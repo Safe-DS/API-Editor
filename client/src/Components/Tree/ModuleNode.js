@@ -10,7 +10,10 @@ const ModuleNode = ({inputModule}) => {
 
     return (
         <li>
-            <div onClick={() => setChildVisibility((v) => !v)}>
+            <div onClick={() => {
+                setChildVisibility((v) => !v)
+                console.log(inputModule.name + " has been selected.");
+            }}>
                 {inputModule.name}
             </div>
             <div>

@@ -7,7 +7,11 @@ const ClassNode = ({inputClass}) => {
 
     return (
         <li>
-            <div onClick={() => setChildVisibility((v) => !v)}>
+            <div onClick={() => {
+                setChildVisibility((v) => !v)
+                console.log(inputClass.name + " has been selected.");
+            }}
+            >
                 {inputClass.name}
             </div>
             {
