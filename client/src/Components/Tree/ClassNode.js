@@ -1,16 +1,23 @@
-import React from "react";
+import React, {useState} from "react";
 
 const ClassNode = ({inputClass}) => {
+    const [childVisible, setChildVisibility] = useState(false);
+
+    let hasClasses = !!inputClass.superclasses && inputClass.superclasses.length !== 0;
+
     return (
         <li key={inputClass.name}>
-            <div>
+            <div onClick={() => setChildVisibility((v) => !v)}>
                 {inputClass.name}
             </div>
-            <ul>
-                {inputClass.superclasses.map(moduleClass => (
-                    <ClassNode inputClass={moduleClass}/>
-                ))}
-            </ul>
+            {
+                hasClasses && childVisible &&
+                <ul>
+                    {inputClass.superclasses.map(moduleClass => (
+                        <ClassNode inputClass={moduleClass}/>
+                    ))}
+                </ul>
+            }
         </li>
     )
 };
