@@ -6,7 +6,7 @@ const ClassNode = ({inputClass}) => {
     let hasClasses = !!inputClass.superclasses && inputClass.superclasses.length !== 0;
 
     return (
-        <li key={inputClass.name}>
+        <li>
             <div onClick={() => setChildVisibility((v) => !v)}>
                 {inputClass.name}
             </div>
@@ -14,7 +14,7 @@ const ClassNode = ({inputClass}) => {
                 hasClasses && childVisible &&
                 <ul>
                     {inputClass.superclasses.map(moduleClass => (
-                        <ClassNode inputClass={moduleClass}/>
+                        <ClassNode key={inputClass.name} inputClass={moduleClass}/>
                     ))}
                 </ul>
             }

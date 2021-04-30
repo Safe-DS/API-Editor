@@ -9,7 +9,7 @@ const ModuleNode = ({inputModule}) => {
     let hasFunctions = !!inputModule.functions && inputModule.functions.length !== 0;
 
     return (
-        <li key={inputModule.name}>
+        <li>
             <div onClick={() => setChildVisibility((v) => !v)}>
                 {inputModule.name}
             </div>
@@ -18,7 +18,7 @@ const ModuleNode = ({inputModule}) => {
                     hasClasses && childVisible &&
                         <ul>
                             {inputModule.classes.map(moduleClass => (
-                                <ClassNode inputClass={moduleClass}/>
+                                <ClassNode key={moduleClass.name} inputClass={moduleClass}/>
                             ))}
                         </ul>
                 }
@@ -26,7 +26,7 @@ const ModuleNode = ({inputModule}) => {
                     hasFunctions && childVisible &&
                     <ul>
                         {inputModule.functions.map(moduleFunction => (
-                            <FunctionNode inputFunction={moduleFunction}/>
+                            <FunctionNode key={moduleFunction.name} inputFunction={moduleFunction}/>
                         ))}
                     </ul>
                 }

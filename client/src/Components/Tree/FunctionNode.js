@@ -2,7 +2,7 @@ import React from "react";
 
 const FunctionNode = ({inputFunction}) => {
     return (
-        <li key={inputFunction.name}>
+        <li>
             <div onClick={() => console.log(inputFunction.parameters)}>
                 {inputFunction.name}
             </div>
