@@ -7,12 +7,15 @@ import PythonParameter from "./PythonParameter";
 
 export default class PythonPackageBuilder {
 
-    static make(packageJson: string) {
-        const p = JSON.parse(packageJson);
+    // @ts-ignore
+    static make(packageJson) {
+
+        console.log(packageJson);
+        console.log(typeof packageJson);
 
         let ms: PythonModule[] = [];
         // @ts-ignore
-        package.modules.forEach(m => {
+        packageJson.modules.forEach(m => {
 
             let cs: PythonClass[] = [];
             // @ts-ignore
@@ -26,7 +29,7 @@ export default class PythonPackageBuilder {
 
                 let ps: PythonParameter[] = [];
                 // @ts-ignore
-                f.parameters.foreach(p => {
+                f.parameters.forEach(p => {
                     ps.push(new PythonParameter(p.name, p.type, p.hasDefault, p.defaultValue, p.limitation, p.ignored, p.docstring));
                 });
 
@@ -36,6 +39,6 @@ export default class PythonPackageBuilder {
             ms.push(new PythonModule(m.name, m.imports, cs, fs))
         });
 
-        return new PythonPackage(p.name, ms);
+        return new PythonPackage(packageJson.name, ms);
     }
 }
