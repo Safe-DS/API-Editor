@@ -10,9 +10,6 @@ export default class PythonPackageBuilder {
     // @ts-ignore
     static make(packageJson) {
 
-        console.log(packageJson);
-        console.log(typeof packageJson);
-
         let ms: PythonModule[] = [];
         // @ts-ignore
         packageJson.modules.forEach(m => {
