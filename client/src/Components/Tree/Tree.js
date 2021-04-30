@@ -7,7 +7,7 @@ const Tree = ({inputPackage}) => {
         <div>
             <ul>
                 {inputPackage.modules.map(module => (
-                    <ModuleNode inputModule={module}/>
+                    <ModuleNode key={module.name} inputModule={module}/>
                 ))}
             </ul>
         </div>

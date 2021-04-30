@@ -4,18 +4,18 @@ import FunctionNode from "./FunctionNode";
 
 const ModuleNode = ({inputModule}) => {
     return (
-        <li key={inputModule.name}>
+        <li>
             <div>
                 {inputModule.name}
             </div>
             <ul>
                 {inputModule.classes.map(moduleClass => (
-                    <ClassNode inputClass={moduleClass}/>
+                    <ClassNode key={moduleClass.name} inputClass={moduleClass}/>
                 ))}
             </ul>
             <ul>
                 {inputModule.functions.map(moduleFunction => (
-                    <FunctionNode inputFunction={moduleFunction}/>
+                    <FunctionNode key={moduleFunction.name} inputFunction={moduleFunction}/>
                 ))}
             </ul>
         </li>

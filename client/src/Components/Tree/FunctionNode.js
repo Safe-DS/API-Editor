@@ -2,7 +2,7 @@ import React from "react";
 
 const FunctionNode = ({inputFunction}) => {
     return (
-        <li key={inputFunction}>
+        <li>
             <div>
                 {inputFunction.name}
             </div>

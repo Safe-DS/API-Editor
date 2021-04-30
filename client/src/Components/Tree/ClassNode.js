@@ -2,13 +2,13 @@ import React from "react";
 
 const ClassNode = ({inputClass}) => {
     return (
-        <li key={inputClass.name}>
+        <li>
             <div>
                 {inputClass.name}
             </div>
             <ul>
                 {inputClass.superclasses.map(moduleClass => (
-                    <ClassNode inputClass={moduleClass}/>
+                    <ClassNode key={moduleClass.name} inputClass={moduleClass}/>
                 ))}
             </ul>
         </li>
