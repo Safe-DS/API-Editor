@@ -16,7 +16,8 @@ let function1 = new PythonFunction(
 );
 let superclass1 = new PythonClass("superclass1", [""], [], "docstring");
 let class1 = new PythonClass("class1", [""], [superclass1], "docstring");
-let module1 = new PythonModule("module1", [], [class1], [function1]);
+let class2 = new PythonClass("class2", [""], [superclass1], "docstring");
+let module1 = new PythonModule("module1", [], [class1,class2], [function1]);
 let treeDummyData = new PythonPackage("package", [module1]);
 
 const TreeView = () => {
