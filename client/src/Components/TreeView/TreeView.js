@@ -9,7 +9,7 @@ import PythonReturnType from "../../model/PythonReturnType";
 
 let returnType1 = new PythonReturnType();
 let parameter1 = new PythonParameter(
-    "parameter1", "type", true, "defaultValue", null, false, "Hello World"
+    "parameter1", "type", true, "defaultValue", null, false, "docstring"
 );
 let function1 = new PythonFunction(
     "function1", [""], [parameter1], false, returnType1,"docstring"
