@@ -1,7 +1,8 @@
 export default class PythonParameter {
 
     readonly name: string;
-    readonly type: string;//Todo Typeclass? instead of returnType etc abstraction to type class
+    // Todo Typeclass? instead of returnType etc abstraction to type class
+    readonly type: string;
     readonly hasDefault: boolean;
     readonly defaultValue: string;//ToDo maybe new default class
     readonly limitation: null;//Todo ueberall null??

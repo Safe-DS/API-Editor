@@ -2,6 +2,7 @@ export default class PythonClass {
 
     readonly name: string;
     readonly decorators: string[];
+    // TODO Superclasses zum Typ string machen
     readonly superclasses: PythonClass[];
     readonly docstring: string;
 
