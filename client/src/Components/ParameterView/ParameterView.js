@@ -10,7 +10,7 @@ const ParameterView = ({parameters}) => {
 
 
                     parameters.map(function (parameters) {
-                        return (<p key={parameters.name}> {parameters.name} </p>)
+                        return (<p key={parameters.name}> {parameters.name}: {parameters.type} </p>)
                     })
                 }
 
