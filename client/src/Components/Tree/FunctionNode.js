@@ -1,11 +1,11 @@
-import React from "react";
+const FunctionNode = ({inputFunction, setParameters}) => {
 
-const FunctionNode = ({inputFunction}) => {
     return (
         <li>
             <div onClick={() =>{
+                setParameters(inputFunction.parameters);
                 console.log(inputFunction.name + " has been selected.");
-                console.log(inputFunction.parameters);
+                //console.log(inputFunction.parameters);
             }
             }>
                 {inputFunction.name}

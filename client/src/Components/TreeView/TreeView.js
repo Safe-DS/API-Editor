@@ -3,13 +3,13 @@ import Tree from "../Tree/Tree";
 import packageJson from "../../data/sklearn.json";
 import PythonPackageBuilder from "../../model/PythonPackageBuilder";
 
-const TreeView = () => {
+const TreeView = ({setParameters}) => {
     let importedPackage = PythonPackageBuilder.make(packageJson);
     return(
         <div className="treeViewDiv">
             <h2>{importedPackage.name}</h2>
             <div>
-                <Tree inputPackage={importedPackage}/>
+                <Tree inputPackage={importedPackage} setParameters={setParameters}/>
             </div>
         </div>
     )

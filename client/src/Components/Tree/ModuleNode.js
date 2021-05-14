@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import ClassNode from "./ClassNode";
 import FunctionNode from "./FunctionNode";
 
-const ModuleNode = ({inputModule}) => {
+const ModuleNode = ({inputModule, setParameters}) => {
     const [childVisible, setChildVisibility] = useState(false);
 
     let hasClasses = !!inputModule.classes && inputModule.classes.length !== 0;
@@ -29,7 +29,7 @@ const ModuleNode = ({inputModule}) => {
                     hasFunctions && childVisible &&
                     <ul>
                         {inputModule.functions.map(moduleFunction => (
-                            <FunctionNode key={moduleFunction.name} inputFunction={moduleFunction}/>
+                            <FunctionNode key={moduleFunction.name} inputFunction={moduleFunction} setParameters={setParameters}/>
                         ))}
                     </ul>
                 }
