@@ -4,6 +4,9 @@ import FunctionNode from "./FunctionNode";
 
 const ModuleNode = ({inputModule}) => {
     const [childVisible, setChildVisibility] = useState(false);
+    this.callbackFunction = (childData) => {
+        this.setState({message: childData})
+    }
 
     let hasClasses = !!inputModule.classes && inputModule.classes.length !== 0;
     let hasFunctions = !!inputModule.functions && inputModule.functions.length !== 0;
@@ -29,8 +32,10 @@ const ModuleNode = ({inputModule}) => {
                     hasFunctions && childVisible &&
                     <ul>
                         {inputModule.functions.map(moduleFunction => (
-                            <FunctionNode key={moduleFunction.name} inputFunction={moduleFunction}/>
+                            <FunctionNode key={moduleFunction.name} inputFunction={moduleFunction}
+                                          parentCallback = {this.callbackFunction}/>
                         ))}
+                        console.log(childData)
                     </ul>
                 }
             </div>
