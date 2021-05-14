@@ -42,7 +42,7 @@ jobs:
       run: yarn run build --if-present
     
     - name: Test
-      run: yarn test
+      run: yarn test --passWithNoTests
     
     - name: Deploy
       run: |
