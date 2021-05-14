@@ -1,0 +1,42 @@
+.tree {
+    padding-left: 0;
+}
+
+.treeViewDiv{
+    overflow: auto;
+    white-space: nowrap;
+}
+
+.tree ul {
+    padding-left: 2rem;
+}
+
+.module-name {
+    padding-left: .5rem;
+}
+
+.class-name {
+    padding-left: .5rem;
+}
+
+.visibility-indicator {
+    display: inline-block;
+    width: 1rem;
+}
+
+.module-content {
+    padding-left: 1.5rem;
+}
+
+.pl-1rem {
+    padding-left: 1rem;
+}
+
+.pl-2-5rem {
+    padding-left: 2rem;
+}
+
+.selected {
+    background-color: cornflowerblue;
+    color: white;
+}
