@@ -1,6 +1,6 @@
 import React from 'react'
 import Tree from "../Tree/Tree";
-import packageJson from "../../sklearn.json";
+import packageJson from "../../data/sklearn.json";
 import PythonPackageBuilder from "../../model/PythonPackageBuilder";
 
 const TreeView = ({setParameters}) => {
