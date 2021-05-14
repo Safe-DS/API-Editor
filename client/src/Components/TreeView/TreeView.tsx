@@ -9,9 +9,7 @@ const TreeView = () => {
     return(
         <div className="treeViewDiv">
             <h2>{importedPackage.name}</h2>
-            <div>
-                <Tree inputPackage={importedPackage}/>
-            </div>
+            <Tree inputPackage={importedPackage}/>
         </div>
     )
 }

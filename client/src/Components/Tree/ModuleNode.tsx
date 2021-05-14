@@ -1,20 +1,32 @@
 import React, {useState} from "react";
 import ClassNode from "./ClassNode";
 import FunctionNode from "./FunctionNode";
+import {isEmptyList} from "../../Utility/listOperations";
+import classNames from "classnames";
+import PythonModule from "../../model/PythonModule";
 
-const ModuleNode = ({inputModule, selection, setSelection}) => {
+type ModuleNodeProps = {
+    inputModule: PythonModule,
+    selection: string,
+    setSelection: (newValue: string) => void,
+}
+
+const ModuleNode = ({inputModule, selection, setSelection}: ModuleNodeProps) => {
     const [childVisible, setChildVisibility] = useState(false);
 
-    let hasClasses = !!inputModule.classes && inputModule.classes.length !== 0;
-    let hasFunctions = !!inputModule.functions && inputModule.functions.length !== 0;
+    let hasClasses = isEmptyList(inputModule.classes);
+    let hasFunctions = isEmptyList(inputModule.functions);
 
-    const cssClasses = [!(hasClasses || hasFunctions) ? "pl-2-5rem" : "pl-1rem",
-                        selection === inputModule.name ? "selected" : ""].join(" ");
+    const cssClasses = classNames({
+        "pl-2-5rem": !(hasClasses || hasFunctions),
+        "pl-1rem": hasClasses || hasFunctions,
+        "selected": selection === inputModule.name,
+    });
 
          return (
-        <li>
+        <div>
             <div className={cssClasses}
-                 onClick={() => {
+                onClick={() => {
                      setSelection(inputModule.name)
                     setChildVisibility(!childVisible)
                     console.log(inputModule.name + " has been selected.");
@@ -26,31 +38,31 @@ const ModuleNode = ({inputModule, selection, setSelection}) => {
                     {inputModule.name}
                 </span>
             </div>
-            <div className="module-content">
+            <div>
                 {
                     hasClasses && childVisible &&
-                        <ul>
+                        <div>
                             {inputModule.classes.map(moduleClass => (
                                 <ClassNode key={moduleClass.name}
                                            inputClass={moduleClass}
                                            selection={selection}
                                            setSelection={setSelection}/>
                             ))}
-                        </ul>
+                        </div>
                 }
                 {
                     hasFunctions && childVisible &&
-                    <ul>
+                    <div>
                         {inputModule.functions.map(moduleFunction => (
                             <FunctionNode key={moduleFunction.name}
                                           inputFunction={moduleFunction}
                                           selection={selection}
                                           setSelection={setSelection}/>
                         ))}
-                    </ul>
+                    </div>
                 }
             </div>
-        </li>
+        </div>
     )
 };
 
