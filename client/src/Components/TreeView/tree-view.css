@@ -33,7 +33,11 @@
 }
 
 .pl-2-5rem {
-    padding-left: 2rem;
+    padding-left: 2.5rem;
+}
+
+.pl-4rem {
+    padding-left: 4rem;
 }
 
 .selected {

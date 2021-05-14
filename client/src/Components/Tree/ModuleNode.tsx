@@ -24,7 +24,7 @@ const ModuleNode = ({inputModule, selection, setSelection}: ModuleNodeProps) => 
     });
 
          return (
-        <div>
+        <div className="module-node">
             <div className={cssClasses}
                 onClick={() => {
                      setSelection(inputModule.name)

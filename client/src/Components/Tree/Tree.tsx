@@ -8,7 +8,7 @@ type TreeProps = {
 
 const Tree = ({inputPackage}: TreeProps) => {
 
-    const [selection, setSelection ] = useState();
+    const [selection, setSelection ] = useState("");
 
     return (
         <div className="tree">
