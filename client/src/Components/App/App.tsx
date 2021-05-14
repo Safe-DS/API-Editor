@@ -9,7 +9,7 @@ function App() {
     return (
         <div className="App">
 
-            <TreeView setParameters={setParameters}/>
+            <TreeView />
             <ParameterView parameters={parameters}/>
         </div>
     );
