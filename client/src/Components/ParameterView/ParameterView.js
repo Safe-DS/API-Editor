@@ -1,11 +1,17 @@
 import React from "react";
 
-const ParameterView = () => {
+const ParameterView = ({parameters}) => {
+
     return (
-        <div className="parameterViewDiv">
-            <h6>empty</h6>
+        <div>
+            {
+                parameters?.map(function (parameters) {
+                    return (<p key={parameters.name}> {parameters.name}: {parameters.type} </p>)
+                })
+            }
         </div>
     )
-}
+};
 
 export default ParameterView;
+
