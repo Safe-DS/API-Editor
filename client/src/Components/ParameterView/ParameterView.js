@@ -1,14 +1,16 @@
-import React from "react";
+import ParameterNode from "./ParameterNode";
 
 const ParameterView = ({parameters}) => {
 
     return (
         <div>
-            {
-                parameters?.map(function (parameters) {
-                    return (<p key={parameters.name}> {parameters.name}: {parameters.type} </p>)
-                })
-            }
+            <ul>
+                {
+                    parameters?.map(function (parameters) {
+                        return (<ParameterNode key={parameters.name} inputParameters={parameters} />)
+                    })
+                }
+            </ul>
         </div>
     )
 };
