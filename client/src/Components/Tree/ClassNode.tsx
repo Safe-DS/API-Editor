@@ -5,20 +5,23 @@ import FunctionNode from "./FunctionNode";
 import {isEmptyList} from "../../Utility/listOperations";
 
 type ClassNodeProps = {
-    inputClass: PythonClass,
+    pythonClass: PythonClass,
     selection: string,
     setSelection: (newValue: string) => void,
+    moduleName: string
 }
 
-const ClassNode = ({inputClass, selection, setSelection}: ClassNodeProps) => {
+const ClassNode = ({pythonClass, selection, setSelection, moduleName}: ClassNodeProps) => {
     const [childVisible, setChildVisibility] = useState(false);
 
-    const hasMethods = isEmptyList(inputClass.methods);
+    const hasMethods = isEmptyList(pythonClass.methods);
+
+    const fullQualifiedName = moduleName + "." + pythonClass.name;
 
     const cssClasses = classNames(
-        "pl-2-5rem",
+        "pl-3rem",
         {
-            "selected": selection === inputClass.name,
+            "selected": selection === fullQualifiedName,
         }
     );
 
@@ -26,22 +29,28 @@ const ClassNode = ({inputClass, selection, setSelection}: ClassNodeProps) => {
         <div className="class-node">
             <div className={cssClasses}
                  onClick={() => {
-                     setSelection(inputClass.name)
+                     setSelection(fullQualifiedName)
                      setChildVisibility(!childVisible);
-                     console.log(inputClass.name + " has been selected.");
+                     console.log(pythonClass.name + " has been selected.");
                  }}>
-                <span className="class-name">
-                    {"𝒞 " + inputClass.name}
+                { hasMethods && <span className="indicator visibility-indicator">{ childVisible ? "▼" : "▶" }</span>}
+                <span className="indicator">
+                    𝒞
+                </span>
+                { " " }
+                <span>
+                    {pythonClass.name}
                 </span>
             </div>
             {
                 hasMethods && childVisible &&
                 <>
-                    {inputClass.methods.map(method => (
-                        <FunctionNode key={method.name}
-                                   inputFunction={method}
-                                   selection={selection}
-                                   setSelection={setSelection}
+                    {pythonClass.methods.map(method => (
+                        <FunctionNode parentFullQualifiedName={fullQualifiedName}
+                                      key={method.name}
+                                      pythonFunction={method}
+                                      selection={selection}
+                                      setSelection={setSelection}
                                       isMethod={true}
                         />
                     ))}

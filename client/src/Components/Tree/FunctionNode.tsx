@@ -3,32 +3,40 @@ import PythonFunction from "../../model/PythonFunction";
 import classNames from "classnames";
 
 type FunctionNodeProps = {
-    inputFunction: PythonFunction,
+    pythonFunction: PythonFunction,
     selection: string,
     setSelection: (newValue: string) => void,
     isMethod?: boolean,
+    /** A parent of a Python class can be a class or a Python module. */
+    parentFullQualifiedName: string
 }
 
-const FunctionNode = ({inputFunction, selection, setSelection, isMethod=false}:FunctionNodeProps) => {
+const FunctionNode = ({pythonFunction, selection, setSelection, parentFullQualifiedName, isMethod=false}:FunctionNodeProps) => {
+
+    const fullQualifiedName = parentFullQualifiedName + "." + pythonFunction.name;
 
     const cssClasses = classNames(
         {
-            "pl-2-5rem": !isMethod,
-            "pl-4rem": isMethod,
-            "selected": selection === inputFunction.name,
+            "pl-3-5rem": !isMethod,
+            "pl-5rem": isMethod,
+            "selected": selection === fullQualifiedName,
         }
     );
 
     return (
         <div className="function-node">
             <div className={cssClasses}
-                 onClick={() =>{
-                     setSelection(inputFunction.name);
-                     console.log(inputFunction.name + " has been selected.");
-                     console.log(inputFunction.parameters);
+                 onClick={() => {
+                     setSelection(fullQualifiedName);
+                     console.log(fullQualifiedName + " has been selected.");
+                     console.log(pythonFunction.parameters);
                  }}>
+                <span className="indicator">
+                    𝑓
+                </span>
+                { " " }
                 <span>
-                    {"𝑓 "  + inputFunction.name}
+                    {pythonFunction.name}
                 </span>
             </div>
         </div>

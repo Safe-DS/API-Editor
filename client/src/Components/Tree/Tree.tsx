@@ -3,18 +3,18 @@ import ModuleNode from "./ModuleNode";
 import PythonPackage from "../../model/PythonPackage";
 
 type TreeProps = {
-    inputPackage: PythonPackage,
+    pythonPackage: PythonPackage,
 }
 
-const Tree = ({inputPackage}: TreeProps) => {
+const Tree = ({pythonPackage}: TreeProps) => {
 
     const [selection, setSelection ] = useState("");
 
     return (
         <div className="tree">
-            {inputPackage.modules.map(module => (
+            {pythonPackage.modules.map(module => (
                 <ModuleNode key={module.name}
-                            inputModule={module}
+                            pythonModule={module}
                             selection={selection}
                             setSelection={setSelection}/>
             ))}

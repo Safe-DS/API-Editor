@@ -6,56 +6,65 @@ import classNames from "classnames";
 import PythonModule from "../../model/PythonModule";
 
 type ModuleNodeProps = {
-    inputModule: PythonModule,
+    pythonModule: PythonModule,
     selection: string,
     setSelection: (newValue: string) => void,
 }
 
-const ModuleNode = ({inputModule, selection, setSelection}: ModuleNodeProps) => {
+const ModuleNode = ({pythonModule, selection, setSelection}: ModuleNodeProps) => {
     const [childVisible, setChildVisibility] = useState(false);
 
-    let hasClasses = isEmptyList(inputModule.classes);
-    let hasFunctions = isEmptyList(inputModule.functions);
+    let hasClasses = isEmptyList(pythonModule.classes);
+    let hasFunctions = isEmptyList(pythonModule.functions);
 
-    const cssClasses = classNames({
-        "pl-2-5rem": !(hasClasses || hasFunctions),
-        "pl-1rem": hasClasses || hasFunctions,
-        "selected": selection === inputModule.name,
-    });
+    const cssClasses = classNames(
+        {
+            "pl-2rem": !(hasClasses || hasFunctions),
+            "pl-1-5rem": (hasClasses || hasFunctions),
+            "selected": selection === pythonModule.name,
+        }
+    );
 
          return (
         <div className="module-node">
             <div className={cssClasses}
                 onClick={() => {
-                     setSelection(inputModule.name)
+                     setSelection(pythonModule.name)
                     setChildVisibility(!childVisible)
-                    console.log(inputModule.name + " has been selected.");
+                    console.log(pythonModule.name + " has been selected.");
                  }}>
                 { (hasClasses || hasFunctions) &&
-                    <span className="visibility-indicator">{ childVisible ? "↓" : "→" }</span>
+                    <span className="indicator visibility-indicator">{ childVisible ? "▼" : "▶" }</span>
                 }
-                <span className="module-name">
-                    {inputModule.name}
+                <span className="indicator">
+                    □
+                </span>
+                { " " }
+                <span>
+                    { pythonModule.name }
                 </span>
             </div>
             <div>
                 {
                     hasClasses && childVisible &&
                         <div>
-                            {inputModule.classes.map(moduleClass => (
+                            {pythonModule.classes.map(moduleClass => (
                                 <ClassNode key={moduleClass.name}
-                                           inputClass={moduleClass}
+                                           pythonClass={moduleClass}
                                            selection={selection}
-                                           setSelection={setSelection}/>
+                                           setSelection={setSelection}
+                                           moduleName={pythonModule.name}
+                                />
                             ))}
                         </div>
                 }
                 {
                     hasFunctions && childVisible &&
                     <div>
-                        {inputModule.functions.map(moduleFunction => (
-                            <FunctionNode key={moduleFunction.name}
-                                          inputFunction={moduleFunction}
+                        {pythonModule.functions.map(moduleFunction => (
+                            <FunctionNode parentFullQualifiedName={pythonModule.name}
+                                          key={moduleFunction.name}
+                                          pythonFunction={moduleFunction}
                                           selection={selection}
                                           setSelection={setSelection}/>
                         ))}

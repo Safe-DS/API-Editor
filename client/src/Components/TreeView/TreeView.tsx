@@ -5,11 +5,11 @@ import packageJson from "../../sklearn.json";
 import PythonPackageBuilder from "../../model/PythonPackageBuilder";
 
 const TreeView = () => {
-    let importedPackage = PythonPackageBuilder.make(packageJson);
+    let pythonPackage = PythonPackageBuilder.make(packageJson);
     return(
         <div className="treeViewDiv">
-            <h2>{importedPackage.name}</h2>
-            <Tree inputPackage={importedPackage}/>
+            <h2 className="package-name">{pythonPackage.name}</h2>
+            <Tree pythonPackage={pythonPackage}/>
         </div>
     )
 }
