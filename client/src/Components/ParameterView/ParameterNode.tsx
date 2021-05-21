@@ -1,33 +1,22 @@
-import React, {useState} from "react";
+import React from "react";
 import "./ParameterView.css";
+import DocumentationText from "./DocumentationText";
+import PythonParameter from "../../model/PythonParameter";
 
-// @ts-ignore
-const ParameterNode = ({inputParameters}) => {
-    const [childVisible, setChildVisibility] = useState(false);
+type ParameterProps = {inputParameter: PythonParameter}
 
+const ParameterNode = ({inputParameter}: ParameterProps) => {
     return (
-        <li>
-            <div onClick={() => {
-                setChildVisibility(!childVisible)
-                }}>
+        <div className="parametersList">
 
-                <span className="visibility-indicator">{ childVisible ? "▼" : ">" }</span>
+            <span className="parameter-name">
+                <h4>{inputParameter?.name}</h4>
+            </span>
 
-                <span className="parameter-name">
-                    {inputParameters?.name}
-                </span>
-
-            </div>
-            <div>
-                {
-                    childVisible &&
-                    <ul>
-                        {inputParameters?.docstring}
-                    </ul>
-                }
-            </div>
-        </li>
-);
+            <DocumentationText inputText={inputParameter?.docstring}/>
+        </div>
+    );
 };
 
 export default ParameterNode;
+

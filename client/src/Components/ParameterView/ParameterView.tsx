@@ -1,17 +1,21 @@
 import ParameterNode from "./ParameterNode";
+import React from "react";
+import PythonParameter from "../../model/PythonParameter";
 
-// @ts-ignore
-const ParameterView = ({parameters}) => {
+type ParameterViewProps = {inputParameters: PythonParameter[]}
+
+const ParameterView = ({inputParameters}: ParameterViewProps) => {
 
     return (
+
         <div className="parameterViewDiv">
-            <ul>
-                {// @ts-ignore
-                    parameters?.map(function (parameters) {
-                        return (<ParameterNode key={parameters.name} inputParameters={parameters} />)
-                    })
-                }
-            </ul>
+            <h2>Parameters</h2>
+            {
+                inputParameters?.map(function (parameters) {
+                    return (<ParameterNode key={parameters.name} inputParameter={parameters} />)
+                })
+            }
+
         </div>
     )
 };

@@ -1,26 +1,26 @@
-
-.tree {
-    padding-left: 0;
-}
-
-.parameterViewDiv li {
-    list-style-type: none;
-}
-
 .parameterViewDiv{
-    overflow: auto;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    padding-right: 1rem;
 }
 
-.tree ul {
-    padding-left: 2rem;
+.parameterViewDiv h2{
+    padding-top: 1rem;
+    padding-left: 1rem;
 }
 
-.module-name {
+.parameterViewDiv a{
     padding-left: .5rem;
 }
 
-.pl-1rem {
+.parametersList {
     padding-left: 1rem;
+    padding-bottom: .5rem;
+}
+
+.parameter-name {
+    font-weight: bold;
 }
 
 .visibility-indicator {
@@ -28,3 +28,15 @@
     width: 1rem;
 }
 
+.read-more-button {
+    background: none!important;
+    border: none;
+    /*padding: 0!important;*/
+    padding-left: 0.5rem;
+    /*optional*/
+    font-family: arial, sans-serif;
+    /*input has OS specific font-family*/
+    color: #069;
+    text-decoration: underline;
+    cursor: pointer;
+}

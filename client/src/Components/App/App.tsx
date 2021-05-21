@@ -4,13 +4,13 @@ import ParameterView from "../ParameterView/ParameterView";
 import TreeView from "../TreeView/TreeView";
 
 function App() {
-    const [parameters, setParameters] = useState(null);
+    const [parameters, setParameters] = useState([]);
 
     return (
         <div className="App">
 
             <TreeView setParameters={setParameters}/>
-            <ParameterView parameters={parameters}/>
+            <ParameterView inputParameters={parameters}/>
         </div>
     );
 }
