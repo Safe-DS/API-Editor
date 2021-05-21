@@ -19,7 +19,7 @@ const ClassNode = ({pythonClass, selection, setSelection, moduleName}: ClassNode
     const fullQualifiedName = moduleName + "." + pythonClass.name;
 
     const cssClasses = classNames(
-        "pl-3rem",
+        "pl-3rem", "tree-view-row",
         {
             "selected": selection === fullQualifiedName,
         }

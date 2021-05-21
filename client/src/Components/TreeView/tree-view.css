@@ -1,14 +1,18 @@
+.tree-view {
+    border-right: 1px solid gray;
+}
+
 .package-name {
     margin: 1rem 1rem .5rem;
 }
 
 .tree {
     padding-left: 0;
-}
-
-.treeViewDiv {
     overflow: auto;
     white-space: nowrap;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
 }
 
 .tree ul {
@@ -63,6 +67,10 @@
 
 .pl-5rem {
     padding-left: 5rem;
+}
+
+.tree-view-row {
+    padding-right: .5rem;
 }
 
 .selected {

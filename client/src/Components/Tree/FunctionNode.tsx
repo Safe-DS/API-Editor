@@ -16,6 +16,7 @@ const FunctionNode = ({pythonFunction, selection, setSelection, parentFullQualif
     const fullQualifiedName = parentFullQualifiedName + "." + pythonFunction.name;
 
     const cssClasses = classNames(
+        "tree-view-row",
         {
             "pl-3-5rem": !isMethod,
             "pl-5rem": isMethod,

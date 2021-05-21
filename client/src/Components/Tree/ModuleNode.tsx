@@ -18,6 +18,7 @@ const ModuleNode = ({pythonModule, selection, setSelection}: ModuleNodeProps) =>
     let hasFunctions = isEmptyList(pythonModule.functions);
 
     const cssClasses = classNames(
+        "tree-view-row",
         {
             "pl-2rem": !(hasClasses || hasFunctions),
             "pl-1-5rem": (hasClasses || hasFunctions),

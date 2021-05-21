@@ -7,7 +7,7 @@ import PythonPackageBuilder from "../../model/PythonPackageBuilder";
 const TreeView = () => {
     let pythonPackage = PythonPackageBuilder.make(packageJson);
     return(
-        <div className="treeViewDiv">
+        <div className="tree-view">
             <h2 className="package-name">{pythonPackage.name}</h2>
             <Tree pythonPackage={pythonPackage}/>
         </div>
