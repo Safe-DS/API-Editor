@@ -1,0 +1,30 @@
+
+.tree {
+    padding-left: 0;
+}
+
+.parameterViewDiv li {
+    list-style-type: none;
+}
+
+.parameterViewDiv{
+    overflow: auto;
+}
+
+.tree ul {
+    padding-left: 2rem;
+}
+
+.module-name {
+    padding-left: .5rem;
+}
+
+.pl-1rem {
+    padding-left: 1rem;
+}
+
+.visibility-indicator {
+    display: inline-block;
+    width: 1rem;
+}
+

@@ -4,7 +4,7 @@ import ParameterNode from "./ParameterNode";
 const ParameterView = ({parameters}) => {
 
     return (
-        <div>
+        <div className="parameterViewDiv">
             <ul>
                 {// @ts-ignore
                     parameters?.map(function (parameters) {

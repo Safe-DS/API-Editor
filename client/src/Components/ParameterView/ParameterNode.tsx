@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import "./ParameterView.css";
 
 // @ts-ignore
 const ParameterNode = ({inputParameters}) => {
@@ -6,17 +7,22 @@ const ParameterNode = ({inputParameters}) => {
 
     return (
         <li>
-            <div  onClick={() => {
+            <div onClick={() => {
                 setChildVisibility(!childVisible)
                 }}>
-                {inputParameters?.name}
+
+                <span className="visibility-indicator">{ childVisible ? "▼" : ">" }</span>
+
+                <span className="parameter-name">
+                    {inputParameters?.name}
+                </span>
+
             </div>
             <div>
                 {
                     childVisible &&
                     <ul>
                         {inputParameters?.docstring}
-
                     </ul>
                 }
             </div>
