@@ -1,6 +1,6 @@
 .tree-view {
     border-right: 1px solid gray;
-    overflow: scroll;
+    overflow: auto;
 }
 
 .package-name {
