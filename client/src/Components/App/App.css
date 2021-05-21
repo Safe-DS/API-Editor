@@ -26,3 +26,7 @@
   height: 40vmin;
   pointer-events: none;
 }
+
+.class-node:hover, .function-node:hover, .module-node:hover {
+  cursor: pointer;
+}
