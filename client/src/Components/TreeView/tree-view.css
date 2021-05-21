@@ -1,5 +1,6 @@
 .tree-view {
     border-right: 1px solid gray;
+    overflow: scroll;
 }
 
 .package-name {
@@ -8,7 +9,6 @@
 
 .tree {
     padding-left: 0;
-    overflow: auto;
     white-space: nowrap;
     display: flex;
     flex-direction: column;
