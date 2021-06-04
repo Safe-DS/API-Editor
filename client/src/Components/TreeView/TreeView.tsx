@@ -4,12 +4,15 @@ import './tree-view.css';
 import packageJson from "../../sklearn.json";
 import PythonPackageBuilder from "../../model/PythonPackageBuilder";
 
-const TreeView = () => {
+type TreeViewProps = {
+    setParameters: any,
+}
+const TreeView = ({setParameters}:TreeViewProps) => {
     let pythonPackage = PythonPackageBuilder.make(packageJson);
     return(
         <div className="tree-view">
             <h2 className="package-name">{pythonPackage.name}</h2>
-            <Tree pythonPackage={pythonPackage}/>
+            <Tree pythonPackage={pythonPackage} setParameters={setParameters}/>
         </div>
     )
 }

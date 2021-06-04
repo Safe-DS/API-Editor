@@ -4,9 +4,10 @@ import PythonPackage from "../../model/PythonPackage";
 
 type TreeProps = {
     pythonPackage: PythonPackage,
+    setParameters: any,
 }
 
-const Tree = ({pythonPackage}: TreeProps) => {
+const Tree = ({pythonPackage, setParameters}: TreeProps) => {
 
     const [selection, setSelection ] = useState("");
 
@@ -16,7 +17,8 @@ const Tree = ({pythonPackage}: TreeProps) => {
                 <ModuleNode key={module.name}
                             pythonModule={module}
                             selection={selection}
-                            setSelection={setSelection}/>
+                            setSelection={setSelection}
+                            setParameters={setParameters}/>
             ))}
         </div>
     );

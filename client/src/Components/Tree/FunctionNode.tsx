@@ -6,12 +6,13 @@ type FunctionNodeProps = {
     pythonFunction: PythonFunction,
     selection: string,
     setSelection: (newValue: string) => void,
+    setParameters: any,
     isMethod?: boolean,
     /** A parent of a Python class can be a class or a Python module. */
-    parentFullQualifiedName: string
+    parentFullQualifiedName: string,
 }
 
-const FunctionNode = ({pythonFunction, selection, setSelection, parentFullQualifiedName, isMethod=false}:FunctionNodeProps) => {
+const FunctionNode = ({pythonFunction, selection, setSelection, setParameters, parentFullQualifiedName, isMethod=false}:FunctionNodeProps) => {
 
     const fullQualifiedName = parentFullQualifiedName + "." + pythonFunction.name;
 
@@ -29,8 +30,7 @@ const FunctionNode = ({pythonFunction, selection, setSelection, parentFullQualif
             <div className={cssClasses}
                  onClick={() => {
                      setSelection(fullQualifiedName);
-                     console.log(fullQualifiedName + " has been selected.");
-                     console.log(pythonFunction.parameters);
+                     setParameters(pythonFunction.parameters)
                  }}>
                 <span className="indicator">
                     𝑓

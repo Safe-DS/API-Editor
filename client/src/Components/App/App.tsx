@@ -1,13 +1,16 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import ParameterView from "../ParameterView/ParameterView";
 import TreeView from "../TreeView/TreeView";
 
 function App() {
+    const [parameters, setParameters] = useState([]);
+
     return (
         <div className="App">
-            <TreeView />
-            <ParameterView parameters={null}/>
+
+            <TreeView setParameters={setParameters}/>
+            <ParameterView inputParameters={parameters}/>
         </div>
     );
 }

@@ -9,9 +9,10 @@ type ModuleNodeProps = {
     pythonModule: PythonModule,
     selection: string,
     setSelection: (newValue: string) => void,
+    setParameters: any,
 }
 
-const ModuleNode = ({pythonModule, selection, setSelection}: ModuleNodeProps) => {
+const ModuleNode = ({pythonModule, selection, setSelection, setParameters}: ModuleNodeProps) => {
     const [childVisible, setChildVisibility] = useState(false);
 
     let hasClasses = isEmptyList(pythonModule.classes);
@@ -55,6 +56,7 @@ const ModuleNode = ({pythonModule, selection, setSelection}: ModuleNodeProps) =>
                                            selection={selection}
                                            setSelection={setSelection}
                                            moduleName={pythonModule.name}
+                                           setParameters={setParameters}
                                 />
                             ))}
                         </div>
@@ -67,7 +69,9 @@ const ModuleNode = ({pythonModule, selection, setSelection}: ModuleNodeProps) =>
                                           key={moduleFunction.name}
                                           pythonFunction={moduleFunction}
                                           selection={selection}
-                                          setSelection={setSelection}/>
+                                          setSelection={setSelection}
+                                          setParameters={setParameters}
+                            />
                         ))}
                     </div>
                 }

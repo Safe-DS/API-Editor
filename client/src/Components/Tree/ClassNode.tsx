@@ -8,10 +8,11 @@ type ClassNodeProps = {
     pythonClass: PythonClass,
     selection: string,
     setSelection: (newValue: string) => void,
-    moduleName: string
+    moduleName: string,
+    setParameters: any,
 }
 
-const ClassNode = ({pythonClass, selection, setSelection, moduleName}: ClassNodeProps) => {
+const ClassNode = ({pythonClass, selection, setSelection, moduleName, setParameters}: ClassNodeProps) => {
     const [childVisible, setChildVisibility] = useState(false);
 
     const hasMethods = isEmptyList(pythonClass.methods);
@@ -52,6 +53,7 @@ const ClassNode = ({pythonClass, selection, setSelection, moduleName}: ClassNode
                                       selection={selection}
                                       setSelection={setSelection}
                                       isMethod={true}
+                                      setParameters={setParameters}
                         />
                     ))}
                 </>
