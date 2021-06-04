@@ -17,7 +17,7 @@ export default class PythonPackageBuilder {
             let cs: PythonClass[] = [];
             // @ts-ignore
             m.classes.forEach(c => {
-                cs.push(new PythonClass(c.name, c.decorators, [], c.docstring || ""));
+                cs.push(new PythonClass(c.name, c.decorators, [], c.docstring || "", c.methods));
             });
 
             let fs: PythonFunction[] = [];
