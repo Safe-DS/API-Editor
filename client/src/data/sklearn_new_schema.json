@@ -490,7 +490,7 @@
           "parameters": [
             {
               "name": "assume_finite",
-              "type": "Any",
+              "type": "bool",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -499,7 +499,7 @@
             },
             {
               "name": "working_memory",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -508,7 +508,7 @@
             },
             {
               "name": "print_changed_only",
-              "type": "Any",
+              "type": "bool",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -694,7 +694,7 @@
                 },
                 {
                   "name": "check_input",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": false,
                   "default": "False",
                   "limitation": null,
@@ -805,7 +805,7 @@
                 },
                 {
                   "name": "y",
-                  "type": "Any",
+                  "type": "Array",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -814,7 +814,7 @@
                 },
                 {
                   "name": "y_pred",
-                  "type": "Any",
+                  "type": "Array",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -975,7 +975,7 @@
                 },
                 {
                   "name": "check_input",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": false,
                   "default": "False",
                   "limitation": null,
@@ -1111,7 +1111,7 @@
                 },
                 {
                   "name": "deep",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": true,
                   "default": "True",
                   "limitation": null,
@@ -1199,7 +1199,7 @@
                 },
                 {
                   "name": "i",
-                  "type": "Any",
+                  "type": "int",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -1238,7 +1238,7 @@
                 },
                 {
                   "name": "i",
-                  "type": "Any",
+                  "type": "int",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -1277,7 +1277,7 @@
                 },
                 {
                   "name": "i",
-                  "type": "Any",
+                  "type": "int",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -1915,9 +1915,9 @@
           "name": "CalibratedClassifierCV",
           "decorators": [],
           "superclasses": [
+            "BaseEstimator",
             "MetaEstimatorMixin",
-            "ClassifierMixin",
-            "BaseEstimator"
+            "ClassifierMixin"
           ],
           "methods": [
             {
@@ -2295,8 +2295,8 @@
           "name": "AffinityPropagation",
           "decorators": [],
           "superclasses": [
-            "ClusterMixin",
-            "BaseEstimator"
+            "BaseEstimator",
+            "ClusterMixin"
           ],
           "methods": [
             {
@@ -2577,8 +2577,8 @@
           "name": "AgglomerativeClustering",
           "decorators": [],
           "superclasses": [
-            "ClusterMixin",
-            "BaseEstimator"
+            "BaseEstimator",
+            "ClusterMixin"
           ],
           "methods": [
             {
@@ -2596,7 +2596,7 @@
                 },
                 {
                   "name": "X",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -2771,7 +2771,7 @@
             },
             {
               "name": "n_clusters",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -2798,7 +2798,7 @@
             },
             {
               "name": "return_distance",
-              "type": "Any",
+              "type": "bool",
               "hasDefault": false,
               "default": "False",
               "limitation": null,
@@ -3143,9 +3143,9 @@
           "name": "Birch",
           "decorators": [],
           "superclasses": [
-            "ClusterMixin",
+            "TransformerMixin",
             "BaseEstimator",
-            "TransformerMixin"
+            "ClusterMixin"
           ],
           "methods": [
             {
@@ -3362,8 +3362,8 @@
           "name": "DBSCAN",
           "decorators": [],
           "superclasses": [
-            "ClusterMixin",
-            "BaseEstimator"
+            "BaseEstimator",
+            "ClusterMixin"
           ],
           "methods": [
             {
@@ -3492,7 +3492,7 @@
             },
             {
               "name": "eps",
-              "type": "Any",
+              "type": "float",
               "hasDefault": true,
               "default": "0.5",
               "limitation": null,
@@ -3793,9 +3793,9 @@
           "name": "KMeans",
           "decorators": [],
           "superclasses": [
-            "ClusterMixin",
+            "TransformerMixin",
             "BaseEstimator",
-            "TransformerMixin"
+            "ClusterMixin"
           ],
           "methods": [
             {
@@ -4325,7 +4325,7 @@
             },
             {
               "name": "n_clusters",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -4374,7 +4374,7 @@
             },
             {
               "name": "n_clusters",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -4484,8 +4484,8 @@
           "name": "MeanShift",
           "decorators": [],
           "superclasses": [
-            "ClusterMixin",
-            "BaseEstimator"
+            "BaseEstimator",
+            "ClusterMixin"
           ],
           "methods": [
             {
@@ -4606,7 +4606,7 @@
             },
             {
               "name": "bin_size",
-              "type": "Any",
+              "type": "float",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -4615,7 +4615,7 @@
             },
             {
               "name": "min_bin_freq",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "1",
               "limitation": null,
@@ -4722,8 +4722,8 @@
           "name": "OPTICS",
           "decorators": [],
           "superclasses": [
-            "ClusterMixin",
-            "BaseEstimator"
+            "BaseEstimator",
+            "ClusterMixin"
           ],
           "methods": [
             {
@@ -4929,8 +4929,8 @@
           "name": "SpectralClustering",
           "decorators": [],
           "superclasses": [
-            "ClusterMixin",
-            "BaseEstimator"
+            "BaseEstimator",
+            "ClusterMixin"
           ],
           "methods": [
             {
@@ -5269,8 +5269,8 @@
           "name": "ColumnTransformer",
           "decorators": [],
           "superclasses": [
-            "_BaseComposition",
-            "TransformerMixin"
+            "TransformerMixin",
+            "_BaseComposition"
           ],
           "methods": [
             {
@@ -5288,7 +5288,7 @@
                 },
                 {
                   "name": "deep",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": true,
                   "default": "True",
                   "limitation": null,
@@ -5591,8 +5591,8 @@
           "name": "TransformedTargetRegressor",
           "decorators": [],
           "superclasses": [
-            "RegressorMixin",
-            "BaseEstimator"
+            "BaseEstimator",
+            "RegressorMixin"
           ],
           "methods": [
             {
@@ -5967,8 +5967,8 @@
           "name": "EllipticEnvelope",
           "decorators": [],
           "superclasses": [
-            "OutlierMixin",
-            "MinCovDet"
+            "MinCovDet",
+            "OutlierMixin"
           ],
           "methods": [
             {
@@ -6364,7 +6364,7 @@
                 },
                 {
                   "name": "scaling",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": true,
                   "default": "True",
                   "limitation": null,
@@ -6373,7 +6373,7 @@
                 },
                 {
                   "name": "squared",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": true,
                   "default": "True",
                   "limitation": null,
@@ -6782,7 +6782,7 @@
             },
             {
               "name": "alpha",
-              "type": "Any",
+              "type": "float",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -6867,7 +6867,7 @@
             },
             {
               "name": "tol",
-              "type": "Any",
+              "type": "float",
               "hasDefault": true,
               "default": "0.0001",
               "limitation": null,
@@ -6876,7 +6876,7 @@
             },
             {
               "name": "enet_tol",
-              "type": "Any",
+              "type": "float",
               "hasDefault": true,
               "default": "0.0001",
               "limitation": null,
@@ -6885,7 +6885,7 @@
             },
             {
               "name": "max_iter",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "100",
               "limitation": null,
@@ -7132,7 +7132,7 @@
             },
             {
               "name": "n_support",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -7141,7 +7141,7 @@
             },
             {
               "name": "remaining_iterations",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -7159,7 +7159,7 @@
             },
             {
               "name": "verbose",
-              "type": "Any",
+              "type": "bool",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -7168,7 +7168,7 @@
             },
             {
               "name": "cov_computation_method",
-              "type": "Any",
+              "type": "Callable",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -7177,7 +7177,7 @@
             },
             {
               "name": "random_state",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -7221,7 +7221,7 @@
             },
             {
               "name": "support_fraction",
-              "type": "Any",
+              "type": "float",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -7230,7 +7230,7 @@
             },
             {
               "name": "cov_computation_method",
-              "type": "Any",
+              "type": "Callable",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -7239,7 +7239,7 @@
             },
             {
               "name": "random_state",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -7283,7 +7283,7 @@
             },
             {
               "name": "n_support",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -7301,7 +7301,7 @@
             },
             {
               "name": "select",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -7310,7 +7310,7 @@
             },
             {
               "name": "n_iter",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -7319,7 +7319,7 @@
             },
             {
               "name": "verbose",
-              "type": "Any",
+              "type": "bool",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -7328,7 +7328,7 @@
             },
             {
               "name": "cov_computation_method",
-              "type": "Any",
+              "type": "Callable",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -7337,7 +7337,7 @@
             },
             {
               "name": "random_state",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -7611,7 +7611,7 @@
             },
             {
               "name": "assume_centered",
-              "type": "Any",
+              "type": "bool",
               "hasDefault": false,
               "default": "False",
               "limitation": null,
@@ -7620,7 +7620,7 @@
             },
             {
               "name": "block_size",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "1000",
               "limitation": null,
@@ -7686,7 +7686,7 @@
             },
             {
               "name": "shrinkage",
-              "type": "Any",
+              "type": "float",
               "hasDefault": true,
               "default": "0.1",
               "limitation": null,
@@ -7861,8 +7861,8 @@
           "name": "PLSSVD",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -8467,7 +8467,7 @@
           "parameters": [
             {
               "name": "data_home",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -8486,7 +8486,7 @@
           "parameters": [
             {
               "name": "data_home",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -8554,7 +8554,7 @@
           "parameters": [
             {
               "name": "module_path",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -8563,7 +8563,7 @@
             },
             {
               "name": "data_file_name",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -9539,7 +9539,7 @@
           "parameters": [
             {
               "name": "name",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -9764,7 +9764,7 @@
             },
             {
               "name": "n_clusters",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -9810,7 +9810,7 @@
             },
             {
               "name": "n_features",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "2",
               "limitation": null,
@@ -9925,7 +9925,7 @@
           "parameters": [
             {
               "name": "n_samples",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "100",
               "limitation": null,
@@ -9934,7 +9934,7 @@
             },
             {
               "name": "n_features",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "20",
               "limitation": null,
@@ -9966,7 +9966,7 @@
           "parameters": [
             {
               "name": "n_samples",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "100",
               "limitation": null,
@@ -9975,7 +9975,7 @@
             },
             {
               "name": "n_features",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "10",
               "limitation": null,
@@ -10007,7 +10007,7 @@
           "parameters": [
             {
               "name": "n_samples",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "100",
               "limitation": null,
@@ -10039,7 +10039,7 @@
           "parameters": [
             {
               "name": "n_samples",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "100",
               "limitation": null,
@@ -10093,7 +10093,7 @@
           "parameters": [
             {
               "name": "n_samples",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "12000",
               "limitation": null,
@@ -10125,7 +10125,7 @@
           "parameters": [
             {
               "name": "n_samples",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "100",
               "limitation": null,
@@ -10134,7 +10134,7 @@
             },
             {
               "name": "n_features",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "100",
               "limitation": null,
@@ -10193,7 +10193,7 @@
           "parameters": [
             {
               "name": "n_samples",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "100",
               "limitation": null,
@@ -10202,7 +10202,7 @@
             },
             {
               "name": "n_features",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "20",
               "limitation": null,
@@ -10244,7 +10244,7 @@
           "parameters": [
             {
               "name": "n_samples",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "100",
               "limitation": null,
@@ -10253,7 +10253,7 @@
             },
             {
               "name": "n_features",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "100",
               "limitation": null,
@@ -10290,7 +10290,7 @@
           "parameters": [
             {
               "name": "n_samples",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "100",
               "limitation": null,
@@ -10322,7 +10322,7 @@
           "parameters": [
             {
               "name": "n_samples",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -10359,7 +10359,7 @@
           "parameters": [
             {
               "name": "dim",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "1",
               "limitation": null,
@@ -10386,7 +10386,7 @@
           "parameters": [
             {
               "name": "n_samples",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "100",
               "limitation": null,
@@ -10395,7 +10395,7 @@
             },
             {
               "name": "n_features",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "10",
               "limitation": null,
@@ -10427,7 +10427,7 @@
           "parameters": [
             {
               "name": "n_dim",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -10454,7 +10454,7 @@
           "parameters": [
             {
               "name": "n_samples",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "100",
               "limitation": null,
@@ -10695,7 +10695,7 @@
           "parameters": [
             {
               "name": "f",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -10732,7 +10732,7 @@
           "parameters": [
             {
               "name": "files",
-              "type": "Any",
+              "type": "ArrayLike",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -10916,7 +10916,7 @@
           "parameters": [
             {
               "name": "text",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -10935,7 +10935,7 @@
           "parameters": [
             {
               "name": "text",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -10954,7 +10954,7 @@
           "parameters": [
             {
               "name": "text",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -11297,8 +11297,8 @@
           "name": "DictionaryLearning",
           "decorators": [],
           "superclasses": [
-            "_BaseSparseCoding",
-            "BaseEstimator"
+            "BaseEstimator",
+            "_BaseSparseCoding"
           ],
           "methods": [
             {
@@ -11351,8 +11351,8 @@
           "name": "MiniBatchDictionaryLearning",
           "decorators": [],
           "superclasses": [
-            "_BaseSparseCoding",
-            "BaseEstimator"
+            "BaseEstimator",
+            "_BaseSparseCoding"
           ],
           "methods": [
             {
@@ -11431,7 +11431,7 @@
                 },
                 {
                   "name": "iter_offset",
-                  "type": "Any",
+                  "type": "int",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -11457,8 +11457,8 @@
           "name": "SparseCoder",
           "decorators": [],
           "superclasses": [
-            "_BaseSparseCoding",
-            "BaseEstimator"
+            "BaseEstimator",
+            "_BaseSparseCoding"
           ],
           "methods": [
             {
@@ -11632,7 +11632,7 @@
             },
             {
               "name": "n_components",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -11683,7 +11683,7 @@
             },
             {
               "name": "n_components",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "2",
               "limitation": null,
@@ -11829,8 +11829,8 @@
           "name": "FactorAnalysis",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -12112,8 +12112,8 @@
           "name": "FastICA",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -12226,7 +12226,7 @@
                 },
                 {
                   "name": "copy",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": true,
                   "default": "True",
                   "limitation": null,
@@ -12269,7 +12269,7 @@
                 },
                 {
                   "name": "copy",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": true,
                   "default": "True",
                   "limitation": null,
@@ -12310,7 +12310,7 @@
             },
             {
               "name": "n_components",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -12480,7 +12480,7 @@
                 },
                 {
                   "name": "check_input",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": true,
                   "default": "True",
                   "limitation": null,
@@ -12619,8 +12619,8 @@
           "name": "KernelPCA",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -12882,8 +12882,8 @@
           "name": "LatentDirichletAllocation",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -13073,7 +13073,7 @@
                 },
                 {
                   "name": "sub_sampling",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": false,
                   "default": "False",
                   "limitation": null,
@@ -13199,8 +13199,8 @@
           "name": "NMF",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -13420,7 +13420,7 @@
             },
             {
               "name": "n_components",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -13455,7 +13455,7 @@
           "parameters": [
             {
               "name": "x",
-              "type": "Any",
+              "type": "ArrayLike",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -13474,7 +13474,7 @@
           "parameters": [
             {
               "name": "X",
-              "type": "Any",
+              "type": "ArrayLike",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -13483,7 +13483,7 @@
             },
             {
               "name": "Y",
-              "type": "Any",
+              "type": "ArrayLike",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -13872,8 +13872,8 @@
           "name": "SparsePCA",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -14038,8 +14038,8 @@
           "name": "TruncatedSVD",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -14357,9 +14357,9 @@
           "name": "LinearDiscriminantAnalysis",
           "decorators": [],
           "superclasses": [
-            "LinearClassifierMixin",
+            "TransformerMixin",
             "BaseEstimator",
-            "TransformerMixin"
+            "LinearClassifierMixin"
           ],
           "methods": [
             {
@@ -14542,8 +14542,8 @@
           "name": "QuadraticDiscriminantAnalysis",
           "decorators": [],
           "superclasses": [
-            "ClassifierMixin",
-            "BaseEstimator"
+            "BaseEstimator",
+            "ClassifierMixin"
           ],
           "methods": [
             {
@@ -14818,9 +14818,9 @@
           "name": "DummyClassifier",
           "decorators": [],
           "superclasses": [
-            "ClassifierMixin",
+            "MultiOutputMixin",
             "BaseEstimator",
-            "MultiOutputMixin"
+            "ClassifierMixin"
           ],
           "methods": [
             {
@@ -15036,9 +15036,9 @@
           "name": "DummyRegressor",
           "decorators": [],
           "superclasses": [
-            "RegressorMixin",
+            "MultiOutputMixin",
             "BaseEstimator",
-            "MultiOutputMixin"
+            "RegressorMixin"
           ],
           "methods": [
             {
@@ -15117,7 +15117,7 @@
                 },
                 {
                   "name": "return_std",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": false,
                   "default": "False",
                   "limitation": null,
@@ -15450,8 +15450,8 @@
           "name": "BaggingClassifier",
           "decorators": [],
           "superclasses": [
-            "ClassifierMixin",
-            "BaseBagging"
+            "BaseBagging",
+            "ClassifierMixin"
           ],
           "methods": [
             {
@@ -15597,8 +15597,8 @@
           "name": "BaggingRegressor",
           "decorators": [],
           "superclasses": [
-            "RegressorMixin",
-            "BaseBagging"
+            "BaseBagging",
+            "RegressorMixin"
           ],
           "methods": [
             {
@@ -15808,8 +15808,8 @@
           "name": "BaseEnsemble",
           "decorators": [],
           "superclasses": [
-            "MetaEstimatorMixin",
-            "BaseEstimator"
+            "BaseEstimator",
+            "MetaEstimatorMixin"
           ],
           "methods": [],
           "fullDocstring": "Base class for all ensemble classes.\n\nWarning: This class should not be used directly. Use derived classes\ninstead.\n\nParameters\n----------\nbase_estimator : object\n    The base estimator from which the ensemble is built.\n\nn_estimators : int, default=10\n    The number of estimators in the ensemble.\n\nestimator_params : list of str, default=tuple()\n    The list of attributes to use as parameters when instantiating a\n    new base estimator. If none are given, default parameters are used.\n\nAttributes\n----------\nbase_estimator_ : estimator\n    The base estimator from which the ensemble is grown.\n\nestimators_ : list of estimators\n    The collection of fitted base estimators."
@@ -15995,8 +15995,8 @@
           "name": "BaseForest",
           "decorators": [],
           "superclasses": [
-            "BaseEnsemble",
-            "MultiOutputMixin"
+            "MultiOutputMixin",
+            "BaseEnsemble"
           ],
           "methods": [
             {
@@ -16289,8 +16289,8 @@
           "name": "ForestRegressor",
           "decorators": [],
           "superclasses": [
-            "RegressorMixin",
-            "BaseForest"
+            "BaseForest",
+            "RegressorMixin"
           ],
           "methods": [
             {
@@ -16707,7 +16707,7 @@
                 },
                 {
                   "name": "monitor",
-                  "type": "Any",
+                  "type": "Callable",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -17043,8 +17043,8 @@
           "name": "GradientBoostingRegressor",
           "decorators": [],
           "superclasses": [
-            "RegressorMixin",
-            "BaseGradientBoosting"
+            "BaseGradientBoosting",
+            "RegressorMixin"
           ],
           "methods": [
             {
@@ -17202,7 +17202,7 @@
                 },
                 {
                   "name": "begin_at_stage",
-                  "type": "Any",
+                  "type": "int",
                   "hasDefault": false,
                   "default": "0",
                   "limitation": null,
@@ -17230,7 +17230,7 @@
                 },
                 {
                   "name": "j",
-                  "type": "Any",
+                  "type": "int",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -17835,7 +17835,7 @@
                 },
                 {
                   "name": "learning_rate",
-                  "type": "Any",
+                  "type": "float",
                   "hasDefault": true,
                   "default": "0.1",
                   "limitation": null,
@@ -17844,7 +17844,7 @@
                 },
                 {
                   "name": "k",
-                  "type": "Any",
+                  "type": "int",
                   "hasDefault": false,
                   "default": "0",
                   "limitation": null,
@@ -18001,7 +18001,7 @@
                 },
                 {
                   "name": "learning_rate",
-                  "type": "Any",
+                  "type": "float",
                   "hasDefault": true,
                   "default": "0.1",
                   "limitation": null,
@@ -18010,7 +18010,7 @@
                 },
                 {
                   "name": "k",
-                  "type": "Any",
+                  "type": "int",
                   "hasDefault": false,
                   "default": "0",
                   "limitation": null,
@@ -18130,7 +18130,7 @@
                 },
                 {
                   "name": "k",
-                  "type": "Any",
+                  "type": "int",
                   "hasDefault": false,
                   "default": "0",
                   "limitation": null,
@@ -18655,7 +18655,7 @@
                 },
                 {
                   "name": "X",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -18717,7 +18717,7 @@
                 },
                 {
                   "name": "X",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -18779,7 +18779,7 @@
                 },
                 {
                   "name": "X",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -18852,7 +18852,7 @@
                 },
                 {
                   "name": "X",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -19266,7 +19266,7 @@
                 },
                 {
                   "name": "n_samples",
-                  "type": "Any",
+                  "type": "int",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -19275,7 +19275,7 @@
                 },
                 {
                   "name": "prediction_dim",
-                  "type": "Any",
+                  "type": "int",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -19325,7 +19325,7 @@
                 },
                 {
                   "name": "y_train",
-                  "type": "Any",
+                  "type": "NDArray",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -19343,7 +19343,7 @@
                 },
                 {
                   "name": "prediction_dim",
-                  "type": "Any",
+                  "type": "int",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -19379,7 +19379,7 @@
                 },
                 {
                   "name": "gradients",
-                  "type": "Any",
+                  "type": "NDArray",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -19388,7 +19388,7 @@
                 },
                 {
                   "name": "hessians",
-                  "type": "Any",
+                  "type": "NDArray",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -19397,7 +19397,7 @@
                 },
                 {
                   "name": "y_true",
-                  "type": "Any",
+                  "type": "NDArray",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -19406,7 +19406,7 @@
                 },
                 {
                   "name": "raw_predictions",
-                  "type": "Any",
+                  "type": "NDArray",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -20461,7 +20461,7 @@
                 },
                 {
                   "name": "X",
-                  "type": "Any",
+                  "type": "NDArray",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -20513,7 +20513,7 @@
                 },
                 {
                   "name": "X",
-                  "type": "Any",
+                  "type": "NDArray",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -20556,7 +20556,7 @@
                 },
                 {
                   "name": "grid",
-                  "type": "Any",
+                  "type": "NDArray",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -20565,7 +20565,7 @@
                 },
                 {
                   "name": "target_features",
-                  "type": "Any",
+                  "type": "NDArray",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -20574,7 +20574,7 @@
                 },
                 {
                   "name": "out",
-                  "type": "Any",
+                  "type": "NDArray",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -20677,8 +20677,8 @@
           "name": "IsolationForest",
           "decorators": [],
           "superclasses": [
-            "OutlierMixin",
-            "BaseBagging"
+            "BaseBagging",
+            "OutlierMixin"
           ],
           "methods": [
             {
@@ -20990,8 +20990,8 @@
           "name": "StackingClassifier",
           "decorators": [],
           "superclasses": [
-            "ClassifierMixin",
-            "_BaseStacking"
+            "_BaseStacking",
+            "ClassifierMixin"
           ],
           "methods": [
             {
@@ -21189,8 +21189,8 @@
           "name": "StackingRegressor",
           "decorators": [],
           "superclasses": [
-            "RegressorMixin",
-            "_BaseStacking"
+            "_BaseStacking",
+            "RegressorMixin"
           ],
           "methods": [
             {
@@ -21385,8 +21385,8 @@
           "name": "VotingClassifier",
           "decorators": [],
           "superclasses": [
-            "_BaseVoting",
-            "ClassifierMixin"
+            "ClassifierMixin",
+            "_BaseVoting"
           ],
           "methods": [
             {
@@ -22081,8 +22081,8 @@
           "name": "AdaBoostRegressor",
           "decorators": [],
           "superclasses": [
-            "RegressorMixin",
-            "BaseWeightBoosting"
+            "BaseWeightBoosting",
+            "RegressorMixin"
           ],
           "methods": [
             {
@@ -22470,8 +22470,8 @@
           "name": "NotFittedError",
           "decorators": [],
           "superclasses": [
-            "ValueError",
-            "AttributeError"
+            "AttributeError",
+            "ValueError"
           ],
           "methods": [],
           "fullDocstring": "Exception class to raise if estimator is used before fitting.\n\nThis class inherits from both ValueError and AttributeError to help with\nexception handling and backward compatibility.\n\nExamples\n--------\n>>> from sklearn.svm import LinearSVC\n>>> from sklearn.exceptions import NotFittedError\n>>> try:\n...     LinearSVC().predict([[1, 2], [2, 3], [3, 4]])\n... except NotFittedError as e:\n...     print(repr(e))\nNotFittedError(\"This LinearSVC instance is not fitted yet. Call 'fit' with\nappropriate arguments before using this estimator.\"...)\n\n.. versionchanged:: 0.18\n   Moved from sklearn.utils.validation."
@@ -22980,8 +22980,8 @@
           "name": "Data",
           "decorators": [],
           "superclasses": [
-            "DenseGeneratorData",
-            "_DataListMixin"
+            "_DataListMixin",
+            "DenseGeneratorData"
           ],
           "methods": [],
           "fullDocstring": null
@@ -23417,7 +23417,7 @@
             },
             {
               "name": "X",
-              "type": "Any",
+              "type": "NDArray",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -23444,7 +23444,7 @@
             },
             {
               "name": "Y",
-              "type": "Any",
+              "type": "NDArray",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -23462,7 +23462,7 @@
             },
             {
               "name": "maxiter",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "20",
               "limitation": null,
@@ -23471,7 +23471,7 @@
             },
             {
               "name": "largest",
-              "type": "Any",
+              "type": "bool",
               "hasDefault": true,
               "default": "True",
               "limitation": null,
@@ -23480,7 +23480,7 @@
             },
             {
               "name": "verbosityLevel",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "0",
               "limitation": null,
@@ -23489,7 +23489,7 @@
             },
             {
               "name": "retLambdaHistory",
-              "type": "Any",
+              "type": "bool",
               "hasDefault": false,
               "default": "False",
               "limitation": null,
@@ -23498,7 +23498,7 @@
             },
             {
               "name": "retResidualNormsHistory",
-              "type": "Any",
+              "type": "bool",
               "hasDefault": false,
               "default": "False",
               "limitation": null,
@@ -23664,7 +23664,7 @@
           "parameters": [
             {
               "name": "data",
-              "type": "Any",
+              "type": "NDArray",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -23734,7 +23734,7 @@
             },
             {
               "name": "flatten",
-              "type": "Any",
+              "type": "bool",
               "hasDefault": false,
               "default": "False",
               "limitation": null,
@@ -23743,7 +23743,7 @@
             },
             {
               "name": "mode",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -23777,7 +23777,7 @@
             },
             {
               "name": "flatten",
-              "type": "Any",
+              "type": "bool",
               "hasDefault": false,
               "default": "False",
               "limitation": null,
@@ -23786,7 +23786,7 @@
             },
             {
               "name": "mode",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -23811,7 +23811,7 @@
           "parameters": [
             {
               "name": "arr",
-              "type": "Any",
+              "type": "NDArray",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -23820,7 +23820,7 @@
             },
             {
               "name": "size",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -23829,7 +23829,7 @@
             },
             {
               "name": "interp",
-              "type": "Any",
+              "type": "str",
               "hasDefault": true,
               "default": "bilinear",
               "limitation": null,
@@ -23838,7 +23838,7 @@
             },
             {
               "name": "mode",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -23872,7 +23872,7 @@
             },
             {
               "name": "arr",
-              "type": "Any",
+              "type": "NDArray",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -23881,7 +23881,7 @@
             },
             {
               "name": "format",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -24116,8 +24116,8 @@
           "name": "DictVectorizer",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -24317,7 +24317,7 @@
                 },
                 {
                   "name": "support",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -24326,7 +24326,7 @@
                 },
                 {
                   "name": "indices",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": false,
                   "default": "False",
                   "limitation": null,
@@ -24399,8 +24399,8 @@
           "name": "FeatureHasher",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -24418,7 +24418,7 @@
                 },
                 {
                   "name": "X",
-                  "type": "Any",
+                  "type": "NDArray",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -24670,7 +24670,7 @@
           "parameters": [
             {
               "name": "n_x",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -24679,7 +24679,7 @@
             },
             {
               "name": "n_y",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -24688,7 +24688,7 @@
             },
             {
               "name": "n_z",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "1",
               "limitation": null,
@@ -24922,8 +24922,8 @@
           "name": "CountVectorizer",
           "decorators": [],
           "superclasses": [
-            "_VectorizerMixin",
-            "BaseEstimator"
+            "BaseEstimator",
+            "_VectorizerMixin"
           ],
           "methods": [
             {
@@ -25112,9 +25112,9 @@
           "name": "HashingVectorizer",
           "decorators": [],
           "superclasses": [
-            "_VectorizerMixin",
+            "TransformerMixin",
             "BaseEstimator",
-            "TransformerMixin"
+            "_VectorizerMixin"
           ],
           "methods": [
             {
@@ -25275,8 +25275,8 @@
           "name": "TfidfTransformer",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -25340,7 +25340,7 @@
                 },
                 {
                   "name": "copy",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": true,
                   "default": "True",
                   "limitation": null,
@@ -25585,7 +25585,7 @@
                 },
                 {
                   "name": "y",
-                  "type": "Any",
+                  "type": "...",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -25628,7 +25628,7 @@
                 },
                 {
                   "name": "y",
-                  "type": "Any",
+                  "type": "...",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -25692,7 +25692,7 @@
           "parameters": [
             {
               "name": "s",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -25711,7 +25711,7 @@
           "parameters": [
             {
               "name": "s",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -25730,7 +25730,7 @@
           "parameters": [
             {
               "name": "s",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -25931,7 +25931,7 @@
                 },
                 {
                   "name": "indices",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": false,
                   "default": "False",
                   "limitation": null,
@@ -26093,9 +26093,9 @@
           "name": "SelectFromModel",
           "decorators": [],
           "superclasses": [
+            "BaseEstimator",
             "MetaEstimatorMixin",
-            "SelectorMixin",
-            "BaseEstimator"
+            "SelectorMixin"
           ],
           "methods": [
             {
@@ -26482,9 +26482,9 @@
           "name": "RFE",
           "decorators": [],
           "superclasses": [
+            "BaseEstimator",
             "MetaEstimatorMixin",
-            "SelectorMixin",
-            "BaseEstimator"
+            "SelectorMixin"
           ],
           "methods": [
             {
@@ -26834,9 +26834,9 @@
           "name": "SequentialFeatureSelector",
           "decorators": [],
           "superclasses": [
+            "BaseEstimator",
             "MetaEstimatorMixin",
-            "SelectorMixin",
-            "BaseEstimator"
+            "SelectorMixin"
           ],
           "methods": [
             {
@@ -27215,8 +27215,8 @@
           "name": "VarianceThreshold",
           "decorators": [],
           "superclasses": [
-            "SelectorMixin",
-            "BaseEstimator"
+            "BaseEstimator",
+            "SelectorMixin"
           ],
           "methods": [
             {
@@ -27410,8 +27410,8 @@
           "name": "GaussianProcessClassifier",
           "decorators": [],
           "superclasses": [
-            "ClassifierMixin",
-            "BaseEstimator"
+            "BaseEstimator",
+            "ClassifierMixin"
           ],
           "methods": [
             {
@@ -27570,7 +27570,7 @@
                 },
                 {
                   "name": "eval_gradient",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": false,
                   "default": "False",
                   "limitation": null,
@@ -27579,7 +27579,7 @@
                 },
                 {
                   "name": "clone_kernel",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": true,
                   "default": "True",
                   "limitation": null,
@@ -27702,9 +27702,9 @@
           "name": "GaussianProcessRegressor",
           "decorators": [],
           "superclasses": [
-            "RegressorMixin",
+            "MultiOutputMixin",
             "BaseEstimator",
-            "MultiOutputMixin"
+            "RegressorMixin"
           ],
           "methods": [
             {
@@ -27774,7 +27774,7 @@
                 },
                 {
                   "name": "return_std",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": false,
                   "default": "False",
                   "limitation": null,
@@ -27783,7 +27783,7 @@
                 },
                 {
                   "name": "return_cov",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": false,
                   "default": "False",
                   "limitation": null,
@@ -27836,7 +27836,7 @@
                 },
                 {
                   "name": "n_samples",
-                  "type": "Any",
+                  "type": "int",
                   "hasDefault": true,
                   "default": "1",
                   "limitation": null,
@@ -27845,7 +27845,7 @@
                 },
                 {
                   "name": "random_state",
-                  "type": "Any",
+                  "type": "int",
                   "hasDefault": false,
                   "default": "0",
                   "limitation": null,
@@ -27888,7 +27888,7 @@
                 },
                 {
                   "name": "eval_gradient",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": false,
                   "default": "False",
                   "limitation": null,
@@ -27897,7 +27897,7 @@
                 },
                 {
                   "name": "clone_kernel",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": true,
                   "default": "True",
                   "limitation": null,
@@ -28033,7 +28033,7 @@
                 },
                 {
                   "name": "deep",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": true,
                   "default": "True",
                   "limitation": null,
@@ -28198,9 +28198,9 @@
           "name": "ConstantKernel",
           "decorators": [],
           "superclasses": [
+            "StationaryKernelMixin",
             "Kernel",
-            "GenericKernelMixin",
-            "StationaryKernelMixin"
+            "GenericKernelMixin"
           ],
           "methods": [
             {
@@ -28349,9 +28349,9 @@
           "name": "ExpSineSquared",
           "decorators": [],
           "superclasses": [
+            "StationaryKernelMixin",
             "Kernel",
-            "NormalizedKernelMixin",
-            "StationaryKernelMixin"
+            "NormalizedKernelMixin"
           ],
           "methods": [
             {
@@ -28421,7 +28421,7 @@
                 },
                 {
                   "name": "deep",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": true,
                   "default": "True",
                   "limitation": null,
@@ -28659,7 +28659,7 @@
                 },
                 {
                   "name": "deep",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": true,
                   "default": "True",
                   "limitation": null,
@@ -28941,7 +28941,7 @@
                 },
                 {
                   "name": "deep",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": true,
                   "default": "True",
                   "limitation": null,
@@ -29272,9 +29272,9 @@
           "name": "RBF",
           "decorators": [],
           "superclasses": [
+            "StationaryKernelMixin",
             "Kernel",
-            "NormalizedKernelMixin",
-            "StationaryKernelMixin"
+            "NormalizedKernelMixin"
           ],
           "methods": [
             {
@@ -29326,9 +29326,9 @@
           "name": "RationalQuadratic",
           "decorators": [],
           "superclasses": [
+            "StationaryKernelMixin",
             "Kernel",
-            "NormalizedKernelMixin",
-            "StationaryKernelMixin"
+            "NormalizedKernelMixin"
           ],
           "methods": [
             {
@@ -29451,9 +29451,9 @@
           "name": "WhiteKernel",
           "decorators": [],
           "superclasses": [
+            "StationaryKernelMixin",
             "Kernel",
-            "GenericKernelMixin",
-            "StationaryKernelMixin"
+            "GenericKernelMixin"
           ],
           "methods": [
             {
@@ -29632,8 +29632,8 @@
           "name": "MissingIndicator",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -29994,7 +29994,7 @@
                 },
                 {
                   "name": "X",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -30071,7 +30071,7 @@
                 },
                 {
                   "name": "X",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -30840,9 +30840,9 @@
           "name": "IsotonicRegression",
           "decorators": [],
           "superclasses": [
-            "RegressorMixin",
+            "TransformerMixin",
             "BaseEstimator",
-            "TransformerMixin"
+            "RegressorMixin"
           ],
           "methods": [
             {
@@ -31131,8 +31131,8 @@
           "name": "AdditiveChi2Sampler",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -31150,7 +31150,7 @@
                 },
                 {
                   "name": "X",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -31219,8 +31219,8 @@
           "name": "Nystroem",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -31301,8 +31301,8 @@
           "name": "PolynomialCountSketch",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -31389,8 +31389,8 @@
           "name": "RBFSampler",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -31477,8 +31477,8 @@
           "name": "SkewedChi2Sampler",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -31496,7 +31496,7 @@
                 },
                 {
                   "name": "X",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -31539,7 +31539,7 @@
                 },
                 {
                   "name": "X",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -31624,9 +31624,9 @@
           "name": "KernelRidge",
           "decorators": [],
           "superclasses": [
-            "RegressorMixin",
+            "MultiOutputMixin",
             "BaseEstimator",
-            "MultiOutputMixin"
+            "RegressorMixin"
           ],
           "methods": [
             {
@@ -32287,8 +32287,8 @@
           "name": "LinearRegression",
           "decorators": [],
           "superclasses": [
-            "RegressorMixin",
             "MultiOutputMixin",
+            "RegressorMixin",
             "LinearModel"
           ],
           "methods": [
@@ -32413,7 +32413,7 @@
           "parameters": [
             {
               "name": "X",
-              "type": "Any",
+              "type": "ArrayLike",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -32422,7 +32422,7 @@
             },
             {
               "name": "y",
-              "type": "Any",
+              "type": "ArrayLike",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -32440,7 +32440,7 @@
             },
             {
               "name": "random_state",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -32592,7 +32592,7 @@
                 },
                 {
                   "name": "return_std",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": false,
                   "default": "False",
                   "limitation": null,
@@ -32703,7 +32703,7 @@
                 },
                 {
                   "name": "return_std",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": false,
                   "default": "False",
                   "limitation": null,
@@ -32870,8 +32870,8 @@
           "name": "ElasticNet",
           "decorators": [],
           "superclasses": [
-            "RegressorMixin",
             "MultiOutputMixin",
+            "RegressorMixin",
             "LinearModel"
           ],
           "methods": [
@@ -32917,7 +32917,7 @@
                 },
                 {
                   "name": "check_input",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": true,
                   "default": "True",
                   "limitation": null,
@@ -32987,8 +32987,8 @@
           "name": "LinearModelCV",
           "decorators": [],
           "superclasses": [
-            "LinearModel",
-            "MultiOutputMixin"
+            "MultiOutputMixin",
+            "LinearModel"
           ],
           "methods": [
             {
@@ -33371,8 +33371,8 @@
           "name": "GeneralizedLinearRegressor",
           "decorators": [],
           "superclasses": [
-            "RegressorMixin",
-            "BaseEstimator"
+            "BaseEstimator",
+            "RegressorMixin"
           ],
           "methods": [
             {
@@ -34077,8 +34077,8 @@
           "name": "HuberRegressor",
           "decorators": [],
           "superclasses": [
-            "RegressorMixin",
             "BaseEstimator",
+            "RegressorMixin",
             "LinearModel"
           ],
           "methods": [
@@ -34097,7 +34097,7 @@
                 },
                 {
                   "name": "X",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -34106,7 +34106,7 @@
                 },
                 {
                   "name": "y",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -34115,7 +34115,7 @@
                 },
                 {
                   "name": "sample_weight",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -34238,8 +34238,8 @@
           "name": "Lars",
           "decorators": [],
           "superclasses": [
-            "RegressorMixin",
             "MultiOutputMixin",
+            "RegressorMixin",
             "LinearModel"
           ],
           "methods": [
@@ -34409,7 +34409,7 @@
                 },
                 {
                   "name": "copy_X",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -34729,9 +34729,9 @@
           "name": "LogisticRegression",
           "decorators": [],
           "superclasses": [
-            "LinearClassifierMixin",
+            "BaseEstimator",
             "SparseCoefMixin",
-            "BaseEstimator"
+            "LinearClassifierMixin"
           ],
           "methods": [
             {
@@ -34862,8 +34862,8 @@
           "decorators": [],
           "superclasses": [
             "LinearClassifierMixin",
-            "LogisticRegression",
-            "BaseEstimator"
+            "BaseEstimator",
+            "LogisticRegression"
           ],
           "methods": [
             {
@@ -35060,8 +35060,8 @@
           "name": "OrthogonalMatchingPursuit",
           "decorators": [],
           "superclasses": [
-            "RegressorMixin",
             "MultiOutputMixin",
+            "RegressorMixin",
             "LinearModel"
           ],
           "methods": [
@@ -35317,7 +35317,7 @@
                 },
                 {
                   "name": "classes",
-                  "type": "Any",
+                  "type": "Array",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -35369,7 +35369,7 @@
                 },
                 {
                   "name": "coef_init",
-                  "type": "Any",
+                  "type": "Array",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -35378,7 +35378,7 @@
                 },
                 {
                   "name": "intercept_init",
-                  "type": "Any",
+                  "type": "Array",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -35483,7 +35483,7 @@
                 },
                 {
                   "name": "coef_init",
-                  "type": "Any",
+                  "type": "Array",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -35492,7 +35492,7 @@
                 },
                 {
                   "name": "intercept_init",
-                  "type": "Any",
+                  "type": "Array",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -35634,10 +35634,10 @@
           "name": "RANSACRegressor",
           "decorators": [],
           "superclasses": [
-            "RegressorMixin",
+            "MultiOutputMixin",
             "MetaEstimatorMixin",
             "BaseEstimator",
-            "MultiOutputMixin"
+            "RegressorMixin"
           ],
           "methods": [
             {
@@ -35744,7 +35744,7 @@
                 },
                 {
                   "name": "y",
-                  "type": "Any",
+                  "type": "Array",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -35913,9 +35913,9 @@
           "name": "Ridge",
           "decorators": [],
           "superclasses": [
-            "RegressorMixin",
+            "MultiOutputMixin",
             "_BaseRidge",
-            "MultiOutputMixin"
+            "RegressorMixin"
           ],
           "methods": [
             {
@@ -35977,9 +35977,9 @@
           "name": "RidgeCV",
           "decorators": [],
           "superclasses": [
+            "MultiOutputMixin",
             "RegressorMixin",
-            "_BaseRidgeCV",
-            "MultiOutputMixin"
+            "_BaseRidgeCV"
           ],
           "methods": [],
           "fullDocstring": "Ridge regression with built-in cross-validation.\n\nSee glossary entry for :term:`cross-validation estimator`.\n\nBy default, it performs efficient Leave-One-Out Cross-Validation.\n\nRead more in the :ref:`User Guide <ridge_regression>`.\n\nParameters\n----------\nalphas : ndarray of shape (n_alphas,), default=(0.1, 1.0, 10.0)\n    Array of alpha values to try.\n    Regularization strength; must be a positive float. Regularization\n    improves the conditioning of the problem and reduces the variance of\n    the estimates. Larger values specify stronger regularization.\n    Alpha corresponds to ``1 / (2C)`` in other linear models such as\n    :class:`~sklearn.linear_model.LogisticRegression` or\n    :class:`~sklearn.svm.LinearSVC`.\n    If using Leave-One-Out cross-validation, alphas must be positive.\n\nfit_intercept : bool, default=True\n    Whether to calculate the intercept for this model. If set\n    to false, no intercept will be used in calculations\n    (i.e. data is expected to be centered).\n\nnormalize : bool, default=False\n    This parameter is ignored when ``fit_intercept`` is set to False.\n    If True, the regressors X will be normalized before regression by\n    subtracting the mean and dividing by the l2-norm.\n    If you wish to standardize, please use\n    :class:`~sklearn.preprocessing.StandardScaler` before calling ``fit``\n    on an estimator with ``normalize=False``.\n\nscoring : string, callable, default=None\n    A string (see model evaluation documentation) or\n    a scorer callable object / function with signature\n    ``scorer(estimator, X, y)``.\n    If None, the negative mean squared error if cv is 'auto' or None\n    (i.e. when using leave-one-out cross-validation), and r2 score\n    otherwise.\n\ncv : int, cross-validation generator or an iterable, default=None\n    Determines the cross-validation splitting strategy.\n    Possible inputs for cv are:\n\n    - None, to use the efficient Leave-One-Out cross-validation\n    - integer, to specify the number of folds.\n    - :term:`CV splitter`,\n    - An iterable yielding (train, test) splits as arrays of indices.\n\n    For integer/None inputs, if ``y`` is binary or multiclass,\n    :class:`~sklearn.model_selection.StratifiedKFold` is used, else,\n    :class:`~sklearn.model_selection.KFold` is used.\n\n    Refer :ref:`User Guide <cross_validation>` for the various\n    cross-validation strategies that can be used here.\n\ngcv_mode : {'auto', 'svd', eigen'}, default='auto'\n    Flag indicating which strategy to use when performing\n    Leave-One-Out Cross-Validation. Options are::\n\n        'auto' : use 'svd' if n_samples > n_features, otherwise use 'eigen'\n        'svd' : force use of singular value decomposition of X when X is\n            dense, eigenvalue decomposition of X^T.X when X is sparse.\n        'eigen' : force computation via eigendecomposition of X.X^T\n\n    The 'auto' mode is the default and is intended to pick the cheaper\n    option of the two depending on the shape of the training data.\n\nstore_cv_values : bool, default=False\n    Flag indicating if the cross-validation values corresponding to\n    each alpha should be stored in the ``cv_values_`` attribute (see\n    below). This flag is only compatible with ``cv=None`` (i.e. using\n    Leave-One-Out Cross-Validation).\n\nalpha_per_target : bool, default=False\n    Flag indicating whether to optimize the alpha value (picked from the\n    `alphas` parameter list) for each target separately (for multi-output\n    settings: multiple prediction targets). When set to `True`, after\n    fitting, the `alpha_` attribute will contain a value for each target.\n    When set to `False`, a single alpha is used for all targets.\n\n    .. versionadded:: 0.24\n\nAttributes\n----------\ncv_values_ : ndarray of shape (n_samples, n_alphas) or         shape (n_samples, n_targets, n_alphas), optional\n    Cross-validation values for each alpha (only available if\n    ``store_cv_values=True`` and ``cv=None``). After ``fit()`` has been\n    called, this attribute will contain the mean squared errors\n    (by default) or the values of the ``{loss,score}_func`` function\n    (if provided in the constructor).\n\ncoef_ : ndarray of shape (n_features) or (n_targets, n_features)\n    Weight vector(s).\n\nintercept_ : float or ndarray of shape (n_targets,)\n    Independent term in decision function. Set to 0.0 if\n    ``fit_intercept = False``.\n\nalpha_ : float or ndarray of shape (n_targets,)\n    Estimated regularization parameter, or, if ``alpha_per_target=True``,\n    the estimated regularization parameter for each target.\n\nbest_score_ : float or ndarray of shape (n_targets,)\n    Score of base estimator with best alpha, or, if\n    ``alpha_per_target=True``, a score for each target.\n\n    .. versionadded:: 0.23\n\nExamples\n--------\n>>> from sklearn.datasets import load_diabetes\n>>> from sklearn.linear_model import RidgeCV\n>>> X, y = load_diabetes(return_X_y=True)\n>>> clf = RidgeCV(alphas=[1e-3, 1e-2, 1e-1, 1]).fit(X, y)\n>>> clf.score(X, y)\n0.5166...\n\nSee Also\n--------\nRidge : Ridge regression.\nRidgeClassifier : Ridge classifier.\nRidgeClassifierCV : Ridge classifier with built-in cross validation."
@@ -35988,8 +35988,8 @@
           "name": "RidgeClassifier",
           "decorators": [],
           "superclasses": [
-            "LinearClassifierMixin",
-            "_BaseRidge"
+            "_BaseRidge",
+            "LinearClassifierMixin"
           ],
           "methods": [
             {
@@ -36072,8 +36072,8 @@
           "name": "RidgeClassifierCV",
           "decorators": [],
           "superclasses": [
-            "LinearClassifierMixin",
-            "_BaseRidgeCV"
+            "_BaseRidgeCV",
+            "LinearClassifierMixin"
           ],
           "methods": [
             {
@@ -36273,7 +36273,7 @@
           "parameters": [
             {
               "name": "max_squared_sum",
-              "type": "Any",
+              "type": "float",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -36282,7 +36282,7 @@
             },
             {
               "name": "alpha_scaled",
-              "type": "Any",
+              "type": "float",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -36300,7 +36300,7 @@
             },
             {
               "name": "fit_intercept",
-              "type": "Any",
+              "type": "bool",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -36309,7 +36309,7 @@
             },
             {
               "name": "n_samples",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -36318,7 +36318,7 @@
             },
             {
               "name": "is_saga",
-              "type": "Any",
+              "type": "bool",
               "hasDefault": false,
               "default": "False",
               "limitation": null,
@@ -36381,7 +36381,7 @@
             },
             {
               "name": "alpha",
-              "type": "Any",
+              "type": "float",
               "hasDefault": true,
               "default": "1.0",
               "limitation": null,
@@ -36390,7 +36390,7 @@
             },
             {
               "name": "beta",
-              "type": "Any",
+              "type": "float",
               "hasDefault": false,
               "default": "0.0",
               "limitation": null,
@@ -36399,7 +36399,7 @@
             },
             {
               "name": "max_iter",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "1000",
               "limitation": null,
@@ -36408,7 +36408,7 @@
             },
             {
               "name": "tol",
-              "type": "Any",
+              "type": "float",
               "hasDefault": true,
               "default": "0.001",
               "limitation": null,
@@ -36417,7 +36417,7 @@
             },
             {
               "name": "verbose",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "0",
               "limitation": null,
@@ -36426,7 +36426,7 @@
             },
             {
               "name": "random_state",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -36435,7 +36435,7 @@
             },
             {
               "name": "check_input",
-              "type": "Any",
+              "type": "bool",
               "hasDefault": true,
               "default": "True",
               "limitation": null,
@@ -36444,7 +36444,7 @@
             },
             {
               "name": "max_squared_sum",
-              "type": "Any",
+              "type": "float",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -36453,7 +36453,7 @@
             },
             {
               "name": "warm_start_mem",
-              "type": "Any",
+              "type": "Dict",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -36462,7 +36462,7 @@
             },
             {
               "name": "is_saga",
-              "type": "Any",
+              "type": "bool",
               "hasDefault": false,
               "default": "False",
               "limitation": null,
@@ -36682,8 +36682,8 @@
           "name": "BaseSGD",
           "decorators": [],
           "superclasses": [
-            "SparseCoefMixin",
-            "BaseEstimator"
+            "BaseEstimator",
+            "SparseCoefMixin"
           ],
           "methods": [
             {
@@ -36841,8 +36841,8 @@
           "name": "BaseSGDClassifier",
           "decorators": [],
           "superclasses": [
-            "LinearClassifierMixin",
-            "BaseSGD"
+            "BaseSGD",
+            "LinearClassifierMixin"
           ],
           "methods": [
             {
@@ -36887,7 +36887,7 @@
                 },
                 {
                   "name": "sample_weight",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -36957,7 +36957,7 @@
                 },
                 {
                   "name": "sample_weight",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -36983,8 +36983,8 @@
           "name": "BaseSGDRegressor",
           "decorators": [],
           "superclasses": [
-            "RegressorMixin",
-            "BaseSGD"
+            "BaseSGD",
+            "RegressorMixin"
           ],
           "methods": [
             {
@@ -37020,7 +37020,7 @@
                 },
                 {
                   "name": "sample_weight",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -37090,7 +37090,7 @@
                 },
                 {
                   "name": "sample_weight",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -37236,7 +37236,7 @@
             },
             {
               "name": "i",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -37263,7 +37263,7 @@
             },
             {
               "name": "alpha",
-              "type": "Any",
+              "type": "float",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -37272,7 +37272,7 @@
             },
             {
               "name": "C",
-              "type": "Any",
+              "type": "float",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -37281,7 +37281,7 @@
             },
             {
               "name": "learning_rate",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -37290,7 +37290,7 @@
             },
             {
               "name": "max_iter",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -37299,7 +37299,7 @@
             },
             {
               "name": "pos_weight",
-              "type": "Any",
+              "type": "float",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -37308,7 +37308,7 @@
             },
             {
               "name": "neg_weight",
-              "type": "Any",
+              "type": "float",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -37335,7 +37335,7 @@
             },
             {
               "name": "random_state",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -37651,8 +37651,8 @@
           "name": "Isomap",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -37781,7 +37781,7 @@
                 },
                 {
                   "name": "X",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -37911,9 +37911,9 @@
           "name": "LocallyLinearEmbedding",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
+            "TransformerMixin",
             "_UnstableArchMixin",
-            "TransformerMixin"
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -38056,7 +38056,7 @@
             },
             {
               "name": "n_neighbors",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -38065,7 +38065,7 @@
             },
             {
               "name": "reg",
-              "type": "Any",
+              "type": "float",
               "hasDefault": true,
               "default": "0.001",
               "limitation": null,
@@ -38099,7 +38099,7 @@
           "parameters": [
             {
               "name": "X",
-              "type": "Any",
+              "type": "ArrayLike",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -38108,7 +38108,7 @@
             },
             {
               "name": "Y",
-              "type": "Any",
+              "type": "ArrayLike",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -38117,7 +38117,7 @@
             },
             {
               "name": "indices",
-              "type": "Any",
+              "type": "ArrayLike",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -38126,7 +38126,7 @@
             },
             {
               "name": "reg",
-              "type": "Any",
+              "type": "float",
               "hasDefault": true,
               "default": "0.001",
               "limitation": null,
@@ -38192,7 +38192,7 @@
             },
             {
               "name": "k",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -38201,7 +38201,7 @@
             },
             {
               "name": "k_skip",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "1",
               "limitation": null,
@@ -38219,7 +38219,7 @@
             },
             {
               "name": "tol",
-              "type": "Any",
+              "type": "float",
               "hasDefault": true,
               "default": "1e-06",
               "limitation": null,
@@ -38228,7 +38228,7 @@
             },
             {
               "name": "max_iter",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "100",
               "limitation": null,
@@ -38237,7 +38237,7 @@
             },
             {
               "name": "random_state",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -39925,7 +39925,7 @@
           "parameters": [
             {
               "name": "y_true",
-              "type": "Any",
+              "type": "Array",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -39934,7 +39934,7 @@
             },
             {
               "name": "y_pred",
-              "type": "Any",
+              "type": "Array",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -41979,7 +41979,7 @@
           "parameters": [
             {
               "name": "score_func",
-              "type": "Any",
+              "type": "Callable",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -42427,7 +42427,7 @@
             },
             {
               "name": "labels_pred",
-              "type": "Any",
+              "type": "Array",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -42795,7 +42795,7 @@
           "parameters": [
             {
               "name": "n_labels",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -42804,7 +42804,7 @@
             },
             {
               "name": "n_samples",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -43259,7 +43259,7 @@
             },
             {
               "name": "gamma",
-              "type": "Any",
+              "type": "float",
               "hasDefault": true,
               "default": "1.0",
               "limitation": null,
@@ -43336,7 +43336,7 @@
             },
             {
               "name": "dense_output",
-              "type": "Any",
+              "type": "bool",
               "hasDefault": true,
               "default": "True",
               "limitation": null,
@@ -43467,7 +43467,7 @@
             },
             {
               "name": "gamma",
-              "type": "Any",
+              "type": "float",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -43510,7 +43510,7 @@
             },
             {
               "name": "dense_output",
-              "type": "Any",
+              "type": "bool",
               "hasDefault": true,
               "default": "True",
               "limitation": null,
@@ -43960,7 +43960,7 @@
             },
             {
               "name": "degree",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "3",
               "limitation": null,
@@ -43969,7 +43969,7 @@
             },
             {
               "name": "gamma",
-              "type": "Any",
+              "type": "float",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -43978,7 +43978,7 @@
             },
             {
               "name": "coef0",
-              "type": "Any",
+              "type": "float",
               "hasDefault": true,
               "default": "1",
               "limitation": null,
@@ -44021,7 +44021,7 @@
             },
             {
               "name": "gamma",
-              "type": "Any",
+              "type": "float",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -44064,7 +44064,7 @@
             },
             {
               "name": "gamma",
-              "type": "Any",
+              "type": "float",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -44073,7 +44073,7 @@
             },
             {
               "name": "coef0",
-              "type": "Any",
+              "type": "float",
               "hasDefault": true,
               "default": "1",
               "limitation": null,
@@ -44488,7 +44488,7 @@
                 },
                 {
                   "name": "n_samples",
-                  "type": "Any",
+                  "type": "int",
                   "hasDefault": true,
                   "default": "1",
                   "limitation": null,
@@ -45096,8 +45096,8 @@
           "name": "BaseSearchCV",
           "decorators": [],
           "superclasses": [
-            "MetaEstimatorMixin",
-            "BaseEstimator"
+            "BaseEstimator",
+            "MetaEstimatorMixin"
           ],
           "methods": [
             {
@@ -45469,7 +45469,7 @@
           "parameters": [
             {
               "name": "X",
-              "type": "Any",
+              "type": "ArrayLike",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -45496,7 +45496,7 @@
             },
             {
               "name": "parameters",
-              "type": "Any",
+              "type": "Dict",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -45505,7 +45505,7 @@
             },
             {
               "name": "train",
-              "type": "Any",
+              "type": "NDArray",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -45514,7 +45514,7 @@
             },
             {
               "name": "test",
-              "type": "Any",
+              "type": "NDArray",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -45532,7 +45532,7 @@
             },
             {
               "name": "verbose",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -45543,7 +45543,7 @@
               "name": "error_score",
               "type": "Any",
               "hasDefault": true,
-              "default": "<ast.Name object at 0x0000014A7B8443A0>",
+              "default": "<ast.Name object at 0x000001F56EA25670>",
               "limitation": null,
               "ignored": false,
               "description": "Value to assign to the score if an error occurs in estimator fitting.\nIf set to 'raise', the error is raised. If a numeric value is given,\nFitFailedWarning is raised. This parameter does not affect the refit\nstep, which will always raise the error."
@@ -45675,7 +45675,7 @@
                 },
                 {
                   "name": "X",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -45684,7 +45684,7 @@
                 },
                 {
                   "name": "y",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -46820,7 +46820,7 @@
           "parameters": [
             {
               "name": "cv",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "5",
               "limitation": null,
@@ -46829,7 +46829,7 @@
             },
             {
               "name": "y",
-              "type": "Any",
+              "type": "ArrayLike",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -47466,9 +47466,9 @@
           "name": "OneVsOneClassifier",
           "decorators": [],
           "superclasses": [
+            "BaseEstimator",
             "MetaEstimatorMixin",
-            "ClassifierMixin",
-            "BaseEstimator"
+            "ClassifierMixin"
           ],
           "methods": [
             {
@@ -47547,7 +47547,7 @@
                 },
                 {
                   "name": "classes",
-                  "type": "Any",
+                  "type": "Array",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -47662,10 +47662,10 @@
           "name": "OneVsRestClassifier",
           "decorators": [],
           "superclasses": [
+            "MultiOutputMixin",
             "MetaEstimatorMixin",
-            "ClassifierMixin",
             "BaseEstimator",
-            "MultiOutputMixin"
+            "ClassifierMixin"
           ],
           "methods": [
             {
@@ -47744,7 +47744,7 @@
                 },
                 {
                   "name": "classes",
-                  "type": "Any",
+                  "type": "Array",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -47977,9 +47977,9 @@
           "name": "OutputCodeClassifier",
           "decorators": [],
           "superclasses": [
+            "BaseEstimator",
             "MetaEstimatorMixin",
-            "ClassifierMixin",
-            "BaseEstimator"
+            "ClassifierMixin"
           ],
           "methods": [
             {
@@ -48185,8 +48185,8 @@
           "decorators": [],
           "superclasses": [
             "MetaEstimatorMixin",
-            "ClassifierMixin",
-            "_BaseChain"
+            "_BaseChain",
+            "ClassifierMixin"
           ],
           "methods": [
             {
@@ -48307,8 +48307,8 @@
           "name": "MultiOutputClassifier",
           "decorators": [],
           "superclasses": [
-            "_MultiOutputEstimator",
-            "ClassifierMixin"
+            "ClassifierMixin",
+            "_MultiOutputEstimator"
           ],
           "methods": [
             {
@@ -48503,9 +48503,9 @@
           "name": "RegressorChain",
           "decorators": [],
           "superclasses": [
-            "RegressorMixin",
             "MetaEstimatorMixin",
-            "_BaseChain"
+            "_BaseChain",
+            "RegressorMixin"
           ],
           "methods": [
             {
@@ -49204,7 +49204,7 @@
                 },
                 {
                   "name": "X",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -49213,7 +49213,7 @@
                 },
                 {
                   "name": "n_neighbors",
-                  "type": "Any",
+                  "type": "int",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -49222,7 +49222,7 @@
                 },
                 {
                   "name": "return_distance",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": true,
                   "default": "True",
                   "limitation": null,
@@ -49270,7 +49270,7 @@
                 },
                 {
                   "name": "n_neighbors",
-                  "type": "Any",
+                  "type": "int",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -49305,8 +49305,8 @@
           "name": "NeighborsBase",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "MultiOutputMixin"
+            "MultiOutputMixin",
+            "BaseEstimator"
           ],
           "methods": [],
           "fullDocstring": "Base class for nearest neighbors estimators."
@@ -49340,7 +49340,7 @@
                 },
                 {
                   "name": "radius",
-                  "type": "Any",
+                  "type": "float",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -49349,7 +49349,7 @@
                 },
                 {
                   "name": "return_distance",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": true,
                   "default": "True",
                   "limitation": null,
@@ -49358,7 +49358,7 @@
                 },
                 {
                   "name": "sort_results",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": false,
                   "default": "False",
                   "limitation": null,
@@ -49406,7 +49406,7 @@
                 },
                 {
                   "name": "radius",
-                  "type": "Any",
+                  "type": "float",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -49424,7 +49424,7 @@
                 },
                 {
                   "name": "sort_results",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": false,
                   "default": "False",
                   "limitation": null,
@@ -49529,8 +49529,8 @@
           "decorators": [],
           "superclasses": [
             "KNeighborsMixin",
-            "ClassifierMixin",
-            "NeighborsBase"
+            "NeighborsBase",
+            "ClassifierMixin"
           ],
           "methods": [
             {
@@ -49651,9 +49651,9 @@
           "name": "RadiusNeighborsClassifier",
           "decorators": [],
           "superclasses": [
-            "ClassifierMixin",
+            "RadiusNeighborsMixin",
             "NeighborsBase",
-            "RadiusNeighborsMixin"
+            "ClassifierMixin"
           ],
           "methods": [
             {
@@ -49950,8 +49950,8 @@
           "name": "RadiusNeighborsTransformer",
           "decorators": [],
           "superclasses": [
-            "NeighborsBase",
             "RadiusNeighborsMixin",
+            "NeighborsBase",
             "TransformerMixin"
           ],
           "methods": [
@@ -50097,7 +50097,7 @@
             },
             {
               "name": "n_neighbors",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -50133,7 +50133,7 @@
             },
             {
               "name": "radius",
-              "type": "Any",
+              "type": "float",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -50251,7 +50251,7 @@
                 },
                 {
                   "name": "y",
-                  "type": "Any",
+                  "type": "...",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -50337,7 +50337,7 @@
                 },
                 {
                   "name": "y",
-                  "type": "Any",
+                  "type": "...",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -50371,7 +50371,7 @@
                 },
                 {
                   "name": "n_samples",
-                  "type": "Any",
+                  "type": "int",
                   "hasDefault": true,
                   "default": "1",
                   "limitation": null,
@@ -50380,7 +50380,7 @@
                 },
                 {
                   "name": "random_state",
-                  "type": "Any",
+                  "type": "int",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -50455,8 +50455,8 @@
           "decorators": [],
           "superclasses": [
             "KNeighborsMixin",
-            "OutlierMixin",
-            "NeighborsBase"
+            "NeighborsBase",
+            "OutlierMixin"
           ],
           "methods": [
             {
@@ -50723,8 +50723,8 @@
           "name": "NeighborhoodComponentsAnalysis",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -50879,8 +50879,8 @@
           "name": "NearestCentroid",
           "decorators": [],
           "superclasses": [
-            "ClassifierMixin",
-            "BaseEstimator"
+            "BaseEstimator",
+            "ClassifierMixin"
           ],
           "methods": [
             {
@@ -51024,9 +51024,9 @@
           "name": "KNeighborsRegressor",
           "decorators": [],
           "superclasses": [
-            "RegressorMixin",
             "KNeighborsMixin",
-            "NeighborsBase"
+            "NeighborsBase",
+            "RegressorMixin"
           ],
           "methods": [
             {
@@ -51113,9 +51113,9 @@
           "name": "RadiusNeighborsRegressor",
           "decorators": [],
           "superclasses": [
-            "RegressorMixin",
+            "RadiusNeighborsMixin",
             "NeighborsBase",
-            "RadiusNeighborsMixin"
+            "RegressorMixin"
           ],
           "methods": [
             {
@@ -52055,8 +52055,8 @@
           "name": "MLPRegressor",
           "decorators": [],
           "superclasses": [
-            "RegressorMixin",
-            "BaseMultilayerPerceptron"
+            "BaseMultilayerPerceptron",
+            "RegressorMixin"
           ],
           "methods": [
             {
@@ -52172,8 +52172,8 @@
           "name": "BernoulliRBM",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -52409,7 +52409,7 @@
                 },
                 {
                   "name": "grads",
-                  "type": "Any",
+                  "type": "List",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -52465,7 +52465,7 @@
                 },
                 {
                   "name": "msg",
-                  "type": "Any",
+                  "type": "str",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -52474,7 +52474,7 @@
                 },
                 {
                   "name": "verbose",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -52518,7 +52518,7 @@
                 },
                 {
                   "name": "time_step",
-                  "type": "Any",
+                  "type": "int",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -52669,8 +52669,8 @@
           "name": "FeatureUnion",
           "decorators": [],
           "superclasses": [
-            "_BaseComposition",
-            "TransformerMixin"
+            "TransformerMixin",
+            "_BaseComposition"
           ],
           "methods": [
             {
@@ -52688,7 +52688,7 @@
                 },
                 {
                   "name": "deep",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": true,
                   "default": "True",
                   "limitation": null,
@@ -52923,7 +52923,7 @@
                 },
                 {
                   "name": "deep",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": true,
                   "default": "True",
                   "limitation": null,
@@ -53374,7 +53374,7 @@
                 },
                 {
                   "name": "sample_weight",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -53769,8 +53769,8 @@
           "name": "Binarizer",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -53797,7 +53797,7 @@
                 },
                 {
                   "name": "y",
-                  "type": "Any",
+                  "type": "...",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -53840,7 +53840,7 @@
                 },
                 {
                   "name": "copy",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -53866,8 +53866,8 @@
           "name": "KernelCenterer",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -53894,7 +53894,7 @@
                 },
                 {
                   "name": "y",
-                  "type": "Any",
+                  "type": "...",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -53937,7 +53937,7 @@
                 },
                 {
                   "name": "copy",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": true,
                   "default": "True",
                   "limitation": null,
@@ -53963,8 +53963,8 @@
           "name": "MaxAbsScaler",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -53991,7 +53991,7 @@
                 },
                 {
                   "name": "y",
-                  "type": "Any",
+                  "type": "...",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -54034,7 +54034,7 @@
                 },
                 {
                   "name": "y",
-                  "type": "Any",
+                  "type": "...",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -54128,8 +54128,8 @@
           "name": "MinMaxScaler",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -54156,7 +54156,7 @@
                 },
                 {
                   "name": "y",
-                  "type": "Any",
+                  "type": "...",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -54199,7 +54199,7 @@
                 },
                 {
                   "name": "y",
-                  "type": "Any",
+                  "type": "...",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -54293,8 +54293,8 @@
           "name": "Normalizer",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -54321,7 +54321,7 @@
                 },
                 {
                   "name": "y",
-                  "type": "Any",
+                  "type": "...",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -54364,7 +54364,7 @@
                 },
                 {
                   "name": "copy",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -54390,8 +54390,8 @@
           "name": "PolynomialFeatures",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -54473,7 +54473,7 @@
                 },
                 {
                   "name": "y",
-                  "type": "Any",
+                  "type": "...",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -54533,8 +54533,8 @@
           "name": "PowerTransformer",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -54561,7 +54561,7 @@
                 },
                 {
                   "name": "y",
-                  "type": "Any",
+                  "type": "...",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -54692,8 +54692,8 @@
           "name": "QuantileTransformer",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -54720,7 +54720,7 @@
                 },
                 {
                   "name": "y",
-                  "type": "Any",
+                  "type": "...",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -54814,8 +54814,8 @@
           "name": "RobustScaler",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -54842,7 +54842,7 @@
                 },
                 {
                   "name": "y",
-                  "type": "Any",
+                  "type": "...",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -54936,8 +54936,8 @@
           "name": "StandardScaler",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -54964,7 +54964,7 @@
                 },
                 {
                   "name": "y",
-                  "type": "Any",
+                  "type": "...",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -55016,7 +55016,7 @@
                 },
                 {
                   "name": "y",
-                  "type": "Any",
+                  "type": "...",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -55068,7 +55068,7 @@
                 },
                 {
                   "name": "copy",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -55111,7 +55111,7 @@
                 },
                 {
                   "name": "copy",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -55150,7 +55150,7 @@
             },
             {
               "name": "value",
-              "type": "Any",
+              "type": "float",
               "hasDefault": true,
               "default": "1.0",
               "limitation": null,
@@ -55482,8 +55482,8 @@
           "name": "KBinsDiscretizer",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -55510,7 +55510,7 @@
                 },
                 {
                   "name": "y",
-                  "type": "Any",
+                  "type": "...",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -55690,7 +55690,7 @@
                 },
                 {
                   "name": "X",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -55699,7 +55699,7 @@
                 },
                 {
                   "name": "y",
-                  "type": "Any",
+                  "type": "...",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -55733,7 +55733,7 @@
                 },
                 {
                   "name": "X",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -55742,7 +55742,7 @@
                 },
                 {
                   "name": "y",
-                  "type": "Any",
+                  "type": "...",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -55776,7 +55776,7 @@
                 },
                 {
                   "name": "X",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -55888,7 +55888,7 @@
                 },
                 {
                   "name": "X",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -55897,7 +55897,7 @@
                 },
                 {
                   "name": "y",
-                  "type": "Any",
+                  "type": "...",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -55931,7 +55931,7 @@
                 },
                 {
                   "name": "X",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -56025,8 +56025,8 @@
           "name": "FunctionTransformer",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -56044,7 +56044,7 @@
                 },
                 {
                   "name": "X",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -56087,7 +56087,7 @@
                 },
                 {
                   "name": "X",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -56121,7 +56121,7 @@
                 },
                 {
                   "name": "X",
-                  "type": "Any",
+                  "type": "ArrayLike",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -56242,8 +56242,8 @@
           "name": "LabelBinarizer",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -56372,7 +56372,7 @@
                 },
                 {
                   "name": "threshold",
-                  "type": "Any",
+                  "type": "float",
                   "hasDefault": false,
                   "default": "None",
                   "limitation": null,
@@ -56398,8 +56398,8 @@
           "name": "LabelEncoder",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -56545,8 +56545,8 @@
           "name": "MultiLabelBinarizer",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -56698,7 +56698,7 @@
           "parameters": [
             {
               "name": "y",
-              "type": "Any",
+              "type": "ArrayLike",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -56838,8 +56838,8 @@
           "name": "BaseRandomProjection",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "TransformerMixin"
+            "TransformerMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -57083,8 +57083,8 @@
           "name": "BaseLabelPropagation",
           "decorators": [],
           "superclasses": [
-            "ClassifierMixin",
-            "BaseEstimator"
+            "BaseEstimator",
+            "ClassifierMixin"
           ],
           "methods": [
             {
@@ -57309,8 +57309,8 @@
           "name": "SelfTrainingClassifier",
           "decorators": [],
           "superclasses": [
-            "MetaEstimatorMixin",
-            "BaseEstimator"
+            "BaseEstimator",
+            "MetaEstimatorMixin"
           ],
           "methods": [
             {
@@ -58250,9 +58250,9 @@
           "name": "LinearSVC",
           "decorators": [],
           "superclasses": [
-            "LinearClassifierMixin",
+            "BaseEstimator",
             "SparseCoefMixin",
-            "BaseEstimator"
+            "LinearClassifierMixin"
           ],
           "methods": [
             {
@@ -58386,8 +58386,8 @@
           "name": "NuSVR",
           "decorators": [],
           "superclasses": [
-            "RegressorMixin",
-            "BaseLibSVM"
+            "BaseLibSVM",
+            "RegressorMixin"
           ],
           "methods": [],
           "fullDocstring": "Nu Support Vector Regression.\n\nSimilar to NuSVC, for regression, uses a parameter nu to control\nthe number of support vectors. However, unlike NuSVC, where nu\nreplaces C, here nu replaces the parameter epsilon of epsilon-SVR.\n\nThe implementation is based on libsvm.\n\nRead more in the :ref:`User Guide <svm_regression>`.\n\nParameters\n----------\nnu : float, default=0.5\n    An upper bound on the fraction of training errors and a lower bound of\n    the fraction of support vectors. Should be in the interval (0, 1].  By\n    default 0.5 will be taken.\n\nC : float, default=1.0\n    Penalty parameter C of the error term.\n\nkernel : {'linear', 'poly', 'rbf', 'sigmoid', 'precomputed'}, default='rbf'\n     Specifies the kernel type to be used in the algorithm.\n     It must be one of 'linear', 'poly', 'rbf', 'sigmoid', 'precomputed' or\n     a callable.\n     If none is given, 'rbf' will be used. If a callable is given it is\n     used to precompute the kernel matrix.\n\ndegree : int, default=3\n    Degree of the polynomial kernel function ('poly').\n    Ignored by all other kernels.\n\ngamma : {'scale', 'auto'} or float, default='scale'\n    Kernel coefficient for 'rbf', 'poly' and 'sigmoid'.\n\n    - if ``gamma='scale'`` (default) is passed then it uses\n      1 / (n_features * X.var()) as value of gamma,\n    - if 'auto', uses 1 / n_features.\n\n    .. versionchanged:: 0.22\n       The default value of ``gamma`` changed from 'auto' to 'scale'.\n\ncoef0 : float, default=0.0\n    Independent term in kernel function.\n    It is only significant in 'poly' and 'sigmoid'.\n\nshrinking : bool, default=True\n    Whether to use the shrinking heuristic.\n    See the :ref:`User Guide <shrinking_svm>`.\n\ntol : float, default=1e-3\n    Tolerance for stopping criterion.\n\ncache_size : float, default=200\n    Specify the size of the kernel cache (in MB).\n\nverbose : bool, default=False\n    Enable verbose output. Note that this setting takes advantage of a\n    per-process runtime setting in libsvm that, if enabled, may not work\n    properly in a multithreaded context.\n\nmax_iter : int, default=-1\n    Hard limit on iterations within solver, or -1 for no limit.\n\nAttributes\n----------\nclass_weight_ : ndarray of shape (n_classes,)\n    Multipliers of parameter C for each class.\n    Computed based on the ``class_weight`` parameter.\n\ncoef_ : ndarray of shape (1, n_features)\n    Weights assigned to the features (coefficients in the primal\n    problem). This is only available in the case of a linear kernel.\n\n    `coef_` is readonly property derived from `dual_coef_` and\n    `support_vectors_`.\n\ndual_coef_ : ndarray of shape (1, n_SV)\n    Coefficients of the support vector in the decision function.\n\nfit_status_ : int\n    0 if correctly fitted, 1 otherwise (will raise warning)\n\nintercept_ : ndarray of shape (1,)\n    Constants in decision function.\n\nn_support_ : ndarray of shape (n_classes,), dtype=int32\n    Number of support vectors for each class.\n\nshape_fit_ : tuple of int of shape (n_dimensions_of_X,)\n    Array dimensions of training vector ``X``.\n\nsupport_ : ndarray of shape (n_SV,)\n    Indices of support vectors.\n\nsupport_vectors_ : ndarray of shape (n_SV, n_features)\n    Support vectors.\n\nExamples\n--------\n>>> from sklearn.svm import NuSVR\n>>> from sklearn.pipeline import make_pipeline\n>>> from sklearn.preprocessing import StandardScaler\n>>> import numpy as np\n>>> n_samples, n_features = 10, 5\n>>> np.random.seed(0)\n>>> y = np.random.randn(n_samples)\n>>> X = np.random.randn(n_samples, n_features)\n>>> regr = make_pipeline(StandardScaler(), NuSVR(C=1.0, nu=0.1))\n>>> regr.fit(X, y)\nPipeline(steps=[('standardscaler', StandardScaler()),\n                ('nusvr', NuSVR(nu=0.1))])\n\nSee Also\n--------\nNuSVC : Support Vector Machine for classification implemented with libsvm\n    with a parameter to control the number of support vectors.\n\nSVR : Epsilon Support Vector Machine for regression implemented with\n    libsvm.\n\nReferences\n----------\n.. [1] `LIBSVM: A Library for Support Vector Machines\n    <http://www.csie.ntu.edu.tw/~cjlin/papers/libsvm.pdf>`_\n\n.. [2] `Platt, John (1999). \"Probabilistic outputs for support vector\n    machines and comparison to regularizedlikelihood methods.\"\n    <http://citeseer.ist.psu.edu/viewdoc/summary?doi=10.1.1.41.1639>`_"
@@ -58612,8 +58612,8 @@
           "name": "SVR",
           "decorators": [],
           "superclasses": [
-            "RegressorMixin",
-            "BaseLibSVM"
+            "BaseLibSVM",
+            "RegressorMixin"
           ],
           "methods": [
             {
@@ -58926,8 +58926,8 @@
           "name": "BaseDecisionTree",
           "decorators": [],
           "superclasses": [
-            "BaseEstimator",
-            "MultiOutputMixin"
+            "MultiOutputMixin",
+            "BaseEstimator"
           ],
           "methods": [
             {
@@ -59068,7 +59068,7 @@
                 },
                 {
                   "name": "check_input",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": true,
                   "default": "True",
                   "limitation": null,
@@ -59111,7 +59111,7 @@
                 },
                 {
                   "name": "check_input",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": true,
                   "default": "True",
                   "limitation": null,
@@ -59154,7 +59154,7 @@
                 },
                 {
                   "name": "check_input",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": true,
                   "default": "True",
                   "limitation": null,
@@ -59259,8 +59259,8 @@
           "name": "DecisionTreeClassifier",
           "decorators": [],
           "superclasses": [
-            "ClassifierMixin",
-            "BaseDecisionTree"
+            "BaseDecisionTree",
+            "ClassifierMixin"
           ],
           "methods": [
             {
@@ -59305,7 +59305,7 @@
                 },
                 {
                   "name": "check_input",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": true,
                   "default": "True",
                   "limitation": null,
@@ -59357,7 +59357,7 @@
                 },
                 {
                   "name": "check_input",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": true,
                   "default": "True",
                   "limitation": null,
@@ -59417,8 +59417,8 @@
           "name": "DecisionTreeRegressor",
           "decorators": [],
           "superclasses": [
-            "RegressorMixin",
-            "BaseDecisionTree"
+            "BaseDecisionTree",
+            "RegressorMixin"
           ],
           "methods": [
             {
@@ -59463,7 +59463,7 @@
                 },
                 {
                   "name": "check_input",
-                  "type": "Any",
+                  "type": "bool",
                   "hasDefault": true,
                   "default": "True",
                   "limitation": null,
@@ -60347,7 +60347,7 @@
             },
             {
               "name": "mask",
-              "type": "Any",
+              "type": "NDArray",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -60356,7 +60356,7 @@
             },
             {
               "name": "len_mask",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -60381,7 +60381,7 @@
           "parameters": [
             {
               "name": "caller_name",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -60400,7 +60400,7 @@
           "parameters": [
             {
               "name": "caller_name",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -60421,7 +60421,7 @@
           "parameters": [
             {
               "name": "n",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -60430,7 +60430,7 @@
             },
             {
               "name": "batch_size",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -60451,7 +60451,7 @@
           "parameters": [
             {
               "name": "n",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -60460,7 +60460,7 @@
             },
             {
               "name": "n_packs",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -60481,7 +60481,7 @@
           "parameters": [
             {
               "name": "row_bytes",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -60515,7 +60515,7 @@
             },
             {
               "name": "mask_length",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -60589,7 +60589,7 @@
             },
             {
               "name": "mask",
-              "type": "Any",
+              "type": "NDArray",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -60952,8 +60952,8 @@
           "name": "CheckingClassifier",
           "decorators": [],
           "superclasses": [
-            "ClassifierMixin",
-            "BaseEstimator"
+            "BaseEstimator",
+            "ClassifierMixin"
           ],
           "methods": [
             {
@@ -62080,7 +62080,7 @@
             },
             {
               "name": "rtol",
-              "type": "Any",
+              "type": "float",
               "hasDefault": true,
               "default": "1e-07",
               "limitation": null,
@@ -62089,7 +62089,7 @@
             },
             {
               "name": "atol",
-              "type": "Any",
+              "type": "float",
               "hasDefault": true,
               "default": "1e-09",
               "limitation": null,
@@ -62098,7 +62098,7 @@
             },
             {
               "name": "err_msg",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "",
               "limitation": null,
@@ -62145,7 +62145,7 @@
             },
             {
               "name": "message",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -62154,7 +62154,7 @@
             },
             {
               "name": "function",
-              "type": "Any",
+              "type": "Callable",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -62173,7 +62173,7 @@
           "parameters": [
             {
               "name": "source_code",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -62182,7 +62182,7 @@
             },
             {
               "name": "timeout",
-              "type": "Any",
+              "type": "int",
               "hasDefault": true,
               "default": "60",
               "limitation": null,
@@ -62210,7 +62210,7 @@
             },
             {
               "name": "func",
-              "type": "Any",
+              "type": "Callable",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -62272,7 +62272,7 @@
             },
             {
               "name": "func",
-              "type": "Any",
+              "type": "Callable",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -62297,7 +62297,7 @@
           "parameters": [
             {
               "name": "func",
-              "type": "Any",
+              "type": "Callable",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -62306,7 +62306,7 @@
             },
             {
               "name": "doc",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -62315,7 +62315,7 @@
             },
             {
               "name": "ignore",
-              "type": "Any",
+              "type": "List",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -62358,7 +62358,7 @@
             },
             {
               "name": "mmap_mode",
-              "type": "Any",
+              "type": "str",
               "hasDefault": true,
               "default": "r",
               "limitation": null,
@@ -62386,7 +62386,7 @@
           "parameters": [
             {
               "name": "obj",
-              "type": "Any",
+              "type": "Callable",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -62432,7 +62432,7 @@
             },
             {
               "name": "may_pass",
-              "type": "Any",
+              "type": "bool",
               "hasDefault": false,
               "default": "False",
               "limitation": null,
@@ -62441,7 +62441,7 @@
             },
             {
               "name": "err_msg",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -62469,7 +62469,7 @@
             },
             {
               "name": "random_state",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "0",
               "limitation": null,
@@ -62509,7 +62509,7 @@
           "parameters": [
             {
               "name": "class_weight",
-              "type": "Any",
+              "type": "Dict",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -62536,7 +62536,7 @@
           "parameters": [
             {
               "name": "class_weight",
-              "type": "Any",
+              "type": "Dict",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -63512,7 +63512,7 @@
             },
             {
               "name": "generate_only",
-              "type": "Any",
+              "type": "bool",
               "hasDefault": false,
               "default": "False",
               "limitation": null,
@@ -64620,7 +64620,7 @@
               "name": "X_dtype",
               "type": "Any",
               "hasDefault": true,
-              "default": "<ast.Name object at 0x0000014A7CBA70D0>",
+              "default": "<ast.Name object at 0x000001F56FD590D0>",
               "limitation": null,
               "ignored": false,
               "description": ""
@@ -65162,7 +65162,7 @@
             },
             {
               "name": "out",
-              "type": "Any",
+              "type": "NDArray",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -65187,7 +65187,7 @@
           "parameters": [
             {
               "name": "w",
-              "type": "Any",
+              "type": "ArrayLike",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -65212,7 +65212,7 @@
           "parameters": [
             {
               "name": "A",
-              "type": "Any",
+              "type": "ArrayLike",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -65265,7 +65265,7 @@
           "parameters": [
             {
               "name": "X",
-              "type": "Any",
+              "type": "ArrayLike",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -65274,7 +65274,7 @@
             },
             {
               "name": "min_value",
-              "type": "Any",
+              "type": "float",
               "hasDefault": false,
               "default": "0",
               "limitation": null,
@@ -65337,7 +65337,7 @@
             },
             {
               "name": "n_components",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -65356,7 +65356,7 @@
           "parameters": [
             {
               "name": "X",
-              "type": "Any",
+              "type": "ArrayLike",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -65365,7 +65365,7 @@
             },
             {
               "name": "squared",
-              "type": "Any",
+              "type": "bool",
               "hasDefault": false,
               "default": "False",
               "limitation": null,
@@ -65435,7 +65435,7 @@
             },
             {
               "name": "copy",
-              "type": "Any",
+              "type": "bool",
               "hasDefault": true,
               "default": "True",
               "limitation": null,
@@ -65460,7 +65460,7 @@
           "parameters": [
             {
               "name": "x",
-              "type": "Any",
+              "type": "ArrayLike",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -65485,7 +65485,7 @@
           "parameters": [
             {
               "name": "arr",
-              "type": "Any",
+              "type": "ArrayLike",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -65494,7 +65494,7 @@
             },
             {
               "name": "axis",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -65503,7 +65503,7 @@
             },
             {
               "name": "rtol",
-              "type": "Any",
+              "type": "float",
               "hasDefault": true,
               "default": "1e-05",
               "limitation": null,
@@ -65512,7 +65512,7 @@
             },
             {
               "name": "atol",
-              "type": "Any",
+              "type": "float",
               "hasDefault": true,
               "default": "1e-08",
               "limitation": null,
@@ -65531,7 +65531,7 @@
           "parameters": [
             {
               "name": "u",
-              "type": "Any",
+              "type": "NDArray",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -65540,7 +65540,7 @@
             },
             {
               "name": "v",
-              "type": "Any",
+              "type": "NDArray",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -65549,7 +65549,7 @@
             },
             {
               "name": "u_based_decision",
-              "type": "Any",
+              "type": "bool",
               "hasDefault": true,
               "default": "True",
               "limitation": null,
@@ -65576,7 +65576,7 @@
           "parameters": [
             {
               "name": "a",
-              "type": "Any",
+              "type": "ArrayLike",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -65585,7 +65585,7 @@
             },
             {
               "name": "w",
-              "type": "Any",
+              "type": "ArrayLike",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -65766,7 +65766,7 @@
             },
             {
               "name": "source",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -65844,7 +65844,7 @@
           "parameters": [
             {
               "name": "delegate",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -65921,7 +65921,7 @@
           "parameters": [
             {
               "name": "y",
-              "type": "Any",
+              "type": "ArrayLike",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -66009,7 +66009,7 @@
           "parameters": [
             {
               "name": "y",
-              "type": "Any",
+              "type": "ArrayLike",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -66432,7 +66432,7 @@
             },
             {
               "name": "m",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -66441,7 +66441,7 @@
             },
             {
               "name": "n",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -66469,7 +66469,7 @@
             },
             {
               "name": "m",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -66478,7 +66478,7 @@
             },
             {
               "name": "n",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -66506,7 +66506,7 @@
             },
             {
               "name": "m",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -66515,7 +66515,7 @@
             },
             {
               "name": "n",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -66543,7 +66543,7 @@
             },
             {
               "name": "m",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -66552,7 +66552,7 @@
             },
             {
               "name": "n",
-              "type": "Any",
+              "type": "int",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -66598,7 +66598,7 @@
             },
             {
               "name": "return_sum_weights",
-              "type": "Any",
+              "type": "bool",
               "hasDefault": false,
               "default": "False",
               "limitation": null,
@@ -66651,7 +66651,7 @@
             },
             {
               "name": "ignore_nan",
-              "type": "Any",
+              "type": "bool",
               "hasDefault": false,
               "default": "False",
               "limitation": null,
@@ -66862,7 +66862,7 @@
             },
             {
               "name": "accept_sparse",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "False",
               "limitation": null,
@@ -66903,7 +66903,7 @@
             },
             {
               "name": "accept_sparse",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "False",
               "limitation": null,
@@ -66948,7 +66948,7 @@
             },
             {
               "name": "attributes",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -66973,7 +66973,7 @@
           "parameters": [
             {
               "name": "memory",
-              "type": "Any",
+              "type": "...",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -67007,7 +67007,7 @@
             },
             {
               "name": "whom",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -67026,7 +67026,7 @@
           "parameters": [
             {
               "name": "seed",
-              "type": "Any",
+              "type": "...",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -67054,7 +67054,7 @@
             },
             {
               "name": "name",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -67111,7 +67111,7 @@
           "parameters": [
             {
               "name": "y",
-              "type": "Any",
+              "type": "ArrayLike",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
@@ -67145,7 +67145,7 @@
             },
             {
               "name": "parameter",
-              "type": "Any",
+              "type": "str",
               "hasDefault": false,
               "default": "None",
               "limitation": null,
