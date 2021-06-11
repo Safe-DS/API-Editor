@@ -21,9 +21,11 @@ const ModuleNode = ({pythonModule, selection, setSelection, setParameters}: Modu
     const cssClasses = classNames(
         "tree-view-row",
         {
+            "text-muted": !(hasClasses || hasFunctions),
+            "cursor-na":!(hasClasses || hasFunctions),
             "pl-2rem": !(hasClasses || hasFunctions),
             "pl-1-5rem": (hasClasses || hasFunctions),
-            "selected": selection === pythonModule.name,
+            "selected": (selection === pythonModule.name) && (hasClasses || hasFunctions),
         }
     );
 
@@ -31,9 +33,8 @@ const ModuleNode = ({pythonModule, selection, setSelection, setParameters}: Modu
         <div className="module-node">
             <div className={cssClasses}
                 onClick={() => {
-                     setSelection(pythonModule.name)
+                    setSelection(pythonModule.name)
                     setChildVisibility(!childVisible)
-                    console.log(pythonModule.name + " has been selected.");
                  }}>
                 { (hasClasses || hasFunctions) &&
                     <span className="indicator visibility-indicator">{ childVisible ? "▼" : "▶" }</span>

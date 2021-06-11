@@ -1,6 +1,7 @@
 import React from "react";
 import PythonFunction from "../../model/PythonFunction";
 import classNames from "classnames";
+import {isEmptyList} from "../../Utility/listOperations";
 
 type FunctionNodeProps = {
     pythonFunction: PythonFunction,
@@ -16,12 +17,16 @@ const FunctionNode = ({pythonFunction, selection, setSelection, setParameters, p
 
     const fullQualifiedName = parentFullQualifiedName + "." + pythonFunction.name;
 
+    const hasParameters = isEmptyList(pythonFunction.parameters);
+
     const cssClasses = classNames(
         "tree-view-row",
         {
+            "text-muted": !hasParameters,
+            "cursor-na": !hasParameters,
             "pl-3-5rem": !isMethod,
             "pl-5rem": isMethod,
-            "selected": selection === fullQualifiedName,
+            "selected": selection === fullQualifiedName && hasParameters,
         }
     );
 

@@ -77,3 +77,7 @@
     background-color: cornflowerblue;
     color: white;
 }
+
+.cursor-na {
+    cursor: not-allowed;
+}
