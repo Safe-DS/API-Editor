@@ -18,12 +18,15 @@ const DocumentationText = ({inputText}) => {
 
 
     const linkName = readMore ? '[Read less]' : '...'
-
+    //▼ ▶
     return (
         <div>
-            <p>{!readMore && inputText.substr(0, endPosition)}
-                {readMore && inputText}
-                <button className="read-more-button" onClick={()=>{setReadMore(!readMore)}}>
+            <p onClick={()=>{setReadMore(!readMore)}}>
+                {moreTextOption && !readMore && "▶"}
+                {moreTextOption && readMore && "▼"}
+                <button className="read-more-button">
+                    {!readMore && inputText.substr(0, endPosition)}
+                    {readMore && inputText}
                     {moreTextOption && linkName}
                 </button>
             </p>
