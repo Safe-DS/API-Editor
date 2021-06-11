@@ -7,15 +7,13 @@ type ParameterViewProps = {inputParameters: PythonParameter[]}
 const ParameterView = ({inputParameters}: ParameterViewProps) => {
 
     return (
-
         <div className="parameterViewDiv">
-            <h2>Parameters</h2>
+            <h2 className={"parameter-title"}>Parameters</h2>
             {
                 inputParameters?.map(function (parameters) {
                     return (<ParameterNode key={parameters.name} inputParameter={parameters} />)
                 })
             }
-
         </div>
     )
 };
