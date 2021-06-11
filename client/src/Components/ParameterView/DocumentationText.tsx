@@ -7,11 +7,21 @@ const DocumentationText = ({inputText}) => {
     const [readMore,setReadMore] = useState(false);
     const moreTextOption = inputText.length > 50
 
-    const linkName = readMore ? '[Read less]' : '[Read more]'
+    let endPosition = 50;
+    const text = inputText.substr(0, endPosition);
+
+    if(moreTextOption) {
+        for(let i = 50; text.charAt(i) !== " " && i > 0; i--){
+            endPosition = i;
+        }
+    }
+
+
+    const linkName = readMore ? '[Read less]' : '...'
 
     return (
         <div>
-            <p>{!readMore && inputText.substr(0, 50)}
+            <p>{!readMore && inputText.substr(0, endPosition)}
                 {readMore && inputText}
                 <button className="read-more-button" onClick={()=>{setReadMore(!readMore)}}>
                     {moreTextOption && linkName}
