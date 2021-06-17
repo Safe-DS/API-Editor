@@ -7,7 +7,6 @@ type ParameterViewProps = {inputParameters: PythonParameter[]}
 const ParameterView = ({inputParameters}: ParameterViewProps) => {
 
     const hasInputParameters = inputParameters.length > 0;
-    // Kommentar hinzugefügt
 
     return (
         <div className="parameterViewDiv">
