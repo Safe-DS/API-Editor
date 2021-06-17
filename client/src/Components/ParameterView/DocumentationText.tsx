@@ -10,7 +10,7 @@ const DocumentationText = ({inputText}) => {
     const linkName = readMore ? '[Read less]' : '[Read more]'
 
     return (
-        <div>
+        <div className="documentation-text">
             <p>{!readMore && inputText.substr(0, 50)}
                 {readMore && inputText}
                 <button className="read-more-button" onClick={()=>{setReadMore(!readMore)}}>

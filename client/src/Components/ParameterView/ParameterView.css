@@ -10,6 +10,11 @@
     padding-left: 1rem;
 }
 
+.parameterViewDiv h5{
+    padding-top: 1rem;
+    padding-left: 1rem;
+}
+
 .parameterViewDiv a{
     padding-left: .5rem;
 }
@@ -19,8 +24,17 @@
     padding-bottom: .5rem;
 }
 
-.parameter-name {
+.parameter-header {
     font-weight: bold;
+}
+
+.parameter-name {
+    float: left;
+    margin-right: 15px;
+}
+
+.parameter-title {
+    padding-bottom: 15px;
 }
 
 .visibility-indicator {
@@ -39,4 +53,8 @@
     color: #069;
     text-decoration: underline;
     cursor: pointer;
+}
+
+.documentation-text {
+    clear: both;
 }
