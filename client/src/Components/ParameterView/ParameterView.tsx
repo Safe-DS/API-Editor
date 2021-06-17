@@ -6,6 +6,8 @@ type ParameterViewProps = {inputParameters: PythonParameter[]}
 
 const ParameterView = ({inputParameters}: ParameterViewProps) => {
 
+    const hasInputParameters = inputParameters.length > 0;
+
     return (
         <div className="parameterViewDiv">
             <h2 className={"parameter-title"}>Parameters</h2>
@@ -14,6 +16,11 @@ const ParameterView = ({inputParameters}: ParameterViewProps) => {
                     return (<ParameterNode key={parameters.name} inputParameter={parameters} />)
                 })
             }
+            {
+                !hasInputParameters &&
+                    <h5>No Parameters available</h5>
+            }
+
         </div>
     )
 };

@@ -10,6 +10,11 @@
     padding-left: 1rem;
 }
 
+.parameterViewDiv h5{
+    padding-top: 1rem;
+    padding-left: 1rem;
+}
+
 .parameterViewDiv a{
     padding-left: .5rem;
 }
