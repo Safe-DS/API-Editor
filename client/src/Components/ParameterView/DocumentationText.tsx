@@ -5,7 +5,7 @@ import "./ParameterView.css";
 const DocumentationText = ({inputText}) => {
 
     const [readMore,setReadMore] = useState(false);
-    const moreTextOption = inputText.length > 50
+  /*  const moreTextOption = inputText.length > 50
 
     let endPosition = 50;
     const text = inputText.substr(0, endPosition);
@@ -14,23 +14,19 @@ const DocumentationText = ({inputText}) => {
         for(let i = 50; text.charAt(i) !== " " && i > 0; i--){
             endPosition = i;
         }
-    }
+    }*/
 
-
-    const linkName = readMore ? '[Read less]' : '...'
-    //▼ ▶
     return (
-        <div>
-            <p onClick={()=>{setReadMore(!readMore)}}>
-                {moreTextOption && !readMore && "▶"}
-                {moreTextOption && readMore && "▼"}
-                <button className="read-more-button">
-                    {!readMore && inputText.substr(0, endPosition)}
-                    {readMore && inputText}
-                    {moreTextOption && linkName}
-                </button>
-            </p>
+        <div className="docuParagraph" onClick={()=>{setReadMore(!readMore)}}>
+            {!readMore && "▶"}
+            {readMore && "▼"}
+            <div className="read-more-button">
+                {
+                    !readMore &&  <div className="docuTextHidden">{inputText}</div>
+                }
 
+                {readMore && inputText}
+            </div>
         </div>
     );
 };

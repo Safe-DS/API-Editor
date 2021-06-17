@@ -3,6 +3,7 @@
     position: sticky;
     top: 0;
     padding-right: 1rem;
+    overflow-x: hidden;
 }
 
 .parameterViewDiv h2{
@@ -17,6 +18,15 @@
 .parametersList {
     padding-left: 1rem;
     padding-bottom: .5rem;
+}
+
+.docuTextHidden {
+    text-overflow: ellipsis;
+}
+
+.docuParagraph{
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .parameter-name {
@@ -40,4 +50,5 @@
     /*color: #069;*/
     /*text-decoration: underline;*/
     cursor: pointer;
+    overflow: hidden;
 }
