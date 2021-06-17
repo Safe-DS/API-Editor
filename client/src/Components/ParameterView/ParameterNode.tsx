@@ -7,6 +7,9 @@ import { Dropdown } from "react-bootstrap";
 type ParameterProps = {inputParameter: PythonParameter}
 
 const ParameterNode = ({inputParameter}: ParameterProps) => {
+
+    const hasDescription = !!inputParameter.docstring;
+
     return (
         <div className="parametersList">
             <span className="parameter-header">
@@ -21,7 +24,15 @@ const ParameterNode = ({inputParameter}: ParameterProps) => {
                     </Dropdown.Menu>
                 </Dropdown>
             </span>
-            <DocumentationText inputText={inputParameter?.docstring}/>
+            {
+                hasDescription &&
+                <DocumentationText inputText={inputParameter?.docstring}/>
+            }
+            {
+                !hasDescription &&
+                <p>No Documentation available</p>
+            }
+
         </div>
     );
 };
