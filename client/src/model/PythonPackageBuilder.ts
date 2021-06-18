@@ -12,70 +12,19 @@ export interface PythonPackageJson {
     modules: PythonModuleJson[]
 }
 
+export function parsePythonPackageJson(packageJson: PythonPackageJson): PythonPackage {
+    return new PythonPackage(
+        packageJson.name,
+        packageJson.modules.map(parsePythonModuleJson)
+    )
+}
+
 interface PythonModuleJson {
     name: string,
     imports: PythonImportJson[]
     fromImports: PythonFromImportJson[]
     classes: PythonClassJson[]
     functions: PythonFunctionJson[]
-}
-
-interface PythonImportJson {
-    module: string,
-    alias: Nullable<string>
-}
-
-interface PythonFromImportJson {
-    module: string,
-    declaration: string,
-    alias: Nullable<string>
-}
-
-interface PythonClassJson {
-    name: string,
-    decorators: string[],
-    superclasses: string[],
-    methods: PythonFunctionJson[],
-    summary: Nullable<string>,
-    description: Nullable<string>
-    fullDocstring: Nullable<string>
-}
-
-interface PythonFunctionJson {
-    name: string,
-    decorators: string[],
-    parameters: PythonParameterJson[],
-    results: PythonResultJson[],
-    hasReturnType: boolean,
-    returnType: string,
-    summary: Nullable<string>,
-    description: Nullable<string>
-    fullDocstring: Nullable<string>
-}
-
-interface PythonParameterJson {
-    name: string,
-    type: string,
-    typeInDocs: Nullable<string>,
-    hasDefault: boolean,
-    default: Nullable<string>,
-    limitation: null,
-    ignored: boolean,
-    description: Nullable<string>
-}
-
-interface PythonResultJson {
-    name: string,
-    type: string,
-    typeInDocs: Nullable<string>,
-    description: Nullable<string>
-}
-
-export function parsePythonPackageJson(packageJson: PythonPackageJson): PythonPackage {
-    return new PythonPackage(
-        packageJson.name,
-        packageJson.modules.map(parsePythonModuleJson)
-    )
 }
 
 function parsePythonModuleJson(moduleJson: PythonModuleJson): PythonModule {
@@ -88,11 +37,22 @@ function parsePythonModuleJson(moduleJson: PythonModuleJson): PythonModule {
     )
 }
 
+interface PythonImportJson {
+    module: string,
+    alias: Nullable<string>
+}
+
 function parsePythonImportJson(importJson: PythonImportJson): PythonImport {
     return new PythonImport(
         importJson.module,
         importJson.alias
     )
+}
+
+interface PythonFromImportJson {
+    module: string,
+    declaration: string,
+    alias: Nullable<string>
 }
 
 function parsePythonFromImportJson(fromImportJson: PythonFromImportJson): PythonFromImport {
@@ -101,6 +61,16 @@ function parsePythonFromImportJson(fromImportJson: PythonFromImportJson): Python
         fromImportJson.declaration,
         fromImportJson.alias
     )
+}
+
+interface PythonClassJson {
+    name: string,
+    decorators: string[],
+    superclasses: string[],
+    methods: PythonFunctionJson[],
+    summary: Nullable<string>,
+    description: Nullable<string>
+    fullDocstring: Nullable<string>
 }
 
 function parsePythonClassJson(classJson: PythonClassJson): PythonClass {
@@ -113,6 +83,18 @@ function parsePythonClassJson(classJson: PythonClassJson): PythonClass {
         classJson.description || "",
         classJson.fullDocstring || ""
     )
+}
+
+interface PythonFunctionJson {
+    name: string,
+    decorators: string[],
+    parameters: PythonParameterJson[],
+    results: PythonResultJson[],
+    hasReturnType: boolean,
+    returnType: string,
+    summary: Nullable<string>,
+    description: Nullable<string>
+    fullDocstring: Nullable<string>
 }
 
 function parsePythonFunctionJson(functionJson: PythonFunctionJson): PythonFunction {
@@ -128,6 +110,17 @@ function parsePythonFunctionJson(functionJson: PythonFunctionJson): PythonFuncti
     )
 }
 
+interface PythonParameterJson {
+    name: string,
+    type: string,
+    typeInDocs: Nullable<string>,
+    hasDefault: boolean,
+    default: Nullable<string>,
+    limitation: null,
+    ignored: boolean,
+    description: Nullable<string>
+}
+
 function parsePythonParameterJson(parameterJson: PythonParameterJson): PythonParameter {
     return new PythonParameter(
         parameterJson.name,
@@ -139,6 +132,13 @@ function parsePythonParameterJson(parameterJson: PythonParameterJson): PythonPar
         parameterJson.ignored,
         parameterJson.description || ""
     )
+}
+
+interface PythonResultJson {
+    name: string,
+    type: string,
+    typeInDocs: Nullable<string>,
+    description: Nullable<string>
 }
 
 function parsePythonResultJson(resultJson: PythonResultJson): PythonResult {
