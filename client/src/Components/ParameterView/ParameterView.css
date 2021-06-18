@@ -1,8 +1,8 @@
 .parameter-view {
+    padding: 1rem;
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-    padding-right: 1rem;
     overflow-x: hidden;
 }
 
