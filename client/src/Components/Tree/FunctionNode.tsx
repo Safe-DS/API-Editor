@@ -30,7 +30,6 @@ const FunctionNode = ({
     const cssClasses = classNames(
         "tree-view-row", {
             "text-muted": !hasParameters,
-            "cursor-na": !hasParameters,
             "pl-3-5rem": !isMethod,
             "pl-5rem": isMethod,
             "selected": (selection.join() === path.join()) && hasParameters
