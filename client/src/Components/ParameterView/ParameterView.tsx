@@ -1,17 +1,18 @@
 import ParameterNode from "./ParameterNode";
 import React from "react";
 import PythonParameter from "../../model/PythonParameter";
+import PythonFunction from "../../model/PythonFunction";
+import DocumentationText from "./DocumentationText";
 
 type ParameterViewProps = {
     inputParameters: PythonParameter[],
     selection: string[],
-    setSelection: any
+    selectedFunction: Nullable<PythonFunction>
 };
 
-const ParameterView = ({inputParameters, selection }: ParameterViewProps) => {
+const ParameterView = ({inputParameters, selection, selectedFunction}: ParameterViewProps) => {
 
     const hasInputParameters = inputParameters.length > 0;
-    console.log(selection);
 
     return (
         <div className="parameter-view">
@@ -22,6 +23,13 @@ const ParameterView = ({inputParameters, selection }: ParameterViewProps) => {
                              .reduce((p, c) => [p, (<span> / </span>), c]) :
                     "" }
             </div>
+            { selectedFunction !== null &&
+                <>
+                    <h1>{selectedFunction.name}</h1>
+                    <DocumentationText inputText={selectedFunction.description} />
+                </>
+            }
+
             <h2 className={"parameter-title"}>Parameters</h2>
             {
                 inputParameters?.map(function (parameters) {
