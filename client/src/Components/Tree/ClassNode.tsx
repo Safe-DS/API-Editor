@@ -19,10 +19,11 @@ const ClassNode = ({parentPath, pythonClass, selection, setSelection, moduleName
     const hasMethods = isEmptyList(pythonClass.methods);
     const path = parentPath.concat(pythonClass.name);
     const cssClasses = classNames(
-        "pl-3rem", "tree-view-row",
-        {
+        "tree-view-row", {
             "text-muted": !hasMethods,
             "cursor-na":!hasMethods,
+            "pl-3-5rem": !hasMethods,
+            "pl-3rem": hasMethods,
             "selected": (selection.join() === path.join()) && hasMethods,
         }
     );
