@@ -26,7 +26,7 @@ const ClassNode = ({
                    }: ClassNodeProps) => {
 
     const [childVisible, setChildVisibility] = useState(false);
-    const hasMethods = isEmptyList(pythonClass.methods);
+    const hasMethods = !isEmptyList(pythonClass.methods);
     const path = parentPath.concat(pythonClass.name);
     const cssClasses = classNames(
         "tree-view-row", {

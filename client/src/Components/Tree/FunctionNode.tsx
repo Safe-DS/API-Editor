@@ -26,7 +26,7 @@ const FunctionNode = ({
                       }: FunctionNodeProps) => {
 
     const path = parentPath.concat(pythonFunction.name)
-    const hasParameters = isEmptyList(pythonFunction.parameters);
+    const hasParameters = !isEmptyList(pythonFunction.parameters);
     const cssClasses = classNames(
         "tree-view-row", {
             "text-muted": !hasParameters,
