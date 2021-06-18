@@ -13,7 +13,7 @@ const ParameterNode = ({inputParameter}: ParameterProps) => {
                 <h4>{inputParameter?.name}</h4>
             </span>
 
-            <DocumentationText inputText={inputParameter?.docstring}/>
+            <DocumentationText inputText={inputParameter?.description}/>
         </div>
     );
 };

@@ -8,7 +8,6 @@ function App() {
 
     return (
         <div className="App">
-
             <TreeView setParameters={setParameters}/>
             <ParameterView inputParameters={parameters}/>
         </div>
