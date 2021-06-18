@@ -1,18 +1,16 @@
-.parameterViewDiv{
+.parameter-view {
+    padding: 1rem;
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-    padding-right: 1rem;
 }
 
 .parameterViewDiv h2{
     padding-top: 1rem;
-    padding-left: 1rem;
 }
 
 .parameterViewDiv h5{
     padding-top: 1rem;
-    padding-left: 1rem;
 }
 
 .parameterViewDiv a{
@@ -57,4 +55,8 @@
 
 .documentation-text {
     clear: both;
+}
+
+.parameter-view-path {
+    height: 1.5rem;
 }
