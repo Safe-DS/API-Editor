@@ -11,6 +11,11 @@
     padding-left: 1rem;
 }
 
+.parameterViewDiv h5{
+    padding-top: 1rem;
+    padding-left: 1rem;
+}
+
 .parameterViewDiv a{
     padding-left: .5rem;
 }
@@ -29,8 +34,18 @@
     justify-content: flex-start;
 }
 
-.parameter-name {
+.parameter-header {
+    display: flex;
+    justify-content: flex-start;
     font-weight: bold;
+}
+
+.parameter-name {
+    margin-right: 15px;
+}
+
+.parameter-title {
+    padding-bottom: 15px;
 }
 
 .visibility-indicator {
@@ -50,4 +65,8 @@
     /*color: #069;*/
     /*text-decoration: underline;*/
     cursor: pointer;
+}
+
+.documentation-text {
+    clear: both;
 }

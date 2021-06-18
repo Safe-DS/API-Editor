@@ -22,6 +22,8 @@ const ClassNode = ({pythonClass, selection, setSelection, moduleName, setParamet
     const cssClasses = classNames(
         "pl-3rem", "tree-view-row",
         {
+            "text-muted": !hasMethods,
+            "cursor-na":!hasMethods,
             "selected": selection === fullQualifiedName,
         }
     );
