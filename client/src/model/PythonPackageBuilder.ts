@@ -1,50 +1,151 @@
-import PythonModule from "./PythonModule";
 import PythonClass from "./PythonClass";
+import PythonFromImport from "./PythonFromImport";
 import PythonFunction from "./PythonFunction";
-import PythonReturnType from "./PythonReturnType";
+import PythonImport from "./PythonImport";
+import PythonModule from "./PythonModule";
 import PythonPackage from "./PythonPackage";
 import PythonParameter from "./PythonParameter";
+import PythonResult from "./PythonResult";
 
-export default class PythonPackageBuilder {
+export interface PythonPackageJson {
+    name: string,
+    modules: PythonModuleJson[]
+}
 
-    // @ts-ignore
-    static make(packageJson) {
+interface PythonModuleJson {
+    name: string,
+    imports: PythonImportJson[]
+    fromImports: PythonFromImportJson[]
+    classes: PythonClassJson[]
+    functions: PythonFunctionJson[]
+}
 
-        let ms: PythonModule[] = [];
-        // @ts-ignore
-        packageJson.modules.forEach(m => {
+interface PythonImportJson {
+    module: string,
+    alias: Nullable<string>
+}
 
-            let cs: PythonClass[] = [];
-            // @ts-ignore
-            m.classes.forEach(c => {
-                cs.push(new PythonClass(c.name, c.decorators, [], c.fullDocstring || "", c.methods));
-            });
+interface PythonFromImportJson {
+    module: string,
+    declaration: string,
+    alias: Nullable<string>
+}
 
-            let fs: PythonFunction[] = [];
-            // @ts-ignore
-            m.functions.forEach(f => {
+interface PythonClassJson {
+    name: string,
+    decorators: string[],
+    superclasses: string[],
+    methods: PythonFunctionJson[],
+    summary: Nullable<string>,
+    description: Nullable<string>
+    fullDocstring: Nullable<string>
+}
 
-                let ps: PythonParameter[] = [];
-                // @ts-ignore
-                f.parameters.forEach(p => {
-                    ps.push(new PythonParameter(p.name, p.type, p.hasDefault, p.defaultValue, p.limitation, p.ignored, p.description));
-                });
+interface PythonFunctionJson {
+    name: string,
+    decorators: string[],
+    parameters: PythonParameterJson[],
+    results: PythonResultJson[],
+    hasReturnType: boolean,
+    returnType: string,
+    summary: Nullable<string>,
+    description: Nullable<string>
+    fullDocstring: Nullable<string>
+}
 
-                fs.push(new PythonFunction(
-                    f.name,
-                    f.decorators,
-                    ps,
-                    f.hasReturnType,
-                    new PythonReturnType(),
-                    f.fullDocstring,
-                    f.summary,
-                    f.description
-                ))
-            });
+interface PythonParameterJson {
+    name: string,
+    type: string,
+    typeInDocs: Nullable<string>,
+    hasDefault: boolean,
+    default: Nullable<string>,
+    limitation: null,
+    ignored: boolean,
+    description: Nullable<string>
+}
 
-            ms.push(new PythonModule(m.name, m.imports, cs, fs))
-        });
+interface PythonResultJson {
+    name: string,
+    type: string,
+    typeInDocs: Nullable<string>,
+    description: Nullable<string>
+}
 
-        return new PythonPackage(packageJson.name, ms);
-    }
+export function parsePythonPackageJson(packageJson: PythonPackageJson): PythonPackage {
+    return new PythonPackage(
+        packageJson.name,
+        packageJson.modules.map(parsePythonModuleJson)
+    )
+}
+
+function parsePythonModuleJson(moduleJson: PythonModuleJson): PythonModule {
+    return new PythonModule(
+        moduleJson.name,
+        moduleJson.imports.map(parsePythonImportJson),
+        moduleJson.fromImports.map(parsePythonFromImportJson),
+        moduleJson.classes.map(parsePythonClassJson),
+        moduleJson.functions.map(parsePythonFunctionJson)
+    )
+}
+
+function parsePythonImportJson(importJson: PythonImportJson): PythonImport {
+    return new PythonImport(
+        importJson.module,
+        importJson.alias
+    )
+}
+
+function parsePythonFromImportJson(fromImportJson: PythonFromImportJson): PythonFromImport {
+    return new PythonFromImport(
+        fromImportJson.module,
+        fromImportJson.declaration,
+        fromImportJson.alias
+    )
+}
+
+function parsePythonClassJson(classJson: PythonClassJson): PythonClass {
+    return new PythonClass(
+        classJson.name,
+        classJson.decorators,
+        classJson.superclasses,
+        classJson.methods.map(parsePythonFunctionJson),
+        classJson.summary || "",
+        classJson.description || "",
+        classJson.fullDocstring || ""
+    )
+}
+
+function parsePythonFunctionJson(functionJson: PythonFunctionJson): PythonFunction {
+    return new PythonFunction(
+        functionJson.name,
+        functionJson.decorators,
+        functionJson.parameters.map(parsePythonParameterJson),
+        functionJson.results.map(parsePythonResultJson),
+        functionJson.returnType,
+        functionJson.summary || "",
+        functionJson.description || "",
+        functionJson.fullDocstring || ""
+    )
+}
+
+function parsePythonParameterJson(parameterJson: PythonParameterJson): PythonParameter {
+    return new PythonParameter(
+        parameterJson.name,
+        parameterJson.type,
+        parameterJson.typeInDocs || "",
+        parameterJson.hasDefault,
+        parameterJson.default || "",
+        parameterJson.limitation,
+        parameterJson.ignored,
+        parameterJson.description || ""
+    )
+}
+
+function parsePythonResultJson(resultJson: PythonResultJson): PythonResult {
+    return new PythonResult(
+        resultJson.name,
+        resultJson.type,
+        resultJson.typeInDocs || "",
+        resultJson.description || ""
+    )
 }

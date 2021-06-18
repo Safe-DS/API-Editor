@@ -26,7 +26,7 @@ const ModuleNode = ({
 
     /** This is the Name of this module without its packages name prefixed. */
 
-    const [_first, ...moduleName] = pythonModule.name.split(".");
+    const [, ...moduleName] = pythonModule.name.split(".");
 
     const path = parentPath.concat(moduleName)
     const [childVisible, setChildVisibility] = useState(false);

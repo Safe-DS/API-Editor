@@ -2,7 +2,7 @@ import React from 'react'
 import Tree from "../Tree/Tree";
 import './tree-view.css';
 import packageJson from "../../data/sklearn.json";
-import PythonPackageBuilder from "../../model/PythonPackageBuilder";
+import {parsePythonPackageJson, PythonPackageJson} from "../../model/PythonPackageBuilder";
 import PythonFunction from "../../model/PythonFunction";
 
 type TreeViewProps = {
@@ -13,7 +13,7 @@ type TreeViewProps = {
 }
 
 const TreeView = ({setParameters, selection, setSelection, setSelectedFunction}: TreeViewProps) => {
-    let pythonPackage = PythonPackageBuilder.make(packageJson);
+    let pythonPackage = parsePythonPackageJson(packageJson as PythonPackageJson);
     return (
         <div className="tree-view">
             <h2 className="package-name">{pythonPackage.name}</h2>
