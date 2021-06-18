@@ -9,7 +9,7 @@ export default abstract class PythonDeclaration {
         const result: string[] = [];
 
         while (current != null) {
-            result.unshift(current.name)
+            result.unshift(current.name);
             current = current.parent();
         }
 

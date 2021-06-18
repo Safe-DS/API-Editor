@@ -11,9 +11,9 @@ export default class PythonResult extends PythonDeclaration {
 
     constructor(
         name: string,
-        type: string = "Any",
-        typeInDocs: string = "",
-        description: string = ""
+        type = "Any",
+        typeInDocs = "",
+        description = ""
     ) {
         super();
 
@@ -28,7 +28,7 @@ export default class PythonResult extends PythonDeclaration {
         return this.containingFunction;
     }
 
-    toString() {
+    toString(): string {
         return `Result "${this.name}"`;
     }
 }

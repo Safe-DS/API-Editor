@@ -2,12 +2,13 @@ import React from "react";
 import PythonFunction from "../../model/PythonFunction";
 import classNames from "classnames";
 import {isEmptyList} from "../../util/listOperations";
+import PythonParameter from "../../model/PythonParameter";
 
 type FunctionNodeProps = {
     pythonFunction: PythonFunction,
     selection: string[],
     setSelection: (newValue: string[]) => void,
-    setParameters: any,
+    setParameters: Setter<PythonParameter[]>,
     isMethod?: boolean,
 
     /** A parent of a Python class can be a class or a Python module. */
@@ -15,7 +16,7 @@ type FunctionNodeProps = {
     setSelectedFunction: Setter<Nullable<PythonFunction>>
 }
 
-const FunctionNode = ({
+export default function FunctionNode({
                           pythonFunction,
                           selection,
                           setSelection,
@@ -23,9 +24,9 @@ const FunctionNode = ({
                           parentPath,
                           isMethod = false,
                           setSelectedFunction
-                      }: FunctionNodeProps) => {
+                      }: FunctionNodeProps): JSX.Element {
 
-    const path = parentPath.concat(pythonFunction.name)
+    const path = parentPath.concat(pythonFunction.name);
     const hasParameters = !isEmptyList(pythonFunction.parameters);
     const cssClasses = classNames(
         "tree-view-row", {
@@ -54,6 +55,4 @@ const FunctionNode = ({
             </div>
         </div>
     );
-};
-
-export default FunctionNode;
+}

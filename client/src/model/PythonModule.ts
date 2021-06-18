@@ -31,11 +31,11 @@ export default class PythonModule extends PythonDeclaration {
         this.containingPackage = null;
 
         this.classes.forEach(it => {
-            it.containingModule = this
+            it.containingModule = this;
         });
 
         this.functions.forEach(it => {
-            it.containingModuleOrClass = this
+            it.containingModuleOrClass = this;
         });
     }
 
@@ -43,7 +43,7 @@ export default class PythonModule extends PythonDeclaration {
         return this.containingPackage;
     }
 
-    toString() {
+    toString(): string {
         return `Module "${this.name}"`;
     }
 }

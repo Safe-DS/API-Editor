@@ -21,10 +21,10 @@ export default class PythonFunction extends PythonDeclaration {
         decorators: string[] = [],
         parameters: PythonParameter[] = [],
         results: PythonResult[] = [],
-        returnType: string = "Any",
-        summary: string = "",
-        description: string = "",
-        fullDocstring: string = "",
+        returnType = "Any",
+        summary = "",
+        description = "",
+        fullDocstring = "",
     ) {
         super();
 
@@ -39,28 +39,28 @@ export default class PythonFunction extends PythonDeclaration {
         this.containingModuleOrClass = null;
 
         this.parameters.forEach(it => {
-            it.containingFunction = this
-        })
+            it.containingFunction = this;
+        });
 
         this.results.forEach(it => {
-            it.containingFunction = this
-        })
+            it.containingFunction = this;
+        });
     }
 
     parent(): Nullable<PythonModule | PythonClass> {
         return this.containingModuleOrClass;
     }
 
-    toString() {
-        let result = ""
+    toString(): string {
+        let result = "";
 
         if (this.decorators.length > 0) {
-            result += this.decorators.map(it => `@${it}`).join(" ")
-            result += " "
+            result += this.decorators.map(it => `@${it}`).join(" ");
+            result += " ";
         }
 
-        result += `def ${this.name}(${this.parameters.map(it => it.name).join(", ")})`
+        result += `def ${this.name}(${this.parameters.map(it => it.name).join(", ")})`;
 
-        return result
+        return result;
     }
 }

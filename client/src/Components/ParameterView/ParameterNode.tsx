@@ -6,7 +6,7 @@ import { Dropdown } from "react-bootstrap";
 
 type ParameterProps = {inputParameter: PythonParameter}
 
-const ParameterNode = ({inputParameter}: ParameterProps) => {
+export default function ParameterNode({inputParameter}: ParameterProps): JSX.Element {
 
     const hasDescription = !!inputParameter.description;
 
@@ -35,7 +35,4 @@ const ParameterNode = ({inputParameter}: ParameterProps) => {
 
         </div>
     );
-};
-
-export default ParameterNode;
-
+}

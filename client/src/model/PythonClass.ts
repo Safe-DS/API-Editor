@@ -18,9 +18,9 @@ export default class PythonClass extends PythonDeclaration {
         decorators: string[] = [],
         superclasses: string[] = [],
         methods: PythonFunction[] = [],
-        summary: string = "",
-        description: string = "",
-        fullDocstring: string = "",
+        summary = "",
+        description = "",
+        fullDocstring = "",
     ) {
         super();
 
@@ -42,7 +42,7 @@ export default class PythonClass extends PythonDeclaration {
         return this.containingModule;
     }
 
-    toString() {
+    toString(): string {
         let result = "";
 
         if (this.decorators.length > 0) {

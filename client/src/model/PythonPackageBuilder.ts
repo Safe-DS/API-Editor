@@ -16,7 +16,7 @@ export function parsePythonPackageJson(packageJson: PythonPackageJson): PythonPa
     return new PythonPackage(
         packageJson.name,
         packageJson.modules.map(parsePythonModuleJson)
-    )
+    );
 }
 
 interface PythonModuleJson {
@@ -34,7 +34,7 @@ function parsePythonModuleJson(moduleJson: PythonModuleJson): PythonModule {
         moduleJson.fromImports.map(parsePythonFromImportJson),
         moduleJson.classes.map(parsePythonClassJson),
         moduleJson.functions.map(parsePythonFunctionJson)
-    )
+    );
 }
 
 interface PythonImportJson {
@@ -46,7 +46,7 @@ function parsePythonImportJson(importJson: PythonImportJson): PythonImport {
     return new PythonImport(
         importJson.module,
         importJson.alias
-    )
+    );
 }
 
 interface PythonFromImportJson {
@@ -60,7 +60,7 @@ function parsePythonFromImportJson(fromImportJson: PythonFromImportJson): Python
         fromImportJson.module,
         fromImportJson.declaration,
         fromImportJson.alias
-    )
+    );
 }
 
 interface PythonClassJson {
@@ -82,7 +82,7 @@ function parsePythonClassJson(classJson: PythonClassJson): PythonClass {
         classJson.summary || "",
         classJson.description || "",
         classJson.fullDocstring || ""
-    )
+    );
 }
 
 interface PythonFunctionJson {
@@ -107,7 +107,7 @@ function parsePythonFunctionJson(functionJson: PythonFunctionJson): PythonFuncti
         functionJson.summary || "",
         functionJson.description || "",
         functionJson.fullDocstring || ""
-    )
+    );
 }
 
 interface PythonParameterJson {
@@ -131,7 +131,7 @@ function parsePythonParameterJson(parameterJson: PythonParameterJson): PythonPar
         parameterJson.limitation,
         parameterJson.ignored,
         parameterJson.description || ""
-    )
+    );
 }
 
 interface PythonResultJson {
@@ -147,5 +147,5 @@ function parsePythonResultJson(resultJson: PythonResultJson): PythonResult {
         resultJson.type,
         resultJson.typeInDocs || "",
         resultJson.description || ""
-    )
+    );
 }
