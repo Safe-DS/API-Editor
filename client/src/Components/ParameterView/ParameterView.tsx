@@ -3,6 +3,7 @@ import React from "react";
 import PythonParameter from "../../model/PythonParameter";
 import PythonFunction from "../../model/PythonFunction";
 import DocumentationText from "./DocumentationText";
+import {isEmptyList} from "../../Utility/listOperations";
 
 type ParameterViewProps = {
     inputParameters: PythonParameter[],
@@ -17,7 +18,7 @@ const ParameterView = ({inputParameters, selection, selectedFunction}: Parameter
     return (
         <div className="parameter-view">
             <div className="parameter-view-path" >
-                { selection.length > 0 ?
+                { isEmptyList(selection) ?
                     // eslint-disable-next-line
                     selection.map<React.ReactNode>(n => <a href="#">{n}</a>)
                              .reduce((p, c) => [p, (<span> / </span>), c]) :
