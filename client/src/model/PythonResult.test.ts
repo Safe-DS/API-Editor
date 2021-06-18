@@ -5,12 +5,12 @@ import PythonClass from "./PythonClass";
 import PythonFunction from "./PythonFunction";
 
 test("path without parent", () => {
-    const pythonResult = new PythonResult("res")
-    expect(pythonResult.path()).toEqual(["res"])
-})
+    const pythonResult = new PythonResult("res");
+    expect(pythonResult.path()).toEqual(["res"]);
+});
 
 test("path with ancestors", () => {
-    const pythonResult = new PythonResult("res")
+    const pythonResult = new PythonResult("res");
     new PythonPackage(
         "package",
         [
@@ -35,14 +35,14 @@ test("path with ancestors", () => {
                 ]
             )
         ]
-    )
+    );
 
-    expect(pythonResult.path()).toEqual(["package", "module", "Class", "function", "res"])
-})
+    expect(pythonResult.path()).toEqual(["package", "module", "Class", "function", "res"]);
+});
 
 test("toString", () => {
-    const pythonResult = new PythonResult("res")
-    expect(pythonResult.toString()).toBe(`Result "res"`)
-})
+    const pythonResult = new PythonResult("res");
+    expect(pythonResult.toString()).toBe(`Result "res"`);
+});
 
-export {}
+export {};

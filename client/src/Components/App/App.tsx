@@ -3,11 +3,12 @@ import './App.css';
 import ParameterView from "../ParameterView/ParameterView";
 import TreeView from "../TreeView/TreeView";
 import PythonFunction from "../../model/PythonFunction";
+import PythonParameter from "../../model/PythonParameter";
 
-function App() {
+function App(): JSX.Element {
 
-    const [parameters, setParameters] = useState([]);
-    const [selection, setSelection] = useState([]);
+    const [parameters, setParameters] = useState<PythonParameter[]>([]);
+    const [selection, setSelection] = useState<string[]>([]);
     const [selectedFunction, setSelectedFunction] = useState<Nullable<PythonFunction>>(null);
 
     return (

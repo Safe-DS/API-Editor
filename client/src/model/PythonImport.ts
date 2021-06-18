@@ -8,11 +8,11 @@ export default class PythonImport {
         this.alias = alias;
     }
 
-    toString() {
+    toString(): string {
         if (this.alias === null) {
-            return `import ${this.module}`
+            return `import ${this.module}`;
         } else {
-            return `import ${this.module} as ${this.alias}`
+            return `import ${this.module} as ${this.alias}`;
         }
     }
 }

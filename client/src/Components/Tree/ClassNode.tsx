@@ -4,6 +4,7 @@ import classNames from "classnames";
 import FunctionNode from "./FunctionNode";
 import {isEmptyList} from "../../util/listOperations";
 import PythonFunction from "../../model/PythonFunction";
+import PythonParameter from "../../model/PythonParameter";
 
 type ClassNodeProps = {
     parentPath: string[],
@@ -11,19 +12,18 @@ type ClassNodeProps = {
     selection: string[],
     setSelection: (newValue: string[]) => void,
     moduleName: string,
-    setParameters: any,
+    setParameters: Setter<PythonParameter[]>,
     setSelectedFunction: Setter<Nullable<PythonFunction>>
 }
 
-const ClassNode = ({
-                       parentPath,
-                       pythonClass,
-                       selection,
-                       setSelection,
-                       moduleName,
-                       setParameters,
-                       setSelectedFunction
-                   }: ClassNodeProps) => {
+export default function ClassNode({
+                                      parentPath,
+                                      pythonClass,
+                                      selection,
+                                      setSelection,
+                                      setParameters,
+                                      setSelectedFunction
+                                  }: ClassNodeProps): JSX.Element {
 
     const [childVisible, setChildVisibility] = useState(false);
     const hasMethods = !isEmptyList(pythonClass.methods);
@@ -66,6 +66,4 @@ const ClassNode = ({
             </div>}
         </div>
     );
-};
-
-export default ClassNode;
+}

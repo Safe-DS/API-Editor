@@ -15,13 +15,13 @@ export default class PythonParameter extends PythonDeclaration {
 
     constructor(
         name: string,
-        type: string = "Any",
-        typeInDocs: string = "",
-        hasDefault: boolean = false,
-        defaultValue: string = "",
-        limitation: null = null,
-        ignored: boolean = false,
-        description: string = ""
+        type = "Any",
+        typeInDocs = "",
+        hasDefault = false,
+        defaultValue = "",
+        limitation = null,
+        ignored = false,
+        description = ""
     ) {
         super();
 
@@ -40,7 +40,7 @@ export default class PythonParameter extends PythonDeclaration {
         return this.containingFunction;
     }
 
-    toString() {
+    toString(): string {
         return `Parameter "${this.name}"`;
     }
 }

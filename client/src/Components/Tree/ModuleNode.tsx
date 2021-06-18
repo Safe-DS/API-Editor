@@ -11,27 +11,27 @@ type ModuleNodeProps = {
     pythonModule: PythonModule,
     selection: string[],
     setSelection: (newValue: string[]) => void,
-    setParameters: any,
+    setParameters: Setter<string[]>,
     setSelectedFunction: Setter<Nullable<PythonFunction>>
 }
 
-const ModuleNode = ({
-                        parentPath,
-                        pythonModule,
-                        selection,
-                        setSelection,
-                        setParameters,
-                        setSelectedFunction
-                    }: ModuleNodeProps) => {
+export default function ModuleNode({
+                                       parentPath,
+                                       pythonModule,
+                                       selection,
+                                       setSelection,
+                                       setParameters,
+                                       setSelectedFunction
+                                   }: ModuleNodeProps): JSX.Element {
 
     /** This is the Name of this module without its packages name prefixed. */
 
     const [, ...moduleName] = pythonModule.name.split(".");
 
-    const path = parentPath.concat(moduleName)
+    const path = parentPath.concat(moduleName);
     const [childVisible, setChildVisibility] = useState(false);
-    let hasClasses = !isEmptyList(pythonModule.classes);
-    let hasFunctions = !isEmptyList(pythonModule.functions);
+    const hasClasses = !isEmptyList(pythonModule.classes);
+    const hasFunctions = !isEmptyList(pythonModule.functions);
     const hasChildren = hasClasses || hasFunctions;
 
     const cssClasses = classNames(
@@ -48,8 +48,8 @@ const ModuleNode = ({
         <div className="module-node">
             <div className={cssClasses}
                  onClick={() => {
-                     setSelection(path)
-                     setChildVisibility(!childVisible)
+                     setSelection(path);
+                     setChildVisibility(!childVisible);
                  }}>
                 {(hasClasses || hasFunctions) &&
                 <span className="indicator visibility-indicator">{childVisible ? "▼" : "▶"}</span>}
@@ -89,7 +89,5 @@ const ModuleNode = ({
                 </div>}
             </div>
         </div>
-    )
-};
-
-export default ModuleNode;
+    );
+}

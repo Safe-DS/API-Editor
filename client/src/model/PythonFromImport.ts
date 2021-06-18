@@ -10,11 +10,11 @@ export default class PythonFromImport {
         this.alias = alias;
     }
 
-    toString() {
+    toString(): string {
         if (this.alias === null) {
-            return `from ${this.module} import ${this.declaration}`
+            return `from ${this.module} import ${this.declaration}`;
         } else {
-            return `from ${this.module} import ${this.declaration} as ${this.alias}`
+            return `from ${this.module} import ${this.declaration} as ${this.alias}`;
         }
     }
 }

@@ -21,7 +21,7 @@ export default class PythonPackage extends PythonDeclaration {
         return null;
     }
 
-    toString() {
+    toString(): string {
         return `Package "${this.name}"`;
     }
 }
