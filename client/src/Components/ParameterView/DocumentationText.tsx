@@ -7,7 +7,7 @@ import classNames from "classnames";
 // @ts-ignore
 const DocumentationText = ({inputText}) => {
 
-    const shortenedText = inputText.split("\n")[0];
+    const shortenedText = inputText.split("\n\n")[0];
     const hasMultipleLines = shortenedText !== inputText;
 
     const [readMore, setReadMore] = useState(false);
