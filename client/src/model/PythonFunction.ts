@@ -1,7 +1,10 @@
 import PythonParameter from "./PythonParameter";
 import PythonResult from "./PythonResult";
+import PythonClass from "./PythonClass";
+import PythonModule from "./PythonModule";
+import PythonDeclaration from "./PythonDeclaration";
 
-export default class PythonFunction {
+export default class PythonFunction extends PythonDeclaration {
 
     readonly name: string;
     readonly decorators: string[];
@@ -11,6 +14,7 @@ export default class PythonFunction {
     readonly summary: string;
     readonly description: string;
     readonly fullDocstring: string;
+    containingModuleOrClass: Nullable<PythonModule | PythonClass>;
 
     constructor(
         name: string,
@@ -22,6 +26,8 @@ export default class PythonFunction {
         description: string = "",
         fullDocstring: string = "",
     ) {
+        super();
+
         this.name = name;
         this.decorators = decorators;
         this.parameters = parameters;
@@ -30,6 +36,19 @@ export default class PythonFunction {
         this.summary = summary;
         this.description = description;
         this.fullDocstring = fullDocstring;
+        this.containingModuleOrClass = null;
+
+        this.parameters.forEach(it => {
+            it.containingFunction = this
+        })
+
+        this.results.forEach(it => {
+            it.containingFunction = this
+        })
+    }
+
+    parent(): Nullable<PythonModule | PythonClass> {
+        return this.containingModuleOrClass;
     }
 
     toString() {

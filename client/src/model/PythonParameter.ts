@@ -1,4 +1,7 @@
-export default class PythonParameter {
+import PythonFunction from "./PythonFunction";
+import PythonDeclaration from "./PythonDeclaration";
+
+export default class PythonParameter extends PythonDeclaration {
 
     readonly name: string;
     readonly type: string;
@@ -8,6 +11,7 @@ export default class PythonParameter {
     readonly limitation: null;
     readonly ignored: boolean;
     readonly description: string;
+    containingFunction: Nullable<PythonFunction>;
 
     constructor(
         name: string,
@@ -19,6 +23,8 @@ export default class PythonParameter {
         ignored: boolean = false,
         description: string = ""
     ) {
+        super();
+
         this.name = name;
         this.type = type;
         this.typeInDocs = typeInDocs;
@@ -27,9 +33,14 @@ export default class PythonParameter {
         this.limitation = limitation;
         this.ignored = ignored;
         this.description = description;
+        this.containingFunction = null;
+    }
+
+    parent(): Nullable<PythonFunction> {
+        return this.containingFunction;
     }
 
     toString() {
-        return `Parameter "${this.name}"`
+        return `Parameter "${this.name}"`;
     }
 }

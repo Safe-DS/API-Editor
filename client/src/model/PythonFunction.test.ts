@@ -1,5 +1,37 @@
 import PythonFunction from "./PythonFunction";
 import PythonParameter from "./PythonParameter";
+import PythonClass from "./PythonClass";
+import PythonPackage from "./PythonPackage";
+import PythonModule from "./PythonModule";
+
+test("path without parent", () => {
+    const pythonFunction = new PythonFunction("function")
+    expect(pythonFunction.path()).toEqual(["function"])
+})
+
+test("path with ancestors", () => {
+    const pythonFunction = new PythonFunction("function")
+    new PythonPackage(
+        "package",
+        [
+            new PythonModule(
+                "module",
+                [],
+                [],
+                [
+                    new PythonClass(
+                        "Class",
+                        [],
+                        [],
+                        [pythonFunction]
+                    )
+                ]
+            )
+        ]
+    )
+
+    expect(pythonFunction.path()).toEqual(["package", "module", "Class", "function"])
+})
 
 test("toString without decorators and parameters", () => {
     const pythonFunction = new PythonFunction("function")

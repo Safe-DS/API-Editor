@@ -1,9 +1,13 @@
-export default class PythonResult {
+import PythonFunction from "./PythonFunction";
+import PythonDeclaration from "./PythonDeclaration";
+
+export default class PythonResult extends PythonDeclaration {
 
     readonly name: string;
     readonly type: string;
     readonly typeInDocs: string;
     readonly description: string;
+    containingFunction: Nullable<PythonFunction>;
 
     constructor(
         name: string,
@@ -11,13 +15,20 @@ export default class PythonResult {
         typeInDocs: string = "",
         description: string = ""
     ) {
+        super();
+
         this.name = name;
         this.type = type;
         this.typeInDocs = typeInDocs;
         this.description = description;
+        this.containingFunction = null;
+    }
+
+    parent(): Nullable<PythonFunction> {
+        return this.containingFunction;
     }
 
     toString() {
-        return `Result "${this.name}"`
+        return `Result "${this.name}"`;
     }
 }
