@@ -17,7 +17,7 @@ export default class PythonPackageBuilder {
             let cs: PythonClass[] = [];
             // @ts-ignore
             m.classes.forEach(c => {
-                cs.push(new PythonClass(c.name, c.decorators, [], c.docstring || "", c.methods));
+                cs.push(new PythonClass(c.name, c.decorators, [], c.fullDocstring || "", c.methods));
             });
 
             let fs: PythonFunction[] = [];
@@ -27,10 +27,19 @@ export default class PythonPackageBuilder {
                 let ps: PythonParameter[] = [];
                 // @ts-ignore
                 f.parameters.forEach(p => {
-                    ps.push(new PythonParameter(p.name, p.type, p.hasDefault, p.defaultValue, p.limitation, p.ignored, p.docstring));
+                    ps.push(new PythonParameter(p.name, p.type, p.hasDefault, p.defaultValue, p.limitation, p.ignored, p.description));
                 });
 
-                fs.push(new PythonFunction(f.name, f.decorators, ps, f.hasReturnType, new PythonReturnType(), f.docstring))
+                fs.push(new PythonFunction(
+                    f.name,
+                    f.decorators,
+                    ps,
+                    f.hasReturnType,
+                    new PythonReturnType(),
+                    f.fullDocstring,
+                    f.summary,
+                    f.description
+                ))
             });
 
             ms.push(new PythonModule(m.name, m.imports, cs, fs))
