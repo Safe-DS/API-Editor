@@ -33,7 +33,7 @@ jobs:
       with:
         path: |
           **/node_modules
-        key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+        key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
     
     - name: Install Dependencies
       run: yarn install --production=false
