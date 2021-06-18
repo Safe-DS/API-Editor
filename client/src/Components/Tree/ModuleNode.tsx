@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import ClassNode from "./ClassNode";
 import FunctionNode from "./FunctionNode";
-import {isEmptyList} from "../../Utility/listOperations";
+import {isEmptyList} from "../../util/listOperations";
 import classNames from "classnames";
 import PythonModule from "../../model/PythonModule";
 import PythonFunction from "../../model/PythonFunction";

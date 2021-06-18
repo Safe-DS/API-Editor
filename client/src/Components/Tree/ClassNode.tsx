@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import PythonClass from "../../model/PythonClass";
 import classNames from "classnames";
 import FunctionNode from "./FunctionNode";
-import {isEmptyList} from "../../Utility/listOperations";
+import {isEmptyList} from "../../util/listOperations";
 import PythonFunction from "../../model/PythonFunction";
 
 type ClassNodeProps = {

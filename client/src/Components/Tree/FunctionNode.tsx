@@ -1,7 +1,7 @@
 import React from "react";
 import PythonFunction from "../../model/PythonFunction";
 import classNames from "classnames";
-import {isEmptyList} from "../../Utility/listOperations";
+import {isEmptyList} from "../../util/listOperations";
 
 type FunctionNodeProps = {
     pythonFunction: PythonFunction,
