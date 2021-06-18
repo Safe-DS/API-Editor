@@ -1,4 +1,4 @@
-.parameterViewDiv{
+.parameter-view {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
@@ -57,16 +57,15 @@
     text-align: left;
     background: none!important;
     border: none;
-    /*padding: 0!important;*/
     padding-left: 0.5rem;
-    /*optional*/
     font-family: arial, sans-serif;
-    /*input has OS specific font-family*/
-    /*color: #069;*/
-    /*text-decoration: underline;*/
     cursor: pointer;
 }
 
 .documentation-text {
     clear: both;
+}
+
+.parameter-view-path {
+    height: 1.5rem;
 }
