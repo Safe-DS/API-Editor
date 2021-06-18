@@ -5,7 +5,7 @@ import remarkGfm from "remark-gfm";
 import classNames from "classnames";
 
 // @ts-ignore
-const DocumentationText = ({inputText}) => {
+const DocumentationText = ({inputText = ""}) => {
 
     const shortenedText = inputText.split("\n\n")[0];
     const hasMultipleLines = shortenedText !== inputText;

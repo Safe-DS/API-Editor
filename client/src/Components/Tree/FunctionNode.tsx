@@ -12,9 +12,18 @@ type FunctionNodeProps = {
 
     /** A parent of a Python class can be a class or a Python module. */
     parentPath: string[],
+    setSelectedFunction: Setter<Nullable<PythonFunction>>
 }
 
-const FunctionNode = ({pythonFunction, selection, setSelection, setParameters, parentPath, isMethod = false} : FunctionNodeProps) => {
+const FunctionNode = ({
+                          pythonFunction,
+                          selection,
+                          setSelection,
+                          setParameters,
+                          parentPath,
+                          isMethod = false,
+                          setSelectedFunction
+                      }: FunctionNodeProps) => {
 
     const path = parentPath.concat(pythonFunction.name)
     const hasParameters = isEmptyList(pythonFunction.parameters);
@@ -30,15 +39,16 @@ const FunctionNode = ({pythonFunction, selection, setSelection, setParameters, p
 
     return (
         <div className="function-node">
-            <div className = { cssClasses }
-                onClick = {() => {
-                    setSelection(path);
-                    setParameters(pythonFunction.parameters)
-                }}>
+            <div className={cssClasses}
+                 onClick={() => {
+                     setSelection(path);
+                     setParameters(pythonFunction.parameters);
+                     setSelectedFunction(pythonFunction);
+                 }}>
                 <span className="indicator">
                     𝑓
                 </span>
-                { " " }
+                {" "}
                 <span>
                     {pythonFunction.name}
                 </span>

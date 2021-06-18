@@ -30,7 +30,16 @@ export default class PythonPackageBuilder {
                     ps.push(new PythonParameter(p.name, p.type, p.hasDefault, p.defaultValue, p.limitation, p.ignored, p.description));
                 });
 
-                fs.push(new PythonFunction(f.name, f.decorators, ps, f.hasReturnType, new PythonReturnType(), f.fullDocstring))
+                fs.push(new PythonFunction(
+                    f.name,
+                    f.decorators,
+                    ps,
+                    f.hasReturnType,
+                    new PythonReturnType(),
+                    f.fullDocstring,
+                    f.summary,
+                    f.description
+                ))
             });
 
             ms.push(new PythonModule(m.name, m.imports, cs, fs))
