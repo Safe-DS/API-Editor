@@ -24,9 +24,9 @@
     text-overflow: ellipsis;
 }
 
-.docuParagraph{
-    white-space: nowrap;
-    overflow: hidden;
+.docu-paragraph{
+    display: flex;
+    justify-content: flex-start;
 }
 
 .parameter-name {
@@ -50,5 +50,4 @@
     /*color: #069;*/
     /*text-decoration: underline;*/
     cursor: pointer;
-    overflow: hidden;
 }
