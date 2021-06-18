@@ -3,14 +3,17 @@
     position: -webkit-sticky;
     position: sticky;
     top: 0;
+    overflow-x: hidden;
 }
 
 .parameterViewDiv h2{
     padding-top: 1rem;
+    padding-left: 1rem;
 }
 
 .parameterViewDiv h5{
     padding-top: 1rem;
+    padding-left: 1rem;
 }
 
 .parameterViewDiv a{
@@ -22,12 +25,22 @@
     padding-bottom: .5rem;
 }
 
+.docuTextHidden {
+    text-overflow: ellipsis;
+}
+
+.docu-paragraph{
+    display: flex;
+    justify-content: flex-start;
+}
+
 .parameter-header {
+    display: flex;
+    justify-content: flex-start;
     font-weight: bold;
 }
 
 .parameter-name {
-    float: left;
     margin-right: 15px;
 }
 
@@ -41,15 +54,11 @@
 }
 
 .read-more-button {
+    text-align: left;
     background: none!important;
     border: none;
-    /*padding: 0!important;*/
     padding-left: 0.5rem;
-    /*optional*/
     font-family: arial, sans-serif;
-    /*input has OS specific font-family*/
-    color: #069;
-    text-decoration: underline;
     cursor: pointer;
 }
 

@@ -8,11 +8,11 @@ type ParameterProps = {inputParameter: PythonParameter}
 
 const ParameterNode = ({inputParameter}: ParameterProps) => {
 
-    const hasDescription = !!inputParameter.docstring;
+    const hasDescription = !!inputParameter.description;
 
     return (
         <div className="parametersList">
-            <span className="parameter-header">
+            <div className="parameter-header">
                 <h4 className={"parameter-name"}>{inputParameter?.name}</h4>
                 <Dropdown>
                     <Dropdown.Toggle size="sm" variant="outline-primary">
@@ -23,14 +23,14 @@ const ParameterNode = ({inputParameter}: ParameterProps) => {
                         <Dropdown.Item eventKey="enum">@Enum</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
-            </span>
+            </div>
             {
                 hasDescription &&
-                <DocumentationText inputText={inputParameter?.docstring}/>
+                <DocumentationText inputText={inputParameter?.description}/>
             }
             {
                 !hasDescription &&
-                <p>No Documentation available</p>
+                <p className="pl-1-5rem">No Documentation available</p>
             }
 
         </div>

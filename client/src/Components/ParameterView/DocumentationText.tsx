@@ -1,22 +1,32 @@
 import React, {useState} from "react";
 import "./ParameterView.css";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import classNames from "classnames";
 
 // @ts-ignore
 const DocumentationText = ({inputText}) => {
 
-    const [readMore,setReadMore] = useState(false);
-    const moreTextOption = inputText.length > 50
+    const shortenedText = inputText.split("\n")[0];
+    const hasMultipleLines = shortenedText !== inputText;
 
-    const linkName = readMore ? '[Read less]' : '[Read more]'
+    const [readMore, setReadMore] = useState(false);
+
+    const cssClasses = classNames(
+        "read-more-button",
+        {
+            "pl-1-5rem": !hasMultipleLines,
+        }
+    );
 
     return (
-        <div className="documentation-text">
-            <p>{!readMore && inputText.substr(0, 50)}
-                {readMore && inputText}
-                <button className="read-more-button" onClick={()=>{setReadMore(!readMore)}}>
-                    {moreTextOption && linkName}
-                </button>
-            </p>
+        <div className="docu-paragraph" onClick={() => {
+            setReadMore(!readMore)
+        }}>
+            {!readMore && hasMultipleLines && "▶"}
+            {readMore && hasMultipleLines && "▼"}
+            <ReactMarkdown className={cssClasses} children={readMore ? inputText : shortenedText}
+                           remarkPlugins={[remarkGfm]}/>
 
         </div>
     );

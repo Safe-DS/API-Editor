@@ -1,7 +1,7 @@
 import React from 'react'
 import Tree from "../Tree/Tree";
 import './tree-view.css';
-import packageJson from "../../sklearn.json";
+import packageJson from "../../data/sklearn_new_schema.json";
 import PythonPackageBuilder from "../../model/PythonPackageBuilder";
 
 type TreeViewProps = {
