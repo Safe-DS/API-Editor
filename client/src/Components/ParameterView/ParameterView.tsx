@@ -18,8 +18,7 @@ const ParameterView = ({inputParameters, selection, selectedFunction}: Parameter
         <div className="parameter-view">
             <div className="parameter-view-path" >
                 { selection.length > 0 ?
-                    // eslint-disable-next-line
-                    selection.map<React.ReactNode>(n => <a href="#">{n}</a>)
+                    selection.map<React.ReactNode>((n, index) => <a href="#" key={index}>{n}</a>)
                              .reduce((p, c) => [p, (<span> / </span>), c]) :
                     "" }
             </div>

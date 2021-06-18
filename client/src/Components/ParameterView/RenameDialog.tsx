@@ -1,22 +1,25 @@
-import React, {useState} from "react";
+import React, {FormEvent, useState} from "react";
 import "./ParameterView.css";
 import {Button, Form, Modal} from "react-bootstrap";
 
-type showDialogState = { handleState: boolean, setDialogState: any, currentRename?: string, setRenameName: any }
+type showDialogState = {
+    handleState: boolean, setDialogState: Setter<boolean>, currentRename?: string,
+    setRenameName: Setter<String>
+}
 
 const RenameDialog = ({handleState, setDialogState, currentRename, setRenameName}: showDialogState) => {
 
     const handleClose = () => setDialogState(false);
 
-    const [value, setValue] = useState(currentRename),
-        onInput = ({target: {value}}: any) => setValue(value),
-        onFormSubmit = (e: any) => {
-            e.preventDefault();
-            if (!!value) {
-                handleClose();
-                setRenameName(value);
-            }
+    const [value, setValue] = useState(currentRename);
+    const onInput = (event: any) => setValue(event.target.value);
+    const onFormSubmit = (e: FormEvent) => {
+        e.preventDefault();
+        if (!!value) {
+            handleClose();
+            setRenameName(value);
         }
+    }
 
     return (
         <Modal
