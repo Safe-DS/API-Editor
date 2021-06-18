@@ -1,50 +1,49 @@
-import React from "react";
+import React, {useState} from "react";
 import "./ParameterView.css";
 import {Button, Form, Modal} from "react-bootstrap";
 
-type showDialogState = {handleState: boolean, setDialogState: any}
+type showDialogState = { handleState: boolean, setDialogState: any, currentRename?: string, setRenameName: any }
 
-const RenameDialog = ({handleState, setDialogState}: showDialogState) => {
+const RenameDialog = ({handleState, setDialogState, currentRename, setRenameName}: showDialogState) => {
 
     const handleClose = () => setDialogState(false);
 
-    const state = {
-        val: ""
-    };
+    const [value, setValue] = useState(currentRename),
+        onInput = ({target: {value}}: any) => setValue(value),
+        onFormSubmit = (e: any) => {
+            e.preventDefault();
+            if (!!value) {
+                handleClose();
+                setRenameName(value);
+            }
+        }
 
-    const onSubmit = () => {
-        console.log(state.val);
-    };
-
-    return(
-
+    return (
         <Modal
             show={handleState}
             onHide={handleClose}
-            backdrop="static"
-            keyboard={false}
         >
             <Modal.Header closeButton>
                 <Modal.Title>Add @rename Annotation</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
-                <Form>
+            <Form onSubmit={onFormSubmit}>
+                <Modal.Body>
                     <Form.Group>
                         <Form.Label>
                             New Name:
                         </Form.Label>
-                        <Form.Control placeholder="New Name" type="text"/>
-
+                        <Form.Control onChange={onInput} value={value} placeholder={currentRename} type="text"/>
                     </Form.Group>
-                </Form>
-
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                    Close
-                </Button>
-                <Button variant="primary" onClick={onSubmit}>Submit</Button>
-            </Modal.Footer>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                    <Button variant="primary" type="submit">
+                        Submit
+                    </Button>
+                </Modal.Footer>
+            </Form>
         </Modal>
     );
 };
