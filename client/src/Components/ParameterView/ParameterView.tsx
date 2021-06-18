@@ -2,14 +2,25 @@ import ParameterNode from "./ParameterNode";
 import React from "react";
 import PythonParameter from "../../model/PythonParameter";
 
-type ParameterViewProps = {inputParameters: PythonParameter[]}
+type ParameterViewProps = {
+    inputParameters: PythonParameter[],
+    selection: string[],
+    setSelection: any
+};
 
-const ParameterView = ({inputParameters}: ParameterViewProps) => {
+const ParameterView = ({inputParameters, selection, setSelection }: ParameterViewProps) => {
 
     const hasInputParameters = inputParameters.length > 0;
+    console.log(selection);
 
     return (
-        <div className="parameterViewDiv">
+        <div className="parameter-view">
+            <div className="parameter-view-path" >
+                { selection.length > 0 ?
+                    selection.map<React.ReactNode>(n => <a href="#">{n}</a>)
+                             .reduce((p, c) => [p, (<span> / </span>), c]) :
+                    "" }
+            </div>
             <h2 className={"parameter-title"}>Parameters</h2>
             {
                 inputParameters?.map(function (parameters) {
@@ -18,7 +29,7 @@ const ParameterView = ({inputParameters}: ParameterViewProps) => {
             }
             {
                 !hasInputParameters &&
-                    <h5>No Parameters available</h5>
+                    <span>There are no Parameters.</span>
             }
 
         </div>
