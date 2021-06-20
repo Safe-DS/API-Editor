@@ -3,6 +3,7 @@ import React from "react";
 import PythonParameter from "../../model/PythonParameter";
 import PythonFunction from "../../model/PythonFunction";
 import DocumentationText from "./DocumentationText";
+import {Breadcrumb} from "react-bootstrap";
 
 type ParameterViewProps = {
     inputParameters: PythonParameter[],
@@ -17,10 +18,14 @@ export default function ParameterView({inputParameters, selection, selectedFunct
     return (
         <div className="parameter-view">
             <div className="parameter-view-path">
-                {selection.length > 0 ?
-                    selection.map<React.ReactNode>((n, index) => <a href="#" key={index}>{n}</a>)
-                        .reduce((p, c, index) => [p, (<span key={index}> / </span>), c]) :
-                    ""}
+                <Breadcrumb>
+                    {(!selection || selection.length === 0) && (
+                        <Breadcrumb.Item active>Nothing selected.</Breadcrumb.Item>
+                    )}
+                    {selection.map((name, index) => (
+                        <Breadcrumb.Item active key={index}>{name}</Breadcrumb.Item>
+                    ))}
+                </Breadcrumb>
             </div>
             {selectedFunction !== null &&
             <>
