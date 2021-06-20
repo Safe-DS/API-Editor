@@ -35,7 +35,7 @@ jobs:
       run: yarn install --production=false
     
     - name: Test
-      run: yarn test --passWithNoTests
+      run: yarn test
     
     - name: Deploy
       run: |
