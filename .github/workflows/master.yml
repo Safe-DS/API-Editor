@@ -34,9 +34,6 @@ jobs:
     - name: Install Dependencies
       run: yarn install --production=false
     
-    - name: Build
-      run: yarn run build --if-present
-    
     - name: Test
       run: yarn test --passWithNoTests
     
