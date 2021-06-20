@@ -28,9 +28,9 @@ export default function DocumentationText({inputText = ""}: DocumentationTextPro
         }}>
             {!readMore && hasMultipleLines && "▶"}
             {readMore && hasMultipleLines && "▼"}
-            <ReactMarkdown className={cssClasses} children={readMore ? inputText : shortenedText}
-                           remarkPlugins={[remarkGfm]}/>
-
+            <ReactMarkdown className={cssClasses} remarkPlugins={[remarkGfm]}>
+                {readMore ? inputText : shortenedText}
+            </ReactMarkdown>
         </div>
     );
 }
