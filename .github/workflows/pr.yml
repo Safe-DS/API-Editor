@@ -24,7 +24,16 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
+
+    - name: Cache Dependencies
+      uses: actions/cache@v2
+      with:
+        path: '**/node_modules'
+        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
     
+    - name: Install Dependencies
+      run: yarn install --production=false
+
     - name: Lint
       run: yarn run lint
       
@@ -40,7 +49,8 @@ jobs:
         node-version: [14.x]
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout Source
+      uses: actions/checkout@v2
     
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
@@ -71,7 +81,8 @@ jobs:
         node-version: [14.x]
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout Source
+      uses: actions/checkout@v2
     
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
