@@ -1,15 +1,11 @@
 import PythonFunction from "./PythonFunction";
 import PythonDeclaration from "./PythonDeclaration";
 
-export default class PythonParameter extends PythonDeclaration {
+export default class PythonResult extends PythonDeclaration {
 
     readonly name: string;
     readonly type: string;
     readonly typeInDocs: string;
-    readonly hasDefault: boolean;
-    readonly defaultValue: string;
-    readonly limitation: null;
-    readonly ignored: boolean;
     readonly description: string;
     containingFunction: Nullable<PythonFunction>;
 
@@ -17,10 +13,6 @@ export default class PythonParameter extends PythonDeclaration {
         name: string,
         type = "Any",
         typeInDocs = "",
-        hasDefault = false,
-        defaultValue = "",
-        limitation = null,
-        ignored = false,
         description = ""
     ) {
         super();
@@ -28,10 +20,6 @@ export default class PythonParameter extends PythonDeclaration {
         this.name = name;
         this.type = type;
         this.typeInDocs = typeInDocs;
-        this.hasDefault = hasDefault;
-        this.defaultValue = defaultValue;
-        this.limitation = limitation;
-        this.ignored = ignored;
         this.description = description;
         this.containingFunction = null;
     }
@@ -41,6 +29,6 @@ export default class PythonParameter extends PythonDeclaration {
     }
 
     toString(): string {
-        return `Parameter "${this.name}"`;
+        return `Result "${this.name}"`;
     }
 }

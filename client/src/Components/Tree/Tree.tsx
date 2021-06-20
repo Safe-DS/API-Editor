@@ -1,17 +1,24 @@
-import React from 'react'
+import React from 'react';
 import ModuleNode from "./ModuleNode";
 import PythonPackage from "../../model/PythonPackage";
 import PythonFunction from "../../model/PythonFunction";
+import PythonParameter from "../../model/PythonParameter";
 
 type TreeProps = {
     pythonPackage: PythonPackage,
-    setParameters: any,
+    setParameters: Setter<PythonParameter[]>,
     selection: string[],
-    setSelection: any,
+    setSelection: Setter<string[]>,
     setSelectedFunction: Setter<Nullable<PythonFunction>>
 }
 
-const Tree = ({pythonPackage, setParameters, selection, setSelection, setSelectedFunction}: TreeProps) => {
+export default function Tree({
+                                 pythonPackage,
+                                 setParameters,
+                                 selection,
+                                 setSelection,
+                                 setSelectedFunction
+                             }: TreeProps): JSX.Element {
 
     const path = [pythonPackage.name];
 
@@ -30,5 +37,3 @@ const Tree = ({pythonPackage, setParameters, selection, setSelection, setSelecte
         </div>
     );
 }
-
-export default Tree;
