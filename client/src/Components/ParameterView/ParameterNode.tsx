@@ -15,7 +15,7 @@ export default function ParameterNode({inputParameter}: ParameterProps): JSX.Ele
     const [renameName, setRenameName] = useState("");
     const handleRenameDialog = () => setRenameDialog(true);
 
-    const handleSelect = (e: any) => {
+    const handleSelect = (e: Nullable<string>) => {
         if (e === "rename") {
             if(!renameName) {
                 setRenameName(inputParameter?.name);

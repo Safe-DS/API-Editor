@@ -4,22 +4,27 @@ import {Button, Form, Modal} from "react-bootstrap";
 
 type showDialogState = {
     handleState: boolean, setDialogState: Setter<boolean>, currentRename?: string,
-    setRenameName: Setter<String>
+    setRenameName: Setter<string>
 }
 
-const RenameDialog = ({handleState, setDialogState, currentRename, setRenameName}: showDialogState) => {
+export default function RenameDialog({
+                                         handleState,
+                                         setDialogState,
+                                         currentRename,
+                                         setRenameName
+                                     }: showDialogState): JSX.Element {
 
     const handleClose = () => setDialogState(false);
 
     const [value, setValue] = useState(currentRename);
-    const onInput = (event: any) => setValue(event.target.value);
+    const onInput = (event: React.ChangeEvent<HTMLInputElement>) => setValue(event.target.value);
     const onFormSubmit = (e: FormEvent) => {
         e.preventDefault();
-        if (!!value) {
+        if (value) {
             handleClose();
             setRenameName(value);
         }
-    }
+    };
 
     return (
         <Modal
@@ -49,6 +54,4 @@ const RenameDialog = ({handleState, setDialogState, currentRename, setRenameName
             </Form>
         </Modal>
     );
-};
-
-export default RenameDialog;
+}
