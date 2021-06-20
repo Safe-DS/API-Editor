@@ -5,13 +5,14 @@ import {isEmptyList} from "../../util/listOperations";
 import classNames from "classnames";
 import PythonModule from "../../model/PythonModule";
 import PythonFunction from "../../model/PythonFunction";
+import PythonParameter from "../../model/PythonParameter";
 
 type ModuleNodeProps = {
     parentPath: string[],
     pythonModule: PythonModule,
     selection: string[],
-    setSelection: (newValue: string[]) => void,
-    setParameters: Setter<string[]>,
+    setSelection: Setter<string[]>,
+    setParameters: Setter<PythonParameter[]>,
     setSelectedFunction: Setter<Nullable<PythonFunction>>
 }
 

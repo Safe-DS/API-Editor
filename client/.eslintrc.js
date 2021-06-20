@@ -7,6 +7,7 @@ module.exports = {
     ],
     extends: [
         "eslint:recommended",
+        "plugin:react/recommended",
         "plugin:@typescript-eslint/recommended",
     ],
     rules: {
@@ -25,5 +26,14 @@ module.exports = {
                 "allowedNames": ["current"]
             }
         ]
+    },
+    // See https://github.com/yannickcr/eslint-plugin-react#configuration
+    "settings": {
+        "react": {
+            "version": "detect"
+        },
+        "propWrapperFunctions": [],
+        "componentWrapperFunctions": [],
+        "linkComponents": []
     }
 };
