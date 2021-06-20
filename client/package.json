@@ -16,6 +16,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "buildWithoutLint": "DISABLE_ESLINT_PLUGIN=true react-scripts build",
+    "lint": "yarn eslint .",
     "test": "react-scripts test",
     "predeploy": "yarn run build",
     "deploy": "gh-pages -d build"
