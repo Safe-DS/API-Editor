@@ -62,3 +62,7 @@
 .documentation-text {
     clear: both;
 }
+
+.text-invalid {
+    background-color: deeppink;
+}
