@@ -28,9 +28,8 @@ jobs:
     - name: Cache dependencies
       uses: actions/cache@v2
       with:
-        path: |
-          **/node_modules
-        key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+        path: '**/node_modules'
+        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
     
     - name: Install Dependencies
       run: yarn install --production=false
