@@ -21,10 +21,7 @@ export default function RenameDialog({
     };
 
     const [nameValid, setNameValid] = useState(true);//wird sich ändern sobald man tippt. bei submit wird leerer name abgefangen
-
     const [currentRenameValue, setCurrentRenameValue] = useState("");
-
-
 
     const onInput = (event: React.ChangeEvent<HTMLInputElement>) => {
         setCurrentRenameValue(event.target.value);
@@ -50,9 +47,6 @@ export default function RenameDialog({
     const handleClose = () => {
         resetData();
     };
-
-
-
 
     return (
         <Modal
