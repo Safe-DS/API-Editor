@@ -5,6 +5,7 @@
   "homepage": "https://lars-reimann.github.io/api-editor",
   "dependencies": {
     "bootstrap": "^4.6.0",
+    "formik": "^2.2.9",
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
     "react-dom": "^17.0.2",

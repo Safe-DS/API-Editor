@@ -13,13 +13,13 @@ export default function ParameterNode({inputParameter}: ParameterProps): JSX.Ele
 
     const [renameDialog, setRenameDialog] = useState(false);
     const [renameName, setRenameName] = useState("");
-    const handleRenameDialog = () => setRenameDialog(true);
+    const openRenameDialog = () => setRenameDialog(true);
 
     const handleRenameSelect = () => {
         if (!renameName) {
             setRenameName(inputParameter.name);
         }
-        handleRenameDialog();
+        openRenameDialog();
     };
 
     const handleEnumSelect = () => {
@@ -35,14 +35,14 @@ export default function ParameterNode({inputParameter}: ParameterProps): JSX.Ele
                         + @Annotation
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                        <Dropdown.Item onSelect={handleRenameSelect} eventKey="rename">@Rename</Dropdown.Item>
-                        <Dropdown.Item onSelect={handleEnumSelect} eventKey="enum">@Enum</Dropdown.Item>
+                        <Dropdown.Item onSelect={handleRenameSelect}>@Rename</Dropdown.Item>
+                        <Dropdown.Item onSelect={handleEnumSelect}>@Enum</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
             </div>
 
-            <RenameDialog handleState={renameDialog} setDialogState={setRenameDialog} setRenameName={setRenameName}
-                          currentRename={renameName}/>
+            <RenameDialog dialogState={renameDialog} setDialogState={setRenameDialog} setCurrentName={setRenameName}
+                          currentName={renameName}/>
 
             {
                 hasDescription &&
