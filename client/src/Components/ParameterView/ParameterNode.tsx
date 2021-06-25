@@ -5,11 +5,11 @@ import DocumentationText from "./DocumentationText";
 import "./ParameterView.css";
 import RenameDialog from "./RenameDialog";
 
-interface ParameterProps {
+interface ParameterNodeProps {
     inputParameter: PythonParameter
 }
 
-export default function ParameterNode({inputParameter}: ParameterProps): JSX.Element {
+export default function ParameterNode({inputParameter}: ParameterNodeProps): JSX.Element {
 
     const hasDescription = !!inputParameter.description;
 
