@@ -10,21 +10,8 @@
   grid-area: TreeView;
 }
 
-.treeViewDiv {
-  border-right: 1px solid lightgray;
-}
-
-.treeViewDiv li {
-  list-style-type: none;
-}
-
 .ParameterView {
   grid-area: ParameterView;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
 }
 
 .class-node:hover, .function-node:hover, .module-node:hover {

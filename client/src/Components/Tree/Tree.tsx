@@ -3,6 +3,7 @@ import ModuleNode from "./ModuleNode";
 import PythonPackage from "../../model/PythonPackage";
 import PythonFunction from "../../model/PythonFunction";
 import PythonParameter from "../../model/PythonParameter";
+import "./Tree.css";
 
 type TreeProps = {
     pythonPackage: PythonPackage,
