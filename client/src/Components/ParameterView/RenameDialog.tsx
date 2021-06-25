@@ -26,7 +26,6 @@ export default function RenameDialog({
 
     const resetData = () => {
         setDialogState(false);
-        setCurrentRenameValue("");
         setNameValid(true);
     };
 
@@ -55,7 +54,7 @@ export default function RenameDialog({
             <Formik
                 onSubmit={console.log}
                 initialValues={{
-                    currentRenameValue: ''
+                    currentRenameValue: currentName
                 }}
             >
                 {() => (
