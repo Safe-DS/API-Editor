@@ -5,7 +5,6 @@ export default abstract class PythonDeclaration {
 
     path(): string[] {
         let current: Nullable<PythonDeclaration> = this;
-
         const result: string[] = [];
 
         while (current != null) {
