@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import "./ParameterView.css";
 import DocumentationText from "./DocumentationText";
 import PythonParameter from "../../model/PythonParameter";
@@ -14,7 +14,7 @@ export default function Parameter({inputParameter}: ParameterProps): JSX.Element
 
     const [renameDialog, setRenameDialog] = useState(false);
     const [renameName, setRenameName] = useState("");
-    const openRenameDialog = () => setRenameDialog(true);
+    const openRenameDialog = () => setRenameDialog(true)
 
     const handleRenameSelect = () => {
         if (!renameName) {
@@ -41,7 +41,7 @@ export default function Parameter({inputParameter}: ParameterProps): JSX.Element
                     </Dropdown.Menu>
                 </Dropdown>
             </div>
-            <AnnotationList/>
+            <AnnotationList renameName={renameName}/>
 
             <RenameDialog dialogState={renameDialog} setDialogState={setRenameDialog} setCurrentName={setRenameName}
                           currentName={renameName}/>

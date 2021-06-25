@@ -1,18 +1,22 @@
-import React, {useState} from "react";
+import React from "react";
 import {Button, ButtonGroup, Col, Form, Row} from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faTrash, faWrench} from '@fortawesome/free-solid-svg-icons';
 
-export default function AnnotationList  (): JSX.Element {
+type AnnotationListProps = {
+    renameName: string
+}
 
-    const [rename] = useState("neuerName");
+export default function AnnotationList  (props: AnnotationListProps): JSX.Element {
 
-    return (<div>
-        <h5>Annotations</h5>
+    if (props.renameName != "")
+    {
+        return (<div>
+            <h5>Annotations</h5>
             <Form.Group as={Row} controlId="formGridEmail">
                 <Form.Label column xs="auto">@rename</Form.Label>
                 <Col xs="auto">
-                    <Button className="rounded-pill" size="sm">{ rename }</Button>
+                    <Button className="rounded-pill" size="sm">{props.renameName}</Button>
                 </Col>
                 <Col xs="auto">
                     <ButtonGroup>
@@ -21,5 +25,7 @@ export default function AnnotationList  (): JSX.Element {
                     </ButtonGroup>
                 </Col>
             </Form.Group>
-    </div>);
+        </div>);
+    }
+    return <></>;
 }
