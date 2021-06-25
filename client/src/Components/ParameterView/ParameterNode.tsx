@@ -3,8 +3,8 @@ import "./ParameterView.css";
 import DocumentationText from "./DocumentationText";
 import PythonParameter from "../../model/PythonParameter";
 import {Dropdown} from "react-bootstrap";
-import RenameDialog from "./RenameDialog";
-import EnumDialog from "./EnumDialog";
+import RenameDialog from "./Dialogues/RenameDialog";
+import EnumDialog from "./Dialogues/EnumDialog";
 import EnumPair from "../../model/EnumPair";
 
 type ParameterProps = { inputParameter: PythonParameter }

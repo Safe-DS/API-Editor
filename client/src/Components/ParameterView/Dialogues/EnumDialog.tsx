@@ -1,20 +1,24 @@
 import React, {FormEvent, useState} from "react";
-import "./ParameterView.css";
-import {Button, Form, Modal} from "react-bootstrap";
+import "../ParameterView.css";
+import {Button, Container, Form, Modal} from "react-bootstrap";
 import {Formik} from 'formik';
-import {nameValidation} from "../../util/validation";
+import {nameValidation} from "../../../util/validation";
+import EnumPair from "../../../model/EnumPair";
+import EnumPairRow from "./EnumPairRow";
 
 type showDialogState = {
     dialogState: boolean, setDialogState: Setter<boolean>, currentName: string,
-    setCurrentName: Setter<string>
+    setCurrentName: Setter<string>, enumList: EnumPair[], setEnumList: Setter<EnumPair[]>
 }
 
-export default function RenameDialog({
-                                         dialogState,
-                                         setDialogState,
-                                         currentName,
-                                         setCurrentName
-                                     }: showDialogState): JSX.Element {
+export default function EnumDialog({
+                                       dialogState,
+                                       setDialogState,
+                                       currentName,
+                                       setCurrentName,
+                                       setEnumList,
+                                       enumList
+                                   }: showDialogState): JSX.Element {
 
     const [nameValid, setNameValid] = useState(true);
     const [currentRenameValue, setCurrentRenameValue] = useState("");
@@ -23,6 +27,14 @@ export default function RenameDialog({
         setCurrentRenameValue(event.target.value);
         setNameValid(nameValidation(event.target.value));
     };
+
+    const pair1 = new EnumPair("hello", "world1");
+    const pair2 = new EnumPair("hello", "world2");
+    const pair3 = new EnumPair("hello", "world3");
+    const listOfEnumPairs = [pair1, pair2, pair3];
+    const listItems = listOfEnumPairs.map((pair, index) =>
+        <EnumPairRow pair={pair} key={String(index)}/>);
+
 
     const resetData = () => {
         setDialogState(false);
@@ -49,7 +61,7 @@ export default function RenameDialog({
             onHide={handleClose}
         >
             <Modal.Header closeButton>
-                <Modal.Title>Add @rename Annotation</Modal.Title>
+                <Modal.Title>Add @enum Annotation</Modal.Title>
             </Modal.Header>
 
             <Formik
@@ -73,6 +85,10 @@ export default function RenameDialog({
                                     onChange={onInput}
                                     isInvalid={!nameValid}
                                 />
+                                <br/>
+                                <Container>
+                                    {listItems}
+                                </Container>
                             </Form.Group>
                         </Modal.Body>
                         <Modal.Footer>
