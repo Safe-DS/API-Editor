@@ -4,35 +4,21 @@ import FunctionNode from "./FunctionNode";
 import {isEmptyList} from "../../util/listOperations";
 import classNames from "classnames";
 import PythonModule from "../../model/PythonModule";
-import PythonFunction from "../../model/PythonFunction";
-import PythonParameter from "../../model/PythonParameter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faArchive} from "@fortawesome/free-solid-svg-icons";
 import VisibilityIndicator from "../Util/VisibilityIndicator";
+import PythonDeclaration from "../../model/PythonDeclaration";
 
 type ModuleNodeProps = {
-    parentPath: string[],
     pythonModule: PythonModule,
-    selection: string[],
-    setSelection: Setter<string[]>,
-    setParameters: Setter<PythonParameter[]>,
-    setSelectedFunction: Setter<Nullable<PythonFunction>>
-}
+    selection: PythonDeclaration,
+    setSelection: Setter<PythonDeclaration>
+};
 
-export default function ModuleNode({
-                                       parentPath,
-                                       pythonModule,
-                                       selection,
-                                       setSelection,
-                                       setParameters,
-                                       setSelectedFunction
-                                   }: ModuleNodeProps): JSX.Element {
+export default function ModuleNode({pythonModule,
+                                    selection,
+                                    setSelection}: ModuleNodeProps): JSX.Element {
 
-    /** This is the Name of this module without its packages name prefixed. */
-
-    const [, ...moduleName] = pythonModule.name.split(".");
-
-    const path = parentPath.concat(moduleName);
     const [childVisible, setChildVisibility] = useState(false);
     const hasClasses = !isEmptyList(pythonModule.classes);
     const hasFunctions = !isEmptyList(pythonModule.functions);
@@ -44,17 +30,19 @@ export default function ModuleNode({
             "cursor-na": !hasChildren,
             "pl-2rem": !hasChildren,
             "pl-1-5rem": hasChildren,
-            "selected": (selection.join() === path.join()) && hasChildren,
+            "selected": (selection.path().join() === pythonModule.path().join()) && hasChildren
         }
     );
+
+    const handleClick = function() {
+        setSelection(pythonModule);
+        setChildVisibility(!childVisible);
+    };
 
     return (
         <div className="module-node">
             <div className={cssClasses}
-                 onClick={() => {
-                     setSelection(path);
-                     setChildVisibility(!childVisible);
-                 }}>
+                 onClick={handleClick}>
                 <VisibilityIndicator hasChildren={hasClasses || hasFunctions} childrenVisible={childVisible}/>
                 <FontAwesomeIcon icon={faArchive} />
                 {" "}
@@ -66,26 +54,18 @@ export default function ModuleNode({
                 {hasClasses && childVisible && <div>
                     {pythonModule.classes.map(moduleClass => (
                         <ClassNode key={moduleClass.name}
-                                   parentPath={path}
                                    pythonClass={moduleClass}
                                    selection={selection}
                                    setSelection={setSelection}
-                                   moduleName={pythonModule.name}
-                                   setParameters={setParameters}
-                                   setSelectedFunction={setSelectedFunction}
-                        />
+                                   moduleName={pythonModule.name}/>
                     ))}
                 </div>}
                 {hasFunctions && childVisible && <div>
                     {pythonModule.functions.map(moduleFunction => (
-                        <FunctionNode parentPath={path}
-                                      key={moduleFunction.name}
+                        <FunctionNode key={moduleFunction.name}
                                       pythonFunction={moduleFunction}
                                       selection={selection}
-                                      setSelection={setSelection}
-                                      setParameters={setParameters}
-                                      setSelectedFunction={setSelectedFunction}
-                        />
+                                      setSelection={setSelection}/>
                     ))}
                 </div>}
             </div>
