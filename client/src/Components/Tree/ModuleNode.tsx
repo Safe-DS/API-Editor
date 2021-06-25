@@ -1,37 +1,38 @@
 import React, {useState} from "react";
 import ClassNode from "./ClassNode";
 import FunctionNode from "./FunctionNode";
-import {isEmptyList} from "../../Utility/listOperations";
+import {isEmptyList} from "../../util/listOperations";
 import classNames from "classnames";
 import PythonModule from "../../model/PythonModule";
 import PythonFunction from "../../model/PythonFunction";
+import PythonParameter from "../../model/PythonParameter";
 
 type ModuleNodeProps = {
     parentPath: string[],
     pythonModule: PythonModule,
     selection: string[],
-    setSelection: (newValue: string[]) => void,
-    setParameters: any,
+    setSelection: Setter<string[]>,
+    setParameters: Setter<PythonParameter[]>,
     setSelectedFunction: Setter<Nullable<PythonFunction>>
 }
 
-const ModuleNode = ({
-                        parentPath,
-                        pythonModule,
-                        selection,
-                        setSelection,
-                        setParameters,
-                        setSelectedFunction
-                    }: ModuleNodeProps) => {
+export default function ModuleNode({
+                                       parentPath,
+                                       pythonModule,
+                                       selection,
+                                       setSelection,
+                                       setParameters,
+                                       setSelectedFunction
+                                   }: ModuleNodeProps): JSX.Element {
 
     /** This is the Name of this module without its packages name prefixed. */
 
     const [, ...moduleName] = pythonModule.name.split(".");
 
-    const path = parentPath.concat(moduleName)
+    const path = parentPath.concat(moduleName);
     const [childVisible, setChildVisibility] = useState(false);
-    let hasClasses = isEmptyList(pythonModule.classes);
-    let hasFunctions = isEmptyList(pythonModule.functions);
+    const hasClasses = !isEmptyList(pythonModule.classes);
+    const hasFunctions = !isEmptyList(pythonModule.functions);
     const hasChildren = hasClasses || hasFunctions;
 
     const cssClasses = classNames(
@@ -48,8 +49,8 @@ const ModuleNode = ({
         <div className="module-node">
             <div className={cssClasses}
                  onClick={() => {
-                     setSelection(path)
-                     setChildVisibility(!childVisible)
+                     setSelection(path);
+                     setChildVisibility(!childVisible);
                  }}>
                 {(hasClasses || hasFunctions) &&
                 <span className="indicator visibility-indicator">{childVisible ? "▼" : "▶"}</span>}
@@ -89,7 +90,5 @@ const ModuleNode = ({
                 </div>}
             </div>
         </div>
-    )
-};
-
-export default ModuleNode;
+    );
+}

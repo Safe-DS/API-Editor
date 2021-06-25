@@ -4,8 +4,11 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import classNames from "classnames";
 
-// @ts-ignore
-const DocumentationText = ({inputText = ""}) => {
+type DocumentationTextProps = {
+    inputText: string
+}
+
+export default function DocumentationText({inputText = ""}: DocumentationTextProps): JSX.Element {
 
     const shortenedText = inputText.split("\n\n")[0];
     const hasMultipleLines = shortenedText !== inputText;
@@ -21,15 +24,13 @@ const DocumentationText = ({inputText = ""}) => {
 
     return (
         <div className="docu-paragraph" onClick={() => {
-            setReadMore(!readMore)
+            setReadMore(!readMore);
         }}>
             {!readMore && hasMultipleLines && "▶"}
             {readMore && hasMultipleLines && "▼"}
-            <ReactMarkdown className={cssClasses} children={readMore ? inputText : shortenedText}
-                           remarkPlugins={[remarkGfm]}/>
-
+            <ReactMarkdown className={cssClasses} remarkPlugins={[remarkGfm]}>
+                {readMore ? inputText : shortenedText}
+            </ReactMarkdown>
         </div>
     );
-};
-
-export default DocumentationText;
+}
