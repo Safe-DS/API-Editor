@@ -59,6 +59,7 @@ export default function EnumDialog({
         <Modal
             show={dialogState}
             onHide={handleClose}
+            size="lg"
         >
             <Modal.Header closeButton>
                 <Modal.Title>Add @enum Annotation</Modal.Title>
@@ -85,7 +86,6 @@ export default function EnumDialog({
                                     onChange={onInput}
                                     isInvalid={!nameValid}
                                 />
-                                <br/>
                                 <Container>
                                     {listItems}
                                 </Container>

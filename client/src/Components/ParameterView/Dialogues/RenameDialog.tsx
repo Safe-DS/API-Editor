@@ -47,6 +47,7 @@ export default function RenameDialog({
         <Modal
             show={dialogState}
             onHide={handleClose}
+            size="lg"
         >
             <Modal.Header closeButton>
                 <Modal.Title>Add @rename Annotation</Modal.Title>

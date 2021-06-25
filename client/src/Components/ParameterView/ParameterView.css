@@ -86,3 +86,7 @@
     padding: 0;
     align-items: center;
 }
+
+.enum-pair-row {
+    padding-top: 15px;
+}
