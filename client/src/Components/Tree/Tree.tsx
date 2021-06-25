@@ -2,6 +2,7 @@ import React from 'react';
 import ModuleNode from "./ModuleNode";
 import PythonPackage from "../../model/PythonPackage";
 import PythonDeclaration from "../../model/PythonDeclaration";
+import "./Tree.css";
 
 type TreeProps = {
     pythonPackage: PythonPackage,

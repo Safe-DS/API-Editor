@@ -1,6 +1,7 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faChevronCircleDown, faChevronCircleRight} from "@fortawesome/free-solid-svg-icons";
 import React from "react";
+import VisibilityIndicatorCSS from "./VisibilityIndicator.module.css";
 
 type VisibilityIndicatorProps = {
     hasChildren: boolean,
@@ -13,7 +14,7 @@ export default function VisibilityIndicator(
     if (hasChildren) {
         return (
             <FontAwesomeIcon
-                className="indicator visibility-indicator"
+                className={VisibilityIndicatorCSS.visibilityIndicator}
                 icon={childrenVisible ? faChevronCircleDown : faChevronCircleRight}
             />
         );
