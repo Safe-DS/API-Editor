@@ -1,8 +1,8 @@
 import React, {FormEvent, useState} from "react";
 import "./ParameterView.css";
 import {Button, Form, Modal} from "react-bootstrap";
-import { Formik } from 'formik';
-import {textValidator} from "../../util/validationTest";
+import {Formik} from 'formik';
+import {nameValidation} from "../../util/validation";
 
 type showDialogState = {
     dialogState: boolean, setDialogState: Setter<boolean>, currentName: string,
@@ -12,16 +12,16 @@ type showDialogState = {
 export default function RenameDialog({
                                          dialogState,
                                          setDialogState,
-                                         currentName, //entweder param name oder rename aus annotation
+                                         currentName,
                                          setCurrentName
                                      }: showDialogState): JSX.Element {
 
-    const [nameValid, setNameValid] = useState(true);//wird sich ändern sobald man tippt. bei submit wird leerer name abgefangen
+    const [nameValid, setNameValid] = useState(true);
     const [currentRenameValue, setCurrentRenameValue] = useState("");
 
     const onInput = (event: React.ChangeEvent<HTMLInputElement>) => {
         setCurrentRenameValue(event.target.value);
-        setNameValid( textValidator(event.target.value) );
+        setNameValid(nameValidation(event.target.value));
     };
 
     const resetData = () => {
