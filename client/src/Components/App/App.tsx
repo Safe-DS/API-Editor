@@ -1,14 +1,13 @@
 import React, {useState} from 'react';
-import './App.css';
-import ParameterView from "../ParameterView/ParameterView";
-import TreeView from "../TreeView/TreeView";
+import pythonPackageJson from "../../data/sklearn.json";
 import PythonDeclaration from "../../model/PythonDeclaration";
 import {parsePythonPackageJson, PythonPackageJson} from "../../model/PythonPackageBuilder";
-import packageJson from "../../data/sklearn.json";
+import ParameterView from "../ParameterView/ParameterView";
+import TreeView from "../TreeView/TreeView";
+import './App.css';
 
 export default function App(): JSX.Element {
-
-    const pythonPackage = parsePythonPackageJson(packageJson as PythonPackageJson);
+    const pythonPackage = parsePythonPackageJson(pythonPackageJson as PythonPackageJson);
     const [selection, setSelection] = useState<PythonDeclaration>(pythonPackage);
 
     return (

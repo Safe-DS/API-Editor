@@ -1,7 +1,6 @@
 .tree {
-    padding-left: 0;
-    white-space: nowrap;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
+    white-space: nowrap;
 }

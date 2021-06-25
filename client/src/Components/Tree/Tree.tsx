@@ -1,8 +1,8 @@
 import React from 'react';
-import ModuleNode from "./ModuleNode";
-import PythonPackage from "../../model/PythonPackage";
 import PythonDeclaration from "../../model/PythonDeclaration";
-import "./Tree.css";
+import PythonPackage from "../../model/PythonPackage";
+import ModuleNode from "./ModuleNode";
+import TreeCSS from "./Tree.module.css";
 
 type TreeProps = {
     pythonPackage: PythonPackage,
@@ -10,17 +10,14 @@ type TreeProps = {
     setSelection: Setter<PythonDeclaration>
 };
 
-export default function Tree({pythonPackage,
-                              selection,
-                              setSelection}: TreeProps): JSX.Element {
-
+export default function Tree(props: TreeProps): JSX.Element {
     return (
-        <div className="tree">
-            {pythonPackage.modules.map(module => (
+        <div className={TreeCSS.tree}>
+            {props.pythonPackage.modules.map(module => (
                 <ModuleNode key={module.name}
                             pythonModule={module}
-                            selection={selection}
-                            setSelection={setSelection}/>
+                            selection={props.selection}
+                            setSelection={props.setSelection}/>
             ))}
         </div>
     );

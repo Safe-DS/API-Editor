@@ -1,0 +1,9 @@
+.treeView {
+    border-right: 1px solid gray;
+    margin: 1rem;
+    overflow: auto;
+}
+
+.packageName {
+    margin-bottom: 1rem;
+}

@@ -1,8 +1,9 @@
 import React from 'react';
 import Tree from "../Tree/Tree";
-import './tree-view.css';
+import "./TreeView.module.css";
 import PythonPackage from "../../model/PythonPackage";
 import PythonDeclaration from "../../model/PythonDeclaration";
+import TreeViewCSS from "./TreeView.module.css";
 
 type TreeViewProps = {
     pythonPackage: PythonPackage,
@@ -10,14 +11,13 @@ type TreeViewProps = {
     setSelection: Setter<PythonDeclaration>
 }
 
-export default function TreeView({pythonPackage, selection, setSelection}: TreeViewProps): JSX.Element {
-
+export default function TreeView(props: TreeViewProps): JSX.Element {
     return (
-        <div className="tree-view">
-            <h2 className="package-name">{pythonPackage.name}</h2>
-            <Tree pythonPackage={pythonPackage}
-                  selection={selection}
-                  setSelection={setSelection}/>
+        <div className={TreeViewCSS.treeView}>
+            <h2 className={TreeViewCSS.packageName}>{props.pythonPackage.name}</h2>
+            <Tree pythonPackage={props.pythonPackage}
+                  selection={props.selection}
+                  setSelection={props.setSelection}/>
         </div>
     );
 }

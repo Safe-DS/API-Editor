@@ -28,7 +28,7 @@ export default function DocumentationText({inputText = ""}: DocumentationTextPro
             setReadMore(!readMore);
         }}>
             <div className="pl-1-5rem">
-                <VisibilityIndicator hasChildren={hasMultipleLines} childrenVisible={readMore}/>
+                <VisibilityIndicator hasChildren={hasMultipleLines} showChildren={readMore}/>
             </div>
 
             <ReactMarkdown className={cssClasses} remarkPlugins={[remarkGfm]}>

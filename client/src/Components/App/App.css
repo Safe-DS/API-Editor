@@ -1,15 +1,15 @@
 .App {
-  display: grid;
-  grid-template-areas: "TreeView  ParameterView";
-  grid-template-columns: 50% 50%;
-  height: 100vh;
-  width: 100vw;
+    display: grid;
+    grid-template-areas: "TreeView  ParameterView";
+    grid-template-columns: 50% 50%;
+    height: 100vh;
+    width: 100vw;
 }
 
 .TreeView {
-  grid-area: TreeView;
+    grid-area: TreeView;
 }
 
 .ParameterView {
-  grid-area: ParameterView;
+    grid-area: ParameterView;
 }

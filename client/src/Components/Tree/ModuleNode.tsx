@@ -1,11 +1,10 @@
-import React, {useState} from "react";
+import {faArchive} from "@fortawesome/free-solid-svg-icons";
+import React from "react";
+import PythonDeclaration from "../../model/PythonDeclaration";
+import PythonModule from "../../model/PythonModule";
+import {isEmptyList} from "../../util/listOperations";
 import ClassNode from "./ClassNode";
 import FunctionNode from "./FunctionNode";
-import {isEmptyList} from "../../util/listOperations";
-import classNames from "classnames";
-import PythonModule from "../../model/PythonModule";
-import {faArchive} from "@fortawesome/free-solid-svg-icons";
-import PythonDeclaration from "../../model/PythonDeclaration";
 import TreeNode from "./TreeNode";
 
 type ModuleNodeProps = {
@@ -14,55 +13,32 @@ type ModuleNodeProps = {
     setSelection: Setter<PythonDeclaration>
 };
 
-export default function ModuleNode({
-                                       pythonModule,
-                                       selection,
-                                       setSelection
-                                   }: ModuleNodeProps): JSX.Element {
-
-    const [childVisible, setChildVisibility] = useState(false);
-    const hasClasses = !isEmptyList(pythonModule.classes);
-    const hasFunctions = !isEmptyList(pythonModule.functions);
+export default function ModuleNode(props: ModuleNodeProps): JSX.Element {
+    const hasClasses = !isEmptyList(props.pythonModule.classes);
+    const hasFunctions = !isEmptyList(props.pythonModule.functions);
     const hasChildren = hasClasses || hasFunctions;
-
-    const cssClasses = classNames(
-        "tree-view-row", {
-            "text-muted": !hasChildren,
-            "cursor-na": !hasChildren,
-            "pl-2rem": !hasChildren,
-            "pl-1-5rem": hasChildren,
-            "selected": (selection.path().join() === pythonModule.path().join()) && hasChildren
-        }
-    );
-
-    const handleClick = function () {
-        setSelection(pythonModule);
-        setChildVisibility(!childVisible);
-    };
 
     return (
         <TreeNode
-            className={cssClasses}
+            declaration={props.pythonModule}
             icon={faArchive}
-            hasChildren={hasClasses || hasFunctions}
-            level={0}
-            name={pythonModule.name}
-            onClick={handleClick}
-            showChildren={childVisible}
+            isWorthClicking={hasChildren}
+            hasChildren={hasChildren}
+            selection={props.selection}
+            setSelection={props.setSelection}
         >
-                {pythonModule.classes.map(moduleClass => (
-                    <ClassNode key={moduleClass.name}
-                               pythonClass={moduleClass}
-                               selection={selection}
-                               setSelection={setSelection}
-                               moduleName={pythonModule.name}/>
-                ))}
-                {pythonModule.functions.map(moduleFunction => (
-                    <FunctionNode key={moduleFunction.name}
-                                  pythonFunction={moduleFunction}
-                                  selection={selection}
-                                  setSelection={setSelection}/>
-                ))}
+            {props.pythonModule.classes.map(moduleClass =>
+                <ClassNode key={moduleClass.name}
+                           pythonClass={moduleClass}
+                           selection={props.selection}
+                           setSelection={props.setSelection}/>
+            )}
+            {props.pythonModule.functions.map(moduleFunction =>
+                <FunctionNode key={moduleFunction.name}
+                              pythonFunction={moduleFunction}
+                              selection={props.selection}
+                              setSelection={props.setSelection}/>
+            )}
         </TreeNode>
     );
 }
