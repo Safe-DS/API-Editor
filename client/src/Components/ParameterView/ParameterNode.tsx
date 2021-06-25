@@ -4,6 +4,8 @@ import DocumentationText from "./DocumentationText";
 import PythonParameter from "../../model/PythonParameter";
 import {Dropdown} from "react-bootstrap";
 import RenameDialog from "./RenameDialog";
+import EnumDialog from "./EnumDialog";
+import EnumPair from "../../model/EnumPair";
 
 type ParameterProps = { inputParameter: PythonParameter }
 
@@ -13,7 +15,13 @@ export default function ParameterNode({inputParameter}: ParameterProps): JSX.Ele
 
     const [renameDialog, setRenameDialog] = useState(false);
     const [renameName, setRenameName] = useState("");
+
+    const [enumDialog, setEnumDialog] = useState(false);
+    const [enumName, setEnumName] = useState("");
+    const [enumList, setEnumList] = useState<EnumPair[]>([]);
+
     const openRenameDialog = () => setRenameDialog(true);
+    const openEnumDialog = () => setEnumDialog(true);
 
     const handleRenameSelect = () => {
         if (!renameName) {
@@ -23,7 +31,7 @@ export default function ParameterNode({inputParameter}: ParameterProps): JSX.Ele
     };
 
     const handleEnumSelect = () => {
-        console.log("TODO");
+        openEnumDialog();
     };
 
     return (
@@ -43,6 +51,10 @@ export default function ParameterNode({inputParameter}: ParameterProps): JSX.Ele
 
             <RenameDialog dialogState={renameDialog} setDialogState={setRenameDialog} setCurrentName={setRenameName}
                           currentName={renameName}/>
+
+            <EnumDialog dialogState={enumDialog} setDialogState={setEnumDialog} setCurrentName={setEnumName}
+                          currentName={enumName} setEnumList={setEnumList}
+                        enumList={enumList}/>
 
             {
                 hasDescription &&
