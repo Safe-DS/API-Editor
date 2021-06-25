@@ -5,6 +5,9 @@ import FunctionNode from "./FunctionNode";
 import {isEmptyList} from "../../util/listOperations";
 import PythonFunction from "../../model/PythonFunction";
 import PythonParameter from "../../model/PythonParameter";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faChalkboard} from "@fortawesome/free-solid-svg-icons";
+import VisibilityIndicator from "../Util/VisibilityIndicator";
 
 type ClassNodeProps = {
     parentPath: string[],
@@ -46,8 +49,8 @@ export default function ClassNode({
                      setChildVisibility(!childVisible);
                      setSelectedFunction(null);
                  }}>
-                {hasMethods && <span className="indicator visibility-indicator">{childVisible ? "▼" : "▶"}</span>}
-                <span className="indicator"> 𝒞 </span>
+                <VisibilityIndicator hasChildren={hasMethods} childrenVisible={childVisible}/>
+                <FontAwesomeIcon icon={faChalkboard}/>
                 {" "}
                 <span> {pythonClass.name} </span>
             </div>

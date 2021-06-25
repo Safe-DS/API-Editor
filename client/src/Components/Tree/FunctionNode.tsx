@@ -3,6 +3,8 @@ import PythonFunction from "../../model/PythonFunction";
 import classNames from "classnames";
 import {isEmptyList} from "../../util/listOperations";
 import PythonParameter from "../../model/PythonParameter";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faCogs} from "@fortawesome/free-solid-svg-icons";
 
 type FunctionNodeProps = {
     pythonFunction: PythonFunction,
@@ -45,9 +47,7 @@ export default function FunctionNode({
                      setParameters(pythonFunction.parameters);
                      setSelectedFunction(pythonFunction);
                  }}>
-                <span className="indicator">
-                    𝑓
-                </span>
+                <FontAwesomeIcon icon={faCogs}/>
                 {" "}
                 <span>
                     {pythonFunction.name}

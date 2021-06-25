@@ -7,6 +7,8 @@ import PythonModule from "../../model/PythonModule";
 import PythonFunction from "../../model/PythonFunction";
 import PythonParameter from "../../model/PythonParameter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faArchive} from "@fortawesome/free-solid-svg-icons";
+import VisibilityIndicator from "../Util/VisibilityIndicator";
 
 type ModuleNodeProps = {
     parentPath: string[],
@@ -53,9 +55,8 @@ export default function ModuleNode({
                      setSelection(path);
                      setChildVisibility(!childVisible);
                  }}>
-                {(hasClasses || hasFunctions) &&
-                <span className="indicator visibility-indicator">{childVisible ? "▼" : "▶"}</span>}
-                <FontAwesomeIcon icon="archive" />
+                <VisibilityIndicator hasChildren={hasClasses || hasFunctions} childrenVisible={childVisible}/>
+                <FontAwesomeIcon icon={faArchive} />
                 {" "}
                 <span>
                     {pythonModule.name}
