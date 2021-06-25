@@ -13,7 +13,3 @@
 .ParameterView {
   grid-area: ParameterView;
 }
-
-.class-node:hover, .function-node:hover, .module-node:hover {
-  cursor: pointer;
-}

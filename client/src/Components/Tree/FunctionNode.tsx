@@ -2,9 +2,9 @@ import React from "react";
 import PythonFunction from "../../model/PythonFunction";
 import classNames from "classnames";
 import {isEmptyList} from "../../util/listOperations";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCogs} from "@fortawesome/free-solid-svg-icons";
 import PythonDeclaration from "../../model/PythonDeclaration";
+import TreeNode from "./TreeNode";
 
 type FunctionNodeProps = {
     pythonFunction: PythonFunction,
@@ -13,10 +13,12 @@ type FunctionNodeProps = {
     isMethod?: boolean
 }
 
-export default function FunctionNode({pythonFunction,
-                                      selection,
-                                      setSelection,
-                                      isMethod = false}: FunctionNodeProps): JSX.Element {
+export default function FunctionNode({
+                                         pythonFunction,
+                                         selection,
+                                         setSelection,
+                                         isMethod = false
+                                     }: FunctionNodeProps): JSX.Element {
 
     const hasParameters = !isEmptyList(pythonFunction.parameters);
     const cssClasses = classNames(
@@ -28,20 +30,19 @@ export default function FunctionNode({pythonFunction,
         }
     );
 
-    const handleClick = function() {
+    const handleClick = function () {
         setSelection(pythonFunction);
     };
 
     return (
-        <div className="function-node">
-            <div className={cssClasses}
-                 onClick={handleClick}>
-                <FontAwesomeIcon icon={faCogs}/>
-                {" "}
-                <span>
-                    {pythonFunction.name}
-                </span>
-            </div>
-        </div>
+        <TreeNode
+            className={cssClasses}
+            icon={faCogs}
+            hasChildren={false}
+            level={isMethod ? 2 : 1}
+            name={pythonFunction.name}
+            onClick={handleClick}
+            showChildren={false}
+        />
     );
 }
