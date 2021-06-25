@@ -1,9 +1,11 @@
 import React, {FormEvent, useState} from "react";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import "./ParameterView.css";
-import {Button, Form, Modal} from "react-bootstrap";
+import {Button, Container, Form, Modal, Row, Col} from "react-bootstrap";
 import {Formik} from 'formik';
 import {nameValidation} from "../../util/validation";
 import EnumPair from "../../model/EnumPair";
+import {faTrash} from "@fortawesome/free-solid-svg-icons";
 
 type showDialogState = {
     dialogState: boolean, setDialogState: Setter<boolean>, currentName: string,
@@ -52,13 +54,13 @@ export default function EnumDialog({
             onHide={handleClose}
         >
             <Modal.Header closeButton>
-                <Modal.Title>Add @rename Annotation</Modal.Title>
+                <Modal.Title>Add @enum Annotation</Modal.Title>
             </Modal.Header>
 
             <Formik
                 onSubmit={console.log}
                 initialValues={{
-                    currentRenameValue: ''
+                    currentEnumNameValue: ''
                 }}
             >
                 {() => (
@@ -76,7 +78,27 @@ export default function EnumDialog({
                                     onChange={onInput}
                                     isInvalid={!nameValid}
                                 />
+                                <br/>
+                                <Container>
+                                    <Row>
+                                        <Col xs={5} className="no-left-padding">
+                                            <Form.Control type="text" placeholder="text1">
 
+                                            </Form.Control>
+                                        </Col>
+                                        <Col xs={5} className="no-right-padding">
+                                            <Form.Control type="text" placeholder="text1">
+
+                                            </Form.Control>
+                                        </Col>
+                                        <Col xs={2} className="delete-enum-item-icon">
+                                            <FontAwesomeIcon
+                                                className="indicator visibility-indicator"
+                                                icon={faTrash}
+                                            />
+                                        </Col>
+                                    </Row>
+                                </Container>
                             </Form.Group>
                         </Modal.Body>
                         <Modal.Footer>

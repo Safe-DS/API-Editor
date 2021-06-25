@@ -53,7 +53,7 @@ export default function ParameterNode({inputParameter}: ParameterProps): JSX.Ele
                           currentName={renameName}/>
 
             <EnumDialog dialogState={enumDialog} setDialogState={setEnumDialog} setCurrentName={setEnumName}
-                          currentName={enumName} setEnumList={setEnumList}
+                        currentName={enumName} setEnumList={setEnumList}
                         enumList={enumList}/>
 
             {
@@ -62,9 +62,8 @@ export default function ParameterNode({inputParameter}: ParameterProps): JSX.Ele
             }
             {
                 !hasDescription &&
-                <p className="pl-1-5rem">No Documentation available</p>
+                <p className="no-read-more-button">No Documentation available</p>
             }
-
         </div>
     );
 }

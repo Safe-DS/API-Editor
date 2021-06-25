@@ -55,7 +55,7 @@ export default function RenameDialog({
             <Formik
                 onSubmit={console.log}
                 initialValues={{
-                    currentRenameValue: ''
+                    currentEnumNameValue: ''
                 }}
             >
                 {() => (
