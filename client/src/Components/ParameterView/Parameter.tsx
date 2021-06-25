@@ -2,12 +2,12 @@ import React from "react";
 import "./ParameterView.css";
 import DocumentationText from "./DocumentationText";
 import PythonParameter from "../../model/PythonParameter";
-import { Dropdown } from "react-bootstrap";
+import {Dropdown} from "react-bootstrap";
 import AnnotationList from "./AnnotationList";
 
-type ParameterProps = {inputParameter: PythonParameter}
+type ParameterProps = { inputParameter: PythonParameter }
 
-const Parameter = ({inputParameter}: ParameterProps) => {
+export default function Parameter({inputParameter}: ParameterProps): JSX.Element {
 
     const hasDescription = !!inputParameter.description;
 
@@ -25,7 +25,7 @@ const Parameter = ({inputParameter}: ParameterProps) => {
                     </Dropdown.Menu>
                 </Dropdown>
             </div>
-            <AnnotationList></AnnotationList>
+            <AnnotationList/>
             {
                 hasDescription &&
                 <DocumentationText inputText={inputParameter?.description}/>
@@ -37,7 +37,6 @@ const Parameter = ({inputParameter}: ParameterProps) => {
 
         </div>
     );
-};
+}
 
-export default Parameter;
 

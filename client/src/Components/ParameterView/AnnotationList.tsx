@@ -1,11 +1,11 @@
-import React, {SyntheticEvent, useState} from "react";
-import {Button, ButtonGroup, Form, FormControl, FormLabel, Row, Col, InputGroup} from "react-bootstrap";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faWrench, faTrash } from '@fortawesome/free-solid-svg-icons'
+import React, {useState} from "react";
+import {Button, ButtonGroup, Col, Form, Row} from "react-bootstrap";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faTrash, faWrench} from '@fortawesome/free-solid-svg-icons';
 
-const AnnotationList = () => {
+export default function AnnotationList  (): JSX.Element {
 
-    const [rename, setRename] = useState("neuerName");
+    const [rename] = useState("neuerName");
 
     return (<div>
         <h5>Annotations</h5>
@@ -22,6 +22,4 @@ const AnnotationList = () => {
                 </Col>
             </Form.Group>
     </div>);
-};
-
-export default AnnotationList;
+}

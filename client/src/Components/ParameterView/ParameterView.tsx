@@ -4,7 +4,6 @@ import PythonParameter from "../../model/PythonParameter";
 import PythonFunction from "../../model/PythonFunction";
 import DocumentationText from "./DocumentationText";
 import {Breadcrumb} from "react-bootstrap";
-import AnnotationList from "./AnnotationList";
 
 type ParameterViewProps = {
     inputParameters: PythonParameter[],
