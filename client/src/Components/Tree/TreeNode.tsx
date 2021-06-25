@@ -3,17 +3,17 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import React, {useState} from "react";
 import PythonDeclaration from "../../model/PythonDeclaration";
+import {ChildrenProp, Setter} from "../../util/types";
 import VisibilityIndicator from "../Util/VisibilityIndicator";
 import TreeNodeCSS from "./TreeNode.module.css";
 
-type TreeNodeProps = {
-    children?: React.ReactNode,
-    declaration: PythonDeclaration,
-    icon: IconDefinition,
-    hasChildren: boolean,
-    selection: PythonDeclaration,
-    setSelection: Setter<PythonDeclaration>,
+interface TreeNodeProps extends ChildrenProp {
+    declaration: PythonDeclaration
+    icon: IconDefinition
     isWorthClicking: boolean
+    hasChildren: boolean
+    selection: PythonDeclaration
+    setSelection: Setter<PythonDeclaration>
 }
 
 export default function TreeNode(props: TreeNodeProps): JSX.Element {

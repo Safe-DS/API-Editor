@@ -1,3 +1,5 @@
+import {Nullable} from "../util/types";
+
 export default abstract class PythonDeclaration {
     abstract readonly name: string
 

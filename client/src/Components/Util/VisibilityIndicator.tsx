@@ -2,11 +2,11 @@ import {faChevronCircleDown, faChevronCircleRight} from "@fortawesome/free-solid
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import React from "react";
+import {ClassNameProp} from "../../util/types";
 import BlankIcon from "./BlankIcon";
 import VisibilityIndicatorCSS from "./VisibilityIndicator.module.css";
 
-type VisibilityIndicatorProps = {
-    className?: string,
+interface VisibilityIndicatorProps extends ClassNameProp {
     hasChildren: boolean,
     showChildren: boolean
 }

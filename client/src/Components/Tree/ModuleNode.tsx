@@ -3,15 +3,16 @@ import React from "react";
 import PythonDeclaration from "../../model/PythonDeclaration";
 import PythonModule from "../../model/PythonModule";
 import {isEmptyList} from "../../util/listOperations";
+import {Setter} from "../../util/types";
 import ClassNode from "./ClassNode";
 import FunctionNode from "./FunctionNode";
 import TreeNode from "./TreeNode";
 
-type ModuleNodeProps = {
-    pythonModule: PythonModule,
-    selection: PythonDeclaration,
+interface ModuleNodeProps {
+    pythonModule: PythonModule
+    selection: PythonDeclaration
     setSelection: Setter<PythonDeclaration>
-};
+}
 
 export default function ModuleNode(props: ModuleNodeProps): JSX.Element {
     const hasClasses = !isEmptyList(props.pythonModule.classes);

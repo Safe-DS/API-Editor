@@ -1,3 +1,5 @@
+import {Nullable} from "../util/types";
+
 export default class PythonFromImport {
 
     readonly module: string;

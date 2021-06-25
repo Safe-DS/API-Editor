@@ -1,11 +1,12 @@
 import React from 'react';
+import {Setter} from "../../util/types";
 import Tree from "../Tree/Tree";
 import "./TreeView.module.css";
 import PythonPackage from "../../model/PythonPackage";
 import PythonDeclaration from "../../model/PythonDeclaration";
 import TreeViewCSS from "./TreeView.module.css";
 
-type TreeViewProps = {
+interface TreeViewProps {
     pythonPackage: PythonPackage,
     selection: PythonDeclaration,
     setSelection: Setter<PythonDeclaration>

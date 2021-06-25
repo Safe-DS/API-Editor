@@ -1,16 +1,15 @@
-import ParameterNode from "./ParameterNode";
 import React from "react";
-import PythonFunction from "../../model/PythonFunction";
-import DocumentationText from "./DocumentationText";
 import {Breadcrumb} from "react-bootstrap";
 import PythonDeclaration from "../../model/PythonDeclaration";
+import PythonFunction from "../../model/PythonFunction";
+import DocumentationText from "./DocumentationText";
+import ParameterNode from "./ParameterNode";
 
-type ParameterViewProps = {
+interface ParameterViewProps {
     selection: PythonDeclaration
-};
+}
 
 export default function ParameterView({selection}: ParameterViewProps): JSX.Element {
-
     return (
         <div className="parameter-view">
             <div className="parameter-view-path">

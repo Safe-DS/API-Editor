@@ -1,11 +1,14 @@
-import React, {FormEvent, useState} from "react";
-import "./ParameterView.css";
-import {Button, Form, Modal} from "react-bootstrap";
 import {Formik} from 'formik';
+import React, {FormEvent, useState} from "react";
+import {Button, Form, Modal} from "react-bootstrap";
+import {Setter} from "../../util/types";
 import {nameValidation} from "../../util/validation";
+import "./ParameterView.css";
 
-type showDialogState = {
-    dialogState: boolean, setDialogState: Setter<boolean>, currentName: string,
+interface showDialogState {
+    dialogState: boolean,
+    setDialogState: Setter<boolean>,
+    currentName: string,
     setCurrentName: Setter<string>
 }
 

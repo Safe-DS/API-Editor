@@ -1,11 +1,13 @@
 import React, {useState} from "react";
-import "./ParameterView.css";
-import DocumentationText from "./DocumentationText";
-import PythonParameter from "../../model/PythonParameter";
 import {Dropdown} from "react-bootstrap";
+import PythonParameter from "../../model/PythonParameter";
+import DocumentationText from "./DocumentationText";
+import "./ParameterView.css";
 import RenameDialog from "./RenameDialog";
 
-type ParameterProps = { inputParameter: PythonParameter }
+interface ParameterProps {
+    inputParameter: PythonParameter
+}
 
 export default function ParameterNode({inputParameter}: ParameterProps): JSX.Element {
 

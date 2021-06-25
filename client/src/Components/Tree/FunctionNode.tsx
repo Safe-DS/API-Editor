@@ -3,9 +3,10 @@ import React from "react";
 import PythonDeclaration from "../../model/PythonDeclaration";
 import PythonFunction from "../../model/PythonFunction";
 import {isEmptyList} from "../../util/listOperations";
+import {Setter} from "../../util/types";
 import TreeNode from "./TreeNode";
 
-type FunctionNodeProps = {
+interface FunctionNodeProps {
     pythonFunction: PythonFunction,
     selection: PythonDeclaration,
     setSelection: Setter<PythonDeclaration>
