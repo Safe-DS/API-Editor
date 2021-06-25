@@ -24,7 +24,7 @@ export default function ParameterNode({inputParameter}: ParameterProps): JSX.Ele
 
     const handleEnumSelect = () => {
         console.log("TODO");
-    }
+    };
 
     return (
         <div className="parametersList">
