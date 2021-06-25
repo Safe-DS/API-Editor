@@ -1,10 +1,12 @@
 import React, {FormEvent, useState} from "react";
 import "../ParameterView.css";
-import {Button, Container, Form, Modal} from "react-bootstrap";
+import {Button, Container, Form, Modal, Col, Row} from "react-bootstrap";
 import {Formik} from 'formik';
 import {nameValidation} from "../../../util/validation";
 import EnumPair from "../../../model/EnumPair";
 import EnumPairRow from "./EnumPairRow";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPlus} from "@fortawesome/free-solid-svg-icons";
 
 type showDialogState = {
     dialogState: boolean, setDialogState: Setter<boolean>, currentName: string,
@@ -87,6 +89,11 @@ export default function EnumDialog({
                                     isInvalid={!nameValid}
                                 />
                                 <Container>
+                                    <Row className="enum-pair-row">
+                                        <Col xs={5}>String/Value:</Col>
+                                        <Col xs={5}>Name of enum:</Col>
+                                        <Col xs={2}><FontAwesomeIcon icon={faPlus}/></Col>
+                                    </Row>
                                     {listItems}
                                 </Container>
                             </Form.Group>
