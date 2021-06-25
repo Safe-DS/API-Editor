@@ -6,6 +6,7 @@ import classNames from "classnames";
 import PythonModule from "../../model/PythonModule";
 import PythonFunction from "../../model/PythonFunction";
 import PythonParameter from "../../model/PythonParameter";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type ModuleNodeProps = {
     parentPath: string[],
@@ -54,9 +55,7 @@ export default function ModuleNode({
                  }}>
                 {(hasClasses || hasFunctions) &&
                 <span className="indicator visibility-indicator">{childVisible ? "▼" : "▶"}</span>}
-                <span className="indicator">
-                    □
-                </span>
+                <FontAwesomeIcon icon="archive" />
                 {" "}
                 <span>
                     {pythonModule.name}
