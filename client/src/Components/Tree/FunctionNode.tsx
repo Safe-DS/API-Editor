@@ -19,8 +19,8 @@ export default function FunctionNode(props: FunctionNodeProps): JSX.Element {
         <TreeNode
             declaration={props.pythonFunction}
             icon={faCogs}
+            isExpandable={false}
             isWorthClicking={hasParameters}
-            hasChildren={false}
             selection={props.selection}
             setSelection={props.setSelection}
         />

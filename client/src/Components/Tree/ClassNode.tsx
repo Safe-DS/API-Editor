@@ -20,8 +20,8 @@ export default function ClassNode(props: ClassNodeProps): JSX.Element {
         <TreeNode
             declaration={props.pythonClass}
             icon={faChalkboard}
+            isExpandable={hasMethods}
             isWorthClicking={hasMethods}
-            hasChildren={hasMethods}
             selection={props.selection}
             setSelection={props.setSelection}
         >

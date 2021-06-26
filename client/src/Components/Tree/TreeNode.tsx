@@ -10,8 +10,8 @@ import TreeNodeCSS from "./TreeNode.module.css";
 interface TreeNodeProps extends ChildrenProp {
     declaration: PythonDeclaration
     icon: IconDefinition
+    isExpandable: boolean
     isWorthClicking: boolean
-    hasChildren: boolean
     selection: PythonDeclaration
     setSelection: Setter<PythonDeclaration>
 }
@@ -25,7 +25,9 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element {
     });
 
     const level = levelOf(props.declaration);
-    const padding = level === 0 ? "0" : `calc(${level} * (1.25em + 0.25rem))`;
+    const style = level === 0 ? {} : {
+        paddingLeft: `calc(${level} * (1.25em + 0.25rem))`
+    };
 
     const handleClick = () => {
         setShowChildren(prevState => !prevState);
@@ -34,10 +36,10 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element {
 
     return (
         <div className={TreeNodeCSS.treeNode}>
-            <div className={className} style={{paddingLeft: padding}} onClick={handleClick}>
+            <div className={className} style={style} onClick={handleClick}>
                 <VisibilityIndicator
                     className={TreeNodeCSS.icon}
-                    hasChildren={props.hasChildren}
+                    hasChildren={props.isExpandable}
                     showChildren={showChildren}
                 />
                 <FontAwesomeIcon

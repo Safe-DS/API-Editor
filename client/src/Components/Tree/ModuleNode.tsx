@@ -23,8 +23,8 @@ export default function ModuleNode(props: ModuleNodeProps): JSX.Element {
         <TreeNode
             declaration={props.pythonModule}
             icon={faArchive}
+            isExpandable={hasChildren}
             isWorthClicking={hasChildren}
-            hasChildren={hasChildren}
             selection={props.selection}
             setSelection={props.setSelection}
         >
