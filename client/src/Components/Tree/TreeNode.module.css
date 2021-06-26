@@ -1,3 +1,7 @@
+.treeNode {
+    user-select: none;
+}
+
 .treeNode:hover {
     cursor: pointer;
 }
