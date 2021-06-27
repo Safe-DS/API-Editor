@@ -4,6 +4,7 @@ import PythonDeclaration from "../../model/PythonDeclaration";
 import PythonFunction from "../../model/PythonFunction";
 import DocumentationText from "./DocumentationText";
 import ParameterNode from "./ParameterNode";
+import {isEmptyList} from "../../util/listOperations";
 
 interface ParameterViewProps {
     selection: PythonDeclaration
@@ -29,11 +30,11 @@ export default function ParameterView({selection}: ParameterViewProps): JSX.Elem
                 <DocumentationText inputText={selection.description}/>
                 <h2 className={"parameter-title"}>Parameters</h2>
                 {
-                    selection.parameters ?
+                    !isEmptyList(selection.parameters) ?
                         selection.parameters.map(function (parameters) {
                             return (<ParameterNode key={parameters.name} inputParameter={parameters}/>);
                         }) :
-                        <span>There are no Parameters.</span>
+                        <span style={{paddingLeft: '1rem'}}>There are no Parameters.</span>
                 }
             </>
             }
