@@ -3,3 +3,7 @@ export function nameValidation (value: string) : boolean{
     return !!value.match(nameRegex);
 }
 
+export function enumValueValidation (value: string) : boolean{
+    const valueRegex = new RegExp(/^[a-zA-Z0-9_]+$/i);
+    return !!value.match(valueRegex);
+}
