@@ -1,12 +1,9 @@
 .treeView {
     border-right: 1px solid gray;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
     margin-right: 1rem;
     overflow: auto;
 }
 
 .packageName {
-    margin-left: 1rem;
-    margin-bottom: 1rem;
+    margin: 1rem;
 }
