@@ -6,14 +6,14 @@ import {nameValidation} from "../../util/validation";
 
 type showDialogState = {
     dialogState: boolean, setDialogState: Setter<boolean>, currentName: string,
-    setCurrentName: Setter<string>
+    setCurrentName: Setter<string>, onSubmit: (name: string)=>void
 }
 
 export default function RenameDialog({
                                          dialogState,
                                          setDialogState,
                                          currentName,
-                                         setCurrentName
+                                         setCurrentName, onSubmit
                                      }: showDialogState): JSX.Element {
 
     const [nameValid, setNameValid] = useState(true);
@@ -27,11 +27,13 @@ export default function RenameDialog({
     const resetData = () => {
         setDialogState(false);
         setNameValid(true);
+        setCurrentRenameValue(currentName);
     };
 
     const onFormSubmit = (e: FormEvent) => {
         e.preventDefault();
-        if (currentRenameValue && currentRenameValue != currentName && nameValid) {
+        if (currentRenameValue && currentRenameValue !== currentName && nameValid) {
+            onSubmit(currentRenameValue);
             currentName = currentRenameValue;
             setCurrentName(currentRenameValue);
             resetData();

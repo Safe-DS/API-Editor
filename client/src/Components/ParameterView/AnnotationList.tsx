@@ -3,11 +3,17 @@ import {Button, ButtonGroup, Col, Form, Row} from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faTrash, faWrench} from '@fortawesome/free-solid-svg-icons';
 
-type AnnotationListProps = {
-    renameName: string
+type RenameProps = {
+    renameName: string;
+    setRenameName: Setter<string>;
+    onRenameEdit: () => void;
 }
 
-export default function AnnotationList  (props: AnnotationListProps): JSX.Element {
+export default function AnnotationList  (props: RenameProps): JSX.Element {
+
+    const deleteRename = () => {
+        props.setRenameName("");
+    };
 
     if (props.renameName != "")
     {
@@ -20,8 +26,8 @@ export default function AnnotationList  (props: AnnotationListProps): JSX.Elemen
                 </Col>
                 <Col xs="auto">
                     <ButtonGroup>
-                        <Button size="sm"><FontAwesomeIcon icon={ faWrench } /></Button>
-                        <Button size="sm"><FontAwesomeIcon icon={ faTrash } /></Button>
+                        <Button size="sm" onClick={props.onRenameEdit}><FontAwesomeIcon icon={ faWrench } /></Button>
+                        <Button size="sm" onClick={deleteRename}><FontAwesomeIcon icon={ faTrash } /></Button>
                     </ButtonGroup>
                 </Col>
             </Form.Group>

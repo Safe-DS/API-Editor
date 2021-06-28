@@ -14,7 +14,8 @@ export default function Parameter({inputParameter}: ParameterProps): JSX.Element
 
     const [renameDialog, setRenameDialog] = useState(false);
     const [renameName, setRenameName] = useState("");
-    const openRenameDialog = () => setRenameDialog(true)
+    const [renameNameAnnotation, setRenameNameAnnotation] = useState("");
+    const openRenameDialog = () => setRenameDialog(true);
 
     const handleRenameSelect = () => {
         if (!renameName) {
@@ -25,6 +26,10 @@ export default function Parameter({inputParameter}: ParameterProps): JSX.Element
 
     const handleEnumSelect = () => {
         console.log("TODO");
+    };
+
+    const handleRenameSubmit = (name: string) => {
+        setRenameNameAnnotation(name);
     };
 
     return (
@@ -41,10 +46,11 @@ export default function Parameter({inputParameter}: ParameterProps): JSX.Element
                     </Dropdown.Menu>
                 </Dropdown>
             </div>
-            <AnnotationList renameName={renameName}/>
+            <AnnotationList renameName={renameNameAnnotation} setRenameName={setRenameNameAnnotation}
+                            onRenameEdit={handleRenameSelect}/>
 
             <RenameDialog dialogState={renameDialog} setDialogState={setRenameDialog} setCurrentName={setRenameName}
-                          currentName={renameName}/>
+                          currentName={renameName} onSubmit={handleRenameSubmit}/>
             {
                 hasDescription &&
                 <DocumentationText inputText={inputParameter?.description}/>
