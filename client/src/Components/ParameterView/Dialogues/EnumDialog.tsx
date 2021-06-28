@@ -115,12 +115,12 @@ export default function EnumDialog({
                                 />
                                 <Container>
                                     <Row className="enum-pair-row">
-                                        <Col xs={5}>String/Value:</Col>
-                                        <Col xs={5}>Name of enum:</Col>
-                                        <Col xs={2}><FontAwesomeIcon icon={faPlus}/></Col>
+                                        <Col xs={5} className="no-left-padding">String/Value:</Col>
+                                        <Col xs={5} className="right">Name of enum:</Col>
+                                        <Col xs={2} className="delete-enum-item-icon"><FontAwesomeIcon icon={faPlus}/></Col>
                                     </Row>
-                                    <Row>
-                                        <Col xs={5}>
+                                    <Row className="enum-pair-row">
+                                        <Col xs={5} className="no-left-padding">
                                             <Form.Control
                                                 type="text"
                                                 placeholder="Parameter String/Value"//{currentName}
@@ -129,7 +129,7 @@ export default function EnumDialog({
                                                 isInvalid={!enumValueValid}
                                             />
                                         </Col>
-                                        <Col xs={5}>
+                                        <Col xs={5} className="no-right-padding">
                                             <Form.Control
                                                 type="text"
                                                 placeholder="Enum Name"//{currentName}
@@ -138,7 +138,7 @@ export default function EnumDialog({
                                                 isInvalid={!enumInstanceNameValid}
                                             />
                                         </Col>
-                                        <Col xs={2}><FontAwesomeIcon icon={faTrash}/></Col>
+                                        <Col xs={2} className="delete-enum-item-icon"><FontAwesomeIcon icon={faTrash}/></Col>
                                     </Row>
                                     {listItems.length > 0 && listItems}
                                 </Container>
