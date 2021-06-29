@@ -80,7 +80,7 @@
     padding-right: 0;
 }
 
-.delete-enum-item-icon {
+.enum-item-icon {
     display: flex;
     justify-content: flex-end;
     padding: 0;

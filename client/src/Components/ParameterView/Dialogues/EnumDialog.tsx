@@ -1,12 +1,11 @@
 import React, {FormEvent, useState} from "react";
 import "../ParameterView.css";
-import {Button, Container, Form, Modal, Col, Row} from "react-bootstrap";
+import {Button, Form, Modal} from "react-bootstrap";
 import {Formik} from 'formik';
-import {enumValueValidation, nameValidation} from "../../../util/validation";
+import {nameValidation} from "../../../util/validation";
 import EnumPair from "../../../model/EnumPair";
-import EnumPairRow from "./EnumPairRow";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
+import EnumHandle from "./EnumHandle";
+
 
 type showDialogState = {
     dialogState: boolean, setDialogState: Setter<boolean>, currentName: string,
@@ -22,35 +21,19 @@ export default function EnumDialog({
                                        enumList
                                    }: showDialogState): JSX.Element {
 
-    const [nameValid, setNameValid] = useState(true);
-    const [name, setName] = useState("");
-    const [enumValueValid, setEnumValueValid] = useState(true);
-    const [enumValue, setEnumValue] = useState("");
-    const [enumInstanceNameValid, setEnumInstanceNameValid] = useState(true);
-    const [enumInstanceName, setEnumInstanceName] = useState("");
-
-    const onInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setName(event.target.value);
-        setNameValid(nameValidation(event.target.value));
-    };
-
-    const onInputEnumInstanceName = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setEnumInstanceName(event.target.value);
-        setEnumInstanceNameValid(nameValidation(event.target.value));
-    };
-
-    const onInputEnumValue = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setEnumValue(event.target.value);
-        setEnumValueValid(enumValueValidation(event.target.value));
-    };
-
-    const pair1 = new EnumPair("hello", "world1");
+    //Test Data
+    /*const pair1 = new EnumPair("hello", "world1");
     const pair2 = new EnumPair("hello", "world2");
     const pair3 = new EnumPair("hello", "world3");
-    const listOfEnumPairs = [pair1, pair2, pair3];
-    const listOfEnumPairs2: EnumPair[] = [];
-    const listItems = listOfEnumPairs.map((pair, index) =>
-        <EnumPairRow pair={pair} key={String(index)}/>);
+    const listOfEnumPairs2 = [pair1, pair2, pair3];*/
+    const listOfEnumPairs: EnumPair[] = [];
+    //End of Test Data
+
+    //instead of TestData:
+    //const listOfEnumPairs = enumList;
+
+    const [nameValid, setNameValid] = useState(true);
+    const [name, setName] = useState("");
 
 
     const resetData = () => {
@@ -58,22 +41,29 @@ export default function EnumDialog({
 
         setName("");
         setNameValid(true);
-
-        setEnumValue("");
-        setNameValid(true);
-
-        setEnumInstanceName("");
-        setEnumInstanceNameValid(true);
-
-        setEnumInstanceName("");
-        setEnumInstanceNameValid(true);
     };
 
+    const onInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setName(event.target.value);
+        setNameValid(nameValidation(event.target.value));
+    };
+
+    //ToDo check if all enum inputs are valid
     const onFormSubmit = (e: FormEvent) => {
         e.preventDefault();
-        if (enumValue && enumValue != currentName && nameValid) {
-            currentName = enumValue;
-            setCurrentName(enumValue);
+
+        let validInputInstances = true;
+
+        listOfEnumPairs.forEach(function(value){
+            if(!value.validValue || !value.validKey){
+                validInputInstances = false;
+            }
+        });
+
+        if (name && name != currentName && nameValid && validInputInstances) {
+            //currentName = enumValue;
+            setCurrentName(name);
+            setEnumList(listOfEnumPairs);
             resetData();
         }
     };
@@ -104,7 +94,7 @@ export default function EnumDialog({
                         <Modal.Body>
                             <Form.Group>
                                 <Form.Label>
-                                    New Name:
+                                    Enum Annotation Name:
                                 </Form.Label>
                                 <Form.Control
                                     type="text"
@@ -113,35 +103,8 @@ export default function EnumDialog({
                                     onChange={onInput}
                                     isInvalid={!nameValid}
                                 />
-                                <Container>
-                                    <Row className="enum-pair-row">
-                                        <Col xs={5} className="no-left-padding">String/Value:</Col>
-                                        <Col xs={5} className="right">Name of enum:</Col>
-                                        <Col xs={2} className="delete-enum-item-icon"><FontAwesomeIcon icon={faPlus}/></Col>
-                                    </Row>
-                                    <Row className="enum-pair-row">
-                                        <Col xs={5} className="no-left-padding">
-                                            <Form.Control
-                                                type="text"
-                                                placeholder="Parameter String/Value"//{currentName}
-                                                value={enumValue}
-                                                onChange={onInputEnumValue}
-                                                isInvalid={!enumValueValid}
-                                            />
-                                        </Col>
-                                        <Col xs={5} className="no-right-padding">
-                                            <Form.Control
-                                                type="text"
-                                                placeholder="Enum Name"//{currentName}
-                                                value={enumInstanceName}
-                                                onChange={onInputEnumInstanceName}
-                                                isInvalid={!enumInstanceNameValid}
-                                            />
-                                        </Col>
-                                        <Col xs={2} className="delete-enum-item-icon"><FontAwesomeIcon icon={faTrash}/></Col>
-                                    </Row>
-                                    {listItems.length > 0 && listItems}
-                                </Container>
+                                <EnumHandle listOfEnumPairs={listOfEnumPairs}/>
+
                             </Form.Group>
                         </Modal.Body>
                         <Modal.Footer>
