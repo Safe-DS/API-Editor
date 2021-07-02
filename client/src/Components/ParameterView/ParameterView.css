@@ -17,7 +17,7 @@
     padding-left: .5rem;
 }
 
-.parametersList {
+.parameter-list {
     padding-left: 1rem;
     padding-bottom: .5rem;
 }
@@ -49,7 +49,6 @@
     text-align: left;
     background: none!important;
     border: none;
-    padding-left: 0.5rem;
     font-family: arial, sans-serif;
     cursor: pointer;
 }

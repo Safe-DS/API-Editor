@@ -5,19 +5,20 @@ import {Setter} from "../../util/types";
 import {nameValidation} from "../../util/validation";
 import "./ParameterView.css";
 
-interface RenameDialogProps {
+interface showDialogState {
     dialogState: boolean,
     setDialogState: Setter<boolean>,
     currentName: string,
-    setCurrentName: Setter<string>
+    setCurrentName: Setter<string>,
+    onSubmit: (name: string)=>void
 }
 
-export default function RenameDialog({
-                                         dialogState,
-                                         setDialogState,
-                                         currentName,
-                                         setCurrentName
-                                     }: RenameDialogProps): JSX.Element {
+export default function RenameDialog({dialogState,
+                                      setDialogState,
+                                      currentName,
+                                      setCurrentName,
+                                      onSubmit
+                                     }: showDialogState): JSX.Element {
 
     const [nameValid, setNameValid] = useState(true);
     const [currentRenameValue, setCurrentRenameValue] = useState("");
@@ -29,13 +30,14 @@ export default function RenameDialog({
 
     const resetData = () => {
         setDialogState(false);
-        setCurrentRenameValue("");
         setNameValid(true);
+        setCurrentRenameValue(currentName);
     };
 
     const onFormSubmit = (e: FormEvent) => {
         e.preventDefault();
-        if (currentRenameValue && currentRenameValue != currentName && nameValid) {
+        if (currentRenameValue && currentRenameValue !== currentName && nameValid) {
+            onSubmit(currentRenameValue);
             currentName = currentRenameValue;
             setCurrentName(currentRenameValue);
             resetData();
@@ -58,7 +60,7 @@ export default function RenameDialog({
             <Formik
                 onSubmit={console.log}
                 initialValues={{
-                    currentRenameValue: ''
+                    currentRenameValue: currentName
                 }}
             >
                 {() => (
