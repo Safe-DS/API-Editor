@@ -26,7 +26,7 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element {
 
     const level = levelOf(props.declaration);
     const style = {
-        paddingLeft: (level === 0 ? '1rem' : `calc(${level} * (1.25em + 0.25rem) + 1rem)`)
+        paddingLeft: (level === 0 ? '1rem' : `calc(0.5 * ${level} * (1.25em + 0.25rem) + 1rem)`)
     };
 
     const handleClick = () => {
@@ -41,6 +41,7 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element {
                     className={TreeNodeCSS.icon}
                     hasChildren={props.isExpandable}
                     showChildren={showChildren}
+                    isSelected={isSelected(props.declaration, props.selection)}
                 />
                 <FontAwesomeIcon
                     className={TreeNodeCSS.icon}
