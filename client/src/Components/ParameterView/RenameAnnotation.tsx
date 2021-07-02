@@ -2,6 +2,7 @@ import React from "react";
 import {Button, ButtonGroup, Col, Row} from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faTrash, faWrench} from '@fortawesome/free-solid-svg-icons';
+import {Setter} from "../../util/types";
 
 interface RenameProps {
     renameName: string,

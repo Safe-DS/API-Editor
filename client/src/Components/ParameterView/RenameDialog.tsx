@@ -13,11 +13,11 @@ interface showDialogState {
     onSubmit: (name: string)=>void
 }
 
-export default function RenameDialog({
-                                         dialogState,
-                                         setDialogState,
-                                         currentName,
-                                         setCurrentName
+export default function RenameDialog({dialogState,
+                                      setDialogState,
+                                      currentName,
+                                      setCurrentName,
+                                      onSubmit
                                      }: showDialogState): JSX.Element {
 
     const [nameValid, setNameValid] = useState(true);
