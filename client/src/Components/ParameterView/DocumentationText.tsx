@@ -1,11 +1,10 @@
-import classNames from "classnames";
 import React, {useState} from "react";
+import "./ParameterView.css";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import VisibilityIndicator from "../Util/VisibilityIndicator";
-import "./ParameterView.css";
+import classNames from "classnames";
 
-interface DocumentationTextProps {
+type DocumentationTextProps = {
     inputText: string
 }
 
@@ -27,10 +26,8 @@ export default function DocumentationText({inputText = ""}: DocumentationTextPro
         <div className="docu-paragraph" onClick={() => {
             setReadMore(!readMore);
         }}>
-            <div className="pl-1-5rem">
-                <VisibilityIndicator hasChildren={hasMultipleLines} showChildren={readMore}/>
-            </div>
-
+            {!readMore && hasMultipleLines && "▶"}
+            {readMore && hasMultipleLines && "▼"}
             <ReactMarkdown className={cssClasses} remarkPlugins={[remarkGfm]}>
                 {readMore ? inputText : shortenedText}
             </ReactMarkdown>

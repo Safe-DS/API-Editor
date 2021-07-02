@@ -1,6 +1,5 @@
-import {Nullable} from "../util/types";
-import PythonDeclaration from "./PythonDeclaration";
 import PythonFunction from "./PythonFunction";
+import PythonDeclaration from "./PythonDeclaration";
 
 export default class PythonParameter extends PythonDeclaration {
 

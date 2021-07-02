@@ -45,6 +45,11 @@
     padding-bottom: 15px;
 }
 
+.visibility-indicator {
+    display: inline-block;
+    width: 1rem;
+}
+
 .read-more-button {
     text-align: left;
     background: none!important;

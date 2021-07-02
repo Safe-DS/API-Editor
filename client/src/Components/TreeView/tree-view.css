@@ -1,0 +1,83 @@
+.tree-view {
+    border-right: 1px solid gray;
+    overflow: auto;
+}
+
+.package-name {
+    margin: 1rem 1rem .5rem;
+}
+
+.tree {
+    padding-left: 0;
+    white-space: nowrap;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.tree ul {
+    padding-left: 2rem;
+}
+
+.indicator {
+    display: inline-block;
+    width: 1rem;
+}
+
+.visibility-indicator {
+    margin-left: -1rem;
+    margin-right: 0.5rem;
+}
+
+.module-content {
+    padding-left: 1.5rem;
+}
+
+.pl-1rem {
+    padding-left: 1rem;
+}
+
+.pl-1-5rem {
+    padding-left: 1.5rem;
+}
+
+.pl-2rem {
+    padding-left: 2rem;
+}
+
+.pl-2-5rem {
+    padding-left: 2.5rem;
+}
+
+.pl-3rem {
+    padding-left: 3rem;
+}
+
+.pl-3-5rem {
+    padding-left: 3.5rem;
+}
+
+.pl-4rem {
+    padding-left: 4rem;
+}
+
+.pl-4-5rem {
+    padding-left: 4.5rem;
+}
+
+.pl-5rem {
+    padding-left: 5rem;
+}
+
+.tree-view-row {
+    padding-right: .5rem;
+}
+
+.selected {
+    background-color: cornflowerblue;
+    color: white;
+}
+
+.cursor-na {
+    cursor: not-allowed;
+}
