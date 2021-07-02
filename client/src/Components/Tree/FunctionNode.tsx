@@ -21,7 +21,7 @@ export default function FunctionNode(props: FunctionNodeProps): JSX.Element {
             declaration={props.pythonFunction}
             icon={faCogs}
             isExpandable={hasParameters}
-            isWorthClicking={hasParameters}
+            isWorthClicking={true}
             selection={props.selection}
             setSelection={props.setSelection}
         >
