@@ -34,7 +34,7 @@ export default function ParameterView({selection}: ParameterViewProps): JSX.Elem
                         selection.parameters.map(function (parameters) {
                             return (<ParameterNode key={parameters.name} inputParameter={parameters}/>);
                         }) :
-                        <span style={{paddingLeft: '1rem'}}>There are no Parameters.</span>
+                        <span className="text-muted" style={{paddingLeft: '1rem'}}>There are no parameters.</span>
                 }
             </>
             }
