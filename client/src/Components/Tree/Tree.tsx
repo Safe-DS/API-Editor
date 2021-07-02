@@ -1,28 +1,39 @@
 import React from 'react';
-import PythonDeclaration from "../../model/PythonDeclaration";
-import PythonPackage from "../../model/PythonPackage";
-import {isEmptyList} from "../../util/listOperations";
-import {Setter} from "../../util/types";
 import ModuleNode from "./ModuleNode";
-import TreeCSS from "./Tree.module.css";
+import PythonPackage from "../../model/PythonPackage";
+import PythonFunction from "../../model/PythonFunction";
+import PythonParameter from "../../model/PythonParameter";
 
-interface TreeProps {
-    pythonPackage: PythonPackage
-    selection: PythonDeclaration
-    setSelection: Setter<PythonDeclaration>
+type TreeProps = {
+    pythonPackage: PythonPackage,
+    setParameters: Setter<PythonParameter[]>,
+    selection: string[],
+    setSelection: Setter<string[]>,
+    setSelectedFunction: Setter<Nullable<PythonFunction>>
 }
 
-export default function Tree(props: TreeProps): JSX.Element {
+export default function Tree({
+                                 pythonPackage,
+                                 setParameters,
+                                 selection,
+                                 setSelection,
+                                 setSelectedFunction
+                             }: TreeProps): JSX.Element {
+
+    const path = [pythonPackage.name];
+
     return (
-        <div className={TreeCSS.tree}>
-            {props.pythonPackage.modules
-                .filter(module => !isEmptyList(module.classes) || !isEmptyList(module.functions))
-                .map(module => (
-                    <ModuleNode key={module.name}
-                                pythonModule={module}
-                                selection={props.selection}
-                                setSelection={props.setSelection}/>
-                ))}
+        <div className="tree">
+            {pythonPackage.modules.map(module => (
+                <ModuleNode parentPath={path}
+                            key={module.name}
+                            pythonModule={module}
+                            selection={selection}
+                            setSelection={setSelection}
+                            setParameters={setParameters}
+                            setSelectedFunction={setSelectedFunction}
+                />
+            ))}
         </div>
     );
 }

@@ -1,21 +1,29 @@
 import React, {useState} from 'react';
-import pythonPackageJson from "../../data/sklearn.json";
-import PythonDeclaration from "../../model/PythonDeclaration";
-import {parsePythonPackageJson, PythonPackageJson} from "../../model/PythonPackageBuilder";
+import './App.css';
 import ParameterView from "../ParameterView/ParameterView";
 import TreeView from "../TreeView/TreeView";
-import './App.css';
+import PythonFunction from "../../model/PythonFunction";
+import PythonParameter from "../../model/PythonParameter";
 
-export default function App(): JSX.Element {
-    const pythonPackage = parsePythonPackageJson(pythonPackageJson as PythonPackageJson);
-    const [selection, setSelection] = useState<PythonDeclaration>(pythonPackage);
+function App(): JSX.Element {
+
+    const [parameters, setParameters] = useState<PythonParameter[]>([]);
+    const [selection, setSelection] = useState<string[]>([]);
+    const [selectedFunction, setSelectedFunction] = useState<Nullable<PythonFunction>>(null);
 
     return (
         <div className="App">
-            <TreeView pythonPackage={pythonPackage}
+            <TreeView setParameters={setParameters}
                       selection={selection}
-                      setSelection={setSelection}/>
-            <ParameterView selection={selection}/>
+                      setSelection={setSelection}
+                      setSelectedFunction={setSelectedFunction}
+            />
+            <ParameterView inputParameters={parameters}
+                           selection={selection}
+                           selectedFunction={selectedFunction}
+            />
         </div>
     );
 }
+
+export default App;
