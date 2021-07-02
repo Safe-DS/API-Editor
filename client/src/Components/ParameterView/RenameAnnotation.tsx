@@ -3,10 +3,10 @@ import {Button, ButtonGroup, Col, Row} from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faTrash, faWrench} from '@fortawesome/free-solid-svg-icons';
 
-type RenameProps = {
-    renameName: string;
-    setRenameName: Setter<string>;
-    onRenameEdit: () => void;
+interface RenameProps {
+    renameName: string,
+    setRenameName: Setter<string>,
+    onRenameEdit: () => void
 }
 
 export default function RenameAnnotation  ({setRenameName, renameName, onRenameEdit}: RenameProps): JSX.Element {
