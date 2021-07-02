@@ -1,5 +1,3 @@
 .treeView {
-    border-right: 1px solid gray;
-    overflow: auto;
     padding: 1rem 0 2rem;
 }
