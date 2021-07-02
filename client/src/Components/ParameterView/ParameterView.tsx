@@ -1,10 +1,9 @@
 import React from "react";
-import {Breadcrumb} from "react-bootstrap";
 import PythonDeclaration from "../../model/PythonDeclaration";
 import PythonFunction from "../../model/PythonFunction";
+import {isEmptyList} from "../../util/listOperations";
 import DocumentationText from "./DocumentationText";
 import ParameterNode from "./ParameterNode";
-import {isEmptyList} from "../../util/listOperations";
 
 interface ParameterViewProps {
     selection: PythonDeclaration
@@ -13,17 +12,6 @@ interface ParameterViewProps {
 export default function ParameterView({selection}: ParameterViewProps): JSX.Element {
     return (
         <div className="parameter-view">
-            <div className="parameter-view-path">
-                <Breadcrumb>
-                    {(!selection || selection.path().length === 0) && (
-                        <Breadcrumb.Item active>Nothing selected.</Breadcrumb.Item>
-                    )}
-                    {selection.path().map((name, index) => (
-                        <Breadcrumb.Item active key={index}>{name}</Breadcrumb.Item>
-                    ))}
-                </Breadcrumb>
-            </div>
-
             {selection instanceof PythonFunction &&
             <>
                 <h1>{selection.name}</h1>

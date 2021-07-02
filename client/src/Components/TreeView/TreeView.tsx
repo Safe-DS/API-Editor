@@ -15,7 +15,6 @@ interface TreeViewProps {
 export default function TreeView(props: TreeViewProps): JSX.Element {
     return (
         <div className={TreeViewCSS.treeView}>
-            <h2 className={TreeViewCSS.packageName}>{props.pythonPackage.name}</h2>
             <Tree pythonPackage={props.pythonPackage}
                   selection={props.selection}
                   setSelection={props.setSelection}/>
