@@ -4,7 +4,7 @@ import DocumentationText from "./DocumentationText";
 import PythonParameter from "../../model/PythonParameter";
 import {Dropdown} from "react-bootstrap";
 import RenameDialog from "./RenameDialog";
-import AnnotationList from "./AnnotationList";
+import RenameAnnotation from "./RenameAnnotation";
 
 type ParameterProps = { inputParameter: PythonParameter }
 
@@ -46,8 +46,8 @@ export default function Parameter({inputParameter}: ParameterProps): JSX.Element
                     </Dropdown.Menu>
                 </Dropdown>
             </div>
-            <AnnotationList renameName={renameNameAnnotation} setRenameName={setRenameNameAnnotation}
-                            onRenameEdit={handleRenameSelect}/>
+            <RenameAnnotation renameName={renameNameAnnotation} setRenameName={setRenameNameAnnotation}
+                              onRenameEdit={handleRenameSelect}/>
 
             <RenameDialog dialogState={renameDialog} setDialogState={setRenameDialog} setCurrentName={setRenameName}
                           currentName={renameName} onSubmit={handleRenameSubmit}/>

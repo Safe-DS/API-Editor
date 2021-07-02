@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, ButtonGroup, Col, Form, Row} from "react-bootstrap";
+import {Button, ButtonGroup, Col, Row} from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faTrash, faWrench} from '@fortawesome/free-solid-svg-icons';
 
@@ -9,28 +9,27 @@ type RenameProps = {
     onRenameEdit: () => void;
 }
 
-export default function AnnotationList  (props: RenameProps): JSX.Element {
+export default function RenameAnnotation  ({setRenameName, renameName, onRenameEdit}: RenameProps): JSX.Element {
 
     const deleteRename = () => {
-        props.setRenameName("");
+        setRenameName("");
     };
 
-    if (props.renameName != "")
+    if (renameName != "")
     {
         return (<div>
             <h5>Annotations</h5>
-            <Form.Group as={Row} controlId="formGridEmail">
-                <Form.Label column xs="auto">@rename</Form.Label>
-                <Col xs="auto">
-                    <Button className="rounded-pill" size="sm">{props.renameName}</Button>
+            <Row>
+                <Col className="align-items-center" xs="auto">
+                    <code>{`@rename: ${renameName}`}</code>
                 </Col>
                 <Col xs="auto">
                     <ButtonGroup>
-                        <Button size="sm" onClick={props.onRenameEdit}><FontAwesomeIcon icon={ faWrench } /></Button>
+                        <Button size="sm" onClick={onRenameEdit}><FontAwesomeIcon icon={ faWrench } /></Button>
                         <Button size="sm" onClick={deleteRename}><FontAwesomeIcon icon={ faTrash } /></Button>
                     </ButtonGroup>
                 </Col>
-            </Form.Group>
+            </Row>
         </div>);
     }
     return <></>;
