@@ -7,13 +7,18 @@ import {Setter} from "../../util/types";
 interface RenameProps {
     renameName: string,
     setRenameName: Setter<string>,
+    setCurrentName: Setter<string>
+    setCurrentRenameValue: Setter<string>,
     onRenameEdit: () => void
 }
 
-export default function RenameAnnotation  ({setRenameName, renameName, onRenameEdit}: RenameProps): JSX.Element {
+export default function RenameAnnotation  ({setRenameName, renameName, setCurrentRenameValue, setCurrentName,
+                                               onRenameEdit}: RenameProps): JSX.Element {
 
     const deleteRename = () => {
         setRenameName("");
+        setCurrentName("");
+        setCurrentRenameValue("");
     };
 
     if (renameName != "")

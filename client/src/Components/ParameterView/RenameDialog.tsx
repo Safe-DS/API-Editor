@@ -10,6 +10,8 @@ interface showDialogState {
     setDialogState: Setter<boolean>,
     currentName: string,
     setCurrentName: Setter<string>,
+    currentRenameValue: string,
+    setCurrentRenameValue: Setter<string>,
     onSubmit: (name: string)=>void
 }
 
@@ -17,11 +19,12 @@ export default function RenameDialog({dialogState,
                                       setDialogState,
                                       currentName,
                                       setCurrentName,
+                                         currentRenameValue,
+                                         setCurrentRenameValue,
                                       onSubmit
                                      }: showDialogState): JSX.Element {
 
     const [nameValid, setNameValid] = useState(true);
-    const [currentRenameValue, setCurrentRenameValue] = useState("");
 
     const onInput = (event: React.ChangeEvent<HTMLInputElement>) => {
         setCurrentRenameValue(event.target.value);

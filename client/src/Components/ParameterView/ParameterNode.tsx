@@ -17,6 +17,7 @@ export default function ParameterNode({inputParameter}: ParameterNodeProps): JSX
     const [renameDialog, setRenameDialog] = useState(false);
     const [renameName, setRenameName] = useState("");
     const [renameNameAnnotation, setRenameNameAnnotation] = useState("");
+    const [currentRenameValue, setCurrentRenameValue] = useState("");
     const openRenameDialog = () => setRenameDialog(true);
 
     const handleRenameSelect = () => {
@@ -49,10 +50,12 @@ export default function ParameterNode({inputParameter}: ParameterNodeProps): JSX
                 </Dropdown>
             </div>
             <RenameAnnotation renameName={renameNameAnnotation} setRenameName={setRenameNameAnnotation}
-                              onRenameEdit={handleRenameSelect}/>
+                              onRenameEdit={handleRenameSelect} setCurrentName={setRenameName}
+                              setCurrentRenameValue={setCurrentRenameValue}/>
 
             <RenameDialog dialogState={renameDialog} setDialogState={setRenameDialog} setCurrentName={setRenameName}
-                          currentName={renameName} onSubmit={handleRenameSubmit}/>
+                          currentName={renameName} currentRenameValue={currentRenameValue}
+                          setCurrentRenameValue={setCurrentRenameValue} onSubmit={handleRenameSubmit}/>
             {
                 hasDescription &&
                 <DocumentationText inputText={inputParameter?.description}/>
