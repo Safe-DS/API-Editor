@@ -1,20 +1,23 @@
-import React, {FormEvent, useState} from "react";
-import "./ParameterView.css";
-import {Button, Form, Modal} from "react-bootstrap";
 import {Formik} from 'formik';
+import React, {FormEvent, useState} from "react";
+import {Button, Form, Modal} from "react-bootstrap";
+import {Setter} from "../../util/types";
 import {nameValidation} from "../../util/validation";
+import "./ParameterView.css";
 
-type showDialogState = {
-    dialogState: boolean, setDialogState: Setter<boolean>, currentName: string,
-    setCurrentName: Setter<string>, onSubmit: (name: string)=>void
+interface RenameDialogProps {
+    dialogState: boolean,
+    setDialogState: Setter<boolean>,
+    currentName: string,
+    setCurrentName: Setter<string>
 }
 
 export default function RenameDialog({
                                          dialogState,
                                          setDialogState,
                                          currentName,
-                                         setCurrentName, onSubmit
-                                     }: showDialogState): JSX.Element {
+                                         setCurrentName
+                                     }: RenameDialogProps): JSX.Element {
 
     const [nameValid, setNameValid] = useState(true);
     const [currentRenameValue, setCurrentRenameValue] = useState("");
@@ -26,14 +29,13 @@ export default function RenameDialog({
 
     const resetData = () => {
         setDialogState(false);
+        setCurrentRenameValue("");
         setNameValid(true);
-        setCurrentRenameValue(currentName);
     };
 
     const onFormSubmit = (e: FormEvent) => {
         e.preventDefault();
-        if (currentRenameValue && currentRenameValue !== currentName && nameValid) {
-            onSubmit(currentRenameValue);
+        if (currentRenameValue && currentRenameValue != currentName && nameValid) {
             currentName = currentRenameValue;
             setCurrentName(currentRenameValue);
             resetData();
@@ -56,7 +58,7 @@ export default function RenameDialog({
             <Formik
                 onSubmit={console.log}
                 initialValues={{
-                    currentRenameValue: currentName
+                    currentRenameValue: ''
                 }}
             >
                 {() => (

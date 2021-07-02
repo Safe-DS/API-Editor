@@ -1,8 +1,9 @@
+import {Nullable} from "../util/types";
+import PythonClass from "./PythonClass";
+import PythonDeclaration from "./PythonDeclaration";
+import PythonModule from "./PythonModule";
 import PythonParameter from "./PythonParameter";
 import PythonResult from "./PythonResult";
-import PythonClass from "./PythonClass";
-import PythonModule from "./PythonModule";
-import PythonDeclaration from "./PythonDeclaration";
 
 export default class PythonFunction extends PythonDeclaration {
 

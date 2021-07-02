@@ -1,3 +1,4 @@
+import {Nullable} from "../util/types";
 import PythonClass from "./PythonClass";
 import PythonFromImport from "./PythonFromImport";
 import PythonFunction from "./PythonFunction";
