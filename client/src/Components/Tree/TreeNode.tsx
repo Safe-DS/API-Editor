@@ -25,8 +25,8 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element {
     });
 
     const level = levelOf(props.declaration);
-    const style = level === 0 ? {paddingLeft: '1rem'} : {
-        paddingLeft: `calc(${level} * (1.25em + 0.25rem) + 1rem)`
+    const style = {
+        paddingLeft: (level === 0 ? '1rem' : `calc(${level} * (1.25em + 0.25rem) + 1rem)`)
     };
 
     const handleClick = () => {
