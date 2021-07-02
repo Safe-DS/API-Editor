@@ -1,34 +1,24 @@
 import React from 'react';
+import {Setter} from "../../util/types";
 import Tree from "../Tree/Tree";
-import './tree-view.css';
-import packageJson from "../../data/sklearn.json";
-import {parsePythonPackageJson, PythonPackageJson} from "../../model/PythonPackageBuilder";
-import PythonFunction from "../../model/PythonFunction";
-import PythonParameter from "../../model/PythonParameter";
+import "./TreeView.module.css";
+import PythonPackage from "../../model/PythonPackage";
+import PythonDeclaration from "../../model/PythonDeclaration";
+import TreeViewCSS from "./TreeView.module.css";
 
-type TreeViewProps = {
-    setParameters: Setter<PythonParameter[]>,
-    selection: string[],
-    setSelection: Setter<string[]>,
-    setSelectedFunction: Setter<Nullable<PythonFunction>>
+interface TreeViewProps {
+    pythonPackage: PythonPackage,
+    selection: PythonDeclaration,
+    setSelection: Setter<PythonDeclaration>
 }
 
-export default function TreeView({
-                                     setParameters,
-                                     selection,
-                                     setSelection,
-                                     setSelectedFunction
-                                 }: TreeViewProps): JSX.Element {
-    const pythonPackage = parsePythonPackageJson(packageJson as PythonPackageJson);
+export default function TreeView(props: TreeViewProps): JSX.Element {
     return (
-        <div className="tree-view">
-            <h2 className="package-name">{pythonPackage.name}</h2>
-            <Tree pythonPackage={pythonPackage}
-                  setParameters={setParameters}
-                  selection={selection}
-                  setSelection={setSelection}
-                  setSelectedFunction={setSelectedFunction}
-            />
+        <div className={TreeViewCSS.treeView}>
+            <h2 className={TreeViewCSS.packageName}>{props.pythonPackage.name}</h2>
+            <Tree pythonPackage={props.pythonPackage}
+                  selection={props.selection}
+                  setSelection={props.setSelection}/>
         </div>
     );
 }

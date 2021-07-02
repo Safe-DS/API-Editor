@@ -1,14 +1,16 @@
 import React, {useState} from "react";
-import "./ParameterView.css";
-import DocumentationText from "./DocumentationText";
-import PythonParameter from "../../model/PythonParameter";
 import {Dropdown} from "react-bootstrap";
+import PythonParameter from "../../model/PythonParameter";
+import DocumentationText from "./DocumentationText";
+import "./ParameterView.css";
 import RenameDialog from "./RenameDialog";
 import RenameAnnotation from "./RenameAnnotation";
 
-type ParameterProps = { inputParameter: PythonParameter }
+interface ParameterNodeProps {
+    inputParameter: PythonParameter
+}
 
-export default function Parameter({inputParameter}: ParameterProps): JSX.Element {
+export default function ParameterNode({inputParameter}: ParameterNodeProps): JSX.Element {
 
     const hasDescription = !!inputParameter.description;
 
@@ -57,7 +59,7 @@ export default function Parameter({inputParameter}: ParameterProps): JSX.Element
             }
             {
                 !hasDescription &&
-                <p className="pl-1-5rem">There is no documentation for this parameter.</p>
+                <p className="pl-3-5rem">There is no documentation for this parameter.</p>
             }
         </div>
     );

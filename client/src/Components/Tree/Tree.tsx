@@ -1,39 +1,28 @@
 import React from 'react';
-import ModuleNode from "./ModuleNode";
+import PythonDeclaration from "../../model/PythonDeclaration";
 import PythonPackage from "../../model/PythonPackage";
-import PythonFunction from "../../model/PythonFunction";
-import PythonParameter from "../../model/PythonParameter";
+import {isEmptyList} from "../../util/listOperations";
+import {Setter} from "../../util/types";
+import ModuleNode from "./ModuleNode";
+import TreeCSS from "./Tree.module.css";
 
-type TreeProps = {
-    pythonPackage: PythonPackage,
-    setParameters: Setter<PythonParameter[]>,
-    selection: string[],
-    setSelection: Setter<string[]>,
-    setSelectedFunction: Setter<Nullable<PythonFunction>>
+interface TreeProps {
+    pythonPackage: PythonPackage
+    selection: PythonDeclaration
+    setSelection: Setter<PythonDeclaration>
 }
 
-export default function Tree({
-                                 pythonPackage,
-                                 setParameters,
-                                 selection,
-                                 setSelection,
-                                 setSelectedFunction
-                             }: TreeProps): JSX.Element {
-
-    const path = [pythonPackage.name];
-
+export default function Tree(props: TreeProps): JSX.Element {
     return (
-        <div className="tree">
-            {pythonPackage.modules.map(module => (
-                <ModuleNode parentPath={path}
-                            key={module.name}
-                            pythonModule={module}
-                            selection={selection}
-                            setSelection={setSelection}
-                            setParameters={setParameters}
-                            setSelectedFunction={setSelectedFunction}
-                />
-            ))}
+        <div className={TreeCSS.tree}>
+            {props.pythonPackage.modules
+                .filter(module => !isEmptyList(module.classes) || !isEmptyList(module.functions))
+                .map(module => (
+                    <ModuleNode key={module.name}
+                                pythonModule={module}
+                                selection={props.selection}
+                                setSelection={props.setSelection}/>
+                ))}
         </div>
     );
 }
