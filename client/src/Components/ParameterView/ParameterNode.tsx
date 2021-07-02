@@ -37,7 +37,7 @@ export default function ParameterNode({inputParameter}: ParameterNodeProps): JSX
     return (
         <div className="parameter-list">
             <div className="parameter-header">
-                <h4 className={"parameter-name"}>{inputParameter?.name}</h4>
+                <h4 className="parameter-name">{inputParameter?.name}</h4>
                 <Dropdown>
                     <Dropdown.Toggle size="sm" variant="outline-primary">
                         + @Annotation
