@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import pythonPackageJson from "../../data/sklearn.json";
 import PythonDeclaration from "../../model/PythonDeclaration";
 import {parsePythonPackageJson, PythonPackageJson} from "../../model/PythonPackageBuilder";
+import Menu from "../Menu/Menu";
 import ParameterView from "../ParameterView/ParameterView";
 import TreeView from "../TreeView/TreeView";
 import './App.css';
@@ -12,6 +13,7 @@ export default function App(): JSX.Element {
 
     return (
         <div className="App">
+            <Menu selection={selection}/>
             <TreeView pythonPackage={pythonPackage}
                       selection={selection}
                       setSelection={setSelection}/>

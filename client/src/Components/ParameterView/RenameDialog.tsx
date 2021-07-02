@@ -5,7 +5,7 @@ import {Setter} from "../../util/types";
 import {nameValidation} from "../../util/validation";
 import "./ParameterView.css";
 
-interface showDialogState {
+interface RenameDialogProps {
     dialogState: boolean,
     setDialogState: Setter<boolean>,
     currentName: string,
@@ -23,7 +23,7 @@ export default function RenameDialog({
                                          currentRenameValue,
                                          setCurrentRenameValue,
                                          onSubmit
-                                     }: showDialogState): JSX.Element {
+                                     }: RenameDialogProps): JSX.Element {
 
     const [nameValid, setNameValid] = useState(true);
 

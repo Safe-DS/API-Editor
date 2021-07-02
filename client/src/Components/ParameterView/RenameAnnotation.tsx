@@ -4,7 +4,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faTrash, faWrench} from '@fortawesome/free-solid-svg-icons';
 import {Setter} from "../../util/types";
 
-interface RenameProps {
+interface RenameAnnotationProps {
     renameName: string,
     setRenameName: Setter<string>,
     setCurrentName: Setter<string>
@@ -13,7 +13,7 @@ interface RenameProps {
 }
 
 export default function RenameAnnotation  ({setRenameName, renameName, setCurrentRenameValue, setCurrentName,
-                                               onRenameEdit}: RenameProps): JSX.Element {
+                                               onRenameEdit}: RenameAnnotationProps): JSX.Element {
 
     const deleteRename = () => {
         setRenameName("");
@@ -21,8 +21,7 @@ export default function RenameAnnotation  ({setRenameName, renameName, setCurren
         setCurrentRenameValue("");
     };
 
-    if (renameName != "")
-    {
+    if (renameName != "") {
         return (<div>
             <h5>Annotations</h5>
             <Row>

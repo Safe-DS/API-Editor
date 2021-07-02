@@ -38,7 +38,7 @@ export default function ParameterNode({inputParameter}: ParameterNodeProps): JSX
     return (
         <div className="parameter-list">
             <div className="parameter-header">
-                <h4 className={"parameter-name"}>{inputParameter?.name}</h4>
+                <h4 className="parameter-name">{inputParameter?.name}</h4>
                 <Dropdown>
                     <Dropdown.Toggle size="sm" variant="outline-primary">
                         + @Annotation
@@ -62,7 +62,7 @@ export default function ParameterNode({inputParameter}: ParameterNodeProps): JSX
             }
             {
                 !hasDescription &&
-                <p className="pl-3-5rem">There is no documentation for this parameter.</p>
+                <p className="pl-3-5rem text-muted">There is no documentation for this parameter.</p>
             }
         </div>
     );
