@@ -9,27 +9,16 @@ type EnumPairRowProps = {
     pair: EnumPair,
     //listOfEnumPairs: EnumPair[],
     //setListLength: Setter<number>
-    deleteFunction(key: string): any,
+    deleteFunction(key: string): void,
 
 }
 
 export default function EnumPairRow(props: EnumPairRowProps): JSX.Element {
 
-    const [enumValueValid, setEnumValueValid] = useState(true);
-    const [enumValue, setEnumValue] = useState("");
-    const [enumInstanceNameValid, setEnumInstanceNameValid] = useState(true);
-    const [enumInstanceName, setEnumInstanceName] = useState("");
-
-
-
-
-    /*const resetData = () => {
-        setEnumValue("");
-        setEnumValueValid(true);
-
-        setEnumInstanceName("");
-        setEnumInstanceNameValid(true);
-    };*/
+    const [enumValueValid, setEnumValueValid] = useState(props.pair.validValue);
+    const [enumValue, setEnumValue] = useState(props.pair.value);
+    const [enumInstanceNameValid, setEnumInstanceNameValid] = useState(props.pair.validKey);
+    const [enumInstanceName, setEnumInstanceName] = useState(props.pair.key);
 
 
     const onInputEnumInstanceName = (event: React.ChangeEvent<HTMLInputElement>) => {//Key
@@ -56,17 +45,17 @@ export default function EnumPairRow(props: EnumPairRowProps): JSX.Element {
         <Row className="enum-pair-row">
             <Col xs={5} className="no-left-padding">
                 <Form.Control type="text"
-                              value={enumInstanceName}
-                              onChange={onInputEnumInstanceName}
-                              isInvalid={!enumInstanceNameValid}>
+                              value={enumValue}
+                              onChange={onInputEnumValue}
+                              isInvalid={!enumValueValid}>
 
                 </Form.Control>
             </Col>
             <Col xs={5} className="no-right-padding">
                 <Form.Control type="text"
-                              value={enumValue}
-                              onChange={onInputEnumValue}
-                              isInvalid={!enumValueValid}>
+                              value={enumInstanceName}
+                              onChange={onInputEnumInstanceName}
+                              isInvalid={!enumInstanceNameValid}>
 
                 </Form.Control>
             </Col>

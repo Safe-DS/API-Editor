@@ -22,11 +22,11 @@ export default function EnumDialog({
                                    }: showDialogState): JSX.Element {
 
     //Test Data
-    /*const pair1 = new EnumPair("hello", "world1");
-    const pair2 = new EnumPair("hello", "world2");
-    const pair3 = new EnumPair("hello", "world3");
-    const listOfEnumPairs2 = [pair1, pair2, pair3];*/
-    const listOfEnumPairs: EnumPair[] = [];
+    const pair1 = new EnumPair("hello1", "world1");
+    const pair2 = new EnumPair("hello2", "world2");
+    const pair3 = new EnumPair("hello3", "world3");
+    const [listOfEnumPairs, setListOfEnumPairs] = useState<EnumPair[]>([pair1, pair2, pair3] );
+
     //End of Test Data
 
     //instead of TestData:
@@ -103,7 +103,7 @@ export default function EnumDialog({
                                     onChange={onInput}
                                     isInvalid={!nameValid}
                                 />
-                                <EnumHandle listOfEnumPairs={listOfEnumPairs}/>
+                                <EnumHandle listOfEnumPairs={listOfEnumPairs} setListOfEnumPairs={setListOfEnumPairs}/>
 
                             </Form.Group>
                         </Modal.Body>

@@ -7,54 +7,27 @@ import EnumPairRow from "./EnumPairRow";
 
 type EnumFormProps = {
     listOfEnumPairs: EnumPair[];
+    setListOfEnumPairs: Setter<EnumPair[]>;
 }
 
-export default function EnumHandle({listOfEnumPairs,
+export default function EnumHandle({listOfEnumPairs, setListOfEnumPairs
                                    }: EnumFormProps): JSX.Element {   //EnumForm name eigentlich
 
 
+    const deleteInstanceByIndex = ( index: number) => {
 
-    const [length, setLength] = useState(listOfEnumPairs.length);//damit update passiert
-
-
-    const deleteInstanceByKey = ( key: string) => {
-        console.log("delete "+ key);
-        listOfEnumPairs.forEach(function(value, index, array){
-            if(value.key == key){
-                console.log("delete at index "+ index);
-                console.log("key: "+array[index].key + "val: "+array[index].value);
-                listOfEnumPairs.splice(index, 1);
-            }
-        });
-        refreshItemsList();
+        const tmpCopy = [...listOfEnumPairs];
+        tmpCopy.splice(index,1 );
+        setListOfEnumPairs(tmpCopy);
     };
 
-
-    let listItems = listOfEnumPairs.map((pair, index) =>
-        <EnumPairRow pair={pair} key={String(index)} deleteFunction={deleteInstanceByKey}/>);
-
-    const refreshItemsList = () =>{
-        listItems = listOfEnumPairs.map((pair, index) =>
-            <EnumPairRow pair={pair} key={String(index)}  deleteFunction={deleteInstanceByKey}/>);
-        setLength(listOfEnumPairs.length);
-    };
-
-
-    const listWhenEmptyItemsList = () =>{
-        console.log("Empty List");
-        if(listOfEnumPairs.length < 1){
-            listOfEnumPairs.push(new EnumPair("",""));
-        }
-        refreshItemsList();
-    };
 
     const addEnumInstance = () =>{
         console.log("add");
-        listOfEnumPairs.push(new EnumPair("",""));
-        refreshItemsList();
+        const tmpCopy = [...listOfEnumPairs];
+        tmpCopy.unshift(new EnumPair("",""));
+        setListOfEnumPairs(tmpCopy);
     };
-
-
 
     return(
         <Container>
@@ -64,31 +37,9 @@ export default function EnumHandle({listOfEnumPairs,
                 <Col xs={2} className="enum-item-icon"><FontAwesomeIcon icon={faPlus} onClick={addEnumInstance}/></Col>
             </Row>
 
+            {listOfEnumPairs.map((pair, index) =>
+                <EnumPairRow pair={pair} key={pair.key + "" + index} deleteFunction={() => deleteInstanceByIndex(index)}/>)}
 
-            {listWhenEmptyItemsList}
-            {length > 0 && listItems /**/}
-            {/*check if list is empty - if empty add one Data"row" to enum - else just show the enum data rows*/}
         </Container>
     );
 }
-/*<Row className="enum-pair-row">
-                <Col xs={5} className="no-left-padding">
-                    <Form.Control
-                        type="text"
-                        placeholder="Parameter String/Value"//{currentName}
-                        value={enumValue}
-                        onChange={onInputEnumValue}
-                        isInvalid={!enumValueValid}
-                    />
-                </Col>
-                <Col xs={5} className="no-right-padding">
-                    <Form.Control
-                        type="text"
-                        placeholder="Enum Name"//{currentName}
-                        value={enumInstanceName}
-                        onChange={onInputEnumInstanceName}
-                        isInvalid={!enumInstanceNameValid}
-                    />
-                </Col>
-                <Col xs={2} className="delete-enum-item-icon"><FontAwesomeIcon icon={faTrash}/></Col>
-            </Row>*/
