@@ -52,7 +52,7 @@ export default function ParameterNode({inputParameter}: ParameterNodeProps): JSX
             }
             {
                 !hasDescription &&
-                <p className="pl-3-5rem">No Documentation available</p>
+                <p className="pl-3-5rem text-muted">No documentation available.</p>
             }
         </div>
     );
