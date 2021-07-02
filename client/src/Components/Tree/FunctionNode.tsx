@@ -4,6 +4,7 @@ import PythonDeclaration from "../../model/PythonDeclaration";
 import PythonFunction from "../../model/PythonFunction";
 import {isEmptyList} from "../../util/listOperations";
 import {Setter} from "../../util/types";
+import ParameterNode from "./ParameterNode";
 import TreeNode from "./TreeNode";
 
 interface FunctionNodeProps {
@@ -19,10 +20,19 @@ export default function FunctionNode(props: FunctionNodeProps): JSX.Element {
         <TreeNode
             declaration={props.pythonFunction}
             icon={faCogs}
-            isExpandable={false}
+            isExpandable={hasParameters}
             isWorthClicking={hasParameters}
             selection={props.selection}
             setSelection={props.setSelection}
-        />
+        >
+            {props.pythonFunction.parameters.map(parameter =>
+                <ParameterNode
+                    key={parameter.name}
+                    pythonParameter={parameter}
+                    selection={props.selection}
+                    setSelection={props.setSelection}
+                />
+            )}
+        </TreeNode>
     );
 }
