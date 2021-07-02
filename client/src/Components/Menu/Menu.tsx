@@ -1,24 +1,22 @@
 import React from 'react';
 import {Nav, Navbar, NavDropdown} from "react-bootstrap";
+import PythonDeclaration from "../../model/PythonDeclaration";
 
-export default function Menu(): JSX.Element {
+interface MenuProps {
+    selection: PythonDeclaration
+}
+
+export default function Menu(props: MenuProps): JSX.Element {
     return (
-        <Navbar className="Menu" bg="light" expand="lg">
-            <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav"/>
-            <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="mr-auto">
-                    <Nav.Link href="#home">Home</Nav.Link>
-                    <Nav.Link href="#link">Link</Nav.Link>
-                    <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                        <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                        <NavDropdown.Divider/>
-                        <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-                    </NavDropdown>
-                </Nav>
-            </Navbar.Collapse>
+        <Navbar className="Menu justify-content-between" bg="light" expand="lg">
+            <Navbar.Text>{props.selection.path().join("/")}</Navbar.Text>
+            <Nav>
+               <NavDropdown title="Import" id="import-dropdown" alignRight={true}>
+                   <NavDropdown.Item href="#">Python Package</NavDropdown.Item>
+                   <NavDropdown.Item href="#">Annotation File</NavDropdown.Item>
+               </NavDropdown>
+               <Navbar.Text>Export</Navbar.Text>
+            </Nav>
         </Navbar>
     );
 }
