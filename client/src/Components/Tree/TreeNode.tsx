@@ -2,7 +2,7 @@ import {IconDefinition} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import React, {useState} from "react";
-import PythonDeclaration from "../../model/PythonDeclaration";
+import PythonDeclaration from "../../model/python/PythonDeclaration";
 import {ChildrenProp, Setter} from "../../util/types";
 import VisibilityIndicator from "../Util/VisibilityIndicator";
 import TreeNodeCSS from "./TreeNode.module.css";

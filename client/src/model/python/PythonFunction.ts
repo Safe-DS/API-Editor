@@ -1,4 +1,4 @@
-import {Nullable} from "../util/types";
+import {Nullable} from "../../util/types";
 import PythonClass from "./PythonClass";
 import PythonDeclaration from "./PythonDeclaration";
 import PythonModule from "./PythonModule";

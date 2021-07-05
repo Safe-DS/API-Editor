@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import pythonPackageJson from "../../data/sklearn.json";
-import PythonDeclaration from "../../model/PythonDeclaration";
-import {parsePythonPackageJson, PythonPackageJson} from "../../model/PythonPackageBuilder";
+import PythonDeclaration from "../../model/python/PythonDeclaration";
+import {parsePythonPackageJson, PythonPackageJson} from "../../model/python/PythonPackageBuilder";
 import Menu from "../Menu/Menu";
 import ParameterView from "../ParameterView/ParameterView";
 import TreeView from "../TreeView/TreeView";

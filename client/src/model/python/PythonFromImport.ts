@@ -1,4 +1,4 @@
-import {Nullable} from "../util/types";
+import {Nullable} from "../../util/types";
 
 export default class PythonFromImport {
 

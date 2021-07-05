@@ -2,8 +2,8 @@ import {Formik} from 'formik';
 import React, {FormEvent, useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
 import {Setter} from "../../util/types";
-import {nameValidation} from "../../util/validation";
-import "./ParameterView.css";
+import {isValidPythonIdentifier} from "../../util/validation";
+import "../ParameterView/ParameterView.css";
 
 interface RenameDialogProps {
     dialogState: boolean,
@@ -29,7 +29,7 @@ export default function RenameDialog({
 
     const onInput = (event: React.ChangeEvent<HTMLInputElement>) => {
         setCurrentRenameValue(event.target.value);
-        setNameValid(nameValidation(event.target.value));
+        setNameValid(isValidPythonIdentifier(event.target.value));
     };
 
     const resetData = () => {
@@ -73,7 +73,7 @@ export default function RenameDialog({
                         <Modal.Body>
                             <Form.Group>
                                 <Form.Label>
-                                    New Name:
+                                    New name for &quot;{currentName}&quot;:
                                 </Form.Label>
                                 <Form.Control
                                     type="text"

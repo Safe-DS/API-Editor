@@ -1,6 +1,6 @@
 import React from 'react';
 import {Nav, Navbar, NavDropdown} from "react-bootstrap";
-import PythonDeclaration from "../../model/PythonDeclaration";
+import PythonDeclaration from "../../model/python/PythonDeclaration";
 
 interface MenuProps {
     selection: PythonDeclaration

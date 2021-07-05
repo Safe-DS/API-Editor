@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import {Dropdown} from "react-bootstrap";
-import PythonParameter from "../../model/PythonParameter";
+import PythonParameter from "../../model/python/PythonParameter";
 import DocumentationText from "./DocumentationText";
 import "./ParameterView.css";
-import RenameDialog from "./RenameDialog";
+import RenameDialog from "../Dialog/RenameDialog";
 import RenameAnnotation from "./RenameAnnotation";
 
 interface ParameterNodeProps {
@@ -15,7 +15,7 @@ export default function ParameterNode({inputParameter}: ParameterNodeProps): JSX
     const hasDescription = !!inputParameter.description;
 
     const [renameDialog, setRenameDialog] = useState(false);
-    const [renameName, setRenameName] = useState("");
+    const [renameName, setRenameName] = useState(inputParameter.name);
     const [renameNameAnnotation, setRenameNameAnnotation] = useState("");
     const [currentRenameValue, setCurrentRenameValue] = useState("");
     const openRenameDialog = () => setRenameDialog(true);
