@@ -21,11 +21,20 @@ export default function EnumDialog({
                                        enumList
                                    }: showDialogState): JSX.Element {
 
+    const rowIfEmpty = new EnumPair("", "");
     //Test Data
     const pair1 = new EnumPair("hello1", "world1");
     const pair2 = new EnumPair("hello2", "world2");
     const pair3 = new EnumPair("hello3", "world3");
-    const [listOfEnumPairs, setListOfEnumPairs] = useState<EnumPair[]>([pair1, pair2, pair3] );
+
+    let initialList: EnumPair[] = [rowIfEmpty];
+
+    if(enumList.length > 0){
+        initialList = enumList;
+    }
+
+
+    const [listOfEnumPairs, setListOfEnumPairs] = useState<EnumPair[]>(initialList);//[pair1, pair2, pair3]
 
     //End of Test Data
 
@@ -33,14 +42,15 @@ export default function EnumDialog({
     //const listOfEnumPairs = enumList;
 
     const [nameValid, setNameValid] = useState(true);
-    const [name, setName] = useState("");
+    const [name, setName] = useState(currentName);
 
 
     const resetData = () => {
         setDialogState(false);
 
-        setName("");
+        setName(currentName);
         setNameValid(true);
+        setListOfEnumPairs(enumList);
     };
 
     const onInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,13 +65,15 @@ export default function EnumDialog({
         let validInputInstances = true;
 
         listOfEnumPairs.forEach(function(value){
-            if(!value.validValue || !value.validKey){
+            if(!value.validValue || !value.validKey || value.key.length < 1 || value.value.length < 1){
                 validInputInstances = false;
+                value.validValue = false;
+                value.validKey = false;
             }
         });
 
-        if (name && name != currentName && nameValid && validInputInstances) {
-            //currentName = enumValue;
+        if (name && nameValid && validInputInstances) {//&& name != currentName
+            console.log(name);
             setCurrentName(name);
             setEnumList(listOfEnumPairs);
             resetData();
@@ -98,7 +110,7 @@ export default function EnumDialog({
                                 </Form.Label>
                                 <Form.Control
                                     type="text"
-                                    placeholder={currentName}
+                                    //placeholder={currentName}
                                     value={name}
                                     onChange={onInput}
                                     isInvalid={!nameValid}

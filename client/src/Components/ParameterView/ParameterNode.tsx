@@ -18,7 +18,11 @@ export default function ParameterNode({inputParameter}: ParameterProps): JSX.Ele
 
     const [enumDialog, setEnumDialog] = useState(false);
     const [enumName, setEnumName] = useState("");
-    const [enumList, setEnumList] = useState<EnumPair[]>([]);
+    const pair1 = new EnumPair("hello1", "world1");
+    const pair2 = new EnumPair("hello2", "world2");
+    const pair3 = new EnumPair("hello3", "world3");
+
+    const [enumList, setEnumList] = useState<EnumPair[]>([pair1, pair2, pair3]);
 
     const openRenameDialog = () => setRenameDialog(true);
     const openEnumDialog = () => setEnumDialog(true);
