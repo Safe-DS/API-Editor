@@ -1,100 +1,75 @@
-import {Formik} from 'formik';
-import React, {FormEvent, useState} from "react";
+import React, {useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
-import {Setter} from "../../util/types";
+import RenameAnnotation from "../../model/annotation/RenameAnnotation";
+import {Nullable, Setter} from "../../util/types";
 import {isValidPythonIdentifier} from "../../util/validation";
 import "../ParameterView/ParameterView.css";
 
 interface RenameDialogProps {
-    dialogState: boolean,
-    setDialogState: Setter<boolean>,
-    currentName: string,
-    setCurrentName: Setter<string>,
-    currentRenameValue: string,
-    setCurrentRenameValue: Setter<string>,
-    onSubmit: (name: string)=>void
+    isVisible: boolean
+    setIsVisible: Setter<boolean>
+    originalName: string
+    renameAnnotation: Nullable<RenameAnnotation>
+    setRenameAnnotation: Setter<Nullable<RenameAnnotation>>
 }
 
-export default function RenameDialog({
-                                         dialogState,
-                                         setDialogState,
-                                         currentName,
-                                         setCurrentName,
-                                         currentRenameValue,
-                                         setCurrentRenameValue,
-                                         onSubmit
-                                     }: RenameDialogProps): JSX.Element {
+export default function RenameDialog(props: RenameDialogProps): JSX.Element {
+    const [currentUserInput, setCurrentUserInput] = useState(props.renameAnnotation?.newName ?? props.originalName);
 
-    const [nameValid, setNameValid] = useState(true);
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => setCurrentUserInput(event.target.value);
 
-    const onInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setCurrentRenameValue(event.target.value);
-        setNameValid(isValidPythonIdentifier(event.target.value));
+    const close = () => {
+        props.setIsVisible(false);
     };
 
-    const resetData = () => {
-        setDialogState(false);
-        setNameValid(true);
-        setCurrentRenameValue(currentName);
-    };
-
-    const onFormSubmit = (e: FormEvent) => {
-        e.preventDefault();
-        if (currentRenameValue && currentRenameValue !== currentName && nameValid) {
-            onSubmit(currentRenameValue);
-            currentName = currentRenameValue;
-            setCurrentName(currentRenameValue);
-            resetData();
+    const submit = () => {
+        if (currentUserInput === props.originalName) {
+            props.setRenameAnnotation(null);
+            props.setIsVisible(false);
+        } else if (isValidPythonIdentifier(currentUserInput)) {
+            props.setRenameAnnotation(new RenameAnnotation(currentUserInput));
+            props.setIsVisible(false);
         }
-    };
-
-    const handleClose = () => {
-        resetData();
     };
 
     return (
         <Modal
-            show={dialogState}
-            onHide={handleClose}
+            onHide={close}
+            show={props.isVisible}
         >
             <Modal.Header closeButton>
                 <Modal.Title>Add @rename Annotation</Modal.Title>
             </Modal.Header>
 
-            <Formik
-                onSubmit={console.log}
-                initialValues={{
-                    currentRenameValue: currentName
-                }}
-            >
-                {() => (
-
-                    <Form noValidate>
-                        <Modal.Body>
-                            <Form.Group>
-                                <Form.Label>
-                                    New name for &quot;{currentName}&quot;:
-                                </Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    placeholder={currentName}
-                                    value={currentRenameValue}
-                                    onChange={onInput}
-                                    isInvalid={!nameValid}
-                                />
-                            </Form.Group>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="secondary" onClick={handleClose}>
-                                Close
-                            </Button>
-                            <Button variant="primary" type="submit" onClick={onFormSubmit}>
-                                Submit
-                            </Button>
-                        </Modal.Footer>
-                    </Form>
-                )}
-            </Formik>
+            <Modal.Body>
+                <Form noValidate>
+                    <Modal.Body>
+                        <Form.Group>
+                            <Form.Label>
+                                New name for &quot;{props.originalName}&quot;:
+                            </Form.Label>
+                            <Form.Control
+                                type="text"
+                                value={currentUserInput}
+                                onChange={handleChange}
+                                isInvalid={!isValidPythonIdentifier(currentUserInput)}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                Valid Python identifiers must start with a letter or underscore followed by letters,
+                                numbers and underscores.
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={close}>
+                            Close
+                        </Button>
+                        <Button variant="primary" type="button" onClick={submit}>
+                            Submit
+                        </Button>
+                    </Modal.Footer>
+                </Form>
+            </Modal.Body>
         </Modal>
     );
 }
