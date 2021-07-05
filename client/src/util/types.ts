@@ -9,6 +9,7 @@ export interface ClassNameProp {
     className?: string
 }
 
+// TODO remove once the type of functional components is set to React.FC<T>
 export interface ChildrenProp {
     children?: React.ReactNode
 }

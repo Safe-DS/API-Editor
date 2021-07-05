@@ -1,7 +1,7 @@
 import {faKeyboard} from "@fortawesome/free-solid-svg-icons";
 import React from "react";
-import PythonDeclaration from "../../model/PythonDeclaration";
-import PythonParameter from "../../model/PythonParameter";
+import PythonDeclaration from "../../model/python/PythonDeclaration";
+import PythonParameter from "../../model/python/PythonParameter";
 import {Setter} from "../../util/types";
 import TreeNode from "./TreeNode";
 

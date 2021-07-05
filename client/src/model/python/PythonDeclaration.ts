@@ -1,4 +1,4 @@
-import {Nullable} from "../util/types";
+import {Nullable} from "../../util/types";
 
 export default abstract class PythonDeclaration {
     abstract readonly name: string
@@ -9,7 +9,7 @@ export default abstract class PythonDeclaration {
         let current: Nullable<PythonDeclaration> = this;
         const result: string[] = [];
 
-        while (current != null) {
+        while (current !== null) {
             result.unshift(current.name);
             current = current.parent();
         }
