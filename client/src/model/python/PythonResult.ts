@@ -29,6 +29,10 @@ export default class PythonResult extends PythonDeclaration {
         return this.containingFunction;
     }
 
+    children(): PythonDeclaration[] {
+        return [];
+    }
+
     toString(): string {
         return `Result "${this.name}"`;
     }

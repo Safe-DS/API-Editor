@@ -1,9 +1,12 @@
+import {isEmptyList} from "../../util/listOperations";
 import {Nullable} from "../../util/types";
 
 export default abstract class PythonDeclaration {
     abstract readonly name: string
 
     abstract parent(): Nullable<PythonDeclaration>
+
+    abstract children(): PythonDeclaration[]
 
     path(): string[] {
         let current: Nullable<PythonDeclaration> = this;
@@ -15,5 +18,14 @@ export default abstract class PythonDeclaration {
         }
 
         return result;
+    }
+
+    getByRelativePath(relativePath: string[]): Nullable<PythonDeclaration> {
+        if (isEmptyList(relativePath)) {
+            return this;
+        }
+
+        const [head, ...tail] = relativePath;
+        return this.children().find(it => it.name === head)?.getByRelativePath(tail) ?? null;
     }
 }

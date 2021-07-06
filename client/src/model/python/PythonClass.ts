@@ -43,6 +43,10 @@ export default class PythonClass extends PythonDeclaration {
         return this.containingModule;
     }
 
+    children(): PythonDeclaration[] {
+        return this.methods;
+    }
+
     toString(): string {
         let result = "";
 

@@ -41,6 +41,10 @@ export default class PythonParameter extends PythonDeclaration {
         return this.containingFunction;
     }
 
+    children(): PythonDeclaration[] {
+        return [];
+    }
+
     toString(): string {
         return `Parameter "${this.name}"`;
     }

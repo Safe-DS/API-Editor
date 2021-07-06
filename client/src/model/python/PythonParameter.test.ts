@@ -39,6 +39,11 @@ test("path with ancestors", () => {
     expect(pythonParameter.path()).toEqual(["package", "module", "Class", "function", "param"]);
 });
 
+test("getByRelativePath", () => {
+    const pythonParameter = new PythonParameter("param");
+    expect(pythonParameter.getByRelativePath(["child"])).toBe(null);
+});
+
 test("toString", () => {
     const pythonParameter = new PythonParameter("param");
     expect(pythonParameter.toString()).toBe(`Parameter "param"`);
