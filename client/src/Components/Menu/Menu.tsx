@@ -11,7 +11,7 @@ export default function Menu(props: MenuProps): JSX.Element {
         <Navbar className="Menu justify-content-between" bg="light" expand="lg">
             <Navbar.Text>{props.selection.path().join("/")}</Navbar.Text>
             <Nav>
-               <NavDropdown title="Import" id="import-dropdown" alignRight={true}>
+               <NavDropdown title="Import" id="import-dropdown" align="end">
                    <NavDropdown.Item href="#">Python Package</NavDropdown.Item>
                    <NavDropdown.Item href="#">Annotation File</NavDropdown.Item>
                </NavDropdown>
