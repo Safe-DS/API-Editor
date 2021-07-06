@@ -22,10 +22,7 @@ export default function RenameDialog(props: RenameDialogProps): JSX.Element {
     };
 
     const submit = () => {
-        if (currentUserInput === props.oldName) {
-            props.setNewName(null);
-            props.setIsVisible(false);
-        } else if (isValidPythonIdentifier(currentUserInput)) {
+        if (isValidPythonIdentifier(currentUserInput)) {
             props.setNewName(currentUserInput);
             props.setIsVisible(false);
         }

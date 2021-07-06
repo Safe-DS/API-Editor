@@ -14,7 +14,7 @@ export default class AnnotationStore {
     }
 
     setRenamingFor(declaration: PythonDeclaration, newName: Nullable<string>): AnnotationStore {
-        if (newName === null) {
+        if (newName === null || declaration.name === newName) {
             return this.removeRenamingFor(declaration);
         }
 
