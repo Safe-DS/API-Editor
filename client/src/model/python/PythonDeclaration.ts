@@ -20,6 +20,10 @@ export default abstract class PythonDeclaration {
         return result;
     }
 
+    pathAsString(): string {
+        return this.path().join("/");
+    }
+
     getByRelativePath(relativePath: string[]): Nullable<PythonDeclaration> {
         if (isEmptyList(relativePath)) {
             return this;
