@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
-import RenameAnnotation from "../../model/annotation/RenameAnnotation";
 import {Nullable, Setter} from "../../util/types";
 import {isValidPythonIdentifier} from "../../util/validation";
 import "../ParameterView/ParameterView.css";
@@ -8,13 +7,13 @@ import "../ParameterView/ParameterView.css";
 interface RenameDialogProps {
     isVisible: boolean
     setIsVisible: Setter<boolean>
-    originalName: string
-    renameAnnotation: Nullable<RenameAnnotation>
-    setRenameAnnotation: Setter<Nullable<RenameAnnotation>>
+    oldName: string
+    newName: Nullable<string>
+    setNewName: Setter<Nullable<string>>
 }
 
 export default function RenameDialog(props: RenameDialogProps): JSX.Element {
-    const [currentUserInput, setCurrentUserInput] = useState(props.renameAnnotation?.newName ?? props.originalName);
+    const [currentUserInput, setCurrentUserInput] = useState(props.newName ?? props.oldName);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => setCurrentUserInput(event.target.value);
 
@@ -23,11 +22,11 @@ export default function RenameDialog(props: RenameDialogProps): JSX.Element {
     };
 
     const submit = () => {
-        if (currentUserInput === props.originalName) {
-            props.setRenameAnnotation(null);
+        if (currentUserInput === props.oldName) {
+            props.setNewName(null);
             props.setIsVisible(false);
         } else if (isValidPythonIdentifier(currentUserInput)) {
-            props.setRenameAnnotation(new RenameAnnotation(currentUserInput));
+            props.setNewName(currentUserInput);
             props.setIsVisible(false);
         }
     };
@@ -46,7 +45,7 @@ export default function RenameDialog(props: RenameDialogProps): JSX.Element {
                     <Modal.Body>
                         <Form.Group>
                             <Form.Label>
-                                New name for &quot;{props.originalName}&quot;:
+                                New name for &quot;{props.oldName}&quot;:
                             </Form.Label>
                             <Form.Control
                                 type="text"

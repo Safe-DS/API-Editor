@@ -1,25 +1,24 @@
+import {faTrash, faWrench} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import React from "react";
 import {Button, ButtonGroup, Col, Row} from "react-bootstrap";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faTrash, faWrench} from '@fortawesome/free-solid-svg-icons';
-import RenameAnnotation from "../../model/annotation/RenameAnnotation";
 import {Nullable, Setter} from "../../util/types";
 
 interface RenameAnnotationViewProps {
-    renameAnnotation: Nullable<RenameAnnotation>,
-    setRenameAnnotation: Setter<Nullable<RenameAnnotation>>,
+    newName: Nullable<string>,
+    setNewName: Setter<Nullable<string>>,
     onRenameEdit: () => void,
 }
 
 const RenameAnnotationView: React.FC<RenameAnnotationViewProps> = (props) => {
-    const deleteRenameAnnotation = () => props.setRenameAnnotation(null);
+    const deleteRenameAnnotation = () => props.setNewName(null);
 
-    if (props.renameAnnotation !== null) {
+    if (props.newName !== null) {
         return (<div>
             <h5>Annotations</h5>
             <Row>
                 <Col className="align-items-center" xs="auto">
-                    <code>{`@rename: ${props.renameAnnotation.newName}`}</code>
+                    <code>{`@rename: ${props.newName}`}</code>
                 </Col>
                 <Col xs="auto">
                     <ButtonGroup>

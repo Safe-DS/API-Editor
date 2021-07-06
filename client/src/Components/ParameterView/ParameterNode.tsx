@@ -1,20 +1,28 @@
 import React, {useState} from "react";
 import {Dropdown} from "react-bootstrap";
-import RenameAnnotation from "../../model/annotation/RenameAnnotation";
+import AnnotationStore from "../../model/annotation/AnnotationStore";
 import PythonParameter from "../../model/python/PythonParameter";
-import {Nullable} from "../../util/types";
+import {Nullable, Setter} from "../../util/types";
 import RenameDialog from "../Dialog/RenameDialog";
 import DocumentationText from "./DocumentationText";
 import "./ParameterView.css";
 import RenameAnnotationView from "./RenameAnnotationView";
 
 interface ParameterNodeProps {
-    inputParameter: PythonParameter
+    pythonParameter: PythonParameter
+    annotationStore: AnnotationStore
+    setAnnotationStore: Setter<AnnotationStore>
 }
 
 export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
     const [showRenameDialog, setShowRenameDialog] = useState(false);
-    const [renameAnnotation, setRenameAnnotation] = useState<Nullable<RenameAnnotation>>(null);
+
+    const newName = props.annotationStore.getRenamingFor(props.pythonParameter);
+    const setNewName = (newName: Nullable<string>) => {
+        props.setAnnotationStore(
+            props.annotationStore.setRenamingFor(props.pythonParameter, newName)
+        );
+    };
 
     const openRenameDialog = () => setShowRenameDialog(true);
     const handleEnumSelect = () => console.log("TODO");
@@ -22,7 +30,7 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
     return (
         <div className="parameter-list">
             <div className="parameter-header">
-                <h4 className="parameter-name">{props.inputParameter.name}</h4>
+                <h4 className="parameter-name">{props.pythonParameter.name}</h4>
                 <Dropdown>
                     <Dropdown.Toggle size="sm" variant="outline-primary">
                         + @Annotation
@@ -34,8 +42,8 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
                 </Dropdown>
             </div>
             <RenameAnnotationView
-                renameAnnotation={renameAnnotation}
-                setRenameAnnotation={setRenameAnnotation}
+                newName={newName}
+                setNewName={setNewName}
                 onRenameEdit={openRenameDialog}
             />
 
@@ -43,17 +51,17 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
             {showRenameDialog && <RenameDialog
                 isVisible={showRenameDialog}
                 setIsVisible={setShowRenameDialog}
-                originalName={props.inputParameter.name}
-                renameAnnotation={renameAnnotation}
-                setRenameAnnotation={setRenameAnnotation}
+                oldName={props.pythonParameter.name}
+                newName={newName}
+                setNewName={setNewName}
             />}
 
             {
-                props.inputParameter.description &&
-                <DocumentationText inputText={props.inputParameter?.description}/>
+                props.pythonParameter.description &&
+                <DocumentationText inputText={props.pythonParameter?.description}/>
             }
             {
-                !props.inputParameter.description &&
+                !props.pythonParameter.description &&
                 <p className="pl-3-5rem text-muted">There is no documentation for this parameter.</p>
             }
         </div>
