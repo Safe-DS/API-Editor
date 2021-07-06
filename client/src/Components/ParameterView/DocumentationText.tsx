@@ -1,9 +1,12 @@
 import classNames from "classnames";
 import React, {useState} from "react";
 import ReactMarkdown from "react-markdown";
+import rehypeKatex from "rehype-katex";
 import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
 import VisibilityIndicator from "../Util/VisibilityIndicator";
 import "./ParameterView.css";
+import "katex/dist/katex.min.css";
 
 interface DocumentationTextProps {
     inputText: string
@@ -11,7 +14,8 @@ interface DocumentationTextProps {
 
 export default function DocumentationText({inputText = ""}: DocumentationTextProps): JSX.Element {
 
-    const shortenedText = inputText.split("\n\n")[0];
+    const preprocessedText = inputText.replaceAll(/:math:`([^`]*)`/g, "$$$1$$");
+    const shortenedText = preprocessedText.split("\n\n")[0];
     const hasMultipleLines = shortenedText !== inputText;
 
     const [readMore, setReadMore] = useState(false);
@@ -31,8 +35,15 @@ export default function DocumentationText({inputText = ""}: DocumentationTextPro
                 <VisibilityIndicator hasChildren={hasMultipleLines} showChildren={readMore}/>
             </div>
 
-            <ReactMarkdown className={cssClasses} remarkPlugins={[remarkGfm]}>
-                {readMore ? inputText : shortenedText}
+            {/*<ReactMarkdown*/}
+            {/*    remarkPlugins={[remarkGfm, remarkMath]}*/}
+            {/*    rehypePlugins={[rehypeKatex]}*/}
+            {/*>*/}
+            {/*    The lift coefficient ($C_L$) is a dimensionless coefficient.*/}
+            {/*</ReactMarkdown>*/}
+
+            <ReactMarkdown className={cssClasses} rehypePlugins={[rehypeKatex]} remarkPlugins={[remarkGfm, remarkMath]}>
+                {readMore ? preprocessedText : shortenedText}
             </ReactMarkdown>
         </div>
     );
