@@ -4,6 +4,11 @@ export function isValidPythonIdentifier(value: string) : boolean{
 }
 
 export function enumValueValidation (value: string) : boolean{
-    const valueRegex = new RegExp(/^[a-zA-Z0-9_]+$/i);
+    const valueRegex = new RegExp(/^[a-zA-Z0-9_.-]+$/i);
+    return !!value.match(valueRegex);
+}
+
+export function enumKeyValidation (value: string) : boolean{
+    const valueRegex = new RegExp(/^[A-Z]+[A-Z_0-9]*$/);
     return !!value.match(valueRegex);
 }
