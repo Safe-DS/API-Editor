@@ -35,15 +35,8 @@ export default function DocumentationText({inputText = ""}: DocumentationTextPro
                 <VisibilityIndicator hasChildren={hasMultipleLines} showChildren={readMore}/>
             </div>
 
-            {/*<ReactMarkdown*/}
-            {/*    remarkPlugins={[remarkGfm, remarkMath]}*/}
-            {/*    rehypePlugins={[rehypeKatex]}*/}
-            {/*>*/}
-            {/*    The lift coefficient ($C_L$) is a dimensionless coefficient.*/}
-            {/*</ReactMarkdown>*/}
-
             <ReactMarkdown className={cssClasses} rehypePlugins={[rehypeKatex]} remarkPlugins={[remarkGfm, remarkMath]}>
-                {readMore ? preprocessedText : shortenedText}
+                {readMore || !hasMultipleLines ? preprocessedText : shortenedText + " [Read More...]"}
             </ReactMarkdown>
         </div>
     );
