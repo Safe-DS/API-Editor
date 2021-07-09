@@ -1,9 +1,7 @@
 import {faCogs} from "@fortawesome/free-solid-svg-icons";
 import React from "react";
-import PythonDeclaration from "../../model/python/PythonDeclaration";
 import PythonFunction from "../../model/python/PythonFunction";
 import {isEmptyList} from "../../util/listOperations";
-import {Setter} from "../../util/types";
 import ParameterNode from "./ParameterNode";
 import TreeNode from "./TreeNode";
 

@@ -1,9 +1,7 @@
 import {faChalkboard} from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import PythonClass from "../../model/python/PythonClass";
-import PythonDeclaration from "../../model/python/PythonDeclaration";
 import {isEmptyList} from "../../util/listOperations";
-import {Setter} from "../../util/types";
 import FunctionNode from "./FunctionNode";
 import TreeNode from "./TreeNode";
 

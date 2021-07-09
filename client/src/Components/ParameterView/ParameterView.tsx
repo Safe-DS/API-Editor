@@ -1,12 +1,11 @@
 import React from "react";
 import AnnotationStore from "../../model/annotation/AnnotationStore";
-import PythonDeclaration from "../../model/python/PythonDeclaration";
 import PythonFunction from "../../model/python/PythonFunction";
 import {isEmptyList} from "../../util/listOperations";
 import {Setter} from "../../util/types";
 import DocumentationText from "./DocumentationText";
 import ParameterNode from "./ParameterNode";
-import {useLocation,matchPath} from "react-router";
+import {useLocation} from "react-router";
 import PythonPackage from "../../model/python/PythonPackage";
 
 interface ParameterViewProps {

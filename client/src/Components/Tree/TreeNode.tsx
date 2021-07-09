@@ -3,7 +3,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import React, {useState} from "react";
 import PythonDeclaration from "../../model/python/PythonDeclaration";
-import {ChildrenProp, Setter} from "../../util/types";
+import {ChildrenProp} from "../../util/types";
 import VisibilityIndicator from "../Util/VisibilityIndicator";
 import TreeNodeCSS from "./TreeNode.module.css";
 import {Link} from "react-router-dom";
@@ -47,7 +47,8 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element {
                     icon={props.icon}
                     fixedWidth
                 />
-                <Link to={`/${props.declaration.path().join("/")}`}>{props.declaration.name}</Link>
+                <Link className="treeNode-link"
+                      to={`/${props.declaration.path().join("/")}`}>{props.declaration.name}</Link>
             </div>
             <div className={TreeNodeCSS.children}>
                 {showChildren && props.children}
