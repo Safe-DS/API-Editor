@@ -37,9 +37,6 @@ export default function EnumPairRow(props: EnumPairRowProps): JSX.Element {
         setEnumValueValid(valid);
     };
 
-
-
-
     return (
         <Row className="enum-pair-row">
             <Col xs={5} className="no-left-padding">

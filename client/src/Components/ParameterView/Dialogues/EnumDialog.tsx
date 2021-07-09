@@ -115,7 +115,6 @@ export default function EnumDialog({
                                     isInvalid={!nameValid}
                                 />
                                 <EnumHandle listOfEnumPairs={listOfEnumPairs} setListOfEnumPairs={setListOfEnumPairs}/>
-
                             </Form.Group>
                         </Modal.Body>
                         <Modal.Footer>

@@ -15,7 +15,6 @@ export default function EnumHandle({listOfEnumPairs, setListOfEnumPairs
 
 
     const deleteInstanceByIndex = ( index: number) => {
-
         const tmpCopy = [...listOfEnumPairs];
         tmpCopy.splice(index,1 );
         setListOfEnumPairs(tmpCopy);
