@@ -4,7 +4,7 @@ import AnnotationStore from "../../model/annotation/AnnotationStore";
 import PythonDeclaration from "../../model/python/PythonDeclaration";
 import {parsePythonPackageJson, PythonPackageJson} from "../../model/python/PythonPackageBuilder";
 import Menu from "../Menu/Menu";
-import ParameterView from "../ParameterView/ParameterView";
+import SelectionView from "../SelectionView/SelectionView";
 import TreeView from "../TreeView/TreeView";
 import AppCSS from './App.module.css';
 
@@ -26,7 +26,7 @@ export default function App(): JSX.Element {
                 />
             </div>
             <div className={AppCSS.rightPane}>
-                <ParameterView
+                <SelectionView
                     selection={selection}
                     annotationStore={annotationStore}
                     setAnnotationStore={setAnnotationStore}

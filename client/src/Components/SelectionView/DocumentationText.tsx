@@ -5,7 +5,7 @@ import rehypeKatex from "rehype-katex";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import VisibilityIndicator from "../Util/VisibilityIndicator";
-import "./ParameterView.css";
+import "./SelectionView.css";
 import "katex/dist/katex.min.css";
 
 interface DocumentationTextProps {
