@@ -10,8 +10,8 @@ export default function ModuleImportFromItem(props: ModuleImportFromItemProps): 
     return (
         <>
             <TitleValueViewPair title="Module" value={props.inputImportFrom.module}/>
-            <TitleValueViewPair title="Declaration" value={props.inputImportFrom.declaration}/>
-            <TitleValueViewPair title="Alias" value={props.inputImportFrom.alias}/>
+            {props.inputImportFrom.declaration ? <TitleValueViewPair title="Declaration" value={props.inputImportFrom.declaration}/> : ""}
+            {props.inputImportFrom.alias ? <TitleValueViewPair title="Alias" value={props.inputImportFrom.alias}/> : ""}
         </>
     );
 }

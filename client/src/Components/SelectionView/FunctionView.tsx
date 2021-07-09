@@ -18,7 +18,7 @@ export default function FunctionView(props: FunctionViewProps): JSX.Element {
         <>
             <h1>{props.pythonFunction.name}</h1>
             <DocumentationText inputText={props.pythonFunction.description}/>
-            <h2 className={"parameter-title"}>Parameters</h2>
+            <h2 className={"function-title"}>Parameters</h2>
             {
                 !isEmptyList(props.pythonFunction.parameters) ?
                     props.pythonFunction.parameters.map(parameters => (

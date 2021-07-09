@@ -13,17 +13,28 @@ export default function ModuleView(props: ModuleViewProps): JSX.Element {
         <>
             <h1>{props.pythonModule.name}</h1>
             <h2>Imports</h2>
-            {!isEmptyList(props.pythonModule.imports) ? props.pythonModule.imports.map((pythonImport, index) => (
-                <ModuleImportItem key={index} inputImport={pythonImport}/>
-                )) : <span className="text-muted"
-                style={{paddingLeft: '1rem'}}>There are no imports.</span>
+            {!isEmptyList(props.pythonModule.imports) ?
+                <ul className="module-list">
+                    {props.pythonModule.imports.map((pythonImport, index) => (
+                        <li key={index}>
+                            <ModuleImportItem inputImport={pythonImport}/>
+                        </li>
+                    ))}
+                </ul>
+                : <span className="text-muted"
+                        style={{paddingLeft: '1rem'}}>There are no imports.</span>
             }
             <h2>Imported from</h2>
-            {!isEmptyList(props.pythonModule.imports) ? props.pythonModule.fromImports.map((pythonImportFrom, index) => (
-                <ModuleImportFromItem key={index} inputImportFrom={pythonImportFrom}/>
-            )) : <span className="text-muted"
-                       style={{paddingLeft: '1rem'}}>There are no modules that import this module.</span>
-            }
+            {!isEmptyList(props.pythonModule.imports) ?
+                <ul className="module-list">
+                    {props.pythonModule.fromImports.map((pythonImportFrom, index) => (
+                        <li key={index}>
+                            <ModuleImportFromItem inputImportFrom={pythonImportFrom}/>
+                        </li>
+                    ))}
+                </ul>
+                : <span className="text-muted"
+                          style={{paddingLeft: '1rem'}}>There are no modules that import this module.</span>}
         </>
     );
 }

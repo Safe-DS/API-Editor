@@ -1,5 +1,6 @@
 import React from "react";
 import PythonImport from "../../model/python/PythonImport";
+import TitleValueViewPair from "./TitleValueViewPair";
 
 interface ModuleImportItemProps {
     inputImport: PythonImport
@@ -8,8 +9,8 @@ interface ModuleImportItemProps {
 export default function ModuleImportItem(props: ModuleImportItemProps): JSX.Element {
     return (
         <>
-            <div>{"Module: " + props.inputImport.module}</div>
-            <div>{props.inputImport.alias ? "Alias: " + props.inputImport.alias : ""}</div>
+            <TitleValueViewPair title={"Module"} value={props.inputImport.module}/>
+            {props.inputImport.alias ? <TitleValueViewPair title={"Alias"} value={props.inputImport.alias}/> : ""}
         </>
     );
 }

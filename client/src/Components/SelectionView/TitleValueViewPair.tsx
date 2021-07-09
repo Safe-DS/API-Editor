@@ -10,7 +10,8 @@ export default function TitleValueViewPair(props: ClassViewProps): JSX.Element {
 
     return (
         <>
-            {props.value && <p>{props.title + ": " + props.value}</p>}
+            {props.value && <>{props.title + ": " + props.value}</>}
+            <br/>
         </>
     );
 }
