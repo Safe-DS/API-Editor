@@ -47,7 +47,7 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element {
                     icon={props.icon}
                     fixedWidth
                 />
-                <Link className="treeNode-link"
+                <Link className={TreeNodeCSS.treeNodeLink}
                       to={`/${props.declaration.path().join("/")}`}>{props.declaration.name}</Link>
             </div>
             <div className={TreeNodeCSS.children}>

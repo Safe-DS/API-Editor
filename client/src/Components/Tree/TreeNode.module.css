@@ -14,3 +14,12 @@
 .icon {
     margin-right: 0.25rem;
 }
+
+.treeNodeLink {
+    color: inherit;
+}
+
+.treeNodeLink:hover {
+    text-decoration: none;
+    color: inherit;
+}
