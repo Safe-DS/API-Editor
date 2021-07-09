@@ -23,7 +23,6 @@ export default function DocumentationText({inputText = ""}: DocumentationTextPro
     const cssClasses = classNames(
         "read-more-button",
         {
-            "pl-1-5rem": !hasMultipleLines,
         }
     );
 
