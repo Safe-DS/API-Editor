@@ -11,27 +11,21 @@ import {BrowserRouter} from "react-router-dom";
 
 export default function App(): JSX.Element {
     const pythonPackage = parsePythonPackageJson(pythonPackageJson as PythonPackageJson);
-    const [selection, setSelection] = useState<PythonDeclaration>(pythonPackage);
     const [annotationStore, setAnnotationStore] = useState(new AnnotationStore());
 
     return (
         <BrowserRouter>
             <div className={AppCSS.app}>
                 <div className={AppCSS.menu}>
-                    <Menu selection={selection}/>
+                    <Menu/>
                 </div>
                 <div className={AppCSS.leftPane}>
-                    <TreeView
-                        pythonPackage={pythonPackage}
-                        selection={selection}
-                        setSelection={setSelection}
-                    />
+                    <TreeView pythonPackage={pythonPackage}/>
                 </div>
                 <div className={AppCSS.rightPane}>
-                    <ParameterView
-                        pythonPackage={pythonPackage}
-                        annotationStore={annotationStore}
-                        setAnnotationStore={setAnnotationStore}
+                    <ParameterView pythonPackage={pythonPackage}
+                                   annotationStore={annotationStore}
+                                   setAnnotationStore={setAnnotationStore}
                     />
                 </div>
             </div>

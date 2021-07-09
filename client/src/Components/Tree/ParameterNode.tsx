@@ -6,20 +6,14 @@ import {Setter} from "../../util/types";
 import TreeNode from "./TreeNode";
 
 interface ParameterNodeProps {
-    pythonParameter: PythonParameter,
-    selection: PythonDeclaration,
-    setSelection: Setter<PythonDeclaration>
+    pythonParameter: PythonParameter
 }
 
 export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
     return (
-        <TreeNode
-            declaration={props.pythonParameter}
-            icon={faKeyboard}
-            isExpandable={false}
-            isWorthClicking={false}
-            selection={props.selection}
-            setSelection={props.setSelection}
-        />
+        <TreeNode declaration={props.pythonParameter}
+                  icon={faKeyboard}
+                  isExpandable={false}
+                  isWorthClicking={false}/>
     );
 }

@@ -1,14 +1,9 @@
 import React from 'react';
 import {Nav, Navbar, NavDropdown} from "react-bootstrap";
 import {NavLink} from "react-router-dom";
-import PythonDeclaration from "../../model/python/PythonDeclaration";
 import {useLocation} from "react-router";
 
-interface MenuProps {
-    selection: PythonDeclaration
-}
-
-export default function Menu(props: MenuProps): JSX.Element {
+export default function Menu(): JSX.Element {
     return (
         <Navbar className="Menu justify-content-between" bg="light" expand="lg">
             <Navbar.Text>{

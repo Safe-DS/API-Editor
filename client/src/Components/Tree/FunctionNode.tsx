@@ -9,8 +9,6 @@ import TreeNode from "./TreeNode";
 
 interface FunctionNodeProps {
     pythonFunction: PythonFunction,
-    selection: PythonDeclaration,
-    setSelection: Setter<PythonDeclaration>
 }
 
 export default function FunctionNode(props: FunctionNodeProps): JSX.Element {
@@ -21,17 +19,11 @@ export default function FunctionNode(props: FunctionNodeProps): JSX.Element {
             declaration={props.pythonFunction}
             icon={faCogs}
             isExpandable={hasParameters}
-            isWorthClicking={true}
-            selection={props.selection}
-            setSelection={props.setSelection}
-        >
+            isWorthClicking={true}>
             {props.pythonFunction.parameters.map(parameter =>
                 <ParameterNode
                     key={parameter.name}
-                    pythonParameter={parameter}
-                    selection={props.selection}
-                    setSelection={props.setSelection}
-                />
+                    pythonParameter={parameter}/>
             )}
         </TreeNode>
     );

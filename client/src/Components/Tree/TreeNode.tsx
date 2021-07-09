@@ -14,8 +14,6 @@ interface TreeNodeProps extends ChildrenProp {
     icon: IconDefinition
     isExpandable: boolean
     isWorthClicking: boolean
-    selection: PythonDeclaration
-    setSelection: Setter<PythonDeclaration>
 }
 
 export default function TreeNode(props: TreeNodeProps): JSX.Element {
@@ -33,7 +31,6 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element {
 
     const handleClick = () => {
         setShowChildren(prevState => !prevState);
-        props.setSelection(props.declaration);
     };
 
     return (

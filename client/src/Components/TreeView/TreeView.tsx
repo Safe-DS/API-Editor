@@ -7,17 +7,13 @@ import PythonDeclaration from "../../model/python/PythonDeclaration";
 import TreeViewCSS from "./TreeView.module.css";
 
 interface TreeViewProps {
-    pythonPackage: PythonPackage,
-    selection: PythonDeclaration,
-    setSelection: Setter<PythonDeclaration>
+    pythonPackage: PythonPackage
 }
 
 export default function TreeView(props: TreeViewProps): JSX.Element {
     return (
         <div className={TreeViewCSS.treeView}>
-            <Tree pythonPackage={props.pythonPackage}
-                  selection={props.selection}
-                  setSelection={props.setSelection}/>
+            <Tree pythonPackage={props.pythonPackage}/>
         </div>
     );
 }
