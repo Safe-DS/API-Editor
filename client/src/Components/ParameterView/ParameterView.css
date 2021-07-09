@@ -55,3 +55,7 @@
 .documentation-text {
     clear: both;
 }
+.modal-dialog {
+    margin-left: 10rem;
+    margin-top: 5rem;
+}
