@@ -62,7 +62,7 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
             }
             {
                 !props.pythonParameter.description &&
-                <p className="pl-3-5rem text-muted">There is no documentation for this parameter.</p>
+                <p className="pl-4-2rem text-muted">There is no documentation for this parameter.</p>
             }
         </div>
     );
