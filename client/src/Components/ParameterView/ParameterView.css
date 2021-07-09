@@ -80,12 +80,31 @@
     padding-right: 0;
 }
 
+.enum-modal-max {
+    max-height: calc(100vh - 3.5rem)!important;
+    overflow-y: auto;
+}
+
+.enum-modal-scrollable {
+    overflow-y: auto;
+}
+
 .enum-item-icon {
     display: flex;
     justify-content: flex-end;
     padding: 0;
     align-items: center;
 }
+
+.add-enum-btn{
+    background-color: green;
+    border-color: darkgreen;
+}
+.add-enum-btn:hover{
+    background-color: darkgreen;
+    border-color: darkgreen;
+}
+
 
 .enum-pair-row {
     padding-top: 15px;

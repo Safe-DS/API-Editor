@@ -18,9 +18,9 @@ export default function ParameterNode({inputParameter}: ParameterProps): JSX.Ele
 
     const [enumDialog, setEnumDialog] = useState(false);
     const [enumName, setEnumName] = useState("");
-    const pair1 = new EnumPair("hello1", "world1");
-    const pair2 = new EnumPair("hello2", "world2");
-    const pair3 = new EnumPair("hello3", "world3");
+    const pair1 = new EnumPair("HELLO_1", "world1");
+    const pair2 = new EnumPair("HELLO_2", "world2");
+    const pair3 = new EnumPair("HELLO_3", "world3");
 
     const [enumList, setEnumList] = useState<EnumPair[]>([pair1, pair2, pair3]);
 
@@ -57,9 +57,7 @@ export default function ParameterNode({inputParameter}: ParameterProps): JSX.Ele
                           currentName={renameName}/>
 
             <EnumDialog dialogState={enumDialog} setDialogState={setEnumDialog} setCurrentName={setEnumName}
-                        currentName={enumName} setEnumList={setEnumList}
-                        enumList={enumList}/>
-
+                        currentName={enumName} enumList={enumList}/>
             {
                 hasDescription &&
                 <DocumentationText inputText={inputParameter?.description}/>

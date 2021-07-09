@@ -9,7 +9,7 @@ import EnumHandle from "./EnumHandle";
 
 type showDialogState = {
     dialogState: boolean, setDialogState: Setter<boolean>, currentName: string,
-    setCurrentName: Setter<string>, enumList: EnumPair[], setEnumList: Setter<EnumPair[]>
+    setCurrentName: Setter<string>, enumList: EnumPair[]
 }
 
 export default function EnumDialog({
@@ -17,40 +17,38 @@ export default function EnumDialog({
                                        setDialogState,
                                        currentName,
                                        setCurrentName,
-                                       setEnumList,
                                        enumList
                                    }: showDialogState): JSX.Element {
-
-    const rowIfEmpty = new EnumPair("", "");
-    //Test Data
-    const pair1 = new EnumPair("hello1", "world1");
-    const pair2 = new EnumPair("hello2", "world2");
-    const pair3 = new EnumPair("hello3", "world3");
-
-    let initialList: EnumPair[] = [rowIfEmpty];
-
-    if(enumList.length > 0){
-        initialList = enumList;
-    }
-
-
-    const [listOfEnumPairs, setListOfEnumPairs] = useState<EnumPair[]>(initialList);//[pair1, pair2, pair3]
-
-    //End of Test Data
-
-    //instead of TestData:
-    //const listOfEnumPairs = enumList;
 
     const [nameValid, setNameValid] = useState(true);
     const [name, setName] = useState(currentName);
 
+    const initialList: EnumPair[] = [];
+
+    const deepCloneOrEmpty = (from: EnumPair[],to: EnumPair[] ) => {
+        if(from.length > 0){
+            from.forEach(function(value){
+                to.push(new EnumPair(value.key, value.value));
+            });
+        }
+        else{
+            to.push(new EnumPair("", ""));
+        }
+    };
+
+    deepCloneOrEmpty(enumList, initialList);
+    const [listOfEnumPairs, setListOfEnumPairs] = useState<EnumPair[]>(initialList);
+
+    
 
     const resetData = () => {
         setDialogState(false);
-
         setName(currentName);
         setNameValid(true);
-        setListOfEnumPairs(enumList);
+
+        initialList.splice(0, initialList.length);
+        deepCloneOrEmpty(enumList, initialList);
+        setListOfEnumPairs(initialList);
     };
 
     const onInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,18 +63,17 @@ export default function EnumDialog({
         let validInputInstances = true;
 
         listOfEnumPairs.forEach(function(value){
-            if(!value.validValue || !value.validKey || value.key.length < 1 || value.value.length < 1){
+            if(value.key.length < 1 || value.value.length < 1 || !value.isValidValue() || !value.isValidKey() ){
                 validInputInstances = false;
-                value.validValue = false;
-                value.validKey = false;
             }
         });
 
         if (name && nameValid && validInputInstances) {//&& name != currentName
-            console.log(name);
             setCurrentName(name);
-            setEnumList(listOfEnumPairs);
-            resetData();
+            enumList.splice(0, enumList.length);
+            deepCloneOrEmpty(listOfEnumPairs, enumList);
+            //setEnumList(listOfEnumPairs);
+            setDialogState(false);
         }
     };
 
@@ -89,6 +86,8 @@ export default function EnumDialog({
             show={dialogState}
             onHide={handleClose}
             size="lg"
+            className={"enum-modal-max"}
+            //scrollable={true}
         >
             <Modal.Header closeButton>
                 <Modal.Title>Add @enum Annotation</Modal.Title>

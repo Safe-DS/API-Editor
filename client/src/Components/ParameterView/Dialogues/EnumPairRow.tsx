@@ -1,38 +1,37 @@
-import {Col, Form, Row} from "react-bootstrap";
+import {Button, Col, Form, Row} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import React, {useState} from "react";
 import EnumPair from "../../../model/EnumPair";
-import {enumValueValidation, nameValidation} from "../../../util/validation";
 
 type EnumPairRowProps = {
     pair: EnumPair,
     //listOfEnumPairs: EnumPair[],
     //setListLength: Setter<number>
     deleteFunction(key: string): void,
-
 }
 
 export default function EnumPairRow(props: EnumPairRowProps): JSX.Element {
 
-    const [enumValueValid, setEnumValueValid] = useState(props.pair.validValue);
+    const [enumValueValid, setEnumValueValid] = useState(true);
     const [enumValue, setEnumValue] = useState(props.pair.value);
-    const [enumInstanceNameValid, setEnumInstanceNameValid] = useState(props.pair.validKey);
-    const [enumInstanceName, setEnumInstanceName] = useState(props.pair.key);
+    const [enumKeyValid, setEnumKeyValid] = useState(true);
+    const [enumKey, setEnumKey] = useState(props.pair.key);
 
 
-    const onInputEnumInstanceName = (event: React.ChangeEvent<HTMLInputElement>) => {//Key
-        const valid = nameValidation(event.target.value);
-        setEnumInstanceName(event.target.value);
-        setEnumInstanceNameValid(valid);
+    const onInputEnumKey = (event: React.ChangeEvent<HTMLInputElement>) => {//Key
+
         props.pair.key = event.target.value;
-        props.pair.validKey = valid;
+        const valid = props.pair.isValidKey();
+        console.log(valid);
+
+        setEnumKey(event.target.value);
+        setEnumKeyValid(valid);
     };
 
     const onInputEnumValue = (event: React.ChangeEvent<HTMLInputElement>) => {//Value
-        const valid = enumValueValidation(event.target.value);
         props.pair.value = event.target.value;
-        props.pair.validValue = valid;
+        const valid = props.pair.isValidValue();
 
         setEnumValue(event.target.value);
         setEnumValueValid(valid);
@@ -53,18 +52,18 @@ export default function EnumPairRow(props: EnumPairRowProps): JSX.Element {
             </Col>
             <Col xs={5} className="no-right-padding">
                 <Form.Control type="text"
-                              value={enumInstanceName}
-                              onChange={onInputEnumInstanceName}
-                              isInvalid={!enumInstanceNameValid}>
+                              value={enumKey}
+                              onChange={onInputEnumKey}
+                              isInvalid={!enumKeyValid}>
 
                 </Form.Control>
             </Col>
             <Col xs={2} className="enum-item-icon">
-                <FontAwesomeIcon
-                    className="indicator visibility-indicator"
-                    icon={faTrash}
-                    onClick={() => props.deleteFunction(enumInstanceName)}
-                />
+                <Button size="sm" variant="danger" onClick={() => props.deleteFunction(enumKey)}>
+                    <FontAwesomeIcon
+                        icon={faTrash}
+                    />
+                </Button>
             </Col>
         </Row>
     );
