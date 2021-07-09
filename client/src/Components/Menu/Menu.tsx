@@ -1,15 +1,22 @@
 import React from 'react';
 import {Nav, Navbar, NavDropdown} from "react-bootstrap";
-import PythonDeclaration from "../../model/python/PythonDeclaration";
+import {NavLink} from "react-router-dom";
+import {useLocation} from "react-router";
 
-interface MenuProps {
-    selection: PythonDeclaration
-}
+export default function Menu(): JSX.Element {
 
-export default function Menu(props: MenuProps): JSX.Element {
+    const pathname = useLocation().pathname.split("/");
+
     return (
         <Navbar className="Menu justify-content-between" bg="light" expand="lg">
-            <Navbar.Text>{props.selection.path().join("/")}</Navbar.Text>
+            <Navbar.Text>{
+                pathname.slice(1).map((x, i)=>(
+                    <React.Fragment key={i}>
+                        <span> / </span>
+                        <NavLink to={`/${pathname.slice(1, i + 2).join("/")}`}>{x}</NavLink>
+                    </React.Fragment>
+                ))}
+            </Navbar.Text>
             <Nav>
                <NavDropdown title="Import" id="import-dropdown" align="end">
                    <NavDropdown.Item href="#">Python Package</NavDropdown.Item>
