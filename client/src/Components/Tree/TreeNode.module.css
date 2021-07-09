@@ -1,0 +1,16 @@
+.treeNode {
+    user-select: none;
+}
+
+.treeNode:hover {
+    cursor: pointer;
+}
+
+.selected {
+    background-color: cornflowerblue;
+    color: white !important;
+}
+
+.icon {
+    margin-right: 0.25rem;
+}

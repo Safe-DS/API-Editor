@@ -1,5 +1,6 @@
-import PythonFunction from "./PythonFunction";
+import {Nullable} from "../../util/types";
 import PythonDeclaration from "./PythonDeclaration";
+import PythonFunction from "./PythonFunction";
 
 export default class PythonParameter extends PythonDeclaration {
 
@@ -38,6 +39,10 @@ export default class PythonParameter extends PythonDeclaration {
 
     parent(): Nullable<PythonFunction> {
         return this.containingFunction;
+    }
+
+    children(): PythonDeclaration[] {
+        return [];
     }
 
     toString(): string {

@@ -1,6 +1,7 @@
+import {Nullable} from "../../util/types";
+import PythonDeclaration from "./PythonDeclaration";
 import PythonFunction from "./PythonFunction";
 import PythonModule from "./PythonModule";
-import PythonDeclaration from "./PythonDeclaration";
 
 export default class PythonClass extends PythonDeclaration {
 
@@ -40,6 +41,10 @@ export default class PythonClass extends PythonDeclaration {
 
     parent(): Nullable<PythonDeclaration> {
         return this.containingModule;
+    }
+
+    children(): PythonDeclaration[] {
+        return this.methods;
     }
 
     toString(): string {

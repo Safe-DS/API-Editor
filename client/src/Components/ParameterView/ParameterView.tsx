@@ -1,50 +1,40 @@
-import ParameterNode from "./ParameterNode";
 import React from "react";
-import PythonParameter from "../../model/PythonParameter";
-import PythonFunction from "../../model/PythonFunction";
+import AnnotationStore from "../../model/annotation/AnnotationStore";
+import PythonDeclaration from "../../model/python/PythonDeclaration";
+import PythonFunction from "../../model/python/PythonFunction";
+import {isEmptyList} from "../../util/listOperations";
+import {Setter} from "../../util/types";
 import DocumentationText from "./DocumentationText";
-import {Breadcrumb} from "react-bootstrap";
+import ParameterNode from "./ParameterNode";
 
-type ParameterViewProps = {
-    inputParameters: PythonParameter[],
-    selection: string[],
-    selectedFunction: Nullable<PythonFunction>
-};
+interface ParameterViewProps {
+    selection: PythonDeclaration,
+    annotationStore: AnnotationStore
+    setAnnotationStore: Setter<AnnotationStore>
+}
 
-export default function ParameterView({inputParameters, selection, selectedFunction}: ParameterViewProps): JSX.Element {
-
-    const hasInputParameters = inputParameters.length > 0;
-
+export default function ParameterView(props: ParameterViewProps): JSX.Element {
     return (
         <div className="parameter-view">
-            <div className="parameter-view-path">
-                <Breadcrumb>
-                    {(!selection || selection.length === 0) && (
-                        <Breadcrumb.Item active>Nothing selected.</Breadcrumb.Item>
-                    )}
-                    {selection.map((name, index) => (
-                        <Breadcrumb.Item active key={index}>{name}</Breadcrumb.Item>
-                    ))}
-                </Breadcrumb>
-            </div>
-            {selectedFunction !== null &&
+            {props.selection instanceof PythonFunction &&
             <>
-                <h1>{selectedFunction.name}</h1>
-                <DocumentationText inputText={selectedFunction.description}/>
+                <h1>{props.selection.name}</h1>
+                <DocumentationText inputText={props.selection.description}/>
+                <h2 className={"parameter-title"}>Parameters</h2>
+                {
+                    !isEmptyList(props.selection.parameters) ?
+                        props.selection.parameters.map(parameters => (
+                            <ParameterNode
+                                key={parameters.name}
+                                pythonParameter={parameters}
+                                annotationStore={props.annotationStore}
+                                setAnnotationStore={props.setAnnotationStore}
+                            />
+                        )) :
+                        <span className="text-muted" style={{paddingLeft: '1rem'}}>There are no parameters.</span>
+                }
             </>
             }
-
-            <h2 className={"parameter-title"}>Parameters</h2>
-            {
-                inputParameters?.map(function (parameters) {
-                    return (<ParameterNode key={parameters.name} inputParameter={parameters}/>);
-                })
-            }
-            {
-                !hasInputParameters &&
-                <span>There are no Parameters.</span>
-            }
-
         </div>
     );
 }

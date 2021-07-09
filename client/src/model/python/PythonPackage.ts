@@ -21,6 +21,10 @@ export default class PythonPackage extends PythonDeclaration {
         return null;
     }
 
+    children(): PythonDeclaration[] {
+        return this.modules;
+    }
+
     toString(): string {
         return `Package "${this.name}"`;
     }

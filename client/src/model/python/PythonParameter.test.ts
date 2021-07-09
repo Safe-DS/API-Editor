@@ -1,16 +1,16 @@
-import PythonResult from "./PythonResult";
+import PythonParameter from "./PythonParameter";
+import PythonFunction from "./PythonFunction";
 import PythonPackage from "./PythonPackage";
 import PythonModule from "./PythonModule";
 import PythonClass from "./PythonClass";
-import PythonFunction from "./PythonFunction";
 
 test("path without parent", () => {
-    const pythonResult = new PythonResult("res");
-    expect(pythonResult.path()).toEqual(["res"]);
+    const pythonParameter = new PythonParameter("param");
+    expect(pythonParameter.path()).toEqual(["param"]);
 });
 
 test("path with ancestors", () => {
-    const pythonResult = new PythonResult("res");
+    const pythonParameter = new PythonParameter("param");
     new PythonPackage(
         "package",
         [
@@ -27,8 +27,7 @@ test("path with ancestors", () => {
                             new PythonFunction(
                                 "function",
                                 [],
-                                [],
-                                [pythonResult]
+                                [pythonParameter]
                             )
                         ]
                     )
@@ -37,12 +36,17 @@ test("path with ancestors", () => {
         ]
     );
 
-    expect(pythonResult.path()).toEqual(["package", "module", "Class", "function", "res"]);
+    expect(pythonParameter.path()).toEqual(["package", "module", "Class", "function", "param"]);
+});
+
+test("getByRelativePath", () => {
+    const pythonParameter = new PythonParameter("param");
+    expect(pythonParameter.getByRelativePath(["child"])).toBe(null);
 });
 
 test("toString", () => {
-    const pythonResult = new PythonResult("res");
-    expect(pythonResult.toString()).toBe(`Result "res"`);
+    const pythonParameter = new PythonParameter("param");
+    expect(pythonParameter.toString()).toBe(`Parameter "param"`);
 });
 
 export {};

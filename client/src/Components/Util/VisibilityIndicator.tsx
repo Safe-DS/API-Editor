@@ -1,23 +1,42 @@
+import {faChevronDown, faChevronRight} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faChevronCircleDown, faChevronCircleRight} from "@fortawesome/free-solid-svg-icons";
+import classNames from "classnames";
 import React from "react";
+import {ClassNameProp} from "../../util/types";
+import BlankIcon from "./BlankIcon";
+import VisibilityIndicatorCSS from "./VisibilityIndicator.module.css";
 
-type VisibilityIndicatorProps = {
+interface VisibilityIndicatorProps extends ClassNameProp {
     hasChildren: boolean,
-    childrenVisible: boolean
+    showChildren: boolean,
+    isSelected?: boolean,
 }
 
 export default function VisibilityIndicator(
-    {hasChildren = true, childrenVisible = false}: VisibilityIndicatorProps
+    {
+        className,
+        hasChildren,
+        showChildren,
+        isSelected = false
+    }: VisibilityIndicatorProps
 ): JSX.Element {
+
+    const cssClasses = classNames(
+        className,
+        {
+            [VisibilityIndicatorCSS.closed]: !isSelected && !showChildren
+        }
+    );
+
     if (hasChildren) {
         return (
             <FontAwesomeIcon
-                className="indicator visibility-indicator"
-                icon={childrenVisible ? faChevronCircleDown : faChevronCircleRight}
+                className={cssClasses}
+                icon={showChildren ? faChevronDown : faChevronRight}
+                fixedWidth
             />
         );
     } else {
-        return <></>;
+        return <BlankIcon className={className}/>;
     }
 }

@@ -1,0 +1,22 @@
+.app {
+    display: grid;
+    grid-template-areas: "menu menu" "leftPane rightPane";
+    grid-template-columns: 50% 50%;
+    height: 100vh;
+    width: 100vw;
+}
+
+.menu {
+    grid-area: menu;
+}
+
+.leftPane {
+    border-right: 1px solid gray;
+    grid-area: leftPane;
+    overflow: auto;
+}
+
+.rightPane {
+    grid-area: rightPane;
+    overflow: auto;
+}

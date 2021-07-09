@@ -14,11 +14,16 @@ module.exports = {
             "warn",
             "always"
         ],
+        "eqeqeq": [
+            "error",
+            "always"
+        ],
         "no-extra-semi": "warn",
         "semi": [
             "warn",
             "always"
         ],
+        "react/prop-types": "off",
         "@typescript-eslint/no-this-alias": [
             "error",
             {

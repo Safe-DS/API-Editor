@@ -9,13 +9,20 @@ import EnumPair from "../../model/EnumPair";
 
 type ParameterProps = { inputParameter: PythonParameter }
 
-export default function ParameterNode({inputParameter}: ParameterProps): JSX.Element {
+interface ParameterNodeProps {
+    pythonParameter: PythonParameter
+    annotationStore: AnnotationStore
+    setAnnotationStore: Setter<AnnotationStore>
+}
 
-    const hasDescription = !!inputParameter.description;
+export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
+    const [showRenameDialog, setShowRenameDialog] = useState(false);
 
-    const [renameDialog, setRenameDialog] = useState(false);
-    const [renameName, setRenameName] = useState("");
-
+    const newName = props.annotationStore.getRenamingFor(props.pythonParameter);
+    const setNewName = (newName: Nullable<string>) => {
+        props.setAnnotationStore(
+            props.annotationStore.setRenamingFor(props.pythonParameter, newName)
+        );
     const [enumDialog, setEnumDialog] = useState(false);
     const [enumName, setEnumName] = useState("");
     const pair1 = new EnumPair("HELLO_1", "world1");
@@ -24,48 +31,53 @@ export default function ParameterNode({inputParameter}: ParameterProps): JSX.Ele
 
     const [enumList, setEnumList] = useState<EnumPair[]>([pair1, pair2, pair3]);
 
-    const openRenameDialog = () => setRenameDialog(true);
-    const openEnumDialog = () => setEnumDialog(true);
 
-    const handleRenameSelect = () => {
-        if (!renameName) {
-            setRenameName(inputParameter.name);
-        }
-        openRenameDialog();
-    };
-
+    const openRenameDialog = () => setShowRenameDialog(true);
     const handleEnumSelect = () => {
         openEnumDialog();
     };
 
     return (
-        <div className="parametersList">
+        <div className="parameter-list">
             <div className="parameter-header">
-                <h4 className={"parameter-name"}>{inputParameter?.name}</h4>
+                <h4 className="parameter-name">{props.pythonParameter.name}</h4>
                 <Dropdown>
                     <Dropdown.Toggle size="sm" variant="outline-primary">
                         + @Annotation
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                        <Dropdown.Item onSelect={handleRenameSelect}>@Rename</Dropdown.Item>
+                        <Dropdown.Item onSelect={openRenameDialog}>@Rename</Dropdown.Item>
                         <Dropdown.Item onSelect={handleEnumSelect}>@Enum</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
             </div>
 
-            <RenameDialog dialogState={renameDialog} setDialogState={setRenameDialog} setCurrentName={setRenameName}
-                          currentName={renameName}/>
+            <RenameAnnotationView
+                newName={newName}
+                setNewName={setNewName}
+                onRenameEdit={openRenameDialog}
+            />
+
+            {/*This additional check cause the dialog to be thrown away after closing it, resetting its state*/}
+            {showRenameDialog && <RenameDialog
+                isVisible={showRenameDialog}
+                setIsVisible={setShowRenameDialog}
+                oldName={props.pythonParameter.name}
+                newName={newName}
+                setNewName={setNewName}
+            />}
 
             <EnumDialog dialogState={enumDialog} setDialogState={setEnumDialog} setCurrentName={setEnumName}
                         currentName={enumName} enumList={enumList}/>
             {
-                hasDescription &&
-                <DocumentationText inputText={inputParameter?.description}/>
+                props.pythonParameter.description &&
+                <DocumentationText inputText={props.pythonParameter?.description}/>
             }
             {
-                !hasDescription &&
-                <p className="no-read-more-button">No Documentation available</p>
+                !props.pythonParameter.description &&
+                <p className="pl-3-5rem text-muted">There is no documentation for this parameter.</p>
             }
+
         </div>
     );
 }

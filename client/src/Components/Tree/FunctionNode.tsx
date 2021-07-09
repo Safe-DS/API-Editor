@@ -1,58 +1,38 @@
-import React from "react";
-import PythonFunction from "../../model/PythonFunction";
-import classNames from "classnames";
-import {isEmptyList} from "../../util/listOperations";
-import PythonParameter from "../../model/PythonParameter";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faCogs} from "@fortawesome/free-solid-svg-icons";
+import React from "react";
+import PythonDeclaration from "../../model/python/PythonDeclaration";
+import PythonFunction from "../../model/python/PythonFunction";
+import {isEmptyList} from "../../util/listOperations";
+import {Setter} from "../../util/types";
+import ParameterNode from "./ParameterNode";
+import TreeNode from "./TreeNode";
 
-type FunctionNodeProps = {
+interface FunctionNodeProps {
     pythonFunction: PythonFunction,
-    selection: string[],
-    setSelection: (newValue: string[]) => void,
-    setParameters: Setter<PythonParameter[]>,
-    isMethod?: boolean,
-
-    /** A parent of a Python class can be a class or a Python module. */
-    parentPath: string[],
-    setSelectedFunction: Setter<Nullable<PythonFunction>>
+    selection: PythonDeclaration,
+    setSelection: Setter<PythonDeclaration>
 }
 
-export default function FunctionNode({
-                          pythonFunction,
-                          selection,
-                          setSelection,
-                          setParameters,
-                          parentPath,
-                          isMethod = false,
-                          setSelectedFunction
-                      }: FunctionNodeProps): JSX.Element {
-
-    const path = parentPath.concat(pythonFunction.name);
-    const hasParameters = !isEmptyList(pythonFunction.parameters);
-    const cssClasses = classNames(
-        "tree-view-row", {
-            "text-muted": !hasParameters,
-            "pl-3-5rem": !isMethod,
-            "pl-5rem": isMethod,
-            "selected": (selection.join() === path.join()) && hasParameters
-        }
-    );
+export default function FunctionNode(props: FunctionNodeProps): JSX.Element {
+    const hasParameters = !isEmptyList(props.pythonFunction.parameters);
 
     return (
-        <div className="function-node">
-            <div className={cssClasses}
-                 onClick={() => {
-                     setSelection(path);
-                     setParameters(pythonFunction.parameters);
-                     setSelectedFunction(pythonFunction);
-                 }}>
-                <FontAwesomeIcon icon={faCogs}/>
-                {" "}
-                <span>
-                    {pythonFunction.name}
-                </span>
-            </div>
-        </div>
+        <TreeNode
+            declaration={props.pythonFunction}
+            icon={faCogs}
+            isExpandable={hasParameters}
+            isWorthClicking={true}
+            selection={props.selection}
+            setSelection={props.setSelection}
+        >
+            {props.pythonFunction.parameters.map(parameter =>
+                <ParameterNode
+                    key={parameter.name}
+                    pythonParameter={parameter}
+                    selection={props.selection}
+                    setSelection={props.setSelection}
+                />
+            )}
+        </TreeNode>
     );
 }

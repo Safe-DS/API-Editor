@@ -33,6 +33,17 @@ test("path with ancestors", () => {
     expect(pythonFunction.path()).toEqual(["package", "module", "Class", "function"]);
 });
 
+test("getByRelativePath with correct path", () => {
+    const pythonParameter = new PythonParameter("param");
+    const pythonFunction =  new PythonFunction("function", [], [pythonParameter]);
+    expect(pythonFunction.getByRelativePath(["param"])).toBe(pythonParameter);
+});
+
+test("getByRelativePath with misleading path", () => {
+    const pythonFunction = new PythonFunction("function");
+    expect(pythonFunction.getByRelativePath(["child"])).toBe(null);
+});
+
 test("toString without decorators and parameters", () => {
     const pythonFunction = new PythonFunction("function");
     expect(pythonFunction.toString()).toBe("def function()");
