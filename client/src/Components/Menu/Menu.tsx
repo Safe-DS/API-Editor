@@ -4,13 +4,16 @@ import {NavLink} from "react-router-dom";
 import {useLocation} from "react-router";
 
 export default function Menu(): JSX.Element {
+
+    const pathname = useLocation().pathname.split("/");
+
     return (
         <Navbar className="Menu justify-content-between" bg="light" expand="lg">
             <Navbar.Text>{
-                useLocation().pathname.split("/").slice(1).map((x, i)=>(
+                pathname.slice(1).map((x, i)=>(
                     <React.Fragment key={i}>
                         <span> / </span>
-                        <NavLink to={`/${useLocation().pathname.split("/").slice(1, i + 2).join("/")}`}>{x}</NavLink>
+                        <NavLink to={`/${pathname.slice(1, i + 2).join("/")}`}>{x}</NavLink>
                     </React.Fragment>
                 ))}
             </Navbar.Text>
