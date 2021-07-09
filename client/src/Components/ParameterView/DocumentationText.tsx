@@ -43,7 +43,7 @@ export default function DocumentationText({inputText = ""}: DocumentationTextPro
             {/*</ReactMarkdown>*/}
 
             <ReactMarkdown className={cssClasses} rehypePlugins={[rehypeKatex]} remarkPlugins={[remarkGfm, remarkMath]}>
-                {readMore ? preprocessedText : shortenedText}
+                {readMore || !hasMultipleLines ? preprocessedText : shortenedText + " [Read More...]"}
             </ReactMarkdown>
         </div>
     );
