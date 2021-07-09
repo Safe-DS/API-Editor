@@ -2,9 +2,10 @@ import React, {FormEvent, useState} from "react";
 import "../ParameterView.css";
 import {Button, Form, Modal} from "react-bootstrap";
 import {Formik} from 'formik';
-import {nameValidation} from "../../../util/validation";
+import {isValidPythonIdentifier} from "../../../util/validation";
 import EnumPair from "../../../model/EnumPair";
 import EnumHandle from "./EnumHandle";
+import {Setter} from "../../../util/types";
 
 
 type showDialogState = {
@@ -53,7 +54,7 @@ export default function EnumDialog({
 
     const onInput = (event: React.ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value);
-        setNameValid(nameValidation(event.target.value));
+        setNameValid(isValidPythonIdentifier(event.target.value));
     };
 
     //ToDo check if all enum inputs are valid

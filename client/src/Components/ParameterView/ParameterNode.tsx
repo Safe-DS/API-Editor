@@ -1,11 +1,14 @@
 import React, {useState} from "react";
 import "./ParameterView.css";
 import DocumentationText from "./DocumentationText";
-import PythonParameter from "../../model/PythonParameter";
 import {Dropdown} from "react-bootstrap";
-import RenameDialog from "./Dialogues/RenameDialog";
 import EnumDialog from "./Dialogues/EnumDialog";
 import EnumPair from "../../model/EnumPair";
+import RenameAnnotationView from "./RenameAnnotationView";
+import {Nullable, Setter} from "../../util/types";
+import AnnotationStore from "../../model/annotation/AnnotationStore";
+import PythonParameter from "../../model/python/PythonParameter";
+import RenameDialog from "../Dialog/RenameDialog";
 
 type ParameterProps = { inputParameter: PythonParameter }
 
@@ -15,14 +18,17 @@ interface ParameterNodeProps {
     setAnnotationStore: Setter<AnnotationStore>
 }
 
+
 export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
     const [showRenameDialog, setShowRenameDialog] = useState(false);
+    const [showEnumDialog, setShowEnumDialog] = useState(false);
 
     const newName = props.annotationStore.getRenamingFor(props.pythonParameter);
     const setNewName = (newName: Nullable<string>) => {
         props.setAnnotationStore(
             props.annotationStore.setRenamingFor(props.pythonParameter, newName)
         );
+    };
     const [enumDialog, setEnumDialog] = useState(false);
     const [enumName, setEnumName] = useState("");
     const pair1 = new EnumPair("HELLO_1", "world1");
@@ -33,9 +39,10 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
 
 
     const openRenameDialog = () => setShowRenameDialog(true);
-    const handleEnumSelect = () => {
-        openEnumDialog();
+    const openEnumDialog = () => {
+        setShowEnumDialog(true);
     };
+
 
     return (
         <div className="parameter-list">
@@ -47,7 +54,7 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                         <Dropdown.Item onSelect={openRenameDialog}>@Rename</Dropdown.Item>
-                        <Dropdown.Item onSelect={handleEnumSelect}>@Enum</Dropdown.Item>
+                        <Dropdown.Item onSelect={openEnumDialog}>@Enum</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
             </div>
@@ -67,7 +74,7 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
                 setNewName={setNewName}
             />}
 
-            <EnumDialog dialogState={enumDialog} setDialogState={setEnumDialog} setCurrentName={setEnumName}
+            <EnumDialog dialogState={showEnumDialog} setDialogState={setShowEnumDialog} setCurrentName={setEnumName}
                         currentName={enumName} enumList={enumList}/>
             {
                 props.pythonParameter.description &&
@@ -80,4 +87,5 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
 
         </div>
     );
+
 }
