@@ -8,7 +8,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/react-fontawesome": "^0.1.14",
     "@types/react-router-dom": "^5.1.7",
-    "bootstrap": "^4.6.0",
+    "bootstrap": "5.0.2",
     "formik": "^2.2.9",
     "immutable": "^4.0.0-rc.12",
     "react": "^17.0.2",

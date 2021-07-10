@@ -2,18 +2,21 @@ import React from 'react';
 import {Nav, Navbar, NavDropdown} from "react-bootstrap";
 import {NavLink} from "react-router-dom";
 import {useLocation} from "react-router";
+import MenuCSS from "./Menu.module.css";
+import classNames from "classnames";
 
 export default function Menu(): JSX.Element {
 
     const pathname = useLocation().pathname.split("/");
+    const cssClasses = classNames(MenuCSS.menu, "justify-content-between");
 
     return (
-        <Navbar className="Menu justify-content-between" bg="light" expand="lg">
+        <Navbar className={cssClasses} bg="light" expand="lg">
             <Navbar.Text>{
                 pathname.slice(1).map((x, i)=>(
                     <React.Fragment key={i}>
                         <span> / </span>
-                        <NavLink to={`/${pathname.slice(1, i + 2).join("/")}`}>{x}</NavLink>
+                        <NavLink className={MenuCSS.breadcrumbLink} to={`/${pathname.slice(1, i + 2).join("/")}`}>{x}</NavLink>
                     </React.Fragment>
                 ))}
             </Navbar.Text>
