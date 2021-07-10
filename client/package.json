@@ -1,57 +1,75 @@
 {
-  "name": "api-editor-client",
-  "version": "0.1.0",
-  "private": true,
-  "homepage": "https://lars-reimann.github.io/api-editor",
-  "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.35",
-    "@fortawesome/free-solid-svg-icons": "^5.15.3",
-    "@fortawesome/react-fontawesome": "^0.1.14",
-    "@types/react-router-dom": "^5.1.7",
-    "bootstrap": "^4.6.0",
-    "formik": "^2.2.9",
-    "immutable": "^4.0.0-rc.12",
-    "react": "^17.0.2",
-    "react-bootstrap": "^2.0.0-beta.2",
-    "react-dom": "^17.0.2",
-    "react-markdown": "^6.0.2",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
-    "rehype-katex": "^5.0.0",
-    "remark-gfm": "^1.0.0",
-    "remark-math": "^4.0.0",
-    "web-vitals": "^1.0.1"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "buildWithoutLint": "DISABLE_ESLINT_PLUGIN=true react-scripts build",
-    "lint": "yarn eslint .",
-    "test": "react-scripts test",
-    "predeploy": "yarn run build",
-    "deploy": "gh-pages -d build"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "@types/jest": "^26.0.15",
-    "@types/node": "^12.0.0",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
-    "gh-pages": "^3.1.0",
-    "typescript": "^4.3.4"
-  }
+    "name": "api-editor-client",
+    "version": "0.1.0",
+    "private": true,
+    "homepage": "https://lars-reimann.github.io/api-editor",
+    "dependencies": {
+        "@fortawesome/fontawesome-svg-core": "^1.2.35",
+        "@fortawesome/free-solid-svg-icons": "^5.15.3",
+        "@fortawesome/react-fontawesome": "^0.1.14",
+        "bootstrap": "5.0.2",
+        "formik": "^2.2.9",
+        "immutable": "^4.0.0-rc.12",
+        "react": "^17.0.2",
+        "react-bootstrap": "^2.0.0-beta.2",
+        "react-dom": "^17.0.2",
+        "react-markdown": "^6.0.2",
+        "react-router-dom": "^5.2.0",
+        "react-scripts": "4.0.3",
+        "rehype-katex": "^5.0.0",
+        "remark-gfm": "^1.0.0",
+        "remark-math": "^4.0.0",
+        "web-vitals": "^1.0.1"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "buildWithoutLint": "DISABLE_ESLINT_PLUGIN=true react-scripts build",
+        "lint": "yarn jslint && yarn csslint",
+        "jslint": "yarn eslint .",
+        "csslint": "yarn stylelint \"**/*.css\"",
+        "fix": "yarn jslint --fix && yarn csslint --fix && yarn prettier --write .",
+        "test": "react-scripts test",
+        "predeploy": "yarn build",
+        "deploy": "gh-pages -d build",
+        "prepare": "cd .. && husky install client/.husky"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "@testing-library/jest-dom": "^5.11.4",
+        "@testing-library/react": "^11.1.0",
+        "@testing-library/user-event": "^12.1.10",
+        "@types/jest": "^26.0.15",
+        "@types/node": "^12.0.0",
+        "@types/react": "^17.0.0",
+        "@types/react-dom": "^17.0.0",
+        "@types/react-router-dom": "^5.1.7",
+        "eslint-config-prettier": "^8.3.0",
+        "gh-pages": "^3.1.0",
+        "husky": "^7.0.1",
+        "lint-staged": "^11.0.0",
+        "prettier": "^2.3.2",
+        "stylelint": "^13.13.1",
+        "stylelint-config-idiomatic-order": "^8.1.0",
+        "stylelint-config-prettier": "^8.0.2",
+        "stylelint-config-standard": "^22.0.0",
+        "stylelint-order": "^4.1.0",
+        "typescript": "^4.3.4"
+    },
+    "lint-staged": {
+        "*.css": "stylelint --fix",
+        "*.{js,jsx,ts,tsx}": "eslint --fix",
+        "*.{css,js,jsx,ts,tsx,md}": "prettier --write"
+    }
 }

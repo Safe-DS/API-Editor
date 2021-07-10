@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "name": "Run yarn start",
+            "cwd": "${workspaceFolder}/client",
+            "command": "yarn start",
+            "request": "launch",
+            "type": "node-terminal"
+        }
+    ]
+}

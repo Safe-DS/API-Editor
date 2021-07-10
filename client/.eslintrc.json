@@ -1,0 +1,31 @@
+{
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint"],
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "eslint-config-prettier"
+    ],
+    "rules": {
+        "eol-last": ["warn", "always"],
+        "eqeqeq": ["error", "always"],
+        "react/prop-types": "off",
+        "@typescript-eslint/no-this-alias": [
+            "error",
+            {
+                "allowedNames": ["current"]
+            }
+        ]
+    },
+    // See https://github.com/yannickcr/eslint-plugin-react#configuration
+    "settings": {
+        "react": {
+            "version": "detect"
+        },
+        "propWrapperFunctions": [],
+        "componentWrapperFunctions": [],
+        "linkComponents": []
+    }
+}
