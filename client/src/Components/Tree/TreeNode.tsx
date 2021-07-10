@@ -66,9 +66,9 @@ function isSelected(declaration: PythonDeclaration): boolean {
 }
 
 function selfOrChildIsSelected(declaration: PythonDeclaration): boolean {
-    const declarationPath = `/${declaration.path().join("/")}`
-    const currentPath = useLocation().pathname
+    const declarationPath = `/${declaration.path().join("/")}`;
+    const currentPath = useLocation().pathname;
 
     // The slash prevents /sklearn/sklearn from opening when the path is /sklearn/sklearn.base
-    return currentPath === declarationPath || currentPath.startsWith(`${declarationPath}/`)
+    return currentPath === declarationPath || currentPath.startsWith(`${declarationPath}/`);
 }
