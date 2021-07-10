@@ -7,16 +7,18 @@ import classNames from "classnames";
 
 export default function Menu(): JSX.Element {
 
-    const pathname = useLocation().pathname.split("/");
+    const pathname = useLocation().pathname.split("/").slice(1);
     const cssClasses = classNames(MenuCSS.menu, "justify-content-between");
 
     return (
         <Navbar className={cssClasses} bg="light" expand="lg">
             <Navbar.Text>{
-                pathname.slice(1).map((x, i)=>(
+                pathname.map((x, i)=>(
                     <React.Fragment key={i}>
-                        <span> / </span>
-                        <NavLink className={MenuCSS.breadcrumbLink} to={`/${pathname.slice(1, i + 2).join("/")}`}>{x}</NavLink>
+                        { i !== 0 &&
+                            <span> / </span>
+                        }
+                        <NavLink className={MenuCSS.breadcrumbLink} to={`/${pathname.slice(0, i + 1).join("/")}`}>{x}</NavLink>
                     </React.Fragment>
                 ))}
             </Navbar.Text>
