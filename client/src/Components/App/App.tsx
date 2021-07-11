@@ -6,14 +6,14 @@ import Menu from "../Menu/Menu";
 import ParameterView from "../ParameterView/ParameterView";
 import TreeView from "../TreeView/TreeView";
 import AppCSS from './App.module.css';
-import {BrowserRouter} from "react-router-dom";
+import {HashRouter} from "react-router-dom";
 
 export default function App(): JSX.Element {
     const pythonPackage = parsePythonPackageJson(pythonPackageJson as PythonPackageJson);
     const [annotationStore, setAnnotationStore] = useState(new AnnotationStore());
 
     return (
-        <BrowserRouter>
+        <HashRouter>
             <div className={AppCSS.app}>
                 <div className={AppCSS.menu}>
                     <Menu/>
@@ -28,6 +28,6 @@ export default function App(): JSX.Element {
                     />
                 </div>
             </div>
-        </BrowserRouter>
+        </HashRouter>
     );
 }

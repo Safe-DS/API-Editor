@@ -33,7 +33,7 @@ export default function RenameDialog(props: RenameDialogProps): JSX.Element {
             onHide={close}
             show={props.isVisible}
         >
-            <Modal.Header>
+            <Modal.Header closeButton>
                 <Modal.Title>Add @rename Annotation</Modal.Title>
             </Modal.Header>
 
