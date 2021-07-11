@@ -2,30 +2,30 @@
     padding: 1rem;
 }
 
-.parameterViewDiv h2{
+.parameterViewDiv h2 {
     padding-top: 1rem;
     padding-left: 1rem;
 }
 
-.parameterViewDiv h5{
+.parameterViewDiv h5 {
     padding-top: 1rem;
     padding-left: 1rem;
 }
 
-.parameterViewDiv a{
-    padding-left: .5rem;
+.parameterViewDiv a {
+    padding-left: 0.5rem;
 }
 
 .parameter-list {
+    padding-bottom: 0.5rem;
     padding-left: 1rem;
-    padding-bottom: .5rem;
 }
 
 .docuTextHidden {
     text-overflow: ellipsis;
 }
 
-.docu-paragraph{
+.docu-paragraph {
     display: flex;
     justify-content: flex-start;
 }
@@ -45,11 +45,11 @@
 }
 
 .read-more-button {
-    text-align: left;
-    background: none!important;
     border: none;
-    font-family: arial, sans-serif;
+    background: none !important;
     cursor: pointer;
+    font-family: arial, sans-serif;
+    text-align: left;
 }
 
 .documentation-text {
@@ -62,8 +62,9 @@
 
 @media screen and (min-width: 1200px) {
     .modal-dialog {
+        width: 500px;
+
         /* Centers the dialog over the left pane */
         margin-left: calc(25vw - 250px);
-        width: 500px;
     }
 }
