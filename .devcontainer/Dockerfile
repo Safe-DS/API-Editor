@@ -3,3 +3,5 @@
 # [Choice] Node.js version: 16, 14, 12
 ARG VARIANT="16-buster"
 FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:0-${VARIANT}
+
+# We cannot install the NPM dependencies into the image since they would end up in a different location than the code
