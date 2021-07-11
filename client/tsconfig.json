@@ -4,7 +4,7 @@
         "lib": ["dom", "dom.iterable", "esnext"],
         "target": "ES2020",
         "noEmit": true,
-        "module": "ES2020",
+        "module": "esnext",
         "moduleResolution": "node",
         "isolatedModules": true,
         "allowJs": false,
@@ -16,5 +16,6 @@
         "skipLibCheck": true,
         "strict": true
     },
-    "exclude": ["node_modules"]
+    "exclude": ["node_modules"],
+    "include": ["src"]
 }
