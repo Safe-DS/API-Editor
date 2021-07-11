@@ -1,0 +1,11 @@
+{
+    "recommendations": [
+        "clinyong.vscode-css-modules",
+        "dbaeumer.vscode-eslint",
+        "eamodio.gitlens",
+        "esbenp.prettier-vscode",
+        "github.vscode-pull-request-github",
+        "msjsdiag.debugger-for-edge",
+        "stylelint.vscode-stylelint"
+    ]
+}

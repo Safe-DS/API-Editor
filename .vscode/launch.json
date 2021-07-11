@@ -1,11 +1,14 @@
 {
     "configurations": [
         {
-            "name": "Run yarn start",
-            "cwd": "${workspaceFolder}/client",
-            "command": "yarn start",
+            "name": "Debug with Edge",
+            "type": "pwa-msedge",
             "request": "launch",
-            "type": "node-terminal"
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}/client/src",
+            "sourceMapPathOverrides": {
+                "webpack:///src/*": "${webRoot}/*"
+            }
         }
     ]
 }
