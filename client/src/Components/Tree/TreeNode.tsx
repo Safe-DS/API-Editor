@@ -17,7 +17,7 @@ interface TreeNodeProps extends ChildrenProp {
 }
 
 export default function TreeNode(props: TreeNodeProps): JSX.Element {
-    const [showChildren, setShowChildren] = useState(false);
+    const [showChildren, setShowChildren] = useState(selfOrChildIsSelected(props.declaration));
 
     const className = classNames({
         [TreeNodeCSS.selected]: isSelected(props.declaration),
@@ -63,4 +63,12 @@ function levelOf(declaration: PythonDeclaration): number {
 
 function isSelected(declaration: PythonDeclaration): boolean {
     return `/${declaration.path().join("/")}` === useLocation().pathname;
+}
+
+function selfOrChildIsSelected(declaration: PythonDeclaration): boolean {
+    const declarationPath = `/${declaration.path().join("/")}`;
+    const currentPath = useLocation().pathname;
+
+    // The slash prevents /sklearn/sklearn from opening when the path is /sklearn/sklearn.base
+    return currentPath === declarationPath || currentPath.startsWith(`${declarationPath}/`);
 }
