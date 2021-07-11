@@ -10,7 +10,6 @@ import AnnotationStore from "../../model/annotation/AnnotationStore";
 import PythonParameter from "../../model/python/PythonParameter";
 import RenameDialog from "../Dialog/RenameDialog";
 
-type ParameterProps = { inputParameter: PythonParameter }
 
 interface ParameterNodeProps {
     pythonParameter: PythonParameter
@@ -29,19 +28,24 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
             props.annotationStore.setRenamingFor(props.pythonParameter, newName)
         );
     };
-    const [enumDialog, setEnumDialog] = useState(false);
-    const [enumName, setEnumName] = useState("");
-    const pair1 = new EnumPair("HELLO_1", "world1");
-    const pair2 = new EnumPair("HELLO_2", "world2");
-    const pair3 = new EnumPair("HELLO_3", "world3");
 
-    const [enumList, setEnumList] = useState<EnumPair[]>([pair1, pair2, pair3]);
+    //ToDo check if getEnumFor needs value of renamed Parameter
+   /* const newEnumDefinition = props.annotationStore.getEnumFor(props.pythonParameter);
+    const setNewEnumDefinition = (newName: Nullable<string>) => {
+        props.setAnnotationStore(
+            props.annotationStore.setEnumFor(props.pythonParameter, newName)
+        );
+    };*/
+
+
+
+    const [enumName, setEnumName] = useState("");
+
+    const [enumList, setEnumList] = useState<EnumPair[]>([]);
 
 
     const openRenameDialog = () => setShowRenameDialog(true);
-    const openEnumDialog = () => {
-        setShowEnumDialog(true);
-    };
+    const openEnumDialog = () => setShowEnumDialog(true);
 
 
     return (
@@ -49,7 +53,7 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
             <div className="parameter-header">
                 <h4 className="parameter-name">{props.pythonParameter.name}</h4>
                 <Dropdown>
-                    <Dropdown.Toggle size="sm" variant="outline-primary">
+                    <Dropdown.Toggle size="sm" variant="primary">
                         + @Annotation
                     </Dropdown.Toggle>
                     <Dropdown.Menu>

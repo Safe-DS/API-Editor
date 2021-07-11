@@ -87,8 +87,6 @@ export default function EnumDialog({
             show={dialogState}
             onHide={handleClose}
             size="lg"
-            className={"enum-modal-max"}
-            //scrollable={true}
         >
             <Modal.Header closeButton>
                 <Modal.Title>Add @enum Annotation</Modal.Title>
