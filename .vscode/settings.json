@@ -9,7 +9,6 @@
         "**/.devcontainer": true,
         "**/.git": true,
         "**/.gitattributes": true,
-        "**/.gitignore": true,
         "**/.github": true,
         "**/.husky": true,
         "**/.DS_Store": true,
