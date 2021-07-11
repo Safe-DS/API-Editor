@@ -8,6 +8,7 @@
     "files.exclude": {
         "**/.devcontainer": true,
         "**/.git": true,
+        "**/.gitattributes": true,
         "**/.gitignore": true,
         "**/.github": true,
         "**/.husky": true,
