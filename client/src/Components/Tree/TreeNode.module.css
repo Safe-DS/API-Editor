@@ -16,8 +16,8 @@
 }
 
 .treeNodeLink {
-    text-decoration: none;
     color: inherit;
+    text-decoration: none;
 }
 
 .treeNodeLink:hover {
