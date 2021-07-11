@@ -2,6 +2,7 @@
     "recommendations": [
         "clinyong.vscode-css-modules",
         "dbaeumer.vscode-eslint",
+        "donjayamanne.githistory",
         "eamodio.gitlens",
         "esbenp.prettier-vscode",
         "github.vscode-pull-request-github",

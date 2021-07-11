@@ -3,15 +3,22 @@
         "source.fixAll": true
     },
     "editor.formatOnSave": true,
+
     "files.eol": "\n",
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
     "files.trimTrailingWhitespace": true,
+
     "terminal.integrated.cwd": "client",
+
     "prettier.configPath": "client/.prettierrc.json",
     "prettier.ignorePath": "client/.prettierignore",
     "stylelint.configFile": "client/.stylelintrc.json",
+
     "[css]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[html]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "[javascript]": {
@@ -25,6 +32,10 @@
     },
     "[jsonc]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[markdown]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.quickSuggestions": false
     },
     "[typescript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
