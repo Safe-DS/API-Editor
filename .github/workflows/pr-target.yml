@@ -9,7 +9,7 @@ on:
       - reopened
 
 jobs:
-  main:
+  title:
     runs-on: ubuntu-latest
     steps:
     
