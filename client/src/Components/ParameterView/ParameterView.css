@@ -61,7 +61,7 @@
 }
 
 @media screen and (min-width: 1200px) {
-    .modal-dialog {
+    .annotation-dialog {
         /* Centers the dialog over the left pane */
         margin-left: calc(25vw - 250px);
         width: 500px;
