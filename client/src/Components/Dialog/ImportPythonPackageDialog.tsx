@@ -13,6 +13,8 @@ interface ImportPythonPackageDialogProps {
 export default function ImportPythonPackageDialog(props: ImportPythonPackageDialogProps): JSX.Element {
 
     const [fileName, setFileName] = useState("");
+    /* not yet needed, but important for storing the file later
+    const [file, setFile] = useState<File[]>([]); */
 
     const close = () => {
         props.setIsVisible(false);
@@ -49,18 +51,21 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
                             </Form.Label>
                             <div style={dropzoneStyle}>
                                 <Dropzone onDrop={acceptedFiles => {
-                                    if(isValidJsonFile(acceptedFiles[acceptedFiles.length - 1].name)){
-                                        if(acceptedFiles.length > 1) {
+                                    if (isValidJsonFile(acceptedFiles[acceptedFiles.length - 1].name)) {
+                                        if (acceptedFiles.length > 1) {
                                             acceptedFiles = [acceptedFiles[acceptedFiles.length - 1]];
                                         }
                                         setFileName(acceptedFiles[0].name);
+                                        /* not yet needed, but important for storing the file later
+                                        setFile([acceptedFiles[0]]);*/
                                     }
                                 }}>
                                     {({getRootProps, getInputProps}) => (
                                         <section>
                                             <div {...getRootProps()}>
                                                 <input {...getInputProps()} />
-                                                <p>Drag and drop a python package here, or click to select the file <br/>(only *.json will be accepted)</p>
+                                                <p>Drag and drop a python package here, or click to select the
+                                                    file <br/>(only *.json will be accepted)</p>
                                             </div>
                                         </section>
                                     )}
