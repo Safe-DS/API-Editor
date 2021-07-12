@@ -29,7 +29,7 @@ export default function FunctionView(props: FunctionViewProps): JSX.Element {
                             setAnnotationStore={props.setAnnotationStore}
                         />
                     )) :
-                    <span className="text-muted" style={{paddingLeft: '1rem'}}>There are no parameters.</span>
+                    <span className={"text-muted, pl-2rem"}>There are no parameters.</span>
             }
         </>
     );

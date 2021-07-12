@@ -23,24 +23,22 @@ export default function DocumentationText({inputText = ""}: DocumentationTextPro
     const cssClasses = classNames(
         "read-more-button",
         {
-            "pl-1-5rem": !hasMultipleLines,
+            "pl-2rem": !hasMultipleLines,
         }
     );
+
+    const iconCssClasses = classNames({
+        "pl-1rem": hasMultipleLines,
+    });
 
     return (
         <div className="docu-paragraph" onClick={() => {
             setReadMore(!readMore);
         }}>
-            <div className="pl-1-5rem">
+            {hasMultipleLines && <div className={iconCssClasses}>
                 <VisibilityIndicator hasChildren={hasMultipleLines} showChildren={readMore}/>
-            </div>
+            </div>}
 
-            {/*<ReactMarkdown*/}
-            {/*    remarkPlugins={[remarkGfm, remarkMath]}*/}
-            {/*    rehypePlugins={[rehypeKatex]}*/}
-            {/*>*/}
-            {/*    The lift coefficient ($C_L$) is a dimensionless coefficient.*/}
-            {/*</ReactMarkdown>*/}
 
             <ReactMarkdown className={cssClasses} rehypePlugins={[rehypeKatex]} remarkPlugins={[remarkGfm, remarkMath]}>
                 {readMore ? preprocessedText : shortenedText}

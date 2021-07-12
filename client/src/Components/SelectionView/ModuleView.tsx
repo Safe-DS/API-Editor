@@ -22,10 +22,10 @@ export default function ModuleView(props: ModuleViewProps): JSX.Element {
                     ))}
                 </ul>
                 : <span className="text-muted"
-                        style={{paddingLeft: '1rem'}}>There are no imports.</span>
+                        style={{paddingLeft: '2rem'}}>There are no imports.</span>
             }
             <h2>Imported from</h2>
-            {!isEmptyList(props.pythonModule.imports) ?
+            {!isEmptyList(props.pythonModule.fromImports) ?
                 <ul className="module-list">
                     {props.pythonModule.fromImports.map((pythonImportFrom, index) => (
                         <li key={index}>
@@ -34,7 +34,7 @@ export default function ModuleView(props: ModuleViewProps): JSX.Element {
                     ))}
                 </ul>
                 : <span className="text-muted"
-                          style={{paddingLeft: '1rem'}}>There are no modules that import this module.</span>}
+                          style={{paddingLeft: '2rem'}}>There are no modules that import this module.</span>}
         </>
     );
 }

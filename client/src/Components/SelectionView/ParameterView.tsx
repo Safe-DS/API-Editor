@@ -9,15 +9,14 @@ interface ParameterViewProps {
 
 export default function ParameterView(props: ParameterViewProps): JSX.Element {
 
-    console.log(props.pythonParameter.typeInDocs);
-    console.log(props.pythonParameter.type);
-
     return (
         <>
             <h1>{props.pythonParameter.name}</h1>
             <DocumentationText inputText={props.pythonParameter.description}/>
             {props.pythonParameter.hasDefault && <TitleValueViewPair title="Default value" value={props.pythonParameter.defaultValue}/>}
-            <TitleValueViewPair title="Type" value={props.pythonParameter.type}/>
+            {props.pythonParameter.type &&
+            <><h2>Type</h2><span className="pl-2rem">{props.pythonParameter.type}</span></>
+            }
         </>
     );
 }

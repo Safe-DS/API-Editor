@@ -61,9 +61,13 @@ h2 {
     padding-top: 15px;
 }
 
+h1 {
+    padding-bottom: 15px;
+}
+
 .module-list {
     list-style: none;
-    padding-left: 0;
+    padding-left: 2rem;
 }
 
 .module-list li:not(:first-child) {
