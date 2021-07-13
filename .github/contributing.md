@@ -2,9 +2,10 @@
 
 ### Title
 
-The title must follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) convention.
+The title must follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) convention. **Mark breaking changes with an exclamation mark**.
 
 All **types** from [Commitizen](https://github.com/commitizen/conventional-commit-types/blob/master/index.json) are allowed. Pick the one that fits best:
+
 | Type | Meaning |
 |------|---------|
 | **`feat`** | New feature |
@@ -28,6 +29,12 @@ Possible **scopes** are:
 | `dialog` | (Modal) dialogs |
 | `menuBar` | Menu bar at the top |
 | `treeView` | Visualization of the declarations in the current package as a tree |
+
+Examples:
+
+* `feat(devcontainer): add ESLint plugin`
+* `docs: write contributing guide`
+* `refactor!: drop support for older browsers` (the exclamation mark denotes a breaking change)
 
 ### Description
 
