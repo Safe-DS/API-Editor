@@ -29,45 +29,44 @@ export default function RenameDialog(props: RenameDialogProps): JSX.Element {
     };
 
     return (
-        <div className="annotation-dialog">
-            <Modal
-                onHide={close}
-                show={props.isVisible}
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title>Add @rename Annotation</Modal.Title>
-                </Modal.Header>
+        <Modal
+            onHide={close}
+            show={props.isVisible}
+            className="annotation-dialog"
+        >
+            <Modal.Header closeButton>
+                <Modal.Title>Add @rename Annotation</Modal.Title>
+            </Modal.Header>
 
-                <Modal.Body>
-                    <Form noValidate>
-                        <Modal.Body>
-                            <Form.Group>
-                                <Form.Label>
-                                    New name for &quot;{props.oldName}&quot;:
-                                </Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    value={currentUserInput}
-                                    onChange={handleChange}
-                                    isInvalid={!isValidPythonIdentifier(currentUserInput)}
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                    Valid Python identifiers must start with a letter or underscore followed by letters,
-                                    numbers and underscores.
-                                </Form.Control.Feedback>
-                            </Form.Group>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="secondary" onClick={close}>
-                                Close
-                            </Button>
-                            <Button variant="primary" type="button" onClick={submit}>
-                                Submit
-                            </Button>
-                        </Modal.Footer>
-                    </Form>
-                </Modal.Body>
-            </Modal>
-        </div>
+            <Modal.Body>
+                <Form noValidate>
+                    <Modal.Body>
+                        <Form.Group>
+                            <Form.Label>
+                                New name for &quot;{props.oldName}&quot;:
+                            </Form.Label>
+                            <Form.Control
+                                type="text"
+                                value={currentUserInput}
+                                onChange={handleChange}
+                                isInvalid={!isValidPythonIdentifier(currentUserInput)}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                Valid Python identifiers must start with a letter or underscore followed by letters,
+                                numbers and underscores.
+                            </Form.Control.Feedback>
+                        </Form.Group>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={close}>
+                            Close
+                        </Button>
+                        <Button variant="primary" type="button" onClick={submit}>
+                            Submit
+                        </Button>
+                    </Modal.Footer>
+                </Form>
+            </Modal.Body>
+        </Modal>
     );
 }
