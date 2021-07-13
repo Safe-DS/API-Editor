@@ -4,6 +4,7 @@ import {Setter} from "../../util/types";
 import "../ParameterView/ParameterView.css";
 import Dropzone from 'react-dropzone';
 import {isValidJsonFile} from "../../util/validation";
+import DialogCSS from "./dialog.module.css";
 
 interface ImportPythonPackageDialogProps {
     isVisible: boolean
@@ -37,6 +38,7 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
             onHide={close}
             show={props.isVisible}
             size={"lg"}
+            className={DialogCSS.modalDialog}
         >
             <Modal.Header closeButton>
                 <Modal.Title>Import Python package</Modal.Title>
