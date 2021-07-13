@@ -32,7 +32,7 @@ export default function Menu(): JSX.Element {
                 ))}
             </Navbar.Text>
             <Nav>
-                <NavDropdown title="Import" id="import-dropdown" alignRight>
+                <NavDropdown title="Import" id="import-dropdown" align="end">
                     <NavDropdown.Item onClick={openImportPythonPackageDialog} href="#">Python Package</NavDropdown.Item>
                     <NavDropdown.Item onClick={openImportAnnotationFileDialog} href="#">Annotation File</NavDropdown.Item>
                 </NavDropdown>
