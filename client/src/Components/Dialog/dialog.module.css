@@ -9,3 +9,15 @@
         width: 500px;
     }
 }
+
+.dropzone {
+    background-color: #fafafa;
+    border: 3px dashed #eeeeee;
+    margin-bottom: 10px;
+    padding: 20px;
+    text-align: center;
+}
+
+.dropzoneText {
+    margin: 0;
+}

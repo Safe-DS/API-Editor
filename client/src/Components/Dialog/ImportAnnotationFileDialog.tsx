@@ -25,14 +25,6 @@ export default function ImportAnnotationFileDialog(props: ImportAnnotationFileDi
         console.log("TODO");
     };
 
-    const dropzoneStyle = {
-        textAlign: "center" as const,
-        padding: "20px",
-        border: "3px dashed #eeeeee",
-        backgroundColor: "#fafafa",
-        marginBottom: "10px",
-    };
-
     return (
         <Modal
             onHide={close}
@@ -51,7 +43,7 @@ export default function ImportAnnotationFileDialog(props: ImportAnnotationFileDi
                             <Form.Label>
                                 Select an annotation file to upload.
                             </Form.Label>
-                            <div style={dropzoneStyle}>
+                            <div className={DialogCSS.dropzone}>
                                 <Dropzone onDrop={acceptedFiles => {
                                     if (isValidJsonFile(acceptedFiles[acceptedFiles.length - 1].name)) {
                                         if (acceptedFiles.length > 1) {
@@ -66,8 +58,8 @@ export default function ImportAnnotationFileDialog(props: ImportAnnotationFileDi
                                         <section>
                                             <div {...getRootProps()}>
                                                 <input {...getInputProps()} />
-                                                <p>Drag and drop an annotation files here, or click to select the
-                                                    file <br/>(only *.json will be accepted)</p>
+                                                <p className={DialogCSS.dropzoneText}>Drag and drop an annotation files here, or click to select the
+                                                    file<br/>(only *.json will be accepted)</p>
                                             </div>
                                         </section>
                                     )}
