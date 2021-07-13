@@ -39,7 +39,7 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
             size={"lg"}
         >
             <Modal.Header closeButton>
-                <Modal.Title>Import python package</Modal.Title>
+                <Modal.Title>Import Python package</Modal.Title>
             </Modal.Header>
 
             <Modal.Body>
@@ -47,7 +47,7 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
                     <Modal.Body>
                         <Form.Group>
                             <Form.Label>
-                                Select a python package to upload.
+                                Select a Python package to upload.
                             </Form.Label>
                             <div style={dropzoneStyle}>
                                 <Dropzone onDrop={acceptedFiles => {
@@ -64,7 +64,7 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
                                         <section>
                                             <div {...getRootProps()}>
                                                 <input {...getInputProps()} />
-                                                <p>Drag and drop a python package here, or click to select the
+                                                <p>Drag and drop a Python package here, or click to select the
                                                     file <br/>(only *.json will be accepted)</p>
                                             </div>
                                         </section>
