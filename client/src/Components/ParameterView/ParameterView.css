@@ -55,15 +55,3 @@
 .documentation-text {
     clear: both;
 }
-
-.modal-dialog {
-    margin-top: 5rem;
-}
-
-@media screen and (min-width: 1200px) {
-    .modal-dialog {
-        /* Centers the dialog over the left pane */
-        margin-left: calc(25vw - 250px);
-        width: 500px;
-    }
-}
