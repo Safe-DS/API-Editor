@@ -7,7 +7,6 @@ import PythonPackage from "./PythonPackage";
 import PythonDeclaration from "./PythonDeclaration";
 
 export default class PythonModule extends PythonDeclaration {
-
     readonly name: string;
     readonly imports: PythonImport[];
     readonly fromImports: PythonFromImport[];
@@ -16,6 +15,7 @@ export default class PythonModule extends PythonDeclaration {
     containingPackage: Nullable<PythonPackage>;
 
     constructor(
+
         name: string,
         imports: PythonImport[] = [],
         fromImports: PythonFromImport[] = [],

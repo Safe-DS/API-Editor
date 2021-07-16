@@ -6,7 +6,6 @@ import PythonParameter from "./PythonParameter";
 import PythonResult from "./PythonResult";
 
 export default class PythonFunction extends PythonDeclaration {
-
     readonly name: string;
     readonly decorators: string[];
     readonly parameters: PythonParameter[];
@@ -18,6 +17,7 @@ export default class PythonFunction extends PythonDeclaration {
     containingModuleOrClass: Nullable<PythonModule | PythonClass>;
 
     constructor(
+
         name: string,
         decorators: string[] = [],
         parameters: PythonParameter[] = [],

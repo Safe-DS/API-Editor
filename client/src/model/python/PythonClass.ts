@@ -15,6 +15,7 @@ export default class PythonClass extends PythonDeclaration {
     containingModule: Nullable<PythonModule>;
 
     constructor(
+
         name: string,
         decorators: string[] = [],
         superclasses: string[] = [],
@@ -63,4 +64,6 @@ export default class PythonClass extends PythonDeclaration {
 
         return result;
     }
+
+
 }
