@@ -5,7 +5,7 @@ import rehypeKatex from "rehype-katex";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import VisibilityIndicator from "../Util/VisibilityIndicator";
-import "./ParameterView.css";
+import "./SelectionView.css";
 import "katex/dist/katex.min.css";
 
 interface DocumentationTextProps {
@@ -23,17 +23,22 @@ export default function DocumentationText({inputText = ""}: DocumentationTextPro
     const cssClasses = classNames(
         "read-more-button",
         {
-            "pl-1-5rem": !hasMultipleLines,
+            "pl-2rem": !hasMultipleLines,
         }
     );
+
+    const iconCssClasses = classNames({
+        "pl-1rem": hasMultipleLines,
+    });
 
     return (
         <div className="docu-paragraph" onClick={() => {
             setReadMore(!readMore);
         }}>
-            <div className="pl-1-5rem">
+            {hasMultipleLines && <div className={iconCssClasses}>
                 <VisibilityIndicator hasChildren={hasMultipleLines} showChildren={readMore}/>
-            </div>
+            </div>}
+
 
             <ReactMarkdown className={cssClasses} rehypePlugins={[rehypeKatex]} remarkPlugins={[remarkGfm, remarkMath]}>
                 {readMore || !hasMultipleLines ? preprocessedText : shortenedText + " [Read More...]"}
