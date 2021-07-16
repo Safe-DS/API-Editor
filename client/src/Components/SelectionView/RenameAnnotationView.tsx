@@ -1,7 +1,7 @@
 import {faTrash, faWrench} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import React from "react";
-import {Button, ButtonGroup, Card, Col, Row} from "react-bootstrap";
+import {Button, ButtonGroup, Col, Row} from "react-bootstrap";
 import {Nullable, Setter} from "../../util/types";
 
 interface RenameAnnotationViewProps {
@@ -14,23 +14,19 @@ const RenameAnnotationView: React.FC<RenameAnnotationViewProps> = (props) => {
     const deleteRenameAnnotation = () => props.setNewName(null);
 
     if (props.newName !== null) {
-        return (<div>
-            <h5>Annotations</h5>
-            <Card>
-                <Card.Body>
-                <Row>
-                    <Col>
-                        <code>{`@rename: ${props.newName}`}</code>
-                    </Col>
-                    <Col>
-                        <ButtonGroup>
-                            <Button size="sm" onClick={props.onRenameEdit}><FontAwesomeIcon icon={faWrench}/></Button>
-                            <Button size="sm" onClick={deleteRenameAnnotation}><FontAwesomeIcon icon={faTrash}/></Button>
-                        </ButtonGroup>
-                    </Col>
-                </Row>
-                </Card.Body>
-            </Card>
+        return (<div className={"annotation-list"}>
+            <h4>Annotations</h4>
+            <Row>
+                <Col className="align-items-center" xs="auto">
+                    <code>{`@rename: ${props.newName}`}</code>
+                </Col>
+                <Col xs="auto">
+                    <ButtonGroup>
+                        <Button size="sm" onClick={props.onRenameEdit}><FontAwesomeIcon icon={faWrench}/></Button>
+                        <Button size="sm" onClick={deleteRenameAnnotation}><FontAwesomeIcon icon={faTrash}/></Button>
+                    </ButtonGroup>
+                </Col>
+            </Row>
         </div>);
     }
     return <></>;

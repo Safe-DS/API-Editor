@@ -4,7 +4,6 @@ import AnnotationStore from "../../model/annotation/AnnotationStore";
 import PythonParameter from "../../model/python/PythonParameter";
 import {Nullable, Setter} from "../../util/types";
 import RenameDialog from "../Dialog/RenameDialog";
-import DocumentationText from "./DocumentationText";
 import "./SelectionView.css";
 import RenameAnnotationView from "./RenameAnnotationView";
 import classNames from "classnames";
@@ -34,7 +33,7 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
     });
 
     return (
-        <div className="parameter-list">
+        <div>
             <div className="parameter-header">
                 {props.isTitle ? <h1 className="parameter-name">{props.pythonParameter.name}</h1> : <h4 className="parameter-name">{props.pythonParameter.name}</h4>}
                 <div className={dropdownClassnames}>
@@ -65,12 +64,8 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
             />}
 
             {
-                props.pythonParameter.description &&
-                <DocumentationText inputText={props.pythonParameter?.description}/>
-            }
-            {
                 !props.pythonParameter.description &&
-                <p className="pl-2rem text-muted">There is no documentation for this parameter.</p>
+                <p className="pl-1rem text-muted">There is no documentation for this parameter.</p>
             }
         </div>
     );
