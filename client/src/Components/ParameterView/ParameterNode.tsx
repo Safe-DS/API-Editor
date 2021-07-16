@@ -29,7 +29,7 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
 
     return (
         <div className="parameter-list">
-            <div className="parameter-header">
+            <div className="parameter-header pl-1rem">
                 <h4 className="parameter-name">{props.pythonParameter.name}</h4>
                 <Dropdown>
                     <Dropdown.Toggle size="sm" variant="outline-primary">
@@ -62,7 +62,7 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
             }
             {
                 !props.pythonParameter.description &&
-                <p className="pl-2-7rem text-muted">There is no documentation for this parameter.</p>
+                <p className="pl-2rem text-muted">There is no documentation for this parameter.</p>
             }
         </div>
     );

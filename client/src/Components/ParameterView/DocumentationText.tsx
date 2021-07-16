@@ -27,10 +27,10 @@ export default function DocumentationText({inputText = ""}: DocumentationTextPro
     );
 
     return (
-        <div className="docu-paragraph" onClick={() => {
+        <div className="docu-paragraph " onClick={() => {
             setReadMore(!readMore);
         }}>
-            <div className="pl-1-5rem">
+            <div className="pl-1rem">
                 <VisibilityIndicator hasChildren={hasMultipleLines} showChildren={readMore}/>
             </div>
 

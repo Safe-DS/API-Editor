@@ -24,7 +24,7 @@ export default function ParameterView(props: ParameterViewProps): JSX.Element {
             <>
                 <h1>{declaration.name}</h1>
                 <DocumentationText inputText={declaration.description}/>
-                <h2 className={"parameter-title"}>Parameters</h2>
+                <h2>Parameters</h2>
                 {
                     !isEmptyList(declaration.parameters) ?
                         declaration.parameters.map(parameters => (
@@ -35,7 +35,7 @@ export default function ParameterView(props: ParameterViewProps): JSX.Element {
                                 setAnnotationStore={props.setAnnotationStore}
                             />
                         )) :
-                        <span className="text-muted" style={{paddingLeft: '1rem'}}>There are no parameters.</span>
+                        <span className="text-muted" style={{paddingLeft: '2rem'}}>There are no parameters.</span>
                 }
             </>
             }
