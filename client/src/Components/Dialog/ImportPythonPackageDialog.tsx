@@ -1,28 +1,32 @@
-import React, {useState} from "react";
+import React, {FormEvent, useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
 import {Setter} from "../../util/types";
 import "../SelectionView/SelectionView.css";
 import Dropzone from 'react-dropzone';
 import {isValidJsonFile} from "../../util/validation";
 import DialogCSS from "./dialog.module.css";
+import PythonPackage from "../../model/python/PythonPackage";
+import {parsePythonPackageJson} from "../../model/python/PythonPackageBuilder";
 
 interface ImportPythonPackageDialogProps {
     isVisible: boolean
-    setIsVisible: Setter<boolean>
+    setIsVisible: Setter<boolean>,
+    setPythonPackage: Setter<PythonPackage>
 }
 
 export default function ImportPythonPackageDialog(props: ImportPythonPackageDialogProps): JSX.Element {
 
     const [fileName, setFileName] = useState("");
-    /* not yet needed, but important for storing the file later
-    const [file, setFile] = useState<File[]>([]); */
+    const [newPythonPackage, setNewPythonPackage] = useState<PythonPackage>();
 
     const close = () => {
         props.setIsVisible(false);
     };
 
-    const submit = () => {
-        console.log("TODO");
+    const submit = (event: FormEvent) => {
+        event.preventDefault();
+        props.setIsVisible(false);
+        if (newPythonPackage) props.setPythonPackage(newPythonPackage);
     };
 
     return (
@@ -50,8 +54,13 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
                                             acceptedFiles = [acceptedFiles[acceptedFiles.length - 1]];
                                         }
                                         setFileName(acceptedFiles[0].name);
-                                        /* not yet needed, but important for storing the file later
-                                        setFile([acceptedFiles[0]]);*/
+                                        const reader = new FileReader();
+                                        reader.onload = () => {
+                                            if (typeof reader.result === 'string') {
+                                                setNewPythonPackage(parsePythonPackageJson(JSON.parse(reader.result)));
+                                            }
+                                        };
+                                        reader.readAsText(acceptedFiles[0]);
                                     }
                                 }}>
                                     {({getRootProps, getInputProps}) => (
@@ -72,7 +81,7 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
                         <Button variant="secondary" onClick={close}>
                             Cancel
                         </Button>
-                        <Button variant="primary" type="button" onSubmit={submit}>
+                        <Button variant="primary" type="submit" onClick={submit}>
                             Submit
                         </Button>
                     </Modal.Footer>

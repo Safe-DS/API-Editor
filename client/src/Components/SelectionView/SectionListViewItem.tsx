@@ -18,10 +18,10 @@ export default function SectionListViewItem(props: ClassViewItemProps): JSX.Elem
             {
                 !isEmptyList(props.inputElements) ?
                     props.inputElements.map((listElement, index) => (
-                        <div className="pl-2rem" key={index}>{listElement}</div>
+                        <div className="pl-1rem" key={index}>{listElement}</div>
                     )) :
                     <span className="text-muted"
-                          style={{paddingLeft: '2rem'}}>There are no {props.title.toLowerCase()}.</span>
+                          style={{paddingLeft: '1rem'}}>There are no {props.title.toLowerCase()}.</span>
             }
         </>
     );

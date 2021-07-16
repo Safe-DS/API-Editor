@@ -28,7 +28,7 @@ export default function ParameterView(props: ParameterViewProps): JSX.Element {
                 {declaration.hasDefault &&
                 <TitleValueViewPair title="Default value" value={declaration.defaultValue}/>}
                 {declaration.type &&
-                <><h2>Type</h2><span className="pl-2rem">{declaration.type}</span></>
+                <><h2>Type</h2><span className="pl-1rem">{declaration.type}</span></>
                 }
             </>}
         </>

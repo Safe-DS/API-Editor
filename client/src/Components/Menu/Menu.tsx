@@ -6,8 +6,14 @@ import MenuCSS from "./Menu.module.css";
 import classNames from "classnames";
 import ImportAnnotationFileDialog from "../Dialog/ImportAnnotationFileDialog";
 import ImportPythonPackageDialog from "../Dialog/ImportPythonPackageDialog";
+import {Setter} from "../../util/types";
+import PythonPackage from "../../model/python/PythonPackage";
 
-export default function Menu(): JSX.Element {
+interface MenuProps {
+    setPythonPackage: Setter<PythonPackage>
+}
+
+export default function Menu(props: MenuProps): JSX.Element {
 
     const openImportAnnotationFileDialog = () => setShowImportAnnotationFileDialog(true);
     const openImportPythonPackageDialog = () => setShowImportPythonPackageDialog(true);
@@ -41,7 +47,8 @@ export default function Menu(): JSX.Element {
             {showImportAnnotationFileDialog && <ImportAnnotationFileDialog isVisible={showImportAnnotationFileDialog}
                                                                            setIsVisible={setShowImportAnnotationFileDialog}/>}
             {showImportPythonPackageDialog && <ImportPythonPackageDialog isVisible={showImportPythonPackageDialog}
-                                                                         setIsVisible={setShowImportPythonPackageDialog}/>}
+                                                                         setIsVisible={setShowImportPythonPackageDialog}
+                                                                         setPythonPackage={props.setPythonPackage}/>}
 
         </Navbar>
     );
