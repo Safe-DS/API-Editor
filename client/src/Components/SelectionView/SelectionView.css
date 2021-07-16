@@ -42,6 +42,7 @@
 
 .function-title {
     padding-bottom: 15px;
+    padding-top: 15px;
 }
 
 .read-more-button {
@@ -52,8 +53,36 @@
     cursor: pointer;
 }
 
+.no-read-more-button {
+    text-align: left;
+    background: none!important;
+    border: none;
+    padding-left: 3rem;
+    font-family: arial, sans-serif;
+}
+
 .documentation-text {
     clear: both;
+}
+
+.no-left-padding {
+    padding-left: 0;
+}
+
+.no-right-padding {
+    padding-right: 0;
+}
+
+.enum-item-icon {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0;
+    align-items: center;
+}
+
+
+.enum-pair-row {
+    padding-top: 15px;
 }
 
 h2 {
