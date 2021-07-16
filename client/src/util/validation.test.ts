@@ -1,4 +1,4 @@
-import { isValidPythonIdentifier } from './validation';
+import {isValidJsonFile, isValidPythonIdentifier} from './validation';
 
 test("valid name starting with lower case letter", () => {
     const testString = "hallo_welt";
@@ -23,4 +23,14 @@ test("invalid name with %", () => {
 test("invalid name starting with number", () => {
     const testString = "9Hallo_Welt";
     expect(isValidPythonIdentifier(testString)).toEqual(false);
+});
+
+test("invalid json file name", () => {
+    const testString = "helloWorld.png";
+    expect(isValidJsonFile(testString)).toEqual(false);
+});
+
+test("valid json file name", () => {
+    const testString = "helloWorld.json";
+    expect(isValidJsonFile(testString)).toEqual(true);
 });

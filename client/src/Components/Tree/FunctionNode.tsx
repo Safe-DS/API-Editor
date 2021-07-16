@@ -1,16 +1,12 @@
 import {faCogs} from "@fortawesome/free-solid-svg-icons";
 import React from "react";
-import PythonDeclaration from "../../model/python/PythonDeclaration";
 import PythonFunction from "../../model/python/PythonFunction";
 import {isEmptyList} from "../../util/listOperations";
-import {Setter} from "../../util/types";
 import ParameterNode from "./ParameterNode";
 import TreeNode from "./TreeNode";
 
 interface FunctionNodeProps {
     pythonFunction: PythonFunction,
-    selection: PythonDeclaration,
-    setSelection: Setter<PythonDeclaration>
 }
 
 export default function FunctionNode(props: FunctionNodeProps): JSX.Element {
@@ -21,17 +17,11 @@ export default function FunctionNode(props: FunctionNodeProps): JSX.Element {
             declaration={props.pythonFunction}
             icon={faCogs}
             isExpandable={hasParameters}
-            isWorthClicking={true}
-            selection={props.selection}
-            setSelection={props.setSelection}
-        >
+            isWorthClicking={true}>
             {props.pythonFunction.parameters.map(parameter =>
                 <ParameterNode
                     key={parameter.name}
-                    pythonParameter={parameter}
-                    selection={props.selection}
-                    setSelection={props.setSelection}
-                />
+                    pythonParameter={parameter}/>
             )}
         </TreeNode>
     );
