@@ -6,9 +6,9 @@ import ClassView from "./ClassView";
 import PythonClass from "../../model/python/PythonClass";
 import ModuleView from "./ModuleView";
 import PythonModule from "../../model/python/PythonModule";
-import ParameterView from "./ParameterView";
+import FunctionView from "./FunctionView";
 import PythonParameter from "../../model/python/PythonParameter";
-import NewParameterView from "./NewParameterView";
+import ParameterView from "./ParameterView";
 import PythonPackage from "../../model/python/PythonPackage";
 import {useLocation} from "react-router";
 
@@ -25,8 +25,8 @@ export default function SelectionView(props: SelectionViewProps): JSX.Element {
     return (
         <div className="parameter-view">
             {declaration instanceof PythonFunction &&
-            <ParameterView pythonPackage={props.pythonPackage} annotationStore={props.annotationStore}
-                           setAnnotationStore={props.setAnnotationStore}/>
+            <FunctionView pythonPackage={props.pythonPackage} annotationStore={props.annotationStore}
+                          setAnnotationStore={props.setAnnotationStore}/>
             }
             {declaration instanceof PythonClass &&
             <ClassView pythonPackage={props.pythonPackage}/>
@@ -35,7 +35,7 @@ export default function SelectionView(props: SelectionViewProps): JSX.Element {
             <ModuleView pythonPackage={props.pythonPackage}/>
             }
             {declaration instanceof PythonParameter &&
-            <NewParameterView pythonPackage={props.pythonPackage}/>}
+            <ParameterView pythonPackage={props.pythonPackage}/>}
         </div>
     );
 }

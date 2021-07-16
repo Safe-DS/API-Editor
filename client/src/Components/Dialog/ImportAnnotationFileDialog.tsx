@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
 import {Setter} from "../../util/types";
-import "../SelectionView/ParameterView.css";
+import "../SelectionView/SelectionView.css";
 import Dropzone from 'react-dropzone';
 import {isValidJsonFile} from "../../util/validation";
 import DialogCSS from "./dialog.module.css";

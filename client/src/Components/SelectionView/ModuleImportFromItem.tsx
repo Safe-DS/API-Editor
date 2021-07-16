@@ -9,7 +9,7 @@ interface ModuleImportFromItemProps {
 export default function ModuleImportFromItem(props: ModuleImportFromItemProps): JSX.Element {
     return (
         <>
-            <TitleValueViewPair title="Module" value={props.inputImportFrom.module}/>
+            {props.inputImportFrom.module ? <TitleValueViewPair title="Module" value={props.inputImportFrom.module}/> : ""}
             {props.inputImportFrom.declaration ? <TitleValueViewPair title="Declaration" value={props.inputImportFrom.declaration}/> : ""}
             {props.inputImportFrom.alias ? <TitleValueViewPair title="Alias" value={props.inputImportFrom.alias}/> : ""}
         </>

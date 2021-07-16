@@ -1,44 +1,30 @@
 import React from "react";
-import PythonFunction from "../../model/python/PythonFunction";
 import DocumentationText from "./DocumentationText";
-import {isEmptyList} from "../../util/listOperations";
-import ParameterNode from "./ParameterNode";
-import AnnotationStore from "../../model/annotation/AnnotationStore";
-import {Setter} from "../../util/types";
+import PythonParameter from "../../model/python/PythonParameter";
+import TitleValueViewPair from "./TitleValueViewPair";
 import {useLocation} from "react-router";
 import PythonPackage from "../../model/python/PythonPackage";
 
-interface FunctionViewProps {
+interface ParameterViewProps {
     pythonPackage: PythonPackage,
-    annotationStore: AnnotationStore,
-    setAnnotationStore: Setter<AnnotationStore>,
 }
 
-export default function ParameterView(props: FunctionViewProps): JSX.Element {
+export default function ParameterView(props: ParameterViewProps): JSX.Element {
 
     const declaration = props.pythonPackage.getByRelativePath(useLocation().pathname.split("/").splice(2));
 
     return (
-        <div>
-            {declaration instanceof PythonFunction &&
+        <>
+            {declaration instanceof PythonParameter &&
             <>
                 <h1>{declaration.name}</h1>
                 <DocumentationText inputText={declaration.description}/>
-                <h2 className={"function-title"}>Parameters</h2>
-                {
-                    !isEmptyList(declaration.parameters) ?
-                        declaration.parameters.map(parameters => (
-                            <ParameterNode
-                                key={parameters.name}
-                                pythonParameter={parameters}
-                                annotationStore={props.annotationStore}
-                                setAnnotationStore={props.setAnnotationStore}
-                            />
-                        )) :
-                        <span className={"text-muted, pl-2rem"}>There are no parameters.</span>
+                {declaration.hasDefault &&
+                <TitleValueViewPair title="Default value" value={declaration.defaultValue}/>}
+                {declaration.type &&
+                <><h2>Type</h2><span className="pl-2rem">{declaration.type}</span></>
                 }
-            </>
-            }
-        </div>
+            </>}
+        </>
     );
 }
