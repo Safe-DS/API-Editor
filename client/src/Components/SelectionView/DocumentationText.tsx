@@ -27,17 +27,13 @@ export default function DocumentationText({inputText = ""}: DocumentationTextPro
         }
     );
 
-    const iconCssClasses = classNames({
-        "pl-1rem": hasMultipleLines,
-    });
-
     return (
         <div className="docu-paragraph" onClick={() => {
             setReadMore(!readMore);
         }}>
-            {hasMultipleLines && <div className={iconCssClasses}>
+            {hasMultipleLines &&
                 <VisibilityIndicator hasChildren={hasMultipleLines} showChildren={readMore}/>
-            </div>}
+            }
 
 
             <ReactMarkdown className={cssClasses} rehypePlugins={[rehypeKatex]} remarkPlugins={[remarkGfm, remarkMath]}>

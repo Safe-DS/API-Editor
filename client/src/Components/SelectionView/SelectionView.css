@@ -62,12 +62,13 @@ h2 {
 }
 
 h1 {
+    font-weight: bold;
     padding-bottom: 15px;
 }
 
 .module-list {
     list-style: none;
-    padding-left: 2rem;
+    padding-left: 1rem;
 }
 
 .module-list li:not(:first-child) {
@@ -79,4 +80,9 @@ h1 {
     margin-bottom: 10px;
     padding-bottom: 20px;
     align-self: flex-end;
+}
+
+.annotation-list {
+    padding-bottom: 20px;
+    padding-left: 1rem;
 }
