@@ -7,7 +7,6 @@ import {Nullable, Setter} from "../../../util/types";
 import PythonEnum from "../../../model/python/PythonEnum";
 import EnumHandle from "./EnumHandle";
 
-
 type showDialogState = {
     dialogState: boolean, setDialogState: Setter<boolean>,
     enumDefinition: Nullable<PythonEnum>, setEnumDefinition: Setter<Nullable<PythonEnum>>
