@@ -1,7 +1,6 @@
 import {Map} from "immutable";
 import {Nullable} from "../../util/types";
 import PythonDeclaration from "../python/PythonDeclaration";
-import EnumPair from "../EnumPair";
 import PythonEnum from "../python/PythonEnum";
 
 export default class AnnotationStore {
@@ -14,40 +13,37 @@ export default class AnnotationStore {
     }
 
     getRenamingFor(declaration: PythonDeclaration): Nullable<string> {
-        console.log(declaration.name);
         return this.renamings.get(declaration.pathAsString()) ?? null;
     }
 
-    getEnumFor(enumDefinition: PythonEnum): Nullable<string> {
+    getEnumFor(enumDefinition: PythonDeclaration): PythonEnum | null {
         return this.enums.get(enumDefinition.pathAsString()) ?? null;
     }
 
     setRenamingFor(declaration: PythonDeclaration, parameterName: Nullable<string>): AnnotationStore {
         if (parameterName === null || declaration.name === parameterName) {
-            console.log(declaration.name);
-            console.log(parameterName);
             return this.removeRenamingFor(declaration);
         }
 
-        return new AnnotationStore(this.renamings.set(declaration.pathAsString(), parameterName));
+        return new AnnotationStore(this.renamings.set(declaration.pathAsString(), parameterName), this.enums);
     }
 
-    setEnumFor(enumDefinition: PythonEnum, newName: Nullable<string>): AnnotationStore {
-        if (newName === null || enumDefinition.enumName === newName) {
-            return this.removeEnumFor(enumDefinition);
+    setEnumFor(declaration: PythonDeclaration, parameterEnum: Nullable<PythonEnum>): AnnotationStore {
+        if (parameterEnum === null) {
+            return this.removeEnumFor(declaration);
         }
 
-        return new AnnotationStore(this.renamings.set(enumDefinition.pathAsString(), newName));
+        return new AnnotationStore(this.renamings, this.enums.set(declaration.pathAsString(), parameterEnum));
     }
 
     removeRenamingFor(declaration: PythonDeclaration): AnnotationStore {
-        return new AnnotationStore(this.renamings.remove(declaration.pathAsString()));
+        return new AnnotationStore(this.renamings.remove(declaration.pathAsString()), this.enums);
     }
 
-    removeEnumFor(enumDefinition: PythonEnum): AnnotationStore {
-        return new AnnotationStore(this.renamings.remove(enumDefinition.pathAsString()));
+    removeEnumFor(enumDefinition: PythonDeclaration): AnnotationStore {
+        return new AnnotationStore(this.renamings.remove(enumDefinition.pathAsString()), this.enums);
     }
 }
 
 export type RenameAnnotationStore = Map<string, string>
-export type EnumAnnotationStore = Map<string, string>
+export type EnumAnnotationStore = Map<string, PythonEnum>

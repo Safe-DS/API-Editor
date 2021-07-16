@@ -5,26 +5,25 @@ import {Formik} from 'formik';
 import {isValidPythonIdentifier} from "../../../util/validation";
 import EnumPair from "../../../model/EnumPair";
 import EnumHandle from "./EnumHandle";
-import {Setter} from "../../../util/types";
+import {Nullable, Setter} from "../../../util/types";
+import PythonEnum from "../../../model/python/PythonEnum";
 
 
 type showDialogState = {
-    dialogState: boolean, setDialogState: Setter<boolean>, currentName: string,
-    setCurrentName: Setter<string>, enumList: EnumPair[]
+    dialogState: boolean, setDialogState: Setter<boolean>,
+    enumDefinition: Nullable<PythonEnum>, setEnumDefinition: Setter<Nullable<PythonEnum>>
 }
 
 export default function EnumDialog({
                                        dialogState,
                                        setDialogState,
-                                       currentName,
-                                       setCurrentName,
-                                       enumList
+                                       enumDefinition,
+                                       setEnumDefinition
                                    }: showDialogState): JSX.Element {
 
     const [nameValid, setNameValid] = useState(true);
-    const [name, setName] = useState(currentName);
+    const [name, setName] = useState(enumDefinition?.enumName ? enumDefinition?.enumName : "");
 
-    const initialList: EnumPair[] = [];
 
     const deepCloneOrEmpty = (from: EnumPair[],to: EnumPair[] ) => {
         if(from.length > 0){
@@ -37,18 +36,24 @@ export default function EnumDialog({
         }
     };
 
-    deepCloneOrEmpty(enumList, initialList);
+    const initialList: EnumPair[] = [];//new EnumPair("","")
+
+    if(enumDefinition?.enumPairs){
+        deepCloneOrEmpty(enumDefinition?.enumPairs , initialList);
+    }
+    else{
+        initialList.push(new EnumPair("",""));
+    }
+
+
     const [listOfEnumPairs, setListOfEnumPairs] = useState<EnumPair[]>(initialList);
 
     
 
     const resetData = () => {
         setDialogState(false);
-        setName(currentName);
+        setName(enumDefinition?.enumName ? enumDefinition?.enumName : "");
         setNameValid(true);
-
-        initialList.splice(0, initialList.length);
-        deepCloneOrEmpty(enumList, initialList);
         setListOfEnumPairs(initialList);
     };
 
@@ -70,10 +75,7 @@ export default function EnumDialog({
         });
 
         if (name && nameValid && validInputInstances) {//&& name != currentName
-            setCurrentName(name);
-            enumList.splice(0, enumList.length);
-            deepCloneOrEmpty(listOfEnumPairs, enumList);
-            //setEnumList(listOfEnumPairs);
+            setEnumDefinition(new PythonEnum(name, name, listOfEnumPairs));
             setDialogState(false);
         }
     };

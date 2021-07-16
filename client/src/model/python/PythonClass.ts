@@ -2,6 +2,7 @@ import {Nullable} from "../../util/types";
 import PythonDeclaration from "./PythonDeclaration";
 import PythonFunction from "./PythonFunction";
 import PythonModule from "./PythonModule";
+import EnumPair from "../EnumPair";
 
 export default class PythonClass extends PythonDeclaration {
 
@@ -15,6 +16,7 @@ export default class PythonClass extends PythonDeclaration {
     containingModule: Nullable<PythonModule>;
 
     constructor(
+
         name: string,
         decorators: string[] = [],
         superclasses: string[] = [],
@@ -63,4 +65,6 @@ export default class PythonClass extends PythonDeclaration {
 
         return result;
     }
+
+
 }
