@@ -44,7 +44,7 @@ export default class AnnotationStore {
     }
 
     private setRenaming(path: string, newName: string) {
-        return new AnnotationStore(this.renamings.set(path, newName));
+        return new AnnotationStore(this.renamings.set(path, newName), this.enums);
     }
 
     private setEnum(path: string, pythonEnum: PythonEnum) {
