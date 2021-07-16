@@ -9,6 +9,7 @@ import RenameDialog from "../Dialog/RenameDialog";
 import "./SelectionView.css";
 import classNames from "classnames";
 import PythonEnum from "../../model/python/PythonEnum";
+import EnumAnnotationView from "./EnumAnnotationView";
 
 interface ParameterNodeProps {
     pythonParameter: PythonParameter,
@@ -59,10 +60,19 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
                     </Dropdown>
                 </div>
             </div>
+
+            {newName &&
+                <h4>Annotations</h4>
+            }
             <RenameAnnotationView
                 newName={newName}
                 setNewName={setNewName}
                 onRenameEdit={openRenameDialog}
+            />
+            <EnumAnnotationView
+                enumDefinition={newEnumDefinition}
+                setEnumDefinition={setNewEnumDefinition}
+                onEnumEdit={openEnumDialog}
             />
 
             {/*This additional check cause the dialog to be thrown away after closing it, resetting its state*/}
@@ -74,8 +84,10 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
                 setNewName={setNewName}
             />}
 
-            <EnumDialog dialogState={showEnumDialog} setDialogState={setShowEnumDialog}
-                        enumDefinition={newEnumDefinition} setEnumDefinition={setNewEnumDefinition}/>
+            {showEnumDialog && <EnumDialog
+                dialogState={showEnumDialog} setDialogState={setShowEnumDialog}
+                                           enumDefinition={newEnumDefinition} setEnumDefinition={setNewEnumDefinition}/>
+            }
             {
                 !props.pythonParameter.description &&
                 <p className="pl-1rem text-muted">There is no documentation for this parameter.</p>

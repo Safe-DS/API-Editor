@@ -41,7 +41,7 @@ export default class AnnotationStore {
     }
 
     removeEnumFor(enumDefinition: PythonDeclaration): AnnotationStore {
-        return new AnnotationStore(this.renamings.remove(enumDefinition.pathAsString()), this.enums);
+        return new AnnotationStore(this.renamings, this.enums.remove(enumDefinition.pathAsString()));
     }
 }
 

@@ -23,7 +23,6 @@ export default function EnumDialog({
     const [nameValid, setNameValid] = useState(true);
     const [name, setName] = useState(enumDefinition?.enumName ? enumDefinition?.enumName : "");
 
-
     const deepCloneOrEmpty = (from: EnumPair[],to: EnumPair[] ) => {
         if(from.length > 0){
             from.forEach(function(value){
@@ -44,15 +43,15 @@ export default function EnumDialog({
         initialList.push(new EnumPair("",""));
     }
 
-
     const [listOfEnumPairs, setListOfEnumPairs] = useState<EnumPair[]>(initialList);
-
-    
 
     const resetData = () => {
         setDialogState(false);
         setName(enumDefinition?.enumName ? enumDefinition?.enumName : "");
         setNameValid(true);
+        initialList.splice(0, initialList.length);
+        initialList.push(new EnumPair("",""));
+
         setListOfEnumPairs(initialList);
     };
 
@@ -74,7 +73,11 @@ export default function EnumDialog({
 
         if (name && nameValid && validInputInstances) {//&& name != currentName
             setEnumDefinition(new PythonEnum(name, listOfEnumPairs));
+            //reset below
             setDialogState(false);
+            initialList.splice(0, initialList.length);
+            initialList.push(new EnumPair("",""));
+            setListOfEnumPairs(initialList);
         }
     };
 
