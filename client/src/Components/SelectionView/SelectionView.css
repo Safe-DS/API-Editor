@@ -73,3 +73,10 @@ h1 {
 .module-list li:not(:first-child) {
     margin-top: 20px;
 }
+
+.parameter-is-title {
+    display: flex;
+    margin-bottom: 8px;
+    padding-bottom: 20px;
+    align-self: flex-end;
+}

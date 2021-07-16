@@ -35,7 +35,8 @@ export default function SelectionView(props: SelectionViewProps): JSX.Element {
             <ModuleView pythonPackage={props.pythonPackage}/>
             }
             {declaration instanceof PythonParameter &&
-            <ParameterView pythonPackage={props.pythonPackage}/>}
+            <ParameterView pythonPackage={props.pythonPackage} annotationStore={props.annotationStore}
+                           setAnnotationStore={props.setAnnotationStore}/>}
         </div>
     );
 }

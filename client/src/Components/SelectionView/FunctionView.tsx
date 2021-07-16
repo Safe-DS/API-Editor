@@ -33,6 +33,7 @@ export default function FunctionView(props: FunctionViewProps): JSX.Element {
                                 pythonParameter={parameters}
                                 annotationStore={props.annotationStore}
                                 setAnnotationStore={props.setAnnotationStore}
+                                isTitle={false}
                             />
                         )) :
                         <span className={"text-muted, pl-2rem"}>There are no parameters.</span>
