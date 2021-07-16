@@ -1,12 +1,11 @@
 import React, {FormEvent, useState} from "react";
-import "../ParameterView.css";
 import {Button, Form, Modal} from "react-bootstrap";
 import {Formik} from 'formik';
 import {isValidPythonIdentifier} from "../../../util/validation";
 import EnumPair from "../../../model/EnumPair";
-import EnumHandle from "./EnumHandle";
 import {Nullable, Setter} from "../../../util/types";
 import PythonEnum from "../../../model/python/PythonEnum";
+import EnumHandle from "./EnumHandle";
 
 
 type showDialogState = {

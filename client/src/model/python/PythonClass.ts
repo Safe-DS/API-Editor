@@ -2,7 +2,6 @@ import {Nullable} from "../../util/types";
 import PythonDeclaration from "./PythonDeclaration";
 import PythonFunction from "./PythonFunction";
 import PythonModule from "./PythonModule";
-import EnumPair from "../EnumPair";
 
 export default class PythonClass extends PythonDeclaration {
 

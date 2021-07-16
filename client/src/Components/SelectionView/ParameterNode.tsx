@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import "./ParameterView.css";
 import DocumentationText from "./DocumentationText";
 import {Dropdown} from "react-bootstrap";
 import EnumDialog from "./Dialogues/EnumDialog";
@@ -8,11 +7,6 @@ import {Nullable, Setter} from "../../util/types";
 import AnnotationStore from "../../model/annotation/AnnotationStore";
 import PythonParameter from "../../model/python/PythonParameter";
 import RenameDialog from "../Dialog/RenameDialog";
-import DocumentationText from "./DocumentationText";
-import "./ParameterView.css";
-import RenameAnnotationView from "./RenameAnnotationView";
-import "./SelectionView.css";
-import RenameAnnotationView from "./RenameAnnotationView";
 import classNames from "classnames";
 import PythonEnum from "../../model/python/PythonEnum";
 
@@ -22,7 +16,6 @@ interface ParameterNodeProps {
     setAnnotationStore: Setter<AnnotationStore>,
     isTitle: boolean,
 }
-
 
 export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
     const [showRenameDialog, setShowRenameDialog] = useState(false);
