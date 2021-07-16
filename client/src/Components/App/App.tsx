@@ -17,7 +17,7 @@ export default function App(): JSX.Element {
         <HashRouter>
             <div className={AppCSS.app}>
                 <div className={AppCSS.menu}>
-                    <Menu setPythonPackage={setPythonPackage}/>
+                    <Menu setPythonPackage={setPythonPackage} annotationStore={annotationStore}/>
                 </div>
                 <div className={AppCSS.leftPane}>
                     <TreeView pythonPackage={pythonPackage}/>

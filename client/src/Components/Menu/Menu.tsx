@@ -8,9 +8,11 @@ import ImportAnnotationFileDialog from "../Dialog/ImportAnnotationFileDialog";
 import ImportPythonPackageDialog from "../Dialog/ImportPythonPackageDialog";
 import {Setter} from "../../util/types";
 import PythonPackage from "../../model/python/PythonPackage";
+import AnnotationStore from "../../model/annotation/AnnotationStore";
 
 interface MenuProps {
     setPythonPackage: Setter<PythonPackage>
+    annotationStore: AnnotationStore
 }
 
 export default function Menu(props: MenuProps): JSX.Element {
@@ -23,6 +25,10 @@ export default function Menu(props: MenuProps): JSX.Element {
 
     const pathname = useLocation().pathname.split("/").slice(1);
     const cssClasses = classNames(MenuCSS.menu, "justify-content-between");
+
+    const exportAnnotations = () => {
+        props.annotationStore.downloadAnnotations(props.annotationStore.toJson());
+    };
 
     return (
         <Navbar className={cssClasses} bg="light" expand="lg">
@@ -40,9 +46,13 @@ export default function Menu(props: MenuProps): JSX.Element {
             <Nav>
                 <NavDropdown title="Import" id="import-dropdown" align="end">
                     <NavDropdown.Item onClick={openImportPythonPackageDialog} href="#">Python Package</NavDropdown.Item>
-                    <NavDropdown.Item onClick={openImportAnnotationFileDialog} href="#">Annotation File</NavDropdown.Item>
+                    <NavDropdown.Item onClick={openImportAnnotationFileDialog} href="#">Annotation
+                        File</NavDropdown.Item>
                 </NavDropdown>
-                <Navbar.Text>Export</Navbar.Text>
+
+                <Nav.Link onClick={exportAnnotations} href="#">
+                    Export
+                </Nav.Link>
             </Nav>
             {showImportAnnotationFileDialog && <ImportAnnotationFileDialog isVisible={showImportAnnotationFileDialog}
                                                                            setIsVisible={setShowImportAnnotationFileDialog}/>}

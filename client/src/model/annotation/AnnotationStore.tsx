@@ -7,7 +7,7 @@ import PythonEnum from "../python/PythonEnum";
 
 interface annotationsJson {
     renamings: Map<string, string>,
-    enums: Map<string, Map<string, string>>
+    enums: Map<string, PythonEnum>
 }
 
 export default class AnnotationStore {
@@ -47,6 +47,10 @@ export default class AnnotationStore {
         return new AnnotationStore(this.renamings.set(path, newName));
     }
 
+    private setEnum(path: string, pythonEnum: PythonEnum) {
+        return new AnnotationStore(this.renamings, this.enums.set(path, pythonEnum));
+    }
+
     removeRenamingFor(declaration: PythonDeclaration): AnnotationStore {
         return new AnnotationStore(this.renamings.remove(declaration.pathAsString()), this.enums);
     }
@@ -56,12 +60,23 @@ export default class AnnotationStore {
     }
 
     toJson(): string {
-        return JSON.stringify({"renamings": this.renamings});
+        return JSON.stringify({"renamings": this.renamings, "enums": this.enums});
+    }
+
+    downloadAnnotations(content: string): void {
+        const a = document.createElement("a");
+        const file = new Blob([content], {type: "text/plain"});
+        a.href = URL.createObjectURL(file);
+        a.download = "annotations.json";
+        a.click();
     }
 
     fromJson(annotations: annotationsJson): void {
         annotations.renamings.forEach(((value, key) => {
-            this.setRenaming(value, key);
+            this.setRenaming(key, value);
+        }));
+        annotations.enums.forEach(((value, key) => {
+            this.setEnum(key, value);
         }));
     }
 }
