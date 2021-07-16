@@ -23,7 +23,7 @@ export default function DocumentationText({inputText = ""}: DocumentationTextPro
     const cssClasses = classNames(
         "read-more-button",
         {
-            "pl-2rem": !hasMultipleLines,
+            "pl-1rem": !hasMultipleLines,
         }
     );
 
@@ -32,7 +32,7 @@ export default function DocumentationText({inputText = ""}: DocumentationTextPro
     });
 
     return (
-        <div className="docu-paragraph " onClick={() => {
+        <div className="docu-paragraph" onClick={() => {
             setReadMore(!readMore);
         }}>
             {hasMultipleLines && <div className={iconCssClasses}>
