@@ -3,19 +3,26 @@ import PythonModule from "../../model/python/PythonModule";
 import {isEmptyList} from "../../util/listOperations";
 import ModuleImportItem from "./ModuleImportItem";
 import ModuleImportFromItem from "./ModuleImportFromItem";
+import PythonPackage from "../../model/python/PythonPackage";
+import {useLocation} from "react-router";
 
 interface ModuleViewProps {
-    pythonModule: PythonModule,
+    pythonPackage: PythonPackage,
 }
 
 export default function ModuleView(props: ModuleViewProps): JSX.Element {
+
+    const declaration = props.pythonPackage.getByRelativePath(useLocation().pathname.split("/").splice(2));
+
     return (
         <>
-            <h1>{props.pythonModule.name}</h1>
+            {declaration instanceof PythonModule &&
+        <>
+            <h1>{declaration.name}</h1>
             <h2>Imports</h2>
-            {!isEmptyList(props.pythonModule.imports) ?
+            {!isEmptyList(declaration.imports) ?
                 <ul className="module-list">
-                    {props.pythonModule.imports.map((pythonImport, index) => (
+                    {declaration.imports.map((pythonImport, index) => (
                         <li key={index}>
                             <ModuleImportItem inputImport={pythonImport}/>
                         </li>
@@ -25,9 +32,9 @@ export default function ModuleView(props: ModuleViewProps): JSX.Element {
                         style={{paddingLeft: '2rem'}}>There are no imports.</span>
             }
             <h2>Imported from</h2>
-            {!isEmptyList(props.pythonModule.fromImports) ?
+            {!isEmptyList(declaration.fromImports) ?
                 <ul className="module-list">
-                    {props.pythonModule.fromImports.map((pythonImportFrom, index) => (
+                    {declaration.fromImports.map((pythonImportFrom, index) => (
                         <li key={index}>
                             <ModuleImportFromItem inputImportFrom={pythonImportFrom}/>
                         </li>
@@ -35,6 +42,8 @@ export default function ModuleView(props: ModuleViewProps): JSX.Element {
                 </ul>
                 : <span className="text-muted"
                           style={{paddingLeft: '2rem'}}>There are no modules that import this module.</span>}
+        </>
+            }
         </>
     );
 }
