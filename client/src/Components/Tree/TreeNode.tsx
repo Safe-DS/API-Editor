@@ -3,24 +3,24 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import React, {useState} from "react";
 import PythonDeclaration from "../../model/python/PythonDeclaration";
-import {ChildrenProp, Setter} from "../../util/types";
+import {ChildrenProp} from "../../util/types";
 import VisibilityIndicator from "../Util/VisibilityIndicator";
 import TreeNodeCSS from "./TreeNode.module.css";
+import {Link} from "react-router-dom";
+import {useLocation} from "react-router";
 
 interface TreeNodeProps extends ChildrenProp {
     declaration: PythonDeclaration
     icon: IconDefinition
     isExpandable: boolean
     isWorthClicking: boolean
-    selection: PythonDeclaration
-    setSelection: Setter<PythonDeclaration>
 }
 
 export default function TreeNode(props: TreeNodeProps): JSX.Element {
-    const [showChildren, setShowChildren] = useState(false);
+    const [showChildren, setShowChildren] = useState(selfOrChildIsSelected(props.declaration));
 
     const className = classNames({
-        [TreeNodeCSS.selected]: isSelected(props.declaration, props.selection),
+        [TreeNodeCSS.selected]: isSelected(props.declaration),
         "text-muted": !props.isWorthClicking
     });
 
@@ -31,7 +31,6 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element {
 
     const handleClick = () => {
         setShowChildren(prevState => !prevState);
-        props.setSelection(props.declaration);
     };
 
     return (
@@ -41,14 +40,15 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element {
                     className={TreeNodeCSS.icon}
                     hasChildren={props.isExpandable}
                     showChildren={showChildren}
-                    isSelected={isSelected(props.declaration, props.selection)}
+                    isSelected={isSelected(props.declaration)}
                 />
                 <FontAwesomeIcon
                     className={TreeNodeCSS.icon}
                     icon={props.icon}
                     fixedWidth
                 />
-                <span>{props.declaration.name}</span>
+                <Link className={TreeNodeCSS.treeNodeLink}
+                      to={`/${props.declaration.path().join("/")}`}>{props.declaration.name}</Link>
             </div>
             <div className={TreeNodeCSS.children}>
                 {showChildren && props.children}
@@ -61,6 +61,14 @@ function levelOf(declaration: PythonDeclaration): number {
     return declaration.path().length - 2;
 }
 
-function isSelected(declaration: PythonDeclaration, selection: PythonDeclaration): boolean {
-    return declaration.path().join() === selection.path().join();
+function isSelected(declaration: PythonDeclaration): boolean {
+    return `/${declaration.path().join("/")}` === useLocation().pathname;
+}
+
+function selfOrChildIsSelected(declaration: PythonDeclaration): boolean {
+    const declarationPath = `/${declaration.path().join("/")}`;
+    const currentPath = useLocation().pathname;
+
+    // The slash prevents /sklearn/sklearn from opening when the path is /sklearn/sklearn.base
+    return currentPath === declarationPath || currentPath.startsWith(`${declarationPath}/`);
 }
