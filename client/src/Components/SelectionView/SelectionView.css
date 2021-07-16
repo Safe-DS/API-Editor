@@ -76,7 +76,7 @@ h1 {
 
 .parameter-is-title {
     display: flex;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     padding-bottom: 20px;
     align-self: flex-end;
 }
