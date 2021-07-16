@@ -23,9 +23,8 @@ export default function EnumHandle({listOfEnumPairs, setListOfEnumPairs
 
 
     const addEnumInstance = () =>{
-        console.log("add");
         const tmpCopy = [...listOfEnumPairs];
-        tmpCopy.unshift(new EnumPair("",""));
+        tmpCopy.push(new EnumPair("",""));
         setListOfEnumPairs(tmpCopy);
     };
 

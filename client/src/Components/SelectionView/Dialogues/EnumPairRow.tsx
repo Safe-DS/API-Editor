@@ -6,8 +6,6 @@ import EnumPair from "../../../model/EnumPair";
 
 type EnumPairRowProps = {
     pair: EnumPair,
-    //listOfEnumPairs: EnumPair[],
-    //setListLength: Setter<number>
     deleteFunction(key: string): void,
 }
 
@@ -23,7 +21,6 @@ export default function EnumPairRow(props: EnumPairRowProps): JSX.Element {
 
         props.pair.key = event.target.value;
         const valid = props.pair.isValidKey();
-        console.log(valid);
 
         setEnumKey(event.target.value);
         setEnumKeyValid(valid);

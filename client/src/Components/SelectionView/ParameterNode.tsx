@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import DocumentationText from "./DocumentationText";
 import {Dropdown} from "react-bootstrap";
 import EnumDialog from "./Dialogues/EnumDialog";
 import RenameAnnotationView from "./RenameAnnotationView";
@@ -8,7 +7,6 @@ import AnnotationStore from "../../model/annotation/AnnotationStore";
 import PythonParameter from "../../model/python/PythonParameter";
 import RenameDialog from "../Dialog/RenameDialog";
 import "./SelectionView.css";
-import RenameAnnotationView from "./RenameAnnotationView";
 import classNames from "classnames";
 import PythonEnum from "../../model/python/PythonEnum";
 

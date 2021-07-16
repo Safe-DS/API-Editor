@@ -61,7 +61,6 @@ export default function EnumDialog({
         setNameValid(isValidPythonIdentifier(event.target.value));
     };
 
-    //ToDo check if all enum inputs are valid
     const onFormSubmit = (e: FormEvent) => {
         e.preventDefault();
 
@@ -74,7 +73,7 @@ export default function EnumDialog({
         });
 
         if (name && nameValid && validInputInstances) {//&& name != currentName
-            setEnumDefinition(new PythonEnum(name, name, listOfEnumPairs));
+            setEnumDefinition(new PythonEnum(name, listOfEnumPairs));
             setDialogState(false);
         }
     };
