@@ -20,14 +20,12 @@ export default function App(): JSX.Element {
                     <Menu setPythonPackage={setPythonPackage}/>
                 </div>
                 <div className={AppCSS.leftPane}>
-                    <TreeView pythonPackage={pythonPackage}
-                    />
+                    <TreeView pythonPackage={pythonPackage}/>
                 </div>
                 <div className={AppCSS.rightPane}>
                     <SelectionView pythonPackage={pythonPackage}
-                        annotationStore={annotationStore}
-                        setAnnotationStore={setAnnotationStore}
-                    />
+                                   annotationStore={annotationStore}
+                                   setAnnotationStore={setAnnotationStore}/>
                 </div>
             </div>
         </HashRouter>
