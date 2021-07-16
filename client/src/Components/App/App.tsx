@@ -14,23 +14,23 @@ export default function App(): JSX.Element {
 
     return (
         <HashRouter>
-        <div className={AppCSS.app}>
-            <div className={AppCSS.menu}>
-                <Menu/>
+            <div className={AppCSS.app}>
+                <div className={AppCSS.menu}>
+                    <Menu/>
+                </div>
+                <div className={AppCSS.leftPane}>
+                    <TreeView
+                        pythonPackage={pythonPackage}
+                    />
+                </div>
+                <div className={AppCSS.rightPane}>
+                    <SelectionView
+                        pythonPackage={pythonPackage}
+                        annotationStore={annotationStore}
+                        setAnnotationStore={setAnnotationStore}
+                    />
+                </div>
             </div>
-            <div className={AppCSS.leftPane}>
-                <TreeView
-                    pythonPackage={pythonPackage}
-                />
-            </div>
-            <div className={AppCSS.rightPane}>
-                <SelectionView
-                    pythonPackage={pythonPackage}
-                    annotationStore={annotationStore}
-                    setAnnotationStore={setAnnotationStore}
-                />
-            </div>
-        </div>
         </HashRouter>
     );
 }
