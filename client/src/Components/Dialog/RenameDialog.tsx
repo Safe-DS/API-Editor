@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
 import {Nullable, Setter} from "../../util/types";
 import {isValidPythonIdentifier} from "../../util/validation";
-import "../ParameterView/ParameterView.css";
+import "../SelectionView/SelectionView.css";
 import DialogCSS from "./dialog.module.css";
 
 interface RenameDialogProps {

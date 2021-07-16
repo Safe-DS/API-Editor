@@ -1,30 +1,30 @@
 import React from "react";
-import AnnotationStore from "../../model/annotation/AnnotationStore";
 import PythonFunction from "../../model/python/PythonFunction";
-import {isEmptyList} from "../../util/listOperations";
-import {Setter} from "../../util/types";
 import DocumentationText from "./DocumentationText";
+import {isEmptyList} from "../../util/listOperations";
 import ParameterNode from "./ParameterNode";
+import AnnotationStore from "../../model/annotation/AnnotationStore";
+import {Setter} from "../../util/types";
 import {useLocation} from "react-router";
 import PythonPackage from "../../model/python/PythonPackage";
 
-interface ParameterViewProps {
+interface FunctionViewProps {
+    pythonPackage: PythonPackage,
     annotationStore: AnnotationStore,
     setAnnotationStore: Setter<AnnotationStore>,
-    pythonPackage: PythonPackage
 }
 
-export default function ParameterView(props: ParameterViewProps): JSX.Element {
+export default function FunctionView(props: FunctionViewProps): JSX.Element {
 
     const declaration = props.pythonPackage.getByRelativePath(useLocation().pathname.split("/").splice(2));
 
     return (
-        <div className="parameter-view">
+        <div>
             {declaration instanceof PythonFunction &&
             <>
                 <h1>{declaration.name}</h1>
                 <DocumentationText inputText={declaration.description}/>
-                <h2>Parameters</h2>
+                <h2 className={"function-title"}>Parameters</h2>
                 {
                     !isEmptyList(declaration.parameters) ?
                         declaration.parameters.map(parameters => (
@@ -33,9 +33,10 @@ export default function ParameterView(props: ParameterViewProps): JSX.Element {
                                 pythonParameter={parameters}
                                 annotationStore={props.annotationStore}
                                 setAnnotationStore={props.setAnnotationStore}
+                                isTitle={false}
                             />
                         )) :
-                        <span className="text-muted" style={{paddingLeft: '2rem'}}>There are no parameters.</span>
+                        <span className={"text-muted, pl-2rem"}>There are no parameters.</span>
                 }
             </>
             }

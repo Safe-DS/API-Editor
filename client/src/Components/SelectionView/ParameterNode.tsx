@@ -5,13 +5,15 @@ import PythonParameter from "../../model/python/PythonParameter";
 import {Nullable, Setter} from "../../util/types";
 import RenameDialog from "../Dialog/RenameDialog";
 import DocumentationText from "./DocumentationText";
-import "./ParameterView.css";
+import "./SelectionView.css";
 import RenameAnnotationView from "./RenameAnnotationView";
+import classNames from "classnames";
 
 interface ParameterNodeProps {
-    pythonParameter: PythonParameter
-    annotationStore: AnnotationStore
-    setAnnotationStore: Setter<AnnotationStore>
+    pythonParameter: PythonParameter,
+    annotationStore: AnnotationStore,
+    setAnnotationStore: Setter<AnnotationStore>,
+    isTitle: boolean,
 }
 
 export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
@@ -27,19 +29,25 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
     const openRenameDialog = () => setShowRenameDialog(true);
     const handleEnumSelect = () => console.log("TODO");
 
+    const dropdownClassnames = classNames({
+        "parameter-is-title" : props.isTitle,
+    });
+
     return (
         <div className="parameter-list">
-            <div className="parameter-header pl-1rem">
-                <h4 className="parameter-name">{props.pythonParameter.name}</h4>
-                <Dropdown>
-                    <Dropdown.Toggle size="sm" variant="outline-primary">
-                        + @Annotation
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        <Dropdown.Item onSelect={openRenameDialog}>@Rename</Dropdown.Item>
-                        <Dropdown.Item onSelect={handleEnumSelect}>@Enum</Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown>
+            <div className="parameter-header">
+                {props.isTitle ? <h1 className="parameter-name">{props.pythonParameter.name}</h1> : <h4 className="parameter-name">{props.pythonParameter.name}</h4>}
+                <div className={dropdownClassnames}>
+                    <Dropdown>
+                        <Dropdown.Toggle size="sm" variant="outline-primary">
+                            + @Annotation
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item onSelect={openRenameDialog}>@Rename</Dropdown.Item>
+                            <Dropdown.Item onSelect={handleEnumSelect}>@Enum</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </div>
             </div>
             <RenameAnnotationView
                 newName={newName}
