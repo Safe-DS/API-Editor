@@ -1,8 +1,10 @@
+import classNames from "classnames";
 import React, {useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
 import {Nullable, Setter} from "../../util/types";
 import {isValidPythonIdentifier} from "../../util/validation";
-import "../ParameterView/ParameterView.css";
+import "../SelectionView/SelectionView.css";
+import DialogCSS from "./dialog.module.css";
 
 interface RenameDialogProps {
     isVisible: boolean
@@ -28,12 +30,15 @@ export default function RenameDialog(props: RenameDialogProps): JSX.Element {
         }
     };
 
+    const cssClasses = classNames(DialogCSS.modalDialog, DialogCSS.annotationDialog);
+
     return (
         <Modal
             onHide={close}
             show={props.isVisible}
+            className={cssClasses}
         >
-            <Modal.Header>
+            <Modal.Header closeButton>
                 <Modal.Title>Add @rename Annotation</Modal.Title>
             </Modal.Header>
 

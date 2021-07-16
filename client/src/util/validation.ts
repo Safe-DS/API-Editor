@@ -3,6 +3,11 @@ export function isValidPythonIdentifier(value: string) : boolean{
     return validPythonIdentifier.test(value);
 }
 
+export function isValidJsonFile(value: string): boolean {
+    const validJsonIdentifier = /^.*\.(json)$/;
+    return validJsonIdentifier.test(value);
+}
+
 export function enumValueValidation (value: string) : boolean{
     const valueRegex = new RegExp(/^[a-zA-Z0-9_.-]+$/i);
     return !!value.match(valueRegex);
