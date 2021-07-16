@@ -5,7 +5,7 @@ import PythonParameter from "../../model/python/PythonParameter";
 import {Nullable, Setter} from "../../util/types";
 import RenameDialog from "../Dialog/RenameDialog";
 import DocumentationText from "./DocumentationText";
-import "./SelectionView.css";
+import "./ParameterView.css";
 import RenameAnnotationView from "./RenameAnnotationView";
 
 interface ParameterNodeProps {

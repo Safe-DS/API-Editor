@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
 import {Nullable, Setter} from "../../util/types";
 import {isValidPythonIdentifier} from "../../util/validation";
-import "../SelectionView/SelectionView.css";
+import "../SelectionView/ParameterView.css";
 
 interface RenameDialogProps {
     isVisible: boolean

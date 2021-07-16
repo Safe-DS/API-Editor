@@ -7,9 +7,9 @@ import ClassView from "./ClassView";
 import PythonClass from "../../model/python/PythonClass";
 import ModuleView from "./ModuleView";
 import PythonModule from "../../model/python/PythonModule";
-import FunctionView from "./FunctionView";
-import PythonParameter from "../../model/python/PythonParameter";
 import ParameterView from "./ParameterView";
+import PythonParameter from "../../model/python/PythonParameter";
+import NewParameterView from "./NewParameterView";
 
 interface SelectionViewProps {
     selection: PythonDeclaration,
@@ -21,8 +21,8 @@ export default function SelectionView(props: SelectionViewProps): JSX.Element {
     return (
         <div className="parameter-view">
             {props.selection instanceof PythonFunction &&
-            <FunctionView pythonFunction={props.selection} annotationStore={props.annotationStore}
-                          setAnnotationStore={props.setAnnotationStore}/>
+            <ParameterView pythonFunction={props.selection} annotationStore={props.annotationStore}
+                           setAnnotationStore={props.setAnnotationStore}/>
             }
             {props.selection instanceof PythonClass &&
             <ClassView pythonClass={props.selection}/>
@@ -31,7 +31,7 @@ export default function SelectionView(props: SelectionViewProps): JSX.Element {
             <ModuleView pythonModule={props.selection}/>
             }
             {props.selection instanceof PythonParameter &&
-            <ParameterView pythonParameter={props.selection}/>}
+            <NewParameterView pythonParameter={props.selection}/>}
         </div>
     );
 }
