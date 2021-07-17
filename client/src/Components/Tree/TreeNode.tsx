@@ -2,12 +2,12 @@ import {IconDefinition} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import React, {useState} from "react";
+import {useLocation} from "react-router";
+import {useHistory} from "react-router-dom";
 import PythonDeclaration from "../../model/python/PythonDeclaration";
 import {ChildrenProp} from "../../util/types";
 import VisibilityIndicator from "../Util/VisibilityIndicator";
 import TreeNodeCSS from "./TreeNode.module.css";
-import {Link} from "react-router-dom";
-import {useLocation} from "react-router";
 
 interface TreeNodeProps extends ChildrenProp {
     declaration: PythonDeclaration
@@ -18,6 +18,7 @@ interface TreeNodeProps extends ChildrenProp {
 
 export default function TreeNode(props: TreeNodeProps): JSX.Element {
     const [showChildren, setShowChildren] = useState(selfOrChildIsSelected(props.declaration));
+    const history = useHistory();
 
     const className = classNames({
         [TreeNodeCSS.selected]: isSelected(props.declaration),
@@ -31,6 +32,7 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element {
 
     const handleClick = () => {
         setShowChildren(prevState => !prevState);
+        history.push(`/${props.declaration.path().join("/")}`);
     };
 
     return (
@@ -47,8 +49,7 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element {
                     icon={props.icon}
                     fixedWidth
                 />
-                <Link className={TreeNodeCSS.treeNodeLink}
-                      to={`/${props.declaration.path().join("/")}`}>{props.declaration.name}</Link>
+                {props.declaration.name}
             </div>
             <div className={TreeNodeCSS.children}>
                 {showChildren && props.children}
