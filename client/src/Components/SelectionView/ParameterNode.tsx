@@ -1,15 +1,16 @@
+import classNames from "classnames";
 import React, {useState} from "react";
 import {Dropdown} from "react-bootstrap";
-import EnumDialog from "./Dialogues/EnumDialog";
-import RenameAnnotationView from "./RenameAnnotationView";
-import {Nullable, Setter} from "../../util/types";
 import AnnotationStore from "../../model/annotation/AnnotationStore";
-import PythonParameter from "../../model/python/PythonParameter";
-import RenameDialog from "../Dialog/RenameDialog";
-import "./SelectionView.css";
-import classNames from "classnames";
 import PythonEnum from "../../model/python/PythonEnum";
+import PythonParameter from "../../model/python/PythonParameter";
+import {Nullable, Setter} from "../../util/types";
+import RenameDialog from "../Dialog/RenameDialog";
+import EnumDialog from "./Dialogues/EnumDialog";
+import DocumentationText from "./DocumentationText";
 import EnumAnnotationView from "./EnumAnnotationView";
+import RenameAnnotationView from "./RenameAnnotationView";
+import "./SelectionView.css";
 
 interface ParameterNodeProps {
     pythonParameter: PythonParameter,
@@ -41,13 +42,14 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
 
 
     const dropdownClassnames = classNames({
-        "parameter-is-title" : props.isTitle,
+        "parameter-is-title": props.isTitle,
     });
 
     return (
         <div>
             <div className="parameter-header">
-                {props.isTitle ? <h1 className="parameter-name">{props.pythonParameter.name}</h1> : <h4 className="parameter-name">{props.pythonParameter.name}</h4>}
+                {props.isTitle ? <h1 className="parameter-name">{props.pythonParameter.name}</h1> :
+                    <h4 className="parameter-name">{props.pythonParameter.name}</h4>}
                 <div className={dropdownClassnames}>
                     <Dropdown>
                         <Dropdown.Toggle size="sm" variant="primary">
@@ -62,7 +64,7 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
             </div>
 
             {newName &&
-                <h4>Annotations</h4>
+            <h4>Annotations</h4>
             }
             <RenameAnnotationView
                 newName={newName}
@@ -86,12 +88,12 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
 
             {showEnumDialog && <EnumDialog
                 dialogState={showEnumDialog} setDialogState={setShowEnumDialog}
-                                           enumDefinition={newEnumDefinition} setEnumDefinition={setNewEnumDefinition}/>
+                enumDefinition={newEnumDefinition} setEnumDefinition={setNewEnumDefinition}/>
             }
-            {
-                !props.pythonParameter.description &&
-                <p className="pl-1rem text-muted">There is no documentation for this parameter.</p>
 
+            {props.pythonParameter.description ?
+                <DocumentationText inputText={props.pythonParameter?.description}/>
+                : <p className="pl-1rem text-muted">There is no documentation for this parameter.</p>
             }
         </div>
     );

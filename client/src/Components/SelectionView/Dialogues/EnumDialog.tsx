@@ -1,11 +1,14 @@
+import classNames from "classnames";
+import {Formik} from 'formik';
 import React, {FormEvent, useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
-import {Formik} from 'formik';
-import {isValidPythonIdentifier} from "../../../util/validation";
 import EnumPair from "../../../model/EnumPair";
-import {Nullable, Setter} from "../../../util/types";
 import PythonEnum from "../../../model/python/PythonEnum";
+import {Nullable, Setter} from "../../../util/types";
+import {isValidPythonIdentifier} from "../../../util/validation";
+import DialogCSS from "../../Dialog/dialog.module.css";
 import EnumHandle from "./EnumHandle";
+
 
 type showDialogState = {
     dialogState: boolean, setDialogState: Setter<boolean>,
@@ -22,24 +25,22 @@ export default function EnumDialog({
     const [nameValid, setNameValid] = useState(true);
     const [name, setName] = useState(enumDefinition?.enumName ? enumDefinition?.enumName : "");
 
-    const deepCloneOrEmpty = (from: EnumPair[],to: EnumPair[] ) => {
-        if(from.length > 0){
-            from.forEach(function(value){
+    const deepCloneOrEmpty = (from: EnumPair[], to: EnumPair[]) => {
+        if (from.length > 0) {
+            from.forEach(function (value) {
                 to.push(new EnumPair(value.key, value.value));
             });
-        }
-        else{
+        } else {
             to.push(new EnumPair("", ""));
         }
     };
 
     const initialList: EnumPair[] = [];//new EnumPair("","")
 
-    if(enumDefinition?.enumPairs){
-        deepCloneOrEmpty(enumDefinition?.enumPairs , initialList);
-    }
-    else{
-        initialList.push(new EnumPair("",""));
+    if (enumDefinition?.enumPairs) {
+        deepCloneOrEmpty(enumDefinition?.enumPairs, initialList);
+    } else {
+        initialList.push(new EnumPair("", ""));
     }
 
     const [listOfEnumPairs, setListOfEnumPairs] = useState<EnumPair[]>(initialList);
@@ -49,7 +50,7 @@ export default function EnumDialog({
         setName(enumDefinition?.enumName ? enumDefinition?.enumName : "");
         setNameValid(true);
         initialList.splice(0, initialList.length);
-        initialList.push(new EnumPair("",""));
+        initialList.push(new EnumPair("", ""));
 
         setListOfEnumPairs(initialList);
     };
@@ -64,8 +65,8 @@ export default function EnumDialog({
 
         let validInputInstances = true;
 
-        listOfEnumPairs.forEach(function(value){
-            if(value.key.length < 1 || value.value.length < 1 || !value.isValidValue() || !value.isValidKey() ){
+        listOfEnumPairs.forEach(function (value) {
+            if (value.key.length < 1 || value.value.length < 1 || !value.isValidValue() || !value.isValidKey()) {
                 validInputInstances = false;
             }
         });
@@ -75,7 +76,7 @@ export default function EnumDialog({
             //reset below
             setDialogState(false);
             initialList.splice(0, initialList.length);
-            initialList.push(new EnumPair("",""));
+            initialList.push(new EnumPair("", ""));
             setListOfEnumPairs(initialList);
         }
     };
@@ -84,11 +85,13 @@ export default function EnumDialog({
         resetData();
     };
 
+    const cssClasses = classNames(DialogCSS.modalDialog, DialogCSS.annotationDialog);
+
     return (
         <Modal
             show={dialogState}
             onHide={handleClose}
-            size="lg"
+            className={cssClasses}
         >
             <Modal.Header closeButton>
                 <Modal.Title>Add @enum Annotation</Modal.Title>
@@ -106,11 +109,10 @@ export default function EnumDialog({
                         <Modal.Body>
                             <Form.Group>
                                 <Form.Label>
-                                    Enum Annotation Name:
+                                    Enum name:
                                 </Form.Label>
                                 <Form.Control
                                     type="text"
-                                    //placeholder={currentName}
                                     value={name}
                                     onChange={onInput}
                                     isInvalid={!nameValid}
@@ -119,8 +121,8 @@ export default function EnumDialog({
                             </Form.Group>
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button variant="secondary" onClick={handleClose}>
-                                Close
+                            <Button variant="danger" onClick={handleClose}>
+                                Cancel
                             </Button>
                             <Button variant="primary" type="submit" onClick={onFormSubmit}>
                                 Submit
