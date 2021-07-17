@@ -18,10 +18,14 @@ export default function ClassNode(props: ClassNodeProps): JSX.Element {
             icon={faChalkboard}
             isExpandable={hasMethods}
             isWorthClicking={hasMethods}>
-            {props.pythonClass.methods.map(method =>
-                <FunctionNode key={method.name}
-                              pythonFunction={method}/>
-            )}
+            
+            {[...props.pythonClass.methods]
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map(method =>
+                    <FunctionNode key={method.name}
+                                  pythonFunction={method}/>
+                )
+            }
         </TreeNode>
     );
 }

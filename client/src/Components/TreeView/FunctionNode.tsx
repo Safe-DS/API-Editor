@@ -18,11 +18,15 @@ export default function FunctionNode(props: FunctionNodeProps): JSX.Element {
             icon={faCogs}
             isExpandable={hasParameters}
             isWorthClicking={true}>
-            {props.pythonFunction.parameters.map(parameter =>
-                <ParameterNode
-                    key={parameter.name}
-                    pythonParameter={parameter}/>
-            )}
+            
+            {[...props.pythonFunction.parameters]
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map(parameter =>
+                    <ParameterNode
+                        key={parameter.name}
+                        pythonParameter={parameter}/>
+                )
+            }
         </TreeNode>
     );
 }
