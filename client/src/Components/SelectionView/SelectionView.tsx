@@ -1,16 +1,16 @@
 import React from "react";
+import {useLocation} from "react-router";
 import AnnotationStore from "../../model/annotation/AnnotationStore";
+import PythonClass from "../../model/python/PythonClass";
 import PythonFunction from "../../model/python/PythonFunction";
+import PythonModule from "../../model/python/PythonModule";
+import PythonPackage from "../../model/python/PythonPackage";
+import PythonParameter from "../../model/python/PythonParameter";
 import {Setter} from "../../util/types";
 import ClassView from "./ClassView";
-import PythonClass from "../../model/python/PythonClass";
-import ModuleView from "./ModuleView";
-import PythonModule from "../../model/python/PythonModule";
 import FunctionView from "./FunctionView";
-import PythonParameter from "../../model/python/PythonParameter";
+import ModuleView from "./ModuleView";
 import ParameterView from "./ParameterView";
-import PythonPackage from "../../model/python/PythonPackage";
-import {useLocation} from "react-router";
 
 interface SelectionViewProps {
     pythonPackage: PythonPackage,
@@ -32,7 +32,7 @@ export default function SelectionView(props: SelectionViewProps): JSX.Element {
             <ClassView pythonPackage={props.pythonPackage}/>
             }
             {declaration instanceof PythonModule &&
-            <ModuleView pythonPackage={props.pythonPackage}/>
+            <ModuleView pythonModule={declaration}/>
             }
             {declaration instanceof PythonParameter &&
             <ParameterView pythonPackage={props.pythonPackage} annotationStore={props.annotationStore}
