@@ -1,36 +1,28 @@
 import React from "react";
-import DocumentationText from "./DocumentationText";
-import PythonParameter from "../../model/python/PythonParameter";
-import TitleValueViewPair from "./TitleValueViewPair";
-import {useLocation} from "react-router";
-import PythonPackage from "../../model/python/PythonPackage";
-import ParameterNode from "./ParameterNode";
 import AnnotationStore from "../../model/annotation/AnnotationStore";
+import PythonParameter from "../../model/python/PythonParameter";
 import {Setter} from "../../util/types";
+import DocumentationText from "./DocumentationText";
+import ParameterNode from "./ParameterNode";
+import TitleValueViewPair from "./TitleValueViewPair";
 
 interface ParameterViewProps {
+    pythonParameter: PythonParameter,
     annotationStore: AnnotationStore,
     setAnnotationStore: Setter<AnnotationStore>,
-    pythonPackage: PythonPackage,
 }
 
 export default function ParameterView(props: ParameterViewProps): JSX.Element {
-
-    const declaration = props.pythonPackage.getByRelativePath(useLocation().pathname.split("/").splice(2));
-
     return (
-        <>
-            {declaration instanceof PythonParameter &&
-            <>
-                <ParameterNode isTitle={true} pythonParameter={declaration} setAnnotationStore={props.setAnnotationStore}
-                               annotationStore={props.annotationStore}/>
-                <DocumentationText inputText={declaration.description}/>
-                {declaration.hasDefault &&
-                <TitleValueViewPair title="Default value" value={declaration.defaultValue}/>}
-                {declaration.type &&
-                <><h2>Type</h2><span className="pl-1rem">{declaration.type}</span></>
-                }
-            </>}
-        </>
+        <div>
+            <ParameterNode isTitle={true} pythonParameter={props.pythonParameter}
+                           setAnnotationStore={props.setAnnotationStore}
+                           annotationStore={props.annotationStore}/>
+            <DocumentationText inputText={props.pythonParameter.description}/>
+            {props.pythonParameter.hasDefault &&
+            <TitleValueViewPair title="Default value" value={props.pythonParameter.defaultValue}/>}
+            {props.pythonParameter.type &&
+            <><h2>Type</h2><span className="pl-1rem">{props.pythonParameter.type}</span></>}
+        </div>
     );
 }
