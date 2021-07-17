@@ -41,7 +41,7 @@ export default function ModuleView(props: ModuleViewProps): JSX.Element {
 
 
     return (
-        <>
+        <div>
             <h1>{props.pythonModule.name}</h1>
             <h2>Imports</h2>
             {!isEmptyList(props.pythonModule.imports) &&
@@ -61,6 +61,6 @@ export default function ModuleView(props: ModuleViewProps): JSX.Element {
             {isEmptyList(props.pythonModule.imports) && isEmptyList(props.pythonModule.fromImports) &&
             <span className="text-muted" style={{paddingLeft: '1rem'}}>There are no imports.</span>
             }
-        </>
+        </div>
     );
 }
