@@ -11,12 +11,14 @@ interface TreeProps {
 export default function Tree(props: TreeProps): JSX.Element {
     return (
         <div className={TreeCSS.tree}>
-            {props.pythonPackage.modules
+            {[...props.pythonPackage.modules]
+                .sort((a, b) => a.name.localeCompare(b.name))
                 .filter(module => !isEmptyList(module.classes) || !isEmptyList(module.functions))
                 .map(module => (
                     <ModuleNode key={module.name}
                                 pythonModule={module}/>
-                ))}
+                ))
+            }
         </div>
     );
 }
