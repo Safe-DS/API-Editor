@@ -5,7 +5,7 @@ import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
 import {materialLight} from 'react-syntax-highlighter/dist/esm/styles/prism';
 import remarkGfm from "remark-gfm";
 import PythonModule from "../../model/python/PythonModule";
-import {isEmptyList} from "../../util/listOperations";
+import {groupBy, isEmptyList} from "../../util/listOperations";
 
 interface ModuleViewProps {
     pythonModule: PythonModule,
@@ -31,14 +31,26 @@ const components = {
 };
 
 export default function ModuleView(props: ModuleViewProps): JSX.Element {
-    const importString = props.pythonModule.imports
+    const importString = [...props.pythonModule.imports]
+        .sort((a, b) => a.module.localeCompare(b.module))
         .map((it) => it.toString())
         .join("\n");
 
-    const fromImportString = props.pythonModule.fromImports
-        .map((it) => it.toString())
-        .join("\n");
+    const longestModuleNameLength = Math.max(...props.pythonModule.fromImports.map(it => it.module.length));
 
+    const fromImportString = [...groupBy(props.pythonModule.fromImports, it => it.module)]
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([module, fromImports]) => {
+            const base = `from ${module} import`;
+            const rest = fromImports
+                .sort((a, b) => a.declaration.localeCompare(b.declaration))
+                .map(fromImport => fromImport.toString().replace(`${base} `, ""))
+                .join(", ");
+
+
+            return `from ${module.padEnd(longestModuleNameLength)} import ${rest}`;
+        })
+        .join("\n");
 
     return (
         <div>
