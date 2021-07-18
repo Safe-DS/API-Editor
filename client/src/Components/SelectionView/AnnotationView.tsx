@@ -1,7 +1,7 @@
 import {faTrash, faWrench} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import React from "react";
-import {Button, ButtonGroup, Card, Col, Row} from "react-bootstrap";
+import {Button, ButtonGroup, Card} from "react-bootstrap";
 import {Nullable, Setter} from "../../util/types";
 import "./AnnotationView.css";
 
