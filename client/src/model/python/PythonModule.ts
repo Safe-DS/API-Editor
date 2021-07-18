@@ -44,7 +44,7 @@ export default class PythonModule extends PythonDeclaration {
         return this.containingPackage;
     }
 
-    children(): PythonDeclaration[] {
+    children(): (PythonClass | PythonFunction)[] {
         return [...this.classes, ...this.functions];
     }
 

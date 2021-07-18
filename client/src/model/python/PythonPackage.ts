@@ -21,7 +21,7 @@ export default class PythonPackage extends PythonDeclaration {
         return null;
     }
 
-    children(): PythonDeclaration[] {
+    children(): PythonModule[] {
         return this.modules;
     }
 
