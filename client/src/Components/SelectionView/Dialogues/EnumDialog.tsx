@@ -44,16 +44,6 @@ export default function EnumDialog({
 
     const [listOfEnumPairs, setListOfEnumPairs] = useState<EnumPair[]>(initialList);
 
-    const resetData = () => {
-        setDialogState(false);
-        setName(enumDefinition?.enumName ? enumDefinition?.enumName : "");
-        setNameValid(true);
-        initialList.splice(0, initialList.length);
-        initialList.push(new EnumPair("",""));
-
-        setListOfEnumPairs(initialList);
-    };
-
     const onInput = (event: React.ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value);
         setNameValid(isValidPythonIdentifier(event.target.value));
@@ -61,27 +51,27 @@ export default function EnumDialog({
 
     const onFormSubmit = (e: FormEvent) => {
         e.preventDefault();
-
         let validInputInstances = true;
 
-        listOfEnumPairs.forEach(function(value){
-            if(value.key.length < 1 || value.value.length < 1 || !value.isValidValue() || !value.isValidKey() ){
-                validInputInstances = false;
-            }
-        });
+        if(listOfEnumPairs.length > 0){
+            listOfEnumPairs.forEach(function(value){
+                if(value.key.length < 1 || value.value.length < 1 || !value.isValidValue() || !value.isValidKey() ){
+                    validInputInstances = false;
+                }
+            });
+        }
+        else{
+            validInputInstances = false;//enum without instances
+        }
 
-        if (name && nameValid && validInputInstances) {//&& name != currentName
+        if (name && nameValid && validInputInstances) {
             setEnumDefinition(new PythonEnum(name, listOfEnumPairs));
-            //reset below
             setDialogState(false);
-            initialList.splice(0, initialList.length);
-            initialList.push(new EnumPair("",""));
-            setListOfEnumPairs(initialList);
         }
     };
 
     const handleClose = () => {
-        resetData();
+        setDialogState(false);
     };
 
     return (
@@ -120,7 +110,7 @@ export default function EnumDialog({
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={handleClose}>
-                                Close
+                                Cancel
                             </Button>
                             <Button variant="primary" type="submit" onClick={onFormSubmit}>
                                 Submit

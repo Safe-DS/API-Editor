@@ -24,7 +24,8 @@ export default function DocumentationText({inputText = ""}: DocumentationTextPro
         "read-more-button",
         {
             "pl-1rem": !hasMultipleLines,
-        }
+        },
+
     );
 
     return (

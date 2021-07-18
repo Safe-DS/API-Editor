@@ -10,6 +10,7 @@ import "./SelectionView.css";
 import classNames from "classnames";
 import PythonEnum from "../../model/python/PythonEnum";
 import EnumAnnotationView from "./EnumAnnotationView";
+import DocumentationText from "./DocumentationText";
 
 interface ParameterNodeProps {
     pythonParameter: PythonParameter,
@@ -30,7 +31,7 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
     };
 
     const newEnumDefinition = props.annotationStore.getEnumFor(props.pythonParameter);
-    const setNewEnumDefinition = (newEnum: Nullable<PythonEnum>) => { //ToDo warum  nullable param
+    const setNewEnumDefinition = (newEnum: Nullable<PythonEnum>) => {
         props.setAnnotationStore(
             props.annotationStore.setEnumFor(props.pythonParameter, newEnum)
         );
@@ -88,10 +89,15 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
                 dialogState={showEnumDialog} setDialogState={setShowEnumDialog}
                                            enumDefinition={newEnumDefinition} setEnumDefinition={setNewEnumDefinition}/>
             }
+
             {
                 !props.pythonParameter.description &&
                 <p className="pl-1rem text-muted">There is no documentation for this parameter.</p>
 
+            }
+            {
+                props.pythonParameter.description &&
+                <DocumentationText inputText={props.pythonParameter?.description}/>
             }
         </div>
     );

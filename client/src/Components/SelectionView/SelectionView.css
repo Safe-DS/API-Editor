@@ -51,6 +51,7 @@
     border: none;
     font-family: arial, sans-serif;
     cursor: pointer;
+    margin-left: 5px;
 }
 
 .no-read-more-button {

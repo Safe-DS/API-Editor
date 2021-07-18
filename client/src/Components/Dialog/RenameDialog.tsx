@@ -63,7 +63,7 @@ export default function RenameDialog(props: RenameDialogProps): JSX.Element {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={close}>
-                            Close
+                            Cancel
                         </Button>
                         <Button variant="primary" type="button" onClick={submit}>
                             Submit
