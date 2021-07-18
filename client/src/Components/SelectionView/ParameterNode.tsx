@@ -8,7 +8,7 @@ import {Nullable, Setter} from "../../util/types";
 import RenameDialog from "../Dialog/RenameDialog";
 import EnumDialog from "./Dialogues/EnumDialog";
 import DocumentationText from "./DocumentationText";
-import RenameAnnotationView from "./RenameAnnotationView";
+import AnnotationView from "./AnnotationView";
 import "./SelectionView.css";
 
 interface ParameterNodeProps {
@@ -61,7 +61,7 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
                     </Dropdown>
                 </div>
             </div>
-            <RenameAnnotationView
+            <AnnotationView
                 newName={newName}
                 setNewName={setNewName}
                 onRenameEdit={openRenameDialog}
