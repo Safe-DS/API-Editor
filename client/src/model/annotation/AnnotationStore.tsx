@@ -18,7 +18,6 @@ export default class AnnotationStore {
     }
 
     getRenamingFor(declaration: PythonDeclaration): Nullable<string> {
-        console.log("renamings", this.renamings);
         return this.renamings.get(declaration.pathAsString()) ?? null;
     }
 
@@ -43,8 +42,6 @@ export default class AnnotationStore {
     }
 
     private setRenamings(renamings: Map<string, string>): AnnotationStore {
-        console.log("renamings setRenamings", renamings);
-        console.log("enums setRenamings", this.enums);
         return new AnnotationStore(renamings, this.enums);
     }
 
@@ -75,7 +72,6 @@ export default class AnnotationStore {
     }
 
     static fromJson(annotations: annotationsJson): AnnotationStore {
-        console.log("fromJson Annotation Renamings", annotations.renamings);
         return new AnnotationStore()
             .setRenamings(annotations.renamings)
             .setEnums(annotations.enums);
