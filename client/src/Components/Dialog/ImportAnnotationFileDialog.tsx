@@ -42,6 +42,7 @@ export default function ImportAnnotationFileDialog(props: ImportAnnotationFileDi
                     props.setAnnotationStore(result);
                 }
             };
+            reader.readAsText(acceptedFiles[0]);
         }
     };
 

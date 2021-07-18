@@ -3,8 +3,6 @@ import {Nullable} from "../../util/types";
 import PythonDeclaration from "../python/PythonDeclaration";
 import PythonEnum from "../python/PythonEnum";
 
-/* TODO: Es fehlen die Enums. */
-
 interface annotationsJson {
     renamings: Map<string, string>,
     enums: Map<string, PythonEnum>
