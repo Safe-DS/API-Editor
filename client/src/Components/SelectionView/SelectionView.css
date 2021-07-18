@@ -46,20 +46,19 @@
 }
 
 .read-more-button {
-    text-align: left;
-    background: none!important;
+    background: none !important;
     border: none;
-    font-family: arial, sans-serif;
     cursor: pointer;
-    margin-left: 5px;
+    font-family: arial, sans-serif;
+    text-align: left;
 }
 
 .no-read-more-button {
-    text-align: left;
-    background: none!important;
+    background: none !important;
     border: none;
-    padding-left: 3rem;
     font-family: arial, sans-serif;
+    padding-left: 3rem;
+    text-align: left;
 }
 
 .documentation-text {
@@ -75,10 +74,10 @@
 }
 
 .enum-item-icon {
+    align-items: center;
     display: flex;
     justify-content: flex-end;
     padding: 0;
-    align-items: center;
 }
 
 
@@ -87,8 +86,8 @@
 }
 
 h2 {
-    padding-top: 30px;
     padding-bottom: 10px;
+    padding-top: 30px;
 }
 
 h1 {
@@ -98,6 +97,7 @@ h1 {
 
 .module-list {
     list-style: none;
+    overflow-x: auto;
     padding-left: 1rem;
 }
 
@@ -106,10 +106,10 @@ h1 {
 }
 
 .parameter-is-title {
+    align-self: flex-end;
     display: flex;
     margin-bottom: 10px;
     padding-bottom: 20px;
-    align-self: flex-end;
 }
 
 .annotation-list {

@@ -1,13 +1,13 @@
+import classNames from "classnames";
 import React, {useState} from 'react';
 import {Nav, Navbar, NavDropdown} from "react-bootstrap";
-import {NavLink} from "react-router-dom";
 import {useLocation} from "react-router";
-import MenuCSS from "./Menu.module.css";
-import classNames from "classnames";
+import {NavLink} from "react-router-dom";
+import PythonPackage from "../../model/python/PythonPackage";
+import {Setter} from "../../util/types";
 import ImportAnnotationFileDialog from "../Dialog/ImportAnnotationFileDialog";
 import ImportPythonPackageDialog from "../Dialog/ImportPythonPackageDialog";
-import {Setter} from "../../util/types";
-import PythonPackage from "../../model/python/PythonPackage";
+import MenuCSS from "./Menu.module.css";
 
 interface MenuProps {
     setPythonPackage: Setter<PythonPackage>
@@ -39,8 +39,8 @@ export default function Menu(props: MenuProps): JSX.Element {
             </Navbar.Text>
             <Nav>
                 <NavDropdown title="Import" id="import-dropdown" align="end">
-                    <NavDropdown.Item onClick={openImportPythonPackageDialog} href="#">Python Package</NavDropdown.Item>
-                    <NavDropdown.Item onClick={openImportAnnotationFileDialog} href="#">Annotation File</NavDropdown.Item>
+                    <NavDropdown.Item onClick={openImportPythonPackageDialog}>Python Package</NavDropdown.Item>
+                    <NavDropdown.Item onClick={openImportAnnotationFileDialog}>Annotation File</NavDropdown.Item>
                 </NavDropdown>
                 <Navbar.Text>Export</Navbar.Text>
             </Nav>

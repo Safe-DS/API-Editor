@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
-import {Setter} from "../../util/types";
-import "../SelectionView/SelectionView.css";
 import Dropzone from 'react-dropzone';
+import {Setter} from "../../util/types";
 import {isValidJsonFile} from "../../util/validation";
+import "../SelectionView/SelectionView.css";
 import DialogCSS from "./dialog.module.css";
 
 interface ImportAnnotationFileDialogProps {
@@ -58,7 +58,8 @@ export default function ImportAnnotationFileDialog(props: ImportAnnotationFileDi
                                         <section>
                                             <div {...getRootProps()}>
                                                 <input {...getInputProps()} />
-                                                <p className={DialogCSS.dropzoneText}>Drag and drop an annotation files here, or click to select the
+                                                <p className={DialogCSS.dropzoneText}>Drag and drop an annotation files
+                                                    here, or click to select the
                                                     file<br/>(only *.json will be accepted)</p>
                                             </div>
                                         </section>
@@ -69,7 +70,7 @@ export default function ImportAnnotationFileDialog(props: ImportAnnotationFileDi
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={close}>
+                        <Button variant="danger" onClick={close}>
                             Cancel
                         </Button>
                         <Button variant="primary" type="button" onSubmit={submit}>
