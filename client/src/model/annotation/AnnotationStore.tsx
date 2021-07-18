@@ -55,11 +55,13 @@ export default class AnnotationStore {
     }
 
     removeRenamingFor(declaration: PythonDeclaration): AnnotationStore {
-        return new AnnotationStore(this.renamings.remove(declaration.pathAsString()), this.enums);
+        this.renamings.delete(declaration.pathAsString());
+        return new AnnotationStore(this.renamings, this.enums);
     }
 
     removeEnumFor(enumDefinition: PythonDeclaration): AnnotationStore {
-        return new AnnotationStore(this.renamings.remove(enumDefinition.pathAsString()), this.enums);
+        this.renamings.delete(enumDefinition.pathAsString());
+        return new AnnotationStore(this.renamings, this.enums);
     }
 
     toJson(): string {

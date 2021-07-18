@@ -11,7 +11,10 @@ import SelectionView from "../SelectionView/SelectionView";
 
 export default function App(): JSX.Element {
     const [pythonPackage, setPythonPackage] = useState<PythonPackage>(parsePythonPackageJson(pythonPackageJson as PythonPackageJson));
-    const [annotationStore, setAnnotationStore] = useState(new AnnotationStore());
+    const initialJSON = JSON.parse('{"renamings":{},"enums":{}}');
+    initialJSON["renamings"] = new Map();
+    initialJSON["enums"] = new Map();
+    const [annotationStore, setAnnotationStore] = useState(AnnotationStore.fromJson(initialJSON));
 
     return (
         <HashRouter>
