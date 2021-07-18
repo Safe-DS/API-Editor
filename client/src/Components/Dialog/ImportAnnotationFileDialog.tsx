@@ -16,6 +16,7 @@ interface ImportAnnotationFileDialogProps {
 export default function ImportAnnotationFileDialog(props: ImportAnnotationFileDialogProps): JSX.Element {
 
     const [fileName, setFileName] = useState("");
+    const [newAnnotationStore, setNewAnnotationStore] = useState(new AnnotationStore());
 
     const close = () => {
         props.setIsVisible(false);
@@ -23,6 +24,9 @@ export default function ImportAnnotationFileDialog(props: ImportAnnotationFileDi
 
     const submit = (event: FormEvent) => {
         event.preventDefault();
+        if (fileName) {
+            props.setAnnotationStore(newAnnotationStore);
+        }
         props.setIsVisible(false);
     };
 
@@ -38,8 +42,7 @@ export default function ImportAnnotationFileDialog(props: ImportAnnotationFileDi
                     const readAnnotationJson = JSON.parse(reader.result);
                     readAnnotationJson["renamings"] = new Map(Object.entries(readAnnotationJson["renamings"]));
                     readAnnotationJson["enums"] = new Map(Object.entries(readAnnotationJson["enums"]));
-                    const result = AnnotationStore.fromJson(readAnnotationJson);
-                    props.setAnnotationStore(result);
+                    setNewAnnotationStore(AnnotationStore.fromJson(readAnnotationJson));
                 }
             };
             reader.readAsText(acceptedFiles[0]);
