@@ -20,6 +20,7 @@ export default class AnnotationStore {
     }
 
     getRenamingFor(declaration: PythonDeclaration): Nullable<string> {
+        console.log("renamings", this.renamings);
         return this.renamings.get(declaration.pathAsString()) ?? null;
     }
 
@@ -43,12 +44,14 @@ export default class AnnotationStore {
         return new AnnotationStore(this.renamings, this.enums.set(declaration.pathAsString(), parameterEnum));
     }
 
-    private setRenaming(path: string, newName: string) {
-        return new AnnotationStore(this.renamings.set(path, newName), this.enums);
+    private setRenamings(renamings: Map<string, string>): AnnotationStore {
+        console.log("renamings setRenamings", renamings);
+        console.log("enums setRenamings", this.enums);
+        return new AnnotationStore(renamings, this.enums);
     }
 
-    private setEnum(path: string, pythonEnum: PythonEnum) {
-        return new AnnotationStore(this.renamings, this.enums.set(path, pythonEnum));
+    private setEnums(enums: Map<string, PythonEnum>): AnnotationStore {
+        return new AnnotationStore(this.renamings, enums);
     }
 
     removeRenamingFor(declaration: PythonDeclaration): AnnotationStore {
@@ -71,13 +74,11 @@ export default class AnnotationStore {
         a.click();
     }
 
-    fromJson(annotations: annotationsJson): void {
-        annotations.renamings.forEach(((value, key) => {
-            this.setRenaming(key, value);
-        }));
-        annotations.enums.forEach(((value, key) => {
-            this.setEnum(key, value);
-        }));
+    static fromJson(annotations: annotationsJson): AnnotationStore {
+        console.log("fromJson Annotation Renamings", annotations.renamings);
+        return new AnnotationStore()
+            .setRenamings(annotations.renamings)
+            .setEnums(annotations.enums);
     }
 }
 

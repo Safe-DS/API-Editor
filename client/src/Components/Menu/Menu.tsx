@@ -13,6 +13,7 @@ import AnnotationStore from "../../model/annotation/AnnotationStore";
 interface MenuProps {
     setPythonPackage: Setter<PythonPackage>
     annotationStore: AnnotationStore
+    setAnnotationStore: Setter<AnnotationStore>
 }
 
 export default function Menu(props: MenuProps): JSX.Element {
@@ -55,7 +56,8 @@ export default function Menu(props: MenuProps): JSX.Element {
                 </Nav.Link>
             </Nav>
             {showImportAnnotationFileDialog && <ImportAnnotationFileDialog isVisible={showImportAnnotationFileDialog}
-                                                                           setIsVisible={setShowImportAnnotationFileDialog}/>}
+                                                                           setIsVisible={setShowImportAnnotationFileDialog}
+                                                                           setAnnotationStore={props.setAnnotationStore}/>}
             {showImportPythonPackageDialog && <ImportPythonPackageDialog isVisible={showImportPythonPackageDialog}
                                                                          setIsVisible={setShowImportPythonPackageDialog}
                                                                          setPythonPackage={props.setPythonPackage}/>}

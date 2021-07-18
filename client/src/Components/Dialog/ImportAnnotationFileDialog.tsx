@@ -10,13 +10,12 @@ import AnnotationStore from "../../model/annotation/AnnotationStore";
 interface ImportAnnotationFileDialogProps {
     isVisible: boolean
     setIsVisible: Setter<boolean>
+    setAnnotationStore: Setter<AnnotationStore>
 }
 
 export default function ImportAnnotationFileDialog(props: ImportAnnotationFileDialogProps): JSX.Element {
 
     const [fileName, setFileName] = useState("");
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [annotationJson, setAnnotationJson] = useState<JSON>();
 
     const close = () => {
         props.setIsVisible(false);
@@ -37,8 +36,10 @@ export default function ImportAnnotationFileDialog(props: ImportAnnotationFileDi
             reader.onload = () => {
                 if (typeof reader.result === 'string') {
                     const readAnnotationJson = JSON.parse(reader.result);
-                    setAnnotationJson(readAnnotationJson);
-                    new AnnotationStore().fromJson(readAnnotationJson);
+                    readAnnotationJson["renamings"] = new Map(Object.entries(readAnnotationJson["renamings"]));
+                    readAnnotationJson["enums"] = new Map(Object.entries(readAnnotationJson["enums"]));
+                    const result = AnnotationStore.fromJson(readAnnotationJson);
+                    props.setAnnotationStore(result);
                 }
             };
         }
