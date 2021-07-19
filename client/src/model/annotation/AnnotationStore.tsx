@@ -1,18 +1,24 @@
-import {Map} from "immutable";
+import * as Immutable from "immutable";
 import {Nullable} from "../../util/types";
 import PythonDeclaration from "../python/PythonDeclaration";
 import PythonEnum from "../python/PythonEnum";
 
 interface annotationsJson {
+    // These are deliberately normal ES6 maps
     renamings: Map<string, string>,
     enums: Map<string, PythonEnum>
 }
+
+export type PythonPath = string
+export type PythonName = string
+export type RenameAnnotationStore = Immutable.Map<PythonPath, PythonName>
+export type EnumAnnotationStore = Immutable.Map<PythonPath, PythonEnum>
 
 export default class AnnotationStore {
     private readonly renamings: RenameAnnotationStore;
     private readonly enums: EnumAnnotationStore;
 
-    constructor(renamings: RenameAnnotationStore = Map(), enums: EnumAnnotationStore = Map()) {
+    constructor(renamings: RenameAnnotationStore = Immutable.Map(), enums: EnumAnnotationStore = Immutable.Map()) {
         this.renamings = renamings;
         this.enums = enums;
     }
@@ -25,12 +31,12 @@ export default class AnnotationStore {
         return this.enums.get(enumDefinition.pathAsString()) ?? null;
     }
 
-    setRenamingFor(declaration: PythonDeclaration, parameterName: Nullable<string>): AnnotationStore {
+    setRenamingFor(declaration: PythonDeclaration, parameterName: Nullable<PythonName>): AnnotationStore {
         if (parameterName === null || declaration.name === parameterName) {
             return this.removeRenamingFor(declaration);
         }
 
-        return new AnnotationStore(this.renamings.set(declaration.pathAsString(), parameterName), this.enums);
+        return this.setRenamings(this.renamings.set(declaration.pathAsString(), parameterName));
     }
 
     setEnumFor(declaration: PythonDeclaration, parameterEnum: Nullable<PythonEnum>): AnnotationStore {
@@ -38,25 +44,23 @@ export default class AnnotationStore {
             return this.removeEnumFor(declaration);
         }
 
-        return new AnnotationStore(this.renamings, this.enums.set(declaration.pathAsString(), parameterEnum));
-    }
-
-    private setRenamings(renamings: Map<string, string>): AnnotationStore {
-        return new AnnotationStore(renamings, this.enums);
-    }
-
-    private setEnums(enums: Map<string, PythonEnum>): AnnotationStore {
-        return new AnnotationStore(this.renamings, enums);
+        return this.setEnums(this.enums.set(declaration.pathAsString(), parameterEnum));
     }
 
     removeRenamingFor(declaration: PythonDeclaration): AnnotationStore {
-        this.renamings.delete(declaration.pathAsString());
-        return new AnnotationStore(this.renamings, this.enums);
+        return this.setRenamings(this.renamings.remove(declaration.pathAsString()));
     }
 
     removeEnumFor(enumDefinition: PythonDeclaration): AnnotationStore {
-        this.enums.delete(enumDefinition.pathAsString());
-        return new AnnotationStore(this.renamings, this.enums);
+        return this.setEnums(this.enums.remove(enumDefinition.pathAsString()));
+    }
+
+    private setRenamings(renamings: RenameAnnotationStore): AnnotationStore {
+        return new AnnotationStore(renamings, this.enums);
+    }
+
+    private setEnums(enums: EnumAnnotationStore): AnnotationStore {
+        return new AnnotationStore(this.renamings, enums);
     }
 
     toJson(): string {
@@ -72,11 +76,9 @@ export default class AnnotationStore {
     }
 
     static fromJson(annotations: annotationsJson): AnnotationStore {
-        return new AnnotationStore()
-            .setRenamings(annotations.renamings)
-            .setEnums(annotations.enums);
+        return new AnnotationStore(
+            Immutable.Map(annotations.renamings),
+            Immutable.Map(annotations.enums)
+        );
     }
 }
-
-export type RenameAnnotationStore = Map<string, string>
-export type EnumAnnotationStore = Map<string, PythonEnum>
