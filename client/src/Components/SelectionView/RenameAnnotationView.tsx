@@ -15,7 +15,6 @@ const RenameAnnotationView: React.FC<RenameAnnotationViewProps> = (props) => {
 
     if (props.newName !== null) {
         return (<div className={"annotation-list"}>
-            <h5>Annotations</h5>
             <Row>
                 <Col className="align-items-center" xs="auto">
                     <code>{`@rename: ${props.newName}`}</code>
