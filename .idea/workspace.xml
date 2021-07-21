@@ -5,69 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e4c8b18c-a361-4742-875a-ba08d400aef0" name="Changes" comment="chore: update dependencies and replace yarn with npm">
-      <change afterPath="$PROJECT_DIR$/.github/ISSUE_TEMPLATE/bug_report.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.github/ISSUE_TEMPLATE/feature_request.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/API Editor.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_2021-07-21_11_29_[Changes]/shelved.patch" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_2021-07-21_11_29__Changes_.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/Components/SelectionView/ClassView.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/Components/SelectionView/Dialogues/EnumDialog.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/Components/SelectionView/Dialogues/EnumHandle.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/Components/SelectionView/Dialogues/EnumPairRow.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/Components/SelectionView/FunctionView.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/Components/SelectionView/ModuleView.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/Components/SelectionView/ParameterNode.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/Components/SelectionView/ParameterView.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/Components/SelectionView/SectionListViewItem.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/Components/SelectionView/SelectionView.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/Components/SelectionView/SelectionView.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/Components/SelectionView/TitleValueViewPair.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/Components/TreeView/TreeNode.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/model/EnumPair.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/model/python/PythonEnum.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/util/listOperations.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/master.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/master.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/pr.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/pr.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/.husky/pre-commit" beforeDir="false" afterPath="$PROJECT_DIR$/client/.husky/pre-commit" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Components/App/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Components/App/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Components/Dialog/ImportAnnotationFileDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Components/Dialog/ImportAnnotationFileDialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Components/Dialog/ImportPythonPackageDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Components/Dialog/ImportPythonPackageDialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Components/Dialog/RenameDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Components/Dialog/RenameDialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Components/Menu/Menu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Components/Menu/Menu.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Components/ParameterView/DocumentationText.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Components/SelectionView/DocumentationText.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Components/ParameterView/ParameterNode.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Components/ParameterView/ParameterView.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Components/ParameterView/ParameterView.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Components/ParameterView/RenameAnnotationView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Components/SelectionView/RenameAnnotationView.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Components/Tree/ClassNode.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Components/TreeView/ClassNode.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Components/Tree/FunctionNode.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Components/TreeView/FunctionNode.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Components/Tree/ModuleNode.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Components/TreeView/ModuleNode.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Components/Tree/ParameterNode.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Components/TreeView/ParameterNode.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Components/Tree/Tree.module.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Components/Tree/Tree.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Components/Tree/TreeNode.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Components/TreeView/TreeNode.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Components/Tree/TreeNode.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Components/TreeView/TreeView.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Components/TreeView/TreeView.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Components/TreeView/TreeView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Components/TreeView/TreeView.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/data/sklearn.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/data/sklearn.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/model/annotation/AnnotationStore.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/model/annotation/AnnotationStore.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/model/python/PythonClass.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/model/python/PythonClass.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/model/python/PythonDeclaration.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/model/python/PythonDeclaration.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/model/python/PythonFunction.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/model/python/PythonFunction.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/model/python/PythonModule.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/model/python/PythonModule.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/model/python/PythonPackage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/model/python/PythonPackage.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/model/python/PythonParameter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/model/python/PythonParameter.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/util/listOperations.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/util/listOperations.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/util/validation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/util/validation.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/yarn.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/client/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
