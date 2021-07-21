@@ -46,9 +46,8 @@ export default function Menu(props: MenuProps): JSX.Element {
             </Navbar.Text>
             <Nav>
                 <NavDropdown title="Import" id="import-dropdown" align="end">
-                    <NavDropdown.Item onClick={openImportPythonPackageDialog} href="#">Python Package</NavDropdown.Item>
-                    <NavDropdown.Item onClick={openImportAnnotationFileDialog} href="#">Annotation
-                        File</NavDropdown.Item>
+                    <NavDropdown.Item onClick={openImportPythonPackageDialog}>Python Package</NavDropdown.Item>
+                    <NavDropdown.Item onClick={openImportAnnotationFileDialog}>Annotation File</NavDropdown.Item>
                 </NavDropdown>
 
                 <Nav.Link onClick={exportAnnotations} href="#">
