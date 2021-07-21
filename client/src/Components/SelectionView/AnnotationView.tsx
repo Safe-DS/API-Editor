@@ -16,7 +16,6 @@ const AnnotationView: React.FC<AnnotationViewProps> = (props) => {
 
     if (props.newName !== null) {
         return (<div className={"annotation-list"}>
-            <h4>Annotations</h4>
             <Card className="mb-2 w-fit-content" bg="light">
                 <Card.Body>
                     <code className="pe-3">

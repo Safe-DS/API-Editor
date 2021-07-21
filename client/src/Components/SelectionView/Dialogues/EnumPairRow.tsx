@@ -44,12 +44,11 @@ export default function EnumPairRow(props: EnumPairRowProps): JSX.Element {
 
                 </Form.Control>
             </Col>
-            <Col xs={5} className="no-right-padding">
+            <Col xs={5} className="no-right-padding" title={"Only capital letters and numbers allowed"}>
                 <Form.Control type="text"
                               value={enumKey}
                               onChange={onInputEnumKey}
                               isInvalid={!enumKeyValid}>
-
                 </Form.Control>
             </Col>
             <Col xs={2} className="enum-item-icon">

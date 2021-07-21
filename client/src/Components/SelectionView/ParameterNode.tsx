@@ -9,6 +9,7 @@ import RenameDialog from "../Dialog/RenameDialog";
 import EnumDialog from "./Dialogues/EnumDialog";
 import DocumentationText from "./DocumentationText";
 import AnnotationView from "./AnnotationView";
+import EnumAnnotationView from "./EnumAnnotationView";
 import "./SelectionView.css";
 
 interface ParameterNodeProps {
@@ -30,7 +31,7 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
     };
 
     const newEnumDefinition = props.annotationStore.getEnumFor(props.pythonParameter);
-    const setNewEnumDefinition = (newEnum: Nullable<PythonEnum>) => { //ToDo warum  nullable param
+    const setNewEnumDefinition = (newEnum: Nullable<PythonEnum>) => {
         props.setAnnotationStore(
             props.annotationStore.setEnumFor(props.pythonParameter, newEnum)
         );
@@ -61,10 +62,19 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
                     </Dropdown>
                 </div>
             </div>
+
+            {(newName || newEnumDefinition) &&
+            <h4>Annotations</h4>
+            }
             <AnnotationView
                 newName={newName}
                 setNewName={setNewName}
                 onRenameEdit={openRenameDialog}
+            />
+            <EnumAnnotationView
+                enumDefinition={newEnumDefinition}
+                setEnumDefinition={setNewEnumDefinition}
+                onEnumEdit={openEnumDialog}
             />
 
             {/*This additional check cause the dialog to be thrown away after closing it, resetting its state*/}
@@ -76,8 +86,10 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
                 setNewName={setNewName}
             />}
 
-            <EnumDialog dialogState={showEnumDialog} setDialogState={setShowEnumDialog}
-                        enumDefinition={newEnumDefinition} setEnumDefinition={setNewEnumDefinition}/>
+            {showEnumDialog && <EnumDialog
+                dialogState={showEnumDialog} setDialogState={setShowEnumDialog}
+                enumDefinition={newEnumDefinition} setEnumDefinition={setNewEnumDefinition}/>
+            }
 
             {props.pythonParameter.description ?
                 <DocumentationText inputText={props.pythonParameter?.description}/>

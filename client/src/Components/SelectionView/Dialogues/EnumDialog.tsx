@@ -1,6 +1,4 @@
-import classNames from "classnames";
-import {Formik} from 'formik';
-import React, {FormEvent, useState} from "react";
+import React, {useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
 import EnumPair from "../../../model/EnumPair";
 import PythonEnum from "../../../model/python/PythonEnum";
@@ -8,7 +6,9 @@ import {Nullable, Setter} from "../../../util/types";
 import {isValidPythonIdentifier} from "../../../util/validation";
 import DialogCSS from "../../Dialog/dialog.module.css";
 import EnumHandle from "./EnumHandle";
-
+import {Formik} from 'formik';
+import classNames from "classnames";
+import {isEmptyList} from "../../../util/listOperations";
 
 type showDialogState = {
     dialogState: boolean, setDialogState: Setter<boolean>,
@@ -24,7 +24,9 @@ export default function EnumDialog({
 
     const [nameValid, setNameValid] = useState(true);
     const [name, setName] = useState(enumDefinition?.enumName ? enumDefinition?.enumName : "");
-
+    const initialList: EnumPair[] = [];
+    const [listOfEnumPairs, setListOfEnumPairs] = useState<EnumPair[]>(initialList);
+    const cssClasses = classNames(DialogCSS.modalDialog, DialogCSS.annotationDialog);
 
     const deepCloneOrEmpty = (from: EnumPair[], to: EnumPair[]) => {
         if (from.length > 0) {
@@ -36,52 +38,31 @@ export default function EnumDialog({
         }
     };
 
-    const initialList: EnumPair[] = [];//new EnumPair("","")
-
-    if (enumDefinition?.enumPairs) {
-        deepCloneOrEmpty(enumDefinition?.enumPairs, initialList);
-    } else {
-        initialList.push(new EnumPair("", ""));
-    }
-
-
-    const [listOfEnumPairs, setListOfEnumPairs] = useState<EnumPair[]>(initialList);
-
-
-    const resetData = () => {
-        setDialogState(false);
-        setName(enumDefinition?.enumName ? enumDefinition?.enumName : "");
-        setNameValid(true);
-        setListOfEnumPairs(initialList);
-    };
-
     const onInput = (event: React.ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value);
         setNameValid(isValidPythonIdentifier(event.target.value));
     };
 
-    const onFormSubmit = (e: FormEvent) => {
-        e.preventDefault();
+    const onFormSubmit = () => {
+        const validInputInstances = !isEmptyList(listOfEnumPairs) && listOfEnumPairs.every(it =>
+            it.key.length > 0 && it.value.length > 0 && it.isValidValue() && it.isValidKey()
+        );
 
-        let validInputInstances = true;
-
-        listOfEnumPairs.forEach(function (value) {
-            if (value.key.length < 1 || value.value.length < 1 || !value.isValidValue() || !value.isValidKey()) {
-                validInputInstances = false;
-            }
-        });
-
-        if (name && nameValid && validInputInstances) {//&& name != currentName
+        if (name && nameValid && validInputInstances) {
             setEnumDefinition(new PythonEnum(name, listOfEnumPairs));
             setDialogState(false);
         }
     };
 
     const handleClose = () => {
-        resetData();
+        setDialogState(false);
     };
 
-    const cssClasses = classNames(DialogCSS.modalDialog, DialogCSS.annotationDialog);
+    if (enumDefinition?.enumPairs) {
+        deepCloneOrEmpty(enumDefinition?.enumPairs, initialList);
+    } else {
+        initialList.push(new EnumPair("", ""));
+    }
 
     return (
         <Modal
@@ -120,7 +101,7 @@ export default function EnumDialog({
                             <Button variant="danger" onClick={handleClose}>
                                 Cancel
                             </Button>
-                            <Button variant="primary" type="submit" onClick={onFormSubmit}>
+                            <Button variant="primary" type="button" onClick={onFormSubmit}>
                                 Submit
                             </Button>
                         </Modal.Footer>
