@@ -57,11 +57,13 @@ export default function Menu(props: MenuProps): JSX.Element {
             </Nav>
             {showImportAnnotationFileDialog && <ImportAnnotationFileDialog isVisible={showImportAnnotationFileDialog}
                                                                            setIsVisible={setShowImportAnnotationFileDialog}
-                                                                           setAnnotationStore={props.setAnnotationStore}/>}
+                                                                           setAnnotationStore={props.setAnnotationStore}
+            />}
             {showImportPythonPackageDialog && <ImportPythonPackageDialog isVisible={showImportPythonPackageDialog}
                                                                          setIsVisible={setShowImportPythonPackageDialog}
-                                                                         setPythonPackage={props.setPythonPackage}/>}
-
+                                                                         setPythonPackage={props.setPythonPackage}
+                                                                         setAnnotationStore={props.setAnnotationStore}
+            />}
         </Navbar>
     );
 }

@@ -7,11 +7,13 @@ import {isValidJsonFile} from "../../util/validation";
 import DialogCSS from "./dialog.module.css";
 import PythonPackage from "../../model/python/PythonPackage";
 import {parsePythonPackageJson} from "../../model/python/PythonPackageBuilder";
+import AnnotationStore from "../../model/annotation/AnnotationStore";
 
 interface ImportPythonPackageDialogProps {
     isVisible: boolean
     setIsVisible: Setter<boolean>,
     setPythonPackage: Setter<PythonPackage>
+    setAnnotationStore: Setter<AnnotationStore>
 }
 
 export default function ImportPythonPackageDialog(props: ImportPythonPackageDialogProps): JSX.Element {
@@ -39,6 +41,7 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
             reader.onload = () => {
                 if (typeof reader.result === 'string') {
                     setNewPythonPackage(parsePythonPackageJson(JSON.parse(reader.result)));
+                    props.setAnnotationStore(new AnnotationStore());
                 }
             };
             reader.readAsText(acceptedFiles[0]);
