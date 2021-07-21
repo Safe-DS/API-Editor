@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e4c8b18c-a361-4742-875a-ba08d400aef0" name="Changes" comment="chore: update dependencies and replace yarn with npm">
-      <change beforePath="$PROJECT_DIR$/client/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/client/.gitignore" afterDir="false" />
+    <list default="true" id="e4c8b18c-a361-4742-875a-ba08d400aef0" name="Changes" comment="build: fix failures">
+      <change beforePath="$PROJECT_DIR$/.github/workflows/master.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/master.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/pr.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/pr.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,6 +56,14 @@
       <updated>1626859655262</updated>
       <workItem from="1626859656496" duration="938000" />
     </task>
+    <task id="LOCAL-00001" summary="build: fix failures">
+      <created>1626861243161</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1626861243161</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -84,6 +94,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="chore: update dependencies and replace yarn with npm" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore: update dependencies and replace yarn with npm" />
+    <MESSAGE value="build: fix failures" />
+    <option name="LAST_COMMIT_MESSAGE" value="build: fix failures" />
   </component>
 </project>
