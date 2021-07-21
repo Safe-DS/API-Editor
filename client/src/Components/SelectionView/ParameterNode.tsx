@@ -61,7 +61,7 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
                 </div>
             </div>
 
-            {newName || newEnumDefinition &&
+            {(newName || newEnumDefinition) &&
             <h4>Annotations</h4>
             }
             <RenameAnnotationView
