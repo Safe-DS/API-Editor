@@ -2,38 +2,38 @@
     padding: 1rem;
 }
 
-.parameterViewDiv h2 {
-    padding-left: 1rem;
+.parameterViewDiv h2{
     padding-top: 1rem;
+    padding-left: 1rem;
 }
 
-.parameterViewDiv h5 {
-    padding-left: 1rem;
+.parameterViewDiv h5{
     padding-top: 1rem;
+    padding-left: 1rem;
 }
 
-.parameterViewDiv a {
+.parameterViewDiv a{
     padding-left: .5rem;
 }
 
 .parameter-list {
-    padding-bottom: .5rem;
     padding-left: 1rem;
+    padding-bottom: .5rem;
 }
 
 .docuTextHidden {
     text-overflow: ellipsis;
 }
 
-.docu-paragraph {
+.docu-paragraph{
     display: flex;
     justify-content: flex-start;
 }
 
 .parameter-header {
     display: flex;
-    font-weight: bold;
     justify-content: flex-start;
+    font-weight: bold;
 }
 
 .parameter-name {
@@ -51,6 +51,7 @@
     cursor: pointer;
     font-family: arial, sans-serif;
     text-align: left;
+    margin-left: 5px;
 }
 
 .no-read-more-button {
@@ -59,6 +60,7 @@
     font-family: arial, sans-serif;
     padding-left: 3rem;
     text-align: left;
+    margin-left: 5px;
 }
 
 .documentation-text {
