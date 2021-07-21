@@ -64,7 +64,6 @@ export default function Menu(props: MenuProps): JSX.Element {
                                                                          setPythonPackage={props.setPythonPackage}
                                                                          setAnnotationStore={props.setAnnotationStore}
             />}
-
         </Navbar>
     );
 }
