@@ -58,7 +58,6 @@ export default class AnnotationStore {
     private setRenamings(renamings: RenameAnnotationStore): AnnotationStore {
         return new AnnotationStore(renamings, this.enums);
     }
-
     private setEnums(enums: EnumAnnotationStore): AnnotationStore {
         return new AnnotationStore(this.renamings, enums);
     }

@@ -17,14 +17,13 @@ export default function DocumentationText({inputText = ""}: DocumentationTextPro
     const preprocessedText = inputText.replaceAll(/:math:`([^`]*)`/g, "$$$1$$");
     const shortenedText = preprocessedText.split("\n\n")[0];
     const hasMultipleLines = shortenedText !== inputText;
-
     const [readMore, setReadMore] = useState(false);
 
     const cssClasses = classNames(
         "read-more-button",
         {
             "pl-1rem": !hasMultipleLines,
-        }
+        },
     );
 
     return (
@@ -34,8 +33,6 @@ export default function DocumentationText({inputText = ""}: DocumentationTextPro
             {hasMultipleLines &&
                 <VisibilityIndicator hasChildren={hasMultipleLines} showChildren={readMore}/>
             }
-
-
             <ReactMarkdown className={cssClasses} rehypePlugins={[rehypeKatex]} remarkPlugins={[remarkGfm, remarkMath]}>
                 {readMore || !hasMultipleLines ? preprocessedText : shortenedText + " [Read More...]"}
             </ReactMarkdown>
