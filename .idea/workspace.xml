@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e4c8b18c-a361-4742-875a-ba08d400aef0" name="Changes" comment="feat: vite instead of CRA">
-      <change afterPath="$PROJECT_DIR$/client/jest.config.json" afterDir="false" />
+    <list default="true" id="e4c8b18c-a361-4742-875a-ba08d400aef0" name="Changes" comment="fix: test script">
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/client/pnpm-lock.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/jest.config.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/jest.config.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,17 +42,21 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="code.cleanup.on.save" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/client/node_modules/prettier" />
     <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.detected.package.stylelint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.standard" value="" />
     <property name="node.js.selected.package.stylelint" value="C:\Users\Lars\Documents\Repositories\teaching\API Editor\client\node_modules\stylelint" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs.jest.jest_package" value="$PROJECT_DIR$/client/node_modules/jest" />
     <property name="nodejs_package_manager_path" value="yarn" />
     <property name="prettierjs.PrettierConfiguration.Package" value="C:\Users\Lars\Documents\Repositories\teaching\API Editor\client\node_modules\prettier" />
-    <property name="settings.editor.selected.configurable" value="settings.javascript.prettier" />
+    <property name="rearrange.code.on.save" value="true" />
+    <property name="settings.editor.selected.configurable" value="settings.javascript.linters.eslint" />
     <property name="ts.external.directory.path" value="C:\Users\Lars\Documents\Repositories\teaching\API Editor\client\node_modules\typescript\lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -87,7 +90,7 @@
       <updated>1626859655262</updated>
       <workItem from="1626859656496" duration="938000" />
       <workItem from="1626874914509" duration="1957000" />
-      <workItem from="1626876898807" duration="3316000" />
+      <workItem from="1626876898807" duration="3625000" />
     </task>
     <task id="LOCAL-00001" summary="build: fix failures">
       <created>1626861243161</created>
@@ -103,7 +106,28 @@
       <option name="project" value="LOCAL" />
       <updated>1626879097184</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="fix: test script">
+      <created>1626880271889</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1626880271889</updated>
+    </task>
+    <task id="LOCAL-00004" summary="fix: test script">
+      <created>1626880283773</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1626880283773</updated>
+    </task>
+    <task id="LOCAL-00005" summary="fix: test script">
+      <created>1626880387153</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1626880387153</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -137,7 +161,8 @@
     <MESSAGE value="chore: update dependencies and replace yarn with npm" />
     <MESSAGE value="build: fix failures" />
     <MESSAGE value="feat: vite instead of CRA" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: vite instead of CRA" />
+    <MESSAGE value="fix: test script" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: test script" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
