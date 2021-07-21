@@ -1,0 +1,117 @@
+h2 {
+    padding-top: 30px;
+    padding-bottom: 10px;
+}
+
+h1 {
+    padding-bottom: 15px;
+    font-weight: bold;
+}
+
+.parameter-view {
+    padding: 1rem;
+}
+
+.parameterViewDiv h2 {
+    padding-top: 1rem;
+    padding-left: 1rem;
+}
+
+.parameterViewDiv h5 {
+    padding-top: 1rem;
+    padding-left: 1rem;
+}
+
+.parameterViewDiv a {
+    padding-left: 0.5rem;
+}
+
+.parameter-list {
+    padding-bottom: 0.5rem;
+    padding-left: 1rem;
+}
+
+.docuTextHidden {
+    text-overflow: ellipsis;
+}
+
+.docu-paragraph {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.parameter-header {
+    display: flex;
+    justify-content: flex-start;
+    font-weight: bold;
+}
+
+.parameter-name {
+    margin-right: 15px;
+}
+
+.function-title {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.read-more-button {
+    border: none;
+    background: none !important;
+    cursor: pointer;
+    font-family: arial, sans-serif;
+    text-align: left;
+}
+
+.no-read-more-button {
+    padding-left: 3rem;
+    border: none;
+    background: none !important;
+    font-family: arial, sans-serif;
+    text-align: left;
+}
+
+.documentation-text {
+    clear: both;
+}
+
+.no-left-padding {
+    padding-left: 0;
+}
+
+.no-right-padding {
+    padding-right: 0;
+}
+
+.enum-item-icon {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0;
+}
+
+.enum-pair-row {
+    padding-top: 15px;
+}
+
+.module-list {
+    padding-left: 1rem;
+    list-style: none;
+    overflow-x: auto;
+}
+
+.module-list li:not(:first-child) {
+    margin-top: 20px;
+}
+
+.parameter-is-title {
+    display: flex;
+    align-self: flex-end;
+    padding-bottom: 20px;
+    margin-bottom: 10px;
+}
+
+.annotation-list {
+    padding-bottom: 20px;
+    padding-left: 1rem;
+}

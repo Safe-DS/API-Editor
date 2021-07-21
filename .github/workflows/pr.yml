@@ -7,7 +7,7 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
-    
+
     defaults:
       run:
         working-directory: ./client
@@ -19,7 +19,7 @@ jobs:
     steps:
     - name: Checkout Source
       uses: actions/checkout@v2
-    
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
@@ -29,17 +29,17 @@ jobs:
       uses: actions/cache@v2
       with:
         path: '**/node_modules'
-        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-    
+        key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+
     - name: Install Dependencies
-      run: yarn install --production=false
+      run: npm ci
 
     - name: Lint
-      run: yarn run lint
-      
+      run: npm run lint
+
   test:
     runs-on: ubuntu-latest
-    
+
     defaults:
       run:
         working-directory: ./client
@@ -51,27 +51,27 @@ jobs:
     steps:
     - name: Checkout Source
       uses: actions/checkout@v2
-    
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-    
+
     - name: Cache Dependencies
       uses: actions/cache@v2
       with:
         path: '**/node_modules'
-        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-    
+        key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+
     - name: Install Dependencies
-      run: yarn install --production=false
-    
+      run: npm ci
+
     - name: Test
-      run: yarn test
+      run: npm run test
 
   build:
     runs-on: ubuntu-latest
-    
+
     defaults:
       run:
         working-directory: ./client
@@ -83,20 +83,20 @@ jobs:
     steps:
     - name: Checkout Source
       uses: actions/checkout@v2
-    
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-    
+
     - name: Cache Dependencies
       uses: actions/cache@v2
       with:
         path: '**/node_modules'
-        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-    
+        key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+
     - name: Install Dependencies
-      run: yarn install --production=false
-    
+      run: npm ci
+
     - name: Build
-      run: yarn run buildWithoutLint
+      run: npm run buildWithoutLint

@@ -1,31 +1,30 @@
-import PythonModule from "./PythonModule";
-import PythonDeclaration from "./PythonDeclaration";
+import PythonModule from './PythonModule'
+import PythonDeclaration from './PythonDeclaration'
 
 export default class PythonPackage extends PythonDeclaration {
-
-    readonly name: string;
-    readonly modules: PythonModule[];
+    readonly name: string
+    readonly modules: PythonModule[]
 
     constructor(name: string, modules: PythonModule[] = []) {
-        super();
+        super()
 
-        this.name = name;
-        this.modules = modules;
+        this.name = name
+        this.modules = modules
 
-        this.modules.forEach(it => {
-            it.containingPackage = this;
-        });
+        this.modules.forEach((it) => {
+            it.containingPackage = this
+        })
     }
 
     parent(): null {
-        return null;
+        return null
     }
 
-    children(): PythonDeclaration[] {
-        return this.modules;
+    children(): PythonModule[] {
+        return this.modules
     }
 
     toString(): string {
-        return `Package "${this.name}"`;
+        return `Package "${this.name}"`
     }
 }

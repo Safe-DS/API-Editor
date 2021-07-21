@@ -1,10 +1,10 @@
-import classNames from "classnames";
-import React, {useState} from "react";
-import {Button, Form, Modal} from "react-bootstrap";
-import {Nullable, Setter} from "../../util/types";
-import {isValidPythonIdentifier} from "../../util/validation";
-import "../ParameterView/ParameterView.css";
-import DialogCSS from "./dialog.module.css";
+import classNames from 'classnames'
+import React, { useState } from 'react'
+import { Button, Form, Modal } from 'react-bootstrap'
+import { Nullable, Setter } from '../../util/types'
+import { isValidPythonIdentifier } from '../../util/validation'
+import '../SelectionView/SelectionView.css'
+import DialogCSS from './dialog.module.css'
 
 interface RenameDialogProps {
     isVisible: boolean
@@ -15,29 +15,25 @@ interface RenameDialogProps {
 }
 
 export default function RenameDialog(props: RenameDialogProps): JSX.Element {
-    const [currentUserInput, setCurrentUserInput] = useState(props.newName ?? props.oldName);
+    const [currentUserInput, setCurrentUserInput] = useState(props.newName ?? props.oldName)
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => setCurrentUserInput(event.target.value);
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => setCurrentUserInput(event.target.value)
 
     const close = () => {
-        props.setIsVisible(false);
-    };
+        props.setIsVisible(false)
+    }
 
     const submit = () => {
         if (isValidPythonIdentifier(currentUserInput)) {
-            props.setNewName(currentUserInput);
-            props.setIsVisible(false);
+            props.setNewName(currentUserInput)
+            props.setIsVisible(false)
         }
-    };
+    }
 
-    const cssClasses = classNames(DialogCSS.modalDialog, DialogCSS.annotationDialog);
+    const cssClasses = classNames(DialogCSS.modalDialog, DialogCSS.annotationDialog)
 
     return (
-        <Modal
-            onHide={close}
-            show={props.isVisible}
-            className={cssClasses}
-        >
+        <Modal onHide={close} show={props.isVisible} className={cssClasses}>
             <Modal.Header closeButton>
                 <Modal.Title>Add @rename Annotation</Modal.Title>
             </Modal.Header>
@@ -46,9 +42,7 @@ export default function RenameDialog(props: RenameDialogProps): JSX.Element {
                 <Form noValidate>
                     <Modal.Body>
                         <Form.Group>
-                            <Form.Label>
-                                New name for &quot;{props.oldName}&quot;:
-                            </Form.Label>
+                            <Form.Label>New name for &quot;{props.oldName}&quot;:</Form.Label>
                             <Form.Control
                                 type="text"
                                 value={currentUserInput}
@@ -62,8 +56,8 @@ export default function RenameDialog(props: RenameDialogProps): JSX.Element {
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={close}>
-                            Close
+                        <Button variant="danger" onClick={close}>
+                            Cancel
                         </Button>
                         <Button variant="primary" type="button" onClick={submit}>
                             Submit
@@ -72,5 +66,5 @@ export default function RenameDialog(props: RenameDialogProps): JSX.Element {
                 </Form>
             </Modal.Body>
         </Modal>
-    );
+    )
 }
