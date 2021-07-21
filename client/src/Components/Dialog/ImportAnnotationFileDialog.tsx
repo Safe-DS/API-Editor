@@ -84,7 +84,7 @@ export default function ImportAnnotationFileDialog(props: ImportAnnotationFileDi
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary"
+                        <Button variant="danger"
                                 onClick={close}>
                             Cancel
                         </Button>

@@ -82,8 +82,7 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary"
-                                onClick={close}>
+                        <Button variant="danger" onClick={close}>
                             Cancel
                         </Button>
                         <Button variant="primary"

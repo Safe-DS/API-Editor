@@ -40,11 +40,11 @@ export default class PythonClass extends PythonDeclaration {
         });
     }
 
-    parent(): Nullable<PythonDeclaration> {
+    parent(): Nullable<PythonModule> {
         return this.containingModule;
     }
 
-    children(): PythonDeclaration[] {
+    children(): PythonFunction[] {
         return this.methods;
     }
 

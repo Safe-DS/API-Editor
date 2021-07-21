@@ -52,7 +52,7 @@ export default class PythonFunction extends PythonDeclaration {
         return this.containingModuleOrClass;
     }
 
-    children(): PythonDeclaration[] {
+    children(): PythonParameter[] {
         return this.parameters;
     }
 
