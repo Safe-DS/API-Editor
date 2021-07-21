@@ -1,4 +1,4 @@
-import { Map } from 'immutable'
+import * as immutable from 'immutable'
 import { Nullable } from '../../util/types'
 import PythonDeclaration from '../python/PythonDeclaration'
 import PythonEnum from '../python/PythonEnum'
@@ -7,7 +7,10 @@ export default class AnnotationStore {
     private readonly renamings: RenameAnnotationStore
     private readonly enums: EnumAnnotationStore
 
-    constructor(renamings: RenameAnnotationStore = Map(), enums: EnumAnnotationStore = Map()) {
+    constructor(
+        renamings: RenameAnnotationStore = immutable.Map<string, string>(),
+        enums: EnumAnnotationStore = immutable.Map<string, PythonEnum>(),
+    ) {
         this.renamings = renamings
         this.enums = enums
     }
@@ -45,5 +48,5 @@ export default class AnnotationStore {
     }
 }
 
-export type RenameAnnotationStore = Map<string, string>
-export type EnumAnnotationStore = Map<string, PythonEnum>
+export type RenameAnnotationStore = immutable.Map<string, string>
+export type EnumAnnotationStore = immutable.Map<string, PythonEnum>

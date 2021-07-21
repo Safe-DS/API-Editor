@@ -1,2 +1,6 @@
-/build
-/node_modules
+.DS_Store/
+dist/
+dist-ssr/
+node_modules/
+
+.eslintrc.js
