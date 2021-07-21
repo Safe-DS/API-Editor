@@ -7,19 +7,19 @@
         "dev": "vite",
         "build": "tsc && vite build",
         "serve": "vite preview",
-        "lint": "pnpm run eslint && pnpm run stylelint",
+        "test": "jest src",
         "eslint": "eslint .",
         "stylelint": "stylelint \"**/*.css\"",
+        "lint": "pnpm run eslint && pnpm run stylelint",
         "fix": "eslint --fix . && stylelint --fix \"**/*.css\" && prettier --write .",
-        "test": "react-scripts test",
         "predeploy": "pnpm run build",
         "deploy": "gh-pages -d build",
         "prepare": "cd .. && husky install client/.husky"
     },
     "lint-staged": {
-        "*.css": "stylelint --fix",
-        "*.{js,jsx,ts,tsx}": "eslint --fix",
-        "*.{html,md,css,js,jsx,ts,tsx,json,yml}": "prettier --write"
+        "*.{js,jsx,ts,tsx}": "eslint --fix .",
+        "*.css": "stylelint --fix \"**/*.css\"",
+        "*.{html,md,css,js,jsx,ts,tsx,json,yml}": "prettier --write ."
     },
     "dependencies": {
         "@fortawesome/fontawesome-svg-core": "^1.2.35",
@@ -48,6 +48,7 @@
         "remark-math": "^4.0.0"
     },
     "devDependencies": {
+        "@types/jest": "^26.0.24",
         "@types/react": "^17.0.0",
         "@types/react-dom": "^17.0.0",
         "@types/react-router-dom": "^5.1.8",
@@ -74,6 +75,7 @@
         "stylelint-config-prettier": "^8.0.2",
         "stylelint-config-standard": "^22.0.0",
         "stylelint-order": "^4.1.0",
+        "ts-jest": "^27.0.4",
         "typescript": "^4.3.2",
         "vite": "^2.4.3"
     }

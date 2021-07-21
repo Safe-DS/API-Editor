@@ -5,53 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e4c8b18c-a361-4742-875a-ba08d400aef0" name="Changes" comment="feat: vite instead of CRA">
-      <change afterPath="$PROJECT_DIR$/.idea/prettier.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/pnpm-lock.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/public/favicon.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/app/hooks.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/app/store.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/features/counter/counterSlice.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/vite-env.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/vite.config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.devcontainer/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/.devcontainer/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.devcontainer/devcontainer.json" beforeDir="false" afterPath="$PROJECT_DIR$/.devcontainer/devcontainer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/jest.config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/.eslintignore" beforeDir="false" afterPath="$PROJECT_DIR$/client/.eslintignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/client/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/.husky/pre-commit" beforeDir="false" afterPath="$PROJECT_DIR$/client/.husky/pre-commit" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/.prettierignore" beforeDir="false" afterPath="$PROJECT_DIR$/client/.prettierignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/.stylelintrc.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/.stylelintrc.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/public/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Components/Dialog/dialog.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Components/Dialog/dialog.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Components/Util/BlankIcon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Components/Util/BlankIcon.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Components/Util/VisibilityIndicator.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Components/Util/VisibilityIndicator.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Components/Util/VisibilityIndicator.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Components/Util/VisibilityIndicator.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/model/annotation/AnnotationStore.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/model/annotation/AnnotationStore.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/model/python/PythonClass.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/model/python/PythonClass.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/model/python/PythonFromImport.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/model/python/PythonFromImport.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/model/python/PythonFromImport.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/model/python/PythonFromImport.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/model/python/PythonFunction.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/model/python/PythonFunction.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/model/python/PythonImport.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/model/python/PythonImport.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/model/python/PythonImport.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/model/python/PythonImport.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/model/python/PythonModule.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/model/python/PythonModule.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/model/python/PythonPackage.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/model/python/PythonPackage.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/model/python/PythonPackageBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/model/python/PythonPackageBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/model/python/PythonParameter.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/model/python/PythonParameter.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/model/python/PythonResult.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/model/python/PythonResult.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/model/python/PythonResult.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/model/python/PythonResult.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/react-app-env.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/reportWebVitals.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/util/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/util/types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/util/validation.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/util/validation.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/client/pnpm-lock.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,6 +50,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.stylelint" value="C:\Users\Lars\Documents\Repositories\teaching\API Editor\client\node_modules\stylelint" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs.jest.jest_package" value="$PROJECT_DIR$/client/node_modules/jest" />
     <property name="nodejs_package_manager_path" value="yarn" />
     <property name="prettierjs.PrettierConfiguration.Package" value="C:\Users\Lars\Documents\Repositories\teaching\API Editor\client\node_modules\prettier" />
     <property name="settings.editor.selected.configurable" value="settings.javascript.prettier" />
@@ -108,6 +66,17 @@
       <recent name="C:\Users\Lars\Documents\Repositories\teaching\API Editor\client3" />
     </key>
   </component>
+  <component name="RunManager">
+    <configuration name="All Tests" type="JavaScriptTestRunnerJest" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/client/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$/client" />
+      <envs />
+      <scope-kind value="ALL" />
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -118,7 +87,7 @@
       <updated>1626859655262</updated>
       <workItem from="1626859656496" duration="938000" />
       <workItem from="1626874914509" duration="1957000" />
-      <workItem from="1626876898807" duration="2105000" />
+      <workItem from="1626876898807" duration="3316000" />
     </task>
     <task id="LOCAL-00001" summary="build: fix failures">
       <created>1626861243161</created>
@@ -127,7 +96,14 @@
       <option name="project" value="LOCAL" />
       <updated>1626861243161</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="feat: vite instead of CRA">
+      <created>1626879097184</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1626879097184</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
