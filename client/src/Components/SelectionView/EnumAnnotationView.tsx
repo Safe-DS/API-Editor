@@ -12,9 +12,9 @@ interface EnumAnnotationViewProps {
 }
 
 const EnumAnnotationView: React.FC<EnumAnnotationViewProps> = (props) => {
-    const deleteEnumAnnotation = () => props.setEnumDefinition(null);//.setNewName(null);
+    const deleteEnumAnnotation = () => props.setEnumDefinition(null);
 
-    if (props.enumDefinition !== null) {//.newName
+    if (props.enumDefinition !== null) {
         return (<div className={"annotation-list"}>
             <Row>
                 <Col className="align-items-center" xs="auto">

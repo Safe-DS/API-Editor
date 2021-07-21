@@ -22,6 +22,8 @@ interface ParameterNodeProps {
 export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
     const [showRenameDialog, setShowRenameDialog] = useState(false);
     const [showEnumDialog, setShowEnumDialog] = useState(false);
+    const openRenameDialog = () => setShowRenameDialog(true);
+    const openEnumDialog = () => setShowEnumDialog(true);
 
     const newName = props.annotationStore.getRenamingFor(props.pythonParameter);
     const setNewName = (newName: Nullable<string>) => {
@@ -36,10 +38,6 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
             props.annotationStore.setEnumFor(props.pythonParameter, newEnum)
         );
     };
-
-    const openRenameDialog = () => setShowRenameDialog(true);
-    const openEnumDialog = () => setShowEnumDialog(true);
-
 
     const dropdownClassnames = classNames({
         "parameter-is-title": props.isTitle,
@@ -63,7 +61,7 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
                 </div>
             </div>
 
-            {newName &&
+            {newName || newEnumDefinition &&
             <h4>Annotations</h4>
             }
             <RenameAnnotationView
