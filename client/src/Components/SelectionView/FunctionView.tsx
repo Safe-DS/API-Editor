@@ -16,7 +16,10 @@ export default function FunctionView(props: FunctionViewProps): JSX.Element {
     return (
         <div>
             <h1>{props.pythonFunction.name}</h1>
-            <DocumentationText inputText={props.pythonFunction.description}/>
+            {props.pythonFunction.description ?
+                <DocumentationText inputText={props.pythonFunction.description}/>
+                : <p className="pl-1rem text-muted">There is no documentation for this function.</p>
+            }
             <h2 className={"function-title"}>Parameters</h2>
             <div className={"pl-1rem"}>
                 {
