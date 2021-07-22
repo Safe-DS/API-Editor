@@ -1,5 +1,6 @@
 .modalDialog {
     margin-top: 5rem;
+    max-height: calc(80vh);
 }
 
 @media screen and (min-width: 1200px) {
