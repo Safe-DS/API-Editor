@@ -36,7 +36,7 @@ export default function App(): JSX.Element {
                     <TreeView pythonPackage={filteredPythonPackage}/>
                 </div>
                 <div className={AppCSS.rightPane}>
-                    <SelectionView pythonPackage={filteredPythonPackage}
+                    <SelectionView pythonPackage={pythonPackage}
                                    annotationStore={annotationStore}
                                    setAnnotationStore={setAnnotationStore}/>
                 </div>
