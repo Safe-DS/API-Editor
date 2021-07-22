@@ -20,7 +20,12 @@ export default function ParameterView(props: ParameterViewProps): JSX.Element {
             {props.pythonParameter.hasDefault &&
             <TitleValueViewPair title="Default value" value={props.pythonParameter.defaultValue}/>}
             {props.pythonParameter.type &&
-            <><h2>Type</h2><span className="pl-1rem">{props.pythonParameter.type}</span></>}
+            <>
+                <h2>Type</h2>
+                <span className="pl-1rem">
+                    {props.pythonParameter.type}
+                </span>
+            </>}
         </div>
     );
 }
