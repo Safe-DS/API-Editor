@@ -1,6 +1,7 @@
 import {Nullable} from "../../util/types";
 import PythonClass from "./PythonClass";
 import PythonDeclaration from "./PythonDeclaration";
+import {PythonFilter} from "./PythonFilter";
 import PythonModule from "./PythonModule";
 import PythonParameter from "./PythonParameter";
 import PythonResult from "./PythonResult";
@@ -17,7 +18,6 @@ export default class PythonFunction extends PythonDeclaration {
     containingModuleOrClass: Nullable<PythonModule | PythonClass>;
 
     constructor(
-
         name: string,
         decorators: string[] = [],
         parameters: PythonParameter[] = [],
@@ -67,5 +67,30 @@ export default class PythonFunction extends PythonDeclaration {
         result += `def ${this.name}(${this.parameters.map(it => it.name).join(", ")})`;
 
         return result;
+    }
+
+    filter(pythonFilter: PythonFilter | void): PythonFunction {
+        if (!pythonFilter) {
+            return this;
+        }
+
+        const parameters = this.parameters
+            .map(it => it.clone())
+            .filter(it =>
+                it.name.toLowerCase().includes((pythonFilter.pythonParameter || "").toLowerCase())
+            );
+
+        const results = this.results.map(it => it.clone());
+
+        return new PythonFunction(
+            this.name,
+            this.decorators,
+            parameters,
+            results,
+            this.returnType,
+            this.summary,
+            this.description,
+            this.fullDocstring
+        );
     }
 }

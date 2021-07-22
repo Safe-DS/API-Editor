@@ -1,6 +1,7 @@
 import {Nullable} from "../../util/types";
 import PythonDeclaration from "./PythonDeclaration";
 import PythonFunction from "./PythonFunction";
+
 export default class PythonParameter extends PythonDeclaration {
 
     readonly name: string;
@@ -46,5 +47,18 @@ export default class PythonParameter extends PythonDeclaration {
 
     toString(): string {
         return `Parameter "${this.name}"`;
+    }
+
+    clone(): PythonParameter {
+        return new PythonParameter(
+            this.name,
+            this.type,
+            this.typeInDocs,
+            this.hasDefault,
+            this.defaultValue,
+            this.limitation,
+            this.ignored,
+            this.description
+        );
     }
 }

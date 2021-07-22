@@ -1,3 +1,4 @@
+import {isEmptyList} from "../../util/listOperations";
 import {PythonFilter} from "./PythonFilter";
 import PythonModule from "./PythonModule";
 import PythonDeclaration from "./PythonDeclaration";
@@ -18,19 +19,6 @@ export default class PythonPackage extends PythonDeclaration {
         });
     }
 
-    filter(filter: PythonFilter | void): PythonPackage {
-        if (!filter) {
-            return this;
-        }
-
-        return this;
-
-        // return new PythonPackage(
-        //     this.name,
-        //     modules.filter
-        // );
-    }
-
     parent(): null {
         return null;
     }
@@ -41,6 +29,21 @@ export default class PythonPackage extends PythonDeclaration {
 
     toString(): string {
         return `Package "${this.name}"`;
+    }
+
+    filter(pythonFilter: PythonFilter | void): PythonPackage {
+        if (!pythonFilter) {
+            return this;
+        }
+
+        const modules = this.modules
+            .map(it => it.filter(pythonFilter))
+            .filter(it =>
+                it.name.toLowerCase().includes((pythonFilter.pythonModule || "").toLowerCase()) &&
+                (!isEmptyList(it.classes) || !isEmptyList(it.functions))
+            );
+
+        return new PythonPackage(this.name, modules);
     }
 }
 

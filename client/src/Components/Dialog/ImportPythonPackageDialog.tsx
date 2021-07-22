@@ -33,6 +33,7 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
         props.setIsVisible(false);
         if (newPythonPackage) {
             props.setPythonPackage(newPythonPackage);
+            props.setFilter("");
             history.push("/");
         }
     };

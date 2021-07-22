@@ -50,7 +50,7 @@ export class PythonFilter {
                             pythonFunction = filterString;
                         }
                         break;
-                    case "parameters":
+                    case "parameter":
                         if (pythonParameter) {
                             return;
                         } else {
