@@ -1,4 +1,4 @@
-import React, {FormEvent, useState} from "react";
+import React, {useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
 import {useHistory} from "react-router-dom";
 import {Setter} from "../../util/types";
@@ -28,8 +28,7 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
         props.setIsVisible(false);
     };
 
-    const submit = (event: FormEvent) => {
-        event.preventDefault();
+    const submit = () => {
         props.setIsVisible(false);
         if (newPythonPackage) {
             props.setPythonPackage(newPythonPackage);
@@ -92,11 +91,12 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="danger" onClick={close}>
+                        <Button variant="danger"
+                                onClick={close}>
                             Cancel
                         </Button>
                         <Button variant="primary"
-                                type="submit"
+                                type="button"
                                 onClick={submit}>
                             Submit
                         </Button>
