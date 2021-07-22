@@ -1,43 +1,35 @@
 import React, {useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
-import {useHistory} from "react-router-dom";
-import {Setter} from "../../util/types";
-import "../SelectionView/SelectionView.css";
+import {Setter} from "../../../util/types";
+import "../../SelectionView/SelectionView.css";
 import Dropzone from 'react-dropzone';
-import {isValidJsonFile} from "../../util/validation";
-import DialogCSS from "./dialog.module.css";
-import PythonPackage from "../../model/python/PythonPackage";
-import {parsePythonPackageJson} from "../../model/python/PythonPackageBuilder";
-import AnnotationStore from "../../model/annotation/AnnotationStore";
+import {isValidJsonFile} from "../../../util/validation";
+import DialogCSS from "../dialogs.module.css";
+import AnnotationStore from "../../../model/annotation/AnnotationStore";
 
-interface ImportPythonPackageDialogProps {
+interface ImportAnnotationFileDialogProps {
     isVisible: boolean
-    setIsVisible: Setter<boolean>,
-    setPythonPackage: Setter<PythonPackage>
+    setIsVisible: Setter<boolean>
     setAnnotationStore: Setter<AnnotationStore>
-    setFilter: Setter<string>
 }
 
-export default function ImportPythonPackageDialog(props: ImportPythonPackageDialogProps): JSX.Element {
+export default function ImportAnnotationFileDialog(props: ImportAnnotationFileDialogProps): JSX.Element {
 
     const [fileName, setFileName] = useState("");
-    const [newPythonPackage, setNewPythonPackage] = useState<PythonPackage>();
-    const history = useHistory();
+    const [newAnnotationStore, setNewAnnotationStore] = useState(new AnnotationStore());
 
     const close = () => {
         props.setIsVisible(false);
     };
 
     const submit = () => {
-        props.setIsVisible(false);
-        if (newPythonPackage) {
-            props.setPythonPackage(newPythonPackage);
-            props.setFilter("");
-            history.push("/");
+        if (fileName) {
+            props.setAnnotationStore(newAnnotationStore);
         }
+        props.setIsVisible(false);
     };
 
-    const slurpAndParse = (acceptedFiles: File[]) => {
+    const onDrop = (acceptedFiles: File[]) => {
         if (isValidJsonFile(acceptedFiles[acceptedFiles.length - 1].name)) {
             if (acceptedFiles.length > 1) {
                 acceptedFiles = [acceptedFiles[acceptedFiles.length - 1]];
@@ -46,8 +38,10 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
             const reader = new FileReader();
             reader.onload = () => {
                 if (typeof reader.result === 'string') {
-                    setNewPythonPackage(parsePythonPackageJson(JSON.parse(reader.result)));
-                    props.setAnnotationStore(new AnnotationStore());
+                    const readAnnotationJson = JSON.parse(reader.result);
+                    readAnnotationJson["renamings"] = new Map(Object.entries(readAnnotationJson["renamings"]));
+                    readAnnotationJson["enums"] = new Map(Object.entries(readAnnotationJson["enums"]));
+                    setNewAnnotationStore(AnnotationStore.fromJson(readAnnotationJson));
                 }
             };
             reader.readAsText(acceptedFiles[0]);
@@ -60,34 +54,32 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
                size={"lg"}
                className={DialogCSS.modalDialog}>
             <Modal.Header closeButton>
-                <Modal.Title>
-                    Import Python package
-                </Modal.Title>
+                <Modal.Title>Import annotation file</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form noValidate>
                     <Modal.Body>
                         <Form.Group>
                             <Form.Label>
-                                Select a Python package to upload.
+                                Select an annotation file to upload.
                             </Form.Label>
                             <div className={DialogCSS.dropzone}>
-                                <Dropzone onDrop={slurpAndParse}>
+                                <Dropzone onDrop={onDrop}>
                                     {({getRootProps, getInputProps}) => (
                                         <section>
                                             <div {...getRootProps()}>
-                                                <input {...getInputProps()} />
+                                                <input {...getInputProps()}/>
                                                 <p className={DialogCSS.dropzoneText}>
-                                                    Drag and drop a Python package here, or click to select the
+                                                    Drag and drop an annotation file here or click to select the
                                                     file.<br/>
-                                                    (Only *.json will be accepted.)
+                                                    (only *.json will be accepted)
                                                 </p>
                                             </div>
                                         </section>
                                     )}
                                 </Dropzone>
                             </div>
-                            {fileName && <div><strong>Imported package name: </strong>{fileName}</div>}
+                            {fileName && <div><strong>Imported file: </strong>{fileName}</div>}
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
