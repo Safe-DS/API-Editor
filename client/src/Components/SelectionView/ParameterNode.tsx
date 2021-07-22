@@ -9,7 +9,6 @@ import RenameDialog from "../Dialog/RenameDialog";
 import EnumDialog from "./Dialogues/EnumDialog";
 import DocumentationText from "./DocumentationText";
 import AnnotationView from "./AnnotationView";
-import EnumAnnotationView from "./EnumAnnotationView";
 import "./SelectionView.css";
 
 interface ParameterNodeProps {
@@ -66,16 +65,14 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
             {(newName || newEnumDefinition) &&
             <h5 className={"pl-1rem"}>Annotations</h5>
             }
-            <AnnotationView
-                newName={newName}
-                setNewName={setNewName}
-                onRenameEdit={openRenameDialog}
-            />
-            <EnumAnnotationView
-                enumDefinition={newEnumDefinition}
-                setEnumDefinition={setNewEnumDefinition}
-                onEnumEdit={openEnumDialog}
-            />
+            <div className={"annotation-list"}>
+                <AnnotationView annotation={newName}
+                                setAnnotation={setNewName}
+                                onEdit={openRenameDialog}/>
+                <AnnotationView annotation={newEnumDefinition}
+                                setAnnotation={setNewEnumDefinition}
+                                onEdit={openEnumDialog}/>
+            </div>
 
             {/*This additional check cause the dialog to be thrown away after closing it, resetting its state*/}
             {showRenameDialog && <RenameDialog
