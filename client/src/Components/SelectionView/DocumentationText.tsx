@@ -14,7 +14,11 @@ interface DocumentationTextProps {
 
 export default function DocumentationText({inputText = ""}: DocumentationTextProps): JSX.Element {
 
-    const preprocessedText = inputText.replaceAll(/:math:`([^`]*)`/g, "$$$1$$");
+    const preprocessedText = inputText
+        .replaceAll(/(?<!\n)\n(?!\n)/g, " ")
+        .replaceAll(/:math:`([^`]*)`/g, "$$$1$$")
+        .replaceAll(/\.\. math::\s*(\S.*)\n\n/g, "$$$\n$1\n$$$\n\n");
+
     const shortenedText = preprocessedText.split("\n\n")[0];
     const hasMultipleLines = shortenedText !== inputText;
     const [readMore, setReadMore] = useState(false);
