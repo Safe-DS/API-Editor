@@ -1,16 +1,19 @@
-import classNames from "classnames";
 import React, {useState} from 'react';
 import {Nav, Navbar, NavDropdown} from "react-bootstrap";
-import {useLocation} from "react-router";
 import {NavLink} from "react-router-dom";
-import PythonPackage from "../../model/python/PythonPackage";
-import {Setter} from "../../util/types";
+import {useLocation} from "react-router";
+import MenuCSS from "./Menu.module.css";
+import classNames from "classnames";
 import ImportAnnotationFileDialog from "../Dialog/ImportAnnotationFileDialog";
 import ImportPythonPackageDialog from "../Dialog/ImportPythonPackageDialog";
-import MenuCSS from "./Menu.module.css";
+import {Setter} from "../../util/types";
+import PythonPackage from "../../model/python/PythonPackage";
+import AnnotationStore from "../../model/annotation/AnnotationStore";
 
 interface MenuProps {
     setPythonPackage: Setter<PythonPackage>
+    annotationStore: AnnotationStore
+    setAnnotationStore: Setter<AnnotationStore>
 }
 
 export default function Menu(props: MenuProps): JSX.Element {
@@ -23,6 +26,10 @@ export default function Menu(props: MenuProps): JSX.Element {
 
     const pathname = useLocation().pathname.split("/").slice(1);
     const cssClasses = classNames(MenuCSS.menu, "justify-content-between");
+
+    const exportAnnotations = () => {
+        props.annotationStore.downloadAnnotations(props.annotationStore.toJson());
+    };
 
     return (
         <Navbar className={cssClasses} bg="light" expand="lg">
@@ -42,14 +49,20 @@ export default function Menu(props: MenuProps): JSX.Element {
                     <NavDropdown.Item onClick={openImportPythonPackageDialog}>Python Package</NavDropdown.Item>
                     <NavDropdown.Item onClick={openImportAnnotationFileDialog}>Annotation File</NavDropdown.Item>
                 </NavDropdown>
-                <Navbar.Text>Export</Navbar.Text>
+
+                <Nav.Link onClick={exportAnnotations} href="#">
+                    Export
+                </Nav.Link>
             </Nav>
             {showImportAnnotationFileDialog && <ImportAnnotationFileDialog isVisible={showImportAnnotationFileDialog}
-                                                                           setIsVisible={setShowImportAnnotationFileDialog}/>}
+                                                                           setIsVisible={setShowImportAnnotationFileDialog}
+                                                                           setAnnotationStore={props.setAnnotationStore}
+            />}
             {showImportPythonPackageDialog && <ImportPythonPackageDialog isVisible={showImportPythonPackageDialog}
                                                                          setIsVisible={setShowImportPythonPackageDialog}
-                                                                         setPythonPackage={props.setPythonPackage}/>}
-
+                                                                         setPythonPackage={props.setPythonPackage}
+                                                                         setAnnotationStore={props.setAnnotationStore}
+            />}
         </Navbar>
     );
 }
