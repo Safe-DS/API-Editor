@@ -94,21 +94,26 @@ export default function EnumDialog({
                                     type="text"
                                     value={name}
                                     onChange={onInput}
-                                    isInvalid={(!isValidPythonIdentifier(name) && !!name ) || !name && shouldValidate}
+                                    isInvalid={(!isValidPythonIdentifier(name) && !!name) || !name && shouldValidate}
                                 />
                                 <Form.Control.Feedback type="invalid">
                                     Valid Python identifiers must start with a letter or underscore followed by letters,
                                     numbers and underscores.
                                 </Form.Control.Feedback>
-                                <EnumHandle listOfEnumPairs={listOfEnumPairs} setListOfEnumPairs={setListOfEnumPairs}
-                                            shouldValidate={shouldValidate} setShouldValidate={setShouldValidate}/>
+                                <EnumHandle listOfEnumPairs={listOfEnumPairs}
+                                            setListOfEnumPairs={setListOfEnumPairs}
+                                            shouldValidate={shouldValidate}
+                                            setShouldValidate={setShouldValidate}/>
                             </Form.Group>
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button variant="danger" onClick={handleClose}>
+                            <Button variant="danger"
+                                    onClick={handleClose}>
                                 Cancel
                             </Button>
-                            <Button variant="primary" type="button" onClick={onFormSubmit}>
+                            <Button variant="primary"
+                                    type="button"
+                                    onClick={onFormSubmit}>
                                 Submit
                             </Button>
                         </Modal.Footer>

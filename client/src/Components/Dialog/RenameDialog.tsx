@@ -60,10 +60,13 @@ export default function RenameDialog(props: RenameDialogProps): JSX.Element {
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="danger" onClick={close}>
+                        <Button variant="danger"
+                                onClick={close}>
                             Cancel
                         </Button>
-                        <Button variant="primary" type="button" onClick={submit}>
+                        <Button variant="primary"
+                                type="button"
+                                onClick={submit}>
                             Submit
                         </Button>
                     </Modal.Footer>
