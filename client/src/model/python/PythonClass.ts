@@ -71,13 +71,11 @@ export default class PythonClass extends PythonDeclaration {
             return this;
         }
 
-        let methods = this.methods.map(it => it.filter(pythonFilter));
-        if (pythonFilter.pythonFunction) {
-            methods = methods.filter(it =>
+        const methods = this.methods.map(it => it.filter(pythonFilter))
+            .filter(it =>
                 it.name.toLowerCase().includes((pythonFilter.pythonFunction || "").toLowerCase()) &&
                 !isEmptyList(it.parameters)
             );
-        }
 
         return new PythonClass(
             this.name,
