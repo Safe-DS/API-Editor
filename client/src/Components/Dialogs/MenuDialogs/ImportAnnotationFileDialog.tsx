@@ -1,13 +1,13 @@
 import React, {useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
-import EnumPair from "../../model/EnumPair";
-import PythonEnum from "../../model/python/PythonEnum";
-import {Setter} from "../../util/types";
-import "../SelectionView/SelectionView.css";
 import Dropzone from 'react-dropzone';
-import {isValidJsonFile} from "../../util/validation";
-import DialogCSS from "./dialog.module.css";
-import AnnotationStore, {AnnotationJson} from "../../model/annotation/AnnotationStore";
+import AnnotationStore, {AnnotationJson} from "../../../model/annotation/AnnotationStore";
+import EnumPair from "../../../model/EnumPair";
+import PythonEnum from "../../../model/python/PythonEnum";
+import {Setter} from "../../../util/types";
+import {isValidJsonFile} from "../../../util/validation";
+import "../../SelectionView/SelectionView.css";
+import DialogCSS from "../dialogs.module.css";
 
 interface ImportAnnotationFileDialogProps {
     isVisible: boolean
