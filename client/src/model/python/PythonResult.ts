@@ -36,4 +36,13 @@ export default class PythonResult extends PythonDeclaration {
     toString(): string {
         return `Result "${this.name}"`;
     }
+
+    clone(): PythonResult {
+        return new PythonResult(
+            this.name,
+            this.type,
+            this.typeInDocs,
+            this.description
+        );
+    }
 }

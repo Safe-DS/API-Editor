@@ -15,6 +15,7 @@ interface ImportPythonPackageDialogProps {
     setIsVisible: Setter<boolean>,
     setPythonPackage: Setter<PythonPackage>
     setAnnotationStore: Setter<AnnotationStore>
+    setFilter: Setter<string>
 }
 
 export default function ImportPythonPackageDialog(props: ImportPythonPackageDialogProps): JSX.Element {
@@ -31,6 +32,7 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
         props.setIsVisible(false);
         if (newPythonPackage) {
             props.setPythonPackage(newPythonPackage);
+            props.setFilter("");
             history.push("/");
         }
     };

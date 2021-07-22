@@ -1,4 +1,6 @@
+import {isEmptyList} from "../../util/listOperations";
 import {Nullable} from "../../util/types";
+import {PythonFilter} from "./PythonFilter";
 import PythonFunction from "./PythonFunction";
 import PythonClass from "./PythonClass";
 import PythonFromImport from "./PythonFromImport";
@@ -15,7 +17,6 @@ export default class PythonModule extends PythonDeclaration {
     containingPackage: Nullable<PythonPackage>;
 
     constructor(
-
         name: string,
         imports: PythonImport[] = [],
         fromImports: PythonFromImport[] = [],
@@ -50,5 +51,34 @@ export default class PythonModule extends PythonDeclaration {
 
     toString(): string {
         return `Module "${this.name}"`;
+    }
+
+    filter(pythonFilter: PythonFilter | void): PythonModule {
+        if (!pythonFilter) {
+            return this;
+        }
+
+        const classes = this.classes
+            .map(it => it.filter(pythonFilter))
+            .filter(it =>
+                it.name.toLowerCase().includes((pythonFilter.pythonClass || "").toLowerCase()) &&
+                !isEmptyList(it.methods)
+            );
+
+        const functions = this.functions
+            .map(it => it.filter(pythonFilter))
+            .filter(it =>
+                !pythonFilter.pythonClass && // if the class filter is active we hide all top-level functions
+                it.name.toLowerCase().includes((pythonFilter.pythonFunction || "").toLowerCase()) &&
+                !isEmptyList(it.parameters)
+            );
+
+        return new PythonModule(
+            this.name,
+            this.imports,
+            this.fromImports,
+            classes,
+            functions
+        );
     }
 }
