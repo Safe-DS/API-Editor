@@ -28,9 +28,10 @@ export default function DocumentationText({inputText = ""}: DocumentationTextPro
     );
 
     return (
-        <div className="docu-paragraph" onClick={() => {
-            setReadMore(true);
-        }}>
+        <div className="docu-paragraph"
+             onClick={() => {
+                 setReadMore(true);
+             }}>
             {hasMultipleLines &&
             <div className="pointer-cursor"
                  onClick={(event) => {
