@@ -16,7 +16,7 @@ interface RenameDialogProps {
 
 export default function RenameDialog(props: RenameDialogProps): JSX.Element {
     const [currentUserInput, setCurrentUserInput] = useState(props.newName ?? props.oldName);
-
+    const cssClasses = classNames(DialogCSS.modalDialog, DialogCSS.annotationDialog);
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => setCurrentUserInput(event.target.value);
 
     const close = () => {
@@ -24,13 +24,12 @@ export default function RenameDialog(props: RenameDialogProps): JSX.Element {
     };
 
     const submit = () => {
-        if (isValidPythonIdentifier(currentUserInput)) {
+        const name = isValidPythonIdentifier(currentUserInput);
+        if (name) {
             props.setNewName(currentUserInput);
             props.setIsVisible(false);
         }
     };
-
-    const cssClasses = classNames(DialogCSS.modalDialog, DialogCSS.annotationDialog);
 
     return (
         <Modal

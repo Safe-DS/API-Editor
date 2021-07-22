@@ -9,11 +9,12 @@ import EnumPairRow from "./EnumPairRow";
 type EnumFormProps = {
     listOfEnumPairs: EnumPair[];
     setListOfEnumPairs: Setter<EnumPair[]>;
-    setOnSubmit: Setter<void>;
+    onValidate: boolean;
+    setOnValidate: Setter<boolean>;
 }
 
 export default function EnumHandle({
-                                       listOfEnumPairs, setListOfEnumPairs, setOnSubmit,
+                                       listOfEnumPairs, setListOfEnumPairs, onValidate,setOnValidate
                                    }: EnumFormProps): JSX.Element {
 
 
@@ -22,14 +23,15 @@ export default function EnumHandle({
             const tmpCopy = [...listOfEnumPairs];
             tmpCopy.splice(index, 1);
             setListOfEnumPairs(tmpCopy);
+            setOnValidate(false);
         }
     };
-
 
     const addEnumInstance = () => {
         const tmpCopy = [...listOfEnumPairs];
         tmpCopy.push(new EnumPair("", ""));
         setListOfEnumPairs(tmpCopy);
+        setOnValidate(false);
     };
 
     return (
@@ -47,7 +49,7 @@ export default function EnumHandle({
                 {listOfEnumPairs.map((pair, index) =>
                     <EnumPairRow pair={pair} key={pair.key + "" + index}
                                  deleteFunction={() => deleteInstanceByIndex(index)}
-                                 setOnSubmit={setOnSubmit}/>)}
+                                 onValidate={onValidate} setOnValidate={setOnValidate}/>)}
             </div>
         </Container>
     );
