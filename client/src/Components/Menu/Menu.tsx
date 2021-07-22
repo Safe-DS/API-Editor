@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
 import {Nav, Navbar, NavDropdown, NavItem} from "react-bootstrap";
+import Feedback from "react-bootstrap/Feedback";
 import {NavLink} from "react-router-dom";
 import {useLocation} from "react-router";
+import {PythonFilter} from "../../model/python/PythonFilter";
 import MenuCSS from "./Menu.module.css";
 import classNames from "classnames";
 import ImportAnnotationFileDialog from "../Dialog/ImportAnnotationFileDialog";
@@ -63,8 +65,14 @@ export default function Menu(props: MenuProps): JSX.Element {
                         type="text"
                         placeholder="Filter..."
                         value={props.filter}
-                        onInput={event => props.setFilter((event.target as HTMLInputElement).value)}
+                        onChange={event => props.setFilter(event.target.value)}
+                        isInvalid={!PythonFilter.fromFilterBoxInput(props.filter)}
+                        spellCheck={false}
                     />
+                    <Feedback type="invalid" tooltip>
+                        {`Valid inputs have the form <scope>:<filter> where scope is one of module, class, function, or
+                        parameter and filter is an arbitrary string. Each scope must occur at most once.`}
+                    </Feedback>
                 </NavItem>
             </Nav>
             {showImportAnnotationFileDialog && <ImportAnnotationFileDialog isVisible={showImportAnnotationFileDialog}
@@ -75,6 +83,7 @@ export default function Menu(props: MenuProps): JSX.Element {
                                                                          setIsVisible={setShowImportPythonPackageDialog}
                                                                          setPythonPackage={props.setPythonPackage}
                                                                          setAnnotationStore={props.setAnnotationStore}
+                                                                         setFilter={props.setFilter}
             />}
         </Navbar>
     );

@@ -4,18 +4,14 @@ import ModuleNode from "./ModuleNode";
 import TreeViewCSS from "./TreeView.module.css";
 
 interface TreeViewProps {
-    pythonPackage: PythonPackage,
-    filter: string
+    pythonPackage: PythonPackage
 }
 
 export default function TreeView(props: TreeViewProps): JSX.Element {
     return (
         <div className={TreeViewCSS.treeView}>
-            {[...props.pythonPackage.modules]
-                .sort((a, b) => a.name.localeCompare(b.name))
-                .map(module => (
-                    <ModuleNode key={module.name}
-                                pythonModule={module}/>
+            {props.pythonPackage.modules.map(module => (
+                    <ModuleNode key={module.name} pythonModule={module}/>
                 ))
             }
         </div>

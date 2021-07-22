@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import pythonPackageJson from "../../data/sklearn.json";
 import AnnotationStore from "../../model/annotation/AnnotationStore";
+import {PythonFilter} from "../../model/python/PythonFilter";
 import {parsePythonPackageJson, PythonPackageJson} from "../../model/python/PythonPackageBuilder";
 import Menu from "../Menu/Menu";
 import TreeView from "../TreeView/TreeView";
@@ -17,6 +18,9 @@ export default function App(): JSX.Element {
     const [annotationStore, setAnnotationStore] = useState(AnnotationStore.fromJson(initialJSON));
     const [filter, setFilter] = useState("");
 
+    const pythonFilter = PythonFilter.fromFilterBoxInput(filter);
+    const filteredPythonPackage=  pythonPackage.filter(pythonFilter);
+
     return (
         <HashRouter>
             <div className={AppCSS.app}>
@@ -29,10 +33,10 @@ export default function App(): JSX.Element {
                           />
                 </div>
                 <div className={AppCSS.leftPane}>
-                    <TreeView pythonPackage={pythonPackage} filter={filter}/>
+                    <TreeView pythonPackage={filteredPythonPackage}/>
                 </div>
                 <div className={AppCSS.rightPane}>
-                    <SelectionView pythonPackage={pythonPackage}
+                    <SelectionView pythonPackage={filteredPythonPackage}
                                    annotationStore={annotationStore}
                                    setAnnotationStore={setAnnotationStore}/>
                 </div>

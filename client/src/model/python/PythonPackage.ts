@@ -1,3 +1,4 @@
+import {PythonFilter} from "./PythonFilter";
 import PythonModule from "./PythonModule";
 import PythonDeclaration from "./PythonDeclaration";
 
@@ -17,6 +18,19 @@ export default class PythonPackage extends PythonDeclaration {
         });
     }
 
+    filter(filter: PythonFilter | void): PythonPackage {
+        if (!filter) {
+            return this;
+        }
+
+        return this;
+
+        // return new PythonPackage(
+        //     this.name,
+        //     modules.filter
+        // );
+    }
+
     parent(): null {
         return null;
     }
@@ -29,3 +43,5 @@ export default class PythonPackage extends PythonDeclaration {
         return `Package "${this.name}"`;
     }
 }
+
+
