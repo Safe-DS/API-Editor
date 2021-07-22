@@ -1,11 +1,13 @@
 import React, {useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
-import {Setter} from "../../../util/types";
-import "../../SelectionView/SelectionView.css";
 import Dropzone from 'react-dropzone';
+import AnnotationStore, {AnnotationJson} from "../../../model/annotation/AnnotationStore";
+import EnumPair from "../../../model/EnumPair";
+import PythonEnum from "../../../model/python/PythonEnum";
+import {Setter} from "../../../util/types";
 import {isValidJsonFile} from "../../../util/validation";
+import "../../SelectionView/SelectionView.css";
 import DialogCSS from "../dialogs.module.css";
-import AnnotationStore from "../../../model/annotation/AnnotationStore";
 
 interface ImportAnnotationFileDialogProps {
     isVisible: boolean
@@ -38,9 +40,17 @@ export default function ImportAnnotationFileDialog(props: ImportAnnotationFileDi
             const reader = new FileReader();
             reader.onload = () => {
                 if (typeof reader.result === 'string') {
-                    const readAnnotationJson = JSON.parse(reader.result);
-                    readAnnotationJson["renamings"] = new Map(Object.entries(readAnnotationJson["renamings"]));
-                    readAnnotationJson["enums"] = new Map(Object.entries(readAnnotationJson["enums"]));
+                    const readAnnotationJson = JSON.parse(reader.result) as AnnotationJson;
+
+                    readAnnotationJson.renamings = new Map(Object.entries(readAnnotationJson.renamings));
+
+                    const enumEntries: [string, PythonEnum][] = Object.entries(readAnnotationJson.enums);
+                    readAnnotationJson.enums = new Map(enumEntries
+                        .map(([key, value]) => [key, new PythonEnum(
+                            value.enumName,
+                            value.enumPairs.map(pair => new EnumPair(pair.key, pair.value))
+                        )]));
+
                     setNewAnnotationStore(AnnotationStore.fromJson(readAnnotationJson));
                 }
             };
