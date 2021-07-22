@@ -7,11 +7,10 @@ import classNames from "classnames";
 import ImportAnnotationFileDialog from "../Dialog/ImportAnnotationFileDialog";
 import ImportPythonPackageDialog from "../Dialog/ImportPythonPackageDialog";
 import {Setter} from "../../util/types";
-import PythonPackage from "../../model/python/PythonPackage";
 import AnnotationStore from "../../model/annotation/AnnotationStore";
 
 interface MenuProps {
-    setPythonPackage: Setter<PythonPackage>
+    setPythonPackage: Setter<string>
     annotationStore: AnnotationStore
     setAnnotationStore: Setter<AnnotationStore>
 }
