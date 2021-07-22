@@ -94,7 +94,7 @@ export default function EnumDialog({
                                     type="text"
                                     value={name}
                                     onChange={onInput}
-                                    isInvalid={!isValidPythonIdentifier(name) && shouldValidate}
+                                    isInvalid={(!isValidPythonIdentifier(name) && !!name ) || !name && shouldValidate}
                                 />
                                 <Form.Control.Feedback type="invalid">
                                     Valid Python identifiers must start with a letter or underscore followed by letters,
