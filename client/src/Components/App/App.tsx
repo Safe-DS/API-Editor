@@ -15,16 +15,21 @@ export default function App(): JSX.Element {
     initialJSON["renamings"] = new Map();
     initialJSON["enums"] = new Map();
     const [annotationStore, setAnnotationStore] = useState(AnnotationStore.fromJson(initialJSON));
+    const [filter, setFilter] = useState("");
 
     return (
         <HashRouter>
             <div className={AppCSS.app}>
                 <div className={AppCSS.menu}>
-                    <Menu setPythonPackage={setPythonPackage} annotationStore={annotationStore}
-                          setAnnotationStore={setAnnotationStore}/>
+                    <Menu setPythonPackage={setPythonPackage}
+                          annotationStore={annotationStore}
+                          setAnnotationStore={setAnnotationStore}
+                          filter={filter}
+                          setFilter={setFilter}
+                          />
                 </div>
                 <div className={AppCSS.leftPane}>
-                    <TreeView pythonPackage={pythonPackage}/>
+                    <TreeView pythonPackage={pythonPackage} filter={filter}/>
                 </div>
                 <div className={AppCSS.rightPane}>
                     <SelectionView pythonPackage={pythonPackage}

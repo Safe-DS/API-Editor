@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Nav, Navbar, NavDropdown} from "react-bootstrap";
+import {Nav, Navbar, NavDropdown, NavItem} from "react-bootstrap";
 import {NavLink} from "react-router-dom";
 import {useLocation} from "react-router";
 import MenuCSS from "./Menu.module.css";
@@ -9,11 +9,15 @@ import ImportPythonPackageDialog from "../Dialog/ImportPythonPackageDialog";
 import {Setter} from "../../util/types";
 import PythonPackage from "../../model/python/PythonPackage";
 import AnnotationStore from "../../model/annotation/AnnotationStore";
+import {Form} from "react-bootstrap";
+
 
 interface MenuProps {
     setPythonPackage: Setter<PythonPackage>
     annotationStore: AnnotationStore
-    setAnnotationStore: Setter<AnnotationStore>
+    setAnnotationStore: Setter<AnnotationStore>,
+    filter: string,
+    setFilter: Setter<string>
 }
 
 export default function Menu(props: MenuProps): JSX.Element {
@@ -53,6 +57,15 @@ export default function Menu(props: MenuProps): JSX.Element {
                 <Nav.Link onClick={exportAnnotations} href="#">
                     Export
                 </Nav.Link>
+
+                <NavItem>
+                    <Form.Control
+                        type="text"
+                        placeholder="Filter..."
+                        value={props.filter}
+                        onInput={event => props.setFilter((event.target as HTMLInputElement).value)}
+                    />
+                </NavItem>
             </Nav>
             {showImportAnnotationFileDialog && <ImportAnnotationFileDialog isVisible={showImportAnnotationFileDialog}
                                                                            setIsVisible={setShowImportAnnotationFileDialog}
