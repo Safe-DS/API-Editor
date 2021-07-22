@@ -32,7 +32,7 @@ export default function Menu(props: MenuProps): JSX.Element {
     };
 
     return (
-        <Navbar className={cssClasses} bg="light" expand="md">
+        <Navbar className={cssClasses} bg="light" expand="sm">
             <Navbar.Text>{
                 pathname.map((x, i) => (
                     <React.Fragment key={i}>
