@@ -4,7 +4,7 @@ import EnumPair from "../../../model/EnumPair";
 import PythonEnum from "../../../model/python/PythonEnum";
 import {Nullable, Setter} from "../../../util/types";
 import {isValidPythonIdentifier} from "../../../util/validation";
-import DialogCSS from "../../Dialog/dialog.module.css";
+import DialogCSS from "../dialog.module.css";
 import EnumHandle from "./EnumHandle";
 import {Formik} from 'formik';
 import classNames from "classnames";
