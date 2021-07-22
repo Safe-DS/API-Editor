@@ -9,6 +9,7 @@ import EnumHandle from "./EnumHandle";
 import {Formik} from 'formik';
 import classNames from "classnames";
 import {isEmptyList} from "../../../util/listOperations";
+import {set} from "immutable";
 
 type showDialogState = {
     dialogState: boolean, setDialogState: Setter<boolean>,
@@ -23,6 +24,7 @@ export default function EnumDialog({
                                    }: showDialogState): JSX.Element {
 
     const [nameValid, setNameValid] = useState(true);
+    const [onSubmitted, setOnSubmit] = useState({});
     const [name, setName] = useState(enumDefinition?.enumName ? enumDefinition?.enumName : "");
     const initialList: EnumPair[] = [];
     const [listOfEnumPairs, setListOfEnumPairs] = useState<EnumPair[]>(initialList);
@@ -44,6 +46,8 @@ export default function EnumDialog({
     };
 
     const onFormSubmit = () => {
+        setSubmitted(true);
+
         const validInputInstances = !isEmptyList(listOfEnumPairs) && listOfEnumPairs.every(it =>
             it.key.length > 0 && it.value.length > 0 && it.isValidValue() && it.isValidKey()
         );
@@ -51,6 +55,8 @@ export default function EnumDialog({
         if (name && nameValid && validInputInstances) {
             setEnumDefinition(new PythonEnum(name, listOfEnumPairs));
             setDialogState(false);
+        }else if(!name){
+            setNameValid(false);
         }
     };
 
@@ -94,7 +100,8 @@ export default function EnumDialog({
                                     onChange={onInput}
                                     isInvalid={!nameValid}
                                 />
-                                <EnumHandle listOfEnumPairs={listOfEnumPairs} setListOfEnumPairs={setListOfEnumPairs}/>
+                                <EnumHandle listOfEnumPairs={listOfEnumPairs} setListOfEnumPairs={setListOfEnumPairs}
+                                            setOnSubmit={setOnSubmit}/>
                             </Form.Group>
                         </Modal.Body>
                         <Modal.Footer>

@@ -3,10 +3,12 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import React, {useState} from "react";
 import EnumPair from "../../../model/EnumPair";
+import {Setter} from "../../../util/types";
 
 type EnumPairRowProps = {
     pair: EnumPair,
     deleteFunction(key: string): void,
+    setOnSubmit: Setter<void>,
 }
 
 export default function EnumPairRow(props: EnumPairRowProps): JSX.Element {
@@ -15,7 +17,6 @@ export default function EnumPairRow(props: EnumPairRowProps): JSX.Element {
     const [enumValue, setEnumValue] = useState(props.pair.value);
     const [enumKeyValid, setEnumKeyValid] = useState(true);
     const [enumKey, setEnumKey] = useState(props.pair.key);
-
 
     const onInputEnumKey = (event: React.ChangeEvent<HTMLInputElement>) => {//Key
 
@@ -33,6 +34,20 @@ export default function EnumPairRow(props: EnumPairRowProps): JSX.Element {
         setEnumValue(event.target.value);
         setEnumValueValid(valid);
     };
+
+    const onSubmit = () => {
+        const validValue = props.pair.isValidValue();
+        const validKey = props.pair.isValidValue();
+
+        if(props.pair.isValidValue()){
+            setEnumValueValid(validValue);
+        }
+        if(props.pair.isValidKey()){
+            setEnumKeyValid(validKey);
+        }
+    };
+
+    props.setOnSubmit(onSubmit());
 
     return (
         <Row className="enum-pair-row">
