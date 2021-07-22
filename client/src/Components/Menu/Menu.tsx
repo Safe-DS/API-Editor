@@ -66,13 +66,11 @@ export default function Menu(props: MenuProps): JSX.Element {
                         placeholder="Filter..."
                         value={props.filter}
                         onChange={event => props.setFilter(event.target.value)}
+                        isValid={PythonFilter.fromFilterBoxInput(props.filter)?.isFiltering()}
                         isInvalid={!PythonFilter.fromFilterBoxInput(props.filter)}
                         spellCheck={false}
                     />
-                    <Feedback type="invalid" tooltip>
-                        {`Valid inputs have the form <scope>:<filter> where scope is one of module, class, function, or
-                        parameter and filter is an arbitrary string. Each scope must occur at most once.`}
-                    </Feedback>
+                    <Feedback type="invalid" tooltip>Each scope must only be used once.</Feedback>
                 </NavItem>
             </Nav>
             {showImportAnnotationFileDialog && <ImportAnnotationFileDialog isVisible={showImportAnnotationFileDialog}

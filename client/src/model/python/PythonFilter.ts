@@ -63,4 +63,11 @@ export class PythonFilter {
 
         return new PythonFilter(pythonModule, pythonClass, pythonFunction, pythonParameter);
     }
+
+    isFiltering(): boolean {
+        return Boolean(this.pythonModule) ||
+            Boolean(this.pythonClass) ||
+            Boolean(this.pythonFunction) ||
+            Boolean(this.pythonParameter);
+    }
 }
