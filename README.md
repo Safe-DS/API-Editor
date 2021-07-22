@@ -2,6 +2,8 @@
 
 [![Master](https://github.com/lars-reimann/api-editor/actions/workflows/master.yml/badge.svg?branch=master)](https://github.com/lars-reimann/api-editor/actions/workflows/master.yml)
 
+This project on Github Pages: https://lars-reimann.github.io/api-editor/
+
 ## Setup
 
 ### Node.js
