@@ -1,4 +1,4 @@
-import React, {FormEvent, useState} from "react";
+import React, {useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
 import {Setter} from "../../util/types";
 import "../SelectionView/SelectionView.css";
@@ -22,8 +22,7 @@ export default function ImportAnnotationFileDialog(props: ImportAnnotationFileDi
         props.setIsVisible(false);
     };
 
-    const submit = (event: FormEvent) => {
-        event.preventDefault();
+    const submit = () => {
         if (fileName) {
             props.setAnnotationStore(newAnnotationStore);
         }
@@ -89,7 +88,7 @@ export default function ImportAnnotationFileDialog(props: ImportAnnotationFileDi
                             Cancel
                         </Button>
                         <Button variant="primary"
-                                type="submit"
+                                type="button"
                                 onClick={submit}>
                             Submit
                         </Button>
