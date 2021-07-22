@@ -23,15 +23,22 @@ export default function DocumentationText({inputText = ""}: DocumentationTextPro
         "read-more-button",
         {
             "pl-1rem": !hasMultipleLines,
+            "pointer-cursor": hasMultipleLines && !readMore
         },
     );
 
     return (
         <div className="docu-paragraph" onClick={() => {
-            setReadMore(!readMore);
+            setReadMore(true);
         }}>
             {hasMultipleLines &&
+            <div className="pointer-cursor"
+                 onClick={(event) => {
+                     event.stopPropagation();
+                     setReadMore(!readMore);
+                 }}>
                 <VisibilityIndicator hasChildren={hasMultipleLines} showChildren={readMore}/>
+            </div>
             }
             <ReactMarkdown className={cssClasses} rehypePlugins={[rehypeKatex]} remarkPlugins={[remarkGfm, remarkMath]}>
                 {readMore || !hasMultipleLines ? preprocessedText : shortenedText + " [Read More...]"}
