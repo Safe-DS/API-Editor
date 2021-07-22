@@ -1,17 +1,16 @@
 import React, {useState} from 'react';
-import {Nav, Navbar, NavDropdown, NavItem} from "react-bootstrap";
+import {Form, Nav, Navbar, NavDropdown, NavItem} from "react-bootstrap";
 import Feedback from "react-bootstrap/Feedback";
 import {NavLink} from "react-router-dom";
 import {useLocation} from "react-router";
 import {PythonFilter} from "../../model/python/PythonFilter";
 import MenuCSS from "./Menu.module.css";
 import classNames from "classnames";
-import ImportAnnotationFileDialog from "../Dialog/ImportAnnotationFileDialog";
-import ImportPythonPackageDialog from "../Dialog/ImportPythonPackageDialog";
+import ImportAnnotationFileDialog from "../Dialogs/MenuDialogs/ImportAnnotationFileDialog";
+import ImportPythonPackageDialog from "../Dialogs/MenuDialogs/ImportPythonPackageDialog";
 import {Setter} from "../../util/types";
 import PythonPackage from "../../model/python/PythonPackage";
 import AnnotationStore from "../../model/annotation/AnnotationStore";
-import {Form} from "react-bootstrap";
 
 
 interface MenuProps {
