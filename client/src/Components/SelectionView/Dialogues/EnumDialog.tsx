@@ -22,7 +22,7 @@ export default function EnumDialog({
                                        setEnumDefinition
                                    }: showDialogState): JSX.Element {
 
-    const [nameValid, setNameValid] = useState(true);
+    const [shouldValidate, setShouldValidate] = useState(false);
     const [name, setName] = useState(enumDefinition?.enumName ? enumDefinition?.enumName : "");
     const initialList: EnumPair[] = [];
     const [listOfEnumPairs, setListOfEnumPairs] = useState<EnumPair[]>(initialList);
@@ -40,7 +40,6 @@ export default function EnumDialog({
 
     const onInput = (event: React.ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value);
-        setNameValid(isValidPythonIdentifier(event.target.value));
     };
 
     const onFormSubmit = () => {
@@ -48,9 +47,12 @@ export default function EnumDialog({
             it.key.length > 0 && it.value.length > 0 && it.isValidValue() && it.isValidKey()
         );
 
-        if (name && nameValid && validInputInstances) {
+        if (name && isValidPythonIdentifier(name) && validInputInstances) {
             setEnumDefinition(new PythonEnum(name, listOfEnumPairs));
             setDialogState(false);
+        }
+        else{
+            setShouldValidate(true);
         }
     };
 
@@ -92,9 +94,14 @@ export default function EnumDialog({
                                     type="text"
                                     value={name}
                                     onChange={onInput}
-                                    isInvalid={!nameValid}
+                                    isInvalid={(!isValidPythonIdentifier(name) && !!name ) || !name && shouldValidate}
                                 />
-                                <EnumHandle listOfEnumPairs={listOfEnumPairs} setListOfEnumPairs={setListOfEnumPairs}/>
+                                <Form.Control.Feedback type="invalid">
+                                    Valid Python identifiers must start with a letter or underscore followed by letters,
+                                    numbers and underscores.
+                                </Form.Control.Feedback>
+                                <EnumHandle listOfEnumPairs={listOfEnumPairs} setListOfEnumPairs={setListOfEnumPairs}
+                                            shouldValidate={shouldValidate} setShouldValidate={setShouldValidate}/>
                             </Form.Group>
                         </Modal.Body>
                         <Modal.Footer>

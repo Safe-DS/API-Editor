@@ -1,5 +1,6 @@
 import React, {FormEvent, useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
+import {useHistory} from "react-router-dom";
 import {Setter} from "../../util/types";
 import "../SelectionView/SelectionView.css";
 import Dropzone from 'react-dropzone';
@@ -21,6 +22,7 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
 
     const [fileName, setFileName] = useState("");
     const [newPythonPackage, setNewPythonPackage] = useState<PythonPackage>();
+    const history = useHistory();
 
     const close = () => {
         props.setIsVisible(false);
@@ -29,7 +31,10 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
     const submit = (event: FormEvent) => {
         event.preventDefault();
         props.setIsVisible(false);
-        if (newPythonPackage) props.setPythonPackage(newPythonPackage);
+        if (newPythonPackage) {
+            props.setPythonPackage(newPythonPackage);
+            history.push("/");
+        }
     };
 
     const slurpAndParse = (acceptedFiles: File[]) => {
