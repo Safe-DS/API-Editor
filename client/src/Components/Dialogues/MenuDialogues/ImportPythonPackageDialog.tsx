@@ -1,9 +1,8 @@
 import React, {FormEvent, useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
 import {Setter} from "../../../util/types";
-import "../../SelectionView/SelectionView.css";
 import {useHistory} from "react-router-dom";
-import "../SelectionView/SelectionView.css";
+import "../../SelectionView/SelectionView.css";
 import Dropzone from 'react-dropzone';
 import {isValidJsonFile} from "../../../util/validation";
 import DialogCSS from "../dialog.module.css";
