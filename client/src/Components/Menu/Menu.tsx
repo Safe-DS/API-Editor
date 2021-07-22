@@ -32,7 +32,7 @@ export default function Menu(props: MenuProps): JSX.Element {
     };
 
     return (
-        <Navbar className={cssClasses} bg="light" expand="lg">
+        <Navbar className={cssClasses} bg="light" expand="md">
             <Navbar.Text>{
                 pathname.map((x, i) => (
                     <React.Fragment key={i}>
@@ -44,7 +44,7 @@ export default function Menu(props: MenuProps): JSX.Element {
                     </React.Fragment>
                 ))}
             </Navbar.Text>
-            <Nav>
+            <Nav navbar={true}>
                 <NavDropdown title="Import" id="import-dropdown" align="end">
                     <NavDropdown.Item onClick={openImportPythonPackageDialog}>Python Package</NavDropdown.Item>
                     <NavDropdown.Item onClick={openImportAnnotationFileDialog}>Annotation File</NavDropdown.Item>
