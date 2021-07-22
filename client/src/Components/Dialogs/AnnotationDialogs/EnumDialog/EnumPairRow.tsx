@@ -2,8 +2,8 @@ import {Button, Col, Form, Row} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import React, {useState} from "react";
-import EnumPair from "../../../model/EnumPair";
-import {Setter} from "../../../util/types";
+import EnumPair from "../../../../model/EnumPair";
+import {Setter} from "../../../../util/types";
 
 type EnumPairRowProps = {
     pair: EnumPair,
