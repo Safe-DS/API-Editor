@@ -8,8 +8,8 @@ import {Setter} from "../../../util/types";
 type EnumPairRowProps = {
     pair: EnumPair,
     deleteFunction(key: string): void,
-    onValidate: boolean;
-    setOnValidate: Setter<boolean>;
+    shouldValidate: boolean;
+    setShouldValidate: Setter<boolean>;
 }
 
 export default function EnumPairRow(props: EnumPairRowProps): JSX.Element {
@@ -33,7 +33,7 @@ export default function EnumPairRow(props: EnumPairRowProps): JSX.Element {
                 <Form.Control type="text"
                               value={enumValue}
                               onChange={onInputEnumValue}
-                              isInvalid={!props.pair.isValidValue() && (!!props.pair.value || props.onValidate)}>
+                              isInvalid={(!props.pair.isValidValue() && !!props.pair.value) || (!props.pair.value && props.shouldValidate)}>
 
                 </Form.Control>
                 <Form.Control.Feedback type="invalid">
@@ -45,7 +45,7 @@ export default function EnumPairRow(props: EnumPairRowProps): JSX.Element {
                 <Form.Control type="text"
                               value={enumKey}
                               onChange={onInputEnumKey}
-                              isInvalid={!props.pair.isValidKey() && (!!props.pair.key || props.onValidate)}>
+                              isInvalid={(!props.pair.isValidKey() && !!props.pair.key) || (!props.pair.key && props.shouldValidate)}>
                 </Form.Control>
                 <Form.Control.Feedback type="invalid">
                     Valid Python Enum Keys must start with a capital letter followed by letters and numbers.
