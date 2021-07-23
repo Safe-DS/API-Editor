@@ -1,0 +1,21 @@
+.parameterHeader {
+    display: flex;
+    justify-content: flex-start;
+    font-weight: bold;
+}
+
+.parameterName {
+    margin-right: 15px;
+}
+
+.parameterIsTitle {
+    display: flex;
+    align-self: flex-end;
+    padding-bottom: 20px;
+    margin-bottom: 10px;
+}
+
+.annotationList {
+    padding-bottom: 20px;
+    padding-left: 2rem;
+}

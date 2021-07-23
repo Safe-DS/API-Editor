@@ -1,9 +1,8 @@
-import classNames from 'classnames'
 import React, { useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import { Nullable, Setter } from '../../../util/types'
 import { isValidPythonIdentifier } from '../../../util/validation'
-import '../../SelectionView/SelectionView.css'
+import '../../SelectionView/SelectionView.module.css'
 import DialogCSS from '../dialogs.module.css'
 
 interface RenameDialogProps {
@@ -16,7 +15,6 @@ interface RenameDialogProps {
 
 export default function RenameDialog(props: RenameDialogProps): JSX.Element {
     const [currentUserInput, setCurrentUserInput] = useState(props.newName ?? props.oldName)
-    const cssClasses = classNames(DialogCSS.modalDialog, DialogCSS.annotationDialog)
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => setCurrentUserInput(event.target.value)
 
     const close = () => {
@@ -31,7 +29,7 @@ export default function RenameDialog(props: RenameDialogProps): JSX.Element {
     }
 
     return (
-        <Modal onHide={close} show={props.isVisible} className={cssClasses}>
+        <Modal onHide={close} show={props.isVisible} className={DialogCSS.annotationDialog}>
             <Modal.Header closeButton>
                 <Modal.Title>Add @rename Annotation</Modal.Title>
             </Modal.Header>

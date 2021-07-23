@@ -10,7 +10,6 @@ import PythonPackage from '../../../model/python/PythonPackage'
 import { parsePythonPackageJson, PythonPackageJson } from '../../../model/python/PythonPackageBuilder'
 import { Setter } from '../../../util/types'
 import { isValidJsonFile } from '../../../util/validation'
-import '../../SelectionView/SelectionView.css'
 import DialogCSS from '../dialogs.module.css'
 
 interface ImportPythonPackageDialogProps {

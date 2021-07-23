@@ -5,6 +5,7 @@ import { isEmptyList } from '../../util/listOperations'
 import { Setter } from '../../util/types'
 import DocumentationText from './DocumentationText'
 import ParameterNode from './ParameterNode'
+import FunctionViewCSS from './FunctionView.module.css'
 
 interface FunctionViewProps {
     pythonFunction: PythonFunction
@@ -21,8 +22,8 @@ export default function FunctionView(props: FunctionViewProps): JSX.Element {
             ) : (
                 <p className="pl-1rem text-muted">There is no documentation for this function.</p>
             )}
-            <h2 className={'function-title'}>Parameters</h2>
-            <div className={'pl-1rem'}>
+            <h2 className={FunctionViewCSS.functionTitle}>Parameters</h2>
+            <div className="pl-1rem">
                 {!isEmptyList(props.pythonFunction.parameters) ? (
                     props.pythonFunction.parameters.map((parameters) => (
                         <ParameterNode
@@ -34,7 +35,7 @@ export default function FunctionView(props: FunctionViewProps): JSX.Element {
                         />
                     ))
                 ) : (
-                    <span className={'text-muted pl-1rem'}>There are no parameters.</span>
+                    <span className="text-muted pl-1rem">There are no parameters.</span>
                 )}
             </div>
         </div>

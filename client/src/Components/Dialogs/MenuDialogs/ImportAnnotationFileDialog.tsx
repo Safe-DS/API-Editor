@@ -6,7 +6,6 @@ import EnumPair from '../../../model/EnumPair'
 import PythonEnum from '../../../model/python/PythonEnum'
 import { Setter } from '../../../util/types'
 import { isValidJsonFile } from '../../../util/validation'
-import '../../SelectionView/SelectionView.css'
 import DialogCSS from '../dialogs.module.css'
 
 interface ImportAnnotationFileDialogProps {

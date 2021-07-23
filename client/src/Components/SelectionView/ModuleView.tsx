@@ -6,6 +6,7 @@ import { materialLight } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import remarkGfm from 'remark-gfm'
 import PythonModule from '../../model/python/PythonModule'
 import { groupBy, isEmptyList } from '../../util/listOperations'
+import ModuleViewCSS from './ModuleView.module.css'
 
 interface ModuleViewProps {
     pythonModule: PythonModule
@@ -49,14 +50,14 @@ export default function ModuleView(props: ModuleViewProps): JSX.Element {
             <h1>{props.pythonModule.name}</h1>
             <h2>Imports</h2>
             {!isEmptyList(props.pythonModule.imports) && (
-                <div className="module-list">
+                <div className={ModuleViewCSS.moduleList}>
                     <ReactMarkdown components={components} remarkPlugins={[remarkGfm]}>
                         {`~~~python\n${importString}\n~~~`}
                     </ReactMarkdown>
                 </div>
             )}
             {!isEmptyList(props.pythonModule.fromImports) && (
-                <div className="module-list">
+                <div className={ModuleViewCSS.moduleList}>
                     <ReactMarkdown components={components} remarkPlugins={[remarkGfm]}>
                         {`~~~python\n${fromImportString}\n~~~`}
                     </ReactMarkdown>

@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 import EnumPair from '../../../../model/EnumPair'
 import { Setter } from '../../../../util/types'
+import EnumDialogCSS from './EnumDialog.module.css'
 
 type EnumPairRowProps = {
     pair: EnumPair
@@ -29,7 +30,7 @@ export default function EnumPairRow(props: EnumPairRowProps): JSX.Element {
     }
 
     return (
-        <Row className="enum-pair-row">
+        <Row className={EnumDialogCSS.enumPairRow}>
             <Col xs={5} className="no-left-padding">
                 <Form.Control
                     type="text"
@@ -58,7 +59,7 @@ export default function EnumPairRow(props: EnumPairRowProps): JSX.Element {
                     Valid Python Enum Keys must start with a capital letter followed by letters and numbers.
                 </Form.Control.Feedback>
             </Col>
-            <Col xs={2} className="enum-item-icon">
+            <Col xs={2} className={EnumDialogCSS.enumItemIcon}>
                 <Button size="sm" variant="danger" onClick={() => props.deleteFunction(enumKey)}>
                     <FontAwesomeIcon icon={faTrash} />
                 </Button>

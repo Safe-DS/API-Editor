@@ -1,0 +1,12 @@
+.docuParagraph {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.readMoreButton {
+    border: none;
+    margin-left: 5px;
+    background: none !important;
+    font-family: arial, sans-serif;
+    text-align: left;
+}

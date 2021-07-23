@@ -1,0 +1,10 @@
+.enumItemIcon {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: 0;
+}
+
+.enumPairRow {
+    padding-top: 15px;
+}

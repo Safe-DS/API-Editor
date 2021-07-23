@@ -6,8 +6,26 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+h1 {
+    padding-bottom: 15px;
+    font-weight: bold;
+}
+
+h2 {
+    padding-top: 30px;
+    padding-bottom: 10px;
+}
+
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.no-left-padding {
+    padding-left: 0;
+}
+
+.no-right-padding {
+    padding-right: 0;
 }
 
 .pl-1rem {
@@ -44,4 +62,12 @@ code {
 
 .pl-5rem {
     padding-left: 5rem;
+}
+
+.pointer-cursor {
+    cursor: pointer;
+}
+
+.w-fit-content {
+    width: fit-content;
 }
