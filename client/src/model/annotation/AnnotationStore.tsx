@@ -3,7 +3,7 @@ import {Nullable} from "../../util/types";
 import PythonDeclaration from "../python/PythonDeclaration";
 import PythonEnum from "../python/PythonEnum";
 
-interface annotationsJson {
+export interface AnnotationJson {
     // These are deliberately normal ES6 maps
     renamings: Map<string, string>,
     enums: Map<string, PythonEnum>
@@ -74,7 +74,7 @@ export default class AnnotationStore {
         a.click();
     }
 
-    static fromJson(annotations: annotationsJson): AnnotationStore {
+    static fromJson(annotations: AnnotationJson): AnnotationStore {
         return new AnnotationStore(
             Immutable.Map(annotations.renamings),
             Immutable.Map(annotations.enums)

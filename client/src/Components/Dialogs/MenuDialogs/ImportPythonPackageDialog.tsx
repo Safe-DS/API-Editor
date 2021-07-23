@@ -1,32 +1,40 @@
-import React, {FormEvent, useState} from "react";
+import React, {useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
-import {Setter} from "../../util/types";
-import "../SelectionView/SelectionView.css";
+import {useHistory} from "react-router-dom";
+import {Setter} from "../../../util/types";
+import "../../SelectionView/SelectionView.css";
 import Dropzone from 'react-dropzone';
-import {isValidJsonFile} from "../../util/validation";
-import DialogCSS from "./dialog.module.css";
-import AnnotationStore from "../../model/annotation/AnnotationStore";
+import {isValidJsonFile} from "../../../util/validation";
+import DialogCSS from "../dialogs.module.css";
+import PythonPackage from "../../../model/python/PythonPackage";
+import {parsePythonPackageJson} from "../../../model/python/PythonPackageBuilder";
+import AnnotationStore from "../../../model/annotation/AnnotationStore";
 
 interface ImportPythonPackageDialogProps {
     isVisible: boolean
     setIsVisible: Setter<boolean>,
     setPythonPackage: Setter<string>
     setAnnotationStore: Setter<AnnotationStore>
+    setFilter: Setter<string>
 }
 
 export default function ImportPythonPackageDialog(props: ImportPythonPackageDialogProps): JSX.Element {
 
     const [fileName, setFileName] = useState("");
     const [newPythonPackage, setNewPythonPackage] = useState<string>();
+    const history = useHistory();
 
     const close = () => {
         props.setIsVisible(false);
     };
 
-    const submit = (event: FormEvent) => {
-        event.preventDefault();
+    const submit = () => {
         props.setIsVisible(false);
-        if (newPythonPackage) props.setPythonPackage(newPythonPackage);
+        if (newPythonPackage) {
+            props.setPythonPackage(newPythonPackage);
+            props.setFilter("");
+            history.push("/");
+        }
     };
 
     const slurpAndParse = (acceptedFiles: File[]) => {
@@ -83,11 +91,12 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="danger" onClick={close}>
+                        <Button variant="danger"
+                                onClick={close}>
                             Cancel
                         </Button>
                         <Button variant="primary"
-                                type="submit"
+                                type="button"
                                 onClick={submit}>
                             Submit
                         </Button>

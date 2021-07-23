@@ -1,10 +1,10 @@
 import classNames from "classnames";
 import React, {useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
-import {Nullable, Setter} from "../../util/types";
-import {isValidPythonIdentifier} from "../../util/validation";
-import "../SelectionView/SelectionView.css";
-import DialogCSS from "./dialog.module.css";
+import {Nullable, Setter} from "../../../util/types";
+import {isValidPythonIdentifier} from "../../../util/validation";
+import "../../SelectionView/SelectionView.css";
+import DialogCSS from "../dialogs.module.css";
 
 interface RenameDialogProps {
     isVisible: boolean
@@ -60,10 +60,13 @@ export default function RenameDialog(props: RenameDialogProps): JSX.Element {
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="danger" onClick={close}>
+                        <Button variant="danger"
+                                onClick={close}>
                             Cancel
                         </Button>
-                        <Button variant="primary" type="button" onClick={submit}>
+                        <Button variant="primary"
+                                type="button"
+                                onClick={submit}>
                             Submit
                         </Button>
                     </Modal.Footer>

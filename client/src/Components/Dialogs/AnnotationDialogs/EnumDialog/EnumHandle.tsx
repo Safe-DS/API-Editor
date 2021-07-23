@@ -2,8 +2,8 @@ import {faPlus} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import React from "react";
 import {Button, Col, Container, Row} from "react-bootstrap";
-import EnumPair from "../../../model/EnumPair";
-import {Setter} from "../../../util/types";
+import EnumPair from "../../../../model/EnumPair";
+import {Setter} from "../../../../util/types";
 import EnumPairRow from "./EnumPairRow";
 
 type EnumFormProps = {

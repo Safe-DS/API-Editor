@@ -1,18 +1,23 @@
 import React, {useState} from 'react';
-import {Nav, Navbar, NavDropdown} from "react-bootstrap";
+import {Form, Nav, Navbar, NavDropdown, NavItem} from "react-bootstrap";
+import Feedback from "react-bootstrap/Feedback";
 import {NavLink} from "react-router-dom";
 import {useLocation} from "react-router";
+import {PythonFilter} from "../../model/python/PythonFilter";
 import MenuCSS from "./Menu.module.css";
 import classNames from "classnames";
-import ImportAnnotationFileDialog from "../Dialog/ImportAnnotationFileDialog";
-import ImportPythonPackageDialog from "../Dialog/ImportPythonPackageDialog";
+import ImportAnnotationFileDialog from "../Dialogs/MenuDialogs/ImportAnnotationFileDialog";
+import ImportPythonPackageDialog from "../Dialogs/MenuDialogs/ImportPythonPackageDialog";
 import {Setter} from "../../util/types";
 import AnnotationStore from "../../model/annotation/AnnotationStore";
+
 
 interface MenuProps {
     setPythonPackage: Setter<string>
     annotationStore: AnnotationStore
-    setAnnotationStore: Setter<AnnotationStore>
+    setAnnotationStore: Setter<AnnotationStore>,
+    filter: string,
+    setFilter: Setter<string>
 }
 
 export default function Menu(props: MenuProps): JSX.Element {
@@ -31,7 +36,7 @@ export default function Menu(props: MenuProps): JSX.Element {
     };
 
     return (
-        <Navbar className={cssClasses} bg="light" expand="lg">
+        <Navbar className={cssClasses} bg="light" expand="sm">
             <Navbar.Text>{
                 pathname.map((x, i) => (
                     <React.Fragment key={i}>
@@ -43,7 +48,7 @@ export default function Menu(props: MenuProps): JSX.Element {
                     </React.Fragment>
                 ))}
             </Navbar.Text>
-            <Nav>
+            <Nav navbar={true}>
                 <NavDropdown title="Import" id="import-dropdown" align="end">
                     <NavDropdown.Item onClick={openImportPythonPackageDialog}>Python Package</NavDropdown.Item>
                     <NavDropdown.Item onClick={openImportAnnotationFileDialog}>Annotation File</NavDropdown.Item>
@@ -52,6 +57,19 @@ export default function Menu(props: MenuProps): JSX.Element {
                 <Nav.Link onClick={exportAnnotations} href="#">
                     Export
                 </Nav.Link>
+
+                <NavItem>
+                    <Form.Control
+                        type="text"
+                        placeholder="Filter..."
+                        value={props.filter}
+                        onChange={event => props.setFilter(event.target.value)}
+                        isValid={PythonFilter.fromFilterBoxInput(props.filter)?.isFiltering()}
+                        isInvalid={!PythonFilter.fromFilterBoxInput(props.filter)}
+                        spellCheck={false}
+                    />
+                    <Feedback type="invalid" tooltip>Each scope must only be used once.</Feedback>
+                </NavItem>
             </Nav>
             {showImportAnnotationFileDialog && <ImportAnnotationFileDialog isVisible={showImportAnnotationFileDialog}
                                                                            setIsVisible={setShowImportAnnotationFileDialog}
@@ -61,6 +79,7 @@ export default function Menu(props: MenuProps): JSX.Element {
                                                                          setIsVisible={setShowImportPythonPackageDialog}
                                                                          setPythonPackage={props.setPythonPackage}
                                                                          setAnnotationStore={props.setAnnotationStore}
+                                                                         setFilter={props.setFilter}
             />}
         </Navbar>
     );

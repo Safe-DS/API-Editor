@@ -31,19 +31,15 @@ const components = {
 };
 
 export default function ModuleView(props: ModuleViewProps): JSX.Element {
-    const importString = [...props.pythonModule.imports]
-        .sort((a, b) => a.module.localeCompare(b.module))
-        .map((it) => it.toString())
+    const importString = props.pythonModule.imports.map((it) => it.toString())
         .join("\n");
 
     const longestModuleNameLength = Math.max(...props.pythonModule.fromImports.map(it => it.module.length));
 
     const fromImportString = [...groupBy(props.pythonModule.fromImports, it => it.module)]
-        .sort(([a], [b]) => a.localeCompare(b))
         .map(([module, fromImports]) => {
             const base = `from ${module} import`;
             const rest = fromImports
-                .sort((a, b) => a.declaration.localeCompare(b.declaration))
                 .map(fromImport => fromImport.toString().replace(`${base} `, ""))
                 .join(", ");
 

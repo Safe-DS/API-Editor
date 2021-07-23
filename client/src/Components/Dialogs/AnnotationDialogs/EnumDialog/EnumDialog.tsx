@@ -1,14 +1,14 @@
 import React, {useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
-import EnumPair from "../../../model/EnumPair";
-import PythonEnum from "../../../model/python/PythonEnum";
-import {Nullable, Setter} from "../../../util/types";
-import {isValidPythonIdentifier} from "../../../util/validation";
-import DialogCSS from "../../Dialog/dialog.module.css";
+import EnumPair from "../../../../model/EnumPair";
+import PythonEnum from "../../../../model/python/PythonEnum";
+import {Nullable, Setter} from "../../../../util/types";
+import {isValidPythonIdentifier} from "../../../../util/validation";
+import DialogCSS from "../../dialogs.module.css";
 import EnumHandle from "./EnumHandle";
 import {Formik} from 'formik';
 import classNames from "classnames";
-import {isEmptyList} from "../../../util/listOperations";
+import {isEmptyList} from "../../../../util/listOperations";
 
 type showDialogState = {
     dialogState: boolean, setDialogState: Setter<boolean>,
@@ -94,21 +94,26 @@ export default function EnumDialog({
                                     type="text"
                                     value={name}
                                     onChange={onInput}
-                                    isInvalid={(!isValidPythonIdentifier(name) && !!name ) || !name && shouldValidate}
+                                    isInvalid={(!isValidPythonIdentifier(name) && !!name) || !name && shouldValidate}
                                 />
                                 <Form.Control.Feedback type="invalid">
                                     Valid Python identifiers must start with a letter or underscore followed by letters,
                                     numbers and underscores.
                                 </Form.Control.Feedback>
-                                <EnumHandle listOfEnumPairs={listOfEnumPairs} setListOfEnumPairs={setListOfEnumPairs}
-                                            shouldValidate={shouldValidate} setShouldValidate={setShouldValidate}/>
+                                <EnumHandle listOfEnumPairs={listOfEnumPairs}
+                                            setListOfEnumPairs={setListOfEnumPairs}
+                                            shouldValidate={shouldValidate}
+                                            setShouldValidate={setShouldValidate}/>
                             </Form.Group>
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button variant="danger" onClick={handleClose}>
+                            <Button variant="danger"
+                                    onClick={handleClose}>
                                 Cancel
                             </Button>
-                            <Button variant="primary" type="button" onClick={onFormSubmit}>
+                            <Button variant="primary"
+                                    type="button"
+                                    onClick={onFormSubmit}>
                                 Submit
                             </Button>
                         </Modal.Footer>
