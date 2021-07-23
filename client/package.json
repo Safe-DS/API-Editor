@@ -18,7 +18,7 @@
     "lint-staged": {
         "*.{js,jsx,ts,tsx}": "eslint --fix .",
         "*.css": "stylelint --fix \"**/*.css\"",
-        "*.{html,md,css,js,jsx,ts,tsx,json,yml}": "prettier --write ."
+        "*.{html,md,css,js,jsx,ts,tsx,json,yaml,yml}": "prettier --write ."
     },
     "dependencies": {
         "@emotion/react": "^11.4.0",
