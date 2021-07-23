@@ -60,15 +60,19 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
                 </div>
             </div>
 
-            {(newName || newEnumDefinition) && <h5 className={'pl-1rem'}>Annotations</h5>}
-            <div className={'annotation-list'}>
-                <AnnotationView annotation={newName} setAnnotation={setNewName} onEdit={openRenameDialog} />
-                <AnnotationView
-                    annotation={newEnumDefinition}
-                    setAnnotation={setNewEnumDefinition}
-                    onEdit={openEnumDialog}
-                />
-            </div>
+            {(newName || newEnumDefinition) && (
+                <>
+                    <h5 className={'pl-1rem'}>Annotations</h5>
+                    <div className={'annotation-list'}>
+                        <AnnotationView annotation={newName} setAnnotation={setNewName} onEdit={openRenameDialog} />
+                        <AnnotationView
+                            annotation={newEnumDefinition}
+                            setAnnotation={setNewEnumDefinition}
+                            onEdit={openEnumDialog}
+                        />
+                    </div>
+                </>
+            )}
 
             {/*This additional check cause the dialog to be thrown away after closing it, resetting its state*/}
             {showRenameDialog && (
