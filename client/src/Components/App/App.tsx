@@ -12,7 +12,7 @@ import SelectionView from "../SelectionView/SelectionView";
 
 export default function App(): JSX.Element {
     const initialJSON = '{"renamings":{},"enums":{}}';
-    const [pythonPackageJsonString, setPythonPackageJsonString] = useState<string>(localStorage.getItem("package") || JSON.stringify(sklearnJson));
+    const [pythonPackageJsonString, setPythonPackageJsonString] = useState(localStorage.getItem("package") || JSON.stringify(sklearnJson));
     const [pythonPackage, setPythonPackage] = useState<PythonPackage>(parsePythonPackageJson(JSON.parse(pythonPackageJsonString) as PythonPackageJson));
     const [annotationStore, setAnnotationStore] = useState(AnnotationStore.fromJson(JSON.parse(localStorage.getItem("annotations") || initialJSON)));
     const [filter, setFilter] = useState("");
@@ -27,7 +27,7 @@ export default function App(): JSX.Element {
     useEffect(() => {
         localStorage.setItem("package", pythonPackageJsonString);
         localStorage.setItem("annotations", annotationStore.toJson());
-    });
+    }, [pythonPackageJsonString, annotationStore.toJson()]);
 
     return (
         <HashRouter>
