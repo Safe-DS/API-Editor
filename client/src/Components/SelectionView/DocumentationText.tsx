@@ -20,7 +20,7 @@ export default function DocumentationText({inputText = ""}: DocumentationTextPro
         .replaceAll(/\.\. math::\s*(\S.*)\n\n/g, "$$$\n$1\n$$$\n\n");
 
     const shortenedText = preprocessedText.split("\n\n")[0];
-    const hasMultipleLines = shortenedText !== inputText;
+    const hasMultipleLines = shortenedText !== preprocessedText;
     const [readMore, setReadMore] = useState(false);
 
     const cssClasses = classNames(
