@@ -8,7 +8,6 @@ import Menu from "../Menu/Menu";
 import TreeView from "../TreeView/TreeView";
 import AppCSS from './App.module.css';
 import {HashRouter} from "react-router-dom";
-import PythonPackage from "../../model/python/PythonPackage";
 import SelectionView from "../SelectionView/SelectionView";
 
 export default function App(): JSX.Element {
