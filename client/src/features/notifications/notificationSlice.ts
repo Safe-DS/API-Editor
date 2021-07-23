@@ -38,7 +38,7 @@ const notificationSlice = createSlice({
 })
 
 const { actions, reducer } = notificationSlice
-export const { queue: queueNotification, dequeue: dequeueNotification } = actions
+export const { queue: enqueueNotification, dequeue: dequeueNotification } = actions
 export default reducer
 
 const selectNotifications = (state: RootState) => state.notifications
