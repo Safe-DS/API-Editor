@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import Dropzone from 'react-dropzone'
 import { useHistory } from 'react-router-dom'
+import { useAppDispatch } from '../../../app/hooks'
+import { queueNotification } from '../../../features/notifications/notificationSlice'
 import AnnotationStore from '../../../model/annotation/AnnotationStore'
 import PythonPackage from '../../../model/python/PythonPackage'
 import { parsePythonPackageJson, PythonPackageJson } from '../../../model/python/PythonPackageBuilder'
@@ -22,6 +24,7 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
     const [fileName, setFileName] = useState('')
     const [newPythonPackage, setNewPythonPackage] = useState<string>()
     const history = useHistory()
+    const dispatch = useAppDispatch()
 
     const close = () => {
         props.setIsVisible(false)
@@ -31,10 +34,21 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
         props.setIsVisible(false)
         if (newPythonPackage) {
             props.setPythonPackage(parsePythonPackageJson(JSON.parse(newPythonPackage) as PythonPackageJson))
-            console.log('storaged')
-            localStorage.setItem('package', newPythonPackage)
             props.setFilter('')
             history.push('/')
+
+            try {
+                localStorage.setItem('package', newPythonPackage)
+            } catch (e) {
+                if (e instanceof DOMException) {
+                    dispatch(
+                        queueNotification({
+                            severity: 'error',
+                            message: e.message,
+                        }),
+                    )
+                }
+            }
         }
     }
 

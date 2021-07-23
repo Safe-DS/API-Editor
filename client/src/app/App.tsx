@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { HashRouter } from 'react-router-dom'
+import NotificationList from '../features/notifications/NotificationList'
 import AnnotationStore, { AnnotationJson } from '../model/annotation/AnnotationStore'
 import { PythonFilter } from '../model/python/PythonFilter'
 import PythonPackage from '../model/python/PythonPackage'
@@ -58,6 +59,7 @@ export default function App(): JSX.Element {
                         setAnnotationStore={setAnnotationStore}
                     />
                 </div>
+                <NotificationList />
             </div>
         </HashRouter>
     )
