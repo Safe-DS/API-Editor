@@ -9,12 +9,11 @@ import classNames from "classnames";
 import ImportAnnotationFileDialog from "../Dialogs/MenuDialogs/ImportAnnotationFileDialog";
 import ImportPythonPackageDialog from "../Dialogs/MenuDialogs/ImportPythonPackageDialog";
 import {Setter} from "../../util/types";
-import PythonPackage from "../../model/python/PythonPackage";
 import AnnotationStore from "../../model/annotation/AnnotationStore";
 
 
 interface MenuProps {
-    setPythonPackage: Setter<PythonPackage>
+    setPythonPackage: Setter<string>
     annotationStore: AnnotationStore
     setAnnotationStore: Setter<AnnotationStore>,
     filter: string,

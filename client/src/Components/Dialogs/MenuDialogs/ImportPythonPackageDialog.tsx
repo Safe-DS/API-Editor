@@ -6,14 +6,12 @@ import "../../SelectionView/SelectionView.css";
 import Dropzone from 'react-dropzone';
 import {isValidJsonFile} from "../../../util/validation";
 import DialogCSS from "../dialogs.module.css";
-import PythonPackage from "../../../model/python/PythonPackage";
-import {parsePythonPackageJson} from "../../../model/python/PythonPackageBuilder";
 import AnnotationStore from "../../../model/annotation/AnnotationStore";
 
 interface ImportPythonPackageDialogProps {
     isVisible: boolean
     setIsVisible: Setter<boolean>,
-    setPythonPackage: Setter<PythonPackage>
+    setPythonPackage: Setter<string>
     setAnnotationStore: Setter<AnnotationStore>
     setFilter: Setter<string>
 }
@@ -21,7 +19,7 @@ interface ImportPythonPackageDialogProps {
 export default function ImportPythonPackageDialog(props: ImportPythonPackageDialogProps): JSX.Element {
 
     const [fileName, setFileName] = useState("");
-    const [newPythonPackage, setNewPythonPackage] = useState<PythonPackage>();
+    const [newPythonPackage, setNewPythonPackage] = useState<string>();
     const history = useHistory();
 
     const close = () => {
@@ -46,7 +44,7 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
             const reader = new FileReader();
             reader.onload = () => {
                 if (typeof reader.result === 'string') {
-                    setNewPythonPackage(parsePythonPackageJson(JSON.parse(reader.result)));
+                    setNewPythonPackage(reader.result);
                     props.setAnnotationStore(new AnnotationStore());
                 }
             };
