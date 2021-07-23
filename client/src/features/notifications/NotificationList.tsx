@@ -1,5 +1,4 @@
-import { Snackbar } from '@material-ui/core'
-import { Alert } from '@material-ui/lab'
+import { Alert, Snackbar } from '@material-ui/core'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from '../../app/hooks'

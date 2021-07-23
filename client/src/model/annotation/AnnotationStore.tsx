@@ -62,8 +62,15 @@ export default class AnnotationStore {
         return this.setEnums(this.enums.remove(enumDefinition.pathAsString()))
     }
 
-    toJson(): string {
+    toJsonString(): string {
         return JSON.stringify({ renamings: this.renamings, enums: this.enums })
+    }
+
+    toJson(): AnnotationJson {
+        return {
+            renamings: new Map([...this.renamings]),
+            enums: new Map([...this.enums]),
+        }
     }
 
     downloadAnnotations(content: string): void {

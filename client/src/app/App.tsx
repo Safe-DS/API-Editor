@@ -9,33 +9,46 @@ import Menu from '../Components/Menu/Menu'
 import SelectionView from '../Components/SelectionView/SelectionView'
 import TreeView from '../Components/TreeView/TreeView'
 import AppCSS from './App.module.css'
+import * as idb from 'idb-keyval'
 
 export default function App(): JSX.Element {
-    const [pythonPackage, setPythonPackage] = useState<PythonPackage>(() => {
-        const storedPackage = localStorage.getItem('package')
-        if (storedPackage) {
-            return parsePythonPackageJson(JSON.parse(storedPackage) as PythonPackageJson)
-        } else {
-            return new PythonPackage('empty')
+    const [pythonPackage, setPythonPackage] = useState<PythonPackage>(new PythonPackage('empty'))
+
+    useEffect(() => {
+        const getPythonPackageFromIndexedDB = async () => {
+            const storedPackage = (await idb.get('package')) as PythonPackageJson
+            if (storedPackage) {
+                setPythonPackage(parsePythonPackageJson(storedPackage))
+            }
         }
+
+        getPythonPackageFromIndexedDB()
     })
 
-    const [annotationStore, setAnnotationStore] = useState<AnnotationStore>(() => {
-        const storedAnnotations = localStorage.getItem('annotations')
-        if (storedAnnotations) {
-            return AnnotationStore.fromJson(JSON.parse(storedAnnotations) as AnnotationJson)
-        } else {
-            return new AnnotationStore()
+    const [annotationStore, setAnnotationStore] = useState<AnnotationStore>(new AnnotationStore())
+
+    useEffect(() => {
+        const getAnnotationsFromIndexedDB = async () => {
+            const storedAnnotations = (await idb.get('annotations')) as AnnotationJson
+            if (storedAnnotations) {
+                setAnnotationStore(AnnotationStore.fromJson(storedAnnotations))
+            }
         }
-    })
+
+        getAnnotationsFromIndexedDB()
+    }, [])
+
+    useEffect(() => {
+        const setAnnotationsInIndexedDB = async () => {
+            await idb.set('annotations', annotationStore.toJson())
+        }
+
+        setAnnotationsInIndexedDB()
+    }, [annotationStore])
 
     const [filter, setFilter] = useState('')
     const pythonFilter = PythonFilter.fromFilterBoxInput(filter)
     const filteredPythonPackage = pythonPackage.filter(pythonFilter)
-
-    useEffect(() => {
-        localStorage.setItem('annotations', annotationStore.toJson())
-    }, [annotationStore])
 
     return (
         <HashRouter>

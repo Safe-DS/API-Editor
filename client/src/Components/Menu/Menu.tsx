@@ -31,7 +31,7 @@ export default function Menu(props: MenuProps): JSX.Element {
     const cssClasses = classNames(MenuCSS.menu, 'justify-content-between')
 
     const exportAnnotations = () => {
-        props.annotationStore.downloadAnnotations(props.annotationStore.toJson())
+        props.annotationStore.downloadAnnotations(props.annotationStore.toJsonString())
     }
 
     return (

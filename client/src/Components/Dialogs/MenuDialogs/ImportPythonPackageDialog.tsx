@@ -1,9 +1,10 @@
+import * as idb from 'idb-keyval'
 import React, { useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import Dropzone from 'react-dropzone'
 import { useHistory } from 'react-router-dom'
 import { useAppDispatch } from '../../../app/hooks'
-import { queueNotification } from '../../../features/notifications/notificationSlice'
+import { enqueueNotification } from '../../../features/notifications/notificationSlice'
 import AnnotationStore from '../../../model/annotation/AnnotationStore'
 import PythonPackage from '../../../model/python/PythonPackage'
 import { parsePythonPackageJson, PythonPackageJson } from '../../../model/python/PythonPackageBuilder'
@@ -30,24 +31,23 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
         props.setIsVisible(false)
     }
 
-    const submit = () => {
+    const submit = async () => {
         props.setIsVisible(false)
         if (newPythonPackage) {
-            props.setPythonPackage(parsePythonPackageJson(JSON.parse(newPythonPackage) as PythonPackageJson))
+            const parsedPythonPackage = JSON.parse(newPythonPackage) as PythonPackageJson
+            props.setPythonPackage(parsePythonPackageJson(parsedPythonPackage))
             props.setFilter('')
             history.push('/')
 
             try {
-                localStorage.setItem('package', newPythonPackage)
+                await idb.set('package', parsedPythonPackage)
             } catch (e) {
-                if (e instanceof DOMException) {
-                    dispatch(
-                        queueNotification({
-                            severity: 'error',
-                            message: e.message,
-                        }),
-                    )
-                }
+                dispatch(
+                    enqueueNotification({
+                        severity: 'error',
+                        message: 'Failed to store package in database.',
+                    }),
+                )
             }
         }
     }
