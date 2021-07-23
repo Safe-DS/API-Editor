@@ -1,21 +1,22 @@
 .modalDialog {
-    margin-top: 5rem;
     max-height: calc(80vh);
+    margin-top: 5rem;
 }
 
 @media screen and (min-width: 1200px) {
     .annotationDialog {
+        width: 500px;
+
         /* Centers the dialog over the left pane */
         margin-left: calc(25vw - 250px);
-        width: 500px;
     }
 }
 
 .dropzone {
-    background-color: #fafafa;
-    border: 3px dashed #eeeeee;
-    margin-bottom: 10px;
     padding: 20px;
+    border: 3px dashed #eee;
+    margin-bottom: 10px;
+    background-color: #fafafa;
     text-align: center;
 }
 

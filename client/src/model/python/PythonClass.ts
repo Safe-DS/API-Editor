@@ -1,81 +1,82 @@
-import {isEmptyList} from "../../util/listOperations";
-import {Nullable} from "../../util/types";
-import PythonDeclaration from "./PythonDeclaration";
-import {PythonFilter} from "./PythonFilter";
-import PythonFunction from "./PythonFunction";
-import PythonModule from "./PythonModule";
+import { isEmptyList } from '../../util/listOperations'
+import { Nullable } from '../../util/types'
+import PythonDeclaration from './PythonDeclaration'
+import { PythonFilter } from './PythonFilter'
+import PythonFunction from './PythonFunction'
+import PythonModule from './PythonModule'
 
 export default class PythonClass extends PythonDeclaration {
-
-    readonly name: string;
-    readonly decorators: string[];
-    readonly superclasses: string[];
-    readonly methods: PythonFunction[];
-    readonly summary: string;
-    readonly description: string;
-    readonly fullDocstring: string;
-    containingModule: Nullable<PythonModule>;
+    readonly name: string
+    readonly decorators: string[]
+    readonly superclasses: string[]
+    readonly methods: PythonFunction[]
+    readonly summary: string
+    readonly description: string
+    readonly fullDocstring: string
+    containingModule: Nullable<PythonModule>
 
     constructor(
         name: string,
         decorators: string[] = [],
         superclasses: string[] = [],
         methods: PythonFunction[] = [],
-        summary = "",
-        description = "",
-        fullDocstring = "",
+        summary = '',
+        description = '',
+        fullDocstring = '',
     ) {
-        super();
+        super()
 
-        this.name = name;
-        this.decorators = decorators;
-        this.superclasses = superclasses;
-        this.methods = methods;
-        this.summary = summary;
-        this.description = description;
-        this.fullDocstring = fullDocstring;
-        this.containingModule = null;
+        this.name = name
+        this.decorators = decorators
+        this.superclasses = superclasses
+        this.methods = methods
+        this.summary = summary
+        this.description = description
+        this.fullDocstring = fullDocstring
+        this.containingModule = null
 
-        this.methods.forEach(it => {
-            it.containingModuleOrClass = this;
-        });
+        this.methods.forEach((it) => {
+            it.containingModuleOrClass = this
+        })
     }
 
     parent(): Nullable<PythonModule> {
-        return this.containingModule;
+        return this.containingModule
     }
 
     children(): PythonFunction[] {
-        return this.methods;
+        return this.methods
     }
 
     toString(): string {
-        let result = "";
+        let result = ''
 
         if (this.decorators.length > 0) {
-            result += this.decorators.map(it => `@${it}`).join(" ");
-            result += " ";
+            result += this.decorators.map((it) => `@${it}`).join(' ')
+            result += ' '
         }
 
-        result += `class ${this.name}`;
+        result += `class ${this.name}`
 
         if (this.superclasses.length > 0) {
-            result += `(${this.superclasses.join(", ")})`;
+            result += `(${this.superclasses.join(', ')})`
         }
 
-        return result;
+        return result
     }
 
     filter(pythonFilter: PythonFilter | void): PythonClass {
         if (!pythonFilter) {
-            return this;
+            return this
         }
 
-        const methods = this.methods.map(it => it.filter(pythonFilter))
-            .filter(it =>
-                it.name.toLowerCase().includes((pythonFilter.pythonFunction || "").toLowerCase()) &&
-                !isEmptyList(it.parameters)
-            );
+        const methods = this.methods
+            .map((it) => it.filter(pythonFilter))
+            .filter(
+                (it) =>
+                    it.name.toLowerCase().includes((pythonFilter.pythonFunction || '').toLowerCase()) &&
+                    !isEmptyList(it.parameters),
+            )
 
         return new PythonClass(
             this.name,
@@ -84,7 +85,7 @@ export default class PythonClass extends PythonDeclaration {
             methods,
             this.summary,
             this.description,
-            this.fullDocstring
-        );
+            this.fullDocstring,
+        )
     }
 }

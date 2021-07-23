@@ -1,0 +1,5 @@
+{
+    "plugins": ["stylelint-order"],
+    "extends": ["stylelint-config-standard", "stylelint-config-idiomatic-order", "stylelint-config-prettier"],
+    "ignoreFiles": ["dist/**/*.css", "dist-ssr/**/*.css", "node_modules/**/*.css"]
+}

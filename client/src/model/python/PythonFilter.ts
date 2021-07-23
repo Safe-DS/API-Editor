@@ -10,64 +10,66 @@ export class PythonFilter {
         pythonModule: FilterString | void,
         pythonClass: FilterString | void,
         pythonFunction: FilterString | void,
-        pythonParameter: FilterString | void
+        pythonParameter: FilterString | void,
     ) {
-        this.pythonModule = pythonModule;
-        this.pythonClass = pythonClass;
-        this.pythonFunction = pythonFunction;
-        this.pythonParameter = pythonParameter;
+        this.pythonModule = pythonModule
+        this.pythonClass = pythonClass
+        this.pythonFunction = pythonFunction
+        this.pythonParameter = pythonParameter
     }
 
     static fromFilterBoxInput(filterBoxInput: string): PythonFilter | void {
-        let pythonModule;
-        let pythonClass;
-        let pythonFunction;
-        let pythonParameter;
+        let pythonModule
+        let pythonClass
+        let pythonFunction
+        let pythonParameter
 
         for (const match of filterBoxInput.matchAll(/(\w+):([^\s:]+)/g)) {
             if (match.length === 3) {
-                const [, scope, filterString] = match;
+                const [, scope, filterString] = match
 
                 switch (scope) {
-                    case "module":
+                    case 'module':
                         if (pythonModule) {
-                            return;
+                            return
                         } else {
-                            pythonModule = filterString;
+                            pythonModule = filterString
                         }
-                        break;
-                    case "class":
+                        break
+                    case 'class':
                         if (pythonClass) {
-                            return;
+                            return
                         } else {
-                            pythonClass = filterString;
+                            pythonClass = filterString
                         }
-                        break;
-                    case "function":
+                        break
+                    case 'function':
                         if (pythonFunction) {
-                            return;
+                            return
                         } else {
-                            pythonFunction = filterString;
+                            pythonFunction = filterString
                         }
-                        break;
-                    case "parameter":
+                        break
+                    case 'parameter':
                         if (pythonParameter) {
-                            return;
+                            return
                         } else {
-                            pythonParameter = filterString;
+                            pythonParameter = filterString
                         }
-                        break;
+                        break
                 }
             }
         }
 
-        return new PythonFilter(pythonModule, pythonClass, pythonFunction, pythonParameter);
+        return new PythonFilter(pythonModule, pythonClass, pythonFunction, pythonParameter)
     }
 
     isFiltering(): boolean {
-        return Boolean(this.pythonModule) ||
+        return (
+            Boolean(this.pythonModule) ||
             Boolean(this.pythonClass) ||
             Boolean(this.pythonFunction) ||
-            Boolean(this.pythonParameter);
+            Boolean(this.pythonParameter)
+        )
     }
 }

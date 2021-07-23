@@ -1,48 +1,37 @@
-import {Nullable} from "../../util/types";
-import PythonDeclaration from "./PythonDeclaration";
-import PythonFunction from "./PythonFunction";
+import { Nullable } from '../../util/types'
+import PythonDeclaration from './PythonDeclaration'
+import PythonFunction from './PythonFunction'
 
 export default class PythonResult extends PythonDeclaration {
+    readonly name: string
+    readonly type: string
+    readonly typeInDocs: string
+    readonly description: string
+    containingFunction: Nullable<PythonFunction>
 
-    readonly name: string;
-    readonly type: string;
-    readonly typeInDocs: string;
-    readonly description: string;
-    containingFunction: Nullable<PythonFunction>;
+    constructor(name: string, type = 'Any', typeInDocs = '', description = '') {
+        super()
 
-    constructor(
-        name: string,
-        type = "Any",
-        typeInDocs = "",
-        description = ""
-    ) {
-        super();
-
-        this.name = name;
-        this.type = type;
-        this.typeInDocs = typeInDocs;
-        this.description = description;
-        this.containingFunction = null;
+        this.name = name
+        this.type = type
+        this.typeInDocs = typeInDocs
+        this.description = description
+        this.containingFunction = null
     }
 
     parent(): Nullable<PythonFunction> {
-        return this.containingFunction;
+        return this.containingFunction
     }
 
     children(): PythonDeclaration[] {
-        return [];
+        return []
     }
 
     toString(): string {
-        return `Result "${this.name}"`;
+        return `Result "${this.name}"`
     }
 
     clone(): PythonResult {
-        return new PythonResult(
-            this.name,
-            this.type,
-            this.typeInDocs,
-            this.description
-        );
+        return new PythonResult(this.name, this.type, this.typeInDocs, this.description)
     }
 }

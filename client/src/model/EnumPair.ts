@@ -1,21 +1,19 @@
-import {enumValueValidation, enumKeyValidation} from "../util/validation";
+import { enumKeyValidation, enumValueValidation } from '../util/validation'
 
 export default class EnumPair {
-    key: string;
-    value: string;
+    key: string
+    value: string
 
     constructor(key: string, value: string) {
-        this.key = key;
-        this.value = value;
+        this.key = key
+        this.value = value
     }
 
-    isValidValue(): boolean{
-        return enumValueValidation(this.value);
+    isValidValue(): boolean {
+        return enumValueValidation(this.value)
     }
 
-    isValidKey(): boolean{
-        return enumKeyValidation(this.key);
+    isValidKey(): boolean {
+        return enumKeyValidation(this.key)
     }
-
 }
-

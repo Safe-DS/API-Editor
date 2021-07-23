@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 export type Nullable<T> = T | null
 
@@ -9,11 +9,9 @@ export interface ClassNameProp {
     className?: string
 }
 
-// TODO remove once the type of functional components is set to React.FC<T>
+// TODO remove once the type of functional Components is set to React.FC<T>
 export interface ChildrenProp {
     children?: React.ReactNode
 }
 
-export interface BaseProps extends ClassNameProp, ChildrenProp {
-
-}
+export interface BaseProps extends ClassNameProp, ChildrenProp {}

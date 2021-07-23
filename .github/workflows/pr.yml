@@ -2,12 +2,12 @@ name: Pull Request
 
 on:
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   lint:
     runs-on: ubuntu-latest
-    
+
     defaults:
       run:
         working-directory: ./client
@@ -17,29 +17,34 @@ jobs:
         node-version: [14.x]
 
     steps:
-    - name: Checkout Source
-      uses: actions/checkout@v2
-    
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
+      - name: Checkout Source
+        uses: actions/checkout@v2
 
-    - name: Cache Dependencies
-      uses: actions/cache@v2
-      with:
-        path: '**/node_modules'
-        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-    
-    - name: Install Dependencies
-      run: yarn install --production=false
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
 
-    - name: Lint
-      run: yarn run lint
-      
+      - name: Cache Dependencies
+        uses: actions/cache@v2
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            - ${{ runner.os }}-modules-
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Lint
+        run: pnpm run lint
+
   test:
     runs-on: ubuntu-latest
-    
+
     defaults:
       run:
         working-directory: ./client
@@ -49,29 +54,34 @@ jobs:
         node-version: [14.x]
 
     steps:
-    - name: Checkout Source
-      uses: actions/checkout@v2
-    
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
-    
-    - name: Cache Dependencies
-      uses: actions/cache@v2
-      with:
-        path: '**/node_modules'
-        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-    
-    - name: Install Dependencies
-      run: yarn install --production=false
-    
-    - name: Test
-      run: yarn test
+      - name: Checkout Source
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Cache Dependencies
+        uses: actions/cache@v2
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            - ${{ runner.os }}-modules-
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Test
+        run: pnpm run test
 
   build:
     runs-on: ubuntu-latest
-    
+
     defaults:
       run:
         working-directory: ./client
@@ -81,22 +91,27 @@ jobs:
         node-version: [14.x]
 
     steps:
-    - name: Checkout Source
-      uses: actions/checkout@v2
-    
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
-    
-    - name: Cache Dependencies
-      uses: actions/cache@v2
-      with:
-        path: '**/node_modules'
-        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-    
-    - name: Install Dependencies
-      run: yarn install --production=false
-    
-    - name: Build
-      run: yarn run buildWithoutLint
+      - name: Checkout Source
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Cache Dependencies
+        uses: actions/cache@v2
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            - ${{ runner.os }}-modules-
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm run build

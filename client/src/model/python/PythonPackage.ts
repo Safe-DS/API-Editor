@@ -1,50 +1,48 @@
-import {isEmptyList} from "../../util/listOperations";
-import {PythonFilter} from "./PythonFilter";
-import PythonModule from "./PythonModule";
-import PythonDeclaration from "./PythonDeclaration";
+import { isEmptyList } from '../../util/listOperations'
+import PythonDeclaration from './PythonDeclaration'
+import { PythonFilter } from './PythonFilter'
+import PythonModule from './PythonModule'
 
 export default class PythonPackage extends PythonDeclaration {
-
-    readonly name: string;
-    readonly modules: PythonModule[];
+    readonly name: string
+    readonly modules: PythonModule[]
 
     constructor(name: string, modules: PythonModule[] = []) {
-        super();
+        super()
 
-        this.name = name;
-        this.modules = modules;
+        this.name = name
+        this.modules = modules
 
-        this.modules.forEach(it => {
-            it.containingPackage = this;
-        });
+        this.modules.forEach((it) => {
+            it.containingPackage = this
+        })
     }
 
     parent(): null {
-        return null;
+        return null
     }
 
     children(): PythonModule[] {
-        return this.modules;
+        return this.modules
     }
 
     toString(): string {
-        return `Package "${this.name}"`;
+        return `Package "${this.name}"`
     }
 
     filter(pythonFilter: PythonFilter | void): PythonPackage {
         if (!pythonFilter) {
-            return this;
+            return this
         }
 
         const modules = this.modules
-            .map(it => it.filter(pythonFilter))
-            .filter(it =>
-                it.name.toLowerCase().includes((pythonFilter.pythonModule || "").toLowerCase()) &&
-                (!isEmptyList(it.classes) || !isEmptyList(it.functions))
-            );
+            .map((it) => it.filter(pythonFilter))
+            .filter(
+                (it) =>
+                    it.name.toLowerCase().includes((pythonFilter.pythonModule || '').toLowerCase()) &&
+                    (!isEmptyList(it.classes) || !isEmptyList(it.functions)),
+            )
 
-        return new PythonPackage(this.name, modules);
+        return new PythonPackage(this.name, modules)
     }
 }
-
-

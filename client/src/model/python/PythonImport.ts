@@ -1,20 +1,19 @@
-import {Nullable} from "../../util/types";
+import { Nullable } from '../../util/types'
 
 export default class PythonImport {
-
-    readonly module: string;
+    readonly module: string
     readonly alias: Nullable<string>
 
     constructor(module: string, alias: Nullable<string> = null) {
-        this.module = module;
-        this.alias = alias;
+        this.module = module
+        this.alias = alias
     }
 
     toString(): string {
         if (this.alias === null) {
-            return `import ${this.module}`;
+            return `import ${this.module}`
         } else {
-            return `import ${this.module} as ${this.alias}`;
+            return `import ${this.module} as ${this.alias}`
         }
     }
 }
