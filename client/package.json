@@ -13,7 +13,7 @@
         "lint": "pnpm run eslint && pnpm run stylelint",
         "fix": "eslint --fix . && stylelint --fix \"**/*.css\" && prettier --write .",
         "predeploy": "pnpm run build",
-        "deploy": "gh-pages -d build",
+        "deploy": "gh-pages -d dist",
         "prepare": "cd .. && husky install client/.husky"
     },
     "lint-staged": {
