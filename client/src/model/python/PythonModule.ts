@@ -1,12 +1,12 @@
 import { isEmptyList } from '../../util/listOperations'
 import { Nullable } from '../../util/types'
-import { PythonFilter } from './PythonFilter'
-import PythonFunction from './PythonFunction'
 import PythonClass from './PythonClass'
+import PythonDeclaration from './PythonDeclaration'
+import { PythonFilter } from './PythonFilter'
 import PythonFromImport from './PythonFromImport'
+import PythonFunction from './PythonFunction'
 import PythonImport from './PythonImport'
 import PythonPackage from './PythonPackage'
-import PythonDeclaration from './PythonDeclaration'
 
 export default class PythonModule extends PythonDeclaration {
     readonly name: string

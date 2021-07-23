@@ -23,6 +23,10 @@ export default class AnnotationStore {
         this.enums = enums
     }
 
+    static fromJson(annotations: AnnotationJson): AnnotationStore {
+        return new AnnotationStore(Immutable.Map(annotations.renamings), Immutable.Map(annotations.enums))
+    }
+
     getRenamingFor(declaration: PythonDeclaration): Nullable<string> {
         return this.renamings.get(declaration.pathAsString()) ?? null
     }
@@ -55,13 +59,6 @@ export default class AnnotationStore {
         return this.setEnums(this.enums.remove(enumDefinition.pathAsString()))
     }
 
-    private setRenamings(renamings: RenameAnnotationStore): AnnotationStore {
-        return new AnnotationStore(renamings, this.enums)
-    }
-    private setEnums(enums: EnumAnnotationStore): AnnotationStore {
-        return new AnnotationStore(this.renamings, enums)
-    }
-
     toJson(): string {
         return JSON.stringify({ renamings: this.renamings, enums: this.enums })
     }
@@ -74,7 +71,11 @@ export default class AnnotationStore {
         a.click()
     }
 
-    static fromJson(annotations: AnnotationJson): AnnotationStore {
-        return new AnnotationStore(Immutable.Map(annotations.renamings), Immutable.Map(annotations.enums))
+    private setRenamings(renamings: RenameAnnotationStore): AnnotationStore {
+        return new AnnotationStore(renamings, this.enums)
+    }
+
+    private setEnums(enums: EnumAnnotationStore): AnnotationStore {
+        return new AnnotationStore(this.renamings, enums)
     }
 }

@@ -1,7 +1,7 @@
-import { Button, Col, Form, Row } from 'react-bootstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
+import { Button, Col, Form, Row } from 'react-bootstrap'
 import EnumPair from '../../../../model/EnumPair'
 import { Setter } from '../../../../util/types'
 

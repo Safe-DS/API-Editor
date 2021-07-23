@@ -2,9 +2,9 @@ import { faTrash, faWrench } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import { Button, ButtonGroup, Card } from 'react-bootstrap'
+import PythonEnum from '../../model/python/PythonEnum'
 import { Nullable, Setter } from '../../util/types'
 import './AnnotationView.css'
-import PythonEnum from '../../model/python/PythonEnum'
 
 interface AnnotationViewProps {
     annotation: Nullable<string | PythonEnum>

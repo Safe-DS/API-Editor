@@ -1,7 +1,7 @@
 import { isEmptyList } from '../../util/listOperations'
+import PythonDeclaration from './PythonDeclaration'
 import { PythonFilter } from './PythonFilter'
 import PythonModule from './PythonModule'
-import PythonDeclaration from './PythonDeclaration'
 
 export default class PythonPackage extends PythonDeclaration {
     readonly name: string

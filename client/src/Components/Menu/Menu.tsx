@@ -1,15 +1,15 @@
+import classNames from 'classnames'
 import React, { useState } from 'react'
 import { Form, Nav, Navbar, NavDropdown, NavItem } from 'react-bootstrap'
 import Feedback from 'react-bootstrap/Feedback'
-import { NavLink } from 'react-router-dom'
 import { useLocation } from 'react-router'
+import { NavLink } from 'react-router-dom'
+import AnnotationStore from '../../model/annotation/AnnotationStore'
 import { PythonFilter } from '../../model/python/PythonFilter'
-import MenuCSS from './Menu.module.css'
-import classNames from 'classnames'
+import { Setter } from '../../util/types'
 import ImportAnnotationFileDialog from '../Dialogs/MenuDialogs/ImportAnnotationFileDialog'
 import ImportPythonPackageDialog from '../Dialogs/MenuDialogs/ImportPythonPackageDialog'
-import { Setter } from '../../util/types'
-import AnnotationStore from '../../model/annotation/AnnotationStore'
+import MenuCSS from './Menu.module.css'
 
 interface MenuProps {
     setPythonPackage: Setter<string>

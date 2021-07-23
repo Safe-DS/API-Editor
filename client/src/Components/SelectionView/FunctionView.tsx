@@ -1,10 +1,10 @@
 import React from 'react'
-import PythonFunction from '../../model/python/PythonFunction'
-import DocumentationText from './DocumentationText'
-import { isEmptyList } from '../../util/listOperations'
-import ParameterNode from './ParameterNode'
 import AnnotationStore from '../../model/annotation/AnnotationStore'
+import PythonFunction from '../../model/python/PythonFunction'
+import { isEmptyList } from '../../util/listOperations'
 import { Setter } from '../../util/types'
+import DocumentationText from './DocumentationText'
+import ParameterNode from './ParameterNode'
 
 interface FunctionViewProps {
     pythonFunction: PythonFunction

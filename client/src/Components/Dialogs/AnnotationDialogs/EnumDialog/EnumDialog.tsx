@@ -1,14 +1,14 @@
+import classNames from 'classnames'
+import { Formik } from 'formik'
 import React, { useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import EnumPair from '../../../../model/EnumPair'
 import PythonEnum from '../../../../model/python/PythonEnum'
+import { isEmptyList } from '../../../../util/listOperations'
 import { Nullable, Setter } from '../../../../util/types'
 import { isValidPythonIdentifier } from '../../../../util/validation'
 import DialogCSS from '../../dialogs.module.css'
 import EnumHandle from './EnumHandle'
-import { Formik } from 'formik'
-import classNames from 'classnames'
-import { isEmptyList } from '../../../../util/listOperations'
 
 type showDialogState = {
     dialogState: boolean

@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
-import { useHistory } from 'react-router-dom'
-import { Setter } from '../../../util/types'
-import '../../SelectionView/SelectionView.css'
 import Dropzone from 'react-dropzone'
-import { isValidJsonFile } from '../../../util/validation'
-import DialogCSS from '../dialogs.module.css'
+import { useHistory } from 'react-router-dom'
 import AnnotationStore from '../../../model/annotation/AnnotationStore'
+import { Setter } from '../../../util/types'
+import { isValidJsonFile } from '../../../util/validation'
+import '../../SelectionView/SelectionView.css'
+import DialogCSS from '../dialogs.module.css'
 
 interface ImportPythonPackageDialogProps {
     isVisible: boolean

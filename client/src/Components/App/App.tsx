@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
+import { HashRouter } from 'react-router-dom'
 import sklearnJson from '../../data/sklearn.json'
 import AnnotationStore from '../../model/annotation/AnnotationStore'
 import { PythonFilter } from '../../model/python/PythonFilter'
 import PythonPackage from '../../model/python/PythonPackage'
 import { parsePythonPackageJson, PythonPackageJson } from '../../model/python/PythonPackageBuilder'
 import Menu from '../Menu/Menu'
+import SelectionView from '../SelectionView/SelectionView'
 import TreeView from '../TreeView/TreeView'
 import AppCSS from './App.module.css'
-import { HashRouter } from 'react-router-dom'
-import SelectionView from '../SelectionView/SelectionView'
 
 export default function App(): JSX.Element {
     const initialJSON = '{"renamings":{},"enums":{}}'

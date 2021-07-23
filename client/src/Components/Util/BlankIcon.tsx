@@ -1,5 +1,5 @@
-import React from 'react'
 import classNames from 'classnames'
+import React from 'react'
 import { ClassNameProp } from '../../util/types'
 import BlankIconCSS from './BlankIcon.module.css'
 

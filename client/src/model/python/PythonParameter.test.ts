@@ -1,8 +1,8 @@
-import PythonParameter from './PythonParameter'
-import PythonFunction from './PythonFunction'
-import PythonPackage from './PythonPackage'
-import PythonModule from './PythonModule'
 import PythonClass from './PythonClass'
+import PythonFunction from './PythonFunction'
+import PythonModule from './PythonModule'
+import PythonPackage from './PythonPackage'
+import PythonParameter from './PythonParameter'
 
 test('path without parent', () => {
     const pythonParameter = new PythonParameter('param')

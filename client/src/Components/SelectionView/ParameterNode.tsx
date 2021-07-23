@@ -5,10 +5,10 @@ import AnnotationStore from '../../model/annotation/AnnotationStore'
 import PythonEnum from '../../model/python/PythonEnum'
 import PythonParameter from '../../model/python/PythonParameter'
 import { Nullable, Setter } from '../../util/types'
-import RenameDialog from '../Dialogs/AnnotationDialogs/RenameDialog'
 import EnumDialog from '../Dialogs/AnnotationDialogs/EnumDialog/EnumDialog'
-import DocumentationText from './DocumentationText'
+import RenameDialog from '../Dialogs/AnnotationDialogs/RenameDialog'
 import AnnotationView from './AnnotationView'
+import DocumentationText from './DocumentationText'
 import './SelectionView.css'
 
 interface ParameterNodeProps {

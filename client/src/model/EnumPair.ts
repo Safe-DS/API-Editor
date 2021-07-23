@@ -1,4 +1,4 @@
-import { enumValueValidation, enumKeyValidation } from '../util/validation'
+import { enumKeyValidation, enumValueValidation } from '../util/validation'
 
 export default class EnumPair {
     key: string
