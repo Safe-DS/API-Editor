@@ -6,13 +6,14 @@ import { useLocation } from 'react-router'
 import { NavLink } from 'react-router-dom'
 import AnnotationStore from '../../model/annotation/AnnotationStore'
 import { PythonFilter } from '../../model/python/PythonFilter'
+import PythonPackage from '../../model/python/PythonPackage'
 import { Setter } from '../../util/types'
 import ImportAnnotationFileDialog from '../Dialogs/MenuDialogs/ImportAnnotationFileDialog'
 import ImportPythonPackageDialog from '../Dialogs/MenuDialogs/ImportPythonPackageDialog'
 import MenuCSS from './Menu.module.css'
 
 interface MenuProps {
-    setPythonPackage: Setter<string>
+    setPythonPackage: Setter<PythonPackage>
     annotationStore: AnnotationStore
     setAnnotationStore: Setter<AnnotationStore>
     filter: string
