@@ -14,7 +14,10 @@ export interface PythonPackageJson {
 }
 
 export function parsePythonPackageJson(packageJson: PythonPackageJson): PythonPackage {
-    return new PythonPackage(packageJson.name, packageJson.modules.map(parsePythonModuleJson))
+    return new PythonPackage(
+        packageJson.name,
+        packageJson.modules.map(parsePythonModuleJson).sort((a, b) => a.name.localeCompare(b.name)),
+    )
 }
 
 interface PythonModuleJson {
@@ -28,10 +31,17 @@ interface PythonModuleJson {
 function parsePythonModuleJson(moduleJson: PythonModuleJson): PythonModule {
     return new PythonModule(
         moduleJson.name,
-        moduleJson.imports.map(parsePythonImportJson),
-        moduleJson.fromImports.map(parsePythonFromImportJson),
-        moduleJson.classes.map(parsePythonClassJson),
-        moduleJson.functions.map(parsePythonFunctionJson),
+        moduleJson.imports.map(parsePythonImportJson).sort((a, b) => a.module.localeCompare(b.module)),
+        moduleJson.fromImports.map(parsePythonFromImportJson).sort((a, b) => {
+            const moduleComparison = a.module.localeCompare(b.module)
+            if (moduleComparison === 0) {
+                return a.declaration.localeCompare(b.declaration)
+            } else {
+                return moduleComparison
+            }
+        }),
+        moduleJson.classes.map(parsePythonClassJson).sort((a, b) => a.name.localeCompare(b.name)),
+        moduleJson.functions.map(parsePythonFunctionJson).sort((a, b) => a.name.localeCompare(b.name)),
     )
 }
 
@@ -69,7 +79,7 @@ function parsePythonClassJson(classJson: PythonClassJson): PythonClass {
         classJson.name,
         classJson.decorators,
         classJson.superclasses,
-        classJson.methods.map(parsePythonFunctionJson),
+        classJson.methods.map(parsePythonFunctionJson).sort((a, b) => a.name.localeCompare(b.name)),
         classJson.summary || '',
         classJson.description || '',
         classJson.fullDocstring || '',
@@ -92,8 +102,8 @@ function parsePythonFunctionJson(functionJson: PythonFunctionJson): PythonFuncti
     return new PythonFunction(
         functionJson.name,
         functionJson.decorators,
-        functionJson.parameters.map(parsePythonParameterJson),
-        functionJson.results.map(parsePythonResultJson),
+        functionJson.parameters.map(parsePythonParameterJson).sort((a, b) => a.name.localeCompare(b.name)),
+        functionJson.results.map(parsePythonResultJson).sort((a, b) => a.name.localeCompare(b.name)),
         functionJson.returnType,
         functionJson.summary || '',
         functionJson.description || '',

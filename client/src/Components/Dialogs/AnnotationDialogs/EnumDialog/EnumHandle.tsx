@@ -2,28 +2,37 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
-import EnumPair from '../../../model/EnumPair'
-import { Setter } from '../../../util/types'
+import EnumPair from '../../../../model/EnumPair'
+import { Setter } from '../../../../util/types'
 import EnumPairRow from './EnumPairRow'
 
 type EnumFormProps = {
     listOfEnumPairs: EnumPair[]
     setListOfEnumPairs: Setter<EnumPair[]>
+    shouldValidate: boolean
+    setShouldValidate: Setter<boolean>
 }
 
-export default function EnumHandle({ listOfEnumPairs, setListOfEnumPairs }: EnumFormProps): JSX.Element {
-    //EnumForm name eigentlich
-
+export default function EnumHandle({
+    listOfEnumPairs,
+    setListOfEnumPairs,
+    shouldValidate,
+    setShouldValidate,
+}: EnumFormProps): JSX.Element {
     const deleteInstanceByIndex = (index: number) => {
-        const tmpCopy = [...listOfEnumPairs]
-        tmpCopy.splice(index, 1)
-        setListOfEnumPairs(tmpCopy)
+        if (listOfEnumPairs.length > 1) {
+            const tmpCopy = [...listOfEnumPairs]
+            tmpCopy.splice(index, 1)
+            setListOfEnumPairs(tmpCopy)
+            setShouldValidate(false)
+        }
     }
 
     const addEnumInstance = () => {
         const tmpCopy = [...listOfEnumPairs]
         tmpCopy.push(new EnumPair('', ''))
         setListOfEnumPairs(tmpCopy)
+        setShouldValidate(false)
     }
 
     return (
@@ -47,6 +56,8 @@ export default function EnumHandle({ listOfEnumPairs, setListOfEnumPairs }: Enum
                         pair={pair}
                         key={pair.key + '' + index}
                         deleteFunction={() => deleteInstanceByIndex(index)}
+                        shouldValidate={shouldValidate}
+                        setShouldValidate={setShouldValidate}
                     />
                 ))}
             </div>

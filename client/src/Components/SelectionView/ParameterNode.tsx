@@ -5,10 +5,10 @@ import AnnotationStore from '../../model/annotation/AnnotationStore'
 import PythonEnum from '../../model/python/PythonEnum'
 import PythonParameter from '../../model/python/PythonParameter'
 import { Nullable, Setter } from '../../util/types'
-import RenameDialog from '../Dialog/RenameDialog'
-import EnumDialog from './Dialogues/EnumDialog'
+import RenameDialog from '../Dialogs/AnnotationDialogs/RenameDialog'
+import EnumDialog from '../Dialogs/AnnotationDialogs/EnumDialog/EnumDialog'
 import DocumentationText from './DocumentationText'
-import RenameAnnotationView from './RenameAnnotationView'
+import AnnotationView from './AnnotationView'
 import './SelectionView.css'
 
 interface ParameterNodeProps {
@@ -29,7 +29,6 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
 
     const newEnumDefinition = props.annotationStore.getEnumFor(props.pythonParameter)
     const setNewEnumDefinition = (newEnum: Nullable<PythonEnum>) => {
-        //ToDo warum  nullable param
         props.setAnnotationStore(props.annotationStore.setEnumFor(props.pythonParameter, newEnum))
     }
 
@@ -60,7 +59,16 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
                     </Dropdown>
                 </div>
             </div>
-            <RenameAnnotationView newName={newName} setNewName={setNewName} onRenameEdit={openRenameDialog} />
+
+            {(newName || newEnumDefinition) && <h5 className={'pl-1rem'}>Annotations</h5>}
+            <div className={'annotation-list'}>
+                <AnnotationView annotation={newName} setAnnotation={setNewName} onEdit={openRenameDialog} />
+                <AnnotationView
+                    annotation={newEnumDefinition}
+                    setAnnotation={setNewEnumDefinition}
+                    onEdit={openEnumDialog}
+                />
+            </div>
 
             {/*This additional check cause the dialog to be thrown away after closing it, resetting its state*/}
             {showRenameDialog && (
@@ -73,12 +81,14 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
                 />
             )}
 
-            <EnumDialog
-                dialogState={showEnumDialog}
-                setDialogState={setShowEnumDialog}
-                enumDefinition={newEnumDefinition}
-                setEnumDefinition={setNewEnumDefinition}
-            />
+            {showEnumDialog && (
+                <EnumDialog
+                    dialogState={showEnumDialog}
+                    setDialogState={setShowEnumDialog}
+                    enumDefinition={newEnumDefinition}
+                    setEnumDefinition={setNewEnumDefinition}
+                />
+            )}
 
             {props.pythonParameter.description ? (
                 <DocumentationText inputText={props.pythonParameter?.description} />

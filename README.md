@@ -2,6 +2,8 @@
 
 [![Master](https://github.com/lars-reimann/api-editor/actions/workflows/master.yml/badge.svg?branch=master)](https://github.com/lars-reimann/api-editor/actions/workflows/master.yml)
 
+This project on Github Pages: https://lars-reimann.github.io/api-editor/
+
 ## Installation for Developers
 
 ### Option 1: VS Code Devcontainer
@@ -55,5 +57,5 @@ revert to _Option 1_.
 1. Run the following command (starting from the root of the repository):
    ```shell
    cd client
-   npm run dev
+   pnpm run dev
    ```

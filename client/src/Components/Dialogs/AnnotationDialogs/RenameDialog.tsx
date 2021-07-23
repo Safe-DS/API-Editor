@@ -1,10 +1,10 @@
 import classNames from 'classnames'
 import React, { useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
-import { Nullable, Setter } from '../../util/types'
-import { isValidPythonIdentifier } from '../../util/validation'
-import '../SelectionView/SelectionView.css'
-import DialogCSS from './dialog.module.css'
+import { Nullable, Setter } from '../../../util/types'
+import { isValidPythonIdentifier } from '../../../util/validation'
+import '../../SelectionView/SelectionView.css'
+import DialogCSS from '../dialogs.module.css'
 
 interface RenameDialogProps {
     isVisible: boolean
@@ -16,7 +16,7 @@ interface RenameDialogProps {
 
 export default function RenameDialog(props: RenameDialogProps): JSX.Element {
     const [currentUserInput, setCurrentUserInput] = useState(props.newName ?? props.oldName)
-
+    const cssClasses = classNames(DialogCSS.modalDialog, DialogCSS.annotationDialog)
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => setCurrentUserInput(event.target.value)
 
     const close = () => {
@@ -29,8 +29,6 @@ export default function RenameDialog(props: RenameDialogProps): JSX.Element {
             props.setIsVisible(false)
         }
     }
-
-    const cssClasses = classNames(DialogCSS.modalDialog, DialogCSS.annotationDialog)
 
     return (
         <Modal onHide={close} show={props.isVisible} className={cssClasses}>

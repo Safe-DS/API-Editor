@@ -1,31 +1,54 @@
-import React, { FormEvent, useState } from 'react'
+import React, { useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
+import { useHistory } from 'react-router-dom'
+import { Setter } from '../../../util/types'
+import '../../SelectionView/SelectionView.css'
 import Dropzone from 'react-dropzone'
-import PythonPackage from '../../model/python/PythonPackage'
-import { parsePythonPackageJson } from '../../model/python/PythonPackageBuilder'
-import { Setter } from '../../util/types'
-import { isValidJsonFile } from '../../util/validation'
-import '../SelectionView/SelectionView.css'
-import DialogCSS from './dialog.module.css'
+import { isValidJsonFile } from '../../../util/validation'
+import DialogCSS from '../dialogs.module.css'
+import AnnotationStore from '../../../model/annotation/AnnotationStore'
 
 interface ImportPythonPackageDialogProps {
     isVisible: boolean
     setIsVisible: Setter<boolean>
-    setPythonPackage: Setter<PythonPackage>
+    setPythonPackage: Setter<string>
+    setAnnotationStore: Setter<AnnotationStore>
+    setFilter: Setter<string>
 }
 
 export default function ImportPythonPackageDialog(props: ImportPythonPackageDialogProps): JSX.Element {
     const [fileName, setFileName] = useState('')
-    const [newPythonPackage, setNewPythonPackage] = useState<PythonPackage>()
+    const [newPythonPackage, setNewPythonPackage] = useState<string>()
+    const history = useHistory()
 
     const close = () => {
         props.setIsVisible(false)
     }
 
-    const submit = (event: FormEvent) => {
-        event.preventDefault()
+    const submit = () => {
         props.setIsVisible(false)
-        if (newPythonPackage) props.setPythonPackage(newPythonPackage)
+        if (newPythonPackage) {
+            props.setPythonPackage(newPythonPackage)
+            props.setFilter('')
+            history.push('/')
+        }
+    }
+
+    const slurpAndParse = (acceptedFiles: File[]) => {
+        if (isValidJsonFile(acceptedFiles[acceptedFiles.length - 1].name)) {
+            if (acceptedFiles.length > 1) {
+                acceptedFiles = [acceptedFiles[acceptedFiles.length - 1]]
+            }
+            setFileName(acceptedFiles[0].name)
+            const reader = new FileReader()
+            reader.onload = () => {
+                if (typeof reader.result === 'string') {
+                    setNewPythonPackage(reader.result)
+                    props.setAnnotationStore(new AnnotationStore())
+                }
+            }
+            reader.readAsText(acceptedFiles[0])
+        }
     }
 
     return (
@@ -33,40 +56,21 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
             <Modal.Header closeButton>
                 <Modal.Title>Import Python package</Modal.Title>
             </Modal.Header>
-
             <Modal.Body>
                 <Form noValidate>
                     <Modal.Body>
                         <Form.Group>
                             <Form.Label>Select a Python package to upload.</Form.Label>
                             <div className={DialogCSS.dropzone}>
-                                <Dropzone
-                                    onDrop={(acceptedFiles) => {
-                                        if (isValidJsonFile(acceptedFiles[acceptedFiles.length - 1].name)) {
-                                            if (acceptedFiles.length > 1) {
-                                                acceptedFiles = [acceptedFiles[acceptedFiles.length - 1]]
-                                            }
-                                            setFileName(acceptedFiles[0].name)
-                                            const reader = new FileReader()
-                                            reader.onload = () => {
-                                                if (typeof reader.result === 'string') {
-                                                    setNewPythonPackage(
-                                                        parsePythonPackageJson(JSON.parse(reader.result)),
-                                                    )
-                                                }
-                                            }
-                                            reader.readAsText(acceptedFiles[0])
-                                        }
-                                    }}
-                                >
+                                <Dropzone onDrop={slurpAndParse}>
                                     {({ getRootProps, getInputProps }) => (
                                         <section>
                                             <div {...getRootProps()}>
                                                 <input {...getInputProps()} />
                                                 <p className={DialogCSS.dropzoneText}>
-                                                    Drag and drop a Python package here, or click to select the file{' '}
+                                                    Drag and drop a Python package here, or click to select the file.
                                                     <br />
-                                                    (only *.json will be accepted)
+                                                    (Only *.json will be accepted.)
                                                 </p>
                                             </div>
                                         </section>
@@ -85,7 +89,7 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
                         <Button variant="danger" onClick={close}>
                             Cancel
                         </Button>
-                        <Button variant="primary" type="submit" onClick={submit}>
+                        <Button variant="primary" type="button" onClick={submit}>
                             Submit
                         </Button>
                     </Modal.Footer>

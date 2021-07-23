@@ -57,8 +57,8 @@ h1 {
 
 .read-more-button {
     border: none;
+    margin-left: 5px;
     background: none !important;
-    cursor: pointer;
     font-family: arial, sans-serif;
     text-align: left;
 }
@@ -66,6 +66,7 @@ h1 {
 .no-read-more-button {
     padding-left: 3rem;
     border: none;
+    margin-left: 5px;
     background: none !important;
     font-family: arial, sans-serif;
     text-align: left;
@@ -85,7 +86,7 @@ h1 {
 
 .enum-item-icon {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-end;
     padding: 0;
 }
@@ -113,5 +114,9 @@ h1 {
 
 .annotation-list {
     padding-bottom: 20px;
-    padding-left: 1rem;
+    padding-left: 2rem;
+}
+
+.pointer-cursor {
+    cursor: pointer;
 }

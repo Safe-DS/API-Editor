@@ -22,17 +22,13 @@ export default function ModuleNode(props: ModuleNodeProps): JSX.Element {
             isExpandable={hasChildren}
             isWorthClicking={hasChildren}
         >
-            {[...props.pythonModule.classes]
-                .sort((a, b) => a.name.localeCompare(b.name))
-                .map((moduleClass) => (
-                    <ClassNode key={moduleClass.name} pythonClass={moduleClass} />
-                ))}
+            {props.pythonModule.classes.map((moduleClass) => (
+                <ClassNode key={moduleClass.name} pythonClass={moduleClass} />
+            ))}
 
-            {[...props.pythonModule.functions]
-                .sort((a, b) => a.name.localeCompare(b.name))
-                .map((moduleFunction) => (
-                    <FunctionNode key={moduleFunction.name} pythonFunction={moduleFunction} />
-                ))}
+            {props.pythonModule.functions.map((moduleFunction) => (
+                <FunctionNode key={moduleFunction.name} pythonFunction={moduleFunction} />
+            ))}
         </TreeNode>
     )
 }
