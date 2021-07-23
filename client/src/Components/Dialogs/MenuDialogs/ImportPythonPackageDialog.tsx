@@ -6,8 +6,6 @@ import "../../SelectionView/SelectionView.css";
 import Dropzone from 'react-dropzone';
 import {isValidJsonFile} from "../../../util/validation";
 import DialogCSS from "../dialogs.module.css";
-import PythonPackage from "../../../model/python/PythonPackage";
-import {parsePythonPackageJson} from "../../../model/python/PythonPackageBuilder";
 import AnnotationStore from "../../../model/annotation/AnnotationStore";
 
 interface ImportPythonPackageDialogProps {
