@@ -3,6 +3,8 @@ import { Button, Form, Modal } from 'react-bootstrap'
 import Dropzone from 'react-dropzone'
 import { useHistory } from 'react-router-dom'
 import AnnotationStore from '../../../model/annotation/AnnotationStore'
+import PythonPackage from '../../../model/python/PythonPackage'
+import { parsePythonPackageJson, PythonPackageJson } from '../../../model/python/PythonPackageBuilder'
 import { Setter } from '../../../util/types'
 import { isValidJsonFile } from '../../../util/validation'
 import '../../SelectionView/SelectionView.css'
@@ -11,7 +13,7 @@ import DialogCSS from '../dialogs.module.css'
 interface ImportPythonPackageDialogProps {
     isVisible: boolean
     setIsVisible: Setter<boolean>
-    setPythonPackage: Setter<string>
+    setPythonPackage: Setter<PythonPackage>
     setAnnotationStore: Setter<AnnotationStore>
     setFilter: Setter<string>
 }
@@ -28,7 +30,9 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
     const submit = () => {
         props.setIsVisible(false)
         if (newPythonPackage) {
-            props.setPythonPackage(newPythonPackage)
+            props.setPythonPackage(parsePythonPackageJson(JSON.parse(newPythonPackage) as PythonPackageJson))
+            console.log('storaged')
+            localStorage.setItem('package', newPythonPackage)
             props.setFilter('')
             history.push('/')
         }
