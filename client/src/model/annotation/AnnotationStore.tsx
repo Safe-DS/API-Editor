@@ -18,7 +18,10 @@ export default class AnnotationStore {
     private readonly renamings: RenameAnnotationStore
     private readonly enums: EnumAnnotationStore
 
-    constructor(renamings: RenameAnnotationStore = Immutable.Map(), enums: EnumAnnotationStore = Immutable.Map()) {
+    constructor(
+        renamings: RenameAnnotationStore = Immutable.Map<string, string>(),
+        enums: EnumAnnotationStore = Immutable.Map<string, PythonEnum>(),
+    ) {
         this.renamings = renamings
         this.enums = enums
     }
