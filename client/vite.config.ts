@@ -5,4 +5,9 @@ import reactRefresh from '@vitejs/plugin-react-refresh'
 export default defineConfig({
     base: '/api-editor/',
     plugins: [reactRefresh()],
+    resolve: {
+        alias: {
+            'mdast-util-to-hast': 'mdast-util-to-hast-backport',
+        },
+    },
 })
