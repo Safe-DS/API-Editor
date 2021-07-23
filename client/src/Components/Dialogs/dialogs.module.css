@@ -1,5 +1,6 @@
-.modalDialog {
-    max-height: calc(80vh);
+.modalDialog,
+.annotationDialog {
+    max-height: 80vh;
     margin-top: 5rem;
 }
 

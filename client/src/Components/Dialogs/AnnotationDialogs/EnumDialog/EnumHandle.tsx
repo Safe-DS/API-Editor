@@ -5,6 +5,7 @@ import { Button, Col, Container, Row } from 'react-bootstrap'
 import EnumPair from '../../../../model/EnumPair'
 import { Setter } from '../../../../util/types'
 import EnumPairRow from './EnumPairRow'
+import EnumDialogCSS from './EnumDialog.module.css'
 
 type EnumFormProps = {
     listOfEnumPairs: EnumPair[]
@@ -37,14 +38,14 @@ export default function EnumHandle({
 
     return (
         <Container>
-            <Row className="enum-pair-row">
+            <Row className={EnumDialogCSS.enumPairRow}>
                 <Col xs={5} className="no-left-padding">
                     String value:
                 </Col>
                 <Col xs={5} className="right">
                     Instance name:
                 </Col>
-                <Col xs={2} className="enum-item-icon">
+                <Col xs={2} className={EnumDialogCSS.enumItemIcon}>
                     <Button size="sm" variant="success" onClick={addEnumInstance}>
                         <FontAwesomeIcon icon={faPlus} />
                     </Button>

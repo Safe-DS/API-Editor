@@ -4,7 +4,6 @@ import React from 'react'
 import { Button, ButtonGroup, Card } from 'react-bootstrap'
 import PythonEnum from '../../model/python/PythonEnum'
 import { Nullable, Setter } from '../../util/types'
-import './AnnotationView.css'
 
 interface AnnotationViewProps {
     annotation: Nullable<string | PythonEnum>

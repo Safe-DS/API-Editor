@@ -9,7 +9,7 @@ import EnumDialog from '../Dialogs/AnnotationDialogs/EnumDialog/EnumDialog'
 import RenameDialog from '../Dialogs/AnnotationDialogs/RenameDialog'
 import AnnotationView from './AnnotationView'
 import DocumentationText from './DocumentationText'
-import './SelectionView.css'
+import ParameterNodeCSS from './ParameterNode.module.css'
 
 interface ParameterNodeProps {
     pythonParameter: PythonParameter
@@ -36,16 +36,16 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
     const openEnumDialog = () => setShowEnumDialog(true)
 
     const dropdownClassnames = classNames({
-        'parameter-is-title': props.isTitle,
+        [ParameterNodeCSS.parameterIsTitle]: props.isTitle,
     })
 
     return (
         <div>
-            <div className="parameter-header">
+            <div className={ParameterNodeCSS.parameterHeader}>
                 {props.isTitle ? (
-                    <h1 className="parameter-name">{props.pythonParameter.name}</h1>
+                    <h1 className={ParameterNodeCSS.parameterName}>{props.pythonParameter.name}</h1>
                 ) : (
-                    <h4 className="parameter-name">{props.pythonParameter.name}</h4>
+                    <h4 className={ParameterNodeCSS.parameterName}>{props.pythonParameter.name}</h4>
                 )}
                 <div className={dropdownClassnames}>
                     <Dropdown>
@@ -62,8 +62,8 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
 
             {(newName || newEnumDefinition) && (
                 <>
-                    <h5 className={'pl-1rem'}>Annotations</h5>
-                    <div className={'annotation-list'}>
+                    <h5 className="pl-1rem">Annotations</h5>
+                    <div className={ParameterNodeCSS.annotationList}>
                         <AnnotationView annotation={newName} setAnnotation={setNewName} onEdit={openRenameDialog} />
                         <AnnotationView
                             annotation={newEnumDefinition}

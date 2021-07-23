@@ -1,4 +1,3 @@
-import classNames from 'classnames'
 import { Formik } from 'formik'
 import React, { useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
@@ -27,8 +26,6 @@ export default function EnumDialog({
     const [name, setName] = useState(enumDefinition?.enumName ? enumDefinition?.enumName : '')
     const initialList: EnumPair[] = []
     const [listOfEnumPairs, setListOfEnumPairs] = useState<EnumPair[]>(initialList)
-    const cssClasses = classNames(DialogCSS.modalDialog, DialogCSS.annotationDialog)
-
     const deepCloneOrEmpty = (from: EnumPair[], to: EnumPair[]) => {
         if (from.length > 0) {
             from.forEach(function (value) {
@@ -69,7 +66,7 @@ export default function EnumDialog({
     }
 
     return (
-        <Modal show={dialogState} onHide={handleClose} className={cssClasses}>
+        <Modal show={dialogState} onHide={handleClose} className={DialogCSS.annotationDialog}>
             <Modal.Header closeButton>
                 <Modal.Title>Add @enum Annotation</Modal.Title>
             </Modal.Header>

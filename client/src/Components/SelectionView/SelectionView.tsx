@@ -11,6 +11,7 @@ import ClassView from './ClassView'
 import FunctionView from './FunctionView'
 import ModuleView from './ModuleView'
 import ParameterView from './ParameterView'
+import SelectionViewCSS from './SelectionView.module.css'
 
 interface SelectionViewProps {
     pythonPackage: PythonPackage
@@ -22,7 +23,7 @@ export default function SelectionView(props: SelectionViewProps): JSX.Element {
     const declaration = props.pythonPackage.getByRelativePath(useLocation().pathname.split('/').splice(2))
 
     return (
-        <div className="parameter-view">
+        <div className={SelectionViewCSS.selectionView}>
             {declaration instanceof PythonFunction && (
                 <FunctionView
                     pythonFunction={declaration}

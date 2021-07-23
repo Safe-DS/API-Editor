@@ -6,7 +6,7 @@ import rehypeKatex from 'rehype-katex'
 import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
 import VisibilityIndicator from '../Util/VisibilityIndicator'
-import './SelectionView.css'
+import DocumentationTextCSS from './DocumentationText.module.css'
 
 interface DocumentationTextProps {
     inputText: string
@@ -22,14 +22,14 @@ export default function DocumentationText({ inputText = '' }: DocumentationTextP
     const hasMultipleLines = shortenedText !== preprocessedText
     const [readMore, setReadMore] = useState(false)
 
-    const cssClasses = classNames('read-more-button', {
+    const cssClasses = classNames(DocumentationTextCSS.readMoreButton, {
         'pl-1rem': !hasMultipleLines,
         'pointer-cursor': hasMultipleLines && !readMore,
     })
 
     return (
         <div
-            className="docu-paragraph"
+            className={DocumentationTextCSS.docuParagraph}
             onClick={() => {
                 setReadMore(true)
             }}
