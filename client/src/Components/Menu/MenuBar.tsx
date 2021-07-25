@@ -7,6 +7,7 @@ import {
     Center,
     Flex,
     HStack,
+    Icon,
     Input,
     InputGroup,
     InputRightElement,
@@ -69,7 +70,7 @@ export default function MenuBar(props: MenuBarProps): JSX.Element {
 
             <HStack>
                 <Menu>
-                    <MenuButton as={Button} rightIcon={<FaChevronDown />}>
+                    <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
                         Import
                     </MenuButton>
                     <MenuList>
@@ -100,7 +101,7 @@ export default function MenuBar(props: MenuBarProps): JSX.Element {
                                 />
                                 {PythonFilter.fromFilterBoxInput(props.filter)?.isFiltering() && (
                                     <InputRightElement>
-                                        <FaCheck color="green" />
+                                        <Icon as={FaCheck} color="green.500" />
                                     </InputRightElement>
                                 )}
                             </InputGroup>

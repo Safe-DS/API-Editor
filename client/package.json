@@ -14,7 +14,7 @@
         "fix": "eslint --fix . && stylelint --fix \"**/*.css\" && prettier --write .",
         "deploy": "pnpm run build && gh-pages -d dist",
         "prepare": "cd .. && husky install client/.husky",
-        "gen:theme-typings": "chakra-cli tokens src/theme.ts",
+        "gen:theme-typings": "chakra-cli tokens src/theme/index.ts",
         "postinstall": "pnpm run gen:theme-typings"
     },
     "lint-staged": {
