@@ -13,7 +13,9 @@
         "lint": "pnpm run eslint && pnpm run stylelint",
         "fix": "eslint --fix . && stylelint --fix \"**/*.css\" && prettier --write .",
         "deploy": "pnpm run build && gh-pages -d dist",
-        "prepare": "cd .. && husky install client/.husky"
+        "prepare": "cd .. && husky install client/.husky",
+        "gen:theme-typings": "chakra-cli tokens src/theme.ts",
+        "postinstall": "pnpm run gen:theme-typings"
     },
     "lint-staged": {
         "*.{js,jsx,ts,tsx}": "eslint --fix .",
@@ -21,18 +23,19 @@
         "*.{html,md,css,js,jsx,ts,tsx,json,yaml,yml}": "prettier --write ."
     },
     "dependencies": {
-        "@emotion/react": "^11.4.0",
-        "@emotion/styled": "^11.3.0",
+        "@chakra-ui/react": "^1.6.5",
+        "@chakra-ui/styled-system": "^1.12.1",
+        "@emotion/react": "^11",
+        "@emotion/styled": "^11",
         "@fortawesome/fontawesome-svg-core": "^1.2.35",
         "@fortawesome/free-solid-svg-icons": "^5.15.3",
         "@fortawesome/react-fontawesome": "^0.1.14",
-        "@material-ui/core": "^5.0.0-beta.1",
-        "@material-ui/lab": "^5.0.0-alpha.40",
         "@popperjs/core": "^2.9.2",
         "@reduxjs/toolkit": "^1.6.1",
         "bootstrap": "^5.0.2",
         "classnames": "^2.3.1",
         "formik": "^2.2.9",
+        "framer-motion": "^4",
         "idb-keyval": "^5.0.6",
         "immutable": "^4.0.0-rc.14",
         "katex": "^0.13.11",
@@ -41,6 +44,8 @@
         "react-bootstrap": "^2.0.0-beta.4",
         "react-dom": "^17.0.0",
         "react-dropzone": "^11.3.4",
+        "react-hook-form": "^7.12.0",
+        "react-icons": "^4.2.0",
         "react-markdown": "^6.0.2",
         "react-redux": "^7.2.4",
         "react-router": "^5.2.0",
@@ -48,11 +53,11 @@
         "react-syntax-highlighter": "^15.4.3",
         "rehype-katex": "^5.0.0",
         "remark-gfm": "^1.0.0",
-        "remark-math": "^4.0.0",
-        "uuid": "^8.3.2"
+        "remark-math": "^4.0.0"
     },
     "devDependencies": {
         "@babel/core": "^7.0.0-0",
+        "@chakra-ui/cli": "^1.5.0",
         "@types/jest": "^26.0.24",
         "@types/react": "^17.0.0",
         "@types/react-dom": "^17.0.0",

@@ -6,11 +6,11 @@ import EnumPair from '../../../model/EnumPair'
 import PythonEnum from '../../../model/python/PythonEnum'
 import { Setter } from '../../../util/types'
 import { isValidJsonFile } from '../../../util/validation'
-import DialogCSS from '../dialogs.module.css'
+import DialogCSS from '../../../Components/Dialogs/dialogs.module.css'
 
 interface ImportAnnotationFileDialogProps {
     isVisible: boolean
-    setIsVisible: Setter<boolean>
+    close: () => void
     setAnnotationStore: Setter<AnnotationStore>
 }
 
@@ -18,15 +18,11 @@ export default function ImportAnnotationFileDialog(props: ImportAnnotationFileDi
     const [fileName, setFileName] = useState('')
     const [newAnnotationStore, setNewAnnotationStore] = useState(new AnnotationStore())
 
-    const close = () => {
-        props.setIsVisible(false)
-    }
-
     const submit = () => {
         if (fileName) {
             props.setAnnotationStore(newAnnotationStore)
         }
-        props.setIsVisible(false)
+        props.close()
     }
 
     const onDrop = (acceptedFiles: File[]) => {
@@ -61,7 +57,7 @@ export default function ImportAnnotationFileDialog(props: ImportAnnotationFileDi
     }
 
     return (
-        <Modal onHide={close} show={props.isVisible} size={'lg'} className={DialogCSS.modalDialog}>
+        <Modal onHide={props.close} show={props.isVisible} size={'lg'} className={DialogCSS.modalDialog}>
             <Modal.Header closeButton>
                 <Modal.Title>Import annotation file</Modal.Title>
             </Modal.Header>
@@ -95,7 +91,7 @@ export default function ImportAnnotationFileDialog(props: ImportAnnotationFileDi
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="danger" onClick={close}>
+                        <Button variant="danger" onClick={props.close}>
                             Cancel
                         </Button>
                         <Button variant="primary" type="button" onClick={submit}>

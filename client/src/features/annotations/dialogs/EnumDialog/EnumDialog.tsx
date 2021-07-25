@@ -6,7 +6,7 @@ import PythonEnum from '../../../../model/python/PythonEnum'
 import { isEmptyList } from '../../../../util/listOperations'
 import { Nullable, Setter } from '../../../../util/types'
 import { isValidPythonIdentifier } from '../../../../util/validation'
-import DialogCSS from '../../dialogs.module.css'
+import DialogCSS from '../../../../Components/Dialogs/dialogs.module.css'
 import EnumHandle from './EnumHandle'
 
 type showDialogState = {

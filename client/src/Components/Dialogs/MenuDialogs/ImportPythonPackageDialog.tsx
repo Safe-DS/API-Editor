@@ -3,8 +3,6 @@ import React, { useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import Dropzone from 'react-dropzone'
 import { useHistory } from 'react-router-dom'
-import { useAppDispatch } from '../../../app/hooks'
-import { enqueueNotification } from '../../../features/notifications/notificationSlice'
 import AnnotationStore from '../../../model/annotation/AnnotationStore'
 import PythonPackage from '../../../model/python/PythonPackage'
 import { parsePythonPackageJson, PythonPackageJson } from '../../../model/python/PythonPackageBuilder'
@@ -14,7 +12,7 @@ import DialogCSS from '../dialogs.module.css'
 
 interface ImportPythonPackageDialogProps {
     isVisible: boolean
-    setIsVisible: Setter<boolean>
+    close: () => void
     setPythonPackage: Setter<PythonPackage>
     setAnnotationStore: Setter<AnnotationStore>
     setFilter: Setter<string>
@@ -24,30 +22,16 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
     const [fileName, setFileName] = useState('')
     const [newPythonPackage, setNewPythonPackage] = useState<string>()
     const history = useHistory()
-    const dispatch = useAppDispatch()
-
-    const close = () => {
-        props.setIsVisible(false)
-    }
 
     const submit = async () => {
-        props.setIsVisible(false)
+        props.close()
         if (newPythonPackage) {
             const parsedPythonPackage = JSON.parse(newPythonPackage) as PythonPackageJson
             props.setPythonPackage(parsePythonPackageJson(parsedPythonPackage))
             props.setFilter('')
             history.push('/')
 
-            try {
-                await idb.set('package', parsedPythonPackage)
-            } catch (e) {
-                dispatch(
-                    enqueueNotification({
-                        severity: 'error',
-                        message: 'Failed to store package in database.',
-                    }),
-                )
-            }
+            await idb.set('package', parsedPythonPackage)
         }
     }
 
@@ -69,7 +53,7 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
     }
 
     return (
-        <Modal onHide={close} show={props.isVisible} size={'lg'} className={DialogCSS.modalDialog}>
+        <Modal onHide={props.close} show={props.isVisible} size={'lg'} className={DialogCSS.modalDialog}>
             <Modal.Header closeButton>
                 <Modal.Title>Import Python package</Modal.Title>
             </Modal.Header>
@@ -103,7 +87,7 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="danger" onClick={close}>
+                        <Button variant="danger" onClick={props.close}>
                             Cancel
                         </Button>
                         <Button variant="primary" type="button" onClick={submit}>
