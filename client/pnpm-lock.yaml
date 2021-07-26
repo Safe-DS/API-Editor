@@ -5,6 +5,7 @@ specifiers:
     '@chakra-ui/cli': ^1.5.0
     '@chakra-ui/react': ^1.6.5
     '@chakra-ui/styled-system': ^1.12.1
+    '@chakra-ui/theme-tools': ^1.1.8
     '@emotion/react': ^11
     '@emotion/styled': ^11
     '@hookform/devtools': ^3.1.0
@@ -68,6 +69,7 @@ specifiers:
 dependencies:
     '@chakra-ui/react': 1.6.5_e0ee5788c57240be202ec6c536c38194
     '@chakra-ui/styled-system': 1.12.1
+    '@chakra-ui/theme-tools': 1.1.8
     '@emotion/react': 11.4.0_fe3438944b1b40b909f746c1015ed4cc
     '@emotion/styled': 11.3.0_10723a8ed514deb56574a12458f204d1
     '@reduxjs/toolkit': 1.6.1_react-redux@7.2.4+react@17.0.2
@@ -1465,6 +1467,19 @@ packages:
             '@chakra-ui/system': 1.7.1_7874f5fd290ce587db5f5f81e8a37ea9
             '@chakra-ui/utils': 1.8.1
             react: 17.0.2
+        dev: false
+
+    /@chakra-ui/theme-tools/1.1.8:
+        resolution:
+            {
+                integrity: sha512-FQqHNfuvl2O1m7o6YY3ozqxnz74TWAhVzzfKrh7/eXcyA2IkF+MuKMUnyWXjOq1bcLt9rAGq0FQALisTd4YPWQ==,
+            }
+        peerDependencies:
+            '@chakra-ui/system': '>=1.0.0'
+        dependencies:
+            '@chakra-ui/utils': 1.8.1
+            '@types/tinycolor2': 1.4.2
+            tinycolor2: 1.4.2
         dev: false
 
     /@chakra-ui/theme-tools/1.1.8_@chakra-ui+system@1.7.1:

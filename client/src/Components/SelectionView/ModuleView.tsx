@@ -1,9 +1,9 @@
-import { Box } from '@chakra-ui/react'
+import { Box, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import { CodeComponent } from 'react-markdown/src/ast-to-react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { materialLight } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { materialOceanic, materialLight } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import remarkGfm from 'remark-gfm'
 import PythonModule from '../../model/python/PythonModule'
 import { groupBy, isEmptyList } from '../../util/listOperations'
@@ -15,9 +15,12 @@ interface ModuleViewProps {
 // See https://github.com/remarkjs/react-markdown#use-custom-components-syntax-highlight
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const code: CodeComponent = ({ node, inline, className, children, ...props }) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const style = useColorModeValue(materialLight, materialOceanic)
+
     const match = /language-(\w+)/.exec(className || '')
     return !inline && match ? (
-        <SyntaxHighlighter style={materialLight} language={match[1]} PreTag="div" {...props}>
+        <SyntaxHighlighter style={style} language={match[1]} PreTag="div" {...props}>
             {String(children).replace(/\n$/, '')}
         </SyntaxHighlighter>
     ) : (

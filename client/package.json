@@ -25,6 +25,7 @@
     "dependencies": {
         "@chakra-ui/react": "^1.6.5",
         "@chakra-ui/styled-system": "^1.12.1",
+        "@chakra-ui/theme-tools": "^1.1.8",
         "@emotion/react": "^11",
         "@emotion/styled": "^11",
         "@reduxjs/toolkit": "^1.6.1",
