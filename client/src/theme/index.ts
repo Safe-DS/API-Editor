@@ -9,7 +9,7 @@ const theme = extendTheme({
             borderStyle: 'solid',
             borderColor: 'gray.200',
             '.chakra-ui-dark &': {
-                borderColor: 'gray.900',
+                borderColor: 'gray.700',
             },
         },
     },

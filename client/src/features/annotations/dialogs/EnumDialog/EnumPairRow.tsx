@@ -37,7 +37,7 @@ export default function EnumPairRow(props: EnumPairRowProps): JSX.Element {
                     type="text"
                     value={stringValue}
                     onChange={onInputStringValue}
-                    isInvalid={!!props.pair.stringValue || (!props.pair.stringValue && props.shouldValidate)}
+                    isInvalid={!props.pair.stringValue && props.shouldValidate}
                 />
             </Col>
             <Col xs={5} className="no-right-padding">
@@ -51,8 +51,8 @@ export default function EnumPairRow(props: EnumPairRowProps): JSX.Element {
                     }
                 />
                 <Form.Control.Feedback type="invalid">
-                    Valid Python identifiers must start with a letter or underscore followed by letters, numbers and
-                    underscores.
+                    Valid Python enum instance names must start with an uppercase letter or underscore followed by
+                    uppercase letters, numbers and underscores.
                 </Form.Control.Feedback>
             </Col>
 
