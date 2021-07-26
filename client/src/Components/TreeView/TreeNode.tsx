@@ -33,7 +33,7 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element {
 
     const handleClick = () => {
         setShowChildren((prevState) => !prevState)
-        history.push(`/${props.declaration.path().join('/')}`)
+        history.push(`/${props.declaration.pathAsString()}`)
     }
 
     return (
@@ -58,11 +58,11 @@ function levelOf(declaration: PythonDeclaration): number {
 }
 
 function isSelected(declaration: PythonDeclaration, currentPathname: string): boolean {
-    return `/${declaration.path().join('/')}` === currentPathname
+    return `/${declaration.pathAsString()}` === currentPathname
 }
 
 function selfOrChildIsSelected(declaration: PythonDeclaration, currentPathname: string): boolean {
-    const declarationPath = `/${declaration.path().join('/')}`
+    const declarationPath = `/${declaration.pathAsString()}`
     const currentPath = currentPathname
 
     // The slash prevents /sklearn/sklearn from opening when the path is /sklearn/sklearn.base

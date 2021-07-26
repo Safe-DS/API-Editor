@@ -51,8 +51,8 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
         }
     }
 
-    const openRenameDialog = () => dispatch(showRenameAnnotationForm(props.pythonParameter.pathAsString()))
-    const openEnumDialog = () => dispatch(showEnumAnnotationForm(props.pythonParameter.pathAsString()))
+    const openRenameDialog = () => dispatch(showRenameAnnotationForm(id))
+    const openEnumDialog = () => dispatch(showEnumAnnotationForm(id))
 
     const dropdownClassnames = classNames({
         [ParameterNodeCSS.parameterIsTitle]: props.isTitle,

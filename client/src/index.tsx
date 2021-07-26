@@ -12,12 +12,12 @@ import theme from './theme'
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
-            <HashRouter>
-                <ChakraProvider theme={theme}>
-                    <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+            <ChakraProvider theme={theme}>
+                <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+                <HashRouter>
                     <App />
-                </ChakraProvider>
-            </HashRouter>
+                </HashRouter>
+            </ChakraProvider>
         </Provider>
     </React.StrictMode>,
     document.getElementById('root'),

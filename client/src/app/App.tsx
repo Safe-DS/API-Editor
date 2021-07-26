@@ -49,6 +49,7 @@ const App: React.FC = () => {
     const [filter, setFilter] = useState('')
     const pythonFilter = PythonFilter.fromFilterBoxInput(filter)
     const filteredPythonPackage = pythonPackage.filter(pythonFilter)
+
     const userActionTarget = pythonPackage.getByRelativePathAsString(currentUserAction.target)
 
     return (
