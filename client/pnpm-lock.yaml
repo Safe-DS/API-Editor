@@ -38,7 +38,6 @@ specifiers:
     eslint-plugin-react: ^7.24.0
     eslint-plugin-react-hooks: ^4.2.0
     eslint-plugin-testing-library: ^3.9.0
-    formik: ^2.2.9
     framer-motion: ^4
     gh-pages: ^3.2.3
     husky: ^7.0.1
@@ -86,7 +85,6 @@ dependencies:
     '@reduxjs/toolkit': 1.6.1_react-redux@7.2.4+react@17.0.2
     bootstrap: 5.0.2_@popperjs+core@2.9.2
     classnames: 2.3.1
-    formik: 2.2.9_react@17.0.2
     framer-motion: 4.1.17_react-dom@17.0.2+react@17.0.2
     idb-keyval: 5.0.6
     immutable: 4.0.0-rc.14
@@ -4265,14 +4263,6 @@ packages:
         resolution: { integrity: sha1-s2nW+128E+7PUk+RsHD+7cNXzzQ= }
         dev: true
 
-    /deepmerge/2.2.1:
-        resolution:
-            {
-                integrity: sha512-R9hc1Xa/NOBi9WRVUWg19rl1UB7Tt4kuPd+thNJgFZoxXsTz7ncaPaeIm+40oSGuP33DfMb4sZt1QIGiJzC4EA==,
-            }
-        engines: { node: '>=0.10.0' }
-        dev: false
-
     /deepmerge/4.2.2:
         resolution:
             {
@@ -5280,24 +5270,6 @@ packages:
     /format/0.2.2:
         resolution: { integrity: sha1-1hcBB+nv3E7TDJ3DkBbflCtctYs= }
         engines: { node: '>=0.4.x' }
-        dev: false
-
-    /formik/2.2.9_react@17.0.2:
-        resolution:
-            {
-                integrity: sha512-LQLcISMmf1r5at4/gyJigGn0gOwFbeEAlji+N9InZF6LIMXnFNkO42sCI8Jt84YZggpD4cPWObAZaxpEFtSzNA==,
-            }
-        peerDependencies:
-            react: '>=16.8.0'
-        dependencies:
-            deepmerge: 2.2.1
-            hoist-non-react-statics: 3.3.2
-            lodash: 4.17.21
-            lodash-es: 4.17.21
-            react: 17.0.2
-            react-fast-compare: 2.0.4
-            tiny-warning: 1.0.3
-            tslib: 1.14.1
         dev: false
 
     /framer-motion/4.1.17_react-dom@17.0.2+react@17.0.2:
@@ -7279,13 +7251,6 @@ packages:
             p-locate: 4.1.0
         dev: true
 
-    /lodash-es/4.17.21:
-        resolution:
-            {
-                integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==,
-            }
-        dev: false
-
     /lodash.clonedeep/4.5.0:
         resolution: { integrity: sha1-4j8/nE+Pvd6HJSnBBxhXoIblzO8= }
         dev: true
@@ -8748,13 +8713,6 @@ packages:
             file-selector: 0.2.4
             prop-types: 15.7.2
             react: 17.0.2
-        dev: false
-
-    /react-fast-compare/2.0.4:
-        resolution:
-            {
-                integrity: sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==,
-            }
         dev: false
 
     /react-fast-compare/3.2.0:
