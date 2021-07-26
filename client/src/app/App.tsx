@@ -5,17 +5,20 @@ import ImportPythonPackageDialog from '../Components/Dialogs/MenuDialogs/ImportP
 import MenuBar from '../Components/Menu/MenuBar'
 import SelectionView from '../Components/SelectionView/SelectionView'
 import TreeView from '../Components/TreeView/TreeView'
-import { initializeAnnotations } from '../features/annotations/annotationSlice'
+import { initializeAnnotations, selectCurrentUserAction } from '../features/annotations/annotationSlice'
 import ImportAnnotationFileDialog from '../features/annotations/dialogs/ImportAnnotationFileDialog'
+import EnumForm from '../features/annotations/EnumForm'
+import RenameForm from '../features/annotations/RenameForm'
 import { PythonFilter } from '../model/python/PythonFilter'
 import PythonPackage from '../model/python/PythonPackage'
 import { parsePythonPackageJson, PythonPackageJson } from '../model/python/PythonPackageBuilder'
 import { useAppDispatch, useAppSelector } from './hooks'
 
-export default function App(): JSX.Element {
+const App: React.FC = () => {
     const [showImportAnnotationFileDialog, setShowImportAnnotationFileDialog] = useBoolean(false)
     const [showImportPythonPackageDialog, setShowImportPythonPackageDialog] = useBoolean(false)
     const [pythonPackage, setPythonPackage] = useState<PythonPackage>(new PythonPackage('empty'))
+    const currentUserAction = useAppSelector(selectCurrentUserAction)
 
     useEffect(() => {
         const getPythonPackageFromIndexedDB = async () => {
@@ -46,6 +49,7 @@ export default function App(): JSX.Element {
     const [filter, setFilter] = useState('')
     const pythonFilter = PythonFilter.fromFilterBoxInput(filter)
     const filteredPythonPackage = pythonPackage.filter(pythonFilter)
+    const userActionTarget = pythonPackage.getByRelativePathAsString(currentUserAction.target)
 
     return (
         <Grid
@@ -68,12 +72,15 @@ export default function App(): JSX.Element {
                 gridArea="leftPane"
                 overflow="auto"
                 minW="20vw"
+                w="40vw"
                 maxW="80vw"
                 borderRight={1}
                 layerStyle="subtleBorder"
                 resize="horizontal"
             >
-                <TreeView pythonPackage={filteredPythonPackage} />
+                {currentUserAction.type === 'none' && <TreeView pythonPackage={filteredPythonPackage} />}
+                {currentUserAction.type === 'enum' && <EnumForm target={userActionTarget || pythonPackage} />}
+                {currentUserAction.type === 'rename' && <RenameForm target={userActionTarget || pythonPackage} />}
             </GridItem>
             <GridItem gridArea="rightPane" overflow="auto">
                 <SelectionView pythonPackage={pythonPackage} />
@@ -96,3 +103,5 @@ export default function App(): JSX.Element {
         </Grid>
     )
 }
+
+export default App

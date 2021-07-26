@@ -20,13 +20,13 @@ export default function EnumPairRow(props: EnumPairRowProps): JSX.Element {
 
     const onInputStringValue = (event: React.ChangeEvent<HTMLInputElement>) => {
         //Key
-        props.pair.stringValue = event.target.value
+        props.pair.stringValue = event.target.value // TODO broken assignment
         setStringValue(event.target.value)
     }
 
     const onInputInstanceName = (event: React.ChangeEvent<HTMLInputElement>) => {
         //Value
-        props.pair.instanceName = event.target.value
+        props.pair.instanceName = event.target.value // TODO broken assignment
         setInstanceName(event.target.value)
     }
 

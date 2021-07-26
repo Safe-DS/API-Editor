@@ -9,6 +9,7 @@ export interface AnnotationsState {
     renamings: {
         [target: string]: RenameAnnotation
     }
+    currentUserAction: UserAction
 }
 
 export interface EnumAnnotation {
@@ -20,25 +21,42 @@ export interface EnumAnnotation {
     /**
      * Name of the enum class that should be created.
      */
-    enumName: string
-    enumPairs: EnumPair[]
+    readonly enumName: string
+    readonly enumPairs: EnumPair[]
 }
 
 export interface EnumPair {
-    stringValue: string
-    instanceName: string
+    stringValue: string // TODO: should be readonly
+    instanceName: string // TODO: should be readonly
 }
 
 export interface RenameAnnotation {
     /**
      * ID of the annotated Python declaration.
      */
-    target: string
+    readonly target: string
 
     /**
      * New name for the declaration.
      */
-    newName: string
+    readonly newName: string
+}
+
+type UserAction = typeof NoUserAction | EnumUserAction | RenameUserAction
+
+const NoUserAction = {
+    type: 'none',
+    target: '',
+}
+
+interface EnumUserAction {
+    readonly type: 'enum'
+    readonly target: string
+}
+
+interface RenameUserAction {
+    readonly type: 'rename'
+    readonly target: string
 }
 
 // Initial state -------------------------------------------------------------------------------------------------------
@@ -46,6 +64,7 @@ export interface RenameAnnotation {
 const initialState: AnnotationsState = {
     enums: {},
     renamings: {},
+    currentUserAction: NoUserAction,
 }
 
 // Thunks --------------------------------------------------------------------------------------------------------------
@@ -78,6 +97,21 @@ const annotationsSlice = createSlice({
         reset() {
             return initialState
         },
+        showEnumAnnotationForm(state, action: PayloadAction<string>) {
+            state.currentUserAction = {
+                type: 'enum',
+                target: action.payload,
+            }
+        },
+        showRenameAnnotationForm(state, action: PayloadAction<string>) {
+            state.currentUserAction = {
+                type: 'rename',
+                target: action.payload,
+            }
+        },
+        hideAnnotationForms(state) {
+            state.currentUserAction = NoUserAction
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(initializeAnnotations.fulfilled, (state, action) => {
@@ -94,6 +128,9 @@ export const {
     removeRenaming,
     set: setAnnotations,
     reset: resetAnnotations,
+    showEnumAnnotationForm,
+    showRenameAnnotationForm,
+    hideAnnotationForms,
 } = actions
 export default reducer
 
@@ -106,3 +143,4 @@ export const selectRenaming =
     (target: string) =>
     (state: RootState): RenameAnnotation | void =>
         selectAnnotations(state).renamings[target]
+export const selectCurrentUserAction = (state: RootState): UserAction => selectAnnotations(state).currentUserAction

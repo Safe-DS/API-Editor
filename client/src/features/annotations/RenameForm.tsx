@@ -1,20 +1,16 @@
 import React, { useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
-import { useAppDispatch, useAppSelector } from '../../../app/hooks'
-import DialogCSS from '../../../Components/Dialogs/dialogs.module.css'
-import '../../../Components/SelectionView/SelectionView.module.css'
-import PythonDeclaration from '../../../model/python/PythonDeclaration'
-import { Setter } from '../../../util/types'
-import { isValidPythonIdentifier } from '../../../util/validation'
-import { selectRenaming, upsertRenaming } from '../annotationSlice'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import '../../Components/SelectionView/SelectionView.module.css'
+import PythonDeclaration from '../../model/python/PythonDeclaration'
+import { isValidPythonIdentifier } from '../../util/validation'
+import { hideAnnotationForms, selectRenaming, upsertRenaming } from './annotationSlice'
 
-interface RenameDialogProps {
-    isVisible: boolean
-    setIsVisible: Setter<boolean>
-    target: PythonDeclaration
+interface RenameFormProps {
+    readonly target: PythonDeclaration
 }
 
-export default function RenameDialog(props: RenameDialogProps): JSX.Element {
+const RenameForm: React.FC<RenameFormProps> = (props) => {
     const target = props.target.pathAsString()
     const newName = useAppSelector(selectRenaming(target))?.newName
     const oldName = props.target.name
@@ -22,7 +18,7 @@ export default function RenameDialog(props: RenameDialogProps): JSX.Element {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => setCurrentUserInput(event.target.value)
     const dispatch = useAppDispatch()
     const close = () => {
-        props.setIsVisible(false)
+        dispatch(hideAnnotationForms())
     }
 
     const submit = () => {
@@ -33,12 +29,12 @@ export default function RenameDialog(props: RenameDialogProps): JSX.Element {
                     newName: currentUserInput,
                 }),
             )
-            props.setIsVisible(false)
+            dispatch(hideAnnotationForms())
         }
     }
 
     return (
-        <Modal onHide={close} show={props.isVisible} className={DialogCSS.annotationDialog}>
+        <>
             <Modal.Header closeButton>
                 <Modal.Title>Add @rename Annotation</Modal.Title>
             </Modal.Header>
@@ -70,6 +66,8 @@ export default function RenameDialog(props: RenameDialogProps): JSX.Element {
                     </Modal.Footer>
                 </Form>
             </Modal.Body>
-        </Modal>
+        </>
     )
 }
+
+export default RenameForm

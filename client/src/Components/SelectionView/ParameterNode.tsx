@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import React, { useState } from 'react'
+import React from 'react'
 import { Dropdown } from 'react-bootstrap'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import {
@@ -8,11 +8,11 @@ import {
     removeRenaming,
     selectEnum,
     selectRenaming,
+    showEnumAnnotationForm,
+    showRenameAnnotationForm,
     upsertEnum,
     upsertRenaming,
 } from '../../features/annotations/annotationSlice'
-import EnumDialog from '../../features/annotations/dialogs/EnumDialog/EnumDialog'
-import RenameDialog from '../../features/annotations/dialogs/RenameDialog'
 import PythonParameter from '../../model/python/PythonParameter'
 import { Optional } from '../../util/types'
 import AnnotationView from './AnnotationView'
@@ -25,8 +25,6 @@ interface ParameterNodeProps {
 }
 
 export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
-    const [showRenameDialog, setShowRenameDialog] = useState(false)
-    const [showEnumDialog, setShowEnumDialog] = useState(false)
     const dispatch = useAppDispatch()
     const id = props.pythonParameter.pathAsString()
 
@@ -53,8 +51,8 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
         }
     }
 
-    const openRenameDialog = () => setShowRenameDialog(true)
-    const openEnumDialog = () => setShowEnumDialog(true)
+    const openRenameDialog = () => dispatch(showRenameAnnotationForm(props.pythonParameter.pathAsString()))
+    const openEnumDialog = () => dispatch(showEnumAnnotationForm(props.pythonParameter.pathAsString()))
 
     const dropdownClassnames = classNames({
         [ParameterNodeCSS.parameterIsTitle]: props.isTitle,
@@ -99,19 +97,6 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
                         />
                     </div>
                 </>
-            )}
-
-            {/*This additional check cause the dialog to be thrown away after closing it, resetting its state*/}
-            {showRenameDialog && (
-                <RenameDialog
-                    target={props.pythonParameter}
-                    isVisible={showRenameDialog}
-                    setIsVisible={setShowRenameDialog}
-                />
-            )}
-
-            {showEnumDialog && (
-                <EnumDialog target={id} dialogState={showEnumDialog} setDialogState={setShowEnumDialog} />
             )}
 
             {props.pythonParameter.description ? (

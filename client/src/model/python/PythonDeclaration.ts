@@ -12,7 +12,7 @@ export default abstract class PythonDeclaration {
         let current: Optional<PythonDeclaration> = this
         const result: string[] = []
 
-        while (current !== null) {
+        while (current !== null && current !== undefined) {
             result.unshift(current.name)
             current = current.parent()
         }
@@ -35,5 +35,9 @@ export default abstract class PythonDeclaration {
                 .find((it) => it.name === head)
                 ?.getByRelativePath(tail) ?? null
         )
+    }
+
+    getByRelativePathAsString(relativePath: string): Optional<PythonDeclaration> {
+        return this.getByRelativePath(relativePath.split('/'))
     }
 }

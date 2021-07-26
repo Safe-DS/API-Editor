@@ -1,22 +1,19 @@
 import { Formik } from 'formik'
 import React, { useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
-import { useAppDispatch, useAppSelector } from '../../../../app/hooks'
-import DialogCSS from '../../../../Components/Dialogs/dialogs.module.css'
-import { isEmptyList } from '../../../../util/listOperations'
-import { Setter } from '../../../../util/types'
-import { isValidEnumInstanceName, isValidPythonIdentifier } from '../../../../util/validation'
-import { EnumPair, selectEnum, upsertEnum } from '../../annotationSlice'
-import EnumHandle from './EnumHandle'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import PythonDeclaration from '../../model/python/PythonDeclaration'
+import { isEmptyList } from '../../util/listOperations'
+import { isValidEnumInstanceName, isValidPythonIdentifier } from '../../util/validation'
+import { EnumPair, hideAnnotationForms, selectEnum, upsertEnum } from './annotationSlice'
+import EnumHandle from './dialogs/EnumDialog/EnumHandle'
 
 type showDialogState = {
-    target: string
-    dialogState: boolean
-    setDialogState: Setter<boolean>
+    target: PythonDeclaration
 }
 
-export default function EnumDialog(props: showDialogState): JSX.Element {
-    const enumDefinition = useAppSelector(selectEnum(props.target))
+export default function EnumForm(props: showDialogState): JSX.Element {
+    const enumDefinition = useAppSelector(selectEnum(props.target.pathAsString()))
     const [shouldValidate, setShouldValidate] = useState(false)
     const [name, setName] = useState(enumDefinition?.enumName ? enumDefinition?.enumName : '')
     const initialList: EnumPair[] = []
@@ -48,19 +45,19 @@ export default function EnumDialog(props: showDialogState): JSX.Element {
         if (name && isValidPythonIdentifier(name) && validInputInstances) {
             dispatch(
                 upsertEnum({
-                    target: props.target,
+                    target: props.target.pathAsString(),
                     enumName: name,
                     enumPairs: listOfEnumPairs,
                 }),
             )
-            props.setDialogState(false)
+            dispatch(hideAnnotationForms())
         } else {
             setShouldValidate(true)
         }
     }
 
     const handleClose = () => {
-        props.setDialogState(false)
+        dispatch(hideAnnotationForms())
     }
 
     if (enumDefinition?.enumPairs) {
@@ -70,7 +67,7 @@ export default function EnumDialog(props: showDialogState): JSX.Element {
     }
 
     return (
-        <Modal show={props.dialogState} onHide={handleClose} className={DialogCSS.annotationDialog}>
+        <>
             <Modal.Header closeButton>
                 <Modal.Title>Add @enum Annotation</Modal.Title>
             </Modal.Header>
@@ -115,6 +112,6 @@ export default function EnumDialog(props: showDialogState): JSX.Element {
                     </Form>
                 )}
             </Formik>
-        </Modal>
+        </>
     )
 }
