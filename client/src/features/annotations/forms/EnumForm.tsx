@@ -11,11 +11,11 @@ import {
 import React, { useEffect } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { FaPlus, FaTrash } from 'react-icons/fa'
-import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import { pythonIdentifierPattern } from '../../common/validation'
-import PythonDeclaration from '../../model/python/PythonDeclaration'
+import { useAppDispatch, useAppSelector } from '../../../app/hooks'
+import { pythonIdentifierPattern } from '../../../common/validation'
+import PythonDeclaration from '../../../model/python/PythonDeclaration'
 import AnnotationForm from './AnnotationForm'
-import { hideAnnotationForms, selectEnum, upsertEnum } from './annotationSlice'
+import { hideAnnotationForms, selectEnum, upsertEnum } from '../annotationSlice'
 
 interface EnumFormProps {
     target: PythonDeclaration
@@ -138,7 +138,7 @@ export default function EnumForm(props: EnumFormProps): JSX.Element {
             </HStack>
 
             {fields.map((field, index) => (
-                <HStack key={field.id} alignItems="start">
+                <HStack key={field.id} alignItems="flex-start">
                     <FormControl isInvalid={Boolean(errors?.pairs?.[index]?.stringValue)}>
                         <Input
                             {...register(`pairs.${index}.stringValue`, {

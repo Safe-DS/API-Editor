@@ -1,6 +1,19 @@
+import {
+    Box,
+    Button,
+    FormControl,
+    FormLabel,
+    Heading,
+    HStack,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+} from '@chakra-ui/react'
 import * as idb from 'idb-keyval'
 import React, { useState } from 'react'
-import { Button, Form, Modal } from 'react-bootstrap'
 import Dropzone from 'react-dropzone'
 import { useHistory } from 'react-router-dom'
 import { useAppDispatch } from '../../../app/hooks'
@@ -54,49 +67,50 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
     }
 
     return (
-        <Modal onHide={props.close} show={props.isVisible} size={'lg'} className={DialogCSS.modalDialog}>
-            <Modal.Header closeButton>
-                <Modal.Title>Import Python package</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <Form noValidate>
-                    <Modal.Body>
-                        <Form.Group>
-                            <Form.Label>Select a Python package to upload.</Form.Label>
-                            <div className={DialogCSS.dropzone}>
-                                <Dropzone onDrop={slurpAndParse}>
-                                    {({ getRootProps, getInputProps }) => (
-                                        <section>
-                                            <div {...getRootProps()}>
-                                                <input {...getInputProps()} />
-                                                <p className={DialogCSS.dropzoneText}>
-                                                    Drag and drop a Python package here, or click to select the file.
-                                                    <br />
-                                                    (Only *.json will be accepted.)
-                                                </p>
-                                            </div>
-                                        </section>
-                                    )}
-                                </Dropzone>
-                            </div>
-                            {fileName && (
-                                <div>
-                                    <strong>Imported package name: </strong>
-                                    {fileName}
-                                </div>
-                            )}
-                        </Form.Group>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="danger" onClick={props.close}>
+        <Modal onClose={props.close} isOpen={props.isVisible} size={'lg'}>
+            <ModalOverlay />
+            <ModalContent>
+                <ModalHeader>
+                    <Heading>Import Python package</Heading>
+                </ModalHeader>
+                <ModalBody>
+                    <FormControl>
+                        <FormLabel>Select a Python package to upload.</FormLabel>
+                        <Box className={DialogCSS.dropzone}>
+                            <Dropzone onDrop={slurpAndParse}>
+                                {({ getRootProps, getInputProps }) => (
+                                    <section>
+                                        <div {...getRootProps()}>
+                                            <input {...getInputProps()} />
+                                            <p className={DialogCSS.dropzoneText}>
+                                                Drag and drop a Python package here, or click to select the file.
+                                                <br />
+                                                (Only *.json will be accepted.)
+                                            </p>
+                                        </div>
+                                    </section>
+                                )}
+                            </Dropzone>
+                        </Box>
+                        {fileName && (
+                            <Box>
+                                <strong>Imported package name: </strong>
+                                {fileName}
+                            </Box>
+                        )}
+                    </FormControl>
+                </ModalBody>
+                <ModalFooter>
+                    <HStack spacing={4}>
+                        <Button colorScheme="red" onClick={props.close}>
                             Cancel
                         </Button>
-                        <Button variant="primary" type="button" onClick={submit}>
+                        <Button colorScheme="blue" onClick={submit}>
                             Submit
                         </Button>
-                    </Modal.Footer>
-                </Form>
-            </Modal.Body>
+                    </HStack>
+                </ModalFooter>
+            </ModalContent>
         </Modal>
     )
 }

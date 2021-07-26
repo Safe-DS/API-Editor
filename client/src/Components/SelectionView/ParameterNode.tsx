@@ -1,4 +1,4 @@
-import { Button, Icon, Menu, MenuButton, MenuItem, MenuList, Stack } from '@chakra-ui/react'
+import { Box, Button, Flex, Heading, Icon, Menu, MenuButton, MenuItem, MenuList, Stack } from '@chakra-ui/react'
 import classNames from 'classnames'
 import React from 'react'
 import { FaChevronDown } from 'react-icons/fa'
@@ -60,14 +60,18 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
     })
 
     return (
-        <div>
-            <div className={ParameterNodeCSS.parameterHeader}>
+        <Box>
+            <Flex justifyContent="flex-start" fontWeight="bold">
                 {props.isTitle ? (
-                    <h1 className={ParameterNodeCSS.parameterName}>{props.pythonParameter.name}</h1>
+                    <Heading as="h1" marginRight={1}>
+                        {props.pythonParameter.name}
+                    </Heading>
                 ) : (
-                    <h4 className={ParameterNodeCSS.parameterName}>{props.pythonParameter.name}</h4>
+                    <Heading as="h5" marginRight={1}>
+                        {props.pythonParameter.name}
+                    </Heading>
                 )}
-                <div className={dropdownClassnames}>
+                <Box className={dropdownClassnames}>
                     <Menu>
                         <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
                             + @Annotation
@@ -77,12 +81,12 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
                             <MenuItem onClick={openEnumDialog}>@Enum</MenuItem>
                         </MenuList>
                     </Menu>
-                </div>
-            </div>
+                </Box>
+            </Flex>
 
             {(newName || newEnumDefinition) && (
                 <>
-                    <h5 className="pl-1rem">Annotations</h5>
+                    <Heading>Annotations</Heading>
                     <Stack className={ParameterNodeCSS.annotationList}>
                         {newName !== null && newName !== undefined && (
                             <AnnotationView
@@ -109,6 +113,6 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
             ) : (
                 <p className="pl-1rem text-muted">There is no documentation for this parameter.</p>
             )}
-        </div>
+        </Box>
     )
 }

@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react'
 import React from 'react'
 import PythonParameter from '../../model/python/PythonParameter'
 import ParameterNode from './ParameterNode'
@@ -9,7 +10,7 @@ interface ParameterViewProps {
 
 export default function ParameterView(props: ParameterViewProps): JSX.Element {
     return (
-        <div>
+        <Box>
             <ParameterNode isTitle={true} pythonParameter={props.pythonParameter} />
             {props.pythonParameter.hasDefault && (
                 <TitleValueViewPair title="Default value" value={props.pythonParameter.defaultValue} />
@@ -20,6 +21,6 @@ export default function ParameterView(props: ParameterViewProps): JSX.Element {
                     <span className="pl-1rem">{props.pythonParameter.type}</span>
                 </>
             )}
-        </div>
+        </Box>
     )
 }

@@ -1,4 +1,4 @@
-import { Icon } from '@chakra-ui/react'
+import { Box, Icon } from '@chakra-ui/react'
 import classNames from 'classnames'
 import React, { useState } from 'react'
 import { IconType } from 'react-icons/lib'
@@ -7,7 +7,6 @@ import { useHistory } from 'react-router-dom'
 import PythonDeclaration from '../../model/python/PythonDeclaration'
 import { ChildrenProp } from '../../util/types'
 import VisibilityIndicator from '../Util/VisibilityIndicator'
-import TreeNodeCSS from './TreeNode.module.css'
 
 interface TreeNodeProps extends ChildrenProp {
     declaration: PythonDeclaration
@@ -22,14 +21,12 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element {
     const history = useHistory()
 
     const className = classNames({
-        [TreeNodeCSS.selected]: isSelected(props.declaration, currentPathname),
+        selected: isSelected(props.declaration, currentPathname),
         'text-muted': !props.isWorthClicking,
     })
 
     const level = levelOf(props.declaration)
-    const style = {
-        paddingLeft: level === 0 ? '1rem' : `calc(0.5 * ${level} * (1.25em + 0.25rem) + 1rem)`,
-    }
+    const paddingLeft = level === 0 ? '1rem' : `calc(0.5 * ${level} * (1.25em + 0.25rem) + 1rem)`
 
     const handleClick = () => {
         setShowChildren((prevState) => !prevState)
@@ -37,8 +34,8 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element {
     }
 
     return (
-        <div className={TreeNodeCSS.treeNode}>
-            <div className={className} style={style} onClick={handleClick}>
+        <Box userSelect="none" _hover={{ cursor: 'pointer' }}>
+            <Box className={className} paddingLeft={paddingLeft} onClick={handleClick}>
                 <VisibilityIndicator
                     hasChildren={props.isExpandable}
                     showChildren={showChildren}
@@ -46,9 +43,9 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element {
                 />
                 <Icon as={props.icon} marginRight={1} />
                 {props.declaration.name}
-            </div>
-            <div className={TreeNodeCSS.children}>{showChildren && props.children}</div>
-        </div>
+            </Box>
+            <Box>{showChildren && props.children}</Box>
+        </Box>
     )
 }
 

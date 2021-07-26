@@ -71,3 +71,12 @@ code {
 .w-fit-content {
     width: fit-content;
 }
+
+.text-muted {
+    color: #6c757d;
+}
+
+.selected {
+    background-color: cornflowerblue;
+    color: white !important;
+}

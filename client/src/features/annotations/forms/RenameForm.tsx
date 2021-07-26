@@ -1,11 +1,11 @@
 import { FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import { pythonIdentifierPattern } from '../../common/validation'
-import PythonDeclaration from '../../model/python/PythonDeclaration'
+import { useAppDispatch, useAppSelector } from '../../../app/hooks'
+import { pythonIdentifierPattern } from '../../../common/validation'
+import PythonDeclaration from '../../../model/python/PythonDeclaration'
+import { hideAnnotationForms, selectRenaming, upsertRenaming } from '../annotationSlice'
 import AnnotationForm from './AnnotationForm'
-import { hideAnnotationForms, selectRenaming, upsertRenaming } from './annotationSlice'
 
 interface RenameFormProps {
     readonly target: PythonDeclaration

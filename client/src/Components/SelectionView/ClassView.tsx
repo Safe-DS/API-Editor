@@ -1,4 +1,4 @@
-import { Heading } from '@chakra-ui/react'
+import { Box, Heading } from '@chakra-ui/react'
 import React from 'react'
 import PythonClass from '../../model/python/PythonClass'
 import DocumentationText from './DocumentationText'
@@ -10,7 +10,7 @@ interface ClassViewProps {
 
 export default function ClassView(props: ClassViewProps): JSX.Element {
     return (
-        <div>
+        <Box>
             <Heading as="h3" size="lg" p={4}>
                 {props.pythonClass.name}
             </Heading>
@@ -21,6 +21,6 @@ export default function ClassView(props: ClassViewProps): JSX.Element {
             )}
             <SectionListViewItem title={'Superclasses'} inputElements={props.pythonClass.superclasses} />
             <SectionListViewItem title={'Decorators'} inputElements={props.pythonClass.decorators} />
-        </div>
+        </Box>
     )
 }

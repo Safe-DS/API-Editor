@@ -1,5 +1,17 @@
+import {
+    Button,
+    FormControl,
+    FormLabel,
+    Heading,
+    HStack,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+} from '@chakra-ui/react'
 import React, { useState } from 'react'
-import { Button, Form, Modal } from 'react-bootstrap'
 import Dropzone from 'react-dropzone'
 import { useAppDispatch } from '../../../app/hooks'
 import DialogCSS from '../../../Components/Dialogs/dialogs.module.css'
@@ -48,49 +60,50 @@ export default function ImportAnnotationFileDialog(props: ImportAnnotationFileDi
     }
 
     return (
-        <Modal onHide={props.close} show={props.isVisible} size={'lg'} className={DialogCSS.modalDialog}>
-            <Modal.Header closeButton>
-                <Modal.Title>Import annotation file</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <Form noValidate>
-                    <Modal.Body>
-                        <Form.Group>
-                            <Form.Label>Select an annotation file to upload.</Form.Label>
-                            <div className={DialogCSS.dropzone}>
-                                <Dropzone onDrop={onDrop}>
-                                    {({ getRootProps, getInputProps }) => (
-                                        <section>
-                                            <div {...getRootProps()}>
-                                                <input {...getInputProps()} />
-                                                <p className={DialogCSS.dropzoneText}>
-                                                    Drag and drop an annotation file here or click to select the file.
-                                                    <br />
-                                                    (only *.json will be accepted)
-                                                </p>
-                                            </div>
-                                        </section>
-                                    )}
-                                </Dropzone>
+        <Modal onClose={props.close} isOpen={props.isVisible} size={'lg'}>
+            <ModalOverlay />
+            <ModalContent>
+                <ModalHeader>
+                    <Heading>Import annotation file</Heading>
+                </ModalHeader>
+                <ModalBody>
+                    <FormControl>
+                        <FormLabel>Select an annotation file to upload.</FormLabel>
+                        <div className={DialogCSS.dropzone}>
+                            <Dropzone onDrop={onDrop}>
+                                {({ getRootProps, getInputProps }) => (
+                                    <section>
+                                        <div {...getRootProps()}>
+                                            <input {...getInputProps()} />
+                                            <p className={DialogCSS.dropzoneText}>
+                                                Drag and drop an annotation file here or click to select the file.
+                                                <br />
+                                                (only *.json will be accepted)
+                                            </p>
+                                        </div>
+                                    </section>
+                                )}
+                            </Dropzone>
+                        </div>
+                        {fileName && (
+                            <div>
+                                <strong>Imported file: </strong>
+                                {fileName}
                             </div>
-                            {fileName && (
-                                <div>
-                                    <strong>Imported file: </strong>
-                                    {fileName}
-                                </div>
-                            )}
-                        </Form.Group>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="danger" onClick={props.close}>
+                        )}
+                    </FormControl>
+                </ModalBody>
+                <ModalFooter>
+                    <HStack spacing={4}>
+                        <Button colorScheme="red" onClick={props.close}>
                             Cancel
                         </Button>
-                        <Button variant="primary" type="button" onClick={submit}>
+                        <Button colorScheme="blue" onClick={submit}>
                             Submit
                         </Button>
-                    </Modal.Footer>
-                </Form>
-            </Modal.Body>
+                    </HStack>
+                </ModalFooter>
+            </ModalContent>
         </Modal>
     )
 }

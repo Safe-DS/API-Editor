@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react'
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import { CodeComponent } from 'react-markdown/src/ast-to-react'
@@ -6,7 +7,6 @@ import { materialLight } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import remarkGfm from 'remark-gfm'
 import PythonModule from '../../model/python/PythonModule'
 import { groupBy, isEmptyList } from '../../util/listOperations'
-import ModuleViewCSS from './ModuleView.module.css'
 
 interface ModuleViewProps {
     pythonModule: PythonModule
@@ -50,18 +50,18 @@ export default function ModuleView(props: ModuleViewProps): JSX.Element {
             <h1>{props.pythonModule.name}</h1>
             <h2>Imports</h2>
             {!isEmptyList(props.pythonModule.imports) && (
-                <div className={ModuleViewCSS.moduleList}>
+                <Box paddingLeft={4}>
                     <ReactMarkdown components={components} remarkPlugins={[remarkGfm]}>
                         {`~~~python\n${importString}\n~~~`}
                     </ReactMarkdown>
-                </div>
+                </Box>
             )}
             {!isEmptyList(props.pythonModule.fromImports) && (
-                <div className={ModuleViewCSS.moduleList}>
+                <Box paddingLeft={4}>
                     <ReactMarkdown components={components} remarkPlugins={[remarkGfm]}>
                         {`~~~python\n${fromImportString}\n~~~`}
                     </ReactMarkdown>
-                </div>
+                </Box>
             )}
             {isEmptyList(props.pythonModule.imports) && isEmptyList(props.pythonModule.fromImports) && (
                 <span className="text-muted" style={{ paddingLeft: '1rem' }}>
