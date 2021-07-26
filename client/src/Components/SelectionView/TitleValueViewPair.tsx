@@ -1,9 +1,9 @@
 import React from 'react'
-import { Nullable } from '../../util/types'
+import { Optional } from '../../util/types'
 
 interface ClassViewProps {
     title: string
-    value: Nullable<string>
+    value: Optional<string>
 }
 
 export default function TitleValueViewPair(props: ClassViewProps): JSX.Element {

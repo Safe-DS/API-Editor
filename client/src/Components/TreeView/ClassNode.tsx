@@ -1,5 +1,5 @@
-import { faChalkboard } from '@fortawesome/free-solid-svg-icons'
 import React from 'react'
+import { FaChalkboard } from 'react-icons/fa'
 import PythonClass from '../../model/python/PythonClass'
 import { isEmptyList } from '../../util/listOperations'
 import FunctionNode from './FunctionNode'
@@ -15,7 +15,7 @@ export default function ClassNode(props: ClassNodeProps): JSX.Element {
     return (
         <TreeNode
             declaration={props.pythonClass}
-            icon={faChalkboard}
+            icon={FaChalkboard}
             isExpandable={hasMethods}
             isWorthClicking={hasMethods}
         >

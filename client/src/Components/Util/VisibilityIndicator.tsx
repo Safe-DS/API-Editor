@@ -1,32 +1,27 @@
-import { faChevronDown, faChevronRight } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import classNames from 'classnames'
+import { Icon, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
-import { ClassNameProp } from '../../util/types'
-import BlankIcon from './BlankIcon'
-import VisibilityIndicatorCSS from './VisibilityIndicator.module.css'
+import { FaChevronDown, FaChevronRight } from 'react-icons/fa'
 
-interface VisibilityIndicatorProps extends ClassNameProp {
+interface VisibilityIndicatorProps {
     hasChildren: boolean
     showChildren: boolean
     isSelected?: boolean
 }
 
 export default function VisibilityIndicator({
-    className,
     hasChildren,
     showChildren,
     isSelected = false,
 }: VisibilityIndicatorProps): JSX.Element {
-    const cssClasses = classNames(className, {
-        [VisibilityIndicatorCSS.closed]: !isSelected && !showChildren,
-    })
+    const isClosed = !isSelected && !showChildren
+    const closedColor = useColorModeValue('gray.200', 'gray.700')
 
-    if (hasChildren) {
-        return (
-            <FontAwesomeIcon className={cssClasses} icon={showChildren ? faChevronDown : faChevronRight} fixedWidth />
-        )
-    } else {
-        return <BlankIcon className={className} />
-    }
+    return (
+        <Icon
+            as={showChildren ? FaChevronDown : FaChevronRight}
+            color={isClosed ? closedColor : 'inherit'}
+            opacity={hasChildren ? 1 : 0}
+            marginRight={1}
+        />
+    )
 }

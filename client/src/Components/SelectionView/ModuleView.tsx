@@ -1,12 +1,12 @@
+import { Box, Heading, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import { CodeComponent } from 'react-markdown/src/ast-to-react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { materialLight } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { materialLight, materialOceanic } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import remarkGfm from 'remark-gfm'
 import PythonModule from '../../model/python/PythonModule'
 import { groupBy, isEmptyList } from '../../util/listOperations'
-import ModuleViewCSS from './ModuleView.module.css'
 
 interface ModuleViewProps {
     pythonModule: PythonModule
@@ -15,9 +15,12 @@ interface ModuleViewProps {
 // See https://github.com/remarkjs/react-markdown#use-custom-components-syntax-highlight
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const code: CodeComponent = ({ node, inline, className, children, ...props }) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const style = useColorModeValue(materialLight, materialOceanic)
+
     const match = /language-(\w+)/.exec(className || '')
     return !inline && match ? (
-        <SyntaxHighlighter style={materialLight} language={match[1]} PreTag="div" {...props}>
+        <SyntaxHighlighter style={style} language={match[1]} PreTag="div" {...props}>
             {String(children).replace(/\n$/, '')}
         </SyntaxHighlighter>
     ) : (
@@ -46,28 +49,34 @@ export default function ModuleView(props: ModuleViewProps): JSX.Element {
         .join('\n')
 
     return (
-        <div>
-            <h1>{props.pythonModule.name}</h1>
-            <h2>Imports</h2>
-            {!isEmptyList(props.pythonModule.imports) && (
-                <div className={ModuleViewCSS.moduleList}>
-                    <ReactMarkdown components={components} remarkPlugins={[remarkGfm]}>
-                        {`~~~python\n${importString}\n~~~`}
-                    </ReactMarkdown>
-                </div>
-            )}
-            {!isEmptyList(props.pythonModule.fromImports) && (
-                <div className={ModuleViewCSS.moduleList}>
-                    <ReactMarkdown components={components} remarkPlugins={[remarkGfm]}>
-                        {`~~~python\n${fromImportString}\n~~~`}
-                    </ReactMarkdown>
-                </div>
-            )}
-            {isEmptyList(props.pythonModule.imports) && isEmptyList(props.pythonModule.fromImports) && (
-                <span className="text-muted" style={{ paddingLeft: '1rem' }}>
-                    There are no imports.
-                </span>
-            )}
-        </div>
+        <Stack spacing={8}>
+            <Heading as="h3" size="lg">
+                {props.pythonModule.name}
+            </Heading>
+            <Stack spacing={4}>
+                <Heading as="h4" size="md">
+                    Imports
+                </Heading>
+                {!isEmptyList(props.pythonModule.imports) && (
+                    <Box paddingLeft={4}>
+                        <ReactMarkdown components={components} remarkPlugins={[remarkGfm]}>
+                            {`~~~python\n${importString}\n~~~`}
+                        </ReactMarkdown>
+                    </Box>
+                )}
+                {!isEmptyList(props.pythonModule.fromImports) && (
+                    <Box paddingLeft={4}>
+                        <ReactMarkdown components={components} remarkPlugins={[remarkGfm]}>
+                            {`~~~python\n${fromImportString}\n~~~`}
+                        </ReactMarkdown>
+                    </Box>
+                )}
+                {isEmptyList(props.pythonModule.imports) && isEmptyList(props.pythonModule.fromImports) && (
+                    <Text className="text-muted" style={{ paddingLeft: '1rem' }}>
+                        There are no imports.
+                    </Text>
+                )}
+            </Stack>
+        </Stack>
     )
 }

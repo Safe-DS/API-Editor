@@ -1,43 +1,46 @@
+import { Heading, Stack, Text } from '@chakra-ui/react'
 import React from 'react'
-import AnnotationStore from '../../model/annotation/AnnotationStore'
 import PythonFunction from '../../model/python/PythonFunction'
 import { isEmptyList } from '../../util/listOperations'
-import { Setter } from '../../util/types'
 import DocumentationText from './DocumentationText'
 import ParameterNode from './ParameterNode'
-import FunctionViewCSS from './FunctionView.module.css'
 
 interface FunctionViewProps {
     pythonFunction: PythonFunction
-    annotationStore: AnnotationStore
-    setAnnotationStore: Setter<AnnotationStore>
 }
 
 export default function FunctionView(props: FunctionViewProps): JSX.Element {
     return (
-        <div>
-            <h1>{props.pythonFunction.name}</h1>
-            {props.pythonFunction.description ? (
-                <DocumentationText inputText={props.pythonFunction.description} />
-            ) : (
-                <p className="pl-1rem text-muted">There is no documentation for this function.</p>
-            )}
-            <h2 className={FunctionViewCSS.functionTitle}>Parameters</h2>
-            <div className="pl-1rem">
-                {!isEmptyList(props.pythonFunction.parameters) ? (
-                    props.pythonFunction.parameters.map((parameters) => (
-                        <ParameterNode
-                            key={parameters.name}
-                            pythonParameter={parameters}
-                            annotationStore={props.annotationStore}
-                            setAnnotationStore={props.setAnnotationStore}
-                            isTitle={false}
-                        />
-                    ))
+        <Stack spacing={8}>
+            <Stack spacing={4}>
+                <Heading as="h3" size="lg">
+                    {props.pythonFunction.name}
+                </Heading>
+                {props.pythonFunction.description ? (
+                    <DocumentationText inputText={props.pythonFunction.description} />
                 ) : (
-                    <span className="text-muted pl-1rem">There are no parameters.</span>
+                    <Text paddingLeft={4} className="text-muted">
+                        There is no documentation for this function.
+                    </Text>
                 )}
-            </div>
-        </div>
+            </Stack>
+
+            <Stack spacing={4}>
+                <Heading as="h4" size="md">
+                    Parameters
+                </Heading>
+                <Stack spacing={6} paddingLeft={4}>
+                    {!isEmptyList(props.pythonFunction.parameters) ? (
+                        props.pythonFunction.parameters.map((parameters) => (
+                            <ParameterNode key={parameters.name} pythonParameter={parameters} isTitle={false} />
+                        ))
+                    ) : (
+                        <Text paddingLeft={4} className="text-muted">
+                            There are no parameters.
+                        </Text>
+                    )}
+                </Stack>
+            </Stack>
+        </Stack>
     )
 }

@@ -1,4 +1,4 @@
-import { faKeyboard } from '@fortawesome/free-solid-svg-icons'
+import { FaKeyboard } from 'react-icons/fa'
 import React from 'react'
 import PythonParameter from '../../model/python/PythonParameter'
 import TreeNode from './TreeNode'
@@ -9,6 +9,6 @@ interface ParameterNodeProps {
 
 export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
     return (
-        <TreeNode declaration={props.pythonParameter} icon={faKeyboard} isExpandable={false} isWorthClicking={false} />
+        <TreeNode declaration={props.pythonParameter} icon={FaKeyboard} isExpandable={false} isWorthClicking={false} />
     )
 }

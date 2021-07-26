@@ -1,41 +1,36 @@
-import { faTrash, faWrench } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { ButtonGroup, Code, HStack, IconButton } from '@chakra-ui/react'
 import React from 'react'
-import { Button, ButtonGroup, Card } from 'react-bootstrap'
-import PythonEnum from '../../model/python/PythonEnum'
-import { Nullable, Setter } from '../../util/types'
+import { FaTrash, FaWrench } from 'react-icons/fa'
 
 interface AnnotationViewProps {
-    annotation: Nullable<string | PythonEnum>
-    setAnnotation: Setter<Nullable<string>> | Setter<Nullable<PythonEnum>>
+    type: string
+    name: string
     onEdit: () => void
+    onDelete: () => void
 }
 
 const AnnotationView: React.FC<AnnotationViewProps> = (props) => {
-    const deleteAnnotation = () => props.setAnnotation(null)
-
-    if (props.annotation !== null) {
-        return (
-            <Card className="mb-2 w-fit-content" bg="light">
-                <Card.Body>
-                    <code className="pe-3">
-                        {props.annotation instanceof PythonEnum
-                            ? `@enum: ${props.annotation.enumName}`
-                            : `@rename: ${props.annotation}`}
-                    </code>
-                    <ButtonGroup>
-                        <Button size="sm" onClick={props.onEdit}>
-                            <FontAwesomeIcon icon={faWrench} />
-                        </Button>
-                        <Button size="sm" onClick={deleteAnnotation}>
-                            <FontAwesomeIcon icon={faTrash} />
-                        </Button>
-                    </ButtonGroup>
-                </Card.Body>
-            </Card>
-        )
-    }
-    return <></>
+    return (
+        <HStack>
+            <Code padding={2} borderRadius="md">{`@${props.type}: ${props.name}`}</Code>
+            <ButtonGroup isAttached>
+                <IconButton
+                    icon={<FaWrench />}
+                    aria-label={'Edit annotation'}
+                    colorScheme="blue"
+                    size="sm"
+                    onClick={props.onEdit}
+                />
+                <IconButton
+                    icon={<FaTrash />}
+                    aria-label={'Delete annotation'}
+                    colorScheme="blue"
+                    size="sm"
+                    onClick={props.onDelete}
+                />
+            </ButtonGroup>
+        </HStack>
+    )
 }
 
 export default AnnotationView

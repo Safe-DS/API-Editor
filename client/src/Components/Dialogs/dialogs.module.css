@@ -1,16 +1,6 @@
-.modalDialog,
-.annotationDialog {
+.modalDialog {
     max-height: 80vh;
     margin-top: 5rem;
-}
-
-@media screen and (min-width: 1200px) {
-    .annotationDialog {
-        width: 500px;
-
-        /* Centers the dialog over the left pane */
-        margin-left: calc(25vw - 250px);
-    }
 }
 
 .dropzone {

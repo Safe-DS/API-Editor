@@ -1,4 +1,4 @@
-import { faArchive } from '@fortawesome/free-solid-svg-icons'
+import { FaArchive } from 'react-icons/fa'
 import React from 'react'
 import PythonModule from '../../model/python/PythonModule'
 import { isEmptyList } from '../../util/listOperations'
@@ -18,7 +18,7 @@ export default function ModuleNode(props: ModuleNodeProps): JSX.Element {
     return (
         <TreeNode
             declaration={props.pythonModule}
-            icon={faArchive}
+            icon={FaArchive}
             isExpandable={hasChildren}
             isWorthClicking={hasChildren}
         >

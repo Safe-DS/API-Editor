@@ -1,11 +1,11 @@
-import { Nullable } from '../../util/types'
+import { Optional } from '../../util/types'
 
 export default class PythonFromImport {
     readonly module: string
     readonly declaration: string
-    readonly alias: Nullable<string>
+    readonly alias: Optional<string>
 
-    constructor(module: string, declaration: string, alias: Nullable<string> = null) {
+    constructor(module: string, declaration: string, alias: Optional<string> = null) {
         this.module = module
         this.declaration = declaration
         this.alias = alias

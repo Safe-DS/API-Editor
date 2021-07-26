@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
-import NotificationReducer from '../features/notifications/notificationSlice'
+import AnnotationReducer from '../features/annotations/annotationSlice'
 
 export const store = configureStore({
     reducer: {
-        notifications: NotificationReducer,
+        annotations: AnnotationReducer,
     },
 })
 

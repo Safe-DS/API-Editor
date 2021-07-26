@@ -1,4 +1,4 @@
-import { Nullable } from '../../util/types'
+import { Optional } from '../../util/types'
 import PythonClass from './PythonClass'
 import PythonFromImport from './PythonFromImport'
 import PythonFunction from './PythonFunction'
@@ -47,7 +47,7 @@ function parsePythonModuleJson(moduleJson: PythonModuleJson): PythonModule {
 
 interface PythonImportJson {
     module: string
-    alias: Nullable<string>
+    alias: Optional<string>
 }
 
 function parsePythonImportJson(importJson: PythonImportJson): PythonImport {
@@ -57,7 +57,7 @@ function parsePythonImportJson(importJson: PythonImportJson): PythonImport {
 interface PythonFromImportJson {
     module: string
     declaration: string
-    alias: Nullable<string>
+    alias: Optional<string>
 }
 
 function parsePythonFromImportJson(fromImportJson: PythonFromImportJson): PythonFromImport {
@@ -69,9 +69,9 @@ interface PythonClassJson {
     decorators: string[]
     superclasses: string[]
     methods: PythonFunctionJson[]
-    summary: Nullable<string>
-    description: Nullable<string>
-    fullDocstring: Nullable<string>
+    summary: Optional<string>
+    description: Optional<string>
+    fullDocstring: Optional<string>
 }
 
 function parsePythonClassJson(classJson: PythonClassJson): PythonClass {
@@ -93,17 +93,17 @@ interface PythonFunctionJson {
     results: PythonResultJson[]
     hasReturnType: boolean
     returnType: string
-    summary: Nullable<string>
-    description: Nullable<string>
-    fullDocstring: Nullable<string>
+    summary: Optional<string>
+    description: Optional<string>
+    fullDocstring: Optional<string>
 }
 
 function parsePythonFunctionJson(functionJson: PythonFunctionJson): PythonFunction {
     return new PythonFunction(
         functionJson.name,
         functionJson.decorators,
-        functionJson.parameters.map(parsePythonParameterJson).sort((a, b) => a.name.localeCompare(b.name)),
-        functionJson.results.map(parsePythonResultJson).sort((a, b) => a.name.localeCompare(b.name)),
+        functionJson.parameters.map(parsePythonParameterJson),
+        functionJson.results.map(parsePythonResultJson),
         functionJson.returnType,
         functionJson.summary || '',
         functionJson.description || '',
@@ -114,12 +114,12 @@ function parsePythonFunctionJson(functionJson: PythonFunctionJson): PythonFuncti
 interface PythonParameterJson {
     name: string
     type: string
-    typeInDocs: Nullable<string>
+    typeInDocs: Optional<string>
     hasDefault: boolean
-    default: Nullable<string>
+    default: Optional<string>
     limitation: null
     ignored: boolean
-    description: Nullable<string>
+    description: Optional<string>
 }
 
 function parsePythonParameterJson(parameterJson: PythonParameterJson): PythonParameter {
@@ -138,8 +138,8 @@ function parsePythonParameterJson(parameterJson: PythonParameterJson): PythonPar
 interface PythonResultJson {
     name: string
     type: string
-    typeInDocs: Nullable<string>
-    description: Nullable<string>
+    typeInDocs: Optional<string>
+    description: Optional<string>
 }
 
 function parsePythonResultJson(resultJson: PythonResultJson): PythonResult {

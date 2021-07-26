@@ -1,4 +1,4 @@
-import { Nullable } from '../../util/types'
+import { Optional } from '../../util/types'
 import PythonDeclaration from './PythonDeclaration'
 import PythonFunction from './PythonFunction'
 
@@ -7,7 +7,7 @@ export default class PythonResult extends PythonDeclaration {
     readonly type: string
     readonly typeInDocs: string
     readonly description: string
-    containingFunction: Nullable<PythonFunction>
+    containingFunction: Optional<PythonFunction>
 
     constructor(name: string, type = 'Any', typeInDocs = '', description = '') {
         super()
@@ -19,7 +19,7 @@ export default class PythonResult extends PythonDeclaration {
         this.containingFunction = null
     }
 
-    parent(): Nullable<PythonFunction> {
+    parent(): Optional<PythonFunction> {
         return this.containingFunction
     }
 

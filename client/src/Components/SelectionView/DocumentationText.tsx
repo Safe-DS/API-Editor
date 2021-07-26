@@ -1,3 +1,4 @@
+import { Box, Flex } from '@chakra-ui/react'
 import classNames from 'classnames'
 import 'katex/dist/katex.min.css'
 import React, { useState } from 'react'
@@ -28,26 +29,26 @@ export default function DocumentationText({ inputText = '' }: DocumentationTextP
     })
 
     return (
-        <div
-            className={DocumentationTextCSS.docuParagraph}
+        <Flex
+            justifyContent="flex-start"
             onClick={() => {
                 setReadMore(true)
             }}
         >
             {hasMultipleLines && (
-                <div
-                    className="pointer-cursor"
+                <Box
+                    cursor="pointer"
                     onClick={(event) => {
                         event.stopPropagation()
                         setReadMore(!readMore)
                     }}
                 >
                     <VisibilityIndicator hasChildren={hasMultipleLines} showChildren={readMore} />
-                </div>
+                </Box>
             )}
             <ReactMarkdown className={cssClasses} rehypePlugins={[rehypeKatex]} remarkPlugins={[remarkGfm, remarkMath]}>
                 {readMore || !hasMultipleLines ? preprocessedText : shortenedText + ' [Read More...]'}
             </ReactMarkdown>
-        </div>
+        </Flex>
     )
 }

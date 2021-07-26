@@ -1,4 +1,4 @@
-import { Nullable } from '../../util/types'
+import { Optional } from '../../util/types'
 import PythonClass from './PythonClass'
 import PythonDeclaration from './PythonDeclaration'
 import { PythonFilter } from './PythonFilter'
@@ -15,7 +15,7 @@ export default class PythonFunction extends PythonDeclaration {
     readonly summary: string
     readonly description: string
     readonly fullDocstring: string
-    containingModuleOrClass: Nullable<PythonModule | PythonClass>
+    containingModuleOrClass: Optional<PythonModule | PythonClass>
 
     constructor(
         name: string,
@@ -48,7 +48,7 @@ export default class PythonFunction extends PythonDeclaration {
         })
     }
 
-    parent(): Nullable<PythonModule | PythonClass> {
+    parent(): Optional<PythonModule | PythonClass> {
         return this.containingModuleOrClass
     }
 

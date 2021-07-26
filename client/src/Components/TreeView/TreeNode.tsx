@@ -1,17 +1,16 @@
-import { IconDefinition } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Box, Icon } from '@chakra-ui/react'
 import classNames from 'classnames'
 import React, { useState } from 'react'
+import { IconType } from 'react-icons/lib'
 import { useLocation } from 'react-router'
 import { useHistory } from 'react-router-dom'
 import PythonDeclaration from '../../model/python/PythonDeclaration'
 import { ChildrenProp } from '../../util/types'
 import VisibilityIndicator from '../Util/VisibilityIndicator'
-import TreeNodeCSS from './TreeNode.module.css'
 
 interface TreeNodeProps extends ChildrenProp {
     declaration: PythonDeclaration
-    icon: IconDefinition
+    icon: IconType
     isExpandable: boolean
     isWorthClicking: boolean
 }
@@ -22,34 +21,31 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element {
     const history = useHistory()
 
     const className = classNames({
-        [TreeNodeCSS.selected]: isSelected(props.declaration, currentPathname),
+        selected: isSelected(props.declaration, currentPathname),
         'text-muted': !props.isWorthClicking,
     })
 
     const level = levelOf(props.declaration)
-    const style = {
-        paddingLeft: level === 0 ? '1rem' : `calc(0.5 * ${level} * (1.25em + 0.25rem) + 1rem)`,
-    }
+    const paddingLeft = level === 0 ? '1rem' : `calc(0.5 * ${level} * (1.25em + 0.25rem) + 1rem)`
 
     const handleClick = () => {
         setShowChildren((prevState) => !prevState)
-        history.push(`/${props.declaration.path().join('/')}`)
+        history.push(`/${props.declaration.pathAsString()}`)
     }
 
     return (
-        <div className={TreeNodeCSS.treeNode}>
-            <div className={className} style={style} onClick={handleClick}>
+        <Box userSelect="none" _hover={{ cursor: 'pointer' }}>
+            <Box className={className} paddingLeft={paddingLeft} onClick={handleClick}>
                 <VisibilityIndicator
-                    className={TreeNodeCSS.icon}
                     hasChildren={props.isExpandable}
                     showChildren={showChildren}
                     isSelected={isSelected(props.declaration, currentPathname)}
                 />
-                <FontAwesomeIcon className={TreeNodeCSS.icon} icon={props.icon} fixedWidth />
+                <Icon as={props.icon} marginRight={1} />
                 {props.declaration.name}
-            </div>
-            <div className={TreeNodeCSS.children}>{showChildren && props.children}</div>
-        </div>
+            </Box>
+            <Box>{showChildren && props.children}</Box>
+        </Box>
     )
 }
 
@@ -58,11 +54,11 @@ function levelOf(declaration: PythonDeclaration): number {
 }
 
 function isSelected(declaration: PythonDeclaration, currentPathname: string): boolean {
-    return `/${declaration.path().join('/')}` === currentPathname
+    return `/${declaration.pathAsString()}` === currentPathname
 }
 
 function selfOrChildIsSelected(declaration: PythonDeclaration, currentPathname: string): boolean {
-    const declarationPath = `/${declaration.path().join('/')}`
+    const declarationPath = `/${declaration.pathAsString()}`
     const currentPath = currentPathname
 
     // The slash prevents /sklearn/sklearn from opening when the path is /sklearn/sklearn.base
