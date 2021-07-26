@@ -9,16 +9,14 @@ interface AnnotationFormProps {
 
 const AnnotationForm: React.FC<AnnotationFormProps> = ({ heading, onCancel, onSave, children }) => {
     return (
-        <Stack spacing={1}>
-            <Heading as="h3" size="lg" p={4}>
+        <Stack spacing={8} p={4}>
+            <Heading as="h3" size="lg">
                 {heading}
             </Heading>
 
-            <Stack spacing={4} p={4}>
-                {children}
-            </Stack>
+            <Stack spacing={4}>{children}</Stack>
 
-            <HStack p={4}>
+            <HStack>
                 <Button colorScheme="blue" onClick={onSave}>
                     Save
                 </Button>

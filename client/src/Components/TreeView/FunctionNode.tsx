@@ -1,4 +1,4 @@
-import { faCogs } from '@fortawesome/free-solid-svg-icons'
+import { FaCogs } from 'react-icons/fa'
 import React from 'react'
 import PythonFunction from '../../model/python/PythonFunction'
 import { isEmptyList } from '../../util/listOperations'
@@ -13,7 +13,7 @@ export default function FunctionNode(props: FunctionNodeProps): JSX.Element {
     const hasParameters = !isEmptyList(props.pythonFunction.parameters)
 
     return (
-        <TreeNode declaration={props.pythonFunction} icon={faCogs} isExpandable={hasParameters} isWorthClicking={true}>
+        <TreeNode declaration={props.pythonFunction} icon={FaCogs} isExpandable={hasParameters} isWorthClicking={true}>
             {props.pythonFunction.parameters.map((parameter) => (
                 <ParameterNode key={parameter.name} pythonParameter={parameter} />
             ))}

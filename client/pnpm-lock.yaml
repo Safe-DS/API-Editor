@@ -7,9 +7,6 @@ specifiers:
     '@chakra-ui/styled-system': ^1.12.1
     '@emotion/react': ^11
     '@emotion/styled': ^11
-    '@fortawesome/fontawesome-svg-core': ^1.2.35
-    '@fortawesome/free-solid-svg-icons': ^5.15.3
-    '@fortawesome/react-fontawesome': ^0.1.14
     '@hookform/devtools': ^3.1.0
     '@popperjs/core': ^2.9.2
     '@reduxjs/toolkit': ^1.6.1
@@ -76,10 +73,6 @@ dependencies:
     '@chakra-ui/styled-system': 1.12.1
     '@emotion/react': 11.4.0_fe3438944b1b40b909f746c1015ed4cc
     '@emotion/styled': 11.3.0_10723a8ed514deb56574a12458f204d1
-    '@fortawesome/fontawesome-svg-core': 1.2.35
-    '@fortawesome/free-solid-svg-icons': 5.15.3
-    '@fortawesome/react-fontawesome': 0.1.14_ec0af2bc0907a851e3e0afc4708fd0f0
-    '@hookform/devtools': 3.1.0_3adc975cec96514bba5225cc5e778884
     '@popperjs/core': 2.9.2
     '@reduxjs/toolkit': 1.6.1_react-redux@7.2.4+react@17.0.2
     bootstrap: 5.0.2_@popperjs+core@2.9.2
@@ -107,6 +100,7 @@ dependencies:
 devDependencies:
     '@babel/core': 7.14.8
     '@chakra-ui/cli': 1.5.0_typescript@4.3.5
+    '@hookform/devtools': 3.1.0_3adc975cec96514bba5225cc5e778884
     '@testing-library/jest-dom': 5.14.1
     '@testing-library/react': 12.0.0_react-dom@17.0.2+react@17.0.2
     '@types/jest': 26.0.24
@@ -467,7 +461,6 @@ packages:
         dependencies:
             '@babel/core': 7.14.8
             '@babel/helper-plugin-utils': 7.14.5
-        dev: false
 
     /@babel/plugin-syntax-logical-assignment-operators/7.10.4_@babel+core@7.14.8:
         resolution:
@@ -1614,7 +1607,6 @@ packages:
             find-root: 1.1.0
             source-map: 0.5.7
             stylis: 4.0.10
-        dev: false
 
     /@emotion/cache/11.4.0:
         resolution:
@@ -1627,14 +1619,12 @@ packages:
             '@emotion/utils': 1.0.0
             '@emotion/weak-memoize': 0.2.5
             stylis: 4.0.10
-        dev: false
 
     /@emotion/hash/0.8.0:
         resolution:
             {
                 integrity: sha512-kBJtf7PH6aWwZ6fka3zQ0p6SBYzx4fl1LoZXE2RrnYST9Xljm7WfKJrU4g/Xr3Beg72MLrp1AWNUmuYJTL7Cow==,
             }
-        dev: false
 
     /@emotion/is-prop-valid/0.8.8:
         resolution:
@@ -1653,7 +1643,6 @@ packages:
             }
         dependencies:
             '@emotion/memoize': 0.7.5
-        dev: false
 
     /@emotion/memoize/0.7.4:
         resolution:
@@ -1668,7 +1657,6 @@ packages:
             {
                 integrity: sha512-igX9a37DR2ZPGYtV6suZ6whr8pTFtyHL3K/oLUotxpSVO2ASaprmAe2Dkq7tBo7CRY7MMDrAa9nuQP9/YG8FxQ==,
             }
-        dev: false
 
     /@emotion/react/11.4.0_fe3438944b1b40b909f746c1015ed4cc:
         resolution:
@@ -1695,7 +1683,6 @@ packages:
             '@types/react': 17.0.14
             hoist-non-react-statics: 3.3.2
             react: 17.0.2
-        dev: false
 
     /@emotion/serialize/1.0.2:
         resolution:
@@ -1708,14 +1695,12 @@ packages:
             '@emotion/unitless': 0.7.5
             '@emotion/utils': 1.0.0
             csstype: 3.0.8
-        dev: false
 
     /@emotion/sheet/1.0.1:
         resolution:
             {
                 integrity: sha512-GbIvVMe4U+Zc+929N1V7nW6YYJtidj31lidSmdYcWozwoBIObXBnaJkKNDjZrLm9Nc0BR+ZyHNaRZxqNZbof5g==,
             }
-        dev: false
 
     /@emotion/styled/11.3.0_10723a8ed514deb56574a12458f204d1:
         resolution:
@@ -1742,28 +1727,24 @@ packages:
             '@emotion/utils': 1.0.0
             '@types/react': 17.0.14
             react: 17.0.2
-        dev: false
 
     /@emotion/unitless/0.7.5:
         resolution:
             {
                 integrity: sha512-OWORNpfjMsSSUBVrRBVGECkhWcULOAJz9ZW8uK9qgxD+87M7jHRcvh/A96XXNhXTLmKcoYSQtBEX7lHMO7YRwg==,
             }
-        dev: false
 
     /@emotion/utils/1.0.0:
         resolution:
             {
                 integrity: sha512-mQC2b3XLDs6QCW+pDQDiyO/EdGZYOygE8s5N5rrzjSI4M3IejPE/JPndCBwRT9z982aqQNi6beWs1UeayrQxxA==,
             }
-        dev: false
 
     /@emotion/weak-memoize/0.2.5:
         resolution:
             {
                 integrity: sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==,
             }
-        dev: false
 
     /@eslint/eslintrc/0.4.3:
         resolution:
@@ -1784,51 +1765,6 @@ packages:
         transitivePeerDependencies:
             - supports-color
         dev: true
-
-    /@fortawesome/fontawesome-common-types/0.2.35:
-        resolution:
-            {
-                integrity: sha512-IHUfxSEDS9dDGqYwIW7wTN6tn/O8E0n5PcAHz9cAaBoZw6UpG20IG/YM3NNLaGPwPqgjBAFjIURzqoQs3rrtuw==,
-            }
-        engines: { node: '>=6' }
-        requiresBuild: true
-        dev: false
-
-    /@fortawesome/fontawesome-svg-core/1.2.35:
-        resolution:
-            {
-                integrity: sha512-uLEXifXIL7hnh2sNZQrIJWNol7cTVIzwI+4qcBIq9QWaZqUblm0IDrtSqbNg+3SQf8SMGHkiSigD++rHmCHjBg==,
-            }
-        engines: { node: '>=6' }
-        requiresBuild: true
-        dependencies:
-            '@fortawesome/fontawesome-common-types': 0.2.35
-        dev: false
-
-    /@fortawesome/free-solid-svg-icons/5.15.3:
-        resolution:
-            {
-                integrity: sha512-XPeeu1IlGYqz4VWGRAT5ukNMd4VHUEEJ7ysZ7pSSgaEtNvSo+FLurybGJVmiqkQdK50OkSja2bfZXOeyMGRD8Q==,
-            }
-        engines: { node: '>=6' }
-        requiresBuild: true
-        dependencies:
-            '@fortawesome/fontawesome-common-types': 0.2.35
-        dev: false
-
-    /@fortawesome/react-fontawesome/0.1.14_ec0af2bc0907a851e3e0afc4708fd0f0:
-        resolution:
-            {
-                integrity: sha512-4wqNb0gRLVaBm/h+lGe8UfPPivcbuJ6ecI4hIgW0LjI7kzpYB9FkN0L9apbVzg+lsBdcTf0AlBtODjcSX5mmKA==,
-            }
-        peerDependencies:
-            '@fortawesome/fontawesome-svg-core': ^1.2.32
-            react: '>=16.x'
-        dependencies:
-            '@fortawesome/fontawesome-svg-core': 1.2.35
-            prop-types: 15.7.2
-            react: 17.0.2
-        dev: false
 
     /@hookform/devtools/3.1.0_3adc975cec96514bba5225cc5e778884:
         resolution:
@@ -1852,7 +1788,7 @@ packages:
         transitivePeerDependencies:
             - '@babel/core'
             - '@types/react'
-        dev: false
+        dev: true
 
     /@humanwhocodes/config-array/0.5.0:
         resolution:
@@ -3429,7 +3365,6 @@ packages:
             '@babel/runtime': 7.14.8
             cosmiconfig: 6.0.0
             resolve: 1.20.0
-        dev: false
 
     /babel-preset-current-node-syntax/1.0.1_@babel+core@7.14.8:
         resolution:
@@ -4057,7 +3992,6 @@ packages:
             parse-json: 5.2.0
             path-type: 4.0.0
             yaml: 1.10.2
-        dev: false
 
     /cosmiconfig/7.0.0:
         resolution:
@@ -5205,7 +5139,6 @@ packages:
             {
                 integrity: sha512-NKfW6bec6GfKc0SGx1e07QZY9PE99u0Bft/0rzSD5k3sO/vwkVUpDUKVm5Gpp5Ue3YfShPFTX2070tDs5kB9Ng==,
             }
-        dev: false
 
     /find-up/2.1.0:
         resolution: { integrity: sha1-RdG35QbHF93UgndaK3eSCjwMV6c= }
@@ -5718,7 +5651,6 @@ packages:
             }
         dependencies:
             react-is: 16.13.1
-        dev: false
 
     /hosted-git-info/2.8.9:
         resolution:
@@ -7212,7 +7144,7 @@ packages:
             react: ^16.8.0 || ^17
         dependencies:
             react: 17.0.2
-        dev: false
+        dev: true
 
     /load-json-file/4.0.0:
         resolution: { integrity: sha1-L19Fq5HjMhYjT9U62rZo607AmTs= }
@@ -7268,6 +7200,7 @@ packages:
             {
                 integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==,
             }
+        dev: true
 
     /log-symbols/3.0.0:
         resolution:
@@ -8946,7 +8879,7 @@ packages:
         dependencies:
             react: 17.0.2
             react-dom: 17.0.2_react@17.0.2
-        dev: false
+        dev: true
 
     /react-style-singleton/2.1.1_b2f98f1a44929e460196386bafc39b6a:
         resolution:
@@ -10007,7 +9940,6 @@ packages:
             {
                 integrity: sha512-m3k+dk7QeJw660eIKRRn3xPF6uuvHs/FFzjX3HQ5ove0qYsiygoAhwn5a3IYKaZPo5LrYD0rfVmtv1gNY1uYwg==,
             }
-        dev: false
 
     /sugarss/2.0.0:
         resolution:

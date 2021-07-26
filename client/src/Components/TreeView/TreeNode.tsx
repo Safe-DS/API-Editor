@@ -1,7 +1,7 @@
-import { IconDefinition } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Icon } from '@chakra-ui/react'
 import classNames from 'classnames'
 import React, { useState } from 'react'
+import { IconType } from 'react-icons/lib'
 import { useLocation } from 'react-router'
 import { useHistory } from 'react-router-dom'
 import PythonDeclaration from '../../model/python/PythonDeclaration'
@@ -11,7 +11,7 @@ import TreeNodeCSS from './TreeNode.module.css'
 
 interface TreeNodeProps extends ChildrenProp {
     declaration: PythonDeclaration
-    icon: IconDefinition
+    icon: IconType
     isExpandable: boolean
     isWorthClicking: boolean
 }
@@ -40,12 +40,11 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element {
         <div className={TreeNodeCSS.treeNode}>
             <div className={className} style={style} onClick={handleClick}>
                 <VisibilityIndicator
-                    className={TreeNodeCSS.icon}
                     hasChildren={props.isExpandable}
                     showChildren={showChildren}
                     isSelected={isSelected(props.declaration, currentPathname)}
                 />
-                <FontAwesomeIcon className={TreeNodeCSS.icon} icon={props.icon} fixedWidth />
+                <Icon as={props.icon} marginRight={1} />
                 {props.declaration.name}
             </div>
             <div className={TreeNodeCSS.children}>{showChildren && props.children}</div>

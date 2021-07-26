@@ -1,3 +1,4 @@
+import { Heading } from '@chakra-ui/react'
 import React from 'react'
 import PythonClass from '../../model/python/PythonClass'
 import DocumentationText from './DocumentationText'
@@ -10,7 +11,9 @@ interface ClassViewProps {
 export default function ClassView(props: ClassViewProps): JSX.Element {
     return (
         <div>
-            <h1>{props.pythonClass.name}</h1>
+            <Heading as="h3" size="lg" p={4}>
+                {props.pythonClass.name}
+            </Heading>
             {props.pythonClass.description ? (
                 <DocumentationText inputText={props.pythonClass.description} />
             ) : (

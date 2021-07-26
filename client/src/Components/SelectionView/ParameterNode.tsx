@@ -1,6 +1,7 @@
+import { Button, Icon, Menu, MenuButton, MenuItem, MenuList, Stack } from '@chakra-ui/react'
 import classNames from 'classnames'
 import React from 'react'
-import { Dropdown } from 'react-bootstrap'
+import { FaChevronDown } from 'react-icons/fa'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import {
     EnumAnnotation,
@@ -67,35 +68,39 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
                     <h4 className={ParameterNodeCSS.parameterName}>{props.pythonParameter.name}</h4>
                 )}
                 <div className={dropdownClassnames}>
-                    <Dropdown>
-                        <Dropdown.Toggle size="sm" variant="primary">
+                    <Menu>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
                             + @Annotation
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            <Dropdown.Item onSelect={openRenameDialog}>@Rename</Dropdown.Item>
-                            <Dropdown.Item onSelect={openEnumDialog}>@Enum</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
+                        </MenuButton>
+                        <MenuList>
+                            <MenuItem onClick={openRenameDialog}>@Rename</MenuItem>
+                            <MenuItem onClick={openEnumDialog}>@Enum</MenuItem>
+                        </MenuList>
+                    </Menu>
                 </div>
             </div>
 
             {(newName || newEnumDefinition) && (
                 <>
                     <h5 className="pl-1rem">Annotations</h5>
-                    <div className={ParameterNodeCSS.annotationList}>
-                        <AnnotationView
-                            type="rename"
-                            name={newName}
-                            onEdit={openRenameDialog}
-                            onDelete={() => setNewName(null)}
-                        />
-                        <AnnotationView
-                            type="enum"
-                            name={newEnumDefinition?.enumName}
-                            onEdit={openEnumDialog}
-                            onDelete={() => setNewEnumDefinition(null)}
-                        />
-                    </div>
+                    <Stack className={ParameterNodeCSS.annotationList}>
+                        {newName !== null && newName !== undefined && (
+                            <AnnotationView
+                                type="rename"
+                                name={newName}
+                                onEdit={openRenameDialog}
+                                onDelete={() => setNewName(null)}
+                            />
+                        )}
+                        {newEnumDefinition?.enumName !== null && newEnumDefinition?.enumName !== undefined && (
+                            <AnnotationView
+                                type="enum"
+                                name={newEnumDefinition?.enumName as string}
+                                onEdit={openEnumDialog}
+                                onDelete={() => setNewEnumDefinition(null)}
+                            />
+                        )}
+                    </Stack>
                 </>
             )}
 

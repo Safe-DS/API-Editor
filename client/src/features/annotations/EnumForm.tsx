@@ -127,7 +127,7 @@ export default function EnumForm(props: EnumFormProps): JSX.Element {
             </FormControl>
 
             {/* Enum pairs ------------------------------------------------------------------------------------------*/}
-            <HStack justify="stretch">
+            <HStack>
                 <Text fontSize="md" fontWeight="medium" w="100%">
                     String value:
                 </Text>
@@ -165,8 +165,8 @@ export default function EnumForm(props: EnumFormProps): JSX.Element {
                     <IconButton
                         icon={<FaTrash />}
                         aria-label="Delete enum pair"
-                        disabled={fields.length <= 1}
                         colorScheme="red"
+                        disabled={fields.length <= 1}
                         onClick={onRemove(index)}
                     />
                 </HStack>
