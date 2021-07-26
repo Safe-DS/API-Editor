@@ -102,8 +102,8 @@ function parsePythonFunctionJson(functionJson: PythonFunctionJson): PythonFuncti
     return new PythonFunction(
         functionJson.name,
         functionJson.decorators,
-        functionJson.parameters.map(parsePythonParameterJson).sort((a, b) => a.name.localeCompare(b.name)),
-        functionJson.results.map(parsePythonResultJson).sort((a, b) => a.name.localeCompare(b.name)),
+        functionJson.parameters.map(parsePythonParameterJson),
+        functionJson.results.map(parsePythonResultJson),
         functionJson.returnType,
         functionJson.summary || '',
         functionJson.description || '',
