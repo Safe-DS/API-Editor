@@ -42,7 +42,6 @@ specifiers:
     gh-pages: ^3.2.3
     husky: ^7.0.1
     idb-keyval: ^5.0.6
-    immutable: ^4.0.0-rc.14
     jest: ^27.0.6
     katex: ^0.13.11
     lint-staged: ^11.0.1
@@ -87,7 +86,6 @@ dependencies:
     classnames: 2.3.1
     framer-motion: 4.1.17_react-dom@17.0.2+react@17.0.2
     idb-keyval: 5.0.6
-    immutable: 4.0.0-rc.14
     katex: 0.13.11
     mdast-util-to-hast-backport: 10.2.2
     react: 17.0.2
@@ -5873,13 +5871,6 @@ packages:
         resolution:
             {
                 integrity: sha512-2WuIehr2y4lmYz9gaQzetPR2ECniCifk4ORaQbU3g5EalLt+0IVTosEPJ5BoYl/75ky2mivzdRzV8wWgQGOSYQ==,
-            }
-        dev: false
-
-    /immutable/4.0.0-rc.14:
-        resolution:
-            {
-                integrity: sha512-pfkvmRKJSoW7JFx0QeYlAmT+kNYvn5j0u7bnpNq4N2RCvHSTlLT208G8jgaquNe+Q8kCPHKOSpxJkyvLDpYq0w==,
             }
         dev: false
 
