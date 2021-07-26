@@ -1,7 +1,5 @@
-export const pythonIdentifierPattern = /^[A-Za-z_][A-Za-z_0-9]*$/
-
 export function isValidPythonIdentifier(value: string): boolean {
-    return pythonIdentifierPattern.test(value)
+    return /^[A-Za-z_][A-Za-z_0-9]*$/.test(value)
 }
 
 export function isValidJsonFile(value: string): boolean {

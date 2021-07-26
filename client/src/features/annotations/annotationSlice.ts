@@ -22,12 +22,12 @@ export interface EnumAnnotation {
      * Name of the enum class that should be created.
      */
     readonly enumName: string
-    readonly enumPairs: EnumPair[]
+    readonly pairs: EnumPair[]
 }
 
 export interface EnumPair {
-    stringValue: string // TODO: should be readonly
-    instanceName: string // TODO: should be readonly
+    readonly stringValue: string
+    readonly instanceName: string
 }
 
 export interface RenameAnnotation {
@@ -137,10 +137,10 @@ export default reducer
 const selectAnnotations = (state: RootState) => state.annotations
 export const selectEnum =
     (target: string) =>
-    (state: RootState): EnumAnnotation | void =>
+    (state: RootState): EnumAnnotation | undefined =>
         selectAnnotations(state).enums[target]
 export const selectRenaming =
     (target: string) =>
-    (state: RootState): RenameAnnotation | void =>
+    (state: RootState): RenameAnnotation | undefined =>
         selectAnnotations(state).renamings[target]
 export const selectCurrentUserAction = (state: RootState): UserAction => selectAnnotations(state).currentUserAction
