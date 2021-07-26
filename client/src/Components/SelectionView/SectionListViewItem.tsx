@@ -1,3 +1,4 @@
+import { Box, Heading, Stack, Text } from '@chakra-ui/react'
 import React from 'react'
 import { isEmptyList } from '../../util/listOperations'
 
@@ -12,19 +13,21 @@ export default function SectionListViewItem(props: ClassViewItemProps): JSX.Elem
     }
 
     return (
-        <>
-            <h2>{props.title}</h2>
+        <Stack spacing={4}>
+            <Heading as="h4" size="md">
+                {props.title}
+            </Heading>
             {!isEmptyList(props.inputElements) ? (
                 props.inputElements.map((listElement, index) => (
-                    <div className="pl-1rem" key={index}>
+                    <Box paddingLeft={4} key={index}>
                         {listElement}
-                    </div>
+                    </Box>
                 ))
             ) : (
-                <span className="text-muted" style={{ paddingLeft: '1rem' }}>
+                <Text paddingLeft={4} className="text-muted">
                     There are no {props.title.toLowerCase()}.
-                </span>
+                </Text>
             )}
-        </>
+        </Stack>
     )
 }

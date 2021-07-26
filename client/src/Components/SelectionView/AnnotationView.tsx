@@ -1,4 +1,4 @@
-import { Box, ButtonGroup, Code, IconButton, useColorModeValue } from '@chakra-ui/react'
+import { ButtonGroup, Code, HStack, IconButton } from '@chakra-ui/react'
 import React from 'react'
 import { FaTrash, FaWrench } from 'react-icons/fa'
 
@@ -11,8 +11,8 @@ interface AnnotationViewProps {
 
 const AnnotationView: React.FC<AnnotationViewProps> = (props) => {
     return (
-        <Box bgColor={useColorModeValue('gray.200', 'gray.700')}>
-            <Code>{`@${props.type}: ${props.name}`}</Code>
+        <HStack>
+            <Code padding={2} borderRadius="md">{`@${props.type}: ${props.name}`}</Code>
             <ButtonGroup isAttached>
                 <IconButton
                     icon={<FaWrench />}
@@ -29,7 +29,7 @@ const AnnotationView: React.FC<AnnotationViewProps> = (props) => {
                     onClick={props.onDelete}
                 />
             </ButtonGroup>
-        </Box>
+        </HStack>
     )
 }
 

@@ -6,13 +6,13 @@ import { store } from './app/store'
 import App from './app/App'
 import './index.css'
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react'
-import theme from './theme'
+import apiEditorTheme from './theme'
 
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
-            <ChakraProvider theme={theme}>
-                <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+            <ChakraProvider theme={apiEditorTheme}>
+                <ColorModeScript initialColorMode={apiEditorTheme.config.initialColorMode} />
                 <HashRouter>
                     <App />
                 </HashRouter>
