@@ -29,7 +29,7 @@ const App: React.FC = () => {
         }
 
         getPythonPackageFromIndexedDB()
-    })
+    }, [])
 
     const annotationStore = useAppSelector((state) => state.annotations)
 
