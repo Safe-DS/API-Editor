@@ -1,29 +1,38 @@
 import React, { useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
-import { Nullable, Setter } from '../../../util/types'
-import { isValidPythonIdentifier } from '../../../util/validation'
-import '../../../Components/SelectionView/SelectionView.module.css'
+import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import DialogCSS from '../../../Components/Dialogs/dialogs.module.css'
+import '../../../Components/SelectionView/SelectionView.module.css'
+import PythonDeclaration from '../../../model/python/PythonDeclaration'
+import { Setter } from '../../../util/types'
+import { isValidPythonIdentifier } from '../../../util/validation'
+import { selectRenaming, upsertRenaming } from '../annotationSlice'
 
 interface RenameDialogProps {
     isVisible: boolean
     setIsVisible: Setter<boolean>
-    oldName: string
-    newName: Nullable<string>
-    setNewName: Setter<Nullable<string>>
+    target: PythonDeclaration
 }
 
 export default function RenameDialog(props: RenameDialogProps): JSX.Element {
-    const [currentUserInput, setCurrentUserInput] = useState(props.newName ?? props.oldName)
+    const target = props.target.pathAsString()
+    const newName = useAppSelector(selectRenaming(target))?.newName
+    const oldName = props.target.name
+    const [currentUserInput, setCurrentUserInput] = useState(newName ?? oldName)
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => setCurrentUserInput(event.target.value)
-
+    const dispatch = useAppDispatch()
     const close = () => {
         props.setIsVisible(false)
     }
 
     const submit = () => {
         if (isValidPythonIdentifier(currentUserInput)) {
-            props.setNewName(currentUserInput)
+            dispatch(
+                upsertRenaming({
+                    target,
+                    newName: currentUserInput,
+                }),
+            )
             props.setIsVisible(false)
         }
     }
@@ -38,7 +47,7 @@ export default function RenameDialog(props: RenameDialogProps): JSX.Element {
                 <Form noValidate>
                     <Modal.Body>
                         <Form.Group>
-                            <Form.Label>New name for &quot;{props.oldName}&quot;:</Form.Label>
+                            <Form.Label>New name for &quot;{oldName}&quot;:</Form.Label>
                             <Form.Control
                                 type="text"
                                 value={currentUserInput}

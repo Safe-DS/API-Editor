@@ -27,15 +27,13 @@ import React, { useRef } from 'react'
 import { FaCheck, FaChevronDown } from 'react-icons/fa'
 import { useLocation } from 'react-router'
 import { NavLink } from 'react-router-dom'
-import AnnotationStore from '../../model/annotation/AnnotationStore'
+import { useAppSelector } from '../../app/hooks'
 import { PythonFilter } from '../../model/python/PythonFilter'
 import PythonPackage from '../../model/python/PythonPackage'
 import { Setter } from '../../util/types'
 
 interface MenuBarProps {
     setPythonPackage: Setter<PythonPackage>
-    annotationStore: AnnotationStore
-    setAnnotationStore: Setter<AnnotationStore>
     filter: string
     setFilter: Setter<string>
     openImportAnnotationFileDialog: () => void
@@ -48,8 +46,14 @@ export default function MenuBar(props: MenuBarProps): JSX.Element {
 
     const pathname = useLocation().pathname.split('/').slice(1)
 
+    const annotationStore = useAppSelector((state) => state.annotations)
+
     const exportAnnotations = () => {
-        props.annotationStore.downloadAnnotations(props.annotationStore.toJsonString())
+        const a = document.createElement('a')
+        const file = new Blob([JSON.stringify(annotationStore)], { type: 'application/json' })
+        a.href = URL.createObjectURL(file)
+        a.download = 'annotations.json'
+        a.click()
     }
 
     return (

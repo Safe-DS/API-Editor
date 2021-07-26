@@ -1,26 +1,27 @@
 import React, { useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import Dropzone from 'react-dropzone'
-import AnnotationStore, { AnnotationJson } from '../../../model/annotation/AnnotationStore'
-import EnumPair from '../../../model/EnumPair'
-import PythonEnum from '../../../model/python/PythonEnum'
-import { Setter } from '../../../util/types'
-import { isValidJsonFile } from '../../../util/validation'
+import { useAppDispatch } from '../../../app/hooks'
 import DialogCSS from '../../../Components/Dialogs/dialogs.module.css'
+import { isValidJsonFile } from '../../../util/validation'
+import { AnnotationsState, setAnnotations } from '../annotationSlice'
 
 interface ImportAnnotationFileDialogProps {
     isVisible: boolean
     close: () => void
-    setAnnotationStore: Setter<AnnotationStore>
 }
 
 export default function ImportAnnotationFileDialog(props: ImportAnnotationFileDialogProps): JSX.Element {
     const [fileName, setFileName] = useState('')
-    const [newAnnotationStore, setNewAnnotationStore] = useState(new AnnotationStore())
+    const [newAnnotationStore, setNewAnnotationStore] = useState<AnnotationsState>({
+        enums: {},
+        renamings: {},
+    })
+    const dispatch = useAppDispatch()
 
     const submit = () => {
         if (fileName) {
-            props.setAnnotationStore(newAnnotationStore)
+            dispatch(setAnnotations(newAnnotationStore))
         }
         props.close()
     }
@@ -34,22 +35,8 @@ export default function ImportAnnotationFileDialog(props: ImportAnnotationFileDi
             const reader = new FileReader()
             reader.onload = () => {
                 if (typeof reader.result === 'string') {
-                    const readAnnotationJson = JSON.parse(reader.result) as AnnotationJson
-
-                    readAnnotationJson.renamings = new Map(Object.entries(readAnnotationJson.renamings))
-
-                    const enumEntries: [string, PythonEnum][] = Object.entries(readAnnotationJson.enums)
-                    readAnnotationJson.enums = new Map(
-                        enumEntries.map(([key, value]) => [
-                            key,
-                            new PythonEnum(
-                                value.enumName,
-                                value.enumPairs.map((pair) => new EnumPair(pair.key, pair.value)),
-                            ),
-                        ]),
-                    )
-
-                    setNewAnnotationStore(AnnotationStore.fromJson(readAnnotationJson))
+                    const readAnnotationJson = JSON.parse(reader.result) as AnnotationsState
+                    setNewAnnotationStore(readAnnotationJson)
                 }
             }
             reader.readAsText(acceptedFiles[0])

@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import * as idb from 'idb-keyval'
 import { RootState } from '../../app/store'
 
-interface AnnotationsState {
+export interface AnnotationsState {
     enums: {
         [target: string]: EnumAnnotation
     }
@@ -11,7 +11,7 @@ interface AnnotationsState {
     }
 }
 
-interface EnumAnnotation {
+export interface EnumAnnotation {
     /**
      * ID of the annotated Python declaration.
      */
@@ -24,12 +24,12 @@ interface EnumAnnotation {
     enumPairs: EnumPair[]
 }
 
-interface EnumPair {
+export interface EnumPair {
     stringValue: string
     instanceName: string
 }
 
-interface RenameAnnotation {
+export interface RenameAnnotation {
     /**
      * ID of the annotated Python declaration.
      */
@@ -50,7 +50,7 @@ const initialState: AnnotationsState = {
 
 // Thunks --------------------------------------------------------------------------------------------------------------
 
-export const initialize = createAsyncThunk('annotations/initialize', async () => {
+export const initializeAnnotations = createAsyncThunk('annotations/initialize', async () => {
     return (await idb.get('annotations')) as AnnotationsState
 })
 
@@ -72,26 +72,37 @@ const annotationsSlice = createSlice({
         removeRenaming(state, action: PayloadAction<string>) {
             delete state.renamings[action.payload]
         },
+        set(_state, action: PayloadAction<AnnotationsState>) {
+            return action.payload
+        },
+        reset() {
+            return initialState
+        },
     },
     extraReducers: (builder) => {
-        builder.addCase(initialize.fulfilled, (state, action) => {
+        builder.addCase(initializeAnnotations.fulfilled, (state, action) => {
             return action.payload
         })
     },
 })
 
 const { actions, reducer } = annotationsSlice
-export const { upsertEnum, removeEnum, upsertRenaming, removeRenaming } = actions
+export const {
+    upsertEnum,
+    removeEnum,
+    upsertRenaming,
+    removeRenaming,
+    set: setAnnotations,
+    reset: resetAnnotations,
+} = actions
 export default reducer
 
 const selectAnnotations = (state: RootState) => state.annotations
-export const selectEnum = (id: string) => (state: RootState) => selectAnnotations(state).enums[id]
-export const selectRenaming = (id: string) => (state: RootState) => selectAnnotations(state).renamings[id]
-
-// TODO: use createSelector whenever a computation actually is expensive (and only then)
-// See https://react-redux.js.org/api/hooks#using-memoizing-selectors
-
-// TODO: this should probably also contain the python package, since it only contains the annotations for the current
-//  python package? or we could store all annotations so we can work on multiple packages in parallel? in the latter case
-//  the separation would actually make sense. the latter case would be a decent idea if we also support to load multiple
-//  python packages at once
+export const selectEnum =
+    (target: string) =>
+    (state: RootState): EnumAnnotation | void =>
+        selectAnnotations(state).enums[target]
+export const selectRenaming =
+    (target: string) =>
+    (state: RootState): RenameAnnotation | void =>
+        selectAnnotations(state).renamings[target]

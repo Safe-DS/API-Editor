@@ -1,27 +1,22 @@
 import { Formik } from 'formik'
 import React, { useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
-import EnumPair from '../../../../model/EnumPair'
-import PythonEnum from '../../../../model/python/PythonEnum'
-import { isEmptyList } from '../../../../util/listOperations'
-import { Nullable, Setter } from '../../../../util/types'
-import { isValidPythonIdentifier } from '../../../../util/validation'
+import { useAppDispatch, useAppSelector } from '../../../../app/hooks'
 import DialogCSS from '../../../../Components/Dialogs/dialogs.module.css'
+import { isEmptyList } from '../../../../util/listOperations'
+import { Setter } from '../../../../util/types'
+import { isValidEnumInstanceName, isValidPythonIdentifier } from '../../../../util/validation'
+import { EnumPair, selectEnum, upsertEnum } from '../../annotationSlice'
 import EnumHandle from './EnumHandle'
 
 type showDialogState = {
+    target: string
     dialogState: boolean
     setDialogState: Setter<boolean>
-    enumDefinition: Nullable<PythonEnum>
-    setEnumDefinition: Setter<Nullable<PythonEnum>>
 }
 
-export default function EnumDialog({
-    dialogState,
-    setDialogState,
-    enumDefinition,
-    setEnumDefinition,
-}: showDialogState): JSX.Element {
+export default function EnumDialog(props: showDialogState): JSX.Element {
+    const enumDefinition = useAppSelector(selectEnum(props.target))
     const [shouldValidate, setShouldValidate] = useState(false)
     const [name, setName] = useState(enumDefinition?.enumName ? enumDefinition?.enumName : '')
     const initialList: EnumPair[] = []
@@ -29,10 +24,10 @@ export default function EnumDialog({
     const deepCloneOrEmpty = (from: EnumPair[], to: EnumPair[]) => {
         if (from.length > 0) {
             from.forEach(function (value) {
-                to.push(new EnumPair(value.key, value.value))
+                to.push({ ...value })
             })
         } else {
-            to.push(new EnumPair('', ''))
+            to.push({ stringValue: '', instanceName: '' })
         }
     }
 
@@ -40,33 +35,42 @@ export default function EnumDialog({
         setName(event.target.value)
     }
 
+    const dispatch = useAppDispatch()
+
     const onFormSubmit = () => {
         const validInputInstances =
             !isEmptyList(listOfEnumPairs) &&
             listOfEnumPairs.every(
-                (it) => it.key.length > 0 && it.value.length > 0 && it.isValidValue() && it.isValidKey(),
+                (it) =>
+                    it.stringValue.length > 0 && it.instanceName.length > 0 && isValidEnumInstanceName(it.instanceName),
             )
 
         if (name && isValidPythonIdentifier(name) && validInputInstances) {
-            setEnumDefinition(new PythonEnum(name, listOfEnumPairs))
-            setDialogState(false)
+            dispatch(
+                upsertEnum({
+                    target: props.target,
+                    enumName: name,
+                    enumPairs: listOfEnumPairs,
+                }),
+            )
+            props.setDialogState(false)
         } else {
             setShouldValidate(true)
         }
     }
 
     const handleClose = () => {
-        setDialogState(false)
+        props.setDialogState(false)
     }
 
     if (enumDefinition?.enumPairs) {
         deepCloneOrEmpty(enumDefinition?.enumPairs, initialList)
     } else {
-        initialList.push(new EnumPair('', ''))
+        initialList.push({ stringValue: '', instanceName: '' })
     }
 
     return (
-        <Modal show={dialogState} onHide={handleClose} className={DialogCSS.annotationDialog}>
+        <Modal show={props.dialogState} onHide={handleClose} className={DialogCSS.annotationDialog}>
             <Modal.Header closeButton>
                 <Modal.Title>Add @enum Annotation</Modal.Title>
             </Modal.Header>

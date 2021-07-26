@@ -2,8 +2,8 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
-import EnumPair from '../../../../model/EnumPair'
 import { Setter } from '../../../../util/types'
+import { EnumPair } from '../../annotationSlice'
 import EnumPairRow from './EnumPairRow'
 import EnumDialogCSS from './EnumDialog.module.css'
 
@@ -31,7 +31,10 @@ export default function EnumHandle({
 
     const addEnumInstance = () => {
         const tmpCopy = [...listOfEnumPairs]
-        tmpCopy.push(new EnumPair('', ''))
+        tmpCopy.push({
+            instanceName: '',
+            stringValue: '',
+        })
         setListOfEnumPairs(tmpCopy)
         setShouldValidate(false)
     }
@@ -55,7 +58,7 @@ export default function EnumHandle({
                 {listOfEnumPairs.map((pair, index) => (
                     <EnumPairRow
                         pair={pair}
-                        key={pair.key + '' + index}
+                        key={pair.stringValue + '' + index}
                         deleteFunction={() => deleteInstanceByIndex(index)}
                         shouldValidate={shouldValidate}
                         setShouldValidate={setShouldValidate}

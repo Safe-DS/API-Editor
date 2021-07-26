@@ -1,35 +1,56 @@
 import classNames from 'classnames'
 import React, { useState } from 'react'
 import { Dropdown } from 'react-bootstrap'
-import AnnotationStore from '../../model/annotation/AnnotationStore'
-import PythonEnum from '../../model/python/PythonEnum'
-import PythonParameter from '../../model/python/PythonParameter'
-import { Nullable, Setter } from '../../util/types'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import {
+    EnumAnnotation,
+    removeEnum,
+    removeRenaming,
+    selectEnum,
+    selectRenaming,
+    upsertEnum,
+    upsertRenaming,
+} from '../../features/annotations/annotationSlice'
 import EnumDialog from '../../features/annotations/dialogs/EnumDialog/EnumDialog'
 import RenameDialog from '../../features/annotations/dialogs/RenameDialog'
+import PythonParameter from '../../model/python/PythonParameter'
+import { Optional } from '../../util/types'
 import AnnotationView from './AnnotationView'
 import DocumentationText from './DocumentationText'
 import ParameterNodeCSS from './ParameterNode.module.css'
 
 interface ParameterNodeProps {
     pythonParameter: PythonParameter
-    annotationStore: AnnotationStore
-    setAnnotationStore: Setter<AnnotationStore>
     isTitle: boolean
 }
 
 export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
     const [showRenameDialog, setShowRenameDialog] = useState(false)
     const [showEnumDialog, setShowEnumDialog] = useState(false)
+    const dispatch = useAppDispatch()
+    const id = props.pythonParameter.pathAsString()
 
-    const newName = props.annotationStore.getRenamingFor(props.pythonParameter)
-    const setNewName = (newName: Nullable<string>) => {
-        props.setAnnotationStore(props.annotationStore.setRenamingFor(props.pythonParameter, newName))
+    const newName = useAppSelector(selectRenaming(id))?.newName
+    const setNewName = (newName: Optional<string>) => {
+        if (newName === undefined || newName === null || newName === props.pythonParameter.name) {
+            dispatch(removeRenaming(id))
+        } else {
+            dispatch(
+                upsertRenaming({
+                    target: id,
+                    newName,
+                }),
+            )
+        }
     }
 
-    const newEnumDefinition = props.annotationStore.getEnumFor(props.pythonParameter)
-    const setNewEnumDefinition = (newEnum: Nullable<PythonEnum>) => {
-        props.setAnnotationStore(props.annotationStore.setEnumFor(props.pythonParameter, newEnum))
+    const newEnumDefinition = useAppSelector(selectEnum(id))
+    const setNewEnumDefinition = (newEnum: Optional<EnumAnnotation>) => {
+        if (newEnum === undefined || newEnum === null) {
+            dispatch(removeEnum(id))
+        } else {
+            dispatch(upsertEnum(newEnum))
+        }
     }
 
     const openRenameDialog = () => setShowRenameDialog(true)
@@ -64,11 +85,17 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
                 <>
                     <h5 className="pl-1rem">Annotations</h5>
                     <div className={ParameterNodeCSS.annotationList}>
-                        <AnnotationView annotation={newName} setAnnotation={setNewName} onEdit={openRenameDialog} />
                         <AnnotationView
-                            annotation={newEnumDefinition}
-                            setAnnotation={setNewEnumDefinition}
+                            type="rename"
+                            name={newName}
+                            onEdit={openRenameDialog}
+                            onDelete={() => setNewName(null)}
+                        />
+                        <AnnotationView
+                            type="enum"
+                            name={newEnumDefinition?.enumName}
                             onEdit={openEnumDialog}
+                            onDelete={() => setNewEnumDefinition(null)}
                         />
                     </div>
                 </>
@@ -77,21 +104,14 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
             {/*This additional check cause the dialog to be thrown away after closing it, resetting its state*/}
             {showRenameDialog && (
                 <RenameDialog
+                    target={props.pythonParameter}
                     isVisible={showRenameDialog}
                     setIsVisible={setShowRenameDialog}
-                    oldName={props.pythonParameter.name}
-                    newName={newName}
-                    setNewName={setNewName}
                 />
             )}
 
             {showEnumDialog && (
-                <EnumDialog
-                    dialogState={showEnumDialog}
-                    setDialogState={setShowEnumDialog}
-                    enumDefinition={newEnumDefinition}
-                    setEnumDefinition={setNewEnumDefinition}
-                />
+                <EnumDialog target={id} dialogState={showEnumDialog} setDialogState={setShowEnumDialog} />
             )}
 
             {props.pythonParameter.description ? (

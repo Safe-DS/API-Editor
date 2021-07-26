@@ -2,8 +2,9 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
-import EnumPair from '../../../../model/EnumPair'
 import { Setter } from '../../../../util/types'
+import { isValidEnumInstanceName } from '../../../../util/validation'
+import { EnumPair } from '../../annotationSlice'
 import EnumDialogCSS from './EnumDialog.module.css'
 
 type EnumPairRowProps = {
@@ -14,19 +15,19 @@ type EnumPairRowProps = {
 }
 
 export default function EnumPairRow(props: EnumPairRowProps): JSX.Element {
-    const [enumValue, setEnumValue] = useState(props.pair.value)
-    const [enumKey, setEnumKey] = useState(props.pair.key)
+    const [instanceName, setInstanceName] = useState(props.pair.instanceName)
+    const [stringValue, setStringValue] = useState(props.pair.stringValue)
 
-    const onInputEnumKey = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const onInputStringValue = (event: React.ChangeEvent<HTMLInputElement>) => {
         //Key
-        props.pair.key = event.target.value
-        setEnumKey(event.target.value)
+        props.pair.stringValue = event.target.value
+        setStringValue(event.target.value)
     }
 
-    const onInputEnumValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const onInputInstanceName = (event: React.ChangeEvent<HTMLInputElement>) => {
         //Value
-        props.pair.value = event.target.value
-        setEnumValue(event.target.value)
+        props.pair.instanceName = event.target.value
+        setInstanceName(event.target.value)
     }
 
     return (
@@ -34,11 +35,19 @@ export default function EnumPairRow(props: EnumPairRowProps): JSX.Element {
             <Col xs={5} className="no-left-padding">
                 <Form.Control
                     type="text"
-                    value={enumValue}
-                    onChange={onInputEnumValue}
+                    value={stringValue}
+                    onChange={onInputStringValue}
+                    isInvalid={!!props.pair.stringValue || (!props.pair.stringValue && props.shouldValidate)}
+                />
+            </Col>
+            <Col xs={5} className="no-right-padding">
+                <Form.Control
+                    type="text"
+                    value={instanceName}
+                    onChange={onInputInstanceName}
                     isInvalid={
-                        (!props.pair.isValidValue() && !!props.pair.value) ||
-                        (!props.pair.value && props.shouldValidate)
+                        (!isValidEnumInstanceName(props.pair.instanceName) && !!props.pair.instanceName) ||
+                        (!props.pair.instanceName && props.shouldValidate)
                     }
                 />
                 <Form.Control.Feedback type="invalid">
@@ -46,21 +55,9 @@ export default function EnumPairRow(props: EnumPairRowProps): JSX.Element {
                     underscores.
                 </Form.Control.Feedback>
             </Col>
-            <Col xs={5} className="no-right-padding">
-                <Form.Control
-                    type="text"
-                    value={enumKey}
-                    onChange={onInputEnumKey}
-                    isInvalid={
-                        (!props.pair.isValidKey() && !!props.pair.key) || (!props.pair.key && props.shouldValidate)
-                    }
-                />
-                <Form.Control.Feedback type="invalid">
-                    Valid Python Enum Keys must start with a capital letter followed by letters and numbers.
-                </Form.Control.Feedback>
-            </Col>
+
             <Col xs={2} className={EnumDialogCSS.enumItemIcon}>
-                <Button size="sm" variant="danger" onClick={() => props.deleteFunction(enumKey)}>
+                <Button size="sm" variant="danger" onClick={() => props.deleteFunction(stringValue)}>
                     <FontAwesomeIcon icon={faTrash} />
                 </Button>
             </Col>

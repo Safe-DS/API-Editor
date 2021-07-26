@@ -5,11 +5,12 @@ import ImportPythonPackageDialog from '../Components/Dialogs/MenuDialogs/ImportP
 import MenuBar from '../Components/Menu/MenuBar'
 import SelectionView from '../Components/SelectionView/SelectionView'
 import TreeView from '../Components/TreeView/TreeView'
+import { initializeAnnotations } from '../features/annotations/annotationSlice'
 import ImportAnnotationFileDialog from '../features/annotations/dialogs/ImportAnnotationFileDialog'
-import AnnotationStore, { AnnotationJson } from '../model/annotation/AnnotationStore'
 import { PythonFilter } from '../model/python/PythonFilter'
 import PythonPackage from '../model/python/PythonPackage'
 import { parsePythonPackageJson, PythonPackageJson } from '../model/python/PythonPackageBuilder'
+import { useAppDispatch, useAppSelector } from './hooks'
 
 export default function App(): JSX.Element {
     const [showImportAnnotationFileDialog, setShowImportAnnotationFileDialog] = useBoolean(false)
@@ -27,22 +28,16 @@ export default function App(): JSX.Element {
         getPythonPackageFromIndexedDB()
     })
 
-    const [annotationStore, setAnnotationStore] = useState<AnnotationStore>(new AnnotationStore())
+    const annotationStore = useAppSelector((state) => state.annotations)
 
+    const dispatch = useAppDispatch()
     useEffect(() => {
-        const getAnnotationsFromIndexedDB = async () => {
-            const storedAnnotations = (await idb.get('annotations')) as AnnotationJson
-            if (storedAnnotations) {
-                setAnnotationStore(AnnotationStore.fromJson(storedAnnotations))
-            }
-        }
-
-        getAnnotationsFromIndexedDB()
-    }, [])
+        dispatch(initializeAnnotations())
+    }, [dispatch])
 
     useEffect(() => {
         const setAnnotationsInIndexedDB = async () => {
-            await idb.set('annotations', annotationStore.toJson())
+            await idb.set('annotations', annotationStore)
         }
 
         setAnnotationsInIndexedDB()
@@ -63,8 +58,6 @@ export default function App(): JSX.Element {
             <GridItem gridArea="menu" colSpan={2}>
                 <MenuBar
                     setPythonPackage={setPythonPackage}
-                    annotationStore={annotationStore}
-                    setAnnotationStore={setAnnotationStore}
                     filter={filter}
                     setFilter={setFilter}
                     openImportAnnotationFileDialog={setShowImportAnnotationFileDialog.on}
@@ -83,18 +76,13 @@ export default function App(): JSX.Element {
                 <TreeView pythonPackage={filteredPythonPackage} />
             </GridItem>
             <GridItem gridArea="rightPane" overflow="auto">
-                <SelectionView
-                    pythonPackage={pythonPackage}
-                    annotationStore={annotationStore}
-                    setAnnotationStore={setAnnotationStore}
-                />
+                <SelectionView pythonPackage={pythonPackage} />
             </GridItem>
 
             {showImportAnnotationFileDialog && (
                 <ImportAnnotationFileDialog
                     isVisible={showImportAnnotationFileDialog}
                     close={setShowImportAnnotationFileDialog.off}
-                    setAnnotationStore={setAnnotationStore}
                 />
             )}
             {showImportPythonPackageDialog && (
@@ -102,7 +90,6 @@ export default function App(): JSX.Element {
                     isVisible={showImportPythonPackageDialog}
                     close={setShowImportPythonPackageDialog.off}
                     setPythonPackage={setPythonPackage}
-                    setAnnotationStore={setAnnotationStore}
                     setFilter={setFilter}
                 />
             )}

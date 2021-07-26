@@ -3,7 +3,8 @@ import React, { useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import Dropzone from 'react-dropzone'
 import { useHistory } from 'react-router-dom'
-import AnnotationStore from '../../../model/annotation/AnnotationStore'
+import { useAppDispatch } from '../../../app/hooks'
+import { resetAnnotations } from '../../../features/annotations/annotationSlice'
 import PythonPackage from '../../../model/python/PythonPackage'
 import { parsePythonPackageJson, PythonPackageJson } from '../../../model/python/PythonPackageBuilder'
 import { Setter } from '../../../util/types'
@@ -14,7 +15,6 @@ interface ImportPythonPackageDialogProps {
     isVisible: boolean
     close: () => void
     setPythonPackage: Setter<PythonPackage>
-    setAnnotationStore: Setter<AnnotationStore>
     setFilter: Setter<string>
 }
 
@@ -22,6 +22,7 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
     const [fileName, setFileName] = useState('')
     const [newPythonPackage, setNewPythonPackage] = useState<string>()
     const history = useHistory()
+    const dispatch = useAppDispatch()
 
     const submit = async () => {
         props.close()
@@ -45,7 +46,7 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
             reader.onload = () => {
                 if (typeof reader.result === 'string') {
                     setNewPythonPackage(reader.result)
-                    props.setAnnotationStore(new AnnotationStore())
+                    dispatch(resetAnnotations())
                 }
             }
             reader.readAsText(acceptedFiles[0])

@@ -1,15 +1,15 @@
 import { isEmptyList } from '../../util/listOperations'
-import { Nullable } from '../../util/types'
+import { Optional } from '../../util/types'
 
 export default abstract class PythonDeclaration {
     abstract readonly name: string
 
-    abstract parent(): Nullable<PythonDeclaration>
+    abstract parent(): Optional<PythonDeclaration>
 
     abstract children(): PythonDeclaration[]
 
     path(): string[] {
-        let current: Nullable<PythonDeclaration> = this
+        let current: Optional<PythonDeclaration> = this
         const result: string[] = []
 
         while (current !== null) {
@@ -24,7 +24,7 @@ export default abstract class PythonDeclaration {
         return this.path().join('/')
     }
 
-    getByRelativePath(relativePath: string[]): Nullable<PythonDeclaration> {
+    getByRelativePath(relativePath: string[]): Optional<PythonDeclaration> {
         if (isEmptyList(relativePath)) {
             return this
         }

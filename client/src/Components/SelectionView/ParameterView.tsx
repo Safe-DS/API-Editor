@@ -1,25 +1,16 @@
 import React from 'react'
-import AnnotationStore from '../../model/annotation/AnnotationStore'
 import PythonParameter from '../../model/python/PythonParameter'
-import { Setter } from '../../util/types'
 import ParameterNode from './ParameterNode'
 import TitleValueViewPair from './TitleValueViewPair'
 
 interface ParameterViewProps {
     pythonParameter: PythonParameter
-    annotationStore: AnnotationStore
-    setAnnotationStore: Setter<AnnotationStore>
 }
 
 export default function ParameterView(props: ParameterViewProps): JSX.Element {
     return (
         <div>
-            <ParameterNode
-                isTitle={true}
-                pythonParameter={props.pythonParameter}
-                setAnnotationStore={props.setAnnotationStore}
-                annotationStore={props.annotationStore}
-            />
+            <ParameterNode isTitle={true} pythonParameter={props.pythonParameter} />
             {props.pythonParameter.hasDefault && (
                 <TitleValueViewPair title="Default value" value={props.pythonParameter.defaultValue} />
             )}

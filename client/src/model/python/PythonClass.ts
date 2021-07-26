@@ -1,5 +1,5 @@
 import { isEmptyList } from '../../util/listOperations'
-import { Nullable } from '../../util/types'
+import { Optional } from '../../util/types'
 import PythonDeclaration from './PythonDeclaration'
 import { PythonFilter } from './PythonFilter'
 import PythonFunction from './PythonFunction'
@@ -13,7 +13,7 @@ export default class PythonClass extends PythonDeclaration {
     readonly summary: string
     readonly description: string
     readonly fullDocstring: string
-    containingModule: Nullable<PythonModule>
+    containingModule: Optional<PythonModule>
 
     constructor(
         name: string,
@@ -40,7 +40,7 @@ export default class PythonClass extends PythonDeclaration {
         })
     }
 
-    parent(): Nullable<PythonModule> {
+    parent(): Optional<PythonModule> {
         return this.containingModule
     }
 
