@@ -67,7 +67,7 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
     }
 
     return (
-        <Modal onClose={props.close} isOpen={props.isVisible} size={'lg'}>
+        <Modal onClose={props.close} isOpen={props.isVisible} size="xl">
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>
