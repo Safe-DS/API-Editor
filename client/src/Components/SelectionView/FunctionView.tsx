@@ -30,7 +30,7 @@ export default function FunctionView(props: FunctionViewProps): JSX.Element {
                     {props.pythonFunction.description ? (
                         <DocumentationText inputText={props.pythonFunction.description} />
                     ) : (
-                        <Text className="text-muted">There is no documentation for this function.</Text>
+                        <Text color="gray.500">There is no documentation for this function.</Text>
                     )}
                 </Box>
             </Stack>
@@ -45,7 +45,7 @@ export default function FunctionView(props: FunctionViewProps): JSX.Element {
                             <ParameterNode key={parameters.name} pythonParameter={parameters} isTitle={false} />
                         ))
                     ) : (
-                        <Text paddingLeft={4} className="text-muted">
+                        <Text paddingLeft={4} color="gray.500">
                             There are no parameters.
                         </Text>
                     )}

@@ -24,7 +24,7 @@ export default function SectionListViewItem(props: ClassViewItemProps): JSX.Elem
                     </Box>
                 ))
             ) : (
-                <Text paddingLeft={4} className="text-muted">
+                <Text paddingLeft={4} color="gray.500">
                     There are no {props.title.toLowerCase()}.
                 </Text>
             )}

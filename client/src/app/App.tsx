@@ -1,7 +1,7 @@
 import { Grid, GridItem, useBoolean } from '@chakra-ui/react'
 import * as idb from 'idb-keyval'
 import React, { useEffect, useState } from 'react'
-import ImportPythonPackageDialog from '../Components/Dialogs/MenuDialogs/ImportPythonPackageDialog'
+import ImportPythonPackageDialog from '../Components/Menu/ImportPythonPackageDialog'
 import MenuBar from '../Components/Menu/MenuBar'
 import SelectionView from '../Components/SelectionView/SelectionView'
 import TreeView from '../Components/TreeView/TreeView'

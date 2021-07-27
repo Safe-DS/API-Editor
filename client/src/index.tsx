@@ -1,11 +1,10 @@
+import { ChakraProvider, ColorModeScript } from '@chakra-ui/react'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { HashRouter } from 'react-router-dom'
-import { store } from './app/store'
 import App from './app/App'
-import './index.css'
-import { ChakraProvider, ColorModeScript } from '@chakra-ui/react'
+import { store } from './app/store'
 import apiEditorTheme from './theme'
 
 ReactDOM.render(

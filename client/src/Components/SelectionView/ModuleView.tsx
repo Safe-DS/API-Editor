@@ -71,7 +71,7 @@ export default function ModuleView(props: ModuleViewProps): JSX.Element {
                     </Box>
                 )}
                 {isEmptyList(props.pythonModule.imports) && isEmptyList(props.pythonModule.fromImports) && (
-                    <Text className="text-muted" style={{ paddingLeft: '1rem' }}>
+                    <Text color="gray.500" paddingLeft={4}>
                         There are no imports.
                     </Text>
                 )}
