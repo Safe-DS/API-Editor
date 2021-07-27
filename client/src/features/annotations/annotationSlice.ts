@@ -9,10 +9,13 @@ export interface AnnotationsState {
     renamings: {
         [target: string]: RenameAnnotation
     }
+    unuseds: {
+        [target: string]: UnusedAnnotation
+    }
     currentUserAction: UserAction
 }
 
-export interface EnumAnnotation {
+interface EnumAnnotation {
     /**
      * ID of the annotated Python declaration.
      */
@@ -25,12 +28,12 @@ export interface EnumAnnotation {
     readonly pairs: EnumPair[]
 }
 
-export interface EnumPair {
+interface EnumPair {
     readonly stringValue: string
     readonly instanceName: string
 }
 
-export interface RenameAnnotation {
+interface RenameAnnotation {
     /**
      * ID of the annotated Python declaration.
      */
@@ -40,6 +43,13 @@ export interface RenameAnnotation {
      * New name for the declaration.
      */
     readonly newName: string
+}
+
+interface UnusedAnnotation {
+    /**
+     * ID of the annotated Python declaration.
+     */
+    readonly target: string
 }
 
 type UserAction = typeof NoUserAction | EnumUserAction | RenameUserAction
@@ -64,6 +74,7 @@ interface RenameUserAction {
 const initialState: AnnotationsState = {
     enums: {},
     renamings: {},
+    unuseds: {},
     currentUserAction: NoUserAction,
 }
 
@@ -79,6 +90,12 @@ const annotationsSlice = createSlice({
     name: 'annotations',
     initialState,
     reducers: {
+        set(_state, action: PayloadAction<AnnotationsState>) {
+            return action.payload
+        },
+        reset() {
+            return initialState
+        },
         upsertEnum(state, action: PayloadAction<EnumAnnotation>) {
             state.enums[action.payload.target] = action.payload
         },
@@ -91,11 +108,11 @@ const annotationsSlice = createSlice({
         removeRenaming(state, action: PayloadAction<string>) {
             delete state.renamings[action.payload]
         },
-        set(_state, action: PayloadAction<AnnotationsState>) {
-            return action.payload
+        addUnused(state, action: PayloadAction<UnusedAnnotation>) {
+            state.unuseds[action.payload.target] = action.payload
         },
-        reset() {
-            return initialState
+        removeUnused(state, action: PayloadAction<string>) {
+            delete state.unuseds[action.payload]
         },
         showEnumAnnotationForm(state, action: PayloadAction<string>) {
             state.currentUserAction = {
@@ -122,12 +139,16 @@ const annotationsSlice = createSlice({
 
 const { actions, reducer } = annotationsSlice
 export const {
+    set: setAnnotations,
+    reset: resetAnnotations,
+
     upsertEnum,
     removeEnum,
     upsertRenaming,
     removeRenaming,
-    set: setAnnotations,
-    reset: resetAnnotations,
+    addUnused,
+    removeUnused,
+
     showEnumAnnotationForm,
     showRenameAnnotationForm,
     hideAnnotationForms,
@@ -143,4 +164,8 @@ export const selectRenaming =
     (target: string) =>
     (state: RootState): RenameAnnotation | undefined =>
         selectAnnotations(state).renamings[target]
+export const selectUnused =
+    (target: string) =>
+    (state: RootState): UnusedAnnotation | undefined =>
+        selectAnnotations(state).unuseds[target]
 export const selectCurrentUserAction = (state: RootState): UserAction => selectAnnotations(state).currentUserAction

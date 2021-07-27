@@ -29,6 +29,7 @@ export default function ImportAnnotationFileDialog(props: ImportAnnotationFileDi
     const [newAnnotationStore, setNewAnnotationStore] = useState<AnnotationsState>({
         enums: {},
         renamings: {},
+        unuseds: {},
         currentUserAction: {
             target: '',
             type: 'none',
