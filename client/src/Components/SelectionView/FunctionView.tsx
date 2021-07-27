@@ -1,4 +1,4 @@
-import { Heading, HStack, Stack, Text } from '@chakra-ui/react'
+import { Box, Heading, HStack, Stack, Text } from '@chakra-ui/react'
 import React from 'react'
 import AnnotationDropdown from '../../features/annotations/menus/AnnotationDropdown'
 import AnnotationView from '../../features/annotations/views/AnnotationView'
@@ -23,15 +23,16 @@ export default function FunctionView(props: FunctionViewProps): JSX.Element {
                     </Heading>
                     <AnnotationDropdown target={id} showRename showUnused />
                 </HStack>
+
                 <AnnotationView target={id} />
 
-                {props.pythonFunction.description ? (
-                    <DocumentationText inputText={props.pythonFunction.description} />
-                ) : (
-                    <Text paddingLeft={4} className="text-muted">
-                        There is no documentation for this function.
-                    </Text>
-                )}
+                <Box paddingLeft={4}>
+                    {props.pythonFunction.description ? (
+                        <DocumentationText inputText={props.pythonFunction.description} />
+                    ) : (
+                        <Text className="text-muted">There is no documentation for this function.</Text>
+                    )}
+                </Box>
             </Stack>
 
             <Stack spacing={4}>

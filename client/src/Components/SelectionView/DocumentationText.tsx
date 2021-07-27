@@ -24,7 +24,6 @@ export default function DocumentationText({ inputText = '' }: DocumentationTextP
     const [readMore, setReadMore] = useState(false)
 
     const cssClasses = classNames(DocumentationTextCSS.readMoreButton, {
-        'pl-1rem': !hasMultipleLines,
         'pointer-cursor': hasMultipleLines && !readMore,
     })
 
