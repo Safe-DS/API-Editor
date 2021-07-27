@@ -5,8 +5,10 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import {
     removeEnum,
     removeRenaming,
+    removeUnused,
     selectEnum,
     selectRenaming,
+    selectUnused,
     showEnumAnnotationForm,
     showRenameAnnotationForm,
 } from '../annotationSlice'
@@ -19,9 +21,10 @@ const AnnotationView: React.FC<AnnotationViewProps> = ({ target }) => {
     const dispatch = useAppDispatch()
 
     const renameAnnotation = useAppSelector(selectRenaming(target))
+    const unusedAnnotation = useAppSelector(selectUnused(target))
     const enumAnnotation = useAppSelector(selectEnum(target))
 
-    if (!renameAnnotation && !enumAnnotation) {
+    if (!renameAnnotation && !unusedAnnotation && !enumAnnotation) {
         return <></>
     }
 
@@ -35,6 +38,7 @@ const AnnotationView: React.FC<AnnotationViewProps> = ({ target }) => {
                     onDelete={() => dispatch(removeRenaming(target))}
                 />
             )}
+            {unusedAnnotation && <Annotation type="unused" onDelete={() => dispatch(removeUnused(target))} />}
             {enumAnnotation && (
                 <Annotation
                     type="enum"
@@ -49,32 +53,29 @@ const AnnotationView: React.FC<AnnotationViewProps> = ({ target }) => {
 
 interface AnnotationProps {
     type: string
-    name: string
+    name?: string
     onEdit?: () => void
     onDelete: () => void
 }
 
-const Annotation: React.FC<AnnotationProps> = (props) => {
+const Annotation: React.FC<AnnotationProps> = ({ name, onDelete, onEdit, type }) => {
     return (
         <ButtonGroup size="sm" variant="outline" isAttached>
             <Button
                 leftIcon={<FaWrench />}
                 flexGrow={1}
                 justifyContent="flex-start"
-                disabled={!props.onEdit}
-                onClick={props.onEdit}
+                disabled={!onEdit}
+                onClick={onEdit}
             >
-                @{props.type}
-                <Text as="span" fontWeight={'normal'} justifySelf="flex-end">
-                    : {props.name}
-                </Text>
+                @{type}
+                {name && (
+                    <Text as="span" fontWeight={'normal'} justifySelf="flex-end">
+                        : {name}
+                    </Text>
+                )}
             </Button>
-            <IconButton
-                icon={<FaTrash />}
-                aria-label={'Delete annotation'}
-                colorScheme="red"
-                onClick={props.onDelete}
-            />
+            <IconButton icon={<FaTrash />} aria-label={'Delete annotation'} colorScheme="red" onClick={onDelete} />
         </ButtonGroup>
     )
 }
