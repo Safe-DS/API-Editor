@@ -24,6 +24,7 @@ Possible **scopes** are:
 
 | Scope           | Meaning                                                                               |
 | --------------- | ------------------------------------------------------------------------------------- |
+| `annotations`   | New annotations or changes to existing ones                                           |
 | `devcontainer`  | [VS Code development container](https://code.visualstudio.com/docs/remote/containers) |
 | `dialog`        | (Modal) dialogs                                                                       |
 | `menuBar`       | Menu bar at the top                                                                   |

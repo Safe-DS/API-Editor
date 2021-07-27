@@ -95,11 +95,11 @@ export default function ImportAnnotationFileDialog(props: ImportAnnotationFileDi
                 </ModalBody>
                 <ModalFooter>
                     <HStack spacing={4}>
-                        <Button colorScheme="red" onClick={props.close}>
-                            Cancel
-                        </Button>
                         <Button colorScheme="blue" onClick={submit}>
                             Submit
+                        </Button>
+                        <Button colorScheme="red" onClick={props.close}>
+                            Cancel
                         </Button>
                     </HStack>
                 </ModalFooter>

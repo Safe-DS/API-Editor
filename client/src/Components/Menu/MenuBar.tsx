@@ -21,6 +21,7 @@ import {
     PopoverContent,
     PopoverTrigger,
     Spacer,
+    Text,
     useColorMode,
 } from '@chakra-ui/react'
 import React, { useRef } from 'react'
@@ -47,6 +48,7 @@ export default function MenuBar(props: MenuBarProps): JSX.Element {
     const pathname = useLocation().pathname.split('/').slice(1)
 
     const annotationStore = useAppSelector((state) => state.annotations)
+    const enableNavigation = useAppSelector((state) => state.annotations.currentUserAction.type === 'none')
 
     const exportAnnotations = () => {
         const a = document.createElement('a')
@@ -62,9 +64,12 @@ export default function MenuBar(props: MenuBarProps): JSX.Element {
                 <Breadcrumb>
                     {pathname.map((part, index) => (
                         <BreadcrumbItem key={index}>
-                            <BreadcrumbLink as={NavLink} to={`/${pathname.slice(0, index + 1).join('/')}`}>
-                                {part}
-                            </BreadcrumbLink>
+                            {enableNavigation && (
+                                <BreadcrumbLink as={NavLink} to={`/${pathname.slice(0, index + 1).join('/')}`}>
+                                    {part}
+                                </BreadcrumbLink>
+                            )}
+                            {!enableNavigation && <Text>{part}</Text>}
                         </BreadcrumbItem>
                     ))}
                 </Breadcrumb>
