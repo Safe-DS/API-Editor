@@ -14,8 +14,7 @@ interface ModuleViewProps {
 
 // See https://github.com/remarkjs/react-markdown#use-custom-components-syntax-highlight
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const code: CodeComponent = ({ node, inline, className, children, ...props }) => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+const Code: CodeComponent = ({ node, inline, className, children, ...props }) => {
     const style = useColorModeValue(materialLight, materialOceanic)
 
     const match = /language-(\w+)/.exec(className || '')
@@ -31,7 +30,7 @@ const code: CodeComponent = ({ node, inline, className, children, ...props }) =>
 }
 
 const components = {
-    code,
+    code: Code,
 }
 
 export default function ModuleView(props: ModuleViewProps): JSX.Element {

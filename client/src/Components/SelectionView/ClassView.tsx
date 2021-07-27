@@ -1,4 +1,4 @@
-import { Heading, HStack, Stack, Text } from '@chakra-ui/react'
+import { Box, Heading, HStack, Stack, Text } from '@chakra-ui/react'
 import React from 'react'
 import AnnotationDropdown from '../../features/annotations/menus/AnnotationDropdown'
 import AnnotationView from '../../features/annotations/views/AnnotationView'
@@ -20,19 +20,21 @@ export default function ClassView(props: ClassViewProps): JSX.Element {
                     <Heading as="h3" size="lg">
                         {props.pythonClass.name}
                     </Heading>
-                    <AnnotationDropdown target={id} showUnused />
+                    <AnnotationDropdown target={id} showRename showUnused />
                 </HStack>
+
                 <AnnotationView target={id} />
-                {props.pythonClass.description ? (
-                    <DocumentationText inputText={props.pythonClass.description} />
-                ) : (
-                    <Text paddingLeft={4} className="text-muted">
-                        There is no documentation for this class.
-                    </Text>
-                )}
+
+                <Box paddingLeft={4}>
+                    {props.pythonClass.description ? (
+                        <DocumentationText inputText={props.pythonClass.description} />
+                    ) : (
+                        <Text className="text-muted">There is no documentation for this class.</Text>
+                    )}
+                </Box>
             </Stack>
-            <SectionListViewItem title={'Superclasses'} inputElements={props.pythonClass.superclasses} />
-            <SectionListViewItem title={'Decorators'} inputElements={props.pythonClass.decorators} />
+            <SectionListViewItem title="Superclasses" inputElements={props.pythonClass.superclasses} />
+            <SectionListViewItem title="Decorators" inputElements={props.pythonClass.decorators} />
         </Stack>
     )
 }

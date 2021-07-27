@@ -1,4 +1,4 @@
-import { Heading, HStack, Stack, Text } from '@chakra-ui/react'
+import { Box, Heading, HStack, Stack, Text } from '@chakra-ui/react'
 import React from 'react'
 import AnnotationDropdown from '../../features/annotations/menus/AnnotationDropdown'
 import AnnotationView from '../../features/annotations/views/AnnotationView'
@@ -21,7 +21,7 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
                         {props.pythonParameter.name}
                     </Heading>
                 ) : (
-                    <Heading as="h5" size="sm">
+                    <Heading as="h4" size="sm">
                         {props.pythonParameter.name}
                     </Heading>
                 )}
@@ -30,13 +30,13 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
 
             <AnnotationView target={id} />
 
-            {props.pythonParameter.description ? (
-                <DocumentationText inputText={props.pythonParameter?.description} />
-            ) : (
-                <Text paddingLeft={4} className="text-muted">
-                    There is no documentation for this parameter.
-                </Text>
-            )}
+            <Box paddingLeft={4}>
+                {props.pythonParameter.description ? (
+                    <DocumentationText inputText={props.pythonParameter?.description} />
+                ) : (
+                    <Text className="text-muted">There is no documentation for this parameter.</Text>
+                )}
+            </Box>
         </Stack>
     )
 }
