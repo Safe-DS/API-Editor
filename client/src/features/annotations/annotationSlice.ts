@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import * as idb from 'idb-keyval'
 import { RootState } from '../../app/store'
 
-interface AnnotationsState {
+export interface AnnotationsState {
     enums: {
         [target: string]: EnumAnnotation
     }
