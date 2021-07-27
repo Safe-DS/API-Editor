@@ -29,7 +29,7 @@ export default function ClassView(props: ClassViewProps): JSX.Element {
                     {props.pythonClass.description ? (
                         <DocumentationText inputText={props.pythonClass.description} />
                     ) : (
-                        <Text className="text-muted">There is no documentation for this class.</Text>
+                        <Text color="gray.500">There is no documentation for this class.</Text>
                     )}
                 </Box>
             </Stack>

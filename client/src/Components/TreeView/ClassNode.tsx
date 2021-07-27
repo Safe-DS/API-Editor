@@ -13,12 +13,7 @@ export default function ClassNode(props: ClassNodeProps): JSX.Element {
     const hasMethods = !isEmptyList(props.pythonClass.methods)
 
     return (
-        <TreeNode
-            declaration={props.pythonClass}
-            icon={FaChalkboard}
-            isExpandable={hasMethods}
-            isWorthClicking={hasMethods}
-        >
+        <TreeNode declaration={props.pythonClass} icon={FaChalkboard} isExpandable={hasMethods}>
             {props.pythonClass.methods.map((method) => (
                 <FunctionNode key={method.name} pythonFunction={method} />
             ))}

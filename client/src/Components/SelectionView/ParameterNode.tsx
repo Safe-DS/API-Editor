@@ -34,7 +34,7 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
                 {props.pythonParameter.description ? (
                     <DocumentationText inputText={props.pythonParameter?.description} />
                 ) : (
-                    <Text className="text-muted">There is no documentation for this parameter.</Text>
+                    <Text color="gray.500">There is no documentation for this parameter.</Text>
                 )}
             </Box>
         </Stack>

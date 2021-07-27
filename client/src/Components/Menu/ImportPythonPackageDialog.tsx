@@ -11,18 +11,18 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
+    Text,
 } from '@chakra-ui/react'
 import * as idb from 'idb-keyval'
 import React, { useState } from 'react'
-import Dropzone from 'react-dropzone'
 import { useHistory } from 'react-router-dom'
-import { useAppDispatch } from '../../../app/hooks'
-import { resetAnnotations } from '../../../features/annotations/annotationSlice'
-import PythonPackage from '../../../model/python/PythonPackage'
-import { parsePythonPackageJson, PythonPackageJson } from '../../../model/python/PythonPackageBuilder'
-import { Setter } from '../../../util/types'
-import { isValidJsonFile } from '../../../util/validation'
-import DialogCSS from '../dialogs.module.css'
+import { useAppDispatch } from '../../app/hooks'
+import StyledDropzone from '../../common/StyledDropzone'
+import { resetAnnotations } from '../../features/annotations/annotationSlice'
+import PythonPackage from '../../model/python/PythonPackage'
+import { parsePythonPackageJson, PythonPackageJson } from '../../model/python/PythonPackageBuilder'
+import { Setter } from '../../util/types'
+import { isValidJsonFile } from '../../util/validation'
 
 interface ImportPythonPackageDialogProps {
     isVisible: boolean
@@ -76,22 +76,11 @@ export default function ImportPythonPackageDialog(props: ImportPythonPackageDial
                 <ModalBody>
                     <FormControl>
                         <FormLabel>Select a Python package to upload.</FormLabel>
-                        <Box className={DialogCSS.dropzone}>
-                            <Dropzone onDrop={slurpAndParse}>
-                                {({ getRootProps, getInputProps }) => (
-                                    <section>
-                                        <div {...getRootProps()}>
-                                            <input {...getInputProps()} />
-                                            <p className={DialogCSS.dropzoneText}>
-                                                Drag and drop a Python package here, or click to select the file.
-                                                <br />
-                                                (Only *.json will be accepted.)
-                                            </p>
-                                        </div>
-                                    </section>
-                                )}
-                            </Dropzone>
-                        </Box>
+                        <StyledDropzone onDrop={slurpAndParse}>
+                            <Text>Drag and drop a Python package here, or click to select the file.</Text>
+                            <Text>(Only *.json will be accepted.)</Text>
+                        </StyledDropzone>
+
                         {fileName && (
                             <Box>
                                 <strong>Imported package name: </strong>

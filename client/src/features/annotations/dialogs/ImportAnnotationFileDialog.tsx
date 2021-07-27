@@ -11,11 +11,11 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
+    Text,
 } from '@chakra-ui/react'
 import React, { useState } from 'react'
-import Dropzone from 'react-dropzone'
 import { useAppDispatch } from '../../../app/hooks'
-import DialogCSS from '../../../Components/Dialogs/dialogs.module.css'
+import StyledDropzone from '../../../common/StyledDropzone'
 import { isValidJsonFile } from '../../../util/validation'
 import { AnnotationsState, setAnnotations } from '../annotationSlice'
 
@@ -71,27 +71,16 @@ export default function ImportAnnotationFileDialog(props: ImportAnnotationFileDi
                 <ModalBody>
                     <FormControl>
                         <FormLabel>Select an annotation file to upload.</FormLabel>
-                        <Box className={DialogCSS.dropzone}>
-                            <Dropzone onDrop={onDrop}>
-                                {({ getRootProps, getInputProps }) => (
-                                    <section>
-                                        <div {...getRootProps()}>
-                                            <input {...getInputProps()} />
-                                            <p className={DialogCSS.dropzoneText}>
-                                                Drag and drop an annotation file here or click to select the file.
-                                                <br />
-                                                (only *.json will be accepted)
-                                            </p>
-                                        </div>
-                                    </section>
-                                )}
-                            </Dropzone>
-                        </Box>
+                        <StyledDropzone onDrop={onDrop}>
+                            <Text>Drag and drop an annotation file here or click to select the file.</Text>
+                            <Text>(only *.json will be accepted)</Text>
+                        </StyledDropzone>
+
                         {fileName && (
-                            <div>
+                            <Box>
                                 <strong>Imported file: </strong>
                                 {fileName}
-                            </div>
+                            </Box>
                         )}
                     </FormControl>
                 </ModalBody>

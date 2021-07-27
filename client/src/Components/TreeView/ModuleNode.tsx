@@ -1,5 +1,5 @@
-import { FaArchive } from 'react-icons/fa'
 import React from 'react'
+import { FaArchive } from 'react-icons/fa'
 import PythonModule from '../../model/python/PythonModule'
 import { isEmptyList } from '../../util/listOperations'
 import ClassNode from './ClassNode'
@@ -16,12 +16,7 @@ export default function ModuleNode(props: ModuleNodeProps): JSX.Element {
     const hasChildren = hasClasses || hasFunctions
 
     return (
-        <TreeNode
-            declaration={props.pythonModule}
-            icon={FaArchive}
-            isExpandable={hasChildren}
-            isWorthClicking={hasChildren}
-        >
+        <TreeNode declaration={props.pythonModule} icon={FaArchive} isExpandable={hasChildren}>
             {props.pythonModule.classes.map((moduleClass) => (
                 <ClassNode key={moduleClass.name} pythonClass={moduleClass} />
             ))}
