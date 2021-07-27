@@ -1,4 +1,5 @@
 import {
+    Box,
     Button,
     FormControl,
     FormLabel,
@@ -69,7 +70,7 @@ export default function ImportAnnotationFileDialog(props: ImportAnnotationFileDi
                 <ModalBody>
                     <FormControl>
                         <FormLabel>Select an annotation file to upload.</FormLabel>
-                        <div className={DialogCSS.dropzone}>
+                        <Box className={DialogCSS.dropzone}>
                             <Dropzone onDrop={onDrop}>
                                 {({ getRootProps, getInputProps }) => (
                                     <section>
@@ -84,7 +85,7 @@ export default function ImportAnnotationFileDialog(props: ImportAnnotationFileDi
                                     </section>
                                 )}
                             </Dropzone>
-                        </div>
+                        </Box>
                         {fileName && (
                             <div>
                                 <strong>Imported file: </strong>

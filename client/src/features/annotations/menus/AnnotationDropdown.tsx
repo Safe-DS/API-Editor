@@ -6,11 +6,11 @@ import { showEnumAnnotationForm, showRenameAnnotationForm } from '../annotationS
 
 interface AnnotationDropdownProps {
     target: string
-    showRename: boolean
-    showEnum: boolean
+    showRename?: boolean
+    showEnum?: boolean
 }
 
-const AnnotationDropdown: React.FC<AnnotationDropdownProps> = ({ showEnum, showRename, target }) => {
+const AnnotationDropdown: React.FC<AnnotationDropdownProps> = ({ showEnum = false, showRename = false, target }) => {
     const dispatch = useAppDispatch()
 
     return (
@@ -19,8 +19,8 @@ const AnnotationDropdown: React.FC<AnnotationDropdownProps> = ({ showEnum, showR
                 Annotations
             </MenuButton>
             <MenuList>
-                {showRename && <MenuItem onClick={() => dispatch(showRenameAnnotationForm(target))}>@Rename</MenuItem>}
-                {showEnum && <MenuItem onClick={() => dispatch(showEnumAnnotationForm(target))}>@Enum</MenuItem>}
+                {showRename && <MenuItem onClick={() => dispatch(showRenameAnnotationForm(target))}>@rename</MenuItem>}
+                {showEnum && <MenuItem onClick={() => dispatch(showEnumAnnotationForm(target))}>@enum</MenuItem>}
             </MenuList>
         </Menu>
     )
