@@ -1,5 +1,4 @@
 import { Box, Flex } from '@chakra-ui/react'
-import classNames from 'classnames'
 import 'katex/dist/katex.min.css'
 import React, { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
@@ -7,7 +6,6 @@ import rehypeKatex from 'rehype-katex'
 import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
 import VisibilityIndicator from '../Util/VisibilityIndicator'
-import DocumentationTextCSS from './DocumentationText.module.css'
 
 interface DocumentationTextProps {
     inputText: string
@@ -22,10 +20,6 @@ export default function DocumentationText({ inputText = '' }: DocumentationTextP
     const shortenedText = preprocessedText.split('\n\n')[0]
     const hasMultipleLines = shortenedText !== preprocessedText
     const [readMore, setReadMore] = useState(false)
-
-    const cssClasses = classNames(DocumentationTextCSS.readMoreButton, {
-        'pointer-cursor': hasMultipleLines && !readMore,
-    })
 
     return (
         <Flex
@@ -45,9 +39,11 @@ export default function DocumentationText({ inputText = '' }: DocumentationTextP
                     <VisibilityIndicator hasChildren={hasMultipleLines} showChildren={readMore} />
                 </Box>
             )}
-            <ReactMarkdown className={cssClasses} rehypePlugins={[rehypeKatex]} remarkPlugins={[remarkGfm, remarkMath]}>
-                {readMore || !hasMultipleLines ? preprocessedText : shortenedText + ' [Read More...]'}
-            </ReactMarkdown>
+            <Box cursor={hasMultipleLines && !readMore ? 'pointer' : undefined}>
+                <ReactMarkdown rehypePlugins={[rehypeKatex]} remarkPlugins={[remarkGfm, remarkMath]}>
+                    {readMore || !hasMultipleLines ? preprocessedText : shortenedText + ' [Read More...]'}
+                </ReactMarkdown>
+            </Box>
         </Flex>
     )
 }

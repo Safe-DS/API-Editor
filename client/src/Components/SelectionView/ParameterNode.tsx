@@ -21,7 +21,7 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
                         {props.pythonParameter.name}
                     </Heading>
                 ) : (
-                    <Heading as="h5" size="sm">
+                    <Heading as="h4" size="sm">
                         {props.pythonParameter.name}
                     </Heading>
                 )}
