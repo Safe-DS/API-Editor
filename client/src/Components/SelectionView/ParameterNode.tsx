@@ -1,6 +1,5 @@
-import { Button, Heading, HStack, Icon, Menu, MenuButton, MenuItem, MenuList, Stack, Text } from '@chakra-ui/react'
+import { Heading, HStack, Stack, Text } from '@chakra-ui/react'
 import React from 'react'
-import { FaChevronDown } from 'react-icons/fa'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import {
     EnumAnnotation,
@@ -13,6 +12,7 @@ import {
     upsertEnum,
     upsertRenaming,
 } from '../../features/annotations/annotationSlice'
+import AnnotationDropdown from '../../features/annotations/menus/AnnotationDropdown'
 import PythonParameter from '../../model/python/PythonParameter'
 import { Optional } from '../../util/types'
 import AnnotationView from './AnnotationView'
@@ -66,15 +66,7 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
                         {props.pythonParameter.name}
                     </Heading>
                 )}
-                <Menu>
-                    <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
-                        + @Annotation
-                    </MenuButton>
-                    <MenuList>
-                        <MenuItem onClick={openRenameDialog}>@Rename</MenuItem>
-                        <MenuItem onClick={openEnumDialog}>@Enum</MenuItem>
-                    </MenuList>
-                </Menu>
+                <AnnotationDropdown target={id} showRename showEnum />
             </HStack>
 
             {(newName || newEnumDefinition) && (
