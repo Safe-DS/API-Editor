@@ -9,6 +9,6 @@ interface ParameterNodeProps {
 
 export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
     return (
-        <TreeNode declaration={props.pythonParameter} icon={FaKeyboard} isExpandable={false} isWorthClicking={false} />
+        <TreeNode declaration={props.pythonParameter} icon={FaKeyboard} isExpandable={false} isWorthClicking={true} />
     )
 }
