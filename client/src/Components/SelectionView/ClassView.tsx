@@ -20,7 +20,7 @@ export default function ClassView(props: ClassViewProps): JSX.Element {
                     <Heading as="h3" size="lg">
                         {props.pythonClass.name}
                     </Heading>
-                    <AnnotationDropdown target={id} showUnused />
+                    <AnnotationDropdown target={id} showRename showUnused />
                 </HStack>
                 <AnnotationView target={id} />
                 {props.pythonClass.description ? (

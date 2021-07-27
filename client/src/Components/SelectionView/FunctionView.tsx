@@ -21,7 +21,7 @@ export default function FunctionView(props: FunctionViewProps): JSX.Element {
                     <Heading as="h3" size="lg">
                         {props.pythonFunction.name}
                     </Heading>
-                    <AnnotationDropdown target={id} showUnused />
+                    <AnnotationDropdown target={id} showRename showUnused />
                 </HStack>
                 <AnnotationView target={id} />
 
