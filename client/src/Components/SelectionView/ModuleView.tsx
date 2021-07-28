@@ -1,9 +1,10 @@
-import { Box, Heading, Stack, Text, useColorModeValue } from '@chakra-ui/react'
-import React from 'react'
+import { Box, Code, Heading, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import React, { useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { CodeComponent } from 'react-markdown/src/ast-to-react'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { materialLight, materialOceanic } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { Light as SyntaxHighlighter } from 'react-syntax-highlighter'
+import python from 'react-syntax-highlighter/dist/esm/languages/hljs/python'
+import { atomOneDark as dark, atomOneLight as light } from 'react-syntax-highlighter/dist/esm/styles/hljs'
 import remarkGfm from 'remark-gfm'
 import PythonModule from '../../model/python/PythonModule'
 import { groupBy, isEmptyList } from '../../util/listOperations'
@@ -14,8 +15,8 @@ interface ModuleViewProps {
 
 // See https://github.com/remarkjs/react-markdown#use-custom-components-syntax-highlight
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const Code: CodeComponent = ({ node, inline, className, children, ...props }) => {
-    const style = useColorModeValue(materialLight, materialOceanic)
+const CustomCode: CodeComponent = ({ node, inline, className, children, ...props }) => {
+    const style = useColorModeValue(light, dark)
 
     const match = /language-(\w+)/.exec(className || '')
     return !inline && match ? (
@@ -23,17 +24,21 @@ const Code: CodeComponent = ({ node, inline, className, children, ...props }) =>
             {String(children).replace(/\n$/, '')}
         </SyntaxHighlighter>
     ) : (
-        <code className={className} {...props}>
+        <Code className={className} {...props}>
             {children}
-        </code>
+        </Code>
     )
 }
 
 const components = {
-    code: Code,
+    code: CustomCode,
 }
 
 export default function ModuleView(props: ModuleViewProps): JSX.Element {
+    useEffect(() => {
+        SyntaxHighlighter.registerLanguage('python', python)
+    }, [])
+
     const importString = props.pythonModule.imports.map((it) => it.toString()).join('\n')
 
     const longestModuleNameLength = Math.max(...props.pythonModule.fromImports.map((it) => it.module.length))
