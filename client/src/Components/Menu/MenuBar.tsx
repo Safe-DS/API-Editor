@@ -78,19 +78,20 @@ export default function MenuBar(props: MenuBarProps): JSX.Element {
             <Spacer />
 
             <HStack>
-                <Menu>
-                    <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
-                        Import
-                    </MenuButton>
-                    <MenuList>
-                        <MenuItem onClick={props.openImportPythonPackageDialog}>Python Package</MenuItem>
-                        <MenuItem onClick={props.openImportAnnotationFileDialog}>Annotations</MenuItem>
-                    </MenuList>
-                </Menu>
-
+                {/* Box gets rid of popper.js warning "CSS margin styles cannot be used"*/}
+                <Box>
+                    <Menu>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
+                            Import
+                        </MenuButton>
+                        <MenuList>
+                            <MenuItem onClick={props.openImportPythonPackageDialog}>Python Package</MenuItem>
+                            <MenuItem onClick={props.openImportAnnotationFileDialog}>Annotations</MenuItem>
+                        </MenuList>
+                    </Menu>
+                </Box>
                 <Button onClick={exportAnnotations}>Export</Button>
                 <Button onClick={toggleColorMode}>Toggle {colorMode === 'light' ? 'Dark' : 'Light'}</Button>
-
                 <Box>
                     <Popover isOpen={!PythonFilter.fromFilterBoxInput(props.filter)} initialFocusRef={initialFocusRef}>
                         <PopoverTrigger>

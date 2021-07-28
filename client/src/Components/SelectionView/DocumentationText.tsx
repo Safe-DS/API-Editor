@@ -12,20 +12,12 @@ interface DocumentationTextProps {
     inputText: string
 }
 
-const CustomText: NormalComponent = ({ className, children, ...props }) => {
-    return (
-        <Text className={className} {...props}>
-            {children}
-        </Text>
-    )
+const CustomText: NormalComponent = ({ className, children }) => {
+    return <Text className={className}>{children}</Text>
 }
 
-const CustomCode: CodeComponent = ({ className, children, ...props }) => {
-    return (
-        <Code className={className} {...props}>
-            {children}
-        </Code>
-    )
+const CustomCode: CodeComponent = ({ className, children }) => {
+    return <Code className={className}>{children}</Code>
 }
 
 const components = {
@@ -44,12 +36,7 @@ export default function DocumentationText({ inputText = '' }: DocumentationTextP
     const [readMore, setReadMore] = useState(false)
 
     return (
-        <Flex
-            justifyContent="flex-start"
-            onClick={() => {
-                setReadMore(true)
-            }}
-        >
+        <Flex justifyContent="flex-start">
             <HStack
                 alignItems="flex-start"
                 cursor={!hasMultipleLines || readMore ? undefined : 'pointer'}
@@ -64,12 +51,10 @@ export default function DocumentationText({ inputText = '' }: DocumentationTextP
             >
                 {hasMultipleLines && (
                     <IconButton
-                        aria-label="Expand"
-                        as={readMore ? FaChevronDown : FaChevronRight}
+                        aria-label="Read more/less"
+                        icon={readMore ? <FaChevronDown /> : <FaChevronRight />}
                         size="xs"
-                        padding={1}
                         variant="outline"
-                        cursor="pointer"
                         onClick={(event) => {
                             event.stopPropagation()
                             setReadMore(!readMore)
