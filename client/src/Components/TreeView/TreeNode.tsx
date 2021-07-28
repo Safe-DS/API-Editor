@@ -29,8 +29,15 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element {
     }
 
     return (
-        <Box userSelect="none" _hover={{ cursor: 'pointer' }}>
-            <Box color={color} backgroundColor={backgroundColor} paddingLeft={paddingLeft} onClick={handleClick}>
+        <>
+            <Box
+                userSelect="none"
+                _hover={{ cursor: 'pointer' }}
+                color={color}
+                backgroundColor={backgroundColor}
+                paddingLeft={paddingLeft}
+                onClick={handleClick}
+            >
                 <VisibilityIndicator
                     hasChildren={props.isExpandable}
                     showChildren={showChildren}
@@ -39,8 +46,8 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element {
                 <Icon as={props.icon} marginRight={1} />
                 {props.declaration.name}
             </Box>
-            <Box>{showChildren && props.children}</Box>
-        </Box>
+            {showChildren && props.children}
+        </>
     )
 }
 
