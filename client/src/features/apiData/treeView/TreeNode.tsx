@@ -1,4 +1,4 @@
-import { Box, Icon } from '@chakra-ui/react'
+import { HStack, Icon, Text } from '@chakra-ui/react'
 import React from 'react'
 import { IconType } from 'react-icons/lib'
 import { useLocation } from 'react-router'
@@ -15,42 +15,42 @@ interface TreeNodeProps extends ChildrenProp {
     isExpandable: boolean
 }
 
-export default function TreeNode(props: TreeNodeProps): JSX.Element {
+const TreeNode: React.FC<TreeNodeProps> = ({ children, declaration, icon, isExpandable }) => {
     const currentPathname = useLocation().pathname
     const history = useHistory()
     const dispatch = useAppDispatch()
 
-    const showChildren = useAppSelector(selectIsExpandedInTreeView(props.declaration.pathAsString()))
+    const showChildren = useAppSelector(selectIsExpandedInTreeView(declaration.pathAsString()))
 
-    const level = levelOf(props.declaration)
-    const paddingLeft = level === 0 ? '1rem' : `calc(0.5 * ${level} * (1.25em + 0.25rem) + 1rem)`
-    const backgroundColor = isSelected(props.declaration, currentPathname) ? 'cornflowerblue' : undefined
-    const color = isSelected(props.declaration, currentPathname) ? 'white' : undefined
+    const level = levelOf(declaration)
+    const paddingLeft = level === 0 ? '1rem' : `${1 + 0.75 * level}rem`
+    const backgroundColor = isSelected(declaration, currentPathname) ? 'cornflowerblue' : undefined
+    const color = isSelected(declaration, currentPathname) ? 'white' : undefined
 
     const handleClick = () => {
-        dispatch(toggleExpandedInTreeView(props.declaration.pathAsString()))
-        history.push(`/${props.declaration.pathAsString()}`)
+        dispatch(toggleExpandedInTreeView(declaration.pathAsString()))
+        history.push(`/${declaration.pathAsString()}`)
     }
 
     return (
         <>
-            <Box
+            <HStack
                 userSelect="none"
-                _hover={{ cursor: 'pointer' }}
+                cursor="pointer"
                 color={color}
                 backgroundColor={backgroundColor}
                 paddingLeft={paddingLeft}
                 onClick={handleClick}
             >
                 <VisibilityIndicator
-                    hasChildren={props.isExpandable}
+                    hasChildren={isExpandable}
                     showChildren={showChildren}
-                    isSelected={isSelected(props.declaration, currentPathname)}
+                    isSelected={isSelected(declaration, currentPathname)}
                 />
-                <Icon as={props.icon} marginRight={1} />
-                {props.declaration.name}
-            </Box>
-            {showChildren && props.children}
+                <Icon as={icon} />
+                <Text>{declaration.name}</Text>
+            </HStack>
+            {showChildren && children}
         </>
     )
 }
@@ -62,3 +62,5 @@ function levelOf(declaration: PythonDeclaration): number {
 function isSelected(declaration: PythonDeclaration, currentPathname: string): boolean {
     return `/${declaration.pathAsString()}` === currentPathname
 }
+
+export default TreeNode

@@ -7,6 +7,8 @@ interface ParameterNodeProps {
     pythonParameter: PythonParameter
 }
 
-export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
-    return <TreeNode declaration={props.pythonParameter} icon={FaKeyboard} isExpandable={false} />
+const ParameterNode: React.FC<ParameterNodeProps> = ({ pythonParameter }) => {
+    return <TreeNode declaration={pythonParameter} icon={FaKeyboard} isExpandable={false} />
 }
+
+export default ParameterNode

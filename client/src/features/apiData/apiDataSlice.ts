@@ -43,4 +43,6 @@ export const selectIsExpandedInTreeView =
     (target: string) =>
     (state: RootState): boolean =>
         Boolean(selectApiData(state).expandedInTreeView[target])
+export const selectAllExpandedInTreeView = (state: RootState): { [target: string]: true } =>
+    selectApiData(state).expandedInTreeView
 export const selectShowApiDataImportDialog = (state: RootState): boolean => selectApiData(state).showImportDialog
