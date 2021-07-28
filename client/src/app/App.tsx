@@ -1,43 +1,39 @@
 import { Grid, GridItem } from '@chakra-ui/react'
 import * as idb from 'idb-keyval'
 import React, { useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
-import MenuBar from '../Components/Menu/MenuBar'
-import SelectionView from '../Components/SelectionView/SelectionView'
-import TreeView from '../Components/TreeView/TreeView'
+import { useLocation } from 'react-router'
+import MenuBar from '../common/MenuBar'
+import { Setter } from '../common/util/types'
 import AnnotationImportDialog from '../features/annotations/AnnotationImportDialog'
 import {
+    AnnotationsState,
     initializeAnnotations,
+    selectAnnotations,
     selectCurrentUserAction,
     selectShowAnnotationImportDialog,
 } from '../features/annotations/annotationSlice'
 import EnumForm from '../features/annotations/forms/EnumForm'
 import RenameForm from '../features/annotations/forms/RenameForm'
 import ApiDataImportDialog from '../features/apiData/ApiDataImportDialog'
-import { selectShowApiDataImportDialog } from '../features/apiData/apiDataSlice'
-import { PythonFilter } from '../model/python/PythonFilter'
-import PythonPackage from '../model/python/PythonPackage'
-import { parsePythonPackageJson, PythonPackageJson } from '../model/python/PythonPackageBuilder'
+import { selectShowApiDataImportDialog, toggleExpandedInTreeView } from '../features/apiData/apiDataSlice'
+import { PythonFilter } from '../features/apiData/model/PythonFilter'
+import PythonPackage from '../features/apiData/model/PythonPackage'
+import { parsePythonPackageJson, PythonPackageJson } from '../features/apiData/model/PythonPackageBuilder'
+import SelectionView from '../features/apiData/selectionView/SelectionView'
+import TreeView from '../features/apiData/treeView/TreeView'
 import { useAppDispatch, useAppSelector } from './hooks'
 
 const App: React.FC = () => {
     const [pythonPackage, setPythonPackage] = useState<PythonPackage>(new PythonPackage('empty'))
     const currentUserAction = useAppSelector(selectCurrentUserAction)
-    const history = useHistory()
-    // const [treeView]
+    const currentPathName = useLocation().pathname
 
     useEffect(() => {
-        const getPythonPackageFromIndexedDB = async () => {
-            const storedPackage = (await idb.get('package')) as PythonPackageJson
-            if (storedPackage) {
-                setPythonPackage(parsePythonPackageJson(storedPackage))
-            }
-        }
-
-        getPythonPackageFromIndexedDB()
+        // noinspection JSIgnoredPromiseFromCall
+        getPythonPackageFromIndexedDB(setPythonPackage)
     }, [])
 
-    const annotationStore = useAppSelector((state) => state.annotations)
+    const annotationStore = useAppSelector(selectAnnotations)
 
     const dispatch = useAppDispatch()
     useEffect(() => {
@@ -45,12 +41,19 @@ const App: React.FC = () => {
     }, [dispatch])
 
     useEffect(() => {
-        const setAnnotationsInIndexedDB = async () => {
-            await idb.set('annotations', annotationStore)
+        // noinspection JSIgnoredPromiseFromCall
+        setAnnotationsInIndexedDB(annotationStore)
+    }, [annotationStore])
+
+    useEffect(() => {
+        const parts = currentPathName.split('/').slice(1)
+
+        for (let i = 2; i < parts.length; i++) {
+            dispatch(toggleExpandedInTreeView(parts.slice(0, i).join('/')))
         }
 
-        setAnnotationsInIndexedDB()
-    }, [annotationStore])
+        // eslint-disable-next-line
+    }, [])
 
     const [filter, setFilter] = useState('')
     const pythonFilter = PythonFilter.fromFilterBoxInput(filter)
@@ -96,6 +99,17 @@ const App: React.FC = () => {
             )}
         </Grid>
     )
+}
+
+async function getPythonPackageFromIndexedDB(setPythonPackage: Setter<PythonPackage>) {
+    const storedPackage = (await idb.get('package')) as PythonPackageJson
+    if (storedPackage) {
+        setPythonPackage(parsePythonPackageJson(storedPackage))
+    }
+}
+
+async function setAnnotationsInIndexedDB(annotationStore: AnnotationsState) {
+    await idb.set('annotations', annotationStore)
 }
 
 export default App

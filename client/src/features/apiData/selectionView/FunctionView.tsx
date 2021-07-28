@@ -1,9 +1,9 @@
 import { Box, Heading, HStack, Stack, Text } from '@chakra-ui/react'
 import React from 'react'
-import AnnotationDropdown from '../../features/annotations/AnnotationDropdown'
-import AnnotationView from '../../features/annotations/AnnotationView'
-import PythonFunction from '../../model/python/PythonFunction'
-import { isEmptyList } from '../../util/listOperations'
+import { isEmptyList } from '../../../common/util/listOperations'
+import AnnotationDropdown from '../../annotations/AnnotationDropdown'
+import AnnotationView from '../../annotations/AnnotationView'
+import PythonFunction from '../model/PythonFunction'
 import DocumentationText from './DocumentationText'
 import ParameterNode from './ParameterNode'
 

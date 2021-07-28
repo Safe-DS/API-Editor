@@ -1,6 +1,6 @@
-import { Box, Heading, Stack, Text } from '@chakra-ui/react'
+import { Heading, ListItem, Stack, Text, UnorderedList } from '@chakra-ui/react'
 import React from 'react'
-import { isEmptyList } from '../../util/listOperations'
+import { isEmptyList } from '../../../common/util/listOperations'
 
 interface ClassViewItemProps {
     title: string
@@ -18,11 +18,11 @@ export default function SectionListViewItem(props: ClassViewItemProps): JSX.Elem
                 {props.title}
             </Heading>
             {!isEmptyList(props.inputElements) ? (
-                props.inputElements.map((listElement, index) => (
-                    <Box paddingLeft={4} key={index}>
-                        {listElement}
-                    </Box>
-                ))
+                <UnorderedList paddingLeft={8}>
+                    {props.inputElements.map((listElement, index) => (
+                        <ListItem key={index}>{listElement}</ListItem>
+                    ))}
+                </UnorderedList>
             ) : (
                 <Text paddingLeft={4} color="gray.500">
                     There are no {props.title.toLowerCase()}.

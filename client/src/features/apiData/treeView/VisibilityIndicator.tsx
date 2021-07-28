@@ -8,20 +8,17 @@ interface VisibilityIndicatorProps {
     isSelected?: boolean
 }
 
-export default function VisibilityIndicator({
-    hasChildren,
-    showChildren,
-    isSelected = false,
-}: VisibilityIndicatorProps): JSX.Element {
+const VisibilityIndicator: React.FC<VisibilityIndicatorProps> = ({ hasChildren, showChildren, isSelected = false }) => {
     const isClosed = !isSelected && !showChildren
     const closedColor = useColorModeValue('gray.200', 'gray.700')
 
     return (
         <Icon
             as={showChildren ? FaChevronDown : FaChevronRight}
-            color={isClosed ? closedColor : 'inherit'}
+            color={isClosed ? closedColor : undefined}
             opacity={hasChildren ? 1 : 0}
-            marginRight={1}
         />
     )
 }
+
+export default VisibilityIndicator

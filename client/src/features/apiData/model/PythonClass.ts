@@ -1,5 +1,5 @@
-import { isEmptyList } from '../../util/listOperations'
-import { Optional } from '../../util/types'
+import { isEmptyList } from '../../../common/util/listOperations'
+import { Optional } from '../../../common/util/types'
 import PythonDeclaration from './PythonDeclaration'
 import { PythonFilter } from './PythonFilter'
 import PythonFunction from './PythonFunction'

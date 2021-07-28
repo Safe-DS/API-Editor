@@ -1,4 +1,4 @@
-import { isEmptyList } from '../../util/listOperations'
+import { isEmptyList } from '../../../common/util/listOperations'
 import PythonDeclaration from './PythonDeclaration'
 import { PythonFilter } from './PythonFilter'
 import PythonModule from './PythonModule'

@@ -1,4 +1,4 @@
-import { Optional } from '../../util/types'
+import { Optional } from '../../../common/util/types'
 
 export default class PythonFromImport {
     readonly module: string
