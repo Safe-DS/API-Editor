@@ -13,6 +13,7 @@ export interface AnnotationsState {
         [target: string]: UnusedAnnotation
     }
     currentUserAction: UserAction
+    showImportDialog: boolean
 }
 
 interface EnumAnnotation {
@@ -76,12 +77,17 @@ const initialState: AnnotationsState = {
     renamings: {},
     unuseds: {},
     currentUserAction: NoUserAction,
+    showImportDialog: false,
 }
 
 // Thunks --------------------------------------------------------------------------------------------------------------
 
 export const initializeAnnotations = createAsyncThunk('annotations/initialize', async () => {
-    return (await idb.get('annotations')) as AnnotationsState
+    try {
+        return (await idb.get('annotations')) as AnnotationsState
+    } catch {
+        return initialState
+    }
 })
 
 // Slice ---------------------------------------------------------------------------------------------------------------
@@ -129,6 +135,9 @@ const annotationsSlice = createSlice({
         hideAnnotationForms(state) {
             state.currentUserAction = NoUserAction
         },
+        toggleImportDialog(state) {
+            state.showImportDialog = !state.showImportDialog
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(initializeAnnotations.fulfilled, (state, action) => {
@@ -152,6 +161,8 @@ export const {
     showEnumAnnotationForm,
     showRenameAnnotationForm,
     hideAnnotationForms,
+
+    toggleImportDialog: toggleAnnotationImportDialog,
 } = actions
 export default reducer
 
@@ -169,3 +180,4 @@ export const selectUnused =
     (state: RootState): UnusedAnnotation | undefined =>
         selectAnnotations(state).unuseds[target]
 export const selectCurrentUserAction = (state: RootState): UserAction => selectAnnotations(state).currentUserAction
+export const selectShowAnnotationImportDialog = (state: RootState): boolean => selectAnnotations(state).showImportDialog

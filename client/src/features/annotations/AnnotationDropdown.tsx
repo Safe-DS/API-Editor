@@ -1,8 +1,8 @@
 import { Box, Button, Icon, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react'
 import React from 'react'
 import { FaChevronDown } from 'react-icons/fa'
-import { useAppDispatch } from '../../../app/hooks'
-import { addUnused, showEnumAnnotationForm, showRenameAnnotationForm } from '../annotationSlice'
+import { useAppDispatch } from '../../app/hooks'
+import { addUnused, showEnumAnnotationForm, showRenameAnnotationForm } from './annotationSlice'
 
 interface AnnotationDropdownProps {
     target: string

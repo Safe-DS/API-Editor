@@ -15,10 +15,10 @@ interface RenameFormState {
     newName: string
 }
 
-const RenameForm: React.FC<RenameFormProps> = (props) => {
-    const target = props.target.pathAsString()
-    const prevNewName = useAppSelector(selectRenaming(target))?.newName
-    const oldName = props.target.name
+const RenameForm: React.FC<RenameFormProps> = ({ target }) => {
+    const targetPath = target.pathAsString()
+    const prevNewName = useAppSelector(selectRenaming(targetPath))?.newName
+    const oldName = target.name
 
     // Hooks -----------------------------------------------------------------------------------------------------------
 
@@ -50,7 +50,7 @@ const RenameForm: React.FC<RenameFormProps> = (props) => {
     const onSave = (data: RenameFormState) => {
         dispatch(
             upsertRenaming({
-                target,
+                target: targetPath,
                 ...data,
             }),
         )

@@ -28,7 +28,8 @@ import React, { useRef } from 'react'
 import { FaCheck, FaChevronDown } from 'react-icons/fa'
 import { useLocation } from 'react-router'
 import { NavLink } from 'react-router-dom'
-import { useAppSelector } from '../../app/hooks'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import { toggleAnnotationImportDialog } from '../../features/annotations/annotationSlice'
 import { PythonFilter } from '../../model/python/PythonFilter'
 import PythonPackage from '../../model/python/PythonPackage'
 import { Setter } from '../../util/types'
@@ -37,13 +38,13 @@ interface MenuBarProps {
     setPythonPackage: Setter<PythonPackage>
     filter: string
     setFilter: Setter<string>
-    openImportAnnotationFileDialog: () => void
     openImportPythonPackageDialog: () => void
 }
 
 export default function MenuBar(props: MenuBarProps): JSX.Element {
     const { colorMode, toggleColorMode } = useColorMode()
     const initialFocusRef = useRef(null)
+    const dispatch = useAppDispatch()
 
     const pathname = useLocation().pathname.split('/').slice(1)
 
@@ -86,7 +87,7 @@ export default function MenuBar(props: MenuBarProps): JSX.Element {
                         </MenuButton>
                         <MenuList>
                             <MenuItem onClick={props.openImportPythonPackageDialog}>Python Package</MenuItem>
-                            <MenuItem onClick={props.openImportAnnotationFileDialog}>Annotations</MenuItem>
+                            <MenuItem onClick={() => dispatch(toggleAnnotationImportDialog())}>Annotations</MenuItem>
                         </MenuList>
                     </Menu>
                 </Box>

@@ -14,8 +14,8 @@ import { FaPlus, FaTrash } from 'react-icons/fa'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { pythonIdentifierPattern } from '../../../common/validation'
 import PythonDeclaration from '../../../model/python/PythonDeclaration'
-import AnnotationForm from './AnnotationForm'
 import { hideAnnotationForms, selectEnum, upsertEnum } from '../annotationSlice'
+import AnnotationForm from './AnnotationForm'
 
 interface EnumFormProps {
     target: PythonDeclaration
@@ -29,11 +29,11 @@ interface EnumFormState {
     }[]
 }
 
-export default function EnumForm(props: EnumFormProps): JSX.Element {
-    const target = props.target.pathAsString()
+const EnumForm: React.FC<EnumFormProps> = ({ target }) => {
+    const targetPath = target.pathAsString()
 
     // Hooks -----------------------------------------------------------------------------------------------------------
-    const enumDefinition = useAppSelector(selectEnum(props.target.pathAsString()))
+    const enumDefinition = useAppSelector(selectEnum(target.pathAsString()))
     const dispatch = useAppDispatch()
 
     const {
@@ -73,7 +73,7 @@ export default function EnumForm(props: EnumFormProps): JSX.Element {
                 },
             ],
         })
-    }, [reset, enumDefinition, target])
+    }, [reset, enumDefinition, targetPath])
 
     // Event handlers --------------------------------------------------------------------------------------------------
 
@@ -93,7 +93,7 @@ export default function EnumForm(props: EnumFormProps): JSX.Element {
     const onSave = (data: EnumFormState) => {
         dispatch(
             upsertEnum({
-                target,
+                target: targetPath,
                 ...data,
             }),
         )
@@ -114,7 +114,7 @@ export default function EnumForm(props: EnumFormProps): JSX.Element {
         >
             {/* Enum name -------------------------------------------------------------------------------------------*/}
             <FormControl isInvalid={Boolean(errors.enumName)}>
-                <FormLabel>Enum name for &quot;{props.target.name}&quot;:</FormLabel>
+                <FormLabel>Enum name for &quot;{target.name}&quot;:</FormLabel>
                 <Input
                     {...register('enumName', {
                         required: 'This is required.',
@@ -174,3 +174,5 @@ export default function EnumForm(props: EnumFormProps): JSX.Element {
         </AnnotationForm>
     )
 }
+
+export default EnumForm

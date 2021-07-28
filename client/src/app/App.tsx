@@ -1,12 +1,17 @@
 import { Grid, GridItem, useBoolean } from '@chakra-ui/react'
 import * as idb from 'idb-keyval'
 import React, { useEffect, useState } from 'react'
-import ImportPythonPackageDialog from '../Components/Menu/ImportPythonPackageDialog'
+import { useHistory } from 'react-router-dom'
 import MenuBar from '../Components/Menu/MenuBar'
+import PythonPackageImportDialog from '../Components/Menu/PythonPackageImportDialog'
 import SelectionView from '../Components/SelectionView/SelectionView'
 import TreeView from '../Components/TreeView/TreeView'
-import { initializeAnnotations, selectCurrentUserAction } from '../features/annotations/annotationSlice'
-import ImportAnnotationFileDialog from '../features/annotations/dialogs/ImportAnnotationFileDialog'
+import AnnotationImportDialog from '../features/annotations/AnnotationImportDialog'
+import {
+    initializeAnnotations,
+    selectCurrentUserAction,
+    selectShowAnnotationImportDialog,
+} from '../features/annotations/annotationSlice'
 import EnumForm from '../features/annotations/forms/EnumForm'
 import RenameForm from '../features/annotations/forms/RenameForm'
 import { PythonFilter } from '../model/python/PythonFilter'
@@ -15,10 +20,11 @@ import { parsePythonPackageJson, PythonPackageJson } from '../model/python/Pytho
 import { useAppDispatch, useAppSelector } from './hooks'
 
 const App: React.FC = () => {
-    const [showImportAnnotationFileDialog, setShowImportAnnotationFileDialog] = useBoolean(false)
     const [showImportPythonPackageDialog, setShowImportPythonPackageDialog] = useBoolean(false)
     const [pythonPackage, setPythonPackage] = useState<PythonPackage>(new PythonPackage('empty'))
     const currentUserAction = useAppSelector(selectCurrentUserAction)
+    const history = useHistory()
+    // const [treeView]
 
     useEffect(() => {
         const getPythonPackageFromIndexedDB = async () => {
@@ -52,6 +58,8 @@ const App: React.FC = () => {
 
     const userActionTarget = pythonPackage.getByRelativePathAsString(currentUserAction.target)
 
+    const showAnnotationImportDialog = useAppSelector(selectShowAnnotationImportDialog)
+
     return (
         <Grid
             autoColumns="0fr 1fr"
@@ -65,7 +73,6 @@ const App: React.FC = () => {
                     setPythonPackage={setPythonPackage}
                     filter={filter}
                     setFilter={setFilter}
-                    openImportAnnotationFileDialog={setShowImportAnnotationFileDialog.on}
                     openImportPythonPackageDialog={setShowImportPythonPackageDialog.on}
                 />
             </GridItem>
@@ -87,15 +94,9 @@ const App: React.FC = () => {
                 <SelectionView pythonPackage={pythonPackage} />
             </GridItem>
 
-            {showImportAnnotationFileDialog && (
-                <ImportAnnotationFileDialog
-                    isVisible={showImportAnnotationFileDialog}
-                    close={setShowImportAnnotationFileDialog.off}
-                />
-            )}
+            {showAnnotationImportDialog && <AnnotationImportDialog />}
             {showImportPythonPackageDialog && (
-                <ImportPythonPackageDialog
-                    isVisible={showImportPythonPackageDialog}
+                <PythonPackageImportDialog
                     close={setShowImportPythonPackageDialog.off}
                     setPythonPackage={setPythonPackage}
                     setFilter={setFilter}

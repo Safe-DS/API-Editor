@@ -1,7 +1,7 @@
 import { Button, ButtonGroup, IconButton, Stack, Text } from '@chakra-ui/react'
 import React from 'react'
 import { FaTrash, FaWrench } from 'react-icons/fa'
-import { useAppDispatch, useAppSelector } from '../../../app/hooks'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import {
     removeEnum,
     removeRenaming,
@@ -11,7 +11,7 @@ import {
     selectUnused,
     showEnumAnnotationForm,
     showRenameAnnotationForm,
-} from '../annotationSlice'
+} from './annotationSlice'
 
 interface AnnotationViewProps {
     target: string
