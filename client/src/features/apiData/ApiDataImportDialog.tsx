@@ -18,26 +18,25 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useAppDispatch } from '../../app/hooks'
 import StyledDropzone from '../../common/StyledDropzone'
-import { resetAnnotations } from '../../features/annotations/annotationSlice'
 import PythonPackage from '../../model/python/PythonPackage'
 import { parsePythonPackageJson, PythonPackageJson } from '../../model/python/PythonPackageBuilder'
 import { Setter } from '../../util/types'
 import { isValidJsonFile } from '../../util/validation'
+import { resetAnnotations } from '../annotations/annotationSlice'
+import { toggleApiDataImportDialog } from './apiDataSlice'
 
 interface ImportPythonPackageDialogProps {
-    close: () => void
     setPythonPackage: Setter<PythonPackage>
     setFilter: Setter<string>
 }
 
-export default function PythonPackageImportDialog(props: ImportPythonPackageDialogProps): JSX.Element {
+export default function ApiDataImportDialog(props: ImportPythonPackageDialogProps): JSX.Element {
     const [fileName, setFileName] = useState('')
     const [newPythonPackage, setNewPythonPackage] = useState<string>()
     const history = useHistory()
     const dispatch = useAppDispatch()
 
     const submit = async () => {
-        props.close()
         if (newPythonPackage) {
             const parsedPythonPackage = JSON.parse(newPythonPackage) as PythonPackageJson
             props.setPythonPackage(parsePythonPackageJson(parsedPythonPackage))
@@ -46,7 +45,9 @@ export default function PythonPackageImportDialog(props: ImportPythonPackageDial
 
             await idb.set('package', parsedPythonPackage)
         }
+        close()
     }
+    const close = () => dispatch(toggleApiDataImportDialog())
 
     const slurpAndParse = (acceptedFiles: File[]) => {
         if (isValidJsonFile(acceptedFiles[acceptedFiles.length - 1].name)) {
@@ -66,23 +67,23 @@ export default function PythonPackageImportDialog(props: ImportPythonPackageDial
     }
 
     return (
-        <Modal onClose={props.close} isOpen={true} size="xl">
+        <Modal onClose={close} isOpen={true} size="xl">
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>
-                    <Heading>Import Python package</Heading>
+                    <Heading>Import API data</Heading>
                 </ModalHeader>
                 <ModalBody>
                     <FormControl>
-                        <FormLabel>Select a Python package to import.</FormLabel>
+                        <FormLabel>Select an API data file to import.</FormLabel>
                         <StyledDropzone onDrop={slurpAndParse}>
-                            <Text>Drag and drop a Python package here, or click to select the file.</Text>
+                            <Text>Drag and drop an API data file here, or click to select the file.</Text>
                             <Text>(Only *.json will be accepted.)</Text>
                         </StyledDropzone>
 
                         {fileName && (
                             <Box>
-                                <strong>Imported package name: </strong>
+                                <strong>Imported file: </strong>
                                 {fileName}
                             </Box>
                         )}
@@ -93,7 +94,7 @@ export default function PythonPackageImportDialog(props: ImportPythonPackageDial
                         <Button colorScheme="blue" onClick={submit}>
                             Submit
                         </Button>
-                        <Button colorScheme="red" onClick={props.close}>
+                        <Button colorScheme="red" onClick={close}>
                             Cancel
                         </Button>
                     </HStack>

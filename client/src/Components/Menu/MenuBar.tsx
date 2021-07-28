@@ -30,6 +30,7 @@ import { useLocation } from 'react-router'
 import { NavLink } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { toggleAnnotationImportDialog } from '../../features/annotations/annotationSlice'
+import { toggleApiDataImportDialog } from '../../features/apiData/apiDataSlice'
 import { PythonFilter } from '../../model/python/PythonFilter'
 import PythonPackage from '../../model/python/PythonPackage'
 import { Setter } from '../../util/types'
@@ -38,7 +39,6 @@ interface MenuBarProps {
     setPythonPackage: Setter<PythonPackage>
     filter: string
     setFilter: Setter<string>
-    openImportPythonPackageDialog: () => void
 }
 
 export default function MenuBar(props: MenuBarProps): JSX.Element {
@@ -86,7 +86,7 @@ export default function MenuBar(props: MenuBarProps): JSX.Element {
                             Import
                         </MenuButton>
                         <MenuList>
-                            <MenuItem onClick={props.openImportPythonPackageDialog}>Python Package</MenuItem>
+                            <MenuItem onClick={() => dispatch(toggleApiDataImportDialog())}>API Data</MenuItem>
                             <MenuItem onClick={() => dispatch(toggleAnnotationImportDialog())}>Annotations</MenuItem>
                         </MenuList>
                     </Menu>

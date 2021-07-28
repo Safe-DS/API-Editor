@@ -63,7 +63,7 @@ const AnnotationImportDialog: React.FC = () => {
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>
-                    <Heading>Import annotation file</Heading>
+                    <Heading>Import annotations</Heading>
                 </ModalHeader>
                 <ModalBody>
                     <FormControl>

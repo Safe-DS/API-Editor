@@ -1,9 +1,8 @@
-import { Grid, GridItem, useBoolean } from '@chakra-ui/react'
+import { Grid, GridItem } from '@chakra-ui/react'
 import * as idb from 'idb-keyval'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import MenuBar from '../Components/Menu/MenuBar'
-import PythonPackageImportDialog from '../Components/Menu/PythonPackageImportDialog'
 import SelectionView from '../Components/SelectionView/SelectionView'
 import TreeView from '../Components/TreeView/TreeView'
 import AnnotationImportDialog from '../features/annotations/AnnotationImportDialog'
@@ -14,13 +13,14 @@ import {
 } from '../features/annotations/annotationSlice'
 import EnumForm from '../features/annotations/forms/EnumForm'
 import RenameForm from '../features/annotations/forms/RenameForm'
+import ApiDataImportDialog from '../features/apiData/ApiDataImportDialog'
+import { selectShowApiDataImportDialog } from '../features/apiData/apiDataSlice'
 import { PythonFilter } from '../model/python/PythonFilter'
 import PythonPackage from '../model/python/PythonPackage'
 import { parsePythonPackageJson, PythonPackageJson } from '../model/python/PythonPackageBuilder'
 import { useAppDispatch, useAppSelector } from './hooks'
 
 const App: React.FC = () => {
-    const [showImportPythonPackageDialog, setShowImportPythonPackageDialog] = useBoolean(false)
     const [pythonPackage, setPythonPackage] = useState<PythonPackage>(new PythonPackage('empty'))
     const currentUserAction = useAppSelector(selectCurrentUserAction)
     const history = useHistory()
@@ -58,6 +58,7 @@ const App: React.FC = () => {
 
     const userActionTarget = pythonPackage.getByRelativePathAsString(currentUserAction.target)
 
+    const showApiDataImportDialog = useAppSelector(selectShowApiDataImportDialog)
     const showAnnotationImportDialog = useAppSelector(selectShowAnnotationImportDialog)
 
     return (
@@ -69,12 +70,7 @@ const App: React.FC = () => {
             h="100vh"
         >
             <GridItem gridArea="menu" colSpan={2}>
-                <MenuBar
-                    setPythonPackage={setPythonPackage}
-                    filter={filter}
-                    setFilter={setFilter}
-                    openImportPythonPackageDialog={setShowImportPythonPackageDialog.on}
-                />
+                <MenuBar setPythonPackage={setPythonPackage} filter={filter} setFilter={setFilter} />
             </GridItem>
             <GridItem
                 gridArea="leftPane"
@@ -95,12 +91,8 @@ const App: React.FC = () => {
             </GridItem>
 
             {showAnnotationImportDialog && <AnnotationImportDialog />}
-            {showImportPythonPackageDialog && (
-                <PythonPackageImportDialog
-                    close={setShowImportPythonPackageDialog.off}
-                    setPythonPackage={setPythonPackage}
-                    setFilter={setFilter}
-                />
+            {showApiDataImportDialog && (
+                <ApiDataImportDialog setPythonPackage={setPythonPackage} setFilter={setFilter} />
             )}
         </Grid>
     )

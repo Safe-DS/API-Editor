@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import AnnotationReducer from '../features/annotations/annotationSlice'
+import ApiDataReducer from '../features/apiData/apiDataSlice'
 
 export const store = configureStore({
     reducer: {
         annotations: AnnotationReducer,
+        apiData: ApiDataReducer,
     },
 })
 
