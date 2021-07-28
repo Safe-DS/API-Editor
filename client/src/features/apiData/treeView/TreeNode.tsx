@@ -1,9 +1,11 @@
 import { Box, Icon } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import React from 'react'
 import { IconType } from 'react-icons/lib'
 import { useLocation } from 'react-router'
 import { useHistory } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { ChildrenProp } from '../../../common/util/types'
+import { selectIsExpandedInTreeView, toggleExpandedInTreeView } from '../apiDataSlice'
 import PythonDeclaration from '../model/PythonDeclaration'
 import VisibilityIndicator from './VisibilityIndicator'
 
@@ -15,8 +17,10 @@ interface TreeNodeProps extends ChildrenProp {
 
 export default function TreeNode(props: TreeNodeProps): JSX.Element {
     const currentPathname = useLocation().pathname
-    const [showChildren, setShowChildren] = useState(selfOrChildIsSelected(props.declaration, currentPathname))
     const history = useHistory()
+    const dispatch = useAppDispatch()
+
+    const showChildren = useAppSelector(selectIsExpandedInTreeView(props.declaration.pathAsString()))
 
     const level = levelOf(props.declaration)
     const paddingLeft = level === 0 ? '1rem' : `calc(0.5 * ${level} * (1.25em + 0.25rem) + 1rem)`
@@ -24,7 +28,7 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element {
     const color = isSelected(props.declaration, currentPathname) ? 'white' : undefined
 
     const handleClick = () => {
-        setShowChildren((prevState) => !prevState)
+        dispatch(toggleExpandedInTreeView(props.declaration.pathAsString()))
         history.push(`/${props.declaration.pathAsString()}`)
     }
 
@@ -57,12 +61,4 @@ function levelOf(declaration: PythonDeclaration): number {
 
 function isSelected(declaration: PythonDeclaration, currentPathname: string): boolean {
     return `/${declaration.pathAsString()}` === currentPathname
-}
-
-function selfOrChildIsSelected(declaration: PythonDeclaration, currentPathname: string): boolean {
-    const declarationPath = `/${declaration.pathAsString()}`
-    const currentPath = currentPathname
-
-    // The slash prevents /sklearn/sklearn from opening when the path is /sklearn/sklearn.base
-    return currentPath === declarationPath || currentPath.startsWith(`${declarationPath}/`)
 }

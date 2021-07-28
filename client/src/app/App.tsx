@@ -1,7 +1,7 @@
 import { Grid, GridItem } from '@chakra-ui/react'
 import * as idb from 'idb-keyval'
 import React, { useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useLocation } from 'react-router'
 import MenuBar from '../common/MenuBar'
 import { Setter } from '../common/util/types'
 import AnnotationImportDialog from '../features/annotations/AnnotationImportDialog'
@@ -15,7 +15,7 @@ import {
 import EnumForm from '../features/annotations/forms/EnumForm'
 import RenameForm from '../features/annotations/forms/RenameForm'
 import ApiDataImportDialog from '../features/apiData/ApiDataImportDialog'
-import { selectShowApiDataImportDialog } from '../features/apiData/apiDataSlice'
+import { selectShowApiDataImportDialog, toggleExpandedInTreeView } from '../features/apiData/apiDataSlice'
 import { PythonFilter } from '../features/apiData/model/PythonFilter'
 import PythonPackage from '../features/apiData/model/PythonPackage'
 import { parsePythonPackageJson, PythonPackageJson } from '../features/apiData/model/PythonPackageBuilder'
@@ -26,8 +26,7 @@ import { useAppDispatch, useAppSelector } from './hooks'
 const App: React.FC = () => {
     const [pythonPackage, setPythonPackage] = useState<PythonPackage>(new PythonPackage('empty'))
     const currentUserAction = useAppSelector(selectCurrentUserAction)
-    const history = useHistory()
-    // const [treeView]
+    const currentPathName = useLocation().pathname
 
     useEffect(() => {
         // noinspection JSIgnoredPromiseFromCall
@@ -45,6 +44,16 @@ const App: React.FC = () => {
         // noinspection JSIgnoredPromiseFromCall
         setAnnotationsInIndexedDB(annotationStore)
     }, [annotationStore])
+
+    useEffect(() => {
+        const parts = currentPathName.split('/').slice(1)
+
+        for (let i = 2; i < parts.length; i++) {
+            dispatch(toggleExpandedInTreeView(parts.slice(0, i).join('/')))
+        }
+
+        // eslint-disable-next-line
+    }, [])
 
     const [filter, setFilter] = useState('')
     const pythonFilter = PythonFilter.fromFilterBoxInput(filter)
@@ -92,14 +101,14 @@ const App: React.FC = () => {
     )
 }
 
-const getPythonPackageFromIndexedDB = async (setPythonPackage: Setter<PythonPackage>) => {
+async function getPythonPackageFromIndexedDB(setPythonPackage: Setter<PythonPackage>) {
     const storedPackage = (await idb.get('package')) as PythonPackageJson
     if (storedPackage) {
         setPythonPackage(parsePythonPackageJson(storedPackage))
     }
 }
 
-const setAnnotationsInIndexedDB = async (annotationStore: AnnotationsState) => {
+async function setAnnotationsInIndexedDB(annotationStore: AnnotationsState) {
     await idb.set('annotations', annotationStore)
 }
 

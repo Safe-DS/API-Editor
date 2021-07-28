@@ -35,7 +35,7 @@ const apiDataSlice = createSlice({
 })
 
 const { actions, reducer } = apiDataSlice
-export const { toggleImportDialog: toggleApiDataImportDialog } = actions
+export const { toggleExpandedInTreeView, toggleImportDialog: toggleApiDataImportDialog } = actions
 export default reducer
 
 const selectApiData = (state: RootState) => state.apiData
