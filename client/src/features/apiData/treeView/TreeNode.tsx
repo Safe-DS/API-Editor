@@ -5,7 +5,7 @@ import { useLocation } from 'react-router'
 import { useHistory } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { ChildrenProp } from '../../../common/util/types'
-import { selectIsExpandedInTreeView, toggleExpandedInTreeView } from '../apiDataSlice'
+import { selectIsExpandedInTreeView, toggleIsExpandedInTreeView } from '../apiDataSlice'
 import PythonDeclaration from '../model/PythonDeclaration'
 import VisibilityIndicator from './VisibilityIndicator'
 
@@ -28,7 +28,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({ children, declaration, icon, isExpa
     const color = isSelected(declaration, currentPathname) ? 'white' : undefined
 
     const handleClick = () => {
-        dispatch(toggleExpandedInTreeView(declaration.pathAsString()))
+        dispatch(toggleIsExpandedInTreeView(declaration.pathAsString()))
         history.push(`/${declaration.pathAsString()}`)
     }
 
