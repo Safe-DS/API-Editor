@@ -5,6 +5,7 @@ export interface ApiDataState {
     expandedInTreeView: {
         [target: string]: true
     }
+    treeViewScrollOffset: number
     showImportDialog: boolean
 }
 
@@ -12,6 +13,7 @@ export interface ApiDataState {
 
 const initialState: ApiDataState = {
     expandedInTreeView: {},
+    treeViewScrollOffset: 0,
     showImportDialog: false,
 }
 
@@ -21,12 +23,15 @@ const apiDataSlice = createSlice({
     name: 'apiData',
     initialState,
     reducers: {
-        toggleExpandedInTreeView(state, action: PayloadAction<string>) {
+        toggleIsExpanded(state, action: PayloadAction<string>) {
             if (state.expandedInTreeView[action.payload]) {
                 delete state.expandedInTreeView[action.payload]
             } else {
                 state.expandedInTreeView[action.payload] = true
             }
+        },
+        setScrollOffset(state, action: PayloadAction<number>) {
+            state.treeViewScrollOffset = action.payload
         },
         toggleImportDialog(state) {
             state.showImportDialog = !state.showImportDialog
@@ -35,7 +40,11 @@ const apiDataSlice = createSlice({
 })
 
 const { actions, reducer } = apiDataSlice
-export const { toggleExpandedInTreeView, toggleImportDialog: toggleApiDataImportDialog } = actions
+export const {
+    toggleIsExpanded: toggleIsExpandedInTreeView,
+    setScrollOffset: setTreeViewScrollOffset,
+    toggleImportDialog: toggleApiDataImportDialog,
+} = actions
 export default reducer
 
 const selectApiData = (state: RootState) => state.apiData
@@ -45,4 +54,5 @@ export const selectIsExpandedInTreeView =
         Boolean(selectApiData(state).expandedInTreeView[target])
 export const selectAllExpandedInTreeView = (state: RootState): { [target: string]: true } =>
     selectApiData(state).expandedInTreeView
+export const selectTreeViewScrollOffset = (state: RootState): number => selectApiData(state).treeViewScrollOffset
 export const selectShowApiDataImportDialog = (state: RootState): boolean => selectApiData(state).showImportDialog

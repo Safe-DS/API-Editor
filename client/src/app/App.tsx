@@ -15,7 +15,7 @@ import {
 import EnumForm from '../features/annotations/forms/EnumForm'
 import RenameForm from '../features/annotations/forms/RenameForm'
 import ApiDataImportDialog from '../features/apiData/ApiDataImportDialog'
-import { selectShowApiDataImportDialog, toggleExpandedInTreeView } from '../features/apiData/apiDataSlice'
+import { selectShowApiDataImportDialog, toggleIsExpandedInTreeView } from '../features/apiData/apiDataSlice'
 import { PythonFilter } from '../features/apiData/model/PythonFilter'
 import PythonPackage from '../features/apiData/model/PythonPackage'
 import { parsePythonPackageJson, PythonPackageJson } from '../features/apiData/model/PythonPackageBuilder'
@@ -49,7 +49,7 @@ const App: React.FC = () => {
         const parts = currentPathName.split('/').slice(1)
 
         for (let i = 2; i < parts.length; i++) {
-            dispatch(toggleExpandedInTreeView(parts.slice(0, i).join('/')))
+            dispatch(toggleIsExpandedInTreeView(parts.slice(0, i).join('/')))
         }
 
         // eslint-disable-next-line

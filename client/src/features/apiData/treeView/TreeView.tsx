@@ -1,9 +1,9 @@
 import { Box } from '@chakra-ui/react'
-import React from 'react'
+import React, { memo, useCallback, useEffect, useRef } from 'react'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeList, ListChildComponentProps } from 'react-window'
-import { useAppSelector } from '../../../app/hooks'
-import { selectAllExpandedInTreeView } from '../apiDataSlice'
+import { useAppDispatch, useAppSelector } from '../../../app/hooks'
+import { selectAllExpandedInTreeView, selectTreeViewScrollOffset, setTreeViewScrollOffset } from '../apiDataSlice'
 import PythonClass from '../model/PythonClass'
 import PythonDeclaration from '../model/PythonDeclaration'
 import PythonFunction from '../model/PythonFunction'
@@ -15,13 +15,45 @@ import FunctionNode from './FunctionNode'
 import ModuleNode from './ModuleNode'
 import ParameterNode from './ParameterNode'
 
+interface ScrollOffset {
+    scrollOffset: number
+}
+
 interface TreeViewProps {
     pythonPackage: PythonPackage
 }
 
-const TreeView: React.FC<TreeViewProps> = ({ pythonPackage }) => {
-    const allExpandedInTreeView = useAppSelector(selectAllExpandedInTreeView)
-    const children = walkChildrenWithPreOrder(allExpandedInTreeView, pythonPackage)
+const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage }) => {
+    const dispatch = useAppDispatch()
+    const allExpanded = useAppSelector(selectAllExpandedInTreeView)
+
+    const children = walkChildrenWithPreOrder(allExpanded, pythonPackage)
+    const previousScrollOffset = useAppSelector(selectTreeViewScrollOffset)
+
+    // Keep a reference to the last FixedSizeList before everything is dismounted
+    const listRef = useRef<FixedSizeList>()
+    const listRefWrapper = useCallback((node) => {
+        if (node) {
+            listRef.current = node
+        }
+    }, [])
+
+    // Store the scroll offset when the component is dismounted
+    useEffect(() => {
+        return () => {
+            const current = listRef.current
+            if (current) {
+                try {
+                    const newScrollOffset = (current.state as ScrollOffset).scrollOffset
+                    dispatch(setTreeViewScrollOffset(newScrollOffset))
+                } catch {
+                    dispatch(setTreeViewScrollOffset(0))
+                }
+            }
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return (
         <AutoSizer disableWidth>
@@ -30,20 +62,22 @@ const TreeView: React.FC<TreeViewProps> = ({ pythonPackage }) => {
                     itemSize={24}
                     itemCount={children.length}
                     itemData={children}
-                    overscanCount={10}
+                    itemKey={(index, data) => data[index]?.pathAsString()}
                     width="100%"
                     height={height}
                     style={{
                         resize: 'horizontal',
                         whiteSpace: 'nowrap',
                     }}
+                    ref={listRefWrapper}
+                    initialScrollOffset={previousScrollOffset}
                 >
                     {TreeNodeGenerator}
                 </FixedSizeList>
             )}
         </AutoSizer>
     )
-}
+})
 
 function walkChildrenWithPreOrder(
     allExpandedInTreeView: { [target: string]: true },
@@ -58,7 +92,7 @@ function walkChildrenWithPreOrder(
     })
 }
 
-const TreeNodeGenerator: React.FC<ListChildComponentProps> = ({ data, index, style }) => {
+const TreeNodeGenerator: React.FC<ListChildComponentProps> = memo(({ data, index, style }) => {
     const declaration = data[index]
 
     return (
@@ -69,6 +103,6 @@ const TreeNodeGenerator: React.FC<ListChildComponentProps> = ({ data, index, sty
             {declaration instanceof PythonParameter && <ParameterNode pythonParameter={declaration} />}
         </Box>
     )
-}
+})
 
 export default TreeView
