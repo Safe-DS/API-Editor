@@ -166,7 +166,7 @@ export const {
 } = actions
 export default reducer
 
-const selectAnnotations = (state: RootState) => state.annotations
+export const selectAnnotations = (state: RootState) => state.annotations
 export const selectEnum =
     (target: string) =>
     (state: RootState): EnumAnnotation | undefined =>

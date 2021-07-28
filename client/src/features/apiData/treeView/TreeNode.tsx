@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 import { IconType } from 'react-icons/lib'
 import { useLocation } from 'react-router'
 import { useHistory } from 'react-router-dom'
-import PythonDeclaration from '../../model/python/PythonDeclaration'
-import { ChildrenProp } from '../../util/types'
+import { ChildrenProp } from '../../../common/util/types'
+import PythonDeclaration from '../model/PythonDeclaration'
 import VisibilityIndicator from './VisibilityIndicator'
 
 interface TreeNodeProps extends ChildrenProp {

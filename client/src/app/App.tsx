@@ -2,12 +2,13 @@ import { Grid, GridItem } from '@chakra-ui/react'
 import * as idb from 'idb-keyval'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import MenuBar from '../Components/Menu/MenuBar'
-import SelectionView from '../Components/SelectionView/SelectionView'
-import TreeView from '../Components/TreeView/TreeView'
+import MenuBar from '../common/MenuBar'
+import { Setter } from '../common/util/types'
 import AnnotationImportDialog from '../features/annotations/AnnotationImportDialog'
 import {
+    AnnotationsState,
     initializeAnnotations,
+    selectAnnotations,
     selectCurrentUserAction,
     selectShowAnnotationImportDialog,
 } from '../features/annotations/annotationSlice'
@@ -15,9 +16,11 @@ import EnumForm from '../features/annotations/forms/EnumForm'
 import RenameForm from '../features/annotations/forms/RenameForm'
 import ApiDataImportDialog from '../features/apiData/ApiDataImportDialog'
 import { selectShowApiDataImportDialog } from '../features/apiData/apiDataSlice'
-import { PythonFilter } from '../model/python/PythonFilter'
-import PythonPackage from '../model/python/PythonPackage'
-import { parsePythonPackageJson, PythonPackageJson } from '../model/python/PythonPackageBuilder'
+import { PythonFilter } from '../features/apiData/model/PythonFilter'
+import PythonPackage from '../features/apiData/model/PythonPackage'
+import { parsePythonPackageJson, PythonPackageJson } from '../features/apiData/model/PythonPackageBuilder'
+import SelectionView from '../features/apiData/selectionView/SelectionView'
+import TreeView from '../features/apiData/treeView/TreeView'
 import { useAppDispatch, useAppSelector } from './hooks'
 
 const App: React.FC = () => {
@@ -27,17 +30,11 @@ const App: React.FC = () => {
     // const [treeView]
 
     useEffect(() => {
-        const getPythonPackageFromIndexedDB = async () => {
-            const storedPackage = (await idb.get('package')) as PythonPackageJson
-            if (storedPackage) {
-                setPythonPackage(parsePythonPackageJson(storedPackage))
-            }
-        }
-
-        getPythonPackageFromIndexedDB()
+        // noinspection JSIgnoredPromiseFromCall
+        getPythonPackageFromIndexedDB(setPythonPackage)
     }, [])
 
-    const annotationStore = useAppSelector((state) => state.annotations)
+    const annotationStore = useAppSelector(selectAnnotations)
 
     const dispatch = useAppDispatch()
     useEffect(() => {
@@ -45,11 +42,8 @@ const App: React.FC = () => {
     }, [dispatch])
 
     useEffect(() => {
-        const setAnnotationsInIndexedDB = async () => {
-            await idb.set('annotations', annotationStore)
-        }
-
-        setAnnotationsInIndexedDB()
+        // noinspection JSIgnoredPromiseFromCall
+        setAnnotationsInIndexedDB(annotationStore)
     }, [annotationStore])
 
     const [filter, setFilter] = useState('')
@@ -96,6 +90,17 @@ const App: React.FC = () => {
             )}
         </Grid>
     )
+}
+
+const getPythonPackageFromIndexedDB = async (setPythonPackage: Setter<PythonPackage>) => {
+    const storedPackage = (await idb.get('package')) as PythonPackageJson
+    if (storedPackage) {
+        setPythonPackage(parsePythonPackageJson(storedPackage))
+    }
+}
+
+const setAnnotationsInIndexedDB = async (annotationStore: AnnotationsState) => {
+    await idb.set('annotations', annotationStore)
 }
 
 export default App

@@ -1,4 +1,4 @@
-import { Optional } from '../../util/types'
+import { Optional } from '../../../common/util/types'
 import PythonClass from './PythonClass'
 import PythonDeclaration from './PythonDeclaration'
 import { PythonFilter } from './PythonFilter'

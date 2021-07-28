@@ -1,5 +1,5 @@
-import { isEmptyList } from '../../util/listOperations'
-import { Optional } from '../../util/types'
+import { isEmptyList } from '../../../common/util/listOperations'
+import { Optional } from '../../../common/util/types'
 
 export default abstract class PythonDeclaration {
     abstract readonly name: string

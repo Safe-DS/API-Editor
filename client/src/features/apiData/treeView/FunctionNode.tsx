@@ -1,7 +1,7 @@
 import React from 'react'
 import { FaCogs } from 'react-icons/fa'
-import PythonFunction from '../../model/python/PythonFunction'
-import { isEmptyList } from '../../util/listOperations'
+import { isEmptyList } from '../../../common/util/listOperations'
+import PythonFunction from '../model/PythonFunction'
 import ParameterNode from './ParameterNode'
 import TreeNode from './TreeNode'
 

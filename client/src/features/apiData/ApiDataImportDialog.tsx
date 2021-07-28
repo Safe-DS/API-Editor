@@ -18,12 +18,12 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useAppDispatch } from '../../app/hooks'
 import StyledDropzone from '../../common/StyledDropzone'
-import PythonPackage from '../../model/python/PythonPackage'
-import { parsePythonPackageJson, PythonPackageJson } from '../../model/python/PythonPackageBuilder'
-import { Setter } from '../../util/types'
-import { isValidJsonFile } from '../../util/validation'
+import { Setter } from '../../common/util/types'
+import { isValidJsonFile } from '../../common/util/validation'
 import { resetAnnotations } from '../annotations/annotationSlice'
 import { toggleApiDataImportDialog } from './apiDataSlice'
+import PythonPackage from './model/PythonPackage'
+import { parsePythonPackageJson, PythonPackageJson } from './model/PythonPackageBuilder'
 
 interface ImportPythonPackageDialogProps {
     setPythonPackage: Setter<PythonPackage>

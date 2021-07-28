@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react'
 import React from 'react'
-import PythonPackage from '../../model/python/PythonPackage'
+import PythonPackage from '../model/PythonPackage'
 import ModuleNode from './ModuleNode'
 
 interface TreeViewProps {

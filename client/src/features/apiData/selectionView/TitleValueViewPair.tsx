@@ -1,5 +1,5 @@
 import React from 'react'
-import { Optional } from '../../util/types'
+import { Optional } from '../../../common/util/types'
 
 interface ClassViewProps {
     title: string

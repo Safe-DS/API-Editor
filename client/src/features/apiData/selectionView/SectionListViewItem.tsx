@@ -1,6 +1,6 @@
 import { Box, Heading, Stack, Text } from '@chakra-ui/react'
 import React from 'react'
-import { isEmptyList } from '../../util/listOperations'
+import { isEmptyList } from '../../../common/util/listOperations'
 
 interface ClassViewItemProps {
     title: string

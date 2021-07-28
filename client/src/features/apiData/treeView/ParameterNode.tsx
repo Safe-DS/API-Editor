@@ -1,6 +1,6 @@
 import React from 'react'
 import { FaKeyboard } from 'react-icons/fa'
-import PythonParameter from '../../model/python/PythonParameter'
+import PythonParameter from '../model/PythonParameter'
 import TreeNode from './TreeNode'
 
 interface ParameterNodeProps {

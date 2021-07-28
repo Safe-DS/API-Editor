@@ -28,12 +28,12 @@ import React, { useRef } from 'react'
 import { FaCheck, FaChevronDown } from 'react-icons/fa'
 import { useLocation } from 'react-router'
 import { NavLink } from 'react-router-dom'
-import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import { toggleAnnotationImportDialog } from '../../features/annotations/annotationSlice'
-import { toggleApiDataImportDialog } from '../../features/apiData/apiDataSlice'
-import { PythonFilter } from '../../model/python/PythonFilter'
-import PythonPackage from '../../model/python/PythonPackage'
-import { Setter } from '../../util/types'
+import { useAppDispatch, useAppSelector } from '../app/hooks'
+import { toggleAnnotationImportDialog } from '../features/annotations/annotationSlice'
+import { toggleApiDataImportDialog } from '../features/apiData/apiDataSlice'
+import { PythonFilter } from '../features/apiData/model/PythonFilter'
+import PythonPackage from '../features/apiData/model/PythonPackage'
+import { Setter } from './util/types'
 
 interface MenuBarProps {
     setPythonPackage: Setter<PythonPackage>

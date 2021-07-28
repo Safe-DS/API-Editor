@@ -1,6 +1,6 @@
 import { Heading, Stack, Text } from '@chakra-ui/react'
 import React from 'react'
-import PythonParameter from '../../model/python/PythonParameter'
+import PythonParameter from '../model/PythonParameter'
 import ParameterNode from './ParameterNode'
 import TitleValueViewPair from './TitleValueViewPair'
 

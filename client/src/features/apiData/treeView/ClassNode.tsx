@@ -1,7 +1,7 @@
 import React from 'react'
 import { FaChalkboard } from 'react-icons/fa'
-import PythonClass from '../../model/python/PythonClass'
-import { isEmptyList } from '../../util/listOperations'
+import { isEmptyList } from '../../../common/util/listOperations'
+import PythonClass from '../model/PythonClass'
 import FunctionNode from './FunctionNode'
 import TreeNode from './TreeNode'
 
