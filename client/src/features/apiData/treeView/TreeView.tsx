@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react'
-import React, { memo, useEffect } from 'react'
+import React, { memo, useCallback, useEffect, useRef } from 'react'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeList, ListChildComponentProps } from 'react-window'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
@@ -26,20 +26,26 @@ interface TreeViewProps {
 const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage }) => {
     const dispatch = useAppDispatch()
     const allExpanded = useAppSelector(selectAllExpandedInTreeView)
-    const listRef = React.createRef<FixedSizeList>()
 
     const children = walkChildrenWithPreOrder(allExpanded, pythonPackage)
     const previousScrollOffset = useAppSelector(selectTreeViewScrollOffset)
 
+    // Keep a reference to the last FixedSizeList before everything is dismounted
+    const listRef = useRef<FixedSizeList>()
+    const listRefWrapper = useCallback((node) => {
+        if (node) {
+            listRef.current = node
+        }
+    }, [])
+
+    // Store the scroll offset when the component is dismounted
     useEffect(() => {
-        const current = listRef.current
-        if (current) {
-            return () => {
+        return () => {
+            const current = listRef.current
+            if (current) {
                 try {
                     const newScrollOffset = (current.state as ScrollOffset).scrollOffset
-                    if (newScrollOffset !== previousScrollOffset) {
-                        dispatch(setTreeViewScrollOffset(newScrollOffset))
-                    }
+                    dispatch(setTreeViewScrollOffset(newScrollOffset))
                 } catch {
                     dispatch(setTreeViewScrollOffset(0))
                 }
@@ -47,7 +53,7 @@ const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage }) => {
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch, listRef])
+    }, [])
 
     return (
         <AutoSizer disableWidth>
@@ -63,7 +69,7 @@ const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage }) => {
                         resize: 'horizontal',
                         whiteSpace: 'nowrap',
                     }}
-                    ref={listRef}
+                    ref={listRefWrapper}
                     initialScrollOffset={previousScrollOffset}
                 >
                     {TreeNodeGenerator}
