@@ -21,7 +21,7 @@ const AnnotationDropdown: React.FC<AnnotationDropdownProps> = ({
 
     return (
         <Menu>
-            <MenuButton as={Button} size="sm" rightIcon={<Icon as={FaChevronDown} />}>
+            <MenuButton as={Button} size="sm" variant="outline" rightIcon={<Icon as={FaChevronDown} />}>
                 Annotations
             </MenuButton>
             <MenuList>
