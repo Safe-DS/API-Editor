@@ -5,7 +5,7 @@ import { useLocation } from 'react-router'
 import { useHistory } from 'react-router-dom'
 import PythonDeclaration from '../../model/python/PythonDeclaration'
 import { ChildrenProp } from '../../util/types'
-import VisibilityIndicator from '../Util/VisibilityIndicator'
+import VisibilityIndicator from './VisibilityIndicator'
 
 interface TreeNodeProps extends ChildrenProp {
     declaration: PythonDeclaration

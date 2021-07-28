@@ -1,11 +1,11 @@
-import { Box, Flex } from '@chakra-ui/react'
+import { Box, Flex, HStack, IconButton } from '@chakra-ui/react'
 import 'katex/dist/katex.min.css'
 import React, { useState } from 'react'
+import { FaChevronDown, FaChevronRight } from 'react-icons/fa'
 import ReactMarkdown from 'react-markdown'
 import rehypeKatex from 'rehype-katex'
 import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
-import VisibilityIndicator from '../Util/VisibilityIndicator'
 
 interface DocumentationTextProps {
     inputText: string
@@ -28,22 +28,27 @@ export default function DocumentationText({ inputText = '' }: DocumentationTextP
                 setReadMore(true)
             }}
         >
-            {hasMultipleLines && (
-                <Box
-                    cursor="pointer"
-                    onClick={(event) => {
-                        event.stopPropagation()
-                        setReadMore(!readMore)
-                    }}
-                >
-                    <VisibilityIndicator hasChildren={hasMultipleLines} showChildren={readMore} />
+            <HStack alignItems="flex-start">
+                {hasMultipleLines && (
+                    <IconButton
+                        aria-label="Expand"
+                        as={readMore ? FaChevronDown : FaChevronRight}
+                        size="xs"
+                        padding={1}
+                        variant="outline"
+                        cursor="pointer"
+                        onClick={(event) => {
+                            event.stopPropagation()
+                            setReadMore(!readMore)
+                        }}
+                    />
+                )}
+                <Box cursor={hasMultipleLines && !readMore ? 'pointer' : undefined}>
+                    <ReactMarkdown rehypePlugins={[rehypeKatex]} remarkPlugins={[remarkGfm, remarkMath]}>
+                        {readMore || !hasMultipleLines ? preprocessedText : shortenedText + ' **[Read More...]**'}
+                    </ReactMarkdown>
                 </Box>
-            )}
-            <Box cursor={hasMultipleLines && !readMore ? 'pointer' : undefined}>
-                <ReactMarkdown rehypePlugins={[rehypeKatex]} remarkPlugins={[remarkGfm, remarkMath]}>
-                    {readMore || !hasMultipleLines ? preprocessedText : shortenedText + ' [Read More...]'}
-                </ReactMarkdown>
-            </Box>
+            </HStack>
         </Flex>
     )
 }
