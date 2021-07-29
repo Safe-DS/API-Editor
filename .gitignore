@@ -1,1 +1,6 @@
+# Gradle
+.gradle/
+
+# Generated stuff
+DS_Store/
 *.log
