@@ -5,8 +5,8 @@
     "scripts": {
         "lint": "eslint .",
         "fix": "eslint --fix . && prettier --write .",
-        "prepare": "husky install .husky",
         "preinstall": "npx only-allow pnpm",
+        "prepare": "husky install .husky",
         "postinstall": "cd client && pnpm install"
     },
     "lint-staged": {
