@@ -34,9 +34,9 @@ Possible **scopes** are:
 
 Examples:
 
-- `feat(annotations): add @rename`
-- `docs: write contributing guide`
-- `refactor!: drop support for older browsers` (the exclamation mark denotes a breaking change)
+-   `feat(annotations): add @rename`
+-   `docs: write contributing guide`
+-   `refactor!: drop support for older browsers` (the exclamation mark denotes a breaking change)
 
 ### Description
 
