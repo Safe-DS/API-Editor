@@ -7,7 +7,7 @@
         "fix": "eslint --fix . && prettier --write .",
         "preinstall": "npx only-allow pnpm",
         "prepare": "husky install .husky",
-        "postinstall": "cd client && pnpm install"
+        "postinstall": "cd com.larsreimann.api_editor.client && pnpm install"
     },
     "lint-staged": {
         "*.{js,jsx,ts,tsx}": "eslint --fix .",

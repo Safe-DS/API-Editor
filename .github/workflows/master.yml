@@ -1,53 +1,53 @@
 name: Master
 
 on:
-  push:
-    branches: [master]
+    push:
+        branches: [master]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+    build:
+        runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: ./client
+        defaults:
+            run:
+                working-directory: ./client
 
-    strategy:
-      matrix:
-        node-version: [14.x]
+        strategy:
+            matrix:
+                node-version: [16.x]
 
-    steps:
-      - name: Checkout Source
-        uses: actions/checkout@v2
+        steps:
+            - name: Checkout Source
+              uses: actions/checkout@v2
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v2
+              with:
+                  node-version: ${{ matrix.node-version }}
 
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+            - name: Cache dependencies
+              uses: actions/cache@v2
+              with:
+                  path: ~/.pnpm-store
+                  key: ${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
 
-      - name: Install pnpm
-        run: npm install -g pnpm
+            - name: Install pnpm
+              run: npm install -g pnpm
 
-      - name: Install Dependencies
-        run: pnpm install
+            - name: Install Dependencies
+              run: pnpm install
 
-      - name: Test
-        run: pnpm run test
+            - name: Test
+              run: pnpm run test
 
-      - name: Deploy
-        run: |
-          git config --global user.name $user_name
-          git config --global user.email $user_email
-          git remote set-url origin https://${github_token}@github.com/${repository}
-          pnpm run deploy
-        env:
-          user_name: "github-actions[bot]"
-          user_email: "github-actions[bot]@users.noreply.github.com"
-          github_token: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
-          repository: ${{ github.repository }}
+            - name: Deploy
+              run: |
+                  git config --global user.name $user_name
+                  git config --global user.email $user_email
+                  git remote set-url origin https://${github_token}@github.com/${repository}
+                  pnpm run deploy
+              env:
+                  user_name: 'github-actions[bot]'
+                  user_email: 'github-actions[bot]@users.noreply.github.com'
+                  github_token: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
+                  repository: ${{ github.repository }}

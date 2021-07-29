@@ -9,7 +9,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/server" />
+            <option value="$PROJECT_DIR$/com.larsreimann.api_editor.client" />
+            <option value="$PROJECT_DIR$/com.larsreimann.api_editor.server" />
           </set>
         </option>
       </GradleProjectSettings>

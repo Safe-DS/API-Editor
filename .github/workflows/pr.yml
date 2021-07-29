@@ -1,111 +1,111 @@
 name: Pull Request
 
 on:
-  pull_request:
-    branches: [master]
+    pull_request:
+        branches: [master]
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
+    lint:
+        runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: ./client
+        defaults:
+            run:
+                working-directory: ./client
 
-    strategy:
-      matrix:
-        node-version: [14.x]
+        strategy:
+            matrix:
+                node-version: [16.x]
 
-    steps:
-      - name: Checkout Source
-        uses: actions/checkout@v2
+        steps:
+            - name: Checkout Source
+              uses: actions/checkout@v2
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v2
+              with:
+                  node-version: ${{ matrix.node-version }}
 
-      - name: Cache Dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+            - name: Cache Dependencies
+              uses: actions/cache@v2
+              with:
+                  path: ~/.pnpm-store
+                  key: ${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
 
-      - name: Install pnpm
-        run: npm install -g pnpm
+            - name: Install pnpm
+              run: npm install -g pnpm
 
-      - name: Install Dependencies
-        run: pnpm install
+            - name: Install Dependencies
+              run: pnpm install
 
-      - name: Lint
-        run: pnpm run lint
+            - name: Lint
+              run: pnpm run lint
 
-  test:
-    runs-on: ubuntu-latest
+    test:
+        runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: ./client
+        defaults:
+            run:
+                working-directory: ./client
 
-    strategy:
-      matrix:
-        node-version: [14.x]
+        strategy:
+            matrix:
+                node-version: [14.x]
 
-    steps:
-      - name: Checkout Source
-        uses: actions/checkout@v2
+        steps:
+            - name: Checkout Source
+              uses: actions/checkout@v2
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v2
+              with:
+                  node-version: ${{ matrix.node-version }}
 
-      - name: Cache Dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+            - name: Cache Dependencies
+              uses: actions/cache@v2
+              with:
+                  path: ~/.pnpm-store
+                  key: ${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
 
-      - name: Install pnpm
-        run: npm install -g pnpm
+            - name: Install pnpm
+              run: npm install -g pnpm
 
-      - name: Install Dependencies
-        run: pnpm install
+            - name: Install Dependencies
+              run: pnpm install
 
-      - name: Test
-        run: pnpm run test
+            - name: Test
+              run: pnpm run test
 
-  build:
-    runs-on: ubuntu-latest
+    build:
+        runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: ./client
+        defaults:
+            run:
+                working-directory: ./client
 
-    strategy:
-      matrix:
-        node-version: [14.x]
+        strategy:
+            matrix:
+                node-version: [14.x]
 
-    steps:
-      - name: Checkout Source
-        uses: actions/checkout@v2
+        steps:
+            - name: Checkout Source
+              uses: actions/checkout@v2
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v2
+              with:
+                  node-version: ${{ matrix.node-version }}
 
-      - name: Cache Dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+            - name: Cache Dependencies
+              uses: actions/cache@v2
+              with:
+                  path: ~/.pnpm-store
+                  key: ${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
 
-      - name: Install pnpm
-        run: npm install -g pnpm
+            - name: Install pnpm
+              run: npm install -g pnpm
 
-      - name: Install Dependencies
-        run: pnpm install
+            - name: Install Dependencies
+              run: pnpm install
 
-      - name: Build
-        run: pnpm run build
+            - name: Build
+              run: pnpm run build

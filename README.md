@@ -8,23 +8,18 @@ This project on Github Pages: https://lars-reimann.github.io/api-editor/.
 
 1. Install the latest version of Node.js from https://nodejs.org/en/.
 2. Install [pnpm](https://pnpm.io/):
-   ```shell
-   npm i -g pnpm
-   ```
-3. Install the dependencies of the client (starting from the root of the repository):
-   ```shell
-   cd client
-   pnpm install
-   ```
-4. Setup Git hooks (still within the client directory):
-   ```shell
-   pnpm run prepare
-   ```
+    ```shell
+    npm i -g pnpm
+    ```
+3. Install the dependencies:
+    ```shell
+    pnpm install
+    ```
 
 ## Starting the Development Server
 
 1. Run the following command (starting from the root of the repository):
-   ```shell
-   cd client
-   pnpm run dev
-   ```
+    ```shell
+    cd client
+    pnpm run dev
+    ```

@@ -1,4 +1,4 @@
-package com.larsreimann.api_editor.plugins
+package com.larsreimann.api_editor.server.plugins
 
 import io.ktor.application.*
 import io.ktor.features.*
@@ -13,8 +13,9 @@ fun Application.configureRouting() {
             call.respondText("Hello World!")
         }
         // Static feature. Try to access `/static/index.html`
-        static("/static") {
+        static("/api-editor") {
             resources("static")
+            defaultResource("static/index.html")
         }
         install(StatusPages) {
             exception<AuthenticationException> { cause ->

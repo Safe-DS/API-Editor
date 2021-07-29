@@ -1,6 +1,6 @@
-package com.larsreimann.api_editor
+package com.larsreimann.api_editor.server
 
-import com.larsreimann.api_editor.plugins.configureRouting
+import com.larsreimann.api_editor.server.plugins.configureRouting
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import kotlin.test.Test

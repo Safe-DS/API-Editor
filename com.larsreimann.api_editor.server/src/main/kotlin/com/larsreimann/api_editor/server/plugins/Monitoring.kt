@@ -1,4 +1,4 @@
-package com.larsreimann.api_editor.plugins
+package com.larsreimann.api_editor.server.plugins
 
 import io.ktor.application.*
 import io.ktor.features.*

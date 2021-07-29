@@ -2,6 +2,9 @@ val ktorVersion: String by project
 val kotlinVersion: String by project
 val logbackVersion: String by project
 
+val javaSourceVersion: JavaVersion by rootProject.extra
+val javaTargetVersion: JavaVersion by rootProject.extra
+
 
 // Plugins -------------------------------------------------------------------------------------------------------------
 
@@ -12,7 +15,12 @@ plugins {
 }
 
 application {
-    mainClass.set("com.larsreimann.api_editor.ApplicationKt")
+    mainClass.set("com.larsreimann.api_editor.server.ApplicationKt")
+}
+
+java {
+    sourceCompatibility = javaSourceVersion
+    targetCompatibility = javaTargetVersion
 }
 
 
@@ -31,9 +39,29 @@ dependencies {
 // Tasks ---------------------------------------------------------------------------------------------------------------
 
 tasks.register<Sync>("copyApplication") {
-    val shadowJarTask = project(":de.unibonn.simpleml.ide").tasks.named("installDist")
-    dependsOn(shadowJarTask)
+    val buildClientTask = project(":com.larsreimann.api_editor.client").tasks.named("buildClient")
+    dependsOn(buildClientTask)
 
-    from(shadowJarTask.get().outputs)
-    into("src/simpleml")
+    from(buildClientTask.get().outputs)
+    into("src/main/resources/static")
+}
+
+tasks {
+    processResources {
+        dependsOn(named("copyApplication"))
+    }
+
+    // Fix for too long paths in batch start script (see https://stackoverflow.com/a/32089746)
+    startScripts {
+        doLast {
+            val winScriptFile = file(windowsScript)
+            val winFileText = winScriptFile.readText()
+                .replace(
+                    Regex("set CLASSPATH=.*"),
+                    "rem original CLASSPATH declaration replaced by:\nset CLASSPATH=%APP_HOME%\\\\lib\\\\*"
+                )
+
+            winScriptFile.writeText(winFileText)
+        }
+    }
 }
