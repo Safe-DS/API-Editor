@@ -1,0 +1,39 @@
+{
+    "name": "com.larsreimann.api_editor",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+        "lint": "eslint .",
+        "fix": "eslint --fix . && prettier --write .",
+        "preinstall": "npx only-allow pnpm",
+        "prepare": "husky install .husky",
+        "postinstall": "cd client && pnpm install"
+    },
+    "lint-staged": {
+        "*.{js,jsx,ts,tsx}": [
+            "eslint --fix",
+            "prettier --write"
+        ],
+        "*.{html,md,css,json,yaml,yml}": "prettier --write"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.14.8",
+        "@typescript-eslint/eslint-plugin": "^4.28.5",
+        "@typescript-eslint/parser": "^4.28.5",
+        "babel-eslint": "^10.1.0",
+        "eslint": "^7.31.0",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-config-react-app": "^6.0.0",
+        "eslint-plugin-flowtype": "^5.8.2",
+        "eslint-plugin-import": "^2.23.4",
+        "eslint-plugin-jest": "^24.4.0",
+        "eslint-plugin-jsx-a11y": "^6.4.1",
+        "eslint-plugin-react": "^7.24.0",
+        "eslint-plugin-react-hooks": "^4.2.0",
+        "eslint-plugin-testing-library": "^3.10.2",
+        "husky": "^7.0.1",
+        "lint-staged": "^11.1.1",
+        "prettier": "^2.3.2",
+        "typescript": "^4.3.5"
+    }
+}

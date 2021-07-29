@@ -1,0 +1,6 @@
+# Compilation/build outputs
+build/
+dist/
+dist-ssr/
+
+/server/src/main/resources/static/

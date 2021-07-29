@@ -1,1 +1,18 @@
+# Gradle
+.gradle/
+
+# Node
+node_modules/
+*.package-lock.json
+*.yarn.lock
+
+# Compilation/build outputs
+build/
+dist/
+dist-ssr/
+
+/server/src/main/resources/static/
+
+# Other
+.DS_Store/
 *.log

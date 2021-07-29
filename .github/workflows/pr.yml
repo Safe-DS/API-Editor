@@ -1,117 +1,101 @@
 name: Pull Request
 
 on:
-  pull_request:
-    branches: [master]
+    pull_request:
+        branches: [master]
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
+    lint:
+        runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: ./client
+        strategy:
+            matrix:
+                node-version: [16.x]
 
-    strategy:
-      matrix:
-        node-version: [14.x]
+        steps:
+            - name: Checkout Source
+              uses: actions/checkout@v2
 
-    steps:
-      - name: Checkout Source
-        uses: actions/checkout@v2
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v2
+              with:
+                  node-version: ${{ matrix.node-version }}
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
+            - name: Cache Node.js dependencies
+              uses: actions/cache@v2
+              with:
+                  path: ~/.pnpm-store
+                  key: ${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-node${{ matrix.node-version }}-
 
-      - name: Cache Dependencies
-        uses: actions/cache@v2
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            - ${{ runner.os }}-modules-
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v2.0.1
+              with:
+                  version: 6.0.2
+                  run_install: true
 
-      - name: Install pnpm
-        run: npm install -g pnpm
+            - name: Install Dependencies
+              run: pnpm install
 
-      - name: Install Dependencies
-        run: pnpm install
+            - name: Lint
+              run: pnpm run lint
 
-      - name: Lint
-        run: pnpm run lint
+    build:
+        runs-on: ubuntu-latest
 
-  test:
-    runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node-version: [16.x]
+                java-version: [11]
 
-    defaults:
-      run:
-        working-directory: ./client
+        steps:
+            - name: Checkout Source
+              uses: actions/checkout@v2
 
-    strategy:
-      matrix:
-        node-version: [14.x]
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v2
+              with:
+                  node-version: ${{ matrix.node-version }}
 
-    steps:
-      - name: Checkout Source
-        uses: actions/checkout@v2
+            - name: Set up JDK ${{ matrix.java-version }}
+              uses: actions/setup-java@v1
+              with:
+                  java-version: ${{ matrix.java-version }}
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
+            - name: Cache Node.js dependencies
+              uses: actions/cache@v2
+              with:
+                  path: ~/.pnpm-store
+                  key: ${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-node${{ matrix.node-version }}-
 
-      - name: Cache Dependencies
-        uses: actions/cache@v2
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            - ${{ runner.os }}-modules-
+            - name: Cache Gradle packages
+              uses: actions/cache@v2
+              with:
+                  path: |
+                      ~/.gradle/caches
+                      ~/.gradle/wrapper
+                  key: ${{ runner.os }}-java${{ matrix.java-version }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+                  restore-keys: |
+                      ${{ runner.os }}-java${{ matrix.java-version }}-
 
-      - name: Install pnpm
-        run: npm install -g pnpm
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v2.0.1
+              with:
+                  version: 6.0.2
 
-      - name: Install Dependencies
-        run: pnpm install
+            # See https://docs.github.com/en/actions/guides/building-and-testing-java-with-gradle
+            - name: Setup Gradle
+              uses: gradle/wrapper-validation-action@v1
 
-      - name: Test
-        run: pnpm run test
+            - name: Build with Gradle
+              run: ./gradlew build
 
-  build:
-    runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: ./client
-
-    strategy:
-      matrix:
-        node-version: [14.x]
-
-    steps:
-      - name: Checkout Source
-        uses: actions/checkout@v2
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Cache Dependencies
-        uses: actions/cache@v2
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            - ${{ runner.os }}-modules-
-
-      - name: Install pnpm
-        run: npm install -g pnpm
-
-      - name: Install Dependencies
-        run: pnpm install
-
-      - name: Build
-        run: pnpm run build
+            - name: Cleanup Gradle Cache
+              # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
+              # Restoring these files from a GitHub Actions cache might cause problems for future builds.
+              run: |
+                  rm -f ~/.gradle/caches/modules-2/modules-2.lock
+                  rm -f ~/.gradle/caches/modules-2/gc.properties

@@ -2,9 +2,11 @@
 
 ### Title
 
-The title must follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) convention. **Mark breaking changes with an exclamation mark**.
+The title must follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) convention. **Mark
+breaking changes with an exclamation mark**.
 
-All **types** from [Commitizen](https://github.com/commitizen/conventional-commit-types/blob/master/index.json) are allowed. Pick the one that fits best:
+All **types** from [Commitizen](https://github.com/commitizen/conventional-commit-types/blob/master/index.json) are
+allowed. Pick the one that fits best:
 
 | Type       | Meaning                                                                   |
 | ---------- | ------------------------------------------------------------------------- |
@@ -22,20 +24,19 @@ All **types** from [Commitizen](https://github.com/commitizen/conventional-commi
 
 Possible **scopes** are:
 
-| Scope           | Meaning                                                                               |
-| --------------- | ------------------------------------------------------------------------------------- |
-| `annotations`   | New annotations or changes to existing ones                                           |
-| `devcontainer`  | [VS Code development container](https://code.visualstudio.com/docs/remote/containers) |
-| `dialog`        | (Modal) dialogs                                                                       |
-| `menuBar`       | Menu bar at the top                                                                   |
-| `selectionView` | Details about the currently selected declaration                                      |
-| `treeView`      | Visualization of the declarations in the current package as a tree                    |
+| Scope           | Meaning                                                            |
+| --------------- | ------------------------------------------------------------------ |
+| `annotations`   | New annotations or changes to existing ones                        |
+| `dialog`        | (Modal) dialogs                                                    |
+| `menuBar`       | Menu bar at the top                                                |
+| `selectionView` | Details about the currently selected declaration                   |
+| `treeView`      | Visualization of the declarations in the current package as a tree |
 
 Examples:
 
-- `feat(devcontainer): add ESLint plugin`
-- `docs: write contributing guide`
-- `refactor!: drop support for older browsers` (the exclamation mark denotes a breaking change)
+-   `feat(annotations): add @rename`
+-   `docs: write contributing guide`
+-   `refactor!: drop support for older browsers` (the exclamation mark denotes a breaking change)
 
 ### Description
 
