@@ -50,10 +50,10 @@ tasks.register<NpxTask>("pnpmInstall") {
     inputs.files(
         "package.json",
         "pnpm-lock.yaml",
-        "com.larsreimann.api_editor.client/package.json",
-        "com.larsreimann.api_editor.client/pnpm-lock.yaml"
+        "client/package.json",
+        "client/pnpm-lock.yaml"
     )
-    outputs.dirs("node_modules", "com.larsreimann.api_editor.client/node_modules")
+    outputs.dirs("node_modules", "client/node_modules")
 
     command.set("pnpm")
     args.set(listOf("install"))

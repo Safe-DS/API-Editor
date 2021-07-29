@@ -39,7 +39,7 @@ dependencies {
 // Tasks ---------------------------------------------------------------------------------------------------------------
 
 tasks.register<Sync>("copyApplication") {
-    val buildClientTask = project(":com.larsreimann.api_editor.client").tasks.named("buildClient")
+    val buildClientTask = project(":client").tasks.named("buildClient")
     dependsOn(buildClientTask)
 
     from(buildClientTask.get().outputs)

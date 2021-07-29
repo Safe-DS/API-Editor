@@ -8,7 +8,6 @@
         "build": "tsc && vite build",
         "serve": "vite preview",
         "test": "jest src",
-        "deploy": "pnpm run build && gh-pages -d dist",
         "gen:theme-typings": "chakra-cli tokens src/theme/index.ts -- out src/theme/index.d.ts",
         "preinstall": "npx only-allow pnpm",
         "postinstall": "pnpm run gen:theme-typings"

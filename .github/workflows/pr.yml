@@ -8,10 +8,6 @@ jobs:
     lint:
         runs-on: ubuntu-latest
 
-        defaults:
-            run:
-                working-directory: ./client
-
         strategy:
             matrix:
                 node-version: [16.x]
@@ -43,10 +39,6 @@ jobs:
     test:
         runs-on: ubuntu-latest
 
-        defaults:
-            run:
-                working-directory: ./client
-
         strategy:
             matrix:
                 node-version: [14.x]
@@ -73,14 +65,11 @@ jobs:
               run: pnpm install
 
             - name: Test
+              working-directory: ./client
               run: pnpm run test
 
     build:
         runs-on: ubuntu-latest
-
-        defaults:
-            run:
-                working-directory: ./client
 
         strategy:
             matrix:
@@ -108,4 +97,5 @@ jobs:
               run: pnpm install
 
             - name: Build
+              working-directory: ./client
               run: pnpm run build

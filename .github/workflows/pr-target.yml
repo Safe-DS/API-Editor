@@ -19,7 +19,6 @@ jobs:
               with:
                   scopes: |
                       annotations
-                      devcontainer
                       dialog
                       menuBar
                       selectionView

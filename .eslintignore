@@ -3,4 +3,4 @@ build/
 dist/
 dist-ssr/
 
-/com.larsreimann.api_editor.server/src/main/resources/static/
+/server/src/main/resources/static/
