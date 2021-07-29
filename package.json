@@ -10,8 +10,11 @@
         "postinstall": "cd com.larsreimann.api_editor.client && pnpm install"
     },
     "lint-staged": {
-        "*.{js,jsx,ts,tsx}": "eslint --fix .",
-        "*.{html,md,css,js,jsx,ts,tsx,json,yaml,yml}": "prettier --write ."
+        "*.{js,jsx,ts,tsx}": [
+            "eslint --fix",
+            "prettier --write"
+        ],
+        "*.{html,md,css,json,yaml,yml}": "prettier --write"
     },
     "devDependencies": {
         "@babel/core": "^7.14.8",
