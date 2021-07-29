@@ -44,7 +44,7 @@ tasks.register<NpxTask>("buildClient") {
         "index.html",
         "package.json",
         "tsconfig.json",
-        "vite.config.json"
+        "vite.config.ts"
     )
     outputs.dirs("dist")
 

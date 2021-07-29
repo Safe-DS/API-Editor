@@ -3,7 +3,7 @@ import { defineConfig } from 'vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    base: '/api-editor/',
+    base: '/',
     plugins: [reactRefresh()],
     resolve: {
         alias: {

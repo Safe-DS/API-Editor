@@ -9,11 +9,10 @@ import io.ktor.routing.*
 
 fun Application.configureRouting() {
     routing {
-        get("/") {
+        get("/hello") {
             call.respondText("Hello World!")
         }
-        // Static feature. Try to access `/static/index.html`
-        static("/api-editor") {
+        static("/") {
             resources("static")
             defaultResource("static/index.html")
         }
