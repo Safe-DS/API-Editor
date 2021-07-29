@@ -1,6 +1,11 @@
 # Gradle
 .gradle/
 
-# Generated stuff
-DS_Store/
+# Node
+node_modules/
+*.package-lock.json
+*.yarn.lock
+
+# Other
+.DS_Store/
 *.log

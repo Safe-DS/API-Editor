@@ -27,3 +27,13 @@ dependencies {
     testImplementation("io.ktor:ktor-server-tests:$ktorVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
 }
+
+// Tasks ---------------------------------------------------------------------------------------------------------------
+
+tasks.register<Sync>("copyApplication") {
+    val shadowJarTask = project(":de.unibonn.simpleml.ide").tasks.named("installDist")
+    dependsOn(shadowJarTask)
+
+    from(shadowJarTask.get().outputs)
+    into("src/simpleml")
+}

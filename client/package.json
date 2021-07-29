@@ -1,5 +1,5 @@
 {
-    "name": "api-editor-client",
+    "name": "com.larsreimann.api_editor.client",
     "version": "0.0.0",
     "private": true,
     "homepage": "https://lars-reimann.github.io/api-editor",
@@ -8,17 +8,10 @@
         "build": "tsc && vite build",
         "serve": "vite preview",
         "test": "jest src",
-        "lint": "eslint .",
-        "fix": "eslint --fix . && prettier --write .",
         "deploy": "pnpm run build && gh-pages -d dist",
-        "prepare": "cd .. && husky install client/.husky",
         "gen:theme-typings": "chakra-cli tokens src/theme/index.ts -- out src/theme/index.d.ts",
         "preinstall": "npx only-allow pnpm",
         "postinstall": "pnpm run gen:theme-typings"
-    },
-    "lint-staged": {
-        "*.{js,jsx,ts,tsx}": "eslint --fix .",
-        "*.{html,md,css,js,jsx,ts,tsx,json,yaml,yml}": "prettier --write ."
     },
     "dependencies": {
         "@chakra-ui/react": "^1.6.5",
@@ -49,7 +42,6 @@
         "remark-math": "^4.0.0"
     },
     "devDependencies": {
-        "@babel/core": "^7.14.8",
         "@chakra-ui/cli": "^1.5.0",
         "@hookform/devtools": "^3.1.0",
         "@testing-library/jest-dom": "^5.14.1",
@@ -62,27 +54,11 @@
         "@types/react-virtualized-auto-sizer": "^1.0.1",
         "@types/react-window": "^1.8.4",
         "@types/uuid": "^8.3.1",
-        "@typescript-eslint/eslint-plugin": "^4.28.5",
-        "@typescript-eslint/parser": "^4.28.5",
         "@vitejs/plugin-react-refresh": "^1.3.5",
-        "babel-eslint": "^10.1.0",
-        "eslint": "^7.31.0",
-        "eslint-config-prettier": "^8.3.0",
-        "eslint-config-react-app": "^6.0.0",
-        "eslint-plugin-flowtype": "^5.8.2",
-        "eslint-plugin-import": "^2.23.4",
-        "eslint-plugin-jest": "^24.4.0",
-        "eslint-plugin-jsx-a11y": "^6.4.1",
-        "eslint-plugin-react": "^7.24.0",
-        "eslint-plugin-react-hooks": "^4.2.0",
-        "eslint-plugin-testing-library": "^3.10.2",
         "gh-pages": "^3.2.3",
         "husky": "^7.0.1",
         "jest": "^27.0.6",
-        "lint-staged": "^11.1.1",
-        "prettier": "^2.3.2",
         "ts-jest": "^27.0.4",
-        "typescript": "^4.3.5",
         "vite": "^2.4.3"
     }
 }

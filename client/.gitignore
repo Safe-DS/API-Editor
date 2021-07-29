@@ -1,9 +1,3 @@
-.DS_Store/
+# Generated stuff
 dist/
 dist-ssr/
-node_modules/
-
-*.local
-*.package-lock.json
-*.yarn.lock
-
