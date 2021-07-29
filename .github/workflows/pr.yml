@@ -21,14 +21,19 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
 
-            - name: Cache Dependencies
+            - name: Cache Node.js dependencies
               uses: actions/cache@v2
               with:
                   path: ~/.pnpm-store
                   key: ${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-node${{ matrix.node-version }}-
 
-            - name: Install pnpm
-              run: curl -f https://get.pnpm.io/v6.7.js | node - add --global pnpm@6
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v2.0.1
+              with:
+                  version: 6.0.2
+                  run_install: true
 
             - name: Install Dependencies
               run: pnpm install
@@ -36,44 +41,13 @@ jobs:
             - name: Lint
               run: pnpm run lint
 
-    test:
-        runs-on: ubuntu-latest
-
-        strategy:
-            matrix:
-                node-version: [16.x]
-
-        steps:
-            - name: Checkout Source
-              uses: actions/checkout@v2
-
-            - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v2
-              with:
-                  node-version: ${{ matrix.node-version }}
-
-            - name: Cache Dependencies
-              uses: actions/cache@v2
-              with:
-                  path: ~/.pnpm-store
-                  key: ${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-
-            - name: Install pnpm
-              run: curl -f https://get.pnpm.io/v6.7.js | node - add --global pnpm@6
-
-            - name: Install Dependencies
-              run: pnpm install
-
-            - name: Test
-              working-directory: ./client
-              run: pnpm run test
-
     build:
         runs-on: ubuntu-latest
 
         strategy:
             matrix:
                 node-version: [16.x]
+                java-version: [11]
 
         steps:
             - name: Checkout Source
@@ -84,18 +58,44 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
 
-            - name: Cache Dependencies
+            - name: Set up JDK ${{ matrix.java-version }}
+              uses: actions/setup-java@v1
+              with:
+                  java-version: ${{ matrix.java-version }}
+
+            - name: Cache Node.js dependencies
               uses: actions/cache@v2
               with:
                   path: ~/.pnpm-store
                   key: ${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-node${{ matrix.node-version }}-
 
-            - name: Install pnpm
-              run: curl -f https://get.pnpm.io/v6.7.js | node - add --global pnpm@6
+            - name: Cache Gradle packages
+              uses: actions/cache@v2
+              with:
+                  path: |
+                      ~/.gradle/caches
+                      ~/.gradle/wrapper
+                  key: ${{ runner.os }}-java${{ matrix.java-version }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+                  restore-keys: |
+                      ${{ runner.os }}-java${{ matrix.java-version }}-
 
-            - name: Install Dependencies
-              run: pnpm install
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v2.0.1
+              with:
+                  version: 6.0.2
 
-            - name: Build
-              working-directory: ./client
-              run: pnpm run build
+            # See https://docs.github.com/en/actions/guides/building-and-testing-java-with-gradle
+            - name: Setup Gradle
+              uses: gradle/wrapper-validation-action@v1
+
+            - name: Build with Gradle
+              run: ./gradlew build
+
+            - name: Cleanup Gradle Cache
+              # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
+              # Restoring these files from a GitHub Actions cache might cause problems for future builds.
+              run: |
+                  rm -f ~/.gradle/caches/modules-2/modules-2.lock
+                  rm -f ~/.gradle/caches/modules-2/gc.properties
