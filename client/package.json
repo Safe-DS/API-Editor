@@ -13,6 +13,7 @@
         "deploy": "pnpm run build && gh-pages -d dist",
         "prepare": "cd .. && husky install client/.husky",
         "gen:theme-typings": "chakra-cli tokens src/theme/index.ts -- out src/theme/index.d.ts",
+        "preinstall": "npx only-allow pnpm",
         "postinstall": "pnpm run gen:theme-typings"
     },
     "lint-staged": {
