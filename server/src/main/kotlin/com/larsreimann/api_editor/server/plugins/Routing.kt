@@ -17,13 +17,12 @@ fun Application.configureRouting() {
             defaultResource("static/index.html")
         }
         install(StatusPages) {
-            exception<AuthenticationException> { cause ->
+            exception<AuthenticationException> {
                 call.respond(HttpStatusCode.Unauthorized)
             }
-            exception<AuthorizationException> { cause ->
+            exception<AuthorizationException> {
                 call.respond(HttpStatusCode.Forbidden)
             }
-
         }
     }
 }

@@ -11,6 +11,7 @@ val javaTargetVersion: JavaVersion by rootProject.extra
 plugins {
     application
     kotlin("jvm")
+    id("com.github.johnrengelman.shadow")
     id("org.jetbrains.kotlin.plugin.serialization")
 }
 
@@ -38,7 +39,7 @@ dependencies {
 
 // Tasks ---------------------------------------------------------------------------------------------------------------
 
-tasks.register<Sync>("copyApplication") {
+tasks.register<Sync>("copyClient") {
     val buildClientTask = project(":client").tasks.named("buildClient")
     dependsOn(buildClientTask)
 
@@ -47,8 +48,11 @@ tasks.register<Sync>("copyApplication") {
 }
 
 tasks {
+    clean {
+        delete(named("copyClient").get().outputs)
+    }
     processResources {
-        dependsOn(named("copyApplication"))
+        dependsOn(named("copyClient"))
     }
 
     // Fix for too long paths in batch start script (see https://stackoverflow.com/a/32089746)

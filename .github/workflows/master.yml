@@ -61,7 +61,7 @@ jobs:
               uses: actions/upload-artifact@v2
               with:
                   name: API-Editor
-                  path: server/build/distributions/*.zip
+                  path: server/build/libs/*-all.jar
                   if-no-files-found: error
 
             - name: Cleanup Gradle Cache
