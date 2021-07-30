@@ -1,17 +1,35 @@
 package com.larsreimann.api_editor.server
 
-import com.larsreimann.api_editor.server.plugins.configureHTTP
-import com.larsreimann.api_editor.server.plugins.configureMonitoring
-import com.larsreimann.api_editor.server.plugins.configureRouting
-import com.larsreimann.api_editor.server.plugins.configureSerialization
+import io.ktor.application.*
+import io.ktor.features.*
+import io.ktor.request.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import org.slf4j.event.Level
 
 fun main() {
     embeddedServer(Netty, port = 4280, host = "localhost") {
-        configureRouting()
         configureHTTP()
         configureMonitoring()
-        configureSerialization()
+        configureRouting()
     }.start(wait = true)
+}
+
+fun Application.configureHTTP() {
+    install(Compression) {
+        gzip {
+            priority = 1.0
+        }
+        deflate {
+            priority = 10.0
+            minimumSize(1024) // condition
+        }
+    }
+}
+
+fun Application.configureMonitoring() {
+    install(CallLogging) {
+        level = Level.INFO
+        filter { call -> call.request.path().startsWith("/") }
+    }
 }

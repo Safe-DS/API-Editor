@@ -10,4 +10,9 @@ export default defineConfig({
             'mdast-util-to-hast': 'mdast-util-to-hast-backport',
         },
     },
+    server: {
+        proxy: {
+            '/api': 'http://localhost:4280',
+        },
+    },
 })

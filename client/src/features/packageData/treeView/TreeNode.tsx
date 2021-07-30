@@ -5,8 +5,8 @@ import { useLocation } from 'react-router'
 import { useHistory } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { ChildrenProp } from '../../../common/util/types'
-import { selectIsExpandedInTreeView, toggleIsExpandedInTreeView } from '../apiDataSlice'
 import PythonDeclaration from '../model/PythonDeclaration'
+import { selectIsExpandedInTreeView, toggleIsExpandedInTreeView } from '../packageDataSlice'
 import VisibilityIndicator from './VisibilityIndicator'
 
 interface TreeNodeProps extends ChildrenProp {

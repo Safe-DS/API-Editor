@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../app/store'
 
-export interface ApiDataState {
+export interface PackageDataState {
     expandedInTreeView: {
         [target: string]: true
     }
@@ -11,7 +11,7 @@ export interface ApiDataState {
 
 // Initial state -------------------------------------------------------------------------------------------------------
 
-const initialState: ApiDataState = {
+const initialState: PackageDataState = {
     expandedInTreeView: {},
     treeViewScrollOffset: 0,
     showImportDialog: false,
@@ -19,8 +19,8 @@ const initialState: ApiDataState = {
 
 // Slice ---------------------------------------------------------------------------------------------------------------
 
-const apiDataSlice = createSlice({
-    name: 'apiData',
+const packageDataSlice = createSlice({
+    name: 'packageData',
     initialState,
     reducers: {
         toggleIsExpanded(state, action: PayloadAction<string>) {
@@ -39,20 +39,21 @@ const apiDataSlice = createSlice({
     },
 })
 
-const { actions, reducer } = apiDataSlice
+const { actions, reducer } = packageDataSlice
 export const {
     toggleIsExpanded: toggleIsExpandedInTreeView,
     setScrollOffset: setTreeViewScrollOffset,
-    toggleImportDialog: toggleApiDataImportDialog,
+    toggleImportDialog: togglePackageDataImportDialog,
 } = actions
 export default reducer
 
-const selectApiData = (state: RootState) => state.apiData
+const selectPackageData = (state: RootState) => state.packageData
 export const selectIsExpandedInTreeView =
     (target: string) =>
     (state: RootState): boolean =>
-        Boolean(selectApiData(state).expandedInTreeView[target])
+        Boolean(selectPackageData(state).expandedInTreeView[target])
 export const selectAllExpandedInTreeView = (state: RootState): { [target: string]: true } =>
-    selectApiData(state).expandedInTreeView
-export const selectTreeViewScrollOffset = (state: RootState): number => selectApiData(state).treeViewScrollOffset
-export const selectShowApiDataImportDialog = (state: RootState): boolean => selectApiData(state).showImportDialog
+    selectPackageData(state).expandedInTreeView
+export const selectTreeViewScrollOffset = (state: RootState): number => selectPackageData(state).treeViewScrollOffset
+export const selectShowPackageDataImportDialog = (state: RootState): boolean =>
+    selectPackageData(state).showImportDialog

@@ -21,16 +21,16 @@ import StyledDropzone from '../../common/StyledDropzone'
 import { Setter } from '../../common/util/types'
 import { isValidJsonFile } from '../../common/util/validation'
 import { resetAnnotations } from '../annotations/annotationSlice'
-import { toggleApiDataImportDialog } from './apiDataSlice'
 import PythonPackage from './model/PythonPackage'
 import { parsePythonPackageJson, PythonPackageJson } from './model/PythonPackageBuilder'
+import { togglePackageDataImportDialog } from './packageDataSlice'
 
 interface ImportPythonPackageDialogProps {
     setPythonPackage: Setter<PythonPackage>
     setFilter: Setter<string>
 }
 
-export default function ApiDataImportDialog(props: ImportPythonPackageDialogProps): JSX.Element {
+export default function PackageDataImportDialog(props: ImportPythonPackageDialogProps): JSX.Element {
     const [fileName, setFileName] = useState('')
     const [newPythonPackage, setNewPythonPackage] = useState<string>()
     const history = useHistory()
@@ -47,7 +47,7 @@ export default function ApiDataImportDialog(props: ImportPythonPackageDialogProp
         }
         close()
     }
-    const close = () => dispatch(toggleApiDataImportDialog())
+    const close = () => dispatch(togglePackageDataImportDialog())
 
     const slurpAndParse = (acceptedFiles: File[]) => {
         if (isValidJsonFile(acceptedFiles[acceptedFiles.length - 1].name)) {
