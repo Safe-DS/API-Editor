@@ -14,13 +14,13 @@ import {
 } from '../features/annotations/annotationSlice'
 import EnumForm from '../features/annotations/forms/EnumForm'
 import RenameForm from '../features/annotations/forms/RenameForm'
-import ApiDataImportDialog from '../features/apiData/ApiDataImportDialog'
-import { selectShowApiDataImportDialog, toggleIsExpandedInTreeView } from '../features/apiData/apiDataSlice'
-import { PythonFilter } from '../features/apiData/model/PythonFilter'
-import PythonPackage from '../features/apiData/model/PythonPackage'
-import { parsePythonPackageJson, PythonPackageJson } from '../features/apiData/model/PythonPackageBuilder'
-import SelectionView from '../features/apiData/selectionView/SelectionView'
-import TreeView from '../features/apiData/treeView/TreeView'
+import { PythonFilter } from '../features/packageData/model/PythonFilter'
+import PythonPackage from '../features/packageData/model/PythonPackage'
+import { parsePythonPackageJson, PythonPackageJson } from '../features/packageData/model/PythonPackageBuilder'
+import PackageDataImportDialog from '../features/packageData/PackageDataImportDialog'
+import { selectShowPackageDataImportDialog, toggleIsExpandedInTreeView } from '../features/packageData/packageDataSlice'
+import SelectionView from '../features/packageData/selectionView/SelectionView'
+import TreeView from '../features/packageData/treeView/TreeView'
 import { useAppDispatch, useAppSelector } from './hooks'
 
 const App: React.FC = () => {
@@ -61,7 +61,7 @@ const App: React.FC = () => {
 
     const userActionTarget = pythonPackage.getByRelativePathAsString(currentUserAction.target)
 
-    const showApiDataImportDialog = useAppSelector(selectShowApiDataImportDialog)
+    const showPackageDataImportDialog = useAppSelector(selectShowPackageDataImportDialog)
     const showAnnotationImportDialog = useAppSelector(selectShowAnnotationImportDialog)
 
     return (
@@ -94,8 +94,8 @@ const App: React.FC = () => {
             </GridItem>
 
             {showAnnotationImportDialog && <AnnotationImportDialog />}
-            {showApiDataImportDialog && (
-                <ApiDataImportDialog setPythonPackage={setPythonPackage} setFilter={setFilter} />
+            {showPackageDataImportDialog && (
+                <PackageDataImportDialog setPythonPackage={setPythonPackage} setFilter={setFilter} />
             )}
         </Grid>
     )

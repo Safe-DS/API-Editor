@@ -11,8 +11,8 @@ val javaTargetVersion: JavaVersion by rootProject.extra
 plugins {
     application
     kotlin("jvm")
+    kotlin("plugin.serialization")
     id("com.github.johnrengelman.shadow")
-    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 application {
