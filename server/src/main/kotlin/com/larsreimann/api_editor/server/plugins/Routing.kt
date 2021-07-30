@@ -9,7 +9,7 @@ import io.ktor.routing.*
 
 fun Application.configureRouting() {
     routing {
-        get("/hello") {
+        get("/api-editor") {
             call.respondText("Hello World!")
         }
         static("/") {

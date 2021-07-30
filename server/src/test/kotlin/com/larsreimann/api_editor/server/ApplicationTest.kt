@@ -10,7 +10,7 @@ class ApplicationTest {
     @Test
     fun testRoot() {
         withTestApplication({ configureRouting() }) {
-            handleRequest(HttpMethod.Get, "/hello").apply {
+            handleRequest(HttpMethod.Get, "/api-editor").apply {
                 assertEquals(HttpStatusCode.OK, response.status())
                 assertEquals("Hello World!", response.content)
             }
