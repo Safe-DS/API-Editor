@@ -32,11 +32,8 @@ jobs:
             - name: Setup pnpm
               uses: pnpm/action-setup@v2.0.1
               with:
-                  version: 6.0.2
+                  version: 6.10.3
                   run_install: true
-
-            - name: Install Dependencies
-              run: pnpm install
 
             - name: Lint
               run: pnpm run lint
@@ -84,7 +81,7 @@ jobs:
             - name: Setup pnpm
               uses: pnpm/action-setup@v2.0.1
               with:
-                  version: 6.0.2
+                  version: 6.10.3
 
             # See https://docs.github.com/en/actions/guides/building-and-testing-java-with-gradle
             - name: Setup Gradle
