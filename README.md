@@ -16,8 +16,8 @@
 
 ### Installation
 
-1. Install [Node.js 16.x](https://nodejs.org/en/).
-2. Install [OpenJDK 11](https://adoptopenjdk.net/).
+1. Install [OpenJDK 11](https://adoptopenjdk.net/).
+2. Install [Node.js 16.x](https://nodejs.org/en/).
 3. Install [pnpm](https://pnpm.io/):
     ```shell
     npm i -g pnpm
@@ -31,7 +31,7 @@
 
 1. Run the backend server:
     ```shell
-       ./gradlew run
+    ./gradlew run
     ```
 2. Run the development server (keep the backend server running):
     ```shell
