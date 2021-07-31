@@ -18,13 +18,9 @@
 
 1. Install [OpenJDK 11](https://adoptopenjdk.net/).
 2. Install [Node.js 16.x](https://nodejs.org/en/).
-3. Install [pnpm](https://pnpm.io/):
+3. Build everything:
     ```shell
-    npm i -g pnpm
-    ```
-4. Install dependencies:
-    ```shell
-    pnpm install
+    ./gradlew build
     ```
 
 ### During development
@@ -36,6 +32,6 @@
 2. Run the development server (keep the backend server running):
     ```shell
     cd client
-    pnpm run dev
+    npm run dev
     ```
 3. Open [localhost:3000](http://localhost:3000) in your browser.

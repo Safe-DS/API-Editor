@@ -20,6 +20,7 @@ const CustomCode: CodeComponent = ({ node, inline, className, children, ...props
 
     const match = /language-(\w+)/.exec(className || '')
     return !inline && match ? (
+        // @ts-ignore
         <SyntaxHighlighter style={style} language={match[1]} PreTag="div" {...props}>
             {String(children).replace(/\n$/, '')}
         </SyntaxHighlighter>
