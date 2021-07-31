@@ -7,34 +7,34 @@ import {
     IconButton,
     Input,
     Text,
-} from '@chakra-ui/react'
-import React, { useEffect } from 'react'
-import { useFieldArray, useForm } from 'react-hook-form'
-import { FaPlus, FaTrash } from 'react-icons/fa'
-import { useAppDispatch, useAppSelector } from '../../../app/hooks'
-import { pythonIdentifierPattern } from '../../../common/validation'
-import PythonDeclaration from '../../packageData/model/PythonDeclaration'
-import { hideAnnotationForms, selectEnum, upsertEnum } from '../annotationSlice'
-import AnnotationForm from './AnnotationForm'
+} from '@chakra-ui/react';
+import React, { useEffect } from 'react';
+import { useFieldArray, useForm } from 'react-hook-form';
+import { FaPlus, FaTrash } from 'react-icons/fa';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { pythonIdentifierPattern } from '../../../common/validation';
+import PythonDeclaration from '../../packageData/model/PythonDeclaration';
+import { hideAnnotationForms, selectEnum, upsertEnum } from '../annotationSlice';
+import AnnotationForm from './AnnotationForm';
 
 interface EnumFormProps {
-    target: PythonDeclaration
+    target: PythonDeclaration;
 }
 
 interface EnumFormState {
-    enumName: string
+    enumName: string;
     pairs: {
-        stringValue: string
-        instanceName: string
-    }[]
+        stringValue: string;
+        instanceName: string;
+    }[];
 }
 
 const EnumForm: React.FC<EnumFormProps> = ({ target }) => {
-    const targetPath = target.pathAsString()
+    const targetPath = target.pathAsString();
 
     // Hooks -----------------------------------------------------------------------------------------------------------
-    const enumDefinition = useAppSelector(selectEnum(target.pathAsString()))
-    const dispatch = useAppDispatch()
+    const enumDefinition = useAppSelector(selectEnum(target.pathAsString()));
+    const dispatch = useAppDispatch();
 
     const {
         control,
@@ -53,15 +53,15 @@ const EnumForm: React.FC<EnumFormProps> = ({ target }) => {
                 },
             ],
         },
-    })
+    });
     const { fields, append, remove } = useFieldArray({
         control,
         name: 'pairs',
-    })
+    });
 
     useEffect(() => {
-        setFocus('enumName')
-    }, [setFocus])
+        setFocus('enumName');
+    }, [setFocus]);
 
     useEffect(() => {
         reset({
@@ -72,23 +72,23 @@ const EnumForm: React.FC<EnumFormProps> = ({ target }) => {
                     instanceName: '',
                 },
             ],
-        })
-    }, [reset, enumDefinition, targetPath])
+        });
+    }, [reset, enumDefinition, targetPath]);
 
     // Event handlers --------------------------------------------------------------------------------------------------
 
     const onRemove = (index: number) => () => {
         if (fields.length > 1) {
-            remove(index)
+            remove(index);
         }
-    }
+    };
 
     const onAppend = () => {
         append({
             stringValue: '',
             instanceName: '',
-        })
-    }
+        });
+    };
 
     const onSave = (data: EnumFormState) => {
         dispatch(
@@ -96,13 +96,13 @@ const EnumForm: React.FC<EnumFormProps> = ({ target }) => {
                 target: targetPath,
                 ...data,
             }),
-        )
-        dispatch(hideAnnotationForms())
-    }
+        );
+        dispatch(hideAnnotationForms());
+    };
 
     const onCancel = () => {
-        dispatch(hideAnnotationForms())
-    }
+        dispatch(hideAnnotationForms());
+    };
 
     // Rendering -------------------------------------------------------------------------------------------------------
 
@@ -172,7 +172,7 @@ const EnumForm: React.FC<EnumFormProps> = ({ target }) => {
                 </HStack>
             ))}
         </AnnotationForm>
-    )
-}
+    );
+};
 
-export default EnumForm
+export default EnumForm;

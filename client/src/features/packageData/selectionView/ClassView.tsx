@@ -1,17 +1,17 @@
-import { Box, Heading, HStack, Stack, Text } from '@chakra-ui/react'
-import React from 'react'
-import AnnotationDropdown from '../../annotations/AnnotationDropdown'
-import AnnotationView from '../../annotations/AnnotationView'
-import PythonClass from '../model/PythonClass'
-import DocumentationText from './DocumentationText'
-import SectionListViewItem from './SectionListViewItem'
+import { Box, Heading, HStack, Stack, Text } from '@chakra-ui/react';
+import React from 'react';
+import AnnotationDropdown from '../../annotations/AnnotationDropdown';
+import AnnotationView from '../../annotations/AnnotationView';
+import PythonClass from '../model/PythonClass';
+import DocumentationText from './DocumentationText';
+import SectionListViewItem from './SectionListViewItem';
 
 interface ClassViewProps {
-    pythonClass: PythonClass
+    pythonClass: PythonClass;
 }
 
 export default function ClassView(props: ClassViewProps): JSX.Element {
-    const id = props.pythonClass.pathAsString()
+    const id = props.pythonClass.pathAsString();
 
     return (
         <Stack spacing={8}>
@@ -36,5 +36,5 @@ export default function ClassView(props: ClassViewProps): JSX.Element {
             <SectionListViewItem title="Superclasses" inputElements={props.pythonClass.superclasses} />
             <SectionListViewItem title="Decorators" inputElements={props.pythonClass.decorators} />
         </Stack>
-    )
+    );
 }

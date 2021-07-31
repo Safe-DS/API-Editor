@@ -23,41 +23,41 @@ import {
     Spacer,
     Text,
     useColorMode,
-} from '@chakra-ui/react'
-import React, { useRef } from 'react'
-import { FaCheck, FaChevronDown } from 'react-icons/fa'
-import { useLocation } from 'react-router'
-import { NavLink } from 'react-router-dom'
-import { useAppDispatch, useAppSelector } from '../app/hooks'
-import { toggleAnnotationImportDialog } from '../features/annotations/annotationSlice'
-import { PythonFilter } from '../features/packageData/model/PythonFilter'
-import PythonPackage from '../features/packageData/model/PythonPackage'
-import { togglePackageDataImportDialog } from '../features/packageData/packageDataSlice'
-import { Setter } from './util/types'
+} from '@chakra-ui/react';
+import React, { useRef } from 'react';
+import { FaCheck, FaChevronDown } from 'react-icons/fa';
+import { useLocation } from 'react-router';
+import { NavLink } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { toggleAnnotationImportDialog } from '../features/annotations/annotationSlice';
+import { PythonFilter } from '../features/packageData/model/PythonFilter';
+import PythonPackage from '../features/packageData/model/PythonPackage';
+import { togglePackageDataImportDialog } from '../features/packageData/packageDataSlice';
+import { Setter } from './util/types';
 
 interface MenuBarProps {
-    setPythonPackage: Setter<PythonPackage>
-    filter: string
-    setFilter: Setter<string>
+    setPythonPackage: Setter<PythonPackage>;
+    filter: string;
+    setFilter: Setter<string>;
 }
 
 export default function MenuBar(props: MenuBarProps): JSX.Element {
-    const { colorMode, toggleColorMode } = useColorMode()
-    const initialFocusRef = useRef(null)
-    const dispatch = useAppDispatch()
+    const { colorMode, toggleColorMode } = useColorMode();
+    const initialFocusRef = useRef(null);
+    const dispatch = useAppDispatch();
 
-    const pathname = useLocation().pathname.split('/').slice(1)
+    const pathname = useLocation().pathname.split('/').slice(1);
 
-    const annotationStore = useAppSelector((state) => state.annotations)
-    const enableNavigation = useAppSelector((state) => state.annotations.currentUserAction.type === 'none')
+    const annotationStore = useAppSelector((state) => state.annotations);
+    const enableNavigation = useAppSelector((state) => state.annotations.currentUserAction.type === 'none');
 
     const exportAnnotations = () => {
-        const a = document.createElement('a')
-        const file = new Blob([JSON.stringify(annotationStore)], { type: 'application/json' })
-        a.href = URL.createObjectURL(file)
-        a.download = 'annotations.json'
-        a.click()
-    }
+        const a = document.createElement('a');
+        const file = new Blob([JSON.stringify(annotationStore)], { type: 'application/json' });
+        a.href = URL.createObjectURL(file);
+        a.download = 'annotations.json';
+        a.click();
+    };
 
     return (
         <Flex as="nav" borderBottom={1} layerStyle="subtleBorder" padding="0.5em 1em">
@@ -125,5 +125,5 @@ export default function MenuBar(props: MenuBarProps): JSX.Element {
                 </Box>
             </HStack>
         </Flex>
-    )
+    );
 }

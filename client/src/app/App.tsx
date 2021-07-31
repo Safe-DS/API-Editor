@@ -1,68 +1,71 @@
-import { Grid, GridItem } from '@chakra-ui/react'
-import * as idb from 'idb-keyval'
-import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router'
-import MenuBar from '../common/MenuBar'
-import { Setter } from '../common/util/types'
-import AnnotationImportDialog from '../features/annotations/AnnotationImportDialog'
+import { Grid, GridItem } from '@chakra-ui/react';
+import * as idb from 'idb-keyval';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
+import MenuBar from '../common/MenuBar';
+import { Setter } from '../common/util/types';
+import AnnotationImportDialog from '../features/annotations/AnnotationImportDialog';
 import {
     AnnotationsState,
     initializeAnnotations,
     selectAnnotations,
     selectCurrentUserAction,
     selectShowAnnotationImportDialog,
-} from '../features/annotations/annotationSlice'
-import EnumForm from '../features/annotations/forms/EnumForm'
-import RenameForm from '../features/annotations/forms/RenameForm'
-import { PythonFilter } from '../features/packageData/model/PythonFilter'
-import PythonPackage from '../features/packageData/model/PythonPackage'
-import { parsePythonPackageJson, PythonPackageJson } from '../features/packageData/model/PythonPackageBuilder'
-import PackageDataImportDialog from '../features/packageData/PackageDataImportDialog'
-import { selectShowPackageDataImportDialog, toggleIsExpandedInTreeView } from '../features/packageData/packageDataSlice'
-import SelectionView from '../features/packageData/selectionView/SelectionView'
-import TreeView from '../features/packageData/treeView/TreeView'
-import { useAppDispatch, useAppSelector } from './hooks'
+} from '../features/annotations/annotationSlice';
+import EnumForm from '../features/annotations/forms/EnumForm';
+import RenameForm from '../features/annotations/forms/RenameForm';
+import { PythonFilter } from '../features/packageData/model/PythonFilter';
+import PythonPackage from '../features/packageData/model/PythonPackage';
+import { parsePythonPackageJson, PythonPackageJson } from '../features/packageData/model/PythonPackageBuilder';
+import PackageDataImportDialog from '../features/packageData/PackageDataImportDialog';
+import {
+    selectShowPackageDataImportDialog,
+    toggleIsExpandedInTreeView,
+} from '../features/packageData/packageDataSlice';
+import SelectionView from '../features/packageData/selectionView/SelectionView';
+import TreeView from '../features/packageData/treeView/TreeView';
+import { useAppDispatch, useAppSelector } from './hooks';
 
 const App: React.FC = () => {
-    const [pythonPackage, setPythonPackage] = useState<PythonPackage>(new PythonPackage('empty'))
-    const currentUserAction = useAppSelector(selectCurrentUserAction)
-    const currentPathName = useLocation().pathname
+    const [pythonPackage, setPythonPackage] = useState<PythonPackage>(new PythonPackage('empty'));
+    const currentUserAction = useAppSelector(selectCurrentUserAction);
+    const currentPathName = useLocation().pathname;
 
     useEffect(() => {
         // noinspection JSIgnoredPromiseFromCall
-        getPythonPackageFromIndexedDB(setPythonPackage)
-    }, [])
+        getPythonPackageFromIndexedDB(setPythonPackage);
+    }, []);
 
-    const annotationStore = useAppSelector(selectAnnotations)
+    const annotationStore = useAppSelector(selectAnnotations);
 
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
     useEffect(() => {
-        dispatch(initializeAnnotations())
-    }, [dispatch])
+        dispatch(initializeAnnotations());
+    }, [dispatch]);
 
     useEffect(() => {
         // noinspection JSIgnoredPromiseFromCall
-        setAnnotationsInIndexedDB(annotationStore)
-    }, [annotationStore])
+        setAnnotationsInIndexedDB(annotationStore);
+    }, [annotationStore]);
 
     useEffect(() => {
-        const parts = currentPathName.split('/').slice(1)
+        const parts = currentPathName.split('/').slice(1);
 
         for (let i = 2; i < parts.length; i++) {
-            dispatch(toggleIsExpandedInTreeView(parts.slice(0, i).join('/')))
+            dispatch(toggleIsExpandedInTreeView(parts.slice(0, i).join('/')));
         }
 
         // eslint-disable-next-line
-    }, [])
+    }, []);
 
-    const [filter, setFilter] = useState('')
-    const pythonFilter = PythonFilter.fromFilterBoxInput(filter)
-    const filteredPythonPackage = pythonPackage.filter(pythonFilter)
+    const [filter, setFilter] = useState('');
+    const pythonFilter = PythonFilter.fromFilterBoxInput(filter);
+    const filteredPythonPackage = pythonPackage.filter(pythonFilter);
 
-    const userActionTarget = pythonPackage.getByRelativePathAsString(currentUserAction.target)
+    const userActionTarget = pythonPackage.getByRelativePathAsString(currentUserAction.target);
 
-    const showPackageDataImportDialog = useAppSelector(selectShowPackageDataImportDialog)
-    const showAnnotationImportDialog = useAppSelector(selectShowAnnotationImportDialog)
+    const showPackageDataImportDialog = useAppSelector(selectShowPackageDataImportDialog);
+    const showAnnotationImportDialog = useAppSelector(selectShowAnnotationImportDialog);
 
     return (
         <Grid
@@ -98,18 +101,18 @@ const App: React.FC = () => {
                 <PackageDataImportDialog setPythonPackage={setPythonPackage} setFilter={setFilter} />
             )}
         </Grid>
-    )
-}
+    );
+};
 
 async function getPythonPackageFromIndexedDB(setPythonPackage: Setter<PythonPackage>) {
-    const storedPackage = (await idb.get('package')) as PythonPackageJson
+    const storedPackage = (await idb.get('package')) as PythonPackageJson;
     if (storedPackage) {
-        setPythonPackage(parsePythonPackageJson(storedPackage))
+        setPythonPackage(parsePythonPackageJson(storedPackage));
     }
 }
 
 async function setAnnotationsInIndexedDB(annotationStore: AnnotationsState) {
-    await idb.set('annotations', annotationStore)
+    await idb.set('annotations', annotationStore);
 }
 
-export default App
+export default App;

@@ -1,7 +1,7 @@
-import { Button, ButtonGroup, IconButton, Stack, Text } from '@chakra-ui/react'
-import React from 'react'
-import { FaTrash, FaWrench } from 'react-icons/fa'
-import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import { Button, ButtonGroup, IconButton, Stack, Text } from '@chakra-ui/react';
+import React from 'react';
+import { FaTrash, FaWrench } from 'react-icons/fa';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
     removeEnum,
     removeRenaming,
@@ -11,21 +11,21 @@ import {
     selectUnused,
     showEnumAnnotationForm,
     showRenameAnnotationForm,
-} from './annotationSlice'
+} from './annotationSlice';
 
 interface AnnotationViewProps {
-    target: string
+    target: string;
 }
 
 const AnnotationView: React.FC<AnnotationViewProps> = ({ target }) => {
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
 
-    const renameAnnotation = useAppSelector(selectRenaming(target))
-    const unusedAnnotation = useAppSelector(selectUnused(target))
-    const enumAnnotation = useAppSelector(selectEnum(target))
+    const renameAnnotation = useAppSelector(selectRenaming(target));
+    const unusedAnnotation = useAppSelector(selectUnused(target));
+    const enumAnnotation = useAppSelector(selectEnum(target));
 
     if (!renameAnnotation && !unusedAnnotation && !enumAnnotation) {
-        return <></>
+        return <></>;
     }
 
     return (
@@ -48,14 +48,14 @@ const AnnotationView: React.FC<AnnotationViewProps> = ({ target }) => {
                 />
             )}
         </Stack>
-    )
-}
+    );
+};
 
 interface AnnotationProps {
-    type: string
-    name?: string
-    onEdit?: () => void
-    onDelete: () => void
+    type: string;
+    name?: string;
+    onEdit?: () => void;
+    onDelete: () => void;
 }
 
 const Annotation: React.FC<AnnotationProps> = ({ name, onDelete, onEdit, type }) => {
@@ -77,7 +77,7 @@ const Annotation: React.FC<AnnotationProps> = ({ name, onDelete, onEdit, type })
             </Button>
             <IconButton icon={<FaTrash />} aria-label={'Delete annotation'} colorScheme="red" onClick={onDelete} />
         </ButtonGroup>
-    )
-}
+    );
+};
 
-export default AnnotationView
+export default AnnotationView;

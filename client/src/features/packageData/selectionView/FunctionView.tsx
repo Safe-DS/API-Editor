@@ -1,18 +1,18 @@
-import { Box, Heading, HStack, Stack, Text } from '@chakra-ui/react'
-import React from 'react'
-import { isEmptyList } from '../../../common/util/listOperations'
-import AnnotationDropdown from '../../annotations/AnnotationDropdown'
-import AnnotationView from '../../annotations/AnnotationView'
-import PythonFunction from '../model/PythonFunction'
-import DocumentationText from './DocumentationText'
-import ParameterNode from './ParameterNode'
+import { Box, Heading, HStack, Stack, Text } from '@chakra-ui/react';
+import React from 'react';
+import { isEmptyList } from '../../../common/util/listOperations';
+import AnnotationDropdown from '../../annotations/AnnotationDropdown';
+import AnnotationView from '../../annotations/AnnotationView';
+import PythonFunction from '../model/PythonFunction';
+import DocumentationText from './DocumentationText';
+import ParameterNode from './ParameterNode';
 
 interface FunctionViewProps {
-    pythonFunction: PythonFunction
+    pythonFunction: PythonFunction;
 }
 
 export default function FunctionView(props: FunctionViewProps): JSX.Element {
-    const id = props.pythonFunction.pathAsString()
+    const id = props.pythonFunction.pathAsString();
 
     return (
         <Stack spacing={8}>
@@ -52,5 +52,5 @@ export default function FunctionView(props: FunctionViewProps): JSX.Element {
                 </Stack>
             </Stack>
         </Stack>
-    )
+    );
 }

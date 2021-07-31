@@ -1,28 +1,28 @@
-import { FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react'
-import React, { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
-import { useAppDispatch, useAppSelector } from '../../../app/hooks'
-import { pythonIdentifierPattern } from '../../../common/validation'
-import PythonDeclaration from '../../packageData/model/PythonDeclaration'
-import { hideAnnotationForms, selectRenaming, upsertRenaming } from '../annotationSlice'
-import AnnotationForm from './AnnotationForm'
+import { FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react';
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { pythonIdentifierPattern } from '../../../common/validation';
+import PythonDeclaration from '../../packageData/model/PythonDeclaration';
+import { hideAnnotationForms, selectRenaming, upsertRenaming } from '../annotationSlice';
+import AnnotationForm from './AnnotationForm';
 
 interface RenameFormProps {
-    readonly target: PythonDeclaration
+    readonly target: PythonDeclaration;
 }
 
 interface RenameFormState {
-    newName: string
+    newName: string;
 }
 
 const RenameForm: React.FC<RenameFormProps> = ({ target }) => {
-    const targetPath = target.pathAsString()
-    const prevNewName = useAppSelector(selectRenaming(targetPath))?.newName
-    const oldName = target.name
+    const targetPath = target.pathAsString();
+    const prevNewName = useAppSelector(selectRenaming(targetPath))?.newName;
+    const oldName = target.name;
 
     // Hooks -----------------------------------------------------------------------------------------------------------
 
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
     const {
         register,
         handleSubmit,
@@ -33,17 +33,17 @@ const RenameForm: React.FC<RenameFormProps> = ({ target }) => {
         defaultValues: {
             newName: '',
         },
-    })
+    });
 
     useEffect(() => {
-        setFocus('newName')
-    }, [setFocus])
+        setFocus('newName');
+    }, [setFocus]);
 
     useEffect(() => {
         reset({
             newName: prevNewName || oldName,
-        })
-    }, [reset, prevNewName, oldName])
+        });
+    }, [reset, prevNewName, oldName]);
 
     // Event handlers --------------------------------------------------------------------------------------------------
 
@@ -53,13 +53,13 @@ const RenameForm: React.FC<RenameFormProps> = ({ target }) => {
                 target: targetPath,
                 ...data,
             }),
-        )
-        dispatch(hideAnnotationForms())
-    }
+        );
+        dispatch(hideAnnotationForms());
+    };
 
     const onCancel = () => {
-        dispatch(hideAnnotationForms())
-    }
+        dispatch(hideAnnotationForms());
+    };
 
     // Rendering -------------------------------------------------------------------------------------------------------
 
@@ -82,7 +82,7 @@ const RenameForm: React.FC<RenameFormProps> = ({ target }) => {
                 </FormErrorMessage>
             </FormControl>
         </AnnotationForm>
-    )
-}
+    );
+};
 
-export default RenameForm
+export default RenameForm;

@@ -1,10 +1,10 @@
-import { Heading, Stack, Text } from '@chakra-ui/react'
-import React from 'react'
-import PythonParameter from '../model/PythonParameter'
-import ParameterNode from './ParameterNode'
+import { Heading, Stack, Text } from '@chakra-ui/react';
+import React from 'react';
+import PythonParameter from '../model/PythonParameter';
+import ParameterNode from './ParameterNode';
 
 interface ParameterViewProps {
-    pythonParameter: PythonParameter
+    pythonParameter: PythonParameter;
 }
 
 export default function ParameterView(props: ParameterViewProps): JSX.Element {
@@ -30,5 +30,5 @@ export default function ParameterView(props: ParameterViewProps): JSX.Element {
                 </Stack>
             )}
         </Stack>
-    )
+    );
 }

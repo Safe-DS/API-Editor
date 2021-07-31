@@ -12,15 +12,15 @@ import {
     ModalHeader,
     ModalOverlay,
     Text,
-} from '@chakra-ui/react'
-import React, { useState } from 'react'
-import { useAppDispatch } from '../../app/hooks'
-import StyledDropzone from '../../common/StyledDropzone'
-import { isValidJsonFile } from '../../common/util/validation'
-import { AnnotationsState, setAnnotations, toggleAnnotationImportDialog } from './annotationSlice'
+} from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { useAppDispatch } from '../../app/hooks';
+import StyledDropzone from '../../common/StyledDropzone';
+import { isValidJsonFile } from '../../common/util/validation';
+import { AnnotationsState, setAnnotations, toggleAnnotationImportDialog } from './annotationSlice';
 
 const AnnotationImportDialog: React.FC = () => {
-    const [fileName, setFileName] = useState('')
+    const [fileName, setFileName] = useState('');
     const [newAnnotationStore, setNewAnnotationStore] = useState<AnnotationsState>({
         enums: {},
         renamings: {},
@@ -30,33 +30,33 @@ const AnnotationImportDialog: React.FC = () => {
             type: 'none',
         },
         showImportDialog: false,
-    })
-    const dispatch = useAppDispatch()
+    });
+    const dispatch = useAppDispatch();
 
     const submit = () => {
         if (fileName) {
-            dispatch(setAnnotations(newAnnotationStore))
+            dispatch(setAnnotations(newAnnotationStore));
         }
-        close()
-    }
-    const close = () => dispatch(toggleAnnotationImportDialog())
+        close();
+    };
+    const close = () => dispatch(toggleAnnotationImportDialog());
 
     const onDrop = (acceptedFiles: File[]) => {
         if (isValidJsonFile(acceptedFiles[acceptedFiles.length - 1].name)) {
             if (acceptedFiles.length > 1) {
-                acceptedFiles = [acceptedFiles[acceptedFiles.length - 1]]
+                acceptedFiles = [acceptedFiles[acceptedFiles.length - 1]];
             }
-            setFileName(acceptedFiles[0].name)
-            const reader = new FileReader()
+            setFileName(acceptedFiles[0].name);
+            const reader = new FileReader();
             reader.onload = () => {
                 if (typeof reader.result === 'string') {
-                    const readAnnotationJson = JSON.parse(reader.result) as AnnotationsState
-                    setNewAnnotationStore(readAnnotationJson)
+                    const readAnnotationJson = JSON.parse(reader.result) as AnnotationsState;
+                    setNewAnnotationStore(readAnnotationJson);
                 }
-            }
-            reader.readAsText(acceptedFiles[0])
+            };
+            reader.readAsText(acceptedFiles[0]);
         }
-    }
+    };
 
     return (
         <Modal onClose={close} isOpen={true} size="xl">
@@ -93,7 +93,7 @@ const AnnotationImportDialog: React.FC = () => {
                 </ModalFooter>
             </ModalContent>
         </Modal>
-    )
-}
+    );
+};
 
-export default AnnotationImportDialog
+export default AnnotationImportDialog;

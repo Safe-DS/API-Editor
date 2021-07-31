@@ -1,15 +1,15 @@
-import { Heading, ListItem, Stack, Text, UnorderedList } from '@chakra-ui/react'
-import React from 'react'
-import { isEmptyList } from '../../../common/util/listOperations'
+import { Heading, ListItem, Stack, Text, UnorderedList } from '@chakra-ui/react';
+import React from 'react';
+import { isEmptyList } from '../../../common/util/listOperations';
 
 interface ClassViewItemProps {
-    title: string
-    inputElements: string[] | string
+    title: string;
+    inputElements: string[] | string;
 }
 
 export default function SectionListViewItem(props: ClassViewItemProps): JSX.Element {
     if (typeof props.inputElements === 'string') {
-        props.inputElements = [props.inputElements]
+        props.inputElements = [props.inputElements];
     }
 
     return (
@@ -29,5 +29,5 @@ export default function SectionListViewItem(props: ClassViewItemProps): JSX.Elem
                 </Text>
             )}
         </Stack>
-    )
+    );
 }

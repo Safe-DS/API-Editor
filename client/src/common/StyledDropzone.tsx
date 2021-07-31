@@ -1,14 +1,14 @@
-import { Box, useColorModeValue } from '@chakra-ui/react'
-import React from 'react'
-import Dropzone from 'react-dropzone'
+import { Box, useColorModeValue } from '@chakra-ui/react';
+import React from 'react';
+import Dropzone from 'react-dropzone';
 
 interface StyledDropzoneProps {
-    onDrop: (acceptedFiles: File[]) => void
+    onDrop: (acceptedFiles: File[]) => void;
 }
 
 const StyledDropzone: React.FC<StyledDropzoneProps> = ({ onDrop, children }) => {
-    const borderColor = useColorModeValue('gray.200', 'gray.500')
-    const backgroundColor = useColorModeValue('gray.50', 'gray.600')
+    const borderColor = useColorModeValue('gray.200', 'gray.500');
+    const backgroundColor = useColorModeValue('gray.50', 'gray.600');
 
     return (
         <Box
@@ -27,7 +27,7 @@ const StyledDropzone: React.FC<StyledDropzoneProps> = ({ onDrop, children }) => 
                 )}
             </Dropzone>
         </Box>
-    )
-}
+    );
+};
 
-export default StyledDropzone
+export default StyledDropzone;

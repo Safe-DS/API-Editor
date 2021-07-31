@@ -1,17 +1,17 @@
-import React from 'react'
+import React from 'react';
 
-export type Optional<T> = T | undefined | null
+export type Optional<T> = T | undefined | null;
 
-export type Getter<T> = () => T
-export type Setter<T> = (newValue: T) => void
+export type Getter<T> = () => T;
+export type Setter<T> = (newValue: T) => void;
 
 export interface ClassNameProp {
-    className?: string
+    className?: string;
 }
 
 // TODO remove once the type of functional Components is set to React.FC<T>
 export interface ChildrenProp {
-    children?: React.ReactNode
+    children?: React.ReactNode;
 }
 
 export interface BaseProps extends ClassNameProp, ChildrenProp {}

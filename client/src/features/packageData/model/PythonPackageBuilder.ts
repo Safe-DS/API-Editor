@@ -1,31 +1,31 @@
-import { Optional } from '../../../common/util/types'
-import PythonClass from './PythonClass'
-import PythonFromImport from './PythonFromImport'
-import PythonFunction from './PythonFunction'
-import PythonImport from './PythonImport'
-import PythonModule from './PythonModule'
-import PythonPackage from './PythonPackage'
-import PythonParameter from './PythonParameter'
-import PythonResult from './PythonResult'
+import { Optional } from '../../../common/util/types';
+import PythonClass from './PythonClass';
+import PythonFromImport from './PythonFromImport';
+import PythonFunction from './PythonFunction';
+import PythonImport from './PythonImport';
+import PythonModule from './PythonModule';
+import PythonPackage from './PythonPackage';
+import PythonParameter from './PythonParameter';
+import PythonResult from './PythonResult';
 
 export interface PythonPackageJson {
-    name: string
-    modules: PythonModuleJson[]
+    name: string;
+    modules: PythonModuleJson[];
 }
 
 export function parsePythonPackageJson(packageJson: PythonPackageJson): PythonPackage {
     return new PythonPackage(
         packageJson.name,
         packageJson.modules.map(parsePythonModuleJson).sort((a, b) => a.name.localeCompare(b.name)),
-    )
+    );
 }
 
 interface PythonModuleJson {
-    name: string
-    imports: PythonImportJson[]
-    fromImports: PythonFromImportJson[]
-    classes: PythonClassJson[]
-    functions: PythonFunctionJson[]
+    name: string;
+    imports: PythonImportJson[];
+    fromImports: PythonFromImportJson[];
+    classes: PythonClassJson[];
+    functions: PythonFunctionJson[];
 }
 
 function parsePythonModuleJson(moduleJson: PythonModuleJson): PythonModule {
@@ -33,45 +33,45 @@ function parsePythonModuleJson(moduleJson: PythonModuleJson): PythonModule {
         moduleJson.name,
         moduleJson.imports.map(parsePythonImportJson).sort((a, b) => a.module.localeCompare(b.module)),
         moduleJson.fromImports.map(parsePythonFromImportJson).sort((a, b) => {
-            const moduleComparison = a.module.localeCompare(b.module)
+            const moduleComparison = a.module.localeCompare(b.module);
             if (moduleComparison === 0) {
-                return a.declaration.localeCompare(b.declaration)
+                return a.declaration.localeCompare(b.declaration);
             } else {
-                return moduleComparison
+                return moduleComparison;
             }
         }),
         moduleJson.classes.map(parsePythonClassJson).sort((a, b) => a.name.localeCompare(b.name)),
         moduleJson.functions.map(parsePythonFunctionJson).sort((a, b) => a.name.localeCompare(b.name)),
-    )
+    );
 }
 
 interface PythonImportJson {
-    module: string
-    alias: Optional<string>
+    module: string;
+    alias: Optional<string>;
 }
 
 function parsePythonImportJson(importJson: PythonImportJson): PythonImport {
-    return new PythonImport(importJson.module, importJson.alias)
+    return new PythonImport(importJson.module, importJson.alias);
 }
 
 interface PythonFromImportJson {
-    module: string
-    declaration: string
-    alias: Optional<string>
+    module: string;
+    declaration: string;
+    alias: Optional<string>;
 }
 
 function parsePythonFromImportJson(fromImportJson: PythonFromImportJson): PythonFromImport {
-    return new PythonFromImport(fromImportJson.module, fromImportJson.declaration, fromImportJson.alias)
+    return new PythonFromImport(fromImportJson.module, fromImportJson.declaration, fromImportJson.alias);
 }
 
 interface PythonClassJson {
-    name: string
-    decorators: string[]
-    superclasses: string[]
-    methods: PythonFunctionJson[]
-    summary: Optional<string>
-    description: Optional<string>
-    fullDocstring: Optional<string>
+    name: string;
+    decorators: string[];
+    superclasses: string[];
+    methods: PythonFunctionJson[];
+    summary: Optional<string>;
+    description: Optional<string>;
+    fullDocstring: Optional<string>;
 }
 
 function parsePythonClassJson(classJson: PythonClassJson): PythonClass {
@@ -83,19 +83,19 @@ function parsePythonClassJson(classJson: PythonClassJson): PythonClass {
         classJson.summary || '',
         classJson.description || '',
         classJson.fullDocstring || '',
-    )
+    );
 }
 
 interface PythonFunctionJson {
-    name: string
-    decorators: string[]
-    parameters: PythonParameterJson[]
-    results: PythonResultJson[]
-    hasReturnType: boolean
-    returnType: string
-    summary: Optional<string>
-    description: Optional<string>
-    fullDocstring: Optional<string>
+    name: string;
+    decorators: string[];
+    parameters: PythonParameterJson[];
+    results: PythonResultJson[];
+    hasReturnType: boolean;
+    returnType: string;
+    summary: Optional<string>;
+    description: Optional<string>;
+    fullDocstring: Optional<string>;
 }
 
 function parsePythonFunctionJson(functionJson: PythonFunctionJson): PythonFunction {
@@ -108,18 +108,18 @@ function parsePythonFunctionJson(functionJson: PythonFunctionJson): PythonFuncti
         functionJson.summary || '',
         functionJson.description || '',
         functionJson.fullDocstring || '',
-    )
+    );
 }
 
 interface PythonParameterJson {
-    name: string
-    type: string
-    typeInDocs: Optional<string>
-    hasDefault: boolean
-    default: Optional<string>
-    limitation: null
-    ignored: boolean
-    description: Optional<string>
+    name: string;
+    type: string;
+    typeInDocs: Optional<string>;
+    hasDefault: boolean;
+    default: Optional<string>;
+    limitation: null;
+    ignored: boolean;
+    description: Optional<string>;
 }
 
 function parsePythonParameterJson(parameterJson: PythonParameterJson): PythonParameter {
@@ -132,16 +132,21 @@ function parsePythonParameterJson(parameterJson: PythonParameterJson): PythonPar
         parameterJson.limitation,
         parameterJson.ignored,
         parameterJson.description || '',
-    )
+    );
 }
 
 interface PythonResultJson {
-    name: string
-    type: string
-    typeInDocs: Optional<string>
-    description: Optional<string>
+    name: string;
+    type: string;
+    typeInDocs: Optional<string>;
+    description: Optional<string>;
 }
 
 function parsePythonResultJson(resultJson: PythonResultJson): PythonResult {
-    return new PythonResult(resultJson.name, resultJson.type, resultJson.typeInDocs || '', resultJson.description || '')
+    return new PythonResult(
+        resultJson.name,
+        resultJson.type,
+        resultJson.typeInDocs || '',
+        resultJson.description || '',
+    );
 }

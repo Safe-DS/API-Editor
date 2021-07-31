@@ -1,8 +1,8 @@
 // regenerate by running
 // npx @chakra-ui/cli tokens path/to/your/theme.(js|ts)
 export interface ThemeTypings {
-    borders: 'none' | '1px' | '2px' | '4px' | '8px'
-    breakpoints: 'base' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+    borders: 'none' | '1px' | '2px' | '4px' | '8px';
+    breakpoints: 'base' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
     colors:
         | 'transparent'
         | 'current'
@@ -187,7 +187,7 @@ export interface ThemeTypings {
         | 'telegram.600'
         | 'telegram.700'
         | 'telegram.800'
-        | 'telegram.900'
+        | 'telegram.900';
     colorSchemes:
         | 'whiteAlpha'
         | 'blackAlpha'
@@ -206,12 +206,12 @@ export interface ThemeTypings {
         | 'messenger'
         | 'whatsapp'
         | 'twitter'
-        | 'telegram'
-    fonts: 'heading' | 'body' | 'mono'
-    fontSizes: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl' | '8xl' | '9xl'
-    fontWeights: 'hairline' | 'thin' | 'light' | 'normal' | 'medium' | 'semibold' | 'bold' | 'extrabold' | 'black'
-    layerStyles: 'subtleBorder'
-    letterSpacings: 'tighter' | 'tight' | 'normal' | 'wide' | 'wider' | 'widest'
+        | 'telegram';
+    fonts: 'heading' | 'body' | 'mono';
+    fontSizes: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl' | '8xl' | '9xl';
+    fontWeights: 'hairline' | 'thin' | 'light' | 'normal' | 'medium' | 'semibold' | 'bold' | 'extrabold' | 'black';
+    layerStyles: 'subtleBorder';
+    letterSpacings: 'tighter' | 'tight' | 'normal' | 'wide' | 'wider' | 'widest';
     lineHeights:
         | '3'
         | '4'
@@ -227,9 +227,9 @@ export interface ThemeTypings {
         | 'short'
         | 'base'
         | 'tall'
-        | 'taller'
-    radii: 'none' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'full'
-    shadows: 'xs' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl' | 'outline' | 'inner' | 'none' | 'dark-lg'
+        | 'taller';
+    radii: 'none' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'full';
+    shadows: 'xs' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl' | 'outline' | 'inner' | 'none' | 'dark-lg';
     sizes:
         | '1'
         | '2'
@@ -284,7 +284,7 @@ export interface ThemeTypings {
         | 'container.sm'
         | 'container.md'
         | 'container.lg'
-        | 'container.xl'
+        | 'container.xl';
     space:
         | '1'
         | '-1'
@@ -351,9 +351,9 @@ export interface ThemeTypings {
         | '2.5'
         | '-2.5'
         | '3.5'
-        | '-3.5'
-    textStyles: never
-    transition: never
+        | '-3.5';
+    textStyles: never;
+    transition: never;
     zIndices:
         | 'hide'
         | 'auto'
@@ -367,167 +367,167 @@ export interface ThemeTypings {
         | 'popover'
         | 'skipLink'
         | 'toast'
-        | 'tooltip'
+        | 'tooltip';
     components: {
         Accordion: {
-            sizes: never
-            variants: never
-        }
+            sizes: never;
+            variants: never;
+        };
         Alert: {
-            sizes: never
-            variants: 'subtle' | 'left-accent' | 'top-accent' | 'solid'
-        }
+            sizes: never;
+            variants: 'subtle' | 'left-accent' | 'top-accent' | 'solid';
+        };
         Avatar: {
-            sizes: '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full'
-            variants: never
-        }
+            sizes: '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
+            variants: never;
+        };
         Badge: {
-            sizes: never
-            variants: 'solid' | 'subtle' | 'outline'
-        }
+            sizes: never;
+            variants: 'solid' | 'subtle' | 'outline';
+        };
         Breadcrumb: {
-            sizes: never
-            variants: never
-        }
+            sizes: never;
+            variants: never;
+        };
         Button: {
-            sizes: 'lg' | 'md' | 'sm' | 'xs'
-            variants: 'ghost' | 'outline' | 'solid' | 'link' | 'unstyled'
-        }
+            sizes: 'lg' | 'md' | 'sm' | 'xs';
+            variants: 'ghost' | 'outline' | 'solid' | 'link' | 'unstyled';
+        };
         Checkbox: {
-            sizes: 'sm' | 'md' | 'lg'
-            variants: never
-        }
+            sizes: 'sm' | 'md' | 'lg';
+            variants: never;
+        };
         CloseButton: {
-            sizes: 'lg' | 'md' | 'sm'
-            variants: never
-        }
+            sizes: 'lg' | 'md' | 'sm';
+            variants: never;
+        };
         Code: {
-            sizes: never
-            variants: 'solid' | 'subtle' | 'outline'
-        }
+            sizes: never;
+            variants: 'solid' | 'subtle' | 'outline';
+        };
         Container: {
-            sizes: never
-            variants: never
-        }
+            sizes: never;
+            variants: never;
+        };
         Divider: {
-            sizes: never
-            variants: 'solid' | 'dashed'
-        }
+            sizes: never;
+            variants: 'solid' | 'dashed';
+        };
         Drawer: {
-            sizes: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
-            variants: never
-        }
+            sizes: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
+            variants: never;
+        };
         Editable: {
-            sizes: never
-            variants: never
-        }
+            sizes: never;
+            variants: never;
+        };
         Form: {
-            sizes: never
-            variants: never
-        }
+            sizes: never;
+            variants: never;
+        };
         FormLabel: {
-            sizes: never
-            variants: never
-        }
+            sizes: never;
+            variants: never;
+        };
         Heading: {
-            sizes: '4xl' | '3xl' | '2xl' | 'xl' | 'lg' | 'md' | 'sm' | 'xs'
-            variants: never
-        }
+            sizes: '4xl' | '3xl' | '2xl' | 'xl' | 'lg' | 'md' | 'sm' | 'xs';
+            variants: never;
+        };
         Input: {
-            sizes: 'lg' | 'md' | 'sm' | 'xs'
-            variants: 'outline' | 'filled' | 'flushed' | 'unstyled'
-        }
+            sizes: 'lg' | 'md' | 'sm' | 'xs';
+            variants: 'outline' | 'filled' | 'flushed' | 'unstyled';
+        };
         Kbd: {
-            sizes: never
-            variants: never
-        }
+            sizes: never;
+            variants: never;
+        };
         Link: {
-            sizes: never
-            variants: never
-        }
+            sizes: never;
+            variants: never;
+        };
         List: {
-            sizes: never
-            variants: never
-        }
+            sizes: never;
+            variants: never;
+        };
         Menu: {
-            sizes: never
-            variants: never
-        }
+            sizes: never;
+            variants: never;
+        };
         Modal: {
-            sizes: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | 'full'
-            variants: never
-        }
+            sizes: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | 'full';
+            variants: never;
+        };
         NumberInput: {
-            sizes: 'xs' | 'sm' | 'md' | 'lg'
-            variants: 'outline' | 'filled' | 'flushed' | 'unstyled'
-        }
+            sizes: 'xs' | 'sm' | 'md' | 'lg';
+            variants: 'outline' | 'filled' | 'flushed' | 'unstyled';
+        };
         PinInput: {
-            sizes: 'lg' | 'md' | 'sm' | 'xs'
-            variants: 'outline' | 'flushed' | 'filled' | 'unstyled'
-        }
+            sizes: 'lg' | 'md' | 'sm' | 'xs';
+            variants: 'outline' | 'flushed' | 'filled' | 'unstyled';
+        };
         Popover: {
-            sizes: never
-            variants: never
-        }
+            sizes: never;
+            variants: never;
+        };
         Progress: {
-            sizes: 'xs' | 'sm' | 'md' | 'lg'
-            variants: never
-        }
+            sizes: 'xs' | 'sm' | 'md' | 'lg';
+            variants: never;
+        };
         Radio: {
-            sizes: 'md' | 'lg' | 'sm'
-            variants: never
-        }
+            sizes: 'md' | 'lg' | 'sm';
+            variants: never;
+        };
         Select: {
-            sizes: 'lg' | 'md' | 'sm' | 'xs'
-            variants: 'outline' | 'filled' | 'flushed' | 'unstyled'
-        }
+            sizes: 'lg' | 'md' | 'sm' | 'xs';
+            variants: 'outline' | 'filled' | 'flushed' | 'unstyled';
+        };
         Skeleton: {
-            sizes: never
-            variants: never
-        }
+            sizes: never;
+            variants: never;
+        };
         SkipLink: {
-            sizes: never
-            variants: never
-        }
+            sizes: never;
+            variants: never;
+        };
         Slider: {
-            sizes: 'lg' | 'md' | 'sm'
-            variants: never
-        }
+            sizes: 'lg' | 'md' | 'sm';
+            variants: never;
+        };
         Spinner: {
-            sizes: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-            variants: never
-        }
+            sizes: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+            variants: never;
+        };
         Stat: {
-            sizes: 'md'
-            variants: never
-        }
+            sizes: 'md';
+            variants: never;
+        };
         Switch: {
-            sizes: 'sm' | 'md' | 'lg'
-            variants: never
-        }
+            sizes: 'sm' | 'md' | 'lg';
+            variants: never;
+        };
         Table: {
-            sizes: 'sm' | 'md' | 'lg'
-            variants: 'simple' | 'striped' | 'unstyled'
-        }
+            sizes: 'sm' | 'md' | 'lg';
+            variants: 'simple' | 'striped' | 'unstyled';
+        };
         Tabs: {
-            sizes: 'sm' | 'md' | 'lg'
-            variants: 'line' | 'enclosed' | 'enclosed-colored' | 'soft-rounded' | 'solid-rounded' | 'unstyled'
-        }
+            sizes: 'sm' | 'md' | 'lg';
+            variants: 'line' | 'enclosed' | 'enclosed-colored' | 'soft-rounded' | 'solid-rounded' | 'unstyled';
+        };
         Tag: {
-            sizes: 'sm' | 'md' | 'lg'
-            variants: 'subtle' | 'solid' | 'outline'
-        }
+            sizes: 'sm' | 'md' | 'lg';
+            variants: 'subtle' | 'solid' | 'outline';
+        };
         Textarea: {
-            sizes: 'xs' | 'sm' | 'md' | 'lg'
-            variants: 'outline' | 'flushed' | 'filled' | 'unstyled'
-        }
+            sizes: 'xs' | 'sm' | 'md' | 'lg';
+            variants: 'outline' | 'flushed' | 'filled' | 'unstyled';
+        };
         Tooltip: {
-            sizes: never
-            variants: never
-        }
+            sizes: never;
+            variants: never;
+        };
         FormError: {
-            sizes: never
-            variants: never
-        }
-    }
+            sizes: never;
+            variants: never;
+        };
+    };
 }

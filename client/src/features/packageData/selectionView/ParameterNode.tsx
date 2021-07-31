@@ -1,17 +1,17 @@
-import { Box, Heading, HStack, Stack, Text } from '@chakra-ui/react'
-import React from 'react'
-import AnnotationDropdown from '../../annotations/AnnotationDropdown'
-import AnnotationView from '../../annotations/AnnotationView'
-import PythonParameter from '../model/PythonParameter'
-import DocumentationText from './DocumentationText'
+import { Box, Heading, HStack, Stack, Text } from '@chakra-ui/react';
+import React from 'react';
+import AnnotationDropdown from '../../annotations/AnnotationDropdown';
+import AnnotationView from '../../annotations/AnnotationView';
+import PythonParameter from '../model/PythonParameter';
+import DocumentationText from './DocumentationText';
 
 interface ParameterNodeProps {
-    pythonParameter: PythonParameter
-    isTitle: boolean
+    pythonParameter: PythonParameter;
+    isTitle: boolean;
 }
 
 export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
-    const id = props.pythonParameter.pathAsString()
+    const id = props.pythonParameter.pathAsString();
 
     return (
         <Stack spacing={4}>
@@ -38,5 +38,5 @@ export default function ParameterNode(props: ParameterNodeProps): JSX.Element {
                 )}
             </Box>
         </Stack>
-    )
+    );
 }

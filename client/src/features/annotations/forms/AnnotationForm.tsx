@@ -1,10 +1,10 @@
-import { Button, Heading, HStack, Stack } from '@chakra-ui/react'
-import React from 'react'
+import { Button, Heading, HStack, Stack } from '@chakra-ui/react';
+import React from 'react';
 
 interface AnnotationFormProps {
-    heading: string
-    onSave: React.MouseEventHandler<HTMLButtonElement>
-    onCancel: React.MouseEventHandler<HTMLButtonElement>
+    heading: string;
+    onSave: React.MouseEventHandler<HTMLButtonElement>;
+    onCancel: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 const AnnotationForm: React.FC<AnnotationFormProps> = ({ heading, onCancel, onSave, children }) => {
@@ -25,7 +25,7 @@ const AnnotationForm: React.FC<AnnotationFormProps> = ({ heading, onCancel, onSa
                 </Button>
             </HStack>
         </Stack>
-    )
-}
+    );
+};
 
-export default AnnotationForm
+export default AnnotationForm;
