@@ -1,4 +1,3 @@
-import com.github.gradle.node.npm.task.NpxTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 // Plugins -------------------------------------------------------------------------------------------------------------
@@ -14,6 +13,7 @@ plugins {
 idea {
     module {
         excludeDirs.add(file("gradle"))
+        excludeDirs.add(file("node_modules"))
     }
 }
 
@@ -44,18 +44,14 @@ subprojects {
 
 // Tasks ---------------------------------------------------------------------------------------------------------------
 
-tasks.register<NpxTask>("pnpmInstall") {
-    group = "pnpm"
-    description = "Install node packages from package.json with pnpm"
-
-    inputs.files(
-        "package.json",
-        "pnpm-lock.yaml",
-        "client/package.json",
-        "client/pnpm-lock.yaml"
-    )
-    outputs.dirs("node_modules", "client/node_modules")
-
-    command.set("pnpm")
-    args.set(listOf("install"))
+tasks {
+    npmInstall {
+        inputs.files(
+            "package.json",
+            "package-lock.json",
+            "client/package.json",
+            "client/package-lock.json"
+        )
+        outputs.dirs("node_modules", "client/node_modules")
+    }
 }

@@ -1,4 +1,4 @@
-import com.github.gradle.node.npm.task.NpxTask
+import com.github.gradle.node.npm.task.NpmTask
 
 // Plugins -------------------------------------------------------------------------------------------------------------
 
@@ -21,22 +21,8 @@ idea {
 
 // Tasks ---------------------------------------------------------------------------------------------------------------
 
-tasks.register<NpxTask>("testClient") {
-    dependsOn(project.rootProject.tasks.named("pnpmInstall"))
-
-    inputs.dir("src")
-    inputs.files(
-        "jest.config.json",
-        "package.json",
-        "tsconfig.json",
-    )
-
-    command.set("pnpm")
-    args.set(listOf("run", "test"))
-}
-
-tasks.register<NpxTask>("buildClient") {
-    dependsOn(project.rootProject.tasks.named("pnpmInstall"))
+tasks.register<NpmTask>("buildClient") {
+    dependsOn(project.rootProject.tasks.named("npmInstall"))
 
     inputs.dir("public")
     inputs.dir("src")
@@ -48,8 +34,20 @@ tasks.register<NpxTask>("buildClient") {
     )
     outputs.dirs("dist")
 
-    command.set("pnpm")
     args.set(listOf("run", "build"))
+}
+
+tasks.register<NpmTask>("testClient") {
+    dependsOn(project.rootProject.tasks.named("npmInstall"))
+
+    inputs.dir("src")
+    inputs.files(
+        "jest.config.json",
+        "package.json",
+        "tsconfig.json",
+    )
+
+    args.set(listOf("run", "test"))
 }
 
 tasks {

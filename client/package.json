@@ -1,6 +1,6 @@
 {
     "name": "com.larsreimann.api_editor.client",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "private": true,
     "scripts": {
         "dev": "vite",
@@ -8,8 +8,7 @@
         "serve": "vite preview",
         "test": "jest src",
         "gen:theme-typings": "chakra-cli tokens src/theme/index.ts -- out src/theme/index.d.ts",
-        "preinstall": "npx only-allow pnpm",
-        "postinstall": "pnpm run gen:theme-typings"
+        "postinstall": "npm run gen:theme-typings"
     },
     "dependencies": {
         "@chakra-ui/react": "^1.6.5",
