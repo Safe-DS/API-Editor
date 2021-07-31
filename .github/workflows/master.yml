@@ -14,7 +14,7 @@ jobs:
                 java-version: [11]
 
         steps:
-            - name: Checkout Source
+            - name: Checkout source
               uses: actions/checkout@v2
 
             - name: Use Node.js ${{ matrix.node-version }}
@@ -53,7 +53,7 @@ jobs:
                   path: server/build/libs/*-all.jar
                   if-no-files-found: error
 
-            - name: Cleanup Gradle Cache
+            - name: Cleanup Gradle cache
               # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
               # Restoring these files from a GitHub Actions cache might cause problems for future builds.
               run: |
