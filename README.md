@@ -18,7 +18,11 @@
 
 1. Install [OpenJDK 11](https://adoptopenjdk.net/).
 2. Install [Node.js 16.x](https://nodejs.org/en/).
-3. Build everything:
+3. Install linter & formatter:
+    ```shell
+    npm install
+    ```
+4. Build everything:
     ```shell
     ./gradlew build
     ```

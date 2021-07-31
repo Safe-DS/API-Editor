@@ -40,18 +40,3 @@ subprojects {
         }
     }
 }
-
-
-// Tasks ---------------------------------------------------------------------------------------------------------------
-
-tasks {
-    npmInstall {
-        inputs.files(
-            "package.json",
-            "package-lock.json",
-            "client/package.json",
-            "client/package-lock.json"
-        )
-        outputs.dirs("node_modules", "client/node_modules")
-    }
-}

@@ -6,8 +6,7 @@
     "scripts": {
         "lint": "eslint .",
         "fix": "eslint --fix . && prettier --write .",
-        "prepare": "husky install .husky",
-        "postinstall": "cd client && npm install"
+        "prepare": "husky install .husky"
     },
     "lint-staged": {
         "*.{js,jsx,ts,tsx}": [

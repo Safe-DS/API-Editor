@@ -22,7 +22,7 @@ idea {
 // Tasks ---------------------------------------------------------------------------------------------------------------
 
 tasks.register<NpmTask>("buildClient") {
-    dependsOn(project.rootProject.tasks.named("npmInstall"))
+    dependsOn(tasks.npmInstall)
 
     inputs.dir("public")
     inputs.dir("src")
@@ -38,7 +38,7 @@ tasks.register<NpmTask>("buildClient") {
 }
 
 tasks.register<NpmTask>("testClient") {
-    dependsOn(project.rootProject.tasks.named("npmInstall"))
+    dependsOn(tasks.npmInstall)
 
     inputs.dir("src")
     inputs.files(

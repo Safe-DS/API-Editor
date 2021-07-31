@@ -6,7 +6,7 @@ Closes #[issue_no].
 
 ### Screenshots (if necessary)
 
-<!-- If your PR includes visual changes, screenshots from before and after your change should always be included. -->
+<!-- If your PR includes visual changes, screenshots from before and after your change must be included. -->
 
 ### Testing instructions
 
