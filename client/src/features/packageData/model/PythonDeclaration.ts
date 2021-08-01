@@ -1,43 +1,43 @@
-import { isEmptyList } from '../../../common/util/listOperations'
-import { Optional } from '../../../common/util/types'
+import { isEmptyList } from '../../../common/util/listOperations';
+import { Optional } from '../../../common/util/types';
 
 export default abstract class PythonDeclaration {
-    abstract readonly name: string
+    abstract readonly name: string;
 
-    abstract parent(): Optional<PythonDeclaration>
+    abstract parent(): Optional<PythonDeclaration>;
 
-    abstract children(): PythonDeclaration[]
+    abstract children(): PythonDeclaration[];
 
     path(): string[] {
-        let current: Optional<PythonDeclaration> = this
-        const result: string[] = []
+        let current: Optional<PythonDeclaration> = this;
+        const result: string[] = [];
 
         while (current !== null && current !== undefined) {
-            result.unshift(current.name)
-            current = current.parent()
+            result.unshift(current.name);
+            current = current.parent();
         }
 
-        return result
+        return result;
     }
 
     pathAsString(): string {
-        return this.path().join('/')
+        return this.path().join('/');
     }
 
     getByRelativePath(relativePath: string[]): Optional<PythonDeclaration> {
         if (isEmptyList(relativePath)) {
-            return this
+            return this;
         }
 
-        const [head, ...tail] = relativePath
+        const [head, ...tail] = relativePath;
         return (
             this.children()
                 .find((it) => it.name === head)
                 ?.getByRelativePath(tail) ?? null
-        )
+        );
     }
 
     getByRelativePathAsString(relativePath: string): Optional<PythonDeclaration> {
-        return this.getByRelativePath(relativePath.split('/').slice(1))
+        return this.getByRelativePath(relativePath.split('/').slice(1));
     }
 }

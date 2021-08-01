@@ -1,85 +1,85 @@
 name: Pull Request
 
 on:
-    pull_request:
-        branches: [master]
+  pull_request:
+    branches: [master]
 
 jobs:
-    lint:
-        runs-on: ubuntu-latest
+  lint:
+    runs-on: ubuntu-latest
 
-        strategy:
-            matrix:
-                node-version: [16.x]
+    strategy:
+      matrix:
+        node-version: [16.x]
 
-        steps:
-            - name: Checkout source
-              uses: actions/checkout@v2
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v2
 
-            - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v2
-              with:
-                  node-version: ${{ matrix.node-version }}
-                  cache: npm
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
 
-            - name: Install dependencies
-              run: npm install --ignore-scripts
+      - name: Install dependencies
+        run: npm install --ignore-scripts
 
-            - name: Lint
-              run: npm run lint
+      - name: Lint
+        run: npm run lint
 
-    build:
-        runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
 
-        strategy:
-            matrix:
-                node-version: [16.x]
-                java-version: [11]
+    strategy:
+      matrix:
+        node-version: [16.x]
+        java-version: [11]
 
-        steps:
-            - name: Checkout source
-              uses: actions/checkout@v2
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v2
 
-            - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v2
-              with:
-                  node-version: ${{ matrix.node-version }}
-                  cache: npm
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
 
-            - name: Set up JDK ${{ matrix.java-version }}
-              uses: actions/setup-java@v2.1.0
-              with:
-                  distribution: adopt
-                  java-version: ${{ matrix.java-version }}
+      - name: Set up JDK ${{ matrix.java-version }}
+        uses: actions/setup-java@v2.1.0
+        with:
+          distribution: adopt
+          java-version: ${{ matrix.java-version }}
 
-            - name: Cache Gradle packages
-              uses: actions/cache@v2
-              with:
-                  path: |
-                      ~/.gradle/caches
-                      ~/.gradle/wrapper
-                  key: ${{ runner.os }}-java${{ matrix.java-version }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-                  restore-keys: |
-                      ${{ runner.os }}-java${{ matrix.java-version }}-
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-java${{ matrix.java-version }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-java${{ matrix.java-version }}-
 
-            # See https://docs.github.com/en/actions/guides/building-and-testing-java-with-gradle
-            - name: Setup Gradle
-              uses: gradle/wrapper-validation-action@v1
+      # See https://docs.github.com/en/actions/guides/building-and-testing-java-with-gradle
+      - name: Setup Gradle
+        uses: gradle/wrapper-validation-action@v1
 
-            - name: Build with Gradle
-              run: ./gradlew build
+      - name: Build with Gradle
+        run: ./gradlew build
 
-            - name: Upload test report
-              if: ${{ failure() }}
-              uses: actions/upload-artifact@v2
-              with:
-                  name: Test report
-                  path: server/build/reports
-                  if-no-files-found: ignore
+      - name: Upload test report
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: Test report
+          path: server/build/reports
+          if-no-files-found: ignore
 
-            - name: Cleanup Gradle cache
-              # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
-              # Restoring these files from a GitHub Actions cache might cause problems for future builds.
-              run: |
-                  rm -f ~/.gradle/caches/modules-2/modules-2.lock
-                  rm -f ~/.gradle/caches/modules-2/gc.properties
+      - name: Cleanup Gradle cache
+        # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
+        # Restoring these files from a GitHub Actions cache might cause problems for future builds.
+        run: |
+          rm -f ~/.gradle/caches/modules-2/modules-2.lock
+          rm -f ~/.gradle/caches/modules-2/gc.properties

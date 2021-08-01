@@ -1,17 +1,17 @@
-import { Optional } from '../../../common/util/types'
-import PythonDeclaration from './PythonDeclaration'
-import PythonFunction from './PythonFunction'
+import { Optional } from '../../../common/util/types';
+import PythonDeclaration from './PythonDeclaration';
+import PythonFunction from './PythonFunction';
 
 export default class PythonParameter extends PythonDeclaration {
-    readonly name: string
-    readonly type: string
-    readonly typeInDocs: string
-    readonly hasDefault: boolean
-    readonly defaultValue: string
-    readonly limitation: null
-    readonly ignored: boolean
-    readonly description: string
-    containingFunction: Optional<PythonFunction>
+    readonly name: string;
+    readonly type: string;
+    readonly typeInDocs: string;
+    readonly hasDefault: boolean;
+    readonly defaultValue: string;
+    readonly limitation: null;
+    readonly ignored: boolean;
+    readonly description: string;
+    containingFunction: Optional<PythonFunction>;
 
     constructor(
         name: string,
@@ -23,29 +23,29 @@ export default class PythonParameter extends PythonDeclaration {
         ignored = false,
         description = '',
     ) {
-        super()
+        super();
 
-        this.name = name
-        this.type = type
-        this.typeInDocs = typeInDocs
-        this.hasDefault = hasDefault
-        this.defaultValue = defaultValue
-        this.limitation = limitation
-        this.ignored = ignored
-        this.description = description
-        this.containingFunction = null
+        this.name = name;
+        this.type = type;
+        this.typeInDocs = typeInDocs;
+        this.hasDefault = hasDefault;
+        this.defaultValue = defaultValue;
+        this.limitation = limitation;
+        this.ignored = ignored;
+        this.description = description;
+        this.containingFunction = null;
     }
 
     parent(): Optional<PythonFunction> {
-        return this.containingFunction
+        return this.containingFunction;
     }
 
     children(): PythonDeclaration[] {
-        return []
+        return [];
     }
 
     toString(): string {
-        return `Parameter "${this.name}"`
+        return `Parameter "${this.name}"`;
     }
 
     clone(): PythonParameter {
@@ -58,6 +58,6 @@ export default class PythonParameter extends PythonDeclaration {
             this.limitation,
             this.ignored,
             this.description,
-        )
+        );
     }
 }

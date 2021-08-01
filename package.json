@@ -17,7 +17,7 @@
     },
     "devDependencies": {
         "@babel/core": "^7.14.8",
-        "@lars-reimann/prettier-config": "^2.0.0",
+        "@lars-reimann/prettier-config": "*",
         "@typescript-eslint/eslint-plugin": "^4.28.5",
         "@typescript-eslint/parser": "^4.28.5",
         "babel-eslint": "^10.1.0",

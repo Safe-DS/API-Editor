@@ -1,11 +1,11 @@
-import { ChakraProvider, ColorModeScript } from '@chakra-ui/react'
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { Provider } from 'react-redux'
-import { HashRouter } from 'react-router-dom'
-import App from './app/App'
-import { store } from './app/store'
-import apiEditorTheme from './theme'
+import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { HashRouter } from 'react-router-dom';
+import App from './app/App';
+import { store } from './app/store';
+import apiEditorTheme from './theme';
 
 ReactDOM.render(
     <React.StrictMode>
@@ -19,4 +19,4 @@ ReactDOM.render(
         </Provider>
     </React.StrictMode>,
     document.getElementById('root'),
-)
+);
