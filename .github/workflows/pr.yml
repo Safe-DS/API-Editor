@@ -21,9 +21,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
+          # cache-dependency-path: package-lock.json # TODO once https://github.com/actions/setup-node/pull/299 is in
 
       - name: Install dependencies
-        run: npm install --ignore-scripts
+        run: npm ci --prefer-offline --no-audit
 
       - name: Lint
         run: npm run lint
@@ -45,6 +46,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
+          # cache-dependency-path: package-lock.json # TODO once https://github.com/actions/setup-node/pull/299 is in
 
       - name: Set up JDK ${{ matrix.java-version }}
         uses: actions/setup-java@v2.1.0

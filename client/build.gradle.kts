@@ -8,6 +8,12 @@ plugins {
     idea
 }
 
+node {
+    if (System.getenv("CI") != null) {
+        npmInstallCommand.set("ci")
+    }
+}
+
 idea {
     module {
         sourceDirs.add(file("src"))
@@ -59,5 +65,10 @@ tasks {
     }
     clean {
         delete(named("buildClient").get().outputs)
+    }
+    npmInstall {
+        if (System.getenv("CI") != null) {
+            args.set(listOf("--prefer-offline", "--no-audit"))
+        }
     }
 }
