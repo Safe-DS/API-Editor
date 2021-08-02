@@ -10,6 +10,8 @@ test('path without parent', () => {
 
 test('path with parent', () => {
     const pythonModule = new PythonModule('module');
+
+    // eslint-disable-next-line no-new
     new PythonPackage('package', [pythonModule]);
 
     expect(pythonModule.path()).toEqual(['package', 'module']);
@@ -24,17 +26,17 @@ test('getByRelativePath with correct path', () => {
         [],
         [new PythonFunction('function', [], [pythonParameter])],
     );
-    expect(pythonModule.getByRelativePath(['function', 'param'])).toBe(pythonParameter);
+    expect(pythonModule.getByRelativePath(['function', 'param'])).toBe(
+        pythonParameter,
+    );
 });
 
 test('getByRelativePath with misleading path', () => {
     const pythonModule = new PythonModule('module');
-    expect(pythonModule.getByRelativePath(['child'])).toBe(null);
+    expect(pythonModule.getByRelativePath(['child'])).toBeNull();
 });
 
 test('toString', () => {
     const pythonModule = new PythonModule('module');
     expect(pythonModule.toString()).toBe(`Module "module"`);
 });
-
-export {};
