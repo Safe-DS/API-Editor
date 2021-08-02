@@ -5,7 +5,11 @@ export default class PythonFromImport {
     readonly declaration: string;
     readonly alias: Optional<string>;
 
-    constructor(module: string, declaration: string, alias: Optional<string> = null) {
+    constructor(
+        module: string,
+        declaration: string,
+        alias: Optional<string> = null,
+    ) {
         this.module = module;
         this.declaration = declaration;
         this.alias = alias;

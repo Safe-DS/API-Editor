@@ -62,8 +62,11 @@ export default class PythonModule extends PythonDeclaration {
             .map((it) => it.filter(pythonFilter))
             .filter(
                 (it) =>
-                    it.name.toLowerCase().includes((pythonFilter.pythonClass || '').toLowerCase()) &&
-                    !isEmptyList(it.methods),
+                    it.name
+                        .toLowerCase()
+                        .includes(
+                            (pythonFilter.pythonClass || '').toLowerCase(),
+                        ) && !isEmptyList(it.methods),
             );
 
         const functions = this.functions
@@ -71,10 +74,20 @@ export default class PythonModule extends PythonDeclaration {
             .filter(
                 (it) =>
                     !pythonFilter.pythonClass && // if the class filter is active we hide all top-level functions
-                    it.name.toLowerCase().includes((pythonFilter.pythonFunction || '').toLowerCase()) &&
+                    it.name
+                        .toLowerCase()
+                        .includes(
+                            (pythonFilter.pythonFunction || '').toLowerCase(),
+                        ) &&
                     !isEmptyList(it.parameters),
             );
 
-        return new PythonModule(this.name, this.imports, this.fromImports, classes, functions);
+        return new PythonModule(
+            this.name,
+            this.imports,
+            this.fromImports,
+            classes,
+            functions,
+        );
     }
 }

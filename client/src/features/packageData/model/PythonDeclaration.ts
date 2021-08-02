@@ -37,7 +37,9 @@ export default abstract class PythonDeclaration {
         );
     }
 
-    getByRelativePathAsString(relativePath: string): Optional<PythonDeclaration> {
+    getByRelativePathAsString(
+        relativePath: string,
+    ): Optional<PythonDeclaration> {
         return this.getByRelativePath(relativePath.split('/').slice(1));
     }
 }

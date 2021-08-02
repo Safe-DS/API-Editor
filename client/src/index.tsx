@@ -11,7 +11,9 @@ ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
             <ChakraProvider theme={apiEditorTheme}>
-                <ColorModeScript initialColorMode={apiEditorTheme.config.initialColorMode} />
+                <ColorModeScript
+                    initialColorMode={apiEditorTheme.config.initialColorMode}
+                />
                 <HashRouter>
                     <App />
                 </HashRouter>
