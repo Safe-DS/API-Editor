@@ -7,7 +7,12 @@ interface AnnotationFormProps {
     onCancel: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const AnnotationForm: React.FC<AnnotationFormProps> = ({ heading, onCancel, onSave, children }) => {
+const AnnotationForm: React.FC<AnnotationFormProps> = function ({
+    heading,
+    onCancel,
+    onSave,
+    children,
+}) {
     return (
         <Stack spacing={8} p={4}>
             <Heading as="h3" size="lg">

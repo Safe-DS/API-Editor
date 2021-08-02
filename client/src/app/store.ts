@@ -10,7 +10,8 @@ export const store = configureStore({
         packageData: packageDataReducer,
         [apiEditorApi.reducerPath]: apiEditorApi.reducer,
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiEditorApi.middleware),
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware().concat(apiEditorApi.middleware),
 });
 
 setupListeners(store.dispatch);

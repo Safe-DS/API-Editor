@@ -3,7 +3,10 @@ import 'katex/dist/katex.min.css';
 import React, { ReactNode, useState } from 'react';
 import { FaChevronDown, FaChevronRight } from 'react-icons/fa';
 import ReactMarkdown from 'react-markdown';
-import { CodeComponent, ReactMarkdownProps } from 'react-markdown/src/ast-to-react';
+import {
+    CodeComponent,
+    ReactMarkdownProps,
+} from 'react-markdown/src/ast-to-react';
 import rehypeKatex from 'rehype-katex';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
@@ -18,11 +21,11 @@ type ParagraphComponent = (
         ReactMarkdownProps,
 ) => ReactNode;
 
-const CustomText: ParagraphComponent = ({ className, children }) => {
+const CustomText: ParagraphComponent = function ({ className, children }) {
     return <Text className={className}>{children}</Text>;
 };
 
-const CustomCode: CodeComponent = ({ className, children }) => {
+const CustomCode: CodeComponent = function ({ className, children }) {
     return <Code className={className}>{children}</Code>;
 };
 
@@ -31,11 +34,13 @@ const components = {
     code: CustomCode,
 };
 
-export default function DocumentationText({ inputText = '' }: DocumentationTextProps): JSX.Element {
+const DocumentationText: React.FC<DocumentationTextProps> = function ({
+    inputText = '',
+}) {
     const preprocessedText = inputText
-        .replaceAll(/(?<!\n)\n(?!\n)/g, ' ')
-        .replaceAll(/:math:`([^`]*)`/g, '$$$1$$')
-        .replaceAll(/\.\. math::\s*(\S.*)\n\n/g, '$$$\n$1\n$$$\n\n');
+        .replaceAll(/(?<!\n)\n(?!\n)/gu, ' ')
+        .replaceAll(/:math:`([^`]*)`/gu, '$$1$')
+        .replaceAll(/\.\. math::\s*(\S.*)\n\n/gu, '$$\n$1\n$$\n\n');
 
     const shortenedText = preprocessedText.split('\n\n')[0];
     const hasMultipleLines = shortenedText !== preprocessedText;
@@ -74,10 +79,14 @@ export default function DocumentationText({ inputText = '' }: DocumentationTextP
                         rehypePlugins={[rehypeKatex]}
                         remarkPlugins={[remarkGfm, remarkMath]}
                     >
-                        {readMore || !hasMultipleLines ? preprocessedText : shortenedText + ' **[Read More...]**'}
+                        {readMore || !hasMultipleLines
+                            ? preprocessedText
+                            : `${shortenedText} **[Read More...]**`}
                     </ReactMarkdown>
                 </Stack>
             </HStack>
         </Flex>
     );
-}
+};
+
+export default DocumentationText;

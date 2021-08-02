@@ -13,12 +13,16 @@ export interface PythonPackageJson {
     modules: PythonModuleJson[];
 }
 
-export function parsePythonPackageJson(packageJson: PythonPackageJson): PythonPackage {
+export const parsePythonPackageJson = function (
+    packageJson: PythonPackageJson,
+): PythonPackage {
     return new PythonPackage(
         packageJson.name,
-        packageJson.modules.map(parsePythonModuleJson).sort((a, b) => a.name.localeCompare(b.name)),
+        packageJson.modules
+            .map(parsePythonModuleJson)
+            .sort((a, b) => a.name.localeCompare(b.name)),
     );
-}
+};
 
 interface PythonModuleJson {
     name: string;
@@ -28,10 +32,14 @@ interface PythonModuleJson {
     functions: PythonFunctionJson[];
 }
 
-function parsePythonModuleJson(moduleJson: PythonModuleJson): PythonModule {
+const parsePythonModuleJson = function (
+    moduleJson: PythonModuleJson,
+): PythonModule {
     return new PythonModule(
         moduleJson.name,
-        moduleJson.imports.map(parsePythonImportJson).sort((a, b) => a.module.localeCompare(b.module)),
+        moduleJson.imports
+            .map(parsePythonImportJson)
+            .sort((a, b) => a.module.localeCompare(b.module)),
         moduleJson.fromImports.map(parsePythonFromImportJson).sort((a, b) => {
             const moduleComparison = a.module.localeCompare(b.module);
             if (moduleComparison === 0) {
@@ -40,19 +48,25 @@ function parsePythonModuleJson(moduleJson: PythonModuleJson): PythonModule {
                 return moduleComparison;
             }
         }),
-        moduleJson.classes.map(parsePythonClassJson).sort((a, b) => a.name.localeCompare(b.name)),
-        moduleJson.functions.map(parsePythonFunctionJson).sort((a, b) => a.name.localeCompare(b.name)),
+        moduleJson.classes
+            .map(parsePythonClassJson)
+            .sort((a, b) => a.name.localeCompare(b.name)),
+        moduleJson.functions
+            .map(parsePythonFunctionJson)
+            .sort((a, b) => a.name.localeCompare(b.name)),
     );
-}
+};
 
 interface PythonImportJson {
     module: string;
     alias: Optional<string>;
 }
 
-function parsePythonImportJson(importJson: PythonImportJson): PythonImport {
+const parsePythonImportJson = function (
+    importJson: PythonImportJson,
+): PythonImport {
     return new PythonImport(importJson.module, importJson.alias);
-}
+};
 
 interface PythonFromImportJson {
     module: string;
@@ -60,9 +74,15 @@ interface PythonFromImportJson {
     alias: Optional<string>;
 }
 
-function parsePythonFromImportJson(fromImportJson: PythonFromImportJson): PythonFromImport {
-    return new PythonFromImport(fromImportJson.module, fromImportJson.declaration, fromImportJson.alias);
-}
+const parsePythonFromImportJson = function (
+    fromImportJson: PythonFromImportJson,
+): PythonFromImport {
+    return new PythonFromImport(
+        fromImportJson.module,
+        fromImportJson.declaration,
+        fromImportJson.alias,
+    );
+};
 
 interface PythonClassJson {
     name: string;
@@ -74,17 +94,21 @@ interface PythonClassJson {
     fullDocstring: Optional<string>;
 }
 
-function parsePythonClassJson(classJson: PythonClassJson): PythonClass {
+const parsePythonClassJson = function (
+    classJson: PythonClassJson,
+): PythonClass {
     return new PythonClass(
         classJson.name,
         classJson.decorators,
         classJson.superclasses,
-        classJson.methods.map(parsePythonFunctionJson).sort((a, b) => a.name.localeCompare(b.name)),
+        classJson.methods
+            .map(parsePythonFunctionJson)
+            .sort((a, b) => a.name.localeCompare(b.name)),
         classJson.summary || '',
         classJson.description || '',
         classJson.fullDocstring || '',
     );
-}
+};
 
 interface PythonFunctionJson {
     name: string;
@@ -98,7 +122,9 @@ interface PythonFunctionJson {
     fullDocstring: Optional<string>;
 }
 
-function parsePythonFunctionJson(functionJson: PythonFunctionJson): PythonFunction {
+const parsePythonFunctionJson = function (
+    functionJson: PythonFunctionJson,
+): PythonFunction {
     return new PythonFunction(
         functionJson.name,
         functionJson.decorators,
@@ -109,7 +135,7 @@ function parsePythonFunctionJson(functionJson: PythonFunctionJson): PythonFuncti
         functionJson.description || '',
         functionJson.fullDocstring || '',
     );
-}
+};
 
 interface PythonParameterJson {
     name: string;
@@ -122,7 +148,9 @@ interface PythonParameterJson {
     description: Optional<string>;
 }
 
-function parsePythonParameterJson(parameterJson: PythonParameterJson): PythonParameter {
+const parsePythonParameterJson = function (
+    parameterJson: PythonParameterJson,
+): PythonParameter {
     return new PythonParameter(
         parameterJson.name,
         parameterJson.type,
@@ -133,7 +161,7 @@ function parsePythonParameterJson(parameterJson: PythonParameterJson): PythonPar
         parameterJson.ignored,
         parameterJson.description || '',
     );
-}
+};
 
 interface PythonResultJson {
     name: string;
@@ -142,11 +170,13 @@ interface PythonResultJson {
     description: Optional<string>;
 }
 
-function parsePythonResultJson(resultJson: PythonResultJson): PythonResult {
+const parsePythonResultJson = function (
+    resultJson: PythonResultJson,
+): PythonResult {
     return new PythonResult(
         resultJson.name,
         resultJson.type,
         resultJson.typeInDocs || '',
         resultJson.description || '',
     );
-}
+};

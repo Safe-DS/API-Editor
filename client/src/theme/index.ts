@@ -4,7 +4,7 @@ import { mode, Styles } from '@chakra-ui/theme-tools';
 const config: ThemeConfig = {};
 
 const styles: Styles = {
-    global: (props) => {
+    global(props) {
         const controlStyle = {
             border: '1px solid',
             borderColor: mode('gray.400', 'gray.400')(props),

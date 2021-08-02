@@ -8,7 +8,11 @@ interface VisibilityIndicatorProps {
     isSelected?: boolean;
 }
 
-const VisibilityIndicator: React.FC<VisibilityIndicatorProps> = ({ hasChildren, showChildren, isSelected = false }) => {
+const VisibilityIndicator: React.FC<VisibilityIndicatorProps> = function ({
+    hasChildren,
+    showChildren,
+    isSelected = false,
+}) {
     const isClosed = !isSelected && !showChildren;
     const closedColor = useColorModeValue('gray.200', 'gray.700');
 

@@ -11,26 +11,39 @@ test('path without parent', () => {
 
 test('path with ancestors', () => {
     const pythonResult = new PythonResult('result');
+
+    // eslint-disable-next-line no-new
     new PythonPackage('package', [
         new PythonModule(
             'module',
             [],
             [],
-            [new PythonClass('Class', [], [], [new PythonFunction('function', [], [], [pythonResult])])],
+            [
+                new PythonClass(
+                    'Class',
+                    [],
+                    [],
+                    [new PythonFunction('function', [], [], [pythonResult])],
+                ),
+            ],
         ),
     ]);
 
-    expect(pythonResult.path()).toEqual(['package', 'module', 'Class', 'function', 'result']);
+    expect(pythonResult.path()).toEqual([
+        'package',
+        'module',
+        'Class',
+        'function',
+        'result',
+    ]);
 });
 
 test('getByRelativePath', () => {
     const pythonResult = new PythonResult('result');
-    expect(pythonResult.getByRelativePath(['child'])).toBe(null);
+    expect(pythonResult.getByRelativePath(['child'])).toBeNull();
 });
 
 test('toString', () => {
     const pythonResult = new PythonResult('result');
     expect(pythonResult.toString()).toBe(`Result "result"`);
 });
-
-export {};

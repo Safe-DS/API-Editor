@@ -1,0 +1,8 @@
+{
+    "extends": "./client/tsconfig.json",
+    "compilerOptions": {
+        "noEmit": true
+    },
+    "include": ["./client/src"],
+    "exclude": []
+}

@@ -8,10 +8,18 @@ interface FunctionNodeProps {
     pythonFunction: PythonFunction;
 }
 
-const FunctionNode: React.FC<FunctionNodeProps> = ({ pythonFunction }) => {
+const FunctionNode: React.FC<FunctionNodeProps> = function ({
+    pythonFunction,
+}) {
     const hasParameters = !isEmptyList(pythonFunction.parameters);
 
-    return <TreeNode declaration={pythonFunction} icon={FaCogs} isExpandable={hasParameters} />;
+    return (
+        <TreeNode
+            declaration={pythonFunction}
+            icon={FaCogs}
+            isExpandable={hasParameters}
+        />
+    );
 };
 
 export default FunctionNode;

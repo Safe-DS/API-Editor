@@ -208,10 +208,38 @@ export interface ThemeTypings {
         | 'twitter'
         | 'telegram';
     fonts: 'heading' | 'body' | 'mono';
-    fontSizes: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl' | '8xl' | '9xl';
-    fontWeights: 'hairline' | 'thin' | 'light' | 'normal' | 'medium' | 'semibold' | 'bold' | 'extrabold' | 'black';
+    fontSizes:
+        | 'xs'
+        | 'sm'
+        | 'md'
+        | 'lg'
+        | 'xl'
+        | '2xl'
+        | '3xl'
+        | '4xl'
+        | '5xl'
+        | '6xl'
+        | '7xl'
+        | '8xl'
+        | '9xl';
+    fontWeights:
+        | 'hairline'
+        | 'thin'
+        | 'light'
+        | 'normal'
+        | 'medium'
+        | 'semibold'
+        | 'bold'
+        | 'extrabold'
+        | 'black';
     layerStyles: 'subtleBorder';
-    letterSpacings: 'tighter' | 'tight' | 'normal' | 'wide' | 'wider' | 'widest';
+    letterSpacings:
+        | 'tighter'
+        | 'tight'
+        | 'normal'
+        | 'wide'
+        | 'wider'
+        | 'widest';
     lineHeights:
         | '3'
         | '4'
@@ -229,7 +257,18 @@ export interface ThemeTypings {
         | 'tall'
         | 'taller';
     radii: 'none' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'full';
-    shadows: 'xs' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl' | 'outline' | 'inner' | 'none' | 'dark-lg';
+    shadows:
+        | 'xs'
+        | 'sm'
+        | 'base'
+        | 'md'
+        | 'lg'
+        | 'xl'
+        | '2xl'
+        | 'outline'
+        | 'inner'
+        | 'none'
+        | 'dark-lg';
     sizes:
         | '1'
         | '2'
@@ -454,7 +493,18 @@ export interface ThemeTypings {
             variants: never;
         };
         Modal: {
-            sizes: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | 'full';
+            sizes:
+                | 'xs'
+                | 'sm'
+                | 'md'
+                | 'lg'
+                | 'xl'
+                | '2xl'
+                | '3xl'
+                | '4xl'
+                | '5xl'
+                | '6xl'
+                | 'full';
             variants: never;
         };
         NumberInput: {
@@ -511,7 +561,13 @@ export interface ThemeTypings {
         };
         Tabs: {
             sizes: 'sm' | 'md' | 'lg';
-            variants: 'line' | 'enclosed' | 'enclosed-colored' | 'soft-rounded' | 'solid-rounded' | 'unstyled';
+            variants:
+                | 'line'
+                | 'enclosed'
+                | 'enclosed-colored'
+                | 'soft-rounded'
+                | 'solid-rounded'
+                | 'unstyled';
         };
         Tag: {
             sizes: 'sm' | 'md' | 'lg';

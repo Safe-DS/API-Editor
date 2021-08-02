@@ -6,7 +6,10 @@ interface StyledDropzoneProps {
     onDrop: (acceptedFiles: File[]) => void;
 }
 
-const StyledDropzone: React.FC<StyledDropzoneProps> = ({ onDrop, children }) => {
+const StyledDropzone: React.FC<StyledDropzoneProps> = function ({
+    onDrop,
+    children,
+}) {
     const borderColor = useColorModeValue('gray.200', 'gray.500');
     const backgroundColor = useColorModeValue('gray.50', 'gray.600');
 

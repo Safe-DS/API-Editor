@@ -64,7 +64,9 @@ export default class PythonFunction extends PythonDeclaration {
             result += ' ';
         }
 
-        result += `def ${this.name}(${this.parameters.map((it) => it.name).join(', ')})`;
+        result += `def ${this.name}(${this.parameters
+            .map((it) => it.name)
+            .join(', ')})`;
 
         return result;
     }
@@ -76,7 +78,13 @@ export default class PythonFunction extends PythonDeclaration {
 
         const parameters = this.parameters
             .map((it) => it.clone())
-            .filter((it) => it.name.toLowerCase().includes((pythonFilter.pythonParameter || '').toLowerCase()));
+            .filter((it) =>
+                it.name
+                    .toLowerCase()
+                    .includes(
+                        (pythonFilter.pythonParameter || '').toLowerCase(),
+                    ),
+            );
 
         const results = this.results.map((it) => it.clone());
 

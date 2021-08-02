@@ -39,7 +39,11 @@ export default class PythonPackage extends PythonDeclaration {
             .map((it) => it.filter(pythonFilter))
             .filter(
                 (it) =>
-                    it.name.toLowerCase().includes((pythonFilter.pythonModule || '').toLowerCase()) &&
+                    it.name
+                        .toLowerCase()
+                        .includes(
+                            (pythonFilter.pythonModule || '').toLowerCase(),
+                        ) &&
                     (!isEmptyList(it.classes) || !isEmptyList(it.functions)),
             );
 

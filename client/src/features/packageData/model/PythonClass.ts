@@ -74,8 +74,11 @@ export default class PythonClass extends PythonDeclaration {
             .map((it) => it.filter(pythonFilter))
             .filter(
                 (it) =>
-                    it.name.toLowerCase().includes((pythonFilter.pythonFunction || '').toLowerCase()) &&
-                    !isEmptyList(it.parameters),
+                    it.name
+                        .toLowerCase()
+                        .includes(
+                            (pythonFilter.pythonFunction || '').toLowerCase(),
+                        ) && !isEmptyList(it.parameters),
             );
 
         return new PythonClass(

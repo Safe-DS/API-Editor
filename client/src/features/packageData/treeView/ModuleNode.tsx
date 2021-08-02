@@ -8,12 +8,18 @@ interface ModuleNodeProps {
     pythonModule: PythonModule;
 }
 
-const ModuleNode: React.FC<ModuleNodeProps> = ({ pythonModule }) => {
+const ModuleNode: React.FC<ModuleNodeProps> = function ({ pythonModule }) {
     const hasClasses = !isEmptyList(pythonModule.classes);
     const hasFunctions = !isEmptyList(pythonModule.functions);
     const hasChildren = hasClasses || hasFunctions;
 
-    return <TreeNode declaration={pythonModule} icon={FaArchive} isExpandable={hasChildren} />;
+    return (
+        <TreeNode
+            declaration={pythonModule}
+            icon={FaArchive}
+            isExpandable={hasChildren}
+        />
+    );
 };
 
 export default ModuleNode;

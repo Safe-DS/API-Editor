@@ -16,7 +16,10 @@ import EnumForm from '../features/annotations/forms/EnumForm';
 import RenameForm from '../features/annotations/forms/RenameForm';
 import { PythonFilter } from '../features/packageData/model/PythonFilter';
 import PythonPackage from '../features/packageData/model/PythonPackage';
-import { parsePythonPackageJson, PythonPackageJson } from '../features/packageData/model/PythonPackageBuilder';
+import {
+    parsePythonPackageJson,
+    PythonPackageJson,
+} from '../features/packageData/model/PythonPackageBuilder';
 import PackageDataImportDialog from '../features/packageData/PackageDataImportDialog';
 import {
     selectShowPackageDataImportDialog,
@@ -26,8 +29,10 @@ import SelectionView from '../features/packageData/selectionView/SelectionView';
 import TreeView from '../features/packageData/treeView/TreeView';
 import { useAppDispatch, useAppSelector } from './hooks';
 
-const App: React.FC = () => {
-    const [pythonPackage, setPythonPackage] = useState<PythonPackage>(new PythonPackage('empty'));
+const App: React.FC = function () {
+    const [pythonPackage, setPythonPackage] = useState<PythonPackage>(
+        new PythonPackage('empty'),
+    );
     const currentUserAction = useAppSelector(selectCurrentUserAction);
     const currentPathName = useLocation().pathname;
 
@@ -62,10 +67,16 @@ const App: React.FC = () => {
     const pythonFilter = PythonFilter.fromFilterBoxInput(filter);
     const filteredPythonPackage = pythonPackage.filter(pythonFilter);
 
-    const userActionTarget = pythonPackage.getByRelativePathAsString(currentUserAction.target);
+    const userActionTarget = pythonPackage.getByRelativePathAsString(
+        currentUserAction.target,
+    );
 
-    const showPackageDataImportDialog = useAppSelector(selectShowPackageDataImportDialog);
-    const showAnnotationImportDialog = useAppSelector(selectShowAnnotationImportDialog);
+    const showPackageDataImportDialog = useAppSelector(
+        selectShowPackageDataImportDialog,
+    );
+    const showAnnotationImportDialog = useAppSelector(
+        selectShowAnnotationImportDialog,
+    );
 
     return (
         <Grid
@@ -76,7 +87,7 @@ const App: React.FC = () => {
             h="100vh"
         >
             <GridItem gridArea="menu" colSpan={2}>
-                <MenuBar setPythonPackage={setPythonPackage} filter={filter} setFilter={setFilter} />
+                <MenuBar filter={filter} setFilter={setFilter} />
             </GridItem>
             <GridItem
                 gridArea="leftPane"
@@ -88,9 +99,15 @@ const App: React.FC = () => {
                 layerStyle="subtleBorder"
                 resize="horizontal"
             >
-                {currentUserAction.type === 'none' && <TreeView pythonPackage={filteredPythonPackage} />}
-                {currentUserAction.type === 'enum' && <EnumForm target={userActionTarget || pythonPackage} />}
-                {currentUserAction.type === 'rename' && <RenameForm target={userActionTarget || pythonPackage} />}
+                {currentUserAction.type === 'none' && (
+                    <TreeView pythonPackage={filteredPythonPackage} />
+                )}
+                {currentUserAction.type === 'enum' && (
+                    <EnumForm target={userActionTarget || pythonPackage} />
+                )}
+                {currentUserAction.type === 'rename' && (
+                    <RenameForm target={userActionTarget || pythonPackage} />
+                )}
             </GridItem>
             <GridItem gridArea="rightPane" overflow="auto">
                 <SelectionView pythonPackage={pythonPackage} />
@@ -98,21 +115,28 @@ const App: React.FC = () => {
 
             {showAnnotationImportDialog && <AnnotationImportDialog />}
             {showPackageDataImportDialog && (
-                <PackageDataImportDialog setPythonPackage={setPythonPackage} setFilter={setFilter} />
+                <PackageDataImportDialog
+                    setPythonPackage={setPythonPackage}
+                    setFilter={setFilter}
+                />
             )}
         </Grid>
     );
 };
 
-async function getPythonPackageFromIndexedDB(setPythonPackage: Setter<PythonPackage>) {
+const getPythonPackageFromIndexedDB = async function (
+    setPythonPackage: Setter<PythonPackage>,
+) {
     const storedPackage = (await idb.get('package')) as PythonPackageJson;
     if (storedPackage) {
         setPythonPackage(parsePythonPackageJson(storedPackage));
     }
-}
+};
 
-async function setAnnotationsInIndexedDB(annotationStore: AnnotationsState) {
+const setAnnotationsInIndexedDB = async function (
+    annotationStore: AnnotationsState,
+) {
     await idb.set('annotations', annotationStore);
-}
+};
 
 export default App;

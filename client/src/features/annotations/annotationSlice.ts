@@ -82,13 +82,16 @@ const initialState: AnnotationsState = {
 
 // Thunks --------------------------------------------------------------------------------------------------------------
 
-export const initializeAnnotations = createAsyncThunk('annotations/initialize', async () => {
-    try {
-        return (await idb.get('annotations')) as AnnotationsState;
-    } catch {
-        return initialState;
-    }
-});
+export const initializeAnnotations = createAsyncThunk(
+    'annotations/initialize',
+    async () => {
+        try {
+            return (await idb.get('annotations')) as AnnotationsState;
+        } catch {
+            return initialState;
+        }
+    },
+);
 
 // Slice ---------------------------------------------------------------------------------------------------------------
 
@@ -139,10 +142,11 @@ const annotationsSlice = createSlice({
             state.showImportDialog = !state.showImportDialog;
         },
     },
-    extraReducers: (builder) => {
-        builder.addCase(initializeAnnotations.fulfilled, (state, action) => {
-            return action.payload;
-        });
+    extraReducers(builder) {
+        builder.addCase(
+            initializeAnnotations.fulfilled,
+            (state, action) => action.payload,
+        );
     },
 });
 
@@ -179,6 +183,7 @@ export const selectUnused =
     (target: string) =>
     (state: RootState): UnusedAnnotation | undefined =>
         selectAnnotations(state).unuseds[target];
-export const selectCurrentUserAction = (state: RootState): UserAction => selectAnnotations(state).currentUserAction;
+export const selectCurrentUserAction = (state: RootState): UserAction =>
+    selectAnnotations(state).currentUserAction;
 export const selectShowAnnotationImportDialog = (state: RootState): boolean =>
     selectAnnotations(state).showImportDialog;

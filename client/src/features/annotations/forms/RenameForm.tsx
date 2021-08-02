@@ -1,10 +1,20 @@
-import { FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react';
+import {
+    FormControl,
+    FormErrorIcon,
+    FormErrorMessage,
+    FormLabel,
+    Input,
+} from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { pythonIdentifierPattern } from '../../../common/validation';
 import PythonDeclaration from '../../packageData/model/PythonDeclaration';
-import { hideAnnotationForms, selectRenaming, upsertRenaming } from '../annotationSlice';
+import {
+    hideAnnotationForms,
+    selectRenaming,
+    upsertRenaming,
+} from '../annotationSlice';
 import AnnotationForm from './AnnotationForm';
 
 interface RenameFormProps {
@@ -15,7 +25,7 @@ interface RenameFormState {
     newName: string;
 }
 
-const RenameForm: React.FC<RenameFormProps> = ({ target }) => {
+const RenameForm: React.FC<RenameFormProps> = function ({ target }) {
     const targetPath = target.pathAsString();
     const prevNewName = useAppSelector(selectRenaming(targetPath))?.newName;
     const oldName = target.name;

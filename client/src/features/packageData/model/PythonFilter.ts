@@ -24,44 +24,50 @@ export class PythonFilter {
         let pythonFunction;
         let pythonParameter;
 
-        for (const match of filterBoxInput.matchAll(/(\w+):([^\s:]+)/g)) {
+        for (const match of filterBoxInput.matchAll(/(\w+):([^\s:]+)/gu)) {
             if (match.length === 3) {
                 const [, scope, filterString] = match;
 
                 switch (scope) {
                     case 'module':
                         if (pythonModule) {
-                            return;
+                            return undefined;
                         } else {
                             pythonModule = filterString;
                         }
                         break;
                     case 'class':
                         if (pythonClass) {
-                            return;
+                            return undefined;
                         } else {
                             pythonClass = filterString;
                         }
                         break;
                     case 'function':
                         if (pythonFunction) {
-                            return;
+                            return undefined;
                         } else {
                             pythonFunction = filterString;
                         }
                         break;
                     case 'parameter':
                         if (pythonParameter) {
-                            return;
+                            return undefined;
                         } else {
                             pythonParameter = filterString;
                         }
                         break;
+                    // no default
                 }
             }
         }
 
-        return new PythonFilter(pythonModule, pythonClass, pythonFunction, pythonParameter);
+        return new PythonFilter(
+            pythonModule,
+            pythonClass,
+            pythonFunction,
+            pythonParameter,
+        );
     }
 
     isFiltering(): boolean {

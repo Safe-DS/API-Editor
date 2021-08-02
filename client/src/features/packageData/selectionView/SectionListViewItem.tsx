@@ -1,4 +1,10 @@
-import { Heading, ListItem, Stack, Text, UnorderedList } from '@chakra-ui/react';
+import {
+    Heading,
+    ListItem,
+    Stack,
+    Text,
+    UnorderedList,
+} from '@chakra-ui/react';
 import React from 'react';
 import { isEmptyList } from '../../../common/util/listOperations';
 
@@ -7,27 +13,34 @@ interface ClassViewItemProps {
     inputElements: string[] | string;
 }
 
-export default function SectionListViewItem(props: ClassViewItemProps): JSX.Element {
-    if (typeof props.inputElements === 'string') {
-        props.inputElements = [props.inputElements];
+const SectionListViewItem: React.FC<ClassViewItemProps> = function ({
+    title,
+    inputElements,
+}) {
+    if (typeof inputElements === 'string') {
+        // eslint-disable-next-line no-param-reassign
+        inputElements = [inputElements];
     }
 
     return (
         <Stack spacing={4}>
             <Heading as="h4" size="md">
-                {props.title}
+                {title}
             </Heading>
-            {!isEmptyList(props.inputElements) ? (
+            {!isEmptyList(inputElements) ? (
                 <UnorderedList paddingLeft={8}>
-                    {props.inputElements.map((listElement, index) => (
+                    {inputElements.map((listElement, index) => (
+                        // eslint-disable-next-line react/no-array-index-key
                         <ListItem key={index}>{listElement}</ListItem>
                     ))}
                 </UnorderedList>
             ) : (
                 <Text paddingLeft={4} color="gray.500">
-                    There are no {props.title.toLowerCase()}.
+                    There are no {title.toLowerCase()}.
                 </Text>
             )}
         </Stack>
     );
-}
+};
+
+export default SectionListViewItem;

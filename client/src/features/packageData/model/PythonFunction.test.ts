@@ -11,22 +11,38 @@ test('path without parent', () => {
 
 test('path with ancestors', () => {
     const pythonFunction = new PythonFunction('function');
+
+    // eslint-disable-next-line no-new
     new PythonPackage('package', [
-        new PythonModule('module', [], [], [new PythonClass('Class', [], [], [pythonFunction])]),
+        new PythonModule(
+            'module',
+            [],
+            [],
+            [new PythonClass('Class', [], [], [pythonFunction])],
+        ),
     ]);
 
-    expect(pythonFunction.path()).toEqual(['package', 'module', 'Class', 'function']);
+    expect(pythonFunction.path()).toEqual([
+        'package',
+        'module',
+        'Class',
+        'function',
+    ]);
 });
 
 test('getByRelativePath with correct path', () => {
     const pythonParameter = new PythonParameter('param');
-    const pythonFunction = new PythonFunction('function', [], [pythonParameter]);
+    const pythonFunction = new PythonFunction(
+        'function',
+        [],
+        [pythonParameter],
+    );
     expect(pythonFunction.getByRelativePath(['param'])).toBe(pythonParameter);
 });
 
 test('getByRelativePath with misleading path', () => {
     const pythonFunction = new PythonFunction('function');
-    expect(pythonFunction.getByRelativePath(['child'])).toBe(null);
+    expect(pythonFunction.getByRelativePath(['child'])).toBeNull();
 });
 
 test('toString without decorators and parameters', () => {
@@ -41,7 +57,7 @@ test('toString with decorators and parameters', () => {
         [new PythonParameter('param1'), new PythonParameter('param2')],
     );
 
-    expect(pythonFunction.toString()).toBe('@deco1 @deco2 def function(param1, param2)');
+    expect(pythonFunction.toString()).toBe(
+        '@deco1 @deco2 def function(param1, param2)',
+    );
 });
-
-export {};

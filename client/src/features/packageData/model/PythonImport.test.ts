@@ -9,5 +9,3 @@ test('toString with alias', () => {
     const pythonImport = new PythonImport('module', 'm');
     expect(pythonImport.toString()).toBe('import module as m');
 });
-
-export {};
