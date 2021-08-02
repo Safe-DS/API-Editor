@@ -3,7 +3,8 @@
         "target": "ESNext",
         "lib": ["DOM", "DOM.Iterable", "ESNext"],
         "allowJs": false,
-        "skipLibCheck": true, // TODO re-enable once https://github.com/chakra-ui/chakra-ui/issues/4226 is fixed
+        "skipLibCheck": true,
+        // TODO re-enable once https://github.com/chakra-ui/chakra-ui/issues/4226 is fixed
         "esModuleInterop": false,
         "allowSyntheticDefaultImports": true,
         "strict": true,
