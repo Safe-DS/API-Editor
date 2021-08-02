@@ -1,8 +1,11 @@
-export function isEmptyList<T>(inputList: T[]): boolean {
+export const isEmptyList = function <T>(inputList: T[]): boolean {
     return inputList.length === 0;
-}
+};
 
-export function groupBy<K, V>(inputList: V[], grouper: (value: V) => K): Map<K, V[]> {
+export const groupBy = function <K, V>(
+    inputList: V[],
+    grouper: (value: V) => K,
+): Map<K, V[]> {
     const result = new Map<K, V[]>();
 
     inputList.forEach((it) => {
@@ -16,4 +19,4 @@ export function groupBy<K, V>(inputList: V[], grouper: (value: V) => K): Map<K, 
     });
 
     return result;
-}
+};

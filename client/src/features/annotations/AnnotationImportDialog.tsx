@@ -17,20 +17,25 @@ import React, { useState } from 'react';
 import { useAppDispatch } from '../../app/hooks';
 import StyledDropzone from '../../common/StyledDropzone';
 import { isValidJsonFile } from '../../common/util/validation';
-import { AnnotationsState, setAnnotations, toggleAnnotationImportDialog } from './annotationSlice';
+import {
+    AnnotationsState,
+    setAnnotations,
+    toggleAnnotationImportDialog,
+} from './annotationSlice';
 
 const AnnotationImportDialog: React.FC = () => {
     const [fileName, setFileName] = useState('');
-    const [newAnnotationStore, setNewAnnotationStore] = useState<AnnotationsState>({
-        enums: {},
-        renamings: {},
-        unuseds: {},
-        currentUserAction: {
-            target: '',
-            type: 'none',
-        },
-        showImportDialog: false,
-    });
+    const [newAnnotationStore, setNewAnnotationStore] =
+        useState<AnnotationsState>({
+            enums: {},
+            renamings: {},
+            unuseds: {},
+            currentUserAction: {
+                target: '',
+                type: 'none',
+            },
+            showImportDialog: false,
+        });
     const dispatch = useAppDispatch();
 
     const submit = () => {
@@ -44,13 +49,16 @@ const AnnotationImportDialog: React.FC = () => {
     const onDrop = (acceptedFiles: File[]) => {
         if (isValidJsonFile(acceptedFiles[acceptedFiles.length - 1].name)) {
             if (acceptedFiles.length > 1) {
+                // eslint-disable-next-line no-param-reassign
                 acceptedFiles = [acceptedFiles[acceptedFiles.length - 1]];
             }
             setFileName(acceptedFiles[0].name);
             const reader = new FileReader();
             reader.onload = () => {
                 if (typeof reader.result === 'string') {
-                    const readAnnotationJson = JSON.parse(reader.result) as AnnotationsState;
+                    const readAnnotationJson = JSON.parse(
+                        reader.result,
+                    ) as AnnotationsState;
                     setNewAnnotationStore(readAnnotationJson);
                 }
             };
@@ -59,7 +67,7 @@ const AnnotationImportDialog: React.FC = () => {
     };
 
     return (
-        <Modal onClose={close} isOpen={true} size="xl">
+        <Modal onClose={close} isOpen size="xl">
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>
@@ -67,9 +75,14 @@ const AnnotationImportDialog: React.FC = () => {
                 </ModalHeader>
                 <ModalBody>
                     <FormControl>
-                        <FormLabel>Select an annotation file to import.</FormLabel>
+                        <FormLabel>
+                            Select an annotation file to import.
+                        </FormLabel>
                         <StyledDropzone onDrop={onDrop}>
-                            <Text>Drag and drop an annotation file here or click to select the file.</Text>
+                            <Text>
+                                Drag and drop an annotation file here or click
+                                to select the file.
+                            </Text>
                             <Text>(only *.json will be accepted)</Text>
                         </StyledDropzone>
 

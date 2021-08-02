@@ -22,7 +22,10 @@ import { Setter } from '../../common/util/types';
 import { isValidJsonFile } from '../../common/util/validation';
 import { resetAnnotations } from '../annotations/annotationSlice';
 import PythonPackage from './model/PythonPackage';
-import { parsePythonPackageJson, PythonPackageJson } from './model/PythonPackageBuilder';
+import {
+    parsePythonPackageJson,
+    PythonPackageJson,
+} from './model/PythonPackageBuilder';
 import { togglePackageDataImportDialog } from './packageDataSlice';
 
 interface ImportPythonPackageDialogProps {
@@ -30,7 +33,9 @@ interface ImportPythonPackageDialogProps {
     setFilter: Setter<string>;
 }
 
-export default function PackageDataImportDialog(props: ImportPythonPackageDialogProps): JSX.Element {
+export default function PackageDataImportDialog(
+    props: ImportPythonPackageDialogProps,
+): JSX.Element {
     const [fileName, setFileName] = useState('');
     const [newPythonPackage, setNewPythonPackage] = useState<string>();
     const history = useHistory();
@@ -38,7 +43,9 @@ export default function PackageDataImportDialog(props: ImportPythonPackageDialog
 
     const submit = async () => {
         if (newPythonPackage) {
-            const parsedPythonPackage = JSON.parse(newPythonPackage) as PythonPackageJson;
+            const parsedPythonPackage = JSON.parse(
+                newPythonPackage,
+            ) as PythonPackageJson;
             props.setPythonPackage(parsePythonPackageJson(parsedPythonPackage));
             props.setFilter('');
             history.push('/');
@@ -52,6 +59,7 @@ export default function PackageDataImportDialog(props: ImportPythonPackageDialog
     const slurpAndParse = (acceptedFiles: File[]) => {
         if (isValidJsonFile(acceptedFiles[acceptedFiles.length - 1].name)) {
             if (acceptedFiles.length > 1) {
+                // eslint-disable-next-line no-param-reassign
                 acceptedFiles = [acceptedFiles[acceptedFiles.length - 1]];
             }
             setFileName(acceptedFiles[0].name);
@@ -67,7 +75,7 @@ export default function PackageDataImportDialog(props: ImportPythonPackageDialog
     };
 
     return (
-        <Modal onClose={close} isOpen={true} size="xl">
+        <Modal onClose={close} isOpen size="xl">
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>
@@ -75,9 +83,14 @@ export default function PackageDataImportDialog(props: ImportPythonPackageDialog
                 </ModalHeader>
                 <ModalBody>
                     <FormControl>
-                        <FormLabel>Select an API data file to import.</FormLabel>
+                        <FormLabel>
+                            Select an API data file to import.
+                        </FormLabel>
                         <StyledDropzone onDrop={slurpAndParse}>
-                            <Text>Drag and drop an API data file here, or click to select the file.</Text>
+                            <Text>
+                                Drag and drop an API data file here, or click to
+                                select the file.
+                            </Text>
                             <Text>(Only *.json will be accepted.)</Text>
                         </StyledDropzone>
 

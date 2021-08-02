@@ -1,4 +1,10 @@
-import { Heading, ListItem, Stack, Text, UnorderedList } from '@chakra-ui/react';
+import {
+    Heading,
+    ListItem,
+    Stack,
+    Text,
+    UnorderedList,
+} from '@chakra-ui/react';
 import React from 'react';
 import { isEmptyList } from '../../../common/util/listOperations';
 
@@ -7,7 +13,9 @@ interface ClassViewItemProps {
     inputElements: string[] | string;
 }
 
-export default function SectionListViewItem(props: ClassViewItemProps): JSX.Element {
+export default function SectionListViewItem(
+    props: ClassViewItemProps,
+): JSX.Element {
     if (typeof props.inputElements === 'string') {
         props.inputElements = [props.inputElements];
     }
@@ -20,6 +28,7 @@ export default function SectionListViewItem(props: ClassViewItemProps): JSX.Elem
             {!isEmptyList(props.inputElements) ? (
                 <UnorderedList paddingLeft={8}>
                     {props.inputElements.map((listElement, index) => (
+                        // eslint-disable-next-line react/no-array-index-key
                         <ListItem key={index}>{listElement}</ListItem>
                     ))}
                 </UnorderedList>

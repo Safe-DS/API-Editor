@@ -9,7 +9,11 @@ import PythonFunction from '../model/PythonFunction';
 import PythonModule from '../model/PythonModule';
 import PythonPackage from '../model/PythonPackage';
 import PythonParameter from '../model/PythonParameter';
-import { selectAllExpandedInTreeView, selectTreeViewScrollOffset, setTreeViewScrollOffset } from '../packageDataSlice';
+import {
+    selectAllExpandedInTreeView,
+    selectTreeViewScrollOffset,
+    setTreeViewScrollOffset,
+} from '../packageDataSlice';
 import ClassNode from './ClassNode';
 import FunctionNode from './FunctionNode';
 import ModuleNode from './ModuleNode';
@@ -39,21 +43,23 @@ const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage }) => {
     }, []);
 
     // Store the scroll offset when the component is dismounted
-    useEffect(() => {
-        return () => {
+    useEffect(
+        () => () => {
             const current = listRef.current;
             if (current) {
                 try {
-                    const newScrollOffset = (current.state as ScrollOffset).scrollOffset;
+                    const newScrollOffset = (current.state as ScrollOffset)
+                        .scrollOffset;
                     dispatch(setTreeViewScrollOffset(newScrollOffset));
                 } catch {
                     dispatch(setTreeViewScrollOffset(0));
                 }
             }
-        };
+        },
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        [],
+    );
 
     return (
         <AutoSizer disableWidth>
@@ -79,7 +85,7 @@ const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage }) => {
     );
 });
 
-function walkChildrenWithPreOrder(
+const walkChildrenWithPreOrder = function (
     allExpandedInTreeView: { [target: string]: true },
     declaration: PythonDeclaration,
 ): PythonDeclaration[] {
@@ -90,19 +96,29 @@ function walkChildrenWithPreOrder(
             return [it];
         }
     });
-}
+};
 
-const TreeNodeGenerator: React.FC<ListChildComponentProps> = memo(({ data, index, style }) => {
-    const declaration = data[index];
+const TreeNodeGenerator: React.FC<ListChildComponentProps> = memo(
+    ({ data, index, style }) => {
+        const declaration = data[index];
 
-    return (
-        <Box style={style}>
-            {declaration instanceof PythonModule && <ModuleNode pythonModule={declaration} />}
-            {declaration instanceof PythonClass && <ClassNode pythonClass={declaration} />}
-            {declaration instanceof PythonFunction && <FunctionNode pythonFunction={declaration} />}
-            {declaration instanceof PythonParameter && <ParameterNode pythonParameter={declaration} />}
-        </Box>
-    );
-});
+        return (
+            <Box style={style}>
+                {declaration instanceof PythonModule && (
+                    <ModuleNode pythonModule={declaration} />
+                )}
+                {declaration instanceof PythonClass && (
+                    <ClassNode pythonClass={declaration} />
+                )}
+                {declaration instanceof PythonFunction && (
+                    <FunctionNode pythonFunction={declaration} />
+                )}
+                {declaration instanceof PythonParameter && (
+                    <ParameterNode pythonParameter={declaration} />
+                )}
+            </Box>
+        );
+    },
+);
 
 export default TreeView;
