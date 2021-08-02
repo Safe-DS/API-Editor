@@ -17,7 +17,7 @@ interface AnnotationViewProps {
     target: string;
 }
 
-const AnnotationView: React.FC<AnnotationViewProps> = ({ target }) => {
+const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
     const dispatch = useAppDispatch();
 
     const renameAnnotation = useAppSelector(selectRenaming(target));
@@ -25,6 +25,7 @@ const AnnotationView: React.FC<AnnotationViewProps> = ({ target }) => {
     const enumAnnotation = useAppSelector(selectEnum(target));
 
     if (!renameAnnotation && !unusedAnnotation && !enumAnnotation) {
+        // eslint-disable-next-line react/jsx-no-useless-fragment
         return <></>;
     }
 
@@ -63,34 +64,36 @@ interface AnnotationProps {
     onDelete: () => void;
 }
 
-const Annotation: React.FC<AnnotationProps> = ({
+const Annotation: React.FC<AnnotationProps> = function ({
     name,
     onDelete,
     onEdit,
     type,
-}) => (
-    <ButtonGroup size="sm" variant="outline" isAttached>
-        <Button
-            leftIcon={<FaWrench />}
-            flexGrow={1}
-            justifyContent="flex-start"
-            disabled={!onEdit}
-            onClick={onEdit}
-        >
-            @{type}
-            {name && (
-                <Text as="span" fontWeight="normal" justifySelf="flex-end">
-                    : {name}
-                </Text>
-            )}
-        </Button>
-        <IconButton
-            icon={<FaTrash />}
-            aria-label="Delete annotation"
-            colorScheme="red"
-            onClick={onDelete}
-        />
-    </ButtonGroup>
-);
+}) {
+    return (
+        <ButtonGroup size="sm" variant="outline" isAttached>
+            <Button
+                leftIcon={<FaWrench />}
+                flexGrow={1}
+                justifyContent="flex-start"
+                disabled={!onEdit}
+                onClick={onEdit}
+            >
+                @{type}
+                {name && (
+                    <Text as="span" fontWeight="normal" justifySelf="flex-end">
+                        : {name}
+                    </Text>
+                )}
+            </Button>
+            <IconButton
+                icon={<FaTrash />}
+                aria-label="Delete annotation"
+                colorScheme="red"
+                onClick={onDelete}
+            />
+        </ButtonGroup>
+    );
+};
 
 export default AnnotationView;

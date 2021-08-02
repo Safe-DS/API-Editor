@@ -21,26 +21,26 @@ type ParagraphComponent = (
         ReactMarkdownProps,
 ) => ReactNode;
 
-const CustomText: ParagraphComponent = ({ className, children }) => (
-    <Text className={className}>{children}</Text>
-);
+const CustomText: ParagraphComponent = function ({ className, children }) {
+    return <Text className={className}>{children}</Text>;
+};
 
-const CustomCode: CodeComponent = ({ className, children }) => (
-    <Code className={className}>{children}</Code>
-);
+const CustomCode: CodeComponent = function ({ className, children }) {
+    return <Code className={className}>{children}</Code>;
+};
 
 const components = {
     p: CustomText,
     code: CustomCode,
 };
 
-export default function DocumentationText({
+const DocumentationText: React.FC<DocumentationTextProps> = function ({
     inputText = '',
-}: DocumentationTextProps): JSX.Element {
+}) {
     const preprocessedText = inputText
         .replaceAll(/(?<!\n)\n(?!\n)/gu, ' ')
-        .replaceAll(/:math:`([^`]*)`/gu, '$$$1$$')
-        .replaceAll(/\.\. math::\s*(\S.*)\n\n/gu, '$$$\n$1\n$$$\n\n');
+        .replaceAll(/:math:`([^`]*)`/gu, '$$1$')
+        .replaceAll(/\.\. math::\s*(\S.*)\n\n/gu, '$$\n$1\n$$\n\n');
 
     const shortenedText = preprocessedText.split('\n\n')[0];
     const hasMultipleLines = shortenedText !== preprocessedText;
@@ -87,4 +87,6 @@ export default function DocumentationText({
             </HStack>
         </Flex>
     );
-}
+};
+
+export default DocumentationText;

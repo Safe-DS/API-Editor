@@ -18,12 +18,12 @@ interface TreeNodeProps extends ChildrenProp {
     isExpandable: boolean;
 }
 
-const TreeNode: React.FC<TreeNodeProps> = ({
+const TreeNode: React.FC<TreeNodeProps> = function ({
     children,
     declaration,
     icon,
     isExpandable,
-}) => {
+}) {
     const currentPathname = useLocation().pathname;
     const history = useHistory();
     const dispatch = useAppDispatch();

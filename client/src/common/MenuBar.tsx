@@ -39,7 +39,7 @@ interface MenuBarProps {
     setFilter: Setter<string>;
 }
 
-export default function MenuBar(props: MenuBarProps): JSX.Element {
+const MenuBar: React.FC<MenuBarProps> = function ({ filter, setFilter }) {
     const { colorMode, toggleColorMode } = useColorMode();
     const initialFocusRef = useRef(null);
     const dispatch = useAppDispatch();
@@ -125,7 +125,7 @@ export default function MenuBar(props: MenuBarProps): JSX.Element {
                 </Button>
                 <Box>
                     <Popover
-                        isOpen={!PythonFilter.fromFilterBoxInput(props.filter)}
+                        isOpen={!PythonFilter.fromFilterBoxInput(filter)}
                         initialFocusRef={initialFocusRef}
                     >
                         <PopoverTrigger>
@@ -133,18 +133,16 @@ export default function MenuBar(props: MenuBarProps): JSX.Element {
                                 <Input
                                     type="text"
                                     placeholder="Filter..."
-                                    value={props.filter}
+                                    value={filter}
                                     onChange={(event) =>
-                                        props.setFilter(event.target.value)
+                                        setFilter(event.target.value)
                                     }
                                     isInvalid={
-                                        !PythonFilter.fromFilterBoxInput(
-                                            props.filter,
-                                        )
+                                        !PythonFilter.fromFilterBoxInput(filter)
                                     }
                                     borderColor={
                                         PythonFilter.fromFilterBoxInput(
-                                            props.filter,
+                                            filter,
                                         )?.isFiltering()
                                             ? 'green'
                                             : 'inherit'
@@ -152,7 +150,7 @@ export default function MenuBar(props: MenuBarProps): JSX.Element {
                                     spellCheck={false}
                                 />
                                 {PythonFilter.fromFilterBoxInput(
-                                    props.filter,
+                                    filter,
                                 )?.isFiltering() && (
                                     <InputRightElement>
                                         <Icon as={FaCheck} color="green.500" />
@@ -171,4 +169,6 @@ export default function MenuBar(props: MenuBarProps): JSX.Element {
             </HStack>
         </Flex>
     );
-}
+};
+
+export default MenuBar;

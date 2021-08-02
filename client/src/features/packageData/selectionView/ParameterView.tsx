@@ -7,30 +7,32 @@ interface ParameterViewProps {
     pythonParameter: PythonParameter;
 }
 
-export default function ParameterView(props: ParameterViewProps): JSX.Element {
+const ParameterView: React.FC<ParameterViewProps> = function ({
+    pythonParameter,
+}) {
     return (
         <Stack spacing={8}>
-            <ParameterNode isTitle pythonParameter={props.pythonParameter} />
+            <ParameterNode isTitle pythonParameter={pythonParameter} />
 
-            {props.pythonParameter.hasDefault && (
+            {pythonParameter.hasDefault && (
                 <Stack spacing={4}>
                     <Heading as="h4" size="md">
                         Default value
                     </Heading>
-                    <Text paddingLeft={4}>
-                        {props.pythonParameter.defaultValue}
-                    </Text>
+                    <Text paddingLeft={4}>{pythonParameter.defaultValue}</Text>
                 </Stack>
             )}
 
-            {props.pythonParameter.type && (
+            {pythonParameter.type && (
                 <Stack spacing={4}>
                     <Heading as="h4" size="md">
                         Type
                     </Heading>
-                    <Text paddingLeft={4}>{props.pythonParameter.type}</Text>
+                    <Text paddingLeft={4}>{pythonParameter.type}</Text>
                 </Stack>
             )}
         </Stack>
     );
-}
+};
+
+export default ParameterView;

@@ -16,7 +16,7 @@
         "*.{html,md,css,json,yaml,yml}": "prettier --write"
     },
     "devDependencies": {
-        "@lars-reimann/eslint-config": "^3.0.3",
+        "@lars-reimann/eslint-config": "^4.0.1",
         "@lars-reimann/prettier-config": "^4.0.1",
         "husky": "^7.0.1",
         "lint-staged": "^11.1.1"

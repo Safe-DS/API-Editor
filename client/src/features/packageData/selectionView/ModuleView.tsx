@@ -19,19 +19,15 @@ import remarkGfm from 'remark-gfm';
 import { groupBy, isEmptyList } from '../../../common/util/listOperations';
 import PythonModule from '../model/PythonModule';
 
-interface ModuleViewProps {
-    pythonModule: PythonModule;
-}
-
 // See https://github.com/remarkjs/react-markdown#use-custom-components-syntax-highlight
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const CustomCode: CodeComponent = ({
+const CustomCode: CodeComponent = function ({
     node,
     inline,
     className,
     children,
     ...props
-}) => {
+}) {
     const style = useColorModeValue(light, dark);
 
     const match = /language-(\w+)/u.exec(className || '');
@@ -56,21 +52,25 @@ const components = {
     code: CustomCode,
 };
 
-export default function ModuleView(props: ModuleViewProps): JSX.Element {
+interface ModuleViewProps {
+    pythonModule: PythonModule;
+}
+
+const ModuleView: React.FC<ModuleViewProps> = function ({ pythonModule }) {
     useEffect(() => {
         SyntaxHighlighter.registerLanguage('python', python);
     }, []);
 
-    const importString = props.pythonModule.imports
+    const importString = pythonModule.imports
         .map((it) => it.toString())
         .join('\n');
 
     const longestModuleNameLength = Math.max(
-        ...props.pythonModule.fromImports.map((it) => it.module.length),
+        ...pythonModule.fromImports.map((it) => it.module.length),
     );
 
     const fromImportString = [
-        ...groupBy(props.pythonModule.fromImports, (it) => it.module),
+        ...groupBy(pythonModule.fromImports, (it) => it.module),
     ]
         .map(([module, fromImports]) => {
             const base = `from ${module} import`;
@@ -89,13 +89,13 @@ export default function ModuleView(props: ModuleViewProps): JSX.Element {
     return (
         <Stack spacing={8}>
             <Heading as="h3" size="lg">
-                {props.pythonModule.name}
+                {pythonModule.name}
             </Heading>
             <Stack spacing={4}>
                 <Heading as="h4" size="md">
                     Imports
                 </Heading>
-                {!isEmptyList(props.pythonModule.imports) && (
+                {!isEmptyList(pythonModule.imports) && (
                     <Box paddingLeft={4}>
                         <ReactMarkdown
                             components={components}
@@ -105,7 +105,7 @@ export default function ModuleView(props: ModuleViewProps): JSX.Element {
                         </ReactMarkdown>
                     </Box>
                 )}
-                {!isEmptyList(props.pythonModule.fromImports) && (
+                {!isEmptyList(pythonModule.fromImports) && (
                     <Box paddingLeft={4}>
                         <ReactMarkdown
                             components={components}
@@ -115,8 +115,8 @@ export default function ModuleView(props: ModuleViewProps): JSX.Element {
                         </ReactMarkdown>
                     </Box>
                 )}
-                {isEmptyList(props.pythonModule.imports) &&
-                    isEmptyList(props.pythonModule.fromImports) && (
+                {isEmptyList(pythonModule.imports) &&
+                    isEmptyList(pythonModule.fromImports) && (
                         <Text color="gray.500" paddingLeft={4}>
                             There are no imports.
                         </Text>
@@ -124,4 +124,6 @@ export default function ModuleView(props: ModuleViewProps): JSX.Element {
             </Stack>
         </Stack>
     );
-}
+};
+
+export default ModuleView;

@@ -15,15 +15,29 @@ interface SelectionViewProps {
     pythonPackage: PythonPackage;
 }
 
-export default function SelectionView(props: SelectionViewProps): JSX.Element {
-    const declaration = props.pythonPackage.getByRelativePath(useLocation().pathname.split('/').splice(2));
+const SelectionView: React.FC<SelectionViewProps> = function ({
+    pythonPackage,
+}) {
+    const declaration = pythonPackage.getByRelativePath(
+        useLocation().pathname.split('/').splice(2),
+    );
 
     return (
         <Box padding={4}>
-            {declaration instanceof PythonFunction && <FunctionView pythonFunction={declaration} />}
-            {declaration instanceof PythonClass && <ClassView pythonClass={declaration} />}
-            {declaration instanceof PythonModule && <ModuleView pythonModule={declaration} />}
-            {declaration instanceof PythonParameter && <ParameterView pythonParameter={declaration} />}
+            {declaration instanceof PythonFunction && (
+                <FunctionView pythonFunction={declaration} />
+            )}
+            {declaration instanceof PythonClass && (
+                <ClassView pythonClass={declaration} />
+            )}
+            {declaration instanceof PythonModule && (
+                <ModuleView pythonModule={declaration} />
+            )}
+            {declaration instanceof PythonParameter && (
+                <ParameterView pythonParameter={declaration} />
+            )}
         </Box>
     );
-}
+};
+
+export default SelectionView;

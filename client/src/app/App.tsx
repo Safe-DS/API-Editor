@@ -29,7 +29,7 @@ import SelectionView from '../features/packageData/selectionView/SelectionView';
 import TreeView from '../features/packageData/treeView/TreeView';
 import { useAppDispatch, useAppSelector } from './hooks';
 
-const App: React.FC = () => {
+const App: React.FC = function () {
     const [pythonPackage, setPythonPackage] = useState<PythonPackage>(
         new PythonPackage('empty'),
     );
@@ -87,11 +87,7 @@ const App: React.FC = () => {
             h="100vh"
         >
             <GridItem gridArea="menu" colSpan={2}>
-                <MenuBar
-                    setPythonPackage={setPythonPackage}
-                    filter={filter}
-                    setFilter={setFilter}
-                />
+                <MenuBar filter={filter} setFilter={setFilter} />
             </GridItem>
             <GridItem
                 gridArea="leftPane"

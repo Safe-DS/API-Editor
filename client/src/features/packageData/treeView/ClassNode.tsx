@@ -8,10 +8,16 @@ interface ClassNodeProps {
     pythonClass: PythonClass;
 }
 
-const ClassNode: React.FC<ClassNodeProps> = (props: ClassNodeProps) => {
-    const hasMethods = !isEmptyList(props.pythonClass.methods);
+const ClassNode: React.FC<ClassNodeProps> = function ({ pythonClass }) {
+    const hasMethods = !isEmptyList(pythonClass.methods);
 
-    return <TreeNode declaration={props.pythonClass} icon={FaChalkboard} isExpandable={hasMethods} />;
+    return (
+        <TreeNode
+            declaration={pythonClass}
+            icon={FaChalkboard}
+            isExpandable={hasMethods}
+        />
+    );
 };
 
 export default ClassNode;

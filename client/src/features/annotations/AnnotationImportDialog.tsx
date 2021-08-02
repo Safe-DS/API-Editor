@@ -23,7 +23,7 @@ import {
     toggleAnnotationImportDialog,
 } from './annotationSlice';
 
-const AnnotationImportDialog: React.FC = () => {
+const AnnotationImportDialog: React.FC = function () {
     const [fileName, setFileName] = useState('');
     const [newAnnotationStore, setNewAnnotationStore] =
         useState<AnnotationsState>({

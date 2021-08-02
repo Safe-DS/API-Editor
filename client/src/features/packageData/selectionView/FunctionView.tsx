@@ -11,15 +11,17 @@ interface FunctionViewProps {
     pythonFunction: PythonFunction;
 }
 
-export default function FunctionView(props: FunctionViewProps): JSX.Element {
-    const id = props.pythonFunction.pathAsString();
+const FunctionView: React.FC<FunctionViewProps> = function ({
+    pythonFunction,
+}) {
+    const id = pythonFunction.pathAsString();
 
     return (
         <Stack spacing={8}>
             <Stack spacing={4}>
                 <HStack>
                     <Heading as="h3" size="lg">
-                        {props.pythonFunction.name}
+                        {pythonFunction.name}
                     </Heading>
                     <AnnotationDropdown target={id} showRename showUnused />
                 </HStack>
@@ -27,10 +29,14 @@ export default function FunctionView(props: FunctionViewProps): JSX.Element {
                 <AnnotationView target={id} />
 
                 <Box paddingLeft={4}>
-                    {props.pythonFunction.description ? (
-                        <DocumentationText inputText={props.pythonFunction.description} />
+                    {pythonFunction.description ? (
+                        <DocumentationText
+                            inputText={pythonFunction.description}
+                        />
                     ) : (
-                        <Text color="gray.500">There is no documentation for this function.</Text>
+                        <Text color="gray.500">
+                            There is no documentation for this function.
+                        </Text>
                     )}
                 </Box>
             </Stack>
@@ -40,9 +46,13 @@ export default function FunctionView(props: FunctionViewProps): JSX.Element {
                     Parameters
                 </Heading>
                 <Stack spacing={6} paddingLeft={4}>
-                    {!isEmptyList(props.pythonFunction.parameters) ? (
-                        props.pythonFunction.parameters.map((parameters) => (
-                            <ParameterNode key={parameters.name} pythonParameter={parameters} isTitle={false} />
+                    {!isEmptyList(pythonFunction.parameters) ? (
+                        pythonFunction.parameters.map((parameters) => (
+                            <ParameterNode
+                                key={parameters.name}
+                                pythonParameter={parameters}
+                                isTitle={false}
+                            />
                         ))
                     ) : (
                         <Text paddingLeft={4} color="gray.500">
@@ -53,4 +63,6 @@ export default function FunctionView(props: FunctionViewProps): JSX.Element {
             </Stack>
         </Stack>
     );
-}
+};
+
+export default FunctionView;

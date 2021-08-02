@@ -10,15 +10,15 @@ interface ClassViewProps {
     pythonClass: PythonClass;
 }
 
-export default function ClassView(props: ClassViewProps): JSX.Element {
-    const id = props.pythonClass.pathAsString();
+const ClassView: React.FC<ClassViewProps> = function ({ pythonClass }) {
+    const id = pythonClass.pathAsString();
 
     return (
         <Stack spacing={8}>
             <Stack spacing={4}>
                 <HStack>
                     <Heading as="h3" size="lg">
-                        {props.pythonClass.name}
+                        {pythonClass.name}
                     </Heading>
                     <AnnotationDropdown target={id} showRename showUnused />
                 </HStack>
@@ -26,15 +26,27 @@ export default function ClassView(props: ClassViewProps): JSX.Element {
                 <AnnotationView target={id} />
 
                 <Box paddingLeft={4}>
-                    {props.pythonClass.description ? (
-                        <DocumentationText inputText={props.pythonClass.description} />
+                    {pythonClass.description ? (
+                        <DocumentationText
+                            inputText={pythonClass.description}
+                        />
                     ) : (
-                        <Text color="gray.500">There is no documentation for this class.</Text>
+                        <Text color="gray.500">
+                            There is no documentation for this class.
+                        </Text>
                     )}
                 </Box>
             </Stack>
-            <SectionListViewItem title="Superclasses" inputElements={props.pythonClass.superclasses} />
-            <SectionListViewItem title="Decorators" inputElements={props.pythonClass.decorators} />
+            <SectionListViewItem
+                title="Superclasses"
+                inputElements={pythonClass.superclasses}
+            />
+            <SectionListViewItem
+                title="Decorators"
+                inputElements={pythonClass.decorators}
+            />
         </Stack>
     );
-}
+};
+
+export default ClassView;
