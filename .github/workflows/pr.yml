@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
-          # cache-dependency-path: package-lock.json # TODO once https://github.com/actions/setup-node/pull/299 is in
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
         run: npm ci --prefer-offline --no-audit
@@ -46,7 +46,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
-          # cache-dependency-path: package-lock.json # TODO once https://github.com/actions/setup-node/pull/299 is in
+          cache-dependency-path: client/package-lock.json
 
       - name: Set up JDK ${{ matrix.java-version }}
         uses: actions/setup-java@v2.1.0
