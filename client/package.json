@@ -11,7 +11,7 @@
         "postinstall": "npm run gen:theme-typings"
     },
     "dependencies": {
-        "@chakra-ui/react": "^1.6.5",
+        "@chakra-ui/react": "^1.6.6",
         "@chakra-ui/styled-system": "^1.12.1",
         "@chakra-ui/system": "^1.7.1",
         "@chakra-ui/theme-tools": "^1.1.8",
