@@ -8,16 +8,16 @@ updates:
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
-      interval: 'daily'
+      interval: 'monthly'
   - package-ecosystem: 'npm'
     directory: '/client'
     schedule:
-      interval: 'daily'
+      interval: 'monthly'
   - package-ecosystem: 'gradle'
     directory: '/'
     schedule:
-      interval: 'daily'
+      interval: 'monthly'
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
-      interval: 'daily'
+      interval: 'monthly'
