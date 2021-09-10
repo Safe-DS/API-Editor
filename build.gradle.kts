@@ -20,7 +20,7 @@ idea {
 
 // Variables -----------------------------------------------------------------------------------------------------------
 
-val javaSourceVersion by extra(JavaVersion.VERSION_16)
+val javaSourceVersion by extra(JavaVersion.VERSION_11)
 val javaTargetVersion by extra(JavaVersion.VERSION_11)
 
 

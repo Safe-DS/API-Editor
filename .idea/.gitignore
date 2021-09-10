@@ -1,5 +1,9 @@
 # Default ignored files
 /shelf/
-/workspace.xml
+gradle.xml
+misc.xml
+uidesigner.xml
+workspace.xml
+
 # Editor-based HTTP Client requests
 /httpRequests/
