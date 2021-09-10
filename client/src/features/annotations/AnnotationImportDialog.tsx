@@ -30,6 +30,7 @@ const AnnotationImportDialog: React.FC = function () {
             enums: {},
             renamings: {},
             unuseds: {},
+            requireds: {},
             currentUserAction: {
                 target: '',
                 type: 'none',

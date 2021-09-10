@@ -28,7 +28,12 @@ const ParameterNode: React.FC<ParameterNodeProps> = function ({
                         {pythonParameter.name}
                     </Heading>
                 )}
-                <AnnotationDropdown target={id} showRename showEnum />
+                <AnnotationDropdown
+                    target={id}
+                    showRename
+                    showEnum
+                    showRequired
+                />
             </HStack>
 
             <AnnotationView target={id} />
