@@ -6,9 +6,11 @@ import {
     removeEnum,
     removeRenaming,
     removeUnused,
+    removeRequired,
     selectEnum,
     selectRenaming,
     selectUnused,
+    selectRequired,
     showEnumAnnotationForm,
     showRenameAnnotationForm,
 } from './annotationSlice';
@@ -23,8 +25,14 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
     const renameAnnotation = useAppSelector(selectRenaming(target));
     const unusedAnnotation = useAppSelector(selectUnused(target));
     const enumAnnotation = useAppSelector(selectEnum(target));
+    const requiredAnnotation = useAppSelector(selectRequired(target));
 
-    if (!renameAnnotation && !unusedAnnotation && !enumAnnotation) {
+    if (
+        !renameAnnotation &&
+        !unusedAnnotation &&
+        !enumAnnotation &&
+        !requiredAnnotation
+    ) {
         // eslint-disable-next-line react/jsx-no-useless-fragment
         return <></>;
     }
@@ -43,6 +51,12 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
                 <Annotation
                     type="unused"
                     onDelete={() => dispatch(removeUnused(target))}
+                />
+            )}
+            {requiredAnnotation && (
+                <Annotation
+                    type="required"
+                    onDelete={() => dispatch(removeRequired(target))}
                 />
             )}
             {enumAnnotation && (

@@ -12,6 +12,9 @@ export interface AnnotationsState {
     unuseds: {
         [target: string]: UnusedAnnotation;
     };
+    requireds: {
+        [target: string]: RequiredAnnotation;
+    };
     currentUserAction: UserAction;
     showImportDialog: boolean;
 }
@@ -53,6 +56,13 @@ interface UnusedAnnotation {
     readonly target: string;
 }
 
+interface RequiredAnnotation {
+    /**
+     * ID of the annotated Python declaration.
+     */
+    readonly target: string;
+}
+
 type UserAction = typeof NoUserAction | EnumUserAction | RenameUserAction;
 
 const NoUserAction = {
@@ -76,6 +86,7 @@ const initialState: AnnotationsState = {
     enums: {},
     renamings: {},
     unuseds: {},
+    requireds: {},
     currentUserAction: NoUserAction,
     showImportDialog: false,
 };
@@ -123,6 +134,12 @@ const annotationsSlice = createSlice({
         removeUnused(state, action: PayloadAction<string>) {
             delete state.unuseds[action.payload];
         },
+        addRequired(state, action: PayloadAction<RequiredAnnotation>) {
+            state.requireds[action.payload.target] = action.payload;
+        },
+        removeRequired(state, action: PayloadAction<string>) {
+            delete state.requireds[action.payload];
+        },
         showEnumAnnotationForm(state, action: PayloadAction<string>) {
             state.currentUserAction = {
                 type: 'enum',
@@ -161,6 +178,8 @@ export const {
     removeRenaming,
     addUnused,
     removeUnused,
+    addRequired,
+    removeRequired,
 
     showEnumAnnotationForm,
     showRenameAnnotationForm,
@@ -183,6 +202,10 @@ export const selectUnused =
     (target: string) =>
     (state: RootState): UnusedAnnotation | undefined =>
         selectAnnotations(state).unuseds[target];
+export const selectRequired =
+    (target: string) =>
+    (state: RootState): RequiredAnnotation | undefined =>
+        selectAnnotations(state).requireds[target];
 export const selectCurrentUserAction = (state: RootState): UserAction =>
     selectAnnotations(state).currentUserAction;
 export const selectShowAnnotationImportDialog = (state: RootState): boolean =>

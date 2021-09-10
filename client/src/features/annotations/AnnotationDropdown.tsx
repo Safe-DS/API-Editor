@@ -12,6 +12,7 @@ import { FaChevronDown } from 'react-icons/fa';
 import { useAppDispatch } from '../../app/hooks';
 import {
     addUnused,
+    addRequired,
     showEnumAnnotationForm,
     showRenameAnnotationForm,
 } from './annotationSlice';
@@ -21,12 +22,14 @@ interface AnnotationDropdownProps {
     showRename?: boolean;
     showEnum?: boolean;
     showUnused?: boolean;
+    showRequired?: boolean;
 }
 
 const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
     showEnum = false,
     showRename = false,
     showUnused = false,
+    showRequired = false,
     target,
 }) {
     const dispatch = useAppDispatch();
@@ -67,6 +70,13 @@ const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                             }
                         >
                             @enum
+                        </MenuItem>
+                    )}
+                    {showRequired && (
+                        <MenuItem
+                            onClick={() => dispatch(addRequired({ target }))}
+                        >
+                            @required
                         </MenuItem>
                     )}
                 </MenuList>
