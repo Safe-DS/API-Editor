@@ -15,6 +15,7 @@ import {
     addRequired,
     showEnumAnnotationForm,
     showRenameAnnotationForm,
+    showOptionalAnnotationForm,
 } from './annotationSlice';
 
 interface AnnotationDropdownProps {
@@ -23,6 +24,7 @@ interface AnnotationDropdownProps {
     showEnum?: boolean;
     showUnused?: boolean;
     showRequired?: boolean;
+    showOptional?: boolean;
 }
 
 const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
@@ -30,6 +32,7 @@ const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
     showRename = false,
     showUnused = false,
     showRequired = false,
+    showOptional = false,
     target,
 }) {
     const dispatch = useAppDispatch();
@@ -77,6 +80,15 @@ const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                             onClick={() => dispatch(addRequired({ target }))}
                         >
                             @required
+                        </MenuItem>
+                    )}
+                    {showOptional && (
+                        <MenuItem
+                            onClick={() =>
+                                dispatch(showOptionalAnnotationForm(target))
+                            }
+                        >
+                            @optional
                         </MenuItem>
                     )}
                 </MenuList>

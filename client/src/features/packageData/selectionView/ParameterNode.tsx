@@ -33,6 +33,7 @@ const ParameterNode: React.FC<ParameterNodeProps> = function ({
                     showRename
                     showEnum
                     showRequired
+                    showOptional
                 />
             </HStack>
 

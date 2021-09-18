@@ -5,7 +5,7 @@ test('valid name starting with lower case letter', () => {
     expect(isValidPythonIdentifier(testString)).toEqual(true);
 });
 
-test('valid_name starting with _', () => {
+test('valid name starting with _', () => {
     const testString = '_hallo_welt';
     expect(isValidPythonIdentifier(testString)).toEqual(true);
 });
