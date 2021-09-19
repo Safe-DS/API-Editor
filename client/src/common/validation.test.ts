@@ -37,7 +37,12 @@ test('number with leading 0 is not a valid number', () => {
 
 test('negative number with empty integer part is a valid number', () => {
     const testNumber = '-.2';
-    expect(Boolean(testNumber.match(numberPattern.value))).toEqual(false);
+    expect(Boolean(testNumber.match(numberPattern.value))).toEqual(true);
+});
+
+test('positive number with empty integer part is a valid number', () => {
+    const testNumber = '.01';
+    expect(Boolean(testNumber.match(numberPattern.value))).toEqual(true);
 });
 
 test('empty negative decimal number is not a valid number', () => {
@@ -82,6 +87,11 @@ test('valid number with exponent and "-"', () => {
 
 test('valid negative number with negative exponent', () => {
     const testNumber = '-0.12E-3';
+    expect(Boolean(testNumber.match(numberPattern.value))).toEqual(true);
+});
+
+test('valid negative number with empty integer part and negative exponent', () => {
+    const testNumber = '-.12E-3';
     expect(Boolean(testNumber.match(numberPattern.value))).toEqual(true);
 });
 
