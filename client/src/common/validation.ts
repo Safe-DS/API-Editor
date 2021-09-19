@@ -4,10 +4,10 @@ export const pythonIdentifierPattern = {
         'Valid Python identifiers must start with a letter or underscore followed by letters, numbers, and underscores.',
 };
 
-export const decimalPattern = {
+export const numberPattern = {
     value: /^[+-]?(([0-9]|[1-9][0-9]*)([.][0-9]*)?|[.][0-9]+)$/u,
     message:
-        'A valid decimal value may start with "+" or "-" followed by numbers and "." as separator for decimal places.',
+        'A number must consist of digits (0 to 9). It may be prefixed by "+" or "-" and may contain a single "." as separator for decimal places.',
 };
 
 export const booleanPattern = {

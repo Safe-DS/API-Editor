@@ -14,7 +14,7 @@ import {
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { booleanPattern, decimalPattern } from '../../../common/validation';
+import { booleanPattern, numberPattern } from '../../../common/validation';
 import PythonDeclaration from '../../packageData/model/PythonDeclaration';
 import {
     hideAnnotationForms,
@@ -106,7 +106,9 @@ const OptionalForm: React.FC<OptionalFormProps> = function ({ target }) {
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
         >
-            <FormLabel>Default type for &quot;{target.name}&quot;:</FormLabel>
+            <FormLabel>
+                Type of default value of &quot;{target.name}&quot;:
+            </FormLabel>
             <Select {...defaultTypeRegister}>
                 <option value="string">String</option>
                 <option value="number">Number</option>
@@ -128,7 +130,7 @@ const OptionalForm: React.FC<OptionalFormProps> = function ({ target }) {
                         <NumberInputField
                             {...register('defaultValue', {
                                 required: 'This is required.',
-                                pattern: decimalPattern,
+                                pattern: numberPattern,
                             })}
                         />
                         <NumberInputStepper>
