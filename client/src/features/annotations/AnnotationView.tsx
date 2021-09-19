@@ -75,7 +75,7 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
             {optionalAnnotation && (
                 <Annotation
                     type="optional"
-                    name={`${optionalAnnotation.defaultType.toString()}.${optionalAnnotation.defaultValue.toString()}`}
+                    name={`${optionalAnnotation.defaultType.toString()}_${optionalAnnotation.defaultValue.toString()}`}
                     onEdit={() => dispatch(showOptionalAnnotationForm(target))}
                     onDelete={() => dispatch(removeOptional(target))}
                 />
