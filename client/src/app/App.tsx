@@ -13,6 +13,7 @@ import {
     selectShowAnnotationImportDialog,
 } from '../features/annotations/annotationSlice';
 import EnumForm from '../features/annotations/forms/EnumForm';
+import OptionalForm from '../features/annotations/forms/OptionalForm';
 import RenameForm from '../features/annotations/forms/RenameForm';
 import { PythonFilter } from '../features/packageData/model/PythonFilter';
 import PythonPackage from '../features/packageData/model/PythonPackage';
@@ -107,6 +108,9 @@ const App: React.FC = function () {
                 )}
                 {currentUserAction.type === 'rename' && (
                     <RenameForm target={userActionTarget || pythonPackage} />
+                )}
+                {currentUserAction.type === 'optional' && (
+                    <OptionalForm target={userActionTarget || pythonPackage} />
                 )}
             </GridItem>
             <GridItem gridArea="rightPane" overflow="auto">

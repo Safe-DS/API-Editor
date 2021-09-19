@@ -15,6 +15,9 @@ export interface AnnotationsState {
     requireds: {
         [target: string]: RequiredAnnotation;
     };
+    optionals: {
+        [target: string]: OptionalAnnotation;
+    };
     currentUserAction: UserAction;
     showImportDialog: boolean;
 }
@@ -63,7 +66,28 @@ interface RequiredAnnotation {
     readonly target: string;
 }
 
-type UserAction = typeof NoUserAction | EnumUserAction | RenameUserAction;
+interface OptionalAnnotation {
+    /**
+     * ID of the annotated Python declaration
+     */
+    readonly target: string;
+
+    /**
+     * Type of default value
+     */
+    readonly defaultType: string;
+
+    /**
+     * Default value
+     */
+    readonly defaultValue: string | number | boolean;
+}
+
+type UserAction =
+    | typeof NoUserAction
+    | EnumUserAction
+    | RenameUserAction
+    | OptionalUserAction;
 
 const NoUserAction = {
     type: 'none',
@@ -80,6 +104,11 @@ interface RenameUserAction {
     readonly target: string;
 }
 
+interface OptionalUserAction {
+    readonly type: 'optional';
+    readonly target: string;
+}
+
 // Initial state -------------------------------------------------------------------------------------------------------
 
 const initialState: AnnotationsState = {
@@ -87,6 +116,7 @@ const initialState: AnnotationsState = {
     renamings: {},
     unuseds: {},
     requireds: {},
+    optionals: {},
     currentUserAction: NoUserAction,
     showImportDialog: false,
 };
@@ -128,6 +158,12 @@ const annotationsSlice = createSlice({
         removeRenaming(state, action: PayloadAction<string>) {
             delete state.renamings[action.payload];
         },
+        upsertOptional(state, action: PayloadAction<OptionalAnnotation>) {
+            state.optionals[action.payload.target] = action.payload;
+        },
+        removeOptional(state, action: PayloadAction<string>) {
+            delete state.optionals[action.payload];
+        },
         addUnused(state, action: PayloadAction<UnusedAnnotation>) {
             state.unuseds[action.payload.target] = action.payload;
         },
@@ -149,6 +185,12 @@ const annotationsSlice = createSlice({
         showRenameAnnotationForm(state, action: PayloadAction<string>) {
             state.currentUserAction = {
                 type: 'rename',
+                target: action.payload,
+            };
+        },
+        showOptionalAnnotationForm(state, action: PayloadAction<string>) {
+            state.currentUserAction = {
+                type: 'optional',
                 target: action.payload,
             };
         },
@@ -180,9 +222,12 @@ export const {
     removeUnused,
     addRequired,
     removeRequired,
+    upsertOptional,
+    removeOptional,
 
     showEnumAnnotationForm,
     showRenameAnnotationForm,
+    showOptionalAnnotationForm,
     hideAnnotationForms,
 
     toggleImportDialog: toggleAnnotationImportDialog,
@@ -206,6 +251,10 @@ export const selectRequired =
     (target: string) =>
     (state: RootState): RequiredAnnotation | undefined =>
         selectAnnotations(state).requireds[target];
+export const selectOptional =
+    (target: string) =>
+    (state: RootState): OptionalAnnotation | undefined =>
+        selectAnnotations(state).optionals[target];
 export const selectCurrentUserAction = (state: RootState): UserAction =>
     selectAnnotations(state).currentUserAction;
 export const selectShowAnnotationImportDialog = (state: RootState): boolean =>
