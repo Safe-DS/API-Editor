@@ -13,13 +13,15 @@ import { useAppDispatch } from '../../app/hooks';
 import {
     addUnused,
     addRequired,
+    showConstantAnnotationForm,
     showEnumAnnotationForm,
-    showRenameAnnotationForm,
     showOptionalAnnotationForm,
+    showRenameAnnotationForm,
 } from './annotationSlice';
 
 interface AnnotationDropdownProps {
     target: string;
+    showConstant?: boolean;
     showRename?: boolean;
     showEnum?: boolean;
     showUnused?: boolean;
@@ -28,11 +30,12 @@ interface AnnotationDropdownProps {
 }
 
 const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
+    showConstant = false,
     showEnum = false,
-    showRename = false,
-    showUnused = false,
-    showRequired = false,
     showOptional = false,
+    showRename = false,
+    showRequired = false,
+    showUnused = false,
     target,
 }) {
     const dispatch = useAppDispatch();
@@ -50,20 +53,13 @@ const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                     Annotations
                 </MenuButton>
                 <MenuList>
-                    {showRename && (
+                    {showConstant && (
                         <MenuItem
                             onClick={() =>
-                                dispatch(showRenameAnnotationForm(target))
+                                dispatch(showConstantAnnotationForm(target))
                             }
                         >
-                            @rename
-                        </MenuItem>
-                    )}
-                    {showUnused && (
-                        <MenuItem
-                            onClick={() => dispatch(addUnused({ target }))}
-                        >
-                            @unused
+                            @constant
                         </MenuItem>
                     )}
                     {showEnum && (
@@ -75,13 +71,6 @@ const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                             @enum
                         </MenuItem>
                     )}
-                    {showRequired && (
-                        <MenuItem
-                            onClick={() => dispatch(addRequired({ target }))}
-                        >
-                            @required
-                        </MenuItem>
-                    )}
                     {showOptional && (
                         <MenuItem
                             onClick={() =>
@@ -89,6 +78,29 @@ const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                             }
                         >
                             @optional
+                        </MenuItem>
+                    )}
+                    {showRename && (
+                        <MenuItem
+                            onClick={() =>
+                                dispatch(showRenameAnnotationForm(target))
+                            }
+                        >
+                            @rename
+                        </MenuItem>
+                    )}
+                    {showRequired && (
+                        <MenuItem
+                            onClick={() => dispatch(addRequired({ target }))}
+                        >
+                            @required
+                        </MenuItem>
+                    )}
+                    {showUnused && (
+                        <MenuItem
+                            onClick={() => dispatch(addUnused({ target }))}
+                        >
+                            @unused
                         </MenuItem>
                     )}
                 </MenuList>
