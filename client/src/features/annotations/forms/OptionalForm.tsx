@@ -4,12 +4,15 @@ import {
     FormErrorMessage,
     FormLabel,
     Input,
+    NumberDecrementStepper,
+    NumberIncrementStepper,
     NumberInput,
     NumberInputField,
     NumberInputStepper,
-    NumberIncrementStepper,
-    NumberDecrementStepper,
+    Radio,
+    RadioGroup,
     Select,
+    Stack,
 } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -42,9 +45,10 @@ const OptionalForm: React.FC<OptionalFormProps> = function ({ target }) {
     const dispatch = useAppDispatch();
 
     const {
-        register,
         handleSubmit,
+        register,
         reset,
+        setValue,
         watch,
         formState: { errors },
     } = useForm<OptionalFormState>({
@@ -54,9 +58,6 @@ const OptionalForm: React.FC<OptionalFormProps> = function ({ target }) {
         },
     });
 
-    const defaultTypeRegister = register('defaultType', {
-        required: 'This is required.',
-    });
     const watchDefaultType = watch('defaultType');
 
     useEffect(() => {
@@ -67,6 +68,14 @@ const OptionalForm: React.FC<OptionalFormProps> = function ({ target }) {
     }, [reset, prevDefaultType, prevDefaultValue]);
 
     // Event handlers --------------------------------------------------------------------------------------------------
+
+    const handleTypeChange = (value: string) => {
+        setValue('defaultType', value);
+        reset({
+            defaultType: value,
+            defaultValue: '',
+        });
+    };
 
     const onSave = (data: OptionalFormState) => {
         dispatch(
@@ -82,20 +91,6 @@ const OptionalForm: React.FC<OptionalFormProps> = function ({ target }) {
         dispatch(hideAnnotationForms());
     };
 
-    /**
-     * Adds functionality to onChange method while preserving original onChange
-     * logic from register method
-     */
-    const registerOnChange = defaultTypeRegister.onChange;
-    defaultTypeRegister.onChange = (event) => {
-        const result = registerOnChange(event);
-        reset({
-            defaultType: event.target.value,
-            defaultValue: '',
-        });
-        return result;
-    };
-
     // Rendering -------------------------------------------------------------------------------------------------------
 
     return (
@@ -109,11 +104,17 @@ const OptionalForm: React.FC<OptionalFormProps> = function ({ target }) {
             <FormLabel>
                 Type of default value of &quot;{target.name}&quot;:
             </FormLabel>
-            <Select {...defaultTypeRegister}>
-                <option value="string">String</option>
-                <option value="number">Number</option>
-                <option value="boolean">Boolean</option>
-            </Select>
+            <RadioGroup
+                defaultValue={prevDefaultType || 'string'}
+                onChange={handleTypeChange}
+            >
+                <Stack direction="column">
+                    <Radio value="string">String</Radio>
+                    <Radio value="number">Number</Radio>
+                    <Radio value="boolean">Boolean</Radio>
+                </Stack>
+            </RadioGroup>
+
             <FormControl isInvalid={Boolean(errors?.defaultValue)}>
                 <FormLabel>
                     Default value for &quot;{target.name}&quot;:
