@@ -12,6 +12,7 @@ import {
     selectCurrentUserAction,
     selectShowAnnotationImportDialog,
 } from '../features/annotations/annotationSlice';
+import ConstantForm from '../features/annotations/forms/ConstantForm';
 import EnumForm from '../features/annotations/forms/EnumForm';
 import OptionalForm from '../features/annotations/forms/OptionalForm';
 import RenameForm from '../features/annotations/forms/RenameForm';
@@ -72,11 +73,11 @@ const App: React.FC = function () {
         currentUserAction.target,
     );
 
-    const showPackageDataImportDialog = useAppSelector(
-        selectShowPackageDataImportDialog,
-    );
     const showAnnotationImportDialog = useAppSelector(
         selectShowAnnotationImportDialog,
+    );
+    const showPackageDataImportDialog = useAppSelector(
+        selectShowPackageDataImportDialog,
     );
 
     return (
@@ -100,17 +101,20 @@ const App: React.FC = function () {
                 layerStyle="subtleBorder"
                 resize="horizontal"
             >
-                {currentUserAction.type === 'none' && (
-                    <TreeView pythonPackage={filteredPythonPackage} />
+                {currentUserAction.type === 'constant' && (
+                    <ConstantForm target={userActionTarget || pythonPackage} />
                 )}
                 {currentUserAction.type === 'enum' && (
                     <EnumForm target={userActionTarget || pythonPackage} />
                 )}
-                {currentUserAction.type === 'rename' && (
-                    <RenameForm target={userActionTarget || pythonPackage} />
+                {currentUserAction.type === 'none' && (
+                    <TreeView pythonPackage={filteredPythonPackage} />
                 )}
                 {currentUserAction.type === 'optional' && (
                     <OptionalForm target={userActionTarget || pythonPackage} />
+                )}
+                {currentUserAction.type === 'rename' && (
+                    <RenameForm target={userActionTarget || pythonPackage} />
                 )}
             </GridItem>
             <GridItem gridArea="rightPane" overflow="auto">

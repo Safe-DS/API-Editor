@@ -30,10 +30,11 @@ const ParameterNode: React.FC<ParameterNodeProps> = function ({
                 )}
                 <AnnotationDropdown
                     target={id}
-                    showRename
+                    showConstant
                     showEnum
-                    showRequired
                     showOptional
+                    showRename
+                    showRequired
                 />
             </HStack>
 

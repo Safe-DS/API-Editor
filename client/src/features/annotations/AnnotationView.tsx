@@ -3,16 +3,19 @@ import React from 'react';
 import { FaTrash, FaWrench } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
+    removeConstant,
     removeEnum,
-    removeRenaming,
-    removeUnused,
-    removeRequired,
     removeOptional,
+    removeRenaming,
+    removeRequired,
+    removeUnused,
+    selectConstant,
     selectEnum,
     selectRenaming,
     selectUnused,
     selectRequired,
     selectOptional,
+    showConstantAnnotationForm,
     showEnumAnnotationForm,
     showRenameAnnotationForm,
     showOptionalAnnotationForm,
@@ -25,18 +28,20 @@ interface AnnotationViewProps {
 const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
     const dispatch = useAppDispatch();
 
-    const renameAnnotation = useAppSelector(selectRenaming(target));
-    const unusedAnnotation = useAppSelector(selectUnused(target));
+    const constantAnnotation = useAppSelector(selectConstant(target));
     const enumAnnotation = useAppSelector(selectEnum(target));
-    const requiredAnnotation = useAppSelector(selectRequired(target));
     const optionalAnnotation = useAppSelector(selectOptional(target));
+    const renameAnnotation = useAppSelector(selectRenaming(target));
+    const requiredAnnotation = useAppSelector(selectRequired(target));
+    const unusedAnnotation = useAppSelector(selectUnused(target));
 
     if (
-        !renameAnnotation &&
-        !unusedAnnotation &&
+        !constantAnnotation &&
         !enumAnnotation &&
+        !optionalAnnotation &&
+        !renameAnnotation &&
         !requiredAnnotation &&
-        !optionalAnnotation
+        !unusedAnnotation
     ) {
         // eslint-disable-next-line react/jsx-no-useless-fragment
         return <></>;
@@ -44,24 +49,12 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
 
     return (
         <Stack maxW="fit-content">
-            {renameAnnotation && (
+            {constantAnnotation && (
                 <Annotation
-                    type="rename"
-                    name={renameAnnotation.newName}
-                    onEdit={() => dispatch(showRenameAnnotationForm(target))}
-                    onDelete={() => dispatch(removeRenaming(target))}
-                />
-            )}
-            {unusedAnnotation && (
-                <Annotation
-                    type="unused"
-                    onDelete={() => dispatch(removeUnused(target))}
-                />
-            )}
-            {requiredAnnotation && (
-                <Annotation
-                    type="required"
-                    onDelete={() => dispatch(removeRequired(target))}
+                    type="constant"
+                    name={`${constantAnnotation.defaultType.toString()}_${constantAnnotation.defaultValue.toString()}`}
+                    onEdit={() => dispatch(showConstantAnnotationForm(target))}
+                    onDelete={() => dispatch(removeConstant(target))}
                 />
             )}
             {enumAnnotation && (
@@ -78,6 +71,26 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
                     name={`${optionalAnnotation.defaultType.toString()}_${optionalAnnotation.defaultValue.toString()}`}
                     onEdit={() => dispatch(showOptionalAnnotationForm(target))}
                     onDelete={() => dispatch(removeOptional(target))}
+                />
+            )}
+            {renameAnnotation && (
+                <Annotation
+                    type="rename"
+                    name={renameAnnotation.newName}
+                    onEdit={() => dispatch(showRenameAnnotationForm(target))}
+                    onDelete={() => dispatch(removeRenaming(target))}
+                />
+            )}
+            {requiredAnnotation && (
+                <Annotation
+                    type="required"
+                    onDelete={() => dispatch(removeRequired(target))}
+                />
+            )}
+            {unusedAnnotation && (
+                <Annotation
+                    type="unused"
+                    onDelete={() => dispatch(removeUnused(target))}
                 />
             )}
         </Stack>

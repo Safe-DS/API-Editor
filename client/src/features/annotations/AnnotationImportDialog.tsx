@@ -27,16 +27,17 @@ const AnnotationImportDialog: React.FC = function () {
     const [fileName, setFileName] = useState('');
     const [newAnnotationStore, setNewAnnotationStore] =
         useState<AnnotationsState>({
-            enums: {},
-            renamings: {},
-            unuseds: {},
-            requireds: {},
-            optionals: {},
+            constants: {},
             currentUserAction: {
                 target: '',
                 type: 'none',
             },
+            enums: {},
+            optionals: {},
+            renamings: {},
+            requireds: {},
             showImportDialog: false,
+            unuseds: {},
         });
     const dispatch = useAppDispatch();
 
