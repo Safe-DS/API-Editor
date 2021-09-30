@@ -1,0 +1,23 @@
+# See all available variables at https://nvuillam.github.io/mega-linter/configuration/ and in linters documentation.
+
+# Config
+APPLY_FIXES: all
+DEFAULT_BRANCH: main
+FILEIO_REPORTER: false
+IGNORE_GITIGNORED_FILES: true
+PRINT_ALPACA: false
+SHOW_ELAPSED_TIME: true
+
+JAVASCRIPT_DEFAULT_STYLE: prettier
+TYPESCRIPT_DEFAULT_STYLE: prettier
+
+# Commands
+PRE_COMMANDS:
+  - command: npm install @lars-reimann/prettier-config
+    cwd: root
+
+# Linters
+DISABLE_LINTERS:
+  - COPYPASTE_JSCPD
+  - SPELL_CSPELL
+  - SPELL_MISSPELL
