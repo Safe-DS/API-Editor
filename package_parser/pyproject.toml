@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "package-parser"
+version = "0.0.1"
+description = "Analyze Python code."
+authors = ["Lars Reimann <mail@larsreimann.com>"]
+license = "MIT"
+
+[tool.poetry.scripts]
+parse-package = "package_parser.main:main"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+astroid = "^2.8.2"
+scikit-learn = "^1.0"
+importlib-metadata = "^4.8.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

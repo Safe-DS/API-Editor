@@ -12,3 +12,13 @@ node_modules/
 
 # mega-linter reports
 /report/
+
+# Python binaries
+__pycache__/
+*.pyc
+
+# Poetry distribution
+dist/
+
+# Output of this tool
+out/
