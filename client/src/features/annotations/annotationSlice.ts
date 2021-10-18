@@ -3,6 +3,9 @@ import * as idb from 'idb-keyval';
 import { RootState } from '../../app/store';
 
 export interface AnnotationsState {
+    boundaries: {
+        [target: string]: BoundaryAnnotation;
+    };
     constants: {
         [target: string]: ConstantAnnotation;
     };
@@ -23,6 +26,18 @@ export interface AnnotationsState {
         [target: string]: UnusedAnnotation;
     };
     showImportDialog: boolean;
+}
+
+interface BoundaryAnnotation {
+    /**
+     * ID of the annotated Python declaration
+     */
+    readonly target: string;
+
+    /**
+     * The interval specifying possible numeric values
+     */
+    readonly interval: Interval;
 }
 
 interface ConstantAnnotation {
@@ -58,6 +73,33 @@ interface EnumAnnotation {
 interface EnumPair {
     readonly stringValue: string;
     readonly instanceName: string;
+}
+
+interface Interval {
+    /**
+     * Whether the type of the interval is discrete or continuous
+     */
+    readonly isDiscrete: boolean;
+
+    /**
+     * Lower interval limit
+     */
+    readonly lowIntervalLimit: number;
+
+    /**
+     * Upper interval limit
+     */
+    readonly upperIntervalLimit: number;
+
+    /**
+     * Whether or not the lower interval limit is inclusive or exclusive
+     */
+    readonly isLowLimitExclusive: boolean;
+
+    /**
+     * Whether or not the upper interval limit is inclusive or exclusive
+     */
+    readonly isUpperLimitExclusive: boolean;
 }
 
 interface OptionalAnnotation {
@@ -105,6 +147,7 @@ interface UnusedAnnotation {
 
 type UserAction =
     | typeof NoUserAction
+    | BoundaryUserAction
     | ConstantUserAction
     | EnumUserAction
     | RenameUserAction
@@ -114,6 +157,11 @@ const NoUserAction = {
     type: 'none',
     target: '',
 };
+
+interface BoundaryUserAction {
+    readonly type: 'boundary';
+    readonly target: string;
+}
 
 interface ConstantUserAction {
     readonly type: 'optional';
@@ -138,6 +186,7 @@ interface RenameUserAction {
 // Initial state -------------------------------------------------------------------------------------------------------
 
 const initialState: AnnotationsState = {
+    boundaries: {},
     constants: {},
     currentUserAction: NoUserAction,
     enums: {},
@@ -172,6 +221,12 @@ const annotationsSlice = createSlice({
         },
         reset() {
             return initialState;
+        },
+        upsertBoundary(state, action: PayloadAction<BoundaryAnnotation>) {
+            state.boundaries[action.payload.target] = action.payload;
+        },
+        removeBoundary(state, action: PayloadAction<string>) {
+            delete state.boundaries[action.payload];
         },
         upsertConstant(state, action: PayloadAction<ConstantAnnotation>) {
             state.constants[action.payload.target] = action.payload;
@@ -208,6 +263,12 @@ const annotationsSlice = createSlice({
         },
         removeUnused(state, action: PayloadAction<string>) {
             delete state.unuseds[action.payload];
+        },
+        showBoundaryAnnotationForm(state, action: PayloadAction<string>) {
+            state.currentUserAction = {
+                type: 'boundary',
+                target: action.payload,
+            };
         },
         showConstantAnnotationForm(state, action: PayloadAction<string>) {
             state.currentUserAction = {
@@ -253,6 +314,8 @@ export const {
     set: setAnnotations,
     reset: resetAnnotations,
 
+    upsertBoundary,
+    removeBoundary,
     upsertConstant,
     removeConstant,
     upsertEnum,
@@ -266,6 +329,7 @@ export const {
     addUnused,
     removeUnused,
 
+    showBoundaryAnnotationForm,
     showConstantAnnotationForm,
     showEnumAnnotationForm,
     showOptionalAnnotationForm,
@@ -277,6 +341,10 @@ export const {
 export default reducer;
 
 export const selectAnnotations = (state: RootState) => state.annotations;
+export const selectBoundary =
+    (target: string) =>
+    (state: RootState): BoundaryAnnotation | undefined =>
+        selectAnnotations(state).boundaries[target];
 export const selectConstant =
     (target: string) =>
     (state: RootState): ConstantAnnotation | undefined =>

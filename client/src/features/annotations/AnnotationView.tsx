@@ -3,6 +3,7 @@ import React from 'react';
 import { FaTrash, FaWrench } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
+    removeBoundary,
     removeConstant,
     removeEnum,
     removeOptional,
@@ -15,10 +16,12 @@ import {
     selectUnused,
     selectRequired,
     selectOptional,
+    showBoundaryAnnotationForm,
     showConstantAnnotationForm,
     showEnumAnnotationForm,
     showRenameAnnotationForm,
     showOptionalAnnotationForm,
+    selectBoundary,
 } from './annotationSlice';
 
 interface AnnotationViewProps {
@@ -28,6 +31,7 @@ interface AnnotationViewProps {
 const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
     const dispatch = useAppDispatch();
 
+    const boundaryAnnotation = useAppSelector(selectBoundary(target));
     const constantAnnotation = useAppSelector(selectConstant(target));
     const enumAnnotation = useAppSelector(selectEnum(target));
     const optionalAnnotation = useAppSelector(selectOptional(target));
@@ -36,6 +40,7 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
     const unusedAnnotation = useAppSelector(selectUnused(target));
 
     if (
+        !boundaryAnnotation &&
         !constantAnnotation &&
         !enumAnnotation &&
         !optionalAnnotation &&
@@ -49,6 +54,14 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
 
     return (
         <Stack maxW="fit-content">
+            {boundaryAnnotation && (
+                <Annotation
+                    type="boundary"
+                    name={String(boundaryAnnotation.toString())}
+                    onEdit={() => dispatch(showBoundaryAnnotationForm(target))}
+                    onDelete={() => dispatch(removeBoundary(target))}
+                />
+            )}
             {constantAnnotation && (
                 <Annotation
                     type="constant"
