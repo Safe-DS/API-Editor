@@ -34,7 +34,7 @@
         "react-virtualized-auto-sizer": "^1.0.6",
         "react-window": "^1.8.6",
         "rehype-katex": "^5.0.0",
-        "remark-gfm": "^1.0.0",
+        "remark-gfm": "^3.0.0",
         "remark-math": "^4.0.0"
     },
     "devDependencies": {
