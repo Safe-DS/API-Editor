@@ -1,3 +1,7 @@
+# Eclipse (also used by Gradle support in VS Code)
+.settings/
+.project
+
 # Gradle
 .gradle/
 
