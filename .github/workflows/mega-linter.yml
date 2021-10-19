@@ -5,7 +5,7 @@ name: Mega-Linter
 
 on:
   pull_request:
-    branches: [main]
+    branches: [master]
 
 concurrency: 
   group: ${{ github.head_ref }}
@@ -19,7 +19,7 @@ env:
   FILTER_REGEX_EXCLUDE: (\.github/workflows/)
 
 jobs:
-  build:
+  lint:
     name: Mega-Linter
     runs-on: ubuntu-latest
     steps:
