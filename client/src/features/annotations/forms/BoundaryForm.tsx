@@ -16,18 +16,18 @@ import {
     Stack,
     Wrap,
     WrapItem,
-} from '@chakra-ui/react';
-import React, { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { numberPattern } from '../../../common/validation';
-import PythonDeclaration from '../../packageData/model/PythonDeclaration';
+} from '@chakra-ui/react'
+import React, { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+import { useAppDispatch, useAppSelector } from '../../../app/hooks'
+import { numberPattern } from '../../../common/validation'
+import PythonDeclaration from '../../packageData/model/PythonDeclaration'
 import {
     hideAnnotationForms,
     selectBoundary,
     upsertBoundary,
-} from '../annotationSlice';
-import AnnotationForm from './AnnotationForm';
+} from '../annotationSlice'
+import AnnotationForm from './AnnotationForm'
 
 interface BoundaryFormProps {
     readonly target: PythonDeclaration;
@@ -44,12 +44,12 @@ interface BoundaryFormState {
 }
 
 const BoundaryForm: React.FC<BoundaryFormProps> = function({ target }) {
-    const targetPath = target.pathAsString();
-    const prevInterval = useAppSelector(selectBoundary(targetPath))?.interval;
+    const targetPath = target.pathAsString()
+    const prevInterval = useAppSelector(selectBoundary(targetPath))?.interval
 
     // Hooks -----------------------------------------------------------------------------------------------------------
 
-    const dispatch = useAppDispatch();
+    const dispatch = useAppDispatch()
     const {
         register,
         handleSubmit,
@@ -77,8 +77,8 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function({ target }) {
                 isLowLimitExclusive: prevInterval?.isLowLimitExclusive || false,
                 isUpperLimitExclusive: prevInterval?.isUpperLimitExclusive || false,
             },
-        });
-    }, [reset, prevInterval]);
+        })
+    }, [reset, prevInterval])
 
     // Event handlers --------------------------------------------------------------------------------------------------
 
@@ -104,9 +104,9 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function({ target }) {
         if (value === 'true') {
             setValue('interval.isUpperLimitExclusive', true)
         } else {
-            setValue('interval.isDiscrete', false);
+            setValue('interval.isUpperLimitExclusive', false)
         }
-    };
+    }
 
     const onSave = (data: BoundaryFormState) => {
         dispatch(
@@ -114,37 +114,13 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function({ target }) {
                 target: targetPath,
                 ...data,
             }),
-        );
-        dispatch(hideAnnotationForms());
-    };
+        )
+        dispatch(hideAnnotationForms())
+    }
 
     const onCancel = () => {
-        dispatch(hideAnnotationForms());
-    };
-
-    const registerOnIsLowLimitExclusiveChange =
-        isLowLimitExclusiveRegister.onChange;
-    isLowLimitExclusiveRegister.onChange = (event) => {
-        const result = registerOnIsLowLimitExclusiveChange(event);
-        if (event.target.value === 'true') {
-            setValue('interval.isLowLimitExclusive', true);
-        } else {
-            setValue('interval.isLowLimitExclusive', false);
-        }
-        return result;
-    };
-
-    const registerOnIsUpperLimitExclusiveChange =
-        isUpperLimitExclusiveRegister.onChange;
-    isUpperLimitExclusiveRegister.onChange = (event) => {
-        const result = registerOnIsUpperLimitExclusiveChange(event);
-        if (event.target.value === 'true') {
-            setValue('interval.isUpperLimitExclusive', true);
-        } else {
-            setValue('interval.isUpperLimitExclusive', false);
-        }
-        return result;
-    };
+        dispatch(hideAnnotationForms())
+    }
 
     // Rendering -------------------------------------------------------------------------------------------------------
 
@@ -241,7 +217,7 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function({ target }) {
                 </WrapItem>
             </Wrap>
         </AnnotationForm>
-    );
-};
+    )
+}
 
-export default BoundaryForm;
+export default BoundaryForm
