@@ -1,12 +1,12 @@
 import { Code, Flex, HStack, IconButton, Stack, Text } from '@chakra-ui/react';
 import 'katex/dist/katex.min.css';
-import React, { ReactNode, useState } from 'react';
+import React, {ClassAttributes, FunctionComponent, HTMLAttributes, useState} from 'react';
 import { FaChevronDown, FaChevronRight } from 'react-icons/fa';
 import ReactMarkdown from 'react-markdown';
 import {
     CodeComponent,
     ReactMarkdownProps,
-} from 'react-markdown/src/ast-to-react';
+} from 'react-markdown/lib/ast-to-react';
 import rehypeKatex from 'rehype-katex';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
@@ -15,11 +15,11 @@ interface DocumentationTextProps {
     inputText: string;
 }
 
-type ParagraphComponent = (
-    props: React.ClassAttributes<HTMLParagraphElement> &
-        React.HTMLAttributes<HTMLParagraphElement> &
-        ReactMarkdownProps,
-) => ReactNode;
+type ParagraphComponent = FunctionComponent<
+    ClassAttributes<HTMLParagraphElement> &
+    HTMLAttributes<HTMLParagraphElement> &
+    ReactMarkdownProps
+>;
 
 const CustomText: ParagraphComponent = function ({ className, children }) {
     return <Text className={className}>{children}</Text>;

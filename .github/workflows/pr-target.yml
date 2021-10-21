@@ -8,6 +8,10 @@ on:
       - synchronize
       - reopened
 
+concurrency: 
+  group: ${{ github.head_ref }}
+  cancel-in-progress: true
+
 jobs:
   title:
     runs-on: ubuntu-latest
