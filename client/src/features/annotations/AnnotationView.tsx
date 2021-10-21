@@ -3,6 +3,7 @@ import React from 'react';
 import { FaTrash, FaWrench } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
+    boundaryToString,
     removeBoundary,
     removeConstant,
     removeEnum,
@@ -57,7 +58,7 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
             {boundaryAnnotation && (
                 <Annotation
                     type="boundary"
-                    name={String(boundaryAnnotation.toString())}
+                    name={(boundaryToString(boundaryAnnotation))}
                     onEdit={() => dispatch(showBoundaryAnnotationForm(target))}
                     onDelete={() => dispatch(removeBoundary(target))}
                 />

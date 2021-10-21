@@ -340,6 +340,19 @@ export const {
 } = actions;
 export default reducer;
 
+export const boundaryToString = (boundary: BoundaryAnnotation) => {
+    const interval = boundary.interval;
+    let result = '';
+    result += interval.isDiscrete ? 'discrete' : 'continuous';
+    result += '_';
+    result += interval.lowIntervalLimit;
+    result += interval.isLowLimitExclusive ? '<' : '<=';
+    result += 'x';
+    result += interval.isUpperLimitExclusive ? '<' : '<=';
+    result += interval.upperIntervalLimit;
+    return result;
+}
+
 export const selectAnnotations = (state: RootState) => state.annotations;
 export const selectBoundary =
     (target: string) =>

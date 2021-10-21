@@ -1,6 +1,10 @@
 import {
+    Box,
     FormControl,
+    FormErrorMessage,
+    FormErrorIcon,
     FormLabel,
+    HStack,
     NumberDecrementStepper,
     NumberIncrementStepper,
     NumberInput,
@@ -10,6 +14,8 @@ import {
     RadioGroup,
     Select,
     Stack,
+    Wrap,
+    WrapItem,
 } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -37,7 +43,7 @@ interface BoundaryFormState {
     };
 }
 
-const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
+const BoundaryForm: React.FC<BoundaryFormProps> = function({ target }) {
     const targetPath = target.pathAsString();
     const prevInterval = useAppSelector(selectBoundary(targetPath))?.interval;
 
@@ -49,8 +55,7 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
         handleSubmit,
         reset,
         setValue,
-        /* watch, */
-        /* formState: { errors }, */
+        formState: { errors },
     } = useForm<BoundaryFormState>({
         defaultValues: {
             interval: {
@@ -61,24 +66,7 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
                 isUpperLimitExclusive: false,
             },
         },
-    });
-
-    // const watchIsDiscrete = watch('interval.isDiscrete');
-
-    const isLowLimitExclusiveRegister = register(
-        'interval.isLowLimitExclusive',
-        {
-            required: 'This is required.',
-        },
-    );
-    const isUpperLimitExclusiveRegister = register(
-        'interval.isUpperLimitExclusive',
-        {
-            required: 'This is required.',
-        },
-    );
-    // const watchIsLowLimitExclusive = watch('interval.isLowLimitExclusive');
-    // const watchIsUpperLimitExclusive = watch('interval.isUpperLimitExclusive');
+    })
 
     useEffect(() => {
         reset({
@@ -87,8 +75,7 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
                 lowIntervalLimit: prevInterval?.lowIntervalLimit || 0,
                 upperIntervalLimit: prevInterval?.upperIntervalLimit || 0,
                 isLowLimitExclusive: prevInterval?.isLowLimitExclusive || false,
-                isUpperLimitExclusive:
-                    prevInterval?.isUpperLimitExclusive || false,
+                isUpperLimitExclusive: prevInterval?.isUpperLimitExclusive || false,
             },
         });
     }, [reset, prevInterval]);
@@ -97,7 +84,25 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
 
     const handleIsDiscreteChange = (value: string) => {
         if (value === 'true') {
-            setValue('interval.isDiscrete', true);
+            setValue('interval.isDiscrete', true)
+        } else {
+            setValue('interval.isDiscrete', false)
+        }
+    }
+
+    const handleIsLowLimitExclusiveChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const value = event.target.value
+        if (value === 'true') {
+            setValue('interval.isLowLimitExclusive', true)
+        } else {
+            setValue('interval.isLowLimitExclusive', false)
+        }
+    }
+
+    const handleIsUpperLimitExclusiveChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const value = event.target.value
+        if (value === 'true') {
+            setValue('interval.isUpperLimitExclusive', true)
         } else {
             setValue('interval.isDiscrete', false);
         }
@@ -149,56 +154,92 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
         >
-            <FormControl>
-                <FormLabel>
-                    Type of default value of &quot;{target.name}&quot;:
-                </FormLabel>
-                <RadioGroup
-                    defaultValue={prevInterval?.isDiscrete.toString() || 'true'}
-                    onChange={handleIsDiscreteChange}
-                >
-                    <Stack direction="column">
-                        <Radio value="true">Discrete</Radio>
-                        <Radio value="false">Continuous</Radio>
-                    </Stack>
-                </RadioGroup>
-            </FormControl>
-            <FormControl>
-                <Select {...isLowLimitExclusiveRegister}>
-                    <option value="false">{'<='}</option>
-                    <option value="true">{'<'}</option>
-                </Select>
-                <Select {...isUpperLimitExclusiveRegister}>
-                    <option value="false">{'<='}</option>
-                    <option value="true">{'<'}</option>
-                </Select>
-            </FormControl>
-            <FormControl>
-                <NumberInput>
-                    <NumberInputField
-                        {...register('interval.lowIntervalLimit', {
-                            required: 'This is required.',
-                            pattern: numberPattern,
-                        })}
-                    />
-                    <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                    </NumberInputStepper>
-                </NumberInput>
-                <NumberInput>
-                    <NumberInputField
-                        {...register('interval.upperIntervalLimit', {
-                            required: 'This is required.',
-                            pattern: numberPattern,
-                        })}
-                    />
-                    <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                    </NumberInputStepper>
-                </NumberInput>
-            </FormControl>
+            <FormLabel>
+                Type of default value of &quot;{target.name}&quot;:
+            </FormLabel>
+            <RadioGroup
+                defaultValue={prevInterval?.isDiscrete.toString() || 'true'}
+                onChange={handleIsDiscreteChange}
+            >
+                <Stack direction='column'>
+                    <Radio value='true'>Discrete</Radio>
+                    <Radio value='false'>Continuous</Radio>
+                </Stack>
+            </RadioGroup>
+            <br />
+            <Wrap spacing='10px' justfiy='center'>
+                <WrapItem>
+                    <HStack spacing='10px'>
+                        <FormControl
+                            invalid={Boolean(errors?.interval?.lowIntervalLimit)}>
+                            <NumberInput
+                                minW={48}
+                                maxW={48}
+                            >
+                                <NumberInputField
+                                    {...register('interval.lowIntervalLimit', {
+                                        required: 'This is required.',
+                                        pattern: numberPattern,
+                                    })}
+                                />
+                                <NumberInputStepper>
+                                    <NumberIncrementStepper />
+                                    <NumberDecrementStepper />
+                                </NumberInputStepper>
+                            </NumberInput>
+                            <FormErrorMessage>
+                                <FormErrorIcon /> {errors?.interval?.lowIntervalLimit?.message}
+                            </FormErrorMessage>
+                        </FormControl>
+                        <Select
+                            defaultValue={prevInterval?.isLowLimitExclusive.toString() || 'false'}
+                            onChange={handleIsLowLimitExclusiveChange}
+                            minW={24}
+                            maxW={24}
+                        >
+                            <option value='false'>{'<='}</option>
+                            <option value='true'>{'<'}</option>
+                        </Select>
+                    </HStack>
+                </WrapItem>
+                <Box display='flex' alignItems='center'>
+                    {target.name}
+                </Box>
+                <WrapItem>
+                    <HStack spacing='10px'>
+                        <Select
+                            defaultValue={prevInterval?.isUpperLimitExclusive.toString() || 'false'}
+                            onChange={handleIsUpperLimitExclusiveChange}
+                            minW={24}
+                            maxW={24}
+                        >
+                            <option value='false'>{'<='}</option>
+                            <option value='true'>{'<'}</option>
+                        </Select>
+                        <FormControl
+                            invalid={Boolean(errors?.interval?.upperIntervalLimit)}>
+                            <NumberInput
+                                minW={48}
+                                maxW={48}
+                            >
+                                <NumberInputField
+                                    {...register('interval.upperIntervalLimit', {
+                                        required: 'This is required.',
+                                        pattern: numberPattern,
+                                    })}
+                                />
+                                <NumberInputStepper>
+                                    <NumberIncrementStepper />
+                                    <NumberDecrementStepper />
+                                </NumberInputStepper>
+                            </NumberInput>
+                            <FormErrorMessage>
+                                <FormErrorIcon /> {errors?.interval?.upperIntervalLimit?.message}
+                            </FormErrorMessage>
+                        </FormControl>
+                    </HStack>
+                </WrapItem>
+            </Wrap>
         </AnnotationForm>
     );
 };
