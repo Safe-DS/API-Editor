@@ -77,7 +77,7 @@ const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                     {showGroup && (
                         <MenuItem
                             onClick={() =>
-                                dispatch(showGroupAnnotationForm(target))
+                                dispatch(showGroupAnnotationForm({target: target, groupName: ''}))
                             }
                         >
                             @group

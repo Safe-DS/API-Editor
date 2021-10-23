@@ -11,7 +11,7 @@ export interface AnnotationsState {
         [target: string]: EnumAnnotation;
     };
     groups: {
-        [target: string]: GroupAnnotation;
+        [target: string]: {[groupName: string]: GroupAnnotation};
     }
     optionals: {
         [target: string]: OptionalAnnotation;
@@ -45,23 +45,6 @@ interface ConstantAnnotation {
     readonly defaultValue: string | number | boolean;
 }
 
-interface GroupAnnotation {
-    /**
-     * ID of the annotated Python declaration
-     */
-    readonly target: string;
-
-    /**
-     * Name of the grouped object
-     */
-    readonly groupName: string,
-
-    /**
-     * Parameters to group
-     */
-    readonly parameters: string[];
-}
-
 interface EnumAnnotation {
     /**
      * ID of the annotated Python declaration.
@@ -78,6 +61,35 @@ interface EnumAnnotation {
 interface EnumPair {
     readonly stringValue: string;
     readonly instanceName: string;
+}
+
+export interface GroupAnnotation {
+    /**
+     * ID of the annotated Python declaration
+     */
+    readonly target: string;
+
+    /**
+     * Name of the grouped object
+     */
+    readonly groupName: string,
+
+    /**
+     * Parameters to group
+     */
+    readonly parameters: string[];
+}
+
+interface GroupTarget {
+    /**
+     * ID of the annotated Python declaration
+     */
+    readonly target: string;
+
+    /**
+     * Name of the grouped object
+     */
+    readonly groupName: string,
 }
 
 interface OptionalAnnotation {
@@ -126,6 +138,7 @@ interface UnusedAnnotation {
 type UserAction =
     | typeof NoUserAction
     | ConstantUserAction
+    | GroupUserAction
     | EnumUserAction
     | RenameUserAction
     | OptionalUserAction;
@@ -136,13 +149,19 @@ const NoUserAction = {
 };
 
 interface ConstantUserAction {
-    readonly type: 'optional';
+    readonly type: 'constant';
     readonly target: string;
 }
 
 interface EnumUserAction {
     readonly type: 'enum';
     readonly target: string;
+}
+
+export interface GroupUserAction {
+    readonly type: 'group';
+    readonly target: string;
+    readonly groupName: string;
 }
 
 interface OptionalUserAction {
@@ -207,10 +226,16 @@ const annotationsSlice = createSlice({
             delete state.enums[action.payload];
         },
         upsertGroup(state, action: PayloadAction<GroupAnnotation>) {
-            state.groups[action.payload.target] = action.payload;
+            if (!state.groups[action.payload.target]) {
+                state.groups[action.payload.target] = {};
+            }
+            state.groups[action.payload.target][action.payload.groupName] = action.payload;
         },
-        removeGroup(state, action: PayloadAction<string>) {
-            delete state.groups[action.payload];
+        removeGroup(state, action: PayloadAction<GroupTarget>) {
+            delete state.groups[action.payload.target][action.payload.groupName];
+            if (Object.keys(state.groups[action.payload.target]).length === 0) {
+                delete state.groups[action.payload.target];
+            }
         },
         upsertOptional(state, action: PayloadAction<OptionalAnnotation>) {
             state.optionals[action.payload.target] = action.payload;
@@ -242,10 +267,11 @@ const annotationsSlice = createSlice({
                 target: action.payload,
             };
         },
-        showGroupAnnotationForm(state, action: PayloadAction<string>) {
+        showGroupAnnotationForm(state, action: PayloadAction<GroupTarget>) {
             state.currentUserAction = {
                 type: 'group',
-                target: action.payload,
+                target: action.payload.target,
+                groupName: action.payload.groupName,
             };
         },
         showEnumAnnotationForm(state, action: PayloadAction<string>) {
@@ -325,7 +351,7 @@ export const selectEnum =
         selectAnnotations(state).enums[target];
 export const selectGroups =
     (target: string) =>
-        (state: RootState): GroupAnnotation | undefined =>
+        (state: RootState): {[groupName: string]: GroupAnnotation} | undefined =>
             selectAnnotations(state).groups[target];
 export const selectOptional =
     (target: string) =>

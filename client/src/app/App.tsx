@@ -7,11 +7,12 @@ import { Setter } from '../common/util/types';
 import AnnotationImportDialog from '../features/annotations/AnnotationImportDialog';
 import {
     AnnotationsState,
+    GroupUserAction,
     initializeAnnotations,
     selectAnnotations,
     selectCurrentUserAction,
     selectShowAnnotationImportDialog,
-} from '../features/annotations/annotationSlice';
+} from '../features/annotations/annotationSlice'
 import ConstantForm from '../features/annotations/forms/ConstantForm';
 import EnumForm from '../features/annotations/forms/EnumForm';
 import GroupForm from '../features/annotations/forms/GroupForm'
@@ -109,7 +110,11 @@ const App: React.FC = function () {
                     <EnumForm target={userActionTarget || pythonPackage} />
                 )}
                 {currentUserAction.type === 'group' && (
-                    <GroupForm target={userActionTarget || pythonPackage} />
+                    <GroupForm
+                        target={userActionTarget || pythonPackage}
+                        groupName={(currentUserAction as GroupUserAction)?.groupName ?
+                            (currentUserAction as GroupUserAction)?.groupName : ''}
+                    />
                 )}
                 {currentUserAction.type === 'none' && (
                     <TreeView pythonPackage={filteredPythonPackage} />

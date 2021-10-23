@@ -22,7 +22,7 @@ import {
     showGroupAnnotationForm,
     showRenameAnnotationForm,
     showOptionalAnnotationForm,
-} from './annotationSlice';
+} from './annotationSlice'
 
 interface AnnotationViewProps {
     target: string;
@@ -70,13 +70,21 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
                     onDelete={() => dispatch(removeEnum(target))}
                 />
             )}
-            {groupAnnotations && (
+            {groupAnnotations && Object.keys(groupAnnotations).map(
+            (groupName) => (
                 <Annotation
+                    key={groupName}
                     type="group"
-                    name={groupAnnotations.groupName}
-                    onEdit={() => dispatch(showGroupAnnotationForm(target))}
-                    onDelete={() => dispatch(removeGroup(target))}
+                    name={groupName}
+                    onEdit={() => dispatch(showGroupAnnotationForm(
+                        {target: target, groupName: groupName}
+                    ))}
+                    onDelete={() => dispatch(removeGroup(
+                        {target: target, groupName: groupName}
+                        )
+                    )}
                 />
+            )
             )}
             {optionalAnnotation && (
                 <Annotation

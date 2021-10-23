@@ -1,5 +1,6 @@
 import {
     Checkbox,
+    CheckboxGroup,
     FormControl,
     FormErrorIcon,
     FormErrorMessage,
@@ -14,6 +15,7 @@ import PythonDeclaration from '../../packageData/model/PythonDeclaration'
 import PythonFunction from '../../packageData/model/PythonFunction'
 import PythonParameter from '../../packageData/model/PythonParameter'
 import {
+    GroupAnnotation,
     hideAnnotationForms,
     selectGroups,
     upsertGroup,
@@ -22,6 +24,7 @@ import AnnotationForm from './AnnotationForm'
 
 interface GroupFormProps {
     readonly target: PythonDeclaration;
+    readonly groupName?: string;
 }
 
 interface GroupFormState {
@@ -29,9 +32,13 @@ interface GroupFormState {
     parameters: string[];
 }
 
-const GroupForm: React.FC<GroupFormProps> = function({ target }) {
+const GroupForm: React.FC<GroupFormProps> = function({ target, groupName }: GroupFormProps) {
     const targetPath = target.pathAsString()
-    const prevGroupName = useAppSelector(selectGroups(targetPath))?.groupName
+    let prevGroupAnnotation: GroupAnnotation | undefined;
+    let currentGroups = useAppSelector(selectGroups(targetPath));
+    if (groupName && currentGroups) {
+        prevGroupAnnotation = currentGroups[groupName];
+    }
     let allParameters: PythonParameter[] = []
 
     if (target instanceof PythonFunction) {
@@ -42,15 +49,16 @@ const GroupForm: React.FC<GroupFormProps> = function({ target }) {
 
     const dispatch = useAppDispatch()
     const {
-        register,
         handleSubmit,
         setFocus,
+        setValue,
+        register,
         reset,
         formState: { errors },
     } = useForm<GroupFormState>({
         defaultValues: {
             groupName: '',
-            parameters: [],
+            parameters: prevGroupAnnotation?.parameters || [],
         },
     })
 
@@ -60,11 +68,15 @@ const GroupForm: React.FC<GroupFormProps> = function({ target }) {
 
     useEffect(() => {
         reset({
-            groupName: prevGroupName || '',
+            groupName: prevGroupAnnotation?.groupName || '',
         })
-    }, [reset, prevGroupName])
+    }, [reset, prevGroupAnnotation])
 
     // Event handlers --------------------------------------------------------------------------------------------------
+
+    const handleParameterChange = (value: string[]) => {
+        setValue('parameters', value);
+    }
 
     const onSave = (data: GroupFormState) => {
         dispatch(
@@ -84,7 +96,7 @@ const GroupForm: React.FC<GroupFormProps> = function({ target }) {
 
     return (
         <AnnotationForm
-            heading={`${prevGroupName ? 'Edit' : 'Add'} @group annotation`}
+            heading={`${prevGroupAnnotation ? 'Edit' : 'Add'} @group annotation`}
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
         >
@@ -101,9 +113,19 @@ const GroupForm: React.FC<GroupFormProps> = function({ target }) {
                     <FormErrorIcon /> {errors.groupName?.message}
                 </FormErrorMessage>
             </FormControl>
-            {allParameters.map((parameter) => (
-                <Checkbox value={parameter.name}>{parameter.name}</Checkbox>
-            ))}
+            <CheckboxGroup
+                defaultValue={prevGroupAnnotation?.parameters || []}
+                onChange={handleParameterChange}
+            >
+                {allParameters.map((parameter) => (
+                    <Checkbox
+                        key={parameter.name}
+                        value={parameter.name}
+                    >
+                        {parameter.name}
+                    </Checkbox>
+                ))}
+            </CheckboxGroup>
         </AnnotationForm>
     )
 }
