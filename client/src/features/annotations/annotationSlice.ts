@@ -10,6 +10,9 @@ export interface AnnotationsState {
     enums: {
         [target: string]: EnumAnnotation;
     };
+    groups: {
+        [target: string]: GroupAnnotation;
+    }
     optionals: {
         [target: string]: OptionalAnnotation;
     };
@@ -40,6 +43,23 @@ interface ConstantAnnotation {
      * Default value
      */
     readonly defaultValue: string | number | boolean;
+}
+
+interface GroupAnnotation {
+    /**
+     * ID of the annotated Python declaration
+     */
+    readonly target: string;
+
+    /**
+     * Name of the grouped object
+     */
+    readonly groupName: string,
+
+    /**
+     * Parameters to group
+     */
+    readonly parameters: string[];
 }
 
 interface EnumAnnotation {
@@ -141,6 +161,7 @@ const initialState: AnnotationsState = {
     constants: {},
     currentUserAction: NoUserAction,
     enums: {},
+    groups: {},
     optionals: {},
     renamings: {},
     requireds: {},
@@ -185,6 +206,12 @@ const annotationsSlice = createSlice({
         removeEnum(state, action: PayloadAction<string>) {
             delete state.enums[action.payload];
         },
+        upsertGroup(state, action: PayloadAction<GroupAnnotation>) {
+            state.groups[action.payload.target] = action.payload;
+        },
+        removeGroup(state, action: PayloadAction<string>) {
+            delete state.groups[action.payload];
+        },
         upsertOptional(state, action: PayloadAction<OptionalAnnotation>) {
             state.optionals[action.payload.target] = action.payload;
         },
@@ -212,6 +239,12 @@ const annotationsSlice = createSlice({
         showConstantAnnotationForm(state, action: PayloadAction<string>) {
             state.currentUserAction = {
                 type: 'constant',
+                target: action.payload,
+            };
+        },
+        showGroupAnnotationForm(state, action: PayloadAction<string>) {
+            state.currentUserAction = {
+                type: 'group',
                 target: action.payload,
             };
         },
@@ -257,6 +290,8 @@ export const {
     removeConstant,
     upsertEnum,
     removeEnum,
+    upsertGroup,
+    removeGroup,
     upsertOptional,
     removeOptional,
     upsertRenaming,
@@ -268,6 +303,7 @@ export const {
 
     showConstantAnnotationForm,
     showEnumAnnotationForm,
+    showGroupAnnotationForm,
     showOptionalAnnotationForm,
     showRenameAnnotationForm,
     hideAnnotationForms,
@@ -287,6 +323,10 @@ export const selectEnum =
     (target: string) =>
     (state: RootState): EnumAnnotation | undefined =>
         selectAnnotations(state).enums[target];
+export const selectGroups =
+    (target: string) =>
+        (state: RootState): GroupAnnotation | undefined =>
+            selectAnnotations(state).groups[target];
 export const selectOptional =
     (target: string) =>
     (state: RootState): OptionalAnnotation | undefined =>

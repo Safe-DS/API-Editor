@@ -14,6 +14,7 @@ import {
 } from '../features/annotations/annotationSlice';
 import ConstantForm from '../features/annotations/forms/ConstantForm';
 import EnumForm from '../features/annotations/forms/EnumForm';
+import GroupForm from '../features/annotations/forms/GroupForm'
 import OptionalForm from '../features/annotations/forms/OptionalForm';
 import RenameForm from '../features/annotations/forms/RenameForm';
 import { PythonFilter } from '../features/packageData/model/PythonFilter';
@@ -106,6 +107,9 @@ const App: React.FC = function () {
                 )}
                 {currentUserAction.type === 'enum' && (
                     <EnumForm target={userActionTarget || pythonPackage} />
+                )}
+                {currentUserAction.type === 'group' && (
+                    <GroupForm target={userActionTarget || pythonPackage} />
                 )}
                 {currentUserAction.type === 'none' && (
                     <TreeView pythonPackage={filteredPythonPackage} />

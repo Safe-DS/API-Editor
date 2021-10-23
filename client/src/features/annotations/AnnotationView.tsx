@@ -5,18 +5,21 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
     removeConstant,
     removeEnum,
+    removeGroup,
     removeOptional,
     removeRenaming,
     removeRequired,
     removeUnused,
     selectConstant,
     selectEnum,
+    selectGroups,
     selectRenaming,
     selectUnused,
     selectRequired,
     selectOptional,
     showConstantAnnotationForm,
     showEnumAnnotationForm,
+    showGroupAnnotationForm,
     showRenameAnnotationForm,
     showOptionalAnnotationForm,
 } from './annotationSlice';
@@ -30,6 +33,7 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
 
     const constantAnnotation = useAppSelector(selectConstant(target));
     const enumAnnotation = useAppSelector(selectEnum(target));
+    const groupAnnotations = useAppSelector(selectGroups(target));
     const optionalAnnotation = useAppSelector(selectOptional(target));
     const renameAnnotation = useAppSelector(selectRenaming(target));
     const requiredAnnotation = useAppSelector(selectRequired(target));
@@ -38,6 +42,7 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
     if (
         !constantAnnotation &&
         !enumAnnotation &&
+        !groupAnnotations &&
         !optionalAnnotation &&
         !renameAnnotation &&
         !requiredAnnotation &&
@@ -63,6 +68,14 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
                     name={enumAnnotation.enumName}
                     onEdit={() => dispatch(showEnumAnnotationForm(target))}
                     onDelete={() => dispatch(removeEnum(target))}
+                />
+            )}
+            {groupAnnotations && (
+                <Annotation
+                    type="group"
+                    name={groupAnnotations.groupName}
+                    onEdit={() => dispatch(showGroupAnnotationForm(target))}
+                    onDelete={() => dispatch(removeGroup(target))}
                 />
             )}
             {optionalAnnotation && (

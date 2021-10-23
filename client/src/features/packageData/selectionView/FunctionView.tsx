@@ -23,7 +23,11 @@ const FunctionView: React.FC<FunctionViewProps> = function ({
                     <Heading as="h3" size="lg">
                         {pythonFunction.name}
                     </Heading>
-                    <AnnotationDropdown target={id} showRename showUnused />
+                    <AnnotationDropdown
+                        target={id}
+                        showGroup
+                        showRename
+                        showUnused />
                 </HStack>
 
                 <AnnotationView target={id} />
