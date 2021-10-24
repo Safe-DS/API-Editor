@@ -17,6 +17,7 @@ import PythonParameter from '../../packageData/model/PythonParameter'
 import {
     GroupAnnotation,
     hideAnnotationForms,
+    removeGroup,
     selectGroups,
     upsertGroup,
 } from '../annotationSlice'
@@ -32,23 +33,86 @@ interface GroupFormState {
     parameters: string[];
 }
 
-const GroupForm: React.FC<GroupFormProps> = function({ target, groupName }: GroupFormProps) {
+const GroupForm: React.FC<GroupFormProps> = function({
+                                                         target,
+                                                         groupName,
+                                                     }: GroupFormProps) {
     const targetPath = target.pathAsString()
-    let prevGroupAnnotation: GroupAnnotation | undefined;
-    let currentGroups = useAppSelector(selectGroups(targetPath));
+    let currentGroups = useAppSelector(selectGroups(targetPath))
+    let prevGroupAnnotation: GroupAnnotation | undefined
     if (groupName && currentGroups) {
-        prevGroupAnnotation = currentGroups[groupName];
+        prevGroupAnnotation = currentGroups[groupName]
     }
+    let otherGroupNames: string[] = []
+    if (!!currentGroups) {
+        otherGroupNames = Object.values(currentGroups)
+            .filter(group => group.groupName !== prevGroupAnnotation?.groupName)
+            .map(group => group.groupName)
+    }
+
     let allParameters: PythonParameter[] = []
 
     if (target instanceof PythonFunction) {
         allParameters = target.children()
     }
 
+    const buildAlreadyUsedName = (name: string, usedIn: string) => {
+        return name + ' (already used in ' + usedIn + ')'
+    }
+
+    const getParameterName = (name: string) => {
+        if (!currentGroups) {
+            return name
+        }
+
+        for (let group of Object.values(currentGroups)) {
+            if (group.parameters.some(parameter => parameter === name)) {
+                if (!prevGroupAnnotation ||
+                    (prevGroupAnnotation && group.groupName !== prevGroupAnnotation.groupName)
+                ) {
+                    return buildAlreadyUsedName(name, group.groupName)
+                }
+            }
+        }
+        return name
+    }
+
+    const updateOtherGroups = () => {
+        if (!!currentGroups) {
+            for (let groupName of otherGroupNames) {
+                let needsChange = false
+                let group = currentGroups[groupName]
+                let currentAnnotationParameter = [...getValues('parameters')]
+                let currentGroupParameter = [...group.parameters]
+                for (let parameter of currentAnnotationParameter) {
+                    const index = currentGroupParameter.indexOf(parameter)
+                    if (index > -1) {
+                        needsChange = true
+                        currentGroupParameter.splice(index, 1)
+                    }
+                }
+                if (!currentGroupParameter.length) {
+                    dispatch(removeGroup(
+                        { target: targetPath, groupName: group.groupName },
+                    ))
+                } else if (needsChange) {
+                    dispatch(upsertGroup(
+                        {
+                            parameters: currentGroupParameter,
+                            groupName: group.groupName,
+                            target: group.target,
+                        },
+                    ))
+                }
+            }
+        }
+    }
+
     // Hooks -----------------------------------------------------------------------------------------------------------
 
     const dispatch = useAppDispatch()
     const {
+        getValues,
         handleSubmit,
         setFocus,
         setValue,
@@ -75,10 +139,11 @@ const GroupForm: React.FC<GroupFormProps> = function({ target, groupName }: Grou
     // Event handlers --------------------------------------------------------------------------------------------------
 
     const handleParameterChange = (value: string[]) => {
-        setValue('parameters', value);
+        setValue('parameters', value)
     }
 
     const onSave = (data: GroupFormState) => {
+        updateOtherGroups()
         dispatch(
             upsertGroup({
                 target: targetPath,
@@ -122,7 +187,7 @@ const GroupForm: React.FC<GroupFormProps> = function({ target, groupName }: Grou
                         key={parameter.name}
                         value={parameter.name}
                     >
-                        {parameter.name}
+                        {getParameterName(parameter.name)}
                     </Checkbox>
                 ))}
             </CheckboxGroup>
