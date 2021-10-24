@@ -6,8 +6,9 @@ import {
     FormErrorMessage,
     FormLabel,
     Input,
+    VStack,
 } from '@chakra-ui/react'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { pythonIdentifierPattern } from '../../../common/validation'
@@ -40,8 +41,10 @@ const GroupForm: React.FC<GroupFormProps> = function({
     const targetPath = target.pathAsString()
     let currentGroups = useAppSelector(selectGroups(targetPath))
     let prevGroupAnnotation: GroupAnnotation | undefined
+    let [numberOfCheckedBoxes, setNumberOfCheckedBoxes] = useState(0)
     if (groupName && currentGroups) {
         prevGroupAnnotation = currentGroups[groupName]
+        setNumberOfCheckedBoxes(prevGroupAnnotation.parameters.length)
     }
     let otherGroupNames: string[] = []
     if (!!currentGroups) {
@@ -65,12 +68,12 @@ const GroupForm: React.FC<GroupFormProps> = function({
             return name
         }
 
-        for (let group of Object.values(currentGroups)) {
-            if (group.parameters.some(parameter => parameter === name)) {
+        for (let group of otherGroupNames) {
+            if (currentGroups[group].parameters.some(parameter => parameter === name)) {
                 if (!prevGroupAnnotation ||
-                    (prevGroupAnnotation && group.groupName !== prevGroupAnnotation.groupName)
+                    (prevGroupAnnotation && currentGroups[group].groupName !== prevGroupAnnotation.groupName)
                 ) {
-                    return buildAlreadyUsedName(name, group.groupName)
+                    return buildAlreadyUsedName(name, currentGroups[group].groupName)
                 }
             }
         }
@@ -91,7 +94,7 @@ const GroupForm: React.FC<GroupFormProps> = function({
                         currentGroupParameter.splice(index, 1)
                     }
                 }
-                if (!currentGroupParameter.length) {
+                if (currentGroupParameter.length < 2) {
                     dispatch(removeGroup(
                         { target: targetPath, groupName: group.groupName },
                     ))
@@ -106,6 +109,10 @@ const GroupForm: React.FC<GroupFormProps> = function({
                 }
             }
         }
+    }
+
+    const twoOrMoreChecked = () => {
+        return getValues('parameters') && getValues('parameters').length > 1
     }
 
     // Hooks -----------------------------------------------------------------------------------------------------------
@@ -140,9 +147,13 @@ const GroupForm: React.FC<GroupFormProps> = function({
 
     const handleParameterChange = (value: string[]) => {
         setValue('parameters', value)
+        setNumberOfCheckedBoxes(getValues('parameters').length)
     }
 
     const onSave = (data: GroupFormState) => {
+        if (!twoOrMoreChecked()) {
+            return
+        }
         updateOtherGroups()
         dispatch(
             upsertGroup({
@@ -178,19 +189,29 @@ const GroupForm: React.FC<GroupFormProps> = function({
                     <FormErrorIcon /> {errors.groupName?.message}
                 </FormErrorMessage>
             </FormControl>
-            <CheckboxGroup
-                defaultValue={prevGroupAnnotation?.parameters || []}
-                onChange={handleParameterChange}
+            <FormControl
+                isInvalid={numberOfCheckedBoxes < 2}
             >
-                {allParameters.map((parameter) => (
-                    <Checkbox
-                        key={parameter.name}
-                        value={parameter.name}
-                    >
-                        {getParameterName(parameter.name)}
-                    </Checkbox>
-                ))}
-            </CheckboxGroup>
+                <CheckboxGroup
+                    defaultValue={prevGroupAnnotation?.parameters || []}
+                    onChange={handleParameterChange}
+                >
+                    <VStack alignItems='left'>
+                        {allParameters.map((parameter) => (
+                            <Checkbox
+                                key={parameter.name}
+                                value={parameter.name}
+                            >
+                                {getParameterName(parameter.name)}
+                            </Checkbox>
+                        ))}
+                    </VStack>
+                </CheckboxGroup>
+                <FormErrorMessage>
+                    <FormErrorIcon />
+                    {'At least two parameters need to be selected.'}
+                </FormErrorMessage>
+            </FormControl>
         </AnnotationForm>
     )
 }
