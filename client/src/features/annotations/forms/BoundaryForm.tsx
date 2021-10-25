@@ -148,6 +148,7 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({target}) {
                         {...register('interval.lowIntervalLimit', {
                             required: 'This is required.',
                             pattern: numberPattern,
+                            valueAsNumber: true,
                             disabled: watch('interval.lowerLimitType') === ComparisonOperator.UNRESTRICTED,
                             validate: {
                                 nonEmptyInterval
@@ -200,6 +201,7 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({target}) {
                         {...register('interval.upperIntervalLimit', {
                             required: 'This is required.',
                             pattern: numberPattern,
+                            valueAsNumber: true,
                             disabled: watch('interval.upperLimitType') === ComparisonOperator.UNRESTRICTED,
                             validate: {
                                 nonEmptyInterval
