@@ -8,7 +8,7 @@ import {
     Input,
     VStack,
 } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { pythonIdentifierPattern } from '../../../common/validation'
@@ -41,10 +41,8 @@ const GroupForm: React.FC<GroupFormProps> = function({
     const targetPath = target.pathAsString()
     let currentGroups = useAppSelector(selectGroups(targetPath))
     let prevGroupAnnotation: GroupAnnotation | undefined
-    let [numberOfCheckedBoxes, setNumberOfCheckedBoxes] = useState(0)
     if (groupName && currentGroups) {
         prevGroupAnnotation = currentGroups[groupName]
-        setNumberOfCheckedBoxes(prevGroupAnnotation.parameters.length)
     }
     let otherGroupNames: string[] = []
     if (!!currentGroups) {
@@ -147,7 +145,6 @@ const GroupForm: React.FC<GroupFormProps> = function({
 
     const handleParameterChange = (value: string[]) => {
         setValue('parameters', value)
-        setNumberOfCheckedBoxes(getValues('parameters').length)
     }
 
     const onSave = (data: GroupFormState) => {
@@ -189,9 +186,7 @@ const GroupForm: React.FC<GroupFormProps> = function({
                     <FormErrorIcon /> {errors.groupName?.message}
                 </FormErrorMessage>
             </FormControl>
-            <FormControl
-                isInvalid={numberOfCheckedBoxes < 2}
-            >
+            <FormControl>
                 <CheckboxGroup
                     defaultValue={prevGroupAnnotation?.parameters || []}
                     onChange={handleParameterChange}
