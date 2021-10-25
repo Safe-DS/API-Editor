@@ -74,6 +74,7 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({target}) {
         reset(initialFormState(prevInterval))
     }, [reset, prevInterval])
 
+
     // Event handlers --------------------------------------------------------------------------------------------------
 
     const handleIsDiscreteChange = (value: string) => {
@@ -107,8 +108,6 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({target}) {
         const upperLimit = getValues('interval.upperIntervalLimit')
         const upperLimitType = getValues('interval.upperLimitType')
 
-        console.log(lowerLimit, lowerLimitType, upperLimit, upperLimitType)
-
         if (lowerLimitType === ComparisonOperator.UNRESTRICTED || upperLimitType === ComparisonOperator.UNRESTRICTED) {
             return true
         }
@@ -123,7 +122,6 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({target}) {
 
     // Rendering -------------------------------------------------------------------------------------------------------
 
-    // @ts-ignore
     return (
         <AnnotationForm
             heading={`${prevInterval ? 'Edit' : 'Add'} @boundary annotation`}
@@ -155,6 +153,7 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({target}) {
                                 nonEmptyInterval
                             }
                         })}
+                        onChange={(_, valueAsNumber) => setValue('interval.lowIntervalLimit', valueAsNumber)}
                     >
                         <NumberInputField/>
                         <NumberInputStepper>
@@ -206,6 +205,7 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({target}) {
                                 nonEmptyInterval
                             }
                         })}
+                        onChange={(_, valueAsNumber) => setValue('interval.upperIntervalLimit', valueAsNumber)}
                     >
                         <NumberInputField/>
                         <NumberInputStepper>
@@ -222,10 +222,6 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({target}) {
                     </FormErrorMessage>
                 </FormControl>
             </HStack>
-
-            {/* { && */}
-            {/*    <Text color='red'>Interval must not be empty.</Text> */}
-            {/* } */}
         </AnnotationForm>
     )
 }
