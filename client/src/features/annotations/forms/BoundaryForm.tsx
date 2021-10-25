@@ -131,7 +131,7 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function({ target }) {
             onCancel={onCancel}
         >
             <FormLabel>
-                Type of default value of &quot;{target.name}&quot;:
+                Type of boundary of &quot;{target.name}&quot;:
             </FormLabel>
             <RadioGroup
                 defaultValue={prevInterval?.isDiscrete.toString() || 'true'}
@@ -143,7 +143,7 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function({ target }) {
                 </Stack>
             </RadioGroup>
             <br />
-            <Wrap spacing='10px' justfiy='center'>
+            <Wrap spacing='10px'>
                 <WrapItem>
                     <HStack spacing='10px'>
                         <FormControl
@@ -178,7 +178,7 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function({ target }) {
                         </Select>
                     </HStack>
                 </WrapItem>
-                <Box display='flex' alignItems='center'>
+                <Box display='flex' alignItems='center' fontWeight='bold'>
                     {target.name}
                 </Box>
                 <WrapItem>
