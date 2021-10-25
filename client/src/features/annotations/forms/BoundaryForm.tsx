@@ -1,8 +1,8 @@
 import {
     Box,
     FormControl,
-    FormErrorMessage,
     FormErrorIcon,
+    FormErrorMessage,
     FormLabel,
     HStack,
     NumberDecrementStepper,
@@ -17,17 +17,14 @@ import {
     Wrap,
     WrapItem,
 } from '@chakra-ui/react'
-import React, { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
-import { useAppDispatch, useAppSelector } from '../../../app/hooks'
-import { numberPattern } from '../../../common/validation'
+import React, {useEffect} from 'react'
+import {useForm} from 'react-hook-form'
+import {useAppDispatch, useAppSelector} from '../../../app/hooks'
+import {numberPattern} from '../../../common/validation'
 import PythonDeclaration from '../../packageData/model/PythonDeclaration'
-import {
-    hideAnnotationForms,
-    selectBoundary,
-    upsertBoundary,
-} from '../annotationSlice'
+import {ComparisonOperator, hideAnnotationForms, Interval, selectBoundary, upsertBoundary,} from '../annotationSlice'
 import AnnotationForm from './AnnotationForm'
+import {Optional} from "../../../common/util/types";
 
 interface BoundaryFormProps {
     readonly target: PythonDeclaration;
@@ -37,13 +34,25 @@ interface BoundaryFormState {
     interval: {
         isDiscrete: boolean;
         lowIntervalLimit: number;
+        lowerLimitType: ComparisonOperator;
         upperIntervalLimit: number;
-        isLowLimitExclusive: boolean;
-        isUpperLimitExclusive: boolean;
+        upperLimitType: ComparisonOperator;
     };
 }
 
-const BoundaryForm: React.FC<BoundaryFormProps> = function({ target }) {
+const initialFormState = function(previousInterval: Optional<Interval>): BoundaryFormState {
+    return {
+        interval: {
+            isDiscrete: previousInterval?.isDiscrete ?? false,
+            lowIntervalLimit: previousInterval?.lowIntervalLimit ?? 0,
+            lowerLimitType: previousInterval?.lowerLimitType ?? ComparisonOperator.LESS_THAN_OR_EQUALS,
+            upperIntervalLimit: previousInterval?.upperIntervalLimit ?? 1,
+            upperLimitType: previousInterval?.upperLimitType ?? ComparisonOperator.LESS_THAN_OR_EQUALS,
+        },
+    }
+}
+
+const BoundaryForm: React.FC<BoundaryFormProps> = function ({target}) {
     const targetPath = target.pathAsString()
     const prevInterval = useAppSelector(selectBoundary(targetPath))?.interval
 
@@ -54,30 +63,15 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function({ target }) {
         register,
         handleSubmit,
         reset,
+        watch,
         setValue,
-        formState: { errors },
+        formState: {errors},
     } = useForm<BoundaryFormState>({
-        defaultValues: {
-            interval: {
-                isDiscrete: false,
-                lowIntervalLimit: 0,
-                upperIntervalLimit: 0,
-                isLowLimitExclusive: false,
-                isUpperLimitExclusive: false,
-            },
-        },
+        defaultValues: initialFormState(prevInterval),
     })
 
     useEffect(() => {
-        reset({
-            interval: {
-                isDiscrete: prevInterval?.isDiscrete || false,
-                lowIntervalLimit: prevInterval?.lowIntervalLimit || 0,
-                upperIntervalLimit: prevInterval?.upperIntervalLimit || 0,
-                isLowLimitExclusive: prevInterval?.isLowLimitExclusive || false,
-                isUpperLimitExclusive: prevInterval?.isUpperLimitExclusive || false,
-            },
-        })
+        reset(initialFormState(prevInterval))
     }, [reset, prevInterval])
 
     // Event handlers --------------------------------------------------------------------------------------------------
@@ -90,29 +84,11 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function({ target }) {
         }
     }
 
-    const handleIsLowLimitExclusiveChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const value = event.target.value
-        if (value === 'true') {
-            setValue('interval.isLowLimitExclusive', true)
-        } else {
-            setValue('interval.isLowLimitExclusive', false)
-        }
-    }
-
-    const handleIsUpperLimitExclusiveChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const value = event.target.value
-        if (value === 'true') {
-            setValue('interval.isUpperLimitExclusive', true)
-        } else {
-            setValue('interval.isUpperLimitExclusive', false)
-        }
-    }
-
     const onSave = (data: BoundaryFormState) => {
         dispatch(
             upsertBoundary({
                 target: targetPath,
-                ...data,
+                interval: {...data.interval},
             }),
         )
         dispatch(hideAnnotationForms())
@@ -134,15 +110,15 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function({ target }) {
                 Type of boundary of &quot;{target.name}&quot;:
             </FormLabel>
             <RadioGroup
-                defaultValue={prevInterval?.isDiscrete.toString() || 'true'}
+                defaultValue={prevInterval?.isDiscrete.toString() || 'false'}
                 onChange={handleIsDiscreteChange}
             >
                 <Stack direction='column'>
-                    <Radio value='true'>Discrete</Radio>
                     <Radio value='false'>Continuous</Radio>
+                    <Radio value='true'>Discrete</Radio>
                 </Stack>
             </RadioGroup>
-            <br />
+            <br/>
             <Wrap spacing='10px'>
                 <WrapItem>
                     <HStack spacing='10px'>
@@ -156,25 +132,27 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function({ target }) {
                                     {...register('interval.lowIntervalLimit', {
                                         required: 'This is required.',
                                         pattern: numberPattern,
+                                        disabled: watch('interval.lowerLimitType') === ComparisonOperator.UNRESTRICTED
                                     })}
                                 />
                                 <NumberInputStepper>
-                                    <NumberIncrementStepper />
-                                    <NumberDecrementStepper />
+                                    <NumberIncrementStepper/>
+                                    <NumberDecrementStepper/>
                                 </NumberInputStepper>
                             </NumberInput>
                             <FormErrorMessage>
-                                <FormErrorIcon /> {errors?.interval?.lowIntervalLimit?.message}
+                                <FormErrorIcon/> {errors?.interval?.lowIntervalLimit?.message}
                             </FormErrorMessage>
                         </FormControl>
                         <Select
-                            defaultValue={prevInterval?.isLowLimitExclusive.toString() || 'false'}
-                            onChange={handleIsLowLimitExclusiveChange}
-                            minW={24}
-                            maxW={24}
+                            {...register('interval.lowerLimitType', {
+                                required: 'This is required.',
+                                valueAsNumber: true
+                            })}
                         >
-                            <option value='false'>{'<='}</option>
-                            <option value='true'>{'<'}</option>
+                            <option value={ComparisonOperator.LESS_THAN_OR_EQUALS}>{'<='}</option>
+                            <option value={ComparisonOperator.LESS_THAN}>{'<'}</option>
+                            <option value={ComparisonOperator.UNRESTRICTED}>no lower limit</option>
                         </Select>
                     </HStack>
                 </WrapItem>
@@ -184,13 +162,14 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function({ target }) {
                 <WrapItem>
                     <HStack spacing='10px'>
                         <Select
-                            defaultValue={prevInterval?.isUpperLimitExclusive.toString() || 'false'}
-                            onChange={handleIsUpperLimitExclusiveChange}
-                            minW={24}
-                            maxW={24}
+                            {...register('interval.upperLimitType', {
+                                required: 'This is required.',
+                                valueAsNumber: true,
+                            })}
                         >
-                            <option value='false'>{'<='}</option>
-                            <option value='true'>{'<'}</option>
+                            <option value={ComparisonOperator.LESS_THAN_OR_EQUALS}>{'<='}</option>
+                            <option value={ComparisonOperator.LESS_THAN}>{'<'}</option>
+                            <option value={ComparisonOperator.UNRESTRICTED}>no upper limit</option>
                         </Select>
                         <FormControl
                             invalid={Boolean(errors?.interval?.upperIntervalLimit)}>
@@ -202,15 +181,16 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function({ target }) {
                                     {...register('interval.upperIntervalLimit', {
                                         required: 'This is required.',
                                         pattern: numberPattern,
+                                        disabled: watch('interval.upperLimitType') === ComparisonOperator.UNRESTRICTED
                                     })}
                                 />
                                 <NumberInputStepper>
-                                    <NumberIncrementStepper />
-                                    <NumberDecrementStepper />
+                                    <NumberIncrementStepper/>
+                                    <NumberDecrementStepper/>
                                 </NumberInputStepper>
                             </NumberInput>
                             <FormErrorMessage>
-                                <FormErrorIcon /> {errors?.interval?.upperIntervalLimit?.message}
+                                <FormErrorIcon/> {errors?.interval?.upperIntervalLimit?.message}
                             </FormErrorMessage>
                         </FormControl>
                     </HStack>

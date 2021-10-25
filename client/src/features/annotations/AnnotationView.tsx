@@ -1,9 +1,10 @@
-import { Button, ButtonGroup, IconButton, Stack, Text } from '@chakra-ui/react';
+import {Button, ButtonGroup, IconButton, Stack, Text} from '@chakra-ui/react';
 import React from 'react';
-import { FaTrash, FaWrench } from 'react-icons/fa';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import {FaTrash, FaWrench} from 'react-icons/fa';
+import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {
-    boundaryToString,
+    BoundaryAnnotation,
+    ComparisonOperator,
     removeBoundary,
     removeConstant,
     removeEnum,
@@ -11,18 +12,18 @@ import {
     removeRenaming,
     removeRequired,
     removeUnused,
+    selectBoundary,
     selectConstant,
     selectEnum,
-    selectRenaming,
-    selectUnused,
-    selectRequired,
     selectOptional,
+    selectRenaming,
+    selectRequired,
+    selectUnused,
     showBoundaryAnnotationForm,
     showConstantAnnotationForm,
     showEnumAnnotationForm,
-    showRenameAnnotationForm,
     showOptionalAnnotationForm,
-    selectBoundary,
+    showRenameAnnotationForm,
 } from './annotationSlice';
 
 interface AnnotationViewProps {
@@ -110,6 +111,31 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
         </Stack>
     );
 };
+
+const boundaryToString = (boundary: BoundaryAnnotation) => {
+    const interval = boundary.interval;
+    let result = '{x ∈ ';
+
+    result += interval.isDiscrete ? 'ℤ' : 'ℝ'
+    result += ' | '
+
+    if (interval.lowerLimitType === ComparisonOperator.LESS_THAN_OR_EQUALS) {
+        result += `${interval.lowIntervalLimit} ≤ `
+    } else if (interval.lowerLimitType === ComparisonOperator.LESS_THAN) {
+        result += `${interval.lowIntervalLimit} <`
+    }
+
+    result += 'x'
+
+    if (interval.upperLimitType === ComparisonOperator.LESS_THAN_OR_EQUALS) {
+        result += ` ≤ ${interval.upperIntervalLimit}`
+    } else if (interval.upperLimitType === ComparisonOperator.LESS_THAN) {
+        result += ` < ${interval.upperIntervalLimit}`
+    }
+
+    result += '}'
+    return result
+}
 
 interface AnnotationProps {
     type: string;

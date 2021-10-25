@@ -28,7 +28,7 @@ export interface AnnotationsState {
     showImportDialog: boolean;
 }
 
-interface BoundaryAnnotation {
+export interface BoundaryAnnotation {
     /**
      * ID of the annotated Python declaration
      */
@@ -38,6 +38,39 @@ interface BoundaryAnnotation {
      * The interval specifying possible numeric values
      */
     readonly interval: Interval;
+}
+
+export interface Interval {
+    /**
+     * Whether the type of the interval is discrete or continuous
+     */
+    readonly isDiscrete: boolean;
+
+    /**
+     * Lower interval limit
+     */
+    readonly lowIntervalLimit: number;
+
+    /**
+     * Whether the lower interval limit is inclusive or exclusive
+     */
+    readonly lowerLimitType: ComparisonOperator;
+
+    /**
+     * Upper interval limit
+     */
+    readonly upperIntervalLimit: number;
+
+    /**
+     * Whether the upper interval limit is inclusive or exclusive
+     */
+    readonly upperLimitType: ComparisonOperator;
+}
+
+export enum ComparisonOperator {
+    LESS_THAN_OR_EQUALS,
+    LESS_THAN,
+    UNRESTRICTED,
 }
 
 interface ConstantAnnotation {
@@ -73,33 +106,6 @@ interface EnumAnnotation {
 interface EnumPair {
     readonly stringValue: string;
     readonly instanceName: string;
-}
-
-interface Interval {
-    /**
-     * Whether the type of the interval is discrete or continuous
-     */
-    readonly isDiscrete: boolean;
-
-    /**
-     * Lower interval limit
-     */
-    readonly lowIntervalLimit: number;
-
-    /**
-     * Upper interval limit
-     */
-    readonly upperIntervalLimit: number;
-
-    /**
-     * Whether or not the lower interval limit is inclusive or exclusive
-     */
-    readonly isLowLimitExclusive: boolean;
-
-    /**
-     * Whether or not the upper interval limit is inclusive or exclusive
-     */
-    readonly isUpperLimitExclusive: boolean;
 }
 
 interface OptionalAnnotation {
@@ -339,19 +345,6 @@ export const {
     toggleImportDialog: toggleAnnotationImportDialog,
 } = actions;
 export default reducer;
-
-export const boundaryToString = (boundary: BoundaryAnnotation) => {
-    const interval = boundary.interval;
-    let result = '';
-    result += interval.isDiscrete ? 'discrete' : 'continuous';
-    result += '_';
-    result += interval.lowIntervalLimit;
-    result += interval.isLowLimitExclusive ? '<' : '<=';
-    result += 'x';
-    result += interval.isUpperLimitExclusive ? '<' : '<=';
-    result += interval.upperIntervalLimit;
-    return result;
-}
 
 export const selectAnnotations = (state: RootState) => state.annotations;
 export const selectBoundary =
