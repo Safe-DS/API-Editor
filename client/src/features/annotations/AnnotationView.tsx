@@ -122,7 +122,7 @@ const boundaryToString = (boundary: BoundaryAnnotation) => {
     if (interval.lowerLimitType === ComparisonOperator.LESS_THAN_OR_EQUALS) {
         result += `${interval.lowIntervalLimit} ≤ `
     } else if (interval.lowerLimitType === ComparisonOperator.LESS_THAN) {
-        result += `${interval.lowIntervalLimit} <`
+        result += `${interval.lowIntervalLimit} < `
     }
 
     result += 'x'
