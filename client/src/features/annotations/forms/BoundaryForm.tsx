@@ -14,6 +14,7 @@ import {
     RadioGroup,
     Select,
     Stack,
+    Text,
     Wrap,
     WrapItem,
 } from '@chakra-ui/react'
@@ -40,7 +41,7 @@ interface BoundaryFormState {
     };
 }
 
-const initialFormState = function(previousInterval: Optional<Interval>): BoundaryFormState {
+const initialFormState = function (previousInterval: Optional<Interval>): BoundaryFormState {
     return {
         interval: {
             isDiscrete: previousInterval?.isDiscrete ?? false,
@@ -63,6 +64,7 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({target}) {
         register,
         handleSubmit,
         reset,
+        getValues,
         watch,
         setValue,
         formState: {errors},
@@ -132,7 +134,26 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({target}) {
                                     {...register('interval.lowIntervalLimit', {
                                         required: 'This is required.',
                                         pattern: numberPattern,
-                                        disabled: watch('interval.lowerLimitType') === ComparisonOperator.UNRESTRICTED
+                                        disabled: watch('interval.lowerLimitType') === ComparisonOperator.UNRESTRICTED,
+                                        // Example for cross-field validation
+                                        validate: {
+                                            nonEmptyInterval() {
+                                                const lowerLimit = getValues('interval.lowIntervalLimit')
+                                                const lowerLimitType = getValues('interval.lowerLimitType')
+                                                const upperLimit = getValues('interval.upperIntervalLimit')
+                                                const upperLimitType = getValues('interval.upperLimitType')
+
+                                                if (lowerLimitType === ComparisonOperator.UNRESTRICTED || upperLimitType === ComparisonOperator.UNRESTRICTED) {
+                                                    return true
+                                                }
+
+                                                if (lowerLimitType === ComparisonOperator.LESS_THAN || upperLimitType === ComparisonOperator.LESS_THAN) {
+                                                    return lowerLimit < upperLimit
+                                                }
+
+                                                return lowerLimit <= upperLimit
+                                            }
+                                        }
                                     })}
                                 />
                                 <NumberInputStepper>
@@ -195,7 +216,12 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({target}) {
                         </FormControl>
                     </HStack>
                 </WrapItem>
+
             </Wrap>
+
+            {errors?.interval?.lowIntervalLimit?.type === "nonEmptyInterval" &&
+                <Text color='red'>Interval must not be empty.</Text>
+            }
         </AnnotationForm>
     )
 }
