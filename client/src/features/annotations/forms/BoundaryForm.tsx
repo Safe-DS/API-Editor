@@ -108,6 +108,11 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({target}) {
         const upperLimit = getValues('interval.upperIntervalLimit')
         const upperLimitType = getValues('interval.upperLimitType')
 
+        // Already handled by making the fields required
+        if (Number.isNaN(lowerLimit) || Number.isNaN(upperLimit)) {
+            return true
+        }
+
         if (lowerLimitType === ComparisonOperator.UNRESTRICTED || upperLimitType === ComparisonOperator.UNRESTRICTED) {
             return true
         }
@@ -166,7 +171,7 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({target}) {
                         <FormErrorIcon/>
                         {
                             errors?.interval?.lowIntervalLimit?.message ||
-                            errors?.interval?.upperIntervalLimit?.type === "nonEmptyInterval" && "Interval is empty."
+                            errors?.interval?.lowIntervalLimit?.type === "nonEmptyInterval" && "Interval is empty."
                         }
                     </FormErrorMessage>
                 </FormControl>
