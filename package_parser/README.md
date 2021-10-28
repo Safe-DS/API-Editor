@@ -1,6 +1,6 @@
 # Execution of Starter Code
 
-1. Install Python 3.5 (or a later version).
+1. Install Python 3.9.
 2. Install [poetry](https://python-poetry.org/docs/master/#installation).
 3. **Only the first time**, install dependencies:
     ```shell
