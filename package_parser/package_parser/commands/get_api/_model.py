@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import inspect
 from typing import Any, Optional
 
 from package_parser.utils import declaration_name, parent_qname
@@ -105,17 +106,34 @@ class Class:
     def from_json(json: Any) -> Class:
         return Class(
             json["qname"],
-            json["is_public"]
+            json["is_public"],
+            json["docstring"],
+            json["source_code"]
         )
 
-    def __init__(self, qname: str, is_public: bool) -> None:
+    def __init__(
+        self,
+        qname: str,
+        is_public: bool,
+        docstring: str,
+        source_code: str
+    ) -> None:
         self.qname: str = qname
         self.is_public: bool = is_public
+        self.docstring: str = docstring
+        self.source_code: str = source_code
+
+    @property
+    def name(self) -> str:
+        return self.qname.split(".")[-1]
 
     def to_json(self) -> Any:
         return {
+            "name": self.name,
             "qname": self.qname,
-            "is_public": self.is_public
+            "is_public": self.is_public,
+            "docstring": self.docstring,
+            "source_code": self.source_code
         }
 
 
@@ -126,22 +144,40 @@ class Function:
         return Function(
             json["qname"],
             [Parameter.from_json(parameter_json) for parameter_json in json["parameters"]],
-            json["is_public"]
+            json["is_public"],
+            json["docstring"],
+            json["source_code"]
         )
 
-    def __init__(self, qname: str, parameters: list[Parameter], is_public: bool) -> None:
+    def __init__(
+        self,
+        qname: str,
+        parameters: list[Parameter],
+        is_public: bool,
+        docstring: str,
+        source_code: str
+    ) -> None:
         self.qname: str = qname
         self.parameters: list[Parameter] = parameters
         self.is_public: bool = is_public
+        self.docstring: str = inspect.cleandoc(docstring or "")
+        self.source_code: str = source_code
+
+    @property
+    def name(self) -> str:
+        return self.qname.split(".")[-1]
 
     def to_json(self) -> Any:
         return {
+            "name": self.name,
             "qname": self.qname,
             "parameters": [
                 parameter.to_json()
                 for parameter in self.parameters
             ],
-            "is_public": self.is_public
+            "is_public": self.is_public,
+            "docstring": self.docstring,
+            "source_code": self.source_code
         }
 
 
@@ -152,17 +188,49 @@ class Parameter:
         return Parameter(
             json["name"],
             json["default_value"],
-            json["is_public"]
+            json["is_public"],
+            ParameterDocstring.from_json(json["docstring"])
         )
 
-    def __init__(self, name: str, default_value: Optional[str], is_public: bool) -> None:
+    def __init__(
+        self,
+        name: str,
+        default_value: Optional[str],
+        is_public: bool,
+        docstring: ParameterDocstring
+    ) -> None:
         self.name: str = name
         self.default_value: Optional[str] = default_value
         self.is_public: bool = is_public
+        self.docstring = docstring
 
     def to_json(self) -> Any:
         return {
             "name": self.name,
             "default_value": self.default_value,
-            "is_public": self.is_public
+            "is_public": self.is_public,
+            "docstring": self.docstring.to_json()
+        }
+
+
+class ParameterDocstring:
+    @staticmethod
+    def from_json(json: Any) -> ParameterDocstring:
+        return ParameterDocstring(
+            json["type"],
+            json["description"]
+        )
+
+    def __init__(
+        self,
+        type: str,
+        description: str,
+    ) -> None:
+        self.type: str = type
+        self.description: str = description
+
+    def to_json(self) -> Any:
+        return {
+            "type": self.type,
+            "description": self.description
         }

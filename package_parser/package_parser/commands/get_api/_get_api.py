@@ -27,7 +27,7 @@ def get_api(package_name: str) -> API:
             print("Skipping test file")
             continue
 
-        with open(file, "r") as f:
+        with open(file, "r", encoding="utf-8") as f:
             source = f.read()
             walker.walk(
                 astroid.parse(
