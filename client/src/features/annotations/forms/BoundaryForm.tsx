@@ -188,7 +188,9 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function({ target }) {
                         }
                     </FormErrorMessage>
                 </FormControl>
-                <FormControl>
+                <FormControl
+                    isInvalid={Boolean(errors?.interval?.lowerLimitType)}
+                >
                     <Select
                         {...register('interval.lowerLimitType', {
                             required: 'This is required.',
@@ -220,7 +222,9 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function({ target }) {
                     {target.name}
                 </Text>
 
-                <FormControl>
+                <FormControl
+                    isInvalid={Boolean(errors?.interval?.upperLimitType)}
+                >
                     <Select
                         {...register('interval.upperLimitType', {
                             required: 'This is required.',
