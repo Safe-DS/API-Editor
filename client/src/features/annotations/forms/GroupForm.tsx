@@ -80,9 +80,9 @@ const GroupForm: React.FC<GroupFormProps> = function({
 
     const updateOtherGroups = () => {
         if (!!currentGroups) {
-            for (let groupName of otherGroupNames) {
+            for (let nameOfGroup of otherGroupNames) {
                 let needsChange = false
-                let group = currentGroups[groupName]
+                let group = currentGroups[nameOfGroup]
                 let currentAnnotationParameter = [...getValues('parameters')]
                 let currentGroupParameter = [...group.parameters]
                 for (let parameter of currentAnnotationParameter) {
