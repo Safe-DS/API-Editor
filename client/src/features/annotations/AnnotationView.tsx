@@ -64,7 +64,7 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
             {boundaryAnnotation && (
                 <Annotation
                     type="boundary"
-                    name={(boundaryToString(boundaryAnnotation))}
+                    name={boundaryToString(boundaryAnnotation)}
                     onEdit={() => dispatch(showBoundaryAnnotationForm(target))}
                     onDelete={() => dispatch(removeBoundary(target))}
                 />
@@ -85,22 +85,22 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
                     onDelete={() => dispatch(removeEnum(target))}
                 />
             )}
-            {groupAnnotations && Object.keys(groupAnnotations).map(
-            (groupName) => (
-                <Annotation
-                    key={groupName}
-                    type="group"
-                    name={groupName}
-                    onEdit={() => dispatch(showGroupAnnotationForm(
-                        {target, groupName}
-                    ))}
-                    onDelete={() => dispatch(removeGroup(
-                        {target, groupName}
-                        )
-                    )}
-                />
-            )
-            )}
+            {groupAnnotations &&
+                Object.keys(groupAnnotations).map((groupName) => (
+                    <Annotation
+                        key={groupName}
+                        type="group"
+                        name={groupName}
+                        onEdit={() =>
+                            dispatch(
+                                showGroupAnnotationForm({ target, groupName }),
+                            )
+                        }
+                        onDelete={() =>
+                            dispatch(removeGroup({ target, groupName }))
+                        }
+                    />
+                ))}
             {optionalAnnotation && (
                 <Annotation
                     type="optional"
@@ -137,26 +137,26 @@ const boundaryToString = (boundary: BoundaryAnnotation) => {
     const interval = boundary.interval;
     let result = '{x ∈ ';
 
-    result += interval.isDiscrete ? 'ℤ' : 'ℝ'
-    result += ' | '
+    result += interval.isDiscrete ? 'ℤ' : 'ℝ';
+    result += ' | ';
 
     if (interval.lowerLimitType === ComparisonOperator.LESS_THAN_OR_EQUALS) {
-        result += `${interval.lowIntervalLimit} ≤ `
+        result += `${interval.lowIntervalLimit} ≤ `;
     } else if (interval.lowerLimitType === ComparisonOperator.LESS_THAN) {
-        result += `${interval.lowIntervalLimit} < `
+        result += `${interval.lowIntervalLimit} < `;
     }
 
-    result += 'x'
+    result += 'x';
 
     if (interval.upperLimitType === ComparisonOperator.LESS_THAN_OR_EQUALS) {
-        result += ` ≤ ${interval.upperIntervalLimit}`
+        result += ` ≤ ${interval.upperIntervalLimit}`;
     } else if (interval.upperLimitType === ComparisonOperator.LESS_THAN) {
-        result += ` < ${interval.upperIntervalLimit}`
+        result += ` < ${interval.upperIntervalLimit}`;
     }
 
-    result += '}'
-    return result
-}
+    result += '}';
+    return result;
+};
 
 interface AnnotationProps {
     type: string;

@@ -16,7 +16,7 @@ import {
 import BoundaryForm from '../features/annotations/forms/BoundaryForm';
 import ConstantForm from '../features/annotations/forms/ConstantForm';
 import EnumForm from '../features/annotations/forms/EnumForm';
-import GroupForm from '../features/annotations/forms/GroupForm'
+import GroupForm from '../features/annotations/forms/GroupForm';
 import OptionalForm from '../features/annotations/forms/OptionalForm';
 import RenameForm from '../features/annotations/forms/RenameForm';
 import { PythonFilter } from '../features/packageData/model/PythonFilter';
@@ -116,8 +116,12 @@ const App: React.FC = function () {
                 {currentUserAction.type === 'group' && (
                     <GroupForm
                         target={userActionTarget || pythonPackage}
-                        groupName={(currentUserAction as GroupUserAction)?.groupName ?
-                            (currentUserAction as GroupUserAction)?.groupName : ''}
+                        groupName={
+                            (currentUserAction as GroupUserAction)?.groupName
+                                ? (currentUserAction as GroupUserAction)
+                                      ?.groupName
+                                : ''
+                        }
                     />
                 )}
                 {currentUserAction.type === 'none' && (
