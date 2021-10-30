@@ -249,11 +249,13 @@ export const initializeAnnotations = createAsyncThunk(
     'annotations/initialize',
     async () => {
         try {
-            const storedAnnotations = (await idb.get('annotations')) as AnnotationsState;
+            const storedAnnotations = (await idb.get(
+                'annotations',
+            )) as AnnotationsState;
             return {
                 ...initialState,
-                ...storedAnnotations
-            }
+                ...storedAnnotations,
+            };
         } catch {
             return initialState;
         }
