@@ -56,13 +56,13 @@ const GroupForm: React.FC<GroupFormProps> = function({ target, groupName }: Grou
 
     const buildAlreadyUsedName = (name: string, usedIn: string) => `${name  } (already used in ${  usedIn  })`
 
-    const getParameterName = (name: string) => {
+    const getParameterLabel = (name: string) => {
         if (!currentGroups) {
             return name
         }
 
         for (const group of otherGroupNames) {
-            if (currentGroups[group]?.parameters.some(parameter => parameter === name)) {
+            if (currentGroups[group]?.parameters?.some(parameter => parameter === name)) {
                 if (!prevGroupAnnotation ||
                     (prevGroupAnnotation && currentGroups[group].groupName !== prevGroupAnnotation.groupName)
                 ) {
@@ -120,7 +120,7 @@ const GroupForm: React.FC<GroupFormProps> = function({ target, groupName }: Grou
     } = useForm<GroupFormState>({
         defaultValues: {
             groupName: '',
-            parameters: prevGroupAnnotation?.parameters || [],
+            parameters: [],
         },
     })
 
@@ -131,6 +131,7 @@ const GroupForm: React.FC<GroupFormProps> = function({ target, groupName }: Grou
     useEffect(() => {
         reset({
             groupName: prevGroupAnnotation?.groupName || '',
+            parameters: prevGroupAnnotation?.parameters || [],
         })
     }, [reset, prevGroupAnnotation])
 
@@ -189,7 +190,7 @@ const GroupForm: React.FC<GroupFormProps> = function({ target, groupName }: Grou
                                         key={parameter.name}
                                         value={parameter.name}
                                     >
-                                        {getParameterName(parameter.name)}
+                                        {getParameterLabel(parameter.name)}
                                     </Checkbox>
                                 ))}
                             </VStack>
