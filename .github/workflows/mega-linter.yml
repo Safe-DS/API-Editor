@@ -7,8 +7,8 @@ on:
   pull_request:
     branches: [master]
 
-concurrency: 
-  group: ${{ github.head_ref }}
+concurrency:
+  group: ${{ github.head_ref }}-${{ github.workflow }}
   cancel-in-progress: true
 
 env:
@@ -20,7 +20,6 @@ env:
 
 jobs:
   lint:
-    name: Mega-Linter
     runs-on: ubuntu-latest
     steps:
       # Git Checkout
