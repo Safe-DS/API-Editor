@@ -20,7 +20,6 @@ env:
 
 jobs:
   lint:
-    name: Mega-Linter
     runs-on: ubuntu-latest
     steps:
       # Git Checkout
