@@ -10,6 +10,9 @@ node_modules/
 pnpm-lock.yaml
 yarn.lock
 
+# mega-linter
+report/
+
 # Compilation/build outputs
 build/
 dist/
