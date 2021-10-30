@@ -1,0 +1,67 @@
+Mega-Linter can help you to define the same linter configuration locally
+
+INSTRUCTIONS
+
+- Copy the content of IDE-config folder at the root of your repository
+- if you are using Visual Studio Code, just reopen your project after the copy, and you will be prompted to install recommended extensions
+- If not, you can install extensions manually using the following links.
+
+IDE EXTENSIONS APPLICABLE TO YOUR PROJECT
+
+eslint (TSX)
+  - atom:
+    - linter-eslint: https://atom.io/packages/linter-eslint
+  - brackets:
+    - brackets-eslint: https://github.com/brackets-userland/brackets-eslint
+  - eclipse:
+    - Tern-Linter-ESLint: https://github.com/angelozerr/tern.java/wiki/Tern-Linter-ESLint
+  - emacs:
+    - flycheck: http://www.flycheck.org/en/latest/languages.html#javascript
+  - idea:
+    - ESLint Plugin: https://plugins.jetbrains.com/plugin/7494-eslint
+  - sublime:
+    - SublimeLinter-eslint: https://github.com/roadhump/SublimeLinter-eslint
+  - vim:
+    - ale: https://github.com/w0rp/ale
+    - Syntastic: https://github.com/vim-syntastic/syntastic/tree/master/syntax_checkers/javascript
+  - vscode:
+    - vscode-eslint: https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint
+
+eslint (TYPESCRIPT)
+  - atom:
+    - linter-eslint: https://atom.io/packages/linter-eslint
+  - brackets:
+    - brackets-eslint: https://github.com/brackets-userland/brackets-eslint
+  - eclipse:
+    - Tern-Linter-ESLint: https://github.com/angelozerr/tern.java/wiki/Tern-Linter-ESLint
+  - emacs:
+    - flycheck: http://www.flycheck.org/en/latest/languages.html#javascript
+  - idea:
+    - ESLint Plugin: https://plugins.jetbrains.com/plugin/7494-eslint
+  - sublime:
+    - SublimeLinter-eslint: https://github.com/roadhump/SublimeLinter-eslint
+  - vim:
+    - ale: https://github.com/w0rp/ale
+    - Syntastic: https://github.com/vim-syntastic/syntastic/tree/master/syntax_checkers/javascript
+  - vscode:
+    - vscode-eslint: https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint
+
+prettier (TYPESCRIPT)
+  - atom:
+    - prettier-atom: https://github.com/prettier/prettier-atom
+    - atom-mprettier: https://github.com/t9md/atom-mprettier
+    - atom-miniprettier: https://github.com/duailibe/atom-miniprettier
+  - emacs:
+    - prettier-emacs: https://github.com/prettier/prettier-emacs
+    - prettier.el: https://github.com/jscheid/prettier.el
+    - apheleia: https://github.com/raxod502/apheleia
+  - idea:
+    - native support: https://prettier.io/docs/en/webstorm.html
+  - sublime:
+    - JsPrettier: https://packagecontrol.io/packages/JsPrettier
+  - vim:
+    - vim-prettier: https://github.com/prettier/vim-prettier
+  - visual_studio:
+    - JavaScriptPrettier: https://github.com/madskristensen/JavaScriptPrettier
+  - vscode:
+    - prettier-vscode: https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
