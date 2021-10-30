@@ -70,13 +70,14 @@ const GroupForm: React.FC<GroupFormProps> = function ({
         for (const group of otherGroupNames) {
             if (
                 currentGroups[group]?.parameters?.some(
-                    parameter => parameter === name,
+                    (parameter) => parameter === name,
                 )
             ) {
-                if (!prevGroupAnnotation ||
+                if (
+                    !prevGroupAnnotation ||
                     (prevGroupAnnotation &&
                         currentGroups[group].groupName !==
-                        prevGroupAnnotation.groupName)
+                            prevGroupAnnotation.groupName)
                 ) {
                     return buildAlreadyUsedName(
                         name,
