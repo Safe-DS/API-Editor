@@ -6,6 +6,7 @@ import {
     BoundaryAnnotation,
     ComparisonOperator,
     removeBoundary,
+    removeCalledAfter,
     removeConstant,
     removeEnum,
     removeOptional,
@@ -13,6 +14,7 @@ import {
     removeRequired,
     removeUnused,
     selectBoundary,
+    selectCalledAfters,
     selectConstant,
     selectEnum,
     selectOptional,
@@ -20,11 +22,12 @@ import {
     selectRequired,
     selectUnused,
     showBoundaryAnnotationForm,
+    showCalledAfterAnnotationForm,
     showConstantAnnotationForm,
     showEnumAnnotationForm,
     showOptionalAnnotationForm,
     showRenameAnnotationForm,
-} from './annotationSlice';
+} from './annotationSlice'
 
 interface AnnotationViewProps {
     target: string;
@@ -34,6 +37,7 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
     const dispatch = useAppDispatch();
 
     const boundaryAnnotation = useAppSelector(selectBoundary(target));
+    const calledAfterAnnotation = useAppSelector(selectCalledAfters(target));
     const constantAnnotation = useAppSelector(selectConstant(target));
     const enumAnnotation = useAppSelector(selectEnum(target));
     const optionalAnnotation = useAppSelector(selectOptional(target));
@@ -43,6 +47,7 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
 
     if (
         !boundaryAnnotation &&
+        !calledAfterAnnotation &&
         !constantAnnotation &&
         !enumAnnotation &&
         !optionalAnnotation &&
@@ -64,6 +69,22 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
                     onDelete={() => dispatch(removeBoundary(target))}
                 />
             )}
+            {calledAfterAnnotation &&
+                Object.keys(calledAfterAnnotation).map((calledAfterName) =>
+                    (
+                        <Annotation
+                            type="calledAfterName"
+                            name={calledAfterName}
+                            onEdit={() =>
+                                dispatch(showCalledAfterAnnotationForm({ target, calledAfterName }))
+                            }
+                            onDelete={() =>
+                                dispatch(removeCalledAfter({ target, calledAfterName }))
+                            }
+                        />
+                    )
+                )
+            }
             {constantAnnotation && (
                 <Annotation
                     type="constant"

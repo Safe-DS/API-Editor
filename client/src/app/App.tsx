@@ -13,6 +13,7 @@ import {
     selectShowAnnotationImportDialog,
 } from '../features/annotations/annotationSlice';
 import BoundaryForm from '../features/annotations/forms/BoundaryForm';
+import CalledAfterForm from '../features/annotations/forms/CalledAfterForm';
 import ConstantForm from '../features/annotations/forms/ConstantForm';
 import EnumForm from '../features/annotations/forms/EnumForm';
 import OptionalForm from '../features/annotations/forms/OptionalForm';
@@ -104,6 +105,9 @@ const App: React.FC = function () {
             >
                 {currentUserAction.type === 'boundary' && (
                     <BoundaryForm target={userActionTarget || pythonPackage} />
+                )}
+                {currentUserAction.type === 'calledAfter' && (
+                    <CalledAfterForm target={userActionTarget || pythonPackage} />
                 )}
                 {currentUserAction.type === 'constant' && (
                     <ConstantForm target={userActionTarget || pythonPackage} />
