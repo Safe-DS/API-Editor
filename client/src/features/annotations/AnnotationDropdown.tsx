@@ -13,6 +13,7 @@ import { useAppDispatch } from '../../app/hooks';
 import {
     addUnused,
     addRequired,
+    showBoundaryAnnotationForm,
     showConstantAnnotationForm,
     showEnumAnnotationForm,
     showOptionalAnnotationForm,
@@ -21,6 +22,7 @@ import {
 
 interface AnnotationDropdownProps {
     target: string;
+    showBoundary?: boolean;
     showConstant?: boolean;
     showRename?: boolean;
     showEnum?: boolean;
@@ -30,6 +32,7 @@ interface AnnotationDropdownProps {
 }
 
 const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
+    showBoundary = false,
     showConstant = false,
     showEnum = false,
     showOptional = false,
@@ -53,6 +56,15 @@ const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                     Annotations
                 </MenuButton>
                 <MenuList>
+                    {showBoundary && (
+                        <MenuItem
+                            onClick={() =>
+                                dispatch(showBoundaryAnnotationForm(target))
+                            }
+                        >
+                            @boundary
+                        </MenuItem>
+                    )}
                     {showConstant && (
                         <MenuItem
                             onClick={() =>

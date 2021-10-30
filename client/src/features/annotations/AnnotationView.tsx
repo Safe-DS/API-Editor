@@ -1,24 +1,29 @@
-import { Button, ButtonGroup, IconButton, Stack, Text } from '@chakra-ui/react';
+import {Button, ButtonGroup, IconButton, Stack, Text} from '@chakra-ui/react';
 import React from 'react';
-import { FaTrash, FaWrench } from 'react-icons/fa';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import {FaTrash, FaWrench} from 'react-icons/fa';
+import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {
+    BoundaryAnnotation,
+    ComparisonOperator,
+    removeBoundary,
     removeConstant,
     removeEnum,
     removeOptional,
     removeRenaming,
     removeRequired,
     removeUnused,
+    selectBoundary,
     selectConstant,
     selectEnum,
-    selectRenaming,
-    selectUnused,
-    selectRequired,
     selectOptional,
+    selectRenaming,
+    selectRequired,
+    selectUnused,
+    showBoundaryAnnotationForm,
     showConstantAnnotationForm,
     showEnumAnnotationForm,
-    showRenameAnnotationForm,
     showOptionalAnnotationForm,
+    showRenameAnnotationForm,
 } from './annotationSlice';
 
 interface AnnotationViewProps {
@@ -28,6 +33,7 @@ interface AnnotationViewProps {
 const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
     const dispatch = useAppDispatch();
 
+    const boundaryAnnotation = useAppSelector(selectBoundary(target));
     const constantAnnotation = useAppSelector(selectConstant(target));
     const enumAnnotation = useAppSelector(selectEnum(target));
     const optionalAnnotation = useAppSelector(selectOptional(target));
@@ -36,6 +42,7 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
     const unusedAnnotation = useAppSelector(selectUnused(target));
 
     if (
+        !boundaryAnnotation &&
         !constantAnnotation &&
         !enumAnnotation &&
         !optionalAnnotation &&
@@ -49,6 +56,14 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
 
     return (
         <Stack maxW="fit-content">
+            {boundaryAnnotation && (
+                <Annotation
+                    type="boundary"
+                    name={(boundaryToString(boundaryAnnotation))}
+                    onEdit={() => dispatch(showBoundaryAnnotationForm(target))}
+                    onDelete={() => dispatch(removeBoundary(target))}
+                />
+            )}
             {constantAnnotation && (
                 <Annotation
                     type="constant"
@@ -96,6 +111,31 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
         </Stack>
     );
 };
+
+const boundaryToString = (boundary: BoundaryAnnotation) => {
+    const interval = boundary.interval;
+    let result = '{x ∈ ';
+
+    result += interval.isDiscrete ? 'ℤ' : 'ℝ'
+    result += ' | '
+
+    if (interval.lowerLimitType === ComparisonOperator.LESS_THAN_OR_EQUALS) {
+        result += `${interval.lowIntervalLimit} ≤ `
+    } else if (interval.lowerLimitType === ComparisonOperator.LESS_THAN) {
+        result += `${interval.lowIntervalLimit} < `
+    }
+
+    result += 'x'
+
+    if (interval.upperLimitType === ComparisonOperator.LESS_THAN_OR_EQUALS) {
+        result += ` ≤ ${interval.upperIntervalLimit}`
+    } else if (interval.upperLimitType === ComparisonOperator.LESS_THAN) {
+        result += ` < ${interval.upperIntervalLimit}`
+    }
+
+    result += '}'
+    return result
+}
 
 interface AnnotationProps {
     type: string;

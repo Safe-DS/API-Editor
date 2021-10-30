@@ -30,6 +30,7 @@ const ParameterNode: React.FC<ParameterNodeProps> = function ({
                 )}
                 <AnnotationDropdown
                     target={id}
+                    showBoundary
                     showConstant
                     showEnum
                     showOptional
