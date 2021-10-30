@@ -12,7 +12,8 @@ import {
     selectAnnotations,
     selectCurrentUserAction,
     selectShowAnnotationImportDialog,
-} from '../features/annotations/annotationSlice'
+} from '../features/annotations/annotationSlice';
+import BoundaryForm from '../features/annotations/forms/BoundaryForm';
 import ConstantForm from '../features/annotations/forms/ConstantForm';
 import EnumForm from '../features/annotations/forms/EnumForm';
 import GroupForm from '../features/annotations/forms/GroupForm'
@@ -103,6 +104,9 @@ const App: React.FC = function () {
                 layerStyle="subtleBorder"
                 resize="horizontal"
             >
+                {currentUserAction.type === 'boundary' && (
+                    <BoundaryForm target={userActionTarget || pythonPackage} />
+                )}
                 {currentUserAction.type === 'constant' && (
                     <ConstantForm target={userActionTarget || pythonPackage} />
                 )}
