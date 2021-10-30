@@ -27,7 +27,8 @@ const FunctionView: React.FC<FunctionViewProps> = function ({
                         target={id}
                         showGroup
                         showRename
-                        showUnused />
+                        showUnused
+                    />
                 </HStack>
 
                 <AnnotationView target={id} />
