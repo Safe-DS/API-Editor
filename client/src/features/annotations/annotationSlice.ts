@@ -296,6 +296,39 @@ const annotationsSlice = createSlice({
             if (!state.groups[action.payload.target]) {
                 state.groups[action.payload.target] = {};
             }
+            else {
+                const targetGroups = state.groups[action.payload.target];
+                const otherGroupNames = Object.values(targetGroups)
+                    .filter(
+                        (group) => group.groupName !== action.payload.groupName,
+                    )
+                    .map((group) => group.groupName);
+
+                for (const nameOfGroup of otherGroupNames) {
+                    let needsChange = false;
+                    const group = targetGroups[nameOfGroup];
+                    const currentAnnotationParameter = action.payload.parameters;
+                    const currentGroupParameter = [...group.parameters];
+                    for (const parameter of currentAnnotationParameter) {
+                        const index = currentGroupParameter.indexOf(parameter);
+                        if (index > -1) {
+                            needsChange = true;
+                            currentGroupParameter.splice(index, 1);
+                        }
+                    }
+                    if (currentGroupParameter.length < 1) {
+                        removeGroup({
+                            target: action.payload.target,
+                            groupName: group.groupName,
+                        })
+                    } else if (needsChange) {
+                        state.groups[group.target][group.groupName] =
+                            {parameters: currentGroupParameter,
+                                groupName: group.groupName,
+                                target: group.target};
+                    }
+                }
+            }
             state.groups[action.payload.target][action.payload.groupName] =
                 action.payload;
         },
@@ -308,6 +341,7 @@ const annotationsSlice = createSlice({
             }
         },
         upsertOptional(state, action: PayloadAction<OptionalAnnotation>) {
+            console.log(action.payload);
             state.optionals[action.payload.target] = action.payload;
         },
         removeOptional(state, action: PayloadAction<string>) {

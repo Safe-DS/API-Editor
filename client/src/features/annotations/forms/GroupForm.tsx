@@ -1,27 +1,12 @@
-import {
-    Checkbox,
-    CheckboxGroup,
-    FormControl,
-    FormErrorIcon,
-    FormErrorMessage,
-    FormLabel,
-    Input,
-    VStack,
-} from '@chakra-ui/react';
-import React, { useEffect } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { Checkbox, FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Input, VStack } from '@chakra-ui/react';
+import React, {useEffect} from 'react';
+import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { pythonIdentifierPattern } from '../../../common/validation';
 import PythonDeclaration from '../../packageData/model/PythonDeclaration';
 import PythonFunction from '../../packageData/model/PythonFunction';
 import PythonParameter from '../../packageData/model/PythonParameter';
-import {
-    GroupAnnotation,
-    hideAnnotationForms,
-    removeGroup,
-    selectGroups,
-    upsertGroup,
-} from '../annotationSlice';
+import { GroupAnnotation, hideAnnotationForms, selectGroups, upsertGroup } from '../annotationSlice';
 import AnnotationForm from './AnnotationForm';
 
 interface GroupFormProps {
@@ -31,13 +16,14 @@ interface GroupFormProps {
 
 interface GroupFormState {
     groupName: string;
-    parameters: string[];
+    parameters: { [name: string]: boolean };
+    dummy: string;
 }
 
 const GroupForm: React.FC<GroupFormProps> = function ({
-    target,
-    groupName,
-}: GroupFormProps) {
+                                                           target,
+                                                           groupName,
+                                                       }: GroupFormProps) {
     const targetPath = target.pathAsString();
     const currentGroups = useAppSelector(selectGroups(targetPath));
     let prevGroupAnnotation: GroupAnnotation | undefined;
@@ -59,88 +45,57 @@ const GroupForm: React.FC<GroupFormProps> = function ({
         allParameters = target.children();
     }
 
-    const buildAlreadyUsedName = (name: string, usedIn: string) =>
-        `${name} (already used in ${usedIn})`;
-
-    const getParameterLabel = (name: string) => {
+    const groupContainsParameter = (key: string, name: string) => {
         if (!currentGroups) {
-            return name;
+            return null;
         }
+        return currentGroups[key]?.parameters?.some(
+            (parameter) => parameter === name,
+        )
+    }
 
-        for (const group of otherGroupNames) {
+    const getParameterLabel = (parameterName: string) => {
+        for (const groupKey of otherGroupNames) {
             if (
-                currentGroups[group]?.parameters?.some(
-                    (parameter) => parameter === name,
-                )
+                currentGroups && groupContainsParameter(groupKey, parameterName) && !isCurrentGroup(groupKey)
             ) {
-                if (
-                    !prevGroupAnnotation ||
-                    (prevGroupAnnotation &&
-                        currentGroups[group].groupName !==
-                            prevGroupAnnotation.groupName)
-                ) {
-                    return buildAlreadyUsedName(
-                        name,
-                        currentGroups[group].groupName,
-                    );
-                }
+                return `${parameterName} (already used in ${currentGroups[groupKey].groupName})`
             }
         }
-        return name;
+        return parameterName;
     };
 
-    const updateOtherGroups = () => {
-        if (currentGroups) {
-            for (const nameOfGroup of otherGroupNames) {
-                let needsChange = false;
-                const group = currentGroups[nameOfGroup];
-                const currentAnnotationParameter = [...getValues('parameters')];
-                const currentGroupParameter = [...group.parameters];
-                for (const parameter of currentAnnotationParameter) {
-                    const index = currentGroupParameter.indexOf(parameter);
-                    if (index > -1) {
-                        needsChange = true;
-                        currentGroupParameter.splice(index, 1);
-                    }
-                }
-                if (currentGroupParameter.length < 1) {
-                    dispatch(
-                        removeGroup({
-                            target: targetPath,
-                            groupName: group.groupName,
-                        }),
-                    );
-                } else if (needsChange) {
-                    dispatch(
-                        upsertGroup({
-                            parameters: currentGroupParameter,
-                            groupName: group.groupName,
-                            target: group.target,
-                        }),
-                    );
-                }
-            }
-        }
-    };
+    const isCurrentGroup = (key: string) => {
+        return (
+            prevGroupAnnotation &&
+            (!currentGroups ||
+                currentGroups[key]?.groupName ===
+                prevGroupAnnotation.groupName)
+        )
+    }
 
-    const checkedAtLeastOne = () =>
-        getValues('parameters') && getValues('parameters').length >= 1;
+    const getSelectedParameters = (): string[] => Object.entries(getValues('parameters'))
+        .filter(([, isSelected]) => isSelected)
+        .map(([name,]) => name)
+
+    const checkedAtLeastOne = () => {
+        return getSelectedParameters().length >= 1;
+    }
 
     // Hooks -----------------------------------------------------------------------------------------------------------
 
     const dispatch = useAppDispatch();
     const {
-        control,
         getValues,
         handleSubmit,
         setFocus,
         register,
         reset,
-        formState: { errors },
+        formState: {errors},
     } = useForm<GroupFormState>({
         defaultValues: {
             groupName: '',
-            parameters: [],
+            parameters: {},
         },
     });
 
@@ -149,20 +104,25 @@ const GroupForm: React.FC<GroupFormProps> = function ({
     }, [setFocus]);
 
     useEffect(() => {
+        const prevParameters: { [name: string]: boolean } = {}
+        prevGroupAnnotation?.parameters?.forEach(name => {
+            prevParameters[name] = true
+        })
+
         reset({
             groupName: prevGroupAnnotation?.groupName || '',
-            parameters: prevGroupAnnotation?.parameters || [],
+            parameters: prevParameters,
         });
     }, [reset, prevGroupAnnotation]);
 
     // Event handlers --------------------------------------------------------------------------------------------------
 
     const onSave = (data: GroupFormState) => {
-        updateOtherGroups();
         dispatch(
             upsertGroup({
                 target: targetPath,
-                ...data,
+                groupName: data.groupName,
+                parameters: getSelectedParameters()
             }),
         );
         dispatch(hideAnnotationForms());
@@ -188,42 +148,42 @@ const GroupForm: React.FC<GroupFormProps> = function ({
                     placeholder="Name of parameter object"
                     {...register('groupName', {
                         required: 'This is required.',
-                        pattern: pythonIdentifierPattern,
+                        pattern: pythonIdentifierPattern
                     })}
                 />
                 <FormErrorMessage>
-                    <FormErrorIcon /> {errors.groupName?.message}
+                    <FormErrorIcon/> {errors.groupName?.message}
                 </FormErrorMessage>
             </FormControl>
             <FormControl isInvalid={Boolean(errors?.parameters)}>
-                <Controller
-                    name="parameters"
-                    control={control}
-                    render={({ field: { ref, ...rest } }) => (
-                        <CheckboxGroup
-                            {...rest}
-                            defaultValue={prevGroupAnnotation?.parameters || []}
+                <VStack alignItems="left">
+                    {allParameters.map((parameter) => (
+                        <Checkbox
+                            key={parameter.name}
+                            {...register(`parameters.${parameter.name}`)}
                         >
-                            <VStack alignItems="left">
-                                {allParameters.map((parameter) => (
-                                    <Checkbox
-                                        key={parameter.name}
-                                        value={parameter.name}
-                                    >
-                                        {getParameterLabel(parameter.name)}
-                                    </Checkbox>
-                                ))}
-                            </VStack>
-                        </CheckboxGroup>
-                    )}
-                    rules={{ validate: () => checkedAtLeastOne() }}
+                            {getParameterLabel(parameter.name)}
+                        </Checkbox>
+                    ))}
+                </VStack>
+            </FormControl>
+
+            <FormControl isInvalid={"dummy" in errors}>
+                <Input type="hidden"
+                       {...register("dummy", {
+                           validate: () => checkedAtLeastOne()
+                       })}
+
+                       onChange={() => {
+                       }}
                 />
                 <FormErrorMessage>
-                    <FormErrorIcon />
-                    {errors?.parameters &&
-                        'At least one parameter needs to be selected.'}
+                    <FormErrorIcon/>
+                    {errors.dummy &&
+                    'At least one parameter needs to be selected.'}
                 </FormErrorMessage>
             </FormControl>
+
         </AnnotationForm>
     );
 };
