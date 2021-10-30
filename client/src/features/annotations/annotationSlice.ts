@@ -295,8 +295,7 @@ const annotationsSlice = createSlice({
         upsertGroup(state, action: PayloadAction<GroupAnnotation>) {
             if (!state.groups[action.payload.target]) {
                 state.groups[action.payload.target] = {};
-            }
-            else {
+            } else {
                 const targetGroups = state.groups[action.payload.target];
                 const otherGroupNames = Object.values(targetGroups)
                     .filter(
@@ -307,7 +306,8 @@ const annotationsSlice = createSlice({
                 for (const nameOfGroup of otherGroupNames) {
                     let needsChange = false;
                     const group = targetGroups[nameOfGroup];
-                    const currentAnnotationParameter = action.payload.parameters;
+                    const currentAnnotationParameter =
+                        action.payload.parameters;
                     const currentGroupParameter = [...group.parameters];
                     for (const parameter of currentAnnotationParameter) {
                         const index = currentGroupParameter.indexOf(parameter);
@@ -320,12 +320,13 @@ const annotationsSlice = createSlice({
                         removeGroup({
                             target: action.payload.target,
                             groupName: group.groupName,
-                        })
+                        });
                     } else if (needsChange) {
-                        state.groups[group.target][group.groupName] =
-                            {parameters: currentGroupParameter,
-                                groupName: group.groupName,
-                                target: group.target};
+                        state.groups[group.target][group.groupName] = {
+                            parameters: currentGroupParameter,
+                            groupName: group.groupName,
+                            target: group.target,
+                        };
                     }
                 }
             }
