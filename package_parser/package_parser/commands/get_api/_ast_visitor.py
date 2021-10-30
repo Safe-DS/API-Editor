@@ -5,7 +5,7 @@ from numpydoc.docscrape import NumpyDocString
 
 from package_parser.utils import parent_qname
 from ._file_filters import _is_init_file
-from ._model import API, Function, Parameter, Class, ParameterDocstring
+from ._model import API, Function, Parameter, Class, ParameterDocstring, ParameterAssignment
 
 
 class _CallableVisitor:
@@ -77,19 +77,20 @@ class _CallableVisitor:
             docstring = node.doc
         function_numpydoc = NumpyDocString(docstring or "")
 
-        # Arguments that can be passed positionally only ( f(1) works but not f(x=1) )
+        # Arguments that can be specified positionally only ( f(1) works but not f(x=1) )
         result = [
             Parameter(
                 it.name,
                 default_value=None,
                 is_public=function_is_public,
+                assigned_by=ParameterAssignment.POSITION_ONLY,
                 docstring=_CallableVisitor.__parameter_docstring(function_numpydoc, it.name)
             )
 
             for it in parameters.posonlyargs
         ]
 
-        # Arguments that can be passed positionally or by name ( f(1) and f(x=1) both work )
+        # Arguments that can be specified positionally or by name ( f(1) and f(x=1) both work )
         result += [
             Parameter(
                 it.name,
@@ -98,13 +99,14 @@ class _CallableVisitor:
                     index - len(parameters.args) + len(parameters.defaults)
                 ),
                 function_is_public,
+                ParameterAssignment.POSITION_OR_NAME,
                 _CallableVisitor.__parameter_docstring(function_numpydoc, it.name)
             )
 
             for index, it in enumerate(parameters.args)
         ]
 
-        # Arguments that can be passed by name only ( f(x=1) works but not f(1) )
+        # Arguments that can be specified by name only ( f(x=1) works but not f(1) )
         result += [
             Parameter(
                 it.name,
@@ -113,6 +115,7 @@ class _CallableVisitor:
                     index - len(parameters.kwonlyargs) + len(parameters.kw_defaults)
                 ),
                 function_is_public,
+                ParameterAssignment.NAME_ONLY,
                 _CallableVisitor.__parameter_docstring(function_numpydoc, it.name)
             )
 

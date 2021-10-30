@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import inspect
+from enum import Enum, auto
 from typing import Any, Optional
 
 from package_parser.utils import declaration_name, parent_qname
@@ -189,6 +190,7 @@ class Parameter:
             json["name"],
             json["default_value"],
             json["is_public"],
+            ParameterAssignment[json["assigned_by"]],
             ParameterDocstring.from_json(json["docstring"])
         )
 
@@ -197,11 +199,13 @@ class Parameter:
         name: str,
         default_value: Optional[str],
         is_public: bool,
+        assigned_by: ParameterAssignment,
         docstring: ParameterDocstring
     ) -> None:
         self.name: str = name
         self.default_value: Optional[str] = default_value
         self.is_public: bool = is_public
+        self.assigned_by: ParameterAssignment = assigned_by
         self.docstring = docstring
 
     def to_json(self) -> Any:
@@ -209,8 +213,15 @@ class Parameter:
             "name": self.name,
             "default_value": self.default_value,
             "is_public": self.is_public,
+            "assigned_by": self.assigned_by.name,
             "docstring": self.docstring.to_json()
         }
+
+
+class ParameterAssignment(Enum):
+    POSITION_ONLY = auto(),
+    POSITION_OR_NAME = auto(),
+    NAME_ONLY = auto(),
 
 
 class ParameterDocstring:
