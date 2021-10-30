@@ -9,9 +9,15 @@ PRINT_ALPACA: false
 SHOW_ELAPSED_TIME: true
 
 JAVASCRIPT_DEFAULT_STYLE: prettier
+JAVASCRIPT_PRETTIER_FILE_EXTENSIONS:
+  - .js
+  - .jsx
 TYPESCRIPT_DEFAULT_STYLE: prettier
+TYPESCRIPT_PRETTIER_FILE_EXTENSIONS:
+  - .ts
+  - .tsx
 
-# Commands
+  # Commands
 PRE_COMMANDS:
   - command: npm install
     cwd: root
