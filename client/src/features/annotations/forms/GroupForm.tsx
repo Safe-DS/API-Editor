@@ -9,7 +9,7 @@ import {
     VStack,
 } from '@chakra-ui/react'
 import React, { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { pythonIdentifierPattern } from '../../../common/validation'
 import PythonDeclaration from '../../packageData/model/PythonDeclaration'
@@ -67,7 +67,7 @@ const GroupForm: React.FC<GroupFormProps> = function({
         }
 
         for (let group of otherGroupNames) {
-            if (currentGroups[group].parameters.some(parameter => parameter === name)) {
+            if (currentGroups[group]?.parameters.some(parameter => parameter === name)) {
                 if (!prevGroupAnnotation ||
                     (prevGroupAnnotation && currentGroups[group].groupName !== prevGroupAnnotation.groupName)
                 ) {
@@ -92,7 +92,7 @@ const GroupForm: React.FC<GroupFormProps> = function({
                         currentGroupParameter.splice(index, 1)
                     }
                 }
-                if (currentGroupParameter.length < 2) {
+                if (currentGroupParameter.length < 1) {
                     dispatch(removeGroup(
                         { target: targetPath, groupName: group.groupName },
                     ))
@@ -109,18 +109,18 @@ const GroupForm: React.FC<GroupFormProps> = function({
         }
     }
 
-    const twoOrMoreChecked = () => {
-        return getValues('parameters') && getValues('parameters').length > 1
+    const checkedAtLeastOne = () => {
+        return getValues('parameters') && getValues('parameters').length >= 1
     }
 
     // Hooks -----------------------------------------------------------------------------------------------------------
 
     const dispatch = useAppDispatch()
     const {
+        control,
         getValues,
         handleSubmit,
         setFocus,
-        setValue,
         register,
         reset,
         formState: { errors },
@@ -143,14 +143,7 @@ const GroupForm: React.FC<GroupFormProps> = function({
 
     // Event handlers --------------------------------------------------------------------------------------------------
 
-    const handleParameterChange = (value: string[]) => {
-        setValue('parameters', value)
-    }
-
     const onSave = (data: GroupFormState) => {
-        if (!twoOrMoreChecked()) {
-            return
-        }
         updateOtherGroups()
         dispatch(
             upsertGroup({
@@ -173,7 +166,7 @@ const GroupForm: React.FC<GroupFormProps> = function({
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
         >
-            <FormControl isInvalid={Boolean(errors.groupName)}>
+            <FormControl isInvalid={Boolean(errors?.groupName)}>
                 <FormLabel>Function &quot;{target.name}&quot;:</FormLabel>
                 <Input
                     placeholder='Name of parameter object'
@@ -186,25 +179,37 @@ const GroupForm: React.FC<GroupFormProps> = function({
                     <FormErrorIcon /> {errors.groupName?.message}
                 </FormErrorMessage>
             </FormControl>
-            <FormControl>
-                <CheckboxGroup
-                    defaultValue={prevGroupAnnotation?.parameters || []}
-                    onChange={handleParameterChange}
-                >
-                    <VStack alignItems='left'>
-                        {allParameters.map((parameter) => (
-                            <Checkbox
-                                key={parameter.name}
-                                value={parameter.name}
-                            >
-                                {getParameterName(parameter.name)}
-                            </Checkbox>
-                        ))}
-                    </VStack>
-                </CheckboxGroup>
+            <FormControl
+                isInvalid={Boolean(errors?.parameters)}
+            >
+                <Controller
+                    name='parameters'
+                    control={control}
+                    render={({ field: { ref, ...rest } }) => (
+                        <CheckboxGroup
+                            {...rest}
+                            defaultValue={prevGroupAnnotation?.parameters || []}
+                        >
+                            <VStack alignItems='left'>
+                                {allParameters.map((parameter) => (
+                                    <Checkbox
+                                        key={parameter.name}
+                                        value={parameter.name}
+                                    >
+                                        {getParameterName(parameter.name)}
+                                    </Checkbox>
+                                ))}
+                            </VStack>
+                        </CheckboxGroup>
+                    )}
+                    rules = {{ validate: () => checkedAtLeastOne() }}
+                />
                 <FormErrorMessage>
                     <FormErrorIcon />
-                    {'At least two parameters need to be selected.'}
+                    {
+                        errors?.parameters &&
+                        'At least one parameter needs to be selected.'
+                    }
                 </FormErrorMessage>
             </FormControl>
         </AnnotationForm>
