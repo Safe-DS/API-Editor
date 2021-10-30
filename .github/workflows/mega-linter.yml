@@ -1,6 +1,6 @@
 ---
 # Mega-Linter GitHub Action configuration file
-# More info at https://nvuillam.github.io/mega-linter
+# More info at https://megalinter.github.io
 name: Mega-Linter
 
 on:
@@ -33,11 +33,11 @@ jobs:
       - name: Mega-Linter
         id: ml
         # You can override Mega-Linter flavor used to have faster performances
-        # More info at https://nvuillam.github.io/mega-linter/flavors/
-        uses: nvuillam/mega-linter@v4.46.0
+        # More info at https://megalinter.github.io/flavors/
+        uses: megalinter/megalinter@v5.0.0
         env:
           # All available variables are described in documentation
-          # https://nvuillam.github.io/mega-linter/configuration/
+          # https://megalinter.github.io/configuration/
           VALIDATE_ALL_CODEBASE: false
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # ADD YOUR CUSTOM ENV VARIABLES HERE TO OVERRIDE VALUES OF .mega-linter.yml AT THE ROOT OF YOUR REPOSITORY
