@@ -34,10 +34,7 @@ interface GroupFormState {
     parameters: string[];
 }
 
-const GroupForm: React.FC<GroupFormProps> = function({
-                                                         target,
-                                                         groupName,
-                                                     }: GroupFormProps) {
+const GroupForm: React.FC<GroupFormProps> = function({ target, groupName }: GroupFormProps) {
     const targetPath = target.pathAsString()
     let currentGroups = useAppSelector(selectGroups(targetPath))
     let prevGroupAnnotation: GroupAnnotation | undefined
@@ -202,7 +199,7 @@ const GroupForm: React.FC<GroupFormProps> = function({
                             </VStack>
                         </CheckboxGroup>
                     )}
-                    rules = {{ validate: () => checkedAtLeastOne() }}
+                    rules={{ validate: () => checkedAtLeastOne() }}
                 />
                 <FormErrorMessage>
                     <FormErrorIcon />
