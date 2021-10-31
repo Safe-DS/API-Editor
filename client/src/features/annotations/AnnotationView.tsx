@@ -74,6 +74,7 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
                         <Annotation
                             type="calledAfterName"
                             name={calledAfterName}
+                            key={calledAfterName}
                             onDelete={() =>
                                 dispatch(removeCalledAfter({ target, calledAfterName }))
                             }
