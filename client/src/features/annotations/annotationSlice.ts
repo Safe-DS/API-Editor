@@ -270,8 +270,11 @@ const annotationsSlice = createSlice({
             delete state.boundaries[action.payload];
         },
         upsertCalledAfter(state, action: PayloadAction<CalledAfterAnnotation>) {
-            // TODO
-            console.log('TODO');
+            if (!state.calledAfters[action.payload.target]) {
+                state.calledAfters[action.payload.target] = {};
+            }
+            state.calledAfters[action.payload.target][action.payload.calledAfterName] =
+                action.payload;
         },
         removeCalledAfter(state, action: PayloadAction<CalledAfterTarget>) {
             delete state.calledAfters[action.payload.target][

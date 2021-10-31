@@ -22,7 +22,6 @@ import {
     selectRequired,
     selectUnused,
     showBoundaryAnnotationForm,
-    showCalledAfterAnnotationForm,
     showConstantAnnotationForm,
     showEnumAnnotationForm,
     showOptionalAnnotationForm,
@@ -75,9 +74,6 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
                         <Annotation
                             type="calledAfterName"
                             name={calledAfterName}
-                            onEdit={() =>
-                                dispatch(showCalledAfterAnnotationForm({ target, calledAfterName }))
-                            }
                             onDelete={() =>
                                 dispatch(removeCalledAfter({ target, calledAfterName }))
                             }

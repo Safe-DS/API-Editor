@@ -3,30 +3,30 @@ import {
     FormErrorIcon,
     FormErrorMessage,
     FormLabel,
-    Input,
+    Select,
 } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { useAppDispatch } from '../../../app/hooks';
+import { Optional } from '../../../common/util/types'
 import PythonDeclaration from '../../packageData/model/PythonDeclaration';
 import {
     hideAnnotationForms,
-    selectCalledAfters,
     upsertCalledAfter,
 } from '../annotationSlice';
 import AnnotationForm from './AnnotationForm';
 
 interface CalledAfterFormProps {
     readonly target: PythonDeclaration;
+    readonly selectOptions: Optional<string[]>;
 }
 
 interface CalledAfterFormState {
     calledAfterName: string;
 }
 
-const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ target }) {
+const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ target, selectOptions }) {
     const targetPath = target.pathAsString();
-    const calledAfters = useAppSelector(selectCalledAfters(targetPath));
 
     // Hooks -----------------------------------------------------------------------------------------------------------
 
@@ -77,13 +77,19 @@ const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ target }) {
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
         >
-            <FormControl isInvalid={false}>
+            <FormControl isInvalid={Boolean(errors?.calledAfterName)}>
                 <FormLabel>Name of the callable to be called before:</FormLabel>
-                <Input
-                    {...register('calledAfterName')}
-                />
+                <Select
+                    {...register('calledAfterName', {
+                        required: 'This is required.'
+                    })}
+                >
+                    {selectOptions?.map((name, index) => (
+                        <option key={name + index} value={ name }>{ name }</option>
+                    ))}
+                </Select>
                 <FormErrorMessage>
-                    <FormErrorIcon /> {errors?.calledAfterName && 'This is required'}
+                    <FormErrorIcon /> {errors?.calledAfterName?.message}
                 </FormErrorMessage>
             </FormControl>
         </AnnotationForm>

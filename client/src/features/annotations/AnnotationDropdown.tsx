@@ -14,6 +14,7 @@ import {
     addUnused,
     addRequired,
     showBoundaryAnnotationForm,
+    showCalledAfterAnnotationForm,
     showConstantAnnotationForm,
     showEnumAnnotationForm,
     showOptionalAnnotationForm,
@@ -23,6 +24,7 @@ import {
 interface AnnotationDropdownProps {
     target: string;
     showBoundary?: boolean;
+    showCalledAfter?: boolean;
     showConstant?: boolean;
     showRename?: boolean;
     showEnum?: boolean;
@@ -33,6 +35,7 @@ interface AnnotationDropdownProps {
 
 const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
     showBoundary = false,
+    showCalledAfter = false,
     showConstant = false,
     showEnum = false,
     showOptional = false,
@@ -63,6 +66,20 @@ const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                             }
                         >
                             @boundary
+                        </MenuItem>
+                    )}
+                    {showCalledAfter && (
+                        <MenuItem
+                            onClick={() =>
+                                dispatch(
+                                    showCalledAfterAnnotationForm({
+                                        target,
+                                        calledAfterName: '',
+                                    }),
+                                )
+                            }
+                        >
+                            @calledAfter
                         </MenuItem>
                     )}
                     {showConstant && (
