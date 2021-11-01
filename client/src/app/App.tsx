@@ -93,27 +93,6 @@ const App: React.FC = function () {
         }
     };
 
-    const getCalledAfterOptions = (target: Optional<PythonDeclaration>) => {
-        const pathString = target?.pathAsString();
-        if (!pathString || !target) {
-            return [];
-        }
-        const returnedOptions = (getContainingModule(userActionTarget) as PythonModule)
-            ?.getNestedContainedFunctionNames();
-        const targetIndex = returnedOptions.indexOf(pathString);
-        if (targetIndex !== -1) {
-            returnedOptions.splice(targetIndex, -1);
-        }
-        // let currentCalledAfters = useAppSelector(selectCalledAfters(target.pathAsString()))
-        // if (currentCalledAfters) {
-        //     const currentCalledAfterNames = Object.values(currentCalledAfters)
-        //         .map(calledAfterAnnotation => calledAfterAnnotation.calledAfterName)
-        //     returnedOptions.filter(option => !currentCalledAfterNames.includes(option))
-        // }
-        // return returnedOptions
-        return returnedOptions
-    }
-
     const showAnnotationImportDialog = useAppSelector(
         selectShowAnnotationImportDialog,
     );
@@ -148,7 +127,10 @@ const App: React.FC = function () {
                 {currentUserAction.type === 'calledAfter' && (
                     <CalledAfterForm
                         target={userActionTarget || pythonPackage}
-                        selectOptions={getCalledAfterOptions(userActionTarget)}
+                        selectOptions={
+                            getContainingModule(userActionTarget)
+                                ?.getNestedContainedFunctionNames()
+                        }
                     />
                 )}
                 {currentUserAction.type === 'constant' && (

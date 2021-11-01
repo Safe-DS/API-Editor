@@ -7,13 +7,13 @@ import {
 } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useAppDispatch } from '../../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { Optional } from '../../../common/util/types'
 import PythonDeclaration from '../../packageData/model/PythonDeclaration';
 import {
-    hideAnnotationForms,
+    hideAnnotationForms, selectCalledAfters,
     upsertCalledAfter,
-} from '../annotationSlice';
+} from '../annotationSlice'
 import AnnotationForm from './AnnotationForm';
 
 interface CalledAfterFormProps {
@@ -27,6 +27,17 @@ interface CalledAfterFormState {
 
 const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ target, selectOptions }) {
     const targetPath = target.pathAsString();
+
+    const targetIndex = selectOptions?.indexOf(targetPath);
+    if (targetIndex !== undefined && targetIndex !== -1) {
+        selectOptions?.splice(targetIndex, 1);
+    }
+    let currentCalledAfters = useAppSelector(selectCalledAfters(target.pathAsString()))
+    if (currentCalledAfters) {
+        const currentCalledAfterNames = Object.values(currentCalledAfters)
+            .map(calledAfterAnnotation => calledAfterAnnotation.calledAfterName)
+        selectOptions = selectOptions?.filter(option => !currentCalledAfterNames.includes(option))
+    }
 
     // Hooks -----------------------------------------------------------------------------------------------------------
 
