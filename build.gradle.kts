@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm") version "1.5.31" apply false
     kotlin("plugin.serialization") version "1.5.31" apply false
-    id("com.github.johnrengelman.shadow") version "7.0.0" apply false
+    id("com.github.johnrengelman.shadow") version "7.1.0" apply false
     id("com.github.node-gradle.node") version "3.1.1"
     idea
 }
