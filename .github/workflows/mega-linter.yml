@@ -5,7 +5,7 @@ name: Mega-Linter
 
 on:
   pull_request:
-    branches: [master]
+    branches: [main]
 
 concurrency:
   group: ${{ github.head_ref }}-${{ github.workflow }}
