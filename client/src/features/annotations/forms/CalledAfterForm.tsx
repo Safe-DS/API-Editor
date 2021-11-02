@@ -7,13 +7,14 @@ import {
 } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks'
-import { Optional } from '../../../common/util/types'
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { Optional } from '../../../common/util/types';
 import PythonDeclaration from '../../packageData/model/PythonDeclaration';
 import {
-    hideAnnotationForms, selectCalledAfters,
+    hideAnnotationForms,
+    selectCalledAfters,
     upsertCalledAfter,
-} from '../annotationSlice'
+} from '../annotationSlice';
 import AnnotationForm from './AnnotationForm';
 
 interface CalledAfterFormProps {
@@ -25,18 +26,28 @@ interface CalledAfterFormState {
     calledAfterName: string;
 }
 
-const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ target, selectOptions }) {
+const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({
+    target,
+    selectOptions,
+}) {
     const targetPath = target.pathAsString();
 
-    const targetIndex = selectOptions?.indexOf(targetPath);
+    let optionsShown = selectOptions?.slice();
+
+    const targetIndex = optionsShown?.indexOf(targetPath);
     if (targetIndex !== undefined && targetIndex !== -1) {
-        selectOptions?.splice(targetIndex, 1);
+        optionsShown?.splice(targetIndex, 1);
     }
-    let currentCalledAfters = useAppSelector(selectCalledAfters(target.pathAsString()))
+    let currentCalledAfters = useAppSelector(
+        selectCalledAfters(target.pathAsString()),
+    );
     if (currentCalledAfters) {
-        const currentCalledAfterNames = Object.values(currentCalledAfters)
-            .map(calledAfterAnnotation => calledAfterAnnotation.calledAfterName)
-        selectOptions = selectOptions?.filter(option => !currentCalledAfterNames.includes(option))
+        const currentCalledAfterNames = Object.values(currentCalledAfters).map(
+            (calledAfterAnnotation) => calledAfterAnnotation.calledAfterName,
+        );
+        optionsShown = optionsShown?.filter(
+            (option) => !currentCalledAfterNames.includes(option),
+        );
     }
 
     // Hooks -----------------------------------------------------------------------------------------------------------
@@ -92,11 +103,13 @@ const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ target, sele
                 <FormLabel>Name of the callable to be called before:</FormLabel>
                 <Select
                     {...register('calledAfterName', {
-                        required: 'This is required.'
+                        required: 'This is required.',
                     })}
                 >
-                    {selectOptions?.map((name, index) => (
-                        <option key={name + index} value={ name }>{ name }</option>
+                    {optionsShown?.map((name, index) => (
+                        <option key={name + index} value={name}>
+                            {name}
+                        </option>
                     ))}
                 </Select>
                 <FormErrorMessage>
