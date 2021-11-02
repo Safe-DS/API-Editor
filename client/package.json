@@ -18,7 +18,7 @@
         "@emotion/react": "^11.5.0",
         "@emotion/styled": "^11.3.0",
         "@reduxjs/toolkit": "^1.6.2",
-        "framer-motion": "^4.1.17",
+        "framer-motion": "^5.0.1",
         "idb-keyval": "^6.0.3",
         "katex": "^0.13.18",
         "react": "^17.0.2",
