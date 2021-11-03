@@ -21,7 +21,7 @@ import {
     PopoverContent,
     PopoverTrigger,
     Spacer,
-    Text,
+    Text as ChakraText,
     useColorMode,
 } from '@chakra-ui/react';
 import React, { useRef } from 'react';
@@ -83,7 +83,9 @@ const MenuBar: React.FC<MenuBarProps> = function ({ filter, setFilter }) {
                                     {part}
                                 </BreadcrumbLink>
                             )}
-                            {!enableNavigation && <Text>{part}</Text>}
+                            {!enableNavigation && (
+                                <ChakraText>{part}</ChakraText>
+                            )}
                         </BreadcrumbItem>
                     ))}
                 </Breadcrumb>
@@ -143,7 +145,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({ filter, setFilter }) {
                                     borderColor={
                                         PythonFilter.fromFilterBoxInput(
                                             filter,
-                                        )?.isFiltering()
+                                        )?.isFilteringModules()
                                             ? 'green'
                                             : 'inherit'
                                     }
@@ -151,7 +153,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({ filter, setFilter }) {
                                 />
                                 {PythonFilter.fromFilterBoxInput(
                                     filter,
-                                )?.isFiltering() && (
+                                )?.isFilteringModules() && (
                                     <InputRightElement>
                                         <Icon as={FaCheck} color="green.500" />
                                     </InputRightElement>
