@@ -1,4 +1,10 @@
-import { Box, Heading, HStack, Stack, Text } from '@chakra-ui/react';
+import {
+    Box,
+    Heading,
+    HStack,
+    Stack,
+    Text as ChakraText,
+} from '@chakra-ui/react';
 import React from 'react';
 import { isEmptyList } from '../../../common/util/listOperations';
 import AnnotationDropdown from '../../annotations/AnnotationDropdown';
@@ -26,6 +32,9 @@ const FunctionView: React.FC<FunctionViewProps> = function ({
                     <AnnotationDropdown
                         target={id}
                         showCalledAfter
+                        showGroup={
+                            pythonFunction.explicitParameters().length >= 2
+                        }
                         showRename
                         showUnused
                     />
@@ -39,9 +48,9 @@ const FunctionView: React.FC<FunctionViewProps> = function ({
                             inputText={pythonFunction.description}
                         />
                     ) : (
-                        <Text color="gray.500">
+                        <ChakraText color="gray.500">
                             There is no documentation for this function.
-                        </Text>
+                        </ChakraText>
                     )}
                 </Box>
             </Stack>
@@ -60,9 +69,9 @@ const FunctionView: React.FC<FunctionViewProps> = function ({
                             />
                         ))
                     ) : (
-                        <Text paddingLeft={4} color="gray.500">
+                        <ChakraText paddingLeft={4} color="gray.500">
                             There are no parameters.
-                        </Text>
+                        </ChakraText>
                     )}
                 </Stack>
             </Stack>

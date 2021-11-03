@@ -11,7 +11,7 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
-    Text,
+    Text as ChakraText,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useAppDispatch } from '../../app/hooks';
@@ -35,6 +35,7 @@ const AnnotationImportDialog: React.FC = function () {
                 type: 'none',
             },
             enums: {},
+            groups: {},
             optionals: {},
             renamings: {},
             requireds: {},
@@ -84,11 +85,13 @@ const AnnotationImportDialog: React.FC = function () {
                             Select an annotation file to import.
                         </FormLabel>
                         <StyledDropzone onDrop={onDrop}>
-                            <Text>
+                            <ChakraText>
                                 Drag and drop an annotation file here or click
                                 to select the file.
-                            </Text>
-                            <Text>(only *.json will be accepted)</Text>
+                            </ChakraText>
+                            <ChakraText>
+                                (only *.json will be accepted)
+                            </ChakraText>
                         </StyledDropzone>
 
                         {fileName && (

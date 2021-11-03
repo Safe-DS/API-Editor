@@ -56,6 +56,14 @@ export default class PythonFunction extends PythonDeclaration {
         return this.parameters;
     }
 
+    explicitParameters(): PythonParameter[] {
+        if (this.parent() instanceof PythonModule) {
+            return this.children();
+        }
+
+        return this.children().slice(1);
+    }
+
     toString(): string {
         let result = '';
 

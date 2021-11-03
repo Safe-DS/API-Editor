@@ -16,6 +16,9 @@ export interface AnnotationsState {
     enums: {
         [target: string]: EnumAnnotation;
     };
+    groups: {
+        [target: string]: { [groupName: string]: GroupAnnotation };
+    };
     optionals: {
         [target: string]: OptionalAnnotation;
     };
@@ -135,6 +138,35 @@ interface EnumPair {
     readonly instanceName: string;
 }
 
+export interface GroupAnnotation {
+    /**
+     * ID of the annotated Python declaration
+     */
+    readonly target: string;
+
+    /**
+     * Name of the grouped object
+     */
+    readonly groupName: string;
+
+    /**
+     * Parameters to group
+     */
+    readonly parameters: string[];
+}
+
+interface GroupTarget {
+    /**
+     * ID of the annotated Python declaration
+     */
+    readonly target: string;
+
+    /**
+     * Name of the grouped object
+     */
+    readonly groupName: string;
+}
+
 interface OptionalAnnotation {
     /**
      * ID of the annotated Python declaration
@@ -183,6 +215,7 @@ type UserAction =
     | BoundaryUserAction
     | CalledAfterUserAction
     | ConstantUserAction
+    | GroupUserAction
     | EnumUserAction
     | RenameUserAction
     | OptionalUserAction;
@@ -204,13 +237,19 @@ interface CalledAfterUserAction {
 }
 
 interface ConstantUserAction {
-    readonly type: 'optional';
+    readonly type: 'constant';
     readonly target: string;
 }
 
 interface EnumUserAction {
     readonly type: 'enum';
     readonly target: string;
+}
+
+export interface GroupUserAction {
+    readonly type: 'group';
+    readonly target: string;
+    readonly groupName: string;
 }
 
 interface OptionalUserAction {
@@ -231,6 +270,7 @@ const initialState: AnnotationsState = {
     constants: {},
     currentUserAction: NoUserAction,
     enums: {},
+    groups: {},
     optionals: {},
     renamings: {},
     requireds: {},
@@ -244,7 +284,13 @@ export const initializeAnnotations = createAsyncThunk(
     'annotations/initialize',
     async () => {
         try {
-            return (await idb.get('annotations')) as AnnotationsState;
+            const storedAnnotations = (await idb.get(
+                'annotations',
+            )) as AnnotationsState;
+            return {
+                ...initialState,
+                ...storedAnnotations,
+            };
         } catch {
             return initialState;
         }
@@ -296,7 +342,57 @@ const annotationsSlice = createSlice({
         removeEnum(state, action: PayloadAction<string>) {
             delete state.enums[action.payload];
         },
+        upsertGroup(state, action: PayloadAction<GroupAnnotation>) {
+            if (!state.groups[action.payload.target]) {
+                state.groups[action.payload.target] = {};
+            } else {
+                const targetGroups = state.groups[action.payload.target];
+                const otherGroupNames = Object.values(targetGroups)
+                    .filter(
+                        (group) => group.groupName !== action.payload.groupName,
+                    )
+                    .map((group) => group.groupName);
+
+                for (const nameOfGroup of otherGroupNames) {
+                    let needsChange = false;
+                    const group = targetGroups[nameOfGroup];
+                    const currentAnnotationParameter =
+                        action.payload.parameters;
+                    const currentGroupParameter = [...group.parameters];
+                    for (const parameter of currentAnnotationParameter) {
+                        const index = currentGroupParameter.indexOf(parameter);
+                        if (index > -1) {
+                            needsChange = true;
+                            currentGroupParameter.splice(index, 1);
+                        }
+                    }
+                    if (currentGroupParameter.length < 1) {
+                        removeGroup({
+                            target: action.payload.target,
+                            groupName: group.groupName,
+                        });
+                    } else if (needsChange) {
+                        state.groups[group.target][group.groupName] = {
+                            parameters: currentGroupParameter,
+                            groupName: group.groupName,
+                            target: group.target,
+                        };
+                    }
+                }
+            }
+            state.groups[action.payload.target][action.payload.groupName] =
+                action.payload;
+        },
+        removeGroup(state, action: PayloadAction<GroupTarget>) {
+            delete state.groups[action.payload.target][
+                action.payload.groupName
+            ];
+            if (Object.keys(state.groups[action.payload.target]).length === 0) {
+                delete state.groups[action.payload.target];
+            }
+        },
         upsertOptional(state, action: PayloadAction<OptionalAnnotation>) {
+            console.log(action.payload);
             state.optionals[action.payload.target] = action.payload;
         },
         removeOptional(state, action: PayloadAction<string>) {
@@ -337,6 +433,13 @@ const annotationsSlice = createSlice({
             state.currentUserAction = {
                 type: 'constant',
                 target: action.payload,
+            };
+        },
+        showGroupAnnotationForm(state, action: PayloadAction<GroupTarget>) {
+            state.currentUserAction = {
+                type: 'group',
+                target: action.payload.target,
+                groupName: action.payload.groupName,
             };
         },
         showEnumAnnotationForm(state, action: PayloadAction<string>) {
@@ -385,6 +488,8 @@ export const {
     removeConstant,
     upsertEnum,
     removeEnum,
+    upsertGroup,
+    removeGroup,
     upsertOptional,
     removeOptional,
     upsertRenaming,
@@ -398,6 +503,7 @@ export const {
     showCalledAfterAnnotationForm,
     showConstantAnnotationForm,
     showEnumAnnotationForm,
+    showGroupAnnotationForm,
     showOptionalAnnotationForm,
     showRenameAnnotationForm,
     hideAnnotationForms,
@@ -425,6 +531,10 @@ export const selectEnum =
     (target: string) =>
     (state: RootState): EnumAnnotation | undefined =>
         selectAnnotations(state).enums[target];
+export const selectGroups =
+    (target: string) =>
+    (state: RootState): { [groupName: string]: GroupAnnotation } | undefined =>
+        selectAnnotations(state).groups[target];
 export const selectOptional =
     (target: string) =>
     (state: RootState): OptionalAnnotation | undefined =>
