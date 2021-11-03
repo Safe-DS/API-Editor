@@ -6,6 +6,9 @@ export interface AnnotationsState {
     boundaries: {
         [target: string]: BoundaryAnnotation;
     };
+    calledAfters: {
+        [target: string]: { [calledAfterName: string]: CalledAfterAnnotation };
+    };
     constants: {
         [target: string]: ConstantAnnotation;
     };
@@ -74,6 +77,30 @@ export enum ComparisonOperator {
     LESS_THAN_OR_EQUALS,
     LESS_THAN,
     UNRESTRICTED,
+}
+
+interface CalledAfterAnnotation {
+    /**
+     * ID of the annotated Python declaration
+     */
+    readonly target: string;
+
+    /**
+     * Name of the callable to be called first
+     */
+    readonly calledAfterName: string;
+}
+
+interface CalledAfterTarget {
+    /**
+     * ID of the annotated Python declaration
+     */
+    readonly target: string;
+
+    /**
+     * Name of the callable to be called first
+     */
+    readonly calledAfterName: string;
 }
 
 interface ConstantAnnotation {
@@ -186,6 +213,7 @@ interface UnusedAnnotation {
 type UserAction =
     | typeof NoUserAction
     | BoundaryUserAction
+    | CalledAfterUserAction
     | ConstantUserAction
     | GroupUserAction
     | EnumUserAction
@@ -200,6 +228,12 @@ const NoUserAction = {
 interface BoundaryUserAction {
     readonly type: 'boundary';
     readonly target: string;
+}
+
+interface CalledAfterUserAction {
+    readonly type: 'calledAfter';
+    readonly target: string;
+    readonly calledAfterName: string;
 }
 
 interface ConstantUserAction {
@@ -232,6 +266,7 @@ interface RenameUserAction {
 
 const initialState: AnnotationsState = {
     boundaries: {},
+    calledAfters: {},
     constants: {},
     currentUserAction: NoUserAction,
     enums: {},
@@ -279,6 +314,25 @@ const annotationsSlice = createSlice({
         },
         removeBoundary(state, action: PayloadAction<string>) {
             delete state.boundaries[action.payload];
+        },
+        upsertCalledAfter(state, action: PayloadAction<CalledAfterAnnotation>) {
+            if (!state.calledAfters[action.payload.target]) {
+                state.calledAfters[action.payload.target] = {};
+            }
+            state.calledAfters[action.payload.target][
+                action.payload.calledAfterName
+            ] = action.payload;
+        },
+        removeCalledAfter(state, action: PayloadAction<CalledAfterTarget>) {
+            delete state.calledAfters[action.payload.target][
+                action.payload.calledAfterName
+            ];
+            if (
+                Object.keys(state.calledAfters[action.payload.target])
+                    .length === 0
+            ) {
+                delete state.calledAfters[action.payload.target];
+            }
         },
         upsertConstant(state, action: PayloadAction<ConstantAnnotation>) {
             state.constants[action.payload.target] = action.payload;
@@ -372,6 +426,16 @@ const annotationsSlice = createSlice({
                 target: action.payload,
             };
         },
+        showCalledAfterAnnotationForm(
+            state,
+            action: PayloadAction<CalledAfterTarget>,
+        ) {
+            state.currentUserAction = {
+                type: 'calledAfter',
+                target: action.payload.target,
+                calledAfterName: action.payload.calledAfterName,
+            };
+        },
         showConstantAnnotationForm(state, action: PayloadAction<string>) {
             state.currentUserAction = {
                 type: 'constant',
@@ -425,6 +489,8 @@ export const {
 
     upsertBoundary,
     removeBoundary,
+    upsertCalledAfter,
+    removeCalledAfter,
     upsertConstant,
     removeConstant,
     upsertEnum,
@@ -441,6 +507,7 @@ export const {
     removeUnused,
 
     showBoundaryAnnotationForm,
+    showCalledAfterAnnotationForm,
     showConstantAnnotationForm,
     showEnumAnnotationForm,
     showGroupAnnotationForm,
@@ -457,6 +524,10 @@ export const selectBoundary =
     (target: string) =>
     (state: RootState): BoundaryAnnotation | undefined =>
         selectAnnotations(state).boundaries[target];
+export const selectCalledAfters =
+    (target: string) =>
+    (state: RootState): { [calledAfter: string]: CalledAfterAnnotation } =>
+        selectAnnotations(state).calledAfters[target] ?? [];
 export const selectConstant =
     (target: string) =>
     (state: RootState): ConstantAnnotation | undefined =>
@@ -469,8 +540,8 @@ export const selectEnum =
         selectAnnotations(state).enums[target];
 export const selectGroups =
     (target: string) =>
-    (state: RootState): { [groupName: string]: GroupAnnotation } | undefined =>
-        selectAnnotations(state).groups[target];
+    (state: RootState): { [groupName: string]: GroupAnnotation } =>
+        selectAnnotations(state).groups[target] ?? [];
 export const selectOptional =
     (target: string) =>
     (state: RootState): OptionalAnnotation | undefined =>

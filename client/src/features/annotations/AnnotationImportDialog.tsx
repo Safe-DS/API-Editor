@@ -29,6 +29,7 @@ const AnnotationImportDialog: React.FC = function () {
         useState<AnnotationsState>({
             boundaries: {},
             constants: {},
+            calledAfters: {},
             currentUserAction: {
                 target: '',
                 type: 'none',

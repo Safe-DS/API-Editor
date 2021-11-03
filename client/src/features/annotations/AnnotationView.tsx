@@ -12,6 +12,7 @@ import {
     BoundaryAnnotation,
     ComparisonOperator,
     removeBoundary,
+    removeCalledAfter,
     removeConstant,
     removeEnum,
     removeGroup,
@@ -20,6 +21,7 @@ import {
     removeRequired,
     removeUnused,
     selectBoundary,
+    selectCalledAfters,
     selectConstant,
     selectEnum,
     selectGroups,
@@ -43,6 +45,7 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
     const dispatch = useAppDispatch();
 
     const boundaryAnnotation = useAppSelector(selectBoundary(target));
+    const calledAfterAnnotation = useAppSelector(selectCalledAfters(target));
     const constantAnnotation = useAppSelector(selectConstant(target));
     const enumAnnotation = useAppSelector(selectEnum(target));
     const groupAnnotations = useAppSelector(selectGroups(target));
@@ -53,6 +56,7 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
 
     if (
         !boundaryAnnotation &&
+        !calledAfterAnnotation &&
         !constantAnnotation &&
         !enumAnnotation &&
         !groupAnnotations &&
@@ -75,6 +79,16 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
                     onDelete={() => dispatch(removeBoundary(target))}
                 />
             )}
+            {Object.keys(calledAfterAnnotation).map((calledAfterName) => (
+                <Annotation
+                    type="calledAfter"
+                    name={calledAfterName}
+                    key={calledAfterName}
+                    onDelete={() =>
+                        dispatch(removeCalledAfter({ target, calledAfterName }))
+                    }
+                />
+            ))}
             {constantAnnotation && (
                 <Annotation
                     type="constant"
@@ -91,22 +105,19 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
                     onDelete={() => dispatch(removeEnum(target))}
                 />
             )}
-            {groupAnnotations &&
-                Object.keys(groupAnnotations).map((groupName) => (
-                    <Annotation
-                        key={groupName}
-                        type="group"
-                        name={groupName}
-                        onEdit={() =>
-                            dispatch(
-                                showGroupAnnotationForm({ target, groupName }),
-                            )
-                        }
-                        onDelete={() =>
-                            dispatch(removeGroup({ target, groupName }))
-                        }
-                    />
-                ))}
+            {Object.keys(groupAnnotations).map((groupName) => (
+                <Annotation
+                    key={groupName}
+                    type="group"
+                    name={groupName}
+                    onEdit={() =>
+                        dispatch(showGroupAnnotationForm({ target, groupName }))
+                    }
+                    onDelete={() =>
+                        dispatch(removeGroup({ target, groupName }))
+                    }
+                />
+            ))}
             {optionalAnnotation && (
                 <Annotation
                     type="optional"
