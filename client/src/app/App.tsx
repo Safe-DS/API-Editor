@@ -14,6 +14,7 @@ import {
     selectShowAnnotationImportDialog,
 } from '../features/annotations/annotationSlice';
 import BoundaryForm from '../features/annotations/forms/BoundaryForm';
+import CalledAfterForm from '../features/annotations/forms/CalledAfterForm';
 import ConstantForm from '../features/annotations/forms/ConstantForm';
 import EnumForm from '../features/annotations/forms/EnumForm';
 import GroupForm from '../features/annotations/forms/GroupForm';
@@ -33,6 +34,7 @@ import {
 import SelectionView from '../features/packageData/selectionView/SelectionView';
 import TreeView from '../features/packageData/treeView/TreeView';
 import { useAppDispatch, useAppSelector } from './hooks';
+import PythonFunction from '../features/packageData/model/PythonFunction';
 
 const App: React.FC = function () {
     const [pythonPackage, setPythonPackage] = useState<PythonPackage>(
@@ -107,6 +109,10 @@ const App: React.FC = function () {
                 {currentUserAction.type === 'boundary' && (
                     <BoundaryForm target={userActionTarget || pythonPackage} />
                 )}
+                {currentUserAction.type === 'calledAfter' &&
+                    userActionTarget instanceof PythonFunction && (
+                        <CalledAfterForm target={userActionTarget} />
+                    )}
                 {currentUserAction.type === 'constant' && (
                     <ConstantForm target={userActionTarget || pythonPackage} />
                 )}

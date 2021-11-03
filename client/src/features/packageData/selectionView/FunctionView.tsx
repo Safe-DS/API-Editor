@@ -12,6 +12,8 @@ import AnnotationView from '../../annotations/AnnotationView';
 import PythonFunction from '../model/PythonFunction';
 import DocumentationText from './DocumentationText';
 import ParameterNode from './ParameterNode';
+import { useAppSelector } from '../../../app/hooks';
+import { selectCalledAfters } from '../../annotations/annotationSlice';
 
 interface FunctionViewProps {
     pythonFunction: PythonFunction;
@@ -22,6 +24,14 @@ const FunctionView: React.FC<FunctionViewProps> = function ({
 }) {
     const id = pythonFunction.pathAsString();
 
+    // If more @calledAfter annotations can be added
+    const currentCalledAfters = Object.keys(
+        useAppSelector(selectCalledAfters(id)),
+    );
+    const hasRemainingCalledAfters = pythonFunction
+        .siblingFunctions()
+        .some((it) => !currentCalledAfters.includes(it.name));
+
     return (
         <Stack spacing={8}>
             <Stack spacing={4}>
@@ -31,6 +41,7 @@ const FunctionView: React.FC<FunctionViewProps> = function ({
                     </Heading>
                     <AnnotationDropdown
                         target={id}
+                        showCalledAfter={hasRemainingCalledAfters}
                         showGroup={
                             pythonFunction.explicitParameters().length >= 2
                         }
