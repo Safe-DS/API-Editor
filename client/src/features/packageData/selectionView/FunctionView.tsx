@@ -31,7 +31,9 @@ const FunctionView: React.FC<FunctionViewProps> = function ({
                     </Heading>
                     <AnnotationDropdown
                         target={id}
-                        showGroup
+                        showGroup={
+                            pythonFunction.explicitParameters().length >= 2
+                        }
                         showRename
                         showUnused
                     />
