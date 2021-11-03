@@ -1,13 +1,20 @@
-import {Button, ButtonGroup, IconButton, Stack, Text} from '@chakra-ui/react';
+import {
+    Button,
+    ButtonGroup,
+    IconButton,
+    Stack,
+    Text as ChakraText,
+} from '@chakra-ui/react';
 import React from 'react';
-import {FaTrash, FaWrench} from 'react-icons/fa';
-import {useAppDispatch, useAppSelector} from '../../app/hooks';
+import { FaTrash, FaWrench } from 'react-icons/fa';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
     BoundaryAnnotation,
     ComparisonOperator,
     removeBoundary,
     removeConstant,
     removeEnum,
+    removeGroup,
     removeOptional,
     removeRenaming,
     removeRequired,
@@ -15,6 +22,7 @@ import {
     selectBoundary,
     selectConstant,
     selectEnum,
+    selectGroups,
     selectOptional,
     selectRenaming,
     selectRequired,
@@ -22,6 +30,7 @@ import {
     showBoundaryAnnotationForm,
     showConstantAnnotationForm,
     showEnumAnnotationForm,
+    showGroupAnnotationForm,
     showOptionalAnnotationForm,
     showRenameAnnotationForm,
 } from './annotationSlice';
@@ -36,6 +45,7 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
     const boundaryAnnotation = useAppSelector(selectBoundary(target));
     const constantAnnotation = useAppSelector(selectConstant(target));
     const enumAnnotation = useAppSelector(selectEnum(target));
+    const groupAnnotations = useAppSelector(selectGroups(target));
     const optionalAnnotation = useAppSelector(selectOptional(target));
     const renameAnnotation = useAppSelector(selectRenaming(target));
     const requiredAnnotation = useAppSelector(selectRequired(target));
@@ -45,6 +55,7 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
         !boundaryAnnotation &&
         !constantAnnotation &&
         !enumAnnotation &&
+        !groupAnnotations &&
         !optionalAnnotation &&
         !renameAnnotation &&
         !requiredAnnotation &&
@@ -59,7 +70,7 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
             {boundaryAnnotation && (
                 <Annotation
                     type="boundary"
-                    name={(boundaryToString(boundaryAnnotation))}
+                    name={boundaryToString(boundaryAnnotation)}
                     onEdit={() => dispatch(showBoundaryAnnotationForm(target))}
                     onDelete={() => dispatch(removeBoundary(target))}
                 />
@@ -80,6 +91,22 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
                     onDelete={() => dispatch(removeEnum(target))}
                 />
             )}
+            {groupAnnotations &&
+                Object.keys(groupAnnotations).map((groupName) => (
+                    <Annotation
+                        key={groupName}
+                        type="group"
+                        name={groupName}
+                        onEdit={() =>
+                            dispatch(
+                                showGroupAnnotationForm({ target, groupName }),
+                            )
+                        }
+                        onDelete={() =>
+                            dispatch(removeGroup({ target, groupName }))
+                        }
+                    />
+                ))}
             {optionalAnnotation && (
                 <Annotation
                     type="optional"
@@ -116,26 +143,26 @@ const boundaryToString = (boundary: BoundaryAnnotation) => {
     const interval = boundary.interval;
     let result = '{x ∈ ';
 
-    result += interval.isDiscrete ? 'ℤ' : 'ℝ'
-    result += ' | '
+    result += interval.isDiscrete ? 'ℤ' : 'ℝ';
+    result += ' | ';
 
     if (interval.lowerLimitType === ComparisonOperator.LESS_THAN_OR_EQUALS) {
-        result += `${interval.lowIntervalLimit} ≤ `
+        result += `${interval.lowIntervalLimit} ≤ `;
     } else if (interval.lowerLimitType === ComparisonOperator.LESS_THAN) {
-        result += `${interval.lowIntervalLimit} < `
+        result += `${interval.lowIntervalLimit} < `;
     }
 
-    result += 'x'
+    result += 'x';
 
     if (interval.upperLimitType === ComparisonOperator.LESS_THAN_OR_EQUALS) {
-        result += ` ≤ ${interval.upperIntervalLimit}`
+        result += ` ≤ ${interval.upperIntervalLimit}`;
     } else if (interval.upperLimitType === ComparisonOperator.LESS_THAN) {
-        result += ` < ${interval.upperIntervalLimit}`
+        result += ` < ${interval.upperIntervalLimit}`;
     }
 
-    result += '}'
-    return result
-}
+    result += '}';
+    return result;
+};
 
 interface AnnotationProps {
     type: string;
@@ -161,9 +188,13 @@ const Annotation: React.FC<AnnotationProps> = function ({
             >
                 @{type}
                 {name && (
-                    <Text as="span" fontWeight="normal" justifySelf="flex-end">
+                    <ChakraText
+                        as="span"
+                        fontWeight="normal"
+                        justifySelf="flex-end"
+                    >
                         : {name}
-                    </Text>
+                    </ChakraText>
                 )}
             </Button>
             <IconButton

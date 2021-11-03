@@ -15,6 +15,7 @@ import {
     addRequired,
     showBoundaryAnnotationForm,
     showConstantAnnotationForm,
+    showGroupAnnotationForm,
     showEnumAnnotationForm,
     showOptionalAnnotationForm,
     showRenameAnnotationForm,
@@ -24,6 +25,7 @@ interface AnnotationDropdownProps {
     target: string;
     showBoundary?: boolean;
     showConstant?: boolean;
+    showGroup?: boolean;
     showRename?: boolean;
     showEnum?: boolean;
     showUnused?: boolean;
@@ -34,6 +36,7 @@ interface AnnotationDropdownProps {
 const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
     showBoundary = false,
     showConstant = false,
+    showGroup = false,
     showEnum = false,
     showOptional = false,
     showRename = false,
@@ -81,6 +84,20 @@ const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                             }
                         >
                             @enum
+                        </MenuItem>
+                    )}
+                    {showGroup && (
+                        <MenuItem
+                            onClick={() =>
+                                dispatch(
+                                    showGroupAnnotationForm({
+                                        target,
+                                        groupName: '',
+                                    }),
+                                )
+                            }
+                        >
+                            @group
                         </MenuItem>
                     )}
                     {showOptional && (
