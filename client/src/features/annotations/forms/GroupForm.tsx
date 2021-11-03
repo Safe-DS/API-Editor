@@ -53,7 +53,6 @@ const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName }) {
 
     if (target instanceof PythonFunction) {
         allParameters = target.explicitParameters();
-        console.log(allParameters);
     }
 
     const groupContainsParameter = (key: string, name: string) => {
