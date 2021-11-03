@@ -1,4 +1,10 @@
-import { Button, ButtonGroup, IconButton, Stack, Text } from '@chakra-ui/react';
+import {
+    Button,
+    ButtonGroup,
+    IconButton,
+    Stack,
+    Text as ChakraText,
+} from '@chakra-ui/react';
 import React from 'react';
 import { FaTrash, FaWrench } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -182,9 +188,13 @@ const Annotation: React.FC<AnnotationProps> = function ({
             >
                 @{type}
                 {name && (
-                    <Text as="span" fontWeight="normal" justifySelf="flex-end">
+                    <ChakraText
+                        as="span"
+                        fontWeight="normal"
+                        justifySelf="flex-end"
+                    >
                         : {name}
-                    </Text>
+                    </ChakraText>
                 )}
             </Button>
             <IconButton
