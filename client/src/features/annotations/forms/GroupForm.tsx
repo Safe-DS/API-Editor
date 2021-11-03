@@ -33,10 +33,7 @@ interface GroupFormState {
     dummy: string;
 }
 
-const GroupForm: React.FC<GroupFormProps> = function ({
-    target,
-    groupName,
-}: GroupFormProps) {
+const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName }) {
     const targetPath = target.pathAsString();
     const currentGroups = useAppSelector(selectGroups(targetPath));
     let prevGroupAnnotation: GroupAnnotation | undefined;
@@ -55,7 +52,8 @@ const GroupForm: React.FC<GroupFormProps> = function ({
     let allParameters: PythonParameter[] = [];
 
     if (target instanceof PythonFunction) {
-        allParameters = target.children();
+        allParameters = target.explicitParameters();
+        console.log(allParameters);
     }
 
     const groupContainsParameter = (key: string, name: string) => {
