@@ -1,4 +1,4 @@
-import { HStack, Icon, Text } from '@chakra-ui/react';
+import { HStack, Icon, Text as ChakraText } from '@chakra-ui/react';
 import React from 'react';
 import { IconType } from 'react-icons/lib';
 import { useLocation } from 'react-router';
@@ -19,7 +19,6 @@ interface TreeNodeProps extends ChildrenProp {
 }
 
 const TreeNode: React.FC<TreeNodeProps> = function ({
-    children,
     declaration,
     icon,
     isExpandable,
@@ -47,25 +46,22 @@ const TreeNode: React.FC<TreeNodeProps> = function ({
     };
 
     return (
-        <>
-            <HStack
-                userSelect="none"
-                cursor="pointer"
-                color={color}
-                backgroundColor={backgroundColor}
-                paddingLeft={paddingLeft}
-                onClick={handleClick}
-            >
-                <VisibilityIndicator
-                    hasChildren={isExpandable}
-                    showChildren={showChildren}
-                    isSelected={isSelected(declaration, currentPathname)}
-                />
-                <Icon as={icon} />
-                <Text>{declaration.name}</Text>
-            </HStack>
-            {showChildren && children}
-        </>
+        <HStack
+            userSelect="none"
+            cursor="pointer"
+            color={color}
+            backgroundColor={backgroundColor}
+            paddingLeft={paddingLeft}
+            onClick={handleClick}
+        >
+            <VisibilityIndicator
+                hasChildren={isExpandable}
+                showChildren={showChildren}
+                isSelected={isSelected(declaration, currentPathname)}
+            />
+            <Icon as={icon} />
+            <ChakraText>{declaration.name}</ChakraText>
+        </HStack>
     );
 };
 

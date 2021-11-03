@@ -31,7 +31,7 @@ export default class PythonPackage extends PythonDeclaration {
     }
 
     filter(pythonFilter: PythonFilter | void): PythonPackage {
-        if (!pythonFilter) {
+        if (!pythonFilter || !pythonFilter.isFiltering()) {
             return this;
         }
 
