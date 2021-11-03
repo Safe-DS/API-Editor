@@ -3,7 +3,7 @@ import * as idb from 'idb-keyval';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import MenuBar from '../common/MenuBar';
-import { Optional, Setter } from '../common/util/types';
+import { Setter } from '../common/util/types';
 import AnnotationImportDialog from '../features/annotations/AnnotationImportDialog';
 import {
     AnnotationsState,
@@ -20,11 +20,7 @@ import EnumForm from '../features/annotations/forms/EnumForm';
 import GroupForm from '../features/annotations/forms/GroupForm';
 import OptionalForm from '../features/annotations/forms/OptionalForm';
 import RenameForm from '../features/annotations/forms/RenameForm';
-import PythonClass from '../features/packageData/model/PythonClass';
-import PythonDeclaration from '../features/packageData/model/PythonDeclaration';
 import { PythonFilter } from '../features/packageData/model/PythonFilter';
-import PythonFunction from '../features/packageData/model/PythonFunction';
-import PythonModule from '../features/packageData/model/PythonModule';
 import PythonPackage from '../features/packageData/model/PythonPackage';
 import {
     parsePythonPackageJson,
@@ -38,6 +34,7 @@ import {
 import SelectionView from '../features/packageData/selectionView/SelectionView';
 import TreeView from '../features/packageData/treeView/TreeView';
 import { useAppDispatch, useAppSelector } from './hooks';
+import PythonFunction from '../features/packageData/model/PythonFunction';
 
 const App: React.FC = function () {
     const [pythonPackage, setPythonPackage] = useState<PythonPackage>(
@@ -81,21 +78,6 @@ const App: React.FC = function () {
         currentUserAction.target,
     );
 
-    const getContainingModule = (
-        target: Optional<PythonDeclaration>,
-    ): Optional<PythonModule> => {
-        if (target instanceof PythonFunction) {
-            if (target?.parent() instanceof PythonClass) {
-                return (target?.parent() as PythonClass)?.parent();
-            }
-            if (target?.parent() instanceof PythonModule) {
-                return target?.parent() as PythonModule;
-            }
-        } else {
-            return null;
-        }
-    };
-
     const showAnnotationImportDialog = useAppSelector(
         selectShowAnnotationImportDialog,
     );
@@ -127,14 +109,10 @@ const App: React.FC = function () {
                 {currentUserAction.type === 'boundary' && (
                     <BoundaryForm target={userActionTarget || pythonPackage} />
                 )}
-                {currentUserAction.type === 'calledAfter' && (
-                    <CalledAfterForm
-                        target={userActionTarget || pythonPackage}
-                        selectOptions={getContainingModule(
-                            userActionTarget,
-                        )?.getNestedContainedFunctionNames()}
-                    />
-                )}
+                {currentUserAction.type === 'calledAfter' &&
+                    userActionTarget instanceof PythonFunction && (
+                        <CalledAfterForm target={userActionTarget} />
+                    )}
                 {currentUserAction.type === 'constant' && (
                     <ConstantForm target={userActionTarget || pythonPackage} />
                 )}

@@ -8,47 +8,32 @@ import {
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { Optional } from '../../../common/util/types';
-import PythonDeclaration from '../../packageData/model/PythonDeclaration';
 import {
     hideAnnotationForms,
     selectCalledAfters,
     upsertCalledAfter,
 } from '../annotationSlice';
 import AnnotationForm from './AnnotationForm';
+import PythonFunction from '../../packageData/model/PythonFunction';
 
 interface CalledAfterFormProps {
-    readonly target: PythonDeclaration;
-    readonly selectOptions: Optional<string[]>;
+    readonly target: PythonFunction;
 }
 
 interface CalledAfterFormState {
     calledAfterName: string;
 }
 
-const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({
-    target,
-    selectOptions,
-}) {
+const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ target }) {
     const targetPath = target.pathAsString();
-
-    let optionsShown = selectOptions?.slice();
-
-    const targetIndex = optionsShown?.indexOf(targetPath);
-    if (targetIndex !== undefined && targetIndex !== -1) {
-        optionsShown?.splice(targetIndex, 1);
-    }
-    let currentCalledAfters = useAppSelector(
-        selectCalledAfters(target.pathAsString()),
+    const currentCalledAfters = Object.keys(
+        useAppSelector(selectCalledAfters(targetPath)),
     );
-    if (currentCalledAfters) {
-        const currentCalledAfterNames = Object.values(currentCalledAfters).map(
-            (calledAfterAnnotation) => calledAfterAnnotation.calledAfterName,
-        );
-        optionsShown = optionsShown?.filter(
-            (option) => !currentCalledAfterNames.includes(option),
-        );
-    }
+
+    const remainingCalledAfters = target
+        .siblingFunctions()
+        .map((it) => it.name)
+        .filter((it) => !currentCalledAfters.includes(it));
 
     // Hooks -----------------------------------------------------------------------------------------------------------
 
@@ -106,8 +91,8 @@ const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({
                         required: 'This is required.',
                     })}
                 >
-                    {optionsShown?.map((name, index) => (
-                        <option key={name + index} value={name}>
+                    {remainingCalledAfters?.map((name) => (
+                        <option key={name} value={name}>
                             {name}
                         </option>
                     ))}

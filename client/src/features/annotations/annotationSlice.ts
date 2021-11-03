@@ -526,10 +526,8 @@ export const selectBoundary =
         selectAnnotations(state).boundaries[target];
 export const selectCalledAfters =
     (target: string) =>
-    (
-        state: RootState,
-    ): { [calledAfter: string]: CalledAfterAnnotation } | undefined =>
-        selectAnnotations(state).calledAfters[target];
+    (state: RootState): { [calledAfter: string]: CalledAfterAnnotation } =>
+        selectAnnotations(state).calledAfters[target] ?? [];
 export const selectConstant =
     (target: string) =>
     (state: RootState): ConstantAnnotation | undefined =>
@@ -542,8 +540,8 @@ export const selectEnum =
         selectAnnotations(state).enums[target];
 export const selectGroups =
     (target: string) =>
-    (state: RootState): { [groupName: string]: GroupAnnotation } | undefined =>
-        selectAnnotations(state).groups[target];
+    (state: RootState): { [groupName: string]: GroupAnnotation } =>
+        selectAnnotations(state).groups[target] ?? [];
 export const selectOptional =
     (target: string) =>
     (state: RootState): OptionalAnnotation | undefined =>

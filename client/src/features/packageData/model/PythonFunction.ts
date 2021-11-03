@@ -64,6 +64,17 @@ export default class PythonFunction extends PythonDeclaration {
         return this.children().slice(1);
     }
 
+    siblingFunctions(): PythonFunction[] {
+        return (
+            (this.parent()
+                ?.children()
+                .filter(
+                    (it) =>
+                        it instanceof PythonFunction && it.name !== this.name,
+                ) as PythonFunction[]) ?? []
+        );
+    }
+
     toString(): string {
         let result = '';
 

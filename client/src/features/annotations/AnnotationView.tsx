@@ -79,19 +79,16 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
                     onDelete={() => dispatch(removeBoundary(target))}
                 />
             )}
-            {calledAfterAnnotation &&
-                Object.keys(calledAfterAnnotation).map((calledAfterName) => (
-                    <Annotation
-                        type="calledAfterName"
-                        name={calledAfterName}
-                        key={calledAfterName}
-                        onDelete={() =>
-                            dispatch(
-                                removeCalledAfter({ target, calledAfterName }),
-                            )
-                        }
-                    />
-                ))}
+            {Object.keys(calledAfterAnnotation).map((calledAfterName) => (
+                <Annotation
+                    type="calledAfter"
+                    name={calledAfterName}
+                    key={calledAfterName}
+                    onDelete={() =>
+                        dispatch(removeCalledAfter({ target, calledAfterName }))
+                    }
+                />
+            ))}
             {constantAnnotation && (
                 <Annotation
                     type="constant"
@@ -108,22 +105,19 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
                     onDelete={() => dispatch(removeEnum(target))}
                 />
             )}
-            {groupAnnotations &&
-                Object.keys(groupAnnotations).map((groupName) => (
-                    <Annotation
-                        key={groupName}
-                        type="group"
-                        name={groupName}
-                        onEdit={() =>
-                            dispatch(
-                                showGroupAnnotationForm({ target, groupName }),
-                            )
-                        }
-                        onDelete={() =>
-                            dispatch(removeGroup({ target, groupName }))
-                        }
-                    />
-                ))}
+            {Object.keys(groupAnnotations).map((groupName) => (
+                <Annotation
+                    key={groupName}
+                    type="group"
+                    name={groupName}
+                    onEdit={() =>
+                        dispatch(showGroupAnnotationForm({ target, groupName }))
+                    }
+                    onDelete={() =>
+                        dispatch(removeGroup({ target, groupName }))
+                    }
+                />
+            ))}
             {optionalAnnotation && (
                 <Annotation
                     type="optional"
