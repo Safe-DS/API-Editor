@@ -94,11 +94,11 @@ export default class PythonModule extends PythonDeclaration {
     getNestedContainedFunctionNames() {
         let functions = [];
         for (let pythonFunction of [...this.functions]) {
-            functions.push(pythonFunction.pathAsString())
+            functions.push(pythonFunction.pathAsString());
         }
         for (let pythonClass of [...this.classes]) {
             for (let pythonFunction of pythonClass.children()) {
-                functions.push(pythonFunction.pathAsString())
+                functions.push(pythonFunction.pathAsString());
             }
         }
         return functions;

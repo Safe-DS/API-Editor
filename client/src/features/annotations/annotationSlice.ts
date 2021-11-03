@@ -8,7 +8,7 @@ export interface AnnotationsState {
     };
     calledAfters: {
         [target: string]: { [calledAfterName: string]: CalledAfterAnnotation };
-    }
+    };
     constants: {
         [target: string]: ConstantAnnotation;
     };
@@ -319,14 +319,18 @@ const annotationsSlice = createSlice({
             if (!state.calledAfters[action.payload.target]) {
                 state.calledAfters[action.payload.target] = {};
             }
-            state.calledAfters[action.payload.target][action.payload.calledAfterName] =
-                action.payload;
+            state.calledAfters[action.payload.target][
+                action.payload.calledAfterName
+            ] = action.payload;
         },
         removeCalledAfter(state, action: PayloadAction<CalledAfterTarget>) {
             delete state.calledAfters[action.payload.target][
                 action.payload.calledAfterName
-                ];
-            if (Object.keys(state.calledAfters[action.payload.target]).length === 0) {
+            ];
+            if (
+                Object.keys(state.calledAfters[action.payload.target])
+                    .length === 0
+            ) {
                 delete state.calledAfters[action.payload.target];
             }
         },
@@ -422,12 +426,15 @@ const annotationsSlice = createSlice({
                 target: action.payload,
             };
         },
-        showCalledAfterAnnotationForm(state, action: PayloadAction<CalledAfterTarget>) {
+        showCalledAfterAnnotationForm(
+            state,
+            action: PayloadAction<CalledAfterTarget>,
+        ) {
             state.currentUserAction = {
                 type: 'calledAfter',
                 target: action.payload.target,
                 calledAfterName: action.payload.calledAfterName,
-            }
+            };
         },
         showConstantAnnotationForm(state, action: PayloadAction<string>) {
             state.currentUserAction = {
@@ -519,7 +526,9 @@ export const selectBoundary =
         selectAnnotations(state).boundaries[target];
 export const selectCalledAfters =
     (target: string) =>
-    (state: RootState): { [calledAfter: string]: CalledAfterAnnotation } | undefined =>
+    (
+        state: RootState,
+    ): { [calledAfter: string]: CalledAfterAnnotation } | undefined =>
         selectAnnotations(state).calledAfters[target];
 export const selectConstant =
     (target: string) =>

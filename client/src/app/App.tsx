@@ -81,16 +81,17 @@ const App: React.FC = function () {
         currentUserAction.target,
     );
 
-    const getContainingModule = (target: Optional<PythonDeclaration>): Optional<PythonModule> => {
-        if(target instanceof PythonFunction) {
-            if(target?.parent() instanceof PythonClass) {
+    const getContainingModule = (
+        target: Optional<PythonDeclaration>,
+    ): Optional<PythonModule> => {
+        if (target instanceof PythonFunction) {
+            if (target?.parent() instanceof PythonClass) {
                 return (target?.parent() as PythonClass)?.parent();
             }
-            if(target?.parent() instanceof PythonModule) {
+            if (target?.parent() instanceof PythonModule) {
                 return target?.parent() as PythonModule;
             }
-        }
-        else {
+        } else {
             return null;
         }
     };
@@ -129,10 +130,9 @@ const App: React.FC = function () {
                 {currentUserAction.type === 'calledAfter' && (
                     <CalledAfterForm
                         target={userActionTarget || pythonPackage}
-                        selectOptions={
-                            getContainingModule(userActionTarget)
-                                ?.getNestedContainedFunctionNames()
-                        }
+                        selectOptions={getContainingModule(
+                            userActionTarget,
+                        )?.getNestedContainedFunctionNames()}
                     />
                 )}
                 {currentUserAction.type === 'constant' && (

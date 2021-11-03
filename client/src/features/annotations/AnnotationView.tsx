@@ -35,7 +35,7 @@ import {
     showGroupAnnotationForm,
     showOptionalAnnotationForm,
     showRenameAnnotationForm,
-} from './annotationSlice'
+} from './annotationSlice';
 
 interface AnnotationViewProps {
     target: string;
@@ -80,19 +80,18 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
                 />
             )}
             {calledAfterAnnotation &&
-                Object.keys(calledAfterAnnotation).map((calledAfterName) =>
-                    (
-                        <Annotation
-                            type="calledAfterName"
-                            name={calledAfterName}
-                            key={calledAfterName}
-                            onDelete={() =>
-                                dispatch(removeCalledAfter({ target, calledAfterName }))
-                            }
-                        />
-                    )
-                )
-            }
+                Object.keys(calledAfterAnnotation).map((calledAfterName) => (
+                    <Annotation
+                        type="calledAfterName"
+                        name={calledAfterName}
+                        key={calledAfterName}
+                        onDelete={() =>
+                            dispatch(
+                                removeCalledAfter({ target, calledAfterName }),
+                            )
+                        }
+                    />
+                ))}
             {constantAnnotation && (
                 <Annotation
                     type="constant"
