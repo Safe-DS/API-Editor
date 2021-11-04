@@ -13,6 +13,7 @@ import {
     ComparisonOperator,
     DefaultType,
     DefaultValue,
+    removeAttribute,
     removeBoundary,
     removeCalledAfter,
     removeConstant,
@@ -85,7 +86,7 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
                         attributeAnnotation.defaultType,
                     )}
                     onEdit={() => dispatch(showAttributeAnnotationForm(target))}
-                    onDelete={() => dispatch(removeOptional(target))}
+                    onDelete={() => dispatch(removeAttribute(target))}
                 />
             )}
             {boundaryAnnotation && (
@@ -180,7 +181,7 @@ const valueToString = (value: DefaultValue, type: DefaultType): string => {
         case 'number':
             return String(value);
         case 'boolean':
-            return String(value);
+            return value === 'true' ? 'True' : 'False';
     }
 };
 
