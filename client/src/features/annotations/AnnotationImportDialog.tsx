@@ -27,6 +27,7 @@ const AnnotationImportDialog: React.FC = function () {
     const [fileName, setFileName] = useState('');
     const [newAnnotationStore, setNewAnnotationStore] =
         useState<AnnotationsState>({
+            attributes: {},
             boundaries: {},
             constants: {},
             calledAfters: {},
