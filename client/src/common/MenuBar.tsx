@@ -1,4 +1,10 @@
 import {
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogContent,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogOverlay,
     Box,
     Breadcrumb,
     BreadcrumbItem,
@@ -6,6 +12,7 @@ import {
     Button,
     Center,
     Flex,
+    Heading,
     HStack,
     Icon,
     Input,
@@ -21,15 +28,19 @@ import {
     PopoverContent,
     PopoverTrigger,
     Spacer,
-    Text,
+    Text as ChakraText,
     useColorMode,
+    VStack,
 } from '@chakra-ui/react';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { FaCheck, FaChevronDown } from 'react-icons/fa';
 import { useLocation } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { toggleAnnotationImportDialog } from '../features/annotations/annotationSlice';
+import {
+    resetAnnotations,
+    toggleAnnotationImportDialog,
+} from '../features/annotations/annotationSlice';
 import { PythonFilter } from '../features/packageData/model/PythonFilter';
 import { togglePackageDataImportDialog } from '../features/packageData/packageDataSlice';
 import { Setter } from './util/types';
@@ -38,6 +49,71 @@ interface MenuBarProps {
     filter: string;
     setFilter: Setter<string>;
 }
+
+const DeleteAllAnnotations = function () {
+    const dispatch = useAppDispatch();
+    const [isOpen, setIsOpen] = useState(false);
+    const cancelRef = useRef(null);
+
+    // Event handlers ----------------------------------------------------------
+
+    const handleConfirm = () => {
+        dispatch(resetAnnotations());
+        setIsOpen(false);
+    };
+    const handleCancel = () => setIsOpen(false);
+
+    // Render ------------------------------------------------------------------
+
+    return (
+        <>
+            <Button onClick={() => setIsOpen(true)}>
+                Delete all annotations
+            </Button>
+
+            <AlertDialog
+                isOpen={isOpen}
+                leastDestructiveRef={cancelRef}
+                onClose={handleCancel}
+            >
+                <AlertDialogOverlay>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <Heading>Delete all annotations</Heading>
+                        </AlertDialogHeader>
+
+                        <AlertDialogBody>
+                            <VStack alignItems="flexStart">
+                                <ChakraText>
+                                    Are you sure? You can't undo this action
+                                    afterwards.
+                                </ChakraText>
+                                <ChakraText>
+                                    Hint: Consider exporting your work first by
+                                    clicking on the "Export" button in the menu
+                                    bar.
+                                </ChakraText>
+                            </VStack>
+                        </AlertDialogBody>
+
+                        <AlertDialogFooter>
+                            <Button ref={cancelRef} onClick={handleCancel}>
+                                Cancel
+                            </Button>
+                            <Button
+                                colorScheme="red"
+                                onClick={handleConfirm}
+                                ml={3}
+                            >
+                                Delete
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
+            </AlertDialog>
+        </>
+    );
+};
 
 const MenuBar: React.FC<MenuBarProps> = function ({ filter, setFilter }) {
     const { colorMode, toggleColorMode } = useColorMode();
@@ -83,7 +159,9 @@ const MenuBar: React.FC<MenuBarProps> = function ({ filter, setFilter }) {
                                     {part}
                                 </BreadcrumbLink>
                             )}
-                            {!enableNavigation && <Text>{part}</Text>}
+                            {!enableNavigation && (
+                                <ChakraText>{part}</ChakraText>
+                            )}
                         </BreadcrumbItem>
                     ))}
                 </Breadcrumb>
@@ -120,8 +198,9 @@ const MenuBar: React.FC<MenuBarProps> = function ({ filter, setFilter }) {
                     </Menu>
                 </Box>
                 <Button onClick={exportAnnotations}>Export</Button>
+                <DeleteAllAnnotations />
                 <Button onClick={toggleColorMode}>
-                    Toggle {colorMode === 'light' ? 'Dark' : 'Light'}
+                    Toggle {colorMode === 'light' ? 'dark' : 'light'}
                 </Button>
                 <Box>
                     <Popover
