@@ -1,8 +1,8 @@
-import { HStack, Icon, Text } from '@chakra-ui/react';
+import { HStack, Icon, Text as ChakraText } from '@chakra-ui/react';
 import React from 'react';
 import { IconType } from 'react-icons/lib';
 import { useLocation } from 'react-router';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { ChildrenProp } from '../../../common/util/types';
 import PythonDeclaration from '../model/PythonDeclaration';
@@ -25,7 +25,7 @@ const TreeNode: React.FC<TreeNodeProps> = function ({
     isExpandable,
 }) {
     const currentPathname = useLocation().pathname;
-    const history = useHistory();
+    const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
     const showChildren = useAppSelector(
@@ -43,7 +43,7 @@ const TreeNode: React.FC<TreeNodeProps> = function ({
 
     const handleClick = () => {
         dispatch(toggleIsExpandedInTreeView(declaration.pathAsString()));
-        history.push(`/${declaration.pathAsString()}`);
+        navigate(`/${declaration.pathAsString()}`);
     };
 
     return (
@@ -62,7 +62,7 @@ const TreeNode: React.FC<TreeNodeProps> = function ({
                     isSelected={isSelected(declaration, currentPathname)}
                 />
                 <Icon as={icon} />
-                <Text>{declaration.name}</Text>
+                <ChakraText>{declaration.name}</ChakraText>
             </HStack>
             {showChildren && children}
         </>

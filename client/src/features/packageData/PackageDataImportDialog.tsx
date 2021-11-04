@@ -11,11 +11,11 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
-    Text,
+    Text as ChakraText,
 } from '@chakra-ui/react';
 import * as idb from 'idb-keyval';
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../app/hooks';
 import StyledDropzone from '../../common/StyledDropzone';
 import { Setter } from '../../common/util/types';
@@ -37,7 +37,7 @@ const PackageDataImportDialog: React.FC<ImportPythonPackageDialogProps> =
     function ({ setFilter, setPythonPackage }) {
         const [fileName, setFileName] = useState('');
         const [newPythonPackage, setNewPythonPackage] = useState<string>();
-        const history = useHistory();
+        const navigate = useNavigate();
         const dispatch = useAppDispatch();
 
         const submit = async () => {
@@ -47,7 +47,7 @@ const PackageDataImportDialog: React.FC<ImportPythonPackageDialogProps> =
                 ) as PythonPackageJson;
                 setPythonPackage(parsePythonPackageJson(parsedPythonPackage));
                 setFilter('');
-                history.push('/');
+                navigate('/');
 
                 await idb.set('package', parsedPythonPackage);
             }
@@ -86,11 +86,13 @@ const PackageDataImportDialog: React.FC<ImportPythonPackageDialogProps> =
                                 Select an API data file to import.
                             </FormLabel>
                             <StyledDropzone onDrop={slurpAndParse}>
-                                <Text>
+                                <ChakraText>
                                     Drag and drop an API data file here, or
                                     click to select the file.
-                                </Text>
-                                <Text>(Only *.json will be accepted.)</Text>
+                                </ChakraText>
+                                <ChakraText>
+                                    (Only *.json will be accepted.)
+                                </ChakraText>
                             </StyledDropzone>
 
                             {fileName && (
