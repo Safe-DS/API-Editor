@@ -1,6 +1,7 @@
 import { Optional } from '../../../common/util/types';
 import PythonDeclaration from './PythonDeclaration';
 import PythonFunction from './PythonFunction';
+import PythonModule from './PythonModule';
 
 export default class PythonParameter extends PythonDeclaration {
     readonly name: string;
@@ -42,6 +43,21 @@ export default class PythonParameter extends PythonDeclaration {
 
     children(): PythonDeclaration[] {
         return [];
+    }
+
+    isExplicitParameter(): boolean {
+        const containingFunction = this.parent();
+        if (!containingFunction) {
+            return false;
+        }
+
+        // This is parameter of global function
+        if (containingFunction.parent() instanceof PythonModule) {
+            return true;
+        }
+
+        // This is parameter of a method but not the first
+        return containingFunction.children()[0] !== this;
     }
 
     toString(): string {

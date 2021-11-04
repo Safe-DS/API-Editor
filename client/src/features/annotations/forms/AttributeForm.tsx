@@ -20,30 +20,30 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { booleanPattern, numberPattern } from '../../../common/validation';
 import PythonDeclaration from '../../packageData/model/PythonDeclaration';
 import {
-    hideAnnotationForms,
-    selectOptional,
     DefaultType,
-    upsertOptional,
     DefaultValue,
+    hideAnnotationForms,
+    selectAttribute,
+    upsertAttribute,
 } from '../annotationSlice';
 import AnnotationForm from './AnnotationForm';
 
-interface OptionalFormProps {
+interface AttributeFormProps {
     target: PythonDeclaration;
 }
 
-interface OptionalFormState {
+interface AttributeFormState {
     defaultValue: DefaultValue;
     defaultType: DefaultType;
 }
 
-const OptionalForm: React.FC<OptionalFormProps> = function ({ target }) {
+const AttributeForm: React.FC<AttributeFormProps> = function ({ target }) {
     const targetPath = target.pathAsString();
 
     // Hooks -----------------------------------------------------------------------------------------------------------
-    const optionalDefinition = useAppSelector(selectOptional(targetPath));
-    const prevDefaultType = optionalDefinition?.defaultType;
-    const prevDefaultValue = optionalDefinition?.defaultValue;
+    const attributeDefinition = useAppSelector(selectAttribute(targetPath));
+    const prevDefaultType = attributeDefinition?.defaultType;
+    const prevDefaultValue = attributeDefinition?.defaultValue;
     const dispatch = useAppDispatch();
 
     const {
@@ -53,7 +53,7 @@ const OptionalForm: React.FC<OptionalFormProps> = function ({ target }) {
         setValue,
         watch,
         formState: { errors },
-    } = useForm<OptionalFormState>({
+    } = useForm<AttributeFormState>({
         defaultValues: {
             defaultType: 'string',
             defaultValue: '',
@@ -79,9 +79,9 @@ const OptionalForm: React.FC<OptionalFormProps> = function ({ target }) {
         });
     };
 
-    const onSave = (data: OptionalFormState) => {
+    const onSave = (data: AttributeFormState) => {
         dispatch(
-            upsertOptional({
+            upsertAttribute({
                 target: targetPath,
                 ...data,
             }),
@@ -98,8 +98,8 @@ const OptionalForm: React.FC<OptionalFormProps> = function ({ target }) {
     return (
         <AnnotationForm
             heading={`${
-                optionalDefinition ? 'Edit' : 'Add'
-            } @optional annotation`}
+                attributeDefinition ? 'Edit' : 'Add'
+            } @attribute annotation`}
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
         >
@@ -161,4 +161,4 @@ const OptionalForm: React.FC<OptionalFormProps> = function ({ target }) {
     );
 };
 
-export default OptionalForm;
+export default AttributeForm;

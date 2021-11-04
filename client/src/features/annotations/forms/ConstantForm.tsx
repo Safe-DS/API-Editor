@@ -20,6 +20,8 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { booleanPattern, numberPattern } from '../../../common/validation';
 import PythonDeclaration from '../../packageData/model/PythonDeclaration';
 import {
+    DefaultType,
+    DefaultValue,
     hideAnnotationForms,
     selectConstant,
     upsertConstant,
@@ -31,8 +33,8 @@ interface ConstantFormProps {
 }
 
 interface ConstantFormState {
-    defaultValue: string | number | boolean;
-    defaultType: string;
+    defaultValue: DefaultValue;
+    defaultType: DefaultType;
 }
 
 const ConstantForm: React.FC<ConstantFormProps> = function ({ target }) {
@@ -69,10 +71,10 @@ const ConstantForm: React.FC<ConstantFormProps> = function ({ target }) {
 
     // Event handlers --------------------------------------------------------------------------------------------------
 
-    const handleTypeChange = (value: string) => {
-        setValue('defaultType', value);
+    const handleTypeChange = (newType: DefaultType) => {
+        setValue('defaultType', newType);
         reset({
-            defaultType: value,
+            defaultType: newType,
             defaultValue: '',
         });
     };
