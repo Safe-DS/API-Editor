@@ -28,27 +28,33 @@ class _AstVisitor:
     def enter_module(self, module_node: astroid.Module):
         imports: list[Import] = []
         from_imports: list[FromImport] = []
+        visited_global_nodes: set[astroid.NodeNG] = set()
 
-        for _, global_declaration_node_list in module_node.globals.items():
-            global_declaration_node = global_declaration_node_list[0]
+        for _, global_node_list in module_node.globals.items():
+            global_node = global_node_list[0]
+
+            # For some reason from-imports get visited as often as there are imported names, leading to duplicates
+            if global_node in visited_global_nodes:
+                continue
+            visited_global_nodes.add(global_node)
 
             # import X as Y
-            if isinstance(global_declaration_node, astroid.Import):
-                for (name, alias) in global_declaration_node.names:
+            if isinstance(global_node, astroid.Import):
+                for (name, alias) in global_node.names:
                     imports.append(Import(name, alias))
 
             # from X import a as b
-            if isinstance(global_declaration_node, astroid.ImportFrom):
+            if isinstance(global_node, astroid.ImportFrom):
                 base_import_path = module_node.relative_to_absolute_name(
-                    global_declaration_node.modname, global_declaration_node.level
+                    global_node.modname, global_node.level
                 )
 
-                for (name, alias) in global_declaration_node.names:
+                for (name, alias) in global_node.names:
                     from_imports.append(FromImport(base_import_path, name, alias))
 
                 # Find re-exported declarations in __init__.py files
                 if _is_init_file(module_node.file):
-                    for declaration, _ in global_declaration_node.names:
+                    for declaration, _ in global_node.names:
                         reexported_name = f"{base_import_path}.{declaration}"
 
                         if reexported_name.startswith(module_node.name):
