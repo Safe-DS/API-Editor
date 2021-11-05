@@ -21,7 +21,7 @@ import {
     PopoverContent,
     PopoverTrigger,
     Spacer,
-    Text,
+    Text as ChakraText,
     useColorMode,
 } from '@chakra-ui/react';
 import React, { useRef } from 'react';
@@ -70,20 +70,22 @@ const MenuBar: React.FC<MenuBarProps> = function ({ filter, setFilter }) {
         >
             <Center>
                 <Breadcrumb>
-                    {pathname.map((part, index) => (
+                    {pathname.slice(1).map((part, index) => (
                         // eslint-disable-next-line react/no-array-index-key
                         <BreadcrumbItem key={index}>
                             {enableNavigation && (
                                 <BreadcrumbLink
                                     as={NavLink}
                                     to={`/${pathname
-                                        .slice(0, index + 1)
+                                        .slice(0, index + 2)
                                         .join('/')}`}
                                 >
                                     {part}
                                 </BreadcrumbLink>
                             )}
-                            {!enableNavigation && <Text>{part}</Text>}
+                            {!enableNavigation && (
+                                <ChakraText>{part}</ChakraText>
+                            )}
                         </BreadcrumbItem>
                     ))}
                 </Breadcrumb>
