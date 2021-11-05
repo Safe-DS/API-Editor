@@ -2,9 +2,10 @@ import importlib
 from pathlib import Path
 from typing import Optional
 
+# pylint: disable=no-name-in-module
 from importlib_metadata import packages_distributions, version
-
 from package_parser.utils import list_files
+
 from ._file_filters import _is_init_file
 
 
