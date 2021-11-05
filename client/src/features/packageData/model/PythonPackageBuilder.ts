@@ -47,7 +47,7 @@ export const parsePythonPackageJson = function (
 interface PythonModuleJson {
     name: string;
     imports: PythonImportJson[];
-    fromImports: PythonFromImportJson[];
+    from_imports: PythonFromImportJson[];
     classes: string[];
     functions: string[];
 }
@@ -62,7 +62,7 @@ const parsePythonModuleJson = function (
         moduleJson.imports
             .map(parsePythonImportJson)
             .sort((a, b) => a.module.localeCompare(b.module)),
-        moduleJson.fromImports.map(parsePythonFromImportJson).sort((a, b) => {
+        moduleJson.from_imports.map(parsePythonFromImportJson).sort((a, b) => {
             const moduleComparison = a.module.localeCompare(b.module);
             if (moduleComparison === 0) {
                 return a.declaration.localeCompare(b.declaration);
