@@ -91,7 +91,7 @@ export default class PythonFunction extends PythonDeclaration {
     }
 
     filter(pythonFilter: PythonFilter | void): PythonFunction {
-        if (!pythonFilter) {
+        if (!pythonFilter || !pythonFilter.isFilteringParameters()) {
             return this;
         }
 

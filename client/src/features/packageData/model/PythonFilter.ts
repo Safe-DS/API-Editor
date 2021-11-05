@@ -70,12 +70,28 @@ export class PythonFilter {
         );
     }
 
-    isFiltering(): boolean {
+    isFilteringModules(): boolean {
         return (
             Boolean(this.pythonModule) ||
             Boolean(this.pythonClass) ||
             Boolean(this.pythonFunction) ||
             Boolean(this.pythonParameter)
         );
+    }
+
+    isFilteringClasses(): boolean {
+        return (
+            Boolean(this.pythonClass) ||
+            Boolean(this.pythonFunction) ||
+            Boolean(this.pythonParameter)
+        );
+    }
+
+    isFilteringFunctions(): boolean {
+        return Boolean(this.pythonFunction) || Boolean(this.pythonParameter);
+    }
+
+    isFilteringParameters(): boolean {
+        return Boolean(this.pythonParameter);
     }
 }

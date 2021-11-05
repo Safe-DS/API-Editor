@@ -222,7 +222,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({ filter, setFilter }) {
                                     borderColor={
                                         PythonFilter.fromFilterBoxInput(
                                             filter,
-                                        )?.isFiltering()
+                                        )?.isFilteringModules()
                                             ? 'green'
                                             : 'inherit'
                                     }
@@ -230,7 +230,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({ filter, setFilter }) {
                                 />
                                 {PythonFilter.fromFilterBoxInput(
                                     filter,
-                                )?.isFiltering() && (
+                                )?.isFilteringModules() && (
                                     <InputRightElement>
                                         <Icon as={FaCheck} color="green.500" />
                                     </InputRightElement>
