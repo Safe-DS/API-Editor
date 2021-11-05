@@ -7,30 +7,30 @@ import PythonModule from './PythonModule';
 
 export default class PythonClass extends PythonDeclaration {
     readonly name: string;
+    readonly qname: string;
     readonly decorators: string[];
     readonly superclasses: string[];
     readonly methods: PythonFunction[];
-    readonly summary: string;
     readonly description: string;
     readonly fullDocstring: string;
     containingModule: Optional<PythonModule>;
 
     constructor(
         name: string,
+        qname: string,
         decorators: string[] = [],
         superclasses: string[] = [],
         methods: PythonFunction[] = [],
-        summary = '',
         description = '',
         fullDocstring = '',
     ) {
         super();
 
         this.name = name;
+        this.qname = name;
         this.decorators = decorators;
         this.superclasses = superclasses;
         this.methods = methods;
-        this.summary = summary;
         this.description = description;
         this.fullDocstring = fullDocstring;
         this.containingModule = null;
@@ -83,10 +83,10 @@ export default class PythonClass extends PythonDeclaration {
 
         return new PythonClass(
             this.name,
+            this.qname,
             this.decorators,
             this.superclasses,
             methods,
-            this.summary,
             this.description,
             this.fullDocstring,
         );

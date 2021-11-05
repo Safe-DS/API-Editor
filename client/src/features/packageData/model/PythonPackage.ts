@@ -4,13 +4,22 @@ import { PythonFilter } from './PythonFilter';
 import PythonModule from './PythonModule';
 
 export default class PythonPackage extends PythonDeclaration {
+    readonly distribution: string;
     readonly name: string;
+    readonly version: string;
     readonly modules: PythonModule[];
 
-    constructor(name: string, modules: PythonModule[] = []) {
+    constructor(
+        distribution: string,
+        name: string,
+        version: string,
+        modules: PythonModule[] = [],
+    ) {
         super();
 
+        this.distribution = distribution;
         this.name = name;
+        this.version = version;
         this.modules = modules;
 
         this.modules.forEach((it) => {
@@ -27,7 +36,7 @@ export default class PythonPackage extends PythonDeclaration {
     }
 
     toString(): string {
-        return `Package "${this.name}"`;
+        return `Package "${this.distribution}/${this.name} v${this.version}"`;
     }
 
     filter(pythonFilter: PythonFilter | void): PythonPackage {
@@ -47,6 +56,11 @@ export default class PythonPackage extends PythonDeclaration {
                     (!isEmptyList(it.classes) || !isEmptyList(it.functions)),
             );
 
-        return new PythonPackage(this.name, modules);
+        return new PythonPackage(
+            this.distribution,
+            this.name,
+            this.version,
+            modules,
+        );
     }
 }
