@@ -13,7 +13,7 @@ test('path with ancestors', () => {
     const pythonResult = new PythonResult('result');
 
     // eslint-disable-next-line no-new
-    new PythonPackage('package', [
+    new PythonPackage('distribution', 'package', '0.0.1', [
         new PythonModule(
             'module',
             [],
@@ -21,9 +21,18 @@ test('path with ancestors', () => {
             [
                 new PythonClass(
                     'Class',
+                    'Class',
                     [],
                     [],
-                    [new PythonFunction('function', [], [], [pythonResult])],
+                    [
+                        new PythonFunction(
+                            'function',
+                            'function',
+                            [],
+                            [],
+                            [pythonResult],
+                        ),
+                    ],
                 ),
             ],
         ),
@@ -40,6 +49,7 @@ test('path with ancestors', () => {
 
 test('getByRelativePath', () => {
     const pythonResult = new PythonResult('result');
+    // eslint-disable-next-line testing-library/prefer-presence-queries
     expect(pythonResult.getByRelativePath(['child'])).toBeNull();
 });
 
