@@ -87,8 +87,8 @@ const PackageDataImportDialog: React.FC<ImportPythonPackageDialogProps> =
                             </FormLabel>
                             <StyledDropzone onDrop={slurpAndParse}>
                                 <ChakraText>
-                                    Drag and drop an API data file here, or
-                                    click to select the file.
+                                    Drag and drop an API data file here or click
+                                    to select the file.
                                 </ChakraText>
                                 <ChakraText>
                                     (Only *.json will be accepted.)
