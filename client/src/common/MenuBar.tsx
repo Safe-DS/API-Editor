@@ -70,14 +70,14 @@ const MenuBar: React.FC<MenuBarProps> = function ({ filter, setFilter }) {
         >
             <Center>
                 <Breadcrumb>
-                    {pathname.slice(1).map((part, index) => (
+                    {pathname.map((part, index) => (
                         // eslint-disable-next-line react/no-array-index-key
                         <BreadcrumbItem key={index}>
                             {enableNavigation && (
                                 <BreadcrumbLink
                                     as={NavLink}
                                     to={`/${pathname
-                                        .slice(0, index + 2)
+                                        .slice(0, index + 1)
                                         .join('/')}`}
                                 >
                                     {part}

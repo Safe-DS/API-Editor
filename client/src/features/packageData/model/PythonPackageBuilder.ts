@@ -10,7 +10,7 @@ import PythonResult from './PythonResult';
 
 export interface PythonPackageJson {
     distribution: string;
-    name: string;
+    package: string;
     version: string;
     modules: PythonModuleJson[];
     classes: PythonClassJson[];
@@ -36,7 +36,7 @@ export const parsePythonPackageJson = function (
 
     return new PythonPackage(
         packageJson.distribution,
-        packageJson.name,
+        packageJson.package,
         packageJson.version,
         packageJson.modules
             .map((it) => parsePythonModuleJson(it, classes, functions))
