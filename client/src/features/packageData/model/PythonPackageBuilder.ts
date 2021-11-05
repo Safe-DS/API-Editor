@@ -9,7 +9,9 @@ import PythonParameter from './PythonParameter';
 import PythonResult from './PythonResult';
 
 export interface PythonPackageJson {
+    distribution: string;
     name: string;
+    version: string;
     modules: PythonModuleJson[];
 }
 
@@ -28,8 +30,8 @@ interface PythonModuleJson {
     name: string;
     imports: PythonImportJson[];
     fromImports: PythonFromImportJson[];
-    classes: PythonClassJson[];
-    functions: PythonFunctionJson[];
+    classes: string[];
+    functions: string[];
 }
 
 const parsePythonModuleJson = function (
@@ -86,12 +88,14 @@ const parsePythonFromImportJson = function (
 
 interface PythonClassJson {
     name: string;
+    qname: string;
     decorators: string[];
     superclasses: string[];
-    methods: PythonFunctionJson[];
-    summary: Optional<string>;
+    methods: string[];
+    is_public: boolean;
     description: Optional<string>;
-    fullDocstring: Optional<string>;
+    docstring: Optional<string>;
+    source_code: string;
 }
 
 const parsePythonClassJson = function (
@@ -112,14 +116,14 @@ const parsePythonClassJson = function (
 
 interface PythonFunctionJson {
     name: string;
+    qname: string;
     decorators: string[];
     parameters: PythonParameterJson[];
     results: PythonResultJson[];
-    hasReturnType: boolean;
-    returnType: string;
-    summary: Optional<string>;
+    is_public: boolean;
     description: Optional<string>;
-    fullDocstring: Optional<string>;
+    docstring: Optional<string>;
+    source_code: string;
 }
 
 const parsePythonFunctionJson = function (
@@ -139,13 +143,13 @@ const parsePythonFunctionJson = function (
 
 interface PythonParameterJson {
     name: string;
-    type: string;
-    typeInDocs: Optional<string>;
-    hasDefault: boolean;
-    default: Optional<string>;
-    limitation: null;
-    ignored: boolean;
-    description: Optional<string>;
+    default_value: Optional<string>;
+    is_public: boolean;
+    assigned_by: 'POSITION_ONLY' | 'POSITION_OR_NAME' | 'NAME_ONLY';
+    docstring: {
+        type: Optional<string>;
+        description: Optional<string>;
+    };
 }
 
 const parsePythonParameterJson = function (
