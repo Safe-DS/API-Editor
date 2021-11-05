@@ -28,7 +28,7 @@ export default class PythonParameter extends PythonDeclaration {
         super();
 
         this.name = name;
-        this.defaultValue = defaultValue;
+        this.defaultValue = defaultValue ?? '';
         this.assignedBy = assignedBy;
         this.isPublic = isPublic;
         this.typeInDocs = typeInDocs;
