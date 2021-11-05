@@ -27,7 +27,7 @@ export default class PythonClass extends PythonDeclaration {
         super();
 
         this.name = name;
-        this.qname = name;
+        this.qname = qname;
         this.decorators = decorators;
         this.superclasses = superclasses;
         this.methods = methods;
