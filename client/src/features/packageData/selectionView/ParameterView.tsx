@@ -1,4 +1,4 @@
-import { Heading, Stack, Text } from '@chakra-ui/react';
+import { Heading, Stack, Text as ChakraText } from '@chakra-ui/react';
 import React from 'react';
 import PythonParameter from '../model/PythonParameter';
 import ParameterNode from './ParameterNode';
@@ -14,21 +14,25 @@ const ParameterView: React.FC<ParameterViewProps> = function ({
         <Stack spacing={8}>
             <ParameterNode isTitle pythonParameter={pythonParameter} />
 
-            {pythonParameter.hasDefault && (
+            {pythonParameter.defaultValue && (
                 <Stack spacing={4}>
                     <Heading as="h4" size="md">
                         Default value
                     </Heading>
-                    <Text paddingLeft={4}>{pythonParameter.defaultValue}</Text>
+                    <ChakraText paddingLeft={4}>
+                        {pythonParameter.defaultValue}
+                    </ChakraText>
                 </Stack>
             )}
 
-            {pythonParameter.type && (
+            {pythonParameter.typeInDocs && (
                 <Stack spacing={4}>
                     <Heading as="h4" size="md">
                         Type
                     </Heading>
-                    <Text paddingLeft={4}>{pythonParameter.type}</Text>
+                    <ChakraText paddingLeft={4}>
+                        {pythonParameter.typeInDocs}
+                    </ChakraText>
                 </Stack>
             )}
         </Stack>
