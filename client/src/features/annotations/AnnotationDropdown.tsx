@@ -11,19 +11,21 @@ import React from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import { useAppDispatch } from '../../app/hooks';
 import {
-    addUnused,
     addRequired,
+    addUnused,
+    showAttributeAnnotationForm,
     showBoundaryAnnotationForm,
     showCalledAfterAnnotationForm,
     showConstantAnnotationForm,
-    showGroupAnnotationForm,
     showEnumAnnotationForm,
+    showGroupAnnotationForm,
     showOptionalAnnotationForm,
     showRenameAnnotationForm,
 } from './annotationSlice';
 
 interface AnnotationDropdownProps {
     target: string;
+    showAttribute?: boolean;
     showBoundary?: boolean;
     showCalledAfter?: boolean;
     showConstant?: boolean;
@@ -36,6 +38,7 @@ interface AnnotationDropdownProps {
 }
 
 const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
+    showAttribute = false,
     showBoundary = false,
     showCalledAfter = false,
     showConstant = false,
@@ -62,6 +65,15 @@ const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                     Annotations
                 </MenuButton>
                 <MenuList>
+                    {showAttribute && (
+                        <MenuItem
+                            onClick={() =>
+                                dispatch(showAttributeAnnotationForm(target))
+                            }
+                        >
+                            @attribute
+                        </MenuItem>
+                    )}
                     {showBoundary && (
                         <MenuItem
                             onClick={() =>

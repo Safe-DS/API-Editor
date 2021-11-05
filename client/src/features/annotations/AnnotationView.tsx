@@ -11,6 +11,9 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
     BoundaryAnnotation,
     ComparisonOperator,
+    DefaultType,
+    DefaultValue,
+    removeAttribute,
     removeBoundary,
     removeCalledAfter,
     removeConstant,
@@ -20,6 +23,7 @@ import {
     removeRenaming,
     removeRequired,
     removeUnused,
+    selectAttribute,
     selectBoundary,
     selectCalledAfters,
     selectConstant,
@@ -29,6 +33,7 @@ import {
     selectRenaming,
     selectRequired,
     selectUnused,
+    showAttributeAnnotationForm,
     showBoundaryAnnotationForm,
     showConstantAnnotationForm,
     showEnumAnnotationForm,
@@ -44,6 +49,7 @@ interface AnnotationViewProps {
 const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
     const dispatch = useAppDispatch();
 
+    const attributeAnnotation = useAppSelector(selectAttribute(target));
     const boundaryAnnotation = useAppSelector(selectBoundary(target));
     const calledAfterAnnotation = useAppSelector(selectCalledAfters(target));
     const constantAnnotation = useAppSelector(selectConstant(target));
@@ -55,6 +61,7 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
     const unusedAnnotation = useAppSelector(selectUnused(target));
 
     if (
+        !attributeAnnotation &&
         !boundaryAnnotation &&
         !calledAfterAnnotation &&
         !constantAnnotation &&
@@ -71,6 +78,17 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
 
     return (
         <Stack maxW="fit-content">
+            {attributeAnnotation && (
+                <Annotation
+                    type="attribute"
+                    name={valueToString(
+                        attributeAnnotation.defaultValue,
+                        attributeAnnotation.defaultType,
+                    )}
+                    onEdit={() => dispatch(showAttributeAnnotationForm(target))}
+                    onDelete={() => dispatch(removeAttribute(target))}
+                />
+            )}
             {boundaryAnnotation && (
                 <Annotation
                     type="boundary"
@@ -92,7 +110,10 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
             {constantAnnotation && (
                 <Annotation
                     type="constant"
-                    name={`${constantAnnotation.defaultType.toString()}_${constantAnnotation.defaultValue.toString()}`}
+                    name={valueToString(
+                        constantAnnotation.defaultValue,
+                        constantAnnotation.defaultType,
+                    )}
                     onEdit={() => dispatch(showConstantAnnotationForm(target))}
                     onDelete={() => dispatch(removeConstant(target))}
                 />
@@ -121,7 +142,10 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
             {optionalAnnotation && (
                 <Annotation
                     type="optional"
-                    name={`${optionalAnnotation.defaultType.toString()}_${optionalAnnotation.defaultValue.toString()}`}
+                    name={valueToString(
+                        optionalAnnotation.defaultValue,
+                        optionalAnnotation.defaultType,
+                    )}
                     onEdit={() => dispatch(showOptionalAnnotationForm(target))}
                     onDelete={() => dispatch(removeOptional(target))}
                 />
@@ -148,6 +172,17 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
             )}
         </Stack>
     );
+};
+
+const valueToString = (value: DefaultValue, type: DefaultType): string => {
+    switch (type) {
+        case 'string':
+            return `"${value}"`;
+        case 'number':
+            return String(value);
+        case 'boolean':
+            return value === 'true' ? 'True' : 'False';
+    }
 };
 
 const boundaryToString = (boundary: BoundaryAnnotation) => {

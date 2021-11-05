@@ -19,7 +19,6 @@ interface TreeNodeProps extends ChildrenProp {
 }
 
 const TreeNode: React.FC<TreeNodeProps> = function ({
-    children,
     declaration,
     icon,
     isExpandable,
@@ -47,25 +46,22 @@ const TreeNode: React.FC<TreeNodeProps> = function ({
     };
 
     return (
-        <>
-            <HStack
-                userSelect="none"
-                cursor="pointer"
-                color={color}
-                backgroundColor={backgroundColor}
-                paddingLeft={paddingLeft}
-                onClick={handleClick}
-            >
-                <VisibilityIndicator
-                    hasChildren={isExpandable}
-                    showChildren={showChildren}
-                    isSelected={isSelected(declaration, currentPathname)}
-                />
-                <Icon as={icon} />
-                <ChakraText>{declaration.name}</ChakraText>
-            </HStack>
-            {showChildren && children}
-        </>
+        <HStack
+            userSelect="none"
+            cursor="pointer"
+            color={color}
+            backgroundColor={backgroundColor}
+            paddingLeft={paddingLeft}
+            onClick={handleClick}
+        >
+            <VisibilityIndicator
+                hasChildren={isExpandable}
+                showChildren={showChildren}
+                isSelected={isSelected(declaration, currentPathname)}
+            />
+            <Icon as={icon} />
+            <ChakraText>{declaration.name}</ChakraText>
+        </HStack>
     );
 };
 

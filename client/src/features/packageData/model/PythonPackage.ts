@@ -40,7 +40,7 @@ export default class PythonPackage extends PythonDeclaration {
     }
 
     filter(pythonFilter: PythonFilter | void): PythonPackage {
-        if (!pythonFilter) {
+        if (!pythonFilter || !pythonFilter.isFilteringModules()) {
             return this;
         }
 
@@ -53,7 +53,10 @@ export default class PythonPackage extends PythonDeclaration {
                         .includes(
                             (pythonFilter.pythonModule || '').toLowerCase(),
                         ) &&
-                    (!isEmptyList(it.classes) || !isEmptyList(it.functions)),
+                    // Don't exclude empty modules when we only filter modules
+                    (!pythonFilter.isFilteringClasses() ||
+                        !isEmptyList(it.classes) ||
+                        !isEmptyList(it.functions)),
             );
 
         return new PythonPackage(

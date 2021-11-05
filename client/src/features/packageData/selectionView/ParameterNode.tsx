@@ -1,4 +1,10 @@
-import { Box, Heading, HStack, Stack, Text } from '@chakra-ui/react';
+import {
+    Box,
+    Heading,
+    HStack,
+    Stack,
+    Text as ChakraText,
+} from '@chakra-ui/react';
 import React from 'react';
 import AnnotationDropdown from '../../annotations/AnnotationDropdown';
 import AnnotationView from '../../annotations/AnnotationView';
@@ -16,6 +22,10 @@ const ParameterNode: React.FC<ParameterNodeProps> = function ({
 }) {
     const id = pythonParameter.pathAsString();
 
+    const isConstructorParameter =
+        pythonParameter.parent()?.name === '__init__';
+    const isExplicitParameter = pythonParameter.isExplicitParameter();
+
     return (
         <Stack spacing={4}>
             <HStack>
@@ -28,15 +38,18 @@ const ParameterNode: React.FC<ParameterNodeProps> = function ({
                         {pythonParameter.name}
                     </Heading>
                 )}
-                <AnnotationDropdown
-                    target={id}
-                    showBoundary
-                    showConstant
-                    showEnum
-                    showOptional
-                    showRename
-                    showRequired
-                />
+                {isExplicitParameter && (
+                    <AnnotationDropdown
+                        target={id}
+                        showAttribute={isConstructorParameter}
+                        showBoundary
+                        showConstant
+                        showEnum
+                        showOptional
+                        showRename
+                        showRequired
+                    />
+                )}
             </HStack>
 
             <AnnotationView target={id} />
@@ -47,9 +60,9 @@ const ParameterNode: React.FC<ParameterNodeProps> = function ({
                         inputText={pythonParameter?.description}
                     />
                 ) : (
-                    <Text color="gray.500">
+                    <ChakraText color="gray.500">
                         There is no documentation for this parameter.
-                    </Text>
+                    </ChakraText>
                 )}
             </Box>
         </Stack>

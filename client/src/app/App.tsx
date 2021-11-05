@@ -35,6 +35,7 @@ import SelectionView from '../features/packageData/selectionView/SelectionView';
 import TreeView from '../features/packageData/treeView/TreeView';
 import { useAppDispatch, useAppSelector } from './hooks';
 import PythonFunction from '../features/packageData/model/PythonFunction';
+import AttributeForm from '../features/annotations/forms/AttributeForm';
 
 const App: React.FC = function () {
     const [pythonPackage, setPythonPackage] = useState<PythonPackage>(
@@ -106,6 +107,9 @@ const App: React.FC = function () {
                 layerStyle="subtleBorder"
                 resize="horizontal"
             >
+                {currentUserAction.type === 'attribute' && (
+                    <AttributeForm target={userActionTarget || pythonPackage} />
+                )}
                 {currentUserAction.type === 'boundary' && (
                     <BoundaryForm target={userActionTarget || pythonPackage} />
                 )}

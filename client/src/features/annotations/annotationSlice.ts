@@ -3,6 +3,9 @@ import * as idb from 'idb-keyval';
 import { RootState } from '../../app/store';
 
 export interface AnnotationsState {
+    attributes: {
+        [target: string]: AttributeAnnotation;
+    };
     boundaries: {
         [target: string]: BoundaryAnnotation;
     };
@@ -33,6 +36,26 @@ export interface AnnotationsState {
     };
     showImportDialog: boolean;
 }
+
+interface AttributeAnnotation {
+    /**
+     * ID of the annotated Python declaration
+     */
+    readonly target: string;
+
+    /**
+     * Type of default value
+     */
+    readonly defaultType: DefaultType;
+
+    /**
+     * Default value
+     */
+    readonly defaultValue: DefaultValue;
+}
+
+export type DefaultType = 'string' | 'number' | 'boolean';
+export type DefaultValue = string | number | boolean;
 
 export interface BoundaryAnnotation {
     /**
@@ -112,12 +135,12 @@ interface ConstantAnnotation {
     /**
      * Type of default value
      */
-    readonly defaultType: string;
+    readonly defaultType: DefaultType;
 
     /**
      * Default value
      */
-    readonly defaultValue: string | number | boolean;
+    readonly defaultValue: DefaultValue;
 }
 
 interface EnumAnnotation {
@@ -176,12 +199,12 @@ interface OptionalAnnotation {
     /**
      * Type of default value
      */
-    readonly defaultType: string;
+    readonly defaultType: DefaultType;
 
     /**
      * Default value
      */
-    readonly defaultValue: string | number | boolean;
+    readonly defaultValue: DefaultValue;
 }
 
 interface RenameAnnotation {
@@ -212,6 +235,7 @@ interface UnusedAnnotation {
 
 type UserAction =
     | typeof NoUserAction
+    | AttributeUserAction
     | BoundaryUserAction
     | CalledAfterUserAction
     | ConstantUserAction
@@ -224,6 +248,11 @@ const NoUserAction = {
     type: 'none',
     target: '',
 };
+
+interface AttributeUserAction {
+    readonly type: 'attribute';
+    readonly target: string;
+}
 
 interface BoundaryUserAction {
     readonly type: 'boundary';
@@ -265,6 +294,7 @@ interface RenameUserAction {
 // Initial state -------------------------------------------------------------------------------------------------------
 
 const initialState: AnnotationsState = {
+    attributes: {},
     boundaries: {},
     calledAfters: {},
     constants: {},
@@ -308,6 +338,12 @@ const annotationsSlice = createSlice({
         },
         reset() {
             return initialState;
+        },
+        upsertAttribute(state, action: PayloadAction<AttributeAnnotation>) {
+            state.attributes[action.payload.target] = action.payload;
+        },
+        removeAttribute(state, action: PayloadAction<string>) {
+            delete state.attributes[action.payload];
         },
         upsertBoundary(state, action: PayloadAction<BoundaryAnnotation>) {
             state.boundaries[action.payload.target] = action.payload;
@@ -396,7 +432,6 @@ const annotationsSlice = createSlice({
             }
         },
         upsertOptional(state, action: PayloadAction<OptionalAnnotation>) {
-            console.log(action.payload);
             state.optionals[action.payload.target] = action.payload;
         },
         removeOptional(state, action: PayloadAction<string>) {
@@ -419,6 +454,12 @@ const annotationsSlice = createSlice({
         },
         removeUnused(state, action: PayloadAction<string>) {
             delete state.unuseds[action.payload];
+        },
+        showAttributeAnnotationForm(state, action: PayloadAction<string>) {
+            state.currentUserAction = {
+                type: 'attribute',
+                target: action.payload,
+            };
         },
         showBoundaryAnnotationForm(state, action: PayloadAction<string>) {
             state.currentUserAction = {
@@ -487,6 +528,8 @@ export const {
     set: setAnnotations,
     reset: resetAnnotations,
 
+    upsertAttribute,
+    removeAttribute,
     upsertBoundary,
     removeBoundary,
     upsertCalledAfter,
@@ -506,6 +549,7 @@ export const {
     addUnused,
     removeUnused,
 
+    showAttributeAnnotationForm,
     showBoundaryAnnotationForm,
     showCalledAfterAnnotationForm,
     showConstantAnnotationForm,
@@ -520,6 +564,10 @@ export const {
 export default reducer;
 
 export const selectAnnotations = (state: RootState) => state.annotations;
+export const selectAttribute =
+    (target: string) =>
+    (state: RootState): AttributeAnnotation | undefined =>
+        selectAnnotations(state).attributes[target];
 export const selectBoundary =
     (target: string) =>
     (state: RootState): BoundaryAnnotation | undefined =>
@@ -527,7 +575,7 @@ export const selectBoundary =
 export const selectCalledAfters =
     (target: string) =>
     (state: RootState): { [calledAfter: string]: CalledAfterAnnotation } =>
-        selectAnnotations(state).calledAfters[target] ?? [];
+        selectAnnotations(state).calledAfters[target] ?? {};
 export const selectConstant =
     (target: string) =>
     (state: RootState): ConstantAnnotation | undefined =>
@@ -541,7 +589,7 @@ export const selectEnum =
 export const selectGroups =
     (target: string) =>
     (state: RootState): { [groupName: string]: GroupAnnotation } =>
-        selectAnnotations(state).groups[target] ?? [];
+        selectAnnotations(state).groups[target] ?? {};
 export const selectOptional =
     (target: string) =>
     (state: RootState): OptionalAnnotation | undefined =>
