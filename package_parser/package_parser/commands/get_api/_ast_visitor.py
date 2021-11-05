@@ -23,7 +23,7 @@ class _AstVisitor:
     def __init__(self, api: API) -> None:
         self.reexported: set[str] = set()
         self.api: API = api
-        self.__module_and_class_stack: list[Union[Module, Class]] = []
+        self.__declaration_stack: list[Union[Module, Class, Function]] = []
 
     def enter_module(self, module_node: astroid.Module):
         imports: list[Import] = []
@@ -66,10 +66,10 @@ class _AstVisitor:
             imports,
             from_imports,
         )
-        self.__module_and_class_stack.append(module)
+        self.__declaration_stack.append(module)
 
     def leave_module(self, _: astroid.Module) -> None:
-        module = self.__module_and_class_stack.pop()
+        module = self.__declaration_stack.pop()
         if not isinstance(module, Module):
             raise AssertionError("Imbalanced push/pop on stack")
 
@@ -96,18 +96,19 @@ class _AstVisitor:
             class_node.doc,
             class_node.as_string(),
         )
-        self.__module_and_class_stack.append(class_)
+        self.__declaration_stack.append(class_)
 
     def leave_classdef(self, _: astroid.ClassDef) -> None:
-        class_ = self.__module_and_class_stack.pop()
+        class_ = self.__declaration_stack.pop()
         if not isinstance(class_, Class):
             raise AssertionError("Imbalanced push/pop on stack")
-        self.api.add_class(class_)
 
-        # Add qualified name of class to containing module
-        if len(self.__module_and_class_stack) > 0:
-            parent = self.__module_and_class_stack[-1]
+        if len(self.__declaration_stack) > 0:
+            parent = self.__declaration_stack[-1]
+
+            # Ignore nested classes for now
             if isinstance(parent, Module):
+                self.api.add_class(class_)
                 parent.add_class(class_.qname)
 
     def enter_functiondef(self, function_node: astroid.FunctionDef) -> None:
@@ -122,26 +123,33 @@ class _AstVisitor:
         numpydoc = NumpyDocString(inspect.cleandoc(function_node.doc or ""))
         is_public = self.is_public(function_node.name, qname)
 
-        self.api.add_function(
-            Function(
-                qname,
-                decorator_names,
-                self.__function_parameters(function_node, is_public),
-                [],  # TODO: results
-                is_public,
-                _AstVisitor.__description(numpydoc),
-                function_node.doc,
-                function_node.as_string(),
-            )
+        function = Function(
+            qname,
+            decorator_names,
+            self.__function_parameters(function_node, is_public),
+            [],  # TODO: results
+            is_public,
+            _AstVisitor.__description(numpydoc),
+            function_node.doc,
+            function_node.as_string(),
         )
+        self.__declaration_stack.append(function)
 
-        # Add qualified name of function to containing module or class
-        if len(self.__module_and_class_stack) > 0:
-            parent = self.__module_and_class_stack[-1]
+    def leave_functiondef(self, _: astroid.FunctionDef) -> None:
+        function = self.__declaration_stack.pop()
+        if not isinstance(function, Function):
+            raise AssertionError("Imbalanced push/pop on stack")
+
+        if len(self.__declaration_stack) > 0:
+            parent = self.__declaration_stack[-1]
+
+            # Ignore nested functions for now
             if isinstance(parent, Module):
-                parent.add_function(qname)
+                self.api.add_function(function)
+                parent.add_function(function.qname)
             elif isinstance(parent, Class):
-                parent.add_method(qname)
+                self.api.add_function(function)
+                parent.add_method(function.qname)
 
     @staticmethod
     def __description(numpydoc: NumpyDocString) -> str:
