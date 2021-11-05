@@ -20,7 +20,7 @@ TYPESCRIPT_PRETTIER_FILE_EXTENSIONS:
 # Commands
 PRE_COMMANDS:
   - command: npm install
-    cwd: root
+    cwd: workspace
 
 # Linters
 ENABLE_LINTERS:
