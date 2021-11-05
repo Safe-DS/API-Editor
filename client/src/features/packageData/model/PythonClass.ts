@@ -66,7 +66,7 @@ export default class PythonClass extends PythonDeclaration {
     }
 
     filter(pythonFilter: PythonFilter | void): PythonClass {
-        if (!pythonFilter) {
+        if (!pythonFilter || !pythonFilter.isFilteringFunctions()) {
             return this;
         }
 
@@ -78,7 +78,10 @@ export default class PythonClass extends PythonDeclaration {
                         .toLowerCase()
                         .includes(
                             (pythonFilter.pythonFunction || '').toLowerCase(),
-                        ) && !isEmptyList(it.parameters),
+                        ) &&
+                    // Don't exclude functions without parameters when we don't filter parameters
+                    (!pythonFilter.isFilteringParameters() ||
+                        !isEmptyList(it.parameters)),
             );
 
         return new PythonClass(

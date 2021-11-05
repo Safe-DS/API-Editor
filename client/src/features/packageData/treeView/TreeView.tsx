@@ -31,7 +31,7 @@ const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage }) => {
     const dispatch = useAppDispatch();
     const allExpanded = useAppSelector(selectAllExpandedInTreeView);
 
-    const children = walkChildrenWithPreOrder(allExpanded, pythonPackage);
+    const children = walkChildrenInPreorder(allExpanded, pythonPackage);
     const previousScrollOffset = useAppSelector(selectTreeViewScrollOffset);
 
     // Keep a reference to the last FixedSizeList before everything is dismounted
@@ -85,13 +85,16 @@ const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage }) => {
     );
 });
 
-const walkChildrenWithPreOrder = function (
-    allExpandedInTreeView: { [target: string]: true },
+const walkChildrenInPreorder = function (
+    allExpandedItemsInTreeView: { [target: string]: true },
     declaration: PythonDeclaration,
 ): PythonDeclaration[] {
     return declaration.children().flatMap((it) => {
-        if (allExpandedInTreeView[it.pathAsString()]) {
-            return [it, ...walkChildrenWithPreOrder(allExpandedInTreeView, it)];
+        if (allExpandedItemsInTreeView[it.pathAsString()]) {
+            return [
+                it,
+                ...walkChildrenInPreorder(allExpandedItemsInTreeView, it),
+            ];
         } else {
             return [it];
         }

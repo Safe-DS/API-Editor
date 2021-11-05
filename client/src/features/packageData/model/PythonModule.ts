@@ -54,7 +54,8 @@ export default class PythonModule extends PythonDeclaration {
     }
 
     filter(pythonFilter: PythonFilter | void): PythonModule {
-        if (!pythonFilter) {
+        // isFilteringClasses is also true if we are filtering functions
+        if (!pythonFilter || !pythonFilter.isFilteringClasses()) {
             return this;
         }
 
@@ -66,7 +67,10 @@ export default class PythonModule extends PythonDeclaration {
                         .toLowerCase()
                         .includes(
                             (pythonFilter.pythonClass || '').toLowerCase(),
-                        ) && !isEmptyList(it.methods),
+                        ) &&
+                    // Don't exclude empty classes when we only filter modules or classes
+                    (!pythonFilter.isFilteringFunctions() ||
+                        !isEmptyList(it.methods)),
             );
 
         const functions = this.functions
@@ -79,7 +83,9 @@ export default class PythonModule extends PythonDeclaration {
                         .includes(
                             (pythonFilter.pythonFunction || '').toLowerCase(),
                         ) &&
-                    !isEmptyList(it.parameters),
+                    // Don't exclude functions without parameters when we don't filter parameters
+                    (!pythonFilter.isFilteringParameters() ||
+                        !isEmptyList(it.parameters)),
             );
 
         return new PythonModule(
