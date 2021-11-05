@@ -1,27 +1,27 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import PythonDeclaration from '../../packageData/model/PythonDeclaration';
-import { selectConstant, upsertConstant } from '../annotationSlice';
+import { selectAttribute, upsertAttribute } from '../annotationSlice';
 import TypeValueForm, { TypeValueFormState } from './TypeValueForm';
 
-interface ConstantFormProps {
+interface AttributeFormProps {
     target: PythonDeclaration;
 }
 
-const ConstantForm: React.FC<ConstantFormProps> = function ({ target }) {
+const AttributeForm: React.FC<AttributeFormProps> = function ({ target }) {
     const targetPath = target.pathAsString();
 
     // Hooks -----------------------------------------------------------------------------------------------------------
-    const constantDefinition = useAppSelector(selectConstant(targetPath));
-    const previousDefaultType = constantDefinition?.defaultType;
-    const previousDefaultValue = constantDefinition?.defaultValue;
+    const previousAnnotation = useAppSelector(selectAttribute(targetPath));
+    const previousDefaultType = previousAnnotation?.defaultType;
+    const previousDefaultValue = previousAnnotation?.defaultValue;
     const dispatch = useAppDispatch();
 
     // Event handlers --------------------------------------------------------------------------------------------------
 
     const handleUpsertAnnotation = (data: TypeValueFormState) => {
         dispatch(
-            upsertConstant({
+            upsertAttribute({
                 target: targetPath,
                 ...data,
             }),
@@ -33,7 +33,7 @@ const ConstantForm: React.FC<ConstantFormProps> = function ({ target }) {
     return (
         <TypeValueForm
             target={target}
-            annotationType="constant"
+            annotationType="attribute"
             previousDefaultType={previousDefaultType}
             previousDefaultValue={previousDefaultValue}
             onUpsertAnnotation={handleUpsertAnnotation}
@@ -41,4 +41,4 @@ const ConstantForm: React.FC<ConstantFormProps> = function ({ target }) {
     );
 };
 
-export default ConstantForm;
+export default AttributeForm;
