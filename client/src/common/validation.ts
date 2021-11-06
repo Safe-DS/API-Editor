@@ -15,7 +15,8 @@ export const pythonIdentifierPattern = {
         'Valid Python identifiers must start with a letter or underscore followed by letters, numbers, and underscores.',
 };
 
-export const qualifiedModulePathPattern = {
-    value: /^[A-Za-z_][A-Za-z_0-9.]*\/[A-Za-z_][A-Za-z_0-9.]*$/u,
-    message: 'A valid module path must be of the form "package/module".',
+export const moduleNamePattern = {
+    value: /^[A-Za-z_][A-Za-z_0-9.]*$/u,
+    message:
+        'A valid module name must start with a letter or underscore followed by letters, numbers, dots and underscores.',
 };

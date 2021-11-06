@@ -1,8 +1,4 @@
-import {
-    numberPattern,
-    booleanPattern,
-    qualifiedModulePathPattern,
-} from './validation';
+import { numberPattern, booleanPattern, moduleNamePattern } from './validation';
 
 test('valid natural number', () => {
     const testNumber = '1';
@@ -144,58 +140,37 @@ test('negative number is not a valid boolean', () => {
     expect(Boolean(testValue.match(booleanPattern.value))).toEqual(false);
 });
 
-test('"package/module" is a valid module path"', () => {
-    const testValue = 'package/module';
-    expect(Boolean(testValue.match(qualifiedModulePathPattern.value))).toEqual(
-        true,
-    );
-});
-
-test('"package" is not a valid module path"', () => {
+test('"m0dule" is a valid module path"', () => {
     const testValue = 'package';
-    expect(Boolean(testValue.match(qualifiedModulePathPattern.value))).toEqual(
-        false,
-    );
+    expect(Boolean(testValue.match(moduleNamePattern.value))).toEqual(true);
 });
 
-test('"package/Module.base" is a valid module path"', () => {
-    const testValue = 'package/Module.base';
-    expect(Boolean(testValue.match(qualifiedModulePathPattern.value))).toEqual(
-        true,
-    );
+test('"Module2" is a valid module path"', () => {
+    const testValue = 'Module2';
+    expect(Boolean(testValue.match(moduleNamePattern.value))).toEqual(true);
 });
 
-test('"package/Module.base2" is a valid module path"', () => {
-    const testValue = 'package/Module.base2';
-    expect(Boolean(testValue.match(qualifiedModulePathPattern.value))).toEqual(
-        true,
-    );
+test('"Module.base2" is a valid module path"', () => {
+    const testValue = 'Module.base2';
+    expect(Boolean(testValue.match(moduleNamePattern.value))).toEqual(true);
 });
 
-test('"P/M" is a valid module path"', () => {
+test('"P/M" is not a valid module path"', () => {
     const testValue = 'P/M';
-    expect(Boolean(testValue.match(qualifiedModulePathPattern.value))).toEqual(
-        true,
-    );
+    expect(Boolean(testValue.match(moduleNamePattern.value))).toEqual(false);
 });
 
-test('"P/234" is not a valid module path"', () => {
+test('"P/234" is not a valid module name"', () => {
     const testValue = 'P/234';
-    expect(Boolean(testValue.match(qualifiedModulePathPattern.value))).toEqual(
-        false,
-    );
+    expect(Boolean(testValue.match(moduleNamePattern.value))).toEqual(false);
 });
 
-test('"Package_module" is not a valid module path"', () => {
-    const testValue = 'Package_module';
-    expect(Boolean(testValue.match(qualifiedModulePathPattern.value))).toEqual(
-        false,
-    );
+test('"P_module" is a valid module path"', () => {
+    const testValue = 'P_module';
+    expect(Boolean(testValue.match(moduleNamePattern.value))).toEqual(true);
 });
 
-test('"Package.module" is not a valid module path"', () => {
-    const testValue = 'Package.module';
-    expect(Boolean(testValue.match(qualifiedModulePathPattern.value))).toEqual(
-        false,
-    );
+test('"module.base" is not a valid module path"', () => {
+    const testValue = 'module.base';
+    expect(Boolean(testValue.match(moduleNamePattern.value))).toEqual(true);
 });

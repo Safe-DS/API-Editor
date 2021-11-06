@@ -8,7 +8,7 @@ import {
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { qualifiedModulePathPattern } from '../../../common/validation';
+import { moduleNamePattern } from '../../../common/validation';
 import PythonDeclaration from '../../packageData/model/PythonDeclaration';
 import {
     hideAnnotationForms,
@@ -28,7 +28,7 @@ interface MoveFormState {
 const MoveForm: React.FC<MoveFormProps> = function ({ target }) {
     const targetPath = target.pathAsString();
     const prevDestination = useAppSelector(selectMove(targetPath))?.destination;
-    const oldModulePath = target?.parent()?.pathAsString();
+    const oldModulePath = target?.parent()?.name;
 
     // Hooks -----------------------------------------------------------------------------------------------------------
 
@@ -81,12 +81,12 @@ const MoveForm: React.FC<MoveFormProps> = function ({ target }) {
         >
             <FormControl isInvalid={Boolean(errors.destination)}>
                 <FormLabel>
-                    Path of destination module for &quot;{target.name}&quot;:
+                    Destination module name for &quot;{target.name}&quot;:
                 </FormLabel>
                 <Input
                     {...register('destination', {
                         required: 'This is required.',
-                        pattern: qualifiedModulePathPattern,
+                        pattern: moduleNamePattern,
                     })}
                 />
                 <FormErrorMessage>
