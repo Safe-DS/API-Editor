@@ -20,6 +20,7 @@ import {
     removeEnum,
     removeGroup,
     removeOptional,
+    removeMove,
     removeRenaming,
     removeRequired,
     removeUnused,
@@ -29,6 +30,7 @@ import {
     selectConstant,
     selectEnum,
     selectGroups,
+    selectMove,
     selectOptional,
     selectRenaming,
     selectRequired,
@@ -38,6 +40,7 @@ import {
     showConstantAnnotationForm,
     showEnumAnnotationForm,
     showGroupAnnotationForm,
+    showMoveAnnotationForm,
     showOptionalAnnotationForm,
     showRenameAnnotationForm,
 } from './annotationSlice';
@@ -55,6 +58,7 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
     const constantAnnotation = useAppSelector(selectConstant(target));
     const enumAnnotation = useAppSelector(selectEnum(target));
     const groupAnnotations = useAppSelector(selectGroups(target));
+    const moveAnnotation = useAppSelector(selectMove(target));
     const optionalAnnotation = useAppSelector(selectOptional(target));
     const renameAnnotation = useAppSelector(selectRenaming(target));
     const requiredAnnotation = useAppSelector(selectRequired(target));
@@ -67,6 +71,7 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
         !constantAnnotation &&
         !enumAnnotation &&
         !groupAnnotations &&
+        !moveAnnotation &&
         !optionalAnnotation &&
         !renameAnnotation &&
         !requiredAnnotation &&
@@ -139,6 +144,14 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
                     }
                 />
             ))}
+            {moveAnnotation && (
+                <Annotation
+                    type="move"
+                    name={moveAnnotation.destination}
+                    onEdit={() => dispatch(showMoveAnnotationForm(target))}
+                    onDelete={() => dispatch(removeMove(target))}
+                />
+            )}
             {optionalAnnotation && (
                 <Annotation
                     type="optional"

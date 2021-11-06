@@ -1,4 +1,8 @@
-import { numberPattern, booleanPattern } from './validation';
+import {
+    numberPattern,
+    booleanPattern,
+    qualifiedModulePathPattern,
+} from './validation';
 
 test('valid natural number', () => {
     const testNumber = '1';
@@ -138,4 +142,60 @@ test('number is not a valid boolean', () => {
 test('negative number is not a valid boolean', () => {
     const testValue = '-1';
     expect(Boolean(testValue.match(booleanPattern.value))).toEqual(false);
+});
+
+test('"package/module" is a valid module path"', () => {
+    const testValue = 'package/module';
+    expect(Boolean(testValue.match(qualifiedModulePathPattern.value))).toEqual(
+        true,
+    );
+});
+
+test('"package" is not a valid module path"', () => {
+    const testValue = 'package';
+    expect(Boolean(testValue.match(qualifiedModulePathPattern.value))).toEqual(
+        false,
+    );
+});
+
+test('"package/Module.base" is a valid module path"', () => {
+    const testValue = 'package/Module.base';
+    expect(Boolean(testValue.match(qualifiedModulePathPattern.value))).toEqual(
+        true,
+    );
+});
+
+test('"package/Module.base2" is a valid module path"', () => {
+    const testValue = 'package/Module.base2';
+    expect(Boolean(testValue.match(qualifiedModulePathPattern.value))).toEqual(
+        true,
+    );
+});
+
+test('"P/M" is a valid module path"', () => {
+    const testValue = 'P/M';
+    expect(Boolean(testValue.match(qualifiedModulePathPattern.value))).toEqual(
+        true,
+    );
+});
+
+test('"P/234" is not a valid module path"', () => {
+    const testValue = 'P/234';
+    expect(Boolean(testValue.match(qualifiedModulePathPattern.value))).toEqual(
+        false,
+    );
+});
+
+test('"Package_module" is not a valid module path"', () => {
+    const testValue = 'Package_module';
+    expect(Boolean(testValue.match(qualifiedModulePathPattern.value))).toEqual(
+        false,
+    );
+});
+
+test('"Package.module" is not a valid module path"', () => {
+    const testValue = 'Package.module';
+    expect(Boolean(testValue.match(qualifiedModulePathPattern.value))).toEqual(
+        false,
+    );
 });

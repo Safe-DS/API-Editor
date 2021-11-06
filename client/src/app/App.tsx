@@ -18,6 +18,7 @@ import CalledAfterForm from '../features/annotations/forms/CalledAfterForm';
 import ConstantForm from '../features/annotations/forms/ConstantForm';
 import EnumForm from '../features/annotations/forms/EnumForm';
 import GroupForm from '../features/annotations/forms/GroupForm';
+import MoveForm from '../features/annotations/forms/MoveForm';
 import OptionalForm from '../features/annotations/forms/OptionalForm';
 import RenameForm from '../features/annotations/forms/RenameForm';
 import { PythonFilter } from '../features/packageData/model/PythonFilter';
@@ -133,6 +134,9 @@ const App: React.FC = function () {
                                 : ''
                         }
                     />
+                )}
+                {currentUserAction.type === 'move' && (
+                    <MoveForm target={userActionTarget || pythonPackage} />
                 )}
                 {currentUserAction.type === 'none' && (
                     <TreeView pythonPackage={filteredPythonPackage} />

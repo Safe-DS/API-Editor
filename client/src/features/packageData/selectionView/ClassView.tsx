@@ -20,7 +20,12 @@ const ClassView: React.FC<ClassViewProps> = function ({ pythonClass }) {
                     <Heading as="h3" size="lg">
                         {pythonClass.name}
                     </Heading>
-                    <AnnotationDropdown target={id} showRename showUnused />
+                    <AnnotationDropdown
+                        target={id}
+                        showMove
+                        showRename
+                        showUnused
+                    />
                 </HStack>
 
                 <AnnotationView target={id} />
