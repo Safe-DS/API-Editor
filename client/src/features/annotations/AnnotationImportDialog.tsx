@@ -37,6 +37,7 @@ const AnnotationImportDialog: React.FC = function () {
             },
             enums: {},
             groups: {},
+            moves: {},
             optionals: {},
             renamings: {},
             requireds: {},
