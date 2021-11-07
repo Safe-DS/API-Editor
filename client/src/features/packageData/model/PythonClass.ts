@@ -15,6 +15,10 @@ export default class PythonClass extends PythonDeclaration {
     readonly fullDocstring: string;
     containingModule: Optional<PythonModule>;
 
+
+
+
+    
     constructor(
         name: string,
         qname: string,
