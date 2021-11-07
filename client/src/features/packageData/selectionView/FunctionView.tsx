@@ -10,6 +10,7 @@ import { isEmptyList } from '../../../common/util/listOperations';
 import AnnotationDropdown from '../../annotations/AnnotationDropdown';
 import AnnotationView from '../../annotations/AnnotationView';
 import PythonFunction from '../model/PythonFunction';
+import PythonModule from '../model/PythonModule';
 import DocumentationText from './DocumentationText';
 import ParameterNode from './ParameterNode';
 import { useAppSelector } from '../../../app/hooks';
@@ -44,6 +45,10 @@ const FunctionView: React.FC<FunctionViewProps> = function ({
                         showCalledAfter={hasRemainingCalledAfters}
                         showGroup={
                             pythonFunction.explicitParameters().length >= 2
+                        }
+                        showMove={
+                            pythonFunction.containingModuleOrClass instanceof
+                            PythonModule
                         }
                         showRename
                         showUnused

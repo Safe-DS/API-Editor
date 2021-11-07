@@ -1,4 +1,10 @@
-import { Box, Heading, HStack, Stack, Text } from '@chakra-ui/react';
+import {
+    Box,
+    Heading,
+    HStack,
+    Stack,
+    Text as ChakraText,
+} from '@chakra-ui/react';
 import React from 'react';
 import AnnotationDropdown from '../../annotations/AnnotationDropdown';
 import AnnotationView from '../../annotations/AnnotationView';
@@ -20,7 +26,12 @@ const ClassView: React.FC<ClassViewProps> = function ({ pythonClass }) {
                     <Heading as="h3" size="lg">
                         {pythonClass.name}
                     </Heading>
-                    <AnnotationDropdown target={id} showRename showUnused />
+                    <AnnotationDropdown
+                        target={id}
+                        showMove
+                        showRename
+                        showUnused
+                    />
                 </HStack>
 
                 <AnnotationView target={id} />
@@ -31,9 +42,9 @@ const ClassView: React.FC<ClassViewProps> = function ({ pythonClass }) {
                             inputText={pythonClass.description}
                         />
                     ) : (
-                        <Text color="gray.500">
+                        <ChakraText color="gray.500">
                             There is no documentation for this class.
-                        </Text>
+                        </ChakraText>
                     )}
                 </Box>
             </Stack>

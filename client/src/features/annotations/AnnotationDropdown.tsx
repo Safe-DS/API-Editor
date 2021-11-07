@@ -19,22 +19,24 @@ import {
     showConstantAnnotationForm,
     showEnumAnnotationForm,
     showGroupAnnotationForm,
+    showMoveAnnotationForm,
     showOptionalAnnotationForm,
     showRenameAnnotationForm,
 } from './annotationSlice';
 
 interface AnnotationDropdownProps {
-    target: string;
     showAttribute?: boolean;
     showBoundary?: boolean;
     showCalledAfter?: boolean;
     showConstant?: boolean;
-    showGroup?: boolean;
-    showRename?: boolean;
     showEnum?: boolean;
-    showUnused?: boolean;
-    showRequired?: boolean;
+    showGroup?: boolean;
+    showMove?: boolean;
     showOptional?: boolean;
+    showRename?: boolean;
+    showRequired?: boolean;
+    showUnused?: boolean;
+    target: string;
 }
 
 const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
@@ -44,6 +46,7 @@ const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
     showConstant = false,
     showGroup = false,
     showEnum = false,
+    showMove = false,
     showOptional = false,
     showRename = false,
     showRequired = false,
@@ -127,6 +130,15 @@ const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                             }
                         >
                             @group
+                        </MenuItem>
+                    )}
+                    {showMove && (
+                        <MenuItem
+                            onClick={() =>
+                                dispatch(showMoveAnnotationForm(target))
+                            }
+                        >
+                            @move
                         </MenuItem>
                     )}
                     {showOptional && (
