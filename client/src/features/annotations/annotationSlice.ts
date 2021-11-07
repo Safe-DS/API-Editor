@@ -22,6 +22,9 @@ export interface AnnotationsState {
     groups: {
         [target: string]: { [groupName: string]: GroupAnnotation };
     };
+    moves: {
+        [target: string]: MoveAnnotation;
+    };
     optionals: {
         [target: string]: OptionalAnnotation;
     };
@@ -190,6 +193,18 @@ interface GroupTarget {
     readonly groupName: string;
 }
 
+interface MoveAnnotation {
+    /**
+     * ID of the annotated Python declaration.
+     */
+    readonly target: string;
+
+    /**
+     * Qualified path to the destination
+     */
+    readonly destination: string;
+}
+
 interface OptionalAnnotation {
     /**
      * ID of the annotated Python declaration
@@ -301,6 +316,7 @@ const initialState: AnnotationsState = {
     currentUserAction: NoUserAction,
     enums: {},
     groups: {},
+    moves: {},
     optionals: {},
     renamings: {},
     requireds: {},
@@ -431,6 +447,12 @@ const annotationsSlice = createSlice({
                 delete state.groups[action.payload.target];
             }
         },
+        upsertMove(state, action: PayloadAction<MoveAnnotation>) {
+            state.moves[action.payload.target] = action.payload;
+        },
+        removeMove(state, action: PayloadAction<string>) {
+            delete state.moves[action.payload];
+        },
         upsertOptional(state, action: PayloadAction<OptionalAnnotation>) {
             state.optionals[action.payload.target] = action.payload;
         },
@@ -496,6 +518,12 @@ const annotationsSlice = createSlice({
                 target: action.payload,
             };
         },
+        showMoveAnnotationForm(state, action: PayloadAction<string>) {
+            state.currentUserAction = {
+                type: 'move',
+                target: action.payload,
+            };
+        },
         showOptionalAnnotationForm(state, action: PayloadAction<string>) {
             state.currentUserAction = {
                 type: 'optional',
@@ -540,6 +568,8 @@ export const {
     removeEnum,
     upsertGroup,
     removeGroup,
+    upsertMove,
+    removeMove,
     upsertOptional,
     removeOptional,
     upsertRenaming,
@@ -555,6 +585,7 @@ export const {
     showConstantAnnotationForm,
     showEnumAnnotationForm,
     showGroupAnnotationForm,
+    showMoveAnnotationForm,
     showOptionalAnnotationForm,
     showRenameAnnotationForm,
     hideAnnotationForms,
@@ -590,6 +621,10 @@ export const selectGroups =
     (target: string) =>
     (state: RootState): { [groupName: string]: GroupAnnotation } =>
         selectAnnotations(state).groups[target] ?? {};
+export const selectMove =
+    (target: string) =>
+    (state: RootState): MoveAnnotation | undefined =>
+        selectAnnotations(state).moves[target];
 export const selectOptional =
     (target: string) =>
     (state: RootState): OptionalAnnotation | undefined =>
