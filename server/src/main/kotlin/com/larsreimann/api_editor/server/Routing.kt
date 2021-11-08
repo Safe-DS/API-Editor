@@ -1,6 +1,5 @@
 package com.larsreimann.api_editor.server
 
-import com.larsreimann.api_editor.server.data.PackageData
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.http.*
@@ -37,10 +36,7 @@ fun Application.configureRouting() {
 
 fun Route.packageData() {
     get("/packageData/{packageName}") {
-        val packageData = PackageData(call.parameters["packageName"]!!)
-        println(packageData)
-        println(call.request.headers)
-        call.respond(packageData)
+        call.respond("invalid")
     }
 }
 
