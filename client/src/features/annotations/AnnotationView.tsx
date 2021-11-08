@@ -206,9 +206,9 @@ const boundaryToString = (boundary: BoundaryAnnotation) => {
     result += ' | ';
 
     if (interval.lowerLimitType === ComparisonOperator.LESS_THAN_OR_EQUALS) {
-        result += `${interval.lowIntervalLimit} ≤ `;
+        result += `${interval.lowerIntervalLimit} ≤ `;
     } else if (interval.lowerLimitType === ComparisonOperator.LESS_THAN) {
-        result += `${interval.lowIntervalLimit} < `;
+        result += `${interval.lowerIntervalLimit} < `;
     }
 
     result += 'x';
