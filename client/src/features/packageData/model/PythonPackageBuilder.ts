@@ -24,14 +24,14 @@ export const parsePythonPackageJson = function (
     const functions = new Map(
         packageJson.functions
             .map(parsePythonFunctionJson)
-            .map((it) => [it.qname, it]),
+            .map((it) => [it.qualifiedName, it]),
     );
 
     // Classes
     const classes = new Map(
         packageJson.classes
             .map((it) => parsePythonClassJson(it, functions))
-            .map((it) => [it.qname, it]),
+            .map((it) => [it.qualifiedName, it]),
     );
 
     return new PythonPackage(
@@ -72,14 +72,19 @@ const parsePythonModuleJson = function (
         }),
         moduleJson.classes
             .sort((a, b) => a.localeCompare(b))
-            .filter((classQname) => classes.has(classQname))
-            .map((classQName) => classes.get(classQName) as PythonClass),
+            .filter((classQualifiedName) => classes.has(classQualifiedName))
+            .map(
+                (classQualifiedName) =>
+                    classes.get(classQualifiedName) as PythonClass,
+            ),
         moduleJson.functions
             .sort((a, b) => a.localeCompare(b))
-            .filter((functionQname) => functions.has(functionQname))
+            .filter((functionQualifiedName) =>
+                functions.has(functionQualifiedName),
+            )
             .map(
-                (functionQname) =>
-                    functions.get(functionQname) as PythonFunction,
+                (functionQualifiedName) =>
+                    functions.get(functionQualifiedName) as PythonFunction,
             ),
     );
 };
@@ -134,10 +139,12 @@ const parsePythonClassJson = function (
         classJson.superclasses,
         classJson.methods
             .sort((a, b) => a.localeCompare(b))
-            .filter((functionQname) => functions.has(functionQname))
+            .filter((functionQualifiedName) =>
+                functions.has(functionQualifiedName),
+            )
             .map(
-                (functionQname) =>
-                    functions.get(functionQname) as PythonFunction,
+                (functionQualifiedName) =>
+                    functions.get(functionQualifiedName) as PythonFunction,
             ),
         classJson.description ?? '',
         classJson.docstring ?? '',

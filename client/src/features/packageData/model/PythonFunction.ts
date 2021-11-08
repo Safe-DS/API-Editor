@@ -8,7 +8,7 @@ import PythonResult from './PythonResult';
 
 export default class PythonFunction extends PythonDeclaration {
     readonly name: string;
-    readonly qname: string;
+    readonly qualifiedName: string;
     readonly decorators: string[];
     readonly parameters: PythonParameter[];
     readonly results: PythonResult[];
@@ -19,7 +19,7 @@ export default class PythonFunction extends PythonDeclaration {
 
     constructor(
         name: string,
-        qname: string,
+        qualifiedName: string,
         decorators: string[] = [],
         parameters: PythonParameter[] = [],
         results: PythonResult[] = [],
@@ -30,7 +30,7 @@ export default class PythonFunction extends PythonDeclaration {
         super();
 
         this.name = name;
-        this.qname = qname;
+        this.qualifiedName = qualifiedName;
         this.decorators = decorators;
         this.parameters = parameters;
         this.results = results;
@@ -109,7 +109,7 @@ export default class PythonFunction extends PythonDeclaration {
 
         return new PythonFunction(
             this.name,
-            this.qname,
+            this.qualifiedName,
             this.decorators,
             parameters,
             results,
