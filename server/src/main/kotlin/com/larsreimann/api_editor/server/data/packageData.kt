@@ -2,29 +2,30 @@ package com.larsreimann.api_editor.server.data
 
 import kotlinx.serialization.Serializable
 
-sealed interface PythonDeclaration {
-    val name: String
-    val annotations: List<EditorAnnotation>
+@Serializable
+sealed class AnnotatedPythonDeclaration {
+    abstract val name: String
+    abstract val annotations: List<EditorAnnotation>
 }
 
 @Serializable
-data class PythonPackage(
+data class AnnotatedPythonPackage(
     val distribution: String,
     override val name: String,
     val version: String,
-    val modules: List<PythonModule>,
+    val modules: List<AnnotatedPythonModule>,
     override val annotations: List<EditorAnnotation>
-) : PythonDeclaration
+) : AnnotatedPythonDeclaration()
 
 @Serializable
-data class PythonModule(
+data class AnnotatedPythonModule(
     override val name: String,
     val imports: List<PythonImport>,
     val fromImports: List<PythonFromImport>,
-    val classes: List<PythonClass>,
-    val functions: List<PythonFunction>,
+    val classes: List<AnnotatedPythonClass>,
+    val functions: List<AnnotatedPythonFunction>,
     override val annotations: List<EditorAnnotation>
-) : PythonDeclaration
+) : AnnotatedPythonDeclaration()
 
 @Serializable
 data class PythonImport(
@@ -40,32 +41,32 @@ data class PythonFromImport(
 )
 
 @Serializable
-data class PythonClass(
+data class AnnotatedPythonClass(
     override val name: String,
     val qualifiedName: String,
     val decorators: List<String>,
     val superclasses: List<String>,
-    val methods: List<PythonFunction>,
+    val methods: List<AnnotatedPythonFunction>,
     val description: String,
     val fullDocstring: String,
     override val annotations: List<EditorAnnotation>
-) : PythonDeclaration
+) : AnnotatedPythonDeclaration()
 
 @Serializable
-data class PythonFunction(
+data class AnnotatedPythonFunction(
     override val name: String,
     val qualifiedName: String,
     val decorators: List<String>,
-    val parameters: List<PythonParameter>,
-    val results: List<PythonResult>,
+    val parameters: List<AnnotatedPythonParameter>,
+    val results: List<AnnotatedPythonResult>,
     val isPublic: Boolean,
     val description: String,
     val fullDocstring: String,
     override val annotations: List<EditorAnnotation>
-) : PythonDeclaration
+) : AnnotatedPythonDeclaration()
 
 @Serializable
-data class PythonParameter(
+data class AnnotatedPythonParameter(
     override val name: String,
     val defaultValue: String,
     val assignedBy: PythonParameterAssignment,
@@ -73,7 +74,7 @@ data class PythonParameter(
     val typeInDocs: String,
     val description: String,
     override val annotations: List<EditorAnnotation>
-) : PythonDeclaration
+) : AnnotatedPythonDeclaration()
 
 enum class PythonParameterAssignment {
     POSITION_ONLY,
@@ -82,10 +83,10 @@ enum class PythonParameterAssignment {
 }
 
 @Serializable
-data class PythonResult(
+data class AnnotatedPythonResult(
     override val name: String,
     val type: String,
     val typeInDocs: String,
     val description: String,
     override val annotations: List<EditorAnnotation>
-) : PythonDeclaration
+) : AnnotatedPythonDeclaration()
