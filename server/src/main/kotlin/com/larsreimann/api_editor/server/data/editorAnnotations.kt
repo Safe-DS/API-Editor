@@ -53,7 +53,6 @@ object RequiredAnnotation : EditorAnnotation()
 @Serializable
 object UnusedAnnotation : EditorAnnotation()
 
-
 @Serializable
 sealed class DefaultValue
 

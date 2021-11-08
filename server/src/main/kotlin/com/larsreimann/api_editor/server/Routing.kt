@@ -22,9 +22,11 @@ import kotlinx.serialization.json.Json
 fun Application.configureRouting() {
     install(ContentNegotiation) {
         // Necessary due to https://youtrack.jetbrains.com/issue/KTOR-435
-        json(Json {
-            useArrayPolymorphism = false
-        })
+        json(
+            Json {
+                useArrayPolymorphism = false
+            }
+        )
     }
 
     routing {
