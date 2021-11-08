@@ -1,7 +1,6 @@
 package com.larsreimann.api_editor.server.data
 
 import kotlinx.serialization.Serializable
-import kotlin.jvm.JvmInline
 
 sealed interface EditorAnnotation
 
