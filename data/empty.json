@@ -1,4 +1,8 @@
 {
-    "name": "empty",
-    "modules": []
+    "distribution": "empty",
+    "package": "empty",
+    "version": "0.0.1",
+    "modules": [],
+    "classes": [],
+    "functions": []
 }

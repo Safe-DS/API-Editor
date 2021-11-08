@@ -3,36 +3,36 @@ import PythonDeclaration from './PythonDeclaration';
 import PythonFunction from './PythonFunction';
 import PythonModule from './PythonModule';
 
+export enum PythonParameterAssignment {
+    POSITION_ONLY,
+    POSITION_OR_NAME,
+    NAME_ONLY,
+}
+
 export default class PythonParameter extends PythonDeclaration {
     readonly name: string;
-    readonly type: string;
-    readonly typeInDocs: string;
-    readonly hasDefault: boolean;
     readonly defaultValue: string;
-    readonly limitation: null;
-    readonly ignored: boolean;
+    readonly assignedBy: PythonParameterAssignment;
+    readonly isPublic: boolean;
+    readonly typeInDocs: string;
     readonly description: string;
     containingFunction: Optional<PythonFunction>;
 
     constructor(
         name: string,
-        type = 'Any',
-        typeInDocs = '',
-        hasDefault = false,
-        defaultValue = '',
-        limitation = null,
-        ignored = false,
-        description = '',
+        defaultValue: string = '',
+        assignedBy: PythonParameterAssignment = PythonParameterAssignment.POSITION_OR_NAME,
+        isPublic: boolean = false,
+        typeInDocs: string = '',
+        description: string = '',
     ) {
         super();
 
         this.name = name;
-        this.type = type;
+        this.defaultValue = defaultValue ?? '';
+        this.assignedBy = assignedBy;
+        this.isPublic = isPublic;
         this.typeInDocs = typeInDocs;
-        this.hasDefault = hasDefault;
-        this.defaultValue = defaultValue;
-        this.limitation = limitation;
-        this.ignored = ignored;
         this.description = description;
         this.containingFunction = null;
     }
@@ -67,12 +67,10 @@ export default class PythonParameter extends PythonDeclaration {
     clone(): PythonParameter {
         return new PythonParameter(
             this.name,
-            this.type,
-            this.typeInDocs,
-            this.hasDefault,
             this.defaultValue,
-            this.limitation,
-            this.ignored,
+            this.assignedBy,
+            this.isPublic,
+            this.typeInDocs,
             this.description,
         );
     }

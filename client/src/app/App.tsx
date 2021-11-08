@@ -40,7 +40,7 @@ import AttributeForm from '../features/annotations/forms/AttributeForm';
 
 const App: React.FC = function () {
     const [pythonPackage, setPythonPackage] = useState<PythonPackage>(
-        new PythonPackage('empty'),
+        new PythonPackage('empty', 'empty', '0.0.1'),
     );
     const currentUserAction = useAppSelector(selectCurrentUserAction);
     const currentPathName = useLocation().pathname;

@@ -8,33 +8,33 @@ import PythonResult from './PythonResult';
 
 export default class PythonFunction extends PythonDeclaration {
     readonly name: string;
+    readonly qualifiedName: string;
     readonly decorators: string[];
     readonly parameters: PythonParameter[];
     readonly results: PythonResult[];
-    readonly returnType: string;
-    readonly summary: string;
+    readonly isPublic: boolean;
     readonly description: string;
     readonly fullDocstring: string;
     containingModuleOrClass: Optional<PythonModule | PythonClass>;
 
     constructor(
         name: string,
+        qualifiedName: string,
         decorators: string[] = [],
         parameters: PythonParameter[] = [],
         results: PythonResult[] = [],
-        returnType = 'Any',
-        summary = '',
+        isPublic: boolean = false,
         description = '',
         fullDocstring = '',
     ) {
         super();
 
         this.name = name;
+        this.qualifiedName = qualifiedName;
         this.decorators = decorators;
         this.parameters = parameters;
         this.results = results;
-        this.returnType = returnType;
-        this.summary = summary;
+        this.isPublic = isPublic;
         this.description = description;
         this.fullDocstring = fullDocstring;
         this.containingModuleOrClass = null;
@@ -109,11 +109,11 @@ export default class PythonFunction extends PythonDeclaration {
 
         return new PythonFunction(
             this.name,
+            this.qualifiedName,
             this.decorators,
             parameters,
             results,
-            this.returnType,
-            this.summary,
+            this.isPublic,
             this.description,
             this.fullDocstring,
         );
