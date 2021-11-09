@@ -31,7 +31,7 @@
 
 1. Run the backend server:
     ```shell
-    ./gradlew run
+    ./gradlew run --continuous
     ```
 2. Run the development server (keep the backend server running):
     ```shell

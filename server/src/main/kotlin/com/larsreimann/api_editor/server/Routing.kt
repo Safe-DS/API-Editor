@@ -1,17 +1,32 @@
 package com.larsreimann.api_editor.server
 
-import com.larsreimann.api_editor.server.data.PackageData
-import io.ktor.application.*
-import io.ktor.features.*
-import io.ktor.http.*
-import io.ktor.http.content.*
-import io.ktor.response.*
-import io.ktor.routing.*
-import io.ktor.serialization.*
+import com.larsreimann.api_editor.server.data.AnnotatedPythonPackage
+import io.ktor.application.Application
+import io.ktor.application.call
+import io.ktor.application.install
+import io.ktor.features.ContentNegotiation
+import io.ktor.features.StatusPages
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.content.defaultResource
+import io.ktor.http.content.resources
+import io.ktor.http.content.static
+import io.ktor.request.receive
+import io.ktor.response.respond
+import io.ktor.routing.Route
+import io.ktor.routing.post
+import io.ktor.routing.route
+import io.ktor.routing.routing
+import io.ktor.serialization.json
+import kotlinx.serialization.json.Json
 
 fun Application.configureRouting() {
     install(ContentNegotiation) {
-        json()
+        // Necessary due to https://youtrack.jetbrains.com/issue/KTOR-435
+        json(
+            Json {
+                useArrayPolymorphism = false
+            }
+        )
     }
 
     routing {
@@ -20,8 +35,9 @@ fun Application.configureRouting() {
             defaultResource("static/index.html")
         }
 
-        route("/api") {
-            packageData()
+        route("/api-editor") {
+            echo()
+            infer()
         }
 
         install(StatusPages) {
@@ -35,12 +51,22 @@ fun Application.configureRouting() {
     }
 }
 
-fun Route.packageData() {
-    get("/packageData/{packageName}") {
-        val packageData = PackageData(call.parameters["packageName"]!!)
-        println(packageData)
-        println(call.request.headers)
-        call.respond(packageData)
+/**
+ * Route to test serialization and deserialization.
+ */
+fun Route.echo() {
+    post("/echo") {
+        val pythonPackage = call.receive<AnnotatedPythonPackage>()
+        call.respond(pythonPackage)
+    }
+}
+
+fun Route.infer() {
+    post("/infer") {
+        // val pythonPackage = call.receive<AnnotatedPythonPackage>()
+        // TODO
+
+        call.respond("Not implemented")
     }
 }
 

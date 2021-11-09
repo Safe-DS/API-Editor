@@ -81,7 +81,7 @@ export interface Interval {
     /**
      * Lower interval limit
      */
-    readonly lowIntervalLimit: number;
+    readonly lowerIntervalLimit: number;
 
     /**
      * Whether the lower interval limit is inclusive or exclusive
