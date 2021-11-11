@@ -40,7 +40,7 @@ export interface AnnotationsState {
     showImportDialog: boolean;
 }
 
-interface AttributeAnnotation {
+export interface AttributeAnnotation {
     /**
      * ID of the annotated Python declaration
      */
@@ -105,7 +105,7 @@ export enum ComparisonOperator {
     UNRESTRICTED,
 }
 
-interface CalledAfterAnnotation {
+export interface CalledAfterAnnotation {
     /**
      * ID of the annotated Python declaration
      */
@@ -117,7 +117,7 @@ interface CalledAfterAnnotation {
     readonly calledAfterName: string;
 }
 
-interface CalledAfterTarget {
+export interface CalledAfterTarget {
     /**
      * ID of the annotated Python declaration
      */
@@ -129,7 +129,7 @@ interface CalledAfterTarget {
     readonly calledAfterName: string;
 }
 
-interface ConstantAnnotation {
+export interface ConstantAnnotation {
     /**
      * ID of the annotated Python declaration
      */
@@ -146,7 +146,7 @@ interface ConstantAnnotation {
     readonly defaultValue: DefaultValue;
 }
 
-interface EnumAnnotation {
+export interface EnumAnnotation {
     /**
      * ID of the annotated Python declaration.
      */
@@ -159,7 +159,7 @@ interface EnumAnnotation {
     readonly pairs: EnumPair[];
 }
 
-interface EnumPair {
+export interface EnumPair {
     readonly stringValue: string;
     readonly instanceName: string;
 }
@@ -181,7 +181,7 @@ export interface GroupAnnotation {
     readonly parameters: string[];
 }
 
-interface GroupTarget {
+export interface GroupTarget {
     /**
      * ID of the annotated Python declaration
      */
@@ -193,7 +193,7 @@ interface GroupTarget {
     readonly groupName: string;
 }
 
-interface MoveAnnotation {
+export interface MoveAnnotation {
     /**
      * ID of the annotated Python declaration.
      */
@@ -205,7 +205,7 @@ interface MoveAnnotation {
     readonly destination: string;
 }
 
-interface OptionalAnnotation {
+export interface OptionalAnnotation {
     /**
      * ID of the annotated Python declaration
      */
@@ -222,7 +222,7 @@ interface OptionalAnnotation {
     readonly defaultValue: DefaultValue;
 }
 
-interface RenameAnnotation {
+export interface RenameAnnotation {
     /**
      * ID of the annotated Python declaration.
      */
@@ -234,14 +234,14 @@ interface RenameAnnotation {
     readonly newName: string;
 }
 
-interface RequiredAnnotation {
+export interface RequiredAnnotation {
     /**
      * ID of the annotated Python declaration.
      */
     readonly target: string;
 }
 
-interface UnusedAnnotation {
+export interface UnusedAnnotation {
     /**
      * ID of the annotated Python declaration.
      */
