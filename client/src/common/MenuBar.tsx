@@ -33,7 +33,7 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import * as idb from 'idb-keyval';
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FaCheck, FaChevronDown } from 'react-icons/fa';
 import { useLocation } from 'react-router';
 import { NavLink } from 'react-router-dom';
@@ -42,29 +42,37 @@ import {
     resetAnnotations,
     toggleAnnotationImportDialog,
 } from '../features/annotations/annotationSlice';
+import {
+    InferableAnnotation,
+    InferableAttributeAnnotation,
+    InferableBoundaryAnnotation,
+    InferableCalledAfterAnnotation,
+    InferableConstantAnnotation,
+    InferableEnumAnnotation,
+    InferableGroupAnnotation,
+    InferableMoveAnnotation,
+    InferableOptionalAnnotation,
+    InferableRenameAnnotation,
+    InferableRequiredAnnotation,
+    InferableUnusedAnnotation,
+} from '../features/InferableDataModel/InferableAnnotation';
+import InferablePythonClass from '../features/InferableDataModel/InferablePythonClass';
+import InferablePythonFunction from '../features/InferableDataModel/InferablePythonFunction';
+import InferablePythonModule from '../features/InferableDataModel/InferablePythonModule';
+import InferablePythonPackage from '../features/InferableDataModel/InferablePythonPackage';
+import InferablePythonParameter from '../features/InferableDataModel/InferablePythonParameter';
+import InferablePythonResult from '../features/InferableDataModel/InferablePythonResult';
 import PythonClass from '../features/packageData/model/PythonClass';
 import { PythonFilter } from '../features/packageData/model/PythonFilter';
 import PythonFunction from '../features/packageData/model/PythonFunction';
 import PythonModule from '../features/packageData/model/PythonModule';
 import PythonPackage from '../features/packageData/model/PythonPackage';
 import {
-    selectAttribute,
-    selectBoundary,
-    selectCalledAfters,
-    selectConstant,
-    selectEnum,
-    selectGroups,
-    selectMove,
-    selectOptional,
-    selectRenaming,
-    selectRequired,
-    selectUnused,
-} from '../features/annotations/annotationSlice';
-import {
     parsePythonPackageJson,
     PythonPackageJson,
 } from '../features/packageData/model/PythonPackageBuilder';
 import PythonParameter from '../features/packageData/model/PythonParameter';
+import PythonResult from '../features/packageData/model/PythonResult';
 import { togglePackageDataImportDialog } from '../features/packageData/packageDataSlice';
 import { Setter } from './util/types';
 
@@ -192,8 +200,8 @@ const MenuBar: React.FC<MenuBarProps> = function ({ filter, setFilter }) {
         'Unused',
     ];
 
-    const getExistingAnnotations = (target: string) => {
-        let targetAnnotations: any[] = [];
+    const getExistingAnnotations = (target: string): InferableAnnotation[] => {
+        let targetAnnotations: InferableAnnotation[] = [];
         possibleAnnotations.forEach((annotation) => {
             const returnedAnnotations = returnFormattedAnnotation(
                 target,
@@ -201,7 +209,6 @@ const MenuBar: React.FC<MenuBarProps> = function ({ filter, setFilter }) {
             );
             if (returnedAnnotations) {
                 targetAnnotations.concat(returnedAnnotations);
-                console.log(targetAnnotations);
             }
         });
         return targetAnnotations;
@@ -209,49 +216,121 @@ const MenuBar: React.FC<MenuBarProps> = function ({ filter, setFilter }) {
 
     const returnFormattedAnnotation = (
         target: string,
-        annotationName: string,
-    ) => {
-        switch (annotationName) {
+        annotationType: string,
+    ): InferableAnnotation[] | InferableAnnotation | undefined => {
+        switch (annotationType) {
             case 'Attribute':
-                return useAppSelector(selectAttribute(target));
+                const attributeAnnotation = annotationStore.attributes[target];
+                if (attributeAnnotation) {
+                    return new InferableAttributeAnnotation(
+                        attributeAnnotation,
+                    );
+                }
+                break;
             case 'Boundary':
-                return useAppSelector(selectBoundary(target));
+                const boundaryAnnotation = annotationStore.boundaries[target];
+                if (boundaryAnnotation) {
+                    return new InferableBoundaryAnnotation(boundaryAnnotation);
+                }
+                break;
             case 'CalledAfters':
-                return Object.values(
-                    useAppSelector(selectCalledAfters(target)),
+                const calledAfterAnnotations = Object.values(
+                    annotationStore.calledAfters[target],
                 );
+                if (!calledAfterAnnotations) {
+                    break;
+                }
+                if (calledAfterAnnotations.length === 1) {
+                    return new InferableCalledAfterAnnotation(
+                        calledAfterAnnotations[0],
+                    );
+                }
+                let inferableCalledAfterAnnotations: InferableCalledAfterAnnotation[] =
+                    [];
+                calledAfterAnnotations.forEach((calledAfterAnnotation) => {
+                    inferableCalledAfterAnnotations.push(
+                        new InferableCalledAfterAnnotation(
+                            calledAfterAnnotation,
+                        ),
+                    );
+                });
+                return inferableCalledAfterAnnotations;
             case 'Constant':
-                return useAppSelector(selectConstant(target));
+                const constantAnnotation = annotationStore.constants[target];
+                if (constantAnnotation) {
+                    return new InferableConstantAnnotation(constantAnnotation);
+                }
+                break;
             case 'Groups':
-                return Object.values(useAppSelector(selectGroups(target)));
+                const groupAnnotations = Object.values(
+                    annotationStore.groups[target],
+                );
+                if (!groupAnnotations) {
+                    break;
+                }
+                if (groupAnnotations.length === 1) {
+                    return new InferableGroupAnnotation(groupAnnotations[0]);
+                }
+                let inferableGroupAnnotations: InferableGroupAnnotation[] = [];
+                groupAnnotations.forEach((groupAnnotation) => {
+                    inferableGroupAnnotations.push(
+                        new InferableGroupAnnotation(groupAnnotation),
+                    );
+                });
+                return inferableGroupAnnotations;
             case 'Enum':
-                return useAppSelector(selectEnum(target));
+                const enumAnnotation = annotationStore.enums[target];
+                if (enumAnnotation) {
+                    return new InferableEnumAnnotation(enumAnnotation);
+                }
+                break;
             case 'Move':
-                return useAppSelector(selectMove(target));
+                const moveAnnotation = annotationStore.moves[target];
+                if (moveAnnotation) {
+                    return new InferableMoveAnnotation(moveAnnotation);
+                }
+                break;
             case 'Optional':
-                return useAppSelector(selectOptional(target));
+                const optionalAnnotation = annotationStore.optionals[target];
+                if (optionalAnnotation) {
+                    return new InferableOptionalAnnotation(optionalAnnotation);
+                }
+                break;
             case 'Rename':
-                return useAppSelector(selectRenaming(target));
+                const renameAnnotation = annotationStore.renamings[target];
+                if (renameAnnotation) {
+                    return new InferableRenameAnnotation(renameAnnotation);
+                }
+                break;
             case 'Required':
-                return useAppSelector(selectRequired(target));
+                const requiredAnnotation = annotationStore.requireds[target];
+                if (requiredAnnotation) {
+                    return new InferableRequiredAnnotation();
+                }
+                break;
             case 'Unused':
-                return useAppSelector(selectUnused(target));
+                const unusedAnnotation = annotationStore.unuseds[target];
+                if (unusedAnnotation) {
+                    return new InferableUnusedAnnotation();
+                }
+                break;
         }
         return undefined;
     };
 
     const buildInferablePackage = (pythonPackage: PythonPackage) => {
-        return {
+        const inferablePackage: InferablePythonPackage = {
             name: pythonPackage.name,
             distribution: pythonPackage.distribution,
             version: pythonPackage.version,
             annotations: getExistingAnnotations(pythonPackage.pathAsString()),
-            modules: buildInferableModules(pythonPackage),
+            modules: buildInferableModules(pythonPackage.modules),
         };
+        return inferablePackage;
     };
 
     const buildInferableClasses = (pythonModule: PythonModule) => {
-        let pythonClasses = [];
+        let pythonClasses: InferablePythonClass[] = [];
         pythonModule.classes.forEach((pythonClass: PythonClass) => {
             pythonClasses.push({
                 name: pythonClass.name,
@@ -259,7 +338,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({ filter, setFilter }) {
                 decorators: pythonClass.decorators,
                 superclasses: pythonClass.superclasses,
                 description: pythonClass.description,
-                fullDocString: pythonClass.fullDocstring,
+                fullDocstring: pythonClass.fullDocstring,
                 methods: buildInferableFunctions(pythonClass),
                 annotations: getExistingAnnotations(pythonClass.pathAsString()),
             });
@@ -270,7 +349,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({ filter, setFilter }) {
     const buildInferableFunctions = (
         pythonDeclaration: PythonModule | PythonClass,
     ) => {
-        let pythonFunctions = [];
+        let pythonFunctions: InferablePythonFunction[] = [];
         if (pythonDeclaration instanceof PythonModule) {
             pythonDeclaration.functions.forEach(
                 (pythonFunction: PythonFunction) => {
@@ -293,54 +372,68 @@ const MenuBar: React.FC<MenuBarProps> = function ({ filter, setFilter }) {
     };
 
     const buildInferableFunction = (pythonFunction: PythonFunction) => {
-        return {
-            name: pythonFunction.name,
-            qualifiedName: pythonFunction.qualifiedName,
-            decorators: pythonFunction.decorators,
-            parameters: buildInferableParameters(pythonFunction),
-            results: pythonFunction.results,
-            isPublic: pythonFunction.isPublic,
-            description: pythonFunction.description,
-            fullDocstring: pythonFunction.fullDocstring,
-            annotations: getExistingAnnotations(pythonFunction.pathAsString()),
-        };
-    };
-
-    const buildInferableParameters = (pythonFunction: PythonFunction) => {
-        let pythonParameters = [];
-        pythonFunction.parameters.forEach(
-            (pythonParameter: PythonParameter) => {
-                pythonParameters.push({
-                    name: pythonParameter.name,
-                    defaultValue: pythonParameter.defaultValue,
-                    assignedBy: pythonParameter.assignedBy,
-                    isPublic: pythonParameter.isPublic,
-                    typeInDocs: pythonParameter.typeInDocs,
-                    description: pythonParameter.description,
-                    annotations: getExistingAnnotations(
-                        pythonParameter.pathAsString(),
-                    ),
-                });
-            },
+        return new InferablePythonFunction(
+            pythonFunction.name,
+            pythonFunction.qualifiedName,
+            pythonFunction.decorators,
+            buildInferableParameters(pythonFunction.parameters),
+            buildInferablePythonResults(pythonFunction.results),
+            pythonFunction.isPublic,
+            pythonFunction.description,
+            pythonFunction.fullDocstring,
+            getExistingAnnotations(pythonFunction.pathAsString()),
         );
-        return pythonParameters;
     };
 
-    const buildInferableModules = (pythonPackage: PythonPackage) => {
-        let pythonModules = [];
-        pythonPackage.modules.forEach((pythonModule: PythonModule) => {
-            pythonModules.push({
-                name: pythonModule.name,
-                imports: pythonModule.imports,
-                fromImports: pythonModule.fromImports,
-                classes: buildInferableClasses(pythonModule),
-                functions: buildInferableFunctions(pythonModule),
-                annotations: getExistingAnnotations(
-                    pythonModule.pathAsString(),
+    const buildInferablePythonResults = (pythonResults: PythonResult[]) => {
+        let inferablePythonResults: InferablePythonResult[] = [];
+        pythonResults.forEach((pythonResult: PythonResult) => {
+            inferablePythonResults.push(
+                new InferablePythonResult(
+                    pythonResult.name,
+                    pythonResult.type,
+                    pythonResult.typeInDocs,
+                    pythonResult.description,
+                    getExistingAnnotations(pythonResult.pathAsString()),
                 ),
-            });
+            );
         });
-        return pythonModules;
+        return inferablePythonResults;
+    };
+
+    const buildInferableParameters = (pythonParameters: PythonParameter[]) => {
+        let inferablePythonParameters: InferablePythonParameter[] = [];
+        pythonParameters.forEach((pythonParameter: PythonParameter) => {
+            inferablePythonParameters.push(
+                new InferablePythonParameter(
+                    pythonParameter.name,
+                    pythonParameter.defaultValue,
+                    pythonParameter.assignedBy,
+                    pythonParameter.isPublic,
+                    pythonParameter.typeInDocs,
+                    pythonParameter.description,
+                    getExistingAnnotations(pythonParameter.pathAsString()),
+                ),
+            );
+        });
+        return inferablePythonParameters;
+    };
+
+    const buildInferableModules = (pythonModules: PythonModule[]) => {
+        let inferablePythonModules: InferablePythonModule[] = [];
+        pythonModules.forEach((pythonModule: PythonModule) => {
+            inferablePythonModules.push(
+                new InferablePythonModule(
+                    pythonModule.name,
+                    pythonModule.imports,
+                    pythonModule.fromImports,
+                    buildInferableClasses(pythonModule),
+                    buildInferableFunctions(pythonModule),
+                    getExistingAnnotations(pythonModule.pathAsString()),
+                ),
+            );
+        });
+        return inferablePythonModules;
     };
 
     const infer = () => {
@@ -349,8 +442,11 @@ const MenuBar: React.FC<MenuBarProps> = function ({ filter, setFilter }) {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(pythonPackage),
+            body: JSON.stringify(annotatedPythonPackage),
         };
+        fetch('https://localhost:4280/api-editor/infer', requestOptions)
+            .then((response) => response.json())
+            .then((data) => console.log(data));
     };
 
     return (

@@ -51,7 +51,7 @@ export class InferableAttributeAnnotation extends InferableAnnotation {
     }
 }
 
-export class InferableBoundary extends InferableAnnotation {
+export class InferableBoundaryAnnotation extends InferableAnnotation {
     readonly interval: Interval;
 
     constructor(boundaryAnnotation: BoundaryAnnotation) {
@@ -60,7 +60,7 @@ export class InferableBoundary extends InferableAnnotation {
     }
 }
 
-export class InferableCalledAfter extends InferableAnnotation {
+export class InferableCalledAfterAnnotation extends InferableAnnotation {
     readonly calledAfterName: string;
 
     constructor(calledAfterAnnotation: CalledAfterAnnotation) {
@@ -68,7 +68,7 @@ export class InferableCalledAfter extends InferableAnnotation {
         this.calledAfterName = calledAfterAnnotation.calledAfterName;
     }
 }
-export class InferableConstant extends InferableAnnotation {
+export class InferableConstantAnnotation extends InferableAnnotation {
     readonly defaultValue: { type: string; value: DefaultValue };
 
     constructor(constantAnnotation: ConstantAnnotation) {
@@ -81,7 +81,7 @@ export class InferableConstant extends InferableAnnotation {
         };
     }
 }
-export class InferableGroup extends InferableAnnotation {
+export class InferableGroupAnnotation extends InferableAnnotation {
     readonly groupName: string;
     readonly parameters: string[];
 
@@ -91,7 +91,7 @@ export class InferableGroup extends InferableAnnotation {
         this.parameters = groupAnnotation.parameters;
     }
 }
-export class InferableEnum extends InferableAnnotation {
+export class InferableEnumAnnotation extends InferableAnnotation {
     readonly enumName: string;
     readonly pairs: EnumPair[];
 
@@ -101,7 +101,7 @@ export class InferableEnum extends InferableAnnotation {
         this.pairs = enumAnnotation.pairs;
     }
 }
-export class InferableMove extends InferableAnnotation {
+export class InferableMoveAnnotation extends InferableAnnotation {
     readonly destination: string;
 
     constructor(moveAnnotation: MoveAnnotation) {
@@ -109,7 +109,7 @@ export class InferableMove extends InferableAnnotation {
         this.destination = moveAnnotation.destination;
     }
 }
-export class InferableOptional extends InferableAnnotation {
+export class InferableOptionalAnnotation extends InferableAnnotation {
     readonly defaultValue: { type: string; value: DefaultValue };
 
     constructor(optionalAnnotation: OptionalAnnotation) {
@@ -122,7 +122,7 @@ export class InferableOptional extends InferableAnnotation {
         };
     }
 }
-export class InferableRename extends InferableAnnotation {
+export class InferableRenameAnnotation extends InferableAnnotation {
     readonly newName: string;
 
     constructor(renameAnnotation: RenameAnnotation) {
@@ -130,13 +130,13 @@ export class InferableRename extends InferableAnnotation {
         this.newName = renameAnnotation.newName;
     }
 }
-export class InferableRequired extends InferableAnnotation {
-    constructor(requiredAnnotation: RequiredAnnotation) {
+export class InferableRequiredAnnotation extends InferableAnnotation {
+    constructor() {
         super(dataPathPrefix + 'RequiredAnnotation');
     }
 }
-export class InferableUnused extends InferableAnnotation {
-    constructor(unusedAnnotation: UnusedAnnotation) {
+export class InferableUnusedAnnotation extends InferableAnnotation {
+    constructor() {
         super(dataPathPrefix + 'UnusedAnnotation');
     }
 }
