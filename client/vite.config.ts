@@ -7,7 +7,7 @@ export default defineConfig({
     plugins: [reactRefresh()],
     server: {
         proxy: {
-            '/api': 'http://localhost:4280',
+            '/api-editor': 'http://localhost:4280',
         },
     },
 });
