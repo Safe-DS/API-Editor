@@ -11,8 +11,6 @@ import {
     MoveAnnotation,
     OptionalAnnotation,
     RenameAnnotation,
-    RequiredAnnotation,
-    UnusedAnnotation,
     EnumPair,
 } from '../annotations/annotationSlice';
 
