@@ -234,20 +234,22 @@ const MenuBar: React.FC<MenuBarProps> = function ({ filter, setFilter }) {
                 }
                 break;
             case 'CalledAfters':
-                const calledAfterAnnotations = Object.values(
-                    annotationStore.calledAfters[target],
-                );
+                const calledAfterAnnotations =
+                    annotationStore.calledAfters[target];
                 if (!calledAfterAnnotations) {
                     break;
                 }
-                if (calledAfterAnnotations.length === 1) {
+                const calledAfterAnnotationList = Object.values(
+                    calledAfterAnnotations,
+                );
+                if (calledAfterAnnotationList.length === 1) {
                     return new InferableCalledAfterAnnotation(
-                        calledAfterAnnotations[0],
+                        calledAfterAnnotationList[0],
                     );
                 }
                 let inferableCalledAfterAnnotations: InferableCalledAfterAnnotation[] =
                     [];
-                calledAfterAnnotations.forEach((calledAfterAnnotation) => {
+                calledAfterAnnotationList.forEach((calledAfterAnnotation) => {
                     inferableCalledAfterAnnotations.push(
                         new InferableCalledAfterAnnotation(
                             calledAfterAnnotation,
@@ -262,17 +264,16 @@ const MenuBar: React.FC<MenuBarProps> = function ({ filter, setFilter }) {
                 }
                 break;
             case 'Groups':
-                const groupAnnotations = Object.values(
-                    annotationStore.groups[target],
-                );
+                const groupAnnotations = annotationStore.groups[target];
                 if (!groupAnnotations) {
                     break;
                 }
-                if (groupAnnotations.length === 1) {
-                    return new InferableGroupAnnotation(groupAnnotations[0]);
+                const groupAnnotationList = Object.values(groupAnnotations);
+                if (groupAnnotationList.length === 1) {
+                    return new InferableGroupAnnotation(groupAnnotationList[0]);
                 }
                 let inferableGroupAnnotations: InferableGroupAnnotation[] = [];
-                groupAnnotations.forEach((groupAnnotation) => {
+                groupAnnotationList.forEach((groupAnnotation) => {
                     inferableGroupAnnotations.push(
                         new InferableGroupAnnotation(groupAnnotation),
                     );
