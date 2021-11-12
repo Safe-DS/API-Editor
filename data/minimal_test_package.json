@@ -1,0 +1,147 @@
+{
+    "distribution": "test",
+    "package": "test",
+    "version": "0.0.1",
+    "modules": [
+        {
+            "name": "module_1",
+            "imports": [
+                {
+                    "module": "module_2",
+                    "alias": null
+                }
+            ],
+            "from_imports": [
+                {
+                    "module": "module_3",
+                    "declaration": "function_module_3",
+                    "alias": null
+                }
+            ],
+            "classes": ["test.module_1.Class_1_Module_1"],
+            "functions": ["test.module_1.function_module_1"]
+        },
+        {
+            "name": "module_2",
+            "imports": [],
+            "from_imports": [
+                {
+                    "module": "module_1",
+                    "declaration": "function_module_1",
+                    "alias": null
+                }
+            ],
+            "classes": [],
+            "functions": []
+        },
+        {
+            "name": "module_3",
+            "imports": [
+                {
+                    "module": "module_1",
+                    "alias": null
+                }
+            ],
+            "from_imports": [],
+            "classes": [],
+            "functions": ["test.module_3.function_module_3"]
+        }
+    ],
+    "classes": [
+        {
+            "name": "Class_1_Module_1",
+            "qname": "test.module_1.Class_1_Module_1",
+            "decorators": [],
+            "superclasses": [],
+            "methods": ["test.module_1.Class_1_Module_1.class_method_1"]
+        }
+    ],
+    "functions": [
+        {
+            "name": "function_module_1",
+            "qname": "test.module_1.function_module_1",
+            "decorators": [],
+            "parameters": [
+                {
+                    "name": "param1",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": "first param"
+                    }
+                },
+                {
+                    "name": "param2",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": "second param"
+                    }
+                },
+                {
+                    "name": "param3",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "NAME_ONLY",
+                    "docstring": {
+                        "type": "bool",
+                        "description": "third param"
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "description": "description",
+            "docstring": "docstring",
+            "source_code": ""
+        },
+        {
+            "name": "function_module_3",
+            "qname": "test.module_3.function_module_3",
+            "decorators": [],
+            "parameters": [
+                {
+                    "name": "only_param",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": "only param"
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "description": "description",
+            "docstring": "docstring",
+            "source_code": ""
+        },
+        {
+            "name": "class_method_1",
+            "qname": "test.module_1.Class_1_Module_1.class_method_1",
+            "decorators": [],
+            "parameters": [
+                {
+                    "name": "only_param",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": "only param"
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "description": "description",
+            "docstring": "docstring",
+            "source_code": ""
+        }
+    ]
+}
