@@ -445,7 +445,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({ filter, setFilter }) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(annotatedPythonPackage),
         };
-        fetch('https://localhost:4280/api-editor/infer', requestOptions)
+        fetch('/api-editor/infer', requestOptions)
             .then((response) => response.json())
             .then((data) => console.log(data));
     };
