@@ -4,7 +4,7 @@ import { InferableAnnotation } from './InferableAnnotation';
 export default class InferablePythonParameter {
     readonly name: string;
     readonly defaultValue: string;
-    readonly assignedBy: PythonParameterAssignment;
+    readonly assignedBy: string;
     readonly isPublic: boolean;
     readonly typeInDocs: string;
     readonly description: string;
@@ -21,7 +21,17 @@ export default class InferablePythonParameter {
     ) {
         this.name = name;
         this.defaultValue = defaultValue ?? '';
-        this.assignedBy = assignedBy;
+        switch (assignedBy) {
+            case PythonParameterAssignment.NAME_ONLY:
+                this.assignedBy = 'NAME_ONLY';
+                break;
+            case PythonParameterAssignment.POSITION_ONLY:
+                this.assignedBy = 'POSITION_ONLY';
+                break;
+            case PythonParameterAssignment.POSITION_OR_NAME:
+                this.assignedBy = 'POSITION_OR_NAME';
+                break;
+        }
         this.isPublic = isPublic;
         this.typeInDocs = typeInDocs;
         this.description = description;
