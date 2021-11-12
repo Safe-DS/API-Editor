@@ -158,9 +158,8 @@ const MenuBar: React.FC<MenuBarProps> = function ({ filter, setFilter }) {
         (state) => state.annotations.currentUserAction.type === 'none',
     );
 
-    const [pythonPackage, setPythonPackage] = useState<PythonPackage>(
-        new PythonPackage('empty', 'empty', '0.0.1'),
-    );
+    const [currentPythonPackage, setCurrentPythonPackage] =
+        useState<PythonPackage>(new PythonPackage('empty', 'empty', '0.0.1'));
 
     const exportAnnotations = () => {
         const a = document.createElement('a');
@@ -174,7 +173,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({ filter, setFilter }) {
 
     useEffect(() => {
         // noinspection JSIgnoredPromiseFromCall
-        getPythonPackageFromIndexedDB(setPythonPackage);
+        getPythonPackageFromIndexedDB(setCurrentPythonPackage);
     }, []);
 
     const getPythonPackageFromIndexedDB = async function (
@@ -438,7 +437,8 @@ const MenuBar: React.FC<MenuBarProps> = function ({ filter, setFilter }) {
     };
 
     const infer = () => {
-        const annotatedPythonPackage = buildInferablePackage(pythonPackage);
+        const annotatedPythonPackage =
+            buildInferablePackage(currentPythonPackage);
 
         const requestOptions = {
             method: 'POST',
