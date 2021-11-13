@@ -10,7 +10,7 @@ public enum AnnotatableDeclaration {
 
     private final String declarationName;
 
-    private AnnotatableDeclaration(String declaration) {
+    AnnotatableDeclaration(String declaration) {
         declarationName = declaration;
     }
 

@@ -71,7 +71,8 @@ export default class AnnotatedPythonPackageBuilder {
                 annotation,
             );
             if (returnedAnnotations) {
-                targetAnnotations.concat(returnedAnnotations);
+                targetAnnotations =
+                    targetAnnotations.concat(returnedAnnotations);
             }
         });
         return targetAnnotations;

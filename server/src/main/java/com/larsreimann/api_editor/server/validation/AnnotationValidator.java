@@ -5,9 +5,9 @@ import com.larsreimann.api_editor.server.data.*;
 import java.util.*;
 
 public class AnnotationValidator {
-    AnnotatedPythonPackage annotatedPythonPackage;
+    private final AnnotatedPythonPackage annotatedPythonPackage;
 
-    List<AnnotationError> validationErrors;
+    private final List<AnnotationError> validationErrors;
 
     private static final String ANNOTATION_PREFIX = "com.larsreimann.api_editor.server.data.";
     private static final String ANNOTATION_CLASS_SUFFIX = "Annotation";
@@ -64,18 +64,25 @@ public class AnnotationValidator {
 
     public AnnotationValidator(AnnotatedPythonPackage inputPackage) {
         annotatedPythonPackage = inputPackage;
-        validationErrors = List.of();
+        validationErrors = new ArrayList<>();
     }
 
-    public List<AnnotationError> getValidationErrors() {
+    public List<AnnotationError> returnValidationErrors() {
         validatePackage();
         return validationErrors;
     }
 
     private void validateClassFunction(AnnotatedPythonFunction annotatedPythonFunction) {
-        annotatedPythonFunction.getParameters().forEach(
-            (parameter) -> validateFunctionParameter(parameter, annotatedPythonFunction.getQualifiedName())
-        );
+        boolean isConstructor = isConstructor(annotatedPythonFunction.getName());
+        if (isConstructor) {
+            annotatedPythonFunction.getParameters().forEach(
+                (parameter) -> validateConstructorParameter(parameter, annotatedPythonFunction.getQualifiedName())
+            );
+        } else {
+            annotatedPythonFunction.getParameters().forEach(
+                (parameter) -> validateFunctionParameter(parameter, annotatedPythonFunction.getQualifiedName())
+            );
+        }
         EditorAnnotation[] functionAnnotations = annotatedPythonFunction.getAnnotations().toArray(new EditorAnnotation[0]);
         validateAnnotationsValidOnTarget(functionAnnotations, AnnotatableDeclaration.CLASS_FUNCTION, annotatedPythonFunction.getQualifiedName());
         validateAnnotationCombinations(functionAnnotations, annotatedPythonFunction.getQualifiedName());
@@ -91,27 +98,33 @@ public class AnnotationValidator {
     }
 
     private void validateFunctionParameter(AnnotatedPythonParameter annotatedPythonParameter, String functionPath) {
-        // TODO
+        String qualifiedParameterName = functionPath + "/" + annotatedPythonParameter.getName();
+        EditorAnnotation[] parameterAnnotations = annotatedPythonParameter.getAnnotations().toArray(new EditorAnnotation[0]);
+        validateAnnotationsValidOnTarget(parameterAnnotations, AnnotatableDeclaration.FUNCTION_PARAMETER, qualifiedParameterName);
+        validateAnnotationCombinations(parameterAnnotations, qualifiedParameterName);
     }
 
     private void validateConstructorParameter(AnnotatedPythonParameter annotatedPythonParameter, String functionPath) {
-        // TODO
+        String qualifiedParameterName = functionPath + "/" + annotatedPythonParameter.getName();
+        EditorAnnotation[] parameterAnnotations = annotatedPythonParameter.getAnnotations().toArray(new EditorAnnotation[0]);
+        validateAnnotationsValidOnTarget(parameterAnnotations, AnnotatableDeclaration.CONSTRUCTOR_PARAMETER, qualifiedParameterName);
+        validateAnnotationCombinations(parameterAnnotations, qualifiedParameterName);
     }
 
     private void validateClass(AnnotatedPythonClass annotatedPythonClass) {
         annotatedPythonClass.getMethods().forEach(this::validateClassFunction);
-        // TODO
+        EditorAnnotation[] classAnnotations = annotatedPythonClass.getAnnotations().toArray(new EditorAnnotation[0]);
+        validateAnnotationsValidOnTarget(classAnnotations, AnnotatableDeclaration.CLASS, annotatedPythonClass.getQualifiedName());
+        validateAnnotationCombinations(classAnnotations, annotatedPythonClass.getQualifiedName());
     }
 
     private void validateModule(AnnotatedPythonModule annotatedPythonModule) {
         annotatedPythonModule.getClasses().forEach(this::validateClass);
         annotatedPythonModule.getFunctions().forEach(this::validateGlobalFunction);
-        // TODO
     }
 
     private void validatePackage() {
         annotatedPythonPackage.getModules().forEach(this::validateModule);
-        // TODO
     }
 
     private void validateAnnotationsValidOnTarget(
@@ -135,12 +148,10 @@ public class AnnotationValidator {
                 validAnnotations = possibleFunctionParameterAnnotations;
                 break;
         }
-        for (EditorAnnotation editorAnnotation: editorAnnotations) {
+        for (EditorAnnotation editorAnnotation : editorAnnotations) {
             String annotationName = getAnnotationName(editorAnnotation);
-            if (annotationName != null && annotationName.endsWith(ANNOTATION_CLASS_SUFFIX)){
-                annotationName = annotationName.substring(0, annotationName.length() - ANNOTATION_CLASS_SUFFIX.length());
-            }
-            if (!validAnnotations.contains(annotationName)) {
+
+            if (validAnnotations.isEmpty() || !validAnnotations.contains(annotationName)) {
                 validationErrors.add(new AnnotationTargetError(qualifiedName, annotationName, declaration));
             }
         }
@@ -148,7 +159,7 @@ public class AnnotationValidator {
 
     private void validateAnnotationCombinations(EditorAnnotation[] editorAnnotations, String qualifiedName) {
         for (int i = 0; i < editorAnnotations.length; i++) {
-            for (int j = i; j < editorAnnotations.length; j++) {
+            for (int j = i + 1; j < editorAnnotations.length; j++) {
                 validateAnnotationCombination(qualifiedName, editorAnnotations[i], editorAnnotations[j]);
             }
         }
@@ -157,7 +168,8 @@ public class AnnotationValidator {
     private void validateAnnotationCombination(String qualifiedName, EditorAnnotation firstAnnotation, EditorAnnotation secondAnnotation) {
         String firstAnnotationName = getAnnotationName(firstAnnotation);
         String secondAnnotationName = getAnnotationName(secondAnnotation);
-        if (!possibleCombinations.get(firstAnnotationName).contains(secondAnnotationName)) {
+        if (possibleCombinations.get(firstAnnotationName).isEmpty()
+            || !possibleCombinations.get(firstAnnotationName).contains(secondAnnotationName)) {
             validationErrors.add(
                 new AnnotationCombinationError(qualifiedName,
                     firstAnnotationName,
@@ -167,6 +179,17 @@ public class AnnotationValidator {
     }
 
     private String getAnnotationName(EditorAnnotation editorAnnotation) {
-        return editorAnnotation.getClass().getCanonicalName();
+        String name = editorAnnotation.getClass().getCanonicalName();
+        if (name != null && name.startsWith(ANNOTATION_PREFIX)) {
+            name = name.substring(ANNOTATION_PREFIX.length());
+        }
+        if (name != null && name.endsWith(ANNOTATION_CLASS_SUFFIX)) {
+            name = name.substring(0, name.length() - ANNOTATION_CLASS_SUFFIX.length());
+        }
+        return name;
+    }
+
+    private boolean isConstructor(String name) {
+        return name.equals("__init__");
     }
 }
