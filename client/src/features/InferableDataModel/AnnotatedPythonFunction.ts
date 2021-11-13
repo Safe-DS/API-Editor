@@ -1,13 +1,13 @@
 import { InferableAnnotation } from './InferableAnnotation';
-import InferablePythonParameter from './InferablePythonParameter';
-import InferablePythonResult from './InferablePythonResult';
+import AnnotatedPythonParameter from './AnnotatedPythonParameter';
+import AnnotatedPythonResult from './AnnotatedPythonResult';
 
-export default class InferablePythonFunction {
+export default class AnnotatedPythonFunction {
     readonly name: string;
     readonly qualifiedName: string;
     readonly decorators: string[];
-    readonly parameters: InferablePythonParameter[];
-    readonly results: InferablePythonResult[];
+    readonly parameters: AnnotatedPythonParameter[];
+    readonly results: AnnotatedPythonResult[];
     readonly isPublic: boolean;
     readonly description: string;
     readonly fullDocstring: string;
@@ -17,8 +17,8 @@ export default class InferablePythonFunction {
         name: string,
         qualifiedName: string,
         decorators: string[] = [],
-        parameters: InferablePythonParameter[] = [],
-        results: InferablePythonResult[] = [],
+        parameters: AnnotatedPythonParameter[] = [],
+        results: AnnotatedPythonResult[] = [],
         isPublic: boolean = false,
         description: string = '',
         fullDocstring: string = '',

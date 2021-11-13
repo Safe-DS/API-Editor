@@ -1,6 +1,6 @@
 import { InferableAnnotation } from './InferableAnnotation';
 
-export default class InferablePythonResult {
+export default class AnnotatedPythonResult {
     readonly name: string;
     readonly type: string;
     readonly typeInDocs: string;

@@ -1,12 +1,12 @@
 import { InferableAnnotation } from './InferableAnnotation';
-import InferablePythonFunction from './InferablePythonFunction';
+import AnnotatedPythonFunction from './AnnotatedPythonFunction';
 
-export default class InferablePythonClass {
+export default class AnnotatedPythonClass {
     readonly name: string;
     readonly qualifiedName: string;
     readonly decorators: string[];
     readonly superclasses: string[];
-    readonly methods: InferablePythonFunction[];
+    readonly methods: AnnotatedPythonFunction[];
     readonly description: string;
     readonly fullDocstring: string;
     readonly annotations: InferableAnnotation[];
@@ -16,7 +16,7 @@ export default class InferablePythonClass {
         qualifiedName: string,
         decorators: string[] = [],
         superclasses: string[] = [],
-        methods: InferablePythonFunction[] = [],
+        methods: AnnotatedPythonFunction[] = [],
         description: string = '',
         fullDocstring: string = '',
         annotations: InferableAnnotation[] = [],

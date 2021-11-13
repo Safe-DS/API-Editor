@@ -1,23 +1,23 @@
 import PythonFromImport from '../packageData/model/PythonFromImport';
 import PythonImport from '../packageData/model/PythonImport';
 import { InferableAnnotation } from './InferableAnnotation';
-import InferablePythonClass from './InferablePythonClass';
-import InferablePythonFunction from './InferablePythonFunction';
+import AnnotatedPythonClass from './AnnotatedPythonClass';
+import AnnotatedPythonFunction from './AnnotatedPythonFunction';
 
-export default class InferablePythonModule {
+export default class AnnotatedPythonModule {
     readonly name: string;
     readonly imports: PythonImport[];
     readonly fromImports: PythonFromImport[];
-    readonly classes: InferablePythonClass[];
-    readonly functions: InferablePythonFunction[];
+    readonly classes: AnnotatedPythonClass[];
+    readonly functions: AnnotatedPythonFunction[];
     readonly annotations: InferableAnnotation[];
 
     constructor(
         name: string,
         imports: PythonImport[] = [],
         fromImports: PythonFromImport[] = [],
-        classes: InferablePythonClass[] = [],
-        functions: InferablePythonFunction[] = [],
+        classes: AnnotatedPythonClass[] = [],
+        functions: AnnotatedPythonFunction[] = [],
         annotations: InferableAnnotation[] = [],
     ) {
         this.name = name;

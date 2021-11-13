@@ -1,18 +1,18 @@
 import { InferableAnnotation } from './InferableAnnotation';
-import InferablePythonModule from './InferablePythonModule';
+import AnnotatedPythonModule from './AnnotatedPythonModule';
 
-export default class InferablePythonPackage {
+export default class AnnotatedPythonPackage {
     readonly distribution: string;
     readonly name: string;
     readonly version: string;
-    readonly modules: InferablePythonModule[];
+    readonly modules: AnnotatedPythonModule[];
     readonly annotations: InferableAnnotation[];
 
     constructor(
         distribution: string,
         name: string,
         version: string,
-        modules: InferablePythonModule[] = [],
+        modules: AnnotatedPythonModule[] = [],
         annotations: InferableAnnotation[] = [],
     ) {
         this.distribution = distribution;
