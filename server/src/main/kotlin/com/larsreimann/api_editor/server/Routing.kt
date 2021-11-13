@@ -64,7 +64,6 @@ fun Route.echo() {
 fun Route.infer() {
     post("/infer") {
         // val pythonPackage = call.receive<AnnotatedPythonPackage>()
-        // TODO
 
         call.respond("Not implemented")
     }

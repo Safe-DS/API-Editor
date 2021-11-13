@@ -32,7 +32,8 @@ import {
     useColorMode,
     VStack,
 } from '@chakra-ui/react';
-import React, { useRef, useState } from 'react';
+import * as idb from 'idb-keyval';
+import React, { useEffect, useRef, useState } from 'react';
 import { FaCheck, FaChevronDown } from 'react-icons/fa';
 import { useLocation } from 'react-router';
 import { NavLink } from 'react-router-dom';
@@ -41,7 +42,13 @@ import {
     resetAnnotations,
     toggleAnnotationImportDialog,
 } from '../features/annotations/annotationSlice';
+import AnnotatedPythonPackageBuilder from '../features/InferableDataModel/AnnotatedPythonPackageBuilder';
 import { PythonFilter } from '../features/packageData/model/PythonFilter';
+import PythonPackage from '../features/packageData/model/PythonPackage';
+import {
+    parsePythonPackageJson,
+    PythonPackageJson,
+} from '../features/packageData/model/PythonPackageBuilder';
 import { togglePackageDataImportDialog } from '../features/packageData/packageDataSlice';
 import { Setter } from './util/types';
 
@@ -127,6 +134,9 @@ const MenuBar: React.FC<MenuBarProps> = function ({ filter, setFilter }) {
         (state) => state.annotations.currentUserAction.type === 'none',
     );
 
+    const [currentPythonPackage, setCurrentPythonPackage] =
+        useState<PythonPackage>(new PythonPackage('empty', 'empty', '0.0.1'));
+
     const exportAnnotations = () => {
         const a = document.createElement('a');
         const file = new Blob([JSON.stringify(annotationStore)], {
@@ -135,6 +145,38 @@ const MenuBar: React.FC<MenuBarProps> = function ({ filter, setFilter }) {
         a.href = URL.createObjectURL(file);
         a.download = 'annotations.json';
         a.click();
+    };
+
+    useEffect(() => {
+        // noinspection JSIgnoredPromiseFromCall
+        getPythonPackageFromIndexedDB(setCurrentPythonPackage);
+    }, []);
+
+    const getPythonPackageFromIndexedDB = async function (
+        setPythonPackage: Setter<PythonPackage>,
+    ) {
+        const storedPackage = (await idb.get('package')) as PythonPackageJson;
+        if (storedPackage) {
+            setPythonPackage(parsePythonPackageJson(storedPackage));
+        }
+    };
+
+    const infer = () => {
+        const annotatedPythonPackageBuilder = new AnnotatedPythonPackageBuilder(
+            currentPythonPackage,
+            annotationStore,
+        );
+        const annotatedPythonPackage =
+            annotatedPythonPackageBuilder.generateAnnotatedPythonPackage();
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(annotatedPythonPackage),
+        };
+        fetch('/api-editor/infer', requestOptions)
+            .then((response) => response.text())
+            .then((data) => console.log(data));
     };
 
     return (
@@ -170,6 +212,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({ filter, setFilter }) {
             <Spacer />
 
             <HStack>
+                <Button onClick={infer}>Infer</Button>
                 {/* Box gets rid of popper.js warning "CSS margin styles cannot be used" */}
                 <Box>
                     <Menu>

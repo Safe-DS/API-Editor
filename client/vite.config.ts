@@ -7,7 +7,10 @@ export default defineConfig({
     plugins: [reactRefresh()],
     server: {
         proxy: {
-            '/api': 'http://localhost:4280',
+            '/api-editor': {
+                target: 'http://127.0.0.1:4280',
+                changeOrigin: true,
+            },
         },
     },
 });
