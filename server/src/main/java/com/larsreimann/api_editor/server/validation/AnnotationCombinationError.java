@@ -11,6 +11,7 @@ public class AnnotationCombinationError implements AnnotationError{
         this.secondAnnotationName = secondAnnotationName;
     }
 
+    @Override
     public String message() {
         return "(" + firstAnnotationName + ", " + secondAnnotationName + ") "
             + "cannot both be set for element: " + qualifiedName;
