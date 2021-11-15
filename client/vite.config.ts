@@ -13,4 +13,9 @@ export default defineConfig({
             },
         },
     },
+    resolve: {
+        alias: {
+            '@lars-reimann/api-editor-model': './lib/sharedModel',
+        },
+    },
 });

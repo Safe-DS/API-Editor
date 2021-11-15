@@ -16,6 +16,7 @@ repositories {
 kotlin {
     jvm()
     js {
+        moduleName = "sharedModel"
         nodejs {
             useCommonJs()
         }

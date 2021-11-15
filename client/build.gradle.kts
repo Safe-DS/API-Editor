@@ -28,10 +28,11 @@ idea {
 // Tasks ---------------------------------------------------------------------------------------------------------------
 
 tasks.register<Sync>("copyModel") {
-    dependsOn(project(":shared").tasks.named("build"))
+    val buildModelTask = project(":shared").tasks.named("jsProductionExecutableCompileSync")
+    dependsOn(buildModelTask)
 
-    from(rootProject.buildDir.resolve("js"))
-    into("lib/sharedModel")
+    from(buildModelTask.get().outputs)
+    into("lib")
 }
 
 tasks.register<NpmTask>("buildClient") {

@@ -1,21 +1,16 @@
 {
+    "extends": "@tsconfig/recommended/tsconfig.json",
     "compilerOptions": {
+        "baseUrl": ".",
         "target": "ESNext",
-        "lib": ["DOM", "DOM.Iterable", "ESNext"],
-        "allowJs": false,
-        "skipLibCheck": true,
-        // TODO re-enable once https://github.com/chakra-ui/chakra-ui/issues/4226 is fixed
-        "esModuleInterop": false,
-        "allowSyntheticDefaultImports": true,
-        "strict": true,
-        "forceConsistentCasingInFileNames": true,
         "module": "ESNext",
         "moduleResolution": "Node",
-        "resolveJsonModule": true,
-        "isolatedModules": true,
         "noEmit": true,
-        "jsx": "react"
+        "jsx": "react",
+        "paths": {
+            "@lars-reimann/api-editor-model": ["lib/sharedModel"]
+        }
     },
-    "include": ["src/"],
+    "include": ["lib/", "src/"],
     "exclude": ["**/*.test.ts"]
 }
