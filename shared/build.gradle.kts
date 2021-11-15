@@ -16,8 +16,14 @@ repositories {
 kotlin {
     jvm()
     js {
-        moduleName = "sharedModel"
-        nodejs()
+        moduleName = "shared-model"
+        compilations["main"].packageJson {
+            customField("type", "commonjs")
+        }
+
+        nodejs {
+            useCommonJs()
+        }
         binaries.executable()
     }
 

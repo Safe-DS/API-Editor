@@ -7,10 +7,7 @@
         "moduleResolution": "Node",
         "esModuleInterop": true,
         "noEmit": true,
-        "jsx": "react",
-        "paths": {
-            "sharedModel": ["src/lib/sharedModel"]
-        }
+        "jsx": "react"
     },
     "include": ["src/"],
     "exclude": ["**/*.test.ts"]
