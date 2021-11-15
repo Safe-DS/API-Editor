@@ -2,7 +2,6 @@ val javaVersion: String by project
 val ktorVersion: String by project
 val logbackVersion: String by project
 
-
 // Plugins -------------------------------------------------------------------------------------------------------------
 
 plugins {
@@ -21,7 +20,6 @@ java {
         languageVersion.set(JavaLanguageVersion.of(javaVersion))
     }
 }
-
 
 // Dependencies --------------------------------------------------------------------------------------------------------
 
