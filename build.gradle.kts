@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 // Plugins -------------------------------------------------------------------------------------------------------------
 
 plugins {
@@ -20,8 +18,7 @@ idea {
 
 // Variables -----------------------------------------------------------------------------------------------------------
 
-val javaSourceVersion by extra(JavaVersion.VERSION_11)
-val javaTargetVersion by extra(JavaVersion.VERSION_11)
+val javaVersion by extra(16)
 
 
 // Subprojects ---------------------------------------------------------------------------------------------------------
@@ -32,11 +29,5 @@ subprojects {
 
     repositories {
         mavenCentral()
-    }
-
-    tasks.withType<KotlinCompile>().configureEach {
-        kotlinOptions {
-            jvmTarget = javaTargetVersion.majorVersion
-        }
     }
 }

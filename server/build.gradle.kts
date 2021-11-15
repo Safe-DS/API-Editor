@@ -2,8 +2,7 @@ val ktorVersion: String by project
 val kotlinVersion: String by project
 val logbackVersion: String by project
 
-val javaSourceVersion: JavaVersion by rootProject.extra
-val javaTargetVersion: JavaVersion by rootProject.extra
+val javaVersion: Int by rootProject.extra
 
 
 // Plugins -------------------------------------------------------------------------------------------------------------
@@ -20,8 +19,9 @@ application {
 }
 
 java {
-    sourceCompatibility = javaSourceVersion
-    targetCompatibility = javaTargetVersion
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(javaVersion))
+    }
 }
 
 
