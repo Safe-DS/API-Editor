@@ -1,7 +1,6 @@
+val javaVersion: String by project
 val ktorVersion: String by project
 val logbackVersion: String by project
-
-val javaVersion: Int by rootProject.extra
 
 
 // Plugins -------------------------------------------------------------------------------------------------------------
