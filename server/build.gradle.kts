@@ -1,5 +1,4 @@
 val ktorVersion: String by project
-val kotlinVersion: String by project
 val logbackVersion: String by project
 
 val javaVersion: Int by rootProject.extra
@@ -28,13 +27,16 @@ java {
 // Dependencies --------------------------------------------------------------------------------------------------------
 
 dependencies {
+    implementation("ch.qos.logback:logback-classic:$logbackVersion")
+    implementation("io.ktor:ktor-serialization:$ktorVersion")
     implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-server-host-common:$ktorVersion")
-    implementation("io.ktor:ktor-serialization:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
-    implementation("ch.qos.logback:logback-classic:$logbackVersion")
-    testImplementation("io.ktor:ktor-server-tests:$ktorVersion")
-    testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
+
+    testImplementation(kotlin("test"))
+    testImplementation("io.kotest:kotest-assertions-core-jvm:4.6.3")
+    testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
+    testImplementation("io.mockk:mockk:1.12.0")
 }
 
 // Tasks ---------------------------------------------------------------------------------------------------------------
@@ -48,6 +50,9 @@ tasks.register<Sync>("copyClient") {
 }
 
 tasks {
+    test {
+        useJUnitPlatform()
+    }
     clean {
         delete(named("copyClient").get().outputs)
     }
