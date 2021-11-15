@@ -26,6 +26,8 @@ java {
 // Dependencies --------------------------------------------------------------------------------------------------------
 
 dependencies {
+    implementation(project(":shared"))
+
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("io.ktor:ktor-serialization:$ktorVersion")
     implementation("io.ktor:ktor-server-core:$ktorVersion")

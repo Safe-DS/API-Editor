@@ -1,4 +1,4 @@
-package com.larsreimann.api_editor.server.data
+package com.larsreimann.api_editor.shared.model
 
 import kotlinx.serialization.Serializable
 

@@ -6,6 +6,7 @@ plugins {
 
     // Pin versions for subprojects
     kotlin("jvm") version "1.6.0-RC2" apply false
+    kotlin("multiplatform") version "1.6.0-RC2" apply false
     kotlin("plugin.serialization") version "1.6.0-RC2" apply false
     id("com.github.johnrengelman.shadow") version "7.1.0" apply false
     id("com.github.node-gradle.node") version "3.1.1" apply false
