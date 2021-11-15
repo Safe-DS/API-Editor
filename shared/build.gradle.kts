@@ -16,7 +16,9 @@ repositories {
 kotlin {
     jvm()
     js {
-        nodejs()
+        nodejs {
+            useCommonJs()
+        }
         binaries.executable()
     }
 

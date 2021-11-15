@@ -27,8 +27,15 @@ idea {
 
 // Tasks ---------------------------------------------------------------------------------------------------------------
 
+tasks.register<Sync>("copyModel") {
+    dependsOn(project(":shared").tasks.named("build"))
+
+    from(rootProject.buildDir.resolve("js"))
+    into("lib/sharedModel")
+}
+
 tasks.register<NpmTask>("buildClient") {
-    dependsOn(tasks.npmInstall)
+    dependsOn(tasks.named("copyModel"), tasks.npmInstall)
 
     inputs.dir("public")
     inputs.dir("src")
@@ -64,6 +71,7 @@ tasks {
         dependsOn(named("testClient"))
     }
     clean {
+        delete(named("copyModel").get().outputs)
         delete(named("buildClient").get().outputs)
     }
     npmInstall {

@@ -17,6 +17,7 @@ report/
 build/
 dist/
 dist-ssr/
+lib/
 
 /server/src/main/resources/static/
 
