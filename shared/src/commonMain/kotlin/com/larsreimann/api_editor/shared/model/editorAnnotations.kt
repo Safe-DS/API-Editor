@@ -37,13 +37,49 @@ data class CalledAfterAnnotation(val calledAfterName: String) : EditorAnnotation
 data class ConstantAnnotation(val defaultValue: DefaultValue) : EditorAnnotation()
 
 @Serializable
-data class EnumAnnotation(val enumName: String, val pairs: List<EnumPair>) : EditorAnnotation()
+data class EnumAnnotation(val enumName: String, val pairs: Array<EnumPair>) : EditorAnnotation() {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+
+        other as EnumAnnotation
+
+        if (enumName != other.enumName) return false
+        if (!pairs.contentEquals(other.pairs)) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = enumName.hashCode()
+        result = 31 * result + pairs.contentHashCode()
+        return result
+    }
+}
 
 @Serializable
 data class EnumPair(val stringValue: String, val instanceName: String)
 
 @Serializable
-data class GroupAnnotation(val groupName: String, val parameters: List<String>) : EditorAnnotation()
+data class GroupAnnotation(val groupName: String, val parameters: Array<String>) : EditorAnnotation() {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+
+        other as GroupAnnotation
+
+        if (groupName != other.groupName) return false
+        if (!parameters.contentEquals(other.parameters)) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = groupName.hashCode()
+        result = 31 * result + parameters.contentHashCode()
+        return result
+    }
+}
 
 @Serializable
 data class MoveAnnotation(val destination: String) : EditorAnnotation()
@@ -54,11 +90,33 @@ data class OptionalAnnotation(val defaultValue: DefaultValue) : EditorAnnotation
 @Serializable
 data class RenameAnnotation(val newName: String) : EditorAnnotation()
 
+// TODO: should be an object once they are properly supported by @JsExport
 @Serializable
-object RequiredAnnotation : EditorAnnotation()
+class RequiredAnnotation : EditorAnnotation() {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+        return true
+    }
 
+    override fun hashCode(): Int {
+        return this::class.hashCode()
+    }
+}
+
+// TODO: should be an object once they are properly supported by @JsExport
 @Serializable
-object UnusedAnnotation : EditorAnnotation()
+class UnusedAnnotation : EditorAnnotation() {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return this::class.hashCode()
+    }
+}
 
 @Serializable
 sealed class DefaultValue

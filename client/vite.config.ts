@@ -1,3 +1,5 @@
+// @ts-ignore
+import path from 'path';
 import reactRefresh from '@vitejs/plugin-react-refresh';
 import { defineConfig } from 'vite';
 
@@ -15,7 +17,7 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            '@lars-reimann/api-editor-model': './lib/sharedModel',
+            sharedModel: path.resolve(__dirname, 'src/lib/sharedModel.js'),
         },
     },
 });

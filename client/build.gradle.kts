@@ -32,7 +32,7 @@ tasks.register<Sync>("copyModel") {
     dependsOn(buildModelTask)
 
     from(buildModelTask.get().outputs)
-    into("lib")
+    into("src/lib")
 }
 
 tasks.register<NpmTask>("buildClient") {
@@ -52,7 +52,7 @@ tasks.register<NpmTask>("buildClient") {
 }
 
 tasks.register<NpmTask>("testClient") {
-    dependsOn(tasks.npmInstall)
+    dependsOn(tasks.named("copyModel"), tasks.npmInstall)
 
     inputs.dir("src")
     inputs.files(

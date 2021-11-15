@@ -5,12 +5,13 @@
         "target": "ESNext",
         "module": "ESNext",
         "moduleResolution": "Node",
+        "esModuleInterop": true,
         "noEmit": true,
         "jsx": "react",
         "paths": {
-            "@lars-reimann/api-editor-model": ["lib/sharedModel"]
+            "sharedModel": ["src/lib/sharedModel"]
         }
     },
-    "include": ["lib/", "src/"],
+    "include": ["src/"],
     "exclude": ["**/*.test.ts"]
 }

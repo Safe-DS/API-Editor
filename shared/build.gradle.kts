@@ -17,9 +17,7 @@ kotlin {
     jvm()
     js {
         moduleName = "sharedModel"
-        nodejs {
-            useCommonJs()
-        }
+        nodejs()
         binaries.executable()
     }
 

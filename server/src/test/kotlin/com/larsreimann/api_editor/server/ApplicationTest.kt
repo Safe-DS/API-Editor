@@ -47,40 +47,40 @@ class ApplicationTest {
                 distribution = "test-distribution",
                 name = "test-package",
                 version = "1.0.0",
-                modules = listOf(
+                modules = arrayOf(
                     AnnotatedPythonModule(
                         name = "test-module",
-                        imports = listOf(
+                        imports = arrayOf(
                             PythonImport(
                                 module = "test-import",
                                 alias = "test-alias"
                             )
                         ),
-                        fromImports = listOf(
+                        fromImports = arrayOf(
                             PythonFromImport(
                                 module = "test-from-import",
                                 declaration = "test-declaration",
                                 alias = null
                             )
                         ),
-                        classes = listOf(
+                        classes = arrayOf(
                             AnnotatedPythonClass(
                                 name = "test-class",
                                 qualifiedName = "test-module.test-class",
-                                decorators = listOf("test-decorator"),
-                                superclasses = listOf("test-superclass"),
-                                methods = emptyList(),
+                                decorators = arrayOf("test-decorator"),
+                                superclasses = arrayOf("test-superclass"),
+                                methods = emptyArray(),
                                 description = "Lorem ipsum",
                                 fullDocstring = "Lorem ipsum",
-                                annotations = emptyList()
+                                annotations = emptyArray()
                             )
                         ),
-                        functions = listOf(
+                        functions = arrayOf(
                             AnnotatedPythonFunction(
                                 name = "test-function",
                                 qualifiedName = "test-module.test-function",
-                                decorators = listOf("test-decorator"),
-                                parameters = listOf(
+                                decorators = arrayOf("test-decorator"),
+                                parameters = arrayOf(
                                     AnnotatedPythonParameter(
                                         name = "test-parameter",
                                         defaultValue = "42",
@@ -88,28 +88,28 @@ class ApplicationTest {
                                         isPublic = true,
                                         typeInDocs = "str",
                                         description = "Lorem ipsum",
-                                        annotations = emptyList()
+                                        annotations = emptyArray()
                                     )
                                 ),
-                                results = listOf(
+                                results = arrayOf(
                                     AnnotatedPythonResult(
                                         name = "test-result",
                                         type = "str",
                                         typeInDocs = "str",
                                         description = "Lorem ipsum",
-                                        annotations = emptyList()
+                                        annotations = emptyArray()
                                     )
                                 ),
                                 isPublic = true,
                                 description = "Lorem ipsum",
                                 fullDocstring = "Lorem ipsum",
-                                annotations = emptyList()
+                                annotations = emptyArray()
                             )
                         ),
-                        annotations = emptyList()
+                        annotations = emptyArray()
                     )
                 ),
-                annotations = listOf(
+                annotations = arrayOf(
                     AttributeAnnotation(DefaultBoolean(false)),
                     BoundaryAnnotation(
                         isDiscrete = false,
@@ -122,21 +122,21 @@ class ApplicationTest {
                     ConstantAnnotation(DefaultNumber(0.1)),
                     EnumAnnotation(
                         enumName = "test-enum",
-                        pairs = listOf(
+                        pairs = arrayOf(
                             EnumPair("test-value", "TEST_VALUE")
                         )
                     ),
                     GroupAnnotation(
                         groupName = "test-group",
-                        parameters = listOf(
+                        parameters = arrayOf(
                             "test-parameter"
                         )
                     ),
                     MoveAnnotation("test-destination-module"),
                     OptionalAnnotation(DefaultString("bla")),
                     RenameAnnotation("test-new-name"),
-                    RequiredAnnotation,
-                    UnusedAnnotation
+                    RequiredAnnotation(),
+                    UnusedAnnotation()
                 )
             )
 
