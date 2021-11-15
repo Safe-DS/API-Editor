@@ -1,5 +1,3 @@
-// @ts-ignore
-import path from 'path';
 import reactRefresh from '@vitejs/plugin-react-refresh';
 import { defineConfig } from 'vite';
 
@@ -7,6 +5,8 @@ import { defineConfig } from 'vite';
 export default defineConfig({
     base: '/',
     plugins: [reactRefresh()],
+
+    // Necessary since shared-model use CommonJS instead of ES6 modules
     optimizeDeps: {
         include: ['shared-model'],
     },

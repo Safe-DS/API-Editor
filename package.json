@@ -5,6 +5,7 @@
     "prettier": "@lars-reimann/prettier-config",
     "devDependencies": {
         "@lars-reimann/eslint-config": "^4.0.4",
-        "@lars-reimann/prettier-config": "^4.0.1"
+        "@lars-reimann/prettier-config": "^4.0.1",
+        "@tsconfig/recommended": "^1.0.1"
     }
 }
