@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x]
-        java-version: [11]
+        java-version: [17]
 
     steps:
       - name: Checkout source
