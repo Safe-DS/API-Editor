@@ -1,6 +1,10 @@
+@file:OptIn(kotlin.js.ExperimentalJsExport::class)
+@file:JsExport
+
 package com.larsreimann.api_editor.shared.model
 
 import kotlinx.serialization.Serializable
+import kotlin.js.JsExport
 
 @Serializable
 sealed class AnnotatedPythonDeclaration {
@@ -69,17 +73,20 @@ data class AnnotatedPythonFunction(
 data class AnnotatedPythonParameter(
     override val name: String,
     val defaultValue: String,
-    val assignedBy: PythonParameterAssignment,
+    val assignedBy: String,
     val isPublic: Boolean,
     val typeInDocs: String,
     val description: String,
     override val annotations: List<EditorAnnotation>
 ) : AnnotatedPythonDeclaration()
 
-enum class PythonParameterAssignment {
-    POSITION_ONLY,
-    POSITION_OR_NAME,
-    NAME_ONLY
+// TODO: should be an enum once they are supported by @JsExport
+class PythonParameterAssignment {
+    companion object {
+        const val POSITION_ONLY = "POSITION_ONLY"
+        const val POSITION_OR_NAME = "POSITION_OR_NAME"
+        const val NAME_ONLY = "NAME_ONLY"
+    }
 }
 
 @Serializable

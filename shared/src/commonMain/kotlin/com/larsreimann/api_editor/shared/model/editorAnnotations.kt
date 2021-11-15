@@ -1,6 +1,10 @@
+@file:OptIn(kotlin.js.ExperimentalJsExport::class)
+@file:JsExport
+
 package com.larsreimann.api_editor.shared.model
 
 import kotlinx.serialization.Serializable
+import kotlin.js.JsExport
 
 @Serializable
 sealed class EditorAnnotation
@@ -12,15 +16,18 @@ data class AttributeAnnotation(val defaultValue: DefaultValue) : EditorAnnotatio
 data class BoundaryAnnotation(
     val isDiscrete: Boolean,
     val lowerIntervalLimit: Double,
-    val lowerLimitType: ComparisonOperator,
+    val lowerLimitType: String,
     val upperIntervalLimit: Double,
-    val upperLimitType: ComparisonOperator
+    val upperLimitType: String
 ) : EditorAnnotation()
 
-enum class ComparisonOperator {
-    LESS_THAN_OR_EQUALS,
-    LESS_THAN,
-    UNRESTRICTED,
+// TODO: should be an enum once they are supported by @JsExport
+class ComparisonOperator {
+    companion object {
+        const val LESS_THAN_OR_EQUALS = "LESS_THAN_OR_EQUALS"
+        const val LESS_THAN = "LESS_THAN"
+        const val UNRESTRICTED = "UNRESTRICTED"
+    }
 }
 
 @Serializable
