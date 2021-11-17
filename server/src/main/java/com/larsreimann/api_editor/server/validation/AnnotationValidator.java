@@ -27,7 +27,7 @@ public class AnnotationValidator {
             "Attribute", "Group", "Optional", "Rename", "Required"
         ));
         possibleCombinations.put("Group", Set.of(
-            "Boundary", "CalledAfter", "Enum", "Group", "Move", "Optional", "Rename", "Required"
+            "CalledAfter", "Group", "Move", "Rename"
         ));
         possibleCombinations.put("Move", Set.of(
             "CalledAfter", "Group", "Rename"
@@ -43,6 +43,8 @@ public class AnnotationValidator {
         ));
         possibleCombinations.put("Unused", Set.of());
     }
+
+    private final String GROUP_ANNOTATION_NAME = "Group";
 
     /**
      * Constructor for class AnnotationValidator
@@ -77,68 +79,201 @@ public class AnnotationValidator {
     private void validateClass(AnnotatedPythonClass annotatedPythonClass) {
         annotatedPythonClass.getMethods().forEach(this::validateMethod);
         List<EditorAnnotation> classAnnotations = annotatedPythonClass.getAnnotations();
-        validateAnnotationsValidOnTarget(classAnnotations, AnnotationTarget.CLASS, annotatedPythonClass.getQualifiedName());
-        validateAnnotationCombinations(classAnnotations, annotatedPythonClass.getQualifiedName());
+        validateAnnotationsValidOnTarget(
+            classAnnotations,
+            AnnotationTarget.CLASS, annotatedPythonClass.getQualifiedName()
+        );
+        validateAnnotationCombinations(
+            classAnnotations,
+            annotatedPythonClass.getQualifiedName()
+        );
     }
 
     private void validateMethod(AnnotatedPythonFunction annotatedPythonFunction) {
+        Set<String> groupedParameterNames = getParameterNamesInGroups(
+            annotatedPythonFunction.getAnnotations()
+        );
         if (annotatedPythonFunction.isConstructor()) {
-            annotatedPythonFunction.getParameters().forEach(this::validateConstructorParameter);
+            annotatedPythonFunction.getParameters().forEach(parameter ->
+                    validateConstructorParameter(
+                        parameter,
+                        groupedParameterNames.contains(parameter.getName())
+                    )
+            );
         } else {
-            annotatedPythonFunction.getParameters().forEach(this::validateFunctionParameter);
+            annotatedPythonFunction.getParameters().forEach(
+                parameter -> validateFunctionParameter(
+                    parameter,
+                    groupedParameterNames.contains(parameter.getName())
+                )
+            );
         }
         List<EditorAnnotation> functionAnnotations = annotatedPythonFunction.getAnnotations();
-        validateAnnotationsValidOnTarget(functionAnnotations, AnnotationTarget.METHOD, annotatedPythonFunction.getQualifiedName());
-        validateAnnotationCombinations(functionAnnotations, annotatedPythonFunction.getQualifiedName());
+        validateAnnotationsValidOnTarget(functionAnnotations,
+            AnnotationTarget.METHOD,
+            annotatedPythonFunction.getQualifiedName()
+        );
+        validateAnnotationCombinations(
+            functionAnnotations,
+            annotatedPythonFunction.getQualifiedName()
+        );
     }
 
-    private void validateGlobalFunction(AnnotatedPythonFunction annotatedPythonFunction) {
-        annotatedPythonFunction.getParameters().forEach(this::validateFunctionParameter);
+    private void validateGlobalFunction(
+        AnnotatedPythonFunction annotatedPythonFunction
+    ) {
+        Set<String> groupedParameterNames = getParameterNamesInGroups(
+            annotatedPythonFunction.getAnnotations()
+        );
+        annotatedPythonFunction.getParameters().forEach(
+            parameter -> validateFunctionParameter(
+                parameter,
+                groupedParameterNames.contains(parameter.getName())
+            )
+        );
         List<EditorAnnotation> functionAnnotations = annotatedPythonFunction.getAnnotations();
-        validateAnnotationsValidOnTarget(functionAnnotations, AnnotationTarget.GLOBAL_FUNCTION, annotatedPythonFunction.getQualifiedName());
-        validateAnnotationCombinations(functionAnnotations, annotatedPythonFunction.getQualifiedName());
+        validateAnnotationsValidOnTarget(functionAnnotations,
+            AnnotationTarget.GLOBAL_FUNCTION,
+            annotatedPythonFunction.getQualifiedName()
+        );
+        validateAnnotationCombinations(
+            functionAnnotations,
+            annotatedPythonFunction.getQualifiedName()
+        );
     }
 
-    private void validateFunctionParameter(AnnotatedPythonParameter annotatedPythonParameter) {
+    private void validateFunctionParameter(
+        AnnotatedPythonParameter annotatedPythonParameter,
+        boolean parameterInGroup
+    ) {
         List<EditorAnnotation> parameterAnnotations = annotatedPythonParameter.getAnnotations();
-        validateAnnotationsValidOnTarget(parameterAnnotations, AnnotationTarget.FUNCTION_PARAMETER, annotatedPythonParameter.getQualifiedName());
-        validateAnnotationCombinations(parameterAnnotations, annotatedPythonParameter.getQualifiedName());
+        String qualifiedName = annotatedPythonParameter.getQualifiedName();
+        validateAnnotationsValidOnTarget(parameterAnnotations,
+            AnnotationTarget.FUNCTION_PARAMETER,
+            qualifiedName
+        );
+        validateAnnotationCombinations(
+            parameterAnnotations,
+            qualifiedName
+        );
+        if (parameterInGroup) {
+            validateGroupCombinations(qualifiedName, parameterAnnotations);
+        }
     }
 
-    private void validateConstructorParameter(AnnotatedPythonParameter annotatedPythonParameter) {
+    private void validateConstructorParameter(
+        AnnotatedPythonParameter annotatedPythonParameter,
+        boolean parameterInGroup
+    ) {
         List<EditorAnnotation> parameterAnnotations = annotatedPythonParameter.getAnnotations();
-        validateAnnotationsValidOnTarget(parameterAnnotations, AnnotationTarget.CONSTRUCTOR_PARAMETER, annotatedPythonParameter.getQualifiedName());
-        validateAnnotationCombinations(parameterAnnotations, annotatedPythonParameter.getQualifiedName());
+        String qualifiedName = annotatedPythonParameter.getQualifiedName();
+        validateAnnotationsValidOnTarget(
+            parameterAnnotations,
+            AnnotationTarget.CONSTRUCTOR_PARAMETER,
+            qualifiedName
+        );
+        validateAnnotationCombinations(
+            parameterAnnotations,
+            qualifiedName
+        );
+        if (parameterInGroup) {
+            validateGroupCombinations(qualifiedName, parameterAnnotations);
+        }
     }
 
     private void validateAnnotationsValidOnTarget(
-        Iterable<EditorAnnotation> editorAnnotations, AnnotationTarget target, String qualifiedName
+        Iterable<EditorAnnotation> editorAnnotations,
+        AnnotationTarget target,
+        String qualifiedName
     ) {
         for (EditorAnnotation editorAnnotation : editorAnnotations) {
             if (!editorAnnotation.isApplicableTo(target)) {
-                validationErrors.add(new AnnotationTargetError(qualifiedName, editorAnnotation.getType(), target));
+                validationErrors.add(
+                    new AnnotationTargetError(
+                        qualifiedName,
+                        editorAnnotation.getType(),
+                        target)
+                );
             }
         }
     }
 
-    private void validateAnnotationCombinations(List<EditorAnnotation> editorAnnotations, String qualifiedName) {
+    private Set<String> getParameterNamesInGroups(
+        List<EditorAnnotation> editorAnnotations
+    ) {
+        List<GroupAnnotation> groupAnnotations = getGroupAnnotations(
+            editorAnnotations
+        );
+        if (groupAnnotations.isEmpty()) {
+            return Collections.emptySet();
+        }
+        Set<String> groupedParameterNames = new HashSet<>();
+        groupAnnotations.forEach(groupAnnotation ->
+            groupedParameterNames.addAll(groupAnnotation.getParameters())
+        );
+        return groupedParameterNames;
+    }
+
+    private List<GroupAnnotation> getGroupAnnotations(
+        List<EditorAnnotation> editorAnnotations
+    ) {
+        List<GroupAnnotation> groupAnnotations = new ArrayList<>();
+        editorAnnotations.forEach(annotation -> {
+            if (annotation.getType().equals("Group")) {
+                groupAnnotations.add((GroupAnnotation) annotation);
+            }
+        });
+        return groupAnnotations;
+    }
+
+    private void validateAnnotationCombinations(
+        List<EditorAnnotation> editorAnnotations,
+        String qualifiedName
+    ) {
         for (int i = 0; i < editorAnnotations.size(); i++) {
             for (int j = i + 1; j < editorAnnotations.size(); j++) {
-                validateAnnotationCombination(qualifiedName, editorAnnotations.get(i), editorAnnotations.get(j));
+                validateAnnotationCombination(
+                    qualifiedName,
+                    editorAnnotations.get(i),
+                    editorAnnotations.get(j));
             }
         }
     }
 
-    private void validateAnnotationCombination(String qualifiedName, EditorAnnotation firstAnnotation, EditorAnnotation secondAnnotation) {
+    private void validateAnnotationCombination(
+        String qualifiedName,
+        EditorAnnotation firstAnnotation,
+        EditorAnnotation secondAnnotation
+    ) {
         String firstAnnotationName = firstAnnotation.getType();
         String secondAnnotationName = secondAnnotation.getType();
         if (possibleCombinations.get(firstAnnotationName).isEmpty()
-            || !possibleCombinations.get(firstAnnotationName).contains(secondAnnotationName)) {
+            || !possibleCombinations.get(firstAnnotationName)
+            .contains(secondAnnotationName)) {
             validationErrors.add(
                 new AnnotationCombinationError(qualifiedName,
                     firstAnnotationName,
                     secondAnnotationName)
             );
         }
+    }
+
+    private void validateGroupCombinations(
+        String qualifiedName,
+        List<EditorAnnotation> editorAnnotations
+    ){
+        editorAnnotations.forEach(editorAnnotation -> {
+            String annotationName = editorAnnotation.getType();
+            if (!possibleCombinations.get(GROUP_ANNOTATION_NAME)
+                .contains(annotationName)
+            ) {
+                validationErrors.add(
+                    new GroupAnnotationCombinationError(
+                        qualifiedName,
+                        annotationName
+                    )
+                );
+            }
+        });
     }
 }

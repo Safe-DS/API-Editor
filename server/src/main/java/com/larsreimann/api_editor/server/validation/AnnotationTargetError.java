@@ -15,7 +15,7 @@ public record AnnotationTargetError(
      */
     @Override
     public String message() {
-        return "The annotation " + annotationName + " cannot be set for the following element of type "
+        return "The annotation " + annotationName.toLowerCase() + " cannot be set for the following element of type "
             + target.toString() + ": " + qualifiedName;
     }
 }

@@ -435,4 +435,218 @@ class AnnotationValidationTest {
 
         Assertions.assertEquals(annotationErrors.size(), expectedErrors.size());
     }
+
+    @Test
+    void returnGroupAnnotationCombinationsErrorsForConflictingAnnotation() {
+        // given
+        AnnotatedPythonPackage testPythonPackage = new AnnotatedPythonPackage(
+            "test-distribution",
+            "test-package",
+            "1.0.0",
+            List.of(
+                new AnnotatedPythonModule(
+                    "test-module",
+                    List.of(
+                        new PythonImport(
+                            "test-import",
+                            "test-alias"
+                        )
+                    ),
+                    List.of(
+                        new PythonFromImport(
+                            "test-from-import",
+                            "test-declaration",
+                            null
+                        )
+                    ),
+                    List.of(
+                        new AnnotatedPythonClass(
+                            "test-class",
+                            "test-module.test-class",
+                            List.of("test-decorator"),
+                            List.of("test-superclass"),
+                            List.of(new AnnotatedPythonFunction(
+                                "__init__",
+                                "test-module.test-class.__init__",
+                                List.of("decorators"),
+                                List.of(
+                                    new AnnotatedPythonParameter(
+                                        "first-param",
+                                        "test-module.test-class.__init__.first-param",
+                                        "defaultValue",
+                                        PythonParameterAssignment.POSITION_OR_NAME,
+                                        true,
+                                        "typeInDocs",
+                                        "description",
+                                        List.of(
+                                            new AttributeAnnotation(
+                                                new DefaultString("test")
+                                            )
+                                        )
+                                    ),
+                                    new AnnotatedPythonParameter(
+                                        "second-param",
+                                        "test-module.test-class.__init__.second-param",
+                                        "defaultValue",
+                                        PythonParameterAssignment.POSITION_OR_NAME,
+                                        true,
+                                        "typeInDocs",
+                                        "description",
+                                        List.of(
+                                            new ConstantAnnotation(
+                                                new DefaultString("test")
+                                            )
+                                        )
+                                    ),
+                                    new AnnotatedPythonParameter(
+                                        "third-param",
+                                        "test-module.test-class.__init__.third-param",
+                                        "defaultValue",
+                                        PythonParameterAssignment.POSITION_OR_NAME,
+                                        true,
+                                        "typeInDocs",
+                                        "description",
+                                        List.of(
+                                            new RenameAnnotation("newName")
+                                        )
+                                    )
+                                ),
+                                Collections.emptyList(),
+                                true,
+                                "description",
+                                "fullDocstring",
+                                List.of(
+                                    new GroupAnnotation(
+                                        "paramGroup",
+                                        List.of("first-param", "second-param")
+                                    )
+                                )
+                            ), new AnnotatedPythonFunction(
+                                "class-function",
+                                "test-module.test-class.class-function",
+                                List.of("decorators"),
+                                List.of(
+                                    new AnnotatedPythonParameter(
+                                        "first-param",
+                                        "test-module.test-class.class-function.first-param",
+                                        "defaultValue",
+                                        PythonParameterAssignment.POSITION_OR_NAME,
+                                        true,
+                                        "typeInDocs",
+                                        "description",
+                                        List.of(
+                                            new RenameAnnotation("newName")
+                                        )
+                                    ),
+                                    new AnnotatedPythonParameter(
+                                        "second-param",
+                                        "test-module.test-class.class-function.second-param",
+                                        "defaultValue",
+                                        PythonParameterAssignment.POSITION_OR_NAME,
+                                        true,
+                                        "typeInDocs",
+                                        "description",
+                                        List.of(
+                                            new ConstantAnnotation(
+                                                new DefaultString("test")
+                                            )
+                                        )
+                                    )
+                                ),
+                                Collections.emptyList(),
+                                true,
+                                "description",
+                                "fullDocstring",
+                                List.of(
+                                    new GroupAnnotation(
+                                        "paramGroup",
+                                        List.of("second-param")
+                                    )
+                                )
+                            )),
+                            "Lorem ipsum",
+                            "Lorem ipsum",
+                            Collections.emptyList()
+                        )
+                    ),
+                    List.of(
+                        new AnnotatedPythonFunction(
+                            "class-function",
+                            "test-module.module-function",
+                            List.of("decorators"),
+                            List.of(
+                                new AnnotatedPythonParameter(
+                                    "first-param",
+                                    "test-module.module-function.first-param",
+                                    "defaultValue",
+                                    PythonParameterAssignment.POSITION_OR_NAME,
+                                    true,
+                                    "typeInDocs",
+                                    "description",
+                                    List.of(
+                                        new RenameAnnotation("newName")
+                                    )
+                                ),
+                                new AnnotatedPythonParameter(
+                                    "second-param",
+                                    "test-module.module-function.second-param",
+                                    "defaultValue",
+                                    PythonParameterAssignment.POSITION_OR_NAME,
+                                    true,
+                                    "typeInDocs",
+                                    "description",
+                                    List.of(
+                                        new ConstantAnnotation(
+                                            new DefaultString("test")
+                                        )
+                                    )
+                                )
+                            ),
+                            Collections.emptyList(),
+                            true,
+                            "description",
+                            "fullDocstring",
+                            List.of(
+                                new GroupAnnotation(
+                                    "paramGroup",
+                                    List.of("second-param")
+                                )
+                            )
+                    )),
+                    Collections.emptyList()
+                )
+            ),
+            Collections.emptyList()
+        );
+
+        // when
+        AnnotationValidator annotationValidator = new AnnotationValidator(testPythonPackage);
+        List<AnnotationError> annotationErrors = annotationValidator.returnValidationErrors();
+
+        // then
+        List<AnnotationError> expectedErrors = List.of(
+            new GroupAnnotationCombinationError(
+                "test-module.test-class.__init__.first-param",
+                "Attribute"
+            ),
+            new GroupAnnotationCombinationError(
+                "test-module.test-class.__init__.second-param",
+                "Constant"
+            ),
+            new GroupAnnotationCombinationError(
+                "test-module.test-class.class-function.second-param",
+                "Constant"
+            ),
+            new GroupAnnotationCombinationError(
+                "test-module.module-function.second-param",
+                "Constant"
+            )
+        );
+
+        expectedErrors.forEach(expectedError -> Assertions.assertTrue(
+            annotationErrors.contains(expectedError)
+        ));
+
+        Assertions.assertEquals(annotationErrors.size(), expectedErrors.size());
+    }
 }

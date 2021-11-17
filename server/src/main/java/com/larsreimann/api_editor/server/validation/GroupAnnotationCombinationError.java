@@ -1,9 +1,8 @@
 package com.larsreimann.api_editor.server.validation;
 
-public record AnnotationCombinationError(
+public record GroupAnnotationCombinationError(
     String qualifiedName,
-    String firstAnnotationName,
-    String secondAnnotationName
+    String annotationName
 ) implements AnnotationError {
 
     /**
@@ -13,7 +12,8 @@ public record AnnotationCombinationError(
      */
     @Override
     public String message() {
-        return "(" + firstAnnotationName.toLowerCase() + ", " + secondAnnotationName.toLowerCase() + ") "
-            + "cannot both be set for element: " + qualifiedName;
+        return "The parameter " + qualifiedName
+            + " is part of a group. Grouped parameters must not have the following annotation: " +
+            annotationName.toLowerCase() + " annotation";
     }
 }
