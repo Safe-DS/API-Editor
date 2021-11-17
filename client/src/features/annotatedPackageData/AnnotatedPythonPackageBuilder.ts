@@ -85,18 +85,17 @@ export default class AnnotatedPythonPackageBuilder {
     #buildAnnotatedPythonFunctions(
         pythonDeclaration: PythonModule | PythonClass,
     ): AnnotatedPythonFunction[] {
-        let pythonFunctions: AnnotatedPythonFunction[] = [];
         if (pythonDeclaration instanceof PythonModule) {
-            pythonDeclaration.functions.map((pythonFunction: PythonFunction) =>
-                this.#buildAnnotatedPythonFunction(pythonFunction),
+            return pythonDeclaration.functions.map(
+                (pythonFunction: PythonFunction) =>
+                    this.#buildAnnotatedPythonFunction(pythonFunction),
+            );
+        } else {
+            return pythonDeclaration.methods.map(
+                (pythonFunction: PythonFunction) =>
+                    this.#buildAnnotatedPythonFunction(pythonFunction),
             );
         }
-        if (pythonDeclaration instanceof PythonClass) {
-            pythonDeclaration.methods.map((pythonFunction: PythonFunction) =>
-                this.#buildAnnotatedPythonFunction(pythonFunction),
-            );
-        }
-        return pythonFunctions;
     }
 
     #buildAnnotatedPythonFunction(
