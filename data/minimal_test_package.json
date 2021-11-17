@@ -127,6 +127,16 @@
             "decorators": [],
             "parameters": [
                 {
+                    "name": "self",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "",
+                        "description": ""
+                    }
+                },
+                {
                     "name": "only_param",
                     "default_value": null,
                     "is_public": false,
