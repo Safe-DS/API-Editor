@@ -1,8 +1,21 @@
 package com.larsreimann.api_editor.server.validation;
 
-import com.larsreimann.api_editor.server.data.*;
+import com.larsreimann.api_editor.server.data.AnnotatedPythonClass;
+import com.larsreimann.api_editor.server.data.AnnotatedPythonFunction;
+import com.larsreimann.api_editor.server.data.AnnotatedPythonModule;
+import com.larsreimann.api_editor.server.data.AnnotatedPythonPackage;
+import com.larsreimann.api_editor.server.data.AnnotatedPythonParameter;
+import com.larsreimann.api_editor.server.data.AnnotationTarget;
+import com.larsreimann.api_editor.server.data.EditorAnnotation;
+import com.larsreimann.api_editor.server.data.GroupAnnotation;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class AnnotationValidator {
     private final AnnotatedPythonPackage annotatedPythonPackage;
@@ -47,7 +60,7 @@ public class AnnotationValidator {
     private final String GROUP_ANNOTATION_NAME = "Group";
 
     /**
-     * Constructor for class AnnotationValidator
+     * Constructor for class AnnotationValidator.
      *
      * @param inputPackage The package to be validated
      */
@@ -57,8 +70,7 @@ public class AnnotationValidator {
     }
 
     /**
-     * Validates the classes annotated python package
-     * and returns validation errors
+     * Validates the classes annotated python package and returns validation errors.
      *
      * @return the validation errors found
      */
@@ -95,10 +107,10 @@ public class AnnotationValidator {
         );
         if (annotatedPythonFunction.isConstructor()) {
             annotatedPythonFunction.getParameters().forEach(parameter ->
-                    validateConstructorParameter(
-                        parameter,
-                        groupedParameterNames.contains(parameter.getName())
-                    )
+                validateConstructorParameter(
+                    parameter,
+                    groupedParameterNames.contains(parameter.getName())
+                )
             );
         } else {
             annotatedPythonFunction.getParameters().forEach(
@@ -261,7 +273,7 @@ public class AnnotationValidator {
     private void validateGroupCombinations(
         String qualifiedName,
         List<EditorAnnotation> editorAnnotations
-    ){
+    ) {
         editorAnnotations.forEach(editorAnnotation -> {
             String annotationName = editorAnnotation.getType();
             if (!possibleCombinations.get(GROUP_ANNOTATION_NAME)

@@ -9,7 +9,7 @@ public record AnnotationTargetError(
 ) implements AnnotationError {
 
     /**
-     * Returns an error message specifying the annotation error
+     * Returns an error message specifying the annotation error.
      *
      * @return The constructed error message
      */

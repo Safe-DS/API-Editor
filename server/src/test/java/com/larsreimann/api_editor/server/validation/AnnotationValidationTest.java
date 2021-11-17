@@ -1,6 +1,25 @@
 package com.larsreimann.api_editor.server.validation;
 
-import com.larsreimann.api_editor.server.data.*;
+import com.larsreimann.api_editor.server.data.AnnotatedPythonClass;
+import com.larsreimann.api_editor.server.data.AnnotatedPythonFunction;
+import com.larsreimann.api_editor.server.data.AnnotatedPythonModule;
+import com.larsreimann.api_editor.server.data.AnnotatedPythonPackage;
+import com.larsreimann.api_editor.server.data.AnnotatedPythonParameter;
+import com.larsreimann.api_editor.server.data.AnnotatedPythonResult;
+import com.larsreimann.api_editor.server.data.AnnotationTarget;
+import com.larsreimann.api_editor.server.data.AttributeAnnotation;
+import com.larsreimann.api_editor.server.data.BoundaryAnnotation;
+import com.larsreimann.api_editor.server.data.CalledAfterAnnotation;
+import com.larsreimann.api_editor.server.data.ComparisonOperator;
+import com.larsreimann.api_editor.server.data.ConstantAnnotation;
+import com.larsreimann.api_editor.server.data.DefaultString;
+import com.larsreimann.api_editor.server.data.GroupAnnotation;
+import com.larsreimann.api_editor.server.data.MoveAnnotation;
+import com.larsreimann.api_editor.server.data.OptionalAnnotation;
+import com.larsreimann.api_editor.server.data.PythonFromImport;
+import com.larsreimann.api_editor.server.data.PythonImport;
+import com.larsreimann.api_editor.server.data.PythonParameterAssignment;
+import com.larsreimann.api_editor.server.data.RenameAnnotation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -612,7 +631,7 @@ class AnnotationValidationTest {
                                     List.of("second-param")
                                 )
                             )
-                    )),
+                        )),
                     Collections.emptyList()
                 )
             ),
