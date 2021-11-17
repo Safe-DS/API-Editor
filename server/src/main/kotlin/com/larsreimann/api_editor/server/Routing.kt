@@ -66,10 +66,10 @@ fun Route.infer() {
     post("/infer") {
         val pythonPackage = call.receive<AnnotatedPythonPackage>()
         val annotationValidator = AnnotationValidator(pythonPackage)
-        val annotationErrors = annotationValidator.returnValidationErrors()
+        val annotationErrors = annotationValidator.validate()
+        val messages = annotationErrors.map { it.message() }
 
-        // TODO
-        call.respond("Not implemented")
+        call.respond(messages)
     }
 }
 
