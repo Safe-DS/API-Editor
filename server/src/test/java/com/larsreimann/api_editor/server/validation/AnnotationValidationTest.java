@@ -133,7 +133,7 @@ class AnnotationValidationTest {
 
         // when
         AnnotationValidator annotationValidator = new AnnotationValidator(testPythonPackage);
-        List<AnnotationError> annotationErrors = annotationValidator.returnValidationErrors();
+        List<AnnotationError> annotationErrors = annotationValidator.validate();
 
         // then
         List<AnnotationError> expectedErrors = List.of(
@@ -305,7 +305,7 @@ class AnnotationValidationTest {
 
         // when
         AnnotationValidator annotationValidator = new AnnotationValidator(testPythonPackage);
-        List<AnnotationError> annotationErrors = annotationValidator.returnValidationErrors();
+        List<AnnotationError> annotationErrors = annotationValidator.validate();
 
         // then
         Assertions.assertTrue(annotationErrors.isEmpty());
@@ -422,7 +422,7 @@ class AnnotationValidationTest {
 
         // when
         AnnotationValidator annotationValidator = new AnnotationValidator(testPythonPackage);
-        List<AnnotationError> annotationErrors = annotationValidator.returnValidationErrors();
+        List<AnnotationError> annotationErrors = annotationValidator.validate();
 
         // then
         List<AnnotationError> expectedErrors = List.of(
@@ -640,7 +640,7 @@ class AnnotationValidationTest {
 
         // when
         AnnotationValidator annotationValidator = new AnnotationValidator(testPythonPackage);
-        List<AnnotationError> annotationErrors = annotationValidator.returnValidationErrors();
+        List<AnnotationError> annotationErrors = annotationValidator.validate();
 
         // then
         List<AnnotationError> expectedErrors = List.of(

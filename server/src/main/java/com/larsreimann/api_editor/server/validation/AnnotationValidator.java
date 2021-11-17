@@ -74,7 +74,7 @@ public class AnnotationValidator {
      *
      * @return the validation errors found
      */
-    public List<AnnotationError> returnValidationErrors() {
+    public List<AnnotationError> validate() {
         validatePackage();
         return validationErrors;
     }
