@@ -6,6 +6,11 @@ public record AnnotationCombinationError(
     String secondAnnotationName
 ) implements AnnotationError {
 
+    /**
+     * Returns an error message specifying the annotation error
+     *
+     * @return The constructed error message
+     */
     @Override
     public String message() {
         return "(" + firstAnnotationName + ", " + secondAnnotationName + ") "

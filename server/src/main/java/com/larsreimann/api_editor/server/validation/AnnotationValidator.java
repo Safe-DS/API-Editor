@@ -44,11 +44,22 @@ public class AnnotationValidator {
         possibleCombinations.put("Unused", Set.of());
     }
 
+    /**
+     * Constructor for class AnnotationValidator
+     *
+     * @param inputPackage The package to be validated
+     */
     public AnnotationValidator(AnnotatedPythonPackage inputPackage) {
         annotatedPythonPackage = inputPackage;
         validationErrors = new ArrayList<>();
     }
 
+    /**
+     * Validates the classes annotated python package
+     * and returns validation errors
+     *
+     * @return the validation errors found
+     */
     public List<AnnotationError> returnValidationErrors() {
         validatePackage();
         return validationErrors;

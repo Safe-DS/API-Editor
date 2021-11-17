@@ -8,6 +8,11 @@ public record AnnotationTargetError(
     AnnotationTarget target
 ) implements AnnotationError {
 
+    /**
+     * Returns an error message specifying the annotation error
+     *
+     * @return The constructed error message
+     */
     @Override
     public String message() {
         return "The annotation " + annotationName + " cannot be set for the following element of type "
