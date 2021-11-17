@@ -96,7 +96,11 @@ const App: React.FC = function () {
             h="100vh"
         >
             <GridItem gridArea="menu" colSpan={2}>
-                <MenuBar filter={filter} setFilter={setFilter} />
+                <MenuBar
+                    pythonPackage={pythonPackage}
+                    filter={filter}
+                    setFilter={setFilter}
+                />
             </GridItem>
             <GridItem
                 gridArea="leftPane"

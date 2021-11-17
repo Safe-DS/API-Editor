@@ -63,11 +63,15 @@ data class AnnotatedPythonFunction(
     val description: String,
     val fullDocstring: String,
     override val annotations: List<EditorAnnotation>
-) : AnnotatedPythonDeclaration()
+) : AnnotatedPythonDeclaration() {
+
+    fun isConstructor() = name == "__init__"
+}
 
 @Serializable
 data class AnnotatedPythonParameter(
     override val name: String,
+    val qualifiedName: String,
     val defaultValue: String,
     val assignedBy: PythonParameterAssignment,
     val isPublic: Boolean,

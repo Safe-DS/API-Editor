@@ -1,6 +1,7 @@
 package com.larsreimann.api_editor.server
 
 import com.larsreimann.api_editor.server.data.AnnotatedPythonPackage
+import com.larsreimann.api_editor.server.validation.AnnotationValidator
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
@@ -63,9 +64,12 @@ fun Route.echo() {
 
 fun Route.infer() {
     post("/infer") {
-        // val pythonPackage = call.receive<AnnotatedPythonPackage>()
+        val pythonPackage = call.receive<AnnotatedPythonPackage>()
+        val annotationValidator = AnnotationValidator(pythonPackage)
+        val annotationErrors = annotationValidator.validate()
+        val messages = annotationErrors.map { it.message() }
 
-        call.respond("Not implemented")
+        call.respond(messages)
     }
 }
 

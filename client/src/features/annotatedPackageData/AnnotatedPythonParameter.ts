@@ -3,6 +3,7 @@ import { InferableAnnotation } from './InferableAnnotation';
 
 export default class AnnotatedPythonParameter {
     readonly name: string;
+    readonly qualifiedName: string;
     readonly defaultValue: string;
     readonly assignedBy: string;
     readonly isPublic: boolean;
@@ -12,6 +13,7 @@ export default class AnnotatedPythonParameter {
 
     constructor(
         name: string,
+        qualifiedName: string,
         defaultValue: string = '',
         assignedBy: PythonParameterAssignment = PythonParameterAssignment.POSITION_OR_NAME,
         isPublic: boolean = false,
@@ -20,6 +22,7 @@ export default class AnnotatedPythonParameter {
         annotations: InferableAnnotation[] = [],
     ) {
         this.name = name;
+        this.qualifiedName = qualifiedName;
         this.defaultValue = defaultValue ?? '';
         switch (assignedBy) {
             case PythonParameterAssignment.NAME_ONLY:

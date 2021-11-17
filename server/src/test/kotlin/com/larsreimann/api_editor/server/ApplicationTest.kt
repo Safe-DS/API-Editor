@@ -83,6 +83,7 @@ class ApplicationTest {
                                 parameters = listOf(
                                     AnnotatedPythonParameter(
                                         name = "test-parameter",
+                                        qualifiedName = "test-module.test-function.test-parameter",
                                         defaultValue = "42",
                                         assignedBy = PythonParameterAssignment.NAME_ONLY,
                                         isPublic = true,
