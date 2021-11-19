@@ -70,9 +70,8 @@ fun Route.infer() {
         val messages = annotationErrors.map { it.message() }
         if (messages.isNotEmpty()) {
             call.respond(HttpStatusCode.Conflict, messages)
-        }
-        else {
-            call.respond(HttpStatusCode.OK,"TODO")
+        } else {
+            call.respond(HttpStatusCode.OK, "TODO")
         }
     }
 }
