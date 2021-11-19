@@ -41,7 +41,7 @@ import {
     resetAnnotations,
     toggleAnnotationImportDialog,
 } from '../features/annotations/annotationSlice';
-import AnnotatedPythonPackageBuilder from '../features/annotatedPackageData/AnnotatedPythonPackageBuilder';
+import AnnotatedPythonPackageBuilder from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
 import { PythonFilter } from '../features/packageData/model/PythonFilter';
 import PythonPackage from '../features/packageData/model/PythonPackage';
 import { togglePackageDataImportDialog } from '../features/packageData/packageDataSlice';
