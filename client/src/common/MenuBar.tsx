@@ -51,6 +51,7 @@ interface MenuBarProps {
     pythonPackage: PythonPackage;
     filter: string;
     setFilter: Setter<string>;
+    displayInferErrors: (errors: string[]) => void;
 }
 
 const DeleteAllAnnotations = function () {
@@ -122,6 +123,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({
     pythonPackage,
     filter,
     setFilter,
+    displayInferErrors,
 }) {
     const { colorMode, toggleColorMode } = useColorMode();
     const initialFocusRef = useRef(null);
@@ -157,9 +159,14 @@ const MenuBar: React.FC<MenuBarProps> = function ({
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(annotatedPythonPackage),
         };
-        fetch('/api-editor/infer', requestOptions)
-            .then((response) => response.text())
-            .then((data) => console.log(data));
+        fetch('/api-editor/infer', requestOptions).then(async (response) => {
+            const jsonResponse = await response.json();
+            if (!response.ok) {
+                displayInferErrors(jsonResponse);
+            } else {
+                //TODO
+            }
+        });
     };
 
     return (
