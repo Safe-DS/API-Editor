@@ -1,12 +1,11 @@
 import {
-    Button,
     Grid,
     GridItem,
     ListItem,
     Modal,
     ModalBody,
+    ModalCloseButton,
     ModalContent,
-    ModalFooter,
     ModalHeader,
     ModalOverlay,
     UnorderedList,
@@ -206,18 +205,14 @@ const App: React.FC = function () {
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>Infer errors</ModalHeader>
-                    <ModalBody paddingLeft={10}>
+                    <ModalCloseButton />
+                    <ModalBody paddingLeft={10} paddingBottom={6}>
                         <UnorderedList spacing={5}>
                             {inferErrors.map((error, index) => (
                                 <ListItem key={error + index}>{error}</ListItem>
                             ))}
                         </UnorderedList>
                     </ModalBody>
-                    <ModalFooter>
-                        <Button onClick={() => setShowInferErrorDialog(false)}>
-                            Close
-                        </Button>
-                    </ModalFooter>
                 </ModalContent>
             </Modal>
         </>
