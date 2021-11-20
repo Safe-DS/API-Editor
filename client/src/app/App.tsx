@@ -1,12 +1,15 @@
 import {
+    Button,
     Grid,
     GridItem,
+    ListItem,
     Modal,
     ModalBody,
-    ModalCloseButton,
     ModalContent,
+    ModalFooter,
     ModalHeader,
     ModalOverlay,
+    UnorderedList,
 } from '@chakra-ui/react';
 import * as idb from 'idb-keyval';
 import React, { useEffect, useState } from 'react';
@@ -203,14 +206,18 @@ const App: React.FC = function () {
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>Infer errors</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody>
-                        <ul>
+                    <ModalBody paddingLeft={10}>
+                        <UnorderedList spacing={5}>
                             {inferErrors.map((error, index) => (
-                                <li key={error + index}>{error}</li>
+                                <ListItem key={error + index}>{error}</ListItem>
                             ))}
-                        </ul>
+                        </UnorderedList>
                     </ModalBody>
+                    <ModalFooter>
+                        <Button onClick={() => setShowInferErrorDialog(false)}>
+                            Close
+                        </Button>
+                    </ModalFooter>
                 </ModalContent>
             </Modal>
         </>
