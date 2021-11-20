@@ -134,6 +134,29 @@ const MenuBar: React.FC<MenuBarProps> = function ({
         (state) => state.annotations.currentUserAction.type === 'none',
     );
 
+    const downloadAdapters = () => {
+        const annotatedPythonPackageBuilder = new AnnotatedPythonPackageBuilder(
+            pythonPackage,
+            annotationStore,
+        );
+        const annotatedPythonPackage =
+            annotatedPythonPackageBuilder.generateAnnotatedPythonPackage();
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(annotatedPythonPackage),
+        };
+        fetch('/api-editor/downloadAdapters', requestOptions)
+            .then((response) => response.blob())
+            .then((file) => {
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(file);
+                a.download = 'simpleml.zip';
+                a.click();
+            });
+    };
+
     const exportAnnotations = () => {
         const a = document.createElement('a');
         const file = new Blob([JSON.stringify(annotationStore)], {
@@ -195,6 +218,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({
             <Spacer />
 
             <HStack>
+                <Button onClick={downloadAdapters}>Download adapters</Button>
                 <Button onClick={infer}>Infer</Button>
                 {/* Box gets rid of popper.js warning "CSS margin styles cannot be used" */}
                 <Box>

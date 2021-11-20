@@ -1,24 +1,21 @@
 package com.larsreimann.api_editor.server
 
 import com.larsreimann.api_editor.server.data.AnnotatedPythonPackage
+import com.larsreimann.api_editor.server.fileHandling.PackageFileBuilder
 import com.larsreimann.api_editor.server.validation.AnnotationValidator
-import io.ktor.application.Application
-import io.ktor.application.call
-import io.ktor.application.install
-import io.ktor.features.ContentNegotiation
-import io.ktor.features.StatusPages
-import io.ktor.http.HttpStatusCode
-import io.ktor.http.content.defaultResource
-import io.ktor.http.content.resources
-import io.ktor.http.content.static
-import io.ktor.request.receive
-import io.ktor.response.respond
-import io.ktor.routing.Route
-import io.ktor.routing.post
-import io.ktor.routing.route
-import io.ktor.routing.routing
-import io.ktor.serialization.json
+import io.ktor.application.*
+import io.ktor.features.*
+import io.ktor.http.*
+import io.ktor.http.content.*
+import io.ktor.request.*
+import io.ktor.response.*
+import io.ktor.routing.*
+import io.ktor.serialization.*
 import kotlinx.serialization.json.Json
+import java.io.*
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
+import kotlin.io.use
 
 fun Application.configureRouting() {
     install(ContentNegotiation) {
@@ -39,6 +36,7 @@ fun Application.configureRouting() {
         route("/api-editor") {
             echo()
             infer()
+            downloadAdapters()
         }
 
         install(StatusPages) {
@@ -70,6 +68,37 @@ fun Route.infer() {
         val messages = annotationErrors.map { it.message() }
 
         call.respond(messages)
+    }
+}
+
+fun Route.downloadAdapters() {
+    post("/downloadAdapters") {
+        val pythonPackage = call.receive<AnnotatedPythonPackage>()
+        val packageFileBuilder = PackageFileBuilder(pythonPackage)
+        val zipFileName = pythonPackage.name.plus(".zip")
+        val zipFile = File(zipFileName)
+        val fileList = packageFileBuilder.returnModuleFiles()
+        ZipOutputStream(BufferedOutputStream(FileOutputStream(zipFile))).use { output ->
+            fileList.forEach { file ->
+                if (file.length() > 1)
+                    FileInputStream(file).use { input ->
+                        BufferedInputStream(input).use { origin ->
+                            val entry = ZipEntry(file.name)
+                            output.putNextEntry(entry)
+                            origin.copyTo(output, 1024)
+                        }
+                    }
+            }
+        }
+        call.response.header(
+            HttpHeaders.ContentDisposition,
+            ContentDisposition.Attachment.withParameter(
+                ContentDisposition.Parameters.FileName, zipFileName
+            ).toString()
+        )
+        call.respondFile(zipFile)
+        fileList.forEach { file -> file.delete() }
+        zipFile.delete()
     }
 }
 
