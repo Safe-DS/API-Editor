@@ -68,8 +68,11 @@ fun Route.infer() {
         val annotationValidator = AnnotationValidator(pythonPackage)
         val annotationErrors = annotationValidator.validate()
         val messages = annotationErrors.map { it.message() }
-
-        call.respond(messages)
+        if (messages.isNotEmpty()) {
+            call.respond(HttpStatusCode.Conflict, messages)
+        } else {
+            call.respond(HttpStatusCode.OK, "TODO")
+        }
     }
 }
 

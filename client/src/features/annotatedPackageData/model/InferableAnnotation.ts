@@ -1,18 +1,18 @@
 import {
-    DefaultType,
     AttributeAnnotation,
-    Interval,
-    DefaultValue,
     BoundaryAnnotation,
     CalledAfterAnnotation,
+    ComparisonOperator,
     ConstantAnnotation,
+    DefaultType,
+    DefaultValue,
     EnumAnnotation,
+    EnumPair,
     GroupAnnotation,
     MoveAnnotation,
     OptionalAnnotation,
     RenameAnnotation,
-    EnumPair,
-} from '../annotations/annotationSlice';
+} from '../../annotations/annotationSlice';
 
 const dataPathPrefix = 'com.larsreimann.api_editor.server.data.';
 
@@ -50,11 +50,23 @@ export class InferableAttributeAnnotation extends InferableAnnotation {
 }
 
 export class InferableBoundaryAnnotation extends InferableAnnotation {
-    readonly interval: Interval;
+    readonly isDiscrete: boolean;
+    readonly lowerIntervalLimit: number;
+    readonly lowerLimitType: string;
+    readonly upperIntervalLimit: number;
+    readonly upperLimitType: string;
 
     constructor(boundaryAnnotation: BoundaryAnnotation) {
         super(dataPathPrefix + 'BoundaryAnnotation');
-        this.interval = boundaryAnnotation.interval;
+        this.isDiscrete = boundaryAnnotation.interval.isDiscrete;
+        this.lowerIntervalLimit =
+            boundaryAnnotation.interval.lowerIntervalLimit;
+        this.lowerLimitType =
+            ComparisonOperator[boundaryAnnotation.interval.lowerLimitType];
+        this.upperIntervalLimit =
+            boundaryAnnotation.interval.upperIntervalLimit;
+        this.upperLimitType =
+            ComparisonOperator[boundaryAnnotation.interval.upperLimitType];
     }
 }
 

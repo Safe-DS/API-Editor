@@ -1,4 +1,15 @@
-import { Grid, GridItem } from '@chakra-ui/react';
+import {
+    Grid,
+    GridItem,
+    ListItem,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalHeader,
+    ModalOverlay,
+    UnorderedList,
+} from '@chakra-ui/react';
 import * as idb from 'idb-keyval';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
@@ -87,83 +98,124 @@ const App: React.FC = function () {
         selectShowPackageDataImportDialog,
     );
 
+    const [showInferErrorDialog, setShowInferErrorDialog] = useState(false);
+    const [inferErrors, setInferErrors] = useState<string[]>([]);
+    const displayInferErrors = (errors: string[]) => {
+        setInferErrors(errors);
+        setShowInferErrorDialog(true);
+    };
+
     return (
-        <Grid
-            autoColumns="0fr 1fr"
-            autoRows="0fr 1fr"
-            templateAreas='"menu menu" "leftPane rightPane"'
-            w="100vw"
-            h="100vh"
-        >
-            <GridItem gridArea="menu" colSpan={2}>
-                <MenuBar
-                    pythonPackage={pythonPackage}
-                    filter={filter}
-                    setFilter={setFilter}
-                />
-            </GridItem>
-            <GridItem
-                gridArea="leftPane"
-                overflow="auto"
-                minW="20vw"
-                w="40vw"
-                maxW="80vw"
-                borderRight={1}
-                layerStyle="subtleBorder"
-                resize="horizontal"
+        <>
+            <Grid
+                autoColumns="0fr 1fr"
+                autoRows="0fr 1fr"
+                templateAreas='"menu menu" "leftPane rightPane"'
+                w="100vw"
+                h="100vh"
             >
-                {currentUserAction.type === 'attribute' && (
-                    <AttributeForm target={userActionTarget || pythonPackage} />
-                )}
-                {currentUserAction.type === 'boundary' && (
-                    <BoundaryForm target={userActionTarget || pythonPackage} />
-                )}
-                {currentUserAction.type === 'calledAfter' &&
-                    userActionTarget instanceof PythonFunction && (
-                        <CalledAfterForm target={userActionTarget} />
+                <GridItem gridArea="menu" colSpan={2}>
+                    <MenuBar
+                        pythonPackage={pythonPackage}
+                        filter={filter}
+                        setFilter={setFilter}
+                        displayInferErrors={displayInferErrors}
+                    />
+                </GridItem>
+                <GridItem
+                    gridArea="leftPane"
+                    overflow="auto"
+                    minW="20vw"
+                    w="40vw"
+                    maxW="80vw"
+                    borderRight={1}
+                    layerStyle="subtleBorder"
+                    resize="horizontal"
+                >
+                    {currentUserAction.type === 'attribute' && (
+                        <AttributeForm
+                            target={userActionTarget || pythonPackage}
+                        />
                     )}
-                {currentUserAction.type === 'constant' && (
-                    <ConstantForm target={userActionTarget || pythonPackage} />
-                )}
-                {currentUserAction.type === 'enum' && (
-                    <EnumForm target={userActionTarget || pythonPackage} />
-                )}
-                {currentUserAction.type === 'group' && (
-                    <GroupForm
-                        target={userActionTarget || pythonPackage}
-                        groupName={
-                            (currentUserAction as GroupUserAction)?.groupName
-                                ? (currentUserAction as GroupUserAction)
-                                      ?.groupName
-                                : ''
-                        }
+                    {currentUserAction.type === 'boundary' && (
+                        <BoundaryForm
+                            target={userActionTarget || pythonPackage}
+                        />
+                    )}
+                    {currentUserAction.type === 'calledAfter' &&
+                        userActionTarget instanceof PythonFunction && (
+                            <CalledAfterForm target={userActionTarget} />
+                        )}
+                    {currentUserAction.type === 'constant' && (
+                        <ConstantForm
+                            target={userActionTarget || pythonPackage}
+                        />
+                    )}
+                    {currentUserAction.type === 'enum' && (
+                        <EnumForm target={userActionTarget || pythonPackage} />
+                    )}
+                    {currentUserAction.type === 'group' && (
+                        <GroupForm
+                            target={userActionTarget || pythonPackage}
+                            groupName={
+                                (currentUserAction as GroupUserAction)
+                                    ?.groupName
+                                    ? (currentUserAction as GroupUserAction)
+                                          ?.groupName
+                                    : ''
+                            }
+                        />
+                    )}
+                    {currentUserAction.type === 'move' && (
+                        <MoveForm target={userActionTarget || pythonPackage} />
+                    )}
+                    {currentUserAction.type === 'none' && (
+                        <TreeView pythonPackage={filteredPythonPackage} />
+                    )}
+                    {currentUserAction.type === 'optional' && (
+                        <OptionalForm
+                            target={userActionTarget || pythonPackage}
+                        />
+                    )}
+                    {currentUserAction.type === 'rename' && (
+                        <RenameForm
+                            target={userActionTarget || pythonPackage}
+                        />
+                    )}
+                </GridItem>
+                <GridItem gridArea="rightPane" overflow="auto">
+                    <SelectionView pythonPackage={pythonPackage} />
+                </GridItem>
+
+                {showAnnotationImportDialog && <AnnotationImportDialog />}
+                {showPackageDataImportDialog && (
+                    <PackageDataImportDialog
+                        setPythonPackage={setPythonPackage}
+                        setFilter={setFilter}
                     />
                 )}
-                {currentUserAction.type === 'move' && (
-                    <MoveForm target={userActionTarget || pythonPackage} />
-                )}
-                {currentUserAction.type === 'none' && (
-                    <TreeView pythonPackage={filteredPythonPackage} />
-                )}
-                {currentUserAction.type === 'optional' && (
-                    <OptionalForm target={userActionTarget || pythonPackage} />
-                )}
-                {currentUserAction.type === 'rename' && (
-                    <RenameForm target={userActionTarget || pythonPackage} />
-                )}
-            </GridItem>
-            <GridItem gridArea="rightPane" overflow="auto">
-                <SelectionView pythonPackage={pythonPackage} />
-            </GridItem>
-
-            {showAnnotationImportDialog && <AnnotationImportDialog />}
-            {showPackageDataImportDialog && (
-                <PackageDataImportDialog
-                    setPythonPackage={setPythonPackage}
-                    setFilter={setFilter}
-                />
-            )}
-        </Grid>
+            </Grid>
+            <Modal
+                isOpen={showInferErrorDialog}
+                onClose={() => setShowInferErrorDialog(false)}
+                scrollBehavior="inside"
+                size="xl"
+                isCentered
+            >
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Infer errors</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody paddingLeft={10} paddingBottom={6}>
+                        <UnorderedList spacing={5}>
+                            {inferErrors.map((error, index) => (
+                                <ListItem key={error + index}>{error}</ListItem>
+                            ))}
+                        </UnorderedList>
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
+        </>
     );
 };
 

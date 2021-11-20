@@ -1,10 +1,10 @@
-import { AnnotationsState } from '../annotations/annotationSlice';
-import PythonClass from '../packageData/model/PythonClass';
-import PythonFunction from '../packageData/model/PythonFunction';
-import PythonModule from '../packageData/model/PythonModule';
-import PythonPackage from '../packageData/model/PythonPackage';
-import PythonParameter from '../packageData/model/PythonParameter';
-import PythonResult from '../packageData/model/PythonResult';
+import { AnnotationsState } from '../../annotations/annotationSlice';
+import PythonClass from '../../packageData/model/PythonClass';
+import PythonFunction from '../../packageData/model/PythonFunction';
+import PythonModule from '../../packageData/model/PythonModule';
+import PythonPackage from '../../packageData/model/PythonPackage';
+import PythonParameter from '../../packageData/model/PythonParameter';
+import PythonResult from '../../packageData/model/PythonResult';
 import AnnotatedPythonClass from './AnnotatedPythonClass';
 import AnnotatedPythonFunction from './AnnotatedPythonFunction';
 import AnnotatedPythonModule from './AnnotatedPythonModule';
