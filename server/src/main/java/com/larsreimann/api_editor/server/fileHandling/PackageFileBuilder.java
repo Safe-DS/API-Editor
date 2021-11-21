@@ -44,12 +44,49 @@ public class PackageFileBuilder {
     }
 
     private String buildModuleContent(AnnotatedPythonModule pythonModule) {
-        return listToString(buildAllImports(pythonModule), 1)
-            + "\n\n"
-            + listToString(buildAllClasses(pythonModule.getClasses()), 2)
-            + "\n\n"
-            + listToString(buildAllFunctions(pythonModule.getFunctions()), 2)
-            + "\n\n";
+        String formattedImports = listToString(
+            buildAllImports(pythonModule), 1
+        );
+        String formattedClasses = listToString(
+            buildAllClasses(pythonModule.getClasses()), 2
+        );
+        String formattedFunctions = listToString(
+            buildAllFunctions(pythonModule.getFunctions()), 2
+        );
+        String importSeparator;
+        if (formattedImports.isBlank()) {
+            importSeparator = "";
+        }
+        else if (formattedClasses.isBlank() && formattedFunctions.isBlank()) {
+            importSeparator = "\n";
+        }
+        else {
+            importSeparator = "\n\n";
+        }
+        String classesSeparator;
+        if (formattedClasses.isBlank()) {
+            classesSeparator = "";
+        }
+        else if (formattedFunctions.isBlank()) {
+            classesSeparator = "\n";
+        }
+        else {
+            classesSeparator = "\n\n";
+        }
+        String functionSeparator;
+        if (formattedFunctions.isBlank()) {
+            functionSeparator = "";
+        }
+        else {
+            functionSeparator = "\n";
+        }
+        formattedImports = formattedImports + importSeparator;
+        return formattedImports
+            + importSeparator
+            + formattedClasses
+            + classesSeparator
+            + formattedFunctions
+            + functionSeparator;
     }
 
     private List<String> buildAllImports(AnnotatedPythonModule pythonModule) {
