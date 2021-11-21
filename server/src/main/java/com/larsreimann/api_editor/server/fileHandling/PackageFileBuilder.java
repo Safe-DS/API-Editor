@@ -81,12 +81,11 @@ public class PackageFileBuilder {
             functionSeparator = "\n";
         }
         formattedImports = formattedImports + importSeparator;
+        formattedClasses = formattedClasses + classesSeparator;
+        formattedFunctions = formattedFunctions + functionSeparator;
         return formattedImports
-            + importSeparator
             + formattedClasses
-            + classesSeparator
-            + formattedFunctions
-            + functionSeparator;
+            + formattedFunctions;
     }
 
     private List<String> buildAllImports(AnnotatedPythonModule pythonModule) {
@@ -169,8 +168,6 @@ public class PackageFileBuilder {
         }
     }
 
-
-
     private List<String> buildAllClasses(
         List<AnnotatedPythonClass> pythonClasses
     ) {
@@ -237,10 +234,15 @@ public class PackageFileBuilder {
             formattedFunctionParameters =
                 formattedFunctionParameters
                     + String.join(", ", positionOnlyParameters);
-            if (hasPositionOrNameParameters || hasNameOnlyParameters) {
+            if (hasPositionOrNameParameters) {
                 formattedFunctionParameters =
                     formattedFunctionParameters
                     + ", /, ";
+            }
+            else if(hasNameOnlyParameters) {
+                formattedFunctionParameters =
+                    formattedFunctionParameters
+                    + ", /";
             }
             else {
                 formattedFunctionParameters =
@@ -264,7 +266,6 @@ public class PackageFileBuilder {
             }
             formattedFunctionParameters =
                 formattedFunctionParameters
-                    + ", *, "
                     + String.join(", ", nameOnlyParameters);
         }
         return formattedFunctionParameters;
