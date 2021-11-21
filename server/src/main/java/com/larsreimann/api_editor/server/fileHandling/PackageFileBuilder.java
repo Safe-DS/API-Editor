@@ -34,17 +34,6 @@ public class PackageFileBuilder {
         return moduleFiles;
     }
 
-    private String buildModuleContent(AnnotatedPythonModule module) {
-        // TODO
-        return "TODO";
-    }
-
-    private String indent(String toIndent) {
-        String INDENTATION = "    ";
-        toIndent = INDENTATION + toIndent;
-        return toIndent.replaceAll("\n", "\n" + INDENTATION);
-    }
-
     private File buildFile(String fileName, String content) throws IOException {
         File file = new File(fileName);
         try (BufferedWriter out = new BufferedWriter(new FileWriter(fileName))) {
@@ -54,22 +43,221 @@ public class PackageFileBuilder {
         return file;
     }
 
-    private String buildFunction(AnnotatedPythonFunction pythonFunction) {
-        return "TODO";
+    private String buildModuleContent(AnnotatedPythonModule pythonModule) {
+        return listToString(buildAllImports(pythonModule), 1)
+            + "\n\n"
+            + listToString(buildAllClasses(pythonModule.getClasses()), 2)
+            + "\n\n"
+            + listToString(buildAllFunctions(pythonModule.getFunctions()), 2)
+            + "\n\n";
     }
 
-    private String buildParameters(List<AnnotatedPythonParameter> pythonParameters) {
-        return "TODO";
+    private List<String> buildAllImports(AnnotatedPythonModule pythonModule) {
+        List<String> imports = new ArrayList<>();
+        imports.add(buildNamespace(pythonModule.getName()));
+        imports.addAll(buildImports(pythonModule.getImports()));
+        imports.addAll(buildFromImports(pythonModule.getFromImports()));
+        return imports;
+    }
+
+    private String buildNamespace(String moduleName) {
+        return "import " + pythonPackage.getName() + "." + moduleName;
+    }
+
+    private List<String> buildImports(List<PythonImport> pythonImports) {
+        List<String> formattedImports = new ArrayList<>();
+        pythonImports.forEach(pythonImport -> {
+            if (pythonImport.getAlias() != null
+                && !pythonImport.getAlias().isBlank()) {
+                formattedImports.add(
+                    "import "
+                        + pythonImport.getModule()
+                        + " as "
+                        + pythonImport.getAlias()
+                );
+            }
+            else {
+                formattedImports.add(
+                    "import "
+                        + pythonImport.getModule()
+                );
+            }
+        });
+        return formattedImports;
+    }
+
+    private List<String> buildFromImports(
+        List<PythonFromImport> pythonFromImports
+    ) {
+        List<String> formattedImports = new ArrayList<>();
+        pythonFromImports.forEach(pythonFromImport -> {
+            if (pythonFromImport.getAlias() != null
+                && !pythonFromImport.getAlias().isBlank()) {
+                formattedImports.add(
+                    "from "
+                        + pythonFromImport.getModule()
+                        + " import "
+                        + pythonFromImport.getDeclaration()
+                        + " as "
+                        + pythonFromImport.getAlias()
+                );
+            }
+            else {
+                formattedImports.add(
+                    "from "
+                        + pythonFromImport.getModule()
+                        + " import "
+                        + pythonFromImport.getDeclaration()
+                );
+            }
+        });
+        return formattedImports;
+    }
+
+    private String listToString(
+        List<String> listToConvert, int numberOfNewlines
+    ) {
+        String delimiter;
+        if (numberOfNewlines <= 0) {
+            delimiter = "";
+        }
+        else {
+            delimiter = "\n".repeat(numberOfNewlines);
+        }
+        if (listToConvert == null || listToConvert.isEmpty()) {
+            return "";
+        }
+        else {
+            return String.join(delimiter, listToConvert);
+        }
+    }
+
+
+
+    private List<String> buildAllClasses(
+        List<AnnotatedPythonClass> pythonClasses
+    ) {
+        List<String> formattedClasses = new ArrayList<>();
+        pythonClasses.forEach(pythonClass ->
+            formattedClasses.add(buildClass(pythonClass)));
+        return formattedClasses;
     }
 
     private String buildClass(AnnotatedPythonClass pythonClass) {
-        return "TODO";
+        String formattedClass = "class " + pythonClass.getName() + ":\n";
+        formattedClass = formattedClass
+            + indent(listToString(buildAllFunctions(pythonClass.getMethods()), 2));
+        return formattedClass;
     }
 
-    private String buildImports(AnnotatedPythonModule pythonModule) {
-        // imports
-        // fromImports
-        // namespace
-        return "TODO";
+    private String indent(String toIndent) {
+        String INDENTATION = "    ";
+        toIndent = INDENTATION + toIndent;
+        return toIndent.replaceAll("\n", "\n" + INDENTATION);
+    }
+
+    private List<String> buildAllFunctions(
+        List<AnnotatedPythonFunction> pythonFunctions
+    ) {
+        List<String> formattedFunctions = new ArrayList<>();
+        pythonFunctions.forEach(pythonFunction ->
+            formattedFunctions.add(buildFunction(pythonFunction)));
+        return formattedFunctions;
+    }
+
+    private String buildFunction(AnnotatedPythonFunction pythonFunction) {
+        return "def "
+            + pythonFunction.getName()
+            + "("
+            + buildFunctionParameters(pythonFunction.getParameters())
+            + ")"
+            + ":\n"
+            + indent(buildFunctionBody(pythonFunction));
+    }
+
+    private String buildFunctionParameters(
+        List<AnnotatedPythonParameter> pythonParameters
+    ) {
+        String formattedFunctionParameters = "";
+        List<String> positionOnlyParameters = new ArrayList<>();
+        List<String> positionOrNameParameters = new ArrayList<>();
+        List<String> nameOnlyParameters = new ArrayList<>();
+        pythonParameters.forEach(pythonParameter -> {
+            switch (pythonParameter.getAssignedBy()) {
+                case POSITION_ONLY -> positionOnlyParameters
+                    .add(pythonParameter.getName());
+                case POSITION_OR_NAME -> positionOrNameParameters
+                    .add(pythonParameter.getName());
+                case NAME_ONLY -> nameOnlyParameters
+                    .add(pythonParameter.getName());
+            }
+        });
+        boolean hasPositionOnlyParameters = !positionOnlyParameters.isEmpty();
+        boolean hasPositionOrNameParameters = !positionOrNameParameters.isEmpty();
+        boolean hasNameOnlyParameters = !nameOnlyParameters.isEmpty();
+
+        if (hasPositionOnlyParameters) {
+            formattedFunctionParameters =
+                formattedFunctionParameters
+                    + String.join(", ", positionOnlyParameters);
+            if (hasPositionOrNameParameters || hasNameOnlyParameters) {
+                formattedFunctionParameters =
+                    formattedFunctionParameters
+                    + ", /, ";
+            }
+            else {
+                formattedFunctionParameters =
+                    formattedFunctionParameters
+                        + ", /";
+            }
+        }
+        if (hasPositionOrNameParameters) {
+            formattedFunctionParameters =
+                formattedFunctionParameters
+                    + String.join(", ", positionOrNameParameters);
+        }
+        if (hasNameOnlyParameters) {
+            if (hasPositionOnlyParameters || hasPositionOrNameParameters) {
+                formattedFunctionParameters =
+                    formattedFunctionParameters + ", *, ";
+            }
+            else {
+                formattedFunctionParameters =
+                    formattedFunctionParameters + "*, ";
+            }
+            formattedFunctionParameters =
+                formattedFunctionParameters
+                    + ", *, "
+                    + String.join(", ", nameOnlyParameters);
+        }
+        return formattedFunctionParameters;
+    }
+
+    private String buildFunctionBody(AnnotatedPythonFunction pythonFunction) {
+        return pythonFunction.getQualifiedName()
+            + "("
+            + buildFunctionParameterCall(pythonFunction.getParameters())
+            + ")";
+    }
+
+    private String buildFunctionParameterCall(
+        List<AnnotatedPythonParameter> pythonParameters
+    ) {
+        List<String> formattedParameters = new ArrayList<>();
+        pythonParameters.forEach(pythonParameter -> {
+            if (pythonParameter.getAssignedBy()
+                == PythonParameterAssignment.NAME_ONLY) {
+                formattedParameters.add(
+                    pythonParameter.getName()
+                        + "="
+                        + pythonParameter.getName()
+                );
+            } else {
+                formattedParameters.add(
+                    pythonParameter.getName()
+                );
+            }
+        });
+        return String.join(", ", formattedParameters);
     }
 }
