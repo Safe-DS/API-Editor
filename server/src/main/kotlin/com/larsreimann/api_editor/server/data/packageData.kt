@@ -67,7 +67,35 @@ data class AnnotatedPythonClass(
 
     @Transient
     override var originalDeclaration: AnnotatedPythonClass? = null
+
+    @Transient
+    val attributes = mutableListOf<AnnotatedPythonAttribute>()
 }
+
+data class AnnotatedPythonAttribute(
+    override val name: String,
+    val qualifiedName: String,
+    val defaultValue: String,
+    val isPublic: Boolean,
+    val typeInDocs: String,
+    val description: String,
+    override val annotations: List<EditorAnnotation>
+) : AnnotatedPythonDeclaration() {
+
+    @Transient
+    override var originalDeclaration: AnnotatedPythonAttribute? = null
+
+    @Transient
+    var boundary: Boundary? = null
+}
+
+data class Boundary(
+    val isDiscrete: Boolean,
+    val lowerIntervalLimit: Double,
+    val lowerLimitType: ComparisonOperator,
+    val upperIntervalLimit: Double,
+    val upperLimitType: ComparisonOperator
+)
 
 data class AnnotatedPythonEnum(
     override val name: String,
@@ -100,6 +128,9 @@ data class AnnotatedPythonFunction(
     @Transient
     override var originalDeclaration: AnnotatedPythonFunction? = null
 
+    @Transient
+    val calledAfter = mutableListOf<AnnotatedPythonFunction>()
+
     fun isConstructor() = name == "__init__"
 }
 
@@ -117,6 +148,9 @@ data class AnnotatedPythonParameter(
 
     @Transient
     override var originalDeclaration: AnnotatedPythonParameter? = null
+
+    @Transient
+    var boundary: Boundary? = null
 }
 
 enum class PythonParameterAssignment {
@@ -136,4 +170,7 @@ data class AnnotatedPythonResult(
 
     @Transient
     override var originalDeclaration: AnnotatedPythonResult? = null
+
+    @Transient
+    var boundary: Boundary? = null
 }
