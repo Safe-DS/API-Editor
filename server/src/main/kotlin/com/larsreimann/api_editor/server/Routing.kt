@@ -1,7 +1,8 @@
 package com.larsreimann.api_editor.server
 
 import com.larsreimann.api_editor.server.data.AnnotatedPythonPackage
-import com.larsreimann.api_editor.server.fileHandling.PackageFileBuilder
+import com.larsreimann.api_editor.server.file_handling.ModuleContentBuilder
+import com.larsreimann.api_editor.server.file_handling.PackageFileBuilder
 import com.larsreimann.api_editor.server.validation.AnnotationValidator
 import io.ktor.application.*
 import io.ktor.features.*
@@ -74,7 +75,10 @@ fun Route.infer() {
 fun Route.downloadAdapters() {
     post("/downloadAdapters") {
         val pythonPackage = call.receive<AnnotatedPythonPackage>()
-        val packageFileBuilder = PackageFileBuilder(pythonPackage)
+        val packageFileBuilder =
+            PackageFileBuilder(
+                pythonPackage
+            )
         val zipFileName = pythonPackage.name.plus(".zip")
         val zipFile = File(zipFileName)
         val fileList = packageFileBuilder.returnModuleFiles()
