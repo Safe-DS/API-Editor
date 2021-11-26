@@ -46,10 +46,10 @@ class FunctionContentBuilderTest {
                 new AnnotatedPythonParameter(
                     "only-param",
                     "test-module.test-class.test-class-function.only-param",
-                    null,
+                    "13",
                     PythonParameterAssignment.POSITION_ONLY,
                     true,
-                    "typeInDocs",
+                    "float",
                     "description",
                     Collections.emptyList()
                 )
@@ -66,7 +66,7 @@ class FunctionContentBuilderTest {
 
         // then
         String expectedFormattedFunction = """
-            def test-function(only-param, /):
+            def test-function(only-param=13, /):
                 test-module.test-function(only-param)""";
         Assertions.assertEquals(expectedFormattedFunction, formattedClass);
     }
@@ -82,10 +82,10 @@ class FunctionContentBuilderTest {
                 new AnnotatedPythonParameter(
                     "only-param",
                     "test-module.test-class.test-class-function.only-param",
-                    null,
+                    "False",
                     PythonParameterAssignment.POSITION_OR_NAME,
                     true,
-                    "typeInDocs",
+                    "bool",
                     "description",
                     Collections.emptyList()
                 )
@@ -102,7 +102,7 @@ class FunctionContentBuilderTest {
 
         // then
         String expectedFormattedFunction = """
-            def test-function(only-param):
+            def test-function(only-param=False):
                 test-module.test-function(only-param)""";
         Assertions.assertEquals(expectedFormattedFunction, formattedClass);
     }

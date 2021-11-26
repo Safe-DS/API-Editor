@@ -28,9 +28,7 @@ class ModuleContentBuilderTest {
                     true,
                     "typeInDocs",
                     "description",
-                    List.of(new AttributeAnnotation(
-                        new DefaultString("test")
-                    ))
+                    Collections.emptyList()
                 )),
                 Collections.emptyList(),
                 true,
@@ -132,7 +130,7 @@ class ModuleContentBuilderTest {
                             "42",
                             PythonParameterAssignment.NAME_ONLY,
                             true,
-                            "str",
+                            "int",
                             "Lorem ipsum",
                             Collections.emptyList()
                         )
@@ -177,13 +175,13 @@ class ModuleContentBuilderTest {
             from test-from-import2 import test-declaration2 as test-import2
 
             class test-class:
-                def test-class-function(only-param):
+                def test-class-function(only-param="defaultValue"):
                     test-module.test-class.test-class-function(only-param)
 
             def function_module_1(*, param1, param2, param3):
                 test.module_1.function_module_1(param1=param1, param2=param2, param3=param3)
 
-            def test-function(*, test-parameter):
+            def test-function(*, test-parameter=42):
                 test-module.test-function(test-parameter=test-parameter)
             """;
 

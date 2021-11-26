@@ -48,7 +48,7 @@ class ClassContentBuilderTest {
                     "defaultValue",
                     PythonParameterAssignment.POSITION_OR_NAME,
                     true,
-                    "typeInDocs",
+                    "str",
                     "description",
                     List.of(new AttributeAnnotation(
                         new DefaultString("test")
@@ -71,7 +71,7 @@ class ClassContentBuilderTest {
         // then
         String expectedFormattedClass = """
             class test-class:
-                def test-class-function(only-param):
+                def test-class-function(only-param="defaultValue"):
                     test-module.test-class.test-class-function(only-param)""";
         Assertions.assertEquals(formattedClass, expectedFormattedClass);
     }

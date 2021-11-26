@@ -35,11 +35,11 @@ public class FunctionContentBuilder extends PythonFileBuilder {
         pythonParameters.forEach(pythonParameter -> {
             switch (pythonParameter.getAssignedBy()) {
                 case POSITION_ONLY -> positionOnlyParameters
-                    .add(pythonParameter.getName());
+                    .add(buildFormattedParameter(pythonParameter));
                 case POSITION_OR_NAME -> positionOrNameParameters
-                    .add(pythonParameter.getName());
+                    .add(buildFormattedParameter(pythonParameter));
                 case NAME_ONLY -> nameOnlyParameters
-                    .add(pythonParameter.getName());
+                    .add(buildFormattedParameter(pythonParameter));
             }
         });
         boolean hasPositionOnlyParameters = !positionOnlyParameters.isEmpty();
@@ -85,6 +85,24 @@ public class FunctionContentBuilder extends PythonFileBuilder {
                     + String.join(", ", nameOnlyParameters);
         }
         return formattedFunctionParameters;
+    }
+
+    private static String buildFormattedParameter(AnnotatedPythonParameter pythonParameter) {
+        String formattedParameter = pythonParameter.getName();
+        String defaultValue = pythonParameter.getDefaultValue();
+        if (defaultValue != null
+            && !defaultValue.isBlank()) {
+            if (pythonParameter.getTypeInDocs().contains("bool")
+                || pythonParameter.getTypeInDocs().contains("int")
+                || pythonParameter.getTypeInDocs().contains("float")
+            ) {
+                formattedParameter = formattedParameter + "=" + defaultValue;
+            }
+            else {
+                formattedParameter = formattedParameter + "=\"" + defaultValue + "\"";
+            }
+        }
+        return formattedParameter;
     }
 
     private static String buildFunctionBody(AnnotatedPythonFunction pythonFunction) {
