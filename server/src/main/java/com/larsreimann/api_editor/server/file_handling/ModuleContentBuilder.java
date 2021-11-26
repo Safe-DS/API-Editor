@@ -6,7 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ModuleContentBuilder extends PythonFileBuilder {
-    public static String buildModuleContent(
+    /**
+     * Builds a string containing the formatted module content
+     *
+     * @param pythonModule The module whose content is to be formatted
+     *                     and returned
+     * @param packageName The name of the package the module is in
+     * @return The string containing the formatted module content
+     */
+    protected static String buildModuleContent(
         AnnotatedPythonModule pythonModule,
         String packageName
     ) {

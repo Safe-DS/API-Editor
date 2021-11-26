@@ -8,7 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FunctionContentBuilder extends PythonFileBuilder {
-    public static String buildFunction(AnnotatedPythonFunction pythonFunction) {
+    /**
+     * Builds a string containing the formatted function content
+     *
+     * @param pythonFunction The function whose content is to be formatted
+     *                       and returned
+     * @return The string containing the formatted function content
+     */
+    protected static String buildFunction(AnnotatedPythonFunction pythonFunction) {
         return "def "
             + pythonFunction.getName()
             + "("

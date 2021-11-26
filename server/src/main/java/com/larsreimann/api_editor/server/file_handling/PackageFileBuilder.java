@@ -13,10 +13,22 @@ public class PackageFileBuilder {
     AnnotatedPythonPackage pythonPackage;
     private final String PYTHON_EXTENSION = ".py";
 
+    /**
+     * Constructor for class PackageFileBuilder
+     *
+     * @param annotatedPythonPackage The package whose files
+     *                               should be built
+     */
     public PackageFileBuilder(AnnotatedPythonPackage annotatedPythonPackage) {
         this.pythonPackage = annotatedPythonPackage;
     }
 
+    /**
+     * Builds and returns module files based on the python package of the
+     * initialized class
+     *
+     * @return The list of generated module files
+     */
     public List<File> returnModuleFiles() {
         List<File> moduleFiles = new ArrayList<>();
         pythonPackage.getModules().forEach(module -> {

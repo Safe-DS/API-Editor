@@ -8,6 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ImportContentBuilder extends PythonFileBuilder {
+    /**
+     * Builds a string containing the formatted imports
+     *
+     * @param pythonModule The module whose imports are to be returned
+     * @param packageName The name of the package the module is in
+     * @return The string containing the formatted imports
+     */
     protected static String buildAllImports(
         AnnotatedPythonModule pythonModule,
         String packageName
