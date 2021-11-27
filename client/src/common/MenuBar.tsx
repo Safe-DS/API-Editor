@@ -15,9 +15,11 @@ import {
     Heading,
     HStack,
     Icon,
+    Image,
     Input,
     InputGroup,
     InputRightElement,
+    Link,
     Menu,
     MenuButton,
     MenuItem,
@@ -41,7 +43,7 @@ import {
     resetAnnotations,
     toggleAnnotationImportDialog,
 } from '../features/annotations/annotationSlice';
-import AnnotatedPythonPackageBuilder from '../features/annotatedPackageData/AnnotatedPythonPackageBuilder';
+import AnnotatedPythonPackageBuilder from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
 import { PythonFilter } from '../features/packageData/model/PythonFilter';
 import PythonPackage from '../features/packageData/model/PythonPackage';
 import { togglePackageDataImportDialog } from '../features/packageData/packageDataSlice';
@@ -51,6 +53,7 @@ interface MenuBarProps {
     pythonPackage: PythonPackage;
     filter: string;
     setFilter: Setter<string>;
+    displayInferErrors: (errors: string[]) => void;
 }
 
 const DeleteAllAnnotations = function () {
@@ -122,6 +125,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({
     pythonPackage,
     filter,
     setFilter,
+    displayInferErrors,
 }) {
     const { colorMode, toggleColorMode } = useColorMode();
     const initialFocusRef = useRef(null);
@@ -180,9 +184,14 @@ const MenuBar: React.FC<MenuBarProps> = function ({
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(annotatedPythonPackage),
         };
-        fetch('/api-editor/infer', requestOptions)
-            .then((response) => response.text())
-            .then((data) => console.log(data));
+        fetch('/api-editor/infer', requestOptions).then(async (response) => {
+            const jsonResponse = await response.json();
+            if (!response.ok) {
+                displayInferErrors(jsonResponse);
+            } else {
+                //TODO
+            }
+        });
     };
 
     return (
@@ -193,26 +202,39 @@ const MenuBar: React.FC<MenuBarProps> = function ({
             padding="0.5em 1em"
         >
             <Center>
-                <Breadcrumb>
-                    {pathname.map((part, index) => (
-                        // eslint-disable-next-line react/no-array-index-key
-                        <BreadcrumbItem key={index}>
-                            {enableNavigation && (
-                                <BreadcrumbLink
-                                    as={NavLink}
-                                    to={`/${pathname
-                                        .slice(0, index + 1)
-                                        .join('/')}`}
-                                >
-                                    {part}
-                                </BreadcrumbLink>
-                            )}
-                            {!enableNavigation && (
-                                <ChakraText>{part}</ChakraText>
-                            )}
-                        </BreadcrumbItem>
-                    ))}
-                </Breadcrumb>
+                <HStack spacing={4}>
+                    <Button padding={1}>
+                        <Link to="/" as={NavLink} width="100%" height="100%">
+                            <Image
+                                src="favicon.svg"
+                                alt="logo"
+                                width="100%"
+                                height="100%"
+                            />
+                        </Link>
+                    </Button>
+
+                    <Breadcrumb>
+                        {pathname.map((part, index) => (
+                            // eslint-disable-next-line react/no-array-index-key
+                            <BreadcrumbItem key={index}>
+                                {enableNavigation && (
+                                    <BreadcrumbLink
+                                        as={NavLink}
+                                        to={`/${pathname
+                                            .slice(0, index + 1)
+                                            .join('/')}`}
+                                    >
+                                        {part}
+                                    </BreadcrumbLink>
+                                )}
+                                {!enableNavigation && (
+                                    <ChakraText>{part}</ChakraText>
+                                )}
+                            </BreadcrumbItem>
+                        ))}
+                    </Breadcrumb>
+                </HStack>
             </Center>
 
             <Spacer />

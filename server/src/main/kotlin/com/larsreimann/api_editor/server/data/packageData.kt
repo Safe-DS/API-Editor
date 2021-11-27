@@ -1,11 +1,13 @@
 package com.larsreimann.api_editor.server.data
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 @Serializable
 sealed class AnnotatedPythonDeclaration {
     abstract val name: String
     abstract val annotations: List<EditorAnnotation>
+    abstract val originalDeclaration: AnnotatedPythonDeclaration?
 }
 
 @Serializable
@@ -15,7 +17,11 @@ data class AnnotatedPythonPackage(
     val version: String,
     val modules: List<AnnotatedPythonModule>,
     override val annotations: List<EditorAnnotation>
-) : AnnotatedPythonDeclaration()
+) : AnnotatedPythonDeclaration() {
+
+    @Transient
+    override var originalDeclaration: AnnotatedPythonPackage? = null
+}
 
 @Serializable
 data class AnnotatedPythonModule(
@@ -25,7 +31,14 @@ data class AnnotatedPythonModule(
     val classes: List<AnnotatedPythonClass>,
     val functions: List<AnnotatedPythonFunction>,
     override val annotations: List<EditorAnnotation>
-) : AnnotatedPythonDeclaration()
+) : AnnotatedPythonDeclaration() {
+
+    @Transient
+    override var originalDeclaration: AnnotatedPythonModule? = null
+
+    @Transient
+    val enums = mutableListOf<AnnotatedPythonEnum>()
+}
 
 @Serializable
 data class PythonImport(
@@ -50,7 +63,54 @@ data class AnnotatedPythonClass(
     val description: String,
     val fullDocstring: String,
     override val annotations: List<EditorAnnotation>
-) : AnnotatedPythonDeclaration()
+) : AnnotatedPythonDeclaration() {
+
+    @Transient
+    override var originalDeclaration: AnnotatedPythonClass? = null
+
+    @Transient
+    val attributes = mutableListOf<AnnotatedPythonAttribute>()
+}
+
+data class AnnotatedPythonAttribute(
+    override val name: String,
+    val qualifiedName: String,
+    val defaultValue: String,
+    val isPublic: Boolean,
+    val typeInDocs: String,
+    val description: String,
+    override val annotations: List<EditorAnnotation>
+) : AnnotatedPythonDeclaration() {
+
+    @Transient
+    override var originalDeclaration: AnnotatedPythonAttribute? = null
+
+    @Transient
+    var boundary: Boundary? = null
+}
+
+data class Boundary(
+    val isDiscrete: Boolean,
+    val lowerIntervalLimit: Double,
+    val lowerLimitType: ComparisonOperator,
+    val upperIntervalLimit: Double,
+    val upperLimitType: ComparisonOperator
+)
+
+data class AnnotatedPythonEnum(
+    override val name: String,
+    val instances: List<PythonEnumInstance>,
+    override val annotations: List<EditorAnnotation>
+) : AnnotatedPythonDeclaration() {
+
+    @Transient
+    override var originalDeclaration: AnnotatedPythonEnum? = null
+}
+
+data class PythonEnumInstance(
+    val name: String,
+    val value: String
+)
 
 @Serializable
 data class AnnotatedPythonFunction(
@@ -65,6 +125,12 @@ data class AnnotatedPythonFunction(
     override val annotations: List<EditorAnnotation>
 ) : AnnotatedPythonDeclaration() {
 
+    @Transient
+    override var originalDeclaration: AnnotatedPythonFunction? = null
+
+    @Transient
+    val calledAfter = mutableListOf<AnnotatedPythonFunction>()
+
     fun isConstructor() = name == "__init__"
 }
 
@@ -78,7 +144,14 @@ data class AnnotatedPythonParameter(
     val typeInDocs: String,
     val description: String,
     override val annotations: List<EditorAnnotation>
-) : AnnotatedPythonDeclaration()
+) : AnnotatedPythonDeclaration() {
+
+    @Transient
+    override var originalDeclaration: AnnotatedPythonParameter? = null
+
+    @Transient
+    var boundary: Boundary? = null
+}
 
 enum class PythonParameterAssignment {
     POSITION_ONLY,
@@ -93,4 +166,11 @@ data class AnnotatedPythonResult(
     val typeInDocs: String,
     val description: String,
     override val annotations: List<EditorAnnotation>
-) : AnnotatedPythonDeclaration()
+) : AnnotatedPythonDeclaration() {
+
+    @Transient
+    override var originalDeclaration: AnnotatedPythonResult? = null
+
+    @Transient
+    var boundary: Boundary? = null
+}
