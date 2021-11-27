@@ -12,22 +12,20 @@ public class ImportContentBuilder extends PythonFileBuilder {
      * Builds a string containing the formatted imports
      *
      * @param pythonModule The module whose imports are to be returned
-     * @param packageName The name of the package the module is in
      * @return The string containing the formatted imports
      */
     protected static String buildAllImports(
-        AnnotatedPythonModule pythonModule,
-        String packageName
+        AnnotatedPythonModule pythonModule
     ) {
         List<String> imports = new ArrayList<>();
-        imports.add(buildNamespace(packageName, pythonModule.getName()));
+        imports.add(buildNamespace(pythonModule.getName()));
         imports.addAll(buildImports(pythonModule.getImports()));
         imports.addAll(buildFromImports(pythonModule.getFromImports()));
         return listToString(imports, 1);
     }
 
-    private static String buildNamespace(String packageName, String moduleName) {
-        return "import " + packageName + "." + moduleName;
+    private static String buildNamespace(String moduleName) {
+        return "import " + moduleName;
     }
 
     private static List<String> buildImports(List<PythonImport> pythonImports) {

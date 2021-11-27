@@ -11,15 +11,13 @@ public class ModuleContentBuilder extends PythonFileBuilder {
      *
      * @param pythonModule The module whose content is to be formatted
      *                     and returned
-     * @param packageName The name of the package the module is in
      * @return The string containing the formatted module content
      */
     protected static String buildModuleContent(
-        AnnotatedPythonModule pythonModule,
-        String packageName
+        AnnotatedPythonModule pythonModule
     ) {
         String formattedImports = ImportContentBuilder.buildAllImports(
-            pythonModule, packageName
+            pythonModule
         );
         String formattedClasses = buildAllClasses(pythonModule.getClasses());
         String formattedFunctions = buildAllFunctions(pythonModule.getFunctions());

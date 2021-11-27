@@ -163,12 +163,12 @@ class ModuleContentBuilderTest {
 
         // when
         String moduleContent = ModuleContentBuilder.buildModuleContent(
-            testModule, testPackage.getName()
+            testModule
         );
 
         //then
         String expectedModuleContent = """
-            import test-package.test-module
+            import test-module
             import test-import1 as test-alias
             import test-import2
             from test-from-import1 import test-declaration1
@@ -243,12 +243,12 @@ class ModuleContentBuilderTest {
 
         // when
         String moduleContent = ModuleContentBuilder.buildModuleContent(
-            testModule, testPackage.getName()
+            testModule
         );
 
         //then
         String expectedModuleContent = """
-            import test-package.test-module
+            import test-module
             import test-import1 as test-alias
             import test-import2
             from test-from-import1 import test-declaration1
@@ -292,22 +292,14 @@ class ModuleContentBuilderTest {
             Collections.emptyList()
         );
 
-        AnnotatedPythonPackage testPackage = new AnnotatedPythonPackage(
-            "test-distribution",
-            "test-package",
-            "1.0.0",
-            List.of(testModule),
-            Collections.emptyList()
-        );
-
         // when
         String moduleContent = ModuleContentBuilder.buildModuleContent(
-            testModule, testPackage.getName()
+            testModule
         );
 
         //then
         String expectedModuleContent = """
-            import test-package.test-module
+            import test-module
             import test-import1 as test-alias
             import test-import2
             from test-from-import1 import test-declaration1

@@ -37,7 +37,7 @@ public class PackageFileBuilder {
                     buildFile(
                         module.getName() + PYTHON_EXTENSION,
                         ModuleContentBuilder.buildModuleContent(
-                            module, pythonPackage.getName()
+                            module
                         )
                     )
                 );

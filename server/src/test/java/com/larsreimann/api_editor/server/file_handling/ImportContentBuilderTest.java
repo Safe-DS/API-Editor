@@ -21,13 +21,12 @@ class ImportContentBuilderTest {
             Collections.emptyList(),
             Collections.emptyList()
         );
-        String packageName = "test-name";
 
         // when
         String formattedImports = ImportContentBuilder.buildAllImports(
-            pythonModule, packageName
+            pythonModule
         );
-        String expectedFormattedImports = "import test-name.test-module";
+        String expectedFormattedImports = "import test-module";
 
         //then
         Assertions.assertEquals(expectedFormattedImports, formattedImports);
@@ -47,14 +46,13 @@ class ImportContentBuilderTest {
             Collections.emptyList(),
             Collections.emptyList()
         );
-        String packageName = "test-name";
 
         // when
         String formattedImports = ImportContentBuilder.buildAllImports(
-            pythonModule, packageName
+            pythonModule
         );
         String expectedFormattedImports = """
-            import test-name.test-module
+            import test-module
             import imported-module1 as imported-test-module
             import imported-module2""";
 
@@ -84,14 +82,13 @@ class ImportContentBuilderTest {
             Collections.emptyList(),
             Collections.emptyList()
         );
-        String packageName = "test-name";
 
         // when
         String formattedImports = ImportContentBuilder.buildAllImports(
-            pythonModule, packageName
+            pythonModule
         );
         String expectedFormattedImports = """
-            import test-name.test-module
+            import test-module
             from imported-module1 import function1 as f1
             from imported-module2 import function2""";
 
@@ -124,14 +121,13 @@ class ImportContentBuilderTest {
             Collections.emptyList(),
             Collections.emptyList()
         );
-        String packageName = "test-name";
 
         // when
         String formattedImports = ImportContentBuilder.buildAllImports(
-            pythonModule, packageName
+            pythonModule
         );
         String expectedFormattedImports = """
-            import test-name.test-module
+            import test-module
             import imported-module1 as imported-test-module
             import imported-module2
             from imported-module1 import function1 as f1
