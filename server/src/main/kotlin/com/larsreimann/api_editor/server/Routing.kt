@@ -1,7 +1,6 @@
 package com.larsreimann.api_editor.server
 
 import com.larsreimann.api_editor.server.data.AnnotatedPythonPackage
-import com.larsreimann.api_editor.server.file_handling.ModuleContentBuilder
 import com.larsreimann.api_editor.server.file_handling.PackageFileBuilder
 import com.larsreimann.api_editor.server.validation.AnnotationValidator
 import io.ktor.application.*
@@ -37,7 +36,6 @@ fun Application.configureRouting() {
         route("/api-editor") {
             echo()
             infer()
-            downloadAdapters()
         }
 
         install(StatusPages) {
@@ -70,42 +68,35 @@ fun Route.infer() {
         if (messages.isNotEmpty()) {
             call.respond(HttpStatusCode.Conflict, messages)
         } else {
-            call.respond(HttpStatusCode.OK, "TODO")
-        }
-    }
-}
-
-fun Route.downloadAdapters() {
-    post("/downloadAdapters") {
-        val pythonPackage = call.receive<AnnotatedPythonPackage>()
-        val packageFileBuilder =
-            PackageFileBuilder(
-                pythonPackage
-            )
-        val zipFileName = pythonPackage.name.plus(".zip")
-        val zipFile = File(zipFileName)
-        val fileList = packageFileBuilder.returnModuleFiles()
-        ZipOutputStream(BufferedOutputStream(FileOutputStream(zipFile))).use { output ->
-            fileList.forEach { file ->
-                if (file.length() > 1)
-                    FileInputStream(file).use { input ->
-                        BufferedInputStream(input).use { origin ->
-                            val entry = ZipEntry(file.name)
-                            output.putNextEntry(entry)
-                            origin.copyTo(output, 1024)
+            val packageFileBuilder =
+                PackageFileBuilder(
+                    pythonPackage
+                )
+            val zipFileName = pythonPackage.name.plus(".zip")
+            val zipFile = File(zipFileName)
+            val fileList = packageFileBuilder.returnModuleFiles()
+            ZipOutputStream(BufferedOutputStream(FileOutputStream(zipFile))).use { output ->
+                fileList.forEach { file ->
+                    if (file.length() > 1)
+                        FileInputStream(file).use { input ->
+                            BufferedInputStream(input).use { origin ->
+                                val entry = ZipEntry(file.name)
+                                output.putNextEntry(entry)
+                                origin.copyTo(output, 1024)
+                            }
                         }
-                    }
+                }
             }
+            call.response.header(
+                HttpHeaders.ContentDisposition,
+                ContentDisposition.Attachment.withParameter(
+                    ContentDisposition.Parameters.FileName, zipFileName
+                ).toString()
+            )
+            call.respondFile(zipFile)
+            fileList.forEach { file -> file.delete() }
+            zipFile.delete()
         }
-        call.response.header(
-            HttpHeaders.ContentDisposition,
-            ContentDisposition.Attachment.withParameter(
-                ContentDisposition.Parameters.FileName, zipFileName
-            ).toString()
-        )
-        call.respondFile(zipFile)
-        fileList.forEach { file -> file.delete() }
-        zipFile.delete()
     }
 }
 
