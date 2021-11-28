@@ -16,20 +16,22 @@ public class ModuleContentBuilder extends PythonFileBuilder {
     protected static String buildModuleContent(
         AnnotatedPythonModule pythonModule
     ) {
-        String formattedImports = ImportContentBuilder.buildAllImports(
-            pythonModule
-        );
+        String formattedImport = buildNamespace(pythonModule.getName());
         String formattedClasses = buildAllClasses(pythonModule.getClasses());
         String formattedFunctions = buildAllFunctions(pythonModule.getFunctions());
         String[] separators = buildSeparators(
-            formattedImports, formattedClasses, formattedFunctions
+            formattedImport, formattedClasses, formattedFunctions
         );
-        formattedImports = formattedImports + separators[0];
+        formattedImport = formattedImport + separators[0];
         formattedClasses = formattedClasses + separators[1];
         formattedFunctions = formattedFunctions + separators[2];
-        return formattedImports
+        return formattedImport
             + formattedClasses
             + formattedFunctions;
+    }
+
+    private static String buildNamespace(String moduleName) {
+        return "import " + moduleName;
     }
 
     private static String buildAllClasses(

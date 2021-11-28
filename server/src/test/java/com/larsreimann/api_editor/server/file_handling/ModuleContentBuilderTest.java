@@ -43,28 +43,8 @@ class ModuleContentBuilderTest {
 
         AnnotatedPythonModule testModule = new AnnotatedPythonModule(
             "test-module",
-            List.of(
-                new PythonImport(
-                    "test-import1",
-                    "test-alias"
-                ),
-                new PythonImport(
-                    "test-import2",
-                    null
-                )
-            ),
-            List.of(
-                new PythonFromImport(
-                    "test-from-import1",
-                    "test-declaration1",
-                    null
-                ),
-                new PythonFromImport(
-                    "test-from-import2",
-                    "test-declaration2",
-                    "test-import2"
-                )
-            ),
+            Collections.emptyList(),
+            Collections.emptyList(),
             List.of(
                 testClass
             ),
@@ -169,10 +149,6 @@ class ModuleContentBuilderTest {
         //then
         String expectedModuleContent = """
             import test-module
-            import test-import1 as test-alias
-            import test-import2
-            from test-from-import1 import test-declaration1
-            from test-from-import2 import test-declaration2 as test-import2
 
             class test-class:
                 def test-class-function(only-param="defaultValue"):
@@ -208,10 +184,6 @@ class ModuleContentBuilderTest {
                 new PythonImport(
                     "test-import1",
                     "test-alias"
-                ),
-                new PythonImport(
-                    "test-import2",
-                    null
                 )
             ),
             List.of(
@@ -219,11 +191,6 @@ class ModuleContentBuilderTest {
                     "test-from-import1",
                     "test-declaration1",
                     null
-                ),
-                new PythonFromImport(
-                    "test-from-import2",
-                    "test-declaration2",
-                    "test-import2"
                 )
             ),
             List.of(
@@ -249,10 +216,6 @@ class ModuleContentBuilderTest {
         //then
         String expectedModuleContent = """
             import test-module
-            import test-import1 as test-alias
-            import test-import2
-            from test-from-import1 import test-declaration1
-            from test-from-import2 import test-declaration2 as test-import2
 
             class test-class:
             """;
@@ -269,10 +232,6 @@ class ModuleContentBuilderTest {
                 new PythonImport(
                     "test-import1",
                     "test-alias"
-                ),
-                new PythonImport(
-                    "test-import2",
-                    null
                 )
             ),
             List.of(
@@ -280,11 +239,6 @@ class ModuleContentBuilderTest {
                     "test-from-import1",
                     "test-declaration1",
                     null
-                ),
-                new PythonFromImport(
-                    "test-from-import2",
-                    "test-declaration2",
-                    "test-import2"
                 )
             ),
             Collections.emptyList(),
@@ -300,10 +254,6 @@ class ModuleContentBuilderTest {
         //then
         String expectedModuleContent = """
             import test-module
-            import test-import1 as test-alias
-            import test-import2
-            from test-from-import1 import test-declaration1
-            from test-from-import2 import test-declaration2 as test-import2
             """;
 
         Assertions.assertEquals(expectedModuleContent, moduleContent);
