@@ -146,10 +146,10 @@ class _AstVisitor:
             # Ignore nested functions for now
             if isinstance(parent, Module):
                 self.api.add_function(function)
-                parent.add_function(function.qname)
+                parent.add_function(function.unique_qname)
             elif isinstance(parent, Class):
                 self.api.add_function(function)
-                parent.add_method(function.qname)
+                parent.add_method(function.unique_qname)
 
     @staticmethod
     def __description(numpydoc: NumpyDocString) -> str:

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import inspect
+import re
 from enum import Enum, auto
 from typing import Any, Optional
 
@@ -38,15 +39,15 @@ class API:
         self.classes[class_.qname] = class_
 
     def add_function(self, function: Function) -> None:
-        self.functions[function.qname] = function
+        self.functions[function.unique_qname] = function
 
     def is_public_class(self, class_qname: str) -> bool:
         return class_qname in self.classes and self.classes[class_qname].is_public
 
-    def is_public_function(self, function_qname: str) -> bool:
+    def is_public_function(self, function_unique_qname: str) -> bool:
         return (
-            function_qname in self.functions
-            and self.functions[function_qname].is_public
+            function_unique_qname in self.functions
+            and self.functions[function_unique_qname].is_public
         )
 
     def class_count(self) -> int:
@@ -77,14 +78,14 @@ class API:
 
         return result
 
-    def get_default_value(self, parameter_qname: str) -> Optional[str]:
-        function_qname = parent_qname(parameter_qname)
-        parameter_name = declaration_qname_to_name(parameter_qname)
+    def get_default_value(self, parameter_unique_qname: str) -> Optional[str]:
+        function_unique_qname = parent_qname(parameter_unique_qname)
+        parameter_name = declaration_qname_to_name(parameter_unique_qname)
 
-        if function_qname not in self.functions:
+        if function_unique_qname not in self.functions:
             return None
 
-        for parameter in self.functions[function_qname].parameters:
+        for parameter in self.functions[function_unique_qname].parameters:
             if parameter.name == parameter_name:
                 return parameter.default_value
 
@@ -105,7 +106,7 @@ class API:
             ],
             "functions": [
                 function.to_json()
-                for function in sorted(self.functions.values(), key=lambda it: it.qname)
+                for function in sorted(self.functions.values(), key=lambda it: it.unique_qname)
             ],
         }
 
@@ -125,8 +126,8 @@ class Module:
         for class_qname in json["classes"]:
             result.add_class(class_qname)
 
-        for function_qname in json["functions"]:
-            result.add_function(function_qname)
+        for function_unique_qname in json["functions"]:
+            result.add_function(function_unique_qname)
 
         return result
 
@@ -142,8 +143,8 @@ class Module:
     def add_class(self, class_qname: str) -> None:
         self.classes.append(class_qname)
 
-    def add_function(self, function_qname: str) -> None:
-        self.functions.append(function_qname)
+    def add_function(self, function_unique_qname: str) -> None:
+        self.functions.append(function_unique_qname)
 
     def to_json(self) -> Any:
         return {
@@ -201,8 +202,8 @@ class Class:
             json["source_code"],
         )
 
-        for method_qname in json["methods"]:
-            result.add_method(method_qname)
+        for method_unique_qname in json["methods"]:
+            result.add_method(method_unique_qname)
 
         return result
 
@@ -229,8 +230,8 @@ class Class:
     def name(self) -> str:
         return self.qname.split(".")[-1]
 
-    def add_method(self, function_qname: str) -> None:
-        self.methods.append(function_qname)
+    def add_method(self, method_unique_qname: str) -> None:
+        self.methods.append(method_unique_qname)
 
     def to_json(self) -> Any:
         return {
@@ -287,10 +288,46 @@ class Function:
     def name(self) -> str:
         return self.qname.split(".")[-1]
 
+    @property
+    def unique_name(self) -> str:
+        return self.unique_qname.split(".")[-1]
+
+    @property
+    def unique_qname(self) -> str:
+        result = self.qname
+
+        if self.is_getter():
+            result += '@getter'
+        elif self.is_setter():
+            result += '@setter'
+        elif self.is_deleter():
+            result += '@deleter'
+
+        return result
+
+    def is_getter(self) -> bool:
+        return 'property' in self.decorators
+
+    def is_setter(self) -> bool:
+        for decorator in self.decorators:
+            if re.search(r"^[^.]*.setter$", decorator):
+                return True
+
+        return False
+
+    def is_deleter(self) -> bool:
+        for decorator in self.decorators:
+            if re.search(r"^[^.]*.deleter$", decorator):
+                return True
+
+        return False
+
     def to_json(self) -> Any:
         return {
             "name": self.name,
+            "unique_name": self.unique_name,
             "qname": self.qname,
+            "unique_qname": self.unique_qname,
             "decorators": self.decorators,
             "parameters": [parameter.to_json() for parameter in self.parameters],
             "results": [result.to_json() for result in self.results],
