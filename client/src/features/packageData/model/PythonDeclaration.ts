@@ -8,12 +8,16 @@ export default abstract class PythonDeclaration {
 
     abstract children(): PythonDeclaration[];
 
+    getUniqueName(): string {
+        return this.name;
+    }
+
     path(): string[] {
         let current: Optional<PythonDeclaration> = this;
         const result: string[] = [];
 
         while (current !== null && current !== undefined) {
-            result.unshift(current.name);
+            result.unshift(current.getUniqueName());
             current = current.parent();
         }
 
@@ -32,7 +36,7 @@ export default abstract class PythonDeclaration {
         const [head, ...tail] = relativePath;
         return (
             this.children()
-                .find((it) => it.name === head)
+                .find((it) => it.getUniqueName() === head)
                 ?.getByRelativePath(tail) ?? null
         );
     }

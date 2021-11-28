@@ -24,7 +24,7 @@ export const parsePythonPackageJson = function (
     const functions = new Map(
         packageJson.functions
             .map(parsePythonFunctionJson)
-            .map((it) => [it.qualifiedName, it]),
+            .map((it) => [it.uniqueQualifiedName, it]),
     );
 
     // Classes
@@ -79,12 +79,14 @@ const parsePythonModuleJson = function (
             ),
         moduleJson.functions
             .sort((a, b) => a.localeCompare(b))
-            .filter((functionQualifiedName) =>
-                functions.has(functionQualifiedName),
+            .filter((functionUniqueQualifiedName) =>
+                functions.has(functionUniqueQualifiedName),
             )
             .map(
-                (functionQualifiedName) =>
-                    functions.get(functionQualifiedName) as PythonFunction,
+                (functionUniqueQualifiedName) =>
+                    functions.get(
+                        functionUniqueQualifiedName,
+                    ) as PythonFunction,
             ),
     );
 };
@@ -139,12 +141,14 @@ const parsePythonClassJson = function (
         classJson.superclasses,
         classJson.methods
             .sort((a, b) => a.localeCompare(b))
-            .filter((functionQualifiedName) =>
-                functions.has(functionQualifiedName),
+            .filter((functionUniqueQualifiedName) =>
+                functions.has(functionUniqueQualifiedName),
             )
             .map(
-                (functionQualifiedName) =>
-                    functions.get(functionQualifiedName) as PythonFunction,
+                (functionUniqueQualifiedName) =>
+                    functions.get(
+                        functionUniqueQualifiedName,
+                    ) as PythonFunction,
             ),
         classJson.description ?? '',
         classJson.docstring ?? '',
@@ -153,7 +157,9 @@ const parsePythonClassJson = function (
 
 interface PythonFunctionJson {
     name: string;
+    unique_name: string;
     qname: string;
+    unique_qname: string;
     decorators: string[];
     parameters: PythonParameterJson[];
     results: PythonResultJson[];
@@ -168,7 +174,9 @@ const parsePythonFunctionJson = function (
 ): PythonFunction {
     return new PythonFunction(
         functionJson.name,
+        functionJson.unique_name,
         functionJson.qname,
+        functionJson.unique_qname,
         functionJson.decorators,
         functionJson.parameters.map(parsePythonParameterJson),
         functionJson.results.map(parsePythonResultJson),
