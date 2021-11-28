@@ -71,11 +71,11 @@ export default class PythonFunction extends PythonDeclaration {
     }
 
     isSetter(): boolean {
-        return this.decorators.some((it) => /[^.]*.setter/.test(it));
+        return this.decorators.some((it) => /[^.]*.setter/u.test(it));
     }
 
     isDeleter(): boolean {
-        return this.decorators.some((it) => /[^.]*.deleter/.test(it));
+        return this.decorators.some((it) => /[^.]*.deleter/u.test(it));
     }
 
     explicitParameters(): PythonParameter[] {
