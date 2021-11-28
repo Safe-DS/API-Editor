@@ -5,12 +5,22 @@ import PythonPackage from './PythonPackage';
 import PythonParameter from './PythonParameter';
 
 test('path without parent', () => {
-    const pythonFunction = new PythonFunction('function', 'function');
+    const pythonFunction = new PythonFunction(
+        'function',
+        'function',
+        'function',
+        'function',
+    );
     expect(pythonFunction.path()).toEqual(['function']);
 });
 
 test('path with ancestors', () => {
-    const pythonFunction = new PythonFunction('function', 'function');
+    const pythonFunction = new PythonFunction(
+        'function',
+        'function',
+        'function',
+        'function',
+    );
 
     // eslint-disable-next-line no-new
     new PythonPackage('distribution', 'package', '0.0.1', [
@@ -35,6 +45,8 @@ test('getByRelativePath with correct path', () => {
     const pythonFunction = new PythonFunction(
         'function',
         'function',
+        'function',
+        'function',
         [],
         [pythonParameter],
     );
@@ -42,18 +54,30 @@ test('getByRelativePath with correct path', () => {
 });
 
 test('getByRelativePath with misleading path', () => {
-    const pythonFunction = new PythonFunction('function', 'function');
+    const pythonFunction = new PythonFunction(
+        'function',
+        'function',
+        'function',
+        'function',
+    );
     // eslint-disable-next-line testing-library/prefer-presence-queries
     expect(pythonFunction.getByRelativePath(['child'])).toBeNull();
 });
 
 test('toString without decorators and parameters', () => {
-    const pythonFunction = new PythonFunction('function', 'function');
+    const pythonFunction = new PythonFunction(
+        'function',
+        'function',
+        'function',
+        'function',
+    );
     expect(pythonFunction.toString()).toBe('def function()');
 });
 
 test('toString with decorators and parameters', () => {
     const pythonFunction = new PythonFunction(
+        'function',
+        'function',
         'function',
         'function',
         ['deco1', 'deco2'],

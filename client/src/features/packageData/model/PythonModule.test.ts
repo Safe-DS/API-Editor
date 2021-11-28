@@ -24,7 +24,16 @@ test('getByRelativePath with correct path', () => {
         [],
         [],
         [],
-        [new PythonFunction('function', 'function', [], [pythonParameter])],
+        [
+            new PythonFunction(
+                'function',
+                'function',
+                'function',
+                'function',
+                [],
+                [pythonParameter],
+            ),
+        ],
     );
     expect(pythonModule.getByRelativePath(['function', 'param'])).toBe(
         pythonParameter,
