@@ -13,9 +13,6 @@ import io.ktor.routing.*
 import io.ktor.serialization.*
 import kotlinx.serialization.json.Json
 import java.io.*
-import java.util.zip.ZipEntry
-import java.util.zip.ZipOutputStream
-import kotlin.io.use
 
 fun Application.configureRouting() {
     install(ContentNegotiation) {
@@ -65,36 +62,33 @@ fun Route.infer() {
         val annotationValidator = AnnotationValidator(pythonPackage)
         val annotationErrors = annotationValidator.validate()
         val messages = annotationErrors.map { it.message() }
+        val workingFolderPath = "./tmp/"
+        val zipFolderPath = "./zipFolder/"
         if (messages.isNotEmpty()) {
             call.respond(HttpStatusCode.Conflict, messages)
         } else {
             val packageFileBuilder =
                 PackageFileBuilder(
-                    pythonPackage
+                    pythonPackage,
+                    workingFolderPath,
+                    zipFolderPath
                 )
-            val zipFileName = pythonPackage.name.plus(".zip")
-            val zipFile = File(zipFileName)
-            val fileList = packageFileBuilder.returnModuleFiles()
-            ZipOutputStream(BufferedOutputStream(FileOutputStream(zipFile))).use { output ->
-                fileList.forEach { file ->
-                    if (file.length() > 1)
-                        FileInputStream(file).use { input ->
-                            BufferedInputStream(input).use { origin ->
-                                val entry = ZipEntry(file.name)
-                                output.putNextEntry(entry)
-                                origin.copyTo(output, 1024)
-                            }
-                        }
-                }
+            try {
+                packageFileBuilder.buildModuleFiles()
             }
+            catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            val zipFile = File(zipFolderPath)
+
             call.response.header(
                 HttpHeaders.ContentDisposition,
                 ContentDisposition.Attachment.withParameter(
-                    ContentDisposition.Parameters.FileName, zipFileName
+                    ContentDisposition.Parameters.FileName, zipFolderPath
                 ).toString()
             )
             call.respondFile(zipFile)
-            fileList.forEach { file -> file.delete() }
             zipFile.delete()
         }
     }
