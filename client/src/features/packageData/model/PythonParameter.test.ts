@@ -28,6 +28,8 @@ test('path with ancestors', () => {
                         new PythonFunction(
                             'function',
                             'function',
+                            'function',
+                            'function',
                             [],
                             [pythonParameter],
                         ),

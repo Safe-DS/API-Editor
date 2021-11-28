@@ -27,7 +27,16 @@ test('getByRelativePath with correct path', () => {
         'Class',
         [],
         [],
-        [new PythonFunction('function', 'function', [], [pythonParameter])],
+        [
+            new PythonFunction(
+                'function',
+                'function',
+                'function',
+                'function',
+                [],
+                [pythonParameter],
+            ),
+        ],
     );
     expect(pythonClass.getByRelativePath(['function', 'param'])).toBe(
         pythonParameter,
