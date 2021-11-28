@@ -60,7 +60,7 @@ const TreeNode: React.FC<TreeNodeProps> = function ({
                 isSelected={isSelected(declaration, currentPathname)}
             />
             <Icon as={icon} />
-            <ChakraText>{declaration.name}</ChakraText>
+            <ChakraText>{declaration.getUniqueName()}</ChakraText>
         </HStack>
     );
 };

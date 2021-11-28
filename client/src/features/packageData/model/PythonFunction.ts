@@ -8,7 +8,9 @@ import PythonResult from './PythonResult';
 
 export default class PythonFunction extends PythonDeclaration {
     readonly name: string;
+    readonly uniqueName: string;
     readonly qualifiedName: string;
+    readonly uniqueQualifiedName: string;
     readonly decorators: string[];
     readonly parameters: PythonParameter[];
     readonly results: PythonResult[];
@@ -19,7 +21,9 @@ export default class PythonFunction extends PythonDeclaration {
 
     constructor(
         name: string,
+        uniqueName: string,
         qualifiedName: string,
+        uniqueQualifiedName: string,
         decorators: string[] = [],
         parameters: PythonParameter[] = [],
         results: PythonResult[] = [],
@@ -30,7 +34,9 @@ export default class PythonFunction extends PythonDeclaration {
         super();
 
         this.name = name;
+        this.uniqueName = uniqueName;
         this.qualifiedName = qualifiedName;
+        this.uniqueQualifiedName = uniqueQualifiedName;
         this.decorators = decorators;
         this.parameters = parameters;
         this.results = results;
@@ -54,6 +60,22 @@ export default class PythonFunction extends PythonDeclaration {
 
     children(): PythonParameter[] {
         return this.parameters;
+    }
+
+    getUniqueName(): string {
+        return this.uniqueName;
+    }
+
+    isGetter(): boolean {
+        return this.decorators.includes('property');
+    }
+
+    isSetter(): boolean {
+        return this.decorators.some((it) => /[^.]*.setter/.test(it));
+    }
+
+    isDeleter(): boolean {
+        return this.decorators.some((it) => /[^.]*.deleter/.test(it));
     }
 
     explicitParameters(): PythonParameter[] {
@@ -109,7 +131,9 @@ export default class PythonFunction extends PythonDeclaration {
 
         return new PythonFunction(
             this.name,
+            this.uniqueName,
             this.qualifiedName,
+            this.uniqueQualifiedName,
             this.decorators,
             parameters,
             results,
