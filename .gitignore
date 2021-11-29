@@ -22,3 +22,6 @@ dist/
 
 # Output of this tool
 out/
+
+# VSCode Settings
+.vscode/

@@ -3,7 +3,7 @@ from __future__ import annotations
 import inspect
 import re
 from enum import Enum, auto
-from typing import Any, Optional
+from typing import Any, Dict, Optional
 
 from package_parser.utils import declaration_qname_to_name, parent_qname
 
@@ -106,7 +106,9 @@ class API:
             ],
             "functions": [
                 function.to_json()
-                for function in sorted(self.functions.values(), key=lambda it: it.unique_qname)
+                for function in sorted(
+                    self.functions.values(), key=lambda it: it.unique_qname
+                )
             ],
         }
 
@@ -297,16 +299,16 @@ class Function:
         result = self.qname
 
         if self.is_getter():
-            result += '@getter'
+            result += "@getter"
         elif self.is_setter():
-            result += '@setter'
+            result += "@setter"
         elif self.is_deleter():
-            result += '@deleter'
+            result += "@deleter"
 
         return result
 
     def is_getter(self) -> bool:
-        return 'property' in self.decorators
+        return "property" in self.decorators
 
     def is_setter(self) -> bool:
         for decorator in self.decorators:
@@ -339,9 +341,9 @@ class Function:
 
 
 class Parameter:
-    @staticmethod
-    def from_json(json: Any) -> Parameter:
-        return Parameter(
+    @classmethod
+    def from_json(cls, json: Any):
+        return cls(
             json["name"],
             json["default_value"],
             json["is_public"],
@@ -395,9 +397,9 @@ class Result:
 
 
 class ParameterAndResultDocstring:
-    @staticmethod
-    def from_json(json: Any) -> ParameterAndResultDocstring:
-        return ParameterAndResultDocstring(json["type"], json["description"])
+    @classmethod
+    def from_json(cls, json: Any):
+        return cls(json["type"], json["description"])
 
     def __init__(
         self,
@@ -409,3 +411,98 @@ class ParameterAndResultDocstring:
 
     def to_json(self) -> Any:
         return {"type": self.type, "description": self.description}
+
+
+class Action:
+    @classmethod
+    def from_json(cls, json: Any):
+        return cls(json["action"])
+
+    def __init__(self, action: str) -> None:
+        self.action = action
+
+    def to_json(self) -> Dict:
+        return {"action": self.action}
+
+
+class RuntimeAction(Action):
+    def __init__(self, action: str) -> None:
+        super().__init__(action)
+
+
+class StaticAction(Action):
+    def __init__(self, action: str) -> None:
+        super().__init__(action)
+
+
+class ParameterIsIgnored(StaticAction):
+    def __init__(self, action: str) -> None:
+        super().__init__(action)
+
+
+class ParameterIsIllegal(StaticAction):
+    def __init__(self, action: str) -> None:
+        super().__init__(action)
+
+
+class Condition:
+    @classmethod
+    def from_json(cls, json: Any):
+        return cls(json["condition"])
+
+    def __init__(self, condition: str) -> None:
+        self.condition = condition
+
+    def to_json(self) -> Dict:
+        return {"condition": self.condition}
+
+
+class RuntimeCondition(Condition):
+    def __init__(self, condition: str) -> None:
+        super().__init__(condition)
+
+
+class StaticCondition(Condition):
+    def __init__(self, condition: str) -> None:
+        super().__init__(condition)
+
+
+class ParameterHasValue(StaticCondition):
+    def __init__(self, condition: str) -> None:
+        super().__init__(condition)
+
+
+class ParameterIsSet(StaticCondition):
+    def __init__(self, condition: str) -> None:
+        super().__init__(condition)
+
+
+class Dependency:
+    @classmethod
+    def from_json(cls, json: Any):
+        return cls(
+            Parameter.from_json(["hasDependentParameter"]),
+            Parameter.from_json(["isDependingOn"]),
+            Condition.from_json(["hasCondition"]),
+            Action.from_json(["hasAction"]),
+        )
+
+    def __init__(
+        self,
+        hasDependentParameter: Parameter,
+        isDependingOn: Parameter,
+        hasCondition: Condition,
+        hasAction: Action,
+    ) -> None:
+        self.hasDependentParameter = hasDependentParameter
+        self.isDependingOn = isDependingOn
+        self.hasCondition = hasCondition
+        self.hasAction = hasAction
+
+    def to_json(self) -> Dict:
+        return {
+            "hasDependentParameter": self.hasDependentParameter.to_json(),
+            "isDependingOn": self.isDependingOn.to_json(),
+            "hasCondition": self.hasCondition.to_json(),
+            "hasAction": self.hasAction.to_json(),
+        }
