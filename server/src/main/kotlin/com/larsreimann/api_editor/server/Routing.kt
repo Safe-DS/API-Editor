@@ -65,7 +65,6 @@ fun Route.infer() {
         val annotationErrors = annotationValidator.validate()
         val messages = annotationErrors.map { it.message() }
         val zipFolderPath = "./zipFolder/"
-//        val zipPath = Files.createTempDirectory(zipFolderName);
         if (messages.isNotEmpty()) {
             call.respond(HttpStatusCode.Conflict, messages)
         } else {
