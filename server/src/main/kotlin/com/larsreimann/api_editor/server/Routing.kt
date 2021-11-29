@@ -92,7 +92,6 @@ fun Route.infer() {
             )
             call.respondFile(zipFile)
             zipFile.delete()
-
         } catch (e: Exception) {
             e.printStackTrace()
             call.respond(HttpStatusCode.InternalServerError, "Something went wrong while inferring the API.")
