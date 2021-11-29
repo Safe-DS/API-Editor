@@ -14,7 +14,6 @@ import java.util.zip.ZipOutputStream;
 
 public class PackageFileBuilder {
     AnnotatedPythonPackage pythonPackage;
-    private final String workingFolderPath;
     private final String zipFolderPath;
 
     /**
@@ -22,19 +21,15 @@ public class PackageFileBuilder {
      *
      * @param annotatedPythonPackage The package whose files
      *                               should be built
-     * @param workingFolderPath The path to the folder in which the content
-     *                          of the zip file is being built
      * @param zipFolderPath The path to the folder in which the zip file
      *                      will be generated
      *
      */
     public PackageFileBuilder(
         AnnotatedPythonPackage annotatedPythonPackage,
-        String workingFolderPath,
         String zipFolderPath
     ) {
         this.pythonPackage = annotatedPythonPackage;
-        this.workingFolderPath = workingFolderPath;
         this.zipFolderPath = zipFolderPath;
     }
 
@@ -45,30 +40,35 @@ public class PackageFileBuilder {
      *
      */
     public void buildModuleFiles() throws Exception {
+        Path workingPath = Files.createTempDirectory("working");
+        String absoluteWorkingPath = workingPath.toFile().getAbsolutePath() + "/";
         pythonPackage.getModules().forEach(module -> {
             try {
                 buildFile(
                     module.getName(),
                     ModuleContentBuilder.buildModuleContent(
                         module
-                    )
+                    ),
+                    absoluteWorkingPath
                 );
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
-        zip();
-        File workingDirectory = new File(workingFolderPath);
+        zip(absoluteWorkingPath);
+        File workingDirectory = new File(absoluteWorkingPath);
         deleteFolder(workingDirectory);
     }
 
-    private File buildFile(String fileName, String content) {
+    private File buildFile(String fileName, String content, String workingFolderPath) {
         fileName = fileName.replaceAll("\\.", "/");
         fileName = workingFolderPath + fileName;
-        String directoryName = fileName.substring(0, fileName.lastIndexOf("/"));
+        fileName = fileName.replaceAll("/", "\\\\");
+        String directoryName = fileName.substring(0, fileName.lastIndexOf("\\"));
         File directory = new File(directoryName);
         directory.mkdirs();
         fileName = fileName + ".py";
+        System.out.println(fileName);
         File file = new File(fileName);
         try (BufferedWriter out = new BufferedWriter(new FileWriter(fileName))) {
             out.write(content);
@@ -80,7 +80,7 @@ public class PackageFileBuilder {
         return file;
     }
 
-    private void zip() throws Exception {
+    private void zip(String workingFolderPath) throws Exception {
         Path path = Files.createFile(Paths.get(zipFolderPath));
         try (ZipOutputStream zipOutputStream = new ZipOutputStream(Files.newOutputStream(path))) {
             Path sourcePath = Paths.get(workingFolderPath);

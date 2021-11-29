@@ -13,6 +13,8 @@ import io.ktor.routing.*
 import io.ktor.serialization.*
 import kotlinx.serialization.json.Json
 import java.io.*
+import java.nio.file.Files
+import kotlin.io.path.absolutePathString
 
 fun Application.configureRouting() {
     install(ContentNegotiation) {
@@ -62,15 +64,14 @@ fun Route.infer() {
         val annotationValidator = AnnotationValidator(pythonPackage)
         val annotationErrors = annotationValidator.validate()
         val messages = annotationErrors.map { it.message() }
-        val workingFolderPath = "./tmp/"
         val zipFolderPath = "./zipFolder/"
+//        val zipPath = Files.createTempDirectory(zipFolderName);
         if (messages.isNotEmpty()) {
             call.respond(HttpStatusCode.Conflict, messages)
         } else {
             val packageFileBuilder =
                 PackageFileBuilder(
                     pythonPackage,
-                    workingFolderPath,
                     zipFolderPath
                 )
             try {
