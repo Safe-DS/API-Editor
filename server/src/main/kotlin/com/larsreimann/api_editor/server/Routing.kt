@@ -3,18 +3,28 @@ package com.larsreimann.api_editor.server
 import com.larsreimann.api_editor.server.data.AnnotatedPythonPackage
 import com.larsreimann.api_editor.server.file_handling.PackageFileBuilder
 import com.larsreimann.api_editor.server.validation.AnnotationValidator
-import io.ktor.application.*
-import io.ktor.features.*
-import io.ktor.http.*
-import io.ktor.http.content.*
-import io.ktor.request.*
-import io.ktor.response.*
-import io.ktor.routing.*
-import io.ktor.serialization.*
+import io.ktor.application.Application
+import io.ktor.application.call
+import io.ktor.application.install
+import io.ktor.features.ContentNegotiation
+import io.ktor.features.StatusPages
+import io.ktor.http.ContentDisposition
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.content.defaultResource
+import io.ktor.http.content.resources
+import io.ktor.http.content.static
+import io.ktor.request.receive
+import io.ktor.response.header
+import io.ktor.response.respond
+import io.ktor.response.respondFile
+import io.ktor.routing.Route
+import io.ktor.routing.post
+import io.ktor.routing.route
+import io.ktor.routing.routing
+import io.ktor.serialization.json
 import kotlinx.serialization.json.Json
-import java.io.*
-import java.nio.file.Files
-import kotlin.io.path.absolutePathString
+import java.io.File
 
 fun Application.configureRouting() {
     install(ContentNegotiation) {
@@ -75,8 +85,7 @@ fun Route.infer() {
                 )
             try {
                 packageFileBuilder.buildModuleFiles()
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
 
