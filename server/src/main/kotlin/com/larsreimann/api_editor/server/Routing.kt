@@ -74,32 +74,29 @@ fun Route.infer() {
         val annotationValidator = AnnotationValidator(pythonPackage)
         val annotationErrors = annotationValidator.validate()
         val messages = annotationErrors.map { it.message() }
-        val zipFolderPath = "./zipFolder/"
         if (messages.isNotEmpty()) {
             call.respond(HttpStatusCode.Conflict, messages)
-        } else {
-            val packageFileBuilder =
-                PackageFileBuilder(
-                    pythonPackage,
-                    zipFolderPath
-                )
-            try {
-                packageFileBuilder.buildModuleFiles()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-
-            val zipFile = File(zipFolderPath)
-
-            call.response.header(
-                HttpHeaders.ContentDisposition,
-                ContentDisposition.Attachment.withParameter(
-                    ContentDisposition.Parameters.FileName, zipFolderPath
-                ).toString()
-            )
-            call.respondFile(zipFile)
-            zipFile.delete()
+            return@post
         }
+
+        val zipFolderPath = "./zipFolder/"
+        val packageFileBuilder = PackageFileBuilder(pythonPackage, zipFolderPath)
+        try {
+            packageFileBuilder.buildModuleFiles()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        val zipFile = File(zipFolderPath)
+
+        call.response.header(
+            HttpHeaders.ContentDisposition,
+            ContentDisposition.Attachment.withParameter(
+                ContentDisposition.Parameters.FileName, zipFolderPath
+            ).toString()
+        )
+        call.respondFile(zipFile)
+        zipFile.delete()
     }
 }
 
