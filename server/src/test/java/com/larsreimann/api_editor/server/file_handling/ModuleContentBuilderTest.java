@@ -23,7 +23,7 @@ class ModuleContentBuilderTest {
                 List.of(new AnnotatedPythonParameter(
                     "only-param",
                     "test-module.test-class.test-class-function.only-param",
-                    "defaultValue",
+                    "'defaultValue'",
                     PythonParameterAssignment.POSITION_OR_NAME,
                     true,
                     "typeInDocs",
@@ -151,7 +151,7 @@ class ModuleContentBuilderTest {
             import test-module
 
             class test-class:
-                def test-class-function(only-param="defaultValue"):
+                def test-class-function(only-param='defaultValue'):
                     test-module.test-class.test-class-function(only-param)
 
             def function_module_1(*, param1, param2, param3):

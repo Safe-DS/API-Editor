@@ -92,15 +92,7 @@ public class FunctionContentBuilder extends PythonFileBuilder {
         String defaultValue = pythonParameter.getDefaultValue();
         if (defaultValue != null
             && !defaultValue.isBlank()) {
-            if (pythonParameter.getTypeInDocs().contains("bool")
-                || pythonParameter.getTypeInDocs().contains("int")
-                || pythonParameter.getTypeInDocs().contains("float")
-            ) {
-                formattedParameter = formattedParameter + "=" + defaultValue;
-            }
-            else {
-                formattedParameter = formattedParameter + "=\"" + defaultValue + "\"";
-            }
+            formattedParameter = formattedParameter + "=" + defaultValue;
         }
         return formattedParameter;
     }

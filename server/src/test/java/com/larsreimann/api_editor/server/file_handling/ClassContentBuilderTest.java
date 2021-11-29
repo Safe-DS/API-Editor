@@ -45,7 +45,7 @@ class ClassContentBuilderTest {
                 List.of(new AnnotatedPythonParameter(
                     "only-param",
                     "test-module.test-class.test-class-function.only-param",
-                    "defaultValue",
+                    "'defaultValue'",
                     PythonParameterAssignment.POSITION_OR_NAME,
                     true,
                     "str",
@@ -71,7 +71,7 @@ class ClassContentBuilderTest {
         // then
         String expectedFormattedClass = """
             class test-class:
-                def test-class-function(only-param="defaultValue"):
+                def test-class-function(only-param='defaultValue'):
                     test-module.test-class.test-class-function(only-param)""";
         Assertions.assertEquals(formattedClass, expectedFormattedClass);
     }
