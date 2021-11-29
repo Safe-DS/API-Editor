@@ -132,6 +132,11 @@ export class InferableOptionalAnnotation extends InferableAnnotation {
         };
     }
 }
+export class InferablePureAnnotation extends InferableAnnotation {
+    constructor() {
+        super(dataPathPrefix + 'PureAnnotation');
+    }
+}
 export class InferableRenameAnnotation extends InferableAnnotation {
     readonly newName: string;
 

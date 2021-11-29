@@ -19,8 +19,9 @@ import {
     removeConstant,
     removeEnum,
     removeGroup,
-    removeOptional,
     removeMove,
+    removeOptional,
+    removePure,
     removeRenaming,
     removeRequired,
     removeUnused,
@@ -32,6 +33,7 @@ import {
     selectGroups,
     selectMove,
     selectOptional,
+    selectPure,
     selectRenaming,
     selectRequired,
     selectUnused,
@@ -60,6 +62,7 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
     const groupAnnotations = useAppSelector(selectGroups(target));
     const moveAnnotation = useAppSelector(selectMove(target));
     const optionalAnnotation = useAppSelector(selectOptional(target));
+    const pureAnnotation = useAppSelector(selectPure(target));
     const renameAnnotation = useAppSelector(selectRenaming(target));
     const requiredAnnotation = useAppSelector(selectRequired(target));
     const unusedAnnotation = useAppSelector(selectUnused(target));
@@ -73,6 +76,7 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
         !groupAnnotations &&
         !moveAnnotation &&
         !optionalAnnotation &&
+        !pureAnnotation &&
         !renameAnnotation &&
         !requiredAnnotation &&
         !unusedAnnotation
@@ -161,6 +165,12 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
                     )}
                     onEdit={() => dispatch(showOptionalAnnotationForm(target))}
                     onDelete={() => dispatch(removeOptional(target))}
+                />
+            )}
+            {pureAnnotation && (
+                <Annotation
+                    type="pure"
+                    onDelete={() => dispatch(removePure(target))}
                 />
             )}
             {renameAnnotation && (

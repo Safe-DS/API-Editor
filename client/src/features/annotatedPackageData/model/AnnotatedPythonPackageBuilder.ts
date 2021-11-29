@@ -21,6 +21,7 @@ import {
     InferableGroupAnnotation,
     InferableMoveAnnotation,
     InferableOptionalAnnotation,
+    InferablePureAnnotation,
     InferableRenameAnnotation,
     InferableRequiredAnnotation,
     InferableUnusedAnnotation,
@@ -162,6 +163,7 @@ export default class AnnotatedPythonPackageBuilder {
         'Groups',
         'Move',
         'Optional',
+        'Pure',
         'Rename',
         'Required',
         'Unused',
@@ -248,6 +250,12 @@ export default class AnnotatedPythonPackageBuilder {
                     this.annotationStore.optionals[target];
                 if (optionalAnnotation) {
                     return new InferableOptionalAnnotation(optionalAnnotation);
+                }
+                break;
+            case 'Pure':
+                const pureAnnotation = this.annotationStore.pures[target];
+                if (pureAnnotation) {
+                    return new InferablePureAnnotation();
                 }
                 break;
             case 'Rename':

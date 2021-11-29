@@ -28,6 +28,9 @@ export interface AnnotationsState {
     optionals: {
         [target: string]: OptionalAnnotation;
     };
+    pures: {
+        [target: string]: PureAnnotation;
+    };
     renamings: {
         [target: string]: RenameAnnotation;
     };
@@ -222,6 +225,13 @@ export interface OptionalAnnotation {
     readonly defaultValue: DefaultValue;
 }
 
+export interface PureAnnotation {
+    /**
+     * ID of the annotated Python declaration.
+     */
+    readonly target: string;
+}
+
 export interface RenameAnnotation {
     /**
      * ID of the annotated Python declaration.
@@ -318,6 +328,7 @@ const initialState: AnnotationsState = {
     groups: {},
     moves: {},
     optionals: {},
+    pures: {},
     renamings: {},
     requireds: {},
     showImportDialog: false,
@@ -459,6 +470,12 @@ const annotationsSlice = createSlice({
         removeOptional(state, action: PayloadAction<string>) {
             delete state.optionals[action.payload];
         },
+        addPure(state, action: PayloadAction<PureAnnotation>) {
+            state.pures[action.payload.target] = action.payload;
+        },
+        removePure(state, action: PayloadAction<string>) {
+            delete state.pures[action.payload];
+        },
         upsertRenaming(state, action: PayloadAction<RenameAnnotation>) {
             state.renamings[action.payload.target] = action.payload;
         },
@@ -572,6 +589,8 @@ export const {
     removeMove,
     upsertOptional,
     removeOptional,
+    addPure,
+    removePure,
     upsertRenaming,
     removeRenaming,
     addRequired,
@@ -629,6 +648,10 @@ export const selectOptional =
     (target: string) =>
     (state: RootState): OptionalAnnotation | undefined =>
         selectAnnotations(state).optionals[target];
+export const selectPure =
+    (target: string) =>
+    (state: RootState): PureAnnotation | undefined =>
+        selectAnnotations(state).pures[target];
 export const selectRenaming =
     (target: string) =>
     (state: RootState): RenameAnnotation | undefined =>
