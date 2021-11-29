@@ -68,7 +68,6 @@ public class PackageFileBuilder {
         File directory = new File(directoryName);
         directory.mkdirs();
         fileName = fileName + ".py";
-        System.out.println(fileName);
         File file = new File(fileName);
         try (BufferedWriter out = new BufferedWriter(new FileWriter(fileName))) {
             out.write(content);
