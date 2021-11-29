@@ -14,33 +14,25 @@ import java.util.zip.ZipOutputStream;
 
 public class PackageFileBuilder {
     AnnotatedPythonPackage pythonPackage;
-    private final String zipFolderPath;
 
     /**
      * Constructor for class PackageFileBuilder
      *
-     * @param annotatedPythonPackage The package whose files
-     *                               should be built
-     * @param zipFolderPath The path to the folder in which the zip file
-     *                      will be generated
-     *
+     * @param annotatedPythonPackage The package whose files should be built
      */
     public PackageFileBuilder(
-        AnnotatedPythonPackage annotatedPythonPackage,
-        String zipFolderPath
+        AnnotatedPythonPackage annotatedPythonPackage
     ) {
         this.pythonPackage = annotatedPythonPackage;
-        this.zipFolderPath = zipFolderPath;
     }
 
     /**
      * Builds the module files based on the python package of the
      * initialized class and puts them in the folder
      * at the classes specified zip folder path
-     *
      */
-    public void buildModuleFiles() throws Exception {
-        Path workingPath = Files.createTempDirectory("working");
+    public String buildModuleFiles() throws Exception {
+        Path workingPath = Files.createTempDirectory("api-editor_inferredAPI");
         String absoluteWorkingPath = workingPath.toFile().getAbsolutePath() + "/";
         pythonPackage.getModules().forEach(module -> {
             try {
@@ -55,9 +47,11 @@ public class PackageFileBuilder {
                 e.printStackTrace();
             }
         });
-        zip(absoluteWorkingPath);
+        var zipFolderPath = zip(absoluteWorkingPath);
         File workingDirectory = new File(absoluteWorkingPath);
         deleteFolder(workingDirectory);
+
+        return zipFolderPath;
     }
 
     private File buildFile(String fileName, String content, String workingFolderPath) {
@@ -72,15 +66,14 @@ public class PackageFileBuilder {
         try (BufferedWriter out = new BufferedWriter(new FileWriter(fileName))) {
             out.write(content);
             out.flush();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return file;
     }
 
-    private void zip(String workingFolderPath) throws Exception {
-        Path path = Files.createFile(Paths.get(zipFolderPath));
+    private String zip(String workingFolderPath) throws Exception {
+        Path path = Files.createTempFile("api-editor_inferredAPI", ".zip");
         try (ZipOutputStream zipOutputStream = new ZipOutputStream(Files.newOutputStream(path))) {
             Path sourcePath = Paths.get(workingFolderPath);
             Files.walk(sourcePath)
@@ -96,6 +89,7 @@ public class PackageFileBuilder {
                     }
                 });
         }
+        return path.toString();
     }
 
     private void deleteFolder(File directory) {

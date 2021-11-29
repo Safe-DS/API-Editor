@@ -71,32 +71,32 @@ fun Route.echo() {
 fun Route.infer() {
     post("/infer") {
         val pythonPackage = call.receive<AnnotatedPythonPackage>()
-        val annotationValidator = AnnotationValidator(pythonPackage)
-        val annotationErrors = annotationValidator.validate()
-        val messages = annotationErrors.map { it.message() }
+        val messages = AnnotationValidator(pythonPackage)
+            .validate()
+            .map { it.message() }
         if (messages.isNotEmpty()) {
             call.respond(HttpStatusCode.Conflict, messages)
             return@post
         }
 
-        val zipFolderPath = "./zipFolder/"
-        val packageFileBuilder = PackageFileBuilder(pythonPackage, zipFolderPath)
+        val packageFileBuilder = PackageFileBuilder(pythonPackage)
         try {
-            packageFileBuilder.buildModuleFiles()
+            val zipFolderPath = packageFileBuilder.buildModuleFiles()
+            val zipFile = File(zipFolderPath)
+
+            call.response.header(
+                HttpHeaders.ContentDisposition,
+                ContentDisposition.Attachment.withParameter(
+                    ContentDisposition.Parameters.FileName, zipFolderPath
+                ).toString()
+            )
+            call.respondFile(zipFile)
+            zipFile.delete()
+
         } catch (e: Exception) {
             e.printStackTrace()
+            call.respond(HttpStatusCode.InternalServerError, "Something went wrong while inferring the API.")
         }
-
-        val zipFile = File(zipFolderPath)
-
-        call.response.header(
-            HttpHeaders.ContentDisposition,
-            ContentDisposition.Attachment.withParameter(
-                ContentDisposition.Parameters.FileName, zipFolderPath
-            ).toString()
-        )
-        call.respondFile(zipFile)
-        zipFile.delete()
     }
 }
 
