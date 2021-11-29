@@ -91,6 +91,13 @@ data class OptionalAnnotation(val defaultValue: DefaultValue) : EditorAnnotation
 }
 
 @Serializable
+object PureAnnotation : EditorAnnotation() {
+
+    @Transient
+    override val validTargets = FUNCTIONS
+}
+
+@Serializable
 data class RenameAnnotation(val newName: String) : EditorAnnotation() {
 
     @Transient

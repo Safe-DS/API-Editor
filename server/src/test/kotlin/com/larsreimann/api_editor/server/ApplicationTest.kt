@@ -19,6 +19,7 @@ import com.larsreimann.api_editor.server.data.EnumPair
 import com.larsreimann.api_editor.server.data.GroupAnnotation
 import com.larsreimann.api_editor.server.data.MoveAnnotation
 import com.larsreimann.api_editor.server.data.OptionalAnnotation
+import com.larsreimann.api_editor.server.data.PureAnnotation
 import com.larsreimann.api_editor.server.data.PythonFromImport
 import com.larsreimann.api_editor.server.data.PythonImport
 import com.larsreimann.api_editor.server.data.PythonParameterAssignment
@@ -135,6 +136,7 @@ class ApplicationTest {
                     ),
                     MoveAnnotation("test-destination-module"),
                     OptionalAnnotation(DefaultString("bla")),
+                    PureAnnotation,
                     RenameAnnotation("test-new-name"),
                     RequiredAnnotation,
                     UnusedAnnotation
