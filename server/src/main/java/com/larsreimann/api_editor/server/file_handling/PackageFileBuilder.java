@@ -1,6 +1,7 @@
 package com.larsreimann.api_editor.server.file_handling;
 
 import com.larsreimann.api_editor.server.data.AnnotatedPythonPackage;
+import kotlin.io.FilesKt;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -33,7 +34,6 @@ public class PackageFileBuilder {
      */
     public String buildModuleFiles() throws Exception {
         Path workingPath = Files.createTempDirectory("api-editor_inferredAPI");
-        String absoluteWorkingPath = workingPath.toFile().getAbsolutePath() + "/";
         pythonPackage.getModules().forEach(module -> {
             try {
                 buildFile(
@@ -41,45 +41,40 @@ public class PackageFileBuilder {
                     ModuleContentBuilder.buildModuleContent(
                         module
                     ),
-                    absoluteWorkingPath
+                    workingPath
                 );
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
-        var zipFolderPath = zip(absoluteWorkingPath);
-        File workingDirectory = new File(absoluteWorkingPath);
-        deleteFolder(workingDirectory);
+        var zipFolderPath = zip(workingPath);
+        File workingDirectory = new File(workingPath.toString());
+        FilesKt.deleteRecursively(workingDirectory);
 
         return zipFolderPath;
     }
 
-    private File buildFile(String fileName, String content, String workingFolderPath) {
-        fileName = fileName.replaceAll("\\.", "/");
-        fileName = workingFolderPath + fileName;
-        fileName = fileName.replaceAll("/", "\\\\");
-        String directoryName = fileName.substring(0, fileName.lastIndexOf("\\"));
-        File directory = new File(directoryName);
+    private void buildFile(String fileName, String content, Path workingFolderPath) {
+        String formattedFileName = fileName.replaceAll("\\.", "/") + ".py";
+        Path filePath = Paths.get(workingFolderPath.toString(), formattedFileName);
+        Path directoryPath = filePath.getParent();
+        File directory = new File(directoryPath.toString());
         directory.mkdirs();
-        fileName = fileName + ".py";
-        File file = new File(fileName);
-        try (BufferedWriter out = new BufferedWriter(new FileWriter(fileName))) {
+        try (BufferedWriter out = new BufferedWriter(new FileWriter(filePath.toString()))) {
             out.write(content);
             out.flush();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return file;
     }
 
-    private String zip(String workingFolderPath) throws Exception {
+    private String zip(Path workingFolderPath) throws Exception {
         Path path = Files.createTempFile("api-editor_inferredAPI", ".zip");
         try (ZipOutputStream zipOutputStream = new ZipOutputStream(Files.newOutputStream(path))) {
-            Path sourcePath = Paths.get(workingFolderPath);
-            Files.walk(sourcePath)
+            Files.walk(workingFolderPath)
                 .filter(currentPath -> !Files.isDirectory(currentPath))
                 .forEach(currentPath -> {
-                    ZipEntry zipEntry = new ZipEntry(sourcePath.relativize(currentPath).toString());
+                    ZipEntry zipEntry = new ZipEntry(workingFolderPath.relativize(currentPath).toString());
                     try {
                         zipOutputStream.putNextEntry(zipEntry);
                         Files.copy(currentPath, zipOutputStream);
@@ -90,21 +85,5 @@ public class PackageFileBuilder {
                 });
         }
         return path.toString();
-    }
-
-    private void deleteFolder(File directory) {
-        if (directory.exists()) {
-            File[] files = directory.listFiles();
-            if (files != null) {
-                for (File file : files) {
-                    if (file.isDirectory()) {
-                        deleteFolder(file);
-                    } else {
-                        file.delete();
-                    }
-                }
-            }
-        }
-        directory.delete();
     }
 }
