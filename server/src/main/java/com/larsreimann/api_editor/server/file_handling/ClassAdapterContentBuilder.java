@@ -6,7 +6,7 @@ import com.larsreimann.api_editor.server.data.AnnotatedPythonFunction;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClassContentBuilder extends FileBuilder {
+class ClassAdapterContentBuilder extends FileBuilder {
     /**
      * Builds a string containing the formatted class content
      *
@@ -28,7 +28,7 @@ public class ClassContentBuilder extends FileBuilder {
     ) {
         List<String> formattedFunctions = new ArrayList<>();
         pythonFunctions.forEach(pythonFunction ->
-            formattedFunctions.add(FunctionContentBuilder.buildFunction(pythonFunction)));
+            formattedFunctions.add(FunctionAdapterContentBuilder.buildFunction(pythonFunction)));
         return formattedFunctions;
     }
 }

@@ -5,7 +5,7 @@ import com.larsreimann.api_editor.server.data.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModuleContentBuilder extends FileBuilder {
+class ModuleAdapterContentBuilder extends FileBuilder {
     /**
      * Builds a string containing the formatted module content
      *
@@ -39,7 +39,7 @@ public class ModuleContentBuilder extends FileBuilder {
     ) {
         List<String> formattedClasses = new ArrayList<>();
         pythonClasses.forEach(pythonClass ->
-            formattedClasses.add(ClassContentBuilder.buildClass(pythonClass)));
+            formattedClasses.add(ClassAdapterContentBuilder.buildClass(pythonClass)));
         return listToString(formattedClasses, 2);
     }
 
@@ -48,7 +48,7 @@ public class ModuleContentBuilder extends FileBuilder {
     ) {
         List<String> formattedFunctions = new ArrayList<>();
         pythonFunctions.forEach(pythonFunction ->
-            formattedFunctions.add(FunctionContentBuilder.buildFunction(pythonFunction)));
+            formattedFunctions.add(FunctionAdapterContentBuilder.buildFunction(pythonFunction)));
         return listToString(formattedFunctions, 2);
     }
 

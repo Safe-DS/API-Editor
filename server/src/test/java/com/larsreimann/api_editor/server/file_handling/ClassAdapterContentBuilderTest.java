@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Collections;
 import java.util.List;
 
-class ClassContentBuilderTest {
+class ClassAdapterContentBuilderTest {
     @Test
     void buildClassReturnsFormattedClassWithNoFunctions() {
         // given
@@ -23,7 +23,7 @@ class ClassContentBuilderTest {
         );
 
         // when
-        String formattedClass = ClassContentBuilder.buildClass(testClass);
+        String formattedClass = ClassAdapterContentBuilder.buildClass(testClass);
 
         // then
         String expectedFormattedClass = "class test-class:";
@@ -66,7 +66,7 @@ class ClassContentBuilderTest {
         );
 
         // when
-        String formattedClass = ClassContentBuilder.buildClass(testClass);
+        String formattedClass = ClassAdapterContentBuilder.buildClass(testClass);
 
         // then
         String expectedFormattedClass = """
@@ -132,7 +132,7 @@ class ClassContentBuilderTest {
         );
 
         // when
-        String formattedClass = ClassContentBuilder.buildClass(testClass);
+        String formattedClass = ClassAdapterContentBuilder.buildClass(testClass);
 
         // then
         String expectedFormattedClass = """

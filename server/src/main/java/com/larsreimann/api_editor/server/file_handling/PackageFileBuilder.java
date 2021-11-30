@@ -1,12 +1,16 @@
 package com.larsreimann.api_editor.server.file_handling;
 
+import com.larsreimann.api_editor.server.data.AnnotatedPythonModule;
 import com.larsreimann.api_editor.server.data.AnnotatedPythonPackage;
 import kotlin.io.FilesKt;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -30,7 +34,7 @@ public abstract class PackageFileBuilder {
             try {
                 buildFile(
                     module.getName(),
-                    ModuleContentBuilder.buildModuleContent(
+                    buildModuleContent(
                         module
                     ),
                     workingPath
@@ -65,5 +69,19 @@ public abstract class PackageFileBuilder {
         return path.toString();
     }
 
-    abstract void buildFile(String fileName, String content, Path workingFolderPath);
+    protected void buildFile(String fileName, String content, Path workingFolderPath) {
+        String formattedFileName = fileName.replaceAll("\\.", "/") + ".py";
+        Path filePath = Paths.get(workingFolderPath.toString(), formattedFileName);
+        Path directoryPath = filePath.getParent();
+        File directory = new File(directoryPath.toString());
+        directory.mkdirs();
+        try (BufferedWriter out = new BufferedWriter(new FileWriter(filePath.toString()))) {
+            out.write(content);
+            out.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    abstract String buildModuleContent(AnnotatedPythonModule pythonModule);
 }

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Collections;
 import java.util.List;
 
-class ModuleContentBuilderTest {
+class ModuleAdapterContentBuilderTest {
     @Test
     void buildModuleContentReturnsFormattedModuleContent() {
         // given
@@ -142,7 +142,7 @@ class ModuleContentBuilderTest {
         );
 
         // when
-        String moduleContent = ModuleContentBuilder.buildModuleContent(
+        String moduleContent = ModuleAdapterContentBuilder.buildModuleContent(
             testModule
         );
 
@@ -209,7 +209,7 @@ class ModuleContentBuilderTest {
         );
 
         // when
-        String moduleContent = ModuleContentBuilder.buildModuleContent(
+        String moduleContent = ModuleAdapterContentBuilder.buildModuleContent(
             testModule
         );
 
@@ -247,7 +247,7 @@ class ModuleContentBuilderTest {
         );
 
         // when
-        String moduleContent = ModuleContentBuilder.buildModuleContent(
+        String moduleContent = ModuleAdapterContentBuilder.buildModuleContent(
             testModule
         );
 

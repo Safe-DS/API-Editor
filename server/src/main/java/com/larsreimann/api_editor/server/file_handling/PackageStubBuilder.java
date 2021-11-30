@@ -5,13 +5,13 @@ import com.larsreimann.api_editor.server.data.AnnotatedPythonPackage;
 
 import java.nio.file.Path;
 
-public class PackageAdapterBuilder extends PackageFileBuilder {
+public class PackageStubBuilder extends PackageFileBuilder{
     /**
-     * Constructor for class PackageFileBuilder
+     * Constructor for class PackageStubBuilder
      *
-     * @param annotatedPythonPackage The package whose adapter files should be built
+     * @param annotatedPythonPackage The package whose stub files should be built
      */
-    public PackageAdapterBuilder(
+    public PackageStubBuilder(
         AnnotatedPythonPackage annotatedPythonPackage,
         Path workingDirectory
     ) {
@@ -20,6 +20,6 @@ public class PackageAdapterBuilder extends PackageFileBuilder {
 
     @Override
     String buildModuleContent(AnnotatedPythonModule pythonModule) {
-        return ModuleAdapterContentBuilder.buildModuleContent(pythonModule);
+        return ModuleStubContentBuilder.buildModuleContent(pythonModule);
     }
 }
