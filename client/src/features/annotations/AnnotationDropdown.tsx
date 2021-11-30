@@ -11,6 +11,7 @@ import React from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import { useAppDispatch } from '../../app/hooks';
 import {
+    addPure,
     addRequired,
     addUnused,
     showAttributeAnnotationForm,
@@ -33,6 +34,7 @@ interface AnnotationDropdownProps {
     showGroup?: boolean;
     showMove?: boolean;
     showOptional?: boolean;
+    showPure?: boolean;
     showRename?: boolean;
     showRequired?: boolean;
     showUnused?: boolean;
@@ -47,6 +49,7 @@ const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
     showGroup = false,
     showEnum = false,
     showMove = false,
+    showPure = false,
     showOptional = false,
     showRename = false,
     showRequired = false,
@@ -148,6 +151,11 @@ const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                             }
                         >
                             @optional
+                        </MenuItem>
+                    )}
+                    {showPure && (
+                        <MenuItem onClick={() => dispatch(addPure({ target }))}>
+                            @pure
                         </MenuItem>
                     )}
                     {showRename && (

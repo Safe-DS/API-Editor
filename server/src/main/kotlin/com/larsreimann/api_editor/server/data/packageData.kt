@@ -131,6 +131,9 @@ data class AnnotatedPythonFunction(
     @Transient
     val calledAfter = mutableListOf<AnnotatedPythonFunction>()
 
+    @Transient
+    var isPure = false
+
     fun isConstructor() = name == "__init__"
 }
 

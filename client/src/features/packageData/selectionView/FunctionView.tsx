@@ -50,6 +50,7 @@ const FunctionView: React.FC<FunctionViewProps> = function ({
                             pythonFunction.containingModuleOrClass instanceof
                             PythonModule
                         }
+                        showPure
                         showRename
                         showUnused
                     />
