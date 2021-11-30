@@ -3,28 +3,20 @@ package com.larsreimann.api_editor.server.file_handling;
 import com.larsreimann.api_editor.server.data.AnnotatedPythonPackage;
 import kotlin.io.FilesKt;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-public class PackageFileBuilder {
+public abstract class PackageFileBuilder {
     AnnotatedPythonPackage pythonPackage;
+    Path workingDirectory;
 
-    /**
-     * Constructor for class PackageFileBuilder
-     *
-     * @param annotatedPythonPackage The package whose files should be built
-     */
-    public PackageFileBuilder(
-        AnnotatedPythonPackage annotatedPythonPackage
-    ) {
-        this.pythonPackage = annotatedPythonPackage;
+    public PackageFileBuilder(AnnotatedPythonPackage pythonPackage, Path workingDirectory) {
+        this.pythonPackage = pythonPackage;
+        this.workingDirectory = workingDirectory;
     }
 
     /**
@@ -33,7 +25,7 @@ public class PackageFileBuilder {
      * at the classes specified zip folder path
      */
     public String buildModuleFiles() throws Exception {
-        Path workingPath = Files.createTempDirectory("api-editor_inferredAPI");
+        Path workingPath = Files.createTempDirectory(workingDirectory.toString());
         pythonPackage.getModules().forEach(module -> {
             try {
                 buildFile(
@@ -54,22 +46,8 @@ public class PackageFileBuilder {
         return zipFolderPath;
     }
 
-    private void buildFile(String fileName, String content, Path workingFolderPath) {
-        String formattedFileName = fileName.replaceAll("\\.", "/") + ".py";
-        Path filePath = Paths.get(workingFolderPath.toString(), formattedFileName);
-        Path directoryPath = filePath.getParent();
-        File directory = new File(directoryPath.toString());
-        directory.mkdirs();
-        try (BufferedWriter out = new BufferedWriter(new FileWriter(filePath.toString()))) {
-            out.write(content);
-            out.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     private String zip(Path workingFolderPath) throws Exception {
-        Path path = Files.createTempFile("api-editor_inferredAPI", ".zip");
+        Path path = Files.createTempFile(workingDirectory.toString(), ".zip");
         try (ZipOutputStream zipOutputStream = new ZipOutputStream(Files.newOutputStream(path))) {
             Files.walk(workingFolderPath)
                 .filter(currentPath -> !Files.isDirectory(currentPath))
@@ -86,4 +64,6 @@ public class PackageFileBuilder {
         }
         return path.toString();
     }
+
+    abstract void buildFile(String fileName, String content, Path workingFolderPath);
 }

@@ -1,7 +1,7 @@
 package com.larsreimann.api_editor.server
 
 import com.larsreimann.api_editor.server.data.AnnotatedPythonPackage
-import com.larsreimann.api_editor.server.file_handling.PackageFileBuilder
+import com.larsreimann.api_editor.server.file_handling.PackageAdapterBuilder
 import com.larsreimann.api_editor.server.validation.AnnotationValidator
 import io.ktor.application.Application
 import io.ktor.application.call
@@ -25,6 +25,7 @@ import io.ktor.routing.routing
 import io.ktor.serialization.json
 import kotlinx.serialization.json.Json
 import java.io.File
+import java.nio.file.Paths
 
 fun Application.configureRouting() {
     install(ContentNegotiation) {
@@ -79,9 +80,12 @@ fun Route.infer() {
             return@post
         }
 
-        val packageFileBuilder = PackageFileBuilder(pythonPackage)
+        val packageAdapterBuilder =
+            PackageAdapterBuilder(
+                pythonPackage, Paths.get("api-editor_inferredAPI")
+            )
         try {
-            val zipFolderPath = packageFileBuilder.buildModuleFiles()
+            val zipFolderPath = packageAdapterBuilder.buildModuleFiles()
             val zipFile = File(zipFolderPath)
 
             call.response.header(

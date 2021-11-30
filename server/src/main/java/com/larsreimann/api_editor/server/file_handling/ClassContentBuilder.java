@@ -6,7 +6,7 @@ import com.larsreimann.api_editor.server.data.AnnotatedPythonFunction;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClassContentBuilder extends PythonFileBuilder {
+public class ClassContentBuilder extends FileBuilder {
     /**
      * Builds a string containing the formatted class content
      *

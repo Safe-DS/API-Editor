@@ -2,7 +2,7 @@ package com.larsreimann.api_editor.server.file_handling;
 
 import java.util.List;
 
-public abstract class PythonFileBuilder {
+public abstract class FileBuilder {
     /**
      * Returns an indented version of the passed string
      *

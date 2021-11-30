@@ -5,7 +5,7 @@ import com.larsreimann.api_editor.server.data.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModuleContentBuilder extends PythonFileBuilder {
+public class ModuleContentBuilder extends FileBuilder {
     /**
      * Builds a string containing the formatted module content
      *

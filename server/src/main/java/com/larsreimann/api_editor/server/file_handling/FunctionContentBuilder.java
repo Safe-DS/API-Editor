@@ -7,7 +7,7 @@ import com.larsreimann.api_editor.server.data.PythonParameterAssignment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FunctionContentBuilder extends PythonFileBuilder {
+public class FunctionContentBuilder extends FileBuilder {
     /**
      * Builds a string containing the formatted function content
      *
