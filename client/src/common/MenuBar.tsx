@@ -162,11 +162,15 @@ const MenuBar: React.FC<MenuBarProps> = function ({
             body: JSON.stringify(annotatedPythonPackage),
         };
         fetch('/api-editor/infer', requestOptions).then(async (response) => {
-            const jsonResponse = await response.json();
             if (!response.ok) {
+                const jsonResponse = await response.json();
                 displayInferErrors(jsonResponse);
             } else {
-                //TODO
+                const jsonBlob = await response.blob();
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(jsonBlob);
+                a.download = 'simpleml.zip';
+                a.click();
             }
         });
     };

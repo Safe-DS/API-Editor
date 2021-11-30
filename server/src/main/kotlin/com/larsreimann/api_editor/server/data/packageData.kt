@@ -141,7 +141,7 @@ data class AnnotatedPythonFunction(
 data class AnnotatedPythonParameter(
     override val name: String,
     val qualifiedName: String,
-    val defaultValue: String,
+    val defaultValue: String?,
     val assignedBy: PythonParameterAssignment,
     val isPublic: Boolean,
     val typeInDocs: String,
