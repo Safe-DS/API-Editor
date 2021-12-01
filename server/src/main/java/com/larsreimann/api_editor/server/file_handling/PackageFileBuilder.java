@@ -14,11 +14,13 @@ import java.nio.file.Paths;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-public abstract class PackageFileBuilder {
+public class PackageFileBuilder {
     AnnotatedPythonPackage pythonPackage;
     Path workingDirectory;
 
-    public PackageFileBuilder(AnnotatedPythonPackage pythonPackage, Path workingDirectory) {
+    public PackageFileBuilder(AnnotatedPythonPackage pythonPackage,
+                              Path workingDirectory
+    ) {
         this.pythonPackage = pythonPackage;
         this.workingDirectory = workingDirectory;
     }
@@ -34,10 +36,19 @@ public abstract class PackageFileBuilder {
             try {
                 buildFile(
                     module.getName(),
-                    buildModuleContent(
+                    buildAdapterContent(
                         module
                     ),
-                    workingPath
+                    Paths.get(workingPath.toString(), "adapter"),
+                    ".py"
+                );
+                buildFile(
+                    module.getName(),
+                    buildStubContent(
+                        module
+                    ),
+                    Paths.get(workingPath.toString(), "stub"),
+                    ".stub.simpleml"
                 );
             } catch (Exception e) {
                 e.printStackTrace();
@@ -69,8 +80,14 @@ public abstract class PackageFileBuilder {
         return path.toString();
     }
 
-    protected void buildFile(String fileName, String content, Path workingFolderPath) {
-        String formattedFileName = fileName.replaceAll("\\.", "/") + ".py";
+    protected void buildFile(
+        String fileName,
+        String content,
+        Path workingFolderPath,
+        String fileExtension
+    ) {
+        String formattedFileName = fileName.replaceAll("\\.", "/")
+            + fileExtension;
         Path filePath = Paths.get(workingFolderPath.toString(), formattedFileName);
         Path directoryPath = filePath.getParent();
         File directory = new File(directoryPath.toString());
@@ -83,5 +100,11 @@ public abstract class PackageFileBuilder {
         }
     }
 
-    abstract String buildModuleContent(AnnotatedPythonModule pythonModule);
+    protected String buildAdapterContent(AnnotatedPythonModule pythonModule) {
+        return ModuleAdapterContentBuilder.buildModuleContent(pythonModule);
+    }
+
+    protected String buildStubContent(AnnotatedPythonModule pythonModule){
+        return ModuleStubContentBuilder.buildModuleContent(pythonModule);
+    }
 }

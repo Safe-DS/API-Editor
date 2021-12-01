@@ -1,7 +1,7 @@
 package com.larsreimann.api_editor.server
 
 import com.larsreimann.api_editor.server.data.AnnotatedPythonPackage
-import com.larsreimann.api_editor.server.file_handling.PackageAdapterBuilder
+import com.larsreimann.api_editor.server.file_handling.PackageFileBuilder
 import com.larsreimann.api_editor.server.validation.AnnotationValidator
 import io.ktor.application.Application
 import io.ktor.application.call
@@ -79,9 +79,8 @@ fun Route.infer() {
             call.respond(HttpStatusCode.Conflict, messages)
             return@post
         }
-
         val packageAdapterBuilder =
-            PackageAdapterBuilder(
+            PackageFileBuilder(
                 pythonPackage, Paths.get("api-editor_inferredAPI")
             )
         try {
