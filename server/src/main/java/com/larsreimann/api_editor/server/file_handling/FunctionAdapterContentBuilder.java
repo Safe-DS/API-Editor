@@ -8,31 +8,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 class FunctionAdapterContentBuilder extends FileBuilder {
+    AnnotatedPythonFunction pythonFunction;
+
+    /**
+     * Constructor for FunctionAdapterContentBuilder
+     *
+     * @param pythonFunction The function whose adapter content should be built
+     */
+    public FunctionAdapterContentBuilder(
+        AnnotatedPythonFunction pythonFunction
+    ) {
+        this.pythonFunction = pythonFunction;
+    }
+
     /**
      * Builds a string containing the formatted function content
      *
-     * @param pythonFunction The function whose content is to be formatted
-     *                       and returned
      * @return The string containing the formatted function content
      */
-    protected static String buildFunction(AnnotatedPythonFunction pythonFunction) {
+    protected String buildFunction() {
         return "def "
             + pythonFunction.getName()
             + "("
-            + buildFunctionParameters(pythonFunction.getParameters())
+            + buildFunctionParameters()
             + ")"
             + ":\n"
-            + indent(buildFunctionBody(pythonFunction));
+            + indent(buildFunctionBody());
     }
 
-    private static String buildFunctionParameters(
-        List<AnnotatedPythonParameter> pythonParameters
-    ) {
+    private String buildFunctionParameters() {
         String formattedFunctionParameters = "";
         List<String> positionOnlyParameters = new ArrayList<>();
         List<String> positionOrNameParameters = new ArrayList<>();
         List<String> nameOnlyParameters = new ArrayList<>();
-        pythonParameters.forEach(pythonParameter -> {
+        pythonFunction.getParameters().forEach(pythonParameter -> {
             switch (pythonParameter.getAssignedBy()) {
                 case POSITION_ONLY -> positionOnlyParameters
                     .add(buildFormattedParameter(pythonParameter));
@@ -87,7 +96,7 @@ class FunctionAdapterContentBuilder extends FileBuilder {
         return formattedFunctionParameters;
     }
 
-    private static String buildFormattedParameter(AnnotatedPythonParameter pythonParameter) {
+    private String buildFormattedParameter(AnnotatedPythonParameter pythonParameter) {
         String formattedParameter = pythonParameter.getName();
         String defaultValue = pythonParameter.getDefaultValue();
         if (defaultValue != null
@@ -97,18 +106,16 @@ class FunctionAdapterContentBuilder extends FileBuilder {
         return formattedParameter;
     }
 
-    private static String buildFunctionBody(AnnotatedPythonFunction pythonFunction) {
+    private String buildFunctionBody() {
         return pythonFunction.getQualifiedName()
             + "("
-            + buildFunctionParameterCall(pythonFunction.getParameters())
+            + buildFunctionParameterCall()
             + ")";
     }
 
-    private static String buildFunctionParameterCall(
-        List<AnnotatedPythonParameter> pythonParameters
-    ) {
+    private String buildFunctionParameterCall() {
         List<String> formattedParameters = new ArrayList<>();
-        pythonParameters.forEach(pythonParameter -> {
+        pythonFunction.getParameters().forEach(pythonParameter -> {
             if (pythonParameter.getAssignedBy()
                 == PythonParameterAssignment.NAME_ONLY) {
                 formattedParameters.add(

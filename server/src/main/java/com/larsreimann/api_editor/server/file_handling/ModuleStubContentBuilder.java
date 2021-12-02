@@ -1,32 +1,31 @@
 package com.larsreimann.api_editor.server.file_handling;
 
-import com.larsreimann.api_editor.server.data.AnnotatedPythonClass;
-import com.larsreimann.api_editor.server.data.AnnotatedPythonFunction;
 import com.larsreimann.api_editor.server.data.AnnotatedPythonModule;
 
 import java.util.ArrayList;
 import java.util.List;
 
 class ModuleStubContentBuilder extends FileBuilder {
+    AnnotatedPythonModule pythonModule;
+
+    /**
+     * Constructor for ModuleStubContentBuilder
+     *
+     * @param pythonModule The module whose stub content should be built
+     */
+    public ModuleStubContentBuilder(AnnotatedPythonModule pythonModule) {
+        this.pythonModule = pythonModule;
+    }
+
     /**
      * Builds a string containing the formatted module content
      *
-     * @param pythonModule The module whose content is to be formatted
-     *                     and returned
      * @return The string containing the formatted module content
      */
-    protected static String buildModuleContent(
-        AnnotatedPythonModule pythonModule
-    ) {
-        String formattedPackageDeclaration = buildPackageDeclaration(
-            pythonModule.getName()
-        );
-        String formattedClasses = buildAllClasses(
-            pythonModule.getClasses()
-        );
-        String formattedFunctions = buildAllFunctions(
-            pythonModule.getFunctions()
-        );
+    protected String buildModuleContent() {
+        String formattedPackageDeclaration = buildPackageDeclaration();
+        String formattedClasses = buildAllClasses();
+        String formattedFunctions = buildAllFunctions();
         String[] separators = buildSeparators(
             formattedPackageDeclaration,
             formattedClasses,
@@ -41,31 +40,34 @@ class ModuleStubContentBuilder extends FileBuilder {
             + formattedFunctions;
     }
 
-    private static String buildPackageDeclaration(String moduleName) {
+    private String buildPackageDeclaration() {
         return "package "
             + "simpleml."
-            + moduleName;
+            + pythonModule.getName();
     }
 
-    private static String buildAllClasses(
-        List<AnnotatedPythonClass> pythonClasses
-    ) {
+    private String buildAllClasses() {
         List<String> formattedClasses = new ArrayList<>();
-        pythonClasses.forEach(pythonClass ->
-            formattedClasses.add(ClassStubContentBuilder.buildClass(pythonClass)));
+        pythonModule.getClasses().forEach(pythonClass -> {
+            ClassStubContentBuilder classStubContentBuilder =
+                new ClassStubContentBuilder(pythonClass);
+            formattedClasses.add(classStubContentBuilder.buildClass());
+        });
         return listToString(formattedClasses, 2);
     }
 
-    private static String buildAllFunctions(
-        List<AnnotatedPythonFunction> pythonFunctions
-    ) {
+    private String buildAllFunctions() {
         List<String> formattedFunctions = new ArrayList<>();
-        pythonFunctions.forEach(pythonFunction ->
-            formattedFunctions.add(FunctionStubContentBuilder.buildFunction(pythonFunction)));
+        pythonModule.getFunctions().forEach(pythonFunction -> {
+                FunctionStubContentBuilder functionStubContentBuilder =
+                    new FunctionStubContentBuilder(pythonFunction);
+                formattedFunctions.add(functionStubContentBuilder.buildFunction());
+            }
+        );
         return listToString(formattedFunctions, 2);
     }
 
-    private static String[] buildSeparators(
+    private String[] buildSeparators(
         String formattedPackageDeclaration,
         String formattedClasses,
         String formattedFunctions
@@ -73,28 +75,23 @@ class ModuleStubContentBuilder extends FileBuilder {
         String packageDeclarationSeparator;
         if (formattedPackageDeclaration.isBlank()) {
             packageDeclarationSeparator = "";
-        }
-        else if (formattedClasses.isBlank() && formattedFunctions.isBlank()) {
+        } else if (formattedClasses.isBlank() && formattedFunctions.isBlank()) {
             packageDeclarationSeparator = "\n";
-        }
-        else {
+        } else {
             packageDeclarationSeparator = "\n\n";
         }
         String classesSeparator;
         if (formattedClasses.isBlank()) {
             classesSeparator = "";
-        }
-        else if (formattedFunctions.isBlank()) {
+        } else if (formattedFunctions.isBlank()) {
             classesSeparator = "\n";
-        }
-        else {
+        } else {
             classesSeparator = "\n\n";
         }
         String functionSeparator;
         if (formattedFunctions.isBlank()) {
             functionSeparator = "";
-        }
-        else {
+        } else {
             functionSeparator = "\n";
         }
 

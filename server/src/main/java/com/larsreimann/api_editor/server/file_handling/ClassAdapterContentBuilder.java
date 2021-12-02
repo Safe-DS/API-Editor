@@ -7,28 +7,42 @@ import java.util.ArrayList;
 import java.util.List;
 
 class ClassAdapterContentBuilder extends FileBuilder {
+    AnnotatedPythonClass pythonClass;
+
+    /**
+     * Constructor for ClassAdapterContentBuilder
+     *
+     * @param pythonClass The module whose adapter content should be built
+     */
+    public ClassAdapterContentBuilder(AnnotatedPythonClass pythonClass) {
+        this.pythonClass = pythonClass;
+    }
+
     /**
      * Builds a string containing the formatted class content
      *
-     * @param pythonClass The class whose content is to be formatted and returned
      * @return The string containing the formatted class content
      */
-    protected static String buildClass(AnnotatedPythonClass pythonClass) {
+    protected String buildClass() {
         String formattedClass = "class " + pythonClass.getName() + ":";
         if (!pythonClass.getMethods().isEmpty()) {
             formattedClass = formattedClass + "\n";
             formattedClass = formattedClass
-                + indent(listToString(buildAllFunctions(pythonClass.getMethods()), 2));
+                + indent(listToString(buildAllFunctions(), 2));
         }
         return formattedClass;
     }
 
-    private static List<String> buildAllFunctions(
-        List<AnnotatedPythonFunction> pythonFunctions
-    ) {
+    private List<String> buildAllFunctions() {
         List<String> formattedFunctions = new ArrayList<>();
-        pythonFunctions.forEach(pythonFunction ->
-            formattedFunctions.add(FunctionAdapterContentBuilder.buildFunction(pythonFunction)));
+        pythonClass.getMethods().forEach(pythonFunction -> {
+                FunctionAdapterContentBuilder functionAdapterContentBuilder =
+                    new FunctionAdapterContentBuilder(pythonFunction);
+                formattedFunctions.add(
+                    functionAdapterContentBuilder.buildFunction()
+                );
+            }
+        );
         return formattedFunctions;
     }
 }

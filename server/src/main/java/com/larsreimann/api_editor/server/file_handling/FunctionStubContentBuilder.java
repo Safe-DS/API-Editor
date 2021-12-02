@@ -8,26 +8,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 class FunctionStubContentBuilder extends FileBuilder {
+    AnnotatedPythonFunction pythonFunction;
+
+    /**
+     * Constructor for FunctionStubContentBuilder
+     *
+     * @param pythonFunction The function whose stub content should be built
+     */
+    public FunctionStubContentBuilder(AnnotatedPythonFunction pythonFunction) {
+        this.pythonFunction = pythonFunction;
+    }
+
     /**
      * Builds a string containing the formatted function content
      *
-     * @param pythonFunction The function whose content is to be formatted
-     *                       and returned
      * @return The string containing the formatted function content
      */
-    protected static String buildFunction(AnnotatedPythonFunction pythonFunction) {
+    protected String buildFunction() {
         return "fun "
             + pythonFunction.getName()
             + "("
-            + buildAllFunctionParameters(pythonFunction.getParameters())
+            + buildAllFunctionParameters()
             + ")"
-            + buildAllFormattedResults(pythonFunction.getResults());
+            + buildAllFormattedResults();
     }
 
-    private static String buildAllFunctionParameters(
-        List<AnnotatedPythonParameter> pythonParameters
-    ) {
-        if (pythonParameters == null || pythonParameters.isEmpty()) {
+    private String buildAllFunctionParameters() {
+        List<AnnotatedPythonParameter> pythonParameters = pythonFunction.getParameters();
+        if (pythonParameters.isEmpty()) {
             return "";
         }
         List<String> formattedFunctionParameters = new ArrayList<>();
@@ -37,7 +45,7 @@ class FunctionStubContentBuilder extends FileBuilder {
         return String.join(", ", formattedFunctionParameters);
     }
 
-    private static String buildFormattedParameter(
+    private String buildFormattedParameter(
         AnnotatedPythonParameter pythonParameter
     ) {
         String formattedParameter = pythonParameter.getName() + ": " + "Any?";
@@ -49,10 +57,9 @@ class FunctionStubContentBuilder extends FileBuilder {
         return formattedParameter;
     }
 
-    private static String buildAllFormattedResults(
-        List<AnnotatedPythonResult> pythonResults
-    ) {
-        if (pythonResults == null || pythonResults.isEmpty()) {
+    private String buildAllFormattedResults() {
+        List<AnnotatedPythonResult> pythonResults = pythonFunction.getResults();
+        if (pythonResults.isEmpty()) {
             return "";
         }
         if (pythonResults.size() == 1) {
@@ -68,7 +75,7 @@ class FunctionStubContentBuilder extends FileBuilder {
         }
     }
 
-    private static String buildFormattedResult(
+    private String buildFormattedResult(
         AnnotatedPythonResult pythonResult
     ) {
         return pythonResult.getName()

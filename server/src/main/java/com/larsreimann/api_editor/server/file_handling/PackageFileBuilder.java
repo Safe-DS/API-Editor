@@ -101,10 +101,14 @@ public class PackageFileBuilder {
     }
 
     protected String buildAdapterContent(AnnotatedPythonModule pythonModule) {
-        return ModuleAdapterContentBuilder.buildModuleContent(pythonModule);
+        ModuleAdapterContentBuilder moduleAdapterContentBuilder =
+            new ModuleAdapterContentBuilder(pythonModule);
+        return moduleAdapterContentBuilder.buildModuleContent();
     }
 
     protected String buildStubContent(AnnotatedPythonModule pythonModule){
-        return ModuleStubContentBuilder.buildModuleContent(pythonModule);
+        ModuleStubContentBuilder moduleStubContentBuilder =
+            new ModuleStubContentBuilder(pythonModule);
+        return moduleStubContentBuilder.buildModuleContent();
     }
 }
