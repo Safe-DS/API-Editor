@@ -9,7 +9,7 @@ abstract class FileBuilder {
      * @param toIndent The string to be indented
      * @return The indented string
      */
-    static String indent(String toIndent) {
+    String indent(String toIndent) {
         String INDENTATION = "    ";
         toIndent = INDENTATION + toIndent;
         toIndent = toIndent.replaceAll("\n", "\n" + INDENTATION);
@@ -26,7 +26,7 @@ abstract class FileBuilder {
      *                         elements of the list
      * @return The string resulting from joining the list elements
      */
-    static String listToString(
+    String listToString(
         List<String> listToConvert, int numberOfNewlines
     ) {
         String delimiter;

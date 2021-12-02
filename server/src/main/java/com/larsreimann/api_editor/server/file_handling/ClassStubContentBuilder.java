@@ -20,7 +20,7 @@ class ClassStubContentBuilder extends FileBuilder {
      *
      * @param pythonClass The class whose stub content should be built
      */
-    public ClassStubContentBuilder(
+    protected ClassStubContentBuilder(
         AnnotatedPythonClass pythonClass
     ) {
         List<AnnotatedPythonFunction> originalClassMethods = pythonClass.getMethods();

@@ -15,7 +15,7 @@ class FunctionStubContentBuilder extends FileBuilder {
      *
      * @param pythonFunction The function whose stub content should be built
      */
-    public FunctionStubContentBuilder(AnnotatedPythonFunction pythonFunction) {
+    protected FunctionStubContentBuilder(AnnotatedPythonFunction pythonFunction) {
         this.pythonFunction = pythonFunction;
     }
 

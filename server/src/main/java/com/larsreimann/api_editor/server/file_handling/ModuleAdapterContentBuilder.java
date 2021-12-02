@@ -13,7 +13,7 @@ class ModuleAdapterContentBuilder extends FileBuilder {
      *
      * @param pythonModule The module whose adapter content should be built
      */
-    public ModuleAdapterContentBuilder(AnnotatedPythonModule pythonModule) {
+    protected ModuleAdapterContentBuilder(AnnotatedPythonModule pythonModule) {
         this.pythonModule = pythonModule;
     }
 

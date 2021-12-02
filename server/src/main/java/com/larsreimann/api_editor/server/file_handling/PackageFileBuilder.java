@@ -18,6 +18,13 @@ public class PackageFileBuilder {
     AnnotatedPythonPackage pythonPackage;
     Path workingDirectory;
 
+    /**
+     * Constructor for PackageFileBuilder
+     *
+     * @param pythonPackage The package whose files should be generated
+     * @param workingDirectory The directory used by this class
+     *                         for storing the files
+     */
     public PackageFileBuilder(AnnotatedPythonPackage pythonPackage,
                               Path workingDirectory
     ) {
@@ -80,7 +87,7 @@ public class PackageFileBuilder {
         return path.toString();
     }
 
-    protected void buildFile(
+    private void buildFile(
         String fileName,
         String content,
         Path workingFolderPath,
@@ -100,13 +107,13 @@ public class PackageFileBuilder {
         }
     }
 
-    protected String buildAdapterContent(AnnotatedPythonModule pythonModule) {
+    private String buildAdapterContent(AnnotatedPythonModule pythonModule) {
         ModuleAdapterContentBuilder moduleAdapterContentBuilder =
             new ModuleAdapterContentBuilder(pythonModule);
         return moduleAdapterContentBuilder.buildModuleContent();
     }
 
-    protected String buildStubContent(AnnotatedPythonModule pythonModule){
+    private String buildStubContent(AnnotatedPythonModule pythonModule){
         ModuleStubContentBuilder moduleStubContentBuilder =
             new ModuleStubContentBuilder(pythonModule);
         return moduleStubContentBuilder.buildModuleContent();

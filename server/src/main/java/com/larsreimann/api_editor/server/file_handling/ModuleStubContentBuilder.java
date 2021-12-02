@@ -13,7 +13,7 @@ class ModuleStubContentBuilder extends FileBuilder {
      *
      * @param pythonModule The module whose stub content should be built
      */
-    public ModuleStubContentBuilder(AnnotatedPythonModule pythonModule) {
+    protected ModuleStubContentBuilder(AnnotatedPythonModule pythonModule) {
         this.pythonModule = pythonModule;
     }
 

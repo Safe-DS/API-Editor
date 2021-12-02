@@ -15,7 +15,7 @@ class FunctionAdapterContentBuilder extends FileBuilder {
      *
      * @param pythonFunction The function whose adapter content should be built
      */
-    public FunctionAdapterContentBuilder(
+    protected FunctionAdapterContentBuilder(
         AnnotatedPythonFunction pythonFunction
     ) {
         this.pythonFunction = pythonFunction;
