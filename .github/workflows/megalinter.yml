@@ -1,4 +1,4 @@
-name: Run MegaLinter
+name: MegaLinter
 
 on:
   pull_request:
