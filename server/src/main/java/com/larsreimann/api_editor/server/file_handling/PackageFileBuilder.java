@@ -46,7 +46,10 @@ public class PackageFileBuilder {
                     buildAdapterContent(
                         module
                     ),
-                    Paths.get(workingPath.toString(), "adapter"),
+                    Paths.get(workingPath.toString(),
+                        "adapter",
+                        "simpleml"
+                    ),
                     ".py"
                 );
                 buildFile(
@@ -54,7 +57,11 @@ public class PackageFileBuilder {
                     buildStubContent(
                         module
                     ),
-                    Paths.get(workingPath.toString(), "stub"),
+                    Paths.get(workingPath.toString(),
+                        "stub",
+                        "simpleml",
+                        pythonPackage.getName()
+                    ),
                     ".stub.simpleml"
                 );
             } catch (Exception e) {
