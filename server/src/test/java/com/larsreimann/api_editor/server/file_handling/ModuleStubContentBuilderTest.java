@@ -164,7 +164,7 @@ class ModuleStubContentBuilderTest {
         String expectedModuleContent = """
             package simpleml.test-module
 
-            open class test-class constructor(only-param: Any? or 'defaultValue') {
+            open class test-class(only-param: Any? or 'defaultValue') {
                 attr only-param: Any?
 
                 fun test-class-function(only-param: Any? or 'defaultValue')
@@ -354,7 +354,7 @@ class ModuleStubContentBuilderTest {
         String expectedModuleContent = """
             package simpleml.test-module
 
-            open class test-class constructor(only-param: Any? or 'defaultValue') {
+            open class test-class(only-param: Any? or 'defaultValue') {
                 attr only-param: Any?
             }
             """;

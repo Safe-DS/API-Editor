@@ -28,7 +28,7 @@ class ClassStubContentBuilderTest {
         String formattedClass = classStubContentBuilder.buildClass();
 
         // then
-        String expectedFormattedClass = "open class test-class constructor() {}";
+        String expectedFormattedClass = "open class test-class() {}";
         Assertions.assertEquals(expectedFormattedClass, formattedClass);
     }
 
@@ -74,7 +74,7 @@ class ClassStubContentBuilderTest {
 
         // then
         String expectedFormattedClass = """
-            open class test-class constructor() {
+            open class test-class() {
                 fun test-class-function(only-param: Any? or 'defaultValue')
             }""";
         Assertions.assertEquals(expectedFormattedClass, formattedClass);
@@ -142,7 +142,7 @@ class ClassStubContentBuilderTest {
 
         // then
         String expectedFormattedClass = """
-            open class test-class constructor(only-param: Any?) {
+            open class test-class(only-param: Any?) {
                 attr only-param: Any?
 
                 fun test-class-function1(only-param: Any?)

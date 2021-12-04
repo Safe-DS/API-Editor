@@ -96,7 +96,7 @@ class ClassStubContentBuilder extends FileBuilder {
         }
         return "open class "
             + className
-            + " constructor("
+            + "("
             + formattedConstructorBody
             + ")";
     }
