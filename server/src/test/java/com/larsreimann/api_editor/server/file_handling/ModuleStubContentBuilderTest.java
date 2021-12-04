@@ -164,10 +164,10 @@ class ModuleStubContentBuilderTest {
         String expectedModuleContent = """
             package simpleml.test-module
 
-            open class test-class(only-param: Any? or 'defaultValue') {
+            open class test-class(only-param: Any? or "defaultValue") {
                 attr only-param: Any?
 
-                fun test-class-function(only-param: Any? or 'defaultValue')
+                fun test-class-function(only-param: Any? or "defaultValue")
             }
 
             fun function_module_1(param1: Any?, param2: Any?, param3: Any?) -> test-result: str
@@ -354,7 +354,7 @@ class ModuleStubContentBuilderTest {
         String expectedModuleContent = """
             package simpleml.test-module
 
-            open class test-class(only-param: Any? or 'defaultValue') {
+            open class test-class(only-param: Any? or "defaultValue") {
                 attr only-param: Any?
             }
             """;

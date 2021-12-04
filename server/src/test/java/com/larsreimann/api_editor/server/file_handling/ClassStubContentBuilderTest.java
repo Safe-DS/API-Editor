@@ -75,7 +75,7 @@ class ClassStubContentBuilderTest {
         // then
         String expectedFormattedClass = """
             open class test-class() {
-                fun test-class-function(only-param: Any? or 'defaultValue')
+                fun test-class-function(only-param: Any? or "defaultValue")
             }""";
         Assertions.assertEquals(expectedFormattedClass, formattedClass);
     }

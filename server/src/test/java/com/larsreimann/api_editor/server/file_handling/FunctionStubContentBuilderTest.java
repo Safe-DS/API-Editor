@@ -51,7 +51,7 @@ class FunctionStubContentBuilderTest {
                     "13",
                     PythonParameterAssignment.POSITION_ONLY,
                     true,
-                    "float",
+                    "int",
                     "description",
                     Collections.emptyList()
                 )
@@ -85,10 +85,10 @@ class FunctionStubContentBuilderTest {
                 new AnnotatedPythonParameter(
                     "only-param",
                     "test-module.test-class.test-class-function.only-param",
-                    "False",
+                    "'Test'",
                     PythonParameterAssignment.POSITION_OR_NAME,
                     true,
-                    "bool",
+                    "string",
                     "description",
                     Collections.emptyList()
                 )
@@ -107,7 +107,7 @@ class FunctionStubContentBuilderTest {
 
         // then
         String expectedFormattedFunction = """
-            fun test-function(only-param: Any? or False)""";
+            fun test-function(only-param: Any? or "Test")""";
         Assertions.assertEquals(expectedFormattedFunction, formattedClass);
     }
 
@@ -179,7 +179,7 @@ class FunctionStubContentBuilderTest {
                 new AnnotatedPythonParameter(
                     "only-param",
                     "test-module.test-class.test-class-function.only-param",
-                    "13",
+                    "1.31e+1",
                     PythonParameterAssignment.POSITION_ONLY,
                     true,
                     "float",
@@ -209,7 +209,7 @@ class FunctionStubContentBuilderTest {
 
         // then
         String expectedFormattedFunction = """
-            fun test-function(only-param: Any? or 13) -> firstResult: float""";
+            fun test-function(only-param: Any? or 13.1) -> firstResult: float""";
         Assertions.assertEquals(expectedFormattedFunction, formattedClass);
     }
 
@@ -224,10 +224,10 @@ class FunctionStubContentBuilderTest {
                 new AnnotatedPythonParameter(
                     "only-param",
                     "test-module.test-class.test-class-function.only-param",
-                    "13",
+                    "True",
                     PythonParameterAssignment.POSITION_ONLY,
                     true,
-                    "float",
+                    "bool",
                     "description",
                     Collections.emptyList()
                 )
@@ -261,7 +261,44 @@ class FunctionStubContentBuilderTest {
 
         // then
         String expectedFormattedFunction = """
-            fun test-function(only-param: Any? or 13) -> [firstResult: float, secondResult: float]""";
+            fun test-function(only-param: Any? or true) -> [firstResult: float, secondResult: float]""";
+        Assertions.assertEquals(expectedFormattedFunction, formattedClass);
+    }
+
+    @Test
+    void buildFunctionReturnsFormattedFunctionWithInvalidDefaultValue() {
+        // given
+        AnnotatedPythonFunction testFunction = new AnnotatedPythonFunction(
+            "test-function",
+            "test-module.test-function",
+            List.of("test-decorator"),
+            List.of(
+                new AnnotatedPythonParameter(
+                    "only-param",
+                    "test-module.test-class.test-class-function.only-param",
+                    "'13'x",
+                    PythonParameterAssignment.POSITION_ONLY,
+                    true,
+                    "string",
+                    "description",
+                    Collections.emptyList()
+                )
+            ),
+            Collections.emptyList(),
+            true,
+            "Lorem ipsum",
+            "fullDocstring",
+            Collections.emptyList()
+        );
+
+        // when
+        FunctionStubContentBuilder functionStubContentBuilder =
+            new FunctionStubContentBuilder(testFunction);
+        String formattedClass = functionStubContentBuilder.buildFunction();
+
+        // then
+        String expectedFormattedFunction = """
+            fun test-function(only-param: Any? or ###invalid###)""";
         Assertions.assertEquals(expectedFormattedFunction, formattedClass);
     }
 }

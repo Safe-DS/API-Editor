@@ -123,7 +123,9 @@ class ClassStubContentBuilder extends FileBuilder {
         String defaultValue = pythonParameter.getDefaultValue();
         if (defaultValue != null
             && !defaultValue.isBlank()) {
-            formattedParameter = formattedParameter + " or " + defaultValue;
+            formattedParameter = formattedParameter
+                + " or "
+                + buildFormattedDefaultValue(defaultValue);
         }
         return formattedParameter;
     }
