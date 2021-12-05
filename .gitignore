@@ -20,6 +20,11 @@ __pycache__/
 # Poetry distribution
 dist/
 
+# Pytest outputs
+.pytest_cache/
+htmlcov/
+.coverage
+
 # Output of this tool
 out/
 
