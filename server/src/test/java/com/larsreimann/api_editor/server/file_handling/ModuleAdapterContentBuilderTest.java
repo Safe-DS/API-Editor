@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Collections;
 import java.util.List;
 
-class ModuleContentBuilderTest {
+class ModuleAdapterContentBuilderTest {
     @Test
     void buildModuleContentReturnsFormattedModuleContent() {
         // given
@@ -133,18 +133,10 @@ class ModuleContentBuilderTest {
             Collections.emptyList()
         );
 
-        AnnotatedPythonPackage testPackage = new AnnotatedPythonPackage(
-            "test-distribution",
-            "test-package",
-            "1.0.0",
-            List.of(testModule),
-            Collections.emptyList()
-        );
-
         // when
-        String moduleContent = ModuleContentBuilder.buildModuleContent(
-            testModule
-        );
+        ModuleAdapterContentBuilder moduleAdapterContentBuilder =
+            new ModuleAdapterContentBuilder(testModule);
+        String moduleContent = moduleAdapterContentBuilder.buildModuleContent();
 
         //then
         String expectedModuleContent = """
@@ -153,6 +145,118 @@ class ModuleContentBuilderTest {
             class test-class:
                 def test-class-function(only-param='defaultValue'):
                     test-module.test-class.test-class-function(only-param)
+
+            def function_module_1(*, param1, param2, param3):
+                test.module_1.function_module_1(param1=param1, param2=param2, param3=param3)
+
+            def test-function(*, test-parameter=42):
+                test-module.test-function(test-parameter=test-parameter)
+            """;
+
+        Assertions.assertEquals(expectedModuleContent, moduleContent);
+    }
+
+    @Test
+    void buildModuleContentWithNoClassesReturnsFormattedModuleContent() {
+        // given
+        AnnotatedPythonModule testModule = new AnnotatedPythonModule(
+            "test-module",
+            Collections.emptyList(),
+            Collections.emptyList(),
+            Collections.emptyList(),
+            List.of(
+                new AnnotatedPythonFunction(
+                    "function_module_1",
+                    "test.module_1.function_module_1",
+                    List.of("test-decorator"),
+                    List.of(
+                        new AnnotatedPythonParameter(
+                            "param1",
+                            "test.module_1.function_module_1.param1",
+                            null,
+                            PythonParameterAssignment.NAME_ONLY,
+                            true,
+                            "str",
+                            "Lorem ipsum",
+                            Collections.emptyList()
+                        ),
+                        new AnnotatedPythonParameter(
+                            "param2",
+                            "test.module_1.function_module_1.param2",
+                            null,
+                            PythonParameterAssignment.NAME_ONLY,
+                            true,
+                            "str",
+                            "Lorem ipsum",
+                            Collections.emptyList()
+                        ),
+                        new AnnotatedPythonParameter(
+                            "param3",
+                            "test.module_1.function_module_1.param3",
+                            null,
+                            PythonParameterAssignment.NAME_ONLY,
+                            true,
+                            "str",
+                            "Lorem ipsum",
+                            Collections.emptyList()
+                        )
+                    ),
+                    List.of(
+                        new AnnotatedPythonResult(
+                            "test-result",
+                            "str",
+                            "str",
+                            "Lorem ipsum",
+                            Collections.emptyList()
+                        )
+                    ),
+                    true,
+                    "Lorem ipsum",
+                    "Lorem ipsum",
+                    Collections.emptyList()
+                ),
+                new AnnotatedPythonFunction(
+                    "test-function",
+                    "test-module.test-function",
+                    List.of("test-decorator"),
+                    List.of(
+                        new AnnotatedPythonParameter(
+                            "test-parameter",
+                            "test-module.test-function.test-parameter",
+                            "42",
+                            PythonParameterAssignment.NAME_ONLY,
+                            true,
+                            "int",
+                            "Lorem ipsum",
+                            Collections.emptyList()
+                        )
+                    ),
+                    List.of(
+                        new AnnotatedPythonResult(
+                            "test-result",
+                            "str",
+                            "str",
+                            "Lorem ipsum",
+                            Collections.emptyList()
+                        )
+                    ),
+                    true,
+                    "Lorem ipsum",
+                    "Lorem ipsum",
+                    Collections.emptyList()
+                )
+            ),
+            Collections.emptyList()
+        );
+
+        // when
+        ModuleAdapterContentBuilder moduleAdapterContentBuilder =
+            new ModuleAdapterContentBuilder(testModule);
+        String moduleContent = moduleAdapterContentBuilder.buildModuleContent();
+
+        //then
+        String expectedModuleContent = """
+            import test-module
 
             def function_module_1(*, param1, param2, param3):
                 test.module_1.function_module_1(param1=param1, param2=param2, param3=param3)
@@ -200,18 +304,10 @@ class ModuleContentBuilderTest {
             Collections.emptyList()
         );
 
-        AnnotatedPythonPackage testPackage = new AnnotatedPythonPackage(
-            "test-distribution",
-            "test-package",
-            "1.0.0",
-            List.of(testModule),
-            Collections.emptyList()
-        );
-
         // when
-        String moduleContent = ModuleContentBuilder.buildModuleContent(
-            testModule
-        );
+        ModuleAdapterContentBuilder moduleAdapterContentBuilder =
+            new ModuleAdapterContentBuilder(testModule);
+        String moduleContent = moduleAdapterContentBuilder.buildModuleContent();
 
         //then
         String expectedModuleContent = """
@@ -247,9 +343,9 @@ class ModuleContentBuilderTest {
         );
 
         // when
-        String moduleContent = ModuleContentBuilder.buildModuleContent(
-            testModule
-        );
+        ModuleAdapterContentBuilder moduleAdapterContentBuilder =
+            new ModuleAdapterContentBuilder(testModule);
+        String moduleContent = moduleAdapterContentBuilder.buildModuleContent();
 
         //then
         String expectedModuleContent = """

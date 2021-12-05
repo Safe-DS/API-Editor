@@ -5,20 +5,27 @@ import com.larsreimann.api_editor.server.data.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModuleContentBuilder extends PythonFileBuilder {
+class ModuleAdapterContentBuilder extends FileBuilder {
+    AnnotatedPythonModule pythonModule;
+
+    /**
+     * Constructor for ModuleAdapterContentBuilder
+     *
+     * @param pythonModule The module whose adapter content should be built
+     */
+    protected ModuleAdapterContentBuilder(AnnotatedPythonModule pythonModule) {
+        this.pythonModule = pythonModule;
+    }
+
     /**
      * Builds a string containing the formatted module content
      *
-     * @param pythonModule The module whose content is to be formatted
-     *                     and returned
      * @return The string containing the formatted module content
      */
-    protected static String buildModuleContent(
-        AnnotatedPythonModule pythonModule
-    ) {
-        String formattedImport = buildNamespace(pythonModule.getName());
-        String formattedClasses = buildAllClasses(pythonModule.getClasses());
-        String formattedFunctions = buildAllFunctions(pythonModule.getFunctions());
+    protected String buildModuleContent() {
+        String formattedImport = buildNamespace();
+        String formattedClasses = buildAllClasses();
+        String formattedFunctions = buildAllFunctions();
         String[] separators = buildSeparators(
             formattedImport, formattedClasses, formattedFunctions
         );
@@ -30,25 +37,29 @@ public class ModuleContentBuilder extends PythonFileBuilder {
             + formattedFunctions;
     }
 
-    private static String buildNamespace(String moduleName) {
-        return "import " + moduleName;
+    private String buildNamespace() {
+        return "import " + pythonModule.getName();
     }
 
-    private static String buildAllClasses(
-        List<AnnotatedPythonClass> pythonClasses
-    ) {
+    private String buildAllClasses() {
         List<String> formattedClasses = new ArrayList<>();
-        pythonClasses.forEach(pythonClass ->
-            formattedClasses.add(ClassContentBuilder.buildClass(pythonClass)));
+        pythonModule.getClasses().forEach(pythonClass -> {
+            ClassAdapterContentBuilder classAdapterContentBuilder =
+                new ClassAdapterContentBuilder(pythonClass);
+                formattedClasses.add(classAdapterContentBuilder.buildClass());
+            }
+            );
         return listToString(formattedClasses, 2);
     }
 
-    private static String buildAllFunctions(
-        List<AnnotatedPythonFunction> pythonFunctions
-    ) {
+    private String buildAllFunctions() {
         List<String> formattedFunctions = new ArrayList<>();
-        pythonFunctions.forEach(pythonFunction ->
-            formattedFunctions.add(FunctionContentBuilder.buildFunction(pythonFunction)));
+        pythonModule.getFunctions().forEach(pythonFunction -> {
+                FunctionAdapterContentBuilder functionAdapterContentBuilder =
+                    new FunctionAdapterContentBuilder(pythonFunction);
+                formattedFunctions.add(functionAdapterContentBuilder.buildFunction());
+            }
+        );
         return listToString(formattedFunctions, 2);
     }
 
@@ -60,28 +71,23 @@ public class ModuleContentBuilder extends PythonFileBuilder {
         String importSeparator;
         if (formattedImports.isBlank()) {
             importSeparator = "";
-        }
-        else if (formattedClasses.isBlank() && formattedFunctions.isBlank()) {
+        } else if (formattedClasses.isBlank() && formattedFunctions.isBlank()) {
             importSeparator = "\n";
-        }
-        else {
+        } else {
             importSeparator = "\n\n";
         }
         String classesSeparator;
         if (formattedClasses.isBlank()) {
             classesSeparator = "";
-        }
-        else if (formattedFunctions.isBlank()) {
+        } else if (formattedFunctions.isBlank()) {
             classesSeparator = "\n";
-        }
-        else {
+        } else {
             classesSeparator = "\n\n";
         }
         String functionSeparator;
         if (formattedFunctions.isBlank()) {
             functionSeparator = "";
-        }
-        else {
+        } else {
             functionSeparator = "\n";
         }
 

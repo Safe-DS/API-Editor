@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 import java.util.Collections;
 import java.util.List;
 
-class ClassContentBuilderTest {
+class ClassStubContentBuilderTest {
     @Test
-    void buildClassReturnsFormattedClassWithNoFunctions() {
+    void buildClassReturnsFormattedClassWithNoConstructorAndFunctions() {
         // given
         AnnotatedPythonClass testClass = new AnnotatedPythonClass(
             "test-class",
@@ -23,15 +23,17 @@ class ClassContentBuilderTest {
         );
 
         // when
-        String formattedClass = ClassContentBuilder.buildClass(testClass);
+        ClassStubContentBuilder classStubContentBuilder =
+            new ClassStubContentBuilder(testClass);
+        String formattedClass = classStubContentBuilder.buildClass();
 
         // then
-        String expectedFormattedClass = "class test-class:";
+        String expectedFormattedClass = "open class test-class() {}";
         Assertions.assertEquals(expectedFormattedClass, formattedClass);
     }
 
     @Test
-    void buildClassReturnsFormattedClassWithOneFunction() {
+    void buildClassReturnsFormattedClassWithOneFunctionAndNoConstructor() {
         // given
         AnnotatedPythonClass testClass = new AnnotatedPythonClass(
             "test-class",
@@ -66,18 +68,20 @@ class ClassContentBuilderTest {
         );
 
         // when
-        String formattedClass = ClassContentBuilder.buildClass(testClass);
+        ClassStubContentBuilder classStubContentBuilder =
+            new ClassStubContentBuilder(testClass);
+        String formattedClass = classStubContentBuilder.buildClass();
 
         // then
         String expectedFormattedClass = """
-            class test-class:
-                def test-class-function(only-param='defaultValue'):
-                    test-module.test-class.test-class-function(only-param)""";
-        Assertions.assertEquals(formattedClass, expectedFormattedClass);
+            open class test-class() {
+                fun test-class-function(only-param: Any? or "defaultValue")
+            }""";
+        Assertions.assertEquals(expectedFormattedClass, formattedClass);
     }
 
     @Test
-    void buildClassReturnsFormattedClassWithTwoFunctions() {
+    void buildClassReturnsFormattedClassWithConstructorAndOneFunction() {
         // given
         AnnotatedPythonClass testClass = new AnnotatedPythonClass(
             "test-class",
@@ -106,12 +110,12 @@ class ClassContentBuilderTest {
                     Collections.emptyList()
                 ),
                 new AnnotatedPythonFunction(
-                    "test-class-function2",
-                    "test-module.test-class.test-class-function2",
+                    "__init__",
+                    "test-module.test-class.__init__",
                     List.of("decorators"),
                     List.of(new AnnotatedPythonParameter(
                         "only-param",
-                        "test-module.test-class.test-class-function.only-param",
+                        "test-module.test-class.__init__.only-param",
                         null,
                         PythonParameterAssignment.POSITION_OR_NAME,
                         true,
@@ -132,16 +136,17 @@ class ClassContentBuilderTest {
         );
 
         // when
-        String formattedClass = ClassContentBuilder.buildClass(testClass);
+        ClassStubContentBuilder classStubContentBuilder =
+            new ClassStubContentBuilder(testClass);
+        String formattedClass = classStubContentBuilder.buildClass();
 
         // then
         String expectedFormattedClass = """
-            class test-class:
-                def test-class-function1(only-param):
-                    test-module.test-class.test-class-function1(only-param)
+            open class test-class(only-param: Any?) {
+                attr only-param: Any?
 
-                def test-class-function2(only-param):
-                    test-module.test-class.test-class-function2(only-param)""";
+                fun test-class-function1(only-param: Any?)
+            }""";
         Assertions.assertEquals(formattedClass, expectedFormattedClass);
     }
 }

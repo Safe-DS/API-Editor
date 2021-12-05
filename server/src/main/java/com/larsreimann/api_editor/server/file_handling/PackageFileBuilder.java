@@ -1,5 +1,6 @@
 package com.larsreimann.api_editor.server.file_handling;
 
+import com.larsreimann.api_editor.server.data.AnnotatedPythonModule;
 import com.larsreimann.api_editor.server.data.AnnotatedPythonPackage;
 import kotlin.io.FilesKt;
 
@@ -15,16 +16,20 @@ import java.util.zip.ZipOutputStream;
 
 public class PackageFileBuilder {
     AnnotatedPythonPackage pythonPackage;
+    Path workingDirectory;
 
     /**
-     * Constructor for class PackageFileBuilder
+     * Constructor for PackageFileBuilder
      *
-     * @param annotatedPythonPackage The package whose files should be built
+     * @param pythonPackage    The package whose files should be generated
+     * @param workingDirectory The directory used by this class
+     *                         for storing the files
      */
-    public PackageFileBuilder(
-        AnnotatedPythonPackage annotatedPythonPackage
+    public PackageFileBuilder(AnnotatedPythonPackage pythonPackage,
+                              Path workingDirectory
     ) {
-        this.pythonPackage = annotatedPythonPackage;
+        this.pythonPackage = pythonPackage;
+        this.workingDirectory = workingDirectory;
     }
 
     /**
@@ -33,15 +38,31 @@ public class PackageFileBuilder {
      * at the classes specified zip folder path
      */
     public String buildModuleFiles() throws Exception {
-        Path workingPath = Files.createTempDirectory("api-editor_inferredAPI");
+        Path workingPath = Files.createTempDirectory(workingDirectory.toString());
         pythonPackage.getModules().forEach(module -> {
             try {
                 buildFile(
                     module.getName(),
-                    ModuleContentBuilder.buildModuleContent(
+                    buildAdapterContent(
                         module
                     ),
-                    workingPath
+                    Paths.get(workingPath.toString(),
+                        "adapter",
+                        "simpleml"
+                    ),
+                    ".py"
+                );
+
+                var moduleNameParts = module.getName().split("\\.");
+
+                buildFile(
+                    String.join(".", moduleNameParts) + "." + moduleNameParts[moduleNameParts.length - 1],
+                    buildStubContent(module),
+                    Paths.get(workingPath.toString(),
+                        "stub",
+                        "simpleml"
+                    ),
+                    ".stub.simpleml"
                 );
             } catch (Exception e) {
                 e.printStackTrace();
@@ -54,22 +75,8 @@ public class PackageFileBuilder {
         return zipFolderPath;
     }
 
-    private void buildFile(String fileName, String content, Path workingFolderPath) {
-        String formattedFileName = fileName.replaceAll("\\.", "/") + ".py";
-        Path filePath = Paths.get(workingFolderPath.toString(), formattedFileName);
-        Path directoryPath = filePath.getParent();
-        File directory = new File(directoryPath.toString());
-        directory.mkdirs();
-        try (BufferedWriter out = new BufferedWriter(new FileWriter(filePath.toString()))) {
-            out.write(content);
-            out.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     private String zip(Path workingFolderPath) throws Exception {
-        Path path = Files.createTempFile("api-editor_inferredAPI", ".zip");
+        Path path = Files.createTempFile(workingDirectory.toString(), ".zip");
         try (ZipOutputStream zipOutputStream = new ZipOutputStream(Files.newOutputStream(path))) {
             Files.walk(workingFolderPath)
                 .filter(currentPath -> !Files.isDirectory(currentPath))
@@ -85,5 +92,37 @@ public class PackageFileBuilder {
                 });
         }
         return path.toString();
+    }
+
+    private void buildFile(
+        String fileName,
+        String content,
+        Path workingFolderPath,
+        String fileExtension
+    ) {
+        String formattedFileName = fileName.replaceAll("\\.", "/")
+            + fileExtension;
+        Path filePath = Paths.get(workingFolderPath.toString(), formattedFileName);
+        Path directoryPath = filePath.getParent();
+        File directory = new File(directoryPath.toString());
+        directory.mkdirs();
+        try (BufferedWriter out = new BufferedWriter(new FileWriter(filePath.toString()))) {
+            out.write(content);
+            out.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String buildAdapterContent(AnnotatedPythonModule pythonModule) {
+        ModuleAdapterContentBuilder moduleAdapterContentBuilder =
+            new ModuleAdapterContentBuilder(pythonModule);
+        return moduleAdapterContentBuilder.buildModuleContent();
+    }
+
+    private String buildStubContent(AnnotatedPythonModule pythonModule) {
+        ModuleStubContentBuilder moduleStubContentBuilder =
+            new ModuleStubContentBuilder(pythonModule);
+        return moduleStubContentBuilder.buildModuleContent();
     }
 }

@@ -31,7 +31,7 @@
             ]
         },
         {
-            "name": "module_2",
+            "name": "folder1.module_2",
             "imports": [],
             "from_imports": [
                 {
@@ -62,7 +62,10 @@
             "qname": "test.module_1.Class_1_Module_1",
             "decorators": [],
             "superclasses": [],
-            "methods": ["test.module_1.Class_1_Module_1.class_method_1"]
+            "methods": [
+                "test.module_1.Class_1_Module_1.class_method_1",
+                "test.module_1.Class_1_Module_1.__init__"
+            ]
         }
     ],
     "functions": [
@@ -346,6 +349,30 @@
             "unique_name": "class_method_1",
             "qname": "test.module_1.Class_1_Module_1.class_method_1",
             "unique_qname": "test.module_1.Class_1_Module_1.class_method_1",
+            "decorators": [],
+            "parameters": [
+                {
+                    "name": "only_param",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": "only param"
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "description": "description",
+            "docstring": "docstring",
+            "source_code": ""
+        },
+        {
+            "name": "__init__",
+            "unique_name": "__init__",
+            "qname": "test.module_1.Class_1_Module_1.__init__",
+            "unique_qname": "test.module_1.Class_1_Module_1.__init__",
             "decorators": [],
             "parameters": [
                 {

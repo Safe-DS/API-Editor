@@ -25,6 +25,7 @@ import io.ktor.routing.routing
 import io.ktor.serialization.json
 import kotlinx.serialization.json.Json
 import java.io.File
+import java.nio.file.Paths
 
 fun Application.configureRouting() {
     install(ContentNegotiation) {
@@ -78,10 +79,12 @@ fun Route.infer() {
             call.respond(HttpStatusCode.Conflict, messages)
             return@post
         }
-
-        val packageFileBuilder = PackageFileBuilder(pythonPackage)
+        val packageAdapterBuilder =
+            PackageFileBuilder(
+                pythonPackage, Paths.get("api-editor_inferredAPI")
+            )
         try {
-            val zipFolderPath = packageFileBuilder.buildModuleFiles()
+            val zipFolderPath = packageAdapterBuilder.buildModuleFiles()
             val zipFile = File(zipFolderPath)
 
             call.response.header(

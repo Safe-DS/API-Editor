@@ -2,6 +2,7 @@ package com.larsreimann.api_editor.server.file_handling;
 
 import com.larsreimann.api_editor.server.data.AnnotatedPythonFunction;
 import com.larsreimann.api_editor.server.data.AnnotatedPythonParameter;
+import com.larsreimann.api_editor.server.data.AnnotatedPythonResult;
 import com.larsreimann.api_editor.server.data.PythonParameterAssignment;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -9,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Collections;
 import java.util.List;
 
-class FunctionContentBuilderTest {
+class FunctionStubContentBuilderTest {
     @Test
     void buildFunctionReturnsFormattedFunctionWithNoParameters() {
         // given
@@ -26,12 +27,13 @@ class FunctionContentBuilderTest {
         );
 
         // when
-        String formattedClass = FunctionContentBuilder.buildFunction(testFunction);
+        FunctionStubContentBuilder functionStubContentBuilder =
+            new FunctionStubContentBuilder(testFunction);
+        String formattedClass = functionStubContentBuilder.buildFunction();
 
         // then
         String expectedFormattedFunction = """
-            def test-function():
-                test-module.test-function()""";
+            fun test-function()""";
         Assertions.assertEquals(expectedFormattedFunction, formattedClass);
     }
 
@@ -49,7 +51,7 @@ class FunctionContentBuilderTest {
                     "13",
                     PythonParameterAssignment.POSITION_ONLY,
                     true,
-                    "float",
+                    "int",
                     "description",
                     Collections.emptyList()
                 )
@@ -62,12 +64,13 @@ class FunctionContentBuilderTest {
         );
 
         // when
-        String formattedClass = FunctionContentBuilder.buildFunction(testFunction);
+        FunctionStubContentBuilder functionStubContentBuilder =
+            new FunctionStubContentBuilder(testFunction);
+        String formattedClass = functionStubContentBuilder.buildFunction();
 
         // then
         String expectedFormattedFunction = """
-            def test-function(only-param=13, /):
-                test-module.test-function(only-param)""";
+            fun test-function(only-param: Any? or 13)""";
         Assertions.assertEquals(expectedFormattedFunction, formattedClass);
     }
 
@@ -82,10 +85,10 @@ class FunctionContentBuilderTest {
                 new AnnotatedPythonParameter(
                     "only-param",
                     "test-module.test-class.test-class-function.only-param",
-                    "False",
+                    "'Test'",
                     PythonParameterAssignment.POSITION_OR_NAME,
                     true,
-                    "bool",
+                    "string",
                     "description",
                     Collections.emptyList()
                 )
@@ -98,94 +101,13 @@ class FunctionContentBuilderTest {
         );
 
         // when
-        String formattedClass = FunctionContentBuilder.buildFunction(testFunction);
+        FunctionStubContentBuilder functionStubContentBuilder =
+            new FunctionStubContentBuilder(testFunction);
+        String formattedClass = functionStubContentBuilder.buildFunction();
 
         // then
         String expectedFormattedFunction = """
-            def test-function(only-param=False):
-                test-module.test-function(only-param)""";
-        Assertions.assertEquals(expectedFormattedFunction, formattedClass);
-    }
-
-    @Test
-    void buildFunctionReturnsFormattedFunctionWithNameOnlyParameter() {
-        // given
-        AnnotatedPythonFunction testFunction = new AnnotatedPythonFunction(
-            "test-function",
-            "test-module.test-function",
-            List.of("test-decorator"),
-            List.of(
-                new AnnotatedPythonParameter(
-                    "only-param",
-                    "test-module.test-class.test-class-function.only-param",
-                    null,
-                    PythonParameterAssignment.NAME_ONLY,
-                    true,
-                    "typeInDocs",
-                    "description",
-                    Collections.emptyList()
-                )
-            ),
-            Collections.emptyList(),
-            true,
-            "Lorem ipsum",
-            "fullDocstring",
-            Collections.emptyList()
-        );
-
-        // when
-        String formattedClass = FunctionContentBuilder.buildFunction(testFunction);
-
-        // then
-        String expectedFormattedFunction = """
-            def test-function(*, only-param):
-                test-module.test-function(only-param=only-param)""";
-        Assertions.assertEquals(expectedFormattedFunction, formattedClass);
-    }
-
-    @Test
-    void buildFunctionReturnsFormattedFunctionWithPositionAndPositionOrNameParameter() {
-        // given
-        AnnotatedPythonFunction testFunction = new AnnotatedPythonFunction(
-            "test-function",
-            "test-module.test-function",
-            List.of("test-decorator"),
-            List.of(
-                new AnnotatedPythonParameter(
-                    "first-param",
-                    "test-module.test-class.test-class-function.first-param",
-                    null,
-                    PythonParameterAssignment.POSITION_ONLY,
-                    true,
-                    "typeInDocs",
-                    "description",
-                    Collections.emptyList()
-                ),
-                new AnnotatedPythonParameter(
-                    "second-param",
-                    "test-module.test-class.test-class-function.second-param",
-                    null,
-                    PythonParameterAssignment.POSITION_OR_NAME,
-                    true,
-                    "typeInDocs",
-                    "description",
-                    Collections.emptyList()
-                )
-            ),
-            Collections.emptyList(),
-            true,
-            "Lorem ipsum",
-            "fullDocstring",
-            Collections.emptyList()
-        );
-
-        // when
-        String formattedClass = FunctionContentBuilder.buildFunction(testFunction);
-
-        // then
-        String expectedFormattedFunction = """
-            def test-function(first-param, /, second-param):
-                test-module.test-function(first-param, second-param)""";
+            fun test-function(only-param: Any? or "Test")""";
         Assertions.assertEquals(expectedFormattedFunction, formattedClass);
     }
 
@@ -236,17 +158,18 @@ class FunctionContentBuilderTest {
         );
 
         // when
-        String formattedClass = FunctionContentBuilder.buildFunction(testFunction);
+        FunctionStubContentBuilder functionStubContentBuilder =
+            new FunctionStubContentBuilder(testFunction);
+        String formattedClass = functionStubContentBuilder.buildFunction();
 
         // then
         String expectedFormattedFunction = """
-            def test-function(first-param, /, second-param, *, third-param):
-                test-module.test-function(first-param, second-param, third-param=third-param)""";
+            fun test-function(first-param: Any?, second-param: Any?, third-param: Any?)""";
         Assertions.assertEquals(expectedFormattedFunction, formattedClass);
     }
 
     @Test
-    void buildFunctionReturnsFormattedFunctionWithPositionAndNameOnlyParameter() {
+    void buildFunctionReturnsFormattedFunctionWithOneResult() {
         // given
         AnnotatedPythonFunction testFunction = new AnnotatedPythonFunction(
             "test-function",
@@ -254,27 +177,25 @@ class FunctionContentBuilderTest {
             List.of("test-decorator"),
             List.of(
                 new AnnotatedPythonParameter(
-                    "first-param",
-                    "test-module.test-class.test-class-function.first-param",
-                    null,
+                    "only-param",
+                    "test-module.test-class.test-class-function.only-param",
+                    "1.31e+1",
                     PythonParameterAssignment.POSITION_ONLY,
                     true,
-                    "typeInDocs",
-                    "description",
-                    Collections.emptyList()
-                ),
-                new AnnotatedPythonParameter(
-                    "second-param",
-                    "test-module.test-class.test-class-function.second-param",
-                    null,
-                    PythonParameterAssignment.NAME_ONLY,
-                    true,
-                    "typeInDocs",
+                    "float",
                     "description",
                     Collections.emptyList()
                 )
             ),
-            Collections.emptyList(),
+            List.of(
+                new AnnotatedPythonResult(
+                    "firstResult",
+                    "float",
+                    "float",
+                    "description",
+                    Collections.emptyList()
+                )
+            ),
             true,
             "Lorem ipsum",
             "fullDocstring",
@@ -282,17 +203,18 @@ class FunctionContentBuilderTest {
         );
 
         // when
-        String formattedClass = FunctionContentBuilder.buildFunction(testFunction);
+        FunctionStubContentBuilder functionStubContentBuilder =
+            new FunctionStubContentBuilder(testFunction);
+        String formattedClass = functionStubContentBuilder.buildFunction();
 
         // then
         String expectedFormattedFunction = """
-            def test-function(first-param, /, *, second-param):
-                test-module.test-function(first-param, second-param=second-param)""";
+            fun test-function(only-param: Any? or 13.1) -> firstResult: float""";
         Assertions.assertEquals(expectedFormattedFunction, formattedClass);
     }
 
     @Test
-    void buildFunctionReturnsFormattedFunctionWithPositionOrNameAndNameOnlyParameter() {
+    void buildFunctionReturnsFormattedFunctionWithMultipleResults() {
         // given
         AnnotatedPythonFunction testFunction = new AnnotatedPythonFunction(
             "test-function",
@@ -300,22 +222,64 @@ class FunctionContentBuilderTest {
             List.of("test-decorator"),
             List.of(
                 new AnnotatedPythonParameter(
-                    "first-param",
-                    "test-module.test-class.test-class-function.first-param",
-                    null,
-                    PythonParameterAssignment.POSITION_OR_NAME,
+                    "only-param",
+                    "test-module.test-class.test-class-function.only-param",
+                    "True",
+                    PythonParameterAssignment.POSITION_ONLY,
                     true,
-                    "typeInDocs",
+                    "bool",
+                    "description",
+                    Collections.emptyList()
+                )
+            ),
+            List.of(
+                new AnnotatedPythonResult(
+                    "firstResult",
+                    "float",
+                    "float",
                     "description",
                     Collections.emptyList()
                 ),
+                new AnnotatedPythonResult(
+                    "secondResult",
+                    "float",
+                    "float",
+                    "description",
+                    Collections.emptyList()
+                )
+            ),
+            true,
+            "Lorem ipsum",
+            "fullDocstring",
+            Collections.emptyList()
+        );
+
+        // when
+        FunctionStubContentBuilder functionStubContentBuilder =
+            new FunctionStubContentBuilder(testFunction);
+        String formattedClass = functionStubContentBuilder.buildFunction();
+
+        // then
+        String expectedFormattedFunction = """
+            fun test-function(only-param: Any? or true) -> [firstResult: float, secondResult: float]""";
+        Assertions.assertEquals(expectedFormattedFunction, formattedClass);
+    }
+
+    @Test
+    void buildFunctionReturnsFormattedFunctionWithInvalidDefaultValue() {
+        // given
+        AnnotatedPythonFunction testFunction = new AnnotatedPythonFunction(
+            "test-function",
+            "test-module.test-function",
+            List.of("test-decorator"),
+            List.of(
                 new AnnotatedPythonParameter(
-                    "second-param",
-                    "test-module.test-class.test-class-function.second-param",
-                    null,
-                    PythonParameterAssignment.NAME_ONLY,
+                    "only-param",
+                    "test-module.test-class.test-class-function.only-param",
+                    "'13'x",
+                    PythonParameterAssignment.POSITION_ONLY,
                     true,
-                    "typeInDocs",
+                    "string",
                     "description",
                     Collections.emptyList()
                 )
@@ -328,12 +292,13 @@ class FunctionContentBuilderTest {
         );
 
         // when
-        String formattedClass = FunctionContentBuilder.buildFunction(testFunction);
+        FunctionStubContentBuilder functionStubContentBuilder =
+            new FunctionStubContentBuilder(testFunction);
+        String formattedClass = functionStubContentBuilder.buildFunction();
 
         // then
         String expectedFormattedFunction = """
-            def test-function(first-param, *, second-param):
-                test-module.test-function(first-param, second-param=second-param)""";
+            fun test-function(only-param: Any? or "###invalid###'13'x###")""";
         Assertions.assertEquals(expectedFormattedFunction, formattedClass);
     }
 }
