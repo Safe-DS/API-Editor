@@ -21,7 +21,7 @@ public class PackageFileBuilder {
     /**
      * Constructor for PackageFileBuilder
      *
-     * @param pythonPackage The package whose files should be generated
+     * @param pythonPackage    The package whose files should be generated
      * @param workingDirectory The directory used by this class
      *                         for storing the files
      */
@@ -52,15 +52,15 @@ public class PackageFileBuilder {
                     ),
                     ".py"
                 );
+
+                var moduleNameParts = module.getName().split("\\.");
+
                 buildFile(
-                    module.getName(),
-                    buildStubContent(
-                        module
-                    ),
+                    String.join(".", moduleNameParts) + "." + moduleNameParts[moduleNameParts.length - 1],
+                    buildStubContent(module),
                     Paths.get(workingPath.toString(),
                         "stub",
-                        "simpleml",
-                        pythonPackage.getName()
+                        "simpleml"
                     ),
                     ".stub.simpleml"
                 );
@@ -120,7 +120,7 @@ public class PackageFileBuilder {
         return moduleAdapterContentBuilder.buildModuleContent();
     }
 
-    private String buildStubContent(AnnotatedPythonModule pythonModule){
+    private String buildStubContent(AnnotatedPythonModule pythonModule) {
         ModuleStubContentBuilder moduleStubContentBuilder =
             new ModuleStubContentBuilder(pythonModule);
         return moduleStubContentBuilder.buildModuleContent();
