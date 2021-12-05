@@ -10,7 +10,7 @@ parse-package = "package_parser.main:main"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-astroid = "^2.8.4"
+astroid = "^2.9.0"
 scikit-learn = "^1.0"
 importlib-metadata = "^4.8.2"
 numpydoc = "^1.1.0"
