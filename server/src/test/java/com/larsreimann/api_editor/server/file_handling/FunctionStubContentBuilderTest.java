@@ -298,7 +298,7 @@ class FunctionStubContentBuilderTest {
 
         // then
         String expectedFormattedFunction = """
-            fun test-function(only-param: Any? or ###invalid###)""";
+            fun test-function(only-param: Any? or "###invalid###'13'x###")""";
         Assertions.assertEquals(expectedFormattedFunction, formattedClass);
     }
 }
