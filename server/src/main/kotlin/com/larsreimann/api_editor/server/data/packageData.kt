@@ -8,6 +8,8 @@ sealed class AnnotatedPythonDeclaration {
     abstract val name: String
     abstract val annotations: List<EditorAnnotation>
     abstract val originalDeclaration: AnnotatedPythonDeclaration?
+
+    abstract fun accept(visitor: PackageDataVisitor)
 }
 
 @Serializable
@@ -21,6 +23,16 @@ data class AnnotatedPythonPackage(
 
     @Transient
     override var originalDeclaration: AnnotatedPythonPackage? = null
+
+    override fun accept(visitor: PackageDataVisitor) {
+        val shouldTraverseChildren = visitor.enterPythonPackage(this)
+
+        if (shouldTraverseChildren) {
+            modules.forEach { it.accept(visitor) }
+        }
+
+        visitor.leavePythonPackage(this)
+    }
 }
 
 @Serializable
@@ -38,6 +50,19 @@ data class AnnotatedPythonModule(
 
     @Transient
     val enums = mutableListOf<AnnotatedPythonEnum>()
+
+    override fun accept(visitor: PackageDataVisitor) {
+        val shouldTraverseChildren = visitor.enterPythonModule(this)
+
+        if (shouldTraverseChildren) {
+            classes.forEach { it.accept(visitor) }
+        }
+        if (shouldTraverseChildren) {
+            functions.forEach { it.accept(visitor) }
+        }
+
+        visitor.leavePythonModule(this)
+    }
 }
 
 @Serializable
@@ -70,6 +95,16 @@ data class AnnotatedPythonClass(
 
     @Transient
     val attributes = mutableListOf<AnnotatedPythonAttribute>()
+
+    override fun accept(visitor: PackageDataVisitor) {
+        val shouldTraverseChildren = visitor.enterPythonClass(this)
+
+        if (shouldTraverseChildren) {
+            methods.forEach { it.accept(visitor) }
+        }
+
+        visitor.leavePythonClass(this)
+    }
 }
 
 data class AnnotatedPythonAttribute(
@@ -87,6 +122,11 @@ data class AnnotatedPythonAttribute(
 
     @Transient
     var boundary: Boundary? = null
+
+    override fun accept(visitor: PackageDataVisitor) {
+        visitor.enterPythonAttribute(this)
+        visitor.leavePythonAttribute(this)
+    }
 }
 
 data class Boundary(
@@ -105,6 +145,11 @@ data class AnnotatedPythonEnum(
 
     @Transient
     override var originalDeclaration: AnnotatedPythonEnum? = null
+
+    override fun accept(visitor: PackageDataVisitor) {
+        visitor.enterPythonEnum(this)
+        visitor.leavePythonEnum(this)
+    }
 }
 
 data class PythonEnumInstance(
@@ -135,6 +180,17 @@ data class AnnotatedPythonFunction(
     var isPure = false
 
     fun isConstructor() = name == "__init__"
+
+    override fun accept(visitor: PackageDataVisitor) {
+        val shouldTraverseChildren = visitor.enterPythonFunction(this)
+
+        if (shouldTraverseChildren) {
+            parameters.forEach { it.accept(visitor) }
+            results.forEach { it.accept(visitor) }
+        }
+
+        visitor.leavePythonFunction(this)
+    }
 }
 
 @Serializable
@@ -154,6 +210,11 @@ data class AnnotatedPythonParameter(
 
     @Transient
     var boundary: Boundary? = null
+
+    override fun accept(visitor: PackageDataVisitor) {
+        visitor.enterPythonParameter(this)
+        visitor.leavePythonParameter(this)
+    }
 }
 
 enum class PythonParameterAssignment {
@@ -176,4 +237,9 @@ data class AnnotatedPythonResult(
 
     @Transient
     var boundary: Boundary? = null
+
+    override fun accept(visitor: PackageDataVisitor) {
+        visitor.enterPythonResult(this)
+        visitor.leavePythonResult(this)
+    }
 }
