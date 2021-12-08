@@ -1,5 +1,6 @@
 package com.larsreimann.api_editor.server
 
+import com.larsreimann.api_editor.server.annotationProcessing.PureAnnotationProcessor
 import com.larsreimann.api_editor.server.data.AnnotatedPythonPackage
 import com.larsreimann.api_editor.server.file_handling.PackageFileBuilder
 import com.larsreimann.api_editor.server.validation.AnnotationValidator
@@ -25,7 +26,6 @@ import io.ktor.routing.routing
 import io.ktor.serialization.json
 import kotlinx.serialization.json.Json
 import java.io.File
-import java.nio.file.Paths
 
 fun Application.configureRouting() {
     install(ContentNegotiation) {
@@ -72,34 +72,52 @@ fun Route.echo() {
 fun Route.infer() {
     post("/infer") {
         val pythonPackage = call.receive<AnnotatedPythonPackage>()
-        val messages = AnnotationValidator(pythonPackage)
-            .validate()
-            .map { it.message() }
-        if (messages.isNotEmpty()) {
-            call.respond(HttpStatusCode.Conflict, messages)
-            return@post
-        }
-        val packageAdapterBuilder =
-            PackageFileBuilder(
-                pythonPackage, Paths.get("api-editor_inferredAPI")
-            )
-        try {
-            val zipFolderPath = packageAdapterBuilder.buildModuleFiles()
-            val zipFile = File(zipFolderPath)
+        when (val doInferResult = doInfer(pythonPackage)) {
+            is DoInferResult.ValidationFailure -> {
+                call.respond(HttpStatusCode.Conflict, doInferResult.messages)
+            }
+            is DoInferResult.Success -> {
+                try {
+                    val zipFolderPath = doInferResult.path
+                    val zipFile = File(zipFolderPath)
 
-            call.response.header(
-                HttpHeaders.ContentDisposition,
-                ContentDisposition.Attachment.withParameter(
-                    ContentDisposition.Parameters.FileName, zipFolderPath
-                ).toString()
-            )
-            call.respondFile(zipFile)
-            zipFile.delete()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            call.respond(HttpStatusCode.InternalServerError, "Something went wrong while inferring the API.")
+                    call.response.header(
+                        HttpHeaders.ContentDisposition,
+                        ContentDisposition.Attachment.withParameter(
+                            ContentDisposition.Parameters.FileName, zipFolderPath
+                        ).toString()
+                    )
+                    call.respondFile(zipFile)
+
+                    zipFile.delete()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    call.respond(HttpStatusCode.InternalServerError, "Something went wrong while inferring the API.")
+                }
+            }
         }
     }
+}
+
+fun doInfer(originalPythonPackage: AnnotatedPythonPackage): DoInferResult {
+
+    // Validate
+    val errors = AnnotationValidator(originalPythonPackage).validate()
+    if (errors.isNotEmpty()) {
+        return DoInferResult.ValidationFailure(errors.map { it.message() })
+    }
+
+    // Apply annotations
+    originalPythonPackage.accept(PureAnnotationProcessor)
+
+    // Build files
+    val path = PackageFileBuilder(originalPythonPackage).buildModuleFiles()
+    return DoInferResult.Success(path)
+}
+
+sealed class DoInferResult {
+    class ValidationFailure(val messages: List<String>) : DoInferResult()
+    class Success(val path: String) : DoInferResult()
 }
 
 class AuthenticationException : RuntimeException()

@@ -25,12 +25,21 @@ class FunctionStubContentBuilder extends FileBuilder {
      * @return The string containing the formatted function content
      */
     protected String buildFunction() {
-        return "fun "
+        return buildPureAnnotation()
+            + "fun "
             + pythonFunction.getName()
             + "("
             + buildAllFunctionParameters()
             + ")"
             + buildAllFormattedResults();
+    }
+
+    private String buildPureAnnotation() {
+        if (this.pythonFunction.isPure()) {
+            return "@Pure\n";
+        } else {
+            return "";
+        }
     }
 
     private String buildAllFunctionParameters() {
@@ -67,8 +76,7 @@ class FunctionStubContentBuilder extends FileBuilder {
         if (pythonResults.size() == 1) {
             return " -> "
                 + buildFormattedResult(pythonResults.get(0));
-        }
-        else {
+        } else {
             List<String> formattedResults = new ArrayList<>();
             pythonResults.forEach(pythonResult -> formattedResults
                 .add(buildFormattedResult(pythonResult)));

@@ -6,7 +6,7 @@ import kotlinx.serialization.Transient
 @Serializable
 sealed class AnnotatedPythonDeclaration {
     abstract val name: String
-    abstract val annotations: List<EditorAnnotation>
+    abstract val annotations: MutableList<EditorAnnotation>
     abstract val originalDeclaration: AnnotatedPythonDeclaration?
 
     abstract fun accept(visitor: PackageDataVisitor)
@@ -18,7 +18,7 @@ data class AnnotatedPythonPackage(
     override val name: String,
     val version: String,
     val modules: List<AnnotatedPythonModule>,
-    override val annotations: List<EditorAnnotation>
+    override val annotations: MutableList<EditorAnnotation>
 ) : AnnotatedPythonDeclaration() {
 
     @Transient
@@ -42,7 +42,7 @@ data class AnnotatedPythonModule(
     val fromImports: List<PythonFromImport>,
     val classes: List<AnnotatedPythonClass>,
     val functions: List<AnnotatedPythonFunction>,
-    override val annotations: List<EditorAnnotation>
+    override val annotations: MutableList<EditorAnnotation>
 ) : AnnotatedPythonDeclaration() {
 
     @Transient
@@ -87,7 +87,7 @@ data class AnnotatedPythonClass(
     val methods: List<AnnotatedPythonFunction>,
     val description: String,
     val fullDocstring: String,
-    override val annotations: List<EditorAnnotation>
+    override val annotations: MutableList<EditorAnnotation>
 ) : AnnotatedPythonDeclaration() {
 
     @Transient
@@ -114,7 +114,7 @@ data class AnnotatedPythonAttribute(
     val isPublic: Boolean,
     val typeInDocs: String,
     val description: String,
-    override val annotations: List<EditorAnnotation>
+    override val annotations: MutableList<EditorAnnotation>
 ) : AnnotatedPythonDeclaration() {
 
     @Transient
@@ -140,7 +140,7 @@ data class Boundary(
 data class AnnotatedPythonEnum(
     override val name: String,
     val instances: List<PythonEnumInstance>,
-    override val annotations: List<EditorAnnotation>
+    override val annotations: MutableList<EditorAnnotation>
 ) : AnnotatedPythonDeclaration() {
 
     @Transient
@@ -167,7 +167,7 @@ data class AnnotatedPythonFunction(
     val isPublic: Boolean,
     val description: String,
     val fullDocstring: String,
-    override val annotations: List<EditorAnnotation>
+    override val annotations: MutableList<EditorAnnotation>
 ) : AnnotatedPythonDeclaration() {
 
     @Transient
@@ -202,7 +202,7 @@ data class AnnotatedPythonParameter(
     val isPublic: Boolean,
     val typeInDocs: String,
     val description: String,
-    override val annotations: List<EditorAnnotation>
+    override val annotations: MutableList<EditorAnnotation>
 ) : AnnotatedPythonDeclaration() {
 
     @Transient
@@ -229,7 +229,7 @@ data class AnnotatedPythonResult(
     val type: String,
     val typeInDocs: String,
     val description: String,
-    override val annotations: List<EditorAnnotation>
+    override val annotations: MutableList<EditorAnnotation>
 ) : AnnotatedPythonDeclaration() {
 
     @Transient
