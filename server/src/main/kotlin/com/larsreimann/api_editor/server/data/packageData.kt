@@ -6,8 +6,10 @@ import kotlinx.serialization.Transient
 @Serializable
 sealed class AnnotatedPythonDeclaration {
     abstract val name: String
-    abstract val annotations: List<EditorAnnotation>
+    abstract val annotations: MutableList<EditorAnnotation>
     abstract val originalDeclaration: AnnotatedPythonDeclaration?
+
+    abstract fun accept(visitor: PackageDataVisitor)
 }
 
 @Serializable
@@ -16,11 +18,21 @@ data class AnnotatedPythonPackage(
     override val name: String,
     val version: String,
     val modules: List<AnnotatedPythonModule>,
-    override val annotations: List<EditorAnnotation>
+    override val annotations: MutableList<EditorAnnotation>
 ) : AnnotatedPythonDeclaration() {
 
     @Transient
     override var originalDeclaration: AnnotatedPythonPackage? = null
+
+    override fun accept(visitor: PackageDataVisitor) {
+        val shouldTraverseChildren = visitor.enterPythonPackage(this)
+
+        if (shouldTraverseChildren) {
+            modules.forEach { it.accept(visitor) }
+        }
+
+        visitor.leavePythonPackage(this)
+    }
 }
 
 @Serializable
@@ -30,7 +42,7 @@ data class AnnotatedPythonModule(
     val fromImports: List<PythonFromImport>,
     val classes: List<AnnotatedPythonClass>,
     val functions: List<AnnotatedPythonFunction>,
-    override val annotations: List<EditorAnnotation>
+    override val annotations: MutableList<EditorAnnotation>
 ) : AnnotatedPythonDeclaration() {
 
     @Transient
@@ -38,6 +50,19 @@ data class AnnotatedPythonModule(
 
     @Transient
     val enums = mutableListOf<AnnotatedPythonEnum>()
+
+    override fun accept(visitor: PackageDataVisitor) {
+        val shouldTraverseChildren = visitor.enterPythonModule(this)
+
+        if (shouldTraverseChildren) {
+            classes.forEach { it.accept(visitor) }
+        }
+        if (shouldTraverseChildren) {
+            functions.forEach { it.accept(visitor) }
+        }
+
+        visitor.leavePythonModule(this)
+    }
 }
 
 @Serializable
@@ -62,7 +87,7 @@ data class AnnotatedPythonClass(
     val methods: List<AnnotatedPythonFunction>,
     val description: String,
     val fullDocstring: String,
-    override val annotations: List<EditorAnnotation>
+    override val annotations: MutableList<EditorAnnotation>
 ) : AnnotatedPythonDeclaration() {
 
     @Transient
@@ -70,6 +95,16 @@ data class AnnotatedPythonClass(
 
     @Transient
     val attributes = mutableListOf<AnnotatedPythonAttribute>()
+
+    override fun accept(visitor: PackageDataVisitor) {
+        val shouldTraverseChildren = visitor.enterPythonClass(this)
+
+        if (shouldTraverseChildren) {
+            methods.forEach { it.accept(visitor) }
+        }
+
+        visitor.leavePythonClass(this)
+    }
 }
 
 data class AnnotatedPythonAttribute(
@@ -79,7 +114,7 @@ data class AnnotatedPythonAttribute(
     val isPublic: Boolean,
     val typeInDocs: String,
     val description: String,
-    override val annotations: List<EditorAnnotation>
+    override val annotations: MutableList<EditorAnnotation>
 ) : AnnotatedPythonDeclaration() {
 
     @Transient
@@ -87,6 +122,11 @@ data class AnnotatedPythonAttribute(
 
     @Transient
     var boundary: Boundary? = null
+
+    override fun accept(visitor: PackageDataVisitor) {
+        visitor.enterPythonAttribute(this)
+        visitor.leavePythonAttribute(this)
+    }
 }
 
 data class Boundary(
@@ -100,11 +140,16 @@ data class Boundary(
 data class AnnotatedPythonEnum(
     override val name: String,
     val instances: List<PythonEnumInstance>,
-    override val annotations: List<EditorAnnotation>
+    override val annotations: MutableList<EditorAnnotation>
 ) : AnnotatedPythonDeclaration() {
 
     @Transient
     override var originalDeclaration: AnnotatedPythonEnum? = null
+
+    override fun accept(visitor: PackageDataVisitor) {
+        visitor.enterPythonEnum(this)
+        visitor.leavePythonEnum(this)
+    }
 }
 
 data class PythonEnumInstance(
@@ -122,7 +167,7 @@ data class AnnotatedPythonFunction(
     val isPublic: Boolean,
     val description: String,
     val fullDocstring: String,
-    override val annotations: List<EditorAnnotation>
+    override val annotations: MutableList<EditorAnnotation>
 ) : AnnotatedPythonDeclaration() {
 
     @Transient
@@ -135,6 +180,17 @@ data class AnnotatedPythonFunction(
     var isPure = false
 
     fun isConstructor() = name == "__init__"
+
+    override fun accept(visitor: PackageDataVisitor) {
+        val shouldTraverseChildren = visitor.enterPythonFunction(this)
+
+        if (shouldTraverseChildren) {
+            parameters.forEach { it.accept(visitor) }
+            results.forEach { it.accept(visitor) }
+        }
+
+        visitor.leavePythonFunction(this)
+    }
 }
 
 @Serializable
@@ -146,7 +202,7 @@ data class AnnotatedPythonParameter(
     val isPublic: Boolean,
     val typeInDocs: String,
     val description: String,
-    override val annotations: List<EditorAnnotation>
+    override val annotations: MutableList<EditorAnnotation>
 ) : AnnotatedPythonDeclaration() {
 
     @Transient
@@ -154,6 +210,11 @@ data class AnnotatedPythonParameter(
 
     @Transient
     var boundary: Boundary? = null
+
+    override fun accept(visitor: PackageDataVisitor) {
+        visitor.enterPythonParameter(this)
+        visitor.leavePythonParameter(this)
+    }
 }
 
 enum class PythonParameterAssignment {
@@ -168,7 +229,7 @@ data class AnnotatedPythonResult(
     val type: String,
     val typeInDocs: String,
     val description: String,
-    override val annotations: List<EditorAnnotation>
+    override val annotations: MutableList<EditorAnnotation>
 ) : AnnotatedPythonDeclaration() {
 
     @Transient
@@ -176,4 +237,9 @@ data class AnnotatedPythonResult(
 
     @Transient
     var boundary: Boundary? = null
+
+    override fun accept(visitor: PackageDataVisitor) {
+        visitor.enterPythonResult(this)
+        visitor.leavePythonResult(this)
+    }
 }

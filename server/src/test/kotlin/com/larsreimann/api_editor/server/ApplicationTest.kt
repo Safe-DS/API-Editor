@@ -73,7 +73,7 @@ class ApplicationTest {
                                 methods = emptyList(),
                                 description = "Lorem ipsum",
                                 fullDocstring = "Lorem ipsum",
-                                annotations = emptyList()
+                                annotations = mutableListOf()
                             )
                         ),
                         functions = listOf(
@@ -90,7 +90,7 @@ class ApplicationTest {
                                         isPublic = true,
                                         typeInDocs = "str",
                                         description = "Lorem ipsum",
-                                        annotations = emptyList()
+                                        annotations = mutableListOf()
                                     )
                                 ),
                                 results = listOf(
@@ -99,19 +99,19 @@ class ApplicationTest {
                                         type = "str",
                                         typeInDocs = "str",
                                         description = "Lorem ipsum",
-                                        annotations = emptyList()
+                                        annotations = mutableListOf()
                                     )
                                 ),
                                 isPublic = true,
                                 description = "Lorem ipsum",
                                 fullDocstring = "Lorem ipsum",
-                                annotations = emptyList()
+                                annotations = mutableListOf()
                             )
                         ),
-                        annotations = emptyList()
+                        annotations = mutableListOf()
                     )
                 ),
-                annotations = listOf(
+                annotations = mutableListOf(
                     AttributeAnnotation(DefaultBoolean(false)),
                     BoundaryAnnotation(
                         isDiscrete = false,

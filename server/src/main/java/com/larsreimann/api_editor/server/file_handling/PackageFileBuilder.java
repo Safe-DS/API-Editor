@@ -20,16 +20,11 @@ public class PackageFileBuilder {
 
     /**
      * Constructor for PackageFileBuilder
-     *
-     * @param pythonPackage    The package whose files should be generated
-     * @param workingDirectory The directory used by this class
-     *                         for storing the files
+     *  @param pythonPackage    The package whose files should be generated
      */
-    public PackageFileBuilder(AnnotatedPythonPackage pythonPackage,
-                              Path workingDirectory
-    ) {
+    public PackageFileBuilder(AnnotatedPythonPackage pythonPackage) {
         this.pythonPackage = pythonPackage;
-        this.workingDirectory = workingDirectory;
+        this.workingDirectory = Paths.get("api-editor_inferredAPI");
     }
 
     /**

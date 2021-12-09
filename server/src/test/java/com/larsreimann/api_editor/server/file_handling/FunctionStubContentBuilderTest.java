@@ -4,6 +4,7 @@ import com.larsreimann.api_editor.server.data.AnnotatedPythonFunction;
 import com.larsreimann.api_editor.server.data.AnnotatedPythonParameter;
 import com.larsreimann.api_editor.server.data.AnnotatedPythonResult;
 import com.larsreimann.api_editor.server.data.PythonParameterAssignment;
+import com.larsreimann.api_editor.server.test.util.PackageDataFactoriesKt;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -29,12 +30,12 @@ class FunctionStubContentBuilderTest {
         // when
         FunctionStubContentBuilder functionStubContentBuilder =
             new FunctionStubContentBuilder(testFunction);
-        String formattedClass = functionStubContentBuilder.buildFunction();
+        String formattedFunction = functionStubContentBuilder.buildFunction();
 
         // then
         String expectedFormattedFunction = """
             fun test-function()""";
-        Assertions.assertEquals(expectedFormattedFunction, formattedClass);
+        Assertions.assertEquals(expectedFormattedFunction, formattedFunction);
     }
 
     @Test
@@ -66,12 +67,12 @@ class FunctionStubContentBuilderTest {
         // when
         FunctionStubContentBuilder functionStubContentBuilder =
             new FunctionStubContentBuilder(testFunction);
-        String formattedClass = functionStubContentBuilder.buildFunction();
+        String formattedFunction = functionStubContentBuilder.buildFunction();
 
         // then
         String expectedFormattedFunction = """
             fun test-function(only-param: Any? or 13)""";
-        Assertions.assertEquals(expectedFormattedFunction, formattedClass);
+        Assertions.assertEquals(expectedFormattedFunction, formattedFunction);
     }
 
     @Test
@@ -103,12 +104,12 @@ class FunctionStubContentBuilderTest {
         // when
         FunctionStubContentBuilder functionStubContentBuilder =
             new FunctionStubContentBuilder(testFunction);
-        String formattedClass = functionStubContentBuilder.buildFunction();
+        String formattedFunction = functionStubContentBuilder.buildFunction();
 
         // then
         String expectedFormattedFunction = """
             fun test-function(only-param: Any? or "Test")""";
-        Assertions.assertEquals(expectedFormattedFunction, formattedClass);
+        Assertions.assertEquals(expectedFormattedFunction, formattedFunction);
     }
 
     @Test
@@ -160,12 +161,12 @@ class FunctionStubContentBuilderTest {
         // when
         FunctionStubContentBuilder functionStubContentBuilder =
             new FunctionStubContentBuilder(testFunction);
-        String formattedClass = functionStubContentBuilder.buildFunction();
+        String formattedFunction = functionStubContentBuilder.buildFunction();
 
         // then
         String expectedFormattedFunction = """
             fun test-function(first-param: Any?, second-param: Any?, third-param: Any?)""";
-        Assertions.assertEquals(expectedFormattedFunction, formattedClass);
+        Assertions.assertEquals(expectedFormattedFunction, formattedFunction);
     }
 
     @Test
@@ -205,12 +206,12 @@ class FunctionStubContentBuilderTest {
         // when
         FunctionStubContentBuilder functionStubContentBuilder =
             new FunctionStubContentBuilder(testFunction);
-        String formattedClass = functionStubContentBuilder.buildFunction();
+        String formattedFunction = functionStubContentBuilder.buildFunction();
 
         // then
         String expectedFormattedFunction = """
             fun test-function(only-param: Any? or 13.1) -> firstResult: float""";
-        Assertions.assertEquals(expectedFormattedFunction, formattedClass);
+        Assertions.assertEquals(expectedFormattedFunction, formattedFunction);
     }
 
     @Test
@@ -257,12 +258,12 @@ class FunctionStubContentBuilderTest {
         // when
         FunctionStubContentBuilder functionStubContentBuilder =
             new FunctionStubContentBuilder(testFunction);
-        String formattedClass = functionStubContentBuilder.buildFunction();
+        String formattedFunction = functionStubContentBuilder.buildFunction();
 
         // then
         String expectedFormattedFunction = """
             fun test-function(only-param: Any? or true) -> [firstResult: float, secondResult: float]""";
-        Assertions.assertEquals(expectedFormattedFunction, formattedClass);
+        Assertions.assertEquals(expectedFormattedFunction, formattedFunction);
     }
 
     @Test
@@ -294,11 +295,31 @@ class FunctionStubContentBuilderTest {
         // when
         FunctionStubContentBuilder functionStubContentBuilder =
             new FunctionStubContentBuilder(testFunction);
-        String formattedClass = functionStubContentBuilder.buildFunction();
+        String formattedFunction = functionStubContentBuilder.buildFunction();
 
         // then
         String expectedFormattedFunction = """
             fun test-function(only-param: Any? or "###invalid###'13'x###")""";
-        Assertions.assertEquals(expectedFormattedFunction, formattedClass);
+        Assertions.assertEquals(expectedFormattedFunction, formattedFunction);
+    }
+
+    @Test
+    void shouldMarkPureFunctionsWithAnnotation() {
+        // given
+        AnnotatedPythonFunction testFunction = PackageDataFactoriesKt.createAnnotatedPythonFunction(
+            "testFunction"
+        );
+        testFunction.setPure(true);
+
+        // when
+        FunctionStubContentBuilder functionStubContentBuilder =
+            new FunctionStubContentBuilder(testFunction);
+        String formattedFunction = functionStubContentBuilder.buildFunction();
+
+        // then
+        String expectedFormattedFunction = """
+            @Pure
+            fun testFunction()""";
+        Assertions.assertEquals(expectedFormattedFunction, formattedFunction);
     }
 }
