@@ -3,19 +3,19 @@ package com.larsreimann.api_editor.server.data
 interface PackageDataVisitor {
 
     /**
-     * @returns Whether to visit modules in the package.
+     * @return Whether to visit modules in the package.
      */
     fun enterPythonPackage(pythonPackage: AnnotatedPythonPackage): Boolean
     fun leavePythonPackage(pythonPackage: AnnotatedPythonPackage)
 
     /**
-     * @returns Whether to visit classes and functions in the module.
+     * @return Whether to visit classes and functions in the module.
      */
     fun enterPythonModule(pythonModule: AnnotatedPythonModule): Boolean
     fun leavePythonModule(pythonModule: AnnotatedPythonModule)
 
     /**
-     * @returns Whether to visit methods in the class.
+     * @return Whether to visit methods in the class.
      */
     fun enterPythonClass(pythonClass: AnnotatedPythonClass): Boolean
     fun leavePythonClass(pythonClass: AnnotatedPythonClass)
@@ -27,7 +27,7 @@ interface PackageDataVisitor {
     fun leavePythonEnum(pythonEnum: AnnotatedPythonEnum)
 
     /**
-     * @returns Whether to visit parameters and results in the function.
+     * @return Whether to visit parameters and results in the function.
      */
     fun enterPythonFunction(pythonFunction: AnnotatedPythonFunction): Boolean
     fun leavePythonFunction(pythonFunction: AnnotatedPythonFunction)
