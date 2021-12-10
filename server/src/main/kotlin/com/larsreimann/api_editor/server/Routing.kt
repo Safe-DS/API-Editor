@@ -1,6 +1,7 @@
 package com.larsreimann.api_editor.server
 
 import com.larsreimann.api_editor.server.annotationProcessing.PureAnnotationProcessor
+import com.larsreimann.api_editor.server.annotationProcessing.UnusedAnnotationProcessor
 import com.larsreimann.api_editor.server.data.AnnotatedPythonPackage
 import com.larsreimann.api_editor.server.file_handling.PackageFileBuilder
 import com.larsreimann.api_editor.server.validation.AnnotationValidator
@@ -100,6 +101,7 @@ fun Route.infer() {
 }
 
 fun doInfer(originalPythonPackage: AnnotatedPythonPackage): DoInferResult {
+    var modifiedPythonPackage = originalPythonPackage
 
     // Validate
     val errors = AnnotationValidator(originalPythonPackage).validate()
@@ -108,10 +110,14 @@ fun doInfer(originalPythonPackage: AnnotatedPythonPackage): DoInferResult {
     }
 
     // Apply annotations
-    originalPythonPackage.accept(PureAnnotationProcessor)
+    val unusedAnnotationProcessor = UnusedAnnotationProcessor()
+    modifiedPythonPackage.accept(unusedAnnotationProcessor)
+    modifiedPythonPackage = unusedAnnotationProcessor.modifiedPackage
+
+    modifiedPythonPackage.accept(PureAnnotationProcessor)
 
     // Build files
-    val path = PackageFileBuilder(originalPythonPackage).buildModuleFiles()
+    val path = PackageFileBuilder(modifiedPythonPackage).buildModuleFiles()
     return DoInferResult.Success(path)
 }
 
