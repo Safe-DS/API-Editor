@@ -90,20 +90,19 @@ public class UnusedAnnotationProcessor extends AbstractPackageDataVisitor {
         ) {
             AnnotatedPythonFunction currentFunctionCopy =
                 new AnnotatedPythonFunction(
-                pythonFunction.getName(),
-                pythonFunction.getQualifiedName(),
-                pythonFunction.getDecorators(),
-                new ArrayList<>(pythonFunction.getParameters()),
-                new ArrayList<>(pythonFunction.getResults()),
-                pythonFunction.isPublic(),
-                pythonFunction.getDescription(),
-                pythonFunction.getFullDocstring(),
-                new ArrayList<>(pythonFunction.getAnnotations())
-            );
+                    pythonFunction.getName(),
+                    pythonFunction.getQualifiedName(),
+                    pythonFunction.getDecorators(),
+                    new ArrayList<>(pythonFunction.getParameters()),
+                    new ArrayList<>(pythonFunction.getResults()),
+                    pythonFunction.isPublic(),
+                    pythonFunction.getDescription(),
+                    pythonFunction.getFullDocstring(),
+                    new ArrayList<>(pythonFunction.getAnnotations())
+                );
             if (inClass) {
                 currentClass.getMethods().add(currentFunctionCopy);
-            }
-            else if (inModule) {
+            } else if (inModule) {
                 currentModule.getFunctions().add(currentFunctionCopy);
             }
         }

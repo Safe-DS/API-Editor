@@ -15,7 +15,7 @@ fun createAnnotatedPythonPackage(
     name: String,
     distribution: String = "testDistribution",
     version: String = "1.0.0",
-    modules: List<AnnotatedPythonModule> = emptyList(),
+    modules: List<AnnotatedPythonModule> = mutableListOf(),
     annotations: MutableList<EditorAnnotation> = mutableListOf()
 ): AnnotatedPythonPackage {
 
@@ -33,8 +33,8 @@ fun createAnnotatedPythonModule(
     name: String,
     imports: List<PythonImport> = emptyList(),
     fromImports: List<PythonFromImport> = emptyList(),
-    classes: List<AnnotatedPythonClass> = emptyList(),
-    functions: List<AnnotatedPythonFunction> = emptyList(),
+    classes: List<AnnotatedPythonClass> = mutableListOf(),
+    functions: List<AnnotatedPythonFunction> = mutableListOf(),
     annotations: MutableList<EditorAnnotation> = mutableListOf()
 ): AnnotatedPythonModule {
 
@@ -54,7 +54,7 @@ fun createAnnotatedPythonClass(
     qualifiedName: String = name,
     decorators: List<String> = emptyList(),
     superclasses: List<String> = emptyList(),
-    methods: List<AnnotatedPythonFunction> = emptyList(),
+    methods: List<AnnotatedPythonFunction> = mutableListOf(),
     description: String = "",
     fullDocstring: String = "",
     annotations: MutableList<EditorAnnotation> = mutableListOf()
@@ -77,7 +77,7 @@ fun createAnnotatedPythonFunction(
     name: String,
     qualifiedName: String = name,
     decorators: List<String> = emptyList(),
-    parameters: List<AnnotatedPythonParameter> = emptyList(),
+    parameters: List<AnnotatedPythonParameter> = mutableListOf(),
     results: List<AnnotatedPythonResult> = emptyList(),
     isPublic: Boolean = true,
     description: String = "",
