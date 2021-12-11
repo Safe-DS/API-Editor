@@ -2,6 +2,7 @@ package com.larsreimann.api_editor.server.file_handling;
 
 import com.larsreimann.api_editor.server.data.AnnotatedPythonModule;
 import com.larsreimann.api_editor.server.data.AnnotatedPythonPackage;
+import com.larsreimann.api_editor.server.file_handling.stub.ModuleStubContentBuilder;
 import kotlin.io.FilesKt;
 
 import java.io.BufferedWriter;
@@ -54,7 +55,7 @@ public class PackageFileBuilder {
                     String.join(".", moduleNameParts) + "." + moduleNameParts[moduleNameParts.length - 1],
                     buildStubContent(module),
                     Paths.get(workingPath.toString(),
-                        "stub",
+                        "com/larsreimann/api_editor/server/file_handling/stub",
                         "simpleml"
                     ),
                     ".stub.simpleml"

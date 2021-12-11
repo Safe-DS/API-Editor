@@ -4,6 +4,7 @@ import com.larsreimann.api_editor.server.data.AnnotatedPythonFunction;
 import com.larsreimann.api_editor.server.data.AnnotatedPythonParameter;
 import com.larsreimann.api_editor.server.data.AnnotatedPythonResult;
 import com.larsreimann.api_editor.server.data.PythonParameterAssignment;
+import com.larsreimann.api_editor.server.file_handling.stub.FunctionStubContentBuilder;
 import com.larsreimann.api_editor.server.util.PackageDataFactoriesKt;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

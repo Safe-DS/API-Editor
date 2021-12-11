@@ -5,14 +5,14 @@ import java.text.DecimalFormatSymbols;
 import java.util.List;
 import java.util.Locale;
 
-abstract class FileBuilder {
+public abstract class FileBuilder {
     /**
      * Returns an indented version of the passed string
      *
      * @param toIndent The string to be indented
      * @return The indented string
      */
-    String indent(String toIndent) {
+    protected String indent(String toIndent) {
         String INDENTATION = "    ";
         toIndent = INDENTATION + toIndent;
         toIndent = toIndent.replaceAll("\n", "\n" + INDENTATION);
@@ -29,7 +29,7 @@ abstract class FileBuilder {
      *                         elements of the list
      * @return The string resulting from joining the list elements
      */
-    String listToString(
+    protected String listToString(
         List<String> listToConvert, int numberOfNewlines
     ) {
         String delimiter;
@@ -69,7 +69,7 @@ abstract class FileBuilder {
      * @param defaultValue The default value to format
      * @return The formatted default value
      */
-    String buildFormattedDefaultValue(
+    protected String buildFormattedDefaultValue(
         String defaultValue
     ) {
         String invalid = "\"###invalid###" + defaultValue.replace("\"", "\\\"") + "###\"";

@@ -1,6 +1,7 @@
 package com.larsreimann.api_editor.server.file_handling;
 
 import com.larsreimann.api_editor.server.data.*;
+import com.larsreimann.api_editor.server.file_handling.stub.ModuleStubContentBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -164,7 +165,7 @@ class ModuleStubContentBuilderTest {
         String expectedModuleContent = """
             package simpleml.test-module
 
-            open class test-class(only-param: Any? or "defaultValue") {
+            class test-class(only-param: Any? or "defaultValue") {
                 attr only-param: Any?
 
                 fun test-class-function(only-param: Any? or "defaultValue")
@@ -354,7 +355,7 @@ class ModuleStubContentBuilderTest {
         String expectedModuleContent = """
             package simpleml.test-module
 
-            open class test-class(only-param: Any? or "defaultValue") {
+            class test-class(only-param: Any? or "defaultValue") {
                 attr only-param: Any?
             }
             """;
@@ -387,4 +388,3 @@ class ModuleStubContentBuilderTest {
         Assertions.assertEquals(expectedModuleContent, moduleContent);
     }
 }
-
