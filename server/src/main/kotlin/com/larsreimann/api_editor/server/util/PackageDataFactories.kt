@@ -1,4 +1,4 @@
-package com.larsreimann.api_editor.server.test.util
+package com.larsreimann.api_editor.server.util
 
 import com.larsreimann.api_editor.server.data.AnnotatedPythonClass
 import com.larsreimann.api_editor.server.data.AnnotatedPythonFunction
@@ -15,7 +15,7 @@ fun createAnnotatedPythonPackage(
     name: String,
     distribution: String = "testDistribution",
     version: String = "1.0.0",
-    modules: List<AnnotatedPythonModule> = emptyList(),
+    modules: List<AnnotatedPythonModule> = mutableListOf(),
     annotations: MutableList<EditorAnnotation> = mutableListOf()
 ): AnnotatedPythonPackage {
 
@@ -33,8 +33,8 @@ fun createAnnotatedPythonModule(
     name: String,
     imports: List<PythonImport> = emptyList(),
     fromImports: List<PythonFromImport> = emptyList(),
-    classes: List<AnnotatedPythonClass> = emptyList(),
-    functions: List<AnnotatedPythonFunction> = emptyList(),
+    classes: List<AnnotatedPythonClass> = mutableListOf(),
+    functions: List<AnnotatedPythonFunction> = mutableListOf(),
     annotations: MutableList<EditorAnnotation> = mutableListOf()
 ): AnnotatedPythonModule {
 
@@ -54,7 +54,7 @@ fun createAnnotatedPythonClass(
     qualifiedName: String = name,
     decorators: List<String> = emptyList(),
     superclasses: List<String> = emptyList(),
-    methods: List<AnnotatedPythonFunction> = emptyList(),
+    methods: List<AnnotatedPythonFunction> = mutableListOf(),
     description: String = "",
     fullDocstring: String = "",
     annotations: MutableList<EditorAnnotation> = mutableListOf()
@@ -77,7 +77,7 @@ fun createAnnotatedPythonFunction(
     name: String,
     qualifiedName: String = name,
     decorators: List<String> = emptyList(),
-    parameters: List<AnnotatedPythonParameter> = emptyList(),
+    parameters: List<AnnotatedPythonParameter> = mutableListOf(),
     results: List<AnnotatedPythonResult> = emptyList(),
     isPublic: Boolean = true,
     description: String = "",
@@ -95,5 +95,61 @@ fun createAnnotatedPythonFunction(
         description,
         fullDocstring,
         annotations
+    )
+}
+
+fun createPackageCopyWithoutModules(
+    pythonPackage: AnnotatedPythonPackage
+): AnnotatedPythonPackage {
+    return AnnotatedPythonPackage(
+        name = pythonPackage.name,
+        distribution = pythonPackage.distribution,
+        version = pythonPackage.version,
+        modules = mutableListOf(),
+        annotations = pythonPackage.annotations.toMutableList()
+    )
+}
+
+fun createModuleCopyWithoutClassesAndFunctions(
+    pythonModule: AnnotatedPythonModule
+): AnnotatedPythonModule {
+    return AnnotatedPythonModule(
+        name = pythonModule.name,
+        imports = pythonModule.imports.toMutableList(),
+        fromImports = pythonModule.fromImports.toMutableList(),
+        classes = mutableListOf(),
+        functions = mutableListOf(),
+        annotations = pythonModule.annotations.toMutableList()
+    )
+}
+
+fun createClassCopyWithoutFunctions(
+    pythonClass: AnnotatedPythonClass
+): AnnotatedPythonClass {
+    return AnnotatedPythonClass(
+        name = pythonClass.name,
+        qualifiedName = pythonClass.qualifiedName,
+        decorators = pythonClass.decorators.toMutableList(),
+        superclasses = pythonClass.superclasses.toMutableList(),
+        methods = mutableListOf(),
+        description = pythonClass.description,
+        fullDocstring = pythonClass.fullDocstring,
+        annotations = pythonClass.annotations.toMutableList()
+    )
+}
+
+fun createFunctionCopy(
+    pythonFunction: AnnotatedPythonFunction
+): AnnotatedPythonFunction {
+    return AnnotatedPythonFunction(
+        name = pythonFunction.name,
+        qualifiedName = pythonFunction.qualifiedName,
+        decorators = pythonFunction.decorators,
+        parameters = pythonFunction.parameters.toMutableList(),
+        results = pythonFunction.results.toMutableList(),
+        isPublic = pythonFunction.isPublic,
+        description = pythonFunction.description,
+        fullDocstring = pythonFunction.fullDocstring,
+        annotations = pythonFunction.annotations.toMutableList()
     )
 }
