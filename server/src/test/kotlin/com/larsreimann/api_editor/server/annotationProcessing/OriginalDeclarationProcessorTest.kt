@@ -44,7 +44,7 @@ class OriginalDeclarationProcessorTest {
         val testClass = createAnnotatedPythonClass(
             name = "testClass",
             qualifiedName = "testPackage/testClass",
-        ).apply {annotations += UnusedAnnotation}
+        ).apply { annotations += UnusedAnnotation }
 
         val testPackage = createAnnotatedPythonPackage(
             "testPackage",
@@ -72,7 +72,7 @@ class OriginalDeclarationProcessorTest {
         val testMethod = createAnnotatedPythonFunction(
             name = "testMethod",
             qualifiedName = "testPackage/testClass/testMethod",
-            )
+        )
 
         val testClass = createAnnotatedPythonClass(
             name = "testClass",
@@ -103,6 +103,5 @@ class OriginalDeclarationProcessorTest {
             .classes[0]
             .methods[0]
             .originalDeclaration shouldBe originalMethod
-
     }
 }
