@@ -4,7 +4,7 @@ import com.larsreimann.api_editor.server.data.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static com.larsreimann.api_editor.server.test.util.PackageDataFactoriesKt.*;
+import static com.larsreimann.api_editor.server.util.PackageDataFactoriesKt.*;
 
 class UnusedAnnotationProcessorTest {
     @Test
@@ -31,7 +31,7 @@ class UnusedAnnotationProcessorTest {
         // when
         testPackage.accept(unusedAnnotationProcessor);
         AnnotatedPythonPackage modifiedPackage =
-            unusedAnnotationProcessor.modifiedPackage;
+            unusedAnnotationProcessor.getModifiedPackage();
 
         // then
         Assertions.assertTrue(
@@ -73,7 +73,7 @@ class UnusedAnnotationProcessorTest {
         // when
         testPackage.accept(unusedAnnotationProcessor);
         AnnotatedPythonPackage modifiedPackage =
-            unusedAnnotationProcessor.modifiedPackage;
+            unusedAnnotationProcessor.getModifiedPackage();
 
         // then
         Assertions.assertTrue(
@@ -118,7 +118,7 @@ class UnusedAnnotationProcessorTest {
         // when
         testPackage.accept(unusedAnnotationProcessor);
         AnnotatedPythonPackage modifiedPackage =
-            unusedAnnotationProcessor.modifiedPackage;
+            unusedAnnotationProcessor.getModifiedPackage();
 
         // then
         Assertions.assertTrue(
@@ -134,6 +134,36 @@ class UnusedAnnotationProcessorTest {
                     .getMethods().get(0)
                     .getName()
                     .equals("testMethod")
+        );
+    }
+
+    @Test
+    void shouldRemoveEmptyModule() {
+        // given
+        UnusedAnnotationProcessor unusedAnnotationProcessor =
+            new UnusedAnnotationProcessor();
+
+        AnnotatedPythonClass testClass =
+            createAnnotatedPythonClass("testClass");
+        testClass.getAnnotations().add(UnusedAnnotation.INSTANCE);
+
+        AnnotatedPythonModule testModule =
+            createAnnotatedPythonModule("testModule");
+        testModule.getClasses().add(testClass);
+
+        AnnotatedPythonPackage testPackage =
+            createAnnotatedPythonPackage("testPackage");
+        testPackage.getModules().add(testModule);
+
+        // when
+        testPackage.accept(unusedAnnotationProcessor);
+        AnnotatedPythonPackage modifiedPackage =
+            unusedAnnotationProcessor.getModifiedPackage();
+
+        // then
+        Assertions.assertTrue(
+            modifiedPackage
+                .getModules().isEmpty()
         );
     }
 }

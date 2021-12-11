@@ -3,63 +3,45 @@ package com.larsreimann.api_editor.server.annotationProcessing;
 import com.larsreimann.api_editor.server.data.*;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
+import static com.larsreimann.api_editor.server.util.PackageDataFactoriesKt.*;
 
 public class UnusedAnnotationProcessor extends AbstractPackageDataVisitor {
-    public AnnotatedPythonPackage modifiedPackage;
+    private AnnotatedPythonPackage modifiedPackage;
 
-    AnnotatedPythonModule currentModule;
-    AnnotatedPythonClass currentClass;
+    private AnnotatedPythonModule currentModule;
+    private AnnotatedPythonClass currentClass;
     boolean inClass = false;
     boolean inModule = false;
 
     @Override
-    public boolean enterPythonPackage(AnnotatedPythonPackage pythonPackage) {
-        modifiedPackage = new AnnotatedPythonPackage(
-            pythonPackage.getName(),
-            pythonPackage.getDistribution(),
-            pythonPackage.getVersion(),
-            new ArrayList<>(),
-            new ArrayList<>(pythonPackage.getAnnotations())
-        );
+    public boolean enterPythonPackage(@NotNull AnnotatedPythonPackage pythonPackage) {
+        setModifiedPackage(createPackageCopyWithoutModules(pythonPackage));
 
         return true;
     }
 
     @Override
-    public boolean enterPythonModule(AnnotatedPythonModule pythonModule) {
+    public boolean enterPythonModule(@NotNull AnnotatedPythonModule pythonModule) {
         inModule = true;
-        currentModule = new AnnotatedPythonModule(
-            pythonModule.getName(),
-            new ArrayList<>(pythonModule.getImports()),
-            new ArrayList<>(pythonModule.getFromImports()),
-            new ArrayList<>(),
-            new ArrayList<>(),
-            new ArrayList<>(pythonModule.getAnnotations())
-        );
-        modifiedPackage.getModules().add(currentModule);
+        setCurrentModule(createModuleCopyWithoutClassesAndFunctions(pythonModule));
 
         return true;
     }
 
     @Override
     public void leavePythonModule(@NotNull AnnotatedPythonModule pythonModule) {
+        AnnotatedPythonModule currentModule = getCurrentModule();
+        if (!currentModule.getClasses().isEmpty()
+            || !currentModule.getFunctions().isEmpty()) {
+            getModifiedPackage().getModules().add(currentModule);
+        }
         inModule = false;
     }
 
     @Override
-    public boolean enterPythonClass(AnnotatedPythonClass pythonClass) {
+    public boolean enterPythonClass(@NotNull AnnotatedPythonClass pythonClass) {
         inClass = true;
-        currentClass = new AnnotatedPythonClass(
-            pythonClass.getName(),
-            pythonClass.getQualifiedName(),
-            new ArrayList<>(pythonClass.getDecorators()),
-            new ArrayList<>(pythonClass.getSuperclasses()),
-            new ArrayList<>(),
-            pythonClass.getDescription(),
-            pythonClass.getFullDocstring(),
-            new ArrayList<>(pythonClass.getAnnotations())
-        );
+        setCurrentClass(createClassCopyWithoutFunctions(pythonClass));
 
         if (pythonClass.getAnnotations()
             .stream()
@@ -67,8 +49,8 @@ public class UnusedAnnotationProcessor extends AbstractPackageDataVisitor {
                 -> editorAnnotation.getType().equals("Unused")
             )
         ) {
-            currentModule.getClasses().add(
-                currentClass
+            getCurrentModule().getClasses().add(
+                getCurrentClass()
             );
         }
 
@@ -89,24 +71,38 @@ public class UnusedAnnotationProcessor extends AbstractPackageDataVisitor {
             )
         ) {
             AnnotatedPythonFunction currentFunctionCopy =
-                new AnnotatedPythonFunction(
-                    pythonFunction.getName(),
-                    pythonFunction.getQualifiedName(),
-                    pythonFunction.getDecorators(),
-                    new ArrayList<>(pythonFunction.getParameters()),
-                    new ArrayList<>(pythonFunction.getResults()),
-                    pythonFunction.isPublic(),
-                    pythonFunction.getDescription(),
-                    pythonFunction.getFullDocstring(),
-                    new ArrayList<>(pythonFunction.getAnnotations())
-                );
+                createFunctionCopy(pythonFunction);
             if (inClass) {
-                currentClass.getMethods().add(currentFunctionCopy);
+                getCurrentClass().getMethods().add(currentFunctionCopy);
             } else if (inModule) {
-                currentModule.getFunctions().add(currentFunctionCopy);
+                getCurrentModule().getFunctions().add(currentFunctionCopy);
             }
         }
 
         return false;
+    }
+
+    public AnnotatedPythonPackage getModifiedPackage() {
+        return modifiedPackage;
+    }
+
+    private void setModifiedPackage(AnnotatedPythonPackage modifiedPackage) {
+        this.modifiedPackage = modifiedPackage;
+    }
+
+    private AnnotatedPythonModule getCurrentModule() {
+        return currentModule;
+    }
+
+    private void setCurrentModule(AnnotatedPythonModule currentModule) {
+        this.currentModule = currentModule;
+    }
+
+    private AnnotatedPythonClass getCurrentClass() {
+        return currentClass;
+    }
+
+    private void setCurrentClass(AnnotatedPythonClass currentClass) {
+        this.currentClass = currentClass;
     }
 }

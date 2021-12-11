@@ -1,9 +1,9 @@
 package com.larsreimann.api_editor.server.annotationProcessing
 
 import com.larsreimann.api_editor.server.data.PureAnnotation
-import com.larsreimann.api_editor.server.test.util.createAnnotatedPythonFunction
-import com.larsreimann.api_editor.server.test.util.createAnnotatedPythonModule
-import com.larsreimann.api_editor.server.test.util.createAnnotatedPythonPackage
+import com.larsreimann.api_editor.server.util.createAnnotatedPythonFunction
+import com.larsreimann.api_editor.server.util.createAnnotatedPythonModule
+import com.larsreimann.api_editor.server.util.createAnnotatedPythonPackage
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
