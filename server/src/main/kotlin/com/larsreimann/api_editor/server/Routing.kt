@@ -1,5 +1,6 @@
 package com.larsreimann.api_editor.server
 
+import com.larsreimann.api_editor.server.annotationProcessing.OriginalDeclarationProcessor
 import com.larsreimann.api_editor.server.annotationProcessing.PureAnnotationProcessor
 import com.larsreimann.api_editor.server.annotationProcessing.UnusedAnnotationProcessor
 import com.larsreimann.api_editor.server.data.AnnotatedPythonPackage
@@ -108,6 +109,9 @@ fun doInfer(originalPythonPackage: AnnotatedPythonPackage): DoInferResult {
     if (errors.isNotEmpty()) {
         return DoInferResult.ValidationFailure(errors.map { it.message() })
     }
+
+    // Create original declarations
+    modifiedPythonPackage.accept(OriginalDeclarationProcessor)
 
     // Apply annotations
     val unusedAnnotationProcessor = UnusedAnnotationProcessor()
