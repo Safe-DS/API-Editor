@@ -15,7 +15,6 @@ class OriginalDeclarationProcessorTest {
         val testFunction = createAnnotatedPythonFunction(
             name = "testFunction",
             qualifiedName = "testPackage/testFunction",
-
         )
 
         val testPackage = createAnnotatedPythonPackage(

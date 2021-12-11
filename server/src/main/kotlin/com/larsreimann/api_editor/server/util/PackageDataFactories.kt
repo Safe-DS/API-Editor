@@ -9,6 +9,7 @@ import com.larsreimann.api_editor.server.data.AnnotatedPythonResult
 import com.larsreimann.api_editor.server.data.EditorAnnotation
 import com.larsreimann.api_editor.server.data.PythonFromImport
 import com.larsreimann.api_editor.server.data.PythonImport
+import com.larsreimann.api_editor.server.data.PythonParameterAssignment
 
 @JvmOverloads
 fun createAnnotatedPythonPackage(
@@ -94,6 +95,30 @@ fun createAnnotatedPythonFunction(
         isPublic,
         description,
         fullDocstring,
+        annotations
+    )
+}
+
+@JvmOverloads
+fun createAnnotatedPythonParameter(
+    name: String,
+    qualifiedName: String = name,
+    defaultValue: String? = "",
+    assignedBy: PythonParameterAssignment = PythonParameterAssignment.POSITION_OR_NAME,
+    isPublic: Boolean = true,
+    typeInDocs: String = "",
+    description: String = "",
+    annotations: MutableList<EditorAnnotation> = mutableListOf()
+): AnnotatedPythonParameter {
+
+    return AnnotatedPythonParameter(
+        name,
+        qualifiedName,
+        defaultValue,
+        assignedBy,
+        isPublic,
+        typeInDocs,
+        description,
         annotations
     )
 }
