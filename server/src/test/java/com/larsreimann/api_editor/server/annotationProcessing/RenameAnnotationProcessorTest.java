@@ -1,12 +1,21 @@
 package com.larsreimann.api_editor.server.annotationProcessing;
 
-import com.larsreimann.api_editor.server.data.*;
+import com.larsreimann.api_editor.server.data.AnnotatedPythonClass;
+import com.larsreimann.api_editor.server.data.AnnotatedPythonFunction;
+import com.larsreimann.api_editor.server.data.AnnotatedPythonModule;
+import com.larsreimann.api_editor.server.data.AnnotatedPythonPackage;
+import com.larsreimann.api_editor.server.data.AnnotatedPythonParameter;
+import com.larsreimann.api_editor.server.data.RenameAnnotation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import static com.larsreimann.api_editor.server.util.PackageDataFactoriesKt.*;
+import static com.larsreimann.api_editor.server.util.PackageDataFactoriesKt.createAnnotatedPythonClass;
+import static com.larsreimann.api_editor.server.util.PackageDataFactoriesKt.createAnnotatedPythonFunction;
+import static com.larsreimann.api_editor.server.util.PackageDataFactoriesKt.createAnnotatedPythonModule;
+import static com.larsreimann.api_editor.server.util.PackageDataFactoriesKt.createAnnotatedPythonPackage;
+import static com.larsreimann.api_editor.server.util.PackageDataFactoriesKt.createAnnotatedPythonParameter;
 
 class RenameAnnotationProcessorTest {
     @Test
@@ -18,7 +27,7 @@ class RenameAnnotationProcessorTest {
         AnnotatedPythonClass testClass =
                 createAnnotatedPythonClass(
                         "testClass",
-                        "testPackage/testModule/testClass"
+                        "testPackage.testModule.testClass"
                 );
         testClass.getAnnotations().add(
                 new RenameAnnotation("renamedTestClass")
@@ -46,7 +55,7 @@ class RenameAnnotationProcessorTest {
                 renamedClass.getName()
         );
         Assertions.assertEquals(
-                "testPackage/testModule/renamedTestClass",
+                "testPackage.testModule.renamedTestClass",
                 renamedClass.getQualifiedName()
         );
     }
@@ -60,7 +69,7 @@ class RenameAnnotationProcessorTest {
         AnnotatedPythonFunction testFunction =
                 createAnnotatedPythonFunction(
                         "testFunction",
-                        "testPackage/testModule/testFunction"
+                        "testPackage.testModule.testFunction"
                 );
         testFunction.getAnnotations().add(
                 new RenameAnnotation("renamedTestFunction")
@@ -88,7 +97,7 @@ class RenameAnnotationProcessorTest {
                 renamedFunction.getName()
         );
         Assertions.assertEquals(
-                "testPackage/testModule/renamedTestFunction",
+                "testPackage.testModule.renamedTestFunction",
                 renamedFunction.getQualifiedName()
         );
     }
@@ -102,7 +111,7 @@ class RenameAnnotationProcessorTest {
         AnnotatedPythonFunction testFunction =
                 createAnnotatedPythonFunction(
                         "testFunction",
-                        "testPackage/testModule/testClass/testFunction"
+                        "testPackage.testModule.testClass.testFunction"
                 );
         testFunction.getAnnotations().add(
                 new RenameAnnotation("renamedTestFunction")
@@ -113,7 +122,7 @@ class RenameAnnotationProcessorTest {
         AnnotatedPythonClass testClass =
                 createAnnotatedPythonClass(
                         "testClass",
-                        "testPackage/testModule/testClass",
+                        "testPackage.testModule.testClass",
                         new ArrayList<>(),
                         new ArrayList<>(),
                         classMethods
@@ -142,7 +151,7 @@ class RenameAnnotationProcessorTest {
                 renamedFunction.getName()
         );
         Assertions.assertEquals(
-                "testPackage/testModule/testClass/renamedTestFunction",
+                "testPackage.testModule.testClass.renamedTestFunction",
                 renamedFunction.getQualifiedName()
         );
     }
@@ -156,7 +165,7 @@ class RenameAnnotationProcessorTest {
         AnnotatedPythonFunction testFunction =
                 createAnnotatedPythonFunction(
                         "testFunction",
-                        "testPackage/testModule/testClass/testFunction"
+                        "testPackage.testModule.testClass.testFunction"
                 );
         testFunction.getAnnotations().add(
                 new RenameAnnotation("renamedTestFunction")
@@ -167,7 +176,7 @@ class RenameAnnotationProcessorTest {
         AnnotatedPythonClass testClass =
                 createAnnotatedPythonClass(
                         "testClass",
-                        "testPackage/testModule/testClass",
+                        "testPackage.testModule.testClass",
                         new ArrayList<>(),
                         new ArrayList<>(),
                         classMethods
@@ -195,11 +204,11 @@ class RenameAnnotationProcessorTest {
                 .getClasses().get(0);
         AnnotatedPythonFunction renamedFunction = renamedClass.getMethods().get(0);
         Assertions.assertEquals(
-                "testPackage/testModule/renamedTestClass/renamedTestFunction",
+                "testPackage.testModule.renamedTestClass.renamedTestFunction",
                 renamedFunction.getQualifiedName()
         );
         Assertions.assertEquals(
-                "testPackage/testModule/renamedTestClass",
+                "testPackage.testModule.renamedTestClass",
                 renamedClass.getQualifiedName()
         );
     }
@@ -223,7 +232,7 @@ class RenameAnnotationProcessorTest {
         AnnotatedPythonFunction testFunction =
                 createAnnotatedPythonFunction(
                         "testFunction",
-                        "testPackage/testModule/testClass/testFunction",
+                        "testPackage.testModule.testClass.testFunction",
                         new ArrayList<>(),
                         pythonParameters
                 );
@@ -236,7 +245,7 @@ class RenameAnnotationProcessorTest {
         AnnotatedPythonClass testClass =
                 createAnnotatedPythonClass(
                         "testClass",
-                        "testPackage/testModule/testClass",
+                        "testPackage.testModule.testClass",
                         new ArrayList<>(),
                         new ArrayList<>(),
                         classMethods
@@ -269,7 +278,7 @@ class RenameAnnotationProcessorTest {
                 renamedParameter.getName()
         );
         Assertions.assertEquals(
-                "testPackage/testModule/renamedTestClass/renamedTestFunction/renamedTestParameter",
+                "testPackage.testModule.renamedTestClass.renamedTestFunction.renamedTestParameter",
                 renamedParameter.getQualifiedName()
         );
     }
@@ -289,7 +298,7 @@ class RenameAnnotationProcessorTest {
         AnnotatedPythonFunction testFunction =
                 createAnnotatedPythonFunction(
                         "testFunction",
-                        "testPackage/testModule/testFunction"
+                        "testPackage.testModule.testFunction"
                 );
         testFunction.getParameters().add(pythonParameter);
         testFunction.getAnnotations().add(
@@ -319,7 +328,7 @@ class RenameAnnotationProcessorTest {
                 renamedParameter.getName()
         );
         Assertions.assertEquals(
-                "testPackage/testModule/renamedTestFunction/renamedTestParameter",
+                "testPackage.testModule.renamedTestFunction.renamedTestParameter",
                 renamedParameter.getQualifiedName()
         );
     }
