@@ -1,5 +1,6 @@
 package com.larsreimann.api_editor.server
 
+import com.larsreimann.api_editor.server.annotationProcessing.MoveAnnotationProcessor
 import com.larsreimann.api_editor.server.annotationProcessing.OriginalDeclarationProcessor
 import com.larsreimann.api_editor.server.annotationProcessing.PureAnnotationProcessor
 import com.larsreimann.api_editor.server.annotationProcessing.RenameAnnotationProcessor
@@ -122,6 +123,10 @@ fun doInfer(originalPythonPackage: AnnotatedPythonPackage): DoInferResult {
     val renameAnnotationProcessor = RenameAnnotationProcessor()
     modifiedPythonPackage.accept(renameAnnotationProcessor)
     modifiedPythonPackage = renameAnnotationProcessor.modifiedPackage
+
+    val moveAnnotationProcessor = MoveAnnotationProcessor()
+    modifiedPythonPackage.accept(moveAnnotationProcessor)
+    modifiedPythonPackage = moveAnnotationProcessor.modifiedPackage
 
     modifiedPythonPackage.accept(PureAnnotationProcessor)
 
