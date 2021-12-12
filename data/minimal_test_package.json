@@ -18,16 +18,16 @@
                     "alias": "test_alias"
                 }
             ],
-            "classes": ["test.module_1.Class_1_Module_1"],
+            "classes": ["folder1.folder2.folder3.module_1.Class_1_Module_1"],
             "functions": [
-                "test.module_1.function_module_1",
-                "test.module_1.function_module_1_2",
-                "test.module_1.function_module_1_3",
-                "test.module_1.function_module_1_4",
-                "test.module_1.function_module_1_5",
-                "test.module_1.function_module_1_6",
-                "test.module_1.function_module_1_7",
-                "test.module_1.function_module_1_8"
+                "folder1.folder2.folder3.module_1.function_module_1",
+                "folder1.folder2.folder3.module_1.function_module_1_2",
+                "folder1.folder2.folder3.module_1.function_module_1_3",
+                "folder1.folder2.folder3.module_1.function_module_1_4",
+                "folder1.folder2.folder3.module_1.function_module_1_5",
+                "folder1.folder2.folder3.module_1.function_module_1_6",
+                "folder1.folder2.folder3.module_1.function_module_1_7",
+                "folder1.folder2.folder3.module_1.function_module_1_8"
             ]
         },
         {
@@ -35,7 +35,7 @@
             "imports": [],
             "from_imports": [
                 {
-                    "module": "test.module_1",
+                    "module": "folder1.folder2.folder3.module_1",
                     "declaration": "function_module_1",
                     "alias": null
                 }
@@ -53,18 +53,18 @@
             ],
             "from_imports": [],
             "classes": [],
-            "functions": ["test.module_3.function_module_3"]
+            "functions": ["module_3.function_module_3"]
         }
     ],
     "classes": [
         {
             "name": "Class_1_Module_1",
-            "qname": "test.module_1.Class_1_Module_1",
+            "qname": "folder1.folder2.folder3.module_1.Class_1_Module_1",
             "decorators": [],
             "superclasses": [],
             "methods": [
-                "test.module_1.Class_1_Module_1.class_method_1",
-                "test.module_1.Class_1_Module_1.__init__"
+                "folder1.folder2.folder3.module_1.Class_1_Module_1.class_method_1",
+                "folder1.folder2.folder3.module_1.Class_1_Module_1.__init__"
             ]
         }
     ],
@@ -72,8 +72,8 @@
         {
             "name": "function_module_1",
             "unique_name": "function_module_1",
-            "qname": "test.module_1.function_module_1",
-            "unique_qname": "test.module_1.function_module_1",
+            "qname": "folder1.folder2.folder3.module_1.function_module_1",
+            "unique_qname": "folder1.folder2.folder3.module_1.function_module_1",
             "decorators": [],
             "parameters": [
                 {
@@ -116,8 +116,8 @@
         {
             "name": "function_module_1_2",
             "unique_name": "function_module_1_2",
-            "qname": "test.module_1.function_module_1_2",
-            "unique_qname": "test.module_1.function_module_1_2",
+            "qname": "folder1.folder2.folder3.module_1.function_module_1_2",
+            "unique_qname": "folder1.folder2.folder3.module_1.function_module_1_2",
             "decorators": [],
             "parameters": [
                 {
@@ -160,8 +160,8 @@
         {
             "name": "function_module_1_3",
             "unique_name": "function_module_1_3",
-            "qname": "test.module_1.function_module_1_3",
-            "unique_qname": "test.module_1.function_module_1_3",
+            "qname": "folder1.folder2.folder3.module_1.function_module_1_3",
+            "unique_qname": "folder1.folder2.folder3.module_1.function_module_1_3",
             "decorators": [],
             "parameters": [
                 {
@@ -204,8 +204,8 @@
         {
             "name": "function_module_1_4",
             "unique_name": "function_module_1_4",
-            "qname": "test.module_1.function_module_1_4",
-            "unique_qname": "test.module_1.function_module_1_4",
+            "qname": "folder1.folder2.folder3.module_1.function_module_1_4",
+            "unique_qname": "folder1.folder2.folder3.module_1.function_module_1_4",
             "decorators": [],
             "parameters": [
                 {
@@ -228,8 +228,8 @@
         {
             "name": "function_module_1_5",
             "unique_name": "function_module_1_5",
-            "qname": "test.module_1.function_module_1_5",
-            "unique_qname": "test.module_1.function_module_1_5",
+            "qname": "folder1.folder2.folder3.module_1.function_module_1_5",
+            "unique_qname": "folder1.folder2.folder3.module_1.function_module_1_5",
             "decorators": [],
             "parameters": [
                 {
@@ -252,8 +252,8 @@
         {
             "name": "function_module_1_6",
             "unique_name": "function_module_1_6",
-            "qname": "test.module_1.function_module_1_6",
-            "unique_qname": "test.module_1.function_module_1_6",
+            "qname": "folder1.folder2.folder3.module_1.function_module_1_6",
+            "unique_qname": "folder1.folder2.folder3.module_1.function_module_1_6",
             "decorators": [],
             "parameters": [
                 {
@@ -276,8 +276,8 @@
         {
             "name": "function_module_1_7",
             "unique_name": "function_module_1_7",
-            "qname": "test.module_1.function_module_1_7",
-            "unique_qname": "test.module_1.function_module_1_7",
+            "qname": "folder1.folder2.folder3.module_1.function_module_1_7",
+            "unique_qname": "folder1.folder2.folder3.module_1.function_module_1_7",
             "decorators": [],
             "parameters": [
                 {
@@ -310,8 +310,8 @@
         {
             "name": "function_module_1_8",
             "unique_name": "function_module_1_8",
-            "qname": "test.module_1.function_module_1_8",
-            "unique_qname": "test.module_1.function_module_1_8",
+            "qname": "folder1.folder2.folder3.module_1.function_module_1_8",
+            "unique_qname": "folder1.folder2.folder3.module_1.function_module_1_8",
             "decorators": [],
             "parameters": [],
             "results": [],
@@ -323,8 +323,8 @@
         {
             "name": "function_module_3",
             "unique_name": "function_module_3",
-            "qname": "test.module_3.function_module_3",
-            "unique_qname": "test.module_3.function_module_3",
+            "qname": "folder1.folder2.folder3.module_3.function_module_3",
+            "unique_qname": "folder1.folder2.folder3.module_3.function_module_3",
             "decorators": [],
             "parameters": [
                 {
@@ -347,8 +347,8 @@
         {
             "name": "class_method_1",
             "unique_name": "class_method_1",
-            "qname": "test.module_1.Class_1_Module_1.class_method_1",
-            "unique_qname": "test.module_1.Class_1_Module_1.class_method_1",
+            "qname": "folder1.folder2.folder3.module_1.Class_1_Module_1.class_method_1",
+            "unique_qname": "folder1.folder2.folder3.module_1.Class_1_Module_1.class_method_1",
             "decorators": [],
             "parameters": [
                 {
@@ -371,8 +371,8 @@
         {
             "name": "__init__",
             "unique_name": "__init__",
-            "qname": "test.module_1.Class_1_Module_1.__init__",
-            "unique_qname": "test.module_1.Class_1_Module_1.__init__",
+            "qname": "folder1.folder2.folder3.module_1.Class_1_Module_1.__init__",
+            "unique_qname": "folder1.folder2.folder3.module_1.Class_1_Module_1.__init__",
             "decorators": [],
             "parameters": [
                 {
