@@ -1,6 +1,13 @@
 package com.larsreimann.api_editor.server.annotationProcessing;
 
-import com.larsreimann.api_editor.server.data.*;
+import com.larsreimann.api_editor.server.data.AbstractPackageDataVisitor;
+import com.larsreimann.api_editor.server.data.AnnotatedPythonClass;
+import com.larsreimann.api_editor.server.data.AnnotatedPythonFunction;
+import com.larsreimann.api_editor.server.data.AnnotatedPythonModule;
+import com.larsreimann.api_editor.server.data.AnnotatedPythonPackage;
+import com.larsreimann.api_editor.server.data.AnnotatedPythonParameter;
+import com.larsreimann.api_editor.server.data.EditorAnnotation;
+import com.larsreimann.api_editor.server.data.RenameAnnotation;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -19,7 +26,7 @@ public class RenameAnnotationProcessor extends AbstractPackageDataVisitor {
     private boolean inClass = false;
     private boolean inModule = false;
 
-    private final String PATH_SEPARATOR = "/";
+    private final String PATH_SEPARATOR = ".";
 
     @Override
     public boolean enterPythonPackage(@NotNull AnnotatedPythonPackage pythonPackage) {

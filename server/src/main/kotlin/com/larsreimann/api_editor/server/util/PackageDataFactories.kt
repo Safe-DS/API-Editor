@@ -58,10 +58,10 @@ fun createAnnotatedPythonClass(
     methods: List<AnnotatedPythonFunction> = mutableListOf(),
     description: String = "",
     fullDocstring: String = "",
-    annotations: MutableList<EditorAnnotation> = mutableListOf()
+    annotations: MutableList<EditorAnnotation> = mutableListOf(),
+    originalDeclaration: AnnotatedPythonClass? = null
 ): AnnotatedPythonClass {
-
-    return AnnotatedPythonClass(
+    val newPythonClass = AnnotatedPythonClass(
         name,
         qualifiedName,
         decorators,
@@ -71,6 +71,8 @@ fun createAnnotatedPythonClass(
         fullDocstring,
         annotations
     )
+    newPythonClass.originalDeclaration = originalDeclaration
+    return newPythonClass
 }
 
 @JvmOverloads
@@ -83,10 +85,10 @@ fun createAnnotatedPythonFunction(
     isPublic: Boolean = true,
     description: String = "",
     fullDocstring: String = "",
-    annotations: MutableList<EditorAnnotation> = mutableListOf()
+    annotations: MutableList<EditorAnnotation> = mutableListOf(),
+    originalDeclaration: AnnotatedPythonFunction? = null
 ): AnnotatedPythonFunction {
-
-    return AnnotatedPythonFunction(
+    val pythonFunction = AnnotatedPythonFunction(
         name,
         qualifiedName,
         decorators,
@@ -97,6 +99,8 @@ fun createAnnotatedPythonFunction(
         fullDocstring,
         annotations
     )
+    pythonFunction.originalDeclaration = originalDeclaration
+    return pythonFunction
 }
 
 @JvmOverloads
@@ -108,10 +112,10 @@ fun createAnnotatedPythonParameter(
     isPublic: Boolean = true,
     typeInDocs: String = "",
     description: String = "",
-    annotations: MutableList<EditorAnnotation> = mutableListOf()
+    annotations: MutableList<EditorAnnotation> = mutableListOf(),
+    originalDeclaration: AnnotatedPythonParameter? = null
 ): AnnotatedPythonParameter {
-
-    return AnnotatedPythonParameter(
+    val pythonParameter = AnnotatedPythonParameter(
         name,
         qualifiedName,
         defaultValue,
@@ -121,6 +125,8 @@ fun createAnnotatedPythonParameter(
         description,
         annotations
     )
+    pythonParameter.originalDeclaration = originalDeclaration
+    return pythonParameter
 }
 
 fun createPackageCopyWithoutModules(
@@ -151,7 +157,7 @@ fun createModuleCopyWithoutClassesAndFunctions(
 fun createClassCopyWithoutFunctions(
     pythonClass: AnnotatedPythonClass
 ): AnnotatedPythonClass {
-    return AnnotatedPythonClass(
+    val newPythonClass = AnnotatedPythonClass(
         name = pythonClass.name,
         qualifiedName = pythonClass.qualifiedName,
         decorators = pythonClass.decorators.toMutableList(),
@@ -161,12 +167,14 @@ fun createClassCopyWithoutFunctions(
         fullDocstring = pythonClass.fullDocstring,
         annotations = pythonClass.annotations.toMutableList()
     )
+    newPythonClass.originalDeclaration = pythonClass.originalDeclaration?.copy()
+    return newPythonClass
 }
 
 fun createFunctionCopy(
     pythonFunction: AnnotatedPythonFunction
 ): AnnotatedPythonFunction {
-    return AnnotatedPythonFunction(
+    val newPythonFunction = AnnotatedPythonFunction(
         name = pythonFunction.name,
         qualifiedName = pythonFunction.qualifiedName,
         decorators = pythonFunction.decorators,
@@ -177,4 +185,6 @@ fun createFunctionCopy(
         fullDocstring = pythonFunction.fullDocstring,
         annotations = pythonFunction.annotations.toMutableList()
     )
+    newPythonFunction.originalDeclaration = pythonFunction.originalDeclaration?.copy()
+    return newPythonFunction
 }
