@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import static com.larsreimann.api_editor.server.util.PackageDataFactoriesKt.*;
 
@@ -45,6 +46,38 @@ public class MoveAnnotationProcessor extends AbstractPackageDataVisitor {
     @Override
     public void leavePythonPackage(@NotNull AnnotatedPythonPackage pythonPackage) {
         inPackage = false;
+        // add to existing modules
+        for (AnnotatedPythonModule pythonModule : modifiedPackage.getModules()) {
+            if (classesToAdd.get(pythonModule.getName()) != null) {
+                pythonModule.getClasses().addAll(classesToAdd.get(pythonModule.getName()));
+                classesToAdd.remove(pythonModule.getName());
+            }
+            if (functionsToAdd.get(pythonModule.getName()) != null) {
+                pythonModule.getFunctions().addAll(functionsToAdd.get(pythonModule.getName()));
+                functionsToAdd.remove(pythonModule.getName());
+            }
+        }
+        // add to new modules
+        Iterator<String> it = classesToAdd.keySet().iterator();
+        while (it.hasNext()) {
+            String key = it.next();
+            AnnotatedPythonModule pythonModuleToAdd = createAnnotatedPythonModule(key);
+            pythonModuleToAdd.getClasses().addAll(classesToAdd.get(key));
+            if (functionsToAdd.get(key) != null) {
+                pythonModuleToAdd.getFunctions().addAll(functionsToAdd.get(key));
+                functionsToAdd.remove(key);
+            }
+            modifiedPackage.getModules().add(pythonModuleToAdd);
+            it.remove();
+        }
+        it = functionsToAdd.keySet().iterator();
+        while (it.hasNext()) {
+            String key = it.next();
+            AnnotatedPythonModule pythonModuleToAdd = createAnnotatedPythonModule(key);
+            pythonModuleToAdd.getFunctions().addAll(functionsToAdd.get(key));
+            modifiedPackage.getModules().add(pythonModuleToAdd);
+            it.remove();
+        }
     }
 
     @Override
