@@ -114,7 +114,7 @@ fun doInfer(originalPythonPackage: AnnotatedPythonPackage): DoInferResult {
     // Create original declarations
     modifiedPythonPackage.accept(OriginalDeclarationProcessor)
 
-    // Apply annotations
+    // Apply annotations (don't change the order)
     val unusedAnnotationProcessor = UnusedAnnotationProcessor()
     modifiedPythonPackage.accept(unusedAnnotationProcessor)
     modifiedPythonPackage = unusedAnnotationProcessor.modifiedPackage

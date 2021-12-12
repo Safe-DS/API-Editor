@@ -1,19 +1,11 @@
 package com.larsreimann.api_editor.server.annotationProcessing;
 
-import com.larsreimann.api_editor.server.data.AbstractPackageDataVisitor;
-import com.larsreimann.api_editor.server.data.AnnotatedPythonClass;
-import com.larsreimann.api_editor.server.data.AnnotatedPythonFunction;
-import com.larsreimann.api_editor.server.data.AnnotatedPythonModule;
-import com.larsreimann.api_editor.server.data.AnnotatedPythonPackage;
-import com.larsreimann.api_editor.server.data.AnnotatedPythonParameter;
-import com.larsreimann.api_editor.server.data.EditorAnnotation;
-import com.larsreimann.api_editor.server.data.RenameAnnotation;
+import com.larsreimann.api_editor.server.data.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-import static com.larsreimann.api_editor.server.util.PackageDataFactoriesKt.createModuleCopyWithoutClassesAndFunctions;
-import static com.larsreimann.api_editor.server.util.PackageDataFactoriesKt.createPackageCopyWithoutModules;
+import static com.larsreimann.api_editor.server.util.PackageDataFactoriesKt.*;
 
 public class RenameAnnotationProcessor extends AbstractPackageDataVisitor {
     private AnnotatedPythonPackage modifiedPackage;
@@ -23,13 +15,16 @@ public class RenameAnnotationProcessor extends AbstractPackageDataVisitor {
     private AnnotatedPythonFunction currentFunction;
     private final QualifiedNameGenerator qualifiedNameGenerator =
             new QualifiedNameGenerator();
+    private boolean inFunction = false;
     private boolean inClass = false;
     private boolean inModule = false;
+    private boolean inPackage = false;
 
     private final String PATH_SEPARATOR = ".";
 
     @Override
     public boolean enterPythonPackage(@NotNull AnnotatedPythonPackage pythonPackage) {
+        inPackage = true;
         qualifiedNameGenerator.currentPackageName = pythonPackage.getName();
         setModifiedPackage(createPackageCopyWithoutModules(pythonPackage));
 
@@ -37,11 +32,18 @@ public class RenameAnnotationProcessor extends AbstractPackageDataVisitor {
     }
 
     @Override
+    public void leavePythonPackage(@NotNull AnnotatedPythonPackage pythonPackage) {
+        inPackage = false;
+    }
+
+    @Override
     public boolean enterPythonModule(@NotNull AnnotatedPythonModule pythonModule) {
         inModule = true;
         qualifiedNameGenerator.currentModuleName = pythonModule.getName();
         currentModule = createModuleCopyWithoutClassesAndFunctions(pythonModule);
-        getModifiedPackage().getModules().add(currentModule);
+        if (inPackage) {
+            getModifiedPackage().getModules().add(currentModule);
+        }
 
         return true;
     }
@@ -71,7 +73,7 @@ public class RenameAnnotationProcessor extends AbstractPackageDataVisitor {
                         }
                 );
 
-        currentClass = new AnnotatedPythonClass(
+        currentClass = createAnnotatedPythonClass(
                 qualifiedNameGenerator.currentClassName,
                 qualifiedNameGenerator.getQualifiedClassName(),
                 new ArrayList<>(pythonClass.getDecorators()),
@@ -79,10 +81,13 @@ public class RenameAnnotationProcessor extends AbstractPackageDataVisitor {
                 new ArrayList<>(),
                 pythonClass.getDescription(),
                 pythonClass.getFullDocstring(),
-                annotations
+                annotations,
+                pythonClass.getOriginalDeclaration()
         );
 
-        currentModule.getClasses().add(currentClass);
+        if (inModule) {
+            currentModule.getClasses().add(currentClass);
+        }
 
         return true;
     }
@@ -112,7 +117,7 @@ public class RenameAnnotationProcessor extends AbstractPackageDataVisitor {
                 );
 
         AnnotatedPythonParameter modifiedPythonParameter =
-                new AnnotatedPythonParameter(
+                createAnnotatedPythonParameter(
                         qualifiedNameGenerator.currentParameterName,
                         qualifiedNameGenerator.getQualifiedParameterName(),
                         pythonParameter.getDefaultValue(),
@@ -120,14 +125,18 @@ public class RenameAnnotationProcessor extends AbstractPackageDataVisitor {
                         pythonParameter.isPublic(),
                         pythonParameter.getTypeInDocs(),
                         pythonParameter.getDescription(),
-                        annotations
+                        annotations,
+                        pythonParameter.getOriginalDeclaration()
                 );
 
-        currentFunction.getParameters().add(modifiedPythonParameter);
+        if (inFunction) {
+            currentFunction.getParameters().add(modifiedPythonParameter);
+        }
     }
 
     @Override
     public boolean enterPythonFunction(AnnotatedPythonFunction pythonFunction) {
+        inFunction = true;
         qualifiedNameGenerator.currentFunctionName = pythonFunction.getName();
         ArrayList<EditorAnnotation> annotations = new ArrayList<>();
         pythonFunction
@@ -145,7 +154,7 @@ public class RenameAnnotationProcessor extends AbstractPackageDataVisitor {
                         }
                 );
 
-        currentFunction = new AnnotatedPythonFunction(
+        currentFunction = createAnnotatedPythonFunction(
                 qualifiedNameGenerator.currentFunctionName,
                 qualifiedNameGenerator.getQualifiedFunctionName(),
                 new ArrayList<>(pythonFunction.getDecorators()),
@@ -154,7 +163,8 @@ public class RenameAnnotationProcessor extends AbstractPackageDataVisitor {
                 pythonFunction.isPublic(),
                 pythonFunction.getDescription(),
                 pythonFunction.getFullDocstring(),
-                annotations
+                annotations,
+                pythonFunction.getOriginalDeclaration()
         );
 
         if (inClass) {
@@ -166,12 +176,29 @@ public class RenameAnnotationProcessor extends AbstractPackageDataVisitor {
         return true;
     }
 
+    @Override
+    public void leavePythonFunction(@NotNull AnnotatedPythonFunction pythonFunction) {
+        inFunction = false;
+    }
+
     public AnnotatedPythonPackage getModifiedPackage() {
         return modifiedPackage;
     }
 
     public void setModifiedPackage(AnnotatedPythonPackage modifiedPackage) {
         this.modifiedPackage = modifiedPackage;
+    }
+
+    public AnnotatedPythonModule getCurrentModule() {
+        return this.currentModule;
+    }
+
+    public AnnotatedPythonClass getCurrentClass() {
+        return this.currentClass;
+    }
+
+    public AnnotatedPythonFunction getCurrentFunction() {
+        return this.currentFunction;
     }
 
     private class QualifiedNameGenerator {

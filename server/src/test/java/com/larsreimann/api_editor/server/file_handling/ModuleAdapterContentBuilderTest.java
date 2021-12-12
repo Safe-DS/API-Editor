@@ -1,5 +1,6 @@
 package com.larsreimann.api_editor.server.file_handling;
 
+import com.larsreimann.api_editor.server.annotationProcessing.OriginalDeclarationProcessor;
 import com.larsreimann.api_editor.server.data.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -132,6 +133,7 @@ class ModuleAdapterContentBuilderTest {
             ),
             Collections.emptyList()
         );
+        testModule.accept(OriginalDeclarationProcessor.INSTANCE);
 
         // when
         ModuleAdapterContentBuilder moduleAdapterContentBuilder =
@@ -248,6 +250,7 @@ class ModuleAdapterContentBuilderTest {
             ),
             Collections.emptyList()
         );
+        testModule.accept(OriginalDeclarationProcessor.INSTANCE);
 
         // when
         ModuleAdapterContentBuilder moduleAdapterContentBuilder =
@@ -303,6 +306,7 @@ class ModuleAdapterContentBuilderTest {
             Collections.emptyList(),
             Collections.emptyList()
         );
+        testModule.accept(OriginalDeclarationProcessor.INSTANCE);
 
         // when
         ModuleAdapterContentBuilder moduleAdapterContentBuilder =
@@ -341,6 +345,7 @@ class ModuleAdapterContentBuilderTest {
             Collections.emptyList(),
             Collections.emptyList()
         );
+        testModule.accept(OriginalDeclarationProcessor.INSTANCE);
 
         // when
         ModuleAdapterContentBuilder moduleAdapterContentBuilder =
