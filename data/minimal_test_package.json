@@ -7,7 +7,7 @@
             "name": "folder1.folder2.folder3.module_1",
             "imports": [
                 {
-                    "module": "test.module_2",
+                    "module": "folder1.module_2",
                     "alias": null
                 }
             ],
@@ -323,8 +323,8 @@
         {
             "name": "function_module_3",
             "unique_name": "function_module_3",
-            "qname": "folder1.folder2.folder3.module_3.function_module_3",
-            "unique_qname": "folder1.folder2.folder3.module_3.function_module_3",
+            "qname": "module_3.function_module_3",
+            "unique_qname": "module_3.function_module_3",
             "decorators": [],
             "parameters": [
                 {
