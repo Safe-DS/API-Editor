@@ -169,12 +169,12 @@ class ModuleAdapterContentBuilderTest {
             List.of(
                 new AnnotatedPythonFunction(
                     "function_module",
-                    "test.module.function_module",
+                    "test-module.function_module",
                     List.of("test-decorator"),
                     List.of(
                         new AnnotatedPythonParameter(
                             "param1",
-                            "test.module.function_module_1.param1",
+                            "test-module.function_module_1.param1",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
                             true,
@@ -184,7 +184,7 @@ class ModuleAdapterContentBuilderTest {
                         ),
                         new AnnotatedPythonParameter(
                             "param2",
-                            "test.module.function_module_1.param2",
+                            "test-module.function_module_1.param2",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
                             true,
@@ -194,7 +194,7 @@ class ModuleAdapterContentBuilderTest {
                         ),
                         new AnnotatedPythonParameter(
                             "param3",
-                            "test.module.function_module_1.param3",
+                            "test-module.function_module_1.param3",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
                             true,
@@ -257,12 +257,12 @@ class ModuleAdapterContentBuilderTest {
             new ModuleAdapterContentBuilder(testModule);
         String moduleContent = moduleAdapterContentBuilder.buildModuleContent();
 
-        //then
+        // then
         String expectedModuleContent = """
             import test-module
 
             def function_module(*, param1, param2, param3):
-                test.module.function_module(param1=param1, param2=param2, param3=param3)
+                test-module.function_module(param1=param1, param2=param2, param3=param3)
 
             def test-function(*, test-parameter=42):
                 test-module.test-function(test-parameter=test-parameter)

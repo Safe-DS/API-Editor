@@ -41,12 +41,24 @@ class ModuleAdapterContentBuilder extends FileBuilder {
 
     private String buildNamespace() {
         HashSet<String> importedModules = new HashSet<>();
+        importedModules.add(pythonModule.getName());
         pythonModule.getFunctions().forEach(
             pythonFunction ->
                 importedModules.add(
                     buildParentDeclarationName(
                         Objects.requireNonNull(
                             pythonFunction
+                                .getOriginalDeclaration()
+                        ).getQualifiedName()
+                    )
+                )
+        );
+        pythonModule.getClasses().forEach(
+            pythonClass ->
+                importedModules.add(
+                    buildParentDeclarationName(
+                        Objects.requireNonNull(
+                            pythonClass
                                 .getOriginalDeclaration()
                         ).getQualifiedName()
                     )
