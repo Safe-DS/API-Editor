@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static com.larsreimann.api_editor.server.util.PackageDataFactoriesKt.*;
 
-public class UnusedAnnotationProcessor extends AbstractPackageDataVisitor {
+public class CleanupModulesProcessor extends AbstractPackageDataVisitor {
     private AnnotatedPythonPackage modifiedPackage;
 
     private AnnotatedPythonModule currentModule;
@@ -31,7 +31,10 @@ public class UnusedAnnotationProcessor extends AbstractPackageDataVisitor {
     @Override
     public void leavePythonModule(@NotNull AnnotatedPythonModule pythonModule) {
         AnnotatedPythonModule currentModule = getCurrentModule();
-        getModifiedPackage().getModules().add(currentModule);
+        if (!currentModule.getClasses().isEmpty()
+            || !currentModule.getFunctions().isEmpty()) {
+            getModifiedPackage().getModules().add(currentModule);
+        }
         inModule = false;
     }
 
@@ -40,16 +43,9 @@ public class UnusedAnnotationProcessor extends AbstractPackageDataVisitor {
         inClass = true;
         setCurrentClass(createClassCopyWithoutFunctions(pythonClass));
 
-        if (pythonClass.getAnnotations()
-            .stream()
-            .noneMatch(editorAnnotation
-                -> editorAnnotation.getType().equals("Unused")
-            )
-        ) {
-            getCurrentModule().getClasses().add(
-                getCurrentClass()
-            );
-        }
+        getCurrentModule().getClasses().add(
+            getCurrentClass()
+        );
 
         return true;
     }
@@ -61,19 +57,12 @@ public class UnusedAnnotationProcessor extends AbstractPackageDataVisitor {
 
     @Override
     public boolean enterPythonFunction(@NotNull AnnotatedPythonFunction pythonFunction) {
-        if (pythonFunction.getAnnotations()
-            .stream()
-            .noneMatch(
-                editorAnnotation -> editorAnnotation.getType().equals("Unused")
-            )
-        ) {
-            AnnotatedPythonFunction currentFunctionCopy =
-                createFunctionCopy(pythonFunction);
-            if (inClass) {
-                getCurrentClass().getMethods().add(currentFunctionCopy);
-            } else if (inModule) {
-                getCurrentModule().getFunctions().add(currentFunctionCopy);
-            }
+        AnnotatedPythonFunction currentFunctionCopy =
+            createFunctionCopy(pythonFunction);
+        if (inClass) {
+            getCurrentClass().getMethods().add(currentFunctionCopy);
+        } else if (inModule) {
+            getCurrentModule().getFunctions().add(currentFunctionCopy);
         }
 
         return false;

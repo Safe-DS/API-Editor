@@ -25,7 +25,6 @@ public class RenameAnnotationProcessor extends AbstractPackageDataVisitor {
     @Override
     public boolean enterPythonPackage(@NotNull AnnotatedPythonPackage pythonPackage) {
         inPackage = true;
-        qualifiedNameGenerator.currentPackageName = pythonPackage.getName();
         setModifiedPackage(createPackageCopyWithoutModules(pythonPackage));
 
         return true;
@@ -202,14 +201,13 @@ public class RenameAnnotationProcessor extends AbstractPackageDataVisitor {
     }
 
     private class QualifiedNameGenerator {
-        String currentPackageName;
         String currentModuleName;
         String currentClassName;
         String currentFunctionName;
         String currentParameterName;
 
         String getQualifiedModuleName() {
-            return currentPackageName + PATH_SEPARATOR + currentModuleName;
+            return currentModuleName;
         }
 
         String getQualifiedClassName() {

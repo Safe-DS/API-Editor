@@ -37,7 +37,6 @@ public class MoveAnnotationProcessor extends AbstractPackageDataVisitor {
         inPackage = true;
         classesToAdd = new HashMap<>();
         functionsToAdd = new HashMap<>();
-        qualifiedNameGenerator.currentPackageName = pythonPackage.getName();
         setModifiedPackage(createPackageCopyWithoutModules(pythonPackage));
 
         return true;
@@ -109,6 +108,7 @@ public class MoveAnnotationProcessor extends AbstractPackageDataVisitor {
                 isClassMoved = true;
                 originalModuleName = qualifiedNameGenerator.currentModuleName;
                 newModuleName = ((MoveAnnotation) editorAnnotation).getDestination();
+                qualifiedNameGenerator.currentModuleName = newModuleName;
             }
             else {
                 annotations.add(editorAnnotation);
@@ -180,6 +180,7 @@ public class MoveAnnotationProcessor extends AbstractPackageDataVisitor {
                 isFunctionMoved = true;
                 originalModuleName = qualifiedNameGenerator.currentModuleName;
                 newModuleName = ((MoveAnnotation) editorAnnotation).getDestination();
+                qualifiedNameGenerator.currentModuleName = newModuleName;
             }
             else {
                 annotations.add(editorAnnotation);
@@ -252,14 +253,13 @@ public class MoveAnnotationProcessor extends AbstractPackageDataVisitor {
     }
 
     private class QualifiedNameGenerator {
-        String currentPackageName;
         String currentModuleName;
         String currentClassName;
         String currentFunctionName;
         String currentParameterName;
 
         String getQualifiedModuleName() {
-            return currentPackageName + PATH_SEPARATOR + currentModuleName;
+            return currentModuleName;
         }
 
         String getQualifiedClassName() {

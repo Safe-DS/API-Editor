@@ -1,9 +1,11 @@
 package com.larsreimann.api_editor.server.file_handling;
 
-import com.larsreimann.api_editor.server.data.*;
+import com.larsreimann.api_editor.server.data.AnnotatedPythonModule;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 class ModuleAdapterContentBuilder extends FileBuilder {
     AnnotatedPythonModule pythonModule;
@@ -38,17 +40,40 @@ class ModuleAdapterContentBuilder extends FileBuilder {
     }
 
     private String buildNamespace() {
-        return "import " + pythonModule.getName();
+        HashSet<String> importedModules = new HashSet<>();
+        pythonModule.getFunctions().forEach(
+            pythonFunction ->
+                importedModules.add(
+                    buildParentDeclarationName(
+                        Objects.requireNonNull(
+                            pythonFunction
+                                .getOriginalDeclaration()
+                        ).getQualifiedName()
+                    )
+                )
+        );
+        List<String> imports = new ArrayList<>();
+        importedModules.forEach(
+            moduleName ->
+                imports.add("import " + moduleName)
+        );
+        return listToString(imports, 1);
+    }
+
+    private String buildParentDeclarationName(String qualifiedName) {
+        String PATH_SEPARATOR = ".";
+        int separationPosition = qualifiedName.lastIndexOf(PATH_SEPARATOR);
+        return qualifiedName.substring(0, separationPosition);
     }
 
     private String buildAllClasses() {
         List<String> formattedClasses = new ArrayList<>();
         pythonModule.getClasses().forEach(pythonClass -> {
-            ClassAdapterContentBuilder classAdapterContentBuilder =
-                new ClassAdapterContentBuilder(pythonClass);
+                ClassAdapterContentBuilder classAdapterContentBuilder =
+                    new ClassAdapterContentBuilder(pythonClass);
                 formattedClasses.add(classAdapterContentBuilder.buildClass());
             }
-            );
+        );
         return listToString(formattedClasses, 2);
     }
 
