@@ -1,0 +1,18 @@
+{
+    "sklearn.model_selection.RandomizedSearchCV": {
+        "error_score": {
+            "cases": [
+                {
+                    "type": "numeric"
+                },
+                {
+                    "type": "str",
+                    "value": "raise"
+                }
+            ],
+            "docs": [
+                "error_score : 'raise' or numeric, default=np.nan"
+            ]
+        }
+    }
+}

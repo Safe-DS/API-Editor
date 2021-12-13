@@ -1,0 +1,45 @@
+{
+    "sklearn.neighbors.KNeighborsRegressor": {
+        "weights": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "uniform"
+                },
+                {
+                    "type": "str",
+                    "value": "distance"
+                },
+                {
+                    "type": "callable"
+                }
+            ],
+            "docs": [
+                "weights : {'uniform', 'distance'} or callable, default='uniform'"
+            ]
+        },
+        "algorithm": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "auto"
+                },
+                {
+                    "type": "str",
+                    "value": "ball_tree"
+                },
+                {
+                    "type": "str",
+                    "value": "kd_tree"
+                },
+                {
+                    "type": "str",
+                    "value": "brute"
+                }
+            ],
+            "docs": [
+                "algorithm : {'auto', 'ball_tree', 'kd_tree', 'brute'}, default='auto'"
+            ]
+        }
+    }
+}

@@ -1,0 +1,88 @@
+{
+    "sklearn.tree.DecisionTreeClassifier": {
+        "criterion": {
+            "docs": [
+                "criterion : {\"gini\", \"entropy\"}, default=\"gini\""
+            ],
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "gini"
+                },
+                {
+                    "type": "str",
+                    "value": "entropy"
+                }
+            ]
+        },
+        "splitter": {
+            "docs": [
+                "splitter : {\"best\", \"random\"}, default=\"best\""
+            ],
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "best"
+                },
+                {
+                    "type": "str",
+                    "value": "random"
+                }
+            ]
+        },
+        "max_features": {
+            "docs": [
+                "max_features : int, float or {\"auto\", \"sqrt\", \"log2\"}, default=None"
+            ],
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "auto"
+                },
+                {
+                    "type": "str",
+                    "value": "sqrt"
+                },
+                {
+                    "type": "str",
+                    "value": "log2"
+                },
+                {
+                    "type": "int"
+                },
+                {
+                    "type": "float"
+                }
+            ]
+        },
+        "class_weight": {
+            "docs": [
+                "class_weight : dict, list of dict or \"balanced\", default=None"
+            ],
+            "cases": [
+                {
+                    "type": "dict"
+                },
+                {
+                    "type": "str",
+                    "value": "balanced"
+                },
+                {
+                    "type": "list"
+                }
+            ]
+        },
+        "ccp_alpha": {
+            "docs": [
+                "ccp_alpha : non-negative float, default=0.0"
+            ],
+            "cases": [
+                {
+                    "type": "float",
+                    "min": 0,
+                    "minInclusive": true
+                }
+            ]
+        }
+    }
+}

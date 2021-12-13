@@ -1,0 +1,51 @@
+{
+    "sklearn.preprocessing.OneHotEncoder": {
+        "categories": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "auto"
+                },
+                {
+                    "type": "list"
+                }
+            ],
+            "docs": [
+                "categories : 'auto' or a list of array-like, default='auto'"
+            ]
+        },
+        "drop": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "first"
+                },
+                {
+                    "type": "str",
+                    "value": "if_binary"
+                },
+                {
+                    "type": "array-like"
+                }
+            ],
+            "docs": [
+                "drop : {'first', 'if_binary'} or a array-like of shape (n_features,), default=None"
+            ]
+        },
+        "handle_unknown": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "error"
+                },
+                {
+                    "type": "str",
+                    "value": "ignore"
+                }
+            ],
+            "docs": [
+                "handle_unknown : {'error', 'ignore'}, default='error'"
+            ]
+        }
+    }
+}

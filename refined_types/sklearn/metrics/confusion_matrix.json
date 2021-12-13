@@ -1,0 +1,23 @@
+{
+    "sklearn.metrics.confusion_matrix": {
+        "normalize": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "true"
+                },
+                {
+                    "type": "str",
+                    "value": "pred"
+                },
+                {
+                    "type": "str",
+                    "value": "all"
+                }
+            ],
+            "docs": [
+                "normalize : {'true', 'pred', 'all'}, default=None"
+            ]
+        }
+    }
+}

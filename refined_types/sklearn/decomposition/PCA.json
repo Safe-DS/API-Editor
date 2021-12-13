@@ -1,0 +1,73 @@
+{
+    "sklearn.decomposition.PCA": {
+        "n_components": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "mle"
+                },
+                {
+                    "type": "int"
+                },
+                {
+                    "type": "float"
+                }
+            ],
+            "docs": [
+                "n_components : int, float or 'mle', default=None"
+            ]
+        },
+        "svd_solver": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "auto"
+                },
+                {
+                    "type": "str",
+                    "value": "full"
+                },
+                {
+                    "type": "str",
+                    "value": "arpack"
+                },
+                {
+                    "type": "str",
+                    "value": "randomized"
+                }
+            ],
+            "docs": [
+                "svd_solver : {'auto', 'full', 'arpack', 'randomized'}, default='auto'"
+            ]
+        },
+        "tol": {
+            "cases": [
+                {
+                    "type": "float",
+                    "min": 0.0,
+                    "minInclusive": true
+                }
+            ],
+            "docs": [
+                "Must be of range [0.0, infinity)"
+            ]
+        },
+        "iterated_power": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "auto"
+                },
+                {
+                    "type": "int",
+                    "min": 0.0,
+                    "minInclusive": true
+                }
+            ],
+            "docs": [
+                "iterated_power : int or 'auto', default='auto'",
+                "Must be of range [0, infinity)"
+            ]
+        }
+    }
+}

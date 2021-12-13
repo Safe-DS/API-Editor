@@ -1,0 +1,23 @@
+{
+    "sklearn.metrics.classification_report": {
+        "zero_devision": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "warn"
+                },
+                {
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "type": "int",
+                    "value": 1
+                }
+            ],
+            "docs": [
+                "zero_division : \"warn\", 0 or 1, default=\"warn\""
+            ]
+        }
+    }
+}

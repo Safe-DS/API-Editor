@@ -1,0 +1,91 @@
+{
+    "sklearn.svm.SVC": {
+        "C": {
+            "docs": [
+                "C : float, default=1.0",
+                "Must be strictly positive"
+            ],
+            "cases": [
+                {
+                    "type": "float",
+                    "min": 0,
+                    "minInclusive": false
+                }
+            ]
+        },
+        "kernel": {
+            "docs": [
+                "kernel : {'linear', 'poly', 'rbf', 'sigmoid', 'precomputed'}, default='rbf'"
+            ],
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "linear"
+                },
+                {
+                    "type": "str",
+                    "value": "poly"
+                },
+                {
+                    "type": "str",
+                    "value": "rbf"
+                },
+                {
+                    "type": "str",
+                    "value": "sigmoid"
+                },
+                {
+                    "type": "str",
+                    "value": "precomputed"
+                }
+            ]
+        },
+        "gamma": {
+            "docs": [
+                "gamma : {'scale', 'auto'} or float, default='scale'"
+            ],
+            "cases": [
+                {
+                    "type": "float"
+                },
+                {
+                    "type": "str",
+                    "value": "scale"
+                },
+                {
+                    "type": "str",
+                    "value": "auto"
+                }
+            ]
+        },
+        "class_weight": {
+            "docs": [
+                "class_weight : dict or 'balanced', default=None"
+            ],
+            "cases": [
+                {
+                    "type": "dict"
+                },
+                {
+                    "type": "str",
+                    "value": "balanced"
+                }
+            ]
+        },
+        "decision_function_shape": {
+            "docs": [
+                "decision_function_shape : {'ovo', 'ovr'}, default='ovr'"
+            ],
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "ovo"
+                },
+                {
+                    "type": "str",
+                    "value": "ovr"
+                }
+            ]
+        }
+    }
+}

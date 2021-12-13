@@ -1,0 +1,1860 @@
+{
+    "sklearn.tree.DecisionTreeClassifier": {
+        "criterion": {
+            "docs": [
+                "criterion : {\"gini\", \"entropy\"}, default=\"gini\""
+            ],
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "gini"
+                },
+                {
+                    "type": "str",
+                    "value": "entropy"
+                }
+            ]
+        },
+        "splitter": {
+            "docs": [
+                "splitter : {\"best\", \"random\"}, default=\"best\""
+            ],
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "best"
+                },
+                {
+                    "type": "str",
+                    "value": "random"
+                }
+            ]
+        },
+        "max_features": {
+            "docs": [
+                "max_features : int, float or {\"auto\", \"sqrt\", \"log2\"}, default=None"
+            ],
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "auto"
+                },
+                {
+                    "type": "str",
+                    "value": "sqrt"
+                },
+                {
+                    "type": "str",
+                    "value": "log2"
+                },
+                {
+                    "type": "int"
+                },
+                {
+                    "type": "float"
+                }
+            ]
+        },
+        "class_weight": {
+            "docs": [
+                "class_weight : dict, list of dict or \"balanced\", default=None"
+            ],
+            "cases": [
+                {
+                    "type": "dict"
+                },
+                {
+                    "type": "str",
+                    "value": "balanced"
+                },
+                {
+                    "type": "list"
+                }
+            ]
+        },
+        "ccp_alpha": {
+            "docs": [
+                "ccp_alpha : non-negative float, default=0.0"
+            ],
+            "cases": [
+                {
+                    "type": "float",
+                    "min": 0,
+                    "minInclusive": true
+                }
+            ]
+        }
+    },
+    "sklearn.metrics.mean_squared_log_error": {
+        "multioutput": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "raw_values"
+                },
+                {
+                    "type": "str",
+                    "value": "uniform_average"
+                },
+                {
+                    "type": "array-like"
+                }
+            ],
+            "docs": [
+                "multioutput : {'raw_values', 'uniform_average'} or array-like of shape (n_outputs,), default='uniform_average'"
+            ]
+        }
+    },
+    "sklearn.metrics.roc_curve": {},
+    "sklearn.metrics.roc_auc_score": {
+        "average": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "micro"
+                },
+                {
+                    "type": "str",
+                    "value": "macro"
+                },
+                {
+                    "type": "str",
+                    "value": "samples"
+                },
+                {
+                    "type": "str",
+                    "value": "weighted"
+                }
+            ],
+            "docs": [
+                "average : {'micro', 'macro', 'samples', 'weighted'} or None, default='macro'"
+            ]
+        },
+        "max_fpr": {
+            "cases": [
+                {
+                    "type": "float",
+                    "min": 0.0,
+                    "max": 1.0,
+                    "minInclusive": false,
+                    "maxInclusive": true
+                }
+            ],
+            "docs": [
+                "max_fpr : float > 0 and <= 1, default=None"
+            ]
+        },
+        "multi_class": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "raise"
+                },
+                {
+                    "type": "str",
+                    "value": "ovr"
+                },
+                {
+                    "type": "str",
+                    "value": "ovo"
+                }
+            ],
+            "docs": [
+                "multi_class : {'raise', 'ovr', 'ovo'}, default='raise'"
+            ]
+        }
+    },
+    "sklearn.metrics.confusion_matrix": {
+        "normalize": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "true"
+                },
+                {
+                    "type": "str",
+                    "value": "pred"
+                },
+                {
+                    "type": "str",
+                    "value": "all"
+                }
+            ],
+            "docs": [
+                "normalize : {'true', 'pred', 'all'}, default=None"
+            ]
+        }
+    },
+    "sklearn.metrics.r2_score": {
+        "multioutput": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "raw_values"
+                },
+                {
+                    "type": "str",
+                    "value": "uniform_average"
+                },
+                {
+                    "type": "str",
+                    "value": "variance_weighted"
+                },
+                {
+                    "type": "array-like"
+                }
+            ],
+            "docs": [
+                "multioutput : {'raw_values', 'uniform_average', 'variance_weighted'}, array-like of shape (n_outputs,) or None, default='uniform_average'"
+            ]
+        }
+    },
+    "sklearn.metrics.mean_absolute_error": {
+        "multioutput": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "raw_values"
+                },
+                {
+                    "type": "str",
+                    "value": "uniform_average"
+                },
+                {
+                    "type": "array-like"
+                }
+            ],
+            "docs": [
+                "multioutput : {'raw_values', 'uniform_average'}  or array-like of shape (n_outputs,), default='uniform_average'"
+            ]
+        }
+    },
+    "sklearn.metrics.f1_score": {
+        "average": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "micro"
+                },
+                {
+                    "type": "str",
+                    "value": "macro"
+                },
+                {
+                    "type": "str",
+                    "value": "samples"
+                },
+                {
+                    "type": "str",
+                    "value": "weighted"
+                },
+                {
+                    "type": "str",
+                    "value": "binary"
+                }
+            ],
+            "docs": [
+                "average : {'micro', 'macro', 'samples','weighted', 'binary'} or None, default='binary'"
+            ]
+        },
+        "zero_devision": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "warn"
+                },
+                {
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "type": "int",
+                    "value": 1
+                }
+            ],
+            "docs": [
+                "zero_division : \"warn\", 0 or 1, default=\"warn\""
+            ]
+        }
+    },
+    "sklearn.metrics.mean_squared_error": {
+        "multioutput": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "raw_values"
+                },
+                {
+                    "type": "str",
+                    "value": "uniform_average"
+                },
+                {
+                    "type": "array-like"
+                }
+            ],
+            "docs": [
+                "multioutput : {'raw_values', 'uniform_average'} or array-like of shape (n_outputs,), default='uniform_average'"
+            ]
+        }
+    },
+    "sklearn.metrics.accuracy_score": {},
+    "sklearn.metrics.recall_score": {
+        "average": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "micro"
+                },
+                {
+                    "type": "str",
+                    "value": "macro"
+                },
+                {
+                    "type": "str",
+                    "value": "samples"
+                },
+                {
+                    "type": "str",
+                    "value": "weighted"
+                },
+                {
+                    "type": "str",
+                    "value": "binary"
+                }
+            ],
+            "docs": [
+                "average : {'micro', 'macro', 'samples', 'weighted', 'binary'} or None, default='binary'"
+            ]
+        },
+        "zero_devision": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "warn"
+                },
+                {
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "type": "int",
+                    "value": 1
+                }
+            ],
+            "docs": [
+                "zero_division : \"warn\", 0 or 1, default=\"warn\""
+            ]
+        }
+    },
+    "sklearn.metrics.classification_report": {
+        "zero_devision": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "warn"
+                },
+                {
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "type": "int",
+                    "value": 1
+                }
+            ],
+            "docs": [
+                "zero_division : \"warn\", 0 or 1, default=\"warn\""
+            ]
+        }
+    },
+    "sklearn.metrics.cohen_kappa_score": {
+        "weights": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "linear"
+                },
+                {
+                    "type": "str",
+                    "value": "quadratic"
+                }
+            ],
+            "docs": [
+                "weights : {'linear', 'quadratic'}, default=None"
+            ]
+        }
+    },
+    "sklearn.metrics.precision_score": {
+        "average": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "micro"
+                },
+                {
+                    "type": "str",
+                    "value": "macro"
+                },
+                {
+                    "type": "str",
+                    "value": "samples"
+                },
+                {
+                    "type": "str",
+                    "value": "weighted"
+                },
+                {
+                    "type": "str",
+                    "value": "binary"
+                }
+            ],
+            "docs": [
+                "average : {'micro', 'macro', 'samples','weighted', 'binary'} or None, default='binary'"
+            ]
+        },
+        "zero_devision": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "warn"
+                },
+                {
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "type": "int",
+                    "value": 1
+                }
+            ],
+            "docs": [
+                "zero_division : \"warn\", 0 or 1, default=\"warn\""
+            ]
+        }
+    },
+    "sklearn.ensemble.AdaBoostClassifier": {
+        "algorithm": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "SAMME"
+                },
+                {
+                    "type": "str",
+                    "value": "SAMME.R"
+                }
+            ],
+            "docs": [
+                "algorithm : {'SAMME', 'SAMME.R'}, default='SAMME.R'"
+            ]
+        }
+    },
+    "sklearn.ensemble.GradientBoostingRegressor": {
+        "loss": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "squared_error"
+                },
+                {
+                    "type": "str",
+                    "value": "absolute_error"
+                },
+                {
+                    "type": "str",
+                    "value": "huber"
+                },
+                {
+                    "type": "str",
+                    "value": "quantile"
+                }
+            ],
+            "docs": [
+                "loss : {'squared_error', 'absolute_error', 'huber', 'quantile'}, default='squared_error'"
+            ]
+        },
+        "criterion": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "friedman_mse"
+                },
+                {
+                    "type": "str",
+                    "value": "squared_error"
+                },
+                {
+                    "type": "str",
+                    "value": "mse"
+                },
+                {
+                    "type": "str",
+                    "value": "mae"
+                }
+            ],
+            "docs": [
+                "criterion : {'friedman_mse', 'squared_error', 'mse', 'mae'}, default='friedman_mse'"
+            ]
+        },
+        "init": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "zero"
+                },
+                {
+                    "type": "estimator"
+                }
+            ],
+            "docs": [
+                "init : estimator or 'zero', default=None"
+            ]
+        },
+        "max_features": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "auto"
+                },
+                {
+                    "type": "str",
+                    "value": "sqrt"
+                },
+                {
+                    "type": "str",
+                    "value": "log2"
+                },
+                {
+                    "type": "int"
+                },
+                {
+                    "type": "float"
+                }
+            ],
+            "docs": [
+                "max_features : {'auto', 'sqrt', 'log2'}, int or float"
+            ]
+        },
+        "validation_fraction": {
+            "cases": [
+                {
+                    "type": "float",
+                    "min": 0,
+                    "minInclusive": false,
+                    "max": 1,
+                    "maxInclusive": false
+                }
+            ],
+            "docs": [
+                "validation_fraction : float, default=0.1",
+                "Must be between 0 and 1"
+            ]
+        }
+    },
+    "sklearn.ensemble.RandomForestClassifier": {
+        "criterion": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "gini"
+                },
+                {
+                    "type": "str",
+                    "value": "entropy"
+                }
+            ],
+            "docs": [
+                "criterion : {\"gini\", \"entropy\"}, default=\"gini\""
+            ]
+        },
+        "max_features": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "auto"
+                },
+                {
+                    "type": "str",
+                    "value": "sqrt"
+                },
+                {
+                    "type": "str",
+                    "value": "log2"
+                },
+                {
+                    "type": "float"
+                },
+                {
+                    "type": "int"
+                }
+            ],
+            "docs": [
+                "max_features : {\"auto\", \"sqrt\", \"log2\"}, int or float, default=\"auto\""
+            ]
+        },
+        "class_weight": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "balanced"
+                },
+                {
+                    "type": "str",
+                    "value": "balanced_subsample"
+                },
+                {
+                    "type": "dict"
+                },
+                {
+                    "type": "list"
+                }
+            ],
+            "docs": [
+                "class_weight : {\"balanced\", \"balanced_subsample\"}, dict or list of dicts, default=None"
+            ]
+        },
+        "max_samples": {
+            "cases": [
+                {
+                    "type": "int"
+                },
+                {
+                    "type": "float",
+                    "min": 0,
+                    "minInclusive": false,
+                    "max": 1,
+                    "maxInclusive": true
+                }
+            ],
+            "docs": [
+                "max_samples : int or float, default=None",
+                "If float, then draw `max_samples * X.shape[0]` samples. Thus, `max_samples` should be in the interval `(0.0, 1.0]`."
+            ]
+        }
+    },
+    "sklearn.ensemble.ExtraTreesClassifier": {
+        "criterion": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "gini"
+                },
+                {
+                    "type": "str",
+                    "value": "entropy"
+                }
+            ],
+            "docs": [
+                "criterion : {\"gini\", \"entropy\"}, default=\"gini\""
+            ]
+        },
+        "max_features": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "auto"
+                },
+                {
+                    "type": "str",
+                    "value": "sqrt"
+                },
+                {
+                    "type": "str",
+                    "value": "log2"
+                },
+                {
+                    "type": "float"
+                },
+                {
+                    "type": "int"
+                }
+            ],
+            "docs": [
+                "max_features : {\"auto\", \"sqrt\", \"log2\"}, int or float, default=\"auto\""
+            ]
+        },
+        "class_weight": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "balanced"
+                },
+                {
+                    "type": "str",
+                    "value": "balanced_subsample"
+                },
+                {
+                    "type": "dict"
+                },
+                {
+                    "type": "list"
+                }
+            ],
+            "docs": [
+                "class_weight : {\"balanced\", \"balanced_subsample\"}, dict or list of dicts, default=None"
+            ]
+        },
+        "max_samples": {
+            "cases": [
+                {
+                    "type": "int"
+                },
+                {
+                    "type": "float",
+                    "min": 0,
+                    "minInclusive": false,
+                    "max": 1,
+                    "maxInclusive": true
+                }
+            ],
+            "docs": [
+                "max_samples : int or float, default=None",
+                "If float, then draw `max_samples * X.shape[0]` samples. Thus, `max_samples` should be in the interval `(0.0, 1.0]`."
+            ]
+        }
+    },
+    "sklearn.pipeline.FeatureUnion": {},
+    "sklearn.pipeline.Pipeline": {},
+    "sklearn.cluster.KMeans": {
+        "init": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "k-means++"
+                },
+                {
+                    "type": "str",
+                    "value": "random"
+                },
+                {
+                    "type": "callable"
+                },
+                {
+                    "type": "array-like"
+                }
+            ],
+            "docs": [
+                "init : {'k-means++', 'random'}, callable or array-like of shape (n_clusters, n_features), default='k-means++'"
+            ]
+        },
+        "algorithm": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "auto"
+                },
+                {
+                    "type": "str",
+                    "value": "full"
+                },
+                {
+                    "type": "str",
+                    "value": "elkan"
+                }
+            ],
+            "docs": [
+                "algorithm : {\"auto\", \"full\", \"elkan\"}, default=\"auto\""
+            ]
+        }
+    },
+    "sklearn.feature_extraction.text.CountVectorizer": {
+        "input": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "filename"
+                },
+                {
+                    "type": "str",
+                    "value": "file"
+                },
+                {
+                    "type": "str",
+                    "value": "content"
+                }
+            ],
+            "docs": [
+                "input : {'filename', 'file', 'content'}, default='content'"
+            ]
+        },
+        "decode_error": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "strict"
+                },
+                {
+                    "type": "str",
+                    "value": "ignore"
+                },
+                {
+                    "type": "str",
+                    "value": "replace"
+                }
+            ],
+            "docs": [
+                "decode_error : {'strict', 'ignore', 'replace'}, default='strict'"
+            ]
+        },
+        "strip_accents": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "ascii"
+                },
+                {
+                    "type": "str",
+                    "value": "unicode"
+                }
+            ],
+            "docs": [
+                "strip_accents : {'ascii', 'unicode'}, default=None"
+            ]
+        },
+        "stop_words": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "english"
+                },
+                {
+                    "type": "list"
+                }
+            ],
+            "docs": [
+                "stop_words : {'english'}, list, default=None"
+            ]
+        },
+        "analyzer": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "char_wb"
+                },
+                {
+                    "type": "str",
+                    "value": "char"
+                },
+                {
+                    "type": "str",
+                    "value": "word"
+                },
+                {
+                    "type": "callable"
+                }
+            ],
+            "docs": [
+                "analyzer : {'word', 'char', 'char_wb'} or callable, default='word'"
+            ]
+        },
+        "max_df": {
+            "cases": [
+                {
+                    "type": "float",
+                    "min": 0.0,
+                    "max": 1.0,
+                    "minInclusive": true,
+                    "maxInclusive": true
+                },
+                {
+                    "type": "int"
+                }
+            ],
+            "docs": [
+                "max_df : float in range [0.0, 1.0] or int, default=1.0"
+            ]
+        },
+        "min_df": {
+            "cases": [
+                {
+                    "type": "float",
+                    "min": 0.0,
+                    "max": 1.0,
+                    "minInclusive": true,
+                    "maxInclusive": true
+                },
+                {
+                    "type": "int"
+                }
+            ],
+            "docs": [
+                "min_df : float in range [0.0, 1.0] or int, default=1"
+            ]
+        }
+    },
+    "sklearn.feature_extraction.text.TfidfVectorizer": {
+        "input": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "filename"
+                },
+                {
+                    "type": "str",
+                    "value": "file"
+                },
+                {
+                    "type": "str",
+                    "value": "content"
+                }
+            ],
+            "docs": [
+                "input : {'filename', 'file', 'content'}, default='content'"
+            ]
+        },
+        "decode_error": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "strict"
+                },
+                {
+                    "type": "str",
+                    "value": "ignore"
+                },
+                {
+                    "type": "str",
+                    "value": "replace"
+                }
+            ],
+            "docs": [
+                "decode_error : {'strict', 'ignore', 'replace'}, default='strict'"
+            ]
+        },
+        "strip_accents": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "ascii"
+                },
+                {
+                    "type": "str",
+                    "value": "unicode"
+                }
+            ],
+            "docs": [
+                "strip_accents : {'ascii', 'unicode'}, default=None"
+            ]
+        },
+        "analyzer": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "char_wb"
+                },
+                {
+                    "type": "str",
+                    "value": "char"
+                },
+                {
+                    "type": "str",
+                    "value": "word"
+                },
+                {
+                    "type": "callable"
+                }
+            ],
+            "docs": [
+                "analyzer : {'word', 'char', 'char_wb'} or callable, default='word'"
+            ]
+        },
+        "stop_words": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "english"
+                },
+                {
+                    "type": "list"
+                }
+            ],
+            "docs": [
+                "stop_words : {'english'}, list, default=None"
+            ]
+        },
+        "max_df": {
+            "cases": [
+                {
+                    "type": "float",
+                    "min": 0.0,
+                    "max": 1.0,
+                    "minInclusive": true,
+                    "maxInclusive": true
+                },
+                {
+                    "type": "int"
+                }
+            ],
+            "docs": [
+                "max_df : float or int, default=1.0",
+                "If float in range [0.0, 1.0]"
+            ]
+        },
+        "min_df": {
+            "cases": [
+                {
+                    "type": "float",
+                    "min": 0.0,
+                    "max": 1.0,
+                    "minInclusive": true,
+                    "maxInclusive": true
+                },
+                {
+                    "type": "int"
+                }
+            ],
+            "docs": [
+                "min_df : float or int, default=1",
+                "If float in range of [0.0, 1.0]"
+            ]
+        },
+        "norm": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "l1"
+                },
+                {
+                    "type": "str",
+                    "value": "l2"
+                }
+            ],
+            "docs": [
+                "norm : {'l1', 'l2'}, default='l2'"
+            ]
+        }
+    },
+    "sklearn.linear_model.Ridge": {
+        "solver": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "auto"
+                },
+                {
+                    "type": "str",
+                    "value": "svd"
+                },
+                {
+                    "type": "str",
+                    "value": "cholesky"
+                },
+                {
+                    "type": "str",
+                    "value": "lsqr"
+                },
+                {
+                    "type": "str",
+                    "value": "sparse_cg"
+                },
+                {
+                    "type": "str",
+                    "value": "sag"
+                },
+                {
+                    "type": "str",
+                    "value": "saga"
+                },
+                {
+                    "type": "str",
+                    "value": "lbfgs"
+                }
+            ],
+            "docs": [
+                "solver : {'auto', 'svd', 'cholesky', 'lsqr', 'sparse_cg', 'sag', 'saga', 'lbfgs'}, default='auto'"
+            ]
+        }
+    },
+    "sklearn.linear_model.LogisticRegression": {
+        "penalty": {
+            "docs": [
+                "penalty : {'l1', 'l2', 'elasticnet', 'none'}, default='l2'"
+            ],
+            "cases": [
+                {
+                    "type": "str",
+                    "vaue": "l1"
+                },
+                {
+                    "type": "str",
+                    "vaue": "l2"
+                },
+                {
+                    "type": "str",
+                    "vaue": "elasticnet"
+                },
+                {
+                    "type": "str",
+                    "vaue": "none"
+                }
+            ]
+        },
+        "C": {
+            "docs": [
+                "C : float, default=1.0",
+                "Inverse of regularization strength; must be a positive float"
+            ],
+            "cases": [
+                {
+                    "type": "float",
+                    "min": 0
+                }
+            ]
+        },
+        "class_weight": {
+            "docs": [
+                "class_weight : dict or 'balanced', default=None"
+            ],
+            "cases": [
+                {
+                    "type": "dict"
+                },
+                {
+                    "type": "str",
+                    "value": "balanced"
+                }
+            ]
+        },
+        "solver": {
+            "docs": [
+                "solver : {'newton-cg', 'lbfgs', 'liblinear', 'sag', 'saga'}, default='lbfgs'"
+            ],
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "newton-cg"
+                },
+                {
+                    "type": "str",
+                    "value": "lbfgs"
+                },
+                {
+                    "type": "str",
+                    "value": "liblinear"
+                },
+                {
+                    "type": "str",
+                    "value": "sag"
+                },
+                {
+                    "type": "str",
+                    "value": "saga"
+                }
+            ]
+        },
+        "multi_class": {
+            "docs": [
+                "multi_class : {'auto', 'ovr', 'multinomial'}, default='auto'"
+            ],
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "auto"
+                },
+                {
+                    "type": "str",
+                    "value": "ovr"
+                },
+                {
+                    "type": "str",
+                    "value": "multinomial"
+                }
+            ]
+        },
+        "verbose": {
+            "docs": [
+                "For the liblinear and lbfgs solvers set verbose to any positive number for verbosity"
+            ],
+            "cases": [
+                {
+                    "type": "int",
+                    "min": 0
+                }
+            ]
+        },
+        "l1_ratio": {
+            "cases": [
+                {
+                    "type": "float",
+                    "min": 0,
+                    "minInclusive": true,
+                    "max": 1,
+                    "maxInclusive": true
+                }
+            ],
+            "docs": [
+                "l1_ratio : float, default=0.5",
+                "The ElasticNet mixing parameter, with ``0 <= l1_ratio <= 1``"
+            ]
+        }
+    },
+    "sklearn.linear_model.SGDClassifier": {
+        "loss": {
+            "docs": [
+                "loss : str, default='hinge'",
+                "The possible options are 'hinge', 'log', 'modified_huber', 'squared_hinge', 'perceptron', or a regression loss: 'squared_error', 'huber', 'epsilon_insensitive', or 'squared_epsilon_insensitive'"
+            ],
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "hinge"
+                },
+                {
+                    "type": "str",
+                    "value": "log"
+                },
+                {
+                    "type": "str",
+                    "value": "modified_huber"
+                },
+                {
+                    "type": "str",
+                    "value": "squared_hinge"
+                },
+                {
+                    "type": "str",
+                    "value": "perceptron"
+                },
+                {
+                    "type": "str",
+                    "value": "squared_error"
+                },
+                {
+                    "type": "str",
+                    "value": "huber"
+                },
+                {
+                    "type": "str",
+                    "value": "epsilon_insensitive"
+                },
+                {
+                    "type": "str",
+                    "value": "squared_epsilon_insensitive"
+                }
+            ]
+        },
+        "penalty": {
+            "docs": [
+                "penalty : {'l2', 'l1', 'elasticnet'}, default='l2'"
+            ],
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "l1"
+                },
+                {
+                    "type": "str",
+                    "value": "l2"
+                },
+                {
+                    "type": "str",
+                    "value": "elasticnet"
+                }
+            ]
+        },
+        "l1_ratio": {
+            "cases": [
+                {
+                    "type": "float",
+                    "min": 0,
+                    "minInclusive": true,
+                    "max": 1,
+                    "maxInclusive": true
+                }
+            ],
+            "docs": [
+                "l1_ratio : float, default=0.5",
+                "The ElasticNet mixing parameter, with ``0 <= l1_ratio <= 1``"
+            ]
+        },
+        "learning_rate": {
+            "docs": [
+                "learning_rate : str, default='optimal'",
+                "- 'constant': `eta = eta0`",
+                "- 'optimal': `eta = 1.0 / (alpha * (t + t0))` where t0 is chosen by a heuristic proposed by Leon Bottou",
+                "- 'invscaling': `eta = eta0 / pow(t, power_t)`",
+                "- 'adaptive': eta = eta0, as long as the training keeps decreasing"
+            ],
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "constant"
+                },
+                {
+                    "type": "str",
+                    "value": "optimal"
+                },
+                {
+                    "type": "str",
+                    "value": "invscaling"
+                },
+                {
+                    "type": "str",
+                    "value": "adaptive"
+                }
+            ]
+        },
+        "validation_fraction": {
+            "docs": [
+                "validation_fraction : float, default=0.1",
+                "Must be between 0 and 1"
+            ],
+            "cases": [
+                {
+                    "type": "float",
+                    "min": 0,
+                    "max": 1
+                }
+            ]
+        },
+        "class_weight": {
+            "docs": [
+                "class_weight : dict, {class_label: weight} or \"balanced\", default=None"
+            ],
+            "cases": [
+                {
+                    "type": "dict"
+                },
+                {
+                    "type": "str",
+                    "value": "balanced"
+                }
+            ]
+        }
+    },
+    "sklearn.linear_model.Lasso": {
+        "precompute": {
+            "docs": [
+                "precompute : 'auto', bool or array-like of shape (n_features, n_features)"
+            ],
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "auto"
+                },
+                {
+                    "type": "bool"
+                },
+                {
+                    "type": "array-like"
+                }
+            ]
+        },
+        "selection": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "cyclic"
+                },
+                {
+                    "type": "str",
+                    "value": "random"
+                }
+            ],
+            "docs": [
+                "selection : {'cyclic', 'random'}, default='cyclic'"
+            ]
+        }
+    },
+    "sklearn.linear_model.ElasticNet": {
+        "l1_ratio": {
+            "cases": [
+                {
+                    "type": "float",
+                    "min": 0,
+                    "minInclusive": true,
+                    "max": 1,
+                    "maxInclusive": true
+                }
+            ],
+            "docs": [
+                "l1_ratio : float, default=0.5",
+                "The ElasticNet mixing parameter, with ``0 <= l1_ratio <= 1``"
+            ]
+        },
+        "selection": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "cyclic"
+                },
+                {
+                    "type": "str",
+                    "value": "random"
+                }
+            ],
+            "docs": [
+                "selection : {'cyclic', 'random'}, default='cyclic'"
+            ]
+        }
+    },
+    "sklearn.linear_model.LinearRegression": {},
+    "sklearn.impute.SimpleImputer": {
+        "strategy": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "mean"
+                },
+                {
+                    "type": "str",
+                    "value": "median"
+                },
+                {
+                    "type": "str",
+                    "value": "most_frequent"
+                },
+                {
+                    "type": "str",
+                    "value": "constant"
+                }
+            ],
+            "docs": [
+                "strategy : str, default='mean",
+                "If \"mean\", then replace missing values using the mean along each column",
+                "If \"median\", then replace missing values using the median along each column",
+                "If \"most_frequent\", then replace missing using the most frequent value along each column",
+                "If \"constant\", then replace missing values with fill_value"
+            ]
+        }
+    },
+    "sklearn.utils.shuffle": {},
+    "sklearn.svm.SVC": {
+        "C": {
+            "docs": [
+                "C : float, default=1.0",
+                "Must be strictly positive"
+            ],
+            "cases": [
+                {
+                    "type": "float",
+                    "min": 0,
+                    "minInclusive": false
+                }
+            ]
+        },
+        "kernel": {
+            "docs": [
+                "kernel : {'linear', 'poly', 'rbf', 'sigmoid', 'precomputed'}, default='rbf'"
+            ],
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "linear"
+                },
+                {
+                    "type": "str",
+                    "value": "poly"
+                },
+                {
+                    "type": "str",
+                    "value": "rbf"
+                },
+                {
+                    "type": "str",
+                    "value": "sigmoid"
+                },
+                {
+                    "type": "str",
+                    "value": "precomputed"
+                }
+            ]
+        },
+        "gamma": {
+            "docs": [
+                "gamma : {'scale', 'auto'} or float, default='scale'"
+            ],
+            "cases": [
+                {
+                    "type": "float"
+                },
+                {
+                    "type": "str",
+                    "value": "scale"
+                },
+                {
+                    "type": "str",
+                    "value": "auto"
+                }
+            ]
+        },
+        "class_weight": {
+            "docs": [
+                "class_weight : dict or 'balanced', default=None"
+            ],
+            "cases": [
+                {
+                    "type": "dict"
+                },
+                {
+                    "type": "str",
+                    "value": "balanced"
+                }
+            ]
+        },
+        "decision_function_shape": {
+            "docs": [
+                "decision_function_shape : {'ovo', 'ovr'}, default='ovr'"
+            ],
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "ovo"
+                },
+                {
+                    "type": "str",
+                    "value": "ovr"
+                }
+            ]
+        }
+    },
+    "sklearn.preprocessing.MinMaxScaler": {},
+    "sklearn.preprocessing.StandardScaler": {},
+    "sklearn.preprocessing.LabelEncoder": {},
+    "sklearn.preprocessing.PolynomialFeatures": {
+        "order": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "C"
+                },
+                {
+                    "type": "str",
+                    "value": "F"
+                }
+            ],
+            "docs": [
+                "order : {'C', 'F'}, default='C'"
+            ]
+        }
+    },
+    "sklearn.preprocessing.RobustScaler": {
+        "quantile_range": {
+            "cases": [
+                {
+                    "type": "tuple",
+                    "min": 0,
+                    "max": 100,
+                    "minInclusive": false,
+                    "maxInclusive": false
+                }
+            ],
+            "docs": [
+                "quantile_range : tuple (q_min, q_max), 0.0 < q_min < q_max < 100.0, default=(25.0, 75.0)"
+            ]
+        }
+    },
+    "sklearn.preprocessing.OneHotEncoder": {
+        "categories": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "auto"
+                },
+                {
+                    "type": "list"
+                }
+            ],
+            "docs": [
+                "categories : 'auto' or a list of array-like, default='auto'"
+            ]
+        },
+        "drop": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "first"
+                },
+                {
+                    "type": "str",
+                    "value": "if_binary"
+                },
+                {
+                    "type": "array-like"
+                }
+            ],
+            "docs": [
+                "drop : {'first', 'if_binary'} or a array-like of shape (n_features,), default=None"
+            ]
+        },
+        "handle_unknown": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "error"
+                },
+                {
+                    "type": "str",
+                    "value": "ignore"
+                }
+            ],
+            "docs": [
+                "handle_unknown : {'error', 'ignore'}, default='error'"
+            ]
+        }
+    },
+    "sklearn.naive_bayes.MultinomialNB": {},
+    "sklearn.naive_bayes.GaussianNB": {},
+    "sklearn.model_selection.StratifiedKFold": {
+        "n_splits": {
+            "cases": [
+                {
+                    "type": "int",
+                    "min": 2,
+                    "minInclusive": true
+                }
+            ],
+            "docs": [
+                "n_splits : int, default=5",
+                "Must be at least 2"
+            ]
+        }
+    },
+    "sklearn.model_selection.GroupKFold": {
+        "n_splits": {
+            "cases": [
+                {
+                    "type": "int",
+                    "min": 2,
+                    "minInclusive": true
+                }
+            ],
+            "docs": [
+                "n_splits : int, default=5",
+                "Must be at least 2"
+            ]
+        }
+    },
+    "sklearn.model_selection.RandomizedSearchCV": {
+        "error_score": {
+            "cases": [
+                {
+                    "type": "numeric"
+                },
+                {
+                    "type": "str",
+                    "value": "raise"
+                }
+            ],
+            "docs": [
+                "error_score : 'raise' or numeric, default=np.nan"
+            ]
+        }
+    },
+    "sklearn.model_selection.KFold": {
+        "n_splits": {
+            "cases": [
+                {
+                    "type": "int",
+                    "min": 2,
+                    "minInclusive": true
+                }
+            ],
+            "docs": [
+                "n_splits : int, default=5",
+                "Must be at least 2"
+            ]
+        }
+    },
+    "sklearn.model_selection.GridSearchCV": {
+        "error_score": {
+            "cases": [
+                {
+                    "type": "numeric"
+                },
+                {
+                    "type": "str",
+                    "value": "raise"
+                }
+            ],
+            "docs": [
+                "error_score : 'raise' or numeric, default=np.nan"
+            ]
+        }
+    },
+    "sklearn.model_selection.cross_val_score": {
+        "error_score": {
+            "cases": [
+                {
+                    "type": "numeric"
+                },
+                {
+                    "type": "str",
+                    "value": "raise"
+                }
+            ],
+            "docs": [
+                "error_score : 'raise' or numeric, default=np.nan"
+            ]
+        }
+    },
+    "sklearn.model_selection.train_test_split": {
+        "test_size": {
+            "cases": [
+                {
+                    "type": "float",
+                    "min": 0,
+                    "max": 1,
+                    "minInclusive": true,
+                    "maxInclusive": true
+                },
+                {
+                    "type": "int"
+                }
+            ],
+            "docs": [
+                "test_size : float or int, default=None",
+                "If float, should be between 0.0 and 1.0 and represent the proportion of the dataset to include in the test split"
+            ]
+        },
+        "train_size": {
+            "cases": [
+                {
+                    "type": "float",
+                    "min": 0,
+                    "max": 1,
+                    "minInclusive": true,
+                    "maxInclusive": true
+                },
+                {
+                    "type": "int"
+                }
+            ],
+            "docs": [
+                "train_size : float or int, default=None",
+                "If float, should be between 0.0 and 1.0 and represent the proportion of the dataset to include in the train split"
+            ]
+        }
+    },
+    "sklearn.decomposition.TruncatedSVD": {
+        "algorithm": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "arpack"
+                },
+                {
+                    "type": "str",
+                    "value": "randomized"
+                }
+            ],
+            "docs": [
+                "algorithm : {'arpack', 'randomized'}, default='randomized'"
+            ]
+        }
+    },
+    "sklearn.decomposition.PCA": {
+        "n_components": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "mle"
+                },
+                {
+                    "type": "int"
+                },
+                {
+                    "type": "float"
+                }
+            ],
+            "docs": [
+                "n_components : int, float or 'mle', default=None"
+            ]
+        },
+        "svd_solver": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "auto"
+                },
+                {
+                    "type": "str",
+                    "value": "full"
+                },
+                {
+                    "type": "str",
+                    "value": "arpack"
+                },
+                {
+                    "type": "str",
+                    "value": "randomized"
+                }
+            ],
+            "docs": [
+                "svd_solver : {'auto', 'full', 'arpack', 'randomized'}, default='auto'"
+            ]
+        },
+        "tol": {
+            "cases": [
+                {
+                    "type": "float",
+                    "min": 0.0,
+                    "minInclusive": true
+                }
+            ],
+            "docs": [
+                "Must be of range [0.0, infinity)"
+            ]
+        },
+        "iterated_power": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "auto"
+                },
+                {
+                    "type": "int",
+                    "min": 0.0,
+                    "minInclusive": true
+                }
+            ],
+            "docs": [
+                "iterated_power : int or 'auto', default='auto'",
+                "Must be of range [0, infinity)"
+            ]
+        }
+    },
+    "sklearn.neighbors.KNeighborsRegressor": {
+        "weights": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "uniform"
+                },
+                {
+                    "type": "str",
+                    "value": "distance"
+                },
+                {
+                    "type": "callable"
+                }
+            ],
+            "docs": [
+                "weights : {'uniform', 'distance'} or callable, default='uniform'"
+            ]
+        },
+        "algorithm": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "auto"
+                },
+                {
+                    "type": "str",
+                    "value": "ball_tree"
+                },
+                {
+                    "type": "str",
+                    "value": "kd_tree"
+                },
+                {
+                    "type": "str",
+                    "value": "brute"
+                }
+            ],
+            "docs": [
+                "algorithm : {'auto', 'ball_tree', 'kd_tree', 'brute'}, default='auto'"
+            ]
+        }
+    }
+}

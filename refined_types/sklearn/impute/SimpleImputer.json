@@ -1,0 +1,31 @@
+{
+    "sklearn.impute.SimpleImputer": {
+        "strategy": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "mean"
+                },
+                {
+                    "type": "str",
+                    "value": "median"
+                },
+                {
+                    "type": "str",
+                    "value": "most_frequent"
+                },
+                {
+                    "type": "str",
+                    "value": "constant"
+                }
+            ],
+            "docs": [
+                "strategy : str, default='mean",
+                "If \"mean\", then replace missing values using the mean along each column",
+                "If \"median\", then replace missing values using the median along each column",
+                "If \"most_frequent\", then replace missing using the most frequent value along each column",
+                "If \"constant\", then replace missing values with fill_value"
+            ]
+        }
+    }
+}

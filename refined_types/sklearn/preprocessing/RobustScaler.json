@@ -1,0 +1,18 @@
+{
+    "sklearn.preprocessing.RobustScaler": {
+        "quantile_range": {
+            "cases": [
+                {
+                    "type": "tuple",
+                    "min": 0,
+                    "max": 100,
+                    "minInclusive": false,
+                    "maxInclusive": false
+                }
+            ],
+            "docs": [
+                "quantile_range : tuple (q_min, q_max), 0.0 < q_min < q_max < 100.0, default=(25.0, 75.0)"
+            ]
+        }
+    }
+}

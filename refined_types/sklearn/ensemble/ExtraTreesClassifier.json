@@ -1,0 +1,83 @@
+{
+    "sklearn.ensemble.ExtraTreesClassifier": {
+        "criterion": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "gini"
+                },
+                {
+                    "type": "str",
+                    "value": "entropy"
+                }
+            ],
+            "docs": [
+                "criterion : {\"gini\", \"entropy\"}, default=\"gini\""
+            ]
+        },
+        "max_features": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "auto"
+                },
+                {
+                    "type": "str",
+                    "value": "sqrt"
+                },
+                {
+                    "type": "str",
+                    "value": "log2"
+                },
+                {
+                    "type": "float"
+                },
+                {
+                    "type": "int"
+                }
+            ],
+            "docs": [
+                "max_features : {\"auto\", \"sqrt\", \"log2\"}, int or float, default=\"auto\""
+            ]
+        },
+        "class_weight": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "balanced"
+                },
+                {
+                    "type": "str",
+                    "value": "balanced_subsample"
+                },
+                {
+                    "type": "dict"
+                },
+                {
+                    "type": "list"
+                }
+            ],
+            "docs": [
+                "class_weight : {\"balanced\", \"balanced_subsample\"}, dict or list of dicts, default=None"
+            ]
+        },
+        "max_samples": {
+            "cases": [
+                {
+                    "type": "int"
+                },
+                {
+                    "type": "float",
+                    "min": 0,
+                    "minInclusive": false,
+                    "max": 1,
+                    "maxInclusive": true
+                }
+            ],
+            "docs": [
+                "max_samples : int or float, default=None",
+                "If float, then draw `max_samples * X.shape[0]` samples. Thus, `max_samples` should be in the interval `(0.0, 1.0]`."
+            ]
+        }
+    }
+}

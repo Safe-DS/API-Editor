@@ -1,0 +1,19 @@
+{
+    "sklearn.ensemble.AdaBoostClassifier": {
+        "algorithm": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "SAMME"
+                },
+                {
+                    "type": "str",
+                    "value": "SAMME.R"
+                }
+            ],
+            "docs": [
+                "algorithm : {'SAMME', 'SAMME.R'}, default='SAMME.R'"
+            ]
+        }
+    }
+}

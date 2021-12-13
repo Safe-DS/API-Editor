@@ -1,0 +1,127 @@
+{
+    "sklearn.feature_extraction.text.CountVectorizer": {
+        "input": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "filename"
+                },
+                {
+                    "type": "str",
+                    "value": "file"
+                },
+                {
+                    "type": "str",
+                    "value": "content"
+                }
+            ],
+            "docs": [
+                "input : {'filename', 'file', 'content'}, default='content'"
+            ]
+        },
+        "decode_error": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "strict"
+                },
+                {
+                    "type": "str",
+                    "value": "ignore"
+                },
+                {
+                    "type": "str",
+                    "value": "replace"
+                }
+            ],
+            "docs": [
+                "decode_error : {'strict', 'ignore', 'replace'}, default='strict'"
+            ]
+        },
+        "strip_accents": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "ascii"
+                },
+                {
+                    "type": "str",
+                    "value": "unicode"
+                }
+            ],
+            "docs": [
+                "strip_accents : {'ascii', 'unicode'}, default=None"
+            ]
+        },
+        "stop_words": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "english"
+                },
+                {
+                    "type": "list"
+                }
+            ],
+            "docs": [
+                "stop_words : {'english'}, list, default=None"
+            ]
+        },
+        "analyzer": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "char_wb"
+                },
+                {
+                    "type": "str",
+                    "value": "char"
+                },
+                {
+                    "type": "str",
+                    "value": "word"
+                },
+                {
+                    "type": "callable"
+                }
+            ],
+            "docs": [
+                "analyzer : {'word', 'char', 'char_wb'} or callable, default='word'"
+            ]
+        },
+        "max_df": {
+            "cases": [
+                {
+                    "type": "float",
+                    "min": 0.0,
+                    "max": 1.0,
+                    "minInclusive": true,
+                    "maxInclusive": true
+                },
+                {
+                    "type": "int"
+                }
+            ],
+            "docs": [
+                "max_df : float in range [0.0, 1.0] or int, default=1.0"
+            ]
+        },
+        "min_df": {
+            "cases": [
+                {
+                    "type": "float",
+                    "min": 0.0,
+                    "max": 1.0,
+                    "minInclusive": true,
+                    "maxInclusive": true
+                },
+                {
+                    "type": "int"
+                }
+            ],
+            "docs": [
+                "min_df : float in range [0.0, 1.0] or int, default=1"
+            ]
+        }
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "sklearn.metrics.mean_squared_error": {
+        "multioutput": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "raw_values"
+                },
+                {
+                    "type": "str",
+                    "value": "uniform_average"
+                },
+                {
+                    "type": "array-like"
+                }
+            ],
+            "docs": [
+                "multioutput : {'raw_values', 'uniform_average'} or array-like of shape (n_outputs,), default='uniform_average'"
+            ]
+        }
+    }
+}

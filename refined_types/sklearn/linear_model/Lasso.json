@@ -1,0 +1,36 @@
+{
+    "sklearn.linear_model.Lasso": {
+        "precompute": {
+            "docs": [
+                "precompute : 'auto', bool or array-like of shape (n_features, n_features)"
+            ],
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "auto"
+                },
+                {
+                    "type": "bool"
+                },
+                {
+                    "type": "array-like"
+                }
+            ]
+        },
+        "selection": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "cyclic"
+                },
+                {
+                    "type": "str",
+                    "value": "random"
+                }
+            ],
+            "docs": [
+                "selection : {'cyclic', 'random'}, default='cyclic'"
+            ]
+        }
+    }
+}

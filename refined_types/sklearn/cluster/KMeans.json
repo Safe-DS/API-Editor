@@ -1,0 +1,44 @@
+{
+    "sklearn.cluster.KMeans": {
+        "init": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "k-means++"
+                },
+                {
+                    "type": "str",
+                    "value": "random"
+                },
+                {
+                    "type": "callable"
+                },
+                {
+                    "type": "array-like"
+                }
+            ],
+            "docs": [
+                "init : {'k-means++', 'random'}, callable or array-like of shape (n_clusters, n_features), default='k-means++'"
+            ]
+        },
+        "algorithm": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "auto"
+                },
+                {
+                    "type": "str",
+                    "value": "full"
+                },
+                {
+                    "type": "str",
+                    "value": "elkan"
+                }
+            ],
+            "docs": [
+                "algorithm : {\"auto\", \"full\", \"elkan\"}, default=\"auto\""
+            ]
+        }
+    }
+}

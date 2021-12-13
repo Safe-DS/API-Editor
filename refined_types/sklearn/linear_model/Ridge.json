@@ -1,0 +1,43 @@
+{
+    "sklearn.linear_model.Ridge": {
+        "solver": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "auto"
+                },
+                {
+                    "type": "str",
+                    "value": "svd"
+                },
+                {
+                    "type": "str",
+                    "value": "cholesky"
+                },
+                {
+                    "type": "str",
+                    "value": "lsqr"
+                },
+                {
+                    "type": "str",
+                    "value": "sparse_cg"
+                },
+                {
+                    "type": "str",
+                    "value": "sag"
+                },
+                {
+                    "type": "str",
+                    "value": "saga"
+                },
+                {
+                    "type": "str",
+                    "value": "lbfgs"
+                }
+            ],
+            "docs": [
+                "solver : {'auto', 'svd', 'cholesky', 'lsqr', 'sparse_cg', 'sag', 'saga', 'lbfgs'}, default='auto'"
+            ]
+        }
+    }
+}

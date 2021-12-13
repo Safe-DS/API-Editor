@@ -1,0 +1,218 @@
+criterion : {"gini", "entropy"}, default="gini"
+
+splitter : {"best", "random"}, default="best"
+
+max_features : int, float or {"auto", "sqrt", "log2"}, default=None
+
+class_weight : dict, list of dict or "balanced", default=None
+
+ccp_alpha : non-negative float, default=0.0
+
+multioutput : {'raw_values', 'uniform_average'} or array-like of shape (n_outputs,), default='uniform_average'
+
+average : {'micro', 'macro', 'samples', 'weighted'} or None, default='macro'
+
+max_fpr : float > 0 and <= 1, default=None
+
+multi_class : {'raise', 'ovr', 'ovo'}, default='raise'
+
+normalize : {'true', 'pred', 'all'}, default=None
+
+multioutput : {'raw_values', 'uniform_average', 'variance_weighted'}, array-like of shape (n_outputs,) or None, default='uniform_average'
+
+multioutput : {'raw_values', 'uniform_average'}  or array-like of shape (n_outputs,), default='uniform_average'
+
+average : {'micro', 'macro', 'samples','weighted', 'binary'} or None, default='binary'
+
+zero_division : "warn", 0 or 1, default="warn"
+
+multioutput : {'raw_values', 'uniform_average'} or array-like of shape (n_outputs,), default='uniform_average'
+
+average : {'micro', 'macro', 'samples', 'weighted', 'binary'} or None, default='binary'
+
+zero_division : "warn", 0 or 1, default="warn"
+
+zero_division : "warn", 0 or 1, default="warn"
+
+weights : {'linear', 'quadratic'}, default=None
+
+average : {'micro', 'macro', 'samples','weighted', 'binary'} or None, default='binary'
+
+zero_division : "warn", 0 or 1, default="warn"
+
+algorithm : {'SAMME', 'SAMME.R'}, default='SAMME.R'
+
+loss : {'squared_error', 'absolute_error', 'huber', 'quantile'}, default='squared_error'
+
+criterion : {'friedman_mse', 'squared_error', 'mse', 'mae'}, default='friedman_mse'
+
+init : estimator or 'zero', default=None
+
+max_features : {'auto', 'sqrt', 'log2'}, int or float
+
+validation_fraction : float, default=0.1
+Must be between 0 and 1
+
+criterion : {"gini", "entropy"}, default="gini"
+
+max_features : {"auto", "sqrt", "log2"}, int or float, default="auto"
+
+class_weight : {"balanced", "balanced_subsample"}, dict or list of dicts, default=None
+
+max_samples : int or float, default=None
+If float, then draw `max_samples * X.shape[0]` samples. Thus, `max_samples` should be in the interval `(0.0, 1.0]`.
+
+criterion : {"gini", "entropy"}, default="gini"
+
+max_features : {"auto", "sqrt", "log2"}, int or float, default="auto"
+
+class_weight : {"balanced", "balanced_subsample"}, dict or list of dicts, default=None
+
+max_samples : int or float, default=None
+If float, then draw `max_samples * X.shape[0]` samples. Thus, `max_samples` should be in the interval `(0.0, 1.0]`.
+
+init : {'k-means++', 'random'}, callable or array-like of shape (n_clusters, n_features), default='k-means++'
+
+algorithm : {"auto", "full", "elkan"}, default="auto"
+
+input : {'filename', 'file', 'content'}, default='content'
+
+decode_error : {'strict', 'ignore', 'replace'}, default='strict'
+
+strip_accents : {'ascii', 'unicode'}, default=None
+
+stop_words : {'english'}, list, default=None
+
+analyzer : {'word', 'char', 'char_wb'} or callable, default='word'
+
+max_df : float in range [0.0, 1.0] or int, default=1.0
+
+min_df : float in range [0.0, 1.0] or int, default=1
+
+input : {'filename', 'file', 'content'}, default='content'
+
+decode_error : {'strict', 'ignore', 'replace'}, default='strict'
+
+strip_accents : {'ascii', 'unicode'}, default=None
+
+analyzer : {'word', 'char', 'char_wb'} or callable, default='word'
+
+stop_words : {'english'}, list, default=None
+
+max_df : float or int, default=1.0
+If float in range [0.0, 1.0]
+
+min_df : float or int, default=1
+If float in range of [0.0, 1.0]
+
+norm : {'l1', 'l2'}, default='l2'
+
+solver : {'auto', 'svd', 'cholesky', 'lsqr', 'sparse_cg', 'sag', 'saga', 'lbfgs'}, default='auto'
+
+penalty : {'l1', 'l2', 'elasticnet', 'none'}, default='l2'
+
+C : float, default=1.0
+Inverse of regularization strength; must be a positive float
+
+class_weight : dict or 'balanced', default=None
+
+solver : {'newton-cg', 'lbfgs', 'liblinear', 'sag', 'saga'}, default='lbfgs'
+
+multi_class : {'auto', 'ovr', 'multinomial'}, default='auto'
+
+For the liblinear and lbfgs solvers set verbose to any positive number for verbosity
+
+l1_ratio : float, default=0.5
+The ElasticNet mixing parameter, with ``0 <= l1_ratio <= 1``
+
+loss : str, default='hinge'
+The possible options are 'hinge', 'log', 'modified_huber', 'squared_hinge', 'perceptron', or a regression loss: 'squared_error', 'huber', 'epsilon_insensitive', or 'squared_epsilon_insensitive'
+
+penalty : {'l2', 'l1', 'elasticnet'}, default='l2'
+
+l1_ratio : float, default=0.5
+The ElasticNet mixing parameter, with ``0 <= l1_ratio <= 1``
+
+learning_rate : str, default='optimal'
+- 'constant': `eta = eta0`
+- 'optimal': `eta = 1.0 / (alpha * (t + t0))` where t0 is chosen by a heuristic proposed by Leon Bottou
+- 'invscaling': `eta = eta0 / pow(t, power_t)`
+- 'adaptive': eta = eta0, as long as the training keeps decreasing
+
+validation_fraction : float, default=0.1
+Must be between 0 and 1
+
+class_weight : dict, {class_label: weight} or "balanced", default=None
+
+precompute : 'auto', bool or array-like of shape (n_features, n_features)
+
+selection : {'cyclic', 'random'}, default='cyclic'
+
+l1_ratio : float, default=0.5
+The ElasticNet mixing parameter, with ``0 <= l1_ratio <= 1``
+
+selection : {'cyclic', 'random'}, default='cyclic'
+
+strategy : str, default='mean
+If "mean", then replace missing values using the mean along each column
+If "median", then replace missing values using the median along each column
+If "most_frequent", then replace missing using the most frequent value along each column
+If "constant", then replace missing values with fill_value
+
+C : float, default=1.0
+Must be strictly positive
+
+kernel : {'linear', 'poly', 'rbf', 'sigmoid', 'precomputed'}, default='rbf'
+
+gamma : {'scale', 'auto'} or float, default='scale'
+
+class_weight : dict or 'balanced', default=None
+
+decision_function_shape : {'ovo', 'ovr'}, default='ovr'
+
+order : {'C', 'F'}, default='C'
+
+quantile_range : tuple (q_min, q_max), 0.0 < q_min < q_max < 100.0, default=(25.0, 75.0)
+
+categories : 'auto' or a list of array-like, default='auto'
+
+drop : {'first', 'if_binary'} or a array-like of shape (n_features,), default=None
+
+handle_unknown : {'error', 'ignore'}, default='error'
+
+n_splits : int, default=5
+Must be at least 2
+
+n_splits : int, default=5
+Must be at least 2
+
+error_score : 'raise' or numeric, default=np.nan
+
+n_splits : int, default=5
+Must be at least 2
+
+error_score : 'raise' or numeric, default=np.nan
+
+error_score : 'raise' or numeric, default=np.nan
+
+test_size : float or int, default=None
+If float, should be between 0.0 and 1.0 and represent the proportion of the dataset to include in the test split
+
+train_size : float or int, default=None
+If float, should be between 0.0 and 1.0 and represent the proportion of the dataset to include in the train split
+
+algorithm : {'arpack', 'randomized'}, default='randomized'
+
+n_components : int, float or 'mle', default=None
+
+svd_solver : {'auto', 'full', 'arpack', 'randomized'}, default='auto'
+
+Must be of range [0.0, infinity)
+
+iterated_power : int or 'auto', default='auto'
+Must be of range [0, infinity)
+
+weights : {'uniform', 'distance'} or callable, default='uniform'
+
+algorithm : {'auto', 'ball_tree', 'kd_tree', 'brute'}, default='auto'
+

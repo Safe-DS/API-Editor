@@ -1,0 +1,136 @@
+{
+    "sklearn.linear_model.SGDClassifier": {
+        "loss": {
+            "docs": [
+                "loss : str, default='hinge'",
+                "The possible options are 'hinge', 'log', 'modified_huber', 'squared_hinge', 'perceptron', or a regression loss: 'squared_error', 'huber', 'epsilon_insensitive', or 'squared_epsilon_insensitive'"
+            ],
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "hinge"
+                },
+                {
+                    "type": "str",
+                    "value": "log"
+                },
+                {
+                    "type": "str",
+                    "value": "modified_huber"
+                },
+                {
+                    "type": "str",
+                    "value": "squared_hinge"
+                },
+                {
+                    "type": "str",
+                    "value": "perceptron"
+                },
+                {
+                    "type": "str",
+                    "value": "squared_error"
+                },
+                {
+                    "type": "str",
+                    "value": "huber"
+                },
+                {
+                    "type": "str",
+                    "value": "epsilon_insensitive"
+                },
+                {
+                    "type": "str",
+                    "value": "squared_epsilon_insensitive"
+                }
+            ]
+        },
+        "penalty": {
+            "docs": [
+                "penalty : {'l2', 'l1', 'elasticnet'}, default='l2'"
+            ],
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "l1"
+                },
+                {
+                    "type": "str",
+                    "value": "l2"
+                },
+                {
+                    "type": "str",
+                    "value": "elasticnet"
+                }
+            ]
+        },
+        "l1_ratio": {
+            "cases": [
+                {
+                    "type": "float",
+                    "min": 0,
+                    "minInclusive": true,
+                    "max": 1,
+                    "maxInclusive": true
+                }
+            ],
+            "docs": [
+                "l1_ratio : float, default=0.5",
+                "The ElasticNet mixing parameter, with ``0 <= l1_ratio <= 1``"
+            ]
+        },
+        "learning_rate": {
+            "docs": [
+                "learning_rate : str, default='optimal'",
+                "- 'constant': `eta = eta0`",
+                "- 'optimal': `eta = 1.0 / (alpha * (t + t0))` where t0 is chosen by a heuristic proposed by Leon Bottou",
+                "- 'invscaling': `eta = eta0 / pow(t, power_t)`",
+                "- 'adaptive': eta = eta0, as long as the training keeps decreasing"
+            ],
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "constant"
+                },
+                {
+                    "type": "str",
+                    "value": "optimal"
+                },
+                {
+                    "type": "str",
+                    "value": "invscaling"
+                },
+                {
+                    "type": "str",
+                    "value": "adaptive"
+                }
+            ]
+        },
+        "validation_fraction": {
+            "docs": [
+                "validation_fraction : float, default=0.1",
+                "Must be between 0 and 1"
+            ],
+            "cases": [
+                {
+                    "type": "float",
+                    "min": 0,
+                    "max": 1
+                }
+            ]
+        },
+        "class_weight": {
+            "docs": [
+                "class_weight : dict, {class_label: weight} or \"balanced\", default=None"
+            ],
+            "cases": [
+                {
+                    "type": "dict"
+                },
+                {
+                    "type": "str",
+                    "value": "balanced"
+                }
+            ]
+        }
+    }
+}

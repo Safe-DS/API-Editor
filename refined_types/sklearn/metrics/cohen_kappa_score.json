@@ -1,0 +1,19 @@
+{
+    "sklearn.metrics.cohen_kappa_score": {
+        "weights": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "linear"
+                },
+                {
+                    "type": "str",
+                    "value": "quadratic"
+                }
+            ],
+            "docs": [
+                "weights : {'linear', 'quadratic'}, default=None"
+            ]
+        }
+    }
+}

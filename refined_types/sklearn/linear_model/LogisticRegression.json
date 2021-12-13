@@ -1,0 +1,125 @@
+{
+    "sklearn.linear_model.LogisticRegression": {
+        "penalty": {
+            "docs": [
+                "penalty : {'l1', 'l2', 'elasticnet', 'none'}, default='l2'"
+            ],
+            "cases": [
+                {
+                    "type": "str",
+                    "vaue": "l1"
+                },
+                {
+                    "type": "str",
+                    "vaue": "l2"
+                },
+                {
+                    "type": "str",
+                    "vaue": "elasticnet"
+                },
+                {
+                    "type": "str",
+                    "vaue": "none"
+                }
+            ]
+        },
+        "C": {
+            "docs": [
+                "C : float, default=1.0",
+                "Inverse of regularization strength; must be a positive float"
+            ],
+            "cases": [
+                {
+                    "type": "float",
+                    "min": 0
+                }
+            ]
+        },
+        "class_weight": {
+            "docs": [
+                "class_weight : dict or 'balanced', default=None"
+            ],
+            "cases": [
+                {
+                    "type": "dict"
+                },
+                {
+                    "type": "str",
+                    "value": "balanced"
+                }
+            ]
+        },
+        "solver": {
+            "docs": [
+                "solver : {'newton-cg', 'lbfgs', 'liblinear', 'sag', 'saga'}, default='lbfgs'"
+            ],
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "newton-cg"
+                },
+                {
+                    "type": "str",
+                    "value": "lbfgs"
+                },
+                {
+                    "type": "str",
+                    "value": "liblinear"
+                },
+                {
+                    "type": "str",
+                    "value": "sag"
+                },
+                {
+                    "type": "str",
+                    "value": "saga"
+                }
+            ]
+        },
+        "multi_class": {
+            "docs": [
+                "multi_class : {'auto', 'ovr', 'multinomial'}, default='auto'"
+            ],
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "auto"
+                },
+                {
+                    "type": "str",
+                    "value": "ovr"
+                },
+                {
+                    "type": "str",
+                    "value": "multinomial"
+                }
+            ]
+        },
+        "verbose": {
+            "docs": [
+                "For the liblinear and lbfgs solvers set verbose to any positive number for verbosity"
+            ],
+            "cases": [
+                {
+                    "type": "int",
+                    "min": 0
+                }
+            ]
+        },
+        "l1_ratio": {
+            "cases": [
+                {
+                    "type": "float",
+                    "min": 0,
+                    "minInclusive": true,
+                    "max": 1,
+                    "maxInclusive": true
+                }
+            ],
+            "docs": [
+                "l1_ratio : float, default=0.5",
+                "The ElasticNet mixing parameter, with ``0 <= l1_ratio <= 1``"
+            ]
+        }
+    }
+}

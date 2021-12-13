@@ -1,0 +1,34 @@
+{
+    "sklearn.linear_model.ElasticNet": {
+        "l1_ratio": {
+            "cases": [
+                {
+                    "type": "float",
+                    "min": 0,
+                    "minInclusive": true,
+                    "max": 1,
+                    "maxInclusive": true
+                }
+            ],
+            "docs": [
+                "l1_ratio : float, default=0.5",
+                "The ElasticNet mixing parameter, with ``0 <= l1_ratio <= 1``"
+            ]
+        },
+        "selection": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "cyclic"
+                },
+                {
+                    "type": "str",
+                    "value": "random"
+                }
+            ],
+            "docs": [
+                "selection : {'cyclic', 'random'}, default='cyclic'"
+            ]
+        }
+    }
+}

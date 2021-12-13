@@ -1,0 +1,19 @@
+{
+    "sklearn.decomposition.TruncatedSVD": {
+        "algorithm": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "arpack"
+                },
+                {
+                    "type": "str",
+                    "value": "randomized"
+                }
+            ],
+            "docs": [
+                "algorithm : {'arpack', 'randomized'}, default='randomized'"
+            ]
+        }
+    }
+}

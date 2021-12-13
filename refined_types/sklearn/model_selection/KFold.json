@@ -1,0 +1,17 @@
+{
+    "sklearn.model_selection.KFold": {
+        "n_splits": {
+            "cases": [
+                {
+                    "type": "int",
+                    "min": 2,
+                    "minInclusive": true
+                }
+            ],
+            "docs": [
+                "n_splits : int, default=5",
+                "Must be at least 2"
+            ]
+        }
+    }
+}

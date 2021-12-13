@@ -1,0 +1,19 @@
+{
+    "sklearn.preprocessing.PolynomialFeatures": {
+        "order": {
+            "cases": [
+                {
+                    "type": "str",
+                    "value": "C"
+                },
+                {
+                    "type": "str",
+                    "value": "F"
+                }
+            ],
+            "docs": [
+                "order : {'C', 'F'}, default='C'"
+            ]
+        }
+    }
+}
