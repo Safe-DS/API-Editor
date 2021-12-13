@@ -1,5 +1,7 @@
 package com.larsreimann.api_editor.server.file_handling;
 
+import com.larsreimann.api_editor.server.annotationProcessing.OriginalDeclarationProcessor;
+import com.larsreimann.api_editor.server.annotationProcessing.RenameAnnotationProcessor;
 import com.larsreimann.api_editor.server.data.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -21,6 +23,7 @@ class ClassAdapterContentBuilderTest {
             "Lorem ipsum",
             Collections.emptyList()
         );
+        testClass.accept(OriginalDeclarationProcessor.INSTANCE);
 
         // when
         ClassAdapterContentBuilder classAdapterContentBuilder =
@@ -66,6 +69,7 @@ class ClassAdapterContentBuilderTest {
             "Lorem ipsum",
             Collections.emptyList()
         );
+        testClass.accept(OriginalDeclarationProcessor.INSTANCE);
 
         // when
         ClassAdapterContentBuilder classAdapterContentBuilder =
@@ -134,6 +138,7 @@ class ClassAdapterContentBuilderTest {
             "Lorem ipsum",
             Collections.emptyList()
         );
+        testClass.accept(OriginalDeclarationProcessor.INSTANCE);
 
         // when
         ClassAdapterContentBuilder classAdapterContentBuilder =
@@ -148,6 +153,92 @@ class ClassAdapterContentBuilderTest {
 
                 def test-class-function2(only-param):
                     test-module.test-class.test-class-function2(only-param)""";
+        Assertions.assertEquals(expectedFormattedClass, formattedClass);
+    }
+
+    @Test
+    void buildClassReturnsFormattedClassBasedOnOriginalDeclaration() {
+        // given
+        AnnotatedPythonFunction testFunction = new AnnotatedPythonFunction(
+            "test-function",
+            "test-module.test-class.test-function",
+            List.of("test-decorator"),
+            List.of(
+                new AnnotatedPythonParameter(
+                    "first-param",
+                    "test-module.test-class.test-class-function.first-param",
+                    null,
+                    PythonParameterAssignment.POSITION_ONLY,
+                    true,
+                    "typeInDocs",
+                    "description",
+                    List.of(
+                        new RenameAnnotation("newFirstParamName")
+                    )
+                ),
+                new AnnotatedPythonParameter(
+                    "second-param",
+                    "test-module.test-class.test-class-function.second-param",
+                    null,
+                    PythonParameterAssignment.POSITION_OR_NAME,
+                    true,
+                    "typeInDocs",
+                    "description",
+                    List.of(
+                        new RenameAnnotation("newSecondParamName")
+                    )
+                ),
+                new AnnotatedPythonParameter(
+                    "third-param",
+                    "test-module.test-class.test-class-function.third-param",
+                    null,
+                    PythonParameterAssignment.NAME_ONLY,
+                    true,
+                    "typeInDocs",
+                    "description",
+                    List.of(
+                        new RenameAnnotation("newThirdParamName")
+                    )
+                )
+            ),
+            Collections.emptyList(),
+            true,
+            "Lorem ipsum",
+            "fullDocstring",
+            List.of(
+                new RenameAnnotation("newFunctionName")
+            )
+        );
+
+        AnnotatedPythonClass testClass = new AnnotatedPythonClass(
+            "test-class",
+            "test-module.test-class",
+            Collections.emptyList(),
+            Collections.emptyList(),
+            List.of(testFunction),
+            "",
+            "",
+            List.of(
+                new RenameAnnotation("newClassName")
+            )
+        );
+
+        testClass.accept(OriginalDeclarationProcessor.INSTANCE);
+        RenameAnnotationProcessor renameAnnotationProcessor =
+            new RenameAnnotationProcessor();
+        testClass.accept(renameAnnotationProcessor);
+        testClass = renameAnnotationProcessor.getCurrentClass();
+
+        // when
+        ClassAdapterContentBuilder classAdapterContentBuilder =
+            new ClassAdapterContentBuilder(testClass);
+        String formattedClass = classAdapterContentBuilder.buildClass();
+
+        // then
+        String expectedFormattedClass = """
+            class newClassName:
+                def newFunctionName(newFirstParamName, /, newSecondParamName, *, newThirdParamName):
+                    test-module.test-class.test-function(newFirstParamName, newSecondParamName, third-param=newThirdParamName)""";
         Assertions.assertEquals(expectedFormattedClass, formattedClass);
     }
 }

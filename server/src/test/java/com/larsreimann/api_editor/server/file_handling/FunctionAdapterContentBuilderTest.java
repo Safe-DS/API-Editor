@@ -1,8 +1,11 @@
 package com.larsreimann.api_editor.server.file_handling;
 
+import com.larsreimann.api_editor.server.annotationProcessing.OriginalDeclarationProcessor;
+import com.larsreimann.api_editor.server.annotationProcessing.RenameAnnotationProcessor;
 import com.larsreimann.api_editor.server.data.AnnotatedPythonFunction;
 import com.larsreimann.api_editor.server.data.AnnotatedPythonParameter;
 import com.larsreimann.api_editor.server.data.PythonParameterAssignment;
+import com.larsreimann.api_editor.server.data.RenameAnnotation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -24,6 +27,7 @@ class FunctionAdapterContentBuilderTest {
             "fullDocstring",
             Collections.emptyList()
         );
+        testFunction.accept(OriginalDeclarationProcessor.INSTANCE);
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -62,6 +66,7 @@ class FunctionAdapterContentBuilderTest {
             "fullDocstring",
             Collections.emptyList()
         );
+        testFunction.accept(OriginalDeclarationProcessor.INSTANCE);
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -100,6 +105,7 @@ class FunctionAdapterContentBuilderTest {
             "fullDocstring",
             Collections.emptyList()
         );
+        testFunction.accept(OriginalDeclarationProcessor.INSTANCE);
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -138,6 +144,7 @@ class FunctionAdapterContentBuilderTest {
             "fullDocstring",
             Collections.emptyList()
         );
+        testFunction.accept(OriginalDeclarationProcessor.INSTANCE);
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -186,6 +193,7 @@ class FunctionAdapterContentBuilderTest {
             "fullDocstring",
             Collections.emptyList()
         );
+        testFunction.accept(OriginalDeclarationProcessor.INSTANCE);
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -244,6 +252,7 @@ class FunctionAdapterContentBuilderTest {
             "fullDocstring",
             Collections.emptyList()
         );
+        testFunction.accept(OriginalDeclarationProcessor.INSTANCE);
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -292,6 +301,7 @@ class FunctionAdapterContentBuilderTest {
             "fullDocstring",
             Collections.emptyList()
         );
+        testFunction.accept(OriginalDeclarationProcessor.INSTANCE);
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -340,6 +350,7 @@ class FunctionAdapterContentBuilderTest {
             "fullDocstring",
             Collections.emptyList()
         );
+        testFunction.accept(OriginalDeclarationProcessor.INSTANCE);
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -350,6 +361,77 @@ class FunctionAdapterContentBuilderTest {
         String expectedFormattedFunction = """
             def test-function(first-param, *, second-param):
                 test-module.test-function(first-param, second-param=second-param)""";
+        Assertions.assertEquals(expectedFormattedFunction, formattedFunction);
+    }
+
+    @Test
+    void buildFunctionsReturnsFormattedFunctionBasedOnOriginalDeclaration() {
+        // given
+        AnnotatedPythonFunction testFunction = new AnnotatedPythonFunction(
+            "test-function",
+            "test-module.test-function",
+            List.of("test-decorator"),
+            List.of(
+                new AnnotatedPythonParameter(
+                    "first-param",
+                    "test-module.test-class.test-class-function.first-param",
+                    null,
+                    PythonParameterAssignment.POSITION_ONLY,
+                    true,
+                    "typeInDocs",
+                    "description",
+                    List.of(
+                        new RenameAnnotation("newFirstParamName")
+                    )
+                ),
+                new AnnotatedPythonParameter(
+                    "second-param",
+                    "test-module.test-class.test-class-function.second-param",
+                    null,
+                    PythonParameterAssignment.POSITION_OR_NAME,
+                    true,
+                    "typeInDocs",
+                    "description",
+                    List.of(
+                        new RenameAnnotation("newSecondParamName")
+                    )
+                ),
+                new AnnotatedPythonParameter(
+                    "third-param",
+                    "test-module.test-class.test-class-function.third-param",
+                    null,
+                    PythonParameterAssignment.NAME_ONLY,
+                    true,
+                    "typeInDocs",
+                    "description",
+                    List.of(
+                        new RenameAnnotation("newThirdParamName")
+                    )
+                )
+            ),
+            Collections.emptyList(),
+            true,
+            "Lorem ipsum",
+            "fullDocstring",
+            List.of(
+                new RenameAnnotation("newFunctionName")
+            )
+        );
+        testFunction.accept(OriginalDeclarationProcessor.INSTANCE);
+        RenameAnnotationProcessor renameAnnotationProcessor =
+            new RenameAnnotationProcessor();
+        testFunction.accept(renameAnnotationProcessor);
+        testFunction = renameAnnotationProcessor.getCurrentFunction();
+
+        // when
+        FunctionAdapterContentBuilder functionAdapterContentBuilder =
+            new FunctionAdapterContentBuilder(testFunction);
+        String formattedFunction = functionAdapterContentBuilder.buildFunction();
+
+        // then
+        String expectedFormattedFunction = """
+            def newFunctionName(newFirstParamName, /, newSecondParamName, *, newThirdParamName):
+                test-module.test-function(newFirstParamName, newSecondParamName, third-param=newThirdParamName)""";
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction);
     }
 }

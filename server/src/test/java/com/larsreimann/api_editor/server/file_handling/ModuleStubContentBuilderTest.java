@@ -72,13 +72,13 @@ class ModuleStubContentBuilderTest {
             ),
             List.of(
                 new AnnotatedPythonFunction(
-                    "function_module_1",
-                    "test.module_1.function_module_1",
+                    "function_module",
+                    "test-module.function_module",
                     List.of("test-decorator"),
                     List.of(
                         new AnnotatedPythonParameter(
                             "param1",
-                            "test.module_1.function_module_1.param1",
+                            "test-module.function_module.param1",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
                             true,
@@ -88,7 +88,7 @@ class ModuleStubContentBuilderTest {
                         ),
                         new AnnotatedPythonParameter(
                             "param2",
-                            "test.module_1.function_module_1.param2",
+                            "test-module.function_module.param2",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
                             true,
@@ -98,7 +98,7 @@ class ModuleStubContentBuilderTest {
                         ),
                         new AnnotatedPythonParameter(
                             "param3",
-                            "test.module_1.function_module_1.param3",
+                            "test-module.function_module.param3",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
                             true,
@@ -170,7 +170,7 @@ class ModuleStubContentBuilderTest {
                 fun test-class-function(only-param: Any? or "defaultValue")
             }
 
-            fun function_module_1(param1: Any?, param2: Any?, param3: Any?) -> test-result: str
+            fun function_module(param1: Any?, param2: Any?, param3: Any?) -> test-result: str
 
             fun test-function(test-parameter: Any? or 42) -> test-result: str
             """;
@@ -188,13 +188,13 @@ class ModuleStubContentBuilderTest {
             Collections.emptyList(),
             List.of(
                 new AnnotatedPythonFunction(
-                    "function_module_1",
-                    "test.module_1.function_module_1",
+                    "function_module",
+                    "test-module.function_module",
                     List.of("test-decorator"),
                     List.of(
                         new AnnotatedPythonParameter(
                             "param1",
-                            "test.module_1.function_module_1.param1",
+                            "test-module.function_module.param1",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
                             true,
@@ -204,7 +204,7 @@ class ModuleStubContentBuilderTest {
                         ),
                         new AnnotatedPythonParameter(
                             "param2",
-                            "test.module_1.function_module_1.param2",
+                            "test-module.function_module.param2",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
                             true,
@@ -214,7 +214,7 @@ class ModuleStubContentBuilderTest {
                         ),
                         new AnnotatedPythonParameter(
                             "param3",
-                            "test.module_1.function_module_1.param3",
+                            "test-module.function_module.param3",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
                             true,
@@ -280,7 +280,7 @@ class ModuleStubContentBuilderTest {
         String expectedModuleContent = """
             package simpleml.test-module
 
-            fun function_module_1(param1: Any?, param2: Any?, param3: Any?) -> test-result: str
+            fun function_module(param1: Any?, param2: Any?, param3: Any?) -> test-result: str
 
             fun test-function(test-parameter: Any? or 42) -> test-result: str
             """;
