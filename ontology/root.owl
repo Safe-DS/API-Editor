@@ -1,0 +1,176 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#"
+     xml:base="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api">
+        <rdfs:comment>A root ontology for the python package: scikit-learn.
+
+This ontology is intended to be imported into a more specific ontology which is related to a specific group (dependencies, refined types, side-effects).
+
+It is important that the groups share this root ontology for compatibility.
+
+In Protege, ontologies can be imported at the bottom part of the &apos;Active Ontology&apos; tab.
+
+Later, the three ontologies that share the same root can be easily merged to form the final ontology.
+
+Merging in Protege: Refactor -&gt; Merge ontologies...</rdfs:comment>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#hasParameter -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#hasParameter">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Class"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Parameter"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#hasType -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#hasType">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Parameter"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Type"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#hasName -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#hasName">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#hasValue -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#hasValue">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Parameter"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Class -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Class"/>
+    
+
+
+    <!-- http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#EnumType -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#EnumType">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Type"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#FloatType -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#FloatType">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Type"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#IntegerType -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#IntegerType">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Type"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Parameter -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Parameter"/>
+    
+
+
+    <!-- http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#StringType -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#StringType">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Type"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Type -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Type"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Class"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Parameter"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Type"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#EnumType"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#FloatType"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#IntegerType"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#StringType"/>
+        </owl:members>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+
