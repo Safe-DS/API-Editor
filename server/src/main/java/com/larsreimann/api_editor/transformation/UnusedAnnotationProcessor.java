@@ -7,6 +7,11 @@ import com.larsreimann.api_editor.model.AnnotatedPythonModule;
 import com.larsreimann.api_editor.model.AnnotatedPythonPackage;
 import org.jetbrains.annotations.NotNull;
 
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createClassCopyWithoutFunctions;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createFunctionCopy;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createModuleCopyWithoutClassesAndFunctions;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPackageCopyWithoutModules;
+
 public class UnusedAnnotationProcessor extends AbstractPackageDataVisitor {
     private AnnotatedPythonPackage modifiedPackage;
 
@@ -17,7 +22,7 @@ public class UnusedAnnotationProcessor extends AbstractPackageDataVisitor {
 
     @Override
     public boolean enterPythonPackage(@NotNull AnnotatedPythonPackage pythonPackage) {
-        setModifiedPackage(com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPackageCopyWithoutModules(pythonPackage));
+        setModifiedPackage(createPackageCopyWithoutModules(pythonPackage));
 
         return true;
     }
@@ -25,7 +30,7 @@ public class UnusedAnnotationProcessor extends AbstractPackageDataVisitor {
     @Override
     public boolean enterPythonModule(@NotNull AnnotatedPythonModule pythonModule) {
         inModule = true;
-        setCurrentModule(com.larsreimann.api_editor.util.PackageDataFactoriesKt.createModuleCopyWithoutClassesAndFunctions(pythonModule));
+        setCurrentModule(createModuleCopyWithoutClassesAndFunctions(pythonModule));
 
         return true;
     }
@@ -40,7 +45,7 @@ public class UnusedAnnotationProcessor extends AbstractPackageDataVisitor {
     @Override
     public boolean enterPythonClass(@NotNull AnnotatedPythonClass pythonClass) {
         inClass = true;
-        setCurrentClass(com.larsreimann.api_editor.util.PackageDataFactoriesKt.createClassCopyWithoutFunctions(pythonClass));
+        setCurrentClass(createClassCopyWithoutFunctions(pythonClass));
 
         if (pythonClass.getAnnotations()
             .stream()
@@ -70,7 +75,7 @@ public class UnusedAnnotationProcessor extends AbstractPackageDataVisitor {
             )
         ) {
             AnnotatedPythonFunction currentFunctionCopy =
-                com.larsreimann.api_editor.util.PackageDataFactoriesKt.createFunctionCopy(pythonFunction);
+                createFunctionCopy(pythonFunction);
             if (inClass) {
                 getCurrentClass().getMethods().add(currentFunctionCopy);
             } else if (inModule) {
