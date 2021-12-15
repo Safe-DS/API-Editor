@@ -1,5 +1,6 @@
 package com.larsreimann.api_editor.server
 
+import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.request.*
@@ -8,6 +9,8 @@ import io.ktor.server.netty.*
 import org.slf4j.event.Level
 
 fun main() {
+    SimpleMLStandaloneSetup.doSetup()
+
     embeddedServer(Netty, port = 4280, host = "localhost") {
         configureHTTP()
         configureMonitoring()

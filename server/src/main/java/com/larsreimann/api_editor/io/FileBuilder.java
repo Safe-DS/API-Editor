@@ -69,9 +69,7 @@ public abstract class FileBuilder {
      * @param defaultValue The default value to format
      * @return The formatted default value
      */
-    protected String buildFormattedDefaultValue(
-        String defaultValue
-    ) {
+    protected String buildFormattedDefaultValue(String defaultValue) {
         String invalid = "\"###invalid###" + defaultValue.replace("\"", "\\\"") + "###\"";
         if (
             defaultValue.length() >= 2 &&

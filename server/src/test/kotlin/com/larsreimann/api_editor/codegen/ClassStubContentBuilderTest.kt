@@ -6,18 +6,26 @@ import com.larsreimann.api_editor.model.AnnotatedPythonParameter
 import com.larsreimann.api_editor.model.AttributeAnnotation
 import com.larsreimann.api_editor.model.DefaultString
 import com.larsreimann.api_editor.model.PythonParameterAssignment
+import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 internal class ClassStubContentBuilderTest {
+
+    @BeforeEach
+    fun initSimpleML() {
+        SimpleMLStandaloneSetup.doSetup()
+    }
+
     @Test
     fun buildClassReturnsFormattedClassWithNoConstructorAndFunctions() {
         // given
         val testClass = AnnotatedPythonClass(
-            "test-class",
-            "test-module.test-class",
-            listOf("test-decorator"),
-            listOf("test-superclass"), emptyList(),
+            "TestClass",
+            "testModule.TestClass",
+            listOf("TestDecorator"),
+            listOf("TestSuperclass"), emptyList(),
             "Lorem ipsum",
             "Lorem ipsum", mutableListOf()
         )
@@ -27,7 +35,7 @@ internal class ClassStubContentBuilderTest {
         val formattedClass = classStubContentBuilder.buildClass()
 
         // then
-        val expectedFormattedClass = "class test-class() {}"
+        val expectedFormattedClass = "class TestClass() {}"
         Assertions.assertEquals(expectedFormattedClass, formattedClass)
     }
 
@@ -35,19 +43,19 @@ internal class ClassStubContentBuilderTest {
     fun buildClassReturnsFormattedClassWithOneFunctionAndNoConstructor() {
         // given
         val testClass = AnnotatedPythonClass(
-            "test-class",
-            "test-module.test-class",
-            listOf("test-decorator"),
-            listOf("test-superclass"),
+            "TestClass",
+            "testModule.TestClass",
+            listOf("TestDecorator"),
+            listOf("TestSuperclass"),
             listOf(
                 AnnotatedPythonFunction(
-                    "test-class-function",
-                    "test-module.test-class.test-class-function",
+                    "testClassFunction",
+                    "testModule.TestClass.testClassFunction",
                     listOf("decorators"),
                     listOf(
                         AnnotatedPythonParameter(
-                            "only-param",
-                            "test-module.test-class.test-class-function.only-param",
+                            "onlyParam",
+                            "testModule.TestClass.testClassFunction.onlyParam",
                             "'defaultValue'",
                             PythonParameterAssignment.POSITION_OR_NAME,
                             true,
@@ -75,8 +83,8 @@ internal class ClassStubContentBuilderTest {
 
         // then
         val expectedFormattedClass: String = """
-            |class test-class() {
-            |    fun test-class-function(only-param: Any? or "defaultValue")
+            |class TestClass() {
+            |    fun testClassFunction(onlyParam: String or "defaultValue")
             |}""".trimMargin()
         Assertions.assertEquals(expectedFormattedClass, formattedClass)
     }
@@ -85,19 +93,19 @@ internal class ClassStubContentBuilderTest {
     fun buildClassReturnsFormattedClassWithConstructorAndOneFunction() {
         // given
         val testClass = AnnotatedPythonClass(
-            "test-class",
-            "test-module.test-class",
-            listOf("test-decorator"),
-            listOf("test-superclass"),
+            "TestClass",
+            "testModule.TestClass",
+            listOf("TestDecorator"),
+            listOf("TestSuperclass"),
             listOf(
                 AnnotatedPythonFunction(
-                    "test-class-function1",
-                    "test-module.test-class.test-class-function1",
+                    "testClassFunction1",
+                    "testModule.TestClass.testClassFunction1",
                     listOf("decorators"),
                     listOf(
                         AnnotatedPythonParameter(
-                            "only-param",
-                            "test-module.test-class.test-class-function.only-param",
+                            "onlyParam",
+                            "testModule.TestClass.testClassFunction.onlyParam",
                             null,
                             PythonParameterAssignment.POSITION_OR_NAME,
                             true,
@@ -111,12 +119,12 @@ internal class ClassStubContentBuilderTest {
                 ),
                 AnnotatedPythonFunction(
                     "__init__",
-                    "test-module.test-class.__init__",
+                    "testModule.TestClass.__init__",
                     listOf("decorators"),
                     listOf(
                         AnnotatedPythonParameter(
-                            "only-param",
-                            "test-module.test-class.__init__.only-param",
+                            "onlyParam",
+                            "testModule.TestClass.__init__.onlyParam",
                             null,
                             PythonParameterAssignment.POSITION_OR_NAME,
                             true,
@@ -140,10 +148,10 @@ internal class ClassStubContentBuilderTest {
         // then
         val expectedFormattedClass: String =
             """
-            |class test-class(only-param: Any?) {
-            |    attr only-param: Any?
+            |class TestClass(onlyParam: Any?) {
+            |    attr onlyParam: Any?
             |
-            |    fun test-class-function1(only-param: Any?)
+            |    fun testClassFunction1(onlyParam: Any?)
             |}""".trimMargin()
 
         Assertions.assertEquals(formattedClass, expectedFormattedClass)

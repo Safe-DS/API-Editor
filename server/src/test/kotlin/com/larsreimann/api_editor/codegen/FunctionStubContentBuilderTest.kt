@@ -5,16 +5,24 @@ import com.larsreimann.api_editor.model.AnnotatedPythonParameter
 import com.larsreimann.api_editor.model.AnnotatedPythonResult
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.util.createAnnotatedPythonFunction
+import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 internal class FunctionStubContentBuilderTest {
+
+    @BeforeEach
+    fun initSimpleML() {
+        SimpleMLStandaloneSetup.doSetup()
+    }
+
     @Test
     fun buildFunctionReturnsFormattedFunctionWithNoParameters() {
         // given
         val testFunction = AnnotatedPythonFunction(
-            "test-function",
-            "test-module.test-function",
+            "testFunction",
+            "testModule.testFunction",
             listOf("test-decorator"), emptyList(), emptyList(),
             true,
             "Lorem ipsum",
@@ -28,7 +36,7 @@ internal class FunctionStubContentBuilderTest {
         // then
         val expectedFormattedFunction: String =
             """
-            |fun test-function()""".trimMargin()
+            |fun testFunction()""".trimMargin()
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
     }
 
@@ -36,13 +44,13 @@ internal class FunctionStubContentBuilderTest {
     fun buildFunctionReturnsFormattedFunctionWithPositionOnlyParameter() {
         // given
         val testFunction = AnnotatedPythonFunction(
-            "test-function",
-            "test-module.test-function",
+            "testFunction",
+            "testModule.testFunction",
             listOf("test-decorator"),
             listOf(
                 AnnotatedPythonParameter(
-                    "only-param",
-                    "test-module.test-class.test-class-function.only-param",
+                    "onlyParam",
+                    "testModule.test-class.testClassFunction.onlyParam",
                     "13",
                     PythonParameterAssignment.POSITION_ONLY,
                     true,
@@ -62,7 +70,7 @@ internal class FunctionStubContentBuilderTest {
         // then
         val expectedFormattedFunction: String =
             """
-            |fun test-function(only-param: Any? or 13)""".trimMargin()
+            |fun testFunction(onlyParam: Int or 13)""".trimMargin()
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
     }
 
@@ -70,13 +78,13 @@ internal class FunctionStubContentBuilderTest {
     fun buildFunctionReturnsFormattedFunctionWithPositionOrNameParameter() {
         // given
         val testFunction = AnnotatedPythonFunction(
-            "test-function",
-            "test-module.test-function",
+            "testFunction",
+            "testModule.testFunction",
             listOf("test-decorator"),
             listOf(
                 AnnotatedPythonParameter(
-                    "only-param",
-                    "test-module.test-class.test-class-function.only-param",
+                    "onlyParam",
+                    "testModule.test-class.testClassFunction.onlyParam",
                     "'Test'",
                     PythonParameterAssignment.POSITION_OR_NAME,
                     true,
@@ -96,7 +104,7 @@ internal class FunctionStubContentBuilderTest {
         // then
         val expectedFormattedFunction: String =
             """
-            |fun test-function(only-param: Any? or "Test")""".trimMargin()
+            |fun testFunction(onlyParam: Any? or "Test")""".trimMargin()
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
     }
 
@@ -104,13 +112,13 @@ internal class FunctionStubContentBuilderTest {
     fun buildFunctionReturnsFormattedFunctionWithPositionAndPositionOrNameAndNameOnlyParameter() {
         // given
         val testFunction = AnnotatedPythonFunction(
-            "test-function",
-            "test-module.test-function",
+            "testFunction",
+            "testModule.testFunction",
             listOf("test-decorator"),
             listOf(
                 AnnotatedPythonParameter(
-                    "first-param",
-                    "test-module.test-class.test-class-function.first-param",
+                    "firstParam",
+                    "testModule.test-class.testClassFunction.firstParam",
                     null,
                     PythonParameterAssignment.POSITION_ONLY,
                     true,
@@ -118,8 +126,8 @@ internal class FunctionStubContentBuilderTest {
                     "description", mutableListOf()
                 ),
                 AnnotatedPythonParameter(
-                    "second-param",
-                    "test-module.test-class.test-class-function.second-param",
+                    "secondParam",
+                    "testModule.test-class.testClassFunction.secondParam",
                     null,
                     PythonParameterAssignment.POSITION_OR_NAME,
                     true,
@@ -127,8 +135,8 @@ internal class FunctionStubContentBuilderTest {
                     "description", mutableListOf()
                 ),
                 AnnotatedPythonParameter(
-                    "third-param",
-                    "test-module.test-class.test-class-function.third-param",
+                    "thirdParam",
+                    "testModule.test-class.testClassFunction.thirdParam",
                     null,
                     PythonParameterAssignment.NAME_ONLY,
                     true,
@@ -147,7 +155,7 @@ internal class FunctionStubContentBuilderTest {
 
         // then
         val expectedFormattedFunction: String = """
-            |fun test-function(first-param: Any?, second-param: Any?, third-param: Any?)""".trimMargin()
+            |fun testFunction(firstParam: Any?, secondParam: Any?, thirdParam: Any?)""".trimMargin()
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
     }
 
@@ -155,13 +163,13 @@ internal class FunctionStubContentBuilderTest {
     fun buildFunctionReturnsFormattedFunctionWithOneResult() {
         // given
         val testFunction = AnnotatedPythonFunction(
-            "test-function",
-            "test-module.test-function",
+            "testFunction",
+            "testModule.testFunction",
             listOf("test-decorator"),
             listOf(
                 AnnotatedPythonParameter(
-                    "only-param",
-                    "test-module.test-class.test-class-function.only-param",
+                    "onlyParam",
+                    "testModule.test-class.testClassFunction.onlyParam",
                     "1.31e+1",
                     PythonParameterAssignment.POSITION_ONLY,
                     true,
@@ -188,7 +196,7 @@ internal class FunctionStubContentBuilderTest {
 
         // then
         val expectedFormattedFunction: String = """
-            |fun test-function(only-param: Any? or 13.1) -> firstResult: float""".trimMargin()
+            |fun testFunction(onlyParam: Float or 13.1) -> firstResult: Float""".trimMargin()
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
     }
 
@@ -196,13 +204,13 @@ internal class FunctionStubContentBuilderTest {
     fun buildFunctionReturnsFormattedFunctionWithMultipleResults() {
         // given
         val testFunction = AnnotatedPythonFunction(
-            "test-function",
-            "test-module.test-function",
+            "testFunction",
+            "testModule.testFunction",
             listOf("test-decorator"),
             listOf(
                 AnnotatedPythonParameter(
-                    "only-param",
-                    "test-module.test-class.test-class-function.only-param",
+                    "onlyParam",
+                    "testModule.test-class.testClassFunction.onlyParam",
                     "True",
                     PythonParameterAssignment.POSITION_ONLY,
                     true,
@@ -235,7 +243,7 @@ internal class FunctionStubContentBuilderTest {
 
         // then
         val expectedFormattedFunction: String = """
-            |fun test-function(only-param: Any? or true) -> [firstResult: float, secondResult: float]""".trimMargin()
+            |fun testFunction(onlyParam: Boolean or true) -> (firstResult: Float, secondResult: Float)""".trimMargin()
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
     }
 
@@ -243,13 +251,13 @@ internal class FunctionStubContentBuilderTest {
     fun buildFunctionReturnsFormattedFunctionWithInvalidDefaultValue() {
         // given
         val testFunction = AnnotatedPythonFunction(
-            "test-function",
-            "test-module.test-function",
+            "testFunction",
+            "testModule.testFunction",
             listOf("test-decorator"),
             listOf(
                 AnnotatedPythonParameter(
-                    "only-param",
-                    "test-module.test-class.test-class-function.only-param",
+                    "onlyParam",
+                    "testModule.test-class.testClassFunction.onlyParam",
                     "'13'x",
                     PythonParameterAssignment.POSITION_ONLY,
                     true,
@@ -268,7 +276,7 @@ internal class FunctionStubContentBuilderTest {
 
         // then
         val expectedFormattedFunction: String = """
-            |fun test-function(only-param: Any? or "###invalid###'13'x###")""".trimMargin()
+            |fun testFunction(onlyParam: Any? or "###invalid###'13'x###")""".trimMargin()
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
     }
 
