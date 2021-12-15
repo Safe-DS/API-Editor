@@ -14,7 +14,7 @@ import {
     RenameAnnotation,
 } from '../../annotations/annotationSlice';
 
-const dataPathPrefix = 'com.larsreimann.api_editor.server.data.';
+const dataPathPrefix = 'com.larsreimann.api_editor.model.';
 
 const getDefaultValueTypeSuffix = (type: DefaultType) => {
     switch (type) {
