@@ -29,25 +29,31 @@ class ModuleStubContentBuilder
         formattedPackageDeclaration += separators[0]
         formattedClasses += separators[1]
         formattedFunctions += separators[2]
-        return (formattedPackageDeclaration
-            + formattedClasses
-            + formattedFunctions)
+        return (
+            formattedPackageDeclaration +
+                formattedClasses +
+                formattedFunctions
+            )
     }
 
     private fun buildPackageDeclaration(): String {
-        return ("package "
-            + "simpleml."
-            + pythonModule.name)
+        return (
+            "package " +
+                "simpleml." +
+                pythonModule.name
+            )
     }
 
     private fun buildAllClasses(): String {
         val formattedClasses: MutableList<String> = ArrayList()
-        pythonModule.classes.forEach(Consumer { pythonClass: AnnotatedPythonClass? ->
-            val classStubContentBuilder = ClassStubContentBuilder(
-                pythonClass!!
-            )
-            formattedClasses.add(classStubContentBuilder.buildClass())
-        })
+        pythonModule.classes.forEach(
+            Consumer { pythonClass: AnnotatedPythonClass? ->
+                val classStubContentBuilder = ClassStubContentBuilder(
+                    pythonClass!!
+                )
+                formattedClasses.add(classStubContentBuilder.buildClass())
+            }
+        )
         return listToString(formattedClasses, 2)
     }
 

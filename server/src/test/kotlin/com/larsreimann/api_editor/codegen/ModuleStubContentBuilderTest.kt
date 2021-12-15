@@ -44,7 +44,8 @@ internal class ModuleStubContentBuilderTest {
                             "description",
                             mutableListOf()
                         )
-                    ), emptyList(),
+                    ),
+                    emptyList(),
                     true,
                     "description",
                     "fullDocstring",
@@ -64,7 +65,8 @@ internal class ModuleStubContentBuilderTest {
                             "typeInDocs",
                             "description", mutableListOf()
                         )
-                    ), emptyList(),
+                    ),
+                    emptyList(),
                     true,
                     "description",
                     "fullDocstring", mutableListOf()
@@ -151,14 +153,15 @@ internal class ModuleStubContentBuilderTest {
                     "Lorem ipsum",
                     "Lorem ipsum", mutableListOf()
                 )
-            ), mutableListOf()
+            ),
+            mutableListOf()
         )
 
         // when
         val moduleStubContentBuilder = ModuleStubContentBuilder(testModule)
         val moduleContent = moduleStubContentBuilder.buildModuleContent()
 
-        //then
+        // then
         val expectedModuleContent: String = """
             |package simpleml.testModule
             |
@@ -253,14 +256,15 @@ internal class ModuleStubContentBuilderTest {
                     "Lorem ipsum",
                     "Lorem ipsum", mutableListOf()
                 )
-            ), mutableListOf()
+            ),
+            mutableListOf()
         )
 
         // when
         val moduleStubContentBuilder = ModuleStubContentBuilder(testModule)
         val moduleContent = moduleStubContentBuilder.buildModuleContent()
 
-        //then
+        // then
         val expectedModuleContent: String = """
             |package simpleml.testModule
             |
@@ -294,7 +298,8 @@ internal class ModuleStubContentBuilderTest {
                             "typeInDocs",
                             "description", mutableListOf()
                         )
-                    ), emptyList(),
+                    ),
+                    emptyList(),
                     true,
                     "description",
                     "fullDocstring", mutableListOf()
@@ -320,14 +325,15 @@ internal class ModuleStubContentBuilderTest {
             ),
             listOf(
                 testClass
-            ), emptyList(), mutableListOf()
+            ),
+            emptyList(), mutableListOf()
         )
 
         // when
         val moduleStubContentBuilder = ModuleStubContentBuilder(testModule)
         val moduleContent = moduleStubContentBuilder.buildModuleContent()
 
-        //then
+        // then
         val expectedModuleContent: String = """
             |package simpleml.testModule
             |
@@ -349,7 +355,7 @@ internal class ModuleStubContentBuilderTest {
         val moduleStubContentBuilder = ModuleStubContentBuilder(testModule)
         val moduleContent = moduleStubContentBuilder.buildModuleContent()
 
-        //then
+        // then
         val expectedModuleContent: String = """
             |package simpleml.testModule
             |""".trimMargin()

@@ -57,7 +57,8 @@ internal class FunctionStubContentBuilderTest {
                     "int",
                     "description", mutableListOf()
                 )
-            ), emptyList(),
+            ),
+            emptyList(),
             true,
             "Lorem ipsum",
             "fullDocstring", mutableListOf()
@@ -91,7 +92,8 @@ internal class FunctionStubContentBuilderTest {
                     "string",
                     "description", mutableListOf()
                 )
-            ), emptyList(),
+            ),
+            emptyList(),
             true,
             "Lorem ipsum",
             "fullDocstring", mutableListOf()
@@ -143,7 +145,8 @@ internal class FunctionStubContentBuilderTest {
                     "typeInDocs",
                     "description", mutableListOf()
                 )
-            ), emptyList(),
+            ),
+            emptyList(),
             true,
             "Lorem ipsum",
             "fullDocstring", mutableListOf()
@@ -264,7 +267,8 @@ internal class FunctionStubContentBuilderTest {
                     "string",
                     "description", mutableListOf()
                 )
-            ), emptyList(),
+            ),
+            emptyList(),
             true,
             "Lorem ipsum",
             "fullDocstring", mutableListOf()

@@ -81,11 +81,13 @@ class ClassStubContentBuilder(
             return ""
         }
         val formattedConstructorParameters: MutableList<String> = ArrayList()
-        pythonParameters.forEach(Consumer { pythonParameter: AnnotatedPythonParameter ->
-            formattedConstructorParameters.add(
-                buildConstructorParameter(pythonParameter)
-            )
-        })
+        pythonParameters.forEach(
+            Consumer { pythonParameter: AnnotatedPythonParameter ->
+                formattedConstructorParameters.add(
+                    buildConstructorParameter(pythonParameter)
+                )
+            }
+        )
         return java.lang.String.join(", ", formattedConstructorParameters)
     }
 
@@ -121,7 +123,7 @@ class ClassStubContentBuilder(
      $formattedAttributes
 
      $formattedFunctions
-     """.trimIndent()
+        """.trimIndent()
     }
 
     private fun buildAttributes(): String {
