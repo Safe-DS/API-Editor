@@ -136,34 +136,4 @@ class UnusedAnnotationProcessorTest {
                     .equals("testMethod")
         );
     }
-
-    @Test
-    void shouldRemoveEmptyModule() {
-        // given
-        UnusedAnnotationProcessor unusedAnnotationProcessor =
-            new UnusedAnnotationProcessor();
-
-        AnnotatedPythonClass testClass =
-            createAnnotatedPythonClass("testClass");
-        testClass.getAnnotations().add(UnusedAnnotation.INSTANCE);
-
-        AnnotatedPythonModule testModule =
-            createAnnotatedPythonModule("testModule");
-        testModule.getClasses().add(testClass);
-
-        AnnotatedPythonPackage testPackage =
-            createAnnotatedPythonPackage("testPackage");
-        testPackage.getModules().add(testModule);
-
-        // when
-        testPackage.accept(unusedAnnotationProcessor);
-        AnnotatedPythonPackage modifiedPackage =
-            unusedAnnotationProcessor.getModifiedPackage();
-
-        // then
-        Assertions.assertTrue(
-            modifiedPackage
-                .getModules().isEmpty()
-        );
-    }
 }
