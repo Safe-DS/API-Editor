@@ -7,6 +7,7 @@ import com.larsreimann.api_editor.model.PythonParameterAssignment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class FunctionAdapterContentBuilder extends FileBuilder {
     AnnotatedPythonFunction pythonFunction;
@@ -105,7 +106,7 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
     }
 
     private String buildFunctionBody() {
-        return pythonFunction.getQualifiedName()
+        return Objects.requireNonNull(pythonFunction.getOriginalDeclaration()).getQualifiedName()
             + "("
             + buildFunctionParameterCall()
             + ")";
@@ -117,7 +118,7 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
             if (pythonParameter.getAssignedBy()
                 == PythonParameterAssignment.NAME_ONLY) {
                 formattedParameters.add(
-                    pythonParameter.getName()
+                    Objects.requireNonNull(pythonParameter.getOriginalDeclaration()).getName()
                         + "="
                         + pythonParameter.getName()
                 );

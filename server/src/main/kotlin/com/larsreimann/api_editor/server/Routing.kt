@@ -1,10 +1,12 @@
 package com.larsreimann.api_editor.server
 
-import com.larsreimann.api_editor.io.PackageFileBuilder
-import com.larsreimann.api_editor.model.AnnotatedPythonPackage
-import com.larsreimann.api_editor.transformation.PureAnnotationProcessor
-import com.larsreimann.api_editor.transformation.UnusedAnnotationProcessor
-import com.larsreimann.api_editor.validation.AnnotationValidator
+import com.larsreimann.api_editor.server.annotationProcessing.OriginalDeclarationProcessor
+import com.larsreimann.api_editor.server.annotationProcessing.PureAnnotationProcessor
+import com.larsreimann.api_editor.server.annotationProcessing.RenameAnnotationProcessor
+import com.larsreimann.api_editor.server.annotationProcessing.UnusedAnnotationProcessor
+import com.larsreimann.api_editor.server.data.AnnotatedPythonPackage
+import com.larsreimann.api_editor.server.file_handling.PackageFileBuilder
+import com.larsreimann.api_editor.server.validation.AnnotationValidator
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
@@ -109,10 +111,17 @@ fun doInfer(originalPythonPackage: AnnotatedPythonPackage): DoInferResult {
         return DoInferResult.ValidationFailure(errors.map { it.message() })
     }
 
-    // Apply annotations
+    // Create original declarations
+    modifiedPythonPackage.accept(OriginalDeclarationProcessor)
+
+    // Apply annotations (don't change the order)
     val unusedAnnotationProcessor = UnusedAnnotationProcessor()
     modifiedPythonPackage.accept(unusedAnnotationProcessor)
     modifiedPythonPackage = unusedAnnotationProcessor.modifiedPackage
+
+    val renameAnnotationProcessor = RenameAnnotationProcessor()
+    modifiedPythonPackage.accept(renameAnnotationProcessor)
+    modifiedPythonPackage = renameAnnotationProcessor.modifiedPackage
 
     modifiedPythonPackage.accept(PureAnnotationProcessor)
 

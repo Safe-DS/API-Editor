@@ -1,14 +1,15 @@
-package com.larsreimann.api_editor.util
+package com.larsreimann.api_editor.server.util
 
-import com.larsreimann.api_editor.model.AnnotatedPythonClass
-import com.larsreimann.api_editor.model.AnnotatedPythonFunction
-import com.larsreimann.api_editor.model.AnnotatedPythonModule
-import com.larsreimann.api_editor.model.AnnotatedPythonPackage
-import com.larsreimann.api_editor.model.AnnotatedPythonParameter
-import com.larsreimann.api_editor.model.AnnotatedPythonResult
-import com.larsreimann.api_editor.model.EditorAnnotation
-import com.larsreimann.api_editor.model.PythonFromImport
-import com.larsreimann.api_editor.model.PythonImport
+import com.larsreimann.api_editor.server.data.AnnotatedPythonClass
+import com.larsreimann.api_editor.server.data.AnnotatedPythonFunction
+import com.larsreimann.api_editor.server.data.AnnotatedPythonModule
+import com.larsreimann.api_editor.server.data.AnnotatedPythonPackage
+import com.larsreimann.api_editor.server.data.AnnotatedPythonParameter
+import com.larsreimann.api_editor.server.data.AnnotatedPythonResult
+import com.larsreimann.api_editor.server.data.EditorAnnotation
+import com.larsreimann.api_editor.server.data.PythonFromImport
+import com.larsreimann.api_editor.server.data.PythonImport
+import com.larsreimann.api_editor.server.data.PythonParameterAssignment
 
 @JvmOverloads
 fun createAnnotatedPythonPackage(
@@ -57,10 +58,10 @@ fun createAnnotatedPythonClass(
     methods: List<AnnotatedPythonFunction> = mutableListOf(),
     description: String = "",
     fullDocstring: String = "",
-    annotations: MutableList<EditorAnnotation> = mutableListOf()
+    annotations: MutableList<EditorAnnotation> = mutableListOf(),
+    originalDeclaration: AnnotatedPythonClass? = null
 ): AnnotatedPythonClass {
-
-    return AnnotatedPythonClass(
+    val newPythonClass = AnnotatedPythonClass(
         name,
         qualifiedName,
         decorators,
@@ -70,6 +71,8 @@ fun createAnnotatedPythonClass(
         fullDocstring,
         annotations
     )
+    newPythonClass.originalDeclaration = originalDeclaration
+    return newPythonClass
 }
 
 @JvmOverloads
@@ -82,10 +85,10 @@ fun createAnnotatedPythonFunction(
     isPublic: Boolean = true,
     description: String = "",
     fullDocstring: String = "",
-    annotations: MutableList<EditorAnnotation> = mutableListOf()
+    annotations: MutableList<EditorAnnotation> = mutableListOf(),
+    originalDeclaration: AnnotatedPythonFunction? = null
 ): AnnotatedPythonFunction {
-
-    return AnnotatedPythonFunction(
+    val pythonFunction = AnnotatedPythonFunction(
         name,
         qualifiedName,
         decorators,
@@ -96,6 +99,34 @@ fun createAnnotatedPythonFunction(
         fullDocstring,
         annotations
     )
+    pythonFunction.originalDeclaration = originalDeclaration
+    return pythonFunction
+}
+
+@JvmOverloads
+fun createAnnotatedPythonParameter(
+    name: String,
+    qualifiedName: String = name,
+    defaultValue: String? = "",
+    assignedBy: PythonParameterAssignment = PythonParameterAssignment.POSITION_OR_NAME,
+    isPublic: Boolean = true,
+    typeInDocs: String = "",
+    description: String = "",
+    annotations: MutableList<EditorAnnotation> = mutableListOf(),
+    originalDeclaration: AnnotatedPythonParameter? = null
+): AnnotatedPythonParameter {
+    val pythonParameter = AnnotatedPythonParameter(
+        name,
+        qualifiedName,
+        defaultValue,
+        assignedBy,
+        isPublic,
+        typeInDocs,
+        description,
+        annotations
+    )
+    pythonParameter.originalDeclaration = originalDeclaration
+    return pythonParameter
 }
 
 fun createPackageCopyWithoutModules(
@@ -126,7 +157,7 @@ fun createModuleCopyWithoutClassesAndFunctions(
 fun createClassCopyWithoutFunctions(
     pythonClass: AnnotatedPythonClass
 ): AnnotatedPythonClass {
-    return AnnotatedPythonClass(
+    val newPythonClass = AnnotatedPythonClass(
         name = pythonClass.name,
         qualifiedName = pythonClass.qualifiedName,
         decorators = pythonClass.decorators.toMutableList(),
@@ -136,12 +167,14 @@ fun createClassCopyWithoutFunctions(
         fullDocstring = pythonClass.fullDocstring,
         annotations = pythonClass.annotations.toMutableList()
     )
+    newPythonClass.originalDeclaration = pythonClass.originalDeclaration?.copy()
+    return newPythonClass
 }
 
 fun createFunctionCopy(
     pythonFunction: AnnotatedPythonFunction
 ): AnnotatedPythonFunction {
-    return AnnotatedPythonFunction(
+    val newPythonFunction = AnnotatedPythonFunction(
         name = pythonFunction.name,
         qualifiedName = pythonFunction.qualifiedName,
         decorators = pythonFunction.decorators,
@@ -152,4 +185,6 @@ fun createFunctionCopy(
         fullDocstring = pythonFunction.fullDocstring,
         annotations = pythonFunction.annotations.toMutableList()
     )
+    newPythonFunction.originalDeclaration = pythonFunction.originalDeclaration?.copy()
+    return newPythonFunction
 }
