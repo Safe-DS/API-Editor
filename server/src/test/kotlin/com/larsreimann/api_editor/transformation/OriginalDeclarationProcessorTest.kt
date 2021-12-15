@@ -1,10 +1,10 @@
-package com.larsreimann.api_editor.server.annotationProcessing
+package com.larsreimann.api_editor.transformation
 
-import com.larsreimann.api_editor.server.data.UnusedAnnotation
-import com.larsreimann.api_editor.server.util.createAnnotatedPythonClass
-import com.larsreimann.api_editor.server.util.createAnnotatedPythonFunction
-import com.larsreimann.api_editor.server.util.createAnnotatedPythonModule
-import com.larsreimann.api_editor.server.util.createAnnotatedPythonPackage
+import com.larsreimann.api_editor.model.UnusedAnnotation
+import com.larsreimann.api_editor.util.createAnnotatedPythonClass
+import com.larsreimann.api_editor.util.createAnnotatedPythonFunction
+import com.larsreimann.api_editor.util.createAnnotatedPythonModule
+import com.larsreimann.api_editor.util.createAnnotatedPythonPackage
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 

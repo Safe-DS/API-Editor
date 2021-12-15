@@ -1,11 +1,12 @@
-package com.larsreimann.api_editor.server.file_handling;
+package com.larsreimann.api_editor.codegen;
 
-import com.larsreimann.api_editor.server.annotationProcessing.OriginalDeclarationProcessor;
-import com.larsreimann.api_editor.server.annotationProcessing.RenameAnnotationProcessor;
-import com.larsreimann.api_editor.server.data.AnnotatedPythonFunction;
-import com.larsreimann.api_editor.server.data.AnnotatedPythonParameter;
-import com.larsreimann.api_editor.server.data.PythonParameterAssignment;
-import com.larsreimann.api_editor.server.data.RenameAnnotation;
+import com.larsreimann.api_editor.codegen.FunctionAdapterContentBuilder;
+import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
+import com.larsreimann.api_editor.model.AnnotatedPythonParameter;
+import com.larsreimann.api_editor.model.PythonParameterAssignment;
+import com.larsreimann.api_editor.model.RenameAnnotation;
+import com.larsreimann.api_editor.transformation.OriginalDeclarationProcessor;
+import com.larsreimann.api_editor.transformation.RenameAnnotationProcessor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

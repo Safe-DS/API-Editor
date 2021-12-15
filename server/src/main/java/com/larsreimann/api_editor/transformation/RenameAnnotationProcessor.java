@@ -1,11 +1,22 @@
-package com.larsreimann.api_editor.server.annotationProcessing;
+package com.larsreimann.api_editor.transformation;
 
-import com.larsreimann.api_editor.server.data.*;
+import com.larsreimann.api_editor.model.AbstractPackageDataVisitor;
+import com.larsreimann.api_editor.model.AnnotatedPythonClass;
+import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
+import com.larsreimann.api_editor.model.AnnotatedPythonModule;
+import com.larsreimann.api_editor.model.AnnotatedPythonPackage;
+import com.larsreimann.api_editor.model.AnnotatedPythonParameter;
+import com.larsreimann.api_editor.model.EditorAnnotation;
+import com.larsreimann.api_editor.model.RenameAnnotation;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-import static com.larsreimann.api_editor.server.util.PackageDataFactoriesKt.*;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonClass;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonFunction;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonParameter;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createModuleCopyWithoutClassesAndFunctions;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPackageCopyWithoutModules;
 
 public class RenameAnnotationProcessor extends AbstractPackageDataVisitor {
     private AnnotatedPythonPackage modifiedPackage;
@@ -14,7 +25,7 @@ public class RenameAnnotationProcessor extends AbstractPackageDataVisitor {
     private AnnotatedPythonClass currentClass;
     private AnnotatedPythonFunction currentFunction;
     private final QualifiedNameGenerator qualifiedNameGenerator =
-            new QualifiedNameGenerator();
+        new QualifiedNameGenerator();
     private boolean inFunction = false;
     private boolean inClass = false;
     private boolean inModule = false;
@@ -59,30 +70,29 @@ public class RenameAnnotationProcessor extends AbstractPackageDataVisitor {
         qualifiedNameGenerator.currentClassName = pythonClass.getName();
         ArrayList<EditorAnnotation> annotations = new ArrayList<>();
         pythonClass
-                .getAnnotations()
-                .forEach(
-                        editorAnnotation -> {
-                            if (editorAnnotation instanceof RenameAnnotation) {
-                                qualifiedNameGenerator.currentClassName =
-                                        ((RenameAnnotation) editorAnnotation)
-                                                .getNewName();
-                            }
-                            else {
-                                annotations.add(editorAnnotation);
-                            }
-                        }
-                );
+            .getAnnotations()
+            .forEach(
+                editorAnnotation -> {
+                    if (editorAnnotation instanceof RenameAnnotation) {
+                        qualifiedNameGenerator.currentClassName =
+                            ((RenameAnnotation) editorAnnotation)
+                                .getNewName();
+                    } else {
+                        annotations.add(editorAnnotation);
+                    }
+                }
+            );
 
         currentClass = createAnnotatedPythonClass(
-                qualifiedNameGenerator.currentClassName,
-                qualifiedNameGenerator.getQualifiedClassName(),
-                new ArrayList<>(pythonClass.getDecorators()),
-                new ArrayList<>(pythonClass.getSuperclasses()),
-                new ArrayList<>(),
-                pythonClass.getDescription(),
-                pythonClass.getFullDocstring(),
-                annotations,
-                pythonClass.getOriginalDeclaration()
+            qualifiedNameGenerator.currentClassName,
+            qualifiedNameGenerator.getQualifiedClassName(),
+            new ArrayList<>(pythonClass.getDecorators()),
+            new ArrayList<>(pythonClass.getSuperclasses()),
+            new ArrayList<>(),
+            pythonClass.getDescription(),
+            pythonClass.getFullDocstring(),
+            annotations,
+            pythonClass.getOriginalDeclaration()
         );
 
         if (inModule) {
@@ -102,32 +112,31 @@ public class RenameAnnotationProcessor extends AbstractPackageDataVisitor {
         qualifiedNameGenerator.currentParameterName = pythonParameter.getName();
         ArrayList<EditorAnnotation> annotations = new ArrayList<>();
         pythonParameter
-                .getAnnotations()
-                .forEach(
-                        editorAnnotation -> {
-                            if (editorAnnotation instanceof RenameAnnotation) {
-                                qualifiedNameGenerator.currentParameterName =
-                                        ((RenameAnnotation) editorAnnotation)
-                                                .getNewName();
-                            }
-                            else {
-                                annotations.add(editorAnnotation);
-                            }
-                        }
-                );
+            .getAnnotations()
+            .forEach(
+                editorAnnotation -> {
+                    if (editorAnnotation instanceof RenameAnnotation) {
+                        qualifiedNameGenerator.currentParameterName =
+                            ((RenameAnnotation) editorAnnotation)
+                                .getNewName();
+                    } else {
+                        annotations.add(editorAnnotation);
+                    }
+                }
+            );
 
         AnnotatedPythonParameter modifiedPythonParameter =
-                createAnnotatedPythonParameter(
-                        qualifiedNameGenerator.currentParameterName,
-                        qualifiedNameGenerator.getQualifiedParameterName(),
-                        pythonParameter.getDefaultValue(),
-                        pythonParameter.getAssignedBy(),
-                        pythonParameter.isPublic(),
-                        pythonParameter.getTypeInDocs(),
-                        pythonParameter.getDescription(),
-                        annotations,
-                        pythonParameter.getOriginalDeclaration()
-                );
+            createAnnotatedPythonParameter(
+                qualifiedNameGenerator.currentParameterName,
+                qualifiedNameGenerator.getQualifiedParameterName(),
+                pythonParameter.getDefaultValue(),
+                pythonParameter.getAssignedBy(),
+                pythonParameter.isPublic(),
+                pythonParameter.getTypeInDocs(),
+                pythonParameter.getDescription(),
+                annotations,
+                pythonParameter.getOriginalDeclaration()
+            );
 
         if (inFunction) {
             currentFunction.getParameters().add(modifiedPythonParameter);
@@ -140,31 +149,30 @@ public class RenameAnnotationProcessor extends AbstractPackageDataVisitor {
         qualifiedNameGenerator.currentFunctionName = pythonFunction.getName();
         ArrayList<EditorAnnotation> annotations = new ArrayList<>();
         pythonFunction
-                .getAnnotations()
-                .forEach(
-                        editorAnnotation -> {
-                            if (editorAnnotation instanceof RenameAnnotation) {
-                                qualifiedNameGenerator.currentFunctionName =
-                                        ((RenameAnnotation) editorAnnotation)
-                                                .getNewName();
-                            }
-                            else {
-                                annotations.add(editorAnnotation);
-                            }
-                        }
-                );
+            .getAnnotations()
+            .forEach(
+                editorAnnotation -> {
+                    if (editorAnnotation instanceof RenameAnnotation) {
+                        qualifiedNameGenerator.currentFunctionName =
+                            ((RenameAnnotation) editorAnnotation)
+                                .getNewName();
+                    } else {
+                        annotations.add(editorAnnotation);
+                    }
+                }
+            );
 
         currentFunction = createAnnotatedPythonFunction(
-                qualifiedNameGenerator.currentFunctionName,
-                qualifiedNameGenerator.getQualifiedFunctionName(),
-                new ArrayList<>(pythonFunction.getDecorators()),
-                new ArrayList<>(),
-                new ArrayList<>(pythonFunction.getResults()),
-                pythonFunction.isPublic(),
-                pythonFunction.getDescription(),
-                pythonFunction.getFullDocstring(),
-                annotations,
-                pythonFunction.getOriginalDeclaration()
+            qualifiedNameGenerator.currentFunctionName,
+            qualifiedNameGenerator.getQualifiedFunctionName(),
+            new ArrayList<>(pythonFunction.getDecorators()),
+            new ArrayList<>(),
+            new ArrayList<>(pythonFunction.getResults()),
+            pythonFunction.isPublic(),
+            pythonFunction.getDescription(),
+            pythonFunction.getFullDocstring(),
+            annotations,
+            pythonFunction.getOriginalDeclaration()
         );
 
         if (inClass) {

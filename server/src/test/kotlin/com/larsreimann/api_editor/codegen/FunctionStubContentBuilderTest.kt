@@ -296,6 +296,7 @@ internal class FunctionStubContentBuilderTest {
         val expectedFormattedFunction: String = """
             |@Pure
             |fun testFunction()""".trimMargin()
-            Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
+
+        Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
     }
 }

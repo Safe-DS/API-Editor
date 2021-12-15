@@ -1,15 +1,15 @@
-package com.larsreimann.api_editor.server.util
+package com.larsreimann.api_editor.util
 
-import com.larsreimann.api_editor.server.data.AnnotatedPythonClass
-import com.larsreimann.api_editor.server.data.AnnotatedPythonFunction
-import com.larsreimann.api_editor.server.data.AnnotatedPythonModule
-import com.larsreimann.api_editor.server.data.AnnotatedPythonPackage
-import com.larsreimann.api_editor.server.data.AnnotatedPythonParameter
-import com.larsreimann.api_editor.server.data.AnnotatedPythonResult
-import com.larsreimann.api_editor.server.data.EditorAnnotation
-import com.larsreimann.api_editor.server.data.PythonFromImport
-import com.larsreimann.api_editor.server.data.PythonImport
-import com.larsreimann.api_editor.server.data.PythonParameterAssignment
+import com.larsreimann.api_editor.model.AnnotatedPythonClass
+import com.larsreimann.api_editor.model.AnnotatedPythonFunction
+import com.larsreimann.api_editor.model.AnnotatedPythonModule
+import com.larsreimann.api_editor.model.AnnotatedPythonPackage
+import com.larsreimann.api_editor.model.AnnotatedPythonParameter
+import com.larsreimann.api_editor.model.AnnotatedPythonResult
+import com.larsreimann.api_editor.model.EditorAnnotation
+import com.larsreimann.api_editor.model.PythonFromImport
+import com.larsreimann.api_editor.model.PythonImport
+import com.larsreimann.api_editor.model.PythonParameterAssignment
 
 @JvmOverloads
 fun createAnnotatedPythonPackage(
