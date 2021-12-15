@@ -57,7 +57,7 @@ public class PackageFileBuilder {
                     String.join(".", moduleNameParts) + "." + moduleNameParts[moduleNameParts.length - 1],
                     buildStubContent(module),
                     Paths.get(workingPath.toString(),
-                        "com/larsreimann/api_editor/io/stub",
+                        "stub",
                         "simpleml"
                     ),
                     ".stub.simpleml"
