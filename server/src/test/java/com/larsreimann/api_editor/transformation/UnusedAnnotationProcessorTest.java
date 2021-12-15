@@ -1,12 +1,10 @@
-package com.larsreimann.api_editor.transformation;
+package com.larsreimann.api_editor.server.annotationProcessing;
 
-import com.larsreimann.api_editor.model.AnnotatedPythonClass;
-import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
-import com.larsreimann.api_editor.model.AnnotatedPythonModule;
-import com.larsreimann.api_editor.model.AnnotatedPythonPackage;
-import com.larsreimann.api_editor.model.UnusedAnnotation;
+import com.larsreimann.api_editor.server.data.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static com.larsreimann.api_editor.server.util.PackageDataFactoriesKt.*;
 
 class UnusedAnnotationProcessorTest {
     @Test
@@ -16,18 +14,18 @@ class UnusedAnnotationProcessorTest {
             new UnusedAnnotationProcessor();
 
         AnnotatedPythonClass annotatedTestClass =
-            com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonClass("annotatedTestClass");
+            createAnnotatedPythonClass("annotatedTestClass");
         annotatedTestClass.getAnnotations().add(UnusedAnnotation.INSTANCE);
 
         AnnotatedPythonClass testClass =
-            com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonClass("testClass");
+            createAnnotatedPythonClass("testClass");
 
         AnnotatedPythonModule testModule =
-            com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonModule("testModule");
+            createAnnotatedPythonModule("testModule");
         testModule.getClasses().add(testClass);
 
         AnnotatedPythonPackage testPackage =
-            com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonPackage("testPackage");
+            createAnnotatedPythonPackage("testPackage");
         testPackage.getModules().add(testModule);
 
         // when
@@ -57,19 +55,19 @@ class UnusedAnnotationProcessorTest {
             new UnusedAnnotationProcessor();
 
         AnnotatedPythonFunction annotatedTestFunction =
-            com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonFunction("annotatedTestFunction");
+            createAnnotatedPythonFunction("annotatedTestFunction");
         annotatedTestFunction.getAnnotations().add(UnusedAnnotation.INSTANCE);
 
         AnnotatedPythonFunction testFunction =
-            com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonFunction("testFunction");
+            createAnnotatedPythonFunction("testFunction");
 
         AnnotatedPythonModule testModule =
-            com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonModule("testModule");
+            createAnnotatedPythonModule("testModule");
         testModule.getFunctions().add(testFunction);
         testModule.getFunctions().add(annotatedTestFunction);
 
         AnnotatedPythonPackage testPackage =
-            com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonPackage("testPackage");
+            createAnnotatedPythonPackage("testPackage");
         testPackage.getModules().add(testModule);
 
         // when
@@ -98,23 +96,23 @@ class UnusedAnnotationProcessorTest {
             new UnusedAnnotationProcessor();
 
         AnnotatedPythonFunction annotatedTestMethod =
-            com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonFunction("annotatedTestMethod");
+            createAnnotatedPythonFunction("annotatedTestMethod");
         annotatedTestMethod.getAnnotations().add(UnusedAnnotation.INSTANCE);
 
         AnnotatedPythonFunction testMethod =
-            com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonFunction("testMethod");
+            createAnnotatedPythonFunction("testMethod");
 
         AnnotatedPythonClass testClass =
-            com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonClass("testClass");
+            createAnnotatedPythonClass("testClass");
         testClass.getMethods().add(annotatedTestMethod);
         testClass.getMethods().add(testMethod);
 
         AnnotatedPythonModule testModule =
-            com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonModule("testModule");
+            createAnnotatedPythonModule("testModule");
         testModule.getClasses().add(testClass);
 
         AnnotatedPythonPackage testPackage =
-            com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonPackage("testPackage");
+            createAnnotatedPythonPackage("testPackage");
         testPackage.getModules().add(testModule);
 
         // when
@@ -136,36 +134,6 @@ class UnusedAnnotationProcessorTest {
                     .getMethods().get(0)
                     .getName()
                     .equals("testMethod")
-        );
-    }
-
-    @Test
-    void shouldRemoveEmptyModule() {
-        // given
-        UnusedAnnotationProcessor unusedAnnotationProcessor =
-            new UnusedAnnotationProcessor();
-
-        AnnotatedPythonClass testClass =
-            com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonClass("testClass");
-        testClass.getAnnotations().add(UnusedAnnotation.INSTANCE);
-
-        AnnotatedPythonModule testModule =
-            com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonModule("testModule");
-        testModule.getClasses().add(testClass);
-
-        AnnotatedPythonPackage testPackage =
-            com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonPackage("testPackage");
-        testPackage.getModules().add(testModule);
-
-        // when
-        testPackage.accept(unusedAnnotationProcessor);
-        AnnotatedPythonPackage modifiedPackage =
-            unusedAnnotationProcessor.getModifiedPackage();
-
-        // then
-        Assertions.assertTrue(
-            modifiedPackage
-                .getModules().isEmpty()
         );
     }
 }

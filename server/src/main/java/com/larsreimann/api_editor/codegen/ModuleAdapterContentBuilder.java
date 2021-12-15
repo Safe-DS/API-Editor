@@ -1,12 +1,13 @@
-package com.larsreimann.api_editor.codegen;
+package com.larsreimann.api_editor.server.file_handling;
 
-import com.larsreimann.api_editor.io.FileBuilder;
-import com.larsreimann.api_editor.model.AnnotatedPythonModule;
+import com.larsreimann.api_editor.server.data.AnnotatedPythonModule;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
-public class ModuleAdapterContentBuilder extends FileBuilder {
+class ModuleAdapterContentBuilder extends FileBuilder {
     AnnotatedPythonModule pythonModule;
 
     /**
@@ -14,7 +15,7 @@ public class ModuleAdapterContentBuilder extends FileBuilder {
      *
      * @param pythonModule The module whose adapter content should be built
      */
-    public ModuleAdapterContentBuilder(AnnotatedPythonModule pythonModule) {
+    protected ModuleAdapterContentBuilder(AnnotatedPythonModule pythonModule) {
         this.pythonModule = pythonModule;
     }
 
@@ -23,7 +24,7 @@ public class ModuleAdapterContentBuilder extends FileBuilder {
      *
      * @return The string containing the formatted module content
      */
-    public String buildModuleContent() {
+    protected String buildModuleContent() {
         String formattedImport = buildNamespace();
         String formattedClasses = buildAllClasses();
         String formattedFunctions = buildAllFunctions();
@@ -39,7 +40,41 @@ public class ModuleAdapterContentBuilder extends FileBuilder {
     }
 
     private String buildNamespace() {
-        return "import " + pythonModule.getName();
+        HashSet<String> importedModules = new HashSet<>();
+        pythonModule.getFunctions().forEach(
+            pythonFunction ->
+                importedModules.add(
+                    buildParentDeclarationName(
+                        Objects.requireNonNull(
+                            pythonFunction
+                                .getOriginalDeclaration()
+                        ).getQualifiedName()
+                    )
+                )
+        );
+        pythonModule.getClasses().forEach(
+            pythonClass ->
+                importedModules.add(
+                    buildParentDeclarationName(
+                        Objects.requireNonNull(
+                            pythonClass
+                                .getOriginalDeclaration()
+                        ).getQualifiedName()
+                    )
+                )
+        );
+        List<String> imports = new ArrayList<>();
+        importedModules.forEach(
+            moduleName ->
+                imports.add("import " + moduleName)
+        );
+        return listToString(imports, 1);
+    }
+
+    private String buildParentDeclarationName(String qualifiedName) {
+        String PATH_SEPARATOR = ".";
+        int separationPosition = qualifiedName.lastIndexOf(PATH_SEPARATOR);
+        return qualifiedName.substring(0, separationPosition);
     }
 
     private String buildAllClasses() {

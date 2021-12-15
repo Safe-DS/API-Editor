@@ -1,13 +1,11 @@
-package com.larsreimann.api_editor.transformation;
+package com.larsreimann.api_editor.server.annotationProcessing;
 
-import com.larsreimann.api_editor.model.AbstractPackageDataVisitor;
-import com.larsreimann.api_editor.model.AnnotatedPythonClass;
-import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
-import com.larsreimann.api_editor.model.AnnotatedPythonModule;
-import com.larsreimann.api_editor.model.AnnotatedPythonPackage;
+import com.larsreimann.api_editor.server.data.*;
 import org.jetbrains.annotations.NotNull;
 
-public class UnusedAnnotationProcessor extends AbstractPackageDataVisitor {
+import static com.larsreimann.api_editor.server.util.PackageDataFactoriesKt.*;
+
+public class CleanupModulesProcessor extends AbstractPackageDataVisitor {
     private AnnotatedPythonPackage modifiedPackage;
 
     private AnnotatedPythonModule currentModule;
@@ -17,7 +15,7 @@ public class UnusedAnnotationProcessor extends AbstractPackageDataVisitor {
 
     @Override
     public boolean enterPythonPackage(@NotNull AnnotatedPythonPackage pythonPackage) {
-        setModifiedPackage(com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPackageCopyWithoutModules(pythonPackage));
+        setModifiedPackage(createPackageCopyWithoutModules(pythonPackage));
 
         return true;
     }
@@ -25,7 +23,7 @@ public class UnusedAnnotationProcessor extends AbstractPackageDataVisitor {
     @Override
     public boolean enterPythonModule(@NotNull AnnotatedPythonModule pythonModule) {
         inModule = true;
-        setCurrentModule(com.larsreimann.api_editor.util.PackageDataFactoriesKt.createModuleCopyWithoutClassesAndFunctions(pythonModule));
+        setCurrentModule(createModuleCopyWithoutClassesAndFunctions(pythonModule));
 
         return true;
     }
@@ -33,25 +31,21 @@ public class UnusedAnnotationProcessor extends AbstractPackageDataVisitor {
     @Override
     public void leavePythonModule(@NotNull AnnotatedPythonModule pythonModule) {
         AnnotatedPythonModule currentModule = getCurrentModule();
-        getModifiedPackage().getModules().add(currentModule);
+        if (!currentModule.getClasses().isEmpty()
+            || !currentModule.getFunctions().isEmpty()) {
+            getModifiedPackage().getModules().add(currentModule);
+        }
         inModule = false;
     }
 
     @Override
     public boolean enterPythonClass(@NotNull AnnotatedPythonClass pythonClass) {
         inClass = true;
-        setCurrentClass(com.larsreimann.api_editor.util.PackageDataFactoriesKt.createClassCopyWithoutFunctions(pythonClass));
+        setCurrentClass(createClassCopyWithoutFunctions(pythonClass));
 
-        if (pythonClass.getAnnotations()
-            .stream()
-            .noneMatch(editorAnnotation
-                -> editorAnnotation.getType().equals("Unused")
-            )
-        ) {
-            getCurrentModule().getClasses().add(
-                getCurrentClass()
-            );
-        }
+        getCurrentModule().getClasses().add(
+            getCurrentClass()
+        );
 
         return true;
     }
@@ -63,19 +57,12 @@ public class UnusedAnnotationProcessor extends AbstractPackageDataVisitor {
 
     @Override
     public boolean enterPythonFunction(@NotNull AnnotatedPythonFunction pythonFunction) {
-        if (pythonFunction.getAnnotations()
-            .stream()
-            .noneMatch(
-                editorAnnotation -> editorAnnotation.getType().equals("Unused")
-            )
-        ) {
-            AnnotatedPythonFunction currentFunctionCopy =
-                com.larsreimann.api_editor.util.PackageDataFactoriesKt.createFunctionCopy(pythonFunction);
-            if (inClass) {
-                getCurrentClass().getMethods().add(currentFunctionCopy);
-            } else if (inModule) {
-                getCurrentModule().getFunctions().add(currentFunctionCopy);
-            }
+        AnnotatedPythonFunction currentFunctionCopy =
+            createFunctionCopy(pythonFunction);
+        if (inClass) {
+            getCurrentClass().getMethods().add(currentFunctionCopy);
+        } else if (inModule) {
+            getCurrentModule().getFunctions().add(currentFunctionCopy);
         }
 
         return false;
