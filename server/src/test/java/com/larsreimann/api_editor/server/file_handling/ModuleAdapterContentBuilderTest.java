@@ -324,7 +324,7 @@ class ModuleAdapterContentBuilderTest {
     }
 
     @Test
-    void buildModuleContentWithNoFunctionsAndClassesReturnsFormattedModuleContent() {
+    void buildModuleContentWithEmptyModuleReturnsEmptyString() {
         // given
         AnnotatedPythonModule testModule = new AnnotatedPythonModule(
             "test-module",
@@ -353,9 +353,7 @@ class ModuleAdapterContentBuilderTest {
         String moduleContent = moduleAdapterContentBuilder.buildModuleContent();
 
         //then
-        String expectedModuleContent = """
-            import test-module
-            """;
+        String expectedModuleContent = "";
 
         Assertions.assertEquals(expectedModuleContent, moduleContent);
     }
