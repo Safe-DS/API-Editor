@@ -1,9 +1,16 @@
-package com.larsreimann.api_editor.server.annotationProcessing;
+package com.larsreimann.api_editor.transformation;
 
-import com.larsreimann.api_editor.server.data.*;
+import com.larsreimann.api_editor.model.AbstractPackageDataVisitor;
+import com.larsreimann.api_editor.model.AnnotatedPythonClass;
+import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
+import com.larsreimann.api_editor.model.AnnotatedPythonModule;
+import com.larsreimann.api_editor.model.AnnotatedPythonPackage;
 import org.jetbrains.annotations.NotNull;
 
-import static com.larsreimann.api_editor.server.util.PackageDataFactoriesKt.*;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createClassCopyWithoutFunctions;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createFunctionCopy;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createModuleCopyWithoutClassesAndFunctions;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPackageCopyWithoutModules;
 
 public class CleanupModulesProcessor extends AbstractPackageDataVisitor {
     private AnnotatedPythonPackage modifiedPackage;

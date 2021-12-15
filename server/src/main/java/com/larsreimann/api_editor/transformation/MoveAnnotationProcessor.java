@@ -1,13 +1,25 @@
-package com.larsreimann.api_editor.server.annotationProcessing;
+package com.larsreimann.api_editor.transformation;
 
-import com.larsreimann.api_editor.server.data.*;
+import com.larsreimann.api_editor.model.AbstractPackageDataVisitor;
+import com.larsreimann.api_editor.model.AnnotatedPythonClass;
+import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
+import com.larsreimann.api_editor.model.AnnotatedPythonModule;
+import com.larsreimann.api_editor.model.AnnotatedPythonPackage;
+import com.larsreimann.api_editor.model.AnnotatedPythonParameter;
+import com.larsreimann.api_editor.model.EditorAnnotation;
+import com.larsreimann.api_editor.model.MoveAnnotation;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import static com.larsreimann.api_editor.server.util.PackageDataFactoriesKt.*;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonClass;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonFunction;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonModule;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonParameter;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createModuleCopyWithoutClassesAndFunctions;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPackageCopyWithoutModules;
 
 public class MoveAnnotationProcessor extends AbstractPackageDataVisitor {
     private AnnotatedPythonPackage modifiedPackage;
@@ -109,8 +121,7 @@ public class MoveAnnotationProcessor extends AbstractPackageDataVisitor {
                 originalModuleName = qualifiedNameGenerator.currentModuleName;
                 newModuleName = ((MoveAnnotation) editorAnnotation).getDestination();
                 qualifiedNameGenerator.currentModuleName = newModuleName;
-            }
-            else {
+            } else {
                 annotations.add(editorAnnotation);
             }
         }
@@ -129,8 +140,7 @@ public class MoveAnnotationProcessor extends AbstractPackageDataVisitor {
 
         if (isClassMoved) {
             addClassToAdd(newModuleName, currentClass);
-        }
-        else {
+        } else {
             currentModule.getClasses().add(currentClass);
         }
 
@@ -181,8 +191,7 @@ public class MoveAnnotationProcessor extends AbstractPackageDataVisitor {
                 originalModuleName = qualifiedNameGenerator.currentModuleName;
                 newModuleName = ((MoveAnnotation) editorAnnotation).getDestination();
                 qualifiedNameGenerator.currentModuleName = newModuleName;
-            }
-            else {
+            } else {
                 annotations.add(editorAnnotation);
             }
         }

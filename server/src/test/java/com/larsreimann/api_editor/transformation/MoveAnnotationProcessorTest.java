@@ -1,10 +1,19 @@
-package com.larsreimann.api_editor.server.annotationProcessing;
+package com.larsreimann.api_editor.transformation;
 
-import com.larsreimann.api_editor.server.data.*;
+import com.larsreimann.api_editor.model.AnnotatedPythonClass;
+import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
+import com.larsreimann.api_editor.model.AnnotatedPythonModule;
+import com.larsreimann.api_editor.model.AnnotatedPythonPackage;
+import com.larsreimann.api_editor.model.AnnotatedPythonParameter;
+import com.larsreimann.api_editor.model.MoveAnnotation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static com.larsreimann.api_editor.server.util.PackageDataFactoriesKt.*;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonClass;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonFunction;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonModule;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonPackage;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonParameter;
 
 class MoveAnnotationProcessorTest {
     @Test

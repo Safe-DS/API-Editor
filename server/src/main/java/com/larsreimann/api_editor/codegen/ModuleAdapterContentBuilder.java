@@ -1,13 +1,14 @@
-package com.larsreimann.api_editor.server.file_handling;
+package com.larsreimann.api_editor.codegen;
 
-import com.larsreimann.api_editor.server.data.AnnotatedPythonModule;
+import com.larsreimann.api_editor.io.FileBuilder;
+import com.larsreimann.api_editor.model.AnnotatedPythonModule;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
-class ModuleAdapterContentBuilder extends FileBuilder {
+public class ModuleAdapterContentBuilder extends FileBuilder {
     AnnotatedPythonModule pythonModule;
 
     /**
@@ -15,7 +16,7 @@ class ModuleAdapterContentBuilder extends FileBuilder {
      *
      * @param pythonModule The module whose adapter content should be built
      */
-    protected ModuleAdapterContentBuilder(AnnotatedPythonModule pythonModule) {
+    public ModuleAdapterContentBuilder(AnnotatedPythonModule pythonModule) {
         this.pythonModule = pythonModule;
     }
 
@@ -24,7 +25,7 @@ class ModuleAdapterContentBuilder extends FileBuilder {
      *
      * @return The string containing the formatted module content
      */
-    protected String buildModuleContent() {
+    public String buildModuleContent() {
         String formattedImport = buildNamespace();
         String formattedClasses = buildAllClasses();
         String formattedFunctions = buildAllFunctions();
