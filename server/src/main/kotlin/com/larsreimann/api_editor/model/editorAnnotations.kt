@@ -1,6 +1,9 @@
 package com.larsreimann.api_editor.model
 
 import com.larsreimann.api_editor.model.AnnotationTarget.CLASS
+import com.larsreimann.api_editor.model.AnnotationTarget.CONSTRUCTOR_PARAMETER
+import com.larsreimann.api_editor.model.AnnotationTarget.FUNCTION_PARAMETER
+import com.larsreimann.api_editor.model.AnnotationTarget.GLOBAL_FUNCTION
 import com.larsreimann.api_editor.model.AnnotationTarget.METHOD
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
@@ -20,7 +23,7 @@ sealed class EditorAnnotation {
 data class AttributeAnnotation(val defaultValue: DefaultValue) : EditorAnnotation() {
 
     @Transient
-    override val validTargets = setOf(AnnotationTarget.CONSTRUCTOR_PARAMETER)
+    override val validTargets = setOf(CONSTRUCTOR_PARAMETER)
 }
 
 @Serializable
@@ -112,8 +115,10 @@ object RequiredAnnotation : EditorAnnotation() {
 object UnusedAnnotation : EditorAnnotation() {
 
     @Transient
-    override val validTargets = setOf(CLASS,
-        AnnotationTarget.GLOBAL_FUNCTION, METHOD)
+    override val validTargets = setOf(
+        CLASS,
+        GLOBAL_FUNCTION, METHOD
+    )
 }
 
 @Serializable
@@ -140,9 +145,10 @@ enum class AnnotationTarget(private val target: String) {
     }
 }
 
-val GLOBAL_DECLARATIONS = setOf(CLASS, AnnotationTarget.GLOBAL_FUNCTION)
+val GLOBAL_DECLARATIONS = setOf(CLASS, GLOBAL_FUNCTION)
 val CLASSES = setOf(CLASS)
-val FUNCTIONS = setOf(AnnotationTarget.GLOBAL_FUNCTION, METHOD)
-val PARAMETERS = setOf(AnnotationTarget.CONSTRUCTOR_PARAMETER,
-    AnnotationTarget.FUNCTION_PARAMETER
+val FUNCTIONS = setOf(GLOBAL_FUNCTION, METHOD)
+val PARAMETERS = setOf(
+    CONSTRUCTOR_PARAMETER,
+    FUNCTION_PARAMETER
 )
