@@ -19,6 +19,10 @@ spacy = "^3.2.0"
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
 pytest-cov = "^3.0.0"
+mypy = "^0.910"
+
+[tool.mypy]
+ignore_missing_imports = true # https://github.com/megalinter/megalinter/blob/main/TEMPLATES/.mypy.ini
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
