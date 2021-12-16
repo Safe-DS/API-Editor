@@ -23,7 +23,7 @@ internal class FunctionStubContentBuilderTest {
         val testFunction = AnnotatedPythonFunction(
             "testFunction",
             "testModule.testFunction",
-            listOf("test-decorator"), emptyList(), emptyList(),
+            listOf("testDecorator"), emptyList(), emptyList(),
             true,
             "Lorem ipsum",
             "fullDocstring", mutableListOf()
@@ -46,11 +46,11 @@ internal class FunctionStubContentBuilderTest {
         val testFunction = AnnotatedPythonFunction(
             "testFunction",
             "testModule.testFunction",
-            listOf("test-decorator"),
+            listOf("testDecorator"),
             listOf(
                 AnnotatedPythonParameter(
                     "onlyParam",
-                    "testModule.test-class.testClassFunction.onlyParam",
+                    "testModule.testClass.testClassFunction.onlyParam",
                     "13",
                     PythonParameterAssignment.POSITION_ONLY,
                     true,
@@ -80,11 +80,11 @@ internal class FunctionStubContentBuilderTest {
         val testFunction = AnnotatedPythonFunction(
             "testFunction",
             "testModule.testFunction",
-            listOf("test-decorator"),
+            listOf("testDecorator"),
             listOf(
                 AnnotatedPythonParameter(
                     "onlyParam",
-                    "testModule.test-class.testClassFunction.onlyParam",
+                    "testModule.testClass.testClassFunction.onlyParam",
                     "'Test'",
                     PythonParameterAssignment.POSITION_OR_NAME,
                     true,
@@ -114,11 +114,11 @@ internal class FunctionStubContentBuilderTest {
         val testFunction = AnnotatedPythonFunction(
             "testFunction",
             "testModule.testFunction",
-            listOf("test-decorator"),
+            listOf("testDecorator"),
             listOf(
                 AnnotatedPythonParameter(
                     "firstParam",
-                    "testModule.test-class.testClassFunction.firstParam",
+                    "testModule.testClass.testClassFunction.firstParam",
                     null,
                     PythonParameterAssignment.POSITION_ONLY,
                     true,
@@ -127,7 +127,7 @@ internal class FunctionStubContentBuilderTest {
                 ),
                 AnnotatedPythonParameter(
                     "secondParam",
-                    "testModule.test-class.testClassFunction.secondParam",
+                    "testModule.testClass.testClassFunction.secondParam",
                     null,
                     PythonParameterAssignment.POSITION_OR_NAME,
                     true,
@@ -136,7 +136,7 @@ internal class FunctionStubContentBuilderTest {
                 ),
                 AnnotatedPythonParameter(
                     "thirdParam",
-                    "testModule.test-class.testClassFunction.thirdParam",
+                    "testModule.testClass.testClassFunction.thirdParam",
                     null,
                     PythonParameterAssignment.NAME_ONLY,
                     true,
@@ -165,11 +165,11 @@ internal class FunctionStubContentBuilderTest {
         val testFunction = AnnotatedPythonFunction(
             "testFunction",
             "testModule.testFunction",
-            listOf("test-decorator"),
+            listOf("testDecorator"),
             listOf(
                 AnnotatedPythonParameter(
                     "onlyParam",
-                    "testModule.test-class.testClassFunction.onlyParam",
+                    "testModule.testClass.testClassFunction.onlyParam",
                     "1.31e+1",
                     PythonParameterAssignment.POSITION_ONLY,
                     true,
@@ -206,11 +206,11 @@ internal class FunctionStubContentBuilderTest {
         val testFunction = AnnotatedPythonFunction(
             "testFunction",
             "testModule.testFunction",
-            listOf("test-decorator"),
+            listOf("testDecorator"),
             listOf(
                 AnnotatedPythonParameter(
                     "onlyParam",
-                    "testModule.test-class.testClassFunction.onlyParam",
+                    "testModule.testClass.testClassFunction.onlyParam",
                     "True",
                     PythonParameterAssignment.POSITION_ONLY,
                     true,
@@ -253,11 +253,11 @@ internal class FunctionStubContentBuilderTest {
         val testFunction = AnnotatedPythonFunction(
             "testFunction",
             "testModule.testFunction",
-            listOf("test-decorator"),
+            listOf("testDecorator"),
             listOf(
                 AnnotatedPythonParameter(
                     "onlyParam",
-                    "testModule.test-class.testClassFunction.onlyParam",
+                    "testModule.testClass.testClassFunction.onlyParam",
                     "'13'x",
                     PythonParameterAssignment.POSITION_ONLY,
                     true,
