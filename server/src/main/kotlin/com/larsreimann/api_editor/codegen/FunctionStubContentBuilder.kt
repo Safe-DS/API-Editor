@@ -60,7 +60,7 @@ fun buildFunction(pythonFunction: AnnotatedPythonFunction): String {
     }
 }
 
-private fun buildParameter(pythonParameter: AnnotatedPythonParameter): SmlParameter {
+fun buildParameter(pythonParameter: AnnotatedPythonParameter): SmlParameter {
     return createSmlParameter(
         name = pythonParameter.name,
         type = buildSmlType(pythonParameter.typeInDocs),
@@ -68,14 +68,14 @@ private fun buildParameter(pythonParameter: AnnotatedPythonParameter): SmlParame
     )
 }
 
-private fun buildResult(pythonResult: AnnotatedPythonResult): SmlResult {
+fun buildResult(pythonResult: AnnotatedPythonResult): SmlResult {
     return createSmlResult(
         name = pythonResult.name,
         type = buildSmlType(pythonResult.type)
     )
 }
 
-private fun buildSmlType(pythonType: String): SmlAbstractType {
+fun buildSmlType(pythonType: String): SmlAbstractType {
     // TODO: create the correct type
     return when (pythonType) {
         "bool" -> createSmlNamedType(
