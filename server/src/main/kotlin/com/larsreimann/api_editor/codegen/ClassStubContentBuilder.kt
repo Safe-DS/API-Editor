@@ -1,139 +1,78 @@
 package com.larsreimann.api_editor.codegen
 
-import com.larsreimann.api_editor.io.FileBuilder
 import com.larsreimann.api_editor.model.AnnotatedPythonClass
 import com.larsreimann.api_editor.model.AnnotatedPythonFunction
 import com.larsreimann.api_editor.model.AnnotatedPythonParameter
-import java.util.function.Consumer
+import de.unibonn.simpleml.constant.FileExtension
+import de.unibonn.simpleml.emf.createSmlAttribute
+import de.unibonn.simpleml.emf.createSmlClass
+import de.unibonn.simpleml.emf.createSmlCompilationUnit
+import de.unibonn.simpleml.emf.createSmlDummyResource
+import de.unibonn.simpleml.serializer.SerializationResult
+import de.unibonn.simpleml.serializer.serializeToFormattedString
+import de.unibonn.simpleml.simpleML.SmlAttribute
+import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.simpleML.SmlFunction
+import de.unibonn.simpleml.simpleML.SmlParameter
 
 /**
- * Constructor for ClassStubContentBuilder
+ * Builds a string containing the formatted class content
  *
- * @param pythonClass The class whose stub content should be built
+ * @return The string containing the formatted class content
  */
-class ClassStubContentBuilder(
-    private val pythonClass: AnnotatedPythonClass
-) : FileBuilder() {
-    var classMethods: List<AnnotatedPythonFunction>
-    var hasConstructor: Boolean
-    var hasClassMethods: Boolean
-    var constructor: AnnotatedPythonFunction? = null
+fun buildClassToString(pythonClass: AnnotatedPythonClass): String {
+    val `class` = buildClass(pythonClass)
 
-    init {
-        val originalClassMethods = pythonClass.methods
-        hasConstructor = hasConstructor()
-        hasClassMethods = hasClassMethods()
-        if (!hasConstructor) {
-            classMethods = originalClassMethods
-        } else {
-            classMethods = classMethods()
-            constructor = constructorOrNull()
-        }
+    // Required to serialize the function
+    createSmlDummyResource(
+        "classStub",
+        FileExtension.STUB,
+        createSmlCompilationUnit(listOf(`class`))
+    )
+
+    return when (val result = `class`.serializeToFormattedString()) {
+        is SerializationResult.Success -> result.code
+        is SerializationResult.Failure -> throw IllegalStateException(result.message)
     }
+}
 
-    /**
-     * Builds a string containing the formatted class content
-     *
-     * @return The string containing the formatted class content
-     */
-    fun buildClass(): String {
-        val formattedClassCall = buildClassCall()
-        val formattedClassBody = buildClassBody()
-        return when {
-            formattedClassBody.isBlank() -> "$formattedClassCall {}"
-            else -> """
-                |$formattedClassCall {
-                |${indent(formattedClassBody)}
-                |}
-                """.trimMargin()
-        }
-    }
+fun buildClass(pythonClass: AnnotatedPythonClass): SmlClass {
+    return createSmlClass(
+        name = pythonClass.name,
+        parameters = buildConstructor(pythonClass),
+        members = buildAttributes(pythonClass) + buildFunctions(pythonClass)
+    )
+}
 
-    private fun classMethods(): List<AnnotatedPythonFunction> {
-        return pythonClass.methods.filter { it.name != "__init__" }
-    }
+private fun buildConstructor(pythonClass: AnnotatedPythonClass): List<SmlParameter> {
+    return constructorOrNull(pythonClass)
+        ?.parameters
+        ?.map { buildParameter(it) }
+        .orEmpty()
+}
 
-    private fun hasClassMethods(): Boolean {
-        return pythonClass.methods.any { it.name != "__init__" }
-    }
+private fun classMethods(pythonClass: AnnotatedPythonClass): List<AnnotatedPythonFunction> {
+    return pythonClass.methods.filter { it.name != "__init__" }
+}
 
-    private fun hasConstructor(): Boolean {
-        return pythonClass.methods.any { it.name == "__init__" }
-    }
+private fun constructorOrNull(pythonClass: AnnotatedPythonClass): AnnotatedPythonFunction? {
+    return pythonClass.methods.firstOrNull { it.name == "__init__" }
+}
 
-    private fun constructorOrNull(): AnnotatedPythonFunction? {
-        return pythonClass.methods.firstOrNull { it.name == "__init__" }
-    }
+private fun buildAttributes(pythonClass: AnnotatedPythonClass): List<SmlAttribute> {
+    return constructorOrNull(pythonClass)
+        ?.parameters
+        ?.map { buildAttribute(it) }
+        .orEmpty()
+}
 
-    private fun buildClassCall(): String {
-        val formattedConstructorBody = when {
-            hasConstructor() -> buildConstructor(constructor)
-            else -> ""
-        }
-        return "class ${pythonClass.name}($formattedConstructorBody)"
-    }
+fun buildAttribute(pythonParameter: AnnotatedPythonParameter): SmlAttribute {
+    return createSmlAttribute(
+        name = pythonParameter.name,
+        type = buildType(pythonParameter.typeInDocs)
+    )
+}
 
-    private fun buildConstructor(
-        pythonFunction: AnnotatedPythonFunction?
-    ): String {
-        val pythonParameters = pythonFunction!!.parameters
-        if (pythonParameters.isEmpty()) {
-            return ""
-        }
-        val formattedConstructorParameters: MutableList<String> = ArrayList()
-        pythonParameters.forEach(Consumer { pythonParameter: AnnotatedPythonParameter ->
-            formattedConstructorParameters.add(
-                buildConstructorParameter(pythonParameter)
-            )
-        })
-        return java.lang.String.join(", ", formattedConstructorParameters)
-    }
-
-    private fun buildConstructorParameter(
-        pythonParameter: AnnotatedPythonParameter
-    ): String {
-        val nameAndType = "${pythonParameter.name}: Any?"
-        val defaultValue = when {
-            pythonParameter.defaultValue.isNullOrBlank() -> ""
-            else -> " or ${buildFormattedDefaultValue(pythonParameter.defaultValue)}"
-        }
-
-        return "$nameAndType$defaultValue"
-    }
-
-    private fun buildClassBody(): String {
-        var formattedAttributes = ""
-        if (hasConstructor) {
-            formattedAttributes = buildAttributes()
-        }
-        var formattedFunctions = ""
-        if (hasClassMethods) {
-            formattedFunctions = buildFunctions()
-        }
-        if (formattedAttributes.isBlank()) {
-            return formattedFunctions.ifBlank {
-                ""
-            }
-        }
-        return if (formattedFunctions.isBlank()) {
-            formattedAttributes
-        } else """
-     $formattedAttributes
-
-     $formattedFunctions
-     """.trimIndent()
-    }
-
-    private fun buildAttributes(): String {
-        return constructorOrNull()
-            ?.parameters
-            ?.joinToString { "attr ${it.name}: Any?" }
-            ?: ""
-    }
-
-    private fun buildFunctions(): String {
-        return classMethods.joinToString(separator = "\n") {
-            buildFunction(it)
-        }
-    }
+private fun buildFunctions(pythonClass: AnnotatedPythonClass): List<SmlFunction> {
+    return classMethods(pythonClass).map { buildFunction(it) }
 }

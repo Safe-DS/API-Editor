@@ -30,7 +30,7 @@ internal class FunctionStubContentBuilderTest {
         )
 
         // when
-        val formattedFunction = buildFunction(testFunction)
+        val formattedFunction = buildFunctionToString(testFunction)
 
         // then
         val expectedFormattedFunction: String =
@@ -63,7 +63,7 @@ internal class FunctionStubContentBuilderTest {
         )
 
         // when
-        val formattedFunction = buildFunction(testFunction)
+        val formattedFunction = buildFunctionToString(testFunction)
 
         // then
         val expectedFormattedFunction: String =
@@ -96,7 +96,7 @@ internal class FunctionStubContentBuilderTest {
         )
 
         // when
-        val formattedFunction = buildFunction(testFunction)
+        val formattedFunction = buildFunctionToString(testFunction)
 
         // then
         val expectedFormattedFunction: String =
@@ -147,7 +147,7 @@ internal class FunctionStubContentBuilderTest {
         )
 
         // when
-        val formattedFunction = buildFunction(testFunction)
+        val formattedFunction = buildFunctionToString(testFunction)
 
         // then
         val expectedFormattedFunction: String = """
@@ -187,7 +187,7 @@ internal class FunctionStubContentBuilderTest {
         )
 
         // when
-        val formattedFunction = buildFunction(testFunction)
+        val formattedFunction = buildFunctionToString(testFunction)
 
         // then
         val expectedFormattedFunction: String = """
@@ -233,7 +233,7 @@ internal class FunctionStubContentBuilderTest {
         )
 
         // when
-        val formattedFunction = buildFunction(testFunction)
+        val formattedFunction = buildFunctionToString(testFunction)
 
         // then
         val expectedFormattedFunction: String = """
@@ -265,7 +265,7 @@ internal class FunctionStubContentBuilderTest {
         )
 
         // when
-        val formattedFunction = buildFunction(testFunction)
+        val formattedFunction = buildFunctionToString(testFunction)
 
         // then
         val expectedFormattedFunction: String = """
@@ -282,7 +282,7 @@ internal class FunctionStubContentBuilderTest {
         testFunction.isPure = true
 
         // when
-        val formattedFunction = buildFunction(testFunction)
+        val formattedFunction = buildFunctionToString(testFunction)
 
         // then
         val expectedFormattedFunction: String = """

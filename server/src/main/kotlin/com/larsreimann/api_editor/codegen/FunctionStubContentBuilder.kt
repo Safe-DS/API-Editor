@@ -21,6 +21,7 @@ import de.unibonn.simpleml.serializer.SerializationResult
 import de.unibonn.simpleml.serializer.serializeToFormattedString
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractType
+import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlResult
 
@@ -29,29 +30,15 @@ import de.unibonn.simpleml.simpleML.SmlResult
  *
  * @return The string containing the formatted function content
  */
-fun buildFunction(pythonFunction: AnnotatedPythonFunction): String {
-    val function = createSmlFunction(
-        name = pythonFunction.name,
-        annotations = buildList {
-            if (pythonFunction.isPure) {
-                add(createSmlAnnotationUse("Pure"))
-            }
-        },
-        parameters = pythonFunction.parameters.map { buildParameter(it) },
-        results = if (pythonFunction.results.isEmpty()) {
-            null
-        } else {
-            pythonFunction.results.map { buildResult(it) }
-        }
-    )
+// TODO: only for testing, remove
+fun buildFunctionToString(pythonFunction: AnnotatedPythonFunction): String {
+    val function = buildFunction(pythonFunction)
 
     // Required to serialize the function
     createSmlDummyResource(
         "functionStub",
         FileExtension.STUB,
-        createSmlCompilationUnit {
-            this.members += function
-        }
+        createSmlCompilationUnit(listOf(function))
     )
 
     return when (val result = function.serializeToFormattedString()) {
@@ -60,10 +47,23 @@ fun buildFunction(pythonFunction: AnnotatedPythonFunction): String {
     }
 }
 
+fun buildFunction(pythonFunction: AnnotatedPythonFunction): SmlFunction {
+    return createSmlFunction(
+        name = pythonFunction.name,
+        annotations = buildList {
+            if (pythonFunction.isPure) {
+                add(createSmlAnnotationUse("Pure"))
+            }
+        },
+        parameters = pythonFunction.parameters.map { buildParameter(it) },
+        results = pythonFunction.results.map { buildResult(it) }
+    )
+}
+
 fun buildParameter(pythonParameter: AnnotatedPythonParameter): SmlParameter {
     return createSmlParameter(
         name = pythonParameter.name,
-        type = buildSmlType(pythonParameter.typeInDocs),
+        type = buildType(pythonParameter.typeInDocs),
         defaultValue = pythonParameter.defaultValue?.let { buildDefaultValue(it) }
     )
 }
@@ -71,11 +71,11 @@ fun buildParameter(pythonParameter: AnnotatedPythonParameter): SmlParameter {
 fun buildResult(pythonResult: AnnotatedPythonResult): SmlResult {
     return createSmlResult(
         name = pythonResult.name,
-        type = buildSmlType(pythonResult.type)
+        type = buildType(pythonResult.type)
     )
 }
 
-fun buildSmlType(pythonType: String): SmlAbstractType {
+fun buildType(pythonType: String): SmlAbstractType {
     // TODO: create the correct type
     return when (pythonType) {
         "bool" -> createSmlNamedType(

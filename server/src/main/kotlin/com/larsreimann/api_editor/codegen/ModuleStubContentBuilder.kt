@@ -42,12 +42,9 @@ class ModuleStubContentBuilder
 
     private fun buildAllClasses(): String {
         val formattedClasses: MutableList<String> = ArrayList()
-        pythonModule.classes.forEach(Consumer { pythonClass: AnnotatedPythonClass? ->
-            val classStubContentBuilder = ClassStubContentBuilder(
-                pythonClass!!
-            )
-            formattedClasses.add(classStubContentBuilder.buildClass())
-        })
+        pythonModule.classes.forEach { pythonClass: AnnotatedPythonClass ->
+            formattedClasses.add(buildClassToString(pythonClass))
+        }
         return listToString(formattedClasses, 2)
     }
 
@@ -55,7 +52,7 @@ class ModuleStubContentBuilder
         val formattedFunctions: MutableList<String> = ArrayList()
         pythonModule.functions.forEach(
             Consumer { pythonFunction: AnnotatedPythonFunction? ->
-                formattedFunctions.add(buildFunction(pythonFunction!!))
+                formattedFunctions.add(buildFunctionToString(pythonFunction!!))
             }
         )
         return listToString(formattedFunctions, 2)
