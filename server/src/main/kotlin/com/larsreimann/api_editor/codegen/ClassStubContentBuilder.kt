@@ -20,10 +20,11 @@ import de.unibonn.simpleml.simpleML.SmlParameter
  *
  * @return The string containing the formatted class content
  */
+// TODO: only for testing, remove
 fun buildClassToString(pythonClass: AnnotatedPythonClass): String {
     val `class` = buildClass(pythonClass)
 
-    // Required to serialize the function
+    // Required to serialize the class
     createSmlDummyResource(
         "classStub",
         FileExtension.STUB,

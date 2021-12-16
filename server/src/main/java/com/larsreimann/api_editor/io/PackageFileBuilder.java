@@ -1,7 +1,6 @@
 package com.larsreimann.api_editor.io;
 
 import com.larsreimann.api_editor.codegen.ModuleAdapterContentBuilder;
-import com.larsreimann.api_editor.codegen.ModuleStubContentBuilder;
 import com.larsreimann.api_editor.model.AnnotatedPythonModule;
 import com.larsreimann.api_editor.model.AnnotatedPythonPackage;
 import kotlin.io.FilesKt;
@@ -15,6 +14,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
+import static com.larsreimann.api_editor.codegen.CompilationUnitStubContentBuilderKt.buildCompilationUnitToString;
 
 public class PackageFileBuilder {
     AnnotatedPythonPackage pythonPackage;
@@ -119,8 +120,6 @@ public class PackageFileBuilder {
     }
 
     private String buildStubContent(AnnotatedPythonModule pythonModule) {
-        ModuleStubContentBuilder moduleStubContentBuilder =
-            new ModuleStubContentBuilder(pythonModule);
-        return moduleStubContentBuilder.buildModuleContent();
+        return buildCompilationUnitToString(pythonModule);
     }
 }

@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class ModuleStubContentBuilderTest {
+internal class CompilationUnitStubContentBuilderTest {
 
     @BeforeEach
     fun initSimpleML() {
@@ -155,8 +155,7 @@ internal class ModuleStubContentBuilderTest {
         )
 
         // when
-        val moduleStubContentBuilder = ModuleStubContentBuilder(testModule)
-        val moduleContent = moduleStubContentBuilder.buildModuleContent()
+        val moduleContent = buildCompilationUnitToString(testModule)
 
         //then
         val expectedModuleContent: String = """
@@ -257,8 +256,7 @@ internal class ModuleStubContentBuilderTest {
         )
 
         // when
-        val moduleStubContentBuilder = ModuleStubContentBuilder(testModule)
-        val moduleContent = moduleStubContentBuilder.buildModuleContent()
+        val moduleContent = buildCompilationUnitToString(testModule)
 
         //then
         val expectedModuleContent: String = """
@@ -324,8 +322,7 @@ internal class ModuleStubContentBuilderTest {
         )
 
         // when
-        val moduleStubContentBuilder = ModuleStubContentBuilder(testModule)
-        val moduleContent = moduleStubContentBuilder.buildModuleContent()
+        val moduleContent = buildCompilationUnitToString(testModule)
 
         //then
         val expectedModuleContent: String = """
@@ -346,8 +343,7 @@ internal class ModuleStubContentBuilderTest {
         )
 
         // when
-        val moduleStubContentBuilder = ModuleStubContentBuilder(testModule)
-        val moduleContent = moduleStubContentBuilder.buildModuleContent()
+        val moduleContent = buildCompilationUnitToString(testModule)
 
         //then
         val expectedModuleContent: String = """
