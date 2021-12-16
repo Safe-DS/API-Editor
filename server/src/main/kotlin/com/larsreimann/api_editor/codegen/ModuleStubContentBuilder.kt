@@ -55,10 +55,7 @@ class ModuleStubContentBuilder
         val formattedFunctions: MutableList<String> = ArrayList()
         pythonModule.functions.forEach(
             Consumer { pythonFunction: AnnotatedPythonFunction? ->
-                val functionStubContentBuilder = FunctionStubContentBuilder(
-                    pythonFunction!!
-                )
-                formattedFunctions.add(functionStubContentBuilder.buildFunction())
+                formattedFunctions.add(buildFunction(pythonFunction!!))
             }
         )
         return listToString(formattedFunctions, 2)

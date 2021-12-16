@@ -133,7 +133,7 @@ class ClassStubContentBuilder(
 
     private fun buildFunctions(): String {
         return classMethods.joinToString(separator = "\n") {
-            FunctionStubContentBuilder(it).buildFunction()
+            buildFunction(it)
         }
     }
 }

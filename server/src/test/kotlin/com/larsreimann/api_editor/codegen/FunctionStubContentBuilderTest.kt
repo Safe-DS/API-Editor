@@ -30,8 +30,7 @@ internal class FunctionStubContentBuilderTest {
         )
 
         // when
-        val functionStubContentBuilder = FunctionStubContentBuilder(testFunction)
-        val formattedFunction = functionStubContentBuilder.buildFunction()
+        val formattedFunction = buildFunction(testFunction)
 
         // then
         val expectedFormattedFunction: String =
@@ -64,8 +63,7 @@ internal class FunctionStubContentBuilderTest {
         )
 
         // when
-        val functionStubContentBuilder = FunctionStubContentBuilder(testFunction)
-        val formattedFunction = functionStubContentBuilder.buildFunction()
+        val formattedFunction = buildFunction(testFunction)
 
         // then
         val expectedFormattedFunction: String =
@@ -98,8 +96,7 @@ internal class FunctionStubContentBuilderTest {
         )
 
         // when
-        val functionStubContentBuilder = FunctionStubContentBuilder(testFunction)
-        val formattedFunction = functionStubContentBuilder.buildFunction()
+        val formattedFunction = buildFunction(testFunction)
 
         // then
         val expectedFormattedFunction: String =
@@ -150,8 +147,7 @@ internal class FunctionStubContentBuilderTest {
         )
 
         // when
-        val functionStubContentBuilder = FunctionStubContentBuilder(testFunction)
-        val formattedFunction = functionStubContentBuilder.buildFunction()
+        val formattedFunction = buildFunction(testFunction)
 
         // then
         val expectedFormattedFunction: String = """
@@ -191,8 +187,7 @@ internal class FunctionStubContentBuilderTest {
         )
 
         // when
-        val functionStubContentBuilder = FunctionStubContentBuilder(testFunction)
-        val formattedFunction = functionStubContentBuilder.buildFunction()
+        val formattedFunction = buildFunction(testFunction)
 
         // then
         val expectedFormattedFunction: String = """
@@ -238,8 +233,7 @@ internal class FunctionStubContentBuilderTest {
         )
 
         // when
-        val functionStubContentBuilder = FunctionStubContentBuilder(testFunction)
-        val formattedFunction = functionStubContentBuilder.buildFunction()
+        val formattedFunction = buildFunction(testFunction)
 
         // then
         val expectedFormattedFunction: String = """
@@ -271,8 +265,7 @@ internal class FunctionStubContentBuilderTest {
         )
 
         // when
-        val functionStubContentBuilder = FunctionStubContentBuilder(testFunction)
-        val formattedFunction = functionStubContentBuilder.buildFunction()
+        val formattedFunction = buildFunction(testFunction)
 
         // then
         val expectedFormattedFunction: String = """
@@ -289,8 +282,7 @@ internal class FunctionStubContentBuilderTest {
         testFunction.isPure = true
 
         // when
-        val functionStubContentBuilder = FunctionStubContentBuilder(testFunction)
-        val formattedFunction = functionStubContentBuilder.buildFunction()
+        val formattedFunction = buildFunction(testFunction)
 
         // then
         val expectedFormattedFunction: String = """
