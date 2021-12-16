@@ -66,7 +66,8 @@ internal class ClassStubContentBuilderTest {
                                 )
                             )
                         )
-                    ), emptyList(),
+                    ),
+                    emptyList(),
                     true,
                     "description",
                     "fullDocstring", mutableListOf()
@@ -110,7 +111,8 @@ internal class ClassStubContentBuilderTest {
                             "typeInDocs",
                             "description", mutableListOf()
                         )
-                    ), emptyList(),
+                    ),
+                    emptyList(),
                     true,
                     "description",
                     "fullDocstring", mutableListOf()
@@ -129,7 +131,8 @@ internal class ClassStubContentBuilderTest {
                             "typeInDocs",
                             "description", mutableListOf()
                         )
-                    ), emptyList(),
+                    ),
+                    emptyList(),
                     true,
                     "description",
                     "fullDocstring", mutableListOf()
