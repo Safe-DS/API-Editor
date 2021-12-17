@@ -233,8 +233,7 @@ class ClassAdapterContentBuilderTest {
         testClass.accept(OriginalDeclarationProcessor.INSTANCE);
         RenameAnnotationProcessor renameAnnotationProcessor =
             new RenameAnnotationProcessor();
-        testClass.accept(renameAnnotationProcessor);
-        testClass = renameAnnotationProcessor.getCurrentClass();
+        testClass = testClass.accept(renameAnnotationProcessor);
 
         // when
         ClassAdapterContentBuilder classAdapterContentBuilder =

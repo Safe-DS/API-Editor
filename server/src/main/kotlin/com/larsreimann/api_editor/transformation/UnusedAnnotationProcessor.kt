@@ -1,34 +1,27 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.AbstractPackageDataTransformer
-import com.larsreimann.api_editor.model.AnnotatedPythonAttribute
 import com.larsreimann.api_editor.model.AnnotatedPythonClass
 import com.larsreimann.api_editor.model.AnnotatedPythonFunction
-import com.larsreimann.api_editor.model.AnnotatedPythonParameter
-import com.larsreimann.api_editor.model.AnnotatedPythonResult
 
 class UnusedAnnotationProcessor : AbstractPackageDataTransformer() {
-    override fun createNewClass(
-        oldClass: AnnotatedPythonClass,
-        newAttributes: List<AnnotatedPythonAttribute>,
-        newMethods: List<AnnotatedPythonFunction>
-    ): AnnotatedPythonClass? {
+    override fun shouldVisitAttributesIn(oldClass: AnnotatedPythonClass) = false
+    override fun shouldVisitParametersIn(oldFunction: AnnotatedPythonFunction) = false
+    override fun shouldVisitResultsIn(oldFunction: AnnotatedPythonFunction) = false
+
+    override fun createNewClassOnEnter(oldClass: AnnotatedPythonClass): AnnotatedPythonClass? {
         if (oldClass.hasAnnotationOfType("Unused")) {
             return null
         }
 
-        return super.createNewClass(oldClass, newAttributes, newMethods)
+        return super.createNewClassOnEnter(oldClass)
     }
 
-    override fun createNewFunction(
-        oldFunction: AnnotatedPythonFunction,
-        newParameters: List<AnnotatedPythonParameter>,
-        newResults: List<AnnotatedPythonResult>
-    ): AnnotatedPythonFunction? {
+    override fun createNewFunctionOnEnter(oldFunction: AnnotatedPythonFunction): AnnotatedPythonFunction? {
         if (oldFunction.hasAnnotationOfType("Unused")) {
             return null
         }
 
-        return super.createNewFunction(oldFunction, newParameters, newResults)
+        return super.createNewFunctionOnEnter(oldFunction)
     }
 }

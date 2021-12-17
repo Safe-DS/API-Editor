@@ -42,11 +42,11 @@ class RenameAnnotationProcessorTest {
         testPackage.getModules().add(testModule);
 
         // when
-        testPackage.accept(renameAnnotationProcessor);
         AnnotatedPythonPackage modifiedPackage =
-            renameAnnotationProcessor.getModifiedPackage();
+            testPackage.accept(renameAnnotationProcessor);
 
         // then
+        Assertions.assertNotNull(modifiedPackage);
         AnnotatedPythonClass renamedClass = modifiedPackage
             .getModules().get(0)
             .getClasses().get(0);
@@ -84,11 +84,11 @@ class RenameAnnotationProcessorTest {
         testPackage.getModules().add(testModule);
 
         // when
-        testPackage.accept(renameAnnotationProcessor);
         AnnotatedPythonPackage modifiedPackage =
-            renameAnnotationProcessor.getModifiedPackage();
+            testPackage.accept(renameAnnotationProcessor);
 
         // then
+        Assertions.assertNotNull(modifiedPackage);
         AnnotatedPythonFunction renamedFunction = modifiedPackage
             .getModules().get(0)
             .getFunctions().get(0);
@@ -122,7 +122,7 @@ class RenameAnnotationProcessorTest {
         AnnotatedPythonClass testClass =
             createAnnotatedPythonClass(
                 "testClass",
-                "testPackage.testModule.testClass",
+                "testModule.testClass",
                 new ArrayList<>(),
                 new ArrayList<>(),
                 classMethods
@@ -137,11 +137,11 @@ class RenameAnnotationProcessorTest {
         testPackage.getModules().add(testModule);
 
         // when
-        testPackage.accept(renameAnnotationProcessor);
         AnnotatedPythonPackage modifiedPackage =
-            renameAnnotationProcessor.getModifiedPackage();
+            testPackage.accept(renameAnnotationProcessor);
 
         // then
+        Assertions.assertNotNull(modifiedPackage);
         AnnotatedPythonFunction renamedFunction = modifiedPackage
             .getModules().get(0)
             .getClasses().get(0)
@@ -194,11 +194,11 @@ class RenameAnnotationProcessorTest {
         testPackage.getModules().add(testModule);
 
         // when
-        testPackage.accept(renameAnnotationProcessor);
         AnnotatedPythonPackage modifiedPackage =
-            renameAnnotationProcessor.getModifiedPackage();
+            testPackage.accept(renameAnnotationProcessor);
 
         // then
+        Assertions.assertNotNull(modifiedPackage);
         AnnotatedPythonClass renamedClass = modifiedPackage
             .getModules().get(0)
             .getClasses().get(0);
@@ -232,7 +232,7 @@ class RenameAnnotationProcessorTest {
         AnnotatedPythonFunction testFunction =
             createAnnotatedPythonFunction(
                 "testFunction",
-                "testPackage.testModule.testClass.testFunction",
+                "testModule.testClass.testFunction",
                 new ArrayList<>(),
                 pythonParameters
             );
@@ -245,7 +245,7 @@ class RenameAnnotationProcessorTest {
         AnnotatedPythonClass testClass =
             createAnnotatedPythonClass(
                 "testClass",
-                "testPackage.testModule.testClass",
+                "testModule.testClass",
                 new ArrayList<>(),
                 new ArrayList<>(),
                 classMethods
@@ -263,11 +263,11 @@ class RenameAnnotationProcessorTest {
         testPackage.getModules().add(testModule);
 
         // when
-        testPackage.accept(renameAnnotationProcessor);
         AnnotatedPythonPackage modifiedPackage =
-            renameAnnotationProcessor.getModifiedPackage();
+            testPackage.accept(renameAnnotationProcessor);
 
         // then
+        Assertions.assertNotNull(modifiedPackage);
         AnnotatedPythonParameter renamedParameter = modifiedPackage
             .getModules().get(0)
             .getClasses().get(0).
@@ -314,11 +314,11 @@ class RenameAnnotationProcessorTest {
         testPackage.getModules().add(testModule);
 
         // when
-        testPackage.accept(renameAnnotationProcessor);
         AnnotatedPythonPackage modifiedPackage =
-            renameAnnotationProcessor.getModifiedPackage();
+            testPackage.accept(renameAnnotationProcessor);
 
         // then
+        Assertions.assertNotNull(modifiedPackage);
         AnnotatedPythonParameter renamedParameter = modifiedPackage
             .getModules().get(0)
             .getFunctions().get(0)

@@ -121,8 +121,7 @@ fun doInfer(originalPythonPackage: AnnotatedPythonPackage): DoInferResult {
     modifiedPythonPackage = modifiedPythonPackage.accept(unusedAnnotationProcessor)!!
 
     val renameAnnotationProcessor = RenameAnnotationProcessor()
-    modifiedPythonPackage.accept(renameAnnotationProcessor)
-    modifiedPythonPackage = renameAnnotationProcessor.modifiedPackage
+    modifiedPythonPackage = modifiedPythonPackage.accept(renameAnnotationProcessor)!!
 
     val moveAnnotationProcessor = MoveAnnotationProcessor()
     modifiedPythonPackage.accept(moveAnnotationProcessor)

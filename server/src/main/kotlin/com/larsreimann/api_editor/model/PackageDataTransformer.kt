@@ -165,9 +165,10 @@ abstract class AbstractPackageDataTransformer : PackageDataTransformer {
         oldPackage: AnnotatedPythonPackage,
         newModules: List<AnnotatedPythonModule>
     ): AnnotatedPythonPackage? {
-        val result = oldPackage.copy(modules = newModules)
-        result.originalDeclaration = oldPackage.originalDeclaration ?: oldPackage
-        return result
+        return oldPackage.fullCopy(
+            modules = newModules,
+            originalDeclaration = oldPackage.originalDeclaration ?: oldPackage
+        )
     }
 
     override fun createNewModuleOnEnter(oldModule: AnnotatedPythonModule): AnnotatedPythonModule? {
@@ -180,10 +181,12 @@ abstract class AbstractPackageDataTransformer : PackageDataTransformer {
         newEnums: List<AnnotatedPythonEnum>,
         newFunctions: List<AnnotatedPythonFunction>
     ): AnnotatedPythonModule? {
-        val result = oldModule.copy(classes = newClasses, functions = newFunctions)
-        result.originalDeclaration = oldModule.originalDeclaration ?: oldModule
-        result.enums += newEnums
-        return result
+        return oldModule.fullCopy(
+            classes = newClasses,
+            enums = newEnums,
+            functions = newFunctions,
+            originalDeclaration = oldModule.originalDeclaration ?: oldModule
+        )
     }
 
     override fun createNewClassOnEnter(oldClass: AnnotatedPythonClass): AnnotatedPythonClass? {
@@ -195,10 +198,11 @@ abstract class AbstractPackageDataTransformer : PackageDataTransformer {
         newAttributes: List<AnnotatedPythonAttribute>,
         newMethods: List<AnnotatedPythonFunction>
     ): AnnotatedPythonClass? {
-        val result = oldClass.copy(methods = newMethods)
-        result.originalDeclaration = oldClass.originalDeclaration ?: oldClass
-        result.attributes += newAttributes
-        return result
+        return oldClass.fullCopy(
+            attributes = newAttributes,
+            methods = newMethods,
+            originalDeclaration = oldClass.originalDeclaration ?: oldClass
+        )
     }
 
     override fun createNewAttribute(oldAttribute: AnnotatedPythonAttribute): AnnotatedPythonAttribute? {
@@ -218,11 +222,11 @@ abstract class AbstractPackageDataTransformer : PackageDataTransformer {
         newParameters: List<AnnotatedPythonParameter>,
         newResults: List<AnnotatedPythonResult>
     ): AnnotatedPythonFunction? {
-        val result = oldFunction.copy(parameters = newParameters, results = newResults)
-        result.originalDeclaration = oldFunction.originalDeclaration ?: oldFunction
-        result.calledAfter += oldFunction.calledAfter
-        result.isPure = oldFunction.isPure
-        return result
+        return oldFunction.fullCopy(
+            parameters = newParameters,
+            results = newResults,
+            originalDeclaration = oldFunction.originalDeclaration ?: oldFunction
+        )
     }
 
     override fun createNewParameter(oldParameter: AnnotatedPythonParameter): AnnotatedPythonParameter? {

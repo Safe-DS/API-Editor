@@ -57,6 +57,26 @@ data class AnnotatedPythonPackage(
 
         return transformer.createNewPackageOnLeave(newPackageOnEnter, newModules)
     }
+
+    fun fullCopy(
+        distribution: String = this.distribution,
+        name: String = this.name,
+        version: String = this.version,
+        modules: List<AnnotatedPythonModule> = this.modules,
+        annotations: MutableList<EditorAnnotation> = this.annotations,
+        originalDeclaration: AnnotatedPythonPackage? = this.originalDeclaration
+    ): AnnotatedPythonPackage {
+
+        val result = copy(
+            distribution = distribution,
+            name = name,
+            version = version,
+            modules = modules,
+            annotations = annotations
+        )
+        result.originalDeclaration = originalDeclaration
+        return result
+    }
 }
 
 @Serializable
@@ -118,6 +138,30 @@ data class AnnotatedPythonModule(
         }
 
         return transformer.createNewModuleOnLeave(newModuleOnEnter, newClasses, newEnums, newFunctions)
+    }
+
+    fun fullCopy(
+        name: String = this.name,
+        imports: List<PythonImport> = this.imports,
+        fromImports: List<PythonFromImport> = this.fromImports,
+        classes: List<AnnotatedPythonClass> = this.classes,
+        enums: List<AnnotatedPythonEnum> = this.enums,
+        functions: List<AnnotatedPythonFunction> = this.functions,
+        annotations: MutableList<EditorAnnotation> = this.annotations,
+        originalDeclaration: AnnotatedPythonModule? = this.originalDeclaration
+    ): AnnotatedPythonModule {
+
+        val result = copy(
+            name = name,
+            imports = imports,
+            fromImports = fromImports,
+            classes = classes,
+            functions = functions,
+            annotations = annotations
+        )
+        result.originalDeclaration = originalDeclaration
+        result.enums += enums
+        return result
     }
 }
 
@@ -186,6 +230,34 @@ data class AnnotatedPythonClass(
 
         return transformer.createNewClassOnLeave(newClassOnEnter, newAttributes, newMethods)
     }
+
+    fun fullCopy(
+        name: String = this.name,
+        qualifiedName: String = this.qualifiedName,
+        decorators: List<String> = this.decorators,
+        superclasses: List<String> = this.superclasses,
+        attributes: List<AnnotatedPythonAttribute> = this.attributes,
+        methods: List<AnnotatedPythonFunction> = this.methods,
+        description: String = this.description,
+        fullDocstring: String = this.fullDocstring,
+        annotations: MutableList<EditorAnnotation> = this.annotations,
+        originalDeclaration: AnnotatedPythonClass? = this.originalDeclaration
+    ): AnnotatedPythonClass {
+
+        val result = copy(
+            name = name,
+            qualifiedName = qualifiedName,
+            decorators = decorators,
+            superclasses = superclasses,
+            methods = methods,
+            description = description,
+            fullDocstring = fullDocstring,
+            annotations = annotations
+        )
+        result.originalDeclaration = originalDeclaration
+        result.attributes += attributes
+        return result
+    }
 }
 
 data class AnnotatedPythonAttribute(
@@ -211,6 +283,32 @@ data class AnnotatedPythonAttribute(
 
     override fun accept(transformer: PackageDataTransformer): AnnotatedPythonAttribute? {
         return transformer.createNewAttribute(this)
+    }
+
+    fun fullCopy(
+        name: String = this.name,
+        qualifiedName: String = this.qualifiedName,
+        defaultValue: String = this.defaultValue,
+        isPublic: Boolean = this.isPublic,
+        typeInDocs: String = this.typeInDocs,
+        description: String = this.description,
+        annotations: MutableList<EditorAnnotation> = this.annotations,
+        boundary: Boundary? = this.boundary,
+        originalDeclaration: AnnotatedPythonAttribute? = this.originalDeclaration
+    ): AnnotatedPythonAttribute {
+
+        val result = copy(
+            name = name,
+            qualifiedName = qualifiedName,
+            defaultValue = defaultValue,
+            isPublic = isPublic,
+            typeInDocs = typeInDocs,
+            description = description,
+            annotations = annotations
+        )
+        result.originalDeclaration = originalDeclaration
+        result.boundary = boundary
+        return result
     }
 }
 
@@ -238,6 +336,21 @@ data class AnnotatedPythonEnum(
 
     override fun accept(transformer: PackageDataTransformer): AnnotatedPythonEnum? {
         return transformer.createNewEnum(this)
+    }
+
+    fun fullCopy(
+        name: String = this.name,
+        instances: List<PythonEnumInstance> = this.instances,
+        annotations: MutableList<EditorAnnotation> = this.annotations,
+        originalDeclaration: AnnotatedPythonEnum? = this.originalDeclaration
+    ): AnnotatedPythonEnum {
+        val result = copy(
+            name = name,
+            instances = instances,
+            annotations = annotations
+        )
+        result.originalDeclaration = originalDeclaration
+        return result
     }
 }
 
@@ -304,6 +417,38 @@ data class AnnotatedPythonFunction(
 
         return transformer.createNewFunctionOnLeave(newFunctionOnEnter, newParameters, newResults)
     }
+
+    fun fullCopy(
+        name: String = this.name,
+        qualifiedName: String = this.qualifiedName,
+        decorators: List<String> = this.decorators,
+        parameters: List<AnnotatedPythonParameter> = this.parameters,
+        results: List<AnnotatedPythonResult> = this.results,
+        isPublic: Boolean = this.isPublic,
+        description: String = this.description,
+        fullDocstring: String = this.fullDocstring,
+        annotations: MutableList<EditorAnnotation> = this.annotations,
+        calledAfter: MutableList<AnnotatedPythonFunction> = this.calledAfter,
+        isPure: Boolean = this.isPure,
+        originalDeclaration: AnnotatedPythonFunction? = this.originalDeclaration
+    ): AnnotatedPythonFunction {
+
+        val result = copy(
+            name = name,
+            qualifiedName = qualifiedName,
+            decorators = decorators,
+            parameters = parameters,
+            results = results,
+            isPublic = isPublic,
+            description = description,
+            fullDocstring = fullDocstring,
+            annotations = annotations,
+        )
+        result.originalDeclaration = originalDeclaration
+        result.calledAfter += calledAfter
+        result.isPure = isPure
+        return result
+    }
 }
 
 @Serializable
@@ -331,6 +476,34 @@ data class AnnotatedPythonParameter(
 
     override fun accept(transformer: PackageDataTransformer): AnnotatedPythonParameter? {
         return transformer.createNewParameter(this)
+    }
+
+    fun fullCopy(
+        name: String = this.name,
+        qualifiedName: String = this.qualifiedName,
+        defaultValue: String? = this.defaultValue,
+        assignedBy: PythonParameterAssignment = this.assignedBy,
+        isPublic: Boolean = this.isPublic,
+        typeInDocs: String = this.typeInDocs,
+        description: String = this.description,
+        annotations: MutableList<EditorAnnotation> = this.annotations,
+        boundary: Boundary? = this.boundary,
+        originalDeclaration: AnnotatedPythonParameter? = this.originalDeclaration
+    ): AnnotatedPythonParameter {
+
+        val result = copy(
+            name = name,
+            qualifiedName = qualifiedName,
+            defaultValue = defaultValue,
+            assignedBy = assignedBy,
+            isPublic = isPublic,
+            typeInDocs = typeInDocs,
+            description = description,
+            annotations = annotations
+        )
+        result.originalDeclaration = originalDeclaration
+        result.boundary = boundary
+        return result
     }
 }
 
@@ -362,5 +535,27 @@ data class AnnotatedPythonResult(
 
     override fun accept(transformer: PackageDataTransformer): AnnotatedPythonResult? {
         return transformer.createNewResult(this)
+    }
+
+    fun fullCopy(
+        name: String = this.name,
+        type: String = this.type,
+        typeInDocs: String = this.typeInDocs,
+        description: String = this.description,
+        annotations: MutableList<EditorAnnotation> = this.annotations,
+        boundary: Boundary? = this.boundary,
+        originalDeclaration: AnnotatedPythonResult? = this.originalDeclaration
+    ): AnnotatedPythonResult {
+
+        val result = copy(
+            name = name,
+            type = type,
+            typeInDocs = typeInDocs,
+            description = description,
+            annotations = annotations
+        )
+        result.originalDeclaration = originalDeclaration
+        result.boundary = boundary
+        return result
     }
 }
