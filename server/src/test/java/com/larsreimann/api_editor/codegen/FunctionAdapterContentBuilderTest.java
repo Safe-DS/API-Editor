@@ -421,8 +421,8 @@ class FunctionAdapterContentBuilderTest {
         testFunction.accept(OriginalDeclarationProcessor.INSTANCE);
         RenameAnnotationProcessor renameAnnotationProcessor =
             new RenameAnnotationProcessor();
-        testFunction.accept(renameAnnotationProcessor);
-        testFunction = renameAnnotationProcessor.getCurrentFunction();
+
+        testFunction = testFunction.accept(renameAnnotationProcessor);
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =

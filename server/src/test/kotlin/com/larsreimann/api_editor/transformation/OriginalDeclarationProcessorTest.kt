@@ -1,10 +1,10 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.UnusedAnnotation
-import com.larsreimann.api_editor.util.createAnnotatedPythonClass
-import com.larsreimann.api_editor.util.createAnnotatedPythonFunction
-import com.larsreimann.api_editor.util.createAnnotatedPythonModule
-import com.larsreimann.api_editor.util.createAnnotatedPythonPackage
+import com.larsreimann.api_editor.util.createPythonClass
+import com.larsreimann.api_editor.util.createPythonFunction
+import com.larsreimann.api_editor.util.createPythonModule
+import com.larsreimann.api_editor.util.createPythonPackage
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
@@ -12,15 +12,15 @@ class OriginalDeclarationProcessorTest {
     @Test
     fun `should add original declaration to function`() {
         // given
-        val testFunction = createAnnotatedPythonFunction(
+        val testFunction = createPythonFunction(
             name = "testFunction",
             qualifiedName = "testPackage/testFunction",
         )
 
-        val testPackage = createAnnotatedPythonPackage(
+        val testPackage = createPythonPackage(
             "testPackage",
             modules = listOf(
-                createAnnotatedPythonModule(
+                createPythonModule(
                     "testModule",
                     functions = listOf(testFunction)
                 )
@@ -41,15 +41,15 @@ class OriginalDeclarationProcessorTest {
     @Test
     fun `should add original declaration to class`() {
         // given
-        val testClass = createAnnotatedPythonClass(
+        val testClass = createPythonClass(
             name = "testClass",
             qualifiedName = "testPackage/testClass",
         ).apply { annotations += UnusedAnnotation }
 
-        val testPackage = createAnnotatedPythonPackage(
+        val testPackage = createPythonPackage(
             "testPackage",
             modules = listOf(
-                createAnnotatedPythonModule(
+                createPythonModule(
                     "testModule",
                     classes = listOf(testClass)
                 )
@@ -69,21 +69,21 @@ class OriginalDeclarationProcessorTest {
     @Test
     fun `should add original declaration to class method`() {
         // given
-        val testMethod = createAnnotatedPythonFunction(
+        val testMethod = createPythonFunction(
             name = "testMethod",
             qualifiedName = "testPackage/testClass/testMethod",
         )
 
-        val testClass = createAnnotatedPythonClass(
+        val testClass = createPythonClass(
             name = "testClass",
             qualifiedName = "testPackage/testClass",
             methods = listOf(testMethod)
         )
 
-        val testPackage = createAnnotatedPythonPackage(
+        val testPackage = createPythonPackage(
             "testPackage",
             modules = listOf(
-                createAnnotatedPythonModule(
+                createPythonModule(
                     "testModule",
                     classes = listOf(testClass)
                 )

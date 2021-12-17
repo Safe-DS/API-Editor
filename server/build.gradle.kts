@@ -7,6 +7,7 @@ val xtextVersion: String by project
 
 plugins {
     application
+    `java-test-fixtures`
     kotlin("jvm")
     kotlin("plugin.serialization")
     id("com.github.johnrengelman.shadow")

@@ -1,9 +1,9 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.PureAnnotation
-import com.larsreimann.api_editor.util.createAnnotatedPythonFunction
-import com.larsreimann.api_editor.util.createAnnotatedPythonModule
-import com.larsreimann.api_editor.util.createAnnotatedPythonPackage
+import com.larsreimann.api_editor.util.createPythonFunction
+import com.larsreimann.api_editor.util.createPythonModule
+import com.larsreimann.api_editor.util.createPythonPackage
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
@@ -12,14 +12,14 @@ class PureAnnotationProcessorTest {
 
     @Test
     fun `should mark functions as pure`() {
-        val annotatedFunction = createAnnotatedPythonFunction("testFunction").apply {
+        val annotatedFunction = createPythonFunction("testFunction").apply {
             annotations += PureAnnotation
         }
 
-        val annotatedPackage = createAnnotatedPythonPackage(
+        val annotatedPackage = createPythonPackage(
             "testPackage",
             modules = listOf(
-                createAnnotatedPythonModule(
+                createPythonModule(
                     "testModule",
                     functions = listOf(annotatedFunction)
                 )
@@ -33,14 +33,14 @@ class PureAnnotationProcessorTest {
 
     @Test
     fun `should remove all PureAnnotations from the annotation list`() {
-        val annotatedFunction = createAnnotatedPythonFunction("testFunction").apply {
+        val annotatedFunction = createPythonFunction("testFunction").apply {
             annotations += PureAnnotation
         }
 
-        val annotatedPackage = createAnnotatedPythonPackage(
+        val annotatedPackage = createPythonPackage(
             "testPackage",
             modules = listOf(
-                createAnnotatedPythonModule(
+                createPythonModule(
                     "testModule",
                     functions = listOf(annotatedFunction)
                 )

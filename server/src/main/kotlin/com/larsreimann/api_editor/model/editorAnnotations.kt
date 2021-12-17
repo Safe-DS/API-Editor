@@ -12,9 +12,10 @@ import kotlinx.serialization.Transient
 sealed class EditorAnnotation {
     protected abstract val validTargets: Set<AnnotationTarget>
 
-    fun getType(): String {
-        return this::class.simpleName?.removeSuffix("Annotation") ?: ""
-    }
+    val type: String
+        get() {
+            return this::class.simpleName?.removeSuffix("Annotation") ?: ""
+        }
 
     fun isApplicableTo(target: AnnotationTarget) = target in validTargets
 }

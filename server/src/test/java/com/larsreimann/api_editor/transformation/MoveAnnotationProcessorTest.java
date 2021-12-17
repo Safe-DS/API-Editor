@@ -9,11 +9,11 @@ import com.larsreimann.api_editor.model.MoveAnnotation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonClass;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonFunction;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonModule;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonPackage;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonParameter;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonClass;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonFunction;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonModule;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonPackage;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonParameter;
 
 class MoveAnnotationProcessorTest {
     @Test
@@ -23,21 +23,21 @@ class MoveAnnotationProcessorTest {
             new MoveAnnotationProcessor();
 
         AnnotatedPythonParameter pythonParameter =
-            createAnnotatedPythonParameter("testParameter");
+            createPythonParameter("testParameter");
 
         AnnotatedPythonFunction testFunction =
-            createAnnotatedPythonFunction("testFunction");
+            createPythonFunction("testFunction");
         testFunction.getParameters().add(pythonParameter);
         testFunction.getAnnotations().add(
             new MoveAnnotation("newModule")
         );
 
         AnnotatedPythonModule testModule =
-            createAnnotatedPythonModule("testModule");
+            createPythonModule("testModule");
         testModule.getFunctions().add(testFunction);
 
         AnnotatedPythonPackage testPackage =
-            createAnnotatedPythonPackage("testPackage");
+            createPythonPackage("testPackage");
         testPackage.getModules().add(testModule);
 
         // when
@@ -73,21 +73,21 @@ class MoveAnnotationProcessorTest {
             new MoveAnnotationProcessor();
 
         AnnotatedPythonParameter pythonParameter =
-            createAnnotatedPythonParameter("testParameter");
+            createPythonParameter("testParameter");
 
         AnnotatedPythonFunction testFunction =
-            createAnnotatedPythonFunction("testFunction");
+            createPythonFunction("testFunction");
         testFunction.getParameters().add(pythonParameter);
         testFunction.getAnnotations().add(
             new MoveAnnotation("newModule")
         );
 
         AnnotatedPythonModule testModule =
-            createAnnotatedPythonModule("testModule");
+            createPythonModule("testModule");
         testModule.getFunctions().add(testFunction);
 
         AnnotatedPythonPackage testPackage =
-            createAnnotatedPythonPackage("testPackage");
+            createPythonPackage("testPackage");
         testPackage.getModules().add(testModule);
 
         // when
@@ -110,25 +110,25 @@ class MoveAnnotationProcessorTest {
             new MoveAnnotationProcessor();
 
         AnnotatedPythonParameter pythonParameter =
-            createAnnotatedPythonParameter("testParameter");
+            createPythonParameter("testParameter");
 
         AnnotatedPythonFunction testFunction =
-            createAnnotatedPythonFunction("testFunction");
+            createPythonFunction("testFunction");
         testFunction.getParameters().add(pythonParameter);
 
         AnnotatedPythonClass testClass =
-            createAnnotatedPythonClass("testClass");
+            createPythonClass("testClass");
         testClass.getMethods().add(testFunction);
         testClass.getAnnotations().add(
             new MoveAnnotation("newModule")
         );
 
         AnnotatedPythonModule testModule =
-            createAnnotatedPythonModule("testModule");
+            createPythonModule("testModule");
         testModule.getClasses().add(testClass);
 
         AnnotatedPythonPackage testPackage =
-            createAnnotatedPythonPackage("testPackage");
+            createPythonPackage("testPackage");
         testPackage.getModules().add(testModule);
 
         // when
@@ -172,25 +172,25 @@ class MoveAnnotationProcessorTest {
             new MoveAnnotationProcessor();
 
         AnnotatedPythonParameter pythonParameter =
-            createAnnotatedPythonParameter("testParameter");
+            createPythonParameter("testParameter");
 
         AnnotatedPythonFunction testFunction =
-            createAnnotatedPythonFunction("testFunction");
+            createPythonFunction("testFunction");
         testFunction.getParameters().add(pythonParameter);
 
         AnnotatedPythonClass testClass =
-            createAnnotatedPythonClass("testClass");
+            createPythonClass("testClass");
         testClass.getMethods().add(testFunction);
         testClass.getAnnotations().add(
             new MoveAnnotation("newModule")
         );
 
         AnnotatedPythonModule testModule =
-            createAnnotatedPythonModule("testModule");
+            createPythonModule("testModule");
         testModule.getClasses().add(testClass);
 
         AnnotatedPythonPackage testPackage =
-            createAnnotatedPythonPackage("testPackage");
+            createPythonPackage("testPackage");
         testPackage.getModules().add(testModule);
 
         // when
@@ -213,23 +213,23 @@ class MoveAnnotationProcessorTest {
             new MoveAnnotationProcessor();
 
         AnnotatedPythonClass testClass =
-            createAnnotatedPythonClass("testClass");
+            createPythonClass("testClass");
         testClass.getAnnotations().add(
             new MoveAnnotation("existingModule")
         );
 
         AnnotatedPythonModule testModule =
-            createAnnotatedPythonModule("testModule");
+            createPythonModule("testModule");
         testModule.getClasses().add(testClass);
 
         AnnotatedPythonPackage testPackage =
-            createAnnotatedPythonPackage("testPackage");
+            createPythonPackage("testPackage");
         testPackage.getModules().add(testModule);
 
         AnnotatedPythonClass classInExistingModule =
-            createAnnotatedPythonClass("existingClass");
+            createPythonClass("existingClass");
         AnnotatedPythonModule existingModule =
-            createAnnotatedPythonModule("existingModule");
+            createPythonModule("existingModule");
         existingModule.getClasses().add(classInExistingModule);
 
         testPackage.getModules().add(existingModule);
@@ -257,20 +257,20 @@ class MoveAnnotationProcessorTest {
             new MoveAnnotationProcessor();
 
         AnnotatedPythonFunction testFunction =
-            createAnnotatedPythonFunction("testFunction");
+            createPythonFunction("testFunction");
         testFunction.getAnnotations().add(
             new MoveAnnotation("existingModule")
         );
 
         AnnotatedPythonModule testModule =
-            createAnnotatedPythonModule("testModule");
+            createPythonModule("testModule");
         testModule.getFunctions().add(testFunction);
 
         AnnotatedPythonModule existingModule =
-            createAnnotatedPythonModule("existingModule");
+            createPythonModule("existingModule");
 
         AnnotatedPythonPackage testPackage =
-            createAnnotatedPythonPackage("testPackage");
+            createPythonPackage("testPackage");
         testPackage.getModules().add(testModule);
         testPackage.getModules().add(existingModule);
 

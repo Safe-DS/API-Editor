@@ -12,7 +12,7 @@ import com.larsreimann.api_editor.model.PythonImport
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 
 @JvmOverloads
-fun createAnnotatedPythonPackage(
+fun createPythonPackage(
     name: String,
     distribution: String = "testDistribution",
     version: String = "1.0.0",
@@ -30,7 +30,7 @@ fun createAnnotatedPythonPackage(
 }
 
 @JvmOverloads
-fun createAnnotatedPythonModule(
+fun createPythonModule(
     name: String,
     imports: List<PythonImport> = emptyList(),
     fromImports: List<PythonFromImport> = emptyList(),
@@ -50,7 +50,7 @@ fun createAnnotatedPythonModule(
 }
 
 @JvmOverloads
-fun createAnnotatedPythonClass(
+fun createPythonClass(
     name: String,
     qualifiedName: String = name,
     decorators: List<String> = emptyList(),
@@ -76,7 +76,7 @@ fun createAnnotatedPythonClass(
 }
 
 @JvmOverloads
-fun createAnnotatedPythonFunction(
+fun createPythonFunction(
     name: String,
     qualifiedName: String = name,
     decorators: List<String> = emptyList(),
@@ -104,7 +104,7 @@ fun createAnnotatedPythonFunction(
 }
 
 @JvmOverloads
-fun createAnnotatedPythonParameter(
+fun createPythonParameter(
     name: String,
     qualifiedName: String = name,
     defaultValue: String? = "",
