@@ -30,10 +30,11 @@ class RenameAnnotationProcessor : AbstractPackageDataTransformer() {
     }
 
     override fun createNewClassOnEnter(oldClass: AnnotatedPythonClass): AnnotatedPythonClass {
-        val result = oldClass.rename {
+        val result = oldClass.rename { newName ->
             oldClass.fullCopy(
-                name = it,
-                qualifiedName = qualifiedName(it),
+                name = newName,
+                qualifiedName = qualifiedName(newName),
+                annotations = oldClass.annotations.filterNot { it is RenameAnnotation }.toMutableList(),
                 originalDeclaration = oldClass.originalDeclaration ?: oldClass
             )
         }
@@ -52,10 +53,11 @@ class RenameAnnotationProcessor : AbstractPackageDataTransformer() {
     }
 
     override fun createNewFunctionOnEnter(oldFunction: AnnotatedPythonFunction): AnnotatedPythonFunction {
-        val result = oldFunction.rename {
+        val result = oldFunction.rename { newName ->
             oldFunction.fullCopy(
-                name = it,
-                qualifiedName = qualifiedName(it),
+                name = newName,
+                qualifiedName = qualifiedName(newName),
+                annotations = oldFunction.annotations.filterNot { it is RenameAnnotation }.toMutableList(),
                 originalDeclaration = oldFunction.originalDeclaration ?: oldFunction
             )
         }

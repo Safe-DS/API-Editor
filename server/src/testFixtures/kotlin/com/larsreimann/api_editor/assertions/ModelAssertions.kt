@@ -3,7 +3,8 @@ package com.larsreimann.api_editor.assertions
 import com.larsreimann.api_editor.model.AnnotatedPythonDeclaration
 
 /**
- * Finds a unique descendant of the root with given type and name or throws an assertion error.
+ * Finds a unique descendant of the root with given type and name. If none or multiple matching descendants are found,
+ * an assertion error is thrown.
  */
 inline fun <reified T : AnnotatedPythonDeclaration> AnnotatedPythonDeclaration.findUniqueDescendantOrFail(
     name: String
@@ -12,8 +13,8 @@ inline fun <reified T : AnnotatedPythonDeclaration> AnnotatedPythonDeclaration.f
 }
 
 /**
- * Finds a unique descendant of the root with given type and name or throws an assertion error. This variant can be
- * called from Java:
+ * Finds a unique descendant of the root with given type and name. If none or multiple matching descendants are found,
+ * an assertion error is thrown. This variant can be called from Java:
  *
  * ```java
  * ModelAssertionsKt.findUniqueDescendantOrFail(
@@ -36,7 +37,7 @@ fun <T: AnnotatedPythonDeclaration> findUniqueDescendantOrFail(
     return when (candidates.size) {
         1 -> candidates.first()
         else -> throw AssertionError(
-            "Expected a unique descendant with type ${type::class.java.simpleName} and name $name but found ${candidates.size}."
+            "Expected a unique descendant with type '${type.simpleName}' and name '$name' but found ${candidates.size}."
         )
     }
 }

@@ -1,21 +1,30 @@
 package com.larsreimann.api_editor.transformation
 
+import com.larsreimann.api_editor.assertions.findUniqueDescendantOrFail
+import com.larsreimann.api_editor.model.AnnotatedPythonClass
+import com.larsreimann.api_editor.model.AnnotatedPythonFunction
+import com.larsreimann.api_editor.model.AnnotatedPythonPackage
+import com.larsreimann.api_editor.model.AnnotatedPythonParameter
 import com.larsreimann.api_editor.model.RenameAnnotation
 import com.larsreimann.api_editor.util.createPythonClass
 import com.larsreimann.api_editor.util.createPythonFunction
 import com.larsreimann.api_editor.util.createPythonModule
 import com.larsreimann.api_editor.util.createPythonPackage
 import com.larsreimann.api_editor.util.createPythonParameter
+import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 internal class RenameAnnotationProcessorTest {
-    @Test
-    fun `should rename class`() {
-        // given
-        val testPackage = createPythonPackage(
+
+    private lateinit var testPackage: AnnotatedPythonPackage
+
+    @BeforeEach
+    fun resetTestPackage() {
+        testPackage = createPythonPackage(
             name = "testPackage",
             modules = listOf(
                 createPythonModule(
@@ -24,12 +33,42 @@ internal class RenameAnnotationProcessorTest {
                         createPythonClass(
                             name = "testClass",
                             qualifiedName = "testModule.testClass",
-                            annotations = mutableListOf(RenameAnnotation("renamedTestClass"))
+                            methods = listOf(
+                                createPythonFunction(
+                                    name = "testMethod",
+                                    qualifiedName = "testModule.testClass.testMethod",
+                                    parameters = listOf(
+                                        createPythonParameter(
+                                            name = "testParameter",
+                                            qualifiedName = "testModule.testClass.testMethod.testParameter",
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    ),
+                    functions = listOf(
+                        createPythonFunction(
+                            name = "testFunction",
+                            qualifiedName = "testModule.testFunction",
+                            parameters = listOf(
+                                createPythonParameter(
+                                    name = "testParameter",
+                                    qualifiedName = "testModule.testClass.testMethod.testParameter",
+                                )
+                            )
                         )
                     )
                 )
             )
         )
+    }
+
+    @Test
+    fun `should rename class`() {
+        // given
+        val testClass = testPackage.findUniqueDescendantOrFail<AnnotatedPythonClass>("testClass")
+        testClass.annotations += RenameAnnotation("renamedTestClass")
 
         // when
         val modifiedPackage = testPackage.accept(RenameAnnotationProcessor())
@@ -47,21 +86,8 @@ internal class RenameAnnotationProcessorTest {
     @Test
     fun `should rename global function`() {
         // given
-        val testPackage = createPythonPackage(
-            name = "testPackage",
-            modules = listOf(
-                createPythonModule(
-                    name = "testModule",
-                    functions = listOf(
-                        createPythonFunction(
-                            name = "testFunction",
-                            qualifiedName = "testModule.testFunction",
-                            annotations = mutableListOf(RenameAnnotation("renamedTestFunction"))
-                        )
-                    )
-                )
-            )
-        )
+        val testFunction = testPackage.findUniqueDescendantOrFail<AnnotatedPythonFunction>("testFunction")
+        testFunction.annotations += RenameAnnotation("renamedTestFunction")
 
         // when
         val modifiedPackage = testPackage.accept(RenameAnnotationProcessor())
@@ -79,26 +105,8 @@ internal class RenameAnnotationProcessorTest {
     @Test
     fun `should rename method`() {
         // given
-        val testPackage = createPythonPackage(
-            name = "testPackage",
-            modules = listOf(
-                createPythonModule(
-                    name = "testModule",
-                    classes = listOf(
-                        createPythonClass(
-                            name = "testClass",
-                            methods = listOf(
-                                createPythonFunction(
-                                    name = "testMethod",
-                                    qualifiedName = "testModule.testClass.testMethod",
-                                    annotations = mutableListOf(RenameAnnotation("renamedTestMethod"))
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+        val testMethod = testPackage.findUniqueDescendantOrFail<AnnotatedPythonFunction>("testMethod")
+        testMethod.annotations += RenameAnnotation("renamedTestMethod")
 
         // when
         val modifiedPackage = testPackage.accept(RenameAnnotationProcessor())
@@ -117,28 +125,11 @@ internal class RenameAnnotationProcessorTest {
     @Test
     fun `should rename class and its method`() {
         // given
-        val testPackage = createPythonPackage(
-            name = "testPackage",
-            modules = listOf(
-                createPythonModule(
-                    name = "testModule",
-                    classes = listOf(
-                        createPythonClass(
-                            name = "testClass",
-                            qualifiedName = "testModule.testClass",
-                            annotations = mutableListOf(RenameAnnotation("renamedTestClass")),
-                            methods = listOf(
-                                createPythonFunction(
-                                    name = "testMethod",
-                                    qualifiedName = "testModule.testClass.testMethod",
-                                    annotations = mutableListOf(RenameAnnotation("renamedTestMethod"))
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+        val testClass = testPackage.findUniqueDescendantOrFail<AnnotatedPythonClass>("testClass")
+        testClass.annotations += RenameAnnotation("renamedTestClass")
+
+        val testMethod = testClass.findUniqueDescendantOrFail<AnnotatedPythonFunction>("testMethod")
+        testMethod.annotations += RenameAnnotation("renamedTestMethod")
 
         // when
         val modifiedPackage = testPackage.accept(RenameAnnotationProcessor())
@@ -161,35 +152,14 @@ internal class RenameAnnotationProcessorTest {
     @Test
     fun `should rename class, method, and parameter`() {
         // given
-        val testPackage = createPythonPackage(
-            name = "testPackage",
-            modules = listOf(
-                createPythonModule(
-                    name = "testModule",
-                    classes = listOf(
-                        createPythonClass(
-                            name = "testClass",
-                            qualifiedName = "testModule.testClass",
-                            annotations = mutableListOf(RenameAnnotation("renamedTestClass")),
-                            methods = listOf(
-                                createPythonFunction(
-                                    name = "testMethod",
-                                    qualifiedName = "testModule.testClass.testMethod",
-                                    annotations = mutableListOf(RenameAnnotation("renamedTestMethod")),
-                                    parameters = listOf(
-                                        createPythonParameter(
-                                            name = "testParameter",
-                                            qualifiedName = "testModule.testClass.testMethod.testParameter",
-                                            annotations = mutableListOf(RenameAnnotation("renamedTestParameter"))
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
+        val testClass = testPackage.findUniqueDescendantOrFail<AnnotatedPythonClass>("testClass")
+        testClass.annotations += RenameAnnotation("renamedTestClass")
+
+        val testMethod = testClass.findUniqueDescendantOrFail<AnnotatedPythonFunction>("testMethod")
+        testMethod.annotations += RenameAnnotation("renamedTestMethod")
+
+        val testParameter = testMethod.findUniqueDescendantOrFail<AnnotatedPythonParameter>("testParameter")
+        testParameter.annotations += RenameAnnotation("renamedTestParameter")
 
         // when
         val modifiedPackage = testPackage.accept(RenameAnnotationProcessor())
@@ -217,29 +187,11 @@ internal class RenameAnnotationProcessorTest {
     @Test
     fun `should rename global function and parameter`() {
         // given
-        val testPackage = createPythonPackage(
-            name = "testPackage",
-            modules = listOf(
-                createPythonModule(
-                    name = "testModule",
-                    functions = listOf(
-                        createPythonFunction(
-                            name = "testMethod",
-                            qualifiedName = "testModule.testClass.testFunction",
-                            annotations = mutableListOf(RenameAnnotation("renamedTestFunction")),
-                            parameters = listOf(
-                                createPythonParameter(
-                                    name = "testParameter",
-                                    qualifiedName = "testModule.testClass.testFunction.testParameter",
-                                    annotations = mutableListOf(RenameAnnotation("renamedTestParameter"))
-                                )
+        val testFunction = testPackage.findUniqueDescendantOrFail<AnnotatedPythonFunction>("testFunction")
+        testFunction.annotations += RenameAnnotation("renamedTestFunction")
 
-                            )
-                        )
-                    )
-                )
-            )
-        )
+        val testParameter = testFunction.findUniqueDescendantOrFail<AnnotatedPythonParameter>("testParameter")
+        testParameter.annotations += RenameAnnotation("renamedTestParameter")
 
         // when
         val modifiedPackage = testPackage.accept(RenameAnnotationProcessor())
@@ -257,5 +209,61 @@ internal class RenameAnnotationProcessorTest {
         val (parameterName, parameterQualifiedName) = modifiedPackage.modules[0].functions[0].parameters[0]
         parameterName shouldBe "renamedTestParameter"
         parameterQualifiedName shouldBe "testModule.renamedTestFunction.renamedTestParameter"
+    }
+
+    @Test
+    fun `should remove all RenameAnnotations from the annotation list of classes`() {
+        // given
+        val testClass = testPackage.findUniqueDescendantOrFail<AnnotatedPythonClass>("testClass")
+        testClass.annotations += RenameAnnotation("renamedTestClass")
+
+        // when
+        val modifiedPackage = testPackage.accept(RenameAnnotationProcessor())
+
+        // then
+        modifiedPackage.shouldNotBeNull()
+        modifiedPackage.modules.shouldHaveSize(1)
+        modifiedPackage.modules[0].classes.shouldHaveSize(1)
+
+        val renameAnnotations = modifiedPackage.modules[0].classes[0].annotations.filterIsInstance<RenameAnnotation>()
+        renameAnnotations.shouldBeEmpty()
+    }
+
+    @Test
+    fun `should remove all RenameAnnotations from the annotation list of functions`() {
+        // given
+        val testFunction = testPackage.findUniqueDescendantOrFail<AnnotatedPythonFunction>("testFunction")
+        testFunction.annotations += RenameAnnotation("renamedTestFunction")
+
+        // when
+        val modifiedPackage = testPackage.accept(RenameAnnotationProcessor())
+
+        // then
+        modifiedPackage.shouldNotBeNull()
+        modifiedPackage.modules.shouldHaveSize(1)
+        modifiedPackage.modules[0].classes.shouldHaveSize(1)
+
+        val renameAnnotations = modifiedPackage.modules[0].functions[0].annotations.filterIsInstance<RenameAnnotation>()
+        renameAnnotations.shouldBeEmpty()
+    }
+
+    @Test
+    fun `should remove all RenameAnnotations from the annotation list of parameters`() {
+        // given
+        val testFunction = testPackage.findUniqueDescendantOrFail<AnnotatedPythonFunction>("testFunction")
+        val testParameter = testFunction.findUniqueDescendantOrFail<AnnotatedPythonParameter>("testParameter")
+        testParameter.annotations += RenameAnnotation("renamedTestParameter")
+
+        // when
+        val modifiedPackage = testPackage.accept(RenameAnnotationProcessor())
+
+        // then
+        modifiedPackage.shouldNotBeNull()
+        modifiedPackage.modules.shouldHaveSize(1)
+        modifiedPackage.modules[0].classes.shouldHaveSize(1)
+
+        val renameAnnotations =
+            modifiedPackage.modules[0].functions[0].parameters[0].annotations.filterIsInstance<RenameAnnotation>()
+        renameAnnotations.shouldBeEmpty()
     }
 }
