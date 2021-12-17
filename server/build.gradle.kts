@@ -1,7 +1,7 @@
 val javaVersion: String by project
 val ktorVersion: String by project
 val logbackVersion: String by project
-
+val xtextVersion: String by project
 
 // Plugins -------------------------------------------------------------------------------------------------------------
 
@@ -22,7 +22,6 @@ java {
     }
 }
 
-
 // Dependencies --------------------------------------------------------------------------------------------------------
 
 dependencies {
@@ -31,6 +30,10 @@ dependencies {
     implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-server-host-common:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
+
+    // We can later pull this from Maven Central (or some other repo) once published
+    implementation(files("lib/de.unibonn.simpleml-1.0.0-SNAPSHOT.jar"))
+    implementation("org.eclipse.xtext:org.eclipse.xtext:$xtextVersion")
 
     testImplementation(kotlin("test"))
     testImplementation("io.kotest:kotest-assertions-core-jvm:5.0.2")
