@@ -87,9 +87,7 @@ class RenameAnnotationProcessor : AbstractPackageDataTransformer() {
         val renameAnnotations = this.annotations.filterIsInstance<RenameAnnotation>()
         return when {
             renameAnnotations.isEmpty() -> this
-            else -> {
-                creator(renameAnnotations[0].newName)
-            }
+            else -> creator(renameAnnotations[0].newName)
         }
     }
 
