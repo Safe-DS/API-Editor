@@ -10,7 +10,7 @@ sealed class AnnotatedPythonDeclaration {
     abstract val originalDeclaration: AnnotatedPythonDeclaration?
 
     abstract fun accept(visitor: PackageDataVisitor)
-    abstract fun accept(transformer: PackageDataTransformer): AnnotatedPythonDeclaration
+    abstract fun accept(transformer: PackageDataTransformer): AnnotatedPythonDeclaration?
 }
 
 @Serializable
@@ -35,9 +35,9 @@ data class AnnotatedPythonPackage(
         visitor.leavePythonPackage(this)
     }
 
-    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonPackage {
+    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonPackage? {
         val newModules = when {
-            transformer.shouldVisitModulesIn(this) -> this.modules.map { it.accept(transformer) }
+            transformer.shouldVisitModulesIn(this) -> this.modules.mapNotNull { it.accept(transformer) }
             else -> this.modules
         }
 
@@ -73,19 +73,19 @@ data class AnnotatedPythonModule(
         visitor.leavePythonModule(this)
     }
 
-    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonModule {
+    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonModule? {
         val newClasses = when {
-            transformer.shouldVisitClassesIn(this) -> this.classes.map { it.accept(transformer) }
+            transformer.shouldVisitClassesIn(this) -> this.classes.mapNotNull { it.accept(transformer) }
             else -> this.classes
         }
 
         val newEnums = when {
-            transformer.shouldVisitEnumsIn(this) -> this.enums.map { it.accept(transformer) }
+            transformer.shouldVisitEnumsIn(this) -> this.enums.mapNotNull { it.accept(transformer) }
             else -> this.enums
         }
 
         val newFunctions = when {
-            transformer.shouldVisitFunctionsIn(this) -> this.functions.map { it.accept(transformer) }
+            transformer.shouldVisitFunctionsIn(this) -> this.functions.mapNotNull { it.accept(transformer) }
             else -> this.functions
         }
 
@@ -135,14 +135,14 @@ data class AnnotatedPythonClass(
         visitor.leavePythonClass(this)
     }
 
-    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonClass {
+    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonClass? {
         val newAttributes = when {
-            transformer.shouldVisitAttributesIn(this) -> this.attributes.map { it.accept(transformer) }
+            transformer.shouldVisitAttributesIn(this) -> this.attributes.mapNotNull { it.accept(transformer) }
             else -> this.attributes
         }
 
         val newMethods = when {
-            transformer.shouldVisitMethodsIn(this) -> this.methods.map { it.accept(transformer) }
+            transformer.shouldVisitMethodsIn(this) -> this.methods.mapNotNull { it.accept(transformer) }
             else -> this.methods
         }
 
@@ -171,7 +171,7 @@ data class AnnotatedPythonAttribute(
         visitor.leavePythonAttribute(this)
     }
 
-    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonAttribute {
+    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonAttribute? {
         return transformer.createNewAttribute(this)
     }
 }
@@ -198,7 +198,7 @@ data class AnnotatedPythonEnum(
         visitor.leavePythonEnum(this)
     }
 
-    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonEnum {
+    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonEnum? {
         return transformer.createNewEnum(this)
     }
 }
@@ -243,14 +243,14 @@ data class AnnotatedPythonFunction(
         visitor.leavePythonFunction(this)
     }
 
-    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonFunction {
+    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonFunction? {
         val newParameters = when {
-            transformer.shouldVisitParametersIn(this) -> this.parameters.map { it.accept(transformer) }
+            transformer.shouldVisitParametersIn(this) -> this.parameters.mapNotNull { it.accept(transformer) }
             else -> this.parameters
         }
 
         val newResults = when {
-            transformer.shouldVisitResultsIn(this) -> this.results.map { it.accept(transformer) }
+            transformer.shouldVisitResultsIn(this) -> this.results.mapNotNull { it.accept(transformer) }
             else -> this.results
         }
 
@@ -281,7 +281,7 @@ data class AnnotatedPythonParameter(
         visitor.leavePythonParameter(this)
     }
 
-    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonParameter {
+    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonParameter? {
         return transformer.createNewParameter(this)
     }
 }
@@ -312,7 +312,7 @@ data class AnnotatedPythonResult(
         visitor.leavePythonResult(this)
     }
 
-    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonResult {
+    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonResult? {
         return transformer.createNewResult(this)
     }
 }

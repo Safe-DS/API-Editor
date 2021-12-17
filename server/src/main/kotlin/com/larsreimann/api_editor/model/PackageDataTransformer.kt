@@ -45,34 +45,34 @@ interface PackageDataTransformer {
     fun createNewPackage(
         oldPackage: AnnotatedPythonPackage,
         newModules: List<AnnotatedPythonModule>
-    ): AnnotatedPythonPackage
+    ): AnnotatedPythonPackage?
 
     fun createNewModule(
         oldModule: AnnotatedPythonModule,
         newClasses: List<AnnotatedPythonClass>,
         newEnums: List<AnnotatedPythonEnum>,
         newFunctions: List<AnnotatedPythonFunction>
-    ): AnnotatedPythonModule
+    ): AnnotatedPythonModule?
 
     fun createNewClass(
         oldClass: AnnotatedPythonClass,
         newAttributes: List<AnnotatedPythonAttribute>,
         newMethods: List<AnnotatedPythonFunction>
-    ): AnnotatedPythonClass
+    ): AnnotatedPythonClass?
 
-    fun createNewAttribute(oldAttribute: AnnotatedPythonAttribute): AnnotatedPythonAttribute
+    fun createNewAttribute(oldAttribute: AnnotatedPythonAttribute): AnnotatedPythonAttribute?
 
-    fun createNewEnum(oldEnum: AnnotatedPythonEnum): AnnotatedPythonEnum
+    fun createNewEnum(oldEnum: AnnotatedPythonEnum): AnnotatedPythonEnum?
 
     fun createNewFunction(
         oldFunction: AnnotatedPythonFunction,
         newParameters: List<AnnotatedPythonParameter>,
         newResults: List<AnnotatedPythonResult>
-    ): AnnotatedPythonFunction
+    ): AnnotatedPythonFunction?
 
-    fun createNewParameter(oldParameter: AnnotatedPythonParameter): AnnotatedPythonParameter
+    fun createNewParameter(oldParameter: AnnotatedPythonParameter): AnnotatedPythonParameter?
 
-    fun createNewResult(oldResult: AnnotatedPythonResult): AnnotatedPythonResult
+    fun createNewResult(oldResult: AnnotatedPythonResult): AnnotatedPythonResult?
 }
 
 abstract class AbstractPackageDataTransformer : PackageDataTransformer {
@@ -89,7 +89,7 @@ abstract class AbstractPackageDataTransformer : PackageDataTransformer {
     override fun createNewPackage(
         oldPackage: AnnotatedPythonPackage,
         newModules: List<AnnotatedPythonModule>
-    ): AnnotatedPythonPackage {
+    ): AnnotatedPythonPackage? {
         val result = oldPackage.copy(modules = newModules)
         result.originalDeclaration = oldPackage.originalDeclaration ?: oldPackage
         return result
@@ -100,7 +100,7 @@ abstract class AbstractPackageDataTransformer : PackageDataTransformer {
         newClasses: List<AnnotatedPythonClass>,
         newEnums: List<AnnotatedPythonEnum>,
         newFunctions: List<AnnotatedPythonFunction>
-    ): AnnotatedPythonModule {
+    ): AnnotatedPythonModule? {
         val result = oldModule.copy(classes = newClasses, functions = newFunctions)
         result.originalDeclaration = oldModule.originalDeclaration ?: oldModule
         result.enums += newEnums
@@ -111,18 +111,18 @@ abstract class AbstractPackageDataTransformer : PackageDataTransformer {
         oldClass: AnnotatedPythonClass,
         newAttributes: List<AnnotatedPythonAttribute>,
         newMethods: List<AnnotatedPythonFunction>
-    ): AnnotatedPythonClass {
+    ): AnnotatedPythonClass? {
         val result = oldClass.copy(methods = newMethods)
         result.originalDeclaration = oldClass.originalDeclaration ?: oldClass
         result.attributes += newAttributes
         return result
     }
 
-    override fun createNewAttribute(oldAttribute: AnnotatedPythonAttribute): AnnotatedPythonAttribute {
+    override fun createNewAttribute(oldAttribute: AnnotatedPythonAttribute): AnnotatedPythonAttribute? {
         return oldAttribute
     }
 
-    override fun createNewEnum(oldEnum: AnnotatedPythonEnum): AnnotatedPythonEnum {
+    override fun createNewEnum(oldEnum: AnnotatedPythonEnum): AnnotatedPythonEnum? {
         return oldEnum
     }
 
@@ -130,7 +130,7 @@ abstract class AbstractPackageDataTransformer : PackageDataTransformer {
         oldFunction: AnnotatedPythonFunction,
         newParameters: List<AnnotatedPythonParameter>,
         newResults: List<AnnotatedPythonResult>
-    ): AnnotatedPythonFunction {
+    ): AnnotatedPythonFunction? {
         val result = oldFunction.copy(parameters = newParameters, results = newResults)
         result.originalDeclaration = oldFunction.originalDeclaration ?: oldFunction
         result.calledAfter += oldFunction.calledAfter
@@ -138,11 +138,11 @@ abstract class AbstractPackageDataTransformer : PackageDataTransformer {
         return result
     }
 
-    override fun createNewParameter(oldParameter: AnnotatedPythonParameter): AnnotatedPythonParameter {
+    override fun createNewParameter(oldParameter: AnnotatedPythonParameter): AnnotatedPythonParameter? {
         return oldParameter
     }
 
-    override fun createNewResult(oldResult: AnnotatedPythonResult): AnnotatedPythonResult {
+    override fun createNewResult(oldResult: AnnotatedPythonResult): AnnotatedPythonResult? {
         return oldResult
     }
 }
