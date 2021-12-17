@@ -10,6 +10,7 @@ sealed class AnnotatedPythonDeclaration {
     abstract val originalDeclaration: AnnotatedPythonDeclaration?
 
     abstract fun accept(visitor: PackageDataVisitor)
+    abstract fun accept(transformer: PackageDataTransformer): AnnotatedPythonDeclaration
 }
 
 @Serializable
@@ -32,6 +33,15 @@ data class AnnotatedPythonPackage(
         }
 
         visitor.leavePythonPackage(this)
+    }
+
+    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonPackage {
+        val newModules = when {
+            transformer.shouldVisitModulesIn(this) -> this.modules.map { it.accept(transformer) }
+            else -> this.modules
+        }
+
+        return transformer.createNewPackage(this, newModules)
     }
 }
 
@@ -56,12 +66,30 @@ data class AnnotatedPythonModule(
 
         if (shouldTraverseChildren) {
             classes.forEach { it.accept(visitor) }
-        }
-        if (shouldTraverseChildren) {
+            enums.forEach { it.accept(visitor) }
             functions.forEach { it.accept(visitor) }
         }
 
         visitor.leavePythonModule(this)
+    }
+
+    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonModule {
+        val newClasses = when {
+            transformer.shouldVisitClassesIn(this) -> this.classes.map { it.accept(transformer) }
+            else -> this.classes
+        }
+
+        val newEnums = when {
+            transformer.shouldVisitEnumsIn(this) -> this.enums.map { it.accept(transformer) }
+            else -> this.enums
+        }
+
+        val newFunctions = when {
+            transformer.shouldVisitFunctionsIn(this) -> this.functions.map { it.accept(transformer) }
+            else -> this.functions
+        }
+
+        return transformer.createNewModule(this, newClasses, newEnums, newFunctions)
     }
 }
 
@@ -100,10 +128,25 @@ data class AnnotatedPythonClass(
         val shouldTraverseChildren = visitor.enterPythonClass(this)
 
         if (shouldTraverseChildren) {
+            attributes.forEach { it.accept(visitor) }
             methods.forEach { it.accept(visitor) }
         }
 
         visitor.leavePythonClass(this)
+    }
+
+    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonClass {
+        val newAttributes = when {
+            transformer.shouldVisitAttributesIn(this) -> this.attributes.map { it.accept(transformer) }
+            else -> this.attributes
+        }
+
+        val newMethods = when {
+            transformer.shouldVisitMethodsIn(this) -> this.methods.map { it.accept(transformer) }
+            else -> this.methods
+        }
+
+        return transformer.createNewClass(this, newAttributes, newMethods)
     }
 }
 
@@ -127,6 +170,10 @@ data class AnnotatedPythonAttribute(
         visitor.enterPythonAttribute(this)
         visitor.leavePythonAttribute(this)
     }
+
+    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonAttribute {
+        return transformer.createNewAttribute(this)
+    }
 }
 
 data class Boundary(
@@ -149,6 +196,10 @@ data class AnnotatedPythonEnum(
     override fun accept(visitor: PackageDataVisitor) {
         visitor.enterPythonEnum(this)
         visitor.leavePythonEnum(this)
+    }
+
+    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonEnum {
+        return transformer.createNewEnum(this)
     }
 }
 
@@ -191,6 +242,20 @@ data class AnnotatedPythonFunction(
 
         visitor.leavePythonFunction(this)
     }
+
+    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonFunction {
+        val newParameters = when {
+            transformer.shouldVisitParametersIn(this) -> this.parameters.map { it.accept(transformer) }
+            else -> this.parameters
+        }
+
+        val newResults = when {
+            transformer.shouldVisitResultsIn(this) -> this.results.map { it.accept(transformer) }
+            else -> this.results
+        }
+
+        return transformer.createNewFunction(this, newParameters, newResults)
+    }
 }
 
 @Serializable
@@ -214,6 +279,10 @@ data class AnnotatedPythonParameter(
     override fun accept(visitor: PackageDataVisitor) {
         visitor.enterPythonParameter(this)
         visitor.leavePythonParameter(this)
+    }
+
+    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonParameter {
+        return transformer.createNewParameter(this)
     }
 }
 
@@ -241,5 +310,9 @@ data class AnnotatedPythonResult(
     override fun accept(visitor: PackageDataVisitor) {
         visitor.enterPythonResult(this)
         visitor.leavePythonResult(this)
+    }
+
+    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonResult {
+        return transformer.createNewResult(this)
     }
 }
