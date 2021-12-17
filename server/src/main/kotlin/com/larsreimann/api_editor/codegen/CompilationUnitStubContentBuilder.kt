@@ -36,7 +36,6 @@ fun buildCompilationUnit(pythonModule: AnnotatedPythonModule): SmlCompilationUni
     return createSmlCompilationUnit(listOf(buildPackage(pythonModule)))
 }
 
-
 fun buildPackage(pythonModule: AnnotatedPythonModule): SmlPackage {
     return createSmlPackage(
         name = "simpleml.${pythonModule.name}",
