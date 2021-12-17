@@ -118,8 +118,7 @@ fun doInfer(originalPythonPackage: AnnotatedPythonPackage): DoInferResult {
 
     // Apply annotations (don't change the order)
     val unusedAnnotationProcessor = UnusedAnnotationProcessor()
-    modifiedPythonPackage.accept(unusedAnnotationProcessor)
-    modifiedPythonPackage = unusedAnnotationProcessor.modifiedPackage
+    modifiedPythonPackage = modifiedPythonPackage.accept(unusedAnnotationProcessor)!!
 
     val renameAnnotationProcessor = RenameAnnotationProcessor()
     modifiedPythonPackage.accept(renameAnnotationProcessor)
@@ -142,8 +141,8 @@ fun doInfer(originalPythonPackage: AnnotatedPythonPackage): DoInferResult {
 }
 
 sealed class DoInferResult {
-    class ValidationFailure(val messages: List<String>) : DoInferResult()
     class Success(val path: String) : DoInferResult()
+    class ValidationFailure(val messages: List<String>) : DoInferResult()
 }
 
 class AuthenticationException : RuntimeException()

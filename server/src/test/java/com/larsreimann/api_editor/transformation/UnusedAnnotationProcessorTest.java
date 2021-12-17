@@ -36,11 +36,10 @@ class UnusedAnnotationProcessorTest {
         testPackage.getModules().add(testModule);
 
         // when
-        testPackage.accept(unusedAnnotationProcessor);
-        AnnotatedPythonPackage modifiedPackage =
-            unusedAnnotationProcessor.getModifiedPackage();
+        AnnotatedPythonPackage modifiedPackage = testPackage.accept(unusedAnnotationProcessor);
 
         // then
+        Assertions.assertNotNull(modifiedPackage);
         Assertions.assertTrue(
             modifiedPackage
                 .getModules().get(0)
@@ -78,11 +77,10 @@ class UnusedAnnotationProcessorTest {
         testPackage.getModules().add(testModule);
 
         // when
-        testPackage.accept(unusedAnnotationProcessor);
-        AnnotatedPythonPackage modifiedPackage =
-            unusedAnnotationProcessor.getModifiedPackage();
+        AnnotatedPythonPackage modifiedPackage = testPackage.accept(unusedAnnotationProcessor);
 
         // then
+        Assertions.assertNotNull(modifiedPackage);
         Assertions.assertTrue(
             modifiedPackage
                 .getModules().get(0)
@@ -123,11 +121,10 @@ class UnusedAnnotationProcessorTest {
         testPackage.getModules().add(testModule);
 
         // when
-        testPackage.accept(unusedAnnotationProcessor);
-        AnnotatedPythonPackage modifiedPackage =
-            unusedAnnotationProcessor.getModifiedPackage();
+        AnnotatedPythonPackage modifiedPackage = testPackage.accept(unusedAnnotationProcessor);
 
         // then
+        Assertions.assertNotNull(modifiedPackage);
         Assertions.assertTrue(
             modifiedPackage
                 .getModules().get(0)
