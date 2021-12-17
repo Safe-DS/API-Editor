@@ -1,6 +1,5 @@
 package com.larsreimann.api_editor.codegen
 
-import com.larsreimann.api_editor.io.FileBuilder
 import com.larsreimann.api_editor.model.AnnotatedPythonFunction
 import com.larsreimann.api_editor.model.AnnotatedPythonParameter
 import com.larsreimann.api_editor.model.AnnotatedPythonResult
@@ -22,120 +21,112 @@ import de.unibonn.simpleml.serializer.SerializationResult
 import de.unibonn.simpleml.serializer.serializeToFormattedString
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractType
+import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlResult
 
 /**
- * Constructor for FunctionStubContentBuilder
+ * Builds a string containing the formatted function content
  *
- * @param pythonFunction The function whose stub content should be built
+ * @return The string containing the formatted function content
  */
-class FunctionStubContentBuilder(var pythonFunction: AnnotatedPythonFunction) : FileBuilder() {
+// TODO: only for testing, remove
+fun buildFunctionToString(pythonFunction: AnnotatedPythonFunction): String {
+    val function = buildFunction(pythonFunction)
 
-    /**
-     * Builds a string containing the formatted function content
-     *
-     * @return The string containing the formatted function content
-     */
-    fun buildFunction(): String {
-        val function = createSmlFunction(
-            name = pythonFunction.name,
-            annotations = buildList {
-                if (pythonFunction.isPure) {
-                    add(createSmlAnnotationUse("Pure"))
-                }
-            },
-            parameters = pythonFunction.parameters.map { buildParameter(it) },
-            results = if (pythonFunction.results.isEmpty()) {
-                null
-            } else {
-                pythonFunction.results.map { buildResult(it) }
+    // Required to serialize the function
+    createSmlDummyResource(
+        "functionStub",
+        FileExtension.STUB,
+        createSmlCompilationUnit(listOf(function))
+    )
+
+    return when (val result = function.serializeToFormattedString()) {
+        is SerializationResult.Success -> result.code
+        is SerializationResult.Failure -> throw IllegalStateException(result.message)
+    }
+}
+
+fun buildFunction(pythonFunction: AnnotatedPythonFunction): SmlFunction {
+    return createSmlFunction(
+        name = pythonFunction.name,
+        annotations = buildList {
+            if (pythonFunction.isPure) {
+                add(createSmlAnnotationUse("Pure"))
             }
+        },
+        parameters = pythonFunction.parameters.map { buildParameter(it) },
+        results = pythonFunction.results.map { buildResult(it) }
+    )
+}
+
+fun buildParameter(pythonParameter: AnnotatedPythonParameter): SmlParameter {
+    return createSmlParameter(
+        name = pythonParameter.name,
+        type = buildType(pythonParameter.typeInDocs),
+        defaultValue = pythonParameter.defaultValue?.let { buildDefaultValue(it) }
+    )
+}
+
+fun buildResult(pythonResult: AnnotatedPythonResult): SmlResult {
+    return createSmlResult(
+        name = pythonResult.name,
+        type = buildType(pythonResult.type)
+    )
+}
+
+fun buildType(pythonType: String): SmlAbstractType {
+    // TODO: create the correct type
+    return when (pythonType) {
+        "bool" -> createSmlNamedType(
+            declaration = createSmlClass("Boolean")
         )
-
-        // Required to serialize the function
-        createSmlDummyResource(
-            "functionStub",
-            FileExtension.STUB,
-            createSmlCompilationUnit {
-                this.members += function
-            }
+        "float" -> createSmlNamedType(
+            declaration = createSmlClass("Float")
         )
-
-        return when (val result = function.serializeToFormattedString()) {
-            is SerializationResult.Success -> result.code
-            is SerializationResult.Failure -> throw IllegalStateException(result.message)
-        }
-    }
-
-    private fun buildParameter(pythonParameter: AnnotatedPythonParameter): SmlParameter {
-        return createSmlParameter(
-            name = pythonParameter.name,
-            type = buildSmlType(pythonParameter.typeInDocs),
-            defaultValue = pythonParameter.defaultValue?.let { buildDefaultValue(it) }
+        "int" -> createSmlNamedType(
+            declaration = createSmlClass("Int")
+        )
+        "str" -> createSmlNamedType(
+            declaration = createSmlClass("String")
+        )
+        else -> createSmlNamedType(
+            declaration = createSmlClass("Any"),
+            isNullable = true
         )
     }
+}
 
-    private fun buildResult(pythonResult: AnnotatedPythonResult): SmlResult {
-        return createSmlResult(
-            name = pythonResult.name,
-            type = buildSmlType(pythonResult.type)
-        )
+/**
+ * Converts the given default value string to a formatted version that
+ * matches stub file convention
+ *
+ * @param defaultValue The default value to format
+ * @return The formatted default value
+ */
+fun buildDefaultValue(defaultValue: String): SmlAbstractExpression {
+    val invalid = "###invalid###" + defaultValue.replace("\"", "\\\"") + "###"
+    if (defaultValue.length >= 2 && (
+        defaultValue[defaultValue.length - 1]
+            == defaultValue[0]
+        ) && defaultValue[0] == '\'' && defaultValue.count { it == '\'' } == 2
+    ) {
+        return createSmlString(defaultValue.replace("'".toRegex(), "\"").trim('\'', '"'))
     }
-
-    private fun buildSmlType(pythonType: String): SmlAbstractType {
-        // TODO: create the correct type
-        return when (pythonType) {
-            "bool" -> createSmlNamedType(
-                declaration = createSmlClass("Boolean")
-            )
-            "float" -> createSmlNamedType(
-                declaration = createSmlClass("Float")
-            )
-            "int" -> createSmlNamedType(
-                declaration = createSmlClass("Int")
-            )
-            "str" -> createSmlNamedType(
-                declaration = createSmlClass("String")
-            )
-            else -> createSmlNamedType(
-                declaration = createSmlClass("Any"),
-                isNullable = true
-            )
-        }
+    if (defaultValue == "False" || defaultValue == "True") {
+        return createSmlBoolean(defaultValue == "True")
     }
-
-    /**
-     * Converts the given default value string to a formatted version that
-     * matches stub file convention
-     *
-     * @param defaultValue The default value to format
-     * @return The formatted default value
-     */
-    fun buildDefaultValue(defaultValue: String): SmlAbstractExpression {
-        val invalid = "###invalid###" + defaultValue.replace("\"", "\\\"") + "###"
-        if (defaultValue.length >= 2 && (
-            defaultValue[defaultValue.length - 1]
-                == defaultValue[0]
-            ) && defaultValue[0] == '\'' && defaultValue.count { it == '\'' } == 2
-        ) {
-            return createSmlString(defaultValue.replace("'".toRegex(), "\"").trim('\'', '"'))
-        }
-        if (defaultValue == "False" || defaultValue == "True") {
-            return createSmlBoolean(defaultValue == "True")
-        }
-        if (defaultValue == "None") {
-            return createSmlNull()
-        }
-        try {
-            val numericValue = defaultValue.toDouble()
-            if (numericValue.toInt().toDouble() == numericValue) {
-                return createSmlInt(numericValue.toInt())
-            }
-            return createSmlFloat(numericValue)
-        } catch (e: NumberFormatException) {
-            // do nothing if defaultValue is not numeric
-        }
-        return createSmlString(invalid)
+    if (defaultValue == "None") {
+        return createSmlNull()
     }
+    try {
+        val numericValue = defaultValue.toDouble()
+        if (numericValue.toInt().toDouble() == numericValue) {
+            return createSmlInt(numericValue.toInt())
+        }
+        return createSmlFloat(numericValue)
+    } catch (e: NumberFormatException) {
+        // do nothing if defaultValue is not numeric
+    }
+    return createSmlString(invalid)
 }

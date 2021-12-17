@@ -31,11 +31,10 @@ internal class ClassStubContentBuilderTest {
         )
 
         // when
-        val classStubContentBuilder = ClassStubContentBuilder(testClass)
-        val formattedClass = classStubContentBuilder.buildClass()
+        val formattedClass = buildClassToString(testClass)
 
         // then
-        val expectedFormattedClass = "class TestClass() {}"
+        val expectedFormattedClass = "class TestClass()"
         Assertions.assertEquals(expectedFormattedClass, formattedClass)
     }
 
@@ -79,8 +78,7 @@ internal class ClassStubContentBuilderTest {
         )
 
         // when
-        val classStubContentBuilder = ClassStubContentBuilder(testClass)
-        val formattedClass = classStubContentBuilder.buildClass()
+        val formattedClass = buildClassToString(testClass)
 
         // then
         val expectedFormattedClass: String = """
@@ -145,8 +143,7 @@ internal class ClassStubContentBuilderTest {
         )
 
         // when
-        val classStubContentBuilder = ClassStubContentBuilder(testClass)
-        val formattedClass = classStubContentBuilder.buildClass()
+        val formattedClass = buildClassToString(testClass)
 
         // then
         val expectedFormattedClass: String =

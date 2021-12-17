@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class ModuleStubContentBuilderTest {
+internal class CompilationUnitStubContentBuilderTest {
 
     @BeforeEach
     fun initSimpleML() {
@@ -26,8 +26,8 @@ internal class ModuleStubContentBuilderTest {
         val testClass = AnnotatedPythonClass(
             "testClass",
             "testModule.testClass",
-            listOf("test-decorator"),
-            listOf("test-superclass"),
+            listOf("testDecorator"),
+            listOf("testSuperclass"),
             listOf(
                 AnnotatedPythonFunction(
                     "testClassFunction",
@@ -84,7 +84,7 @@ internal class ModuleStubContentBuilderTest {
                 AnnotatedPythonFunction(
                     "function_module_1",
                     "test.module_1.function_module_1",
-                    listOf("test-decorator"),
+                    listOf("testDecorator"),
                     listOf(
                         AnnotatedPythonParameter(
                             "param1",
@@ -129,7 +129,7 @@ internal class ModuleStubContentBuilderTest {
                 AnnotatedPythonFunction(
                     "testFunction",
                     "testModule.testFunction",
-                    listOf("test-decorator"),
+                    listOf("testDecorator"),
                     listOf(
                         AnnotatedPythonParameter(
                             "testParameter",
@@ -158,8 +158,7 @@ internal class ModuleStubContentBuilderTest {
         )
 
         // when
-        val moduleStubContentBuilder = ModuleStubContentBuilder(testModule)
-        val moduleContent = moduleStubContentBuilder.buildModuleContent()
+        val moduleContent = buildCompilationUnitToString(testModule)
 
         // then
         val expectedModuleContent: String = """
@@ -187,7 +186,7 @@ internal class ModuleStubContentBuilderTest {
                 AnnotatedPythonFunction(
                     "function_module_1",
                     "test.module_1.function_module_1",
-                    listOf("test-decorator"),
+                    listOf("testDecorator"),
                     listOf(
                         AnnotatedPythonParameter(
                             "param1",
@@ -232,7 +231,7 @@ internal class ModuleStubContentBuilderTest {
                 AnnotatedPythonFunction(
                     "testFunction",
                     "testModule.testFunction",
-                    listOf("test-decorator"),
+                    listOf("testDecorator"),
                     listOf(
                         AnnotatedPythonParameter(
                             "testParameter",
@@ -261,8 +260,7 @@ internal class ModuleStubContentBuilderTest {
         )
 
         // when
-        val moduleStubContentBuilder = ModuleStubContentBuilder(testModule)
-        val moduleContent = moduleStubContentBuilder.buildModuleContent()
+        val moduleContent = buildCompilationUnitToString(testModule)
 
         // then
         val expectedModuleContent: String = """
@@ -281,8 +279,8 @@ internal class ModuleStubContentBuilderTest {
         val testClass = AnnotatedPythonClass(
             "testClass",
             "testModule.testClass",
-            listOf("test-decorator"),
-            listOf("test-superclass"),
+            listOf("testDecorator"),
+            listOf("testSuperclass"),
             listOf(
                 AnnotatedPythonFunction(
                     "__init__",
@@ -312,14 +310,14 @@ internal class ModuleStubContentBuilderTest {
             "testModule",
             listOf(
                 PythonImport(
-                    "test-import1",
-                    "test-alias"
+                    "testImport1",
+                    "testAlias"
                 )
             ),
             listOf(
                 PythonFromImport(
-                    "test-from-import1",
-                    "test-declaration1",
+                    "testFromImport1",
+                    "testDeclaration1",
                     null
                 )
             ),
@@ -330,8 +328,7 @@ internal class ModuleStubContentBuilderTest {
         )
 
         // when
-        val moduleStubContentBuilder = ModuleStubContentBuilder(testModule)
-        val moduleContent = moduleStubContentBuilder.buildModuleContent()
+        val moduleContent = buildCompilationUnitToString(testModule)
 
         // then
         val expectedModuleContent: String = """
@@ -352,8 +349,7 @@ internal class ModuleStubContentBuilderTest {
         )
 
         // when
-        val moduleStubContentBuilder = ModuleStubContentBuilder(testModule)
-        val moduleContent = moduleStubContentBuilder.buildModuleContent()
+        val moduleContent = buildCompilationUnitToString(testModule)
 
         // then
         val expectedModuleContent: String = """
