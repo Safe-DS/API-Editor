@@ -44,12 +44,18 @@ data class AnnotatedPythonPackage(
     }
 
     override fun accept(transformer: PackageDataTransformer): AnnotatedPythonPackage? {
+        val newPackageOnEnter = transformer.createNewPackageOnEnter(this) ?: return null
+
         val newModules = when {
-            transformer.shouldVisitModulesIn(this) -> this.modules.mapNotNull { it.accept(transformer) }
-            else -> this.modules
+            transformer.shouldVisitModulesIn(newPackageOnEnter) -> {
+                newPackageOnEnter.modules.mapNotNull { it.accept(transformer) }
+            }
+            else -> {
+                this.modules
+            }
         }
 
-        return transformer.createNewPackage(this, newModules)
+        return transformer.createNewPackageOnLeave(newPackageOnEnter, newModules)
     }
 }
 
@@ -82,22 +88,36 @@ data class AnnotatedPythonModule(
     }
 
     override fun accept(transformer: PackageDataTransformer): AnnotatedPythonModule? {
+        val newModuleOnEnter = transformer.createNewModuleOnEnter(this) ?: return null
+
         val newClasses = when {
-            transformer.shouldVisitClassesIn(this) -> this.classes.mapNotNull { it.accept(transformer) }
-            else -> this.classes
+            transformer.shouldVisitClassesIn(newModuleOnEnter) -> {
+                newModuleOnEnter.classes.mapNotNull { it.accept(transformer) }
+            }
+            else -> {
+                newModuleOnEnter.classes
+            }
         }
 
         val newEnums = when {
-            transformer.shouldVisitEnumsIn(this) -> this.enums.mapNotNull { it.accept(transformer) }
-            else -> this.enums
+            transformer.shouldVisitEnumsIn(newModuleOnEnter) -> {
+                newModuleOnEnter.enums.mapNotNull { it.accept(transformer) }
+            }
+            else -> {
+                newModuleOnEnter.enums
+            }
         }
 
         val newFunctions = when {
-            transformer.shouldVisitFunctionsIn(this) -> this.functions.mapNotNull { it.accept(transformer) }
-            else -> this.functions
+            transformer.shouldVisitFunctionsIn(newModuleOnEnter) -> {
+                newModuleOnEnter.functions.mapNotNull { it.accept(transformer) }
+            }
+            else -> {
+                newModuleOnEnter.functions
+            }
         }
 
-        return transformer.createNewModule(this, newClasses, newEnums, newFunctions)
+        return transformer.createNewModuleOnLeave(newModuleOnEnter, newClasses, newEnums, newFunctions)
     }
 }
 
@@ -144,17 +164,27 @@ data class AnnotatedPythonClass(
     }
 
     override fun accept(transformer: PackageDataTransformer): AnnotatedPythonClass? {
+        val newClassOnEnter = transformer.createNewClassOnEnter(this) ?: return null
+
         val newAttributes = when {
-            transformer.shouldVisitAttributesIn(this) -> this.attributes.mapNotNull { it.accept(transformer) }
-            else -> this.attributes
+            transformer.shouldVisitAttributesIn(newClassOnEnter) -> {
+                newClassOnEnter.attributes.mapNotNull { it.accept(transformer) }
+            }
+            else -> {
+                newClassOnEnter.attributes
+            }
         }
 
         val newMethods = when {
-            transformer.shouldVisitMethodsIn(this) -> this.methods.mapNotNull { it.accept(transformer) }
-            else -> this.methods
+            transformer.shouldVisitMethodsIn(newClassOnEnter) -> {
+                newClassOnEnter.methods.mapNotNull { it.accept(transformer) }
+            }
+            else -> {
+                newClassOnEnter.methods
+            }
         }
 
-        return transformer.createNewClass(this, newAttributes, newMethods)
+        return transformer.createNewClassOnLeave(newClassOnEnter, newAttributes, newMethods)
     }
 }
 
@@ -252,17 +282,27 @@ data class AnnotatedPythonFunction(
     }
 
     override fun accept(transformer: PackageDataTransformer): AnnotatedPythonFunction? {
+        val newFunctionOnEnter = transformer.createNewFunctionOnEnter(this) ?: return null
+
         val newParameters = when {
-            transformer.shouldVisitParametersIn(this) -> this.parameters.mapNotNull { it.accept(transformer) }
-            else -> this.parameters
+            transformer.shouldVisitParametersIn(newFunctionOnEnter) -> {
+                newFunctionOnEnter.parameters.mapNotNull { it.accept(transformer) }
+            }
+            else -> {
+                newFunctionOnEnter.parameters
+            }
         }
 
         val newResults = when {
-            transformer.shouldVisitResultsIn(this) -> this.results.mapNotNull { it.accept(transformer) }
-            else -> this.results
+            transformer.shouldVisitResultsIn(newFunctionOnEnter) -> {
+                newFunctionOnEnter.results.mapNotNull { it.accept(transformer) }
+            }
+            else -> {
+                newFunctionOnEnter.results
+            }
         }
 
-        return transformer.createNewFunction(this, newParameters, newResults)
+        return transformer.createNewFunctionOnLeave(newFunctionOnEnter, newParameters, newResults)
     }
 }
 
