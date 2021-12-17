@@ -11,6 +11,14 @@ sealed class AnnotatedPythonDeclaration {
 
     abstract fun accept(visitor: PackageDataVisitor)
     abstract fun accept(transformer: PackageDataTransformer): AnnotatedPythonDeclaration?
+
+    fun hasAnnotationOfType(type: String): Boolean {
+        return annotations.any { it.type == type }
+    }
+
+    fun getAnnotationsOfType(type: String): List<EditorAnnotation> {
+        return annotations.filter { it.type == type }
+    }
 }
 
 @Serializable
