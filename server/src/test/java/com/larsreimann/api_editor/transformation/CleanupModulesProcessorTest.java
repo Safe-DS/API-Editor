@@ -7,10 +7,10 @@ import com.larsreimann.api_editor.model.AnnotatedPythonPackage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonClass;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonFunction;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonModule;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonPackage;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonClass;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonFunction;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonModule;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonPackage;
 
 class CleanupModulesProcessorTest {
     @Test
@@ -20,10 +20,10 @@ class CleanupModulesProcessorTest {
             new CleanupModulesProcessor();
 
         AnnotatedPythonModule testModule =
-            createAnnotatedPythonModule("testModule");
+            createPythonModule("testModule");
 
         AnnotatedPythonPackage testPackage =
-            createAnnotatedPythonPackage("testPackage");
+            createPythonPackage("testPackage");
         testPackage.getModules().add(testModule);
 
         // when
@@ -42,14 +42,14 @@ class CleanupModulesProcessorTest {
             new CleanupModulesProcessor();
 
         AnnotatedPythonClass testClass =
-            createAnnotatedPythonClass("testClass");
+            createPythonClass("testClass");
 
         AnnotatedPythonModule testModule =
-            createAnnotatedPythonModule("testModule");
+            createPythonModule("testModule");
         testModule.getClasses().add(testClass);
 
         AnnotatedPythonPackage testPackage =
-            createAnnotatedPythonPackage("testPackage");
+            createPythonPackage("testPackage");
         testPackage.getModules().add(testModule);
 
         // when
@@ -68,14 +68,14 @@ class CleanupModulesProcessorTest {
             new CleanupModulesProcessor();
 
         AnnotatedPythonFunction testFunction =
-            createAnnotatedPythonFunction("testFunction");
+            createPythonFunction("testFunction");
 
         AnnotatedPythonModule testModule =
-            createAnnotatedPythonModule("testModule");
+            createPythonModule("testModule");
         testModule.getFunctions().add(testFunction);
 
         AnnotatedPythonPackage testPackage =
-            createAnnotatedPythonPackage("testPackage");
+            createPythonPackage("testPackage");
         testPackage.getModules().add(testModule);
 
         // when

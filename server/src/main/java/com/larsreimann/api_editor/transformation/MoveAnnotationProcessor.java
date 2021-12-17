@@ -14,10 +14,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonClass;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonFunction;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonModule;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createAnnotatedPythonParameter;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonClass;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonFunction;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonModule;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonParameter;
 import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createModuleCopyWithoutClassesAndFunctions;
 import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPackageCopyWithoutModules;
 
@@ -72,7 +72,7 @@ public class MoveAnnotationProcessor extends AbstractPackageDataVisitor {
         Iterator<String> it = classesToAdd.keySet().iterator();
         while (it.hasNext()) {
             String key = it.next();
-            AnnotatedPythonModule pythonModuleToAdd = createAnnotatedPythonModule(key);
+            AnnotatedPythonModule pythonModuleToAdd = createPythonModule(key);
             pythonModuleToAdd.getClasses().addAll(classesToAdd.get(key));
             if (functionsToAdd.get(key) != null) {
                 pythonModuleToAdd.getFunctions().addAll(functionsToAdd.get(key));
@@ -84,7 +84,7 @@ public class MoveAnnotationProcessor extends AbstractPackageDataVisitor {
         it = functionsToAdd.keySet().iterator();
         while (it.hasNext()) {
             String key = it.next();
-            AnnotatedPythonModule pythonModuleToAdd = createAnnotatedPythonModule(key);
+            AnnotatedPythonModule pythonModuleToAdd = createPythonModule(key);
             pythonModuleToAdd.getFunctions().addAll(functionsToAdd.get(key));
             modifiedPackage.getModules().add(pythonModuleToAdd);
             it.remove();
@@ -126,7 +126,7 @@ public class MoveAnnotationProcessor extends AbstractPackageDataVisitor {
             }
         }
 
-        currentClass = createAnnotatedPythonClass(
+        currentClass = createPythonClass(
             qualifiedNameGenerator.currentClassName,
             qualifiedNameGenerator.getQualifiedClassName(),
             new ArrayList<>(pythonClass.getDecorators()),
@@ -161,7 +161,7 @@ public class MoveAnnotationProcessor extends AbstractPackageDataVisitor {
         qualifiedNameGenerator.currentParameterName = pythonParameter.getName();
 
         AnnotatedPythonParameter modifiedPythonParameter =
-            createAnnotatedPythonParameter(
+            createPythonParameter(
                 qualifiedNameGenerator.currentParameterName,
                 qualifiedNameGenerator.getQualifiedParameterName(),
                 pythonParameter.getDefaultValue(),
@@ -196,7 +196,7 @@ public class MoveAnnotationProcessor extends AbstractPackageDataVisitor {
             }
         }
 
-        currentFunction = createAnnotatedPythonFunction(
+        currentFunction = createPythonFunction(
             qualifiedNameGenerator.currentFunctionName,
             qualifiedNameGenerator.getQualifiedFunctionName(),
             new ArrayList<>(pythonFunction.getDecorators()),

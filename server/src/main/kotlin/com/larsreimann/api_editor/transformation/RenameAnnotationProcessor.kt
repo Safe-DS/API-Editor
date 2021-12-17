@@ -74,10 +74,11 @@ class RenameAnnotationProcessor : AbstractPackageDataTransformer() {
     }
 
     override fun createNewParameter(oldParameter: AnnotatedPythonParameter): AnnotatedPythonParameter {
-        return oldParameter.rename {
+        return oldParameter.rename { newName ->
             oldParameter.fullCopy(
-                name = it,
-                qualifiedName = qualifiedName(it),
+                name = newName,
+                qualifiedName = qualifiedName(newName),
+                annotations = oldParameter.annotations.filterNot { it is RenameAnnotation }.toMutableList(),
                 originalDeclaration = oldParameter.originalDeclaration ?: oldParameter
             )
         }

@@ -4,7 +4,7 @@ import com.larsreimann.api_editor.model.AnnotatedPythonFunction
 import com.larsreimann.api_editor.model.AnnotatedPythonParameter
 import com.larsreimann.api_editor.model.AnnotatedPythonResult
 import com.larsreimann.api_editor.model.PythonParameterAssignment
-import com.larsreimann.api_editor.util.createAnnotatedPythonFunction
+import com.larsreimann.api_editor.util.createPythonFunction
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -280,7 +280,7 @@ internal class FunctionStubContentBuilderTest {
     @Test
     fun shouldMarkPureFunctionsWithAnnotation() {
         // given
-        val testFunction = createAnnotatedPythonFunction(
+        val testFunction = createPythonFunction(
             "testFunction"
         )
         testFunction.isPure = true
