@@ -12,6 +12,14 @@ sealed class AnnotatedPythonDeclaration {
     abstract fun accept(visitor: PackageDataVisitor)
     abstract fun accept(transformer: PackageDataTransformer): AnnotatedPythonDeclaration?
 
+    abstract fun children(): Sequence<AnnotatedPythonDeclaration>
+    fun descendants(): Sequence<AnnotatedPythonDeclaration> = sequence {
+        children().forEach {
+            yield(it)
+            yieldAll(it.descendants())
+        }
+    }
+
     fun hasAnnotationOfType(type: String): Boolean {
         return annotations.any { it.type == type }
     }
@@ -56,6 +64,10 @@ data class AnnotatedPythonPackage(
         }
 
         return transformer.createNewPackageOnLeave(newPackageOnEnter, newModules)
+    }
+
+    override fun children() = sequence {
+        yieldAll(modules)
     }
 
     fun fullCopy(
@@ -138,6 +150,12 @@ data class AnnotatedPythonModule(
         }
 
         return transformer.createNewModuleOnLeave(newModuleOnEnter, newClasses, newEnums, newFunctions)
+    }
+
+    override fun children() = sequence {
+        yieldAll(classes)
+        yieldAll(enums)
+        yieldAll(functions)
     }
 
     fun fullCopy(
@@ -231,6 +249,11 @@ data class AnnotatedPythonClass(
         return transformer.createNewClassOnLeave(newClassOnEnter, newAttributes, newMethods)
     }
 
+    override fun children() = sequence {
+        yieldAll(attributes)
+        yieldAll(methods)
+    }
+
     fun fullCopy(
         name: String = this.name,
         qualifiedName: String = this.qualifiedName,
@@ -285,6 +308,8 @@ data class AnnotatedPythonAttribute(
         return transformer.createNewAttribute(this)
     }
 
+    override fun children() = emptySequence<AnnotatedPythonDeclaration>()
+
     fun fullCopy(
         name: String = this.name,
         qualifiedName: String = this.qualifiedName,
@@ -337,6 +362,8 @@ data class AnnotatedPythonEnum(
     override fun accept(transformer: PackageDataTransformer): AnnotatedPythonEnum? {
         return transformer.createNewEnum(this)
     }
+
+    override fun children() = emptySequence<AnnotatedPythonDeclaration>()
 
     fun fullCopy(
         name: String = this.name,
@@ -418,6 +445,11 @@ data class AnnotatedPythonFunction(
         return transformer.createNewFunctionOnLeave(newFunctionOnEnter, newParameters, newResults)
     }
 
+    override fun children() = sequence {
+        yieldAll(parameters)
+        yieldAll(results)
+    }
+
     fun fullCopy(
         name: String = this.name,
         qualifiedName: String = this.qualifiedName,
@@ -478,6 +510,8 @@ data class AnnotatedPythonParameter(
         return transformer.createNewParameter(this)
     }
 
+    override fun children() = emptySequence<AnnotatedPythonDeclaration>()
+
     fun fullCopy(
         name: String = this.name,
         qualifiedName: String = this.qualifiedName,
@@ -536,6 +570,8 @@ data class AnnotatedPythonResult(
     override fun accept(transformer: PackageDataTransformer): AnnotatedPythonResult? {
         return transformer.createNewResult(this)
     }
+
+    override fun children() = emptySequence<AnnotatedPythonDeclaration>()
 
     fun fullCopy(
         name: String = this.name,
