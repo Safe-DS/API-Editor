@@ -24,7 +24,7 @@ inline fun <reified T : AnnotatedPythonDeclaration> AnnotatedPythonDeclaration.f
  * );
  * ```
  */
-fun <T: AnnotatedPythonDeclaration> findUniqueDescendantOrFail(
+fun <T : AnnotatedPythonDeclaration> findUniqueDescendantOrFail(
     root: AnnotatedPythonDeclaration,
     type: Class<out T>,
     name: String
