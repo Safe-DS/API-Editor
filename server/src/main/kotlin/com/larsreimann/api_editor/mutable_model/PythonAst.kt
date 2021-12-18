@@ -58,3 +58,5 @@ class PythonResult(name: String) : PythonDeclaration(name)
 //
 //    @Transient
 //    var isPure = false
+
+class PythonCall()
