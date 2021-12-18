@@ -30,13 +30,9 @@ class PythonFunction(
     val annotations: MutableList<EditorAnnotation>
 ) : PythonDeclaration(name) {
 
-    val parameters = TreeNodeList<PythonParameter>().apply {
-        addAll(parameters)
-    }
+    val parameters = TreeNodeList(parameters)
 
-    val results = TreeNodeList<PythonParameter>().apply {
-        addAll(parameters)
-    }
+    val results = TreeNodeList(results)
 
     override fun children() = sequence {
         yieldAll(parameters)
