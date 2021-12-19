@@ -5,12 +5,6 @@ package com.larsreimann.api_editor.mutable_model
  */
 open class TreeNode {
 
-    // To prevent cyclic updates between nodes and containers only the following interactions are allowed:
-    //  - Everything can access their own functions and properties
-    //  - Node can access functions and properties on Container
-    //  - Container can access parent and container properties on Node
-    //  - Container can access functions defined in TreeNodeContainer on other Containers
-
     /**
      * The parent of this node in the tree.
      */
@@ -49,11 +43,29 @@ open class TreeNode {
         /**
          * Releases the subtree that has this node as root. If this container does not contain the node nothing should
          * happen. Otherwise, the following links need to be removed:
-         * - From the container to the node
-         * - From the node to its parent
-         * - From the node to its container
+         *   - From the container to the node
+         *   - From the node to its parent
+         *   - From the node to its container
          */
         internal abstract fun releaseNode(node: TreeNode)
+
+        /**
+         * Sets parent and container properties of the node to `null`. This method can be called without causing cyclic
+         * updates.
+         */
+        protected fun nullifyUpReferences(node: TreeNode?) {
+            node?.parent = null
+            node?.container = null
+        }
+
+        /**
+         * Sets parent and container properties of the node to `null`. This method can be called without causing cyclic
+         * updates.
+         */
+        protected fun TreeNode?.pointUpReferenceToThisContainer(node: TreeNode?) {
+            node?.parent = this
+            node?.container = this@TreeNodeContainer
+        }
     }
 
     /**
@@ -62,37 +74,34 @@ open class TreeNode {
      * @param node The initial node.
      */
     inner class ContainmentReference<T : TreeNode>(node: T?) : TreeNodeContainer<T>() {
-
-        // TODO:
-        //  General steps:
-        //  * Remove up-references on old value (parent + container <- which must be this unless the value is null)
-        //  * Remove down-reference on this container to old value
-        //  * Remove down-references on old container of new value
-        //  * Set up-references on new value (parent + container)
-        //  * Set down-references on this container (to new value)
-
-        var node: T? = node
+        var node: T? = null
             set(value) {
-                // Up-references on old value
-                field?.parent = null
-                field?.container = null
 
-                // Down-references on this container
+                // Prevents infinite recursion when releasing the new value
+                if (field == value) {
+                    return
+                }
+
+                // Release old value
+                nullifyUpReferences(field)
                 field = null
 
-                // Down-references on old container of new value
-                value?.container?.releaseNode(value)
+                // Release new value
+                value?.release()
 
-                // Up-references on new value
-                value?.parent = this@TreeNode
-                value?.container = this@ContainmentReference
-
-                // Down-references on this container
+                // Store new value in this container
+                pointUpReferenceToThisContainer(value)
                 field = value
             }
 
+        init {
+            this.node = node
+        }
+
         override fun releaseNode(node: TreeNode) {
-            this.node = null
+            if (this.node == node) {
+                this.node = null
+            }
         }
     }
 
@@ -113,7 +122,7 @@ open class TreeNode {
         }
 
         override fun releaseNode(node: TreeNode) {
-            TODO("Not yet implemented")
+            this.remove(node)
         }
 
         override fun add(element: T): Boolean {
