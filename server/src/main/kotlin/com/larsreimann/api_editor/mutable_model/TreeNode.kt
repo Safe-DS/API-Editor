@@ -62,8 +62,8 @@ open class TreeNode {
         }
 
         /**
-         * Sets parent and container properties of the node to `null`. This method can be called without causing cyclic
-         * updates.
+         * Sets parent and container properties of the node to this container. This method can be called without causing
+         * cyclic updates.
          */
         protected fun TreeNode?.pointUplinksToThisContainer(node: TreeNode?) {
             node?.parent = this
