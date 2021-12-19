@@ -5,6 +5,12 @@ package com.larsreimann.api_editor.mutable_model
  */
 open class TreeNode {
 
+    // To prevent cyclic updates between nodes and containers only the following interactions are allowed:
+    //  - Everything can access their own functions and properties
+    //  - Node can access functions and properties on Container
+    //  - Container can access parent and container properties on Node
+    //  - Container can access functions defined in TreeNodeContainer on other Containers
+
     /**
      * The parent of this node in the tree.
      */
@@ -14,7 +20,7 @@ open class TreeNode {
     /**
      * The container of this node in the tree.
      */
-    private var container: TreeNodeContainer? = null
+    private var container: TreeNodeContainer<*>? = null
 
     /**
      * Whether this node is the root of the tree.
@@ -29,107 +35,25 @@ open class TreeNode {
     open fun children() = emptySequence<TreeNode>()
 
     /**
-     * Sets parent and container references to the specified value.
+     * Releases the subtree that has this node as root.
      */
-    private fun moveTo(newParent: TreeNode?, newContainer: TreeNodeContainer?) {
-        this.parent = newParent
-        this.container = newContainer
-    }
-
-    /**
-     * Sets parent and container references to null.
-     */
-    private fun remove() {
-
-        moveTo(null, null)
+    fun release() {
+        this.container?.releaseNode(this)
     }
 
     /**
      * A container for [TreeNode]s of the given type.
      */
-    private sealed interface TreeNodeContainer {
+    sealed class TreeNodeContainer<T : TreeNode> {
 
         /**
-         * Removed the tree node from the container.
+         * Releases the subtree that has this node as root. If this container does not contain the node nothing should
+         * happen. Otherwise, the following links need to be removed:
+         * - From the container to the node
+         * - From the node to its parent
+         * - From the node to its container
          */
-        fun removeTreeNode(node: TreeNode)
-    }
-
-    /**
-     * Stores a list of references to [TreeNode]s and keeps references to them updated on mutation.
-     *
-     * @param nodes The initial nodes.
-     */
-    inner class TreeNodeList<E : TreeNode>(nodes: Collection<E> = emptyList()) : TreeNodeContainer, ArrayList<E>() {
-        init {
-            addAll(nodes)
-        }
-
-        override fun removeTreeNode(node: TreeNode) {
-            remove(node)
-        }
-
-        override fun add(element: E): Boolean {
-            element.parent = this@TreeNode
-            return super.add(element)
-        }
-
-        override fun remove(element: E): Boolean {
-            val wasRemoved = super.remove(element)
-            if (wasRemoved) {
-                element.parent = null
-            }
-            return wasRemoved
-        }
-
-        override fun addAll(elements: Collection<E>): Boolean {
-            elements.forEach { it.parent = this@TreeNode }
-            return super.addAll(elements)
-        }
-
-        override fun addAll(index: Int, elements: Collection<E>): Boolean {
-            elements.forEach { it.parent = this@TreeNode }
-            return super.addAll(index, elements)
-        }
-
-        override fun removeAll(elements: Collection<E>): Boolean {
-            var result = false
-            for (it in elements) {
-                val wasRemoved = remove(it)
-                if (wasRemoved) {
-                    result = true
-                }
-            }
-            return result
-        }
-
-        override fun retainAll(elements: Collection<E>): Boolean {
-            val toRemove = subtract(elements.toSet())
-            return removeAll(toRemove)
-        }
-
-        override fun clear() {
-            forEach { it.parent = null }
-            super.clear()
-        }
-
-        override operator fun set(index: Int, element: E): E {
-            element.parent = this@TreeNode
-            val replacedElement = super.set(index, element)
-            replacedElement.parent = null
-            return replacedElement
-        }
-
-        override fun add(index: Int, element: E) {
-            element.parent = this@TreeNode
-            super.add(index, element)
-        }
-
-        override fun removeAt(index: Int): E {
-            val removedElement = super.removeAt(index)
-            removedElement.parent = null
-            return removedElement
-        }
+        internal abstract fun releaseNode(node: TreeNode)
     }
 
     /**
@@ -137,7 +61,7 @@ open class TreeNode {
      *
      * @param node The initial node.
      */
-    inner class TreeNodeReference<T : TreeNode>(node: T?) : TreeNodeContainer {
+    inner class ContainmentReference<T : TreeNode>(node: T?) : TreeNodeContainer<T>() {
 
         // TODO:
         //  General steps:
@@ -157,20 +81,101 @@ open class TreeNode {
                 field = null
 
                 // Down-references on old container of new value
-                value?.container?.removeTreeNode(value)
+                value?.container?.releaseNode(value)
 
                 // Up-references on new value
                 value?.parent = this@TreeNode
-                value?.container = this@TreeNodeReference
+                value?.container = this@ContainmentReference
 
                 // Down-references on this container
                 field = value
             }
 
-        override fun removeTreeNode(node: TreeNode) {
-            if (this.node == node) {
-                this.node = null
+        override fun releaseNode(node: TreeNode) {
+            this.node = null
+        }
+    }
+
+    /**
+     * Stores a list of references to [TreeNode]s and keeps references to them updated on mutation.
+     *
+     * @param nodes The initial nodes.
+     */
+    inner class ContainmentList<T : TreeNode> private constructor(
+        nodes: Collection<T>,
+        private val delegate: MutableList<T>
+    ) : TreeNodeContainer<T>(), MutableList<T> by delegate {
+
+        constructor(nodes: Collection<T> = emptyList()) : this(nodes, mutableListOf())
+
+        init {
+            addAll(nodes)
+        }
+
+        override fun releaseNode(node: TreeNode) {
+            TODO("Not yet implemented")
+        }
+
+        override fun add(element: T): Boolean {
+            element.parent = this@TreeNode
+            return delegate.add(element)
+        }
+
+        override fun remove(element: T): Boolean {
+            val wasRemoved = delegate.remove(element)
+            if (wasRemoved) {
+                element.parent = null
             }
+            return wasRemoved
+        }
+
+        override fun addAll(elements: Collection<T>): Boolean {
+            elements.forEach { it.parent = this@TreeNode }
+            return delegate.addAll(elements)
+        }
+
+        override fun addAll(index: Int, elements: Collection<T>): Boolean {
+            elements.forEach { it.parent = this@TreeNode }
+            return delegate.addAll(index, elements)
+        }
+
+        override fun removeAll(elements: Collection<T>): Boolean {
+            var result = false
+            for (it in elements) {
+                val wasRemoved = remove(it)
+                if (wasRemoved) {
+                    result = true
+                }
+            }
+            return result
+        }
+
+        override fun retainAll(elements: Collection<T>): Boolean {
+            val toRemove = subtract(elements.toSet())
+            return removeAll(toRemove)
+        }
+
+        override fun clear() {
+            forEach { it.parent = null }
+            delegate.clear()
+        }
+
+        override operator fun set(index: Int, element: T): T {
+            element.parent = this@TreeNode
+            val replacedElement = delegate.set(index, element)
+            replacedElement.parent = null
+            return replacedElement
+        }
+
+        override fun add(index: Int, element: T) {
+            element.parent = this@TreeNode
+            delegate.add(index, element)
+        }
+
+        override fun removeAt(index: Int): T {
+            val removedElement = delegate.removeAt(index)
+            removedElement.parent = null
+            return removedElement
         }
     }
 }
