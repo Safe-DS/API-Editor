@@ -5,6 +5,7 @@ import com.larsreimann.api_editor.model.AnnotatedPythonPackage
 import com.larsreimann.api_editor.transformation.CleanupModulesProcessor
 import com.larsreimann.api_editor.transformation.MoveAnnotationProcessor
 import com.larsreimann.api_editor.transformation.OriginalDeclarationProcessor
+import com.larsreimann.api_editor.transformation.ParameterAnnotationProcessor
 import com.larsreimann.api_editor.transformation.PureAnnotationProcessor
 import com.larsreimann.api_editor.transformation.RenameAnnotationProcessor
 import com.larsreimann.api_editor.transformation.UnusedAnnotationProcessor
@@ -122,6 +123,9 @@ fun doInfer(originalPythonPackage: AnnotatedPythonPackage): DoInferResult {
 
     val renameAnnotationProcessor = RenameAnnotationProcessor()
     modifiedPythonPackage = modifiedPythonPackage.accept(renameAnnotationProcessor)!!
+
+    val parameterAnnotationProcessor = ParameterAnnotationProcessor()
+    modifiedPythonPackage = modifiedPythonPackage.accept(parameterAnnotationProcessor)!!
 
     val moveAnnotationProcessor = MoveAnnotationProcessor()
     modifiedPythonPackage.accept(moveAnnotationProcessor)

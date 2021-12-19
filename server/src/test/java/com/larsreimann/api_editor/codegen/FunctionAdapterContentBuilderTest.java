@@ -1,6 +1,5 @@
 package com.larsreimann.api_editor.codegen;
 
-import com.larsreimann.api_editor.codegen.FunctionAdapterContentBuilder;
 import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
 import com.larsreimann.api_editor.model.AnnotatedPythonParameter;
 import com.larsreimann.api_editor.model.PythonParameterAssignment;

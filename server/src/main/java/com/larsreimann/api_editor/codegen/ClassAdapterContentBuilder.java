@@ -35,7 +35,8 @@ public class ClassAdapterContentBuilder extends FileBuilder {
 
     private List<String> buildAllFunctions() {
         List<String> formattedFunctions = new ArrayList<>();
-        pythonClass.getMethods().forEach(pythonFunction -> {
+        pythonClass.getMethods()
+            .forEach(pythonFunction -> {
                 FunctionAdapterContentBuilder functionAdapterContentBuilder =
                     new FunctionAdapterContentBuilder(pythonFunction);
                 formattedFunctions.add(

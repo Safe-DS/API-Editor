@@ -5,9 +5,7 @@ import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
 import com.larsreimann.api_editor.model.AnnotatedPythonParameter;
 import com.larsreimann.api_editor.model.PythonParameterAssignment;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class FunctionAdapterContentBuilder extends FileBuilder {
     AnnotatedPythonFunction pythonFunction;
@@ -114,17 +112,36 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
 
     private String buildFunctionParameterCall() {
         List<String> formattedParameters = new ArrayList<>();
-        pythonFunction.getParameters().forEach(pythonParameter -> {
+        Map<String, String> originalNameToValueMap = new HashMap<>();
+        pythonFunction.getParameters().forEach(
+            pythonParameter -> {
+                String value;
+                if (pythonParameter.getAssignedBy().equals(PythonParameterAssignment.CONSTANT)) {
+                    value = pythonParameter.getDefaultValue();
+                }
+                else {
+                    value = pythonParameter.getName();
+                }
+                originalNameToValueMap.put(
+                    Objects
+                        .requireNonNull(pythonParameter.getOriginalDeclaration())
+                        .getName(),
+                    value
+                    );
+            }
+        );
+        Objects.requireNonNull(pythonFunction.getOriginalDeclaration())
+            .getParameters().forEach(pythonParameter -> {
             if (pythonParameter.getAssignedBy()
                 == PythonParameterAssignment.NAME_ONLY) {
                 formattedParameters.add(
-                    Objects.requireNonNull(pythonParameter.getOriginalDeclaration()).getName()
+                    pythonParameter.getName()
                         + "="
-                        + pythonParameter.getName()
+                        + originalNameToValueMap.get(pythonParameter.getName())
                 );
             } else {
                 formattedParameters.add(
-                    pythonParameter.getName()
+                    originalNameToValueMap.get(pythonParameter.getName())
                 );
             }
         });

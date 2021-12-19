@@ -544,7 +544,8 @@ data class AnnotatedPythonParameter(
 enum class PythonParameterAssignment {
     POSITION_ONLY,
     POSITION_OR_NAME,
-    NAME_ONLY
+    NAME_ONLY,
+    CONSTANT
 }
 
 @Serializable
