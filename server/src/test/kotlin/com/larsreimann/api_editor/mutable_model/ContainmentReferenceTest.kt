@@ -82,7 +82,7 @@ class ContainmentReferenceTest {
         root.child.node shouldBe innerNode
 
         someOtherInnerNode.parent shouldBe root
-        someOtherInnerNode.container shouldBe root.child
+        someOtherInnerNode.container shouldBe root.someOtherChild
         root.someOtherChild.node shouldBe someOtherInnerNode
     }
 }
