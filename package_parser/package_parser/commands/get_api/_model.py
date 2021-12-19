@@ -340,6 +340,57 @@ class Function:
         }
 
 
+class ParameterEnum:
+    @classmethod
+    def from_docstring(cls, docstring: ParameterAndResultDocstring) -> ParameterEnum:
+        values = set()
+        values.update(ParameterEnum._from_docstring_type(docstring.type))
+        values.update(ParameterEnum._from_docstring_description(docstring.description))
+        return ParameterEnum(values)
+
+    @classmethod
+    def _from_docstring_type(cls, docstring_type: str) -> set[str]:
+        def remove_backslash(e: str):
+            e = e.replace(r"\"", '"')
+            e = e.replace(r"\'", "'")
+            return e
+
+        enum_match = re.search(r"{(.*?)}", docstring_type)
+        values = set()
+        quotes = "'\""
+        if enum_match:
+            enum_str = enum_match.group(1)
+            value = ""
+            inside_value = False
+            curr_quote = None
+            for i, char in enumerate(enum_str):
+                if char in quotes and (i == 0 or (i > 0 and enum_str[i - 1] != "\\")):
+                    if inside_value == False:
+                        inside_value = True
+                        curr_quote = char
+                    elif inside_value == True:
+                        if curr_quote == char:
+                            inside_value = False
+                            curr_quote = None
+                            values.add(remove_backslash(value))
+                            value = ""
+                        else:
+                            value += char
+                elif inside_value:
+                    value += char
+        return values
+
+    @classmethod
+    def _from_docstring_description(cls, docstring_description: str) -> set[str]:
+        return set()
+
+    def __init__(self, values: set[str]) -> None:
+        self.values: set[str] = values
+
+    def to_json(self):
+        return list(self.values)
+
+
 class Parameter:
     @classmethod
     def from_json(cls, json: Any):
@@ -364,6 +415,7 @@ class Parameter:
         self.is_public: bool = is_public
         self.assigned_by: ParameterAssignment = assigned_by
         self.docstring = docstring
+        self.enum: ParameterEnum = ParameterEnum.from_docstring(docstring)
 
     def to_json(self) -> Any:
         return {
@@ -372,6 +424,7 @@ class Parameter:
             "is_public": self.is_public,
             "assigned_by": self.assigned_by.name,
             "docstring": self.docstring.to_json(),
+            "enum": self.enum.to_json(),
         }
 
 
