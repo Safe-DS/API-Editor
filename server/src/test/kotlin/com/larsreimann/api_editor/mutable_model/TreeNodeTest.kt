@@ -32,7 +32,7 @@ class TreeNodeTest {
     }
 
     @Test
-    fun `release() should set parent to null`() {
+    fun `release() should set parent and container to null`() {
         val innerNode = TreeNode()
         val root = object : TreeNode() {
             val child = ContainmentReference(innerNode)
@@ -41,5 +41,6 @@ class TreeNodeTest {
         innerNode.release()
 
         innerNode.parent.shouldBeNull()
+        innerNode.container.shouldBeNull()
     }
 }

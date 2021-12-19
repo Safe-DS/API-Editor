@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_VARIABLE", "unused")
-
 package com.larsreimann.api_editor.mutable_model
 
 import io.kotest.assertions.throwables.shouldNotThrowUnit
@@ -31,6 +29,7 @@ class ContainmentReferenceTest {
     @Test
     fun `constructor should correctly link initial value`() {
         innerNode.parent shouldBe root
+        innerNode.container shouldBe root.child
         root.child.node shouldBe innerNode
     }
 
@@ -39,9 +38,11 @@ class ContainmentReferenceTest {
         root.child.node = root.someOtherChild.node
 
         innerNode.parent.shouldBeNull()
+        innerNode.container.shouldBeNull()
         root.child.node shouldBe someOtherInnerNode
 
         someOtherInnerNode.parent shouldBe root
+        someOtherInnerNode.container shouldBe root.child
         root.someOtherChild.node.shouldBeNull()
     }
 
@@ -50,6 +51,7 @@ class ContainmentReferenceTest {
         root.child.node = null
 
         innerNode.parent.shouldBeNull()
+        innerNode.container.shouldBeNull()
         root.child.node.shouldBeNull()
     }
 
@@ -67,6 +69,7 @@ class ContainmentReferenceTest {
         root.child.releaseNode(innerNode)
 
         innerNode.parent.shouldBeNull()
+        innerNode.container.shouldBeNull()
         root.child.node.shouldBeNull()
     }
 
@@ -75,9 +78,11 @@ class ContainmentReferenceTest {
         root.child.releaseNode(someOtherInnerNode)
 
         innerNode.parent shouldBe root
+        innerNode.container shouldBe root.child
         root.child.node shouldBe innerNode
 
         someOtherInnerNode.parent shouldBe root
+        someOtherInnerNode.container shouldBe root.child
         root.someOtherChild.node shouldBe someOtherInnerNode
     }
 }

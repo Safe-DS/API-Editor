@@ -1,5 +1,7 @@
 package com.larsreimann.api_editor.mutable_model
 
+import kotlin.reflect.KProperty
+
 /**
  * A node in a tree. It has references to its parent and its children.
  */
@@ -14,7 +16,8 @@ open class TreeNode {
     /**
      * The container of this node in the tree.
      */
-    private var container: TreeNodeContainer<*>? = null
+    var container: TreeNodeContainer<*>? = null
+        private set
 
     /**
      * Whether this node is the root of the tree.
@@ -69,9 +72,57 @@ open class TreeNode {
     }
 
     /**
-     * Stores a reference to a [TreeNode] and keeps references to it updated on mutation.
+     * Stores a reference to a [TreeNode] and keeps uplinks (parent/container) and downlinks (container to node) updated
+     * on mutation.
      *
-     * @param node The initial node.
+     * **Samples:**
+     *
+     * _Normal assignment:_
+     * ```kt
+     * object Root: TreeNode() {
+     *     private val child = ContainmentReference(TreeNode())
+     *
+     *     fun get(): TreeNode? {
+     *         return child.node
+     *     }
+     *
+     *     fun set(newNode: TreeNode?) {
+     *         child.node = newNode
+     *     }
+     * }
+     * ```
+     *
+     * _Mutable delegate:_
+     * ```kt
+     * object Root: TreeNode() {
+     *     private var child by ContainmentReference(TreeNode())
+     *
+     *     fun get(): TreeNode? {
+     *         return child
+     *     }
+     *
+     *     fun set(newNode: TreeNode?) {
+     *         child = newNode
+     *     }
+     * }
+     * ```
+     *
+     * _Immutable delegate:_
+     * ```kt
+     * object Root: TreeNode() {
+     *     private val child by ContainmentReference(TreeNode())
+     *
+     *     fun get(): TreeNode? {
+     *         return child
+     *     }
+     *
+     *     fun set(newNode: TreeNode?) {
+     *         // Not possible
+     *     }
+     * }
+     * ```
+     *
+     * @param node The initial value.
      */
     inner class ContainmentReference<T : TreeNode>(node: T?) : TreeNodeContainer<T>() {
         var node: T? = null
@@ -103,10 +154,19 @@ open class TreeNode {
                 this.node = null
             }
         }
+
+        operator fun getValue(node: T, property: KProperty<*>): T? {
+            return this.node
+        }
+
+        operator fun setValue(oldNode: T, property: KProperty<*>, newNode: T?) {
+            this.node = newNode
+        }
     }
 
     /**
-     * Stores a list of references to [TreeNode]s and keeps references to them updated on mutation.
+     * Stores a list of references to [TreeNode]s and keeps uplinks (parent/container) and downlinks (container to node)
+     * updated on mutation.
      *
      * @param nodes The initial nodes.
      */
@@ -126,37 +186,51 @@ open class TreeNode {
         }
 
         override fun add(element: T): Boolean {
-            element.parent = this@TreeNode
+            element.release()
+            pointUplinksToThisContainer(element)
             return delegate.add(element)
+        }
+
+        override fun add(index: Int, element: T) {
+            element.release()
+            pointUplinksToThisContainer(element)
+            delegate.add(index, element)
+        }
+
+        override fun addAll(elements: Collection<T>): Boolean {
+            elements.forEach {
+                it.release()
+                pointUplinksToThisContainer(it)
+            }
+            return delegate.addAll(elements)
+        }
+
+        override fun addAll(index: Int, elements: Collection<T>): Boolean {
+            elements.forEach {
+                it.release()
+                pointUplinksToThisContainer(it)
+            }
+            return delegate.addAll(index, elements)
         }
 
         override fun remove(element: T): Boolean {
             val wasRemoved = delegate.remove(element)
             if (wasRemoved) {
-                element.parent = null
+                nullifyUplinks(element)
             }
             return wasRemoved
         }
 
-        override fun addAll(elements: Collection<T>): Boolean {
-            elements.forEach { it.parent = this@TreeNode }
-            return delegate.addAll(elements)
-        }
-
-        override fun addAll(index: Int, elements: Collection<T>): Boolean {
-            elements.forEach { it.parent = this@TreeNode }
-            return delegate.addAll(index, elements)
+        override fun removeAt(index: Int): T {
+            val removedElement = delegate.removeAt(index)
+            nullifyUplinks(removedElement)
+            return removedElement
         }
 
         override fun removeAll(elements: Collection<T>): Boolean {
-            var result = false
-            for (it in elements) {
-                val wasRemoved = remove(it)
-                if (wasRemoved) {
-                    result = true
-                }
+            return elements.fold(false) { accumulator, element ->
+                accumulator || remove(element)
             }
-            return result
         }
 
         override fun retainAll(elements: Collection<T>): Boolean {
@@ -165,26 +239,18 @@ open class TreeNode {
         }
 
         override fun clear() {
-            forEach { it.parent = null }
+            forEach { nullifyUplinks(it) }
             delegate.clear()
         }
 
-        override operator fun set(index: Int, element: T): T {
-            element.parent = this@TreeNode
+        override fun set(index: Int, element: T): T {
             val replacedElement = delegate.set(index, element)
-            replacedElement.parent = null
+            nullifyUplinks(replacedElement)
+
+            element.release()
+            pointUplinksToThisContainer(element)
+
             return replacedElement
-        }
-
-        override fun add(index: Int, element: T) {
-            element.parent = this@TreeNode
-            delegate.add(index, element)
-        }
-
-        override fun removeAt(index: Int): T {
-            val removedElement = delegate.removeAt(index)
-            removedElement.parent = null
-            return removedElement
         }
     }
 }
