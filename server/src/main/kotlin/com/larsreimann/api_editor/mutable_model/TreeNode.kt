@@ -53,7 +53,7 @@ open class TreeNode {
          * Sets parent and container properties of the node to `null`. This method can be called without causing cyclic
          * updates.
          */
-        protected fun nullifyUpReferences(node: TreeNode?) {
+        protected fun nullifyUplinks(node: TreeNode?) {
             node?.parent = null
             node?.container = null
         }
@@ -62,7 +62,7 @@ open class TreeNode {
          * Sets parent and container properties of the node to `null`. This method can be called without causing cyclic
          * updates.
          */
-        protected fun TreeNode?.pointUpReferenceToThisContainer(node: TreeNode?) {
+        protected fun TreeNode?.pointUplinksToThisContainer(node: TreeNode?) {
             node?.parent = this
             node?.container = this@TreeNodeContainer
         }
@@ -83,14 +83,14 @@ open class TreeNode {
                 }
 
                 // Release old value
-                nullifyUpReferences(field)
+                nullifyUplinks(field)
                 field = null
 
                 // Release new value
                 value?.release()
 
                 // Store new value in this container
-                pointUpReferenceToThisContainer(value)
+                pointUplinksToThisContainer(value)
                 field = value
             }
 

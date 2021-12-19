@@ -2,26 +2,28 @@
 
 package com.larsreimann.api_editor.mutable_model
 
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.sequences.shouldBeEmpty
-import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
 class TreeNodeTest {
 
     @Test
     fun `isRoot() should be true by default`() {
-        TreeNode().isRoot() shouldBe true
+        TreeNode().isRoot().shouldBeTrue()
     }
 
     @Test
     fun `isRoot() should indicate whether the node has a parent`() {
         val innerNode = TreeNode()
         val root = object : TreeNode() {
-            val children = ContainmentReference(innerNode)
+            val child = ContainmentReference(innerNode)
         }
 
-        innerNode.isRoot() shouldBe false
-        root.isRoot() shouldBe true
+        innerNode.isRoot().shouldBeFalse()
+        root.isRoot().shouldBeTrue()
     }
 
     @Test
@@ -33,10 +35,11 @@ class TreeNodeTest {
     fun `release() should set parent to null`() {
         val innerNode = TreeNode()
         val root = object : TreeNode() {
-            val children = ContainmentReference(innerNode)
+            val child = ContainmentReference(innerNode)
         }
+
         innerNode.release()
 
-        innerNode.parent shouldBe null
+        innerNode.parent.shouldBeNull()
     }
 }
