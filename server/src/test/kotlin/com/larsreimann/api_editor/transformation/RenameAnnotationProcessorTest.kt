@@ -54,7 +54,7 @@ internal class RenameAnnotationProcessorTest {
                             parameters = listOf(
                                 createPythonParameter(
                                     name = "testParameter",
-                                    qualifiedName = "testModule.testClass.testMethod.testParameter",
+                                    qualifiedName = "testModule.testFunction.testParameter",
                                 )
                             )
                         )
@@ -84,25 +84,6 @@ internal class RenameAnnotationProcessorTest {
     }
 
     @Test
-    fun `should rename global function`() {
-        // given
-        val testFunction = testPackage.findUniqueDescendantOrFail<AnnotatedPythonFunction>("testFunction")
-        testFunction.annotations += RenameAnnotation("renamedTestFunction")
-
-        // when
-        val modifiedPackage = testPackage.accept(RenameAnnotationProcessor())
-
-        // then
-        modifiedPackage.shouldNotBeNull()
-        modifiedPackage.modules.shouldHaveSize(1)
-        modifiedPackage.modules[0].functions.shouldHaveSize(1)
-
-        val (name, qualifiedName) = modifiedPackage.modules[0].functions[0]
-        name shouldBe "renamedTestFunction"
-        qualifiedName shouldBe "testModule.renamedTestFunction"
-    }
-
-    @Test
     fun `should rename method`() {
         // given
         val testMethod = testPackage.findUniqueDescendantOrFail<AnnotatedPythonFunction>("testMethod")
@@ -123,13 +104,30 @@ internal class RenameAnnotationProcessorTest {
     }
 
     @Test
-    fun `should rename class and its method`() {
+    fun `should rename global function`() {
         // given
-        val testClass = testPackage.findUniqueDescendantOrFail<AnnotatedPythonClass>("testClass")
-        testClass.annotations += RenameAnnotation("renamedTestClass")
+        val testFunction = testPackage.findUniqueDescendantOrFail<AnnotatedPythonFunction>("testFunction")
+        testFunction.annotations += RenameAnnotation("renamedTestFunction")
 
-        val testMethod = testClass.findUniqueDescendantOrFail<AnnotatedPythonFunction>("testMethod")
-        testMethod.annotations += RenameAnnotation("renamedTestMethod")
+        // when
+        val modifiedPackage = testPackage.accept(RenameAnnotationProcessor())
+
+        // then
+        modifiedPackage.shouldNotBeNull()
+        modifiedPackage.modules.shouldHaveSize(1)
+        modifiedPackage.modules[0].functions.shouldHaveSize(1)
+
+        val (name, qualifiedName) = modifiedPackage.modules[0].functions[0]
+        name shouldBe "renamedTestFunction"
+        qualifiedName shouldBe "testModule.renamedTestFunction"
+    }
+
+    @Test
+    fun `should rename parameter`() {
+        // given
+        val testMethod = testPackage.findUniqueDescendantOrFail<AnnotatedPythonFunction>("testMethod")
+        val testParameter = testMethod.findUniqueDescendantOrFail<AnnotatedPythonParameter>("testParameter")
+        testParameter.annotations += RenameAnnotation("renamedTestParameter")
 
         // when
         val modifiedPackage = testPackage.accept(RenameAnnotationProcessor())
@@ -139,27 +137,18 @@ internal class RenameAnnotationProcessorTest {
         modifiedPackage.modules.shouldHaveSize(1)
         modifiedPackage.modules[0].classes.shouldHaveSize(1)
         modifiedPackage.modules[0].classes[0].methods.shouldHaveSize(1)
+        modifiedPackage.modules[0].classes[0].methods[0].parameters.shouldHaveSize(1)
 
-        val (className, classQualifiedName) = modifiedPackage.modules[0].classes[0]
-        className shouldBe "renamedTestClass"
-        classQualifiedName shouldBe "testModule.renamedTestClass"
-
-        val (methodName, methodQualifiedName) = modifiedPackage.modules[0].classes[0].methods[0]
-        methodName shouldBe "renamedTestMethod"
-        methodQualifiedName shouldBe "testModule.renamedTestClass.renamedTestMethod"
+        val (parameterName, parameterQualifiedName) = modifiedPackage.modules[0].classes[0].methods[0].parameters[0]
+        parameterName shouldBe "renamedTestParameter"
+        parameterQualifiedName shouldBe "testModule.testClass.testMethod.renamedTestParameter"
     }
 
     @Test
-    fun `should rename class, method, and parameter`() {
+    fun `should change qualified names of descendants when renaming class`() {
         // given
         val testClass = testPackage.findUniqueDescendantOrFail<AnnotatedPythonClass>("testClass")
         testClass.annotations += RenameAnnotation("renamedTestClass")
-
-        val testMethod = testClass.findUniqueDescendantOrFail<AnnotatedPythonFunction>("testMethod")
-        testMethod.annotations += RenameAnnotation("renamedTestMethod")
-
-        val testParameter = testMethod.findUniqueDescendantOrFail<AnnotatedPythonParameter>("testParameter")
-        testParameter.annotations += RenameAnnotation("renamedTestParameter")
 
         // when
         val modifiedPackage = testPackage.accept(RenameAnnotationProcessor())
@@ -176,22 +165,44 @@ internal class RenameAnnotationProcessorTest {
         classQualifiedName shouldBe "testModule.renamedTestClass"
 
         val (methodName, methodQualifiedName) = modifiedPackage.modules[0].classes[0].methods[0]
-        methodName shouldBe "renamedTestMethod"
-        methodQualifiedName shouldBe "testModule.renamedTestClass.renamedTestMethod"
+        methodName shouldBe "testMethod"
+        methodQualifiedName shouldBe "testModule.renamedTestClass.testMethod"
 
         val (parameterName, parameterQualifiedName) = modifiedPackage.modules[0].classes[0].methods[0].parameters[0]
-        parameterName shouldBe "renamedTestParameter"
-        parameterQualifiedName shouldBe "testModule.renamedTestClass.renamedTestMethod.renamedTestParameter"
+        parameterName shouldBe "testParameter"
+        parameterQualifiedName shouldBe "testModule.renamedTestClass.testMethod.testParameter"
     }
 
     @Test
-    fun `should rename global function and parameter`() {
+    fun `should change qualified names of descendants when renaming method`() {
+        // given
+        val testMethod = testPackage.findUniqueDescendantOrFail<AnnotatedPythonFunction>("testMethod")
+        testMethod.annotations += RenameAnnotation("renamedTestMethod")
+
+        // when
+        val modifiedPackage = testPackage.accept(RenameAnnotationProcessor())
+
+        // then
+        modifiedPackage.shouldNotBeNull()
+        modifiedPackage.modules.shouldHaveSize(1)
+        modifiedPackage.modules[0].classes.shouldHaveSize(1)
+        modifiedPackage.modules[0].classes[0].methods.shouldHaveSize(1)
+        modifiedPackage.modules[0].classes[0].methods[0].parameters.shouldHaveSize(1)
+
+        val (methodName, methodQualifiedName) = modifiedPackage.modules[0].classes[0].methods[0]
+        methodName shouldBe "renamedTestMethod"
+        methodQualifiedName shouldBe "testModule.testClass.renamedTestMethod"
+
+        val (parameterName, parameterQualifiedName) = modifiedPackage.modules[0].classes[0].methods[0].parameters[0]
+        parameterName shouldBe "testParameter"
+        parameterQualifiedName shouldBe "testModule.testClass.renamedTestMethod.testParameter"
+    }
+
+    @Test
+    fun `should change qualified names of descendants when renaming global function`() {
         // given
         val testFunction = testPackage.findUniqueDescendantOrFail<AnnotatedPythonFunction>("testFunction")
         testFunction.annotations += RenameAnnotation("renamedTestFunction")
-
-        val testParameter = testFunction.findUniqueDescendantOrFail<AnnotatedPythonParameter>("testParameter")
-        testParameter.annotations += RenameAnnotation("renamedTestParameter")
 
         // when
         val modifiedPackage = testPackage.accept(RenameAnnotationProcessor())
@@ -207,8 +218,8 @@ internal class RenameAnnotationProcessorTest {
         functionQualifiedName shouldBe "testModule.renamedTestFunction"
 
         val (parameterName, parameterQualifiedName) = modifiedPackage.modules[0].functions[0].parameters[0]
-        parameterName shouldBe "renamedTestParameter"
-        parameterQualifiedName shouldBe "testModule.renamedTestFunction.renamedTestParameter"
+        parameterName shouldBe "testParameter"
+        parameterQualifiedName shouldBe "testModule.renamedTestFunction.testParameter"
     }
 
     @Test

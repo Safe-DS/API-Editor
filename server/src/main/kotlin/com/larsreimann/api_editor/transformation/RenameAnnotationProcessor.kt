@@ -88,10 +88,11 @@ class RenameAnnotationProcessor : AbstractPackageDataTransformer() {
 
     private fun <T : AnnotatedPythonDeclaration> T.rename(creator: (String) -> T): T {
         val renameAnnotations = this.annotations.filterIsInstance<RenameAnnotation>()
-        return when {
-            renameAnnotations.isEmpty() -> this
-            else -> creator(renameAnnotations[0].newName)
+        val newName = when {
+            renameAnnotations.isEmpty() -> this.name
+            else -> renameAnnotations[0].newName
         }
+        return creator(newName)
     }
 
     private fun qualifiedName(vararg additionalSegments: String): String {
