@@ -89,7 +89,7 @@ fun createPythonAttribute(
     annotations: MutableList<EditorAnnotation> = mutableListOf(),
     originalDeclaration: AnnotatedPythonAttribute? = null,
 ): AnnotatedPythonAttribute {
-    val result =  AnnotatedPythonAttribute(
+    val result = AnnotatedPythonAttribute(
         name,
         qualifiedName,
         defaultValue,
