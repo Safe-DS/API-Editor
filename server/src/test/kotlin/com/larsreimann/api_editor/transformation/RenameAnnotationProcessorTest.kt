@@ -6,6 +6,7 @@ import com.larsreimann.api_editor.model.AnnotatedPythonFunction
 import com.larsreimann.api_editor.model.AnnotatedPythonPackage
 import com.larsreimann.api_editor.model.AnnotatedPythonParameter
 import com.larsreimann.api_editor.model.RenameAnnotation
+import com.larsreimann.api_editor.util.createPythonAttribute
 import com.larsreimann.api_editor.util.createPythonClass
 import com.larsreimann.api_editor.util.createPythonFunction
 import com.larsreimann.api_editor.util.createPythonModule
@@ -33,6 +34,12 @@ internal class RenameAnnotationProcessorTest {
                         createPythonClass(
                             name = "testClass",
                             qualifiedName = "testModule.testClass",
+                            attributes = listOf(
+                                createPythonAttribute(
+                                    name = "testAttribute",
+                                    qualifiedName = "testModule.testClass.testAttribute"
+                                )
+                            ),
                             methods = listOf(
                                 createPythonFunction(
                                     name = "testMethod",
@@ -157,12 +164,17 @@ internal class RenameAnnotationProcessorTest {
         modifiedPackage.shouldNotBeNull()
         modifiedPackage.modules.shouldHaveSize(1)
         modifiedPackage.modules[0].classes.shouldHaveSize(1)
+        modifiedPackage.modules[0].classes[0].attributes.shouldHaveSize(1)
         modifiedPackage.modules[0].classes[0].methods.shouldHaveSize(1)
         modifiedPackage.modules[0].classes[0].methods[0].parameters.shouldHaveSize(1)
 
         val (className, classQualifiedName) = modifiedPackage.modules[0].classes[0]
         className shouldBe "renamedTestClass"
         classQualifiedName shouldBe "testModule.renamedTestClass"
+
+        val (attributeName, attributeQualifiedName) = modifiedPackage.modules[0].classes[0].attributes[0]
+        attributeName shouldBe "testAttribute"
+        attributeQualifiedName shouldBe "testModule.renamedTestClass.testAttribute"
 
         val (methodName, methodQualifiedName) = modifiedPackage.modules[0].classes[0].methods[0]
         methodName shouldBe "testMethod"

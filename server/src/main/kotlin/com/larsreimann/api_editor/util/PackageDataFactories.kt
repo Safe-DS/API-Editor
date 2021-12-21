@@ -1,5 +1,6 @@
 package com.larsreimann.api_editor.util
 
+import com.larsreimann.api_editor.model.AnnotatedPythonAttribute
 import com.larsreimann.api_editor.model.AnnotatedPythonClass
 import com.larsreimann.api_editor.model.AnnotatedPythonFunction
 import com.larsreimann.api_editor.model.AnnotatedPythonModule
@@ -55,6 +56,7 @@ fun createPythonClass(
     qualifiedName: String = name,
     decorators: List<String> = emptyList(),
     superclasses: List<String> = emptyList(),
+    attributes: List<AnnotatedPythonAttribute> = mutableListOf(),
     methods: List<AnnotatedPythonFunction> = mutableListOf(),
     description: String = "",
     fullDocstring: String = "",
@@ -71,8 +73,33 @@ fun createPythonClass(
         fullDocstring,
         annotations
     )
+    newPythonClass.attributes += attributes
     newPythonClass.originalDeclaration = originalDeclaration
     return newPythonClass
+}
+
+@JvmOverloads
+fun createPythonAttribute(
+    name: String,
+    qualifiedName: String = name,
+    defaultValue: String = "",
+    isPublic: Boolean = true,
+    typeInDocs: String = "",
+    description: String = "",
+    annotations: MutableList<EditorAnnotation> = mutableListOf(),
+    originalDeclaration: AnnotatedPythonAttribute? = null,
+): AnnotatedPythonAttribute {
+    val result =  AnnotatedPythonAttribute(
+        name,
+        qualifiedName,
+        defaultValue,
+        isPublic,
+        typeInDocs,
+        description,
+        annotations
+    )
+    result.originalDeclaration = originalDeclaration
+    return result
 }
 
 @JvmOverloads
