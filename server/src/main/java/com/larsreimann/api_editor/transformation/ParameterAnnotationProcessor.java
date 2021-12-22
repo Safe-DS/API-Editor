@@ -37,14 +37,12 @@ public class ParameterAnnotationProcessor extends AbstractPackageDataTransformer
         for (EditorAnnotation editorAnnotation : oldParameter.getAnnotations()) {
             if (editorAnnotation instanceof ConstantAnnotation) {
                 assignedBy = PythonParameterAssignment.CONSTANT;
-                // TODO
-                defaultValue = ((DefaultString)(((ConstantAnnotation) editorAnnotation)
-                    .getDefaultValue())).getValue();
+                defaultValue = (((ConstantAnnotation) editorAnnotation)
+                    .getDefaultValue()).toString();
             }
             else if (editorAnnotation instanceof OptionalAnnotation) {
-                // TODO
-                defaultValue = ((DefaultString)(((OptionalAnnotation) editorAnnotation)
-                    .getDefaultValue())).getValue();
+                defaultValue = (((OptionalAnnotation) editorAnnotation)
+                    .getDefaultValue()).toString();
                 assignedBy = PythonParameterAssignment.NAME_ONLY;
             }
             else if (editorAnnotation instanceof RequiredAnnotation) {

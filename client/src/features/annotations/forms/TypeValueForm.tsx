@@ -83,7 +83,7 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
     };
 
     const handleSave = (data: TypeValueFormState) => {
-        let toUpsert = data;
+        let toUpsert = { ...data };
         if (data.defaultType === 'boolean') {
             toUpsert = { ...data, defaultValue: data.defaultValue === 'true' };
         }
