@@ -28,7 +28,7 @@ public class ParameterAnnotationProcessor extends AbstractPackageDataTransformer
         required parameters -> position_or_name,
         optional parameters -> name_only
          */
-        if (oldParameter.getDefaultValue() != null && !oldParameter.getDefaultValue().isBlank()) {
+        if (oldParameter.getDefaultValue() != null) {
             assignedBy = PythonParameterAssignment.NAME_ONLY;
         }
         else {
@@ -47,6 +47,7 @@ public class ParameterAnnotationProcessor extends AbstractPackageDataTransformer
             }
             else if (editorAnnotation instanceof RequiredAnnotation) {
                 defaultValue = null;
+                assignedBy = PythonParameterAssignment.POSITION_OR_NAME;
             }
             else {
                 annotations.add(editorAnnotation);

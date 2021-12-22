@@ -96,8 +96,7 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
     private String buildFormattedParameter(AnnotatedPythonParameter pythonParameter) {
         String formattedParameter = pythonParameter.getName();
         String defaultValue = pythonParameter.getDefaultValue();
-        if (defaultValue != null
-            && !defaultValue.isBlank()) {
+        if (defaultValue != null) {
             formattedParameter = formattedParameter + "=" + defaultValue;
         }
         return formattedParameter;
