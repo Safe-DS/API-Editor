@@ -72,6 +72,7 @@ internal class CompilationUnitStubContentBuilderTest {
                     "fullDocstring", mutableListOf()
                 )
             ),
+            true,
             "Lorem ipsum",
             "Lorem ipsum", mutableListOf()
         )
@@ -303,6 +304,7 @@ internal class CompilationUnitStubContentBuilderTest {
                     "fullDocstring", mutableListOf()
                 )
             ),
+            true,
             "Lorem ipsum",
             "Lorem ipsum", mutableListOf()
         )

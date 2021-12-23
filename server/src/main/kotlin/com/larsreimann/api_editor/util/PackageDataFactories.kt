@@ -58,6 +58,7 @@ fun createPythonClass(
     superclasses: List<String> = emptyList(),
     attributes: List<AnnotatedPythonAttribute> = mutableListOf(),
     methods: List<AnnotatedPythonFunction> = mutableListOf(),
+    isPublic: Boolean = true,
     description: String = "",
     fullDocstring: String = "",
     annotations: MutableList<EditorAnnotation> = mutableListOf(),
@@ -69,6 +70,7 @@ fun createPythonClass(
         decorators,
         superclasses,
         methods,
+        isPublic,
         description,
         fullDocstring,
         annotations
@@ -190,6 +192,7 @@ fun createClassCopyWithoutFunctions(
         decorators = pythonClass.decorators.toMutableList(),
         superclasses = pythonClass.superclasses.toMutableList(),
         methods = mutableListOf(),
+        isPublic = pythonClass.isPublic,
         description = pythonClass.description,
         fullDocstring = pythonClass.fullDocstring,
         annotations = pythonClass.annotations.toMutableList()

@@ -70,6 +70,7 @@ private class PythonClass(
     val superclasses: MutableList<String> = mutableListOf(),
     attributes: List<PythonAttribute> = emptyList(),
     methods: List<PythonFunction> = emptyList(),
+    var isPublic: Boolean = true,
     var description: String = "",
     var fullDocstring: String = "",
     annotations: MutableList<EditorAnnotation> = mutableListOf()

@@ -3,7 +3,7 @@ package com.larsreimann.api_editor.codegen
 import com.larsreimann.api_editor.model.AnnotatedPythonClass
 import com.larsreimann.api_editor.model.AnnotatedPythonFunction
 import com.larsreimann.api_editor.model.AnnotatedPythonParameter
-import de.unibonn.simpleml.constant.FileExtension
+import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.createSmlAttribute
 import de.unibonn.simpleml.emf.createSmlClass
 import de.unibonn.simpleml.emf.createSmlCompilationUnit
@@ -27,7 +27,7 @@ fun buildClassToString(pythonClass: AnnotatedPythonClass): String {
     // Required to serialize the class
     createSmlDummyResource(
         "classStub",
-        FileExtension.STUB,
+        SmlFileExtension.Stub,
         createSmlCompilationUnit(listOf(`class`))
     )
 
@@ -75,5 +75,7 @@ fun buildAttribute(pythonParameter: AnnotatedPythonParameter): SmlAttribute {
 }
 
 private fun buildFunctions(pythonClass: AnnotatedPythonClass): List<SmlFunction> {
-    return classMethods(pythonClass).map { buildFunction(it) }
+    return classMethods(pythonClass)
+        .filter { it.isPublic }
+        .map { buildFunction(it) }
 }
