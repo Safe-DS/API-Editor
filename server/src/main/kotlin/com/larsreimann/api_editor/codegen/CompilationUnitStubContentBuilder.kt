@@ -37,8 +37,16 @@ fun buildCompilationUnit(pythonModule: AnnotatedPythonModule): SmlCompilationUni
 }
 
 fun buildPackage(pythonModule: AnnotatedPythonModule): SmlPackage {
+    val publicClasses = pythonModule.classes
+        .filter { it.isPublic }
+        .map { buildClass(it) }
+
+    val publicFunctions = pythonModule.functions
+        .filter { it.isPublic }
+        .map { buildFunction(it) }
+
     return createSmlPackage(
         name = "simpleml.${pythonModule.name}",
-        members = pythonModule.classes.map { buildClass(it) } + pythonModule.functions.map { buildFunction(it) }
+        members = publicClasses + publicFunctions
     )
 }

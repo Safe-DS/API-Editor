@@ -1,6 +1,5 @@
 package com.larsreimann.api_editor.codegen;
 
-import com.larsreimann.api_editor.codegen.ModuleAdapterContentBuilder;
 import com.larsreimann.api_editor.model.AnnotatedPythonClass;
 import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
 import com.larsreimann.api_editor.model.AnnotatedPythonModule;
@@ -45,6 +44,7 @@ class ModuleAdapterContentBuilderTest {
                 "fullDocstring",
                 Collections.emptyList()
             )),
+            true,
             "Lorem ipsum",
             "Lorem ipsum",
             Collections.emptyList()
@@ -288,6 +288,7 @@ class ModuleAdapterContentBuilderTest {
             List.of("test-decorator"),
             List.of("test-superclass"),
             Collections.emptyList(),
+            true,
             "Lorem ipsum",
             "Lorem ipsum",
             Collections.emptyList()

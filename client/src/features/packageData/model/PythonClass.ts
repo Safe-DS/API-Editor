@@ -11,6 +11,7 @@ export default class PythonClass extends PythonDeclaration {
     readonly decorators: string[];
     readonly superclasses: string[];
     readonly methods: PythonFunction[];
+    readonly isPublic: boolean;
     readonly description: string;
     readonly fullDocstring: string;
     containingModule: Optional<PythonModule>;
@@ -21,6 +22,7 @@ export default class PythonClass extends PythonDeclaration {
         decorators: string[] = [],
         superclasses: string[] = [],
         methods: PythonFunction[] = [],
+        isPublic: boolean = true,
         description = '',
         fullDocstring = '',
     ) {
@@ -31,6 +33,7 @@ export default class PythonClass extends PythonDeclaration {
         this.decorators = decorators;
         this.superclasses = superclasses;
         this.methods = methods;
+        this.isPublic = isPublic;
         this.description = description;
         this.fullDocstring = fullDocstring;
         this.containingModule = null;
@@ -90,6 +93,7 @@ export default class PythonClass extends PythonDeclaration {
             this.decorators,
             this.superclasses,
             methods,
+            this.isPublic,
             this.description,
             this.fullDocstring,
         );

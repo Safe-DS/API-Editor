@@ -26,6 +26,7 @@ internal class ClassStubContentBuilderTest {
             "testModule.TestClass",
             listOf("TestDecorator"),
             listOf("TestSuperclass"), emptyList(),
+            true,
             "Lorem ipsum",
             "Lorem ipsum", mutableListOf()
         )
@@ -73,6 +74,7 @@ internal class ClassStubContentBuilderTest {
                     "fullDocstring", mutableListOf()
                 )
             ),
+            true,
             "Lorem ipsum",
             "Lorem ipsum", mutableListOf()
         )
@@ -138,6 +140,7 @@ internal class ClassStubContentBuilderTest {
                     "fullDocstring", mutableListOf()
                 )
             ),
+            true,
             "Lorem ipsum",
             "Lorem ipsum", mutableListOf()
         )

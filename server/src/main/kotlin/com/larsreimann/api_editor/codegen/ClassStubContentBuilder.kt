@@ -75,5 +75,7 @@ fun buildAttribute(pythonParameter: AnnotatedPythonParameter): SmlAttribute {
 }
 
 private fun buildFunctions(pythonClass: AnnotatedPythonClass): List<SmlFunction> {
-    return classMethods(pythonClass).map { buildFunction(it) }
+    return classMethods(pythonClass)
+        .filter { it.isPublic }
+        .map { buildFunction(it) }
 }

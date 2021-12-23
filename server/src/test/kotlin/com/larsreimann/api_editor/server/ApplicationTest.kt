@@ -71,6 +71,7 @@ class ApplicationTest {
                                 decorators = listOf("test-decorator"),
                                 superclasses = listOf("test-superclass"),
                                 methods = emptyList(),
+                                isPublic = true,
                                 description = "Lorem ipsum",
                                 fullDocstring = "Lorem ipsum",
                                 annotations = mutableListOf()
