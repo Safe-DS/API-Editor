@@ -3,7 +3,7 @@ package com.larsreimann.api_editor.codegen
 import com.larsreimann.api_editor.model.AnnotatedPythonFunction
 import com.larsreimann.api_editor.model.AnnotatedPythonParameter
 import com.larsreimann.api_editor.model.AnnotatedPythonResult
-import de.unibonn.simpleml.constant.FileExtension
+import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.createSmlAnnotationUse
 import de.unibonn.simpleml.emf.createSmlBoolean
 import de.unibonn.simpleml.emf.createSmlClass
@@ -37,7 +37,7 @@ fun buildFunctionToString(pythonFunction: AnnotatedPythonFunction): String {
     // Required to serialize the function
     createSmlDummyResource(
         "functionStub",
-        FileExtension.STUB,
+        SmlFileExtension.Stub,
         createSmlCompilationUnit(listOf(function))
     )
 
@@ -104,7 +104,11 @@ fun buildType(pythonType: String): SmlAbstractType {
  * @param defaultValue The default value to format
  * @return The formatted default value
  */
-fun buildDefaultValue(defaultValue: String): SmlAbstractExpression {
+fun buildDefaultValue(defaultValue: String): SmlAbstractExpression? {
+    if (defaultValue.isBlank()) {
+        return null
+    }
+
     val invalid = "###invalid###" + defaultValue.replace("\"", "\\\"") + "###"
     if (defaultValue.length >= 2 && (
         defaultValue[defaultValue.length - 1]

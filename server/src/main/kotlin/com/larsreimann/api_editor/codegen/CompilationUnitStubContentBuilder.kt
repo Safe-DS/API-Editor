@@ -1,7 +1,7 @@
 package com.larsreimann.api_editor.codegen
 
 import com.larsreimann.api_editor.model.AnnotatedPythonModule
-import de.unibonn.simpleml.constant.FileExtension
+import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.createSmlCompilationUnit
 import de.unibonn.simpleml.emf.createSmlDummyResource
 import de.unibonn.simpleml.emf.createSmlPackage
@@ -22,7 +22,7 @@ fun buildCompilationUnitToString(pythonModule: AnnotatedPythonModule): String {
     // Required to serialize the compilation unit
     createSmlDummyResource(
         "compilationUnitStub",
-        FileExtension.STUB,
+        SmlFileExtension.Stub,
         compilationUnit
     )
 
