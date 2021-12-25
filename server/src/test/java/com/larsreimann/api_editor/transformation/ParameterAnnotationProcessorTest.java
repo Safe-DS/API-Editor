@@ -377,8 +377,6 @@ class ParameterAnnotationProcessorTest {
         assert testPackage != null;
         List<AnnotatedPythonParameter> actualParameters = testPackage.getModules().get(0).getFunctions().get(0).getParameters();
         for (AnnotatedPythonParameter actualParameter : actualParameters) {
-            System.out.println(testParameter1);
-            System.out.println(actualParameter);
             if (parameterIsEqual(expectedTestParameter1, actualParameter)) {
                 testParameter1isContained = true;
             }

@@ -1,6 +1,7 @@
 package com.larsreimann.api_editor.codegen;
 
 import com.larsreimann.api_editor.io.FileBuilder;
+import com.larsreimann.api_editor.model.AnnotatedPythonAttribute;
 import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
 import com.larsreimann.api_editor.model.AnnotatedPythonParameter;
 import com.larsreimann.api_editor.model.PythonParameterAssignment;
@@ -30,13 +31,75 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
         return "def "
             + pythonFunction.getName()
             + "("
-            + buildFunctionParameters()
+            + buildParameters()
             + ")"
             + ":\n"
             + indent(buildFunctionBody());
     }
 
-    private String buildFunctionParameters() {
+    /**
+     * Builds a string containing the formatted constructor
+     *
+     * @param attributes The attributes of the constructors class
+     * @return The string containing the formatted constructor
+     */
+    public String buildConstructor(List<AnnotatedPythonAttribute> attributes) {
+        return "def "
+            + pythonFunction.getName()
+            + "("
+            + buildParameters()
+            + ")"
+            + ":\n"
+            + indent(buildConstructorBody(attributes));
+    }
+
+    /**
+     * Builds a string containing the formatted class method content
+     *
+     * @return The string containing the formatted class method content
+     */
+    public String buildMethod() {
+        return "def "
+            + pythonFunction.getName()
+            + "("
+            + buildParameters()
+            + ")"
+            + ":\n"
+            + indent(buildMethodBody());
+    }
+
+    private String buildConstructorBody(
+        List<AnnotatedPythonAttribute> attributes
+    ) {
+        String separator = "";
+        String assignments = listToString(buildAttributeAssignments(attributes), 1);
+        if (!assignments.isBlank()) {
+            separator = "\n";
+        }
+        return Objects.requireNonNull(pythonFunction.getOriginalDeclaration()).getQualifiedName()
+            + "("
+            + buildParameterCall(true)
+            + ")"
+            + separator
+            + assignments;
+    }
+
+    private List<String> buildAttributeAssignments(
+        List<AnnotatedPythonAttribute> attributes
+    ) {
+        List<String> attributeAssignments = new ArrayList<>();
+        for (AnnotatedPythonAttribute attribute : attributes) {
+            attributeAssignments.add(
+                "self."
+                    + attribute.getName()
+                    + " = "
+                    + attribute.getDefaultValue()
+            );
+        }
+        return attributeAssignments;
+    }
+
+    private String buildParameters() {
         String formattedFunctionParameters = "";
         List<String> positionOnlyParameters = new ArrayList<>();
         List<String> positionOrNameParameters = new ArrayList<>();
@@ -105,20 +168,29 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
     private String buildFunctionBody() {
         return Objects.requireNonNull(pythonFunction.getOriginalDeclaration()).getQualifiedName()
             + "("
-            + buildFunctionParameterCall()
+            + buildParameterCall(false)
             + ")";
     }
 
-    private String buildFunctionParameterCall() {
+    private String buildMethodBody() {
+        return Objects.requireNonNull(pythonFunction.getOriginalDeclaration()).getQualifiedName()
+            + "("
+            + buildParameterCall(true)
+            + ")";
+    }
+
+    private String buildParameterCall(boolean isInClass) {
         List<String> formattedParameters = new ArrayList<>();
         Map<String, String> originalNameToValueMap = new HashMap<>();
         pythonFunction.getParameters().forEach(
             pythonParameter -> {
                 String value;
-                if (pythonParameter.getAssignedBy().equals(PythonParameterAssignment.CONSTANT)) {
+                if (
+                    pythonParameter.getAssignedBy().equals(PythonParameterAssignment.CONSTANT)
+                    || pythonParameter.getAssignedBy().equals(PythonParameterAssignment.ATTRIBUTE)
+                ) {
                     value = pythonParameter.getDefaultValue();
-                }
-                else {
+                } else {
                     value = pythonParameter.getName();
                 }
                 originalNameToValueMap.put(
@@ -126,24 +198,29 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
                         .requireNonNull(pythonParameter.getOriginalDeclaration())
                         .getName(),
                     value
-                    );
+                );
             }
         );
+        // first parameter in classes is implicitly assigned
+        int toSkip = 0;
+        if (isInClass) {
+            toSkip = 1;
+        }
         Objects.requireNonNull(pythonFunction.getOriginalDeclaration())
-            .getParameters().forEach(pythonParameter -> {
-            if (pythonParameter.getAssignedBy()
-                == PythonParameterAssignment.NAME_ONLY) {
-                formattedParameters.add(
-                    pythonParameter.getName()
-                        + "="
-                        + originalNameToValueMap.get(pythonParameter.getName())
-                );
-            } else {
-                formattedParameters.add(
-                    originalNameToValueMap.get(pythonParameter.getName())
-                );
-            }
-        });
+            .getParameters().stream().skip(toSkip).forEach(pythonParameter -> {
+                if (pythonParameter.getAssignedBy()
+                    == PythonParameterAssignment.NAME_ONLY) {
+                    formattedParameters.add(
+                        pythonParameter.getName()
+                            + "="
+                            + originalNameToValueMap.get(pythonParameter.getName())
+                    );
+                } else {
+                    formattedParameters.add(
+                        originalNameToValueMap.get(pythonParameter.getName())
+                    );
+                }
+            });
         return String.join(", ", formattedParameters);
     }
 }
