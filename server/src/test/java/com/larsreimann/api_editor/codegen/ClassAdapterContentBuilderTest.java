@@ -1,6 +1,5 @@
 package com.larsreimann.api_editor.codegen;
 
-import com.larsreimann.api_editor.codegen.ClassAdapterContentBuilder;
 import com.larsreimann.api_editor.model.AnnotatedPythonClass;
 import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
 import com.larsreimann.api_editor.model.AnnotatedPythonParameter;
@@ -26,6 +25,7 @@ class ClassAdapterContentBuilderTest {
             List.of("test-decorator"),
             List.of("test-superclass"),
             Collections.emptyList(),
+            true,
             "Lorem ipsum",
             "Lorem ipsum",
             Collections.emptyList()
@@ -72,6 +72,7 @@ class ClassAdapterContentBuilderTest {
                 "fullDocstring",
                 Collections.emptyList()
             )),
+            true,
             "Lorem ipsum",
             "Lorem ipsum",
             Collections.emptyList()
@@ -141,6 +142,7 @@ class ClassAdapterContentBuilderTest {
                     Collections.emptyList()
                 )
             ),
+            true,
             "Lorem ipsum",
             "Lorem ipsum",
             Collections.emptyList()
@@ -223,6 +225,7 @@ class ClassAdapterContentBuilderTest {
             Collections.emptyList(),
             Collections.emptyList(),
             List.of(testFunction),
+            true,
             "",
             "",
             List.of(

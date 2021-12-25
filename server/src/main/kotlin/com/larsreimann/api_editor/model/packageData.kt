@@ -203,6 +203,7 @@ data class AnnotatedPythonClass(
     val decorators: List<String>,
     val superclasses: List<String>,
     val methods: List<AnnotatedPythonFunction>,
+    val isPublic: Boolean,
     val description: String,
     val fullDocstring: String,
     override val annotations: MutableList<EditorAnnotation>
@@ -261,6 +262,7 @@ data class AnnotatedPythonClass(
         superclasses: List<String> = this.superclasses,
         attributes: List<AnnotatedPythonAttribute> = this.attributes,
         methods: List<AnnotatedPythonFunction> = this.methods,
+        isPublic: Boolean = this.isPublic,
         description: String = this.description,
         fullDocstring: String = this.fullDocstring,
         annotations: MutableList<EditorAnnotation> = this.annotations,
@@ -273,6 +275,7 @@ data class AnnotatedPythonClass(
             decorators = decorators,
             superclasses = superclasses,
             methods = methods,
+            isPublic = isPublic,
             description = description,
             fullDocstring = fullDocstring,
             annotations = annotations

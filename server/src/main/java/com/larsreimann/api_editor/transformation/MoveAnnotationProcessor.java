@@ -132,6 +132,8 @@ public class MoveAnnotationProcessor extends AbstractPackageDataVisitor {
             new ArrayList<>(pythonClass.getDecorators()),
             new ArrayList<>(pythonClass.getSuperclasses()),
             new ArrayList<>(),
+            new ArrayList<>(),
+            pythonClass.isPublic(),
             pythonClass.getDescription(),
             pythonClass.getFullDocstring(),
             annotations,

@@ -150,6 +150,7 @@ const parsePythonClassJson = function (
                         functionUniqueQualifiedName,
                     ) as PythonFunction,
             ),
+        classJson.is_public,
         classJson.description ?? '',
         classJson.docstring ?? '',
     );
