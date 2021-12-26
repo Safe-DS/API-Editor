@@ -15,13 +15,14 @@
 
 ###  http://www.semanticweb.org/praja/ontologies/2021/11/Dependency_Constraints#hasAction
 :hasAction rdf:type owl:ObjectProperty ;
-           rdfs:domain :Dependency ;
-           rdfs:comment "Each dependency has an Action attached to it." .
+           rdfs:domain :Dependency .
 
 
 ###  http://www.semanticweb.org/praja/ontologies/2021/11/Dependency_Constraints#hasCondition
 :hasCondition rdf:type owl:ObjectProperty ;
-              rdfs:domain :Dependency .
+              rdfs:domain :Action ,
+                          :Condition ,
+                          :Dependency .
 
 
 ###  http://www.semanticweb.org/praja/ontologies/2021/11/Dependency_Constraints#hasDependentParameter
@@ -42,11 +43,25 @@
 #    Data properties
 #################################################################
 
+###  http://www.semanticweb.org/praja/ontologies/2021/11/Dependency_Constraints#hasAction
+:hasAction rdf:type owl:DatatypeProperty ;
+           rdfs:subPropertyOf owl:topDataProperty ;
+           rdfs:range xsd:string .
+
+
 ###  http://www.semanticweb.org/praja/ontologies/2021/11/Dependency_Constraints#hasCondition
 :hasCondition rdf:type owl:DatatypeProperty ;
-              rdfs:domain :Action ,
-                          :Condition ;
+              rdfs:subPropertyOf owl:topDataProperty ;
               rdfs:range xsd:string .
+
+
+###  http://www.semanticweb.org/praja/ontologies/2021/11/Dependency_Constraints#hasType
+:hasType rdf:type owl:DatatypeProperty ;
+         rdfs:comment "Each parameter has a type." .
+
+
+###  http://www.w3.org/2002/07/owl#topDataProperty
+owl:topDataProperty rdfs:subPropertyOf owl:topDataProperty .
 
 
 #################################################################
@@ -111,6 +126,9 @@
 #################################################################
 #    Annotations
 #################################################################
+
+:hasAction rdfs:comment "Each dependency has an Action attached to it." .
+
 
 :hasCondition rdfs:comment "Each Dependency has a Condition attached to it." .
 
