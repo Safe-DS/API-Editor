@@ -6,7 +6,11 @@ import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
 import com.larsreimann.api_editor.model.AnnotatedPythonParameter;
 import com.larsreimann.api_editor.model.PythonParameterAssignment;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class FunctionAdapterContentBuilder extends FileBuilder {
     AnnotatedPythonFunction pythonFunction;
@@ -187,7 +191,7 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
                 String value;
                 if (
                     pythonParameter.getAssignedBy().equals(PythonParameterAssignment.CONSTANT)
-                    || pythonParameter.getAssignedBy().equals(PythonParameterAssignment.ATTRIBUTE)
+                        || pythonParameter.getAssignedBy().equals(PythonParameterAssignment.ATTRIBUTE)
                 ) {
                     value = pythonParameter.getDefaultValue();
                 } else {

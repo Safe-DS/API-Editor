@@ -1,6 +1,12 @@
 package com.larsreimann.api_editor.codegen;
 
-import com.larsreimann.api_editor.model.*;
+import com.larsreimann.api_editor.model.AnnotatedPythonClass;
+import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
+import com.larsreimann.api_editor.model.AnnotatedPythonParameter;
+import com.larsreimann.api_editor.model.AttributeAnnotation;
+import com.larsreimann.api_editor.model.DefaultString;
+import com.larsreimann.api_editor.model.PythonParameterAssignment;
+import com.larsreimann.api_editor.model.RenameAnnotation;
 import com.larsreimann.api_editor.transformation.OriginalDeclarationProcessor;
 import com.larsreimann.api_editor.transformation.RenameAnnotationProcessor;
 import org.junit.jupiter.api.Assertions;
@@ -123,15 +129,15 @@ class ClassAdapterContentBuilderTest {
                             Collections.emptyList()
                         ),
                         new AnnotatedPythonParameter(
-                        "only-param",
-                        "test-module.test-class.test-class-function1.only-param",
-                        null,
-                        PythonParameterAssignment.POSITION_OR_NAME,
-                        true,
-                        "typeInDocs",
-                        "description",
-                        Collections.emptyList()
-                    )
+                            "only-param",
+                            "test-module.test-class.test-class-function1.only-param",
+                            null,
+                            PythonParameterAssignment.POSITION_OR_NAME,
+                            true,
+                            "typeInDocs",
+                            "description",
+                            Collections.emptyList()
+                        )
                     ),
                     Collections.emptyList(),
                     true,

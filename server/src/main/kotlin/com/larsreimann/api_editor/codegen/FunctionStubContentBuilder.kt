@@ -111,9 +111,9 @@ fun buildDefaultValue(defaultValue: String): SmlAbstractExpression? {
 
     val invalid = "###invalid###" + defaultValue.replace("\"", "\\\"") + "###"
     if (defaultValue.length >= 2 && (
-        defaultValue[defaultValue.length - 1]
-            == defaultValue[0]
-        ) && defaultValue[0] == '\'' && defaultValue.count { it == '\'' } == 2
+            defaultValue[defaultValue.length - 1]
+                == defaultValue[0]
+            ) && defaultValue[0] == '\'' && defaultValue.count { it == '\'' } == 2
     ) {
         return createSmlString(defaultValue.replace("'".toRegex(), "\"").trim('\'', '"'))
     }

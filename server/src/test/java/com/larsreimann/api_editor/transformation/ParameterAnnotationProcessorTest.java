@@ -1,12 +1,24 @@
 package com.larsreimann.api_editor.transformation;
 
-import com.larsreimann.api_editor.model.*;
+import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
+import com.larsreimann.api_editor.model.AnnotatedPythonModule;
+import com.larsreimann.api_editor.model.AnnotatedPythonPackage;
+import com.larsreimann.api_editor.model.AnnotatedPythonParameter;
+import com.larsreimann.api_editor.model.ConstantAnnotation;
+import com.larsreimann.api_editor.model.DefaultBoolean;
+import com.larsreimann.api_editor.model.DefaultString;
+import com.larsreimann.api_editor.model.OptionalAnnotation;
+import com.larsreimann.api_editor.model.PythonParameterAssignment;
+import com.larsreimann.api_editor.model.RequiredAnnotation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.*;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonFunction;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonModule;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonPackage;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonParameter;
 
 class ParameterAnnotationProcessorTest {
     @Test
@@ -92,11 +104,9 @@ class ParameterAnnotationProcessorTest {
         for (AnnotatedPythonParameter actualParameter : actualParameters) {
             if (parameterIsEqual(expectedTestParameter1, actualParameter)) {
                 testParameter1isContained = true;
-            }
-            else if (parameterIsEqual(expectedTestParameter2, actualParameter)) {
+            } else if (parameterIsEqual(expectedTestParameter2, actualParameter)) {
                 testParameter2isContained = true;
-            }
-            else if (parameterIsEqual(expectedTestParameter3, actualParameter)) {
+            } else if (parameterIsEqual(expectedTestParameter3, actualParameter)) {
                 testParameter3isContained = true;
             }
         }
@@ -188,11 +198,9 @@ class ParameterAnnotationProcessorTest {
         for (AnnotatedPythonParameter actualParameter : actualParameters) {
             if (parameterIsEqual(expectedTestParameter1, actualParameter)) {
                 testParameter1isContained = true;
-            }
-            else if (parameterIsEqual(expectedTestParameter2, actualParameter)) {
+            } else if (parameterIsEqual(expectedTestParameter2, actualParameter)) {
                 testParameter2isContained = true;
-            }
-            else if (parameterIsEqual(expectedTestParameter3, actualParameter)) {
+            } else if (parameterIsEqual(expectedTestParameter3, actualParameter)) {
                 testParameter3isContained = true;
             }
         }
@@ -280,11 +288,9 @@ class ParameterAnnotationProcessorTest {
         for (AnnotatedPythonParameter actualParameter : actualParameters) {
             if (parameterIsEqual(expectedTestParameter1, actualParameter)) {
                 testParameter1isContained = true;
-            }
-            else if (parameterIsEqual(expectedTestParameter2, actualParameter)) {
+            } else if (parameterIsEqual(expectedTestParameter2, actualParameter)) {
                 testParameter2isContained = true;
-            }
-            else if (parameterIsEqual(expectedTestParameter3, actualParameter)) {
+            } else if (parameterIsEqual(expectedTestParameter3, actualParameter)) {
                 testParameter3isContained = true;
             }
         }
@@ -379,11 +385,9 @@ class ParameterAnnotationProcessorTest {
         for (AnnotatedPythonParameter actualParameter : actualParameters) {
             if (parameterIsEqual(expectedTestParameter1, actualParameter)) {
                 testParameter1isContained = true;
-            }
-            else if (parameterIsEqual(expectedTestParameter2, actualParameter)) {
+            } else if (parameterIsEqual(expectedTestParameter2, actualParameter)) {
                 testParameter2isContained = true;
-            }
-            else if (parameterIsEqual(expectedTestParameter3, actualParameter)) {
+            } else if (parameterIsEqual(expectedTestParameter3, actualParameter)) {
                 testParameter3isContained = true;
             }
         }
@@ -406,14 +410,12 @@ class ParameterAnnotationProcessorTest {
             if (!firstParameter.getDefaultValue().equals(secondParameter.getDefaultValue())) {
                 return false;
             }
-        }
-        else if (
+        } else if (
             firstParameter.getDefaultValue() == null
                 && secondParameter.getDefaultValue() != null
         ) {
             return false;
-        }
-        else if (
+        } else if (
             secondParameter.getDefaultValue() == null
                 && firstParameter.getDefaultValue() != null
         ) {

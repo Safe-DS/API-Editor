@@ -1,6 +1,18 @@
 package com.larsreimann.api_editor.codegen;
 
-import com.larsreimann.api_editor.model.*;
+import com.larsreimann.api_editor.model.AnnotatedPythonClass;
+import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
+import com.larsreimann.api_editor.model.AnnotatedPythonModule;
+import com.larsreimann.api_editor.model.AnnotatedPythonParameter;
+import com.larsreimann.api_editor.model.AnnotatedPythonResult;
+import com.larsreimann.api_editor.model.AttributeAnnotation;
+import com.larsreimann.api_editor.model.ConstantAnnotation;
+import com.larsreimann.api_editor.model.DefaultString;
+import com.larsreimann.api_editor.model.OptionalAnnotation;
+import com.larsreimann.api_editor.model.PythonFromImport;
+import com.larsreimann.api_editor.model.PythonImport;
+import com.larsreimann.api_editor.model.PythonParameterAssignment;
+import com.larsreimann.api_editor.model.RequiredAnnotation;
 import com.larsreimann.api_editor.transformation.OriginalDeclarationProcessor;
 import com.larsreimann.api_editor.transformation.ParameterAnnotationProcessor;
 import org.junit.jupiter.api.Assertions;

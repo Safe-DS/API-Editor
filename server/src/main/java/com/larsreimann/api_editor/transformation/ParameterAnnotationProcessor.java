@@ -1,6 +1,17 @@
 package com.larsreimann.api_editor.transformation;
 
-import com.larsreimann.api_editor.model.*;
+import com.larsreimann.api_editor.model.AbstractPackageDataTransformer;
+import com.larsreimann.api_editor.model.AnnotatedPythonAttribute;
+import com.larsreimann.api_editor.model.AnnotatedPythonClass;
+import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
+import com.larsreimann.api_editor.model.AnnotatedPythonParameter;
+import com.larsreimann.api_editor.model.AnnotatedPythonResult;
+import com.larsreimann.api_editor.model.AttributeAnnotation;
+import com.larsreimann.api_editor.model.ConstantAnnotation;
+import com.larsreimann.api_editor.model.EditorAnnotation;
+import com.larsreimann.api_editor.model.OptionalAnnotation;
+import com.larsreimann.api_editor.model.PythonParameterAssignment;
+import com.larsreimann.api_editor.model.RequiredAnnotation;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

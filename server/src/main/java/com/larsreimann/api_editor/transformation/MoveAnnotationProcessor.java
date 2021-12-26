@@ -14,12 +14,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createModuleCopyWithoutClassesAndFunctions;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPackageCopyWithoutModules;
 import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonClass;
 import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonFunction;
 import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonModule;
 import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonParameter;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createModuleCopyWithoutClassesAndFunctions;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPackageCopyWithoutModules;
 
 public class MoveAnnotationProcessor extends AbstractPackageDataVisitor {
     private AnnotatedPythonPackage modifiedPackage;
