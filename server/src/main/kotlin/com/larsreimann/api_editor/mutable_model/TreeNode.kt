@@ -8,16 +8,26 @@ import kotlin.reflect.KProperty
 open class TreeNode {
 
     /**
+     * Parent and container of this node in the tree.
+     */
+    private var location: Location = Location(null, null)
+
+    /**
      * The parent of this node in the tree.
      */
-    var parent: TreeNode? = null
-        private set
+    val parent: TreeNode?
+        get() = location.parent
 
     /**
      * The container of this node in the tree.
      */
-    var container: TreeNodeContainer<*>? = null
-        private set
+    val container: Container<*>?
+        get() = location.container
+
+    /**
+     * Cross-references to this node. They get notified whenever this node is moved.
+     */
+    private val crossReferences = mutableListOf<CrossReference<*>>()
 
     /**
      * Whether this node is the root of the tree.
@@ -32,6 +42,11 @@ open class TreeNode {
     open fun children() = emptySequence<TreeNode>()
 
     /**
+     * Cross-references to this node. They get notified whenever this node is moved.
+     */
+    fun crossReferences() = crossReferences.toList().asSequence()
+
+    /**
      * Releases the subtree that has this node as root.
      */
     fun release() {
@@ -39,9 +54,20 @@ open class TreeNode {
     }
 
     /**
+     * Sets parent and container of this node in the tree.
+     */
+    private fun move(newParent: TreeNode?, newContainer: Container<*>?) {
+        val oldLocation = this.location
+        val newLocation = Location(newParent, newContainer)
+        this.location = newLocation
+
+        crossReferences.forEach { it.onMove(oldLocation, newLocation) }
+    }
+
+    /**
      * A container for [TreeNode]s of the given type.
      */
-    sealed class TreeNodeContainer<T : TreeNode> {
+    sealed class Container<T : TreeNode> {
 
         /**
          * Releases the subtree that has this node as root. If this container does not contain the node nothing should
@@ -57,8 +83,7 @@ open class TreeNode {
          * updates.
          */
         protected fun nullifyUplinks(node: TreeNode?) {
-            node?.parent = null
-            node?.container = null
+            node?.move(newParent = null, newContainer = null)
         }
 
         /**
@@ -66,8 +91,7 @@ open class TreeNode {
          * cyclic updates.
          */
         protected fun TreeNode?.pointUplinksToThisContainer(node: TreeNode?) {
-            node?.parent = this
-            node?.container = this@TreeNodeContainer
+            node?.move(newParent = this@pointUplinksToThisContainer, newContainer = this@Container)
         }
     }
 
@@ -124,7 +148,7 @@ open class TreeNode {
      *
      * @param node The initial value.
      */
-    inner class ContainmentReference<T : TreeNode>(node: T?) : TreeNodeContainer<T>() {
+    inner class ContainmentReference<T : TreeNode>(node: T?) : Container<T>() {
         var node: T? = null
             set(value) {
 
@@ -173,7 +197,7 @@ open class TreeNode {
     inner class ContainmentList<T : TreeNode> private constructor(
         nodes: Collection<T>,
         private val delegate: MutableList<T>
-    ) : TreeNodeContainer<T>(), MutableList<T> by delegate {
+    ) : Container<T>(), MutableList<T> by delegate {
 
         constructor(nodes: Collection<T> = emptyList()) : this(nodes, mutableListOf())
 
@@ -253,4 +277,41 @@ open class TreeNode {
             return replacedElement
         }
     }
+
+    /**
+     * References a [TreeNode] without containing it. Gets notified whenever the [TreeNode] is moved.
+     */
+    class CrossReference<T : TreeNode>(
+        node: T?,
+        val handleMove: CrossReference<T>.(from: Location, to: Location) -> Unit = { _, _ -> }
+    ) {
+        var node: T? = null
+            set(value) {
+                if (field == value) {
+                    return
+                }
+
+                field?.crossReferences?.remove(this)
+                field = value
+                value?.crossReferences?.add(this)
+            }
+
+        init {
+            this.node = node
+        }
+
+        internal fun onMove(from: Location, to: Location) {
+            handleMove(from, to)
+        }
+
+        operator fun getValue(node: T, property: KProperty<*>): T? {
+            return this.node
+        }
+
+        operator fun setValue(oldNode: T, property: KProperty<*>, newNode: T?) {
+            this.node = newNode
+        }
+    }
+
+    data class Location(val parent: TreeNode?, val container: Container<*>?)
 }
