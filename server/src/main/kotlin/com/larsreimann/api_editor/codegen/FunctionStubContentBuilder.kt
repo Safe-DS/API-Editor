@@ -3,6 +3,8 @@ package com.larsreimann.api_editor.codegen
 import com.larsreimann.api_editor.model.AnnotatedPythonFunction
 import com.larsreimann.api_editor.model.AnnotatedPythonParameter
 import com.larsreimann.api_editor.model.AnnotatedPythonResult
+import com.larsreimann.api_editor.model.PythonParameterAssignment.ATTRIBUTE
+import com.larsreimann.api_editor.model.PythonParameterAssignment.CONSTANT
 import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.createSmlAnnotationUse
 import de.unibonn.simpleml.emf.createSmlBoolean
@@ -55,12 +57,16 @@ fun buildFunction(pythonFunction: AnnotatedPythonFunction): SmlFunction {
                 add(createSmlAnnotationUse("Pure"))
             }
         },
-        parameters = pythonFunction.parameters.map { buildParameter(it) },
+        parameters = pythonFunction.parameters.mapNotNull { buildParameter(it) },
         results = pythonFunction.results.map { buildResult(it) }
     )
 }
 
-fun buildParameter(pythonParameter: AnnotatedPythonParameter): SmlParameter {
+fun buildParameter(pythonParameter: AnnotatedPythonParameter): SmlParameter? {
+    if (pythonParameter.assignedBy in setOf(ATTRIBUTE, CONSTANT)) {
+        return null
+    }
+
     return createSmlParameter(
         name = pythonParameter.name,
         type = buildType(pythonParameter.typeInDocs),

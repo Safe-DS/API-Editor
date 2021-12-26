@@ -3,6 +3,7 @@ package com.larsreimann.api_editor.codegen
 import com.larsreimann.api_editor.model.AnnotatedPythonClass
 import com.larsreimann.api_editor.model.AnnotatedPythonFunction
 import com.larsreimann.api_editor.model.AnnotatedPythonParameter
+import com.larsreimann.api_editor.model.PythonParameterAssignment
 import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.createSmlAttribute
 import de.unibonn.simpleml.emf.createSmlClass
@@ -48,7 +49,7 @@ fun buildClass(pythonClass: AnnotatedPythonClass): SmlClass {
 private fun buildConstructor(pythonClass: AnnotatedPythonClass): List<SmlParameter> {
     return constructorOrNull(pythonClass)
         ?.parameters
-        ?.map { buildParameter(it) }
+        ?.mapNotNull { buildParameter(it) }
         .orEmpty()
 }
 
@@ -63,6 +64,7 @@ private fun constructorOrNull(pythonClass: AnnotatedPythonClass): AnnotatedPytho
 private fun buildAttributes(pythonClass: AnnotatedPythonClass): List<SmlAttribute> {
     return constructorOrNull(pythonClass)
         ?.parameters
+        ?.filter { it.assignedBy != PythonParameterAssignment.CONSTANT }
         ?.map { buildAttribute(it) }
         .orEmpty()
 }
