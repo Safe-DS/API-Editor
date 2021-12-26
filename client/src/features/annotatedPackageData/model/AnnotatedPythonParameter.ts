@@ -1,10 +1,11 @@
 import { PythonParameterAssignment } from '../../packageData/model/PythonParameter';
 import { InferableAnnotation } from './InferableAnnotation';
+import { Optional } from '../../../common/util/types';
 
 export default class AnnotatedPythonParameter {
     readonly name: string;
     readonly qualifiedName: string;
-    readonly defaultValue: string;
+    readonly defaultValue: Optional<string>;
     readonly assignedBy: string;
     readonly isPublic: boolean;
     readonly typeInDocs: string;
@@ -14,7 +15,7 @@ export default class AnnotatedPythonParameter {
     constructor(
         name: string,
         qualifiedName: string,
-        defaultValue: string = '',
+        defaultValue: Optional<string> = null,
         assignedBy: PythonParameterAssignment = PythonParameterAssignment.POSITION_OR_NAME,
         isPublic: boolean = false,
         typeInDocs: string = '',
@@ -23,7 +24,7 @@ export default class AnnotatedPythonParameter {
     ) {
         this.name = name;
         this.qualifiedName = qualifiedName;
-        this.defaultValue = defaultValue ?? '';
+        this.defaultValue = defaultValue;
         switch (assignedBy) {
             case PythonParameterAssignment.NAME_ONLY:
                 this.assignedBy = 'NAME_ONLY';

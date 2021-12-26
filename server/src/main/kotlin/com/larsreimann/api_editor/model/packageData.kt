@@ -504,6 +504,10 @@ data class AnnotatedPythonParameter(
     @Transient
     var boundary: Boundary? = null
 
+    fun isRequired() = defaultValue == null
+
+    fun isOptional() = defaultValue != null
+
     override fun accept(visitor: PackageDataVisitor) {
         visitor.enterPythonParameter(this)
         visitor.leavePythonParameter(this)
