@@ -30,7 +30,7 @@ class CrossReferenceTest {
     }
 
     @Test
-    fun `setter should register cross reference on new node`() {
+    fun `setter should register cross-reference on new node`() {
         crossReference.node = someOtherInnerNode
         someOtherInnerNode.crossReferences().shouldContainExactly(crossReference)
     }
@@ -42,7 +42,7 @@ class CrossReferenceTest {
     }
 
     @Test
-    fun `setter should deregister cross reference on old node`() {
+    fun `setter should deregister cross-reference on old node`() {
         crossReference.node = someOtherInnerNode
         innerNode.crossReferences().shouldBeEmpty()
     }
