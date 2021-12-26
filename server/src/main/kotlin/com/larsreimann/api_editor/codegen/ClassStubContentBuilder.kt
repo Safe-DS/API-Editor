@@ -41,6 +41,11 @@ fun buildClassToString(pythonClass: AnnotatedPythonClass): String {
 fun buildClass(pythonClass: AnnotatedPythonClass): SmlClass {
     return createSmlClass(
         name = pythonClass.name,
+        annotations = buildList {
+            if (pythonClass.description.isNotBlank()) {
+                add(createSmlDescriptionAnnotationUse(pythonClass.description))
+            }
+        },
         parameters = buildConstructor(pythonClass),
         members = buildAttributes(pythonClass) + buildFunctions(pythonClass)
     )
@@ -53,7 +58,7 @@ private fun buildConstructor(pythonClass: AnnotatedPythonClass): List<SmlParamet
         .orEmpty()
 }
 
-private fun classMethods(pythonClass: AnnotatedPythonClass): List<AnnotatedPythonFunction> {
+private fun methods(pythonClass: AnnotatedPythonClass): List<AnnotatedPythonFunction> {
     return pythonClass.methods.filter { it.name != "__init__" }
 }
 
@@ -72,12 +77,17 @@ private fun buildAttributes(pythonClass: AnnotatedPythonClass): List<SmlAttribut
 fun buildAttribute(pythonParameter: AnnotatedPythonParameter): SmlAttribute {
     return createSmlAttribute(
         name = pythonParameter.name,
+        annotations = buildList {
+            if (pythonParameter.description.isNotBlank()) {
+                add(createSmlDescriptionAnnotationUse(pythonParameter.description))
+            }
+        },
         type = buildType(pythonParameter.typeInDocs)
     )
 }
 
 private fun buildFunctions(pythonClass: AnnotatedPythonClass): List<SmlFunction> {
-    return classMethods(pythonClass)
+    return methods(pythonClass)
         .filter { it.isPublic }
         .map { buildFunction(it) }
 }

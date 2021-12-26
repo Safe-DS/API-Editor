@@ -7,6 +7,7 @@ import com.larsreimann.api_editor.model.AttributeAnnotation
 import com.larsreimann.api_editor.model.DefaultString
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
+import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -35,7 +36,10 @@ internal class ClassStubContentBuilderTest {
         val formattedClass = buildClassToString(testClass)
 
         // then
-        val expectedFormattedClass = "class TestClass()"
+        val expectedFormattedClass = """
+            |@Description("Lorem ipsum")
+            |class TestClass()
+        """.trimMargin()
         Assertions.assertEquals(expectedFormattedClass, formattedClass)
     }
 
@@ -84,10 +88,13 @@ internal class ClassStubContentBuilderTest {
 
         // then
         val expectedFormattedClass: String = """
+            |@Description("Lorem ipsum")
             |class TestClass() {
-            |    fun testClassFunction(onlyParam: String or "defaultValue")
+            |    @Description("description")
+            |    fun testClassFunction(@Description("description") onlyParam: String or "defaultValue")
             |}""".trimMargin()
-        Assertions.assertEquals(expectedFormattedClass, formattedClass)
+
+        formattedClass shouldBe expectedFormattedClass
     }
 
     @Test
@@ -151,12 +158,15 @@ internal class ClassStubContentBuilderTest {
         // then
         val expectedFormattedClass: String =
             """
-            |class TestClass(onlyParam: Any?) {
+            |@Description("Lorem ipsum")
+            |class TestClass(@Description("description") onlyParam: Any?) {
+            |    @Description("description")
             |    attr onlyParam: Any?
             |
-            |    fun testClassFunction1(onlyParam: Any?)
+            |    @Description("description")
+            |    fun testClassFunction1(@Description("description") onlyParam: Any?)
             |}""".trimMargin()
 
-        Assertions.assertEquals(formattedClass, expectedFormattedClass)
+        formattedClass shouldBe expectedFormattedClass
     }
 }

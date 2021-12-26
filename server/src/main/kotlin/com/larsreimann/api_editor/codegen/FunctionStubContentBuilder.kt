@@ -7,6 +7,7 @@ import com.larsreimann.api_editor.model.PythonParameterAssignment.ATTRIBUTE
 import com.larsreimann.api_editor.model.PythonParameterAssignment.CONSTANT
 import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.createSmlAnnotationUse
+import de.unibonn.simpleml.emf.createSmlArgument
 import de.unibonn.simpleml.emf.createSmlBoolean
 import de.unibonn.simpleml.emf.createSmlClass
 import de.unibonn.simpleml.emf.createSmlCompilationUnit
@@ -23,6 +24,7 @@ import de.unibonn.simpleml.serializer.SerializationResult
 import de.unibonn.simpleml.serializer.serializeToFormattedString
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractType
+import de.unibonn.simpleml.simpleML.SmlAnnotationUse
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlResult
@@ -53,12 +55,22 @@ fun buildFunction(pythonFunction: AnnotatedPythonFunction): SmlFunction {
     return createSmlFunction(
         name = pythonFunction.name,
         annotations = buildList {
+            if (pythonFunction.description.isNotBlank()) {
+                add(createSmlDescriptionAnnotationUse(pythonFunction.description))
+            }
             if (pythonFunction.isPure) {
                 add(createSmlAnnotationUse("Pure"))
             }
         },
         parameters = pythonFunction.parameters.mapNotNull { buildParameter(it) },
         results = pythonFunction.results.map { buildResult(it) }
+    )
+}
+
+fun createSmlDescriptionAnnotationUse(description: String): SmlAnnotationUse {
+    return createSmlAnnotationUse(
+        "Description",
+        listOf(createSmlArgument(createSmlString(description)))
     )
 }
 
@@ -69,6 +81,11 @@ fun buildParameter(pythonParameter: AnnotatedPythonParameter): SmlParameter? {
 
     return createSmlParameter(
         name = pythonParameter.name,
+        annotations = buildList {
+            if (pythonParameter.description.isNotBlank()) {
+                add(createSmlDescriptionAnnotationUse(pythonParameter.description))
+            }
+        },
         type = buildType(pythonParameter.typeInDocs),
         defaultValue = pythonParameter.defaultValue?.let { buildDefaultValue(it) }
     )
@@ -77,6 +94,11 @@ fun buildParameter(pythonParameter: AnnotatedPythonParameter): SmlParameter? {
 fun buildResult(pythonResult: AnnotatedPythonResult): SmlResult {
     return createSmlResult(
         name = pythonResult.name,
+        annotations = buildList {
+            if (pythonResult.description.isNotBlank()) {
+                add(createSmlDescriptionAnnotationUse(pythonResult.description))
+            }
+        },
         type = buildType(pythonResult.type)
     )
 }
@@ -117,9 +139,9 @@ fun buildDefaultValue(defaultValue: String): SmlAbstractExpression? {
 
     val invalid = "###invalid###" + defaultValue.replace("\"", "\\\"") + "###"
     if (defaultValue.length >= 2 && (
-        defaultValue[defaultValue.length - 1]
-            == defaultValue[0]
-        ) && defaultValue[0] == '\'' && defaultValue.count { it == '\'' } == 2
+            defaultValue[defaultValue.length - 1]
+                == defaultValue[0]
+            ) && defaultValue[0] == '\'' && defaultValue.count { it == '\'' } == 2
     ) {
         return createSmlString(defaultValue.replace("'".toRegex(), "\"").trim('\'', '"'))
     }
