@@ -215,6 +215,14 @@ data class AnnotatedPythonClass(
     @Transient
     val attributes = mutableListOf<AnnotatedPythonAttribute>()
 
+    fun methodsExceptConstructor(): List<AnnotatedPythonFunction> {
+        return methods.filter { it.name != "__init__" }
+    }
+
+    fun constructorOrNull(): AnnotatedPythonFunction? {
+        return methods.firstOrNull { it.name == "__init__" }
+    }
+
     override fun accept(visitor: PackageDataVisitor) {
         val shouldTraverseChildren = visitor.enterPythonClass(this)
 
@@ -289,7 +297,7 @@ data class AnnotatedPythonClass(
 data class AnnotatedPythonAttribute(
     override val name: String,
     val qualifiedName: String,
-    val defaultValue: String,
+    val defaultValue: String?,
     val isPublic: Boolean,
     val typeInDocs: String,
     val description: String,
@@ -316,7 +324,7 @@ data class AnnotatedPythonAttribute(
     fun fullCopy(
         name: String = this.name,
         qualifiedName: String = this.qualifiedName,
-        defaultValue: String = this.defaultValue,
+        defaultValue: String? = this.defaultValue,
         isPublic: Boolean = this.isPublic,
         typeInDocs: String = this.typeInDocs,
         description: String = this.description,
@@ -553,7 +561,8 @@ enum class PythonParameterAssignment {
     POSITION_OR_NAME,
     NAME_ONLY,
     CONSTANT,
-    ATTRIBUTE
+    ATTRIBUTE,
+    IMPLICIT
 }
 
 @Serializable
