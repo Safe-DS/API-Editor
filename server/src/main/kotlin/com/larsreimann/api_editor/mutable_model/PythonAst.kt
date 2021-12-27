@@ -117,7 +117,7 @@ class MutablePythonFunction(
 
 class MutablePythonAttribute(
     name: String,
-    var defaultValue: String = "",
+    var defaultValue: String? = null,
     var isPublic: Boolean = true,
     var typeInDocs: String = "",
     var description: String = "",
