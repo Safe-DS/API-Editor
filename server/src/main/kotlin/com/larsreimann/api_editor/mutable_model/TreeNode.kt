@@ -10,7 +10,8 @@ open class TreeNode {
     /**
      * Parent and container of this node in the tree.
      */
-    private var location: Location = Location(null, null)
+    var location: Location = Location(null, null)
+        private set
 
     /**
      * The parent of this node in the tree.
