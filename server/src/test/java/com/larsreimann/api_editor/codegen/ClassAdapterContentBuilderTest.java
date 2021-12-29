@@ -54,18 +54,30 @@ class ClassAdapterContentBuilderTest {
                 "test-class-function",
                 "test-module.test-class.test-class-function",
                 List.of("decorators"),
-                List.of(new AnnotatedPythonParameter(
-                    "only-param",
-                    "test-module.test-class.test-class-function.only-param",
-                    "'defaultValue'",
-                    PythonParameterAssignment.POSITION_OR_NAME,
-                    true,
-                    "str",
-                    "description",
-                    List.of(new AttributeAnnotation(
-                        new DefaultString("test")
-                    ))
-                )),
+                List.of(
+                    new AnnotatedPythonParameter(
+                        "self",
+                        "test-module.test-class.test-class-function.self",
+                        null,
+                        PythonParameterAssignment.POSITION_OR_NAME,
+                        true,
+                        "typeInDocs",
+                        "description",
+                        Collections.emptyList()
+                    ),
+                    new AnnotatedPythonParameter(
+                        "only-param",
+                        "test-module.test-class.test-class-function.only-param",
+                        "'defaultValue'",
+                        PythonParameterAssignment.POSITION_OR_NAME,
+                        true,
+                        "str",
+                        "description",
+                        List.of(new AttributeAnnotation(
+                            new DefaultString("test")
+                        ))
+                    )
+                ),
                 Collections.emptyList(),
                 true,
                 "description",
@@ -87,7 +99,7 @@ class ClassAdapterContentBuilderTest {
         // then
         String expectedFormattedClass = """
             class test-class:
-                def test-class-function(only-param='defaultValue'):
+                def test-class-function(self, only-param='defaultValue'):
                     test-module.test-class.test-class-function(only-param)""";
         Assertions.assertEquals(expectedFormattedClass, formattedClass);
     }
@@ -105,16 +117,28 @@ class ClassAdapterContentBuilderTest {
                     "test-class-function1",
                     "test-module.test-class.test-class-function1",
                     List.of("decorators"),
-                    List.of(new AnnotatedPythonParameter(
-                        "only-param",
-                        "test-module.test-class.test-class-function.only-param",
-                        null,
-                        PythonParameterAssignment.POSITION_OR_NAME,
-                        true,
-                        "typeInDocs",
-                        "description",
-                        Collections.emptyList()
-                    )),
+                    List.of(
+                        new AnnotatedPythonParameter(
+                            "self",
+                            "test-module.test-class.test-class-function1.self",
+                            null,
+                            PythonParameterAssignment.POSITION_OR_NAME,
+                            true,
+                            "typeInDocs",
+                            "description",
+                            Collections.emptyList()
+                        ),
+                        new AnnotatedPythonParameter(
+                            "only-param",
+                            "test-module.test-class.test-class-function1.only-param",
+                            null,
+                            PythonParameterAssignment.POSITION_OR_NAME,
+                            true,
+                            "typeInDocs",
+                            "description",
+                            Collections.emptyList()
+                        )
+                    ),
                     Collections.emptyList(),
                     true,
                     "description",
@@ -125,16 +149,28 @@ class ClassAdapterContentBuilderTest {
                     "test-class-function2",
                     "test-module.test-class.test-class-function2",
                     List.of("decorators"),
-                    List.of(new AnnotatedPythonParameter(
-                        "only-param",
-                        "test-module.test-class.test-class-function.only-param",
-                        null,
-                        PythonParameterAssignment.POSITION_OR_NAME,
-                        true,
-                        "typeInDocs",
-                        "description",
-                        Collections.emptyList()
-                    )),
+                    List.of(
+                        new AnnotatedPythonParameter(
+                            "self",
+                            "test-module.test-class.test-class-function2.self",
+                            null,
+                            PythonParameterAssignment.POSITION_OR_NAME,
+                            true,
+                            "typeInDocs",
+                            "description",
+                            Collections.emptyList()
+                        ),
+                        new AnnotatedPythonParameter(
+                            "only-param",
+                            "test-module.test-class.test-class-function2.only-param",
+                            null,
+                            PythonParameterAssignment.POSITION_OR_NAME,
+                            true,
+                            "typeInDocs",
+                            "description",
+                            Collections.emptyList()
+                        )
+                    ),
                     Collections.emptyList(),
                     true,
                     "description",
@@ -157,10 +193,10 @@ class ClassAdapterContentBuilderTest {
         // then
         String expectedFormattedClass = """
             class test-class:
-                def test-class-function1(only-param):
+                def test-class-function1(self, only-param):
                     test-module.test-class.test-class-function1(only-param)
 
-                def test-class-function2(only-param):
+                def test-class-function2(self, only-param):
                     test-module.test-class.test-class-function2(only-param)""";
         Assertions.assertEquals(expectedFormattedClass, formattedClass);
     }
@@ -174,16 +210,14 @@ class ClassAdapterContentBuilderTest {
             List.of("test-decorator"),
             List.of(
                 new AnnotatedPythonParameter(
-                    "first-param",
-                    "test-module.test-class.test-class-function.first-param",
+                    "self",
+                    "test-module.test-class.test-class-function.self",
                     null,
-                    PythonParameterAssignment.POSITION_ONLY,
+                    PythonParameterAssignment.POSITION_OR_NAME,
                     true,
                     "typeInDocs",
                     "description",
-                    List.of(
-                        new RenameAnnotation("newFirstParamName")
-                    )
+                    Collections.emptyList()
                 ),
                 new AnnotatedPythonParameter(
                     "second-param",
@@ -246,8 +280,8 @@ class ClassAdapterContentBuilderTest {
         // then
         String expectedFormattedClass = """
             class newClassName:
-                def newFunctionName(newFirstParamName, /, newSecondParamName, *, newThirdParamName):
-                    test-module.test-class.test-function(newFirstParamName, newSecondParamName, third-param=newThirdParamName)""";
+                def newFunctionName(self, newSecondParamName, *, newThirdParamName):
+                    test-module.test-class.test-function(newSecondParamName, third-param=newThirdParamName)""";
         Assertions.assertEquals(expectedFormattedClass, formattedClass);
     }
 }

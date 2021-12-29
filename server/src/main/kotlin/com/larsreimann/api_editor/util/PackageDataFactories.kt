@@ -84,7 +84,7 @@ fun createPythonClass(
 fun createPythonAttribute(
     name: String,
     qualifiedName: String = name,
-    defaultValue: String = "",
+    defaultValue: String? = null,
     isPublic: Boolean = true,
     typeInDocs: String = "",
     description: String = "",
@@ -198,6 +198,7 @@ fun createClassCopyWithoutFunctions(
         annotations = pythonClass.annotations.toMutableList()
     )
     newPythonClass.originalDeclaration = pythonClass.originalDeclaration?.copy()
+    newPythonClass.attributes = pythonClass.attributes
     return newPythonClass
 }
 

@@ -1,15 +1,3 @@
-import PythonDeclaration from '../../packageData/model/PythonDeclaration';
-import {
-    DefaultType,
-    DefaultValue,
-    hideAnnotationForms,
-} from '../annotationSlice';
-import { Optional } from '../../../common/util/types';
-import { useAppDispatch } from '../../../app/hooks';
-import { useForm } from 'react-hook-form';
-import React, { useEffect } from 'react';
-import AnnotationForm from './AnnotationForm';
-import { booleanPattern, numberPattern } from '../../../common/validation';
 import {
     FormControl,
     FormErrorIcon,
@@ -26,6 +14,18 @@ import {
     Select,
     Stack,
 } from '@chakra-ui/react';
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useAppDispatch } from '../../../app/hooks';
+import { Optional } from '../../../common/util/types';
+import { booleanPattern, numberPattern } from '../../../common/validation';
+import PythonDeclaration from '../../packageData/model/PythonDeclaration';
+import {
+    DefaultType,
+    DefaultValue,
+    hideAnnotationForms,
+} from '../annotationSlice';
+import AnnotationForm from './AnnotationForm';
 
 interface TypeValueFormProps {
     target: PythonDeclaration;
@@ -83,7 +83,11 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
     };
 
     const handleSave = (data: TypeValueFormState) => {
-        onUpsertAnnotation(data);
+        let toUpsert = { ...data };
+        if (data.defaultType === 'boolean') {
+            toUpsert = { ...data, defaultValue: data.defaultValue === 'true' };
+        }
+        onUpsertAnnotation(toUpsert);
         dispatch(hideAnnotationForms());
     };
 

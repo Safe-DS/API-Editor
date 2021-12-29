@@ -11,7 +11,11 @@ export enum PythonParameterAssignment {
 
 export default class PythonParameter extends PythonDeclaration {
     readonly name: string;
-    readonly defaultValue: string;
+
+    /**
+     * If this is `null` or `undefined` the parameter is required.
+     */
+    readonly defaultValue: Optional<string>;
     readonly assignedBy: PythonParameterAssignment;
     readonly isPublic: boolean;
     readonly typeInDocs: string;
@@ -20,7 +24,7 @@ export default class PythonParameter extends PythonDeclaration {
 
     constructor(
         name: string,
-        defaultValue: string = '',
+        defaultValue: Optional<string> = null,
         assignedBy: PythonParameterAssignment = PythonParameterAssignment.POSITION_OR_NAME,
         isPublic: boolean = false,
         typeInDocs: string = '',
@@ -29,7 +33,7 @@ export default class PythonParameter extends PythonDeclaration {
         super();
 
         this.name = name;
-        this.defaultValue = defaultValue ?? '';
+        this.defaultValue = defaultValue;
         this.assignedBy = assignedBy;
         this.isPublic = isPublic;
         this.typeInDocs = typeInDocs;

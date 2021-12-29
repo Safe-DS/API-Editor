@@ -204,7 +204,7 @@ const valueToString = (value: DefaultValue, type: DefaultType): string => {
         case 'number':
             return String(value);
         case 'boolean':
-            return value === 'true' ? 'True' : 'False';
+            return value === true ? 'True' : 'False';
     }
 };
 

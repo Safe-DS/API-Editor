@@ -126,13 +126,25 @@ object UnusedAnnotation : EditorAnnotation() {
 sealed class DefaultValue
 
 @Serializable
-class DefaultBoolean(val value: Boolean) : DefaultValue()
+class DefaultBoolean(val value: Boolean) : DefaultValue() {
+    override fun toString(): String {
+        return "$value"
+    }
+}
 
 @Serializable
-class DefaultNumber(val value: Double) : DefaultValue()
+class DefaultNumber(val value: Double) : DefaultValue() {
+    override fun toString(): String {
+        return "$value"
+    }
+}
 
 @Serializable
-class DefaultString(val value: String) : DefaultValue()
+class DefaultString(val value: String) : DefaultValue() {
+    override fun toString(): String {
+        return "'$value'"
+    }
+}
 
 enum class AnnotationTarget(private val target: String) {
     CLASS("class"),
