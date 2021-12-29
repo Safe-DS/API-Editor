@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class AttributesInitializer extends AbstractPackageDataTransformer {
     @Override
@@ -59,26 +58,14 @@ public class AttributesInitializer extends AbstractPackageDataTransformer {
     private AnnotatedPythonAttribute convertParameterToAttribute(
         AnnotatedPythonParameter pythonParameter
     ) {
-        AnnotatedPythonAttribute pythonAttribute = new AnnotatedPythonAttribute(
+        return new AnnotatedPythonAttribute(
             pythonParameter.getName(),
             pythonParameter.getQualifiedName(),
-            Objects.requireNonNull(pythonParameter.getDefaultValue()),
+            pythonParameter.getDefaultValue(),
             pythonParameter.isPublic(),
             pythonParameter.getTypeInDocs(),
             pythonParameter.getDescription(),
             pythonParameter.getAnnotations()
         );
-        pythonAttribute.setOriginalDeclaration(
-            new AnnotatedPythonAttribute(
-                Objects.requireNonNull(pythonParameter.getOriginalDeclaration()).getName(),
-                pythonParameter.getOriginalDeclaration().getQualifiedName(),
-                Objects.requireNonNull(pythonParameter.getDefaultValue()),
-                pythonParameter.getOriginalDeclaration().isPublic(),
-                pythonParameter.getOriginalDeclaration().getTypeInDocs(),
-                pythonParameter.getOriginalDeclaration().getDescription(),
-                pythonParameter.getOriginalDeclaration().getAnnotations()
-            )
-        );
-        return pythonAttribute;
     }
 }
