@@ -45,9 +45,7 @@ public class ClassAdapterContentBuilder extends FileBuilder {
                         );
                     } else {
                         formattedFunctions.add(
-                            functionAdapterContentBuilder.buildConstructor(
-                                pythonClass.getAttributes()
-                            )
+                            functionAdapterContentBuilder.buildConstructor()
                         );
                     }
                 }

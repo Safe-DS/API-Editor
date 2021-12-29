@@ -1,22 +1,12 @@
 package com.larsreimann.api_editor.transformation;
 
-import com.larsreimann.api_editor.model.AbstractPackageDataTransformer;
-import com.larsreimann.api_editor.model.AnnotatedPythonAttribute;
-import com.larsreimann.api_editor.model.AnnotatedPythonClass;
-import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
-import com.larsreimann.api_editor.model.AnnotatedPythonParameter;
-import com.larsreimann.api_editor.model.AnnotatedPythonResult;
-import com.larsreimann.api_editor.model.AttributeAnnotation;
-import com.larsreimann.api_editor.model.ConstantAnnotation;
-import com.larsreimann.api_editor.model.EditorAnnotation;
-import com.larsreimann.api_editor.model.OptionalAnnotation;
-import com.larsreimann.api_editor.model.PythonParameterAssignment;
-import com.larsreimann.api_editor.model.RequiredAnnotation;
+import com.larsreimann.api_editor.model.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Processor for Constant-, Optional- and RequiredAnnotations
@@ -109,16 +99,63 @@ public class ParameterAnnotationProcessor extends AbstractPackageDataTransformer
         @NotNull List<AnnotatedPythonAttribute> newAttributes,
         @NotNull List<AnnotatedPythonFunction> newMethods
     ) {
-        List<AnnotatedPythonAttribute> attributesToAdd = new ArrayList<>(newAttributes);
+        List<AnnotatedPythonAttribute> processedNewAttributes = new ArrayList<>(newAttributes);
 
         for (AnnotatedPythonFunction pythonFunction : newMethods) {
             if (pythonFunction.isConstructor()) {
                 for (AnnotatedPythonParameter constructorParameter :
                     pythonFunction.getParameters()) {
+                    // Change default value of old attribute if assigned by of
+                    // constructor parameter is of type attribute
                     if (constructorParameter.getAssignedBy()
                         == PythonParameterAssignment.ATTRIBUTE) {
-                        attributesToAdd.add(
-                            convertParameterToAttribute(constructorParameter)
+                        Optional<AnnotatedPythonAttribute> unmodifiedAttribute =
+                            processedNewAttributes.stream().filter(
+                            pythonAttribute ->
+                                Objects.requireNonNull(
+                                    pythonAttribute.getOriginalDeclaration()
+                                ).getName()
+                                    .equals(
+                                        Objects.requireNonNull(
+                                            constructorParameter
+                                                .getOriginalDeclaration()
+                                            )
+                                            .getName()
+                                    )
+                        ).findAny();
+                        if (unmodifiedAttribute.isPresent()) {
+                            AnnotatedPythonAttribute unmodifiedPresentAttribute
+                                = unmodifiedAttribute.get();
+                            processedNewAttributes.remove(unmodifiedPresentAttribute);
+                            processedNewAttributes.add(
+                                unmodifiedPresentAttribute.fullCopy(
+                                    unmodifiedPresentAttribute.getName(),
+                                    unmodifiedPresentAttribute.getQualifiedName(),
+                                    constructorParameter.getDefaultValue(),
+                                    unmodifiedPresentAttribute.isPublic(),
+                                    unmodifiedPresentAttribute.getTypeInDocs(),
+                                    unmodifiedPresentAttribute.getDescription(),
+                                    unmodifiedPresentAttribute.getAnnotations(),
+                                    unmodifiedPresentAttribute.getBoundary(),
+                                    unmodifiedPresentAttribute.getOriginalDeclaration()
+                                )
+                            );
+                        }
+                    }
+                    // Remove attribute if corresponding
+                    // constructor parameter is of type constant
+                    else if (constructorParameter.getAssignedBy()
+                        == PythonParameterAssignment.CONSTANT) {
+                        processedNewAttributes.removeIf(
+                            pythonAttribute ->
+                                Objects.requireNonNull(pythonAttribute
+                                        .getOriginalDeclaration())
+                                    .getName()
+                                    .equals(
+                                        Objects.requireNonNull(constructorParameter
+                                                .getOriginalDeclaration())
+                                            .getName()
+                                    )
                         );
                     }
                 }
@@ -130,7 +167,7 @@ public class ParameterAnnotationProcessor extends AbstractPackageDataTransformer
             oldClass.getQualifiedName(),
             oldClass.getDecorators(),
             oldClass.getSuperclasses(),
-            attributesToAdd,
+            processedNewAttributes,
             newMethods,
             oldClass.isPublic(),
             oldClass.getDescription(),
@@ -165,31 +202,5 @@ public class ParameterAnnotationProcessor extends AbstractPackageDataTransformer
         orderedParameters.addAll(attributeParameters);
 
         return orderedParameters;
-    }
-
-    private AnnotatedPythonAttribute convertParameterToAttribute(
-        AnnotatedPythonParameter pythonParameter
-    ) {
-        AnnotatedPythonAttribute pythonAttribute = new AnnotatedPythonAttribute(
-            pythonParameter.getName(),
-            pythonParameter.getQualifiedName(),
-            Objects.requireNonNull(pythonParameter.getDefaultValue()),
-            pythonParameter.isPublic(),
-            pythonParameter.getTypeInDocs(),
-            pythonParameter.getDescription(),
-            pythonParameter.getAnnotations()
-        );
-        pythonAttribute.setOriginalDeclaration(
-            new AnnotatedPythonAttribute(
-                Objects.requireNonNull(pythonParameter.getOriginalDeclaration()).getName(),
-                pythonParameter.getOriginalDeclaration().getQualifiedName(),
-                Objects.requireNonNull(pythonParameter.getDefaultValue()),
-                pythonParameter.getOriginalDeclaration().isPublic(),
-                pythonParameter.getOriginalDeclaration().getTypeInDocs(),
-                pythonParameter.getOriginalDeclaration().getDescription(),
-                pythonParameter.getOriginalDeclaration().getAnnotations()
-            )
-        );
-        return pythonAttribute;
     }
 }

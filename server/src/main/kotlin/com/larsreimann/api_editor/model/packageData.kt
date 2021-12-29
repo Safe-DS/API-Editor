@@ -213,7 +213,7 @@ data class AnnotatedPythonClass(
     override var originalDeclaration: AnnotatedPythonClass? = null
 
     @Transient
-    val attributes = mutableListOf<AnnotatedPythonAttribute>()
+    var attributes = mutableListOf<AnnotatedPythonAttribute>()
 
     fun methodsExceptConstructor(): List<AnnotatedPythonFunction> {
         return methods.filter { it.name != "__init__" }

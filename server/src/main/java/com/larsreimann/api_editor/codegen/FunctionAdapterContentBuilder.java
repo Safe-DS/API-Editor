@@ -1,16 +1,11 @@
 package com.larsreimann.api_editor.codegen;
 
 import com.larsreimann.api_editor.io.FileBuilder;
-import com.larsreimann.api_editor.model.AnnotatedPythonAttribute;
 import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
 import com.larsreimann.api_editor.model.AnnotatedPythonParameter;
 import com.larsreimann.api_editor.model.PythonParameterAssignment;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class FunctionAdapterContentBuilder extends FileBuilder {
     AnnotatedPythonFunction pythonFunction;
@@ -44,17 +39,16 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
     /**
      * Builds a string containing the formatted constructor
      *
-     * @param attributes The attributes of the constructors class
      * @return The string containing the formatted constructor
      */
-    public String buildConstructor(List<AnnotatedPythonAttribute> attributes) {
+    public String buildConstructor() {
         return "def "
             + pythonFunction.getName()
             + "("
             + buildParameters()
             + ")"
             + ":\n"
-            + indent(buildConstructorBody(attributes));
+            + indent(buildConstructorBody());
     }
 
     /**
@@ -72,11 +66,9 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
             + indent(buildMethodBody());
     }
 
-    private String buildConstructorBody(
-        List<AnnotatedPythonAttribute> attributes
-    ) {
+    private String buildConstructorBody() {
         String separator = "";
-        String assignments = listToString(buildAttributeAssignments(attributes), 1);
+        String assignments = listToString(buildAttributeAssignments(), 1);
         if (!assignments.isBlank()) {
             separator = "\n";
         }
@@ -88,17 +80,17 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
             + assignments;
     }
 
-    private List<String> buildAttributeAssignments(
-        List<AnnotatedPythonAttribute> attributes
-    ) {
+    private List<String> buildAttributeAssignments() {
         List<String> attributeAssignments = new ArrayList<>();
-        for (AnnotatedPythonAttribute attribute : attributes) {
-            attributeAssignments.add(
-                "self."
-                    + attribute.getName()
-                    + " = "
-                    + attribute.getDefaultValue()
-            );
+        for (AnnotatedPythonParameter parameterAttribute : pythonFunction.getParameters()) {
+            if (parameterAttribute.getAssignedBy().equals(PythonParameterAssignment.ATTRIBUTE)) {
+                attributeAssignments.add(
+                    "self."
+                        + parameterAttribute.getName()
+                        + " = "
+                        + parameterAttribute.getDefaultValue()
+                );
+            }
         }
         return attributeAssignments;
     }

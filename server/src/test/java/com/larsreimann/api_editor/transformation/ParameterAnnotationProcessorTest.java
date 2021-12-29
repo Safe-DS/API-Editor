@@ -1,32 +1,18 @@
 package com.larsreimann.api_editor.transformation;
 
-import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
-import com.larsreimann.api_editor.model.AnnotatedPythonModule;
-import com.larsreimann.api_editor.model.AnnotatedPythonPackage;
-import com.larsreimann.api_editor.model.AnnotatedPythonParameter;
-import com.larsreimann.api_editor.model.ConstantAnnotation;
-import com.larsreimann.api_editor.model.DefaultBoolean;
-import com.larsreimann.api_editor.model.DefaultString;
-import com.larsreimann.api_editor.model.OptionalAnnotation;
-import com.larsreimann.api_editor.model.PythonParameterAssignment;
-import com.larsreimann.api_editor.model.RequiredAnnotation;
+import com.larsreimann.api_editor.model.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonFunction;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonModule;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonPackage;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonParameter;
+import static com.larsreimann.api_editor.server.RoutingKt.processPackage;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.*;
 
 class ParameterAnnotationProcessorTest {
     @Test
     void optionalAnnotationChangesDefaultValuesAndAssignedByOfFunctionParameters() {
         // given
-        ParameterAnnotationProcessor parameterAnnotationProcessor =
-            new ParameterAnnotationProcessor();
-
         AnnotatedPythonParameter testParameter1 =
             createPythonParameter(
                 "testParameter1",
@@ -75,7 +61,7 @@ class ParameterAnnotationProcessorTest {
         testPackage.accept(originalDeclarationProcessor);
 
         // when
-        testPackage = testPackage.accept(parameterAnnotationProcessor);
+        AnnotatedPythonPackage modifiedPackage = processPackage(testPackage);
 
         // then
         AnnotatedPythonParameter expectedTestParameter1 = createPythonParameter(
@@ -99,8 +85,10 @@ class ParameterAnnotationProcessorTest {
         boolean testParameter1isContained = false;
         boolean testParameter2isContained = false;
         boolean testParameter3isContained = false;
-        assert testPackage != null;
-        List<AnnotatedPythonParameter> actualParameters = testPackage.getModules().get(0).getFunctions().get(0).getParameters();
+        List<AnnotatedPythonParameter> actualParameters = modifiedPackage
+            .getModules().get(0)
+            .getFunctions().get(0)
+            .getParameters();
         for (AnnotatedPythonParameter actualParameter : actualParameters) {
             if (parameterIsEqual(expectedTestParameter1, actualParameter)) {
                 testParameter1isContained = true;
@@ -118,9 +106,6 @@ class ParameterAnnotationProcessorTest {
     @Test
     void constantAnnotationChangesDefaultValuesAndAssignedByOfFunctionParameters() {
         // given
-        ParameterAnnotationProcessor parameterAnnotationProcessor =
-            new ParameterAnnotationProcessor();
-
         AnnotatedPythonParameter testParameter1 =
             createPythonParameter(
                 "testParameter1",
@@ -169,7 +154,7 @@ class ParameterAnnotationProcessorTest {
         testPackage.accept(originalDeclarationProcessor);
 
         // when
-        testPackage = testPackage.accept(parameterAnnotationProcessor);
+        AnnotatedPythonPackage modifiedPackage = processPackage(testPackage);
 
         // then
         AnnotatedPythonParameter expectedTestParameter1 = createPythonParameter(
@@ -193,8 +178,10 @@ class ParameterAnnotationProcessorTest {
         boolean testParameter1isContained = false;
         boolean testParameter2isContained = false;
         boolean testParameter3isContained = false;
-        assert testPackage != null;
-        List<AnnotatedPythonParameter> actualParameters = testPackage.getModules().get(0).getFunctions().get(0).getParameters();
+        List<AnnotatedPythonParameter> actualParameters = modifiedPackage
+            .getModules().get(0)
+            .getFunctions().get(0)
+            .getParameters();
         for (AnnotatedPythonParameter actualParameter : actualParameters) {
             if (parameterIsEqual(expectedTestParameter1, actualParameter)) {
                 testParameter1isContained = true;
@@ -212,9 +199,6 @@ class ParameterAnnotationProcessorTest {
     @Test
     void requiredAnnotationRemovesDefaultValuesAndAssignedByOfFunctionParameters() {
         // given
-        ParameterAnnotationProcessor parameterAnnotationProcessor =
-            new ParameterAnnotationProcessor();
-
         AnnotatedPythonParameter testParameter1 =
             createPythonParameter(
                 "testParameter1",
@@ -259,7 +243,7 @@ class ParameterAnnotationProcessorTest {
         testPackage.accept(originalDeclarationProcessor);
 
         // when
-        testPackage = testPackage.accept(parameterAnnotationProcessor);
+        AnnotatedPythonPackage modifiedPackage = processPackage(testPackage);
 
         // then
         AnnotatedPythonParameter expectedTestParameter1 = createPythonParameter(
@@ -283,8 +267,10 @@ class ParameterAnnotationProcessorTest {
         boolean testParameter1isContained = false;
         boolean testParameter2isContained = false;
         boolean testParameter3isContained = false;
-        assert testPackage != null;
-        List<AnnotatedPythonParameter> actualParameters = testPackage.getModules().get(0).getFunctions().get(0).getParameters();
+        List<AnnotatedPythonParameter> actualParameters = modifiedPackage
+            .getModules().get(0)
+            .getFunctions().get(0)
+            .getParameters();
         for (AnnotatedPythonParameter actualParameter : actualParameters) {
             if (parameterIsEqual(expectedTestParameter1, actualParameter)) {
                 testParameter1isContained = true;
@@ -351,12 +337,8 @@ class ParameterAnnotationProcessorTest {
             createPythonPackage("testPackage");
         testPackage.getModules().add(testModule);
 
-        OriginalDeclarationProcessor originalDeclarationProcessor =
-            OriginalDeclarationProcessor.INSTANCE;
-        testPackage.accept(originalDeclarationProcessor);
-
         // when
-        testPackage = testPackage.accept(parameterAnnotationProcessor);
+        AnnotatedPythonPackage modifiedPackage = processPackage(testPackage);
 
         // then
         AnnotatedPythonParameter expectedTestParameter1 = createPythonParameter(
@@ -380,8 +362,10 @@ class ParameterAnnotationProcessorTest {
         boolean testParameter1isContained = false;
         boolean testParameter2isContained = false;
         boolean testParameter3isContained = false;
-        assert testPackage != null;
-        List<AnnotatedPythonParameter> actualParameters = testPackage.getModules().get(0).getFunctions().get(0).getParameters();
+        List<AnnotatedPythonParameter> actualParameters = modifiedPackage
+            .getModules().get(0)
+            .getFunctions().get(0)
+            .getParameters();
         for (AnnotatedPythonParameter actualParameter : actualParameters) {
             if (parameterIsEqual(expectedTestParameter1, actualParameter)) {
                 testParameter1isContained = true;

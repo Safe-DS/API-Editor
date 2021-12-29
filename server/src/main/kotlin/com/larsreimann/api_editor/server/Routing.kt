@@ -2,6 +2,7 @@ package com.larsreimann.api_editor.server
 
 import com.larsreimann.api_editor.io.PackageFileBuilder
 import com.larsreimann.api_editor.model.AnnotatedPythonPackage
+import com.larsreimann.api_editor.transformation.AttributesInitializer
 import com.larsreimann.api_editor.transformation.CleanupModulesProcessor
 import com.larsreimann.api_editor.transformation.MoveAnnotationProcessor
 import com.larsreimann.api_editor.transformation.OriginalDeclarationProcessor
@@ -106,13 +107,25 @@ fun Route.infer() {
 }
 
 fun doInfer(originalPythonPackage: AnnotatedPythonPackage): DoInferResult {
-    var modifiedPythonPackage = originalPythonPackage
-
     // Validate
     val errors = AnnotationValidator(originalPythonPackage).validate()
     if (errors.isNotEmpty()) {
         return DoInferResult.ValidationFailure(errors.map { it.message() })
     }
+
+    // Process package
+    val modifiedPythonPackage = processPackage(originalPythonPackage)
+
+    // Build files
+    val path = PackageFileBuilder(modifiedPythonPackage).buildModuleFiles()
+    return DoInferResult.Success(path)
+}
+
+fun processPackage(originalPythonPackage: AnnotatedPythonPackage): AnnotatedPythonPackage {
+    var modifiedPythonPackage = originalPythonPackage
+
+    // Add attributes to classes
+    modifiedPythonPackage = modifiedPythonPackage.accept(AttributesInitializer())!!
 
     // Create original declarations
     modifiedPythonPackage.accept(OriginalDeclarationProcessor)
@@ -124,12 +137,12 @@ fun doInfer(originalPythonPackage: AnnotatedPythonPackage): DoInferResult {
     val renameAnnotationProcessor = RenameAnnotationProcessor()
     modifiedPythonPackage = modifiedPythonPackage.accept(renameAnnotationProcessor)!!
 
-    val parameterAnnotationProcessor = ParameterAnnotationProcessor()
-    modifiedPythonPackage = modifiedPythonPackage.accept(parameterAnnotationProcessor)!!
-
     val moveAnnotationProcessor = MoveAnnotationProcessor()
     modifiedPythonPackage.accept(moveAnnotationProcessor)
     modifiedPythonPackage = moveAnnotationProcessor.modifiedPackage
+
+    val parameterAnnotationProcessor = ParameterAnnotationProcessor()
+    modifiedPythonPackage = modifiedPythonPackage.accept(parameterAnnotationProcessor)!!
 
     modifiedPythonPackage.accept(PureAnnotationProcessor)
 
@@ -138,9 +151,7 @@ fun doInfer(originalPythonPackage: AnnotatedPythonPackage): DoInferResult {
     modifiedPythonPackage.accept(cleanupModulesProcessor)
     modifiedPythonPackage = cleanupModulesProcessor.modifiedPackage
 
-    // Build files
-    val path = PackageFileBuilder(modifiedPythonPackage).buildModuleFiles()
-    return DoInferResult.Success(path)
+    return modifiedPythonPackage
 }
 
 sealed class DoInferResult {

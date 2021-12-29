@@ -1,25 +1,13 @@
 package com.larsreimann.api_editor.transformation;
 
-import com.larsreimann.api_editor.model.AbstractPackageDataVisitor;
-import com.larsreimann.api_editor.model.AnnotatedPythonClass;
-import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
-import com.larsreimann.api_editor.model.AnnotatedPythonModule;
-import com.larsreimann.api_editor.model.AnnotatedPythonPackage;
-import com.larsreimann.api_editor.model.AnnotatedPythonParameter;
-import com.larsreimann.api_editor.model.EditorAnnotation;
-import com.larsreimann.api_editor.model.MoveAnnotation;
+import com.larsreimann.api_editor.model.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createModuleCopyWithoutClassesAndFunctions;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPackageCopyWithoutModules;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonClass;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonFunction;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonModule;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonParameter;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.*;
 
 public class MoveAnnotationProcessor extends AbstractPackageDataVisitor {
     private AnnotatedPythonPackage modifiedPackage;
@@ -150,6 +138,26 @@ public class MoveAnnotationProcessor extends AbstractPackageDataVisitor {
     }
 
     @Override
+    public void enterPythonAttribute(@NotNull AnnotatedPythonAttribute pythonAttribute) {
+        qualifiedNameGenerator.currentAttributeName = pythonAttribute.getName();
+
+        AnnotatedPythonAttribute modifiedPythonAttribute =
+            createPythonAttribute(
+                qualifiedNameGenerator.currentAttributeName,
+                qualifiedNameGenerator.getQualifiedAttributeName(),
+                pythonAttribute.getDefaultValue(),
+                pythonAttribute.isPublic(),
+                pythonAttribute.getTypeInDocs(),
+                pythonAttribute.getDescription(),
+                pythonAttribute.getAnnotations()
+            );
+
+        if (inClass) {
+            currentClass.getAttributes().add(modifiedPythonAttribute);
+        }
+    }
+
+    @Override
     public void leavePythonClass(@NotNull AnnotatedPythonClass pythonClass) {
         if (isClassMoved) {
             qualifiedNameGenerator.currentModuleName = originalModuleName;
@@ -268,6 +276,7 @@ public class MoveAnnotationProcessor extends AbstractPackageDataVisitor {
         String currentClassName;
         String currentFunctionName;
         String currentParameterName;
+        String currentAttributeName;
 
         String getQualifiedModuleName() {
             return currentModuleName;
@@ -286,6 +295,10 @@ public class MoveAnnotationProcessor extends AbstractPackageDataVisitor {
 
         String getQualifiedParameterName() {
             return getQualifiedFunctionName() + PATH_SEPARATOR + currentParameterName;
+        }
+
+        String getQualifiedAttributeName() {
+            return getQualifiedClassName() + PATH_SEPARATOR + currentAttributeName;
         }
     }
 }
