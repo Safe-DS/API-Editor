@@ -203,6 +203,7 @@ data class AnnotatedPythonClass(
     val decorators: List<String>,
     val superclasses: List<String>,
     val methods: List<AnnotatedPythonFunction>,
+    val isPublic: Boolean,
     val description: String,
     val fullDocstring: String,
     override val annotations: MutableList<EditorAnnotation>
@@ -212,7 +213,15 @@ data class AnnotatedPythonClass(
     override var originalDeclaration: AnnotatedPythonClass? = null
 
     @Transient
-    val attributes = mutableListOf<AnnotatedPythonAttribute>()
+    var attributes = mutableListOf<AnnotatedPythonAttribute>()
+
+    fun methodsExceptConstructor(): List<AnnotatedPythonFunction> {
+        return methods.filter { it.name != "__init__" }
+    }
+
+    fun constructorOrNull(): AnnotatedPythonFunction? {
+        return methods.firstOrNull { it.name == "__init__" }
+    }
 
     override fun accept(visitor: PackageDataVisitor) {
         val shouldTraverseChildren = visitor.enterPythonClass(this)
@@ -261,6 +270,7 @@ data class AnnotatedPythonClass(
         superclasses: List<String> = this.superclasses,
         attributes: List<AnnotatedPythonAttribute> = this.attributes,
         methods: List<AnnotatedPythonFunction> = this.methods,
+        isPublic: Boolean = this.isPublic,
         description: String = this.description,
         fullDocstring: String = this.fullDocstring,
         annotations: MutableList<EditorAnnotation> = this.annotations,
@@ -273,6 +283,7 @@ data class AnnotatedPythonClass(
             decorators = decorators,
             superclasses = superclasses,
             methods = methods,
+            isPublic = isPublic,
             description = description,
             fullDocstring = fullDocstring,
             annotations = annotations
@@ -286,7 +297,7 @@ data class AnnotatedPythonClass(
 data class AnnotatedPythonAttribute(
     override val name: String,
     val qualifiedName: String,
-    val defaultValue: String,
+    val defaultValue: String?,
     val isPublic: Boolean,
     val typeInDocs: String,
     val description: String,
@@ -313,7 +324,7 @@ data class AnnotatedPythonAttribute(
     fun fullCopy(
         name: String = this.name,
         qualifiedName: String = this.qualifiedName,
-        defaultValue: String = this.defaultValue,
+        defaultValue: String? = this.defaultValue,
         isPublic: Boolean = this.isPublic,
         typeInDocs: String = this.typeInDocs,
         description: String = this.description,
@@ -501,6 +512,10 @@ data class AnnotatedPythonParameter(
     @Transient
     var boundary: Boundary? = null
 
+    fun isRequired() = defaultValue == null
+
+    fun isOptional() = defaultValue != null
+
     override fun accept(visitor: PackageDataVisitor) {
         visitor.enterPythonParameter(this)
         visitor.leavePythonParameter(this)
@@ -544,7 +559,10 @@ data class AnnotatedPythonParameter(
 enum class PythonParameterAssignment {
     POSITION_ONLY,
     POSITION_OR_NAME,
-    NAME_ONLY
+    NAME_ONLY,
+    CONSTANT,
+    ATTRIBUTE,
+    IMPLICIT
 }
 
 @Serializable

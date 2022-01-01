@@ -35,6 +35,7 @@ internal class FunctionStubContentBuilderTest {
         // then
         val expectedFormattedFunction: String =
             """
+            |@Description("Lorem ipsum")
             |fun testFunction()""".trimMargin()
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
     }
@@ -69,7 +70,8 @@ internal class FunctionStubContentBuilderTest {
         // then
         val expectedFormattedFunction: String =
             """
-            |fun testFunction(onlyParam: Int or 13)""".trimMargin()
+            |@Description("Lorem ipsum")
+            |fun testFunction(@Description("description") onlyParam: Int or 13)""".trimMargin()
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
     }
 
@@ -103,7 +105,8 @@ internal class FunctionStubContentBuilderTest {
         // then
         val expectedFormattedFunction: String =
             """
-            |fun testFunction(onlyParam: Any? or "Test")""".trimMargin()
+            |@Description("Lorem ipsum")
+            |fun testFunction(@Description("description") onlyParam: Any? or "Test")""".trimMargin()
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
     }
 
@@ -154,7 +157,8 @@ internal class FunctionStubContentBuilderTest {
 
         // then
         val expectedFormattedFunction: String = """
-            |fun testFunction(firstParam: Any?, secondParam: Any?, thirdParam: Any?)""".trimMargin()
+            |@Description("Lorem ipsum")
+            |fun testFunction(@Description("description") firstParam: Any?, @Description("description") secondParam: Any?, @Description("description") thirdParam: Any?)""".trimMargin()
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
     }
 
@@ -194,7 +198,8 @@ internal class FunctionStubContentBuilderTest {
 
         // then
         val expectedFormattedFunction: String = """
-            |fun testFunction(onlyParam: Float or 13.1) -> firstResult: Float""".trimMargin()
+            |@Description("Lorem ipsum")
+            |fun testFunction(@Description("description") onlyParam: Float or 13.1) -> @Description("description") firstResult: Float""".trimMargin()
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
     }
 
@@ -240,7 +245,8 @@ internal class FunctionStubContentBuilderTest {
 
         // then
         val expectedFormattedFunction: String = """
-            |fun testFunction(onlyParam: Boolean or true) -> (firstResult: Float, secondResult: Float)""".trimMargin()
+            |@Description("Lorem ipsum")
+            |fun testFunction(@Description("description") onlyParam: Boolean or true) -> (@Description("description") firstResult: Float, @Description("description") secondResult: Float)""".trimMargin()
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
     }
 
@@ -273,7 +279,8 @@ internal class FunctionStubContentBuilderTest {
 
         // then
         val expectedFormattedFunction: String = """
-            |fun testFunction(onlyParam: Any? or "###invalid###'13'x###")""".trimMargin()
+            |@Description("Lorem ipsum")
+            |fun testFunction(@Description("description") onlyParam: Any? or "###invalid###'13'x###")""".trimMargin()
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
     }
 

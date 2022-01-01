@@ -7,6 +7,7 @@ export default class AnnotatedPythonClass {
     readonly decorators: string[];
     readonly superclasses: string[];
     readonly methods: AnnotatedPythonFunction[];
+    readonly isPublic: boolean;
     readonly description: string;
     readonly fullDocstring: string;
     readonly annotations: InferableAnnotation[];
@@ -17,6 +18,7 @@ export default class AnnotatedPythonClass {
         decorators: string[] = [],
         superclasses: string[] = [],
         methods: AnnotatedPythonFunction[] = [],
+        isPublic: boolean = true,
         description: string = '',
         fullDocstring: string = '',
         annotations: InferableAnnotation[] = [],
@@ -26,6 +28,7 @@ export default class AnnotatedPythonClass {
         this.decorators = decorators;
         this.superclasses = superclasses;
         this.methods = methods;
+        this.isPublic = isPublic;
         this.description = description;
         this.fullDocstring = fullDocstring;
         this.annotations = annotations;

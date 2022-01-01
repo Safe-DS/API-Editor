@@ -150,6 +150,7 @@ const parsePythonClassJson = function (
                         functionUniqueQualifiedName,
                     ) as PythonFunction,
             ),
+        classJson.is_public,
         classJson.description ?? '',
         classJson.docstring ?? '',
     );
@@ -202,7 +203,7 @@ const parsePythonParameterJson = function (
 ): PythonParameter {
     return new PythonParameter(
         parameterJson.name,
-        parameterJson.default_value ?? '',
+        parameterJson.default_value,
         parsePythonParameterAssignment(parameterJson.assigned_by),
         parameterJson.is_public,
         parameterJson.docstring.type ?? '',

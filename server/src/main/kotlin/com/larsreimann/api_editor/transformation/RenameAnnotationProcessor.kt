@@ -52,6 +52,16 @@ class RenameAnnotationProcessor : AbstractPackageDataTransformer() {
         return super.createNewClassOnLeave(oldClass, newAttributes, newMethods)
     }
 
+    override fun createNewAttribute(oldAttribute: AnnotatedPythonAttribute): AnnotatedPythonAttribute {
+        return oldAttribute.rename { newName ->
+            oldAttribute.fullCopy(
+                name = newName,
+                qualifiedName = qualifiedName(newName),
+                originalDeclaration = oldAttribute.originalDeclaration ?: oldAttribute
+            )
+        }
+    }
+
     override fun createNewFunctionOnEnter(oldFunction: AnnotatedPythonFunction): AnnotatedPythonFunction {
         val result = oldFunction.rename { newName ->
             oldFunction.fullCopy(
@@ -88,10 +98,11 @@ class RenameAnnotationProcessor : AbstractPackageDataTransformer() {
 
     private fun <T : AnnotatedPythonDeclaration> T.rename(creator: (String) -> T): T {
         val renameAnnotations = this.annotations.filterIsInstance<RenameAnnotation>()
-        return when {
-            renameAnnotations.isEmpty() -> this
-            else -> creator(renameAnnotations[0].newName)
+        val newName = when {
+            renameAnnotations.isEmpty() -> this.name
+            else -> renameAnnotations[0].newName
         }
+        return creator(newName)
     }
 
     private fun qualifiedName(vararg additionalSegments: String): String {

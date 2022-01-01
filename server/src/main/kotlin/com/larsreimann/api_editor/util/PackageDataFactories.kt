@@ -1,5 +1,6 @@
 package com.larsreimann.api_editor.util
 
+import com.larsreimann.api_editor.model.AnnotatedPythonAttribute
 import com.larsreimann.api_editor.model.AnnotatedPythonClass
 import com.larsreimann.api_editor.model.AnnotatedPythonFunction
 import com.larsreimann.api_editor.model.AnnotatedPythonModule
@@ -55,7 +56,9 @@ fun createPythonClass(
     qualifiedName: String = name,
     decorators: List<String> = emptyList(),
     superclasses: List<String> = emptyList(),
+    attributes: List<AnnotatedPythonAttribute> = mutableListOf(),
     methods: List<AnnotatedPythonFunction> = mutableListOf(),
+    isPublic: Boolean = true,
     description: String = "",
     fullDocstring: String = "",
     annotations: MutableList<EditorAnnotation> = mutableListOf(),
@@ -67,12 +70,38 @@ fun createPythonClass(
         decorators,
         superclasses,
         methods,
+        isPublic,
         description,
         fullDocstring,
         annotations
     )
+    newPythonClass.attributes += attributes
     newPythonClass.originalDeclaration = originalDeclaration
     return newPythonClass
+}
+
+@JvmOverloads
+fun createPythonAttribute(
+    name: String,
+    qualifiedName: String = name,
+    defaultValue: String? = null,
+    isPublic: Boolean = true,
+    typeInDocs: String = "",
+    description: String = "",
+    annotations: MutableList<EditorAnnotation> = mutableListOf(),
+    originalDeclaration: AnnotatedPythonAttribute? = null,
+): AnnotatedPythonAttribute {
+    val result = AnnotatedPythonAttribute(
+        name,
+        qualifiedName,
+        defaultValue,
+        isPublic,
+        typeInDocs,
+        description,
+        annotations
+    )
+    result.originalDeclaration = originalDeclaration
+    return result
 }
 
 @JvmOverloads
@@ -163,11 +192,13 @@ fun createClassCopyWithoutFunctions(
         decorators = pythonClass.decorators.toMutableList(),
         superclasses = pythonClass.superclasses.toMutableList(),
         methods = mutableListOf(),
+        isPublic = pythonClass.isPublic,
         description = pythonClass.description,
         fullDocstring = pythonClass.fullDocstring,
         annotations = pythonClass.annotations.toMutableList()
     )
     newPythonClass.originalDeclaration = pythonClass.originalDeclaration?.copy()
+    newPythonClass.attributes = pythonClass.attributes
     return newPythonClass
 }
 

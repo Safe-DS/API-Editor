@@ -72,6 +72,7 @@ internal class CompilationUnitStubContentBuilderTest {
                     "fullDocstring", mutableListOf()
                 )
             ),
+            true,
             "Lorem ipsum",
             "Lorem ipsum", mutableListOf()
         )
@@ -164,15 +165,20 @@ internal class CompilationUnitStubContentBuilderTest {
         val expectedModuleContent: String = """
             |package simpleml.testModule
             |
-            |class testClass(onlyParam: Any? or "defaultValue") {
+            |@Description("Lorem ipsum")
+            |class testClass(@Description("description") onlyParam: Any? or "defaultValue") {
+            |    @Description("description")
             |    attr onlyParam: Any?
             |
-            |    fun testClassFunction(onlyParam: Any? or "defaultValue")
+            |    @Description("description")
+            |    fun testClassFunction(@Description("description") onlyParam: Any? or "defaultValue")
             |}
             |
-            |fun function_module_1(param1: String, param2: String, param3: String) -> testResult: String
+            |@Description("Lorem ipsum")
+            |fun function_module_1(@Description("Lorem ipsum") param1: String, @Description("Lorem ipsum") param2: String, @Description("Lorem ipsum") param3: String) -> @Description("Lorem ipsum") testResult: String
             |
-            |fun testFunction(testParameter: Int or 42) -> testResult: String
+            |@Description("Lorem ipsum")
+            |fun testFunction(@Description("Lorem ipsum") testParameter: Int or 42) -> @Description("Lorem ipsum") testResult: String
             |""".trimMargin()
         Assertions.assertEquals(expectedModuleContent, moduleContent)
     }
@@ -266,9 +272,11 @@ internal class CompilationUnitStubContentBuilderTest {
         val expectedModuleContent: String = """
             |package simpleml.testModule
             |
-            |fun function_module_1(param1: String, param2: String, param3: String) -> testResult: String
+            |@Description("Lorem ipsum")
+            |fun function_module_1(@Description("Lorem ipsum") param1: String, @Description("Lorem ipsum") param2: String, @Description("Lorem ipsum") param3: String) -> @Description("Lorem ipsum") testResult: String
             |
-            |fun testFunction(testParameter: Int or 42) -> testResult: String
+            |@Description("Lorem ipsum")
+            |fun testFunction(@Description("Lorem ipsum") testParameter: Int or 42) -> @Description("Lorem ipsum") testResult: String
             |""".trimMargin()
         Assertions.assertEquals(expectedModuleContent, moduleContent)
     }
@@ -303,6 +311,7 @@ internal class CompilationUnitStubContentBuilderTest {
                     "fullDocstring", mutableListOf()
                 )
             ),
+            true,
             "Lorem ipsum",
             "Lorem ipsum", mutableListOf()
         )
@@ -334,7 +343,9 @@ internal class CompilationUnitStubContentBuilderTest {
         val expectedModuleContent: String = """
             |package simpleml.testModule
             |
-            |class testClass(onlyParam: Any? or "defaultValue") {
+            |@Description("Lorem ipsum")
+            |class testClass(@Description("description") onlyParam: Any? or "defaultValue") {
+            |    @Description("description")
             |    attr onlyParam: Any?
             |}
             |""".trimMargin()

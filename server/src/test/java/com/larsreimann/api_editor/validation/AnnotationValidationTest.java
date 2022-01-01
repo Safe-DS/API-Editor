@@ -80,6 +80,7 @@ class AnnotationValidationTest {
                                     new DefaultString("test")
                                 ))
                             )),
+                            true,
                             "Lorem ipsum",
                             "Lorem ipsum",
                             List.of(
@@ -235,6 +236,7 @@ class AnnotationValidationTest {
                                     new RenameAnnotation("newName")
                                 )
                             )),
+                            true,
                             "Lorem ipsum",
                             "Lorem ipsum",
                             List.of(
@@ -367,6 +369,7 @@ class AnnotationValidationTest {
                                 "fullDocstring",
                                 Collections.emptyList()
                             )),
+                            true,
                             "Lorem ipsum",
                             "Lorem ipsum",
                             Collections.emptyList()
@@ -583,6 +586,7 @@ class AnnotationValidationTest {
                                     )
                                 )
                             )),
+                            true,
                             "Lorem ipsum",
                             "Lorem ipsum",
                             Collections.emptyList()
