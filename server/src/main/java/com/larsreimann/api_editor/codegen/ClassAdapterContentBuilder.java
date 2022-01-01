@@ -35,14 +35,21 @@ public class ClassAdapterContentBuilder extends FileBuilder {
 
     private List<String> buildAllFunctions() {
         List<String> formattedFunctions = new ArrayList<>();
-        pythonClass.getMethods().forEach(pythonFunction -> {
-                FunctionAdapterContentBuilder functionAdapterContentBuilder =
-                    new FunctionAdapterContentBuilder(pythonFunction);
-                formattedFunctions.add(
-                    functionAdapterContentBuilder.buildFunction()
-                );
-            }
-        );
+        pythonClass.getMethods()
+            .forEach(pythonFunction -> {
+                    FunctionAdapterContentBuilder functionAdapterContentBuilder =
+                        new FunctionAdapterContentBuilder(pythonFunction);
+                    if (!pythonFunction.isConstructor()) {
+                        formattedFunctions.add(
+                            functionAdapterContentBuilder.buildMethod()
+                        );
+                    } else {
+                        formattedFunctions.add(
+                            functionAdapterContentBuilder.buildConstructor()
+                        );
+                    }
+                }
+            );
         return formattedFunctions;
     }
 }

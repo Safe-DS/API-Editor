@@ -4,7 +4,6 @@ import { IconType } from 'react-icons/lib';
 import { useLocation } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { ChildrenProp } from '../../../common/util/types';
 import PythonDeclaration from '../model/PythonDeclaration';
 import {
     selectIsExpandedInTreeView,
@@ -12,7 +11,7 @@ import {
 } from '../packageDataSlice';
 import VisibilityIndicator from './VisibilityIndicator';
 
-interface TreeNodeProps extends ChildrenProp {
+interface TreeNodeProps {
     declaration: PythonDeclaration;
     icon: IconType;
     isExpandable: boolean;

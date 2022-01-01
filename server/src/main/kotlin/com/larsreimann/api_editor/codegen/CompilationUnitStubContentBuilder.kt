@@ -1,7 +1,7 @@
 package com.larsreimann.api_editor.codegen
 
 import com.larsreimann.api_editor.model.AnnotatedPythonModule
-import de.unibonn.simpleml.constant.FileExtension
+import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.createSmlCompilationUnit
 import de.unibonn.simpleml.emf.createSmlDummyResource
 import de.unibonn.simpleml.emf.createSmlPackage
@@ -22,7 +22,7 @@ fun buildCompilationUnitToString(pythonModule: AnnotatedPythonModule): String {
     // Required to serialize the compilation unit
     createSmlDummyResource(
         "compilationUnitStub",
-        FileExtension.STUB,
+        SmlFileExtension.Stub,
         compilationUnit
     )
 
@@ -37,8 +37,16 @@ fun buildCompilationUnit(pythonModule: AnnotatedPythonModule): SmlCompilationUni
 }
 
 fun buildPackage(pythonModule: AnnotatedPythonModule): SmlPackage {
+    val publicClasses = pythonModule.classes
+        .filter { it.isPublic }
+        .map { buildClass(it) }
+
+    val publicFunctions = pythonModule.functions
+        .filter { it.isPublic }
+        .map { buildFunction(it) }
+
     return createSmlPackage(
         name = "simpleml.${pythonModule.name}",
-        members = pythonModule.classes.map { buildClass(it) } + pythonModule.functions.map { buildFunction(it) }
+        members = publicClasses + publicFunctions
     )
 }

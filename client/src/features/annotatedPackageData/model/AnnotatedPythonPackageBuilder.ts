@@ -76,6 +76,7 @@ export default class AnnotatedPythonPackageBuilder {
                     pythonClass.decorators,
                     pythonClass.superclasses,
                     this.#buildAnnotatedPythonFunctions(pythonClass),
+                    pythonClass.isPublic,
                     pythonClass.description,
                     pythonClass.fullDocstring,
                     this.#getExistingAnnotations(pythonClass.pathAsString()),

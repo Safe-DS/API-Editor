@@ -1,27 +1,16 @@
 package com.larsreimann.api_editor.transformation;
 
-import com.larsreimann.api_editor.model.AnnotatedPythonClass;
-import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
-import com.larsreimann.api_editor.model.AnnotatedPythonModule;
-import com.larsreimann.api_editor.model.AnnotatedPythonPackage;
-import com.larsreimann.api_editor.model.AnnotatedPythonParameter;
-import com.larsreimann.api_editor.model.MoveAnnotation;
+import com.larsreimann.api_editor.model.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonClass;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonFunction;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonModule;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonPackage;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonParameter;
+import static com.larsreimann.api_editor.server.RoutingKt.processPackage;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.*;
 
 class MoveAnnotationProcessorTest {
     @Test
     void movedGlobalMethodExistsInNewModule() {
         // given
-        MoveAnnotationProcessor moveAnnotationProcessor =
-            new MoveAnnotationProcessor();
-
         AnnotatedPythonParameter pythonParameter =
             createPythonParameter("testParameter");
 
@@ -41,9 +30,7 @@ class MoveAnnotationProcessorTest {
         testPackage.getModules().add(testModule);
 
         // when
-        testPackage.accept(moveAnnotationProcessor);
-        AnnotatedPythonPackage modifiedPackage =
-            moveAnnotationProcessor.getModifiedPackage();
+        AnnotatedPythonPackage modifiedPackage = processPackage(testPackage);
 
         // then
         boolean newModuleExists = false;
@@ -69,9 +56,6 @@ class MoveAnnotationProcessorTest {
     @Test
     void movedGlobalMethodIsRemovedFromOldModule() {
         // given
-        MoveAnnotationProcessor moveAnnotationProcessor =
-            new MoveAnnotationProcessor();
-
         AnnotatedPythonParameter pythonParameter =
             createPythonParameter("testParameter");
 
@@ -91,9 +75,7 @@ class MoveAnnotationProcessorTest {
         testPackage.getModules().add(testModule);
 
         // when
-        testPackage.accept(moveAnnotationProcessor);
-        AnnotatedPythonPackage modifiedPackage =
-            moveAnnotationProcessor.getModifiedPackage();
+        AnnotatedPythonPackage modifiedPackage = processPackage(testPackage);
 
         // then
         for (AnnotatedPythonModule pythonModule : modifiedPackage.getModules()) {
@@ -106,9 +88,6 @@ class MoveAnnotationProcessorTest {
     @Test
     void movedClassExistsInNewModule() {
         // given
-        MoveAnnotationProcessor moveAnnotationProcessor =
-            new MoveAnnotationProcessor();
-
         AnnotatedPythonParameter pythonParameter =
             createPythonParameter("testParameter");
 
@@ -116,9 +95,13 @@ class MoveAnnotationProcessorTest {
             createPythonFunction("testFunction");
         testFunction.getParameters().add(pythonParameter);
 
+        AnnotatedPythonAttribute testAttribute =
+            createPythonAttribute("testAttribute");
+
         AnnotatedPythonClass testClass =
             createPythonClass("testClass");
         testClass.getMethods().add(testFunction);
+        testClass.getAttributes().add(testAttribute);
         testClass.getAnnotations().add(
             new MoveAnnotation("newModule")
         );
@@ -132,9 +115,7 @@ class MoveAnnotationProcessorTest {
         testPackage.getModules().add(testModule);
 
         // when
-        testPackage.accept(moveAnnotationProcessor);
-        AnnotatedPythonPackage modifiedPackage =
-            moveAnnotationProcessor.getModifiedPackage();
+        AnnotatedPythonPackage modifiedPackage = processPackage(testPackage);
 
         // then
         boolean newModuleExists = false;
@@ -160,6 +141,13 @@ class MoveAnnotationProcessorTest {
                         .getParameters().get(0)
                         .getQualifiedName()
                 );
+                Assertions.assertEquals(
+                    "newModule.testClass.testAttribute",
+                    pythonModule
+                        .getClasses().get(0)
+                        .getAttributes().get(0)
+                        .getQualifiedName()
+                );
             }
         }
         Assertions.assertTrue(newModuleExists);
@@ -168,9 +156,6 @@ class MoveAnnotationProcessorTest {
     @Test
     void movedClassIsRemovedFromOldModule() {
         // given
-        MoveAnnotationProcessor moveAnnotationProcessor =
-            new MoveAnnotationProcessor();
-
         AnnotatedPythonParameter pythonParameter =
             createPythonParameter("testParameter");
 
@@ -194,9 +179,7 @@ class MoveAnnotationProcessorTest {
         testPackage.getModules().add(testModule);
 
         // when
-        testPackage.accept(moveAnnotationProcessor);
-        AnnotatedPythonPackage modifiedPackage =
-            moveAnnotationProcessor.getModifiedPackage();
+        AnnotatedPythonPackage modifiedPackage = processPackage(testPackage);
 
         // then
         for (AnnotatedPythonModule pythonModule : modifiedPackage.getModules()) {
@@ -209,9 +192,6 @@ class MoveAnnotationProcessorTest {
     @Test
     void movedClassExistsInExistingModule() {
         // given
-        MoveAnnotationProcessor moveAnnotationProcessor =
-            new MoveAnnotationProcessor();
-
         AnnotatedPythonClass testClass =
             createPythonClass("testClass");
         testClass.getAnnotations().add(
@@ -235,9 +215,7 @@ class MoveAnnotationProcessorTest {
         testPackage.getModules().add(existingModule);
 
         // when
-        testPackage.accept(moveAnnotationProcessor);
-        AnnotatedPythonPackage modifiedPackage =
-            moveAnnotationProcessor.getModifiedPackage();
+        AnnotatedPythonPackage modifiedPackage = processPackage(testPackage);
 
         // then
         boolean existingModuleStillExists = false;
@@ -253,9 +231,6 @@ class MoveAnnotationProcessorTest {
     @Test
     void movedGlobalMethodExistsInExistingModule() {
         // given
-        MoveAnnotationProcessor moveAnnotationProcessor =
-            new MoveAnnotationProcessor();
-
         AnnotatedPythonFunction testFunction =
             createPythonFunction("testFunction");
         testFunction.getAnnotations().add(
@@ -275,9 +250,7 @@ class MoveAnnotationProcessorTest {
         testPackage.getModules().add(existingModule);
 
         // when
-        testPackage.accept(moveAnnotationProcessor);
-        AnnotatedPythonPackage modifiedPackage =
-            moveAnnotationProcessor.getModifiedPackage();
+        AnnotatedPythonPackage modifiedPackage = processPackage(testPackage);
 
         // then
         boolean existingModuleExists = false;

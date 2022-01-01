@@ -7,18 +7,13 @@ import com.larsreimann.api_editor.model.AnnotatedPythonPackage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonClass;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonFunction;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonModule;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonPackage;
+import static com.larsreimann.api_editor.server.RoutingKt.processPackage;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.*;
 
 class CleanupModulesProcessorTest {
     @Test
     void cleanupModulesProcessorShouldRemoveEmptyModules() {
         // given
-        CleanupModulesProcessor cleanupModulesProcessor =
-            new CleanupModulesProcessor();
-
         AnnotatedPythonModule testModule =
             createPythonModule("testModule");
 
@@ -27,9 +22,7 @@ class CleanupModulesProcessorTest {
         testPackage.getModules().add(testModule);
 
         // when
-        testPackage.accept(cleanupModulesProcessor);
-        AnnotatedPythonPackage modifiedPackage =
-            cleanupModulesProcessor.getModifiedPackage();
+        AnnotatedPythonPackage modifiedPackage = processPackage(testPackage);
 
         // then
         Assertions.assertTrue(modifiedPackage.getModules().isEmpty());
@@ -38,9 +31,6 @@ class CleanupModulesProcessorTest {
     @Test
     void shouldNotRemoveModulesWithClasses() {
         // given
-        CleanupModulesProcessor cleanupModulesProcessor =
-            new CleanupModulesProcessor();
-
         AnnotatedPythonClass testClass =
             createPythonClass("testClass");
 
@@ -53,9 +43,7 @@ class CleanupModulesProcessorTest {
         testPackage.getModules().add(testModule);
 
         // when
-        testPackage.accept(cleanupModulesProcessor);
-        AnnotatedPythonPackage modifiedPackage =
-            cleanupModulesProcessor.getModifiedPackage();
+        AnnotatedPythonPackage modifiedPackage = processPackage(testPackage);
 
         // then
         Assertions.assertEquals(1, modifiedPackage.getModules().size());
@@ -64,9 +52,6 @@ class CleanupModulesProcessorTest {
     @Test
     void shouldNotRemoveModulesWithFunctions() {
         // given
-        CleanupModulesProcessor cleanupModulesProcessor =
-            new CleanupModulesProcessor();
-
         AnnotatedPythonFunction testFunction =
             createPythonFunction("testFunction");
 
@@ -79,9 +64,7 @@ class CleanupModulesProcessorTest {
         testPackage.getModules().add(testModule);
 
         // when
-        testPackage.accept(cleanupModulesProcessor);
-        AnnotatedPythonPackage modifiedPackage =
-            cleanupModulesProcessor.getModifiedPackage();
+        AnnotatedPythonPackage modifiedPackage = processPackage(testPackage);
 
         // then
         Assertions.assertEquals(1, modifiedPackage.getModules().size());

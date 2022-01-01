@@ -3,6 +3,7 @@ package com.larsreimann.api_editor.io;
 import com.larsreimann.api_editor.codegen.ModuleAdapterContentBuilder;
 import com.larsreimann.api_editor.model.AnnotatedPythonModule;
 import com.larsreimann.api_editor.model.AnnotatedPythonPackage;
+import de.unibonn.simpleml.constant.SmlFileExtension;
 import kotlin.io.FilesKt;
 
 import java.io.BufferedWriter;
@@ -49,7 +50,7 @@ public class PackageFileBuilder {
                         "adapter",
                         "simpleml"
                     ),
-                    ".py"
+                    "py"
                 );
 
                 var moduleNameParts = module.getName().split("\\.");
@@ -61,7 +62,7 @@ public class PackageFileBuilder {
                         "stub",
                         "simpleml"
                     ),
-                    ".stub.simpleml"
+                    SmlFileExtension.Stub.toString()
                 );
             } catch (Exception e) {
                 e.printStackTrace();
@@ -100,7 +101,7 @@ public class PackageFileBuilder {
         String fileExtension
     ) {
         String formattedFileName = fileName.replaceAll("\\.", "/")
-            + fileExtension;
+            + "." + fileExtension;
         Path filePath = Paths.get(workingFolderPath.toString(), formattedFileName);
         Path directoryPath = filePath.getParent();
         File directory = new File(directoryPath.toString());

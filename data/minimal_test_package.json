@@ -352,7 +352,7 @@
             "decorators": [],
             "parameters": [
                 {
-                    "name": "only_param",
+                    "name": "self",
                     "default_value": null,
                     "is_public": false,
                     "assigned_by": "POSITION_OR_NAME",
@@ -376,13 +376,33 @@
             "decorators": [],
             "parameters": [
                 {
-                    "name": "only_param",
+                    "name": "self",
                     "default_value": null,
                     "is_public": false,
                     "assigned_by": "POSITION_OR_NAME",
                     "docstring": {
                         "type": "str",
-                        "description": "only param"
+                        "description": "first param"
+                    }
+                },
+                {
+                    "name": "param2",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": "second param"
+                    }
+                },
+                {
+                    "name": "param3",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "NAME_ONLY",
+                    "docstring": {
+                        "type": "bool",
+                        "description": "third param"
                     }
                 }
             ],
