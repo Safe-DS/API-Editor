@@ -56,10 +56,6 @@ class ParameterAnnotationProcessorTest {
             createPythonPackage("testPackage");
         testPackage.getModules().add(testModule);
 
-        OriginalDeclarationProcessor originalDeclarationProcessor =
-            OriginalDeclarationProcessor.INSTANCE;
-        testPackage.accept(originalDeclarationProcessor);
-
         // when
         AnnotatedPythonPackage modifiedPackage = processPackage(testPackage);
 
@@ -149,10 +145,6 @@ class ParameterAnnotationProcessorTest {
             createPythonPackage("testPackage");
         testPackage.getModules().add(testModule);
 
-        OriginalDeclarationProcessor originalDeclarationProcessor =
-            OriginalDeclarationProcessor.INSTANCE;
-        testPackage.accept(originalDeclarationProcessor);
-
         // when
         AnnotatedPythonPackage modifiedPackage = processPackage(testPackage);
 
@@ -237,10 +229,6 @@ class ParameterAnnotationProcessorTest {
         AnnotatedPythonPackage testPackage =
             createPythonPackage("testPackage");
         testPackage.getModules().add(testModule);
-
-        OriginalDeclarationProcessor originalDeclarationProcessor =
-            OriginalDeclarationProcessor.INSTANCE;
-        testPackage.accept(originalDeclarationProcessor);
 
         // when
         AnnotatedPythonPackage modifiedPackage = processPackage(testPackage);
