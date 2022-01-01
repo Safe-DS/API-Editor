@@ -26,58 +26,24 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
      *
      * @return The string containing the formatted function content
      */
-    public String buildFunction() {
-        return "def "
-            + pythonFunction.getName()
-            + "("
-            + buildParameters()
-            + ")"
-            + ":\n"
-            + indent(buildFunctionBody());
-    }
-
-    /**
-     * Builds a string containing the formatted constructor
-     *
-     * @return The string containing the formatted constructor
-     */
-    public String buildConstructor() {
-        return "def "
-            + pythonFunction.getName()
-            + "("
-            + buildParameters()
-            + ")"
-            + ":\n"
-            + indent(buildConstructorBody());
-    }
-
-    /**
-     * Builds a string containing the formatted class method content
-     *
-     * @return The string containing the formatted class method content
-     */
-    public String buildMethod() {
-        return "def "
-            + pythonFunction.getName()
-            + "("
-            + buildParameters()
-            + ")"
-            + ":\n"
-            + indent(buildMethodBody());
-    }
-
-    private String buildConstructorBody() {
-        String separator = "";
-        String assignments = listToString(buildAttributeAssignments(), 1);
-        if (!assignments.isBlank()) {
-            separator = "\n";
+    public String buildFunction(boolean isConstructor) {
+        String constructorSuffix = "";
+        if (isConstructor) {
+            String constructorSeparator = "";
+            String assignments = listToString(buildAttributeAssignments(), 1);
+            if (!assignments.isBlank()) {
+                constructorSeparator = "\n";
+            }
+            constructorSuffix = constructorSeparator + assignments;
         }
-        return Objects.requireNonNull(pythonFunction.getOriginalDeclaration()).getQualifiedName()
+
+        return "def "
+            + pythonFunction.getName()
             + "("
-            + buildParameterCall()
+            + buildParameters()
             + ")"
-            + separator
-            + assignments;
+            + ":\n"
+            + indent(buildFunctionBody() + constructorSuffix);
     }
 
     private List<String> buildAttributeAssignments() {
@@ -182,13 +148,6 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
     }
 
     private String buildFunctionBody() {
-        return Objects.requireNonNull(pythonFunction.getOriginalDeclaration()).getQualifiedName()
-            + "("
-            + buildParameterCall()
-            + ")";
-    }
-
-    private String buildMethodBody() {
         return Objects.requireNonNull(pythonFunction.getOriginalDeclaration()).getQualifiedName()
             + "("
             + buildParameterCall()

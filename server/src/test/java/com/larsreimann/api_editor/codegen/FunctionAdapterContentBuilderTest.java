@@ -32,7 +32,7 @@ class FunctionAdapterContentBuilderTest {
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
             new FunctionAdapterContentBuilder(testFunction);
-        String formattedFunction = functionAdapterContentBuilder.buildFunction();
+        String formattedFunction = functionAdapterContentBuilder.buildFunction(false);
 
         // then
         String expectedFormattedFunction = """
@@ -71,7 +71,7 @@ class FunctionAdapterContentBuilderTest {
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
             new FunctionAdapterContentBuilder(testFunction);
-        String formattedFunction = functionAdapterContentBuilder.buildFunction();
+        String formattedFunction = functionAdapterContentBuilder.buildFunction(false);
 
         // then
         String expectedFormattedFunction = """
@@ -110,7 +110,7 @@ class FunctionAdapterContentBuilderTest {
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
             new FunctionAdapterContentBuilder(testFunction);
-        String formattedFunction = functionAdapterContentBuilder.buildFunction();
+        String formattedFunction = functionAdapterContentBuilder.buildFunction(false);
 
         // then
         String expectedFormattedFunction = """
@@ -149,7 +149,7 @@ class FunctionAdapterContentBuilderTest {
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
             new FunctionAdapterContentBuilder(testFunction);
-        String formattedFunction = functionAdapterContentBuilder.buildFunction();
+        String formattedFunction = functionAdapterContentBuilder.buildFunction(false);
 
         // then
         String expectedFormattedFunction = """
@@ -198,7 +198,7 @@ class FunctionAdapterContentBuilderTest {
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
             new FunctionAdapterContentBuilder(testFunction);
-        String formattedFunction = functionAdapterContentBuilder.buildFunction();
+        String formattedFunction = functionAdapterContentBuilder.buildFunction(false);
 
         // then
         String expectedFormattedFunction = """
@@ -257,7 +257,7 @@ class FunctionAdapterContentBuilderTest {
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
             new FunctionAdapterContentBuilder(testFunction);
-        String formattedFunction = functionAdapterContentBuilder.buildFunction();
+        String formattedFunction = functionAdapterContentBuilder.buildFunction(false);
 
         // then
         String expectedFormattedFunction = """
@@ -306,7 +306,7 @@ class FunctionAdapterContentBuilderTest {
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
             new FunctionAdapterContentBuilder(testFunction);
-        String formattedFunction = functionAdapterContentBuilder.buildFunction();
+        String formattedFunction = functionAdapterContentBuilder.buildFunction(false);
 
         // then
         String expectedFormattedFunction = """
@@ -355,7 +355,7 @@ class FunctionAdapterContentBuilderTest {
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
             new FunctionAdapterContentBuilder(testFunction);
-        String formattedFunction = functionAdapterContentBuilder.buildFunction();
+        String formattedFunction = functionAdapterContentBuilder.buildFunction(false);
 
         // then
         String expectedFormattedFunction = """
@@ -426,7 +426,7 @@ class FunctionAdapterContentBuilderTest {
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
             new FunctionAdapterContentBuilder(testFunction);
-        String formattedFunction = functionAdapterContentBuilder.buildFunction();
+        String formattedFunction = functionAdapterContentBuilder.buildFunction(false);
 
         // then
         String expectedFormattedFunction = """

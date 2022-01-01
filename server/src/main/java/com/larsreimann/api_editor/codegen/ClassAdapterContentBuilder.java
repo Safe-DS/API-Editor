@@ -41,11 +41,11 @@ public class ClassAdapterContentBuilder extends FileBuilder {
                         new FunctionAdapterContentBuilder(pythonFunction);
                     if (!pythonFunction.isConstructor()) {
                         formattedFunctions.add(
-                            functionAdapterContentBuilder.buildMethod()
+                            functionAdapterContentBuilder.buildFunction(false)
                         );
                     } else {
                         formattedFunctions.add(
-                            functionAdapterContentBuilder.buildConstructor()
+                            functionAdapterContentBuilder.buildFunction(true)
                         );
                     }
                 }

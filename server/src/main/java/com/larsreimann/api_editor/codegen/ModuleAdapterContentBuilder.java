@@ -94,7 +94,7 @@ public class ModuleAdapterContentBuilder extends FileBuilder {
         pythonModule.getFunctions().forEach(pythonFunction -> {
                 FunctionAdapterContentBuilder functionAdapterContentBuilder =
                     new FunctionAdapterContentBuilder(pythonFunction);
-                formattedFunctions.add(functionAdapterContentBuilder.buildFunction());
+                formattedFunctions.add(functionAdapterContentBuilder.buildFunction(false));
             }
         );
         return listToString(formattedFunctions, 2);
