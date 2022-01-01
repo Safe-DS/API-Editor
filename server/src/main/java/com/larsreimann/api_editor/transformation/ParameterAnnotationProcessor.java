@@ -183,10 +183,12 @@ public class ParameterAnnotationProcessor extends AbstractPackageDataTransformer
         List<AnnotatedPythonParameter> orderedParameters = new ArrayList<>();
         List<AnnotatedPythonParameter> attributeParameters = new ArrayList<>();
         List<AnnotatedPythonParameter> constantParameters = new ArrayList<>();
+        List<AnnotatedPythonParameter> implicitParameters = new ArrayList<>();
         List<AnnotatedPythonParameter> optionalParameters = new ArrayList<>();
         List<AnnotatedPythonParameter> requiredParameters = new ArrayList<>();
         unorderedParameters.forEach(pythonParameter -> {
             switch (pythonParameter.getAssignedBy()) {
+                case IMPLICIT -> implicitParameters.add(pythonParameter);
                 case POSITION_OR_NAME -> requiredParameters.add(pythonParameter);
                 case NAME_ONLY -> optionalParameters.add(pythonParameter);
                 case CONSTANT -> constantParameters.add(pythonParameter);
@@ -196,6 +198,7 @@ public class ParameterAnnotationProcessor extends AbstractPackageDataTransformer
                 );
             }
         });
+        orderedParameters.addAll(implicitParameters);
         orderedParameters.addAll(requiredParameters);
         orderedParameters.addAll(optionalParameters);
         orderedParameters.addAll(constantParameters);

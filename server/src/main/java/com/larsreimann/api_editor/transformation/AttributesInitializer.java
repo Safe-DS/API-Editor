@@ -58,6 +58,8 @@ public class AttributesInitializer extends AbstractPackageDataTransformer {
     private AnnotatedPythonAttribute convertParameterToAttribute(
         AnnotatedPythonParameter pythonParameter
     ) {
+        List<EditorAnnotation> filteredAnnotations =
+            getFilteredAnnotations(pythonParameter.getAnnotations());
         return new AnnotatedPythonAttribute(
             pythonParameter.getName(),
             pythonParameter.getQualifiedName(),
@@ -65,7 +67,29 @@ public class AttributesInitializer extends AbstractPackageDataTransformer {
             pythonParameter.isPublic(),
             pythonParameter.getTypeInDocs(),
             pythonParameter.getDescription(),
-            pythonParameter.getAnnotations()
+            filteredAnnotations
         );
+    }
+
+    /**
+     * Only return those annotations that are processed on attribute level
+     *
+     * @param unfilteredAnnotations The unfiltered annotations
+     *
+     * @return The filtered annotations
+     */
+    private List<EditorAnnotation> getFilteredAnnotations(List<EditorAnnotation> unfilteredAnnotations) {
+        List<EditorAnnotation> filteredAnnotations = new ArrayList<>();
+        for (EditorAnnotation annotation : unfilteredAnnotations) {
+            switch(annotation.getType()) {
+                case "Attribute":
+                case "Constant":
+                case "Optional":
+                case "Required":
+                    break;
+                default: filteredAnnotations.add(annotation);
+            }
+        }
+        return filteredAnnotations;
     }
 }

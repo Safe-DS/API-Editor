@@ -74,7 +74,7 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
         }
         return Objects.requireNonNull(pythonFunction.getOriginalDeclaration()).getQualifiedName()
             + "("
-            + buildParameterCall(true)
+            + buildParameterCall()
             + ")"
             + separator
             + assignments;
@@ -97,11 +97,14 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
 
     private String buildParameters() {
         String formattedFunctionParameters = "";
+        List<String> implicitParameters = new ArrayList<>();
         List<String> positionOnlyParameters = new ArrayList<>();
         List<String> positionOrNameParameters = new ArrayList<>();
         List<String> nameOnlyParameters = new ArrayList<>();
         pythonFunction.getParameters().forEach(pythonParameter -> {
             switch (pythonParameter.getAssignedBy()) {
+                case IMPLICIT -> implicitParameters
+                    .add(buildFormattedParameter(pythonParameter));
                 case POSITION_ONLY -> positionOnlyParameters
                     .add(buildFormattedParameter(pythonParameter));
                 case POSITION_OR_NAME -> positionOrNameParameters
@@ -110,9 +113,26 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
                     .add(buildFormattedParameter(pythonParameter));
             }
         });
+        // A function has at most one implicit parameter
+        assert implicitParameters.size() < 2;
+        boolean hasImplicitParameter = !implicitParameters.isEmpty();
         boolean hasPositionOnlyParameters = !positionOnlyParameters.isEmpty();
         boolean hasPositionOrNameParameters = !positionOrNameParameters.isEmpty();
         boolean hasNameOnlyParameters = !nameOnlyParameters.isEmpty();
+
+        if (hasImplicitParameter) {
+            formattedFunctionParameters =
+                formattedFunctionParameters
+                    + implicitParameters.get(0);
+            if (
+                hasPositionOnlyParameters ||
+                    hasPositionOrNameParameters ||
+                    hasNameOnlyParameters
+            ) {
+                formattedFunctionParameters =
+                    formattedFunctionParameters + ", ";
+            }
+        }
 
         if (hasPositionOnlyParameters) {
             formattedFunctionParameters =
@@ -164,18 +184,18 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
     private String buildFunctionBody() {
         return Objects.requireNonNull(pythonFunction.getOriginalDeclaration()).getQualifiedName()
             + "("
-            + buildParameterCall(false)
+            + buildParameterCall()
             + ")";
     }
 
     private String buildMethodBody() {
         return Objects.requireNonNull(pythonFunction.getOriginalDeclaration()).getQualifiedName()
             + "("
-            + buildParameterCall(true)
+            + buildParameterCall()
             + ")";
     }
 
-    private String buildParameterCall(boolean isInClass) {
+    private String buildParameterCall() {
         List<String> formattedParameters = new ArrayList<>();
         Map<String, String> originalNameToValueMap = new HashMap<>();
         pythonFunction.getParameters().forEach(
@@ -197,13 +217,12 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
                 );
             }
         );
-        // first parameter in classes is implicitly assigned
-        int toSkip = 0;
-        if (isInClass) {
-            toSkip = 1;
-        }
         Objects.requireNonNull(pythonFunction.getOriginalDeclaration())
-            .getParameters().stream().skip(toSkip).forEach(pythonParameter -> {
+            .getParameters().stream()
+            .filter(pythonParameter ->
+                !pythonParameter.getAssignedBy()
+                    .equals(PythonParameterAssignment.IMPLICIT)
+            ).forEach(pythonParameter -> {
                 if (pythonParameter.getAssignedBy()
                     == PythonParameterAssignment.NAME_ONLY) {
                     formattedParameters.add(

@@ -1,12 +1,6 @@
 package com.larsreimann.api_editor.codegen;
 
-import com.larsreimann.api_editor.model.AnnotatedPythonClass;
-import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
-import com.larsreimann.api_editor.model.AnnotatedPythonParameter;
-import com.larsreimann.api_editor.model.AttributeAnnotation;
-import com.larsreimann.api_editor.model.DefaultString;
-import com.larsreimann.api_editor.model.PythonParameterAssignment;
-import com.larsreimann.api_editor.model.RenameAnnotation;
+import com.larsreimann.api_editor.model.*;
 import com.larsreimann.api_editor.transformation.OriginalDeclarationProcessor;
 import com.larsreimann.api_editor.transformation.RenameAnnotationProcessor;
 import org.junit.jupiter.api.Assertions;
@@ -51,15 +45,15 @@ class ClassAdapterContentBuilderTest {
             List.of("test-decorator"),
             List.of("test-superclass"),
             List.of(new AnnotatedPythonFunction(
-                "test-class-function",
-                "test-module.test-class.test-class-function",
+                "__init__",
+                "test-module.test-class.__init__",
                 List.of("decorators"),
                 List.of(
                     new AnnotatedPythonParameter(
                         "self",
-                        "test-module.test-class.test-class-function.self",
+                        "test-module.test-class.__init__.self",
                         null,
-                        PythonParameterAssignment.POSITION_OR_NAME,
+                        PythonParameterAssignment.IMPLICIT,
                         true,
                         "typeInDocs",
                         "description",
@@ -67,15 +61,13 @@ class ClassAdapterContentBuilderTest {
                     ),
                     new AnnotatedPythonParameter(
                         "only-param",
-                        "test-module.test-class.test-class-function.only-param",
+                        "test-module.test-class.__init__.only-param",
                         "'defaultValue'",
                         PythonParameterAssignment.POSITION_OR_NAME,
                         true,
                         "str",
                         "description",
-                        List.of(new AttributeAnnotation(
-                            new DefaultString("test")
-                        ))
+                        List.of()
                     )
                 ),
                 Collections.emptyList(),
@@ -99,8 +91,8 @@ class ClassAdapterContentBuilderTest {
         // then
         String expectedFormattedClass = """
             class test-class:
-                def test-class-function(self, only-param='defaultValue'):
-                    test-module.test-class.test-class-function(only-param)""";
+                def __init__(self, only-param='defaultValue'):
+                    test-module.test-class.__init__(only-param)""";
         Assertions.assertEquals(expectedFormattedClass, formattedClass);
     }
 
@@ -122,7 +114,7 @@ class ClassAdapterContentBuilderTest {
                             "self",
                             "test-module.test-class.test-class-function1.self",
                             null,
-                            PythonParameterAssignment.POSITION_OR_NAME,
+                            PythonParameterAssignment.IMPLICIT,
                             true,
                             "typeInDocs",
                             "description",
@@ -154,7 +146,7 @@ class ClassAdapterContentBuilderTest {
                             "self",
                             "test-module.test-class.test-class-function2.self",
                             null,
-                            PythonParameterAssignment.POSITION_OR_NAME,
+                            PythonParameterAssignment.IMPLICIT,
                             true,
                             "typeInDocs",
                             "description",
@@ -213,7 +205,7 @@ class ClassAdapterContentBuilderTest {
                     "self",
                     "test-module.test-class.test-class-function.self",
                     null,
-                    PythonParameterAssignment.POSITION_OR_NAME,
+                    PythonParameterAssignment.IMPLICIT,
                     true,
                     "typeInDocs",
                     "description",
