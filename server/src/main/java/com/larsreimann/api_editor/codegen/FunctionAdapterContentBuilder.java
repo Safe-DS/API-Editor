@@ -25,9 +25,9 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
      *
      * @return The string containing the formatted function content
      */
-    public String buildFunction(boolean isConstructor) {
+    public String buildFunction() {
         String constructorSuffix = "";
-        if (isConstructor) {
+        if (pythonFunction.isConstructor()) {
             String constructorSeparator = "";
             String assignments = listToString(buildAttributeAssignments(), 1);
             if (!assignments.isBlank()) {
@@ -164,8 +164,7 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
             pythonFunction
                 .getParameters()
                 .stream()
-                .filter(pythonParameter -> pythonParameter.getBoundary() != null)
-                .collect(Collectors.toList())) {
+                .filter(pythonParameter -> pythonParameter.getBoundary() != null).toList()) {
             Boundary boundary = pythonParameter.getBoundary();
             assert boundary != null;
             if (boundary.isDiscrete()) {

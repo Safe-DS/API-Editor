@@ -39,15 +39,9 @@ public class ClassAdapterContentBuilder extends FileBuilder {
             .forEach(pythonFunction -> {
                     FunctionAdapterContentBuilder functionAdapterContentBuilder =
                         new FunctionAdapterContentBuilder(pythonFunction);
-                    if (!pythonFunction.isConstructor()) {
-                        formattedFunctions.add(
-                            functionAdapterContentBuilder.buildFunction(false)
-                        );
-                    } else {
-                        formattedFunctions.add(
-                            functionAdapterContentBuilder.buildFunction(true)
-                        );
-                    }
+                    formattedFunctions.add(
+                        functionAdapterContentBuilder.buildFunction()
+                    );
                 }
             );
         return formattedFunctions;
