@@ -131,7 +131,7 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
         const upperLimitType = getValues('interval.upperLimitType');
 
         // Already handled by making the fields required
-        if (typeof lowerLimit != 'number' || typeof upperLimit != 'number') {
+        if (typeof lowerLimit !== 'number' || typeof upperLimit !== 'number') {
             return true;
         }
         if (Number.isNaN(lowerLimit) || Number.isNaN(upperLimit)) {
