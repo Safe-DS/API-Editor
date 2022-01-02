@@ -16,7 +16,7 @@
         "@chakra-ui/system": "^1.7.3",
         "@chakra-ui/theme-tools": "^1.1.8",
         "@emotion/react": "^11.5.0",
-        "@emotion/styled": "^11.3.0",
+        "@emotion/styled": "^11.6.0",
         "@reduxjs/toolkit": "^1.6.2",
         "framer-motion": "^5.2.0",
         "idb-keyval": "^6.0.3",
