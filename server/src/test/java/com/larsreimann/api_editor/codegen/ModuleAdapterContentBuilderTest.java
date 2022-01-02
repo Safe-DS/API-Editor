@@ -1,18 +1,6 @@
 package com.larsreimann.api_editor.codegen;
 
-import com.larsreimann.api_editor.model.AnnotatedPythonClass;
-import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
-import com.larsreimann.api_editor.model.AnnotatedPythonModule;
-import com.larsreimann.api_editor.model.AnnotatedPythonParameter;
-import com.larsreimann.api_editor.model.AnnotatedPythonResult;
-import com.larsreimann.api_editor.model.AttributeAnnotation;
-import com.larsreimann.api_editor.model.ConstantAnnotation;
-import com.larsreimann.api_editor.model.DefaultString;
-import com.larsreimann.api_editor.model.OptionalAnnotation;
-import com.larsreimann.api_editor.model.PythonFromImport;
-import com.larsreimann.api_editor.model.PythonImport;
-import com.larsreimann.api_editor.model.PythonParameterAssignment;
-import com.larsreimann.api_editor.model.RequiredAnnotation;
+import com.larsreimann.api_editor.model.*;
 import com.larsreimann.api_editor.transformation.OriginalDeclarationProcessor;
 import com.larsreimann.api_editor.transformation.ParameterAnnotationProcessor;
 import org.junit.jupiter.api.Assertions;
@@ -39,7 +27,7 @@ class ModuleAdapterContentBuilderTest {
                         "self",
                         "test-module.test-class.test-class-function.self",
                         null,
-                        PythonParameterAssignment.POSITION_OR_NAME,
+                        PythonParameterAssignment.IMPLICIT,
                         true,
                         "typeInDocs",
                         "description",
@@ -402,7 +390,7 @@ class ModuleAdapterContentBuilderTest {
                         "self",
                         "test-module.test-class.__init__.self",
                         null,
-                        PythonParameterAssignment.POSITION_OR_NAME,
+                        PythonParameterAssignment.IMPLICIT,
                         true,
                         "typeInDocs",
                         "description",
@@ -484,7 +472,7 @@ class ModuleAdapterContentBuilderTest {
                     List.of(
                         new AnnotatedPythonParameter(
                             "param1",
-                            "test-module.function_module_1.param1",
+                            "test-module.function_module.param1",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
                             true,
@@ -500,7 +488,7 @@ class ModuleAdapterContentBuilderTest {
                         ),
                         new AnnotatedPythonParameter(
                             "param2",
-                            "test-module.function_module_1.param2",
+                            "test-module.function_module.param2",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
                             true,
@@ -510,7 +498,7 @@ class ModuleAdapterContentBuilderTest {
                         ),
                         new AnnotatedPythonParameter(
                             "param3",
-                            "test-module.function_module_1.param3",
+                            "test-module.function_module.param3",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
                             true,
@@ -577,7 +565,7 @@ class ModuleAdapterContentBuilderTest {
                     List.of(
                         new AnnotatedPythonParameter(
                             "param1",
-                            "test-module.function_module_1.param1",
+                            "test-module.function_module.param1",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
                             true,
@@ -593,7 +581,7 @@ class ModuleAdapterContentBuilderTest {
                         ),
                         new AnnotatedPythonParameter(
                             "param2",
-                            "test-module.function_module_1.param2",
+                            "test-module.function_module.param2",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
                             true,
@@ -603,7 +591,7 @@ class ModuleAdapterContentBuilderTest {
                         ),
                         new AnnotatedPythonParameter(
                             "param3",
-                            "test-module.function_module_1.param3",
+                            "test-module.function_module.param3",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
                             true,
@@ -670,7 +658,7 @@ class ModuleAdapterContentBuilderTest {
                     List.of(
                         new AnnotatedPythonParameter(
                             "param1",
-                            "test-module.function_module_1.param1",
+                            "test-module.function_module.param1",
                             "'defaultValue'",
                             PythonParameterAssignment.NAME_ONLY,
                             true,
@@ -682,7 +670,7 @@ class ModuleAdapterContentBuilderTest {
                         ),
                         new AnnotatedPythonParameter(
                             "param2",
-                            "test-module.function_module_1.param2",
+                            "test-module.function_module.param2",
                             "'defaultValue'",
                             PythonParameterAssignment.NAME_ONLY,
                             true,
@@ -692,7 +680,7 @@ class ModuleAdapterContentBuilderTest {
                         ),
                         new AnnotatedPythonParameter(
                             "param3",
-                            "test-module.function_module_1.param3",
+                            "test-module.function_module.param3",
                             "'defaultValue'",
                             PythonParameterAssignment.NAME_ONLY,
                             true,
@@ -755,7 +743,7 @@ class ModuleAdapterContentBuilderTest {
                     List.of(
                         new AnnotatedPythonParameter(
                             "param1",
-                            "test-module.function_module_1.param1",
+                            "test-module.function_module.param1",
                             "'defaultValue'",
                             PythonParameterAssignment.NAME_ONLY,
                             true,
@@ -767,7 +755,7 @@ class ModuleAdapterContentBuilderTest {
                         ),
                         new AnnotatedPythonParameter(
                             "param2",
-                            "test-module.function_module_1.param2",
+                            "test-module.function_module.param2",
                             "'defaultValue'",
                             PythonParameterAssignment.NAME_ONLY,
                             true,
@@ -781,7 +769,7 @@ class ModuleAdapterContentBuilderTest {
                         ),
                         new AnnotatedPythonParameter(
                             "param3",
-                            "test-module.function_module_1.param3",
+                            "test-module.function_module.param3",
                             "'defaultValue'",
                             PythonParameterAssignment.NAME_ONLY,
                             true,
@@ -825,6 +813,134 @@ class ModuleAdapterContentBuilderTest {
 
             def function_module(param1, *, param3='newDefaultValue'):
                 test-module.function_module(param1=param1, param2='newDefaultValue', param3=param3)
+            """;
+
+        Assertions.assertEquals(expectedModuleContent, moduleContent);
+    }
+
+    @Test
+    void buildModuleContentWithBoundaryAnnotationReturnsFormattedModuleContent1() {
+        // given
+        AnnotatedPythonParameter testParameter =
+            new AnnotatedPythonParameter(
+                "param1",
+                "test-module.function_module.param1",
+                "5",
+                PythonParameterAssignment.NAME_ONLY,
+                true,
+                "str",
+                "Lorem ipsum",
+                List.of()
+            );
+        testParameter.setBoundary(
+            new Boundary(
+                true,
+                2,
+                ComparisonOperator.LESS_THAN,
+                10,
+                ComparisonOperator.LESS_THAN
+            )
+        );
+        AnnotatedPythonFunction testFunction = new AnnotatedPythonFunction(
+            "function_module",
+            "test-module.function_module",
+            List.of("test-decorator"),
+            List.of(testParameter),
+            List.of(),
+            true,
+            "Lorem ipsum",
+            "Lorem ipsum",
+            Collections.emptyList()
+        );
+        AnnotatedPythonModule testModule = new AnnotatedPythonModule(
+            "test-module",
+            Collections.emptyList(),
+            Collections.emptyList(),
+            Collections.emptyList(),
+            List.of(testFunction),
+            Collections.emptyList()
+        );
+
+        testModule.accept(OriginalDeclarationProcessor.INSTANCE);
+
+        // when
+        ModuleAdapterContentBuilder moduleAdapterContentBuilder =
+            new ModuleAdapterContentBuilder(testModule);
+        String moduleContent = moduleAdapterContentBuilder.buildModuleContent();
+
+        // then
+        String expectedModuleContent = """
+            import test-module
+
+            def function_module(*, param1=5):
+                if not (isinstance(param1,int) or (isinstance(param1,float) and param1is_integer())):
+                    raise ValueError('param1 needs to be a discrete numerical value, but {} was assigned.'.format(param1))
+                if not 2.0 < param1:
+                    raise ValueError('Valid values of param1 must be higher than 2.0, but {} was assigned.'.format(param1))
+                if not param1 < 10.0:
+                    raise ValueError('Valid values of param1 must be higher than 10.0, but {} was assigned.'.format(param1))
+                test-module.function_module(param1=param1)
+            """;
+
+        Assertions.assertEquals(expectedModuleContent, moduleContent);
+    }
+    @Test
+    void buildModuleContentWithBoundaryAnnotationReturnsFormattedModuleContent2() {
+        // given
+        AnnotatedPythonParameter testParameter =
+            new AnnotatedPythonParameter(
+                "param1",
+                "test-module.function_module.param1",
+                "5",
+                PythonParameterAssignment.NAME_ONLY,
+                true,
+                "str",
+                "Lorem ipsum",
+                List.of()
+            );
+        testParameter.setBoundary(
+            new Boundary(
+                false,
+                2,
+                ComparisonOperator.LESS_THAN_OR_EQUALS,
+                0,
+                ComparisonOperator.UNRESTRICTED
+            )
+        );
+        AnnotatedPythonFunction testFunction = new AnnotatedPythonFunction(
+            "function_module",
+            "test-module.function_module",
+            List.of("test-decorator"),
+            List.of(testParameter),
+            List.of(),
+            true,
+            "Lorem ipsum",
+            "Lorem ipsum",
+            Collections.emptyList()
+        );
+        AnnotatedPythonModule testModule = new AnnotatedPythonModule(
+            "test-module",
+            Collections.emptyList(),
+            Collections.emptyList(),
+            Collections.emptyList(),
+            List.of(testFunction),
+            Collections.emptyList()
+        );
+        testModule.accept(OriginalDeclarationProcessor.INSTANCE);
+
+        // when
+        ModuleAdapterContentBuilder moduleAdapterContentBuilder =
+            new ModuleAdapterContentBuilder(testModule);
+        String moduleContent = moduleAdapterContentBuilder.buildModuleContent();
+
+        // then
+        String expectedModuleContent = """
+            import test-module
+
+            def function_module(*, param1=5):
+                if not 2.0 <= param1:
+                    raise ValueError('Valid values of param1 must be higher or equal to 2.0, but {} was assigned.'.format(param1))
+                test-module.function_module(param1=param1)
             """;
 
         Assertions.assertEquals(expectedModuleContent, moduleContent);

@@ -3,6 +3,7 @@ package com.larsreimann.api_editor.server
 import com.larsreimann.api_editor.io.PackageFileBuilder
 import com.larsreimann.api_editor.model.AnnotatedPythonPackage
 import com.larsreimann.api_editor.transformation.AttributesInitializer
+import com.larsreimann.api_editor.transformation.BoundaryAnnotationProcessor
 import com.larsreimann.api_editor.transformation.CleanupModulesProcessor
 import com.larsreimann.api_editor.transformation.MoveAnnotationProcessor
 import com.larsreimann.api_editor.transformation.OriginalDeclarationProcessor
@@ -143,6 +144,9 @@ fun processPackage(originalPythonPackage: AnnotatedPythonPackage): AnnotatedPyth
 
     val parameterAnnotationProcessor = ParameterAnnotationProcessor()
     modifiedPythonPackage = modifiedPythonPackage.accept(parameterAnnotationProcessor)!!
+
+    val boundaryAnnotationProcessor = BoundaryAnnotationProcessor()
+    modifiedPythonPackage = modifiedPythonPackage.accept(boundaryAnnotationProcessor)!!
 
     modifiedPythonPackage.accept(PureAnnotationProcessor)
 
