@@ -14,6 +14,7 @@ import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlParameter
+import java.util.Locale
 
 /**
  * Builds a string containing the formatted class content
@@ -38,11 +39,16 @@ fun buildClassToString(pythonClass: AnnotatedPythonClass): String {
 }
 
 fun buildClass(pythonClass: AnnotatedPythonClass): SmlClass {
+    val stubName = pythonClass.name.snakeCaseToUpperCamelCase()
+
     return createSmlClass(
-        name = pythonClass.name,
+        name = stubName,
         annotations = buildList {
             if (pythonClass.description.isNotBlank()) {
                 add(createSmlDescriptionAnnotationUse(pythonClass.description))
+            }
+            if (pythonClass.name != stubName) {
+                add(createSmlPythonNameAnnotationUse(pythonClass.name))
             }
         },
         parameters = buildConstructor(pythonClass),
@@ -66,11 +72,16 @@ private fun buildAttributes(pythonClass: AnnotatedPythonClass): List<SmlAttribut
 }
 
 fun buildAttribute(pythonParameter: AnnotatedPythonParameter): SmlAttribute {
+    val stubName = pythonParameter.name.snakeCaseToLowerCamelCase()
+
     return createSmlAttribute(
-        name = pythonParameter.name,
+        name = stubName,
         annotations = buildList {
             if (pythonParameter.description.isNotBlank()) {
                 add(createSmlDescriptionAnnotationUse(pythonParameter.description))
+            }
+            if (pythonParameter.name != stubName) {
+                add(createSmlPythonNameAnnotationUse(pythonParameter.name))
             }
         },
         type = buildType(pythonParameter.typeInDocs)
@@ -81,4 +92,16 @@ private fun buildFunctions(pythonClass: AnnotatedPythonClass): List<SmlFunction>
     return pythonClass.methodsExceptConstructor()
         .filter { it.isPublic }
         .map { buildFunction(it) }
+}
+
+fun String.snakeCaseToLowerCamelCase(): String {
+    return this.snakeCaseToCamelCase().replaceFirstChar { it.lowercase() }
+}
+
+fun String.snakeCaseToUpperCamelCase(): String {
+    return this.snakeCaseToCamelCase().replaceFirstChar { it.uppercase() }
+}
+
+private fun String.snakeCaseToCamelCase(): String {
+    return this.replace(Regex("_(.)")) { it.groupValues[1].uppercase() }
 }

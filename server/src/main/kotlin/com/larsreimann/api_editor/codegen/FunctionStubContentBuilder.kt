@@ -52,14 +52,19 @@ fun buildFunctionToString(pythonFunction: AnnotatedPythonFunction): String {
 }
 
 fun buildFunction(pythonFunction: AnnotatedPythonFunction): SmlFunction {
+    val stubName = pythonFunction.name.snakeCaseToLowerCamelCase()
+
     return createSmlFunction(
-        name = pythonFunction.name,
+        name = stubName,
         annotations = buildList {
             if (pythonFunction.description.isNotBlank()) {
                 add(createSmlDescriptionAnnotationUse(pythonFunction.description))
             }
             if (pythonFunction.isPure) {
                 add(createSmlAnnotationUse("Pure"))
+            }
+            if (pythonFunction.name != stubName) {
+                add(createSmlPythonNameAnnotationUse(pythonFunction.name))
             }
         },
         parameters = pythonFunction.parameters.mapNotNull { buildParameter(it) },
@@ -74,16 +79,28 @@ fun createSmlDescriptionAnnotationUse(description: String): SmlAnnotationUse {
     )
 }
 
+fun createSmlPythonNameAnnotationUse(name: String): SmlAnnotationUse {
+    return createSmlAnnotationUse(
+        "PythonName",
+        listOf(createSmlArgument(createSmlString(name)))
+    )
+}
+
 fun buildParameter(pythonParameter: AnnotatedPythonParameter): SmlParameter? {
     if (pythonParameter.assignedBy in setOf(ATTRIBUTE, CONSTANT)) {
         return null
     }
 
+    val stubName = pythonParameter.name.snakeCaseToLowerCamelCase()
+
     return createSmlParameter(
-        name = pythonParameter.name,
+        name = stubName,
         annotations = buildList {
             if (pythonParameter.description.isNotBlank()) {
                 add(createSmlDescriptionAnnotationUse(pythonParameter.description))
+            }
+            if (pythonParameter.name != stubName) {
+                add(createSmlPythonNameAnnotationUse(pythonParameter.name))
             }
         },
         type = buildType(pythonParameter.typeInDocs),

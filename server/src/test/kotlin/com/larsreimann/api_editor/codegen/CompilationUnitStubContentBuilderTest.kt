@@ -24,19 +24,19 @@ internal class CompilationUnitStubContentBuilderTest {
     fun buildModuleContentReturnsFormattedModuleContent() {
         // given
         val testClass = AnnotatedPythonClass(
-            "testClass",
-            "testModule.testClass",
+            "TestClass",
+            "testModule.TestClass",
             listOf("testDecorator"),
             listOf("testSuperclass"),
             listOf(
                 AnnotatedPythonFunction(
                     "testClassFunction",
-                    "testModule.testClass.testClassFunction",
+                    "testModule.TestClass.testClassFunction",
                     listOf("decorators"),
                     listOf(
                         AnnotatedPythonParameter(
                             "onlyParam",
-                            "testModule.testClass.testClassFunction.onlyParam",
+                            "testModule.TestClass.testClassFunction.onlyParam",
                             "'defaultValue'",
                             PythonParameterAssignment.POSITION_OR_NAME,
                             true,
@@ -53,12 +53,12 @@ internal class CompilationUnitStubContentBuilderTest {
                 ),
                 AnnotatedPythonFunction(
                     "__init__",
-                    "testModule.testClass.__init__",
+                    "testModule.TestClass.__init__",
                     listOf("decorators"),
                     listOf(
                         AnnotatedPythonParameter(
                             "onlyParam",
-                            "testModule.testClass.__init__.onlyParam",
+                            "testModule.TestClass.__init__.onlyParam",
                             "'defaultValue'",
                             PythonParameterAssignment.POSITION_OR_NAME,
                             true,
@@ -83,13 +83,13 @@ internal class CompilationUnitStubContentBuilderTest {
             ),
             listOf(
                 AnnotatedPythonFunction(
-                    "function_module_1",
-                    "test.module_1.function_module_1",
+                    "functionModule1",
+                    "test.module_1.functionModule1",
                     listOf("testDecorator"),
                     listOf(
                         AnnotatedPythonParameter(
                             "param1",
-                            "test.module_1.function_module_1.param1",
+                            "test.module_1.functionModule1.param1",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
                             true,
@@ -98,7 +98,7 @@ internal class CompilationUnitStubContentBuilderTest {
                         ),
                         AnnotatedPythonParameter(
                             "param2",
-                            "test.module_1.function_module_1.param2",
+                            "test.module_1.functionModule1.param2",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
                             true,
@@ -107,7 +107,7 @@ internal class CompilationUnitStubContentBuilderTest {
                         ),
                         AnnotatedPythonParameter(
                             "param3",
-                            "test.module_1.function_module_1.param3",
+                            "test.module_1.functionModule1.param3",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
                             true,
@@ -166,7 +166,7 @@ internal class CompilationUnitStubContentBuilderTest {
             |package simpleml.testModule
             |
             |@Description("Lorem ipsum")
-            |class testClass(@Description("description") onlyParam: Any? or "defaultValue") {
+            |class TestClass(@Description("description") onlyParam: Any? or "defaultValue") {
             |    @Description("description")
             |    attr onlyParam: Any?
             |
@@ -175,7 +175,7 @@ internal class CompilationUnitStubContentBuilderTest {
             |}
             |
             |@Description("Lorem ipsum")
-            |fun function_module_1(@Description("Lorem ipsum") param1: String, @Description("Lorem ipsum") param2: String, @Description("Lorem ipsum") param3: String) -> @Description("Lorem ipsum") testResult: String
+            |fun functionModule1(@Description("Lorem ipsum") param1: String, @Description("Lorem ipsum") param2: String, @Description("Lorem ipsum") param3: String) -> @Description("Lorem ipsum") testResult: String
             |
             |@Description("Lorem ipsum")
             |fun testFunction(@Description("Lorem ipsum") testParameter: Int or 42) -> @Description("Lorem ipsum") testResult: String
@@ -190,13 +190,13 @@ internal class CompilationUnitStubContentBuilderTest {
             "testModule", emptyList(), emptyList(), emptyList(),
             listOf(
                 AnnotatedPythonFunction(
-                    "function_module_1",
-                    "test.module_1.function_module_1",
+                    "functionModule1",
+                    "test.module_1.functionModule1",
                     listOf("testDecorator"),
                     listOf(
                         AnnotatedPythonParameter(
                             "param1",
-                            "test.module_1.function_module_1.param1",
+                            "test.module_1.functionModule1.param1",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
                             true,
@@ -205,7 +205,7 @@ internal class CompilationUnitStubContentBuilderTest {
                         ),
                         AnnotatedPythonParameter(
                             "param2",
-                            "test.module_1.function_module_1.param2",
+                            "test.module_1.functionModule1.param2",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
                             true,
@@ -214,7 +214,7 @@ internal class CompilationUnitStubContentBuilderTest {
                         ),
                         AnnotatedPythonParameter(
                             "param3",
-                            "test.module_1.function_module_1.param3",
+                            "test.module_1.functionModule1.param3",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
                             true,
@@ -273,7 +273,7 @@ internal class CompilationUnitStubContentBuilderTest {
             |package simpleml.testModule
             |
             |@Description("Lorem ipsum")
-            |fun function_module_1(@Description("Lorem ipsum") param1: String, @Description("Lorem ipsum") param2: String, @Description("Lorem ipsum") param3: String) -> @Description("Lorem ipsum") testResult: String
+            |fun functionModule1(@Description("Lorem ipsum") param1: String, @Description("Lorem ipsum") param2: String, @Description("Lorem ipsum") param3: String) -> @Description("Lorem ipsum") testResult: String
             |
             |@Description("Lorem ipsum")
             |fun testFunction(@Description("Lorem ipsum") testParameter: Int or 42) -> @Description("Lorem ipsum") testResult: String
@@ -285,19 +285,19 @@ internal class CompilationUnitStubContentBuilderTest {
     fun buildModuleContentWithOnlyConstructorReturnsFormattedModuleContent() {
         // given
         val testClass = AnnotatedPythonClass(
-            "testClass",
-            "testModule.testClass",
+            "TestClass",
+            "testModule.TestClass",
             listOf("testDecorator"),
             listOf("testSuperclass"),
             listOf(
                 AnnotatedPythonFunction(
                     "__init__",
-                    "testModule.testClass.__init__",
+                    "testModule.TestClass.__init__",
                     listOf("decorators"),
                     listOf(
                         AnnotatedPythonParameter(
                             "onlyParam",
-                            "testModule.testClass.__init__.onlyParam",
+                            "testModule.TestClass.__init__.onlyParam",
                             "'defaultValue'",
                             PythonParameterAssignment.POSITION_OR_NAME,
                             true,
@@ -344,7 +344,7 @@ internal class CompilationUnitStubContentBuilderTest {
             |package simpleml.testModule
             |
             |@Description("Lorem ipsum")
-            |class testClass(@Description("description") onlyParam: Any? or "defaultValue") {
+            |class TestClass(@Description("description") onlyParam: Any? or "defaultValue") {
             |    @Description("description")
             |    attr onlyParam: Any?
             |}
