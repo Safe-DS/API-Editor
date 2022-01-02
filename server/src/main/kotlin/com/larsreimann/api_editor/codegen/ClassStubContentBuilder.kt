@@ -14,7 +14,6 @@ import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlParameter
-import java.util.Locale
 
 /**
  * Builds a string containing the formatted class content
