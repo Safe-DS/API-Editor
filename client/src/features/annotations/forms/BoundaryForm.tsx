@@ -187,6 +187,8 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
                                 nonEmptyInterval,
                             },
                         })}
+                        min={undefined}
+                        max={undefined}
                         onChange={(_, valueAsNumber) =>
                             setValue(
                                 'interval.lowerIntervalLimit',
@@ -288,6 +290,8 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
                                 nonEmptyInterval,
                             },
                         })}
+                        min={undefined}
+                        max={undefined}
                         onChange={(_, valueAsNumber) =>
                             setValue(
                                 'interval.upperIntervalLimit',

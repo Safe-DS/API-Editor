@@ -9,15 +9,19 @@ updates:
     directory: '/'
     schedule:
       interval: 'monthly'
+    rebase-strategy: 'disabled'
   - package-ecosystem: 'npm'
     directory: '/client'
     schedule:
       interval: 'monthly'
+    rebase-strategy: 'disabled'
   - package-ecosystem: 'gradle'
     directory: '/'
     schedule:
       interval: 'monthly'
+    rebase-strategy: 'disabled'
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
       interval: 'monthly'
+    rebase-strategy: 'disabled'
