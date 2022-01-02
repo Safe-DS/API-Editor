@@ -821,7 +821,7 @@ class ModuleAdapterContentBuilderTest {
     @Test
     void buildModuleContentWithBoundaryAnnotationReturnsFormattedModuleContent1() {
         // given
-        AnnotatedPythonParameter testParameter =
+        AnnotatedPythonParameter testParameter1 =
             new AnnotatedPythonParameter(
                 "param1",
                 "test-module.function_module.param1",
@@ -832,12 +832,52 @@ class ModuleAdapterContentBuilderTest {
                 "Lorem ipsum",
                 List.of()
             );
-        testParameter.setBoundary(
+        testParameter1.setBoundary(
             new Boundary(
                 true,
                 2,
                 ComparisonOperator.LESS_THAN,
                 10,
+                ComparisonOperator.LESS_THAN_OR_EQUALS
+            )
+        );
+        AnnotatedPythonParameter testParameter2 =
+            new AnnotatedPythonParameter(
+                "param2",
+                "test-module.function_module.param2",
+                "5",
+                PythonParameterAssignment.NAME_ONLY,
+                true,
+                "str",
+                "Lorem ipsum",
+                List.of()
+            );
+        testParameter2.setBoundary(
+            new Boundary(
+                false,
+                5.0,
+                ComparisonOperator.LESS_THAN_OR_EQUALS,
+                0,
+                ComparisonOperator.UNRESTRICTED
+            )
+        );
+        AnnotatedPythonParameter testParameter3 =
+            new AnnotatedPythonParameter(
+                "param3",
+                "test-module.function_module.param3",
+                "5",
+                PythonParameterAssignment.NAME_ONLY,
+                true,
+                "str",
+                "Lorem ipsum",
+                List.of()
+            );
+        testParameter3.setBoundary(
+            new Boundary(
+                false,
+                0,
+                ComparisonOperator.UNRESTRICTED,
+                10.0,
                 ComparisonOperator.LESS_THAN
             )
         );
@@ -845,7 +885,7 @@ class ModuleAdapterContentBuilderTest {
             "function_module",
             "test-module.function_module",
             List.of("test-decorator"),
-            List.of(testParameter),
+            List.of(testParameter1, testParameter2, testParameter3),
             List.of(),
             true,
             "Lorem ipsum",
@@ -872,14 +912,16 @@ class ModuleAdapterContentBuilderTest {
         String expectedModuleContent = """
             import test-module
 
-            def function_module(*, param1=5):
-                if not (isinstance(param1,int) or (isinstance(param1,float) and param1is_integer())):
-                    raise ValueError('param1 needs to be a discrete numerical value, but {} was assigned.'.format(param1))
-                if not 2.0 < param1:
-                    raise ValueError('Valid values of param1 must be higher than 2.0, but {} was assigned.'.format(param1))
-                if not param1 < 10.0:
-                    raise ValueError('Valid values of param1 must be higher than 10.0, but {} was assigned.'.format(param1))
-                test-module.function_module(param1=param1)
+            def function_module(*, param1=5, param2=5, param3=5):
+                if not (isinstance(param1, int) or (isinstance(param1, float) and param1.is_integer())):
+                    raise ValueError('param1 needs to be an integer, but {} was assigned.'.format(param1))
+                if not 2.0 < param1 <= 10.0:
+                    raise ValueError('Valid values of param1 must be in (2.0, 10.0], but {} was assigned.'.format(param1))
+                if not 5.0 <= param2:
+                    raise ValueError('Valid values of param2 must be greater than or equal to 5.0, but {} was assigned.'.format(param2))
+                if not param3 < 10.0:
+                    raise ValueError('Valid values of param3 must be less than 10.0, but {} was assigned.'.format(param3))
+                test-module.function_module(param1=param1, param2=param2, param3=param3)
             """;
 
         Assertions.assertEquals(expectedModuleContent, moduleContent);
@@ -939,7 +981,7 @@ class ModuleAdapterContentBuilderTest {
 
             def function_module(*, param1=5):
                 if not 2.0 <= param1:
-                    raise ValueError('Valid values of param1 must be higher or equal to 2.0, but {} was assigned.'.format(param1))
+                    raise ValueError('Valid values of param1 must be greater than or equal to 2.0, but {} was assigned.'.format(param1))
                 test-module.function_module(param1=param1)
             """;
 

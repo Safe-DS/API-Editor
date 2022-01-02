@@ -1,10 +1,17 @@
 package com.larsreimann.api_editor.codegen;
 
 import com.larsreimann.api_editor.io.FileBuilder;
-import com.larsreimann.api_editor.model.*;
+import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
+import com.larsreimann.api_editor.model.AnnotatedPythonParameter;
+import com.larsreimann.api_editor.model.Boundary;
+import com.larsreimann.api_editor.model.ComparisonOperator;
+import com.larsreimann.api_editor.model.PythonParameterAssignment;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class FunctionAdapterContentBuilder extends FileBuilder {
     AnnotatedPythonFunction pythonFunction;
@@ -171,23 +178,48 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
                 formattedBoundaries.add(
                     "if not (isinstance("
                         + pythonParameter.getName()
-                        + ",int) or (isinstance("
+                        + ", int) or (isinstance("
                         + pythonParameter.getName()
-                        + ",float)"
+                        + ", float)"
                         + " and "
                         + pythonParameter.getName()
-                        + "is_integer())):\n"
+                        + ".is_integer())):\n"
                         + indent(
                         "raise ValueError('"
                             + pythonParameter.getName()
-                            + " needs to be a discrete numerical value, but {} was assigned."
+                            + " needs to be an integer, but {} was assigned."
                             + "'.format("
                             + pythonParameter.getName()
                             + "))"
                     )
                 );
             }
-            if (boundary.getLowerLimitType() == ComparisonOperator.LESS_THAN) {
+
+            if (boundary.getLowerLimitType() != ComparisonOperator.UNRESTRICTED && boundary.getUpperLimitType() != ComparisonOperator.UNRESTRICTED) {
+                formattedBoundaries.add(
+                    "if not "
+                        + boundary.getLowerIntervalLimit()
+                        + " "
+                        + boundary.getLowerLimitType().getOperator()
+                        + " "
+                        + pythonParameter.getName()
+                        + " "
+                        + boundary.getUpperLimitType().getOperator()
+                        + " "
+                        + boundary.getUpperIntervalLimit()
+                        + ":\n"
+                        + indent(
+                            "raise ValueError('Valid values of "
+                            + pythonParameter.getName()
+                            + " must be in "
+                            + boundary.asInterval()
+                            + ", but {} was assigned."
+                            + "'.format("
+                            + pythonParameter.getName()
+                            + "))"
+                    )
+                );
+            } else if (boundary.getLowerLimitType() == ComparisonOperator.LESS_THAN) {
                 formattedBoundaries.add(
                     "if not "
                         + boundary.getLowerIntervalLimit()
@@ -197,7 +229,7 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
                         + indent(
                         "raise ValueError('Valid values of "
                             + pythonParameter.getName()
-                            + " must be higher than "
+                            + " must be greater than "
                             + boundary.getLowerIntervalLimit()
                             + ", but {} was assigned."
                             + "'.format("
@@ -205,8 +237,7 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
                             + "))"
                     )
                 );
-            }
-            else if (boundary.getLowerLimitType() == ComparisonOperator.LESS_THAN_OR_EQUALS) {
+            } else if (boundary.getLowerLimitType() == ComparisonOperator.LESS_THAN_OR_EQUALS) {
                 formattedBoundaries.add(
                     "if not "
                         + boundary.getLowerIntervalLimit()
@@ -216,7 +247,7 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
                         + indent(
                         "raise ValueError('Valid values of "
                             + pythonParameter.getName()
-                            + " must be higher or equal to "
+                            + " must be greater than or equal to "
                             + boundary.getLowerIntervalLimit()
                             + ", but {} was assigned."
                             + "'.format("
@@ -235,7 +266,7 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
                         + indent(
                         "raise ValueError('Valid values of "
                             + pythonParameter.getName()
-                            + " must be higher than "
+                            + " must be less than "
                             + boundary.getUpperIntervalLimit()
                             + ", but {} was assigned."
                             + "'.format("
@@ -243,8 +274,7 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
                             + "))"
                     )
                 );
-            }
-            else if (boundary.getUpperLimitType() == ComparisonOperator.LESS_THAN) {
+            } else if (boundary.getUpperLimitType() == ComparisonOperator.LESS_THAN) {
                 formattedBoundaries.add(
                     "if not "
                         + pythonParameter.getName()
@@ -254,7 +284,7 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
                         + indent(
                         "raise ValueError('Valid values of "
                             + pythonParameter.getName()
-                            + " must be higher or equal to "
+                            + " must be less than or equal to "
                             + boundary.getUpperIntervalLimit()
                             + ", but {} was assigned."
                             + "'.format("

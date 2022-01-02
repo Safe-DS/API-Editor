@@ -354,7 +354,21 @@ data class Boundary(
     val lowerLimitType: ComparisonOperator,
     val upperIntervalLimit: Double,
     val upperLimitType: ComparisonOperator
-)
+) {
+    fun asInterval() = buildString {
+        when (lowerLimitType) {
+            ComparisonOperator.LESS_THAN -> append("($lowerIntervalLimit, ")
+            ComparisonOperator.LESS_THAN_OR_EQUALS -> append("[$lowerIntervalLimit, ")
+            ComparisonOperator.UNRESTRICTED -> append("(-∞, ")
+        }
+
+        when (upperLimitType) {
+            ComparisonOperator.LESS_THAN -> append("$upperIntervalLimit)")
+            ComparisonOperator.LESS_THAN_OR_EQUALS -> append("$upperIntervalLimit]")
+            ComparisonOperator.UNRESTRICTED -> append("∞)")
+        }
+    }
+}
 
 data class AnnotatedPythonEnum(
     override val name: String,

@@ -40,10 +40,10 @@ data class BoundaryAnnotation(
     override val validTargets = PARAMETERS
 }
 
-enum class ComparisonOperator {
-    LESS_THAN_OR_EQUALS,
-    LESS_THAN,
-    UNRESTRICTED,
+enum class ComparisonOperator(val operator: String) {
+    LESS_THAN_OR_EQUALS("<="),
+    LESS_THAN("<"),
+    UNRESTRICTED(""),
 }
 
 @Serializable
