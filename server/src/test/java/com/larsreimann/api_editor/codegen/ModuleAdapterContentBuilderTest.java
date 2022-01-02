@@ -874,11 +874,11 @@ class ModuleAdapterContentBuilderTest {
 
             def function_module(*, param1=5):
                 if not (isinstance(param1,int) or (isinstance(param1,float) and param1is_integer())):
-                    raise ValueError('param1 needs to be a discrete numerical value, but {} was assigned.'.format(param1)
+                    raise ValueError('param1 needs to be a discrete numerical value, but {} was assigned.'.format(param1))
                 if not 2.0 < param1:
-                    raise ValueError('Valid values of param1 must be higher than 2.0, but {} was assigned.'.format(param1)
+                    raise ValueError('Valid values of param1 must be higher than 2.0, but {} was assigned.'.format(param1))
                 if not param1 < 10.0:
-                    raise ValueError('Valid values of param1 must be higher than 10.0, but {} was assigned.'.format(param1)
+                    raise ValueError('Valid values of param1 must be higher than 10.0, but {} was assigned.'.format(param1))
                 test-module.function_module(param1=param1)
             """;
 
@@ -939,7 +939,7 @@ class ModuleAdapterContentBuilderTest {
 
             def function_module(*, param1=5):
                 if not 2.0 <= param1:
-                    raise ValueError('Valid values of param1 must be higher or equal to 2.0, but {} was assigned.'.format(param1)
+                    raise ValueError('Valid values of param1 must be higher or equal to 2.0, but {} was assigned.'.format(param1))
                 test-module.function_module(param1=param1)
             """;
 
