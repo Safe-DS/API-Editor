@@ -1,96 +1,79 @@
 package com.larsreimann.api_editor.transformation
 
-import com.larsreimann.api_editor.assertions.findUniqueDescendantOrFail
-import com.larsreimann.api_editor.model.SerializablePythonClass
-import com.larsreimann.api_editor.model.SerializablePythonFunction
-import com.larsreimann.api_editor.model.SerializablePythonPackage
 import com.larsreimann.api_editor.model.UnusedAnnotation
-import com.larsreimann.api_editor.util.createPythonClass
-import com.larsreimann.api_editor.util.createPythonFunction
-import com.larsreimann.api_editor.util.createPythonModule
-import com.larsreimann.api_editor.util.createPythonPackage
+import com.larsreimann.api_editor.mutable_model.MutablePythonClass
+import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
+import com.larsreimann.api_editor.mutable_model.MutablePythonModule
+import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
+import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldHaveSize
-import io.kotest.matchers.nulls.shouldNotBeNull
-import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class UnusedAnnotationProcessorTest {
-
-    private lateinit var testPackage: SerializablePythonPackage
+    private lateinit var testMethod: MutablePythonFunction
+    private lateinit var testGlobalFunction: MutablePythonFunction
+    private lateinit var testClass: MutablePythonClass
+    private lateinit var testPackage: MutablePythonPackage
 
     @BeforeEach
-    fun resetTestPackage() {
-        testPackage = createPythonPackage(
+    fun reset() {
+        testMethod = MutablePythonFunction(name = "testMethod")
+        testGlobalFunction = MutablePythonFunction(name = "testGlobalFunction")
+        testClass = MutablePythonClass(
+            name = "TestClass",
+            methods = listOf(testMethod)
+        )
+        testPackage = MutablePythonPackage(
+            distribution = "testPackage",
             name = "testPackage",
+            version = "1.0.0",
             modules = listOf(
-                createPythonModule(
+                MutablePythonModule(
                     name = "testModule",
-                    classes = listOf(
-                        createPythonClass(
-                            name = "testClass",
-                            methods = listOf(
-                                createPythonFunction("testMethod"),
-                                createPythonFunction("annotatedTestMethod")
-                            )
-                        ),
-                        createPythonClass("annotatedTestClass")
-                    ),
-                    functions = listOf(
-                        createPythonFunction("testFunction"),
-                        createPythonFunction("annotatedTestFunction")
-                    )
+                    classes = listOf(testClass),
+                    functions = listOf(testGlobalFunction)
                 )
             )
         )
     }
 
     @Test
-    fun `should remove unused class`() {
-        // given
-        val testClass = testPackage.findUniqueDescendantOrFail<SerializablePythonClass>("annotatedTestClass")
+    fun `should process UnusedAnnotations of classes`() {
         testClass.annotations += UnusedAnnotation
 
-        // when
-        val modifiedPackage = testPackage.accept(UnusedAnnotationProcessor())
+        testPackage.processUnusedAnnotations()
 
-        // then
-        modifiedPackage.shouldNotBeNull()
-        modifiedPackage.modules.shouldHaveSize(1)
-        modifiedPackage.modules[0].classes.shouldHaveSize(1)
-        modifiedPackage.modules[0].classes[0].name shouldBe "testClass"
+        val modules = testPackage.modules
+        modules.shouldHaveSize(1)
+
+        modules[0].classes.shouldBeEmpty()
     }
 
     @Test
-    fun `should remove unused global function`() {
-        // given
-        val testFunction = testPackage.findUniqueDescendantOrFail<SerializablePythonFunction>("annotatedTestFunction")
-        testFunction.annotations += UnusedAnnotation
+    fun `should process UnusedAnnotations of global functions`() {
+        testGlobalFunction.annotations += UnusedAnnotation
 
-        // when
-        val modifiedPackage = testPackage.accept(UnusedAnnotationProcessor())
+        testPackage.processUnusedAnnotations()
 
-        // then
-        modifiedPackage.shouldNotBeNull()
-        modifiedPackage.modules.shouldHaveSize(1)
-        modifiedPackage.modules[0].functions.shouldHaveSize(1)
-        modifiedPackage.modules[0].functions[0].name shouldBe "testFunction"
+        val modules = testPackage.modules
+        modules.shouldHaveSize(1)
+
+        modules[0].functions.shouldBeEmpty()
     }
 
     @Test
-    fun `should remove unused method`() {
-        // given
-        val testMethod = testPackage.findUniqueDescendantOrFail<SerializablePythonFunction>("annotatedTestMethod")
+    fun `should process UnusedAnnotations of methods`() {
         testMethod.annotations += UnusedAnnotation
 
-        // when
-        val modifiedPackage = testPackage.accept(UnusedAnnotationProcessor())
+        testPackage.processUnusedAnnotations()
 
-        // then
-        modifiedPackage.shouldNotBeNull()
-        modifiedPackage.modules.shouldHaveSize(1)
-        modifiedPackage.modules[0].classes.shouldHaveSize(2)
-        modifiedPackage.modules[0].classes[0].methods.shouldHaveSize(1)
-        modifiedPackage.modules[0].classes[0].methods[0].name shouldBe "testMethod"
+        val modules = testPackage.modules
+        modules.shouldHaveSize(1)
+
+        val classes = modules[0].classes
+        classes.shouldHaveSize(1)
+
+        classes[0].methods.shouldBeEmpty()
     }
 }
