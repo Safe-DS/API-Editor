@@ -1,214 +1,94 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.MoveAnnotation
-import com.larsreimann.api_editor.util.createPythonAttribute
-import com.larsreimann.api_editor.util.createPythonClass
-import com.larsreimann.api_editor.util.createPythonFunction
-import com.larsreimann.api_editor.util.createPythonModule
-import com.larsreimann.api_editor.util.createPythonPackage
-import com.larsreimann.api_editor.util.createPythonParameter
-import org.junit.jupiter.api.Assertions
+import com.larsreimann.api_editor.mutable_model.MutablePythonClass
+import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
+import com.larsreimann.api_editor.mutable_model.MutablePythonModule
+import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
+import io.kotest.matchers.collections.shouldBeEmpty
+import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class MoveAnnotationProcessorTest {
-    @Test
-    fun movedGlobalMethodExistsInNewModule() {
-        // given
-        val pythonParameter = createPythonParameter("testParameter")
-        val testFunction = createPythonFunction("testFunction")
-        testFunction.parameters.add(pythonParameter)
-        testFunction.annotations.add(
-            MoveAnnotation("newModule")
+class MoveAnnotationProcessorTest {
+    private lateinit var testClass: MutablePythonClass
+    private lateinit var testFunction: MutablePythonFunction
+    private lateinit var testPackage: MutablePythonPackage
+
+    @BeforeEach
+    fun reset() {
+        testClass = MutablePythonClass(name = "TestClass")
+        testFunction = MutablePythonFunction(name = "testFunction")
+        testPackage = MutablePythonPackage(
+            distribution = "testPackage",
+            name = "testPackage",
+            version = "1.0.0",
+            modules = listOf(
+                MutablePythonModule(name = "existingTestModule"),
+                MutablePythonModule(
+                    name = "testModule",
+                    classes = listOf(testClass),
+                    functions = listOf(testFunction)
+                )
+            )
         )
-        val testModule = createPythonModule("testModule")
-        testModule.functions.add(testFunction)
-        val testPackage = createPythonPackage("testPackage")
-        testPackage.modules.add(testModule)
-
-        // when
-        val (_, _, _, modules) = processPackage(testPackage)
-
-        // then
-        var newModuleExists = false
-        for ((name, _, _, _, functions) in modules) {
-            if (name == "newModule") {
-                newModuleExists = true
-                Assertions.assertEquals(
-                    "newModule.testFunction",
-                    functions[0].qualifiedName
-                )
-                Assertions.assertEquals(
-                    "newModule.testFunction.testParameter",
-                    functions[0]
-                        .parameters[0]
-                        .qualifiedName
-                )
-            }
-        }
-        Assertions.assertTrue(newModuleExists)
     }
 
     @Test
-    fun movedGlobalMethodIsRemovedFromOldModule() {
-        // given
-        val pythonParameter = createPythonParameter("testParameter")
-        val testFunction = createPythonFunction("testFunction")
-        testFunction.parameters.add(pythonParameter)
-        testFunction.annotations.add(
-            MoveAnnotation("newModule")
-        )
-        val testModule = createPythonModule("testModule")
-        testModule.functions.add(testFunction)
-        val testPackage = createPythonPackage("testPackage")
-        testPackage.modules.add(testModule)
+    fun `should process MoveAnnotations of classes with an existing module as destination`() {
+        testClass.annotations += MoveAnnotation("existingTestModule")
 
-        // when
-        val (_, _, _, modules) = processPackage(testPackage)
+        testPackage.processMoveAnnotations()
 
-        // then
-        for ((name, _, _, _, functions) in modules) {
-            if (name == "testModule") {
-                Assertions.assertTrue(functions.isEmpty())
-            }
-        }
+        testClass.qualifiedName() shouldBe "existingTestModule.TestClass"
     }
 
     @Test
-    fun movedClassExistsInNewModule() {
-        // given
-        val pythonParameter = createPythonParameter("testParameter")
-        val testFunction = createPythonFunction("testFunction")
-        testFunction.parameters.add(pythonParameter)
-        val testAttribute = createPythonAttribute("testAttribute")
-        val testClass = createPythonClass("testClass")
-        testClass.methods.add(testFunction)
-        testClass.attributes.add(testAttribute)
-        testClass.annotations.add(
-            MoveAnnotation("newModule")
-        )
-        val testModule = createPythonModule("testModule")
-        testModule.classes.add(testClass)
-        val testPackage = createPythonPackage("testPackage")
-        testPackage.modules.add(testModule)
+    fun `should process MoveAnnotations of classes with a new module as destination`() {
+        testClass.annotations += MoveAnnotation("newTestModule")
 
-        // when
-        val (_, _, _, modules) = processPackage(testPackage)
+        testPackage.processMoveAnnotations()
 
-        // then
-        var newModuleExists = false
-        for ((name, _, _, classes) in modules) {
-            if (name == "newModule") {
-                newModuleExists = true
-                Assertions.assertEquals(
-                    "newModule.testClass",
-                    classes[0].qualifiedName
-                )
-                Assertions.assertEquals(
-                    "newModule.testClass.testFunction",
-                    classes[0]
-                        .methods[0]
-                        .qualifiedName
-                )
-                Assertions.assertEquals(
-                    "newModule.testClass.testFunction.testParameter",
-                    classes[0]
-                        .methods[0]
-                        .parameters[0]
-                        .qualifiedName
-                )
-                Assertions.assertEquals(
-                    "newModule.testClass.testAttribute",
-                    classes[0]
-                        .attributes[0]
-                        .qualifiedName
-                )
-            }
-        }
-        Assertions.assertTrue(newModuleExists)
+        testClass.qualifiedName() shouldBe "newTestModule.TestClass"
     }
 
     @Test
-    fun movedClassIsRemovedFromOldModule() {
-        // given
-        val pythonParameter = createPythonParameter("testParameter")
-        val testFunction = createPythonFunction("testFunction")
-        testFunction.parameters.add(pythonParameter)
-        val testClass = createPythonClass("testClass")
-        testClass.methods.add(testFunction)
-        testClass.annotations.add(
-            MoveAnnotation("newModule")
-        )
-        val testModule = createPythonModule("testModule")
-        testModule.classes.add(testClass)
-        val testPackage = createPythonPackage("testPackage")
-        testPackage.modules.add(testModule)
+    fun `should remove MoveAnnotations of classes`() {
+        testClass.annotations += MoveAnnotation("testModule")
 
-        // when
-        val (_, _, _, modules) = processPackage(testPackage)
+        testPackage.processMoveAnnotations()
 
-        // then
-        for ((name, _, _, classes) in modules) {
-            if (name == "testModule") {
-                Assertions.assertTrue(classes.isEmpty())
-            }
-        }
+        testClass.annotations
+            .filterIsInstance<MoveAnnotation>()
+            .shouldBeEmpty()
     }
 
     @Test
-    fun movedClassExistsInExistingModule() {
-        // given
-        val testClass = createPythonClass("testClass")
-        testClass.annotations.add(
-            MoveAnnotation("existingModule")
-        )
-        val testModule = createPythonModule("testModule")
-        testModule.classes.add(testClass)
-        val testPackage = createPythonPackage("testPackage")
-        testPackage.modules.add(testModule)
-        val classInExistingModule = createPythonClass("existingClass")
-        val existingModule = createPythonModule("existingModule")
-        existingModule.classes.add(classInExistingModule)
-        testPackage.modules.add(existingModule)
+    fun `should process MoveAnnotations of functions with an existing module as destination`() {
+        testFunction.annotations += MoveAnnotation("existingTestModule")
 
-        // when
-        val (_, _, _, modules) = processPackage(testPackage)
+        testPackage.processMoveAnnotations()
 
-        // then
-        var existingModuleStillExists = false
-        for ((name, _, _, classes) in modules) {
-            if (name == "existingModule") {
-                existingModuleStillExists = true
-                Assertions.assertEquals(2, classes.size)
-            }
-        }
-        Assertions.assertTrue(existingModuleStillExists)
+        testFunction.qualifiedName() shouldBe "existingTestModule.testFunction"
     }
 
     @Test
-    fun movedGlobalMethodExistsInExistingModule() {
-        // given
-        val testFunction = createPythonFunction("testFunction")
-        testFunction.annotations.add(
-            MoveAnnotation("existingModule")
-        )
-        val testModule = createPythonModule("testModule")
-        testModule.functions.add(testFunction)
-        val existingModule = createPythonModule("existingModule")
-        val testPackage = createPythonPackage("testPackage")
-        testPackage.modules.add(testModule)
-        testPackage.modules.add(existingModule)
+    fun `should process MoveAnnotations of functions with a new module as destination`() {
+        testFunction.annotations += MoveAnnotation("newTestModule")
 
-        // when
-        val (_, _, _, modules) = processPackage(testPackage)
+        testPackage.processMoveAnnotations()
 
-        // then
-        var existingModuleExists = false
-        for ((name, _, _, _, functions) in modules) {
-            if (name == "existingModule") {
-                existingModuleExists = true
-                Assertions.assertEquals(1, functions.size)
-            }
-        }
-        Assertions.assertTrue(existingModuleExists)
+        testFunction.qualifiedName() shouldBe "newTestModule.testFunction"
+    }
+
+    @Test
+    fun `should remove MoveAnnotations of functions`() {
+        testFunction.annotations += MoveAnnotation("testModule")
+
+        testPackage.processMoveAnnotations()
+
+        testFunction.annotations
+            .filterIsInstance<MoveAnnotation>()
+            .shouldBeEmpty()
     }
 }

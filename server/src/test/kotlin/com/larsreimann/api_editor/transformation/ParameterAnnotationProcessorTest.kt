@@ -16,7 +16,7 @@ import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class ParameterAnnotationProcessorTest {
+class ParameterAnnotationProcessorTest {
     private lateinit var testParameter: MutablePythonParameter
     private lateinit var testPackage: MutablePythonPackage
 

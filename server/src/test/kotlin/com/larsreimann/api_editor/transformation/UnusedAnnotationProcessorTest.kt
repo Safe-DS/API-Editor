@@ -15,7 +15,7 @@ import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class UnusedAnnotationProcessorTest {
+class UnusedAnnotationProcessorTest {
 
     private lateinit var testPackage: SerializablePythonPackage
 
