@@ -1,28 +1,31 @@
 package com.larsreimann.api_editor.transformation;
 
-import com.larsreimann.api_editor.model.AnnotatedPythonClass;
-import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
-import com.larsreimann.api_editor.model.AnnotatedPythonModule;
-import com.larsreimann.api_editor.model.AnnotatedPythonPackage;
+import com.larsreimann.api_editor.model.SerializablePythonClass;
+import com.larsreimann.api_editor.model.SerializablePythonFunction;
+import com.larsreimann.api_editor.model.SerializablePythonModule;
+import com.larsreimann.api_editor.model.SerializablePythonPackage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static com.larsreimann.api_editor.server.RoutingKt.processPackage;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.*;
+import static com.larsreimann.api_editor.transformation.TransformationPlanKt.processPackage;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonClass;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonFunction;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonModule;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonPackage;
 
 class CleanupModulesProcessorTest {
     @Test
     void cleanupModulesProcessorShouldRemoveEmptyModules() {
         // given
-        AnnotatedPythonModule testModule =
+        SerializablePythonModule testModule =
             createPythonModule("testModule");
 
-        AnnotatedPythonPackage testPackage =
+        SerializablePythonPackage testPackage =
             createPythonPackage("testPackage");
         testPackage.getModules().add(testModule);
 
         // when
-        AnnotatedPythonPackage modifiedPackage = processPackage(testPackage);
+        SerializablePythonPackage modifiedPackage = processPackage(testPackage);
 
         // then
         Assertions.assertTrue(modifiedPackage.getModules().isEmpty());
@@ -31,19 +34,19 @@ class CleanupModulesProcessorTest {
     @Test
     void shouldNotRemoveModulesWithClasses() {
         // given
-        AnnotatedPythonClass testClass =
+        SerializablePythonClass testClass =
             createPythonClass("testClass");
 
-        AnnotatedPythonModule testModule =
+        SerializablePythonModule testModule =
             createPythonModule("testModule");
         testModule.getClasses().add(testClass);
 
-        AnnotatedPythonPackage testPackage =
+        SerializablePythonPackage testPackage =
             createPythonPackage("testPackage");
         testPackage.getModules().add(testModule);
 
         // when
-        AnnotatedPythonPackage modifiedPackage = processPackage(testPackage);
+        SerializablePythonPackage modifiedPackage = processPackage(testPackage);
 
         // then
         Assertions.assertEquals(1, modifiedPackage.getModules().size());
@@ -52,19 +55,19 @@ class CleanupModulesProcessorTest {
     @Test
     void shouldNotRemoveModulesWithFunctions() {
         // given
-        AnnotatedPythonFunction testFunction =
+        SerializablePythonFunction testFunction =
             createPythonFunction("testFunction");
 
-        AnnotatedPythonModule testModule =
+        SerializablePythonModule testModule =
             createPythonModule("testModule");
         testModule.getFunctions().add(testFunction);
 
-        AnnotatedPythonPackage testPackage =
+        SerializablePythonPackage testPackage =
             createPythonPackage("testPackage");
         testPackage.getModules().add(testModule);
 
         // when
-        AnnotatedPythonPackage modifiedPackage = processPackage(testPackage);
+        SerializablePythonPackage modifiedPackage = processPackage(testPackage);
 
         // then
         Assertions.assertEquals(1, modifiedPackage.getModules().size());

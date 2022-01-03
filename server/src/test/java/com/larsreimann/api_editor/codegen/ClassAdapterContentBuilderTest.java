@@ -1,7 +1,12 @@
 package com.larsreimann.api_editor.codegen;
 
-import com.larsreimann.api_editor.model.*;
-import com.larsreimann.api_editor.transformation.OriginalDeclarationProcessor;
+import com.larsreimann.api_editor.model.PythonParameterAssignment;
+import com.larsreimann.api_editor.model.RenameAnnotation;
+import com.larsreimann.api_editor.model.SerializablePythonClass;
+import com.larsreimann.api_editor.model.SerializablePythonFunction;
+import com.larsreimann.api_editor.model.SerializablePythonParameter;
+import com.larsreimann.api_editor.transformation.Postprocessor;
+import com.larsreimann.api_editor.transformation.Preprocessor;
 import com.larsreimann.api_editor.transformation.RenameAnnotationProcessor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,7 +18,7 @@ class ClassAdapterContentBuilderTest {
     @Test
     void buildClassReturnsFormattedClassWithNoFunctions() {
         // given
-        AnnotatedPythonClass testClass = new AnnotatedPythonClass(
+        SerializablePythonClass testClass = new SerializablePythonClass(
             "test-class",
             "test-module.test-class",
             List.of("test-decorator"),
@@ -24,7 +29,10 @@ class ClassAdapterContentBuilderTest {
             "Lorem ipsum",
             Collections.emptyList()
         );
-        testClass.accept(OriginalDeclarationProcessor.INSTANCE);
+
+        testClass = testClass.accept(new Preprocessor());
+        assert testClass != null;
+        testClass = testClass.accept(Postprocessor.INSTANCE);
 
         // when
         ClassAdapterContentBuilder classAdapterContentBuilder =
@@ -39,17 +47,17 @@ class ClassAdapterContentBuilderTest {
     @Test
     void buildClassReturnsFormattedClassWithOneFunction() {
         // given
-        AnnotatedPythonClass testClass = new AnnotatedPythonClass(
+        SerializablePythonClass testClass = new SerializablePythonClass(
             "test-class",
             "test-module.test-class",
             List.of("test-decorator"),
             List.of("test-superclass"),
-            List.of(new AnnotatedPythonFunction(
+            List.of(new SerializablePythonFunction(
                 "__init__",
                 "test-module.test-class.__init__",
                 List.of("decorators"),
                 List.of(
-                    new AnnotatedPythonParameter(
+                    new SerializablePythonParameter(
                         "self",
                         "test-module.test-class.__init__.self",
                         null,
@@ -59,7 +67,7 @@ class ClassAdapterContentBuilderTest {
                         "description",
                         Collections.emptyList()
                     ),
-                    new AnnotatedPythonParameter(
+                    new SerializablePythonParameter(
                         "only-param",
                         "test-module.test-class.__init__.only-param",
                         "'defaultValue'",
@@ -81,7 +89,10 @@ class ClassAdapterContentBuilderTest {
             "Lorem ipsum",
             Collections.emptyList()
         );
-        testClass.accept(OriginalDeclarationProcessor.INSTANCE);
+
+        testClass = testClass.accept(new Preprocessor());
+        assert testClass != null;
+        testClass = testClass.accept(Postprocessor.INSTANCE);
 
         // when
         ClassAdapterContentBuilder classAdapterContentBuilder =
@@ -91,7 +102,7 @@ class ClassAdapterContentBuilderTest {
         // then
         String expectedFormattedClass = """
             class test-class:
-                def __init__(self, only-param='defaultValue'):
+                def __init__(self, *, only-param='defaultValue'):
                     test-module.test-class.__init__(only-param)""";
         Assertions.assertEquals(expectedFormattedClass, formattedClass);
     }
@@ -99,18 +110,18 @@ class ClassAdapterContentBuilderTest {
     @Test
     void buildClassReturnsFormattedClassWithTwoFunctions() {
         // given
-        AnnotatedPythonClass testClass = new AnnotatedPythonClass(
+        SerializablePythonClass testClass = new SerializablePythonClass(
             "test-class",
             "test-module.test-class",
             List.of("test-decorator"),
             List.of("test-superclass"),
             List.of(
-                new AnnotatedPythonFunction(
+                new SerializablePythonFunction(
                     "test-class-function1",
                     "test-module.test-class.test-class-function1",
                     List.of("decorators"),
                     List.of(
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "self",
                             "test-module.test-class.test-class-function1.self",
                             null,
@@ -120,7 +131,7 @@ class ClassAdapterContentBuilderTest {
                             "description",
                             Collections.emptyList()
                         ),
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "only-param",
                             "test-module.test-class.test-class-function1.only-param",
                             null,
@@ -137,12 +148,12 @@ class ClassAdapterContentBuilderTest {
                     "fullDocstring",
                     Collections.emptyList()
                 ),
-                new AnnotatedPythonFunction(
+                new SerializablePythonFunction(
                     "test-class-function2",
                     "test-module.test-class.test-class-function2",
                     List.of("decorators"),
                     List.of(
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "self",
                             "test-module.test-class.test-class-function2.self",
                             null,
@@ -152,7 +163,7 @@ class ClassAdapterContentBuilderTest {
                             "description",
                             Collections.emptyList()
                         ),
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "only-param",
                             "test-module.test-class.test-class-function2.only-param",
                             null,
@@ -175,7 +186,10 @@ class ClassAdapterContentBuilderTest {
             "Lorem ipsum",
             Collections.emptyList()
         );
-        testClass.accept(OriginalDeclarationProcessor.INSTANCE);
+
+        testClass = testClass.accept(new Preprocessor());
+        assert testClass != null;
+        testClass = testClass.accept(Postprocessor.INSTANCE);
 
         // when
         ClassAdapterContentBuilder classAdapterContentBuilder =
@@ -196,12 +210,12 @@ class ClassAdapterContentBuilderTest {
     @Test
     void buildClassReturnsFormattedClassBasedOnOriginalDeclaration() {
         // given
-        AnnotatedPythonFunction testFunction = new AnnotatedPythonFunction(
+        SerializablePythonFunction testFunction = new SerializablePythonFunction(
             "test-function",
             "test-module.test-class.test-function",
             List.of("test-decorator"),
             List.of(
-                new AnnotatedPythonParameter(
+                new SerializablePythonParameter(
                     "self",
                     "test-module.test-class.test-class-function.self",
                     null,
@@ -211,7 +225,7 @@ class ClassAdapterContentBuilderTest {
                     "description",
                     Collections.emptyList()
                 ),
-                new AnnotatedPythonParameter(
+                new SerializablePythonParameter(
                     "second-param",
                     "test-module.test-class.test-class-function.second-param",
                     null,
@@ -223,7 +237,7 @@ class ClassAdapterContentBuilderTest {
                         new RenameAnnotation("newSecondParamName")
                     )
                 ),
-                new AnnotatedPythonParameter(
+                new SerializablePythonParameter(
                     "third-param",
                     "test-module.test-class.test-class-function.third-param",
                     null,
@@ -245,7 +259,7 @@ class ClassAdapterContentBuilderTest {
             )
         );
 
-        AnnotatedPythonClass testClass = new AnnotatedPythonClass(
+        SerializablePythonClass testClass = new SerializablePythonClass(
             "test-class",
             "test-module.test-class",
             Collections.emptyList(),
@@ -259,10 +273,11 @@ class ClassAdapterContentBuilderTest {
             )
         );
 
-        testClass.accept(OriginalDeclarationProcessor.INSTANCE);
-        RenameAnnotationProcessor renameAnnotationProcessor =
-            new RenameAnnotationProcessor();
-        testClass = testClass.accept(renameAnnotationProcessor);
+        testClass = testClass.accept(new Preprocessor());
+        assert testClass != null;
+        testClass = testClass.accept(new RenameAnnotationProcessor());
+        assert testClass != null;
+        testClass = testClass.accept(Postprocessor.INSTANCE);
 
         // when
         ClassAdapterContentBuilder classAdapterContentBuilder =
@@ -272,7 +287,7 @@ class ClassAdapterContentBuilderTest {
         // then
         String expectedFormattedClass = """
             class newClassName:
-                def newFunctionName(self, newSecondParamName, *, newThirdParamName):
+                def newFunctionName(self, newSecondParamName, newThirdParamName):
                     test-module.test-class.test-function(newSecondParamName, third-param=newThirdParamName)""";
         Assertions.assertEquals(expectedFormattedClass, formattedClass);
     }

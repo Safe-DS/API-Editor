@@ -1,11 +1,11 @@
 package com.larsreimann.api_editor.codegen
 
-import com.larsreimann.api_editor.model.AnnotatedPythonClass
-import com.larsreimann.api_editor.model.AnnotatedPythonFunction
-import com.larsreimann.api_editor.model.AnnotatedPythonParameter
 import com.larsreimann.api_editor.model.AttributeAnnotation
 import com.larsreimann.api_editor.model.DefaultString
 import com.larsreimann.api_editor.model.PythonParameterAssignment
+import com.larsreimann.api_editor.model.SerializablePythonClass
+import com.larsreimann.api_editor.model.SerializablePythonFunction
+import com.larsreimann.api_editor.model.SerializablePythonParameter
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Assertions
@@ -22,7 +22,7 @@ internal class ClassStubContentBuilderTest {
     @Test
     fun buildClassReturnsFormattedClassWithNoConstructorAndFunctions() {
         // given
-        val testClass = AnnotatedPythonClass(
+        val testClass = SerializablePythonClass(
             "TestClass",
             "testModule.TestClass",
             listOf("TestDecorator"),
@@ -46,18 +46,18 @@ internal class ClassStubContentBuilderTest {
     @Test
     fun buildClassReturnsFormattedClassWithOneFunctionAndNoConstructor() {
         // given
-        val testClass = AnnotatedPythonClass(
+        val testClass = SerializablePythonClass(
             "TestClass",
             "testModule.TestClass",
             listOf("TestDecorator"),
             listOf("TestSuperclass"),
             mutableListOf(
-                AnnotatedPythonFunction(
+                SerializablePythonFunction(
                     "testClassFunction",
                     "testModule.TestClass.testClassFunction",
                     listOf("decorators"),
                     mutableListOf(
-                        AnnotatedPythonParameter(
+                        SerializablePythonParameter(
                             "onlyParam",
                             "testModule.TestClass.testClassFunction.onlyParam",
                             "'defaultValue'",
@@ -100,18 +100,18 @@ internal class ClassStubContentBuilderTest {
     @Test
     fun buildClassReturnsFormattedClassWithConstructorAndOneFunction() {
         // given
-        val testClass = AnnotatedPythonClass(
+        val testClass = SerializablePythonClass(
             "TestClass",
             "testModule.TestClass",
             listOf("TestDecorator"),
             listOf("TestSuperclass"),
             mutableListOf(
-                AnnotatedPythonFunction(
+                SerializablePythonFunction(
                     "testClassFunction1",
                     "testModule.TestClass.testClassFunction1",
                     listOf("decorators"),
                     mutableListOf(
-                        AnnotatedPythonParameter(
+                        SerializablePythonParameter(
                             "onlyParam",
                             "testModule.TestClass.testClassFunction.onlyParam",
                             null,
@@ -126,12 +126,12 @@ internal class ClassStubContentBuilderTest {
                     "description",
                     "fullDocstring", mutableListOf()
                 ),
-                AnnotatedPythonFunction(
+                SerializablePythonFunction(
                     "__init__",
                     "testModule.TestClass.__init__",
                     listOf("decorators"),
                     mutableListOf(
-                        AnnotatedPythonParameter(
+                        SerializablePythonParameter(
                             "onlyParam",
                             "testModule.TestClass.__init__.onlyParam",
                             null,

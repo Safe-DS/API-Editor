@@ -1,7 +1,7 @@
 package com.larsreimann.api_editor.codegen;
 
 import com.larsreimann.api_editor.io.FileBuilder;
-import com.larsreimann.api_editor.model.AnnotatedPythonModule;
+import com.larsreimann.api_editor.model.SerializablePythonModule;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -9,14 +9,14 @@ import java.util.List;
 import java.util.Objects;
 
 public class ModuleAdapterContentBuilder extends FileBuilder {
-    AnnotatedPythonModule pythonModule;
+    SerializablePythonModule pythonModule;
 
     /**
      * Constructor for ModuleAdapterContentBuilder
      *
      * @param pythonModule The module whose adapter content should be built
      */
-    public ModuleAdapterContentBuilder(AnnotatedPythonModule pythonModule) {
+    public ModuleAdapterContentBuilder(SerializablePythonModule pythonModule) {
         this.pythonModule = pythonModule;
     }
 

@@ -9,29 +9,29 @@ import java.util.List;
 public class AttributesInitializer extends AbstractPackageDataTransformer {
     @Override
     public boolean shouldVisitResultsIn(
-        @NotNull AnnotatedPythonFunction pythonFunction
+        @NotNull SerializablePythonFunction pythonFunction
     ) {
         return false;
     }
 
     @Override
     public boolean shouldVisitEnumsIn(
-        @NotNull AnnotatedPythonModule pythonModule
+        @NotNull SerializablePythonModule pythonModule
     ) {
         return false;
     }
 
     @Override
-    public AnnotatedPythonClass createNewClassOnLeave(
-        @NotNull AnnotatedPythonClass oldClass,
-        @NotNull List<AnnotatedPythonAttribute> newAttributes,
-        @NotNull List<AnnotatedPythonFunction> newMethods
+    public SerializablePythonClass createNewClassOnLeave(
+        @NotNull SerializablePythonClass oldClass,
+        @NotNull List<SerializablePythonAttribute> newAttributes,
+        @NotNull List<SerializablePythonFunction> newMethods
     ) {
-        List<AnnotatedPythonAttribute> attributesToAdd = new ArrayList<>(newAttributes);
+        List<SerializablePythonAttribute> attributesToAdd = new ArrayList<>(newAttributes);
 
-        for (AnnotatedPythonFunction pythonFunction : newMethods) {
+        for (SerializablePythonFunction pythonFunction : newMethods) {
             if (pythonFunction.isConstructor()) {
-                for (AnnotatedPythonParameter constructorParameter :
+                for (SerializablePythonParameter constructorParameter :
                     pythonFunction.getParameters()) {
                     attributesToAdd.add(
                         convertParameterToAttribute(constructorParameter)
@@ -55,12 +55,12 @@ public class AttributesInitializer extends AbstractPackageDataTransformer {
         );
     }
 
-    private AnnotatedPythonAttribute convertParameterToAttribute(
-        AnnotatedPythonParameter pythonParameter
+    private SerializablePythonAttribute convertParameterToAttribute(
+        SerializablePythonParameter pythonParameter
     ) {
         List<EditorAnnotation> filteredAnnotations =
             getFilteredAnnotations(pythonParameter.getAnnotations());
-        return new AnnotatedPythonAttribute(
+        return new SerializablePythonAttribute(
             pythonParameter.getName(),
             pythonParameter.getQualifiedName(),
             pythonParameter.getDefaultValue(),

@@ -1,27 +1,27 @@
 package com.larsreimann.api_editor.util
 
-import com.larsreimann.api_editor.model.AnnotatedPythonAttribute
-import com.larsreimann.api_editor.model.AnnotatedPythonClass
-import com.larsreimann.api_editor.model.AnnotatedPythonFunction
-import com.larsreimann.api_editor.model.AnnotatedPythonModule
-import com.larsreimann.api_editor.model.AnnotatedPythonPackage
-import com.larsreimann.api_editor.model.AnnotatedPythonParameter
-import com.larsreimann.api_editor.model.AnnotatedPythonResult
 import com.larsreimann.api_editor.model.EditorAnnotation
 import com.larsreimann.api_editor.model.PythonFromImport
 import com.larsreimann.api_editor.model.PythonImport
 import com.larsreimann.api_editor.model.PythonParameterAssignment
+import com.larsreimann.api_editor.model.SerializablePythonAttribute
+import com.larsreimann.api_editor.model.SerializablePythonClass
+import com.larsreimann.api_editor.model.SerializablePythonFunction
+import com.larsreimann.api_editor.model.SerializablePythonModule
+import com.larsreimann.api_editor.model.SerializablePythonPackage
+import com.larsreimann.api_editor.model.SerializablePythonParameter
+import com.larsreimann.api_editor.model.SerializablePythonResult
 
 @JvmOverloads
 fun createPythonPackage(
     name: String,
     distribution: String = "testDistribution",
     version: String = "1.0.0",
-    modules: List<AnnotatedPythonModule> = mutableListOf(),
+    modules: List<SerializablePythonModule> = mutableListOf(),
     annotations: MutableList<EditorAnnotation> = mutableListOf()
-): AnnotatedPythonPackage {
+): SerializablePythonPackage {
 
-    return AnnotatedPythonPackage(
+    return SerializablePythonPackage(
         distribution,
         name,
         version,
@@ -35,12 +35,12 @@ fun createPythonModule(
     name: String,
     imports: List<PythonImport> = emptyList(),
     fromImports: List<PythonFromImport> = emptyList(),
-    classes: List<AnnotatedPythonClass> = mutableListOf(),
-    functions: List<AnnotatedPythonFunction> = mutableListOf(),
+    classes: List<SerializablePythonClass> = mutableListOf(),
+    functions: List<SerializablePythonFunction> = mutableListOf(),
     annotations: MutableList<EditorAnnotation> = mutableListOf()
-): AnnotatedPythonModule {
+): SerializablePythonModule {
 
-    return AnnotatedPythonModule(
+    return SerializablePythonModule(
         name,
         imports,
         fromImports,
@@ -56,15 +56,15 @@ fun createPythonClass(
     qualifiedName: String = name,
     decorators: List<String> = emptyList(),
     superclasses: List<String> = emptyList(),
-    attributes: List<AnnotatedPythonAttribute> = mutableListOf(),
-    methods: List<AnnotatedPythonFunction> = mutableListOf(),
+    attributes: List<SerializablePythonAttribute> = mutableListOf(),
+    methods: List<SerializablePythonFunction> = mutableListOf(),
     isPublic: Boolean = true,
     description: String = "",
     fullDocstring: String = "",
     annotations: MutableList<EditorAnnotation> = mutableListOf(),
-    originalDeclaration: AnnotatedPythonClass? = null
-): AnnotatedPythonClass {
-    val newPythonClass = AnnotatedPythonClass(
+    originalDeclaration: SerializablePythonClass? = null
+): SerializablePythonClass {
+    val newPythonClass = SerializablePythonClass(
         name,
         qualifiedName,
         decorators,
@@ -89,9 +89,9 @@ fun createPythonAttribute(
     typeInDocs: String = "",
     description: String = "",
     annotations: MutableList<EditorAnnotation> = mutableListOf(),
-    originalDeclaration: AnnotatedPythonAttribute? = null,
-): AnnotatedPythonAttribute {
-    val result = AnnotatedPythonAttribute(
+    originalDeclaration: SerializablePythonAttribute? = null,
+): SerializablePythonAttribute {
+    val result = SerializablePythonAttribute(
         name,
         qualifiedName,
         defaultValue,
@@ -109,15 +109,15 @@ fun createPythonFunction(
     name: String,
     qualifiedName: String = name,
     decorators: List<String> = emptyList(),
-    parameters: List<AnnotatedPythonParameter> = mutableListOf(),
-    results: List<AnnotatedPythonResult> = emptyList(),
+    parameters: List<SerializablePythonParameter> = mutableListOf(),
+    results: List<SerializablePythonResult> = emptyList(),
     isPublic: Boolean = true,
     description: String = "",
     fullDocstring: String = "",
     annotations: MutableList<EditorAnnotation> = mutableListOf(),
-    originalDeclaration: AnnotatedPythonFunction? = null
-): AnnotatedPythonFunction {
-    val pythonFunction = AnnotatedPythonFunction(
+    originalDeclaration: SerializablePythonFunction? = null
+): SerializablePythonFunction {
+    val pythonFunction = SerializablePythonFunction(
         name,
         qualifiedName,
         decorators,
@@ -142,9 +142,9 @@ fun createPythonParameter(
     typeInDocs: String = "",
     description: String = "",
     annotations: MutableList<EditorAnnotation> = mutableListOf(),
-    originalDeclaration: AnnotatedPythonParameter? = null
-): AnnotatedPythonParameter {
-    val pythonParameter = AnnotatedPythonParameter(
+    originalDeclaration: SerializablePythonParameter? = null
+): SerializablePythonParameter {
+    val pythonParameter = SerializablePythonParameter(
         name,
         qualifiedName,
         defaultValue,
@@ -159,9 +159,9 @@ fun createPythonParameter(
 }
 
 fun createPackageCopyWithoutModules(
-    pythonPackage: AnnotatedPythonPackage
-): AnnotatedPythonPackage {
-    return AnnotatedPythonPackage(
+    pythonPackage: SerializablePythonPackage
+): SerializablePythonPackage {
+    return SerializablePythonPackage(
         name = pythonPackage.name,
         distribution = pythonPackage.distribution,
         version = pythonPackage.version,
@@ -171,9 +171,9 @@ fun createPackageCopyWithoutModules(
 }
 
 fun createModuleCopyWithoutClassesAndFunctions(
-    pythonModule: AnnotatedPythonModule
-): AnnotatedPythonModule {
-    return AnnotatedPythonModule(
+    pythonModule: SerializablePythonModule
+): SerializablePythonModule {
+    return SerializablePythonModule(
         name = pythonModule.name,
         imports = pythonModule.imports.toMutableList(),
         fromImports = pythonModule.fromImports.toMutableList(),
@@ -184,9 +184,9 @@ fun createModuleCopyWithoutClassesAndFunctions(
 }
 
 fun createClassCopyWithoutFunctions(
-    pythonClass: AnnotatedPythonClass
-): AnnotatedPythonClass {
-    val newPythonClass = AnnotatedPythonClass(
+    pythonClass: SerializablePythonClass
+): SerializablePythonClass {
+    val newPythonClass = SerializablePythonClass(
         name = pythonClass.name,
         qualifiedName = pythonClass.qualifiedName,
         decorators = pythonClass.decorators.toMutableList(),
@@ -203,9 +203,9 @@ fun createClassCopyWithoutFunctions(
 }
 
 fun createFunctionCopy(
-    pythonFunction: AnnotatedPythonFunction
-): AnnotatedPythonFunction {
-    val newPythonFunction = AnnotatedPythonFunction(
+    pythonFunction: SerializablePythonFunction
+): SerializablePythonFunction {
+    val newPythonFunction = SerializablePythonFunction(
         name = pythonFunction.name,
         qualifiedName = pythonFunction.qualifiedName,
         decorators = pythonFunction.decorators,

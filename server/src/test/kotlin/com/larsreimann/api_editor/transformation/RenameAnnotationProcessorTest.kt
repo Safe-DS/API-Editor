@@ -1,11 +1,11 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.assertions.findUniqueDescendantOrFail
-import com.larsreimann.api_editor.model.AnnotatedPythonClass
-import com.larsreimann.api_editor.model.AnnotatedPythonFunction
-import com.larsreimann.api_editor.model.AnnotatedPythonPackage
-import com.larsreimann.api_editor.model.AnnotatedPythonParameter
 import com.larsreimann.api_editor.model.RenameAnnotation
+import com.larsreimann.api_editor.model.SerializablePythonClass
+import com.larsreimann.api_editor.model.SerializablePythonFunction
+import com.larsreimann.api_editor.model.SerializablePythonPackage
+import com.larsreimann.api_editor.model.SerializablePythonParameter
 import com.larsreimann.api_editor.util.createPythonAttribute
 import com.larsreimann.api_editor.util.createPythonClass
 import com.larsreimann.api_editor.util.createPythonFunction
@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test
 
 internal class RenameAnnotationProcessorTest {
 
-    private lateinit var testPackage: AnnotatedPythonPackage
+    private lateinit var testPackage: SerializablePythonPackage
 
     @BeforeEach
     fun resetTestPackage() {
@@ -74,7 +74,7 @@ internal class RenameAnnotationProcessorTest {
     @Test
     fun `should rename class`() {
         // given
-        val testClass = testPackage.findUniqueDescendantOrFail<AnnotatedPythonClass>("testClass")
+        val testClass = testPackage.findUniqueDescendantOrFail<SerializablePythonClass>("testClass")
         testClass.annotations += RenameAnnotation("renamedTestClass")
 
         // when
@@ -93,7 +93,7 @@ internal class RenameAnnotationProcessorTest {
     @Test
     fun `should rename method`() {
         // given
-        val testMethod = testPackage.findUniqueDescendantOrFail<AnnotatedPythonFunction>("testMethod")
+        val testMethod = testPackage.findUniqueDescendantOrFail<SerializablePythonFunction>("testMethod")
         testMethod.annotations += RenameAnnotation("renamedTestMethod")
 
         // when
@@ -113,7 +113,7 @@ internal class RenameAnnotationProcessorTest {
     @Test
     fun `should rename global function`() {
         // given
-        val testFunction = testPackage.findUniqueDescendantOrFail<AnnotatedPythonFunction>("testFunction")
+        val testFunction = testPackage.findUniqueDescendantOrFail<SerializablePythonFunction>("testFunction")
         testFunction.annotations += RenameAnnotation("renamedTestFunction")
 
         // when
@@ -132,8 +132,8 @@ internal class RenameAnnotationProcessorTest {
     @Test
     fun `should rename parameter`() {
         // given
-        val testMethod = testPackage.findUniqueDescendantOrFail<AnnotatedPythonFunction>("testMethod")
-        val testParameter = testMethod.findUniqueDescendantOrFail<AnnotatedPythonParameter>("testParameter")
+        val testMethod = testPackage.findUniqueDescendantOrFail<SerializablePythonFunction>("testMethod")
+        val testParameter = testMethod.findUniqueDescendantOrFail<SerializablePythonParameter>("testParameter")
         testParameter.annotations += RenameAnnotation("renamedTestParameter")
 
         // when
@@ -154,7 +154,7 @@ internal class RenameAnnotationProcessorTest {
     @Test
     fun `should change qualified names of descendants when renaming class`() {
         // given
-        val testClass = testPackage.findUniqueDescendantOrFail<AnnotatedPythonClass>("testClass")
+        val testClass = testPackage.findUniqueDescendantOrFail<SerializablePythonClass>("testClass")
         testClass.annotations += RenameAnnotation("renamedTestClass")
 
         // when
@@ -188,7 +188,7 @@ internal class RenameAnnotationProcessorTest {
     @Test
     fun `should change qualified names of descendants when renaming method`() {
         // given
-        val testMethod = testPackage.findUniqueDescendantOrFail<AnnotatedPythonFunction>("testMethod")
+        val testMethod = testPackage.findUniqueDescendantOrFail<SerializablePythonFunction>("testMethod")
         testMethod.annotations += RenameAnnotation("renamedTestMethod")
 
         // when
@@ -213,7 +213,7 @@ internal class RenameAnnotationProcessorTest {
     @Test
     fun `should change qualified names of descendants when renaming global function`() {
         // given
-        val testFunction = testPackage.findUniqueDescendantOrFail<AnnotatedPythonFunction>("testFunction")
+        val testFunction = testPackage.findUniqueDescendantOrFail<SerializablePythonFunction>("testFunction")
         testFunction.annotations += RenameAnnotation("renamedTestFunction")
 
         // when
@@ -237,7 +237,7 @@ internal class RenameAnnotationProcessorTest {
     @Test
     fun `should remove all RenameAnnotations from the annotation list of classes`() {
         // given
-        val testClass = testPackage.findUniqueDescendantOrFail<AnnotatedPythonClass>("testClass")
+        val testClass = testPackage.findUniqueDescendantOrFail<SerializablePythonClass>("testClass")
         testClass.annotations += RenameAnnotation("renamedTestClass")
 
         // when
@@ -255,7 +255,7 @@ internal class RenameAnnotationProcessorTest {
     @Test
     fun `should remove all RenameAnnotations from the annotation list of functions`() {
         // given
-        val testFunction = testPackage.findUniqueDescendantOrFail<AnnotatedPythonFunction>("testFunction")
+        val testFunction = testPackage.findUniqueDescendantOrFail<SerializablePythonFunction>("testFunction")
         testFunction.annotations += RenameAnnotation("renamedTestFunction")
 
         // when
@@ -273,8 +273,8 @@ internal class RenameAnnotationProcessorTest {
     @Test
     fun `should remove all RenameAnnotations from the annotation list of parameters`() {
         // given
-        val testFunction = testPackage.findUniqueDescendantOrFail<AnnotatedPythonFunction>("testFunction")
-        val testParameter = testFunction.findUniqueDescendantOrFail<AnnotatedPythonParameter>("testParameter")
+        val testFunction = testPackage.findUniqueDescendantOrFail<SerializablePythonFunction>("testFunction")
+        val testParameter = testFunction.findUniqueDescendantOrFail<SerializablePythonParameter>("testParameter")
         testParameter.annotations += RenameAnnotation("renamedTestParameter")
 
         // when

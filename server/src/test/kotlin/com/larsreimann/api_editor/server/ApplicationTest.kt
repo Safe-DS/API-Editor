@@ -1,11 +1,5 @@
 package com.larsreimann.api_editor.server
 
-import com.larsreimann.api_editor.model.AnnotatedPythonClass
-import com.larsreimann.api_editor.model.AnnotatedPythonFunction
-import com.larsreimann.api_editor.model.AnnotatedPythonModule
-import com.larsreimann.api_editor.model.AnnotatedPythonPackage
-import com.larsreimann.api_editor.model.AnnotatedPythonParameter
-import com.larsreimann.api_editor.model.AnnotatedPythonResult
 import com.larsreimann.api_editor.model.AttributeAnnotation
 import com.larsreimann.api_editor.model.BoundaryAnnotation
 import com.larsreimann.api_editor.model.CalledAfterAnnotation
@@ -25,6 +19,12 @@ import com.larsreimann.api_editor.model.PythonImport
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.model.RenameAnnotation
 import com.larsreimann.api_editor.model.RequiredAnnotation
+import com.larsreimann.api_editor.model.SerializablePythonClass
+import com.larsreimann.api_editor.model.SerializablePythonFunction
+import com.larsreimann.api_editor.model.SerializablePythonModule
+import com.larsreimann.api_editor.model.SerializablePythonPackage
+import com.larsreimann.api_editor.model.SerializablePythonParameter
+import com.larsreimann.api_editor.model.SerializablePythonResult
 import com.larsreimann.api_editor.model.UnusedAnnotation
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
@@ -44,12 +44,12 @@ class ApplicationTest {
     @ExperimentalSerializationApi
     fun testEcho() {
         withTestApplication({ configureRouting() }) {
-            val testPythonPackage = AnnotatedPythonPackage(
+            val testPythonPackage = SerializablePythonPackage(
                 distribution = "test-distribution",
                 name = "test-package",
                 version = "1.0.0",
                 modules = mutableListOf(
-                    AnnotatedPythonModule(
+                    SerializablePythonModule(
                         name = "test-module",
                         imports = mutableListOf(
                             PythonImport(
@@ -65,7 +65,7 @@ class ApplicationTest {
                             )
                         ),
                         classes = mutableListOf(
-                            AnnotatedPythonClass(
+                            SerializablePythonClass(
                                 name = "test-class",
                                 qualifiedName = "test-module.test-class",
                                 decorators = listOf("test-decorator"),
@@ -78,12 +78,12 @@ class ApplicationTest {
                             )
                         ),
                         functions = mutableListOf(
-                            AnnotatedPythonFunction(
+                            SerializablePythonFunction(
                                 name = "test-function",
                                 qualifiedName = "test-module.test-function",
                                 decorators = listOf("test-decorator"),
                                 parameters = mutableListOf(
-                                    AnnotatedPythonParameter(
+                                    SerializablePythonParameter(
                                         name = "test-parameter",
                                         qualifiedName = "test-module.test-function.test-parameter",
                                         defaultValue = "42",
@@ -95,7 +95,7 @@ class ApplicationTest {
                                     )
                                 ),
                                 results = mutableListOf(
-                                    AnnotatedPythonResult(
+                                    SerializablePythonResult(
                                         name = "test-result",
                                         type = "str",
                                         typeInDocs = "str",

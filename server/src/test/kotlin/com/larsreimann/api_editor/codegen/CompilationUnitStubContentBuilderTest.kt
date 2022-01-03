@@ -1,13 +1,13 @@
 package com.larsreimann.api_editor.codegen
 
-import com.larsreimann.api_editor.model.AnnotatedPythonClass
-import com.larsreimann.api_editor.model.AnnotatedPythonFunction
-import com.larsreimann.api_editor.model.AnnotatedPythonModule
-import com.larsreimann.api_editor.model.AnnotatedPythonParameter
-import com.larsreimann.api_editor.model.AnnotatedPythonResult
 import com.larsreimann.api_editor.model.PythonFromImport
 import com.larsreimann.api_editor.model.PythonImport
 import com.larsreimann.api_editor.model.PythonParameterAssignment
+import com.larsreimann.api_editor.model.SerializablePythonClass
+import com.larsreimann.api_editor.model.SerializablePythonFunction
+import com.larsreimann.api_editor.model.SerializablePythonModule
+import com.larsreimann.api_editor.model.SerializablePythonParameter
+import com.larsreimann.api_editor.model.SerializablePythonResult
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -23,18 +23,18 @@ internal class CompilationUnitStubContentBuilderTest {
     @Test
     fun buildModuleContentReturnsFormattedModuleContent() {
         // given
-        val testClass = AnnotatedPythonClass(
+        val testClass = SerializablePythonClass(
             "TestClass",
             "testModule.TestClass",
             listOf("testDecorator"),
             listOf("testSuperclass"),
             mutableListOf(
-                AnnotatedPythonFunction(
+                SerializablePythonFunction(
                     "testClassFunction",
                     "testModule.TestClass.testClassFunction",
                     listOf("decorators"),
                     mutableListOf(
-                        AnnotatedPythonParameter(
+                        SerializablePythonParameter(
                             "onlyParam",
                             "testModule.TestClass.testClassFunction.onlyParam",
                             "'defaultValue'",
@@ -51,12 +51,12 @@ internal class CompilationUnitStubContentBuilderTest {
                     "fullDocstring",
                     mutableListOf()
                 ),
-                AnnotatedPythonFunction(
+                SerializablePythonFunction(
                     "__init__",
                     "testModule.TestClass.__init__",
                     listOf("decorators"),
                     mutableListOf(
-                        AnnotatedPythonParameter(
+                        SerializablePythonParameter(
                             "onlyParam",
                             "testModule.TestClass.__init__.onlyParam",
                             "'defaultValue'",
@@ -76,18 +76,18 @@ internal class CompilationUnitStubContentBuilderTest {
             "Lorem ipsum",
             "Lorem ipsum", mutableListOf()
         )
-        val testModule = AnnotatedPythonModule(
+        val testModule = SerializablePythonModule(
             "testModule", emptyList(), emptyList(),
             mutableListOf(
                 testClass
             ),
             mutableListOf(
-                AnnotatedPythonFunction(
+                SerializablePythonFunction(
                     "functionModule1",
                     "test.module_1.functionModule1",
                     listOf("testDecorator"),
                     mutableListOf(
-                        AnnotatedPythonParameter(
+                        SerializablePythonParameter(
                             "param1",
                             "test.module_1.functionModule1.param1",
                             null,
@@ -96,7 +96,7 @@ internal class CompilationUnitStubContentBuilderTest {
                             "str",
                             "Lorem ipsum", mutableListOf()
                         ),
-                        AnnotatedPythonParameter(
+                        SerializablePythonParameter(
                             "param2",
                             "test.module_1.functionModule1.param2",
                             null,
@@ -105,7 +105,7 @@ internal class CompilationUnitStubContentBuilderTest {
                             "str",
                             "Lorem ipsum", mutableListOf()
                         ),
-                        AnnotatedPythonParameter(
+                        SerializablePythonParameter(
                             "param3",
                             "test.module_1.functionModule1.param3",
                             null,
@@ -116,7 +116,7 @@ internal class CompilationUnitStubContentBuilderTest {
                         )
                     ),
                     mutableListOf(
-                        AnnotatedPythonResult(
+                        SerializablePythonResult(
                             "testResult",
                             "str",
                             "str",
@@ -127,12 +127,12 @@ internal class CompilationUnitStubContentBuilderTest {
                     "Lorem ipsum",
                     "Lorem ipsum", mutableListOf()
                 ),
-                AnnotatedPythonFunction(
+                SerializablePythonFunction(
                     "testFunction",
                     "testModule.testFunction",
                     listOf("testDecorator"),
                     mutableListOf(
-                        AnnotatedPythonParameter(
+                        SerializablePythonParameter(
                             "testParameter",
                             "testModule.testFunction.testParameter",
                             "42",
@@ -143,7 +143,7 @@ internal class CompilationUnitStubContentBuilderTest {
                         )
                     ),
                     mutableListOf(
-                        AnnotatedPythonResult(
+                        SerializablePythonResult(
                             "testResult",
                             "str",
                             "str",
@@ -186,15 +186,15 @@ internal class CompilationUnitStubContentBuilderTest {
     @Test
     fun buildModuleContentWithNoClassesReturnsFormattedModuleContent() {
         // given
-        val testModule = AnnotatedPythonModule(
+        val testModule = SerializablePythonModule(
             "testModule", emptyList(), emptyList(), mutableListOf(),
             mutableListOf(
-                AnnotatedPythonFunction(
+                SerializablePythonFunction(
                     "functionModule1",
                     "test.module_1.functionModule1",
                     listOf("testDecorator"),
                     mutableListOf(
-                        AnnotatedPythonParameter(
+                        SerializablePythonParameter(
                             "param1",
                             "test.module_1.functionModule1.param1",
                             null,
@@ -203,7 +203,7 @@ internal class CompilationUnitStubContentBuilderTest {
                             "str",
                             "Lorem ipsum", mutableListOf()
                         ),
-                        AnnotatedPythonParameter(
+                        SerializablePythonParameter(
                             "param2",
                             "test.module_1.functionModule1.param2",
                             null,
@@ -212,7 +212,7 @@ internal class CompilationUnitStubContentBuilderTest {
                             "str",
                             "Lorem ipsum", mutableListOf()
                         ),
-                        AnnotatedPythonParameter(
+                        SerializablePythonParameter(
                             "param3",
                             "test.module_1.functionModule1.param3",
                             null,
@@ -223,7 +223,7 @@ internal class CompilationUnitStubContentBuilderTest {
                         )
                     ),
                     mutableListOf(
-                        AnnotatedPythonResult(
+                        SerializablePythonResult(
                             "testResult",
                             "str",
                             "str",
@@ -234,12 +234,12 @@ internal class CompilationUnitStubContentBuilderTest {
                     "Lorem ipsum",
                     "Lorem ipsum", mutableListOf()
                 ),
-                AnnotatedPythonFunction(
+                SerializablePythonFunction(
                     "testFunction",
                     "testModule.testFunction",
                     listOf("testDecorator"),
                     mutableListOf(
-                        AnnotatedPythonParameter(
+                        SerializablePythonParameter(
                             "testParameter",
                             "testModule.testFunction.testParameter",
                             "42",
@@ -250,7 +250,7 @@ internal class CompilationUnitStubContentBuilderTest {
                         )
                     ),
                     mutableListOf(
-                        AnnotatedPythonResult(
+                        SerializablePythonResult(
                             "testResult",
                             "str",
                             "str",
@@ -284,18 +284,18 @@ internal class CompilationUnitStubContentBuilderTest {
     @Test
     fun buildModuleContentWithOnlyConstructorReturnsFormattedModuleContent() {
         // given
-        val testClass = AnnotatedPythonClass(
+        val testClass = SerializablePythonClass(
             "TestClass",
             "testModule.TestClass",
             listOf("testDecorator"),
             listOf("testSuperclass"),
             mutableListOf(
-                AnnotatedPythonFunction(
+                SerializablePythonFunction(
                     "__init__",
                     "testModule.TestClass.__init__",
                     listOf("decorators"),
                     mutableListOf(
-                        AnnotatedPythonParameter(
+                        SerializablePythonParameter(
                             "onlyParam",
                             "testModule.TestClass.__init__.onlyParam",
                             "'defaultValue'",
@@ -315,7 +315,7 @@ internal class CompilationUnitStubContentBuilderTest {
             "Lorem ipsum",
             "Lorem ipsum", mutableListOf()
         )
-        val testModule = AnnotatedPythonModule(
+        val testModule = SerializablePythonModule(
             "testModule",
             listOf(
                 PythonImport(
@@ -355,7 +355,7 @@ internal class CompilationUnitStubContentBuilderTest {
     @Test
     fun buildModuleContentWithNoFunctionsAndClassesReturnsFormattedModuleContent() {
         // given
-        val testModule = AnnotatedPythonModule(
+        val testModule = SerializablePythonModule(
             "testModule", emptyList(), emptyList(), mutableListOf(), mutableListOf(), mutableListOf()
         )
 

@@ -1,12 +1,12 @@
 package com.larsreimann.api_editor.assertions
 
-import com.larsreimann.api_editor.model.AnnotatedPythonDeclaration
+import com.larsreimann.api_editor.model.SerializablePythonDeclaration
 
 /**
  * Finds a unique descendant of the root with given type and name. If none or multiple matching descendants are found,
  * an assertion error is thrown.
  */
-inline fun <reified T : AnnotatedPythonDeclaration> AnnotatedPythonDeclaration.findUniqueDescendantOrFail(
+inline fun <reified T : SerializablePythonDeclaration> SerializablePythonDeclaration.findUniqueDescendantOrFail(
     name: String
 ): T {
     return findUniqueDescendantOrFail(this, T::class.java, name)
@@ -24,8 +24,8 @@ inline fun <reified T : AnnotatedPythonDeclaration> AnnotatedPythonDeclaration.f
  * );
  * ```
  */
-fun <T : AnnotatedPythonDeclaration> findUniqueDescendantOrFail(
-    root: AnnotatedPythonDeclaration,
+fun <T : SerializablePythonDeclaration> findUniqueDescendantOrFail(
+    root: SerializablePythonDeclaration,
     type: Class<out T>,
     name: String
 ): T {

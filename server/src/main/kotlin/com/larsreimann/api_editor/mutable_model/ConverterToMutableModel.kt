@@ -1,15 +1,15 @@
 package com.larsreimann.api_editor.mutable_model
 
-import com.larsreimann.api_editor.model.AnnotatedPythonAttribute
-import com.larsreimann.api_editor.model.AnnotatedPythonClass
-import com.larsreimann.api_editor.model.AnnotatedPythonEnum
-import com.larsreimann.api_editor.model.AnnotatedPythonFunction
-import com.larsreimann.api_editor.model.AnnotatedPythonModule
-import com.larsreimann.api_editor.model.AnnotatedPythonPackage
-import com.larsreimann.api_editor.model.AnnotatedPythonParameter
-import com.larsreimann.api_editor.model.AnnotatedPythonResult
+import com.larsreimann.api_editor.model.SerializablePythonAttribute
+import com.larsreimann.api_editor.model.SerializablePythonClass
+import com.larsreimann.api_editor.model.SerializablePythonEnum
+import com.larsreimann.api_editor.model.SerializablePythonFunction
+import com.larsreimann.api_editor.model.SerializablePythonModule
+import com.larsreimann.api_editor.model.SerializablePythonPackage
+import com.larsreimann.api_editor.model.SerializablePythonParameter
+import com.larsreimann.api_editor.model.SerializablePythonResult
 
-fun convertPackage(pythonPackage: AnnotatedPythonPackage): MutablePythonPackage {
+fun convertPackage(pythonPackage: SerializablePythonPackage): MutablePythonPackage {
     return MutablePythonPackage(
         distribution = pythonPackage.distribution,
         name = pythonPackage.name,
@@ -19,7 +19,7 @@ fun convertPackage(pythonPackage: AnnotatedPythonPackage): MutablePythonPackage 
     )
 }
 
-fun convertModule(pythonModule: AnnotatedPythonModule): MutablePythonModule {
+fun convertModule(pythonModule: SerializablePythonModule): MutablePythonModule {
     return MutablePythonModule(
         name = pythonModule.name,
         imports = pythonModule.imports.toMutableList(),
@@ -31,7 +31,7 @@ fun convertModule(pythonModule: AnnotatedPythonModule): MutablePythonModule {
     )
 }
 
-fun convertClass(pythonClass: AnnotatedPythonClass): MutablePythonClass {
+fun convertClass(pythonClass: SerializablePythonClass): MutablePythonClass {
     return MutablePythonClass(
         name = pythonClass.name,
         decorators = pythonClass.decorators.toMutableList(),
@@ -45,7 +45,7 @@ fun convertClass(pythonClass: AnnotatedPythonClass): MutablePythonClass {
     )
 }
 
-fun convertEnum(pythonEnum: AnnotatedPythonEnum): MutablePythonEnum {
+fun convertEnum(pythonEnum: SerializablePythonEnum): MutablePythonEnum {
     return MutablePythonEnum(
         name = pythonEnum.name,
         instances = pythonEnum.instances.toMutableList(),
@@ -53,7 +53,7 @@ fun convertEnum(pythonEnum: AnnotatedPythonEnum): MutablePythonEnum {
     )
 }
 
-fun convertFunction(pythonFunction: AnnotatedPythonFunction): MutablePythonFunction {
+fun convertFunction(pythonFunction: SerializablePythonFunction): MutablePythonFunction {
     return MutablePythonFunction(
         name = pythonFunction.name,
         decorators = pythonFunction.decorators.toMutableList(),
@@ -68,7 +68,7 @@ fun convertFunction(pythonFunction: AnnotatedPythonFunction): MutablePythonFunct
     )
 }
 
-fun convertAttribute(pythonAttribute: AnnotatedPythonAttribute): MutablePythonAttribute {
+fun convertAttribute(pythonAttribute: SerializablePythonAttribute): MutablePythonAttribute {
     return MutablePythonAttribute(
         name = pythonAttribute.name,
         defaultValue = pythonAttribute.defaultValue,
@@ -80,7 +80,7 @@ fun convertAttribute(pythonAttribute: AnnotatedPythonAttribute): MutablePythonAt
     )
 }
 
-fun convertParameter(pythonParameter: AnnotatedPythonParameter): MutablePythonParameter {
+fun convertParameter(pythonParameter: SerializablePythonParameter): MutablePythonParameter {
     return MutablePythonParameter(
         name = pythonParameter.name,
         defaultValue = pythonParameter.defaultValue,
@@ -93,7 +93,7 @@ fun convertParameter(pythonParameter: AnnotatedPythonParameter): MutablePythonPa
     )
 }
 
-fun convertResult(pythonResult: AnnotatedPythonResult): MutablePythonResult {
+fun convertResult(pythonResult: SerializablePythonResult): MutablePythonResult {
     return MutablePythonResult(
         name = pythonResult.name,
         type = pythonResult.type,

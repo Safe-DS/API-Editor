@@ -1,8 +1,8 @@
 package com.larsreimann.api_editor.codegen;
 
 import com.larsreimann.api_editor.io.FileBuilder;
-import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
-import com.larsreimann.api_editor.model.AnnotatedPythonParameter;
+import com.larsreimann.api_editor.model.SerializablePythonFunction;
+import com.larsreimann.api_editor.model.SerializablePythonParameter;
 import com.larsreimann.api_editor.model.Boundary;
 import com.larsreimann.api_editor.model.ComparisonOperator;
 import com.larsreimann.api_editor.model.PythonParameterAssignment;
@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class FunctionAdapterContentBuilder extends FileBuilder {
-    AnnotatedPythonFunction pythonFunction;
+    SerializablePythonFunction pythonFunction;
 
     /**
      * Constructor for FunctionAdapterContentBuilder
@@ -22,7 +22,7 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
      * @param pythonFunction The function whose adapter content should be built
      */
     public FunctionAdapterContentBuilder(
-        AnnotatedPythonFunction pythonFunction
+        SerializablePythonFunction pythonFunction
     ) {
         this.pythonFunction = pythonFunction;
     }
@@ -54,7 +54,7 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
 
     private List<String> buildAttributeAssignments() {
         List<String> attributeAssignments = new ArrayList<>();
-        for (AnnotatedPythonParameter parameterAttribute : pythonFunction.getParameters()) {
+        for (SerializablePythonParameter parameterAttribute : pythonFunction.getParameters()) {
             if (parameterAttribute.getAssignedBy().equals(PythonParameterAssignment.ATTRIBUTE)) {
                 attributeAssignments.add(
                     "self."
@@ -144,7 +144,7 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
         return formattedFunctionParameters;
     }
 
-    private String buildFormattedParameter(AnnotatedPythonParameter pythonParameter) {
+    private String buildFormattedParameter(SerializablePythonParameter pythonParameter) {
         String formattedParameter = pythonParameter.getName();
         String defaultValue = pythonParameter.getDefaultValue();
         if (defaultValue != null) {
@@ -167,7 +167,7 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
 
     private List<String> buildBoundaryChecks() {
         List<String> formattedBoundaries = new ArrayList<>();
-        for (AnnotatedPythonParameter pythonParameter :
+        for (SerializablePythonParameter pythonParameter :
             pythonFunction
                 .getParameters()
                 .stream()
