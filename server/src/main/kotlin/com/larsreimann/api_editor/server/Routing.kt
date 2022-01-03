@@ -2,15 +2,7 @@ package com.larsreimann.api_editor.server
 
 import com.larsreimann.api_editor.io.PackageFileBuilder
 import com.larsreimann.api_editor.model.SerializablePythonPackage
-import com.larsreimann.api_editor.transformation.AttributesInitializer
-import com.larsreimann.api_editor.transformation.BoundaryAnnotationProcessor
-import com.larsreimann.api_editor.transformation.CleanupModulesProcessor
-import com.larsreimann.api_editor.transformation.MoveAnnotationProcessor
-import com.larsreimann.api_editor.transformation.OriginalDeclarationProcessor
-import com.larsreimann.api_editor.transformation.ParameterAnnotationProcessor
-import com.larsreimann.api_editor.transformation.PureAnnotationProcessor
-import com.larsreimann.api_editor.transformation.RenameAnnotationProcessor
-import com.larsreimann.api_editor.transformation.UnusedAnnotationProcessor
+import com.larsreimann.api_editor.transformation.processPackage
 import com.larsreimann.api_editor.validation.AnnotationValidator
 import io.ktor.application.Application
 import io.ktor.application.call
@@ -120,42 +112,6 @@ fun doInfer(originalPythonPackage: SerializablePythonPackage): DoInferResult {
     // Build files
     val path = PackageFileBuilder(modifiedPythonPackage).buildModuleFiles()
     return DoInferResult.Success(path)
-}
-
-fun processPackage(originalPythonPackage: SerializablePythonPackage): SerializablePythonPackage {
-    var modifiedPythonPackage = originalPythonPackage
-
-    // Add attributes to classes
-    modifiedPythonPackage = modifiedPythonPackage.accept(AttributesInitializer())!!
-
-    // Create original declarations
-    modifiedPythonPackage.accept(OriginalDeclarationProcessor)
-
-    // Apply annotations (don't change the order)
-    val unusedAnnotationProcessor = UnusedAnnotationProcessor()
-    modifiedPythonPackage = modifiedPythonPackage.accept(unusedAnnotationProcessor)!!
-
-    val renameAnnotationProcessor = RenameAnnotationProcessor()
-    modifiedPythonPackage = modifiedPythonPackage.accept(renameAnnotationProcessor)!!
-
-    val moveAnnotationProcessor = MoveAnnotationProcessor()
-    modifiedPythonPackage.accept(moveAnnotationProcessor)
-    modifiedPythonPackage = moveAnnotationProcessor.modifiedPackage!!
-
-    val parameterAnnotationProcessor = ParameterAnnotationProcessor()
-    modifiedPythonPackage = modifiedPythonPackage.accept(parameterAnnotationProcessor)!!
-
-    val boundaryAnnotationProcessor = BoundaryAnnotationProcessor()
-    modifiedPythonPackage = modifiedPythonPackage.accept(boundaryAnnotationProcessor)!!
-
-    modifiedPythonPackage.accept(PureAnnotationProcessor)
-
-    // Cleanup
-    val cleanupModulesProcessor = CleanupModulesProcessor()
-    modifiedPythonPackage.accept(cleanupModulesProcessor)
-    modifiedPythonPackage = cleanupModulesProcessor.modifiedPackage
-
-    return modifiedPythonPackage
 }
 
 sealed class DoInferResult {

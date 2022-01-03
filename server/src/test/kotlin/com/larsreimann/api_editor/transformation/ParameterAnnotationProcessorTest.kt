@@ -1,13 +1,12 @@
 package com.larsreimann.api_editor.transformation
 
-import com.larsreimann.api_editor.model.SerializablePythonParameter
 import com.larsreimann.api_editor.model.ConstantAnnotation
 import com.larsreimann.api_editor.model.DefaultBoolean
 import com.larsreimann.api_editor.model.DefaultString
 import com.larsreimann.api_editor.model.OptionalAnnotation
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.model.RequiredAnnotation
-import com.larsreimann.api_editor.server.processPackage
+import com.larsreimann.api_editor.model.SerializablePythonParameter
 import com.larsreimann.api_editor.util.createPythonFunction
 import com.larsreimann.api_editor.util.createPythonModule
 import com.larsreimann.api_editor.util.createPythonPackage

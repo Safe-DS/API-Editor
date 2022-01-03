@@ -1,7 +1,6 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.MoveAnnotation
-import com.larsreimann.api_editor.server.processPackage
 import com.larsreimann.api_editor.util.createPythonAttribute
 import com.larsreimann.api_editor.util.createPythonClass
 import com.larsreimann.api_editor.util.createPythonFunction

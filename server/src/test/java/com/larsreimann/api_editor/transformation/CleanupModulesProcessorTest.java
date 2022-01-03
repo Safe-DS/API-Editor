@@ -7,8 +7,11 @@ import com.larsreimann.api_editor.model.SerializablePythonPackage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static com.larsreimann.api_editor.server.RoutingKt.processPackage;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.*;
+import static com.larsreimann.api_editor.transformation.TransformationPlanKt.processPackage;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonClass;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonFunction;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonModule;
+import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.createPythonPackage;
 
 class CleanupModulesProcessorTest {
     @Test
