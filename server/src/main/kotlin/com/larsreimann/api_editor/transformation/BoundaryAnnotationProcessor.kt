@@ -43,9 +43,7 @@ class BoundaryAnnotationProcessor : AbstractPackageDataTransformer() {
         )
     }
 
-    override fun createNewAttribute(
-        oldAttribute: SerializablePythonAttribute
-    ): SerializablePythonAttribute {
+    override fun createNewAttribute(oldAttribute: SerializablePythonAttribute): SerializablePythonAttribute {
         val annotations = mutableListOf<EditorAnnotation>()
         var newBoundary = oldAttribute.boundary
         for (editorAnnotation in oldAttribute.annotations) {

@@ -19,10 +19,10 @@ import com.larsreimann.api_editor.model.PythonParameterAssignment
 
 sealed class MutablePythonAstNode : TreeNode()
 
-sealed class MutablePythonDeclaration(
-    var name: String,
-    val annotations: MutableList<EditorAnnotation> = mutableListOf()
-) : MutablePythonAstNode() {
+sealed class MutablePythonDeclaration : MutablePythonAstNode() {
+
+    abstract var name: String
+    abstract val annotations: MutableList<EditorAnnotation>
 
     /**
      * Returns the qualified name of the declaration.
@@ -38,12 +38,12 @@ sealed class MutablePythonDeclaration(
 
 class MutablePythonPackage(
     var distribution: String,
-    name: String,
+    override var name: String,
     var version: String,
     modules: List<MutablePythonModule> = emptyList(),
-    annotations: MutableList<EditorAnnotation> = mutableListOf(),
+    override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
     var originalDeclaration: SerializablePythonPackage? = null
-) : MutablePythonDeclaration(name, annotations) {
+) : MutablePythonDeclaration() {
 
     val modules = ContainmentList(modules)
 
@@ -53,15 +53,15 @@ class MutablePythonPackage(
 }
 
 class MutablePythonModule(
-    name: String,
+    override var name: String,
     val imports: MutableList<PythonImport> = mutableListOf(),
     val fromImports: MutableList<PythonFromImport> = mutableListOf(),
     classes: List<MutablePythonClass> = emptyList(),
     enums: List<MutablePythonEnum> = emptyList(),
     functions: List<MutablePythonFunction> = emptyList(),
-    annotations: MutableList<EditorAnnotation> = mutableListOf(),
+    override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
     var originalDeclaration: SerializablePythonModule? = null
-) : MutablePythonDeclaration(name, annotations) {
+) : MutablePythonDeclaration() {
 
     val classes = ContainmentList(classes)
     val enums = ContainmentList(enums)
@@ -75,7 +75,7 @@ class MutablePythonModule(
 }
 
 class MutablePythonClass(
-    name: String,
+    override var name: String,
     val decorators: MutableList<String> = mutableListOf(),
     val superclasses: MutableList<String> = mutableListOf(),
     attributes: List<MutablePythonAttribute> = emptyList(),
@@ -83,9 +83,9 @@ class MutablePythonClass(
     var isPublic: Boolean = true,
     var description: String = "",
     var fullDocstring: String = "",
-    annotations: MutableList<EditorAnnotation> = mutableListOf(),
+    override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
     var originalDeclaration: SerializablePythonClass? = null
-) : MutablePythonDeclaration(name, annotations) {
+) : MutablePythonDeclaration() {
 
     val attributes = ContainmentList(attributes)
     val methods = ContainmentList(methods)
@@ -96,15 +96,15 @@ class MutablePythonClass(
     }
 }
 
-class MutablePythonEnum(
-    name: String,
+data class MutablePythonEnum(
+    override var name: String,
     val instances: MutableList<PythonEnumInstance> = mutableListOf(),
-    annotations: MutableList<EditorAnnotation> = mutableListOf(),
+    override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
     var originalDeclaration: SerializablePythonEnum? = null
-) : MutablePythonDeclaration(name, annotations)
+) : MutablePythonDeclaration()
 
 class MutablePythonFunction(
-    name: String,
+    override var name: String,
     val decorators: MutableList<String> = mutableListOf(),
     parameters: List<MutablePythonParameter> = emptyList(),
     results: List<MutablePythonResult> = emptyList(),
@@ -112,10 +112,10 @@ class MutablePythonFunction(
     var description: String = "",
     var fullDocstring: String = "",
     var isPure: Boolean = false,
-    annotations: MutableList<EditorAnnotation> = mutableListOf(),
+    override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
     val calledAfter: MutableList<SerializablePythonFunction> = mutableListOf(),
     var originalDeclaration: SerializablePythonFunction? = null
-) : MutablePythonDeclaration(name, annotations) {
+) : MutablePythonDeclaration() {
 
     val parameters = ContainmentList(parameters)
     val results = ContainmentList(results)
@@ -128,38 +128,38 @@ class MutablePythonFunction(
     fun isConstructor() = name == "__init__"
 }
 
-class MutablePythonAttribute(
-    name: String,
+data class MutablePythonAttribute(
+    override var name: String,
     var defaultValue: String? = null,
     var isPublic: Boolean = true,
     var typeInDocs: String = "",
     var description: String = "",
     var boundary: Boundary? = null,
-    annotations: MutableList<EditorAnnotation> = mutableListOf(),
+    override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
     var originalDeclaration: SerializablePythonAttribute? = null
-) : MutablePythonDeclaration(name, annotations)
+) : MutablePythonDeclaration()
 
-class MutablePythonParameter(
-    name: String,
+data class MutablePythonParameter(
+    override var name: String,
     var defaultValue: String? = null,
     var assignedBy: PythonParameterAssignment = PythonParameterAssignment.POSITION_OR_NAME,
     var isPublic: Boolean = true,
     var typeInDocs: String = "",
     var description: String = "",
     var boundary: Boundary? = null,
-    annotations: MutableList<EditorAnnotation> = mutableListOf(),
+    override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
     var originalDeclaration: SerializablePythonParameter? = null
-) : MutablePythonDeclaration(name, annotations)
+) : MutablePythonDeclaration()
 
-class MutablePythonResult(
-    name: String,
+data class MutablePythonResult(
+    override var name: String,
     var type: String = "",
     var typeInDocs: String = "",
     var description: String = "",
     var boundary: Boundary? = null,
-    annotations: MutableList<EditorAnnotation> = mutableListOf(),
+    override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
     var originalDeclaration: SerializablePythonResult? = null
-) : MutablePythonDeclaration(name, annotations)
+) : MutablePythonDeclaration()
 
 private sealed class MutablePythonStatement : MutablePythonAstNode() // TODO
 
