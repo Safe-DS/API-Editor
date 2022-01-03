@@ -140,7 +140,7 @@ fun processPackage(originalPythonPackage: AnnotatedPythonPackage): AnnotatedPyth
 
     val moveAnnotationProcessor = MoveAnnotationProcessor()
     modifiedPythonPackage.accept(moveAnnotationProcessor)
-    modifiedPythonPackage = moveAnnotationProcessor.modifiedPackage
+    modifiedPythonPackage = moveAnnotationProcessor.modifiedPackage!!
 
     val parameterAnnotationProcessor = ParameterAnnotationProcessor()
     modifiedPythonPackage = modifiedPythonPackage.accept(parameterAnnotationProcessor)!!

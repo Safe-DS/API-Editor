@@ -25,7 +25,7 @@ fun createPythonPackage(
         distribution,
         name,
         version,
-        modules,
+        modules.toMutableList(),
         annotations
     )
 }
@@ -44,8 +44,8 @@ fun createPythonModule(
         name,
         imports,
         fromImports,
-        classes,
-        functions,
+        classes.toMutableList(),
+        functions.toMutableList(),
         annotations
     )
 }
@@ -69,7 +69,7 @@ fun createPythonClass(
         qualifiedName,
         decorators,
         superclasses,
-        methods,
+        methods.toMutableList(),
         isPublic,
         description,
         fullDocstring,
@@ -121,8 +121,8 @@ fun createPythonFunction(
         name,
         qualifiedName,
         decorators,
-        parameters,
-        results,
+        parameters.toMutableList(),
+        results.toMutableList(),
         isPublic,
         description,
         fullDocstring,

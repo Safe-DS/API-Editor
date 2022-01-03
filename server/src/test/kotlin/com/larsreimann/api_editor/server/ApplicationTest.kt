@@ -48,41 +48,41 @@ class ApplicationTest {
                 distribution = "test-distribution",
                 name = "test-package",
                 version = "1.0.0",
-                modules = listOf(
+                modules = mutableListOf(
                     AnnotatedPythonModule(
                         name = "test-module",
-                        imports = listOf(
+                        imports = mutableListOf(
                             PythonImport(
                                 module = "test-import",
                                 alias = "test-alias"
                             )
                         ),
-                        fromImports = listOf(
+                        fromImports = mutableListOf(
                             PythonFromImport(
                                 module = "test-from-import",
                                 declaration = "test-declaration",
                                 alias = null
                             )
                         ),
-                        classes = listOf(
+                        classes = mutableListOf(
                             AnnotatedPythonClass(
                                 name = "test-class",
                                 qualifiedName = "test-module.test-class",
                                 decorators = listOf("test-decorator"),
                                 superclasses = listOf("test-superclass"),
-                                methods = emptyList(),
+                                methods = mutableListOf(),
                                 isPublic = true,
                                 description = "Lorem ipsum",
                                 fullDocstring = "Lorem ipsum",
                                 annotations = mutableListOf()
                             )
                         ),
-                        functions = listOf(
+                        functions = mutableListOf(
                             AnnotatedPythonFunction(
                                 name = "test-function",
                                 qualifiedName = "test-module.test-function",
                                 decorators = listOf("test-decorator"),
-                                parameters = listOf(
+                                parameters = mutableListOf(
                                     AnnotatedPythonParameter(
                                         name = "test-parameter",
                                         qualifiedName = "test-module.test-function.test-parameter",
@@ -94,7 +94,7 @@ class ApplicationTest {
                                         annotations = mutableListOf()
                                     )
                                 ),
-                                results = listOf(
+                                results = mutableListOf(
                                     AnnotatedPythonResult(
                                         name = "test-result",
                                         type = "str",

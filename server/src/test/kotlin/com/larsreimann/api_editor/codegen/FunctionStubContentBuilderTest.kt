@@ -23,7 +23,7 @@ internal class FunctionStubContentBuilderTest {
         val testFunction = AnnotatedPythonFunction(
             "testFunction",
             "testModule.testFunction",
-            listOf("testDecorator"), emptyList(), emptyList(),
+            listOf("testDecorator"), mutableListOf(), mutableListOf(),
             true,
             "Lorem ipsum",
             "fullDocstring", mutableListOf()
@@ -47,7 +47,7 @@ internal class FunctionStubContentBuilderTest {
             "testFunction",
             "testModule.testFunction",
             listOf("testDecorator"),
-            listOf(
+            mutableListOf(
                 AnnotatedPythonParameter(
                     "onlyParam",
                     "testModule.testClass.testClassFunction.onlyParam",
@@ -58,7 +58,7 @@ internal class FunctionStubContentBuilderTest {
                     "description", mutableListOf()
                 )
             ),
-            emptyList(),
+            mutableListOf(),
             true,
             "Lorem ipsum",
             "fullDocstring", mutableListOf()
@@ -82,7 +82,7 @@ internal class FunctionStubContentBuilderTest {
             "testFunction",
             "testModule.testFunction",
             listOf("testDecorator"),
-            listOf(
+            mutableListOf(
                 AnnotatedPythonParameter(
                     "onlyParam",
                     "testModule.testClass.testClassFunction.onlyParam",
@@ -93,7 +93,7 @@ internal class FunctionStubContentBuilderTest {
                     "description", mutableListOf()
                 )
             ),
-            emptyList(),
+            mutableListOf(),
             true,
             "Lorem ipsum",
             "fullDocstring", mutableListOf()
@@ -117,7 +117,7 @@ internal class FunctionStubContentBuilderTest {
             "testFunction",
             "testModule.testFunction",
             listOf("testDecorator"),
-            listOf(
+            mutableListOf(
                 AnnotatedPythonParameter(
                     "firstParam",
                     "testModule.testClass.testClassFunction.firstParam",
@@ -146,7 +146,7 @@ internal class FunctionStubContentBuilderTest {
                     "description", mutableListOf()
                 )
             ),
-            emptyList(),
+            mutableListOf(),
             true,
             "Lorem ipsum",
             "fullDocstring", mutableListOf()
@@ -169,7 +169,7 @@ internal class FunctionStubContentBuilderTest {
             "testFunction",
             "testModule.testFunction",
             listOf("testDecorator"),
-            listOf(
+            mutableListOf(
                 AnnotatedPythonParameter(
                     "onlyParam",
                     "testModule.testClass.testClassFunction.onlyParam",
@@ -180,7 +180,7 @@ internal class FunctionStubContentBuilderTest {
                     "description", mutableListOf()
                 )
             ),
-            listOf(
+            mutableListOf(
                 AnnotatedPythonResult(
                     "firstResult",
                     "float",
@@ -210,7 +210,7 @@ internal class FunctionStubContentBuilderTest {
             "testFunction",
             "testModule.testFunction",
             listOf("testDecorator"),
-            listOf(
+            mutableListOf(
                 AnnotatedPythonParameter(
                     "onlyParam",
                     "testModule.testClass.testClassFunction.onlyParam",
@@ -221,7 +221,7 @@ internal class FunctionStubContentBuilderTest {
                     "description", mutableListOf()
                 )
             ),
-            listOf(
+            mutableListOf(
                 AnnotatedPythonResult(
                     "firstResult",
                     "float",
@@ -257,7 +257,7 @@ internal class FunctionStubContentBuilderTest {
             "testFunction",
             "testModule.testFunction",
             listOf("testDecorator"),
-            listOf(
+            mutableListOf(
                 AnnotatedPythonParameter(
                     "onlyParam",
                     "testModule.testClass.testClassFunction.onlyParam",
@@ -268,7 +268,7 @@ internal class FunctionStubContentBuilderTest {
                     "description", mutableListOf()
                 )
             ),
-            emptyList(),
+            mutableListOf(),
             true,
             "Lorem ipsum",
             "fullDocstring", mutableListOf()
