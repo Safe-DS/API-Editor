@@ -74,7 +74,8 @@ internal class AnnotationValidatorTest {
                                                 )
                                             )
                                         )
-                                    ), mutableListOf(),
+                                    ),
+                                    mutableListOf(),
                                     true,
                                     "description",
                                     "fullDocstring",
@@ -133,9 +134,11 @@ internal class AnnotationValidatorTest {
                                 )
                             )
                         )
-                    ), mutableListOf()
+                    ),
+                    mutableListOf()
                 )
-            ), mutableListOf()
+            ),
+            mutableListOf()
         )
 
         // when
@@ -231,7 +234,8 @@ internal class AnnotationValidatorTest {
                                                 )
                                             )
                                         )
-                                    ), mutableListOf(),
+                                    ),
+                                    mutableListOf(),
                                     true,
                                     "description",
                                     "fullDocstring",
@@ -307,7 +311,8 @@ internal class AnnotationValidatorTest {
                         RenameAnnotation("rename")
                     )
                 )
-            ), mutableListOf()
+            ),
+            mutableListOf()
         )
 
         // when
@@ -370,7 +375,8 @@ internal class AnnotationValidatorTest {
                                                 )
                                             )
                                         )
-                                    ), mutableListOf(),
+                                    ),
+                                    mutableListOf(),
                                     true,
                                     "description",
                                     "fullDocstring", mutableListOf()
@@ -420,9 +426,11 @@ internal class AnnotationValidatorTest {
                             "Lorem ipsum",
                             "Lorem ipsum", mutableListOf()
                         )
-                    ), mutableListOf()
+                    ),
+                    mutableListOf()
                 )
-            ), mutableListOf()
+            ),
+            mutableListOf()
         )
 
         // when
@@ -531,7 +539,8 @@ internal class AnnotationValidatorTest {
                                                 RenameAnnotation("newName")
                                             )
                                         )
-                                    ), mutableListOf(),
+                                    ),
+                                    mutableListOf(),
                                     true,
                                     "description",
                                     "fullDocstring",
@@ -541,7 +550,8 @@ internal class AnnotationValidatorTest {
                                             listOf("first-param", "second-param")
                                         )
                                     )
-                                ), AnnotatedPythonFunction(
+                                ),
+                                AnnotatedPythonFunction(
                                     "class-function",
                                     "test-module.test-class.class-function",
                                     listOf("decorators"),
@@ -572,7 +582,8 @@ internal class AnnotationValidatorTest {
                                                 )
                                             )
                                         )
-                                    ), mutableListOf(),
+                                    ),
+                                    mutableListOf(),
                                     true,
                                     "description",
                                     "fullDocstring",
@@ -621,7 +632,8 @@ internal class AnnotationValidatorTest {
                                         )
                                     )
                                 )
-                            ), mutableListOf(),
+                            ),
+                            mutableListOf(),
                             true,
                             "description",
                             "fullDocstring",
@@ -632,9 +644,11 @@ internal class AnnotationValidatorTest {
                                 )
                             )
                         )
-                    ), mutableListOf()
+                    ),
+                    mutableListOf()
                 )
-            ), mutableListOf()
+            ),
+            mutableListOf()
         )
 
         // when

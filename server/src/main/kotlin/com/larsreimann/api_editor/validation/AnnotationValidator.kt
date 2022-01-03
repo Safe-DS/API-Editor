@@ -229,8 +229,8 @@ class AnnotationValidator(private val annotatedPythonPackage: AnnotatedPythonPac
         val firstAnnotationName = firstAnnotation.type
         val secondAnnotationName = secondAnnotation.type
         if (possibleCombinations[firstAnnotationName]!!
-                .isEmpty()
-            || !possibleCombinations[firstAnnotationName]!!.contains(secondAnnotationName)
+            .isEmpty() ||
+            !possibleCombinations[firstAnnotationName]!!.contains(secondAnnotationName)
         ) {
             validationErrors.add(
                 AnnotationCombinationError(

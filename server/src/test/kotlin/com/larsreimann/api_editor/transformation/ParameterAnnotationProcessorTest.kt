@@ -346,12 +346,12 @@ internal class ParameterAnnotationProcessorTest {
             if (firstParameter.defaultValue != secondParameter.defaultValue) {
                 return false
             }
-        } else if (firstParameter.defaultValue == null
-            && secondParameter.defaultValue != null
+        } else if (firstParameter.defaultValue == null &&
+            secondParameter.defaultValue != null
         ) {
             return false
-        } else if (secondParameter.defaultValue == null
-            && firstParameter.defaultValue != null
+        } else if (secondParameter.defaultValue == null &&
+            firstParameter.defaultValue != null
         ) {
             return false
         }
