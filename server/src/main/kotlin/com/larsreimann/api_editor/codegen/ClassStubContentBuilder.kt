@@ -1,8 +1,8 @@
 package com.larsreimann.api_editor.codegen
 
+import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.model.SerializablePythonClass
 import com.larsreimann.api_editor.model.SerializablePythonParameter
-import com.larsreimann.api_editor.model.PythonParameterAssignment
 import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.createSmlAttribute
 import de.unibonn.simpleml.emf.createSmlClass

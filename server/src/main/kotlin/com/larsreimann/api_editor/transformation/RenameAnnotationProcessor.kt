@@ -1,6 +1,7 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.AbstractPackageDataTransformer
+import com.larsreimann.api_editor.model.RenameAnnotation
 import com.larsreimann.api_editor.model.SerializablePythonAttribute
 import com.larsreimann.api_editor.model.SerializablePythonClass
 import com.larsreimann.api_editor.model.SerializablePythonDeclaration
@@ -9,7 +10,6 @@ import com.larsreimann.api_editor.model.SerializablePythonFunction
 import com.larsreimann.api_editor.model.SerializablePythonModule
 import com.larsreimann.api_editor.model.SerializablePythonParameter
 import com.larsreimann.api_editor.model.SerializablePythonResult
-import com.larsreimann.api_editor.model.RenameAnnotation
 
 class RenameAnnotationProcessor : AbstractPackageDataTransformer() {
     private val declarationStack = ArrayDeque<SerializablePythonDeclaration>()

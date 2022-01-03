@@ -1,11 +1,11 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.assertions.findUniqueDescendantOrFail
+import com.larsreimann.api_editor.model.RenameAnnotation
 import com.larsreimann.api_editor.model.SerializablePythonClass
 import com.larsreimann.api_editor.model.SerializablePythonFunction
 import com.larsreimann.api_editor.model.SerializablePythonPackage
 import com.larsreimann.api_editor.model.SerializablePythonParameter
-import com.larsreimann.api_editor.model.RenameAnnotation
 import com.larsreimann.api_editor.util.createPythonAttribute
 import com.larsreimann.api_editor.util.createPythonClass
 import com.larsreimann.api_editor.util.createPythonFunction

@@ -1,9 +1,9 @@
 package com.larsreimann.api_editor.codegen
 
+import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.model.SerializablePythonClass
 import com.larsreimann.api_editor.model.SerializablePythonFunction
 import com.larsreimann.api_editor.model.SerializablePythonParameter
-import com.larsreimann.api_editor.model.PythonParameterAssignment
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach

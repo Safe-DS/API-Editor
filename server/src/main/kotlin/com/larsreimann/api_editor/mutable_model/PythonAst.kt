@@ -2,6 +2,12 @@
 
 package com.larsreimann.api_editor.mutable_model
 
+import com.larsreimann.api_editor.model.Boundary
+import com.larsreimann.api_editor.model.EditorAnnotation
+import com.larsreimann.api_editor.model.PythonEnumInstance
+import com.larsreimann.api_editor.model.PythonFromImport
+import com.larsreimann.api_editor.model.PythonImport
+import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.model.SerializablePythonAttribute
 import com.larsreimann.api_editor.model.SerializablePythonClass
 import com.larsreimann.api_editor.model.SerializablePythonEnum
@@ -10,12 +16,6 @@ import com.larsreimann.api_editor.model.SerializablePythonModule
 import com.larsreimann.api_editor.model.SerializablePythonPackage
 import com.larsreimann.api_editor.model.SerializablePythonParameter
 import com.larsreimann.api_editor.model.SerializablePythonResult
-import com.larsreimann.api_editor.model.Boundary
-import com.larsreimann.api_editor.model.EditorAnnotation
-import com.larsreimann.api_editor.model.PythonEnumInstance
-import com.larsreimann.api_editor.model.PythonFromImport
-import com.larsreimann.api_editor.model.PythonImport
-import com.larsreimann.api_editor.model.PythonParameterAssignment
 
 sealed class MutablePythonAstNode : TreeNode()
 

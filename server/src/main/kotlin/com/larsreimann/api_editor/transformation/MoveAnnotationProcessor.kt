@@ -1,14 +1,14 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.AbstractPackageDataVisitor
+import com.larsreimann.api_editor.model.EditorAnnotation
+import com.larsreimann.api_editor.model.MoveAnnotation
 import com.larsreimann.api_editor.model.SerializablePythonAttribute
 import com.larsreimann.api_editor.model.SerializablePythonClass
 import com.larsreimann.api_editor.model.SerializablePythonFunction
 import com.larsreimann.api_editor.model.SerializablePythonModule
 import com.larsreimann.api_editor.model.SerializablePythonPackage
 import com.larsreimann.api_editor.model.SerializablePythonParameter
-import com.larsreimann.api_editor.model.EditorAnnotation
-import com.larsreimann.api_editor.model.MoveAnnotation
 import com.larsreimann.api_editor.util.createModuleCopyWithoutClassesAndFunctions
 import com.larsreimann.api_editor.util.createPackageCopyWithoutModules
 import com.larsreimann.api_editor.util.createPythonAttribute

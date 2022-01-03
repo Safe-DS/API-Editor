@@ -1,11 +1,5 @@
 package com.larsreimann.api_editor.validation
 
-import com.larsreimann.api_editor.model.SerializablePythonClass
-import com.larsreimann.api_editor.model.SerializablePythonFunction
-import com.larsreimann.api_editor.model.SerializablePythonModule
-import com.larsreimann.api_editor.model.SerializablePythonPackage
-import com.larsreimann.api_editor.model.SerializablePythonParameter
-import com.larsreimann.api_editor.model.SerializablePythonResult
 import com.larsreimann.api_editor.model.AnnotationTarget
 import com.larsreimann.api_editor.model.AttributeAnnotation
 import com.larsreimann.api_editor.model.BoundaryAnnotation
@@ -20,6 +14,12 @@ import com.larsreimann.api_editor.model.PythonFromImport
 import com.larsreimann.api_editor.model.PythonImport
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.model.RenameAnnotation
+import com.larsreimann.api_editor.model.SerializablePythonClass
+import com.larsreimann.api_editor.model.SerializablePythonFunction
+import com.larsreimann.api_editor.model.SerializablePythonModule
+import com.larsreimann.api_editor.model.SerializablePythonPackage
+import com.larsreimann.api_editor.model.SerializablePythonParameter
+import com.larsreimann.api_editor.model.SerializablePythonResult
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import org.junit.jupiter.api.Test

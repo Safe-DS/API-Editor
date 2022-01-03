@@ -1,13 +1,13 @@
 package com.larsreimann.api_editor.codegen
 
+import com.larsreimann.api_editor.model.PythonFromImport
+import com.larsreimann.api_editor.model.PythonImport
+import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.model.SerializablePythonClass
 import com.larsreimann.api_editor.model.SerializablePythonFunction
 import com.larsreimann.api_editor.model.SerializablePythonModule
 import com.larsreimann.api_editor.model.SerializablePythonParameter
 import com.larsreimann.api_editor.model.SerializablePythonResult
-import com.larsreimann.api_editor.model.PythonFromImport
-import com.larsreimann.api_editor.model.PythonImport
-import com.larsreimann.api_editor.model.PythonParameterAssignment
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach

@@ -1,11 +1,11 @@
 package com.larsreimann.api_editor.codegen
 
-import com.larsreimann.api_editor.model.SerializablePythonFunction
-import com.larsreimann.api_editor.model.SerializablePythonParameter
-import com.larsreimann.api_editor.model.SerializablePythonResult
 import com.larsreimann.api_editor.model.PythonParameterAssignment.NAME_ONLY
 import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITION_ONLY
 import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITION_OR_NAME
+import com.larsreimann.api_editor.model.SerializablePythonFunction
+import com.larsreimann.api_editor.model.SerializablePythonParameter
+import com.larsreimann.api_editor.model.SerializablePythonResult
 import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.createSmlAnnotationUse
 import de.unibonn.simpleml.emf.createSmlArgument
@@ -157,9 +157,9 @@ fun buildDefaultValue(defaultValue: String): SmlAbstractExpression? {
 
     val invalid = "###invalid###" + defaultValue.replace("\"", "\\\"") + "###"
     if (defaultValue.length >= 2 && (
-            defaultValue[defaultValue.length - 1]
-                == defaultValue[0]
-            ) && defaultValue[0] == '\'' && defaultValue.count { it == '\'' } == 2
+        defaultValue[defaultValue.length - 1]
+            == defaultValue[0]
+        ) && defaultValue[0] == '\'' && defaultValue.count { it == '\'' } == 2
     ) {
         return createSmlString(defaultValue.replace("'".toRegex(), "\"").trim('\'', '"'))
     }
