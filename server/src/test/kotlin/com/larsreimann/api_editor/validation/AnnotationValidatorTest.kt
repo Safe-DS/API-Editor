@@ -32,7 +32,7 @@ internal class AnnotationValidatorTest {
             "test-distribution",
             "test-package",
             "1.0.0",
-            listOf(
+            mutableListOf(
                 AnnotatedPythonModule(
                     "test-module",
                     listOf(
@@ -48,18 +48,18 @@ internal class AnnotationValidatorTest {
                             null
                         )
                     ),
-                    listOf(
+                    mutableListOf(
                         AnnotatedPythonClass(
                             "test-class",
                             "test-module.test-class",
                             listOf("test-decorator"),
                             listOf("test-superclass"),
-                            listOf(
+                            mutableListOf(
                                 AnnotatedPythonFunction(
                                     "test-class-function",
                                     "test-module.test-class.test-class-function",
                                     listOf("decorators"),
-                                    listOf(
+                                    mutableListOf(
                                         AnnotatedPythonParameter(
                                             "only-param",
                                             "test-module.test-class.test-class-function.only-param",
@@ -74,7 +74,7 @@ internal class AnnotationValidatorTest {
                                                 )
                                             )
                                         )
-                                    ), emptyList(),
+                                    ), mutableListOf(),
                                     true,
                                     "description",
                                     "fullDocstring",
@@ -95,12 +95,12 @@ internal class AnnotationValidatorTest {
                             )
                         )
                     ),
-                    listOf(
+                    mutableListOf(
                         AnnotatedPythonFunction(
                             "test-function",
                             "test-module.test-function",
                             listOf("test-decorator"),
-                            listOf(
+                            mutableListOf(
                                 AnnotatedPythonParameter(
                                     "test-parameter",
                                     "test-module.test-function.test-parameter",
@@ -116,7 +116,7 @@ internal class AnnotationValidatorTest {
                                     )
                                 )
                             ),
-                            listOf(
+                            mutableListOf(
                                 AnnotatedPythonResult(
                                     "test-result",
                                     "str",
@@ -181,7 +181,7 @@ internal class AnnotationValidatorTest {
             "test-distribution",
             "test-package",
             "1.0.0",
-            listOf(
+            mutableListOf(
                 AnnotatedPythonModule(
                     "test-module",
                     listOf(
@@ -197,18 +197,18 @@ internal class AnnotationValidatorTest {
                             null
                         )
                     ),
-                    listOf(
+                    mutableListOf(
                         AnnotatedPythonClass(
                             "test-class",
                             "test-module.test-class",
                             listOf("test-decorator"),
                             listOf("test-superclass"),
-                            listOf(
+                            mutableListOf(
                                 AnnotatedPythonFunction(
                                     "__init__",
                                     "test-module.test-class.__init__",
                                     listOf("decorators"),
-                                    listOf(
+                                    mutableListOf(
                                         AnnotatedPythonParameter(
                                             "only-param",
                                             "test-module.test-class.__init__.only-param",
@@ -231,7 +231,7 @@ internal class AnnotationValidatorTest {
                                                 )
                                             )
                                         )
-                                    ), emptyList(),
+                                    ), mutableListOf(),
                                     true,
                                     "description",
                                     "fullDocstring",
@@ -251,12 +251,12 @@ internal class AnnotationValidatorTest {
                             )
                         )
                     ),
-                    listOf(
+                    mutableListOf(
                         AnnotatedPythonFunction(
                             "test-function",
                             "test-module.test-function",
                             listOf("test-decorator"),
-                            listOf(
+                            mutableListOf(
                                 AnnotatedPythonParameter(
                                     "test-parameter",
                                     "test-module.test-function.test-parameter",
@@ -280,7 +280,7 @@ internal class AnnotationValidatorTest {
                                     )
                                 )
                             ),
-                            listOf(
+                            mutableListOf(
                                 AnnotatedPythonResult(
                                     "test-result",
                                     "str",
@@ -325,7 +325,7 @@ internal class AnnotationValidatorTest {
             "test-distribution",
             "test-package",
             "1.0.0",
-            listOf(
+            mutableListOf(
                 AnnotatedPythonModule(
                     "test-module",
                     listOf(
@@ -341,18 +341,18 @@ internal class AnnotationValidatorTest {
                             null
                         )
                     ),
-                    listOf(
+                    mutableListOf(
                         AnnotatedPythonClass(
                             "test-class",
                             "test-module.test-class",
                             listOf("test-decorator"),
                             listOf("test-superclass"),
-                            listOf(
+                            mutableListOf(
                                 AnnotatedPythonFunction(
                                     "__init__",
                                     "test-module.test-class.__init__",
                                     listOf("decorators"),
-                                    listOf(
+                                    mutableListOf(
                                         AnnotatedPythonParameter(
                                             "only-param",
                                             "test-module.test-class.__init__.only-param",
@@ -370,7 +370,7 @@ internal class AnnotationValidatorTest {
                                                 )
                                             )
                                         )
-                                    ), emptyList(),
+                                    ), mutableListOf(),
                                     true,
                                     "description",
                                     "fullDocstring", mutableListOf()
@@ -381,12 +381,12 @@ internal class AnnotationValidatorTest {
                             "Lorem ipsum", mutableListOf()
                         )
                     ),
-                    listOf(
+                    mutableListOf(
                         AnnotatedPythonFunction(
                             "test-function",
                             "test-module.test-function",
                             listOf("test-decorator"),
-                            listOf(
+                            mutableListOf(
                                 AnnotatedPythonParameter(
                                     "test-parameter",
                                     "test-module.test-function.test-parameter",
@@ -408,7 +408,7 @@ internal class AnnotationValidatorTest {
                                     )
                                 )
                             ),
-                            listOf(
+                            mutableListOf(
                                 AnnotatedPythonResult(
                                     "test-result",
                                     "str",
@@ -463,7 +463,7 @@ internal class AnnotationValidatorTest {
             "test-distribution",
             "test-package",
             "1.0.0",
-            listOf(
+            mutableListOf(
                 AnnotatedPythonModule(
                     "test-module",
                     listOf(
@@ -479,18 +479,18 @@ internal class AnnotationValidatorTest {
                             null
                         )
                     ),
-                    listOf(
+                    mutableListOf(
                         AnnotatedPythonClass(
                             "test-class",
                             "test-module.test-class",
                             listOf("test-decorator"),
                             listOf("test-superclass"),
-                            listOf(
+                            mutableListOf(
                                 AnnotatedPythonFunction(
                                     "__init__",
                                     "test-module.test-class.__init__",
                                     listOf("decorators"),
-                                    listOf(
+                                    mutableListOf(
                                         AnnotatedPythonParameter(
                                             "first-param",
                                             "test-module.test-class.__init__.first-param",
@@ -531,7 +531,7 @@ internal class AnnotationValidatorTest {
                                                 RenameAnnotation("newName")
                                             )
                                         )
-                                    ), emptyList(),
+                                    ), mutableListOf(),
                                     true,
                                     "description",
                                     "fullDocstring",
@@ -545,7 +545,7 @@ internal class AnnotationValidatorTest {
                                     "class-function",
                                     "test-module.test-class.class-function",
                                     listOf("decorators"),
-                                    listOf(
+                                    mutableListOf(
                                         AnnotatedPythonParameter(
                                             "first-param",
                                             "test-module.test-class.class-function.first-param",
@@ -572,7 +572,7 @@ internal class AnnotationValidatorTest {
                                                 )
                                             )
                                         )
-                                    ), emptyList(),
+                                    ), mutableListOf(),
                                     true,
                                     "description",
                                     "fullDocstring",
@@ -589,12 +589,12 @@ internal class AnnotationValidatorTest {
                             "Lorem ipsum", mutableListOf()
                         )
                     ),
-                    listOf(
+                    mutableListOf(
                         AnnotatedPythonFunction(
                             "class-function",
                             "test-module.module-function",
                             listOf("decorators"),
-                            listOf(
+                            mutableListOf(
                                 AnnotatedPythonParameter(
                                     "first-param",
                                     "test-module.module-function.first-param",
@@ -621,7 +621,7 @@ internal class AnnotationValidatorTest {
                                         )
                                     )
                                 )
-                            ), emptyList(),
+                            ), mutableListOf(),
                             true,
                             "description",
                             "fullDocstring",

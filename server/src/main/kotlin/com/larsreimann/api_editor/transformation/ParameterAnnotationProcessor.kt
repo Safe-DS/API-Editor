@@ -1,209 +1,205 @@
-package com.larsreimann.api_editor.transformation;
+package com.larsreimann.api_editor.transformation
 
-import com.larsreimann.api_editor.model.*;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import com.larsreimann.api_editor.model.AbstractPackageDataTransformer
+import com.larsreimann.api_editor.model.AnnotatedPythonAttribute
+import com.larsreimann.api_editor.model.AnnotatedPythonClass
+import com.larsreimann.api_editor.model.AnnotatedPythonFunction
+import com.larsreimann.api_editor.model.AnnotatedPythonParameter
+import com.larsreimann.api_editor.model.AnnotatedPythonResult
+import com.larsreimann.api_editor.model.AttributeAnnotation
+import com.larsreimann.api_editor.model.ConstantAnnotation
+import com.larsreimann.api_editor.model.EditorAnnotation
+import com.larsreimann.api_editor.model.OptionalAnnotation
+import com.larsreimann.api_editor.model.PythonParameterAssignment
+import com.larsreimann.api_editor.model.RequiredAnnotation
+import java.util.Objects
+import java.util.function.Consumer
 
 /**
  * Processor for Constant-, Optional- and RequiredAnnotations
  */
-public class ParameterAnnotationProcessor extends AbstractPackageDataTransformer {
-    @Override
-    public boolean shouldVisitResultsIn(
-        @NotNull AnnotatedPythonFunction pythonFunction
-    ) {
-        return false;
+class ParameterAnnotationProcessor : AbstractPackageDataTransformer() {
+    override fun shouldVisitResultsIn(oldFunction: AnnotatedPythonFunction): Boolean {
+        return false
     }
 
-    @Override
-    public AnnotatedPythonParameter createNewParameter(
-        @NotNull AnnotatedPythonParameter oldParameter
-    ) {
-        ArrayList<EditorAnnotation> annotations = new ArrayList<>();
-        String defaultValue = oldParameter.getDefaultValue();
-        PythonParameterAssignment assignedBy;
+    override fun createNewParameter(oldParameter: AnnotatedPythonParameter): AnnotatedPythonParameter {
+        val annotations = ArrayList<EditorAnnotation>()
+        var defaultValue = oldParameter.defaultValue
+        var assignedBy: PythonParameterAssignment
         /* preprocessing:
         required parameters -> position_or_name,
         optional parameters -> name_only
-         */
-        if (oldParameter.getDefaultValue() != null) {
-            assignedBy = PythonParameterAssignment.NAME_ONLY;
+         */assignedBy = if (oldParameter.defaultValue != null) {
+            PythonParameterAssignment.NAME_ONLY
         } else {
-            assignedBy = PythonParameterAssignment.POSITION_OR_NAME;
+            PythonParameterAssignment.POSITION_OR_NAME
         }
-        for (EditorAnnotation editorAnnotation : oldParameter.getAnnotations()) {
-            if (editorAnnotation instanceof AttributeAnnotation) {
-                assignedBy = PythonParameterAssignment.ATTRIBUTE;
-                defaultValue = (((AttributeAnnotation) editorAnnotation)
-                    .getDefaultValue()).toString();
-            } else if (editorAnnotation instanceof ConstantAnnotation) {
-                assignedBy = PythonParameterAssignment.CONSTANT;
-                defaultValue = (((ConstantAnnotation) editorAnnotation)
-                    .getDefaultValue()).toString();
-            } else if (editorAnnotation instanceof OptionalAnnotation) {
-                defaultValue = (((OptionalAnnotation) editorAnnotation)
-                    .getDefaultValue()).toString();
-                assignedBy = PythonParameterAssignment.NAME_ONLY;
-            } else if (editorAnnotation instanceof RequiredAnnotation) {
-                defaultValue = null;
-                assignedBy = PythonParameterAssignment.POSITION_OR_NAME;
-            } else {
-                annotations.add(editorAnnotation);
+        for (editorAnnotation in oldParameter.annotations) {
+            when (editorAnnotation) {
+                is AttributeAnnotation -> {
+                    assignedBy = PythonParameterAssignment.ATTRIBUTE
+                    defaultValue = editorAnnotation
+                        .defaultValue.toString()
+                }
+                is ConstantAnnotation -> {
+                    assignedBy = PythonParameterAssignment.CONSTANT
+                    defaultValue = editorAnnotation
+                        .defaultValue.toString()
+                }
+                is OptionalAnnotation -> {
+                    defaultValue = editorAnnotation
+                        .defaultValue.toString()
+                    assignedBy = PythonParameterAssignment.NAME_ONLY
+                }
+                is RequiredAnnotation -> {
+                    defaultValue = null
+                    assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+                }
+                else -> {
+                    annotations.add(editorAnnotation)
+                }
             }
         }
         return oldParameter.fullCopy(
-            oldParameter.getName(),
-            oldParameter.getQualifiedName(),
+            oldParameter.name,
+            oldParameter.qualifiedName,
             defaultValue,
             assignedBy,
-            oldParameter.isPublic(),
-            oldParameter.getTypeInDocs(),
-            oldParameter.getDescription(),
+            oldParameter.isPublic,
+            oldParameter.typeInDocs,
+            oldParameter.description,
             annotations,
-            oldParameter.getBoundary(),
-            oldParameter.getOriginalDeclaration() != null ?
-                oldParameter.getOriginalDeclaration() : oldParameter
-        );
+            oldParameter.boundary,
+            if (oldParameter.originalDeclaration != null) oldParameter.originalDeclaration else oldParameter
+        )
     }
 
-    @Override
-    public AnnotatedPythonFunction createNewFunctionOnLeave(
-        @NotNull AnnotatedPythonFunction oldFunction,
-        @NotNull List<AnnotatedPythonParameter> newParameters,
-        @NotNull List<AnnotatedPythonResult> newResults
-    ) {
+    override fun createNewFunctionOnLeave(
+        oldFunction: AnnotatedPythonFunction,
+        newParameters: List<AnnotatedPythonParameter>,
+        newResults: List<AnnotatedPythonResult>
+    ): AnnotatedPythonFunction {
         return oldFunction.fullCopy(
-            oldFunction.getName(),
-            oldFunction.getQualifiedName(),
-            oldFunction.getDecorators(),
-            reorderParameters(newParameters),
-            newResults,
-            oldFunction.isPublic(),
-            oldFunction.getDescription(),
-            oldFunction.getFullDocstring(),
-            oldFunction.getAnnotations(),
-            oldFunction.getCalledAfter(),
-            oldFunction.isPure(),
-            oldFunction.getOriginalDeclaration() != null ?
-                oldFunction.getOriginalDeclaration() : oldFunction
-        );
+            oldFunction.name,
+            oldFunction.qualifiedName,
+            oldFunction.decorators,
+            reorderParameters(newParameters).toMutableList(),
+            newResults.toMutableList(),
+            oldFunction.isPublic,
+            oldFunction.description,
+            oldFunction.fullDocstring,
+            oldFunction.annotations,
+            oldFunction.calledAfter,
+            oldFunction.isPure,
+            if (oldFunction.originalDeclaration != null) oldFunction.originalDeclaration else oldFunction
+        )
     }
 
-    @Override
-    public AnnotatedPythonClass createNewClassOnLeave(
-        @NotNull AnnotatedPythonClass oldClass,
-        @NotNull List<AnnotatedPythonAttribute> newAttributes,
-        @NotNull List<AnnotatedPythonFunction> newMethods
-    ) {
-        List<AnnotatedPythonAttribute> processedNewAttributes = new ArrayList<>(newAttributes);
-
-        for (AnnotatedPythonFunction pythonFunction : newMethods) {
+    override fun createNewClassOnLeave(
+        oldClass: AnnotatedPythonClass,
+        newAttributes: List<AnnotatedPythonAttribute>,
+        newMethods: List<AnnotatedPythonFunction>
+    ): AnnotatedPythonClass {
+        val processedNewAttributes: MutableList<AnnotatedPythonAttribute> = ArrayList(newAttributes)
+        for (pythonFunction in newMethods) {
             if (pythonFunction.isConstructor()) {
-                for (AnnotatedPythonParameter constructorParameter :
-                    pythonFunction.getParameters()) {
+                for (constructorParameter in pythonFunction.parameters) {
                     // Change default value of old attribute if assigned by of
                     // constructor parameter is of type attribute
-                    if (constructorParameter.getAssignedBy()
-                        == PythonParameterAssignment.ATTRIBUTE) {
-                        Optional<AnnotatedPythonAttribute> unmodifiedAttribute =
-                            processedNewAttributes.stream().filter(
-                            pythonAttribute ->
-                                Objects.requireNonNull(
-                                    pythonAttribute.getOriginalDeclaration()
-                                ).getName()
-                                    .equals(
-                                        Objects.requireNonNull(
-                                            constructorParameter
-                                                .getOriginalDeclaration()
-                                            )
-                                            .getName()
+                    if (constructorParameter.assignedBy
+                        === PythonParameterAssignment.ATTRIBUTE
+                    ) {
+                        val unmodifiedAttribute =
+                            processedNewAttributes.stream().filter { pythonAttribute: AnnotatedPythonAttribute ->
+                                (Objects.requireNonNull(
+                                    pythonAttribute.originalDeclaration
+                                )!!.name
+                                    ==
+                                    Objects.requireNonNull(
+                                        constructorParameter
+                                            .originalDeclaration
                                     )
-                        ).findAny();
-                        if (unmodifiedAttribute.isPresent()) {
-                            AnnotatedPythonAttribute unmodifiedPresentAttribute
-                                = unmodifiedAttribute.get();
-                            processedNewAttributes.remove(unmodifiedPresentAttribute);
+                                    !!.name
+                                    )
+                            }.findAny()
+                        if (unmodifiedAttribute.isPresent) {
+                            val unmodifiedPresentAttribute = unmodifiedAttribute.get()
+                            processedNewAttributes.remove(unmodifiedPresentAttribute)
                             processedNewAttributes.add(
                                 unmodifiedPresentAttribute.fullCopy(
-                                    unmodifiedPresentAttribute.getName(),
-                                    unmodifiedPresentAttribute.getQualifiedName(),
-                                    constructorParameter.getDefaultValue(),
-                                    unmodifiedPresentAttribute.isPublic(),
-                                    unmodifiedPresentAttribute.getTypeInDocs(),
-                                    unmodifiedPresentAttribute.getDescription(),
-                                    unmodifiedPresentAttribute.getAnnotations(),
-                                    unmodifiedPresentAttribute.getBoundary(),
-                                    unmodifiedPresentAttribute.getOriginalDeclaration()
+                                    unmodifiedPresentAttribute.name,
+                                    unmodifiedPresentAttribute.qualifiedName,
+                                    constructorParameter.defaultValue,
+                                    unmodifiedPresentAttribute.isPublic,
+                                    unmodifiedPresentAttribute.typeInDocs,
+                                    unmodifiedPresentAttribute.description,
+                                    unmodifiedPresentAttribute.annotations,
+                                    unmodifiedPresentAttribute.boundary,
+                                    unmodifiedPresentAttribute.originalDeclaration
                                 )
-                            );
+                            )
                         }
-                    }
-                    // Remove attribute if corresponding
-                    // constructor parameter is of type constant
-                    else if (constructorParameter.getAssignedBy()
-                        == PythonParameterAssignment.CONSTANT) {
-                        processedNewAttributes.removeIf(
-                            pythonAttribute ->
-                                Objects.requireNonNull(pythonAttribute
-                                        .getOriginalDeclaration())
-                                    .getName()
-                                    .equals(
-                                        Objects.requireNonNull(constructorParameter
-                                                .getOriginalDeclaration())
-                                            .getName()
-                                    )
-                        );
+                    } else if (constructorParameter.assignedBy
+                        === PythonParameterAssignment.CONSTANT
+                    ) {
+                        processedNewAttributes.removeIf { pythonAttribute: AnnotatedPythonAttribute ->
+                            (Objects.requireNonNull(
+                                pythonAttribute
+                                    .originalDeclaration
+                            )
+                            !!.name
+                                ==
+                                Objects.requireNonNull(
+                                    constructorParameter
+                                        .originalDeclaration
+                                )
+                                !!.name
+                                )
+                        }
                     }
                 }
             }
         }
-
         return oldClass.fullCopy(
-            oldClass.getName(),
-            oldClass.getQualifiedName(),
-            oldClass.getDecorators(),
-            oldClass.getSuperclasses(),
+            oldClass.name,
+            oldClass.qualifiedName,
+            oldClass.decorators,
+            oldClass.superclasses,
             processedNewAttributes,
-            newMethods,
-            oldClass.isPublic(),
-            oldClass.getDescription(),
-            oldClass.getFullDocstring(),
-            oldClass.getAnnotations(),
-            oldClass.getOriginalDeclaration()
-        );
+            newMethods.toMutableList(),
+            oldClass.isPublic,
+            oldClass.description,
+            oldClass.fullDocstring,
+            oldClass.annotations,
+            oldClass.originalDeclaration
+        )
     }
 
-    private List<AnnotatedPythonParameter> reorderParameters(
-        List<AnnotatedPythonParameter> unorderedParameters
-    ) {
-        List<AnnotatedPythonParameter> orderedParameters = new ArrayList<>();
-        List<AnnotatedPythonParameter> attributeParameters = new ArrayList<>();
-        List<AnnotatedPythonParameter> constantParameters = new ArrayList<>();
-        List<AnnotatedPythonParameter> implicitParameters = new ArrayList<>();
-        List<AnnotatedPythonParameter> optionalParameters = new ArrayList<>();
-        List<AnnotatedPythonParameter> requiredParameters = new ArrayList<>();
-        unorderedParameters.forEach(pythonParameter -> {
-            switch (pythonParameter.getAssignedBy()) {
-                case IMPLICIT -> implicitParameters.add(pythonParameter);
-                case POSITION_OR_NAME -> requiredParameters.add(pythonParameter);
-                case NAME_ONLY -> optionalParameters.add(pythonParameter);
-                case CONSTANT -> constantParameters.add(pythonParameter);
-                case ATTRIBUTE -> attributeParameters.add(pythonParameter);
-                case POSITION_ONLY -> throw new RuntimeException(
+    private fun reorderParameters(unorderedParameters: List<AnnotatedPythonParameter>): List<AnnotatedPythonParameter> {
+        val orderedParameters = mutableListOf<AnnotatedPythonParameter>()
+        val attributeParameters = mutableListOf<AnnotatedPythonParameter>()
+        val constantParameters = mutableListOf<AnnotatedPythonParameter>()
+        val implicitParameters = mutableListOf<AnnotatedPythonParameter>()
+        val optionalParameters = mutableListOf<AnnotatedPythonParameter>()
+        val requiredParameters = mutableListOf<AnnotatedPythonParameter>()
+        unorderedParameters.forEach(Consumer { pythonParameter: AnnotatedPythonParameter ->
+            when (pythonParameter.assignedBy) {
+                PythonParameterAssignment.IMPLICIT -> implicitParameters.add(pythonParameter)
+                PythonParameterAssignment.POSITION_OR_NAME -> requiredParameters.add(pythonParameter)
+                PythonParameterAssignment.NAME_ONLY -> optionalParameters.add(pythonParameter)
+                PythonParameterAssignment.CONSTANT -> constantParameters.add(pythonParameter)
+                PythonParameterAssignment.ATTRIBUTE -> attributeParameters.add(pythonParameter)
+                PythonParameterAssignment.POSITION_ONLY -> throw RuntimeException(
                     "Position_only parameters must not exist after executing ParameterAnnotationProcessor"
-                );
+                )
             }
-        });
-        orderedParameters.addAll(implicitParameters);
-        orderedParameters.addAll(requiredParameters);
-        orderedParameters.addAll(optionalParameters);
-        orderedParameters.addAll(constantParameters);
-        orderedParameters.addAll(attributeParameters);
-
-        return orderedParameters;
+        })
+        orderedParameters.addAll(implicitParameters)
+        orderedParameters.addAll(requiredParameters)
+        orderedParameters.addAll(optionalParameters)
+        orderedParameters.addAll(constantParameters)
+        orderedParameters.addAll(attributeParameters)
+        return orderedParameters
     }
 }

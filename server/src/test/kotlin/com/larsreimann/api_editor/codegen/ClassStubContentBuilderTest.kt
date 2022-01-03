@@ -26,7 +26,7 @@ internal class ClassStubContentBuilderTest {
             "TestClass",
             "testModule.TestClass",
             listOf("TestDecorator"),
-            listOf("TestSuperclass"), emptyList(),
+            listOf("TestSuperclass"), mutableListOf(),
             true,
             "Lorem ipsum",
             "Lorem ipsum", mutableListOf()
@@ -51,12 +51,12 @@ internal class ClassStubContentBuilderTest {
             "testModule.TestClass",
             listOf("TestDecorator"),
             listOf("TestSuperclass"),
-            listOf(
+            mutableListOf(
                 AnnotatedPythonFunction(
                     "testClassFunction",
                     "testModule.TestClass.testClassFunction",
                     listOf("decorators"),
-                    listOf(
+                    mutableListOf(
                         AnnotatedPythonParameter(
                             "onlyParam",
                             "testModule.TestClass.testClassFunction.onlyParam",
@@ -72,7 +72,7 @@ internal class ClassStubContentBuilderTest {
                             )
                         )
                     ),
-                    emptyList(),
+                    mutableListOf(),
                     true,
                     "description",
                     "fullDocstring", mutableListOf()
@@ -105,12 +105,12 @@ internal class ClassStubContentBuilderTest {
             "testModule.TestClass",
             listOf("TestDecorator"),
             listOf("TestSuperclass"),
-            listOf(
+            mutableListOf(
                 AnnotatedPythonFunction(
                     "testClassFunction1",
                     "testModule.TestClass.testClassFunction1",
                     listOf("decorators"),
-                    listOf(
+                    mutableListOf(
                         AnnotatedPythonParameter(
                             "onlyParam",
                             "testModule.TestClass.testClassFunction.onlyParam",
@@ -121,7 +121,7 @@ internal class ClassStubContentBuilderTest {
                             "description", mutableListOf()
                         )
                     ),
-                    emptyList(),
+                    mutableListOf(),
                     true,
                     "description",
                     "fullDocstring", mutableListOf()
@@ -130,7 +130,7 @@ internal class ClassStubContentBuilderTest {
                     "__init__",
                     "testModule.TestClass.__init__",
                     listOf("decorators"),
-                    listOf(
+                    mutableListOf(
                         AnnotatedPythonParameter(
                             "onlyParam",
                             "testModule.TestClass.__init__.onlyParam",
@@ -141,7 +141,7 @@ internal class ClassStubContentBuilderTest {
                             "description", mutableListOf()
                         )
                     ),
-                    emptyList(),
+                    mutableListOf(),
                     true,
                     "description",
                     "fullDocstring", mutableListOf()

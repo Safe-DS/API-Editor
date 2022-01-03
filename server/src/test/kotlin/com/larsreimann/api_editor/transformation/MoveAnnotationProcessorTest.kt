@@ -1,265 +1,215 @@
-package com.larsreimann.api_editor.transformation;
+package com.larsreimann.api_editor.transformation
 
-import com.larsreimann.api_editor.model.*;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import com.larsreimann.api_editor.model.MoveAnnotation
+import com.larsreimann.api_editor.server.processPackage
+import com.larsreimann.api_editor.util.createPythonAttribute
+import com.larsreimann.api_editor.util.createPythonClass
+import com.larsreimann.api_editor.util.createPythonFunction
+import com.larsreimann.api_editor.util.createPythonModule
+import com.larsreimann.api_editor.util.createPythonPackage
+import com.larsreimann.api_editor.util.createPythonParameter
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 
-import static com.larsreimann.api_editor.server.RoutingKt.processPackage;
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.*;
-
-class MoveAnnotationProcessorTest {
+internal class MoveAnnotationProcessorTest {
     @Test
-    void movedGlobalMethodExistsInNewModule() {
+    fun movedGlobalMethodExistsInNewModule() {
         // given
-        AnnotatedPythonParameter pythonParameter =
-            createPythonParameter("testParameter");
-
-        AnnotatedPythonFunction testFunction =
-            createPythonFunction("testFunction");
-        testFunction.getParameters().add(pythonParameter);
-        testFunction.getAnnotations().add(
-            new MoveAnnotation("newModule")
-        );
-
-        AnnotatedPythonModule testModule =
-            createPythonModule("testModule");
-        testModule.getFunctions().add(testFunction);
-
-        AnnotatedPythonPackage testPackage =
-            createPythonPackage("testPackage");
-        testPackage.getModules().add(testModule);
+        val pythonParameter = createPythonParameter("testParameter")
+        val testFunction = createPythonFunction("testFunction")
+        testFunction.parameters.add(pythonParameter)
+        testFunction.annotations.add(
+            MoveAnnotation("newModule")
+        )
+        val testModule = createPythonModule("testModule")
+        testModule.functions.add(testFunction)
+        val testPackage = createPythonPackage("testPackage")
+        testPackage.modules.add(testModule)
 
         // when
-        AnnotatedPythonPackage modifiedPackage = processPackage(testPackage);
+        val (_, _, _, modules) = processPackage(testPackage)
 
         // then
-        boolean newModuleExists = false;
-        for (AnnotatedPythonModule pythonModule : modifiedPackage.getModules()) {
-            if (pythonModule.getName().equals("newModule")) {
-                newModuleExists = true;
+        var newModuleExists = false
+        for ((name, _, _, _, functions) in modules) {
+            if (name == "newModule") {
+                newModuleExists = true
                 Assertions.assertEquals(
                     "newModule.testFunction",
-                    pythonModule.getFunctions().get(0).getQualifiedName()
-                );
+                    functions[0].qualifiedName
+                )
                 Assertions.assertEquals(
                     "newModule.testFunction.testParameter",
-                    pythonModule
-                        .getFunctions().get(0)
-                        .getParameters().get(0)
-                        .getQualifiedName()
-                );
+                    functions[0]
+                        .parameters[0]
+                        .qualifiedName
+                )
             }
         }
-        Assertions.assertTrue(newModuleExists);
+        Assertions.assertTrue(newModuleExists)
     }
 
     @Test
-    void movedGlobalMethodIsRemovedFromOldModule() {
+    fun movedGlobalMethodIsRemovedFromOldModule() {
         // given
-        AnnotatedPythonParameter pythonParameter =
-            createPythonParameter("testParameter");
-
-        AnnotatedPythonFunction testFunction =
-            createPythonFunction("testFunction");
-        testFunction.getParameters().add(pythonParameter);
-        testFunction.getAnnotations().add(
-            new MoveAnnotation("newModule")
-        );
-
-        AnnotatedPythonModule testModule =
-            createPythonModule("testModule");
-        testModule.getFunctions().add(testFunction);
-
-        AnnotatedPythonPackage testPackage =
-            createPythonPackage("testPackage");
-        testPackage.getModules().add(testModule);
+        val pythonParameter = createPythonParameter("testParameter")
+        val testFunction = createPythonFunction("testFunction")
+        testFunction.parameters.add(pythonParameter)
+        testFunction.annotations.add(
+            MoveAnnotation("newModule")
+        )
+        val testModule = createPythonModule("testModule")
+        testModule.functions.add(testFunction)
+        val testPackage = createPythonPackage("testPackage")
+        testPackage.modules.add(testModule)
 
         // when
-        AnnotatedPythonPackage modifiedPackage = processPackage(testPackage);
+        val (_, _, _, modules) = processPackage(testPackage)
 
         // then
-        for (AnnotatedPythonModule pythonModule : modifiedPackage.getModules()) {
-            if (pythonModule.getName().equals("testModule")) {
-                Assertions.assertTrue(pythonModule.getFunctions().isEmpty());
+        for ((name, _, _, _, functions) in modules) {
+            if (name == "testModule") {
+                Assertions.assertTrue(functions.isEmpty())
             }
         }
     }
 
     @Test
-    void movedClassExistsInNewModule() {
+    fun movedClassExistsInNewModule() {
         // given
-        AnnotatedPythonParameter pythonParameter =
-            createPythonParameter("testParameter");
-
-        AnnotatedPythonFunction testFunction =
-            createPythonFunction("testFunction");
-        testFunction.getParameters().add(pythonParameter);
-
-        AnnotatedPythonAttribute testAttribute =
-            createPythonAttribute("testAttribute");
-
-        AnnotatedPythonClass testClass =
-            createPythonClass("testClass");
-        testClass.getMethods().add(testFunction);
-        testClass.getAttributes().add(testAttribute);
-        testClass.getAnnotations().add(
-            new MoveAnnotation("newModule")
-        );
-
-        AnnotatedPythonModule testModule =
-            createPythonModule("testModule");
-        testModule.getClasses().add(testClass);
-
-        AnnotatedPythonPackage testPackage =
-            createPythonPackage("testPackage");
-        testPackage.getModules().add(testModule);
+        val pythonParameter = createPythonParameter("testParameter")
+        val testFunction = createPythonFunction("testFunction")
+        testFunction.parameters.add(pythonParameter)
+        val testAttribute = createPythonAttribute("testAttribute")
+        val testClass = createPythonClass("testClass")
+        testClass.methods.add(testFunction)
+        testClass.attributes.add(testAttribute)
+        testClass.annotations.add(
+            MoveAnnotation("newModule")
+        )
+        val testModule = createPythonModule("testModule")
+        testModule.classes.add(testClass)
+        val testPackage = createPythonPackage("testPackage")
+        testPackage.modules.add(testModule)
 
         // when
-        AnnotatedPythonPackage modifiedPackage = processPackage(testPackage);
+        val (_, _, _, modules) = processPackage(testPackage)
 
         // then
-        boolean newModuleExists = false;
-        for (AnnotatedPythonModule pythonModule : modifiedPackage.getModules()) {
-            if (pythonModule.getName().equals("newModule")) {
-                newModuleExists = true;
+        var newModuleExists = false
+        for ((name, _, _, classes) in modules) {
+            if (name == "newModule") {
+                newModuleExists = true
                 Assertions.assertEquals(
                     "newModule.testClass",
-                    pythonModule.getClasses().get(0).getQualifiedName()
-                );
+                    classes[0].qualifiedName
+                )
                 Assertions.assertEquals(
                     "newModule.testClass.testFunction",
-                    pythonModule
-                        .getClasses().get(0)
-                        .getMethods().get(0)
-                        .getQualifiedName()
-                );
+                    classes[0]
+                        .methods[0]
+                        .qualifiedName
+                )
                 Assertions.assertEquals(
                     "newModule.testClass.testFunction.testParameter",
-                    pythonModule
-                        .getClasses().get(0)
-                        .getMethods().get(0)
-                        .getParameters().get(0)
-                        .getQualifiedName()
-                );
+                    classes[0]
+                        .methods[0]
+                        .parameters[0]
+                        .qualifiedName
+                )
                 Assertions.assertEquals(
                     "newModule.testClass.testAttribute",
-                    pythonModule
-                        .getClasses().get(0)
-                        .getAttributes().get(0)
-                        .getQualifiedName()
-                );
+                    classes[0]
+                        .attributes[0]
+                        .qualifiedName
+                )
             }
         }
-        Assertions.assertTrue(newModuleExists);
+        Assertions.assertTrue(newModuleExists)
     }
 
     @Test
-    void movedClassIsRemovedFromOldModule() {
+    fun movedClassIsRemovedFromOldModule() {
         // given
-        AnnotatedPythonParameter pythonParameter =
-            createPythonParameter("testParameter");
-
-        AnnotatedPythonFunction testFunction =
-            createPythonFunction("testFunction");
-        testFunction.getParameters().add(pythonParameter);
-
-        AnnotatedPythonClass testClass =
-            createPythonClass("testClass");
-        testClass.getMethods().add(testFunction);
-        testClass.getAnnotations().add(
-            new MoveAnnotation("newModule")
-        );
-
-        AnnotatedPythonModule testModule =
-            createPythonModule("testModule");
-        testModule.getClasses().add(testClass);
-
-        AnnotatedPythonPackage testPackage =
-            createPythonPackage("testPackage");
-        testPackage.getModules().add(testModule);
+        val pythonParameter = createPythonParameter("testParameter")
+        val testFunction = createPythonFunction("testFunction")
+        testFunction.parameters.add(pythonParameter)
+        val testClass = createPythonClass("testClass")
+        testClass.methods.add(testFunction)
+        testClass.annotations.add(
+            MoveAnnotation("newModule")
+        )
+        val testModule = createPythonModule("testModule")
+        testModule.classes.add(testClass)
+        val testPackage = createPythonPackage("testPackage")
+        testPackage.modules.add(testModule)
 
         // when
-        AnnotatedPythonPackage modifiedPackage = processPackage(testPackage);
+        val (_, _, _, modules) = processPackage(testPackage)
 
         // then
-        for (AnnotatedPythonModule pythonModule : modifiedPackage.getModules()) {
-            if (pythonModule.getName().equals("testModule")) {
-                Assertions.assertTrue(pythonModule.getClasses().isEmpty());
+        for ((name, _, _, classes) in modules) {
+            if (name == "testModule") {
+                Assertions.assertTrue(classes.isEmpty())
             }
         }
     }
 
     @Test
-    void movedClassExistsInExistingModule() {
+    fun movedClassExistsInExistingModule() {
         // given
-        AnnotatedPythonClass testClass =
-            createPythonClass("testClass");
-        testClass.getAnnotations().add(
-            new MoveAnnotation("existingModule")
-        );
-
-        AnnotatedPythonModule testModule =
-            createPythonModule("testModule");
-        testModule.getClasses().add(testClass);
-
-        AnnotatedPythonPackage testPackage =
-            createPythonPackage("testPackage");
-        testPackage.getModules().add(testModule);
-
-        AnnotatedPythonClass classInExistingModule =
-            createPythonClass("existingClass");
-        AnnotatedPythonModule existingModule =
-            createPythonModule("existingModule");
-        existingModule.getClasses().add(classInExistingModule);
-
-        testPackage.getModules().add(existingModule);
+        val testClass = createPythonClass("testClass")
+        testClass.annotations.add(
+            MoveAnnotation("existingModule")
+        )
+        val testModule = createPythonModule("testModule")
+        testModule.classes.add(testClass)
+        val testPackage = createPythonPackage("testPackage")
+        testPackage.modules.add(testModule)
+        val classInExistingModule = createPythonClass("existingClass")
+        val existingModule = createPythonModule("existingModule")
+        existingModule.classes.add(classInExistingModule)
+        testPackage.modules.add(existingModule)
 
         // when
-        AnnotatedPythonPackage modifiedPackage = processPackage(testPackage);
+        val (_, _, _, modules) = processPackage(testPackage)
 
         // then
-        boolean existingModuleStillExists = false;
-        for (AnnotatedPythonModule pythonModule : modifiedPackage.getModules()) {
-            if (pythonModule.getName().equals("existingModule")) {
-                existingModuleStillExists = true;
-                Assertions.assertEquals(2, pythonModule.getClasses().size());
+        var existingModuleStillExists = false
+        for ((name, _, _, classes) in modules) {
+            if (name == "existingModule") {
+                existingModuleStillExists = true
+                Assertions.assertEquals(2, classes.size)
             }
         }
-        Assertions.assertTrue(existingModuleStillExists);
+        Assertions.assertTrue(existingModuleStillExists)
     }
 
     @Test
-    void movedGlobalMethodExistsInExistingModule() {
+    fun movedGlobalMethodExistsInExistingModule() {
         // given
-        AnnotatedPythonFunction testFunction =
-            createPythonFunction("testFunction");
-        testFunction.getAnnotations().add(
-            new MoveAnnotation("existingModule")
-        );
-
-        AnnotatedPythonModule testModule =
-            createPythonModule("testModule");
-        testModule.getFunctions().add(testFunction);
-
-        AnnotatedPythonModule existingModule =
-            createPythonModule("existingModule");
-
-        AnnotatedPythonPackage testPackage =
-            createPythonPackage("testPackage");
-        testPackage.getModules().add(testModule);
-        testPackage.getModules().add(existingModule);
+        val testFunction = createPythonFunction("testFunction")
+        testFunction.annotations.add(
+            MoveAnnotation("existingModule")
+        )
+        val testModule = createPythonModule("testModule")
+        testModule.functions.add(testFunction)
+        val existingModule = createPythonModule("existingModule")
+        val testPackage = createPythonPackage("testPackage")
+        testPackage.modules.add(testModule)
+        testPackage.modules.add(existingModule)
 
         // when
-        AnnotatedPythonPackage modifiedPackage = processPackage(testPackage);
+        val (_, _, _, modules) = processPackage(testPackage)
 
         // then
-        boolean existingModuleExists = false;
-        for (AnnotatedPythonModule pythonModule : modifiedPackage.getModules()) {
-            if (pythonModule.getName().equals("existingModule")) {
-                existingModuleExists = true;
-                Assertions.assertEquals(1, pythonModule.getFunctions().size());
+        var existingModuleExists = false
+        for ((name, _, _, _, functions) in modules) {
+            if (name == "existingModule") {
+                existingModuleExists = true
+                Assertions.assertEquals(1, functions.size)
             }
         }
-        Assertions.assertTrue(existingModuleExists);
+        Assertions.assertTrue(existingModuleExists)
     }
 }

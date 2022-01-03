@@ -28,12 +28,12 @@ internal class CompilationUnitStubContentBuilderTest {
             "testModule.TestClass",
             listOf("testDecorator"),
             listOf("testSuperclass"),
-            listOf(
+            mutableListOf(
                 AnnotatedPythonFunction(
                     "testClassFunction",
                     "testModule.TestClass.testClassFunction",
                     listOf("decorators"),
-                    listOf(
+                    mutableListOf(
                         AnnotatedPythonParameter(
                             "onlyParam",
                             "testModule.TestClass.testClassFunction.onlyParam",
@@ -45,7 +45,7 @@ internal class CompilationUnitStubContentBuilderTest {
                             mutableListOf()
                         )
                     ),
-                    emptyList(),
+                    mutableListOf(),
                     true,
                     "description",
                     "fullDocstring",
@@ -55,7 +55,7 @@ internal class CompilationUnitStubContentBuilderTest {
                     "__init__",
                     "testModule.TestClass.__init__",
                     listOf("decorators"),
-                    listOf(
+                    mutableListOf(
                         AnnotatedPythonParameter(
                             "onlyParam",
                             "testModule.TestClass.__init__.onlyParam",
@@ -66,7 +66,7 @@ internal class CompilationUnitStubContentBuilderTest {
                             "description", mutableListOf()
                         )
                     ),
-                    emptyList(),
+                    mutableListOf(),
                     true,
                     "description",
                     "fullDocstring", mutableListOf()
@@ -78,15 +78,15 @@ internal class CompilationUnitStubContentBuilderTest {
         )
         val testModule = AnnotatedPythonModule(
             "testModule", emptyList(), emptyList(),
-            listOf(
+            mutableListOf(
                 testClass
             ),
-            listOf(
+            mutableListOf(
                 AnnotatedPythonFunction(
                     "functionModule1",
                     "test.module_1.functionModule1",
                     listOf("testDecorator"),
-                    listOf(
+                    mutableListOf(
                         AnnotatedPythonParameter(
                             "param1",
                             "test.module_1.functionModule1.param1",
@@ -115,7 +115,7 @@ internal class CompilationUnitStubContentBuilderTest {
                             "Lorem ipsum", mutableListOf()
                         )
                     ),
-                    listOf(
+                    mutableListOf(
                         AnnotatedPythonResult(
                             "testResult",
                             "str",
@@ -131,7 +131,7 @@ internal class CompilationUnitStubContentBuilderTest {
                     "testFunction",
                     "testModule.testFunction",
                     listOf("testDecorator"),
-                    listOf(
+                    mutableListOf(
                         AnnotatedPythonParameter(
                             "testParameter",
                             "testModule.testFunction.testParameter",
@@ -142,7 +142,7 @@ internal class CompilationUnitStubContentBuilderTest {
                             "Lorem ipsum", mutableListOf()
                         )
                     ),
-                    listOf(
+                    mutableListOf(
                         AnnotatedPythonResult(
                             "testResult",
                             "str",
@@ -187,13 +187,13 @@ internal class CompilationUnitStubContentBuilderTest {
     fun buildModuleContentWithNoClassesReturnsFormattedModuleContent() {
         // given
         val testModule = AnnotatedPythonModule(
-            "testModule", emptyList(), emptyList(), emptyList(),
-            listOf(
+            "testModule", emptyList(), emptyList(), mutableListOf(),
+            mutableListOf(
                 AnnotatedPythonFunction(
                     "functionModule1",
                     "test.module_1.functionModule1",
                     listOf("testDecorator"),
-                    listOf(
+                    mutableListOf(
                         AnnotatedPythonParameter(
                             "param1",
                             "test.module_1.functionModule1.param1",
@@ -222,7 +222,7 @@ internal class CompilationUnitStubContentBuilderTest {
                             "Lorem ipsum", mutableListOf()
                         )
                     ),
-                    listOf(
+                    mutableListOf(
                         AnnotatedPythonResult(
                             "testResult",
                             "str",
@@ -238,7 +238,7 @@ internal class CompilationUnitStubContentBuilderTest {
                     "testFunction",
                     "testModule.testFunction",
                     listOf("testDecorator"),
-                    listOf(
+                    mutableListOf(
                         AnnotatedPythonParameter(
                             "testParameter",
                             "testModule.testFunction.testParameter",
@@ -249,7 +249,7 @@ internal class CompilationUnitStubContentBuilderTest {
                             "Lorem ipsum", mutableListOf()
                         )
                     ),
-                    listOf(
+                    mutableListOf(
                         AnnotatedPythonResult(
                             "testResult",
                             "str",
@@ -289,12 +289,12 @@ internal class CompilationUnitStubContentBuilderTest {
             "testModule.TestClass",
             listOf("testDecorator"),
             listOf("testSuperclass"),
-            listOf(
+            mutableListOf(
                 AnnotatedPythonFunction(
                     "__init__",
                     "testModule.TestClass.__init__",
                     listOf("decorators"),
-                    listOf(
+                    mutableListOf(
                         AnnotatedPythonParameter(
                             "onlyParam",
                             "testModule.TestClass.__init__.onlyParam",
@@ -305,7 +305,7 @@ internal class CompilationUnitStubContentBuilderTest {
                             "description", mutableListOf()
                         )
                     ),
-                    emptyList(),
+                    mutableListOf(),
                     true,
                     "description",
                     "fullDocstring", mutableListOf()
@@ -330,10 +330,10 @@ internal class CompilationUnitStubContentBuilderTest {
                     null
                 )
             ),
-            listOf(
+            mutableListOf(
                 testClass
             ),
-            emptyList(), mutableListOf()
+            mutableListOf(), mutableListOf()
         )
 
         // when
@@ -356,7 +356,7 @@ internal class CompilationUnitStubContentBuilderTest {
     fun buildModuleContentWithNoFunctionsAndClassesReturnsFormattedModuleContent() {
         // given
         val testModule = AnnotatedPythonModule(
-            "testModule", emptyList(), emptyList(), emptyList(), emptyList(), mutableListOf()
+            "testModule", emptyList(), emptyList(), mutableListOf(), mutableListOf(), mutableListOf()
         )
 
         // when

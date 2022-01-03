@@ -1,91 +1,87 @@
-package com.larsreimann.api_editor.transformation;
+package com.larsreimann.api_editor.transformation
 
-import com.larsreimann.api_editor.model.*;
-import org.jetbrains.annotations.NotNull;
+import com.larsreimann.api_editor.model.AbstractPackageDataTransformer
+import com.larsreimann.api_editor.model.AnnotatedPythonAttribute
+import com.larsreimann.api_editor.model.AnnotatedPythonFunction
+import com.larsreimann.api_editor.model.AnnotatedPythonModule
+import com.larsreimann.api_editor.model.AnnotatedPythonParameter
+import com.larsreimann.api_editor.model.Boundary
+import com.larsreimann.api_editor.model.BoundaryAnnotation
+import com.larsreimann.api_editor.model.EditorAnnotation
 
-import java.util.ArrayList;
-
-public class BoundaryAnnotationProcessor extends AbstractPackageDataTransformer {
-    @Override
-    public boolean shouldVisitResultsIn(
-        @NotNull AnnotatedPythonFunction pythonFunction
-    ) {
-        return false;
+class BoundaryAnnotationProcessor : AbstractPackageDataTransformer() {
+    override fun shouldVisitResultsIn(
+        oldFunction: AnnotatedPythonFunction
+    ): Boolean {
+        return false
     }
 
-    @Override
-    public boolean shouldVisitEnumsIn(
-        @NotNull AnnotatedPythonModule pythonModule
-    ) {
-        return false;
+    override fun shouldVisitEnumsIn(
+        oldModule: AnnotatedPythonModule
+    ): Boolean {
+        return false
     }
 
-    @Override
-    public AnnotatedPythonParameter createNewParameter(
-        @NotNull AnnotatedPythonParameter oldParameter
-    ) {
-        ArrayList<EditorAnnotation> annotations = new ArrayList<>();
-        Boundary newBoundary = oldParameter.getBoundary();
-        for (EditorAnnotation editorAnnotation : oldParameter.getAnnotations()) {
-            if (editorAnnotation instanceof BoundaryAnnotation) {
-                newBoundary = new Boundary(
-                    ((BoundaryAnnotation) editorAnnotation).isDiscrete(),
-                    ((BoundaryAnnotation) editorAnnotation).getLowerIntervalLimit(),
-                    ((BoundaryAnnotation) editorAnnotation).getLowerLimitType(),
-                    ((BoundaryAnnotation) editorAnnotation).getUpperIntervalLimit(),
-                    ((BoundaryAnnotation) editorAnnotation).getUpperLimitType()
-                );
-            }
-            else {
-                annotations.add(editorAnnotation);
+    override fun createNewParameter(
+        oldParameter: AnnotatedPythonParameter
+    ): AnnotatedPythonParameter {
+        val annotations = ArrayList<EditorAnnotation>()
+        var newBoundary = oldParameter.boundary
+        for (editorAnnotation in oldParameter.annotations) {
+            if (editorAnnotation is BoundaryAnnotation) {
+                newBoundary = Boundary(
+                    editorAnnotation.isDiscrete,
+                    editorAnnotation.lowerIntervalLimit,
+                    editorAnnotation.lowerLimitType,
+                    editorAnnotation.upperIntervalLimit,
+                    editorAnnotation.upperLimitType
+                )
+            } else {
+                annotations.add(editorAnnotation)
             }
         }
-
         return oldParameter.fullCopy(
-            oldParameter.getName(),
-            oldParameter.getQualifiedName(),
-            oldParameter.getDefaultValue(),
-            oldParameter.getAssignedBy(),
-            oldParameter.isPublic(),
-            oldParameter.getTypeInDocs(),
-            oldParameter.getDescription(),
+            oldParameter.name,
+            oldParameter.qualifiedName,
+            oldParameter.defaultValue,
+            oldParameter.assignedBy,
+            oldParameter.isPublic,
+            oldParameter.typeInDocs,
+            oldParameter.description,
             annotations,
             newBoundary,
-            oldParameter.getOriginalDeclaration()
-        );
+            oldParameter.originalDeclaration
+        )
     }
 
-    @Override
-    public AnnotatedPythonAttribute createNewAttribute(
-        @NotNull AnnotatedPythonAttribute oldAttribute
-    ) {
-        ArrayList<EditorAnnotation> annotations = new ArrayList<>();
-        Boundary newBoundary = oldAttribute.getBoundary();
-        for (EditorAnnotation editorAnnotation : oldAttribute.getAnnotations()) {
-            if (editorAnnotation instanceof BoundaryAnnotation) {
-                newBoundary = new Boundary(
-                    ((BoundaryAnnotation) editorAnnotation).isDiscrete(),
-                    ((BoundaryAnnotation) editorAnnotation).getLowerIntervalLimit(),
-                    ((BoundaryAnnotation) editorAnnotation).getLowerLimitType(),
-                    ((BoundaryAnnotation) editorAnnotation).getUpperIntervalLimit(),
-                    ((BoundaryAnnotation) editorAnnotation).getUpperLimitType()
-                );
-            }
-            else {
-                annotations.add(editorAnnotation);
+    override fun createNewAttribute(
+        oldAttribute: AnnotatedPythonAttribute
+    ): AnnotatedPythonAttribute {
+        val annotations = ArrayList<EditorAnnotation>()
+        var newBoundary = oldAttribute.boundary
+        for (editorAnnotation in oldAttribute.annotations) {
+            if (editorAnnotation is BoundaryAnnotation) {
+                newBoundary = Boundary(
+                    editorAnnotation.isDiscrete,
+                    editorAnnotation.lowerIntervalLimit,
+                    editorAnnotation.lowerLimitType,
+                    editorAnnotation.upperIntervalLimit,
+                    editorAnnotation.upperLimitType
+                )
+            } else {
+                annotations.add(editorAnnotation)
             }
         }
-
         return oldAttribute.fullCopy(
-            oldAttribute.getName(),
-            oldAttribute.getQualifiedName(),
-            oldAttribute.getDefaultValue(),
-            oldAttribute.isPublic(),
-            oldAttribute.getTypeInDocs(),
-            oldAttribute.getDescription(),
+            oldAttribute.name,
+            oldAttribute.qualifiedName,
+            oldAttribute.defaultValue,
+            oldAttribute.isPublic,
+            oldAttribute.typeInDocs,
+            oldAttribute.description,
             annotations,
             newBoundary,
-            oldAttribute.getOriginalDeclaration()
-        );
+            oldAttribute.originalDeclaration
+        )
     }
 }

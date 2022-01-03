@@ -34,7 +34,7 @@ data class AnnotatedPythonPackage(
     val distribution: String,
     override val name: String,
     val version: String,
-    val modules: List<AnnotatedPythonModule>,
+    val modules: MutableList<AnnotatedPythonModule>,
     override val annotations: MutableList<EditorAnnotation>
 ) : AnnotatedPythonDeclaration() {
 
@@ -74,7 +74,7 @@ data class AnnotatedPythonPackage(
         distribution: String = this.distribution,
         name: String = this.name,
         version: String = this.version,
-        modules: List<AnnotatedPythonModule> = this.modules,
+        modules: MutableList<AnnotatedPythonModule> = this.modules,
         annotations: MutableList<EditorAnnotation> = this.annotations,
         originalDeclaration: AnnotatedPythonPackage? = this.originalDeclaration
     ): AnnotatedPythonPackage {
@@ -96,8 +96,8 @@ data class AnnotatedPythonModule(
     override val name: String,
     val imports: List<PythonImport>,
     val fromImports: List<PythonFromImport>,
-    val classes: List<AnnotatedPythonClass>,
-    val functions: List<AnnotatedPythonFunction>,
+    val classes: MutableList<AnnotatedPythonClass>,
+    val functions: MutableList<AnnotatedPythonFunction>,
     override val annotations: MutableList<EditorAnnotation>
 ) : AnnotatedPythonDeclaration() {
 
@@ -162,9 +162,9 @@ data class AnnotatedPythonModule(
         name: String = this.name,
         imports: List<PythonImport> = this.imports,
         fromImports: List<PythonFromImport> = this.fromImports,
-        classes: List<AnnotatedPythonClass> = this.classes,
-        enums: List<AnnotatedPythonEnum> = this.enums,
-        functions: List<AnnotatedPythonFunction> = this.functions,
+        classes: MutableList<AnnotatedPythonClass> = this.classes,
+        enums: MutableList<AnnotatedPythonEnum> = this.enums,
+        functions: MutableList<AnnotatedPythonFunction> = this.functions,
         annotations: MutableList<EditorAnnotation> = this.annotations,
         originalDeclaration: AnnotatedPythonModule? = this.originalDeclaration
     ): AnnotatedPythonModule {
@@ -202,7 +202,7 @@ data class AnnotatedPythonClass(
     val qualifiedName: String,
     val decorators: List<String>,
     val superclasses: List<String>,
-    val methods: List<AnnotatedPythonFunction>,
+    val methods: MutableList<AnnotatedPythonFunction>,
     val isPublic: Boolean,
     val description: String,
     val fullDocstring: String,
@@ -268,8 +268,8 @@ data class AnnotatedPythonClass(
         qualifiedName: String = this.qualifiedName,
         decorators: List<String> = this.decorators,
         superclasses: List<String> = this.superclasses,
-        attributes: List<AnnotatedPythonAttribute> = this.attributes,
-        methods: List<AnnotatedPythonFunction> = this.methods,
+        attributes: MutableList<AnnotatedPythonAttribute> = this.attributes,
+        methods: MutableList<AnnotatedPythonFunction> = this.methods,
         isPublic: Boolean = this.isPublic,
         description: String = this.description,
         fullDocstring: String = this.fullDocstring,
@@ -416,8 +416,8 @@ data class AnnotatedPythonFunction(
     override val name: String,
     val qualifiedName: String,
     val decorators: List<String>,
-    val parameters: List<AnnotatedPythonParameter>,
-    val results: List<AnnotatedPythonResult>,
+    val parameters: MutableList<AnnotatedPythonParameter>,
+    val results: MutableList<AnnotatedPythonResult>,
     val isPublic: Boolean,
     val description: String,
     val fullDocstring: String,
@@ -479,8 +479,8 @@ data class AnnotatedPythonFunction(
         name: String = this.name,
         qualifiedName: String = this.qualifiedName,
         decorators: List<String> = this.decorators,
-        parameters: List<AnnotatedPythonParameter> = this.parameters,
-        results: List<AnnotatedPythonResult> = this.results,
+        parameters: MutableList<AnnotatedPythonParameter> = this.parameters,
+        results: MutableList<AnnotatedPythonResult> = this.results,
         isPublic: Boolean = this.isPublic,
         description: String = this.description,
         fullDocstring: String = this.fullDocstring,

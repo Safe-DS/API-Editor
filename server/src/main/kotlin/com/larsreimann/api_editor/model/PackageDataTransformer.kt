@@ -166,7 +166,7 @@ abstract class AbstractPackageDataTransformer : PackageDataTransformer {
         newModules: List<AnnotatedPythonModule>
     ): AnnotatedPythonPackage? {
         return oldPackage.fullCopy(
-            modules = newModules,
+            modules = newModules.toMutableList(),
             originalDeclaration = oldPackage.originalDeclaration ?: oldPackage
         )
     }
@@ -182,9 +182,9 @@ abstract class AbstractPackageDataTransformer : PackageDataTransformer {
         newFunctions: List<AnnotatedPythonFunction>
     ): AnnotatedPythonModule? {
         return oldModule.fullCopy(
-            classes = newClasses,
-            enums = newEnums,
-            functions = newFunctions,
+            classes = newClasses.toMutableList(),
+            enums = newEnums.toMutableList(),
+            functions = newFunctions.toMutableList(),
             originalDeclaration = oldModule.originalDeclaration ?: oldModule
         )
     }
@@ -199,8 +199,8 @@ abstract class AbstractPackageDataTransformer : PackageDataTransformer {
         newMethods: List<AnnotatedPythonFunction>
     ): AnnotatedPythonClass? {
         return oldClass.fullCopy(
-            attributes = newAttributes,
-            methods = newMethods,
+            attributes = newAttributes.toMutableList(),
+            methods = newMethods.toMutableList(),
             originalDeclaration = oldClass.originalDeclaration ?: oldClass
         )
     }
@@ -223,8 +223,8 @@ abstract class AbstractPackageDataTransformer : PackageDataTransformer {
         newResults: List<AnnotatedPythonResult>
     ): AnnotatedPythonFunction? {
         return oldFunction.fullCopy(
-            parameters = newParameters,
-            results = newResults,
+            parameters = newParameters.toMutableList(),
+            results = newResults.toMutableList(),
             originalDeclaration = oldFunction.originalDeclaration ?: oldFunction
         )
     }

@@ -14,7 +14,7 @@ fun convertPackage(pythonPackage: MutablePythonPackage): AnnotatedPythonPackage 
         distribution = pythonPackage.distribution,
         name = pythonPackage.name,
         version = pythonPackage.version,
-        modules = pythonPackage.modules.map { convertModule(it) },
+        modules = pythonPackage.modules.map { convertModule(it) }.toMutableList(),
         annotations = pythonPackage.annotations
     )
 }
@@ -24,8 +24,8 @@ fun convertModule(pythonModule: MutablePythonModule): AnnotatedPythonModule {
         name = pythonModule.name,
         imports = pythonModule.imports,
         fromImports = pythonModule.fromImports,
-        classes = pythonModule.classes.map { convertClass(it) },
-        functions = pythonModule.functions.map { convertFunction(it) },
+        classes = pythonModule.classes.map { convertClass(it) }.toMutableList(),
+        functions = pythonModule.functions.map { convertFunction(it) }.toMutableList(),
         annotations = pythonModule.annotations
     )
     result.enums += pythonModule.enums.map { convertEnum(it) }
@@ -38,7 +38,7 @@ fun convertClass(pythonClass: MutablePythonClass): AnnotatedPythonClass {
         qualifiedName = pythonClass.qualifiedName(),
         decorators = pythonClass.decorators,
         superclasses = pythonClass.superclasses,
-        methods = pythonClass.methods.map { convertFunction(it) },
+        methods = pythonClass.methods.map { convertFunction(it) }.toMutableList(),
         isPublic = pythonClass.isPublic,
         description = pythonClass.description,
         fullDocstring = pythonClass.fullDocstring,
@@ -61,8 +61,8 @@ fun convertFunction(pythonFunction: MutablePythonFunction): AnnotatedPythonFunct
         name = pythonFunction.name,
         qualifiedName = pythonFunction.qualifiedName(),
         decorators = pythonFunction.decorators,
-        parameters = pythonFunction.parameters.map { convertParameter(it) },
-        results = pythonFunction.results.map { convertResult(it) },
+        parameters = pythonFunction.parameters.map { convertParameter(it) }.toMutableList(),
+        results = pythonFunction.results.map { convertResult(it) }.toMutableList(),
         isPublic = pythonFunction.isPublic,
         description = pythonFunction.description,
         fullDocstring = pythonFunction.fullDocstring,

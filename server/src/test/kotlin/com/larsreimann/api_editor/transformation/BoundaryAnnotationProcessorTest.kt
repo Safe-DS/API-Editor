@@ -1,173 +1,142 @@
-package com.larsreimann.api_editor.transformation;
+package com.larsreimann.api_editor.transformation
 
-import com.larsreimann.api_editor.model.*;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import com.larsreimann.api_editor.model.BoundaryAnnotation
+import com.larsreimann.api_editor.model.ComparisonOperator
+import com.larsreimann.api_editor.util.createPythonAttribute
+import com.larsreimann.api_editor.util.createPythonClass
+import com.larsreimann.api_editor.util.createPythonFunction
+import com.larsreimann.api_editor.util.createPythonModule
+import com.larsreimann.api_editor.util.createPythonPackage
+import com.larsreimann.api_editor.util.createPythonParameter
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.*;
-
-public class BoundaryAnnotationProcessorTest {
+class BoundaryAnnotationProcessorTest {
     @Test
-    void boundaryAnnotationAddsBoundaryToFunctionParameter1() {
+    fun boundaryAnnotationAddsBoundaryToFunctionParameter1() {
         // given
-        AnnotatedPythonParameter testParameter1 =
-            createPythonParameter(
-                "testParameter1",
-                "testModule.testFunction.testParameter1",
-                null
-            );
-        testParameter1.getAnnotations().add(
-            new BoundaryAnnotation(
+        val testParameter1 = createPythonParameter(
+            "testParameter1",
+            "testModule.testFunction.testParameter1",
+            null
+        )
+        testParameter1.annotations.add(
+            BoundaryAnnotation(
                 true,
-                2,
+                2.0,
                 ComparisonOperator.LESS_THAN,
-                10,
+                10.0,
                 ComparisonOperator.LESS_THAN
             )
-        );
-
-        AnnotatedPythonFunction testFunction =
-            createPythonFunction("testFunction");
-        testFunction.getParameters().add(testParameter1);
-
-        AnnotatedPythonModule testModule =
-            createPythonModule("testModule");
-        testModule.getFunctions().add(testFunction);
-
-        AnnotatedPythonPackage testPackage =
-            createPythonPackage("testPackage");
-        testPackage.getModules().add(testModule);
+        )
+        val testFunction = createPythonFunction("testFunction")
+        testFunction.parameters.add(testParameter1)
+        val testModule = createPythonModule("testModule")
+        testModule.functions.add(testFunction)
+        val testPackage = createPythonPackage("testPackage")
+        testPackage.modules.add(testModule)
 
         // when
-        BoundaryAnnotationProcessor boundaryAnnotationProcessor =
-            new BoundaryAnnotationProcessor();
-        AnnotatedPythonPackage modifiedPackage = testPackage.accept(boundaryAnnotationProcessor);
-
-        // then
-        assert modifiedPackage != null;
-        AnnotatedPythonParameter modifiedParameter = modifiedPackage
-            .getModules().get(0)
-            .getFunctions().get(0)
-            .getParameters().get(0);
-        Boundary addedBoundary = modifiedParameter.getBoundary();
-        Assertions.assertNotNull(addedBoundary);
-        boolean expectedIsDiscrete = true;
-        double expectedLowerIntervalLimit = 2;
-        double expectedUpperIntervalLimit = 10;
-        ComparisonOperator expectedUpperLimitType = ComparisonOperator.LESS_THAN;
-        ComparisonOperator expectedLowerLimitType = ComparisonOperator.LESS_THAN;
-        Assertions.assertEquals(expectedIsDiscrete, addedBoundary.isDiscrete());
-        Assertions.assertEquals(expectedLowerIntervalLimit, addedBoundary.getLowerIntervalLimit());
-        Assertions.assertEquals(expectedUpperIntervalLimit, addedBoundary.getUpperIntervalLimit());
-        Assertions.assertEquals(expectedLowerLimitType, addedBoundary.getLowerLimitType());
-        Assertions.assertEquals(expectedUpperLimitType, addedBoundary.getUpperLimitType());
+        val boundaryAnnotationProcessor = BoundaryAnnotationProcessor()
+        val (_, _, _, modules) = testPackage.accept(boundaryAnnotationProcessor)!!
+        val modifiedParameter = modules[0]
+            .functions[0]
+            .parameters[0]
+        val addedBoundary = modifiedParameter.boundary
+        Assertions.assertNotNull(addedBoundary)
+        val expectedIsDiscrete = true
+        val expectedLowerIntervalLimit = 2.0
+        val expectedUpperIntervalLimit = 10.0
+        val expectedUpperLimitType = ComparisonOperator.LESS_THAN
+        val expectedLowerLimitType = ComparisonOperator.LESS_THAN
+        Assertions.assertEquals(expectedIsDiscrete, addedBoundary!!.isDiscrete)
+        Assertions.assertEquals(expectedLowerIntervalLimit, addedBoundary.lowerIntervalLimit)
+        Assertions.assertEquals(expectedUpperIntervalLimit, addedBoundary.upperIntervalLimit)
+        Assertions.assertEquals(expectedLowerLimitType, addedBoundary.lowerLimitType)
+        Assertions.assertEquals(expectedUpperLimitType, addedBoundary.upperLimitType)
     }
 
     @Test
-    void boundaryAnnotationAddsBoundaryToFunctionParameter2() {
+    fun boundaryAnnotationAddsBoundaryToFunctionParameter2() {
         // given
-        AnnotatedPythonParameter testParameter1 =
-            createPythonParameter(
-                "testParameter1",
-                "testModule.testFunction.testParameter1",
-                null
-            );
-        testParameter1.getAnnotations().add(
-            new BoundaryAnnotation(
+        val testParameter1 = createPythonParameter(
+            "testParameter1",
+            "testModule.testFunction.testParameter1",
+            null
+        )
+        testParameter1.annotations.add(
+            BoundaryAnnotation(
                 false,
-                2,
+                2.0,
                 ComparisonOperator.LESS_THAN_OR_EQUALS,
-                10,
+                10.0,
                 ComparisonOperator.LESS_THAN_OR_EQUALS
             )
-        );
-
-        AnnotatedPythonFunction testFunction =
-            createPythonFunction("testFunction");
-        testFunction.getParameters().add(testParameter1);
-
-        AnnotatedPythonModule testModule =
-            createPythonModule("testModule");
-        testModule.getFunctions().add(testFunction);
-
-        AnnotatedPythonPackage testPackage =
-            createPythonPackage("testPackage");
-        testPackage.getModules().add(testModule);
+        )
+        val testFunction = createPythonFunction("testFunction")
+        testFunction.parameters.add(testParameter1)
+        val testModule = createPythonModule("testModule")
+        testModule.functions.add(testFunction)
+        val testPackage = createPythonPackage("testPackage")
+        testPackage.modules.add(testModule)
 
         // when
-        BoundaryAnnotationProcessor boundaryAnnotationProcessor =
-            new BoundaryAnnotationProcessor();
-        AnnotatedPythonPackage modifiedPackage = testPackage.accept(boundaryAnnotationProcessor);
-
-        // then
-        assert modifiedPackage != null;
-        AnnotatedPythonParameter modifiedParameter = modifiedPackage
-            .getModules().get(0)
-            .getFunctions().get(0)
-            .getParameters().get(0);
-        Boundary addedBoundary = modifiedParameter.getBoundary();
-        Assertions.assertNotNull(addedBoundary);
-        boolean expectedIsDiscrete = false;
-        double expectedLowerIntervalLimit = 2;
-        double expectedUpperIntervalLimit = 10;
-        ComparisonOperator expectedUpperLimitType = ComparisonOperator.LESS_THAN_OR_EQUALS;
-        ComparisonOperator expectedLowerLimitType = ComparisonOperator.LESS_THAN_OR_EQUALS;
-        Assertions.assertEquals(expectedIsDiscrete, addedBoundary.isDiscrete());
-        Assertions.assertEquals(expectedLowerIntervalLimit, addedBoundary.getLowerIntervalLimit());
-        Assertions.assertEquals(expectedUpperIntervalLimit, addedBoundary.getUpperIntervalLimit());
-        Assertions.assertEquals(expectedLowerLimitType, addedBoundary.getLowerLimitType());
-        Assertions.assertEquals(expectedUpperLimitType, addedBoundary.getUpperLimitType());
+        val boundaryAnnotationProcessor = BoundaryAnnotationProcessor()
+        val (_, _, _, modules) = testPackage.accept(boundaryAnnotationProcessor)!!
+        val modifiedParameter = modules[0]
+            .functions[0]
+            .parameters[0]
+        val addedBoundary = modifiedParameter.boundary
+        Assertions.assertNotNull(addedBoundary)
+        val expectedIsDiscrete = false
+        val expectedLowerIntervalLimit = 2.0
+        val expectedUpperIntervalLimit = 10.0
+        val expectedUpperLimitType = ComparisonOperator.LESS_THAN_OR_EQUALS
+        val expectedLowerLimitType = ComparisonOperator.LESS_THAN_OR_EQUALS
+        Assertions.assertEquals(expectedIsDiscrete, addedBoundary!!.isDiscrete)
+        Assertions.assertEquals(expectedLowerIntervalLimit, addedBoundary.lowerIntervalLimit)
+        Assertions.assertEquals(expectedUpperIntervalLimit, addedBoundary.upperIntervalLimit)
+        Assertions.assertEquals(expectedLowerLimitType, addedBoundary.lowerLimitType)
+        Assertions.assertEquals(expectedUpperLimitType, addedBoundary.upperLimitType)
     }
 
     @Test
-    void boundaryAnnotationAddsBoundaryToAttribute() {
+    fun boundaryAnnotationAddsBoundaryToAttribute() {
         // given
-        AnnotatedPythonAttribute testAttribute =
-            createPythonAttribute(
-                "testAttribute",
-                "testModule.testClass.testAttribute",
-                null
-            );
-        testAttribute.getAnnotations().add(
-            new BoundaryAnnotation(
+        val testAttribute = createPythonAttribute(
+            "testAttribute",
+            "testModule.testClass.testAttribute",
+            null
+        )
+        testAttribute.annotations.add(
+            BoundaryAnnotation(
                 true,
-                0,
+                0.0,
                 ComparisonOperator.UNRESTRICTED,
-                0,
+                0.0,
                 ComparisonOperator.UNRESTRICTED
             )
-        );
-
-        AnnotatedPythonClass testClass =
-            createPythonClass("testClass");
-        testClass.getAttributes().add(testAttribute);
-
-        AnnotatedPythonModule testModule =
-            createPythonModule("testModule");
-        testModule.getClasses().add(testClass);
-
-        AnnotatedPythonPackage testPackage =
-            createPythonPackage("testPackage");
-        testPackage.getModules().add(testModule);
+        )
+        val testClass = createPythonClass("testClass")
+        testClass.attributes.add(testAttribute)
+        val testModule = createPythonModule("testModule")
+        testModule.classes.add(testClass)
+        val testPackage = createPythonPackage("testPackage")
+        testPackage.modules.add(testModule)
 
         // when
-        BoundaryAnnotationProcessor boundaryAnnotationProcessor =
-            new BoundaryAnnotationProcessor();
-        AnnotatedPythonPackage modifiedPackage = testPackage.accept(boundaryAnnotationProcessor);
-
-        // then
-        assert modifiedPackage != null;
-        AnnotatedPythonAttribute modifiedAttribute = modifiedPackage
-            .getModules().get(0)
-            .getClasses().get(0)
-            .getAttributes().get(0);
-        Boundary addedBoundary = modifiedAttribute.getBoundary();
-        Assertions.assertNotNull(addedBoundary);
-        boolean expectedIsDiscrete = true;
-        ComparisonOperator expectedUpperLimitType = ComparisonOperator.UNRESTRICTED;
-        ComparisonOperator expectedLowerLimitType = ComparisonOperator.UNRESTRICTED;
-        Assertions.assertEquals(expectedIsDiscrete, addedBoundary.isDiscrete());
-        Assertions.assertEquals(expectedLowerLimitType, addedBoundary.getLowerLimitType());
-        Assertions.assertEquals(expectedUpperLimitType, addedBoundary.getUpperLimitType());
+        val boundaryAnnotationProcessor = BoundaryAnnotationProcessor()
+        val (_, _, _, modules) = testPackage.accept(boundaryAnnotationProcessor)!!
+        val modifiedAttribute = modules[0]
+            .classes[0]
+            .attributes[0]
+        val addedBoundary = modifiedAttribute.boundary
+        Assertions.assertNotNull(addedBoundary)
+        val expectedIsDiscrete = true
+        val expectedUpperLimitType = ComparisonOperator.UNRESTRICTED
+        val expectedLowerLimitType = ComparisonOperator.UNRESTRICTED
+        Assertions.assertEquals(expectedIsDiscrete, addedBoundary!!.isDiscrete)
+        Assertions.assertEquals(expectedLowerLimitType, addedBoundary.lowerLimitType)
+        Assertions.assertEquals(expectedUpperLimitType, addedBoundary.upperLimitType)
     }
 }

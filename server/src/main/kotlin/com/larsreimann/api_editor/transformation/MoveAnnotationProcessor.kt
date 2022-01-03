@@ -1,304 +1,248 @@
-package com.larsreimann.api_editor.transformation;
+package com.larsreimann.api_editor.transformation
 
-import com.larsreimann.api_editor.model.*;
-import org.jetbrains.annotations.NotNull;
+import com.larsreimann.api_editor.model.AbstractPackageDataVisitor
+import com.larsreimann.api_editor.model.AnnotatedPythonAttribute
+import com.larsreimann.api_editor.model.AnnotatedPythonClass
+import com.larsreimann.api_editor.model.AnnotatedPythonFunction
+import com.larsreimann.api_editor.model.AnnotatedPythonModule
+import com.larsreimann.api_editor.model.AnnotatedPythonPackage
+import com.larsreimann.api_editor.model.AnnotatedPythonParameter
+import com.larsreimann.api_editor.model.EditorAnnotation
+import com.larsreimann.api_editor.model.MoveAnnotation
+import com.larsreimann.api_editor.util.createModuleCopyWithoutClassesAndFunctions
+import com.larsreimann.api_editor.util.createPackageCopyWithoutModules
+import com.larsreimann.api_editor.util.createPythonAttribute
+import com.larsreimann.api_editor.util.createPythonClass
+import com.larsreimann.api_editor.util.createPythonFunction
+import com.larsreimann.api_editor.util.createPythonModule
+import com.larsreimann.api_editor.util.createPythonParameter
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-
-import static com.larsreimann.api_editor.util.PackageDataFactoriesKt.*;
-
-public class MoveAnnotationProcessor extends AbstractPackageDataVisitor {
-    private AnnotatedPythonPackage modifiedPackage;
-
-    private AnnotatedPythonModule currentModule;
-    private AnnotatedPythonClass currentClass;
-    private AnnotatedPythonFunction currentFunction;
-    private final QualifiedNameGenerator qualifiedNameGenerator =
-        new QualifiedNameGenerator();
-    private boolean inFunction = false;
-    private boolean inClass = false;
-    private boolean inModule = false;
-    private boolean inPackage = false;
-
-    private boolean isFunctionMoved = false;
-    private boolean isClassMoved = false;
-
-    private String originalModuleName;
-
-    HashMap<String, ArrayList<AnnotatedPythonClass>> classesToAdd;
-    HashMap<String, ArrayList<AnnotatedPythonFunction>> functionsToAdd;
-
-    private final String PATH_SEPARATOR = ".";
-
-    @Override
-    public boolean enterPythonPackage(@NotNull AnnotatedPythonPackage pythonPackage) {
-        inPackage = true;
-        classesToAdd = new HashMap<>();
-        functionsToAdd = new HashMap<>();
-        setModifiedPackage(createPackageCopyWithoutModules(pythonPackage));
-
-        return true;
+class MoveAnnotationProcessor : AbstractPackageDataVisitor() {
+    var modifiedPackage: AnnotatedPythonPackage? = null
+    private var currentModule: AnnotatedPythonModule? = null
+    private var currentClass: AnnotatedPythonClass? = null
+    private var currentFunction: AnnotatedPythonFunction? = null
+    private val qualifiedNameGenerator = QualifiedNameGenerator()
+    private var inFunction = false
+    private var inClass = false
+    private var inModule = false
+    private var inPackage = false
+    private var isFunctionMoved = false
+    private var isClassMoved = false
+    private var originalModuleName: String? = null
+    var classesToAdd: HashMap<String?, ArrayList<AnnotatedPythonClass>?>? = null
+    var functionsToAdd: HashMap<String?, ArrayList<AnnotatedPythonFunction>?>? = null
+    private val PATH_SEPARATOR = "."
+    override fun enterPythonPackage(pythonPackage: AnnotatedPythonPackage): Boolean {
+        inPackage = true
+        classesToAdd = HashMap()
+        functionsToAdd = HashMap()
+        modifiedPackage = createPackageCopyWithoutModules(pythonPackage)
+        return true
     }
 
-    @Override
-    public void leavePythonPackage(@NotNull AnnotatedPythonPackage pythonPackage) {
-        inPackage = false;
+    override fun leavePythonPackage(pythonPackage: AnnotatedPythonPackage) {
+        inPackage = false
         // add to existing modules
-        for (AnnotatedPythonModule pythonModule : modifiedPackage.getModules()) {
-            if (classesToAdd.get(pythonModule.getName()) != null) {
-                pythonModule.getClasses().addAll(classesToAdd.get(pythonModule.getName()));
-                classesToAdd.remove(pythonModule.getName());
+        for ((name, _, _, classes, functions) in modifiedPackage!!.modules) {
+            if (classesToAdd!![name] != null) {
+                classes.addAll(classesToAdd!![name]!!)
+                classesToAdd!!.remove(name)
             }
-            if (functionsToAdd.get(pythonModule.getName()) != null) {
-                pythonModule.getFunctions().addAll(functionsToAdd.get(pythonModule.getName()));
-                functionsToAdd.remove(pythonModule.getName());
+            if (functionsToAdd!![name] != null) {
+                functions.addAll(functionsToAdd!![name]!!)
+                functionsToAdd!!.remove(name)
             }
         }
         // add to new modules
-        Iterator<String> it = classesToAdd.keySet().iterator();
+        var it = classesToAdd!!.keys.iterator()
         while (it.hasNext()) {
-            String key = it.next();
-            AnnotatedPythonModule pythonModuleToAdd = createPythonModule(key);
-            pythonModuleToAdd.getClasses().addAll(classesToAdd.get(key));
-            if (functionsToAdd.get(key) != null) {
-                pythonModuleToAdd.getFunctions().addAll(functionsToAdd.get(key));
-                functionsToAdd.remove(key);
+            val key = it.next()
+            val pythonModuleToAdd = createPythonModule(key!!)
+            pythonModuleToAdd.classes.addAll(classesToAdd!![key]!!)
+            if (functionsToAdd!![key] != null) {
+                pythonModuleToAdd.functions.addAll(functionsToAdd!![key]!!)
+                functionsToAdd!!.remove(key)
             }
-            modifiedPackage.getModules().add(pythonModuleToAdd);
-            it.remove();
+            modifiedPackage!!.modules.add(pythonModuleToAdd)
+            it.remove()
         }
-        it = functionsToAdd.keySet().iterator();
+        it = functionsToAdd!!.keys.iterator()
         while (it.hasNext()) {
-            String key = it.next();
-            AnnotatedPythonModule pythonModuleToAdd = createPythonModule(key);
-            pythonModuleToAdd.getFunctions().addAll(functionsToAdd.get(key));
-            modifiedPackage.getModules().add(pythonModuleToAdd);
-            it.remove();
+            val key = it.next()
+            val pythonModuleToAdd = createPythonModule(key!!)
+            pythonModuleToAdd.functions.addAll(functionsToAdd!![key]!!)
+            modifiedPackage!!.modules.add(pythonModuleToAdd)
+            it.remove()
         }
     }
 
-    @Override
-    public boolean enterPythonModule(@NotNull AnnotatedPythonModule pythonModule) {
-        inModule = true;
-        qualifiedNameGenerator.currentModuleName = pythonModule.getName();
-        currentModule = createModuleCopyWithoutClassesAndFunctions(pythonModule);
+    override fun enterPythonModule(pythonModule: AnnotatedPythonModule): Boolean {
+        inModule = true
+        qualifiedNameGenerator.currentModuleName = pythonModule.name
+        currentModule = createModuleCopyWithoutClassesAndFunctions(pythonModule)
         if (inPackage) {
-            getModifiedPackage().getModules().add(currentModule);
+            modifiedPackage!!.modules.add(currentModule!!)
         }
-
-        return true;
+        return true
     }
 
-    @Override
-    public void leavePythonModule(@NotNull AnnotatedPythonModule pythonModule) {
-        inModule = false;
+    override fun leavePythonModule(pythonModule: AnnotatedPythonModule) {
+        inModule = false
     }
 
-    @Override
-    public boolean enterPythonClass(@NotNull AnnotatedPythonClass pythonClass) {
-        inClass = true;
-        qualifiedNameGenerator.currentClassName = pythonClass.getName();
-        String newModuleName = null;
-        ArrayList<EditorAnnotation> annotations = new ArrayList<>();
-
-        for (EditorAnnotation editorAnnotation : pythonClass.getAnnotations()) {
-            if (editorAnnotation instanceof MoveAnnotation) {
-                isClassMoved = true;
-                originalModuleName = qualifiedNameGenerator.currentModuleName;
-                newModuleName = ((MoveAnnotation) editorAnnotation).getDestination();
-                qualifiedNameGenerator.currentModuleName = newModuleName;
+    override fun enterPythonClass(pythonClass: AnnotatedPythonClass): Boolean {
+        inClass = true
+        qualifiedNameGenerator.currentClassName = pythonClass.name
+        var newModuleName: String? = null
+        val annotations = ArrayList<EditorAnnotation>()
+        for (editorAnnotation in pythonClass.annotations) {
+            if (editorAnnotation is MoveAnnotation) {
+                isClassMoved = true
+                originalModuleName = qualifiedNameGenerator.currentModuleName
+                newModuleName = editorAnnotation.destination
+                qualifiedNameGenerator.currentModuleName = newModuleName
             } else {
-                annotations.add(editorAnnotation);
+                annotations.add(editorAnnotation)
             }
         }
-
         currentClass = createPythonClass(
-            qualifiedNameGenerator.currentClassName,
-            qualifiedNameGenerator.getQualifiedClassName(),
-            new ArrayList<>(pythonClass.getDecorators()),
-            new ArrayList<>(pythonClass.getSuperclasses()),
-            new ArrayList<>(),
-            new ArrayList<>(),
-            pythonClass.isPublic(),
-            pythonClass.getDescription(),
-            pythonClass.getFullDocstring(),
+            qualifiedNameGenerator.currentClassName!!,
+            qualifiedNameGenerator.qualifiedClassName,
+            ArrayList(pythonClass.decorators),
+            ArrayList(pythonClass.superclasses),
+            ArrayList(),
+            ArrayList(),
+            pythonClass.isPublic,
+            pythonClass.description,
+            pythonClass.fullDocstring,
             annotations,
-            pythonClass.getOriginalDeclaration()
-        );
-
+            pythonClass.originalDeclaration
+        )
         if (isClassMoved) {
-            addClassToAdd(newModuleName, currentClass);
+            addClassToAdd(newModuleName, currentClass!!)
         } else {
-            currentModule.getClasses().add(currentClass);
+            currentModule!!.classes.add(currentClass!!)
         }
-
-        return true;
+        return true
     }
 
-    @Override
-    public void enterPythonAttribute(@NotNull AnnotatedPythonAttribute pythonAttribute) {
-        qualifiedNameGenerator.currentAttributeName = pythonAttribute.getName();
-
-        AnnotatedPythonAttribute modifiedPythonAttribute =
-            createPythonAttribute(
-                qualifiedNameGenerator.currentAttributeName,
-                qualifiedNameGenerator.getQualifiedAttributeName(),
-                pythonAttribute.getDefaultValue(),
-                pythonAttribute.isPublic(),
-                pythonAttribute.getTypeInDocs(),
-                pythonAttribute.getDescription(),
-                pythonAttribute.getAnnotations()
-            );
-
+    override fun enterPythonAttribute(pythonAttribute: AnnotatedPythonAttribute) {
+        qualifiedNameGenerator.currentAttributeName = pythonAttribute.name
+        val modifiedPythonAttribute = createPythonAttribute(
+            qualifiedNameGenerator.currentAttributeName!!,
+            qualifiedNameGenerator.qualifiedAttributeName,
+            pythonAttribute.defaultValue,
+            pythonAttribute.isPublic,
+            pythonAttribute.typeInDocs,
+            pythonAttribute.description,
+            pythonAttribute.annotations
+        )
         if (inClass) {
-            currentClass.getAttributes().add(modifiedPythonAttribute);
+            currentClass!!.attributes.add(modifiedPythonAttribute)
         }
     }
 
-    @Override
-    public void leavePythonClass(@NotNull AnnotatedPythonClass pythonClass) {
+    override fun leavePythonClass(pythonClass: AnnotatedPythonClass) {
         if (isClassMoved) {
-            qualifiedNameGenerator.currentModuleName = originalModuleName;
-            isClassMoved = false;
+            qualifiedNameGenerator.currentModuleName = originalModuleName
+            isClassMoved = false
         }
-        inClass = false;
+        inClass = false
     }
 
-    @Override
-    public void enterPythonParameter(AnnotatedPythonParameter pythonParameter) {
-        qualifiedNameGenerator.currentParameterName = pythonParameter.getName();
-
-        AnnotatedPythonParameter modifiedPythonParameter =
-            createPythonParameter(
-                qualifiedNameGenerator.currentParameterName,
-                qualifiedNameGenerator.getQualifiedParameterName(),
-                pythonParameter.getDefaultValue(),
-                pythonParameter.getAssignedBy(),
-                pythonParameter.isPublic(),
-                pythonParameter.getTypeInDocs(),
-                pythonParameter.getDescription(),
-                new ArrayList<>(pythonParameter.getAnnotations()),
-                pythonParameter.getOriginalDeclaration()
-            );
-
+    override fun enterPythonParameter(pythonParameter: AnnotatedPythonParameter) {
+        qualifiedNameGenerator.currentParameterName = pythonParameter.name
+        val modifiedPythonParameter = createPythonParameter(
+            qualifiedNameGenerator.currentParameterName!!,
+            qualifiedNameGenerator.qualifiedParameterName,
+            pythonParameter.defaultValue,
+            pythonParameter.assignedBy,
+            pythonParameter.isPublic,
+            pythonParameter.typeInDocs,
+            pythonParameter.description,
+            ArrayList(pythonParameter.annotations),
+            pythonParameter.originalDeclaration
+        )
         if (inFunction) {
-            currentFunction.getParameters().add(modifiedPythonParameter);
+            currentFunction!!.parameters.add(modifiedPythonParameter)
         }
     }
 
-    @Override
-    public boolean enterPythonFunction(AnnotatedPythonFunction pythonFunction) {
-        inFunction = true;
-        String newModuleName = null;
-        qualifiedNameGenerator.currentFunctionName = pythonFunction.getName();
-        ArrayList<EditorAnnotation> annotations = new ArrayList<>();
-
-        for (EditorAnnotation editorAnnotation : pythonFunction.getAnnotations()) {
-            if (editorAnnotation instanceof MoveAnnotation) {
-                isFunctionMoved = true;
-                originalModuleName = qualifiedNameGenerator.currentModuleName;
-                newModuleName = ((MoveAnnotation) editorAnnotation).getDestination();
-                qualifiedNameGenerator.currentModuleName = newModuleName;
+    override fun enterPythonFunction(pythonFunction: AnnotatedPythonFunction): Boolean {
+        inFunction = true
+        var newModuleName: String? = null
+        qualifiedNameGenerator.currentFunctionName = pythonFunction.name
+        val annotations = ArrayList<EditorAnnotation>()
+        for (editorAnnotation in pythonFunction.annotations) {
+            if (editorAnnotation is MoveAnnotation) {
+                isFunctionMoved = true
+                originalModuleName = qualifiedNameGenerator.currentModuleName
+                newModuleName = editorAnnotation.destination
+                qualifiedNameGenerator.currentModuleName = newModuleName
             } else {
-                annotations.add(editorAnnotation);
+                annotations.add(editorAnnotation)
             }
         }
-
         currentFunction = createPythonFunction(
-            qualifiedNameGenerator.currentFunctionName,
-            qualifiedNameGenerator.getQualifiedFunctionName(),
-            new ArrayList<>(pythonFunction.getDecorators()),
-            new ArrayList<>(),
-            new ArrayList<>(pythonFunction.getResults()),
-            pythonFunction.isPublic(),
-            pythonFunction.getDescription(),
-            pythonFunction.getFullDocstring(),
+            qualifiedNameGenerator.currentFunctionName!!,
+            qualifiedNameGenerator.qualifiedFunctionName,
+            ArrayList(pythonFunction.decorators),
+            ArrayList(),
+            ArrayList(pythonFunction.results),
+            pythonFunction.isPublic,
+            pythonFunction.description,
+            pythonFunction.fullDocstring,
             annotations,
-            pythonFunction.getOriginalDeclaration()
-        );
-
+            pythonFunction.originalDeclaration
+        )
         if (isFunctionMoved) {
-            addFunctionToAdd(newModuleName, currentFunction);
-            return true;
+            addFunctionToAdd(newModuleName, currentFunction!!)
+            return true
         }
         if (inClass) {
-            currentClass.getMethods().add(currentFunction);
+            currentClass!!.methods.add(currentFunction!!)
         } else if (inModule) {
-            currentModule.getFunctions().add(currentFunction);
+            currentModule!!.functions.add(currentFunction!!)
         }
-
-        return true;
+        return true
     }
 
-    @Override
-    public void leavePythonFunction(@NotNull AnnotatedPythonFunction pythonFunction) {
+    override fun leavePythonFunction(pythonFunction: AnnotatedPythonFunction) {
         if (isFunctionMoved) {
-            qualifiedNameGenerator.currentModuleName = originalModuleName;
-            isFunctionMoved = false;
+            qualifiedNameGenerator.currentModuleName = originalModuleName
+            isFunctionMoved = false
         }
-        inFunction = false;
+        inFunction = false
     }
 
-    public AnnotatedPythonPackage getModifiedPackage() {
-        return modifiedPackage;
+    private fun addClassToAdd(moduleName: String?, pythonClass: AnnotatedPythonClass) {
+        classesToAdd!!.computeIfAbsent(moduleName) { k: String? -> ArrayList() }
+        classesToAdd!![moduleName]!!.add(pythonClass)
     }
 
-    public void setModifiedPackage(AnnotatedPythonPackage modifiedPackage) {
-        this.modifiedPackage = modifiedPackage;
+    private fun addFunctionToAdd(moduleName: String?, pythonFunction: AnnotatedPythonFunction) {
+        functionsToAdd!!.computeIfAbsent(moduleName) { k: String? -> ArrayList() }
+        functionsToAdd!![moduleName]!!.add(pythonFunction)
     }
 
-    public AnnotatedPythonModule getCurrentModule() {
-        return this.currentModule;
-    }
-
-    public AnnotatedPythonClass getCurrentClass() {
-        return this.currentClass;
-    }
-
-    public AnnotatedPythonFunction getCurrentFunction() {
-        return this.currentFunction;
-    }
-
-    private void addClassToAdd(String moduleName, AnnotatedPythonClass pythonClass) {
-        classesToAdd.computeIfAbsent(moduleName, k -> new ArrayList<>());
-        classesToAdd.get(moduleName).add(pythonClass);
-    }
-
-    private void addFunctionToAdd(String moduleName, AnnotatedPythonFunction pythonFunction) {
-        functionsToAdd.computeIfAbsent(moduleName, k -> new ArrayList<>());
-        functionsToAdd.get(moduleName).add(pythonFunction);
-    }
-
-    private class QualifiedNameGenerator {
-        String currentModuleName;
-        String currentClassName;
-        String currentFunctionName;
-        String currentParameterName;
-        String currentAttributeName;
-
-        String getQualifiedModuleName() {
-            return currentModuleName;
-        }
-
-        String getQualifiedClassName() {
-            return getQualifiedModuleName() + PATH_SEPARATOR + currentClassName;
-        }
-
-        String getQualifiedFunctionName() {
-            if (inClass) {
-                return getQualifiedClassName() + PATH_SEPARATOR + currentFunctionName;
-            }
-            return getQualifiedModuleName() + PATH_SEPARATOR + currentFunctionName;
-        }
-
-        String getQualifiedParameterName() {
-            return getQualifiedFunctionName() + PATH_SEPARATOR + currentParameterName;
-        }
-
-        String getQualifiedAttributeName() {
-            return getQualifiedClassName() + PATH_SEPARATOR + currentAttributeName;
-        }
+    private inner class QualifiedNameGenerator {
+        val qualifiedModuleName: String?
+            get() = currentModuleName
+        var currentModuleName: String? = null
+        var currentClassName: String? = null
+        var currentFunctionName: String? = null
+        var currentParameterName: String? = null
+        var currentAttributeName: String? = null
+        val qualifiedClassName: String
+            get() = qualifiedModuleName + PATH_SEPARATOR + currentClassName
+        val qualifiedFunctionName: String
+            get() = if (inClass) {
+                qualifiedClassName + PATH_SEPARATOR + currentFunctionName
+            } else qualifiedModuleName + PATH_SEPARATOR + currentFunctionName
+        val qualifiedParameterName: String
+            get() = qualifiedFunctionName + PATH_SEPARATOR + currentParameterName
+        val qualifiedAttributeName: String
+            get() = qualifiedClassName + PATH_SEPARATOR + currentAttributeName
     }
 }

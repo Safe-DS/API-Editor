@@ -24,12 +24,12 @@ class CamelCaseTest {
             "testModule.Test_Class",
             listOf(),
             listOf(),
-            listOf(
+            mutableListOf(
                 AnnotatedPythonFunction(
                     "__init__",
                     "testModule.Test_Class.__init__",
                     listOf(),
-                    listOf(
+                    mutableListOf(
                         AnnotatedPythonParameter(
                             "test_parameter",
                             "testModule.Test_Class.__init__.test_parameter",
@@ -41,7 +41,7 @@ class CamelCaseTest {
                             mutableListOf()
                         )
                     ),
-                    emptyList(),
+                    mutableListOf(),
                     true,
                     "",
                     "",
@@ -51,7 +51,7 @@ class CamelCaseTest {
                     "test_function",
                     "testModule.Test_Class.test_function",
                     listOf(),
-                    listOf(
+                    mutableListOf(
                         AnnotatedPythonParameter(
                             "test_parameter",
                             "testModule.Test_Class.test_function.test_parameter",
@@ -63,7 +63,7 @@ class CamelCaseTest {
                             mutableListOf()
                         )
                     ),
-                    emptyList(),
+                    mutableListOf(),
                     true,
                     "",
                     "",
