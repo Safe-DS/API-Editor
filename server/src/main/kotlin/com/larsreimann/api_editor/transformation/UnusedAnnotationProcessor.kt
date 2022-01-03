@@ -1,27 +1,22 @@
 package com.larsreimann.api_editor.transformation
 
-import com.larsreimann.api_editor.model.AbstractPackageDataTransformer
-import com.larsreimann.api_editor.model.SerializablePythonClass
-import com.larsreimann.api_editor.model.SerializablePythonFunction
+import com.larsreimann.api_editor.model.UnusedAnnotation
+import com.larsreimann.api_editor.mutable_model.MutablePythonDeclaration
+import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
+import com.larsreimann.api_editor.mutable_model.descendants
 
-class UnusedAnnotationProcessor : AbstractPackageDataTransformer() {
-    override fun shouldVisitAttributesIn(oldClass: SerializablePythonClass) = false
-    override fun shouldVisitParametersIn(oldFunction: SerializablePythonFunction) = false
-    override fun shouldVisitResultsIn(oldFunction: SerializablePythonFunction) = false
+/**
+ * Processes and removes `@unused` annotations.
+ */
+fun MutablePythonPackage.processUnusedAnnotations() {
+    this.descendants()
+        .filterIsInstance<MutablePythonDeclaration>()
+        .toList()
+        .forEach { it.processUnusedAnnotations() }
+}
 
-    override fun createNewClassOnEnter(oldClass: SerializablePythonClass): SerializablePythonClass? {
-        if (oldClass.hasAnnotationOfType("Unused")) {
-            return null
-        }
-
-        return super.createNewClassOnEnter(oldClass)
-    }
-
-    override fun createNewFunctionOnEnter(oldFunction: SerializablePythonFunction): SerializablePythonFunction? {
-        if (oldFunction.hasAnnotationOfType("Unused")) {
-            return null
-        }
-
-        return super.createNewFunctionOnEnter(oldFunction)
+private fun MutablePythonDeclaration.processUnusedAnnotations() {
+    if (UnusedAnnotation in this.annotations) {
+        this.release()
     }
 }

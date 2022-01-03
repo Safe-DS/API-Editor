@@ -7,7 +7,6 @@ import com.larsreimann.api_editor.model.SerializablePythonFunction;
 import com.larsreimann.api_editor.model.SerializablePythonParameter;
 import com.larsreimann.api_editor.transformation.Postprocessor;
 import com.larsreimann.api_editor.transformation.Preprocessor;
-import com.larsreimann.api_editor.transformation.RenameAnnotationProcessor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -275,8 +274,6 @@ class ClassAdapterContentBuilderTest {
 
         testClass = testClass.accept(new Preprocessor());
         assert testClass != null;
-        testClass = testClass.accept(new RenameAnnotationProcessor());
-        assert testClass != null;
         testClass = testClass.accept(Postprocessor.INSTANCE);
 
         // when
@@ -286,9 +283,9 @@ class ClassAdapterContentBuilderTest {
 
         // then
         String expectedFormattedClass = """
-            class newClassName:
-                def newFunctionName(self, newSecondParamName, newThirdParamName):
-                    test-module.test-class.test-function(newSecondParamName, third-param=newThirdParamName)""";
+            class test-class:
+                def test-function(self, second-param, third-param):
+                    test-module.test-class.test-function(second-param, third-param=third-param)""";
         Assertions.assertEquals(expectedFormattedClass, formattedClass);
     }
 }

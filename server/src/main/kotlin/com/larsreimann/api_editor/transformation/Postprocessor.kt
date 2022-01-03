@@ -4,11 +4,31 @@ import com.larsreimann.api_editor.model.AbstractPackageDataTransformer
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.model.SerializablePythonAttribute
 import com.larsreimann.api_editor.model.SerializablePythonClass
+import com.larsreimann.api_editor.model.SerializablePythonEnum
 import com.larsreimann.api_editor.model.SerializablePythonFunction
+import com.larsreimann.api_editor.model.SerializablePythonModule
 import com.larsreimann.api_editor.model.SerializablePythonParameter
 import com.larsreimann.api_editor.model.SerializablePythonResult
 
+/**
+ * - Removes empty modules
+ * - Creates attributes for parameters of the constructor
+ * - Reorder parameters
+ */
 object Postprocessor : AbstractPackageDataTransformer() {
+
+    override fun createNewModuleOnLeave(
+        oldModule: SerializablePythonModule,
+        newClasses: List<SerializablePythonClass>,
+        newEnums: List<SerializablePythonEnum>,
+        newFunctions: List<SerializablePythonFunction>
+    ): SerializablePythonModule? {
+        if (newClasses.isEmpty() && newEnums.isEmpty() && newFunctions.isEmpty()) {
+            return null
+        }
+
+        return super.createNewModuleOnLeave(oldModule, newClasses, newEnums, newFunctions)
+    }
 
     override fun createNewClassOnLeave(
         oldClass: SerializablePythonClass,
