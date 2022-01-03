@@ -23,9 +23,9 @@ fun processPackage(originalPythonPackage: SerializablePythonPackage): Serializab
 
     modifiedPythonPackage = modifiedPythonPackage.accept(ParameterAnnotationProcessor())!!
 
-    modifiedPythonPackage = modifiedPythonPackage.accept(BoundaryAnnotationProcessor())!!
+    val mutablePackage = convertPackage(modifiedPythonPackage)
+    mutablePackage.processBoundaryAnnotations()
 
-    var mutablePackage = convertPackage(modifiedPythonPackage)
     mutablePackage.processPureAnnotations()
     modifiedPythonPackage = convertPackage(mutablePackage)
 

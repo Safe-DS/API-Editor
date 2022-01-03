@@ -6,7 +6,7 @@ import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
 import com.larsreimann.api_editor.mutable_model.descendants
 
 /**
- * Marks functions with the `@Pure` annotation as pure and removes the annotation.
+ * Processes and removes `@pure` annotations.
  */
 fun MutablePythonPackage.processPureAnnotations() {
     this.descendants()

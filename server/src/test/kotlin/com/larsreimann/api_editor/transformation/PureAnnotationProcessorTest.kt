@@ -4,18 +4,13 @@ import com.larsreimann.api_editor.model.PureAnnotation
 import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
 import com.larsreimann.api_editor.mutable_model.MutablePythonModule
 import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
-import com.larsreimann.api_editor.util.createPythonFunction
-import com.larsreimann.api_editor.util.createPythonModule
-import com.larsreimann.api_editor.util.createPythonPackage
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class PureAnnotationProcessorTest {
-
     private lateinit var pythonFunction: MutablePythonFunction
-
     private lateinit var pythonPackage: MutablePythonPackage
 
     @BeforeEach
@@ -45,7 +40,7 @@ class PureAnnotationProcessorTest {
     }
 
     @Test
-    fun `should remove all PureAnnotations from the annotation list`() {
+    fun `should remove all PureAnnotations`() {
         pythonPackage.processPureAnnotations()
 
         pythonFunction.annotations
