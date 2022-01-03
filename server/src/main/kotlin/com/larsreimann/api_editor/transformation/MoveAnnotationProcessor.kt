@@ -30,13 +30,14 @@ class MoveAnnotationProcessor : AbstractPackageDataVisitor() {
     private var isFunctionMoved = false
     private var isClassMoved = false
     private var originalModuleName: String? = null
-    var classesToAdd: HashMap<String?, ArrayList<AnnotatedPythonClass>?>? = null
-    var functionsToAdd: HashMap<String?, ArrayList<AnnotatedPythonFunction>?>? = null
+    var classesToAdd = mutableMapOf<String, MutableList<AnnotatedPythonClass>>()
+    var functionsToAdd = mutableMapOf<String, MutableList<AnnotatedPythonFunction>>()
     private val PATH_SEPARATOR = "."
+
     override fun enterPythonPackage(pythonPackage: AnnotatedPythonPackage): Boolean {
         inPackage = true
-        classesToAdd = HashMap()
-        functionsToAdd = HashMap()
+        classesToAdd = mutableMapOf()
+        functionsToAdd = mutableMapOf()
         modifiedPackage = createPackageCopyWithoutModules(pythonPackage)
         return true
     }
@@ -45,33 +46,33 @@ class MoveAnnotationProcessor : AbstractPackageDataVisitor() {
         inPackage = false
         // add to existing modules
         for ((name, _, _, classes, functions) in modifiedPackage!!.modules) {
-            if (classesToAdd!![name] != null) {
-                classes.addAll(classesToAdd!![name]!!)
-                classesToAdd!!.remove(name)
+            if (classesToAdd[name] != null) {
+                classes.addAll(classesToAdd[name]!!)
+                classesToAdd.remove(name)
             }
-            if (functionsToAdd!![name] != null) {
-                functions.addAll(functionsToAdd!![name]!!)
-                functionsToAdd!!.remove(name)
+            if (functionsToAdd[name] != null) {
+                functions.addAll(functionsToAdd[name]!!)
+                functionsToAdd.remove(name)
             }
         }
         // add to new modules
-        var it = classesToAdd!!.keys.iterator()
+        var it = classesToAdd.keys.iterator()
         while (it.hasNext()) {
             val key = it.next()
-            val pythonModuleToAdd = createPythonModule(key!!)
-            pythonModuleToAdd.classes.addAll(classesToAdd!![key]!!)
-            if (functionsToAdd!![key] != null) {
-                pythonModuleToAdd.functions.addAll(functionsToAdd!![key]!!)
-                functionsToAdd!!.remove(key)
+            val pythonModuleToAdd = createPythonModule(key)
+            pythonModuleToAdd.classes.addAll(classesToAdd[key]!!)
+            if (functionsToAdd[key] != null) {
+                pythonModuleToAdd.functions.addAll(functionsToAdd[key]!!)
+                functionsToAdd.remove(key)
             }
             modifiedPackage!!.modules.add(pythonModuleToAdd)
             it.remove()
         }
-        it = functionsToAdd!!.keys.iterator()
+        it = functionsToAdd.keys.iterator()
         while (it.hasNext()) {
             val key = it.next()
-            val pythonModuleToAdd = createPythonModule(key!!)
-            pythonModuleToAdd.functions.addAll(functionsToAdd!![key]!!)
+            val pythonModuleToAdd = createPythonModule(key)
+            pythonModuleToAdd.functions.addAll(functionsToAdd[key]!!)
             modifiedPackage!!.modules.add(pythonModuleToAdd)
             it.remove()
         }
@@ -95,7 +96,7 @@ class MoveAnnotationProcessor : AbstractPackageDataVisitor() {
         inClass = true
         qualifiedNameGenerator.currentClassName = pythonClass.name
         var newModuleName: String? = null
-        val annotations = ArrayList<EditorAnnotation>()
+        val annotations = mutableListOf<EditorAnnotation>()
         for (editorAnnotation in pythonClass.annotations) {
             if (editorAnnotation is MoveAnnotation) {
                 isClassMoved = true
@@ -120,7 +121,7 @@ class MoveAnnotationProcessor : AbstractPackageDataVisitor() {
             pythonClass.originalDeclaration
         )
         if (isClassMoved) {
-            addClassToAdd(newModuleName, currentClass!!)
+            addClassToAdd(newModuleName!!, currentClass!!)
         } else {
             currentModule!!.classes.add(currentClass!!)
         }
@@ -173,7 +174,7 @@ class MoveAnnotationProcessor : AbstractPackageDataVisitor() {
         inFunction = true
         var newModuleName: String? = null
         qualifiedNameGenerator.currentFunctionName = pythonFunction.name
-        val annotations = ArrayList<EditorAnnotation>()
+        val annotations = mutableListOf<EditorAnnotation>()
         for (editorAnnotation in pythonFunction.annotations) {
             if (editorAnnotation is MoveAnnotation) {
                 isFunctionMoved = true
@@ -188,7 +189,7 @@ class MoveAnnotationProcessor : AbstractPackageDataVisitor() {
             qualifiedNameGenerator.currentFunctionName!!,
             qualifiedNameGenerator.qualifiedFunctionName,
             ArrayList(pythonFunction.decorators),
-            ArrayList(),
+            listOf(),
             ArrayList(pythonFunction.results),
             pythonFunction.isPublic,
             pythonFunction.description,
@@ -197,7 +198,7 @@ class MoveAnnotationProcessor : AbstractPackageDataVisitor() {
             pythonFunction.originalDeclaration
         )
         if (isFunctionMoved) {
-            addFunctionToAdd(newModuleName, currentFunction!!)
+            addFunctionToAdd(newModuleName!!, currentFunction!!)
             return true
         }
         if (inClass) {
@@ -216,14 +217,14 @@ class MoveAnnotationProcessor : AbstractPackageDataVisitor() {
         inFunction = false
     }
 
-    private fun addClassToAdd(moduleName: String?, pythonClass: AnnotatedPythonClass) {
-        classesToAdd!!.computeIfAbsent(moduleName) { k: String? -> ArrayList() }
-        classesToAdd!![moduleName]!!.add(pythonClass)
+    private fun addClassToAdd(moduleName: String, pythonClass: AnnotatedPythonClass) {
+        classesToAdd.computeIfAbsent(moduleName) { k: String? -> ArrayList() }
+        classesToAdd[moduleName]!!.add(pythonClass)
     }
 
-    private fun addFunctionToAdd(moduleName: String?, pythonFunction: AnnotatedPythonFunction) {
-        functionsToAdd!!.computeIfAbsent(moduleName) { k: String? -> ArrayList() }
-        functionsToAdd!![moduleName]!!.add(pythonFunction)
+    private fun addFunctionToAdd(moduleName: String, pythonFunction: AnnotatedPythonFunction) {
+        functionsToAdd.computeIfAbsent(moduleName) { k: String? -> ArrayList() }
+        functionsToAdd[moduleName]!!.add(pythonFunction)
     }
 
     private inner class QualifiedNameGenerator {

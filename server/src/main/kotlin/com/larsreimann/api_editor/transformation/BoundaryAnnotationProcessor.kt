@@ -10,22 +10,11 @@ import com.larsreimann.api_editor.model.BoundaryAnnotation
 import com.larsreimann.api_editor.model.EditorAnnotation
 
 class BoundaryAnnotationProcessor : AbstractPackageDataTransformer() {
-    override fun shouldVisitResultsIn(
-        oldFunction: AnnotatedPythonFunction
-    ): Boolean {
-        return false
-    }
+    override fun shouldVisitResultsIn(oldFunction: AnnotatedPythonFunction) = false
+    override fun shouldVisitEnumsIn(oldModule: AnnotatedPythonModule) = false
 
-    override fun shouldVisitEnumsIn(
-        oldModule: AnnotatedPythonModule
-    ): Boolean {
-        return false
-    }
-
-    override fun createNewParameter(
-        oldParameter: AnnotatedPythonParameter
-    ): AnnotatedPythonParameter {
-        val annotations = ArrayList<EditorAnnotation>()
+    override fun createNewParameter(oldParameter: AnnotatedPythonParameter): AnnotatedPythonParameter {
+        val annotations = mutableListOf<EditorAnnotation>()
         var newBoundary = oldParameter.boundary
         for (editorAnnotation in oldParameter.annotations) {
             if (editorAnnotation is BoundaryAnnotation) {
@@ -57,7 +46,7 @@ class BoundaryAnnotationProcessor : AbstractPackageDataTransformer() {
     override fun createNewAttribute(
         oldAttribute: AnnotatedPythonAttribute
     ): AnnotatedPythonAttribute {
-        val annotations = ArrayList<EditorAnnotation>()
+        val annotations = mutableListOf<EditorAnnotation>()
         var newBoundary = oldAttribute.boundary
         for (editorAnnotation in oldAttribute.annotations) {
             if (editorAnnotation is BoundaryAnnotation) {

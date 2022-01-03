@@ -12,8 +12,6 @@ import com.larsreimann.api_editor.model.EditorAnnotation
 import com.larsreimann.api_editor.model.OptionalAnnotation
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.model.RequiredAnnotation
-import java.util.Objects
-import java.util.function.Consumer
 
 /**
  * Processor for Constant-, Optional- and RequiredAnnotations
@@ -24,43 +22,37 @@ class ParameterAnnotationProcessor : AbstractPackageDataTransformer() {
     }
 
     override fun createNewParameter(oldParameter: AnnotatedPythonParameter): AnnotatedPythonParameter {
-        val annotations = ArrayList<EditorAnnotation>()
-        var defaultValue = oldParameter.defaultValue
-        var assignedBy: PythonParameterAssignment
-        /* preprocessing:
-        required parameters -> position_or_name,
-        optional parameters -> name_only
-         */assignedBy = if (oldParameter.defaultValue != null) {
-            PythonParameterAssignment.NAME_ONLY
-        } else {
-            PythonParameterAssignment.POSITION_OR_NAME
+        var assignedBy = when {
+            oldParameter.isOptional() -> PythonParameterAssignment.NAME_ONLY
+            else -> PythonParameterAssignment.POSITION_OR_NAME
         }
+        var defaultValue = oldParameter.defaultValue
+        val annotations = mutableListOf<EditorAnnotation>()
+
         for (editorAnnotation in oldParameter.annotations) {
             when (editorAnnotation) {
                 is AttributeAnnotation -> {
                     assignedBy = PythonParameterAssignment.ATTRIBUTE
-                    defaultValue = editorAnnotation
-                        .defaultValue.toString()
+                    defaultValue = editorAnnotation.defaultValue.toString()
                 }
                 is ConstantAnnotation -> {
                     assignedBy = PythonParameterAssignment.CONSTANT
-                    defaultValue = editorAnnotation
-                        .defaultValue.toString()
+                    defaultValue = editorAnnotation.defaultValue.toString()
                 }
                 is OptionalAnnotation -> {
-                    defaultValue = editorAnnotation
-                        .defaultValue.toString()
                     assignedBy = PythonParameterAssignment.NAME_ONLY
+                    defaultValue = editorAnnotation.defaultValue.toString()
                 }
                 is RequiredAnnotation -> {
-                    defaultValue = null
                     assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+                    defaultValue = null
                 }
                 else -> {
                     annotations.add(editorAnnotation)
                 }
             }
         }
+
         return oldParameter.fullCopy(
             oldParameter.name,
             oldParameter.qualifiedName,
@@ -101,61 +93,35 @@ class ParameterAnnotationProcessor : AbstractPackageDataTransformer() {
         newAttributes: List<AnnotatedPythonAttribute>,
         newMethods: List<AnnotatedPythonFunction>
     ): AnnotatedPythonClass {
-        val processedNewAttributes: MutableList<AnnotatedPythonAttribute> = ArrayList(newAttributes)
+        val processedNewAttributes = newAttributes.toMutableList()
         for (pythonFunction in newMethods) {
             if (pythonFunction.isConstructor()) {
                 for (constructorParameter in pythonFunction.parameters) {
                     // Change default value of old attribute if assigned by of
                     // constructor parameter is of type attribute
-                    if (constructorParameter.assignedBy
-                        === PythonParameterAssignment.ATTRIBUTE
-                    ) {
-                        val unmodifiedAttribute =
-                            processedNewAttributes.stream().filter { pythonAttribute: AnnotatedPythonAttribute ->
-                                (Objects.requireNonNull(
-                                    pythonAttribute.originalDeclaration
-                                )!!.name
-                                    ==
-                                    Objects.requireNonNull(
-                                        constructorParameter
-                                            .originalDeclaration
-                                    )
-                                    !!.name
-                                    )
-                            }.findAny()
-                        if (unmodifiedAttribute.isPresent) {
-                            val unmodifiedPresentAttribute = unmodifiedAttribute.get()
-                            processedNewAttributes.remove(unmodifiedPresentAttribute)
+                    if (constructorParameter.assignedBy === PythonParameterAssignment.ATTRIBUTE) {
+                        val unmodifiedAttribute = processedNewAttributes.firstOrNull {
+                            it.originalDeclaration!!.name == constructorParameter.originalDeclaration!!.name
+                        }
+                        if (unmodifiedAttribute != null) {
+                            processedNewAttributes.remove(unmodifiedAttribute)
                             processedNewAttributes.add(
-                                unmodifiedPresentAttribute.fullCopy(
-                                    unmodifiedPresentAttribute.name,
-                                    unmodifiedPresentAttribute.qualifiedName,
+                                unmodifiedAttribute.fullCopy(
+                                    unmodifiedAttribute.name,
+                                    unmodifiedAttribute.qualifiedName,
                                     constructorParameter.defaultValue,
-                                    unmodifiedPresentAttribute.isPublic,
-                                    unmodifiedPresentAttribute.typeInDocs,
-                                    unmodifiedPresentAttribute.description,
-                                    unmodifiedPresentAttribute.annotations,
-                                    unmodifiedPresentAttribute.boundary,
-                                    unmodifiedPresentAttribute.originalDeclaration
+                                    unmodifiedAttribute.isPublic,
+                                    unmodifiedAttribute.typeInDocs,
+                                    unmodifiedAttribute.description,
+                                    unmodifiedAttribute.annotations,
+                                    unmodifiedAttribute.boundary,
+                                    unmodifiedAttribute.originalDeclaration
                                 )
                             )
                         }
-                    } else if (constructorParameter.assignedBy
-                        === PythonParameterAssignment.CONSTANT
-                    ) {
-                        processedNewAttributes.removeIf { pythonAttribute: AnnotatedPythonAttribute ->
-                            (Objects.requireNonNull(
-                                pythonAttribute
-                                    .originalDeclaration
-                            )
-                            !!.name
-                                ==
-                                Objects.requireNonNull(
-                                    constructorParameter
-                                        .originalDeclaration
-                                )
-                                !!.name
-                                )
+                    } else if (constructorParameter.assignedBy === PythonParameterAssignment.CONSTANT) {
+                        processedNewAttributes.removeIf {
+                            it.originalDeclaration!!.name == constructorParameter.originalDeclaration!!.name
                         }
                     }
                 }
@@ -177,29 +143,14 @@ class ParameterAnnotationProcessor : AbstractPackageDataTransformer() {
     }
 
     private fun reorderParameters(unorderedParameters: List<AnnotatedPythonParameter>): List<AnnotatedPythonParameter> {
-        val orderedParameters = mutableListOf<AnnotatedPythonParameter>()
-        val attributeParameters = mutableListOf<AnnotatedPythonParameter>()
-        val constantParameters = mutableListOf<AnnotatedPythonParameter>()
-        val implicitParameters = mutableListOf<AnnotatedPythonParameter>()
-        val optionalParameters = mutableListOf<AnnotatedPythonParameter>()
-        val requiredParameters = mutableListOf<AnnotatedPythonParameter>()
-        unorderedParameters.forEach(Consumer { pythonParameter: AnnotatedPythonParameter ->
-            when (pythonParameter.assignedBy) {
-                PythonParameterAssignment.IMPLICIT -> implicitParameters.add(pythonParameter)
-                PythonParameterAssignment.POSITION_OR_NAME -> requiredParameters.add(pythonParameter)
-                PythonParameterAssignment.NAME_ONLY -> optionalParameters.add(pythonParameter)
-                PythonParameterAssignment.CONSTANT -> constantParameters.add(pythonParameter)
-                PythonParameterAssignment.ATTRIBUTE -> attributeParameters.add(pythonParameter)
-                PythonParameterAssignment.POSITION_ONLY -> throw RuntimeException(
-                    "Position_only parameters must not exist after executing ParameterAnnotationProcessor"
-                )
-            }
-        })
-        orderedParameters.addAll(implicitParameters)
-        orderedParameters.addAll(requiredParameters)
-        orderedParameters.addAll(optionalParameters)
-        orderedParameters.addAll(constantParameters)
-        orderedParameters.addAll(attributeParameters)
-        return orderedParameters
+        val groups = unorderedParameters.groupBy { it.assignedBy }
+        return buildList {
+            addAll(groups[PythonParameterAssignment.IMPLICIT].orEmpty())
+            addAll(groups[PythonParameterAssignment.POSITION_ONLY].orEmpty())
+            addAll(groups[PythonParameterAssignment.POSITION_OR_NAME].orEmpty())
+            addAll(groups[PythonParameterAssignment.NAME_ONLY].orEmpty())
+            addAll(groups[PythonParameterAssignment.ATTRIBUTE].orEmpty())
+            addAll(groups[PythonParameterAssignment.CONSTANT].orEmpty())
+        }
     }
 }

@@ -1,7 +1,6 @@
 package com.larsreimann.api_editor.validation
 
 import com.larsreimann.api_editor.model.AnnotationTarget
-import java.util.Locale
 
 sealed interface AnnotationError {
 
@@ -25,8 +24,7 @@ data class AnnotationCombinationError(
      * @return The constructed error message
      */
     override fun message(): String {
-        return ("(" + firstAnnotationName.lowercase(Locale.getDefault()) + ", " + secondAnnotationName.lowercase(Locale.getDefault()) + ") "
-            + "cannot both be set for element: " + qualifiedName)
+        return "(${firstAnnotationName.lowercase()}, ${secondAnnotationName.lowercase()}) cannot both be set for element: $qualifiedName"
     }
 }
 
@@ -42,8 +40,7 @@ data class AnnotationTargetError(
      * @return The constructed error message
      */
     override fun message(): String {
-        return ("The annotation " + annotationName.lowercase(Locale.getDefault()) + " cannot be set for the following element of type "
-            + target.toString() + ": " + qualifiedName)
+        return "The annotation ${annotationName.lowercase()} cannot be set for the following element of type $target: $qualifiedName"
     }
 }
 
@@ -58,8 +55,6 @@ data class GroupAnnotationCombinationError(
      * @return The constructed error message
      */
     override fun message(): String {
-        return ("The parameter " + qualifiedName
-            + " is part of a group. Grouped parameters must not have the following annotation: " +
-            annotationName.lowercase(Locale.getDefault()) + " annotation")
+        return "The parameter $qualifiedName is part of a group. Grouped parameters must not have the following annotation: ${annotationName.lowercase()} annotation"
     }
 }
