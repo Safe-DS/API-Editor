@@ -1,9 +1,9 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.assertions.findUniqueDescendantOrFail
-import com.larsreimann.api_editor.model.AnnotatedPythonClass
-import com.larsreimann.api_editor.model.AnnotatedPythonFunction
-import com.larsreimann.api_editor.model.AnnotatedPythonPackage
+import com.larsreimann.api_editor.model.SerializablePythonClass
+import com.larsreimann.api_editor.model.SerializablePythonFunction
+import com.larsreimann.api_editor.model.SerializablePythonPackage
 import com.larsreimann.api_editor.model.UnusedAnnotation
 import com.larsreimann.api_editor.util.createPythonClass
 import com.larsreimann.api_editor.util.createPythonFunction
@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test
 
 internal class UnusedAnnotationProcessorTest {
 
-    private lateinit var testPackage: AnnotatedPythonPackage
+    private lateinit var testPackage: SerializablePythonPackage
 
     @BeforeEach
     fun resetTestPackage() {
@@ -48,7 +48,7 @@ internal class UnusedAnnotationProcessorTest {
     @Test
     fun `should remove unused class`() {
         // given
-        val testClass = testPackage.findUniqueDescendantOrFail<AnnotatedPythonClass>("annotatedTestClass")
+        val testClass = testPackage.findUniqueDescendantOrFail<SerializablePythonClass>("annotatedTestClass")
         testClass.annotations += UnusedAnnotation
 
         // when
@@ -64,7 +64,7 @@ internal class UnusedAnnotationProcessorTest {
     @Test
     fun `should remove unused global function`() {
         // given
-        val testFunction = testPackage.findUniqueDescendantOrFail<AnnotatedPythonFunction>("annotatedTestFunction")
+        val testFunction = testPackage.findUniqueDescendantOrFail<SerializablePythonFunction>("annotatedTestFunction")
         testFunction.annotations += UnusedAnnotation
 
         // when
@@ -80,7 +80,7 @@ internal class UnusedAnnotationProcessorTest {
     @Test
     fun `should remove unused method`() {
         // given
-        val testMethod = testPackage.findUniqueDescendantOrFail<AnnotatedPythonFunction>("annotatedTestMethod")
+        val testMethod = testPackage.findUniqueDescendantOrFail<SerializablePythonFunction>("annotatedTestMethod")
         testMethod.annotations += UnusedAnnotation
 
         // when

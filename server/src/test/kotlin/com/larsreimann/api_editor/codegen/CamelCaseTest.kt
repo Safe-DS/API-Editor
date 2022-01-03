@@ -1,8 +1,8 @@
 package com.larsreimann.api_editor.codegen
 
-import com.larsreimann.api_editor.model.AnnotatedPythonClass
-import com.larsreimann.api_editor.model.AnnotatedPythonFunction
-import com.larsreimann.api_editor.model.AnnotatedPythonParameter
+import com.larsreimann.api_editor.model.SerializablePythonClass
+import com.larsreimann.api_editor.model.SerializablePythonFunction
+import com.larsreimann.api_editor.model.SerializablePythonParameter
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import io.kotest.matchers.shouldBe
@@ -19,18 +19,18 @@ class CamelCaseTest {
     @Test
     fun `should convert names to camel case`() {
         // given
-        val testClass = AnnotatedPythonClass(
+        val testClass = SerializablePythonClass(
             "Test_Class",
             "testModule.Test_Class",
             listOf(),
             listOf(),
             mutableListOf(
-                AnnotatedPythonFunction(
+                SerializablePythonFunction(
                     "__init__",
                     "testModule.Test_Class.__init__",
                     listOf(),
                     mutableListOf(
-                        AnnotatedPythonParameter(
+                        SerializablePythonParameter(
                             "test_parameter",
                             "testModule.Test_Class.__init__.test_parameter",
                             null,
@@ -47,12 +47,12 @@ class CamelCaseTest {
                     "",
                     mutableListOf()
                 ),
-                AnnotatedPythonFunction(
+                SerializablePythonFunction(
                     "test_function",
                     "testModule.Test_Class.test_function",
                     listOf(),
                     mutableListOf(
-                        AnnotatedPythonParameter(
+                        SerializablePythonParameter(
                             "test_parameter",
                             "testModule.Test_Class.test_function.test_parameter",
                             null,

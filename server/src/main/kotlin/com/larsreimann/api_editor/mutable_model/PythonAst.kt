@@ -2,6 +2,14 @@
 
 package com.larsreimann.api_editor.mutable_model
 
+import com.larsreimann.api_editor.model.SerializablePythonAttribute
+import com.larsreimann.api_editor.model.SerializablePythonClass
+import com.larsreimann.api_editor.model.SerializablePythonEnum
+import com.larsreimann.api_editor.model.SerializablePythonFunction
+import com.larsreimann.api_editor.model.SerializablePythonModule
+import com.larsreimann.api_editor.model.SerializablePythonPackage
+import com.larsreimann.api_editor.model.SerializablePythonParameter
+import com.larsreimann.api_editor.model.SerializablePythonResult
 import com.larsreimann.api_editor.model.Boundary
 import com.larsreimann.api_editor.model.EditorAnnotation
 import com.larsreimann.api_editor.model.PythonEnumInstance
@@ -33,7 +41,8 @@ class MutablePythonPackage(
     name: String,
     var version: String,
     modules: List<MutablePythonModule> = emptyList(),
-    annotations: MutableList<EditorAnnotation> = mutableListOf()
+    annotations: MutableList<EditorAnnotation> = mutableListOf(),
+    var originalDeclaration: SerializablePythonPackage? = null
 ) : MutablePythonDeclaration(name, annotations) {
 
     val modules = ContainmentList(modules)
@@ -50,7 +59,8 @@ class MutablePythonModule(
     classes: List<MutablePythonClass> = emptyList(),
     enums: List<MutablePythonEnum> = emptyList(),
     functions: List<MutablePythonFunction> = emptyList(),
-    annotations: MutableList<EditorAnnotation> = mutableListOf()
+    annotations: MutableList<EditorAnnotation> = mutableListOf(),
+    var originalDeclaration: SerializablePythonModule? = null
 ) : MutablePythonDeclaration(name, annotations) {
 
     val classes = ContainmentList(classes)
@@ -73,7 +83,8 @@ class MutablePythonClass(
     var isPublic: Boolean = true,
     var description: String = "",
     var fullDocstring: String = "",
-    annotations: MutableList<EditorAnnotation> = mutableListOf()
+    annotations: MutableList<EditorAnnotation> = mutableListOf(),
+    var originalDeclaration: SerializablePythonClass? = null
 ) : MutablePythonDeclaration(name, annotations) {
 
     val attributes = ContainmentList(attributes)
@@ -88,7 +99,8 @@ class MutablePythonClass(
 class MutablePythonEnum(
     name: String,
     val instances: MutableList<PythonEnumInstance> = mutableListOf(),
-    annotations: MutableList<EditorAnnotation> = mutableListOf()
+    annotations: MutableList<EditorAnnotation> = mutableListOf(),
+    var originalDeclaration: SerializablePythonEnum? = null
 ) : MutablePythonDeclaration(name, annotations)
 
 class MutablePythonFunction(
@@ -99,9 +111,10 @@ class MutablePythonFunction(
     var isPublic: Boolean = true,
     var description: String = "",
     var fullDocstring: String = "",
-    val calledAfter: MutableList<String> = mutableListOf(), // TODO: should be cross-references
     var isPure: Boolean = false,
-    annotations: MutableList<EditorAnnotation> = mutableListOf()
+    annotations: MutableList<EditorAnnotation> = mutableListOf(),
+    val calledAfter: MutableList<SerializablePythonFunction> = mutableListOf(),
+    var originalDeclaration: SerializablePythonFunction? = null
 ) : MutablePythonDeclaration(name, annotations) {
 
     val parameters = ContainmentList(parameters)
@@ -122,7 +135,8 @@ class MutablePythonAttribute(
     var typeInDocs: String = "",
     var description: String = "",
     var boundary: Boundary? = null,
-    annotations: MutableList<EditorAnnotation> = mutableListOf()
+    annotations: MutableList<EditorAnnotation> = mutableListOf(),
+    var originalDeclaration: SerializablePythonAttribute? = null
 ) : MutablePythonDeclaration(name, annotations)
 
 class MutablePythonParameter(
@@ -133,7 +147,8 @@ class MutablePythonParameter(
     var typeInDocs: String = "",
     var description: String = "",
     var boundary: Boundary? = null,
-    annotations: MutableList<EditorAnnotation> = mutableListOf()
+    annotations: MutableList<EditorAnnotation> = mutableListOf(),
+    var originalDeclaration: SerializablePythonParameter? = null
 ) : MutablePythonDeclaration(name, annotations)
 
 class MutablePythonResult(
@@ -142,7 +157,8 @@ class MutablePythonResult(
     var typeInDocs: String = "",
     var description: String = "",
     var boundary: Boundary? = null,
-    annotations: MutableList<EditorAnnotation> = mutableListOf()
+    annotations: MutableList<EditorAnnotation> = mutableListOf(),
+    var originalDeclaration: SerializablePythonResult? = null
 ) : MutablePythonDeclaration(name, annotations)
 
 private sealed class MutablePythonStatement : MutablePythonAstNode() // TODO

@@ -1,11 +1,11 @@
 package com.larsreimann.api_editor.validation
 
-import com.larsreimann.api_editor.model.AnnotatedPythonClass
-import com.larsreimann.api_editor.model.AnnotatedPythonFunction
-import com.larsreimann.api_editor.model.AnnotatedPythonModule
-import com.larsreimann.api_editor.model.AnnotatedPythonPackage
-import com.larsreimann.api_editor.model.AnnotatedPythonParameter
-import com.larsreimann.api_editor.model.AnnotatedPythonResult
+import com.larsreimann.api_editor.model.SerializablePythonClass
+import com.larsreimann.api_editor.model.SerializablePythonFunction
+import com.larsreimann.api_editor.model.SerializablePythonModule
+import com.larsreimann.api_editor.model.SerializablePythonPackage
+import com.larsreimann.api_editor.model.SerializablePythonParameter
+import com.larsreimann.api_editor.model.SerializablePythonResult
 import com.larsreimann.api_editor.model.AnnotationTarget
 import com.larsreimann.api_editor.model.AttributeAnnotation
 import com.larsreimann.api_editor.model.BoundaryAnnotation
@@ -28,12 +28,12 @@ internal class AnnotationValidatorTest {
     @Test
     fun returnAnnotationTargetErrorsForIncorrectlyPlacedAttributeAnnotations() {
         // given
-        val testPythonPackage = AnnotatedPythonPackage(
+        val testPythonPackage = SerializablePythonPackage(
             "test-distribution",
             "test-package",
             "1.0.0",
             mutableListOf(
-                AnnotatedPythonModule(
+                SerializablePythonModule(
                     "test-module",
                     listOf(
                         PythonImport(
@@ -49,18 +49,18 @@ internal class AnnotationValidatorTest {
                         )
                     ),
                     mutableListOf(
-                        AnnotatedPythonClass(
+                        SerializablePythonClass(
                             "test-class",
                             "test-module.test-class",
                             listOf("test-decorator"),
                             listOf("test-superclass"),
                             mutableListOf(
-                                AnnotatedPythonFunction(
+                                SerializablePythonFunction(
                                     "test-class-function",
                                     "test-module.test-class.test-class-function",
                                     listOf("decorators"),
                                     mutableListOf(
-                                        AnnotatedPythonParameter(
+                                        SerializablePythonParameter(
                                             "only-param",
                                             "test-module.test-class.test-class-function.only-param",
                                             "defaultValue",
@@ -97,12 +97,12 @@ internal class AnnotationValidatorTest {
                         )
                     ),
                     mutableListOf(
-                        AnnotatedPythonFunction(
+                        SerializablePythonFunction(
                             "test-function",
                             "test-module.test-function",
                             listOf("test-decorator"),
                             mutableListOf(
-                                AnnotatedPythonParameter(
+                                SerializablePythonParameter(
                                     "test-parameter",
                                     "test-module.test-function.test-parameter",
                                     "42",
@@ -118,7 +118,7 @@ internal class AnnotationValidatorTest {
                                 )
                             ),
                             mutableListOf(
-                                AnnotatedPythonResult(
+                                SerializablePythonResult(
                                     "test-result",
                                     "str",
                                     "str",
@@ -180,12 +180,12 @@ internal class AnnotationValidatorTest {
     @Test
     fun returnNoAnnotationErrorsOnValidlyPlacedAnnotations() {
         // given
-        val testPythonPackage = AnnotatedPythonPackage(
+        val testPythonPackage = SerializablePythonPackage(
             "test-distribution",
             "test-package",
             "1.0.0",
             mutableListOf(
-                AnnotatedPythonModule(
+                SerializablePythonModule(
                     "test-module",
                     listOf(
                         PythonImport(
@@ -201,18 +201,18 @@ internal class AnnotationValidatorTest {
                         )
                     ),
                     mutableListOf(
-                        AnnotatedPythonClass(
+                        SerializablePythonClass(
                             "test-class",
                             "test-module.test-class",
                             listOf("test-decorator"),
                             listOf("test-superclass"),
                             mutableListOf(
-                                AnnotatedPythonFunction(
+                                SerializablePythonFunction(
                                     "__init__",
                                     "test-module.test-class.__init__",
                                     listOf("decorators"),
                                     mutableListOf(
-                                        AnnotatedPythonParameter(
+                                        SerializablePythonParameter(
                                             "only-param",
                                             "test-module.test-class.__init__.only-param",
                                             "defaultValue",
@@ -256,12 +256,12 @@ internal class AnnotationValidatorTest {
                         )
                     ),
                     mutableListOf(
-                        AnnotatedPythonFunction(
+                        SerializablePythonFunction(
                             "test-function",
                             "test-module.test-function",
                             listOf("test-decorator"),
                             mutableListOf(
-                                AnnotatedPythonParameter(
+                                SerializablePythonParameter(
                                     "test-parameter",
                                     "test-module.test-function.test-parameter",
                                     "42",
@@ -285,7 +285,7 @@ internal class AnnotationValidatorTest {
                                 )
                             ),
                             mutableListOf(
-                                AnnotatedPythonResult(
+                                SerializablePythonResult(
                                     "test-result",
                                     "str",
                                     "str",
@@ -326,12 +326,12 @@ internal class AnnotationValidatorTest {
     @Test
     fun returnAnnotationCombinationsErrorsForConflictingAnnotations() {
         // given
-        val testPythonPackage = AnnotatedPythonPackage(
+        val testPythonPackage = SerializablePythonPackage(
             "test-distribution",
             "test-package",
             "1.0.0",
             mutableListOf(
-                AnnotatedPythonModule(
+                SerializablePythonModule(
                     "test-module",
                     listOf(
                         PythonImport(
@@ -347,18 +347,18 @@ internal class AnnotationValidatorTest {
                         )
                     ),
                     mutableListOf(
-                        AnnotatedPythonClass(
+                        SerializablePythonClass(
                             "test-class",
                             "test-module.test-class",
                             listOf("test-decorator"),
                             listOf("test-superclass"),
                             mutableListOf(
-                                AnnotatedPythonFunction(
+                                SerializablePythonFunction(
                                     "__init__",
                                     "test-module.test-class.__init__",
                                     listOf("decorators"),
                                     mutableListOf(
-                                        AnnotatedPythonParameter(
+                                        SerializablePythonParameter(
                                             "only-param",
                                             "test-module.test-class.__init__.only-param",
                                             "defaultValue",
@@ -388,12 +388,12 @@ internal class AnnotationValidatorTest {
                         )
                     ),
                     mutableListOf(
-                        AnnotatedPythonFunction(
+                        SerializablePythonFunction(
                             "test-function",
                             "test-module.test-function",
                             listOf("test-decorator"),
                             mutableListOf(
-                                AnnotatedPythonParameter(
+                                SerializablePythonParameter(
                                     "test-parameter",
                                     "test-module.test-function.test-parameter",
                                     "42",
@@ -415,7 +415,7 @@ internal class AnnotationValidatorTest {
                                 )
                             ),
                             mutableListOf(
-                                AnnotatedPythonResult(
+                                SerializablePythonResult(
                                     "test-result",
                                     "str",
                                     "str",
@@ -467,12 +467,12 @@ internal class AnnotationValidatorTest {
     @Test
     fun returnGroupAnnotationCombinationsErrorsForConflictingAnnotation() {
         // given
-        val testPythonPackage = AnnotatedPythonPackage(
+        val testPythonPackage = SerializablePythonPackage(
             "test-distribution",
             "test-package",
             "1.0.0",
             mutableListOf(
-                AnnotatedPythonModule(
+                SerializablePythonModule(
                     "test-module",
                     listOf(
                         PythonImport(
@@ -488,18 +488,18 @@ internal class AnnotationValidatorTest {
                         )
                     ),
                     mutableListOf(
-                        AnnotatedPythonClass(
+                        SerializablePythonClass(
                             "test-class",
                             "test-module.test-class",
                             listOf("test-decorator"),
                             listOf("test-superclass"),
                             mutableListOf(
-                                AnnotatedPythonFunction(
+                                SerializablePythonFunction(
                                     "__init__",
                                     "test-module.test-class.__init__",
                                     listOf("decorators"),
                                     mutableListOf(
-                                        AnnotatedPythonParameter(
+                                        SerializablePythonParameter(
                                             "first-param",
                                             "test-module.test-class.__init__.first-param",
                                             "defaultValue",
@@ -513,7 +513,7 @@ internal class AnnotationValidatorTest {
                                                 )
                                             )
                                         ),
-                                        AnnotatedPythonParameter(
+                                        SerializablePythonParameter(
                                             "second-param",
                                             "test-module.test-class.__init__.second-param",
                                             "defaultValue",
@@ -527,7 +527,7 @@ internal class AnnotationValidatorTest {
                                                 )
                                             )
                                         ),
-                                        AnnotatedPythonParameter(
+                                        SerializablePythonParameter(
                                             "third-param",
                                             "test-module.test-class.__init__.third-param",
                                             "defaultValue",
@@ -551,12 +551,12 @@ internal class AnnotationValidatorTest {
                                         )
                                     )
                                 ),
-                                AnnotatedPythonFunction(
+                                SerializablePythonFunction(
                                     "class-function",
                                     "test-module.test-class.class-function",
                                     listOf("decorators"),
                                     mutableListOf(
-                                        AnnotatedPythonParameter(
+                                        SerializablePythonParameter(
                                             "first-param",
                                             "test-module.test-class.class-function.first-param",
                                             "defaultValue",
@@ -568,7 +568,7 @@ internal class AnnotationValidatorTest {
                                                 RenameAnnotation("newName")
                                             )
                                         ),
-                                        AnnotatedPythonParameter(
+                                        SerializablePythonParameter(
                                             "second-param",
                                             "test-module.test-class.class-function.second-param",
                                             "defaultValue",
@@ -601,12 +601,12 @@ internal class AnnotationValidatorTest {
                         )
                     ),
                     mutableListOf(
-                        AnnotatedPythonFunction(
+                        SerializablePythonFunction(
                             "class-function",
                             "test-module.module-function",
                             listOf("decorators"),
                             mutableListOf(
-                                AnnotatedPythonParameter(
+                                SerializablePythonParameter(
                                     "first-param",
                                     "test-module.module-function.first-param",
                                     "defaultValue",
@@ -618,7 +618,7 @@ internal class AnnotationValidatorTest {
                                         RenameAnnotation("newName")
                                     )
                                 ),
-                                AnnotatedPythonParameter(
+                                SerializablePythonParameter(
                                     "second-param",
                                     "test-module.module-function.second-param",
                                     "defaultValue",

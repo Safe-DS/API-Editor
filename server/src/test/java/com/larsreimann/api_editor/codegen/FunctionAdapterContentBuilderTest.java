@@ -1,7 +1,7 @@
 package com.larsreimann.api_editor.codegen;
 
-import com.larsreimann.api_editor.model.AnnotatedPythonFunction;
-import com.larsreimann.api_editor.model.AnnotatedPythonParameter;
+import com.larsreimann.api_editor.model.SerializablePythonFunction;
+import com.larsreimann.api_editor.model.SerializablePythonParameter;
 import com.larsreimann.api_editor.model.PythonParameterAssignment;
 import com.larsreimann.api_editor.model.RenameAnnotation;
 import com.larsreimann.api_editor.transformation.OriginalDeclarationProcessor;
@@ -16,7 +16,7 @@ class FunctionAdapterContentBuilderTest {
     @Test
     void buildFunctionReturnsFormattedFunctionWithNoParameters() {
         // given
-        AnnotatedPythonFunction testFunction = new AnnotatedPythonFunction(
+        SerializablePythonFunction testFunction = new SerializablePythonFunction(
             "test-function",
             "test-module.test-function",
             List.of("test-decorator"),
@@ -44,12 +44,12 @@ class FunctionAdapterContentBuilderTest {
     @Test
     void buildFunctionReturnsFormattedFunctionWithPositionOnlyParameter() {
         // given
-        AnnotatedPythonFunction testFunction = new AnnotatedPythonFunction(
+        SerializablePythonFunction testFunction = new SerializablePythonFunction(
             "test-function",
             "test-module.test-function",
             List.of("test-decorator"),
             List.of(
-                new AnnotatedPythonParameter(
+                new SerializablePythonParameter(
                     "only-param",
                     "test-module.test-class.test-class-function.only-param",
                     "13",
@@ -83,12 +83,12 @@ class FunctionAdapterContentBuilderTest {
     @Test
     void buildFunctionReturnsFormattedFunctionWithPositionOrNameParameter() {
         // given
-        AnnotatedPythonFunction testFunction = new AnnotatedPythonFunction(
+        SerializablePythonFunction testFunction = new SerializablePythonFunction(
             "test-function",
             "test-module.test-function",
             List.of("test-decorator"),
             List.of(
-                new AnnotatedPythonParameter(
+                new SerializablePythonParameter(
                     "only-param",
                     "test-module.test-class.test-class-function.only-param",
                     "False",
@@ -122,12 +122,12 @@ class FunctionAdapterContentBuilderTest {
     @Test
     void buildFunctionReturnsFormattedFunctionWithNameOnlyParameter() {
         // given
-        AnnotatedPythonFunction testFunction = new AnnotatedPythonFunction(
+        SerializablePythonFunction testFunction = new SerializablePythonFunction(
             "test-function",
             "test-module.test-function",
             List.of("test-decorator"),
             List.of(
-                new AnnotatedPythonParameter(
+                new SerializablePythonParameter(
                     "only-param",
                     "test-module.test-class.test-class-function.only-param",
                     null,
@@ -161,12 +161,12 @@ class FunctionAdapterContentBuilderTest {
     @Test
     void buildFunctionReturnsFormattedFunctionWithPositionAndPositionOrNameParameter() {
         // given
-        AnnotatedPythonFunction testFunction = new AnnotatedPythonFunction(
+        SerializablePythonFunction testFunction = new SerializablePythonFunction(
             "test-function",
             "test-module.test-function",
             List.of("test-decorator"),
             List.of(
-                new AnnotatedPythonParameter(
+                new SerializablePythonParameter(
                     "first-param",
                     "test-module.test-class.test-class-function.first-param",
                     null,
@@ -176,7 +176,7 @@ class FunctionAdapterContentBuilderTest {
                     "description",
                     Collections.emptyList()
                 ),
-                new AnnotatedPythonParameter(
+                new SerializablePythonParameter(
                     "second-param",
                     "test-module.test-class.test-class-function.second-param",
                     null,
@@ -210,12 +210,12 @@ class FunctionAdapterContentBuilderTest {
     @Test
     void buildFunctionReturnsFormattedFunctionWithPositionAndPositionOrNameAndNameOnlyParameter() {
         // given
-        AnnotatedPythonFunction testFunction = new AnnotatedPythonFunction(
+        SerializablePythonFunction testFunction = new SerializablePythonFunction(
             "test-function",
             "test-module.test-function",
             List.of("test-decorator"),
             List.of(
-                new AnnotatedPythonParameter(
+                new SerializablePythonParameter(
                     "first-param",
                     "test-module.test-class.test-class-function.first-param",
                     null,
@@ -225,7 +225,7 @@ class FunctionAdapterContentBuilderTest {
                     "description",
                     Collections.emptyList()
                 ),
-                new AnnotatedPythonParameter(
+                new SerializablePythonParameter(
                     "second-param",
                     "test-module.test-class.test-class-function.second-param",
                     null,
@@ -235,7 +235,7 @@ class FunctionAdapterContentBuilderTest {
                     "description",
                     Collections.emptyList()
                 ),
-                new AnnotatedPythonParameter(
+                new SerializablePythonParameter(
                     "third-param",
                     "test-module.test-class.test-class-function.third-param",
                     null,
@@ -269,12 +269,12 @@ class FunctionAdapterContentBuilderTest {
     @Test
     void buildFunctionReturnsFormattedFunctionWithPositionAndNameOnlyParameter() {
         // given
-        AnnotatedPythonFunction testFunction = new AnnotatedPythonFunction(
+        SerializablePythonFunction testFunction = new SerializablePythonFunction(
             "test-function",
             "test-module.test-function",
             List.of("test-decorator"),
             List.of(
-                new AnnotatedPythonParameter(
+                new SerializablePythonParameter(
                     "first-param",
                     "test-module.test-class.test-class-function.first-param",
                     null,
@@ -284,7 +284,7 @@ class FunctionAdapterContentBuilderTest {
                     "description",
                     Collections.emptyList()
                 ),
-                new AnnotatedPythonParameter(
+                new SerializablePythonParameter(
                     "second-param",
                     "test-module.test-class.test-class-function.second-param",
                     null,
@@ -318,12 +318,12 @@ class FunctionAdapterContentBuilderTest {
     @Test
     void buildFunctionReturnsFormattedFunctionWithPositionOrNameAndNameOnlyParameter() {
         // given
-        AnnotatedPythonFunction testFunction = new AnnotatedPythonFunction(
+        SerializablePythonFunction testFunction = new SerializablePythonFunction(
             "test-function",
             "test-module.test-function",
             List.of("test-decorator"),
             List.of(
-                new AnnotatedPythonParameter(
+                new SerializablePythonParameter(
                     "first-param",
                     "test-module.test-class.test-class-function.first-param",
                     null,
@@ -333,7 +333,7 @@ class FunctionAdapterContentBuilderTest {
                     "description",
                     Collections.emptyList()
                 ),
-                new AnnotatedPythonParameter(
+                new SerializablePythonParameter(
                     "second-param",
                     "test-module.test-class.test-class-function.second-param",
                     null,
@@ -367,12 +367,12 @@ class FunctionAdapterContentBuilderTest {
     @Test
     void buildFunctionsReturnsFormattedFunctionBasedOnOriginalDeclaration() {
         // given
-        AnnotatedPythonFunction testFunction = new AnnotatedPythonFunction(
+        SerializablePythonFunction testFunction = new SerializablePythonFunction(
             "test-function",
             "test-module.test-function",
             List.of("test-decorator"),
             List.of(
-                new AnnotatedPythonParameter(
+                new SerializablePythonParameter(
                     "first-param",
                     "test-module.test-class.test-class-function.first-param",
                     null,
@@ -384,7 +384,7 @@ class FunctionAdapterContentBuilderTest {
                         new RenameAnnotation("newFirstParamName")
                     )
                 ),
-                new AnnotatedPythonParameter(
+                new SerializablePythonParameter(
                     "second-param",
                     "test-module.test-class.test-class-function.second-param",
                     null,
@@ -396,7 +396,7 @@ class FunctionAdapterContentBuilderTest {
                         new RenameAnnotation("newSecondParamName")
                     )
                 ),
-                new AnnotatedPythonParameter(
+                new SerializablePythonParameter(
                     "third-param",
                     "test-module.test-class.test-class-function.third-param",
                     null,

@@ -1,7 +1,7 @@
 package com.larsreimann.api_editor.server
 
 import com.larsreimann.api_editor.io.PackageFileBuilder
-import com.larsreimann.api_editor.model.AnnotatedPythonPackage
+import com.larsreimann.api_editor.model.SerializablePythonPackage
 import com.larsreimann.api_editor.transformation.AttributesInitializer
 import com.larsreimann.api_editor.transformation.BoundaryAnnotationProcessor
 import com.larsreimann.api_editor.transformation.CleanupModulesProcessor
@@ -72,14 +72,14 @@ fun Application.configureRouting() {
  */
 fun Route.echo() {
     post("/echo") {
-        val pythonPackage = call.receive<AnnotatedPythonPackage>()
+        val pythonPackage = call.receive<SerializablePythonPackage>()
         call.respond(pythonPackage)
     }
 }
 
 fun Route.infer() {
     post("/infer") {
-        val pythonPackage = call.receive<AnnotatedPythonPackage>()
+        val pythonPackage = call.receive<SerializablePythonPackage>()
         when (val doInferResult = doInfer(pythonPackage)) {
             is DoInferResult.ValidationFailure -> {
                 call.respond(HttpStatusCode.Conflict, doInferResult.messages)
@@ -107,7 +107,7 @@ fun Route.infer() {
     }
 }
 
-fun doInfer(originalPythonPackage: AnnotatedPythonPackage): DoInferResult {
+fun doInfer(originalPythonPackage: SerializablePythonPackage): DoInferResult {
     // Validate
     val errors = AnnotationValidator(originalPythonPackage).validate()
     if (errors.isNotEmpty()) {
@@ -122,7 +122,7 @@ fun doInfer(originalPythonPackage: AnnotatedPythonPackage): DoInferResult {
     return DoInferResult.Success(path)
 }
 
-fun processPackage(originalPythonPackage: AnnotatedPythonPackage): AnnotatedPythonPackage {
+fun processPackage(originalPythonPackage: SerializablePythonPackage): SerializablePythonPackage {
     var modifiedPythonPackage = originalPythonPackage
 
     // Add attributes to classes

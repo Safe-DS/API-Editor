@@ -13,17 +13,17 @@ class ModuleAdapterContentBuilderTest {
     @Test
     void buildModuleContentReturnsFormattedModuleContent() {
         // given
-        AnnotatedPythonClass testClass = new AnnotatedPythonClass(
+        SerializablePythonClass testClass = new SerializablePythonClass(
             "test-class",
             "test-module.test-class",
             List.of("test-decorator"),
             List.of("test-superclass"),
-            List.of(new AnnotatedPythonFunction(
+            List.of(new SerializablePythonFunction(
                 "test-class-function",
                 "test-module.test-class.test-class-function",
                 List.of("decorators"),
                 List.of(
-                    new AnnotatedPythonParameter(
+                    new SerializablePythonParameter(
                         "self",
                         "test-module.test-class.test-class-function.self",
                         null,
@@ -33,7 +33,7 @@ class ModuleAdapterContentBuilderTest {
                         "description",
                         Collections.emptyList()
                     ),
-                    new AnnotatedPythonParameter(
+                    new SerializablePythonParameter(
                         "only-param",
                         "test-module.test-class.test-class-function.only-param",
                         "'defaultValue'",
@@ -56,7 +56,7 @@ class ModuleAdapterContentBuilderTest {
             Collections.emptyList()
         );
 
-        AnnotatedPythonModule testModule = new AnnotatedPythonModule(
+        SerializablePythonModule testModule = new SerializablePythonModule(
             "test-module",
             Collections.emptyList(),
             Collections.emptyList(),
@@ -64,12 +64,12 @@ class ModuleAdapterContentBuilderTest {
                 testClass
             ),
             List.of(
-                new AnnotatedPythonFunction(
+                new SerializablePythonFunction(
                     "function_module",
                     "test-module.function_module",
                     List.of("test-decorator"),
                     List.of(
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "param1",
                             "test-module.function_module.param1",
                             null,
@@ -79,7 +79,7 @@ class ModuleAdapterContentBuilderTest {
                             "Lorem ipsum",
                             Collections.emptyList()
                         ),
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "param2",
                             "test-module.function_module.param2",
                             null,
@@ -89,7 +89,7 @@ class ModuleAdapterContentBuilderTest {
                             "Lorem ipsum",
                             Collections.emptyList()
                         ),
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "param3",
                             "test-module.function_module.param3",
                             null,
@@ -101,7 +101,7 @@ class ModuleAdapterContentBuilderTest {
                         )
                     ),
                     List.of(
-                        new AnnotatedPythonResult(
+                        new SerializablePythonResult(
                             "test-result",
                             "str",
                             "str",
@@ -114,12 +114,12 @@ class ModuleAdapterContentBuilderTest {
                     "Lorem ipsum",
                     Collections.emptyList()
                 ),
-                new AnnotatedPythonFunction(
+                new SerializablePythonFunction(
                     "test-function",
                     "test-module.test-function",
                     List.of("test-decorator"),
                     List.of(
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "test-parameter",
                             "test-module.test-function.test-parameter",
                             "42",
@@ -131,7 +131,7 @@ class ModuleAdapterContentBuilderTest {
                         )
                     ),
                     List.of(
-                        new AnnotatedPythonResult(
+                        new SerializablePythonResult(
                             "test-result",
                             "str",
                             "str",
@@ -175,18 +175,18 @@ class ModuleAdapterContentBuilderTest {
     @Test
     void buildModuleContentWithNoClassesReturnsFormattedModuleContent() {
         // given
-        AnnotatedPythonModule testModule = new AnnotatedPythonModule(
+        SerializablePythonModule testModule = new SerializablePythonModule(
             "test-module",
             Collections.emptyList(),
             Collections.emptyList(),
             Collections.emptyList(),
             List.of(
-                new AnnotatedPythonFunction(
+                new SerializablePythonFunction(
                     "function_module",
                     "test-module.function_module",
                     List.of("test-decorator"),
                     List.of(
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "param1",
                             "test-module.function_module_1.param1",
                             null,
@@ -196,7 +196,7 @@ class ModuleAdapterContentBuilderTest {
                             "Lorem ipsum",
                             Collections.emptyList()
                         ),
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "param2",
                             "test-module.function_module_1.param2",
                             null,
@@ -206,7 +206,7 @@ class ModuleAdapterContentBuilderTest {
                             "Lorem ipsum",
                             Collections.emptyList()
                         ),
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "param3",
                             "test-module.function_module_1.param3",
                             null,
@@ -218,7 +218,7 @@ class ModuleAdapterContentBuilderTest {
                         )
                     ),
                     List.of(
-                        new AnnotatedPythonResult(
+                        new SerializablePythonResult(
                             "test-result",
                             "str",
                             "str",
@@ -231,12 +231,12 @@ class ModuleAdapterContentBuilderTest {
                     "Lorem ipsum",
                     Collections.emptyList()
                 ),
-                new AnnotatedPythonFunction(
+                new SerializablePythonFunction(
                     "test-function",
                     "test-module.test-function",
                     List.of("test-decorator"),
                     List.of(
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "test-parameter",
                             "test-module.test-function.test-parameter",
                             "42",
@@ -248,7 +248,7 @@ class ModuleAdapterContentBuilderTest {
                         )
                     ),
                     List.of(
-                        new AnnotatedPythonResult(
+                        new SerializablePythonResult(
                             "test-result",
                             "str",
                             "str",
@@ -288,7 +288,7 @@ class ModuleAdapterContentBuilderTest {
     @Test
     void buildModuleContentWithNoFunctionsReturnsFormattedModuleContent() {
         // given
-        AnnotatedPythonClass testClass = new AnnotatedPythonClass(
+        SerializablePythonClass testClass = new SerializablePythonClass(
             "test-class",
             "test-module.test-class",
             List.of("test-decorator"),
@@ -300,7 +300,7 @@ class ModuleAdapterContentBuilderTest {
             Collections.emptyList()
         );
 
-        AnnotatedPythonModule testModule = new AnnotatedPythonModule(
+        SerializablePythonModule testModule = new SerializablePythonModule(
             "test-module",
             List.of(
                 new PythonImport(
@@ -341,7 +341,7 @@ class ModuleAdapterContentBuilderTest {
     @Test
     void buildModuleContentWithEmptyModuleReturnsEmptyString() {
         // given
-        AnnotatedPythonModule testModule = new AnnotatedPythonModule(
+        SerializablePythonModule testModule = new SerializablePythonModule(
             "test-module",
             List.of(
                 new PythonImport(
@@ -376,17 +376,17 @@ class ModuleAdapterContentBuilderTest {
     @Test
     void buildModuleContentWithAttributeAnnotationsReturnsFormattedModuleContent() {
         // given
-        AnnotatedPythonClass testClass = new AnnotatedPythonClass(
+        SerializablePythonClass testClass = new SerializablePythonClass(
             "test-class",
             "test-module.test-class",
             List.of("test-decorator"),
             List.of("test-superclass"),
-            List.of(new AnnotatedPythonFunction(
+            List.of(new SerializablePythonFunction(
                 "__init__",
                 "test-module.test-class.__init__",
                 List.of("decorators"),
                 List.of(
-                    new AnnotatedPythonParameter(
+                    new SerializablePythonParameter(
                         "self",
                         "test-module.test-class.__init__.self",
                         null,
@@ -396,7 +396,7 @@ class ModuleAdapterContentBuilderTest {
                         "description",
                         Collections.emptyList()
                     ),
-                    new AnnotatedPythonParameter(
+                    new SerializablePythonParameter(
                         "only-param",
                         "test-module.test-class.__init__.only-param",
                         "'defaultValue'",
@@ -425,7 +425,7 @@ class ModuleAdapterContentBuilderTest {
             Collections.emptyList()
         );
 
-        AnnotatedPythonModule testModule = new AnnotatedPythonModule(
+        SerializablePythonModule testModule = new SerializablePythonModule(
             "test-module",
             Collections.emptyList(),
             Collections.emptyList(),
@@ -459,18 +459,18 @@ class ModuleAdapterContentBuilderTest {
     @Test
     void buildModuleContentWithConstantAnnotationReturnsFormattedModuleContent() {
         // given
-        AnnotatedPythonModule testModule = new AnnotatedPythonModule(
+        SerializablePythonModule testModule = new SerializablePythonModule(
             "test-module",
             Collections.emptyList(),
             Collections.emptyList(),
             Collections.emptyList(),
             List.of(
-                new AnnotatedPythonFunction(
+                new SerializablePythonFunction(
                     "function_module",
                     "test-module.function_module",
                     List.of("test-decorator"),
                     List.of(
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "param1",
                             "test-module.function_module.param1",
                             null,
@@ -486,7 +486,7 @@ class ModuleAdapterContentBuilderTest {
                                 )
                             )
                         ),
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "param2",
                             "test-module.function_module.param2",
                             null,
@@ -496,7 +496,7 @@ class ModuleAdapterContentBuilderTest {
                             "Lorem ipsum",
                             Collections.emptyList()
                         ),
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "param3",
                             "test-module.function_module.param3",
                             null,
@@ -514,7 +514,7 @@ class ModuleAdapterContentBuilderTest {
                         )
                     ),
                     List.of(
-                        new AnnotatedPythonResult(
+                        new SerializablePythonResult(
                             "test-result",
                             "str",
                             "str",
@@ -552,18 +552,18 @@ class ModuleAdapterContentBuilderTest {
     @Test
     void buildModuleContentWithOptionalAnnotationsReturnsFormattedModuleContent() {
         // given
-        AnnotatedPythonModule testModule = new AnnotatedPythonModule(
+        SerializablePythonModule testModule = new SerializablePythonModule(
             "test-module",
             Collections.emptyList(),
             Collections.emptyList(),
             Collections.emptyList(),
             List.of(
-                new AnnotatedPythonFunction(
+                new SerializablePythonFunction(
                     "function_module",
                     "test-module.function_module",
                     List.of("test-decorator"),
                     List.of(
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "param1",
                             "test-module.function_module.param1",
                             null,
@@ -579,7 +579,7 @@ class ModuleAdapterContentBuilderTest {
                                 )
                             )
                         ),
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "param2",
                             "test-module.function_module.param2",
                             null,
@@ -589,7 +589,7 @@ class ModuleAdapterContentBuilderTest {
                             "Lorem ipsum",
                             Collections.emptyList()
                         ),
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "param3",
                             "test-module.function_module.param3",
                             null,
@@ -607,7 +607,7 @@ class ModuleAdapterContentBuilderTest {
                         )
                     ),
                     List.of(
-                        new AnnotatedPythonResult(
+                        new SerializablePythonResult(
                             "test-result",
                             "str",
                             "str",
@@ -645,18 +645,18 @@ class ModuleAdapterContentBuilderTest {
     @Test
     void buildModuleContentWithRequiredAnnotationReturnsFormattedModuleContent() {
         // given
-        AnnotatedPythonModule testModule = new AnnotatedPythonModule(
+        SerializablePythonModule testModule = new SerializablePythonModule(
             "test-module",
             Collections.emptyList(),
             Collections.emptyList(),
             Collections.emptyList(),
             List.of(
-                new AnnotatedPythonFunction(
+                new SerializablePythonFunction(
                     "function_module",
                     "test-module.function_module",
                     List.of("test-decorator"),
                     List.of(
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "param1",
                             "test-module.function_module.param1",
                             "'defaultValue'",
@@ -668,7 +668,7 @@ class ModuleAdapterContentBuilderTest {
                                 RequiredAnnotation.INSTANCE
                             )
                         ),
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "param2",
                             "test-module.function_module.param2",
                             "'defaultValue'",
@@ -678,7 +678,7 @@ class ModuleAdapterContentBuilderTest {
                             "Lorem ipsum",
                             Collections.emptyList()
                         ),
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "param3",
                             "test-module.function_module.param3",
                             "'defaultValue'",
@@ -692,7 +692,7 @@ class ModuleAdapterContentBuilderTest {
                         )
                     ),
                     List.of(
-                        new AnnotatedPythonResult(
+                        new SerializablePythonResult(
                             "test-result",
                             "str",
                             "str",
@@ -730,18 +730,18 @@ class ModuleAdapterContentBuilderTest {
     @Test
     void buildModuleContentWithMultipleParameterAnnotationReturnsFormattedModuleContent() {
         // given
-        AnnotatedPythonModule testModule = new AnnotatedPythonModule(
+        SerializablePythonModule testModule = new SerializablePythonModule(
             "test-module",
             Collections.emptyList(),
             Collections.emptyList(),
             Collections.emptyList(),
             List.of(
-                new AnnotatedPythonFunction(
+                new SerializablePythonFunction(
                     "function_module",
                     "test-module.function_module",
                     List.of("test-decorator"),
                     List.of(
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "param1",
                             "test-module.function_module.param1",
                             "'defaultValue'",
@@ -753,7 +753,7 @@ class ModuleAdapterContentBuilderTest {
                                 RequiredAnnotation.INSTANCE
                             )
                         ),
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "param2",
                             "test-module.function_module.param2",
                             "'defaultValue'",
@@ -767,7 +767,7 @@ class ModuleAdapterContentBuilderTest {
                                 )
                             )
                         ),
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "param3",
                             "test-module.function_module.param3",
                             "'defaultValue'",
@@ -783,7 +783,7 @@ class ModuleAdapterContentBuilderTest {
                         )
                     ),
                     List.of(
-                        new AnnotatedPythonResult(
+                        new SerializablePythonResult(
                             "test-result",
                             "str",
                             "str",
@@ -821,8 +821,8 @@ class ModuleAdapterContentBuilderTest {
     @Test
     void buildModuleContentWithBoundaryAnnotationReturnsFormattedModuleContent1() {
         // given
-        AnnotatedPythonParameter testParameter1 =
-            new AnnotatedPythonParameter(
+        SerializablePythonParameter testParameter1 =
+            new SerializablePythonParameter(
                 "param1",
                 "test-module.function_module.param1",
                 "5",
@@ -841,8 +841,8 @@ class ModuleAdapterContentBuilderTest {
                 ComparisonOperator.LESS_THAN_OR_EQUALS
             )
         );
-        AnnotatedPythonParameter testParameter2 =
-            new AnnotatedPythonParameter(
+        SerializablePythonParameter testParameter2 =
+            new SerializablePythonParameter(
                 "param2",
                 "test-module.function_module.param2",
                 "5",
@@ -861,8 +861,8 @@ class ModuleAdapterContentBuilderTest {
                 ComparisonOperator.UNRESTRICTED
             )
         );
-        AnnotatedPythonParameter testParameter3 =
-            new AnnotatedPythonParameter(
+        SerializablePythonParameter testParameter3 =
+            new SerializablePythonParameter(
                 "param3",
                 "test-module.function_module.param3",
                 "5",
@@ -881,7 +881,7 @@ class ModuleAdapterContentBuilderTest {
                 ComparisonOperator.LESS_THAN
             )
         );
-        AnnotatedPythonFunction testFunction = new AnnotatedPythonFunction(
+        SerializablePythonFunction testFunction = new SerializablePythonFunction(
             "function_module",
             "test-module.function_module",
             List.of("test-decorator"),
@@ -892,7 +892,7 @@ class ModuleAdapterContentBuilderTest {
             "Lorem ipsum",
             Collections.emptyList()
         );
-        AnnotatedPythonModule testModule = new AnnotatedPythonModule(
+        SerializablePythonModule testModule = new SerializablePythonModule(
             "test-module",
             Collections.emptyList(),
             Collections.emptyList(),
@@ -929,8 +929,8 @@ class ModuleAdapterContentBuilderTest {
     @Test
     void buildModuleContentWithBoundaryAnnotationReturnsFormattedModuleContent2() {
         // given
-        AnnotatedPythonParameter testParameter =
-            new AnnotatedPythonParameter(
+        SerializablePythonParameter testParameter =
+            new SerializablePythonParameter(
                 "param1",
                 "test-module.function_module.param1",
                 "5",
@@ -949,7 +949,7 @@ class ModuleAdapterContentBuilderTest {
                 ComparisonOperator.UNRESTRICTED
             )
         );
-        AnnotatedPythonFunction testFunction = new AnnotatedPythonFunction(
+        SerializablePythonFunction testFunction = new SerializablePythonFunction(
             "function_module",
             "test-module.function_module",
             List.of("test-decorator"),
@@ -960,7 +960,7 @@ class ModuleAdapterContentBuilderTest {
             "Lorem ipsum",
             Collections.emptyList()
         );
-        AnnotatedPythonModule testModule = new AnnotatedPythonModule(
+        SerializablePythonModule testModule = new SerializablePythonModule(
             "test-module",
             Collections.emptyList(),
             Collections.emptyList(),

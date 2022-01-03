@@ -1,15 +1,15 @@
 package com.larsreimann.api_editor.validation
 
-import com.larsreimann.api_editor.model.AnnotatedPythonClass
-import com.larsreimann.api_editor.model.AnnotatedPythonFunction
-import com.larsreimann.api_editor.model.AnnotatedPythonModule
-import com.larsreimann.api_editor.model.AnnotatedPythonPackage
-import com.larsreimann.api_editor.model.AnnotatedPythonParameter
+import com.larsreimann.api_editor.model.SerializablePythonClass
+import com.larsreimann.api_editor.model.SerializablePythonFunction
+import com.larsreimann.api_editor.model.SerializablePythonModule
+import com.larsreimann.api_editor.model.SerializablePythonPackage
+import com.larsreimann.api_editor.model.SerializablePythonParameter
 import com.larsreimann.api_editor.model.AnnotationTarget
 import com.larsreimann.api_editor.model.EditorAnnotation
 import com.larsreimann.api_editor.model.GroupAnnotation
 
-class AnnotationValidator(private val annotatedPythonPackage: AnnotatedPythonPackage) {
+class AnnotationValidator(private val annotatedPythonPackage: SerializablePythonPackage) {
     private val validationErrors: MutableList<AnnotationError>
     private val groupAnnotationName = "Group"
 
@@ -28,28 +28,28 @@ class AnnotationValidator(private val annotatedPythonPackage: AnnotatedPythonPac
     }
 
     private fun validatePackage() {
-        annotatedPythonPackage.modules.forEach { annotatedPythonModule: AnnotatedPythonModule ->
+        annotatedPythonPackage.modules.forEach { annotatedPythonModule: SerializablePythonModule ->
             validateModule(
                 annotatedPythonModule
             )
         }
     }
 
-    private fun validateModule(annotatedPythonModule: AnnotatedPythonModule) {
-        annotatedPythonModule.classes.forEach { annotatedPythonClass: AnnotatedPythonClass ->
+    private fun validateModule(annotatedPythonModule: SerializablePythonModule) {
+        annotatedPythonModule.classes.forEach { annotatedPythonClass: SerializablePythonClass ->
             validateClass(
                 annotatedPythonClass
             )
         }
-        annotatedPythonModule.functions.forEach { annotatedPythonFunction: AnnotatedPythonFunction ->
+        annotatedPythonModule.functions.forEach { annotatedPythonFunction: SerializablePythonFunction ->
             validateGlobalFunction(
                 annotatedPythonFunction
             )
         }
     }
 
-    private fun validateClass(annotatedPythonClass: AnnotatedPythonClass) {
-        annotatedPythonClass.methods.forEach { annotatedPythonFunction: AnnotatedPythonFunction ->
+    private fun validateClass(annotatedPythonClass: SerializablePythonClass) {
+        annotatedPythonClass.methods.forEach { annotatedPythonFunction: SerializablePythonFunction ->
             validateMethod(
                 annotatedPythonFunction
             )
@@ -65,19 +65,19 @@ class AnnotationValidator(private val annotatedPythonPackage: AnnotatedPythonPac
         )
     }
 
-    private fun validateMethod(annotatedPythonFunction: AnnotatedPythonFunction) {
+    private fun validateMethod(annotatedPythonFunction: SerializablePythonFunction) {
         val groupedParameterNames = getParameterNamesInGroups(
             annotatedPythonFunction.annotations
         )
         if (annotatedPythonFunction.isConstructor()) {
-            annotatedPythonFunction.parameters.forEach { parameter: AnnotatedPythonParameter ->
+            annotatedPythonFunction.parameters.forEach { parameter: SerializablePythonParameter ->
                 validateConstructorParameter(
                     parameter,
                     groupedParameterNames.contains(parameter.name)
                 )
             }
         } else {
-            annotatedPythonFunction.parameters.forEach { parameter: AnnotatedPythonParameter ->
+            annotatedPythonFunction.parameters.forEach { parameter: SerializablePythonParameter ->
                 validateFunctionParameter(
                     parameter,
                     groupedParameterNames.contains(parameter.name)
@@ -97,7 +97,7 @@ class AnnotationValidator(private val annotatedPythonPackage: AnnotatedPythonPac
     }
 
     private fun validateGlobalFunction(
-        annotatedPythonFunction: AnnotatedPythonFunction
+        annotatedPythonFunction: SerializablePythonFunction
     ) {
         val groupedParameterNames = getParameterNamesInGroups(annotatedPythonFunction.annotations)
         annotatedPythonFunction.parameters.forEach {
@@ -119,7 +119,7 @@ class AnnotationValidator(private val annotatedPythonPackage: AnnotatedPythonPac
     }
 
     private fun validateFunctionParameter(
-        annotatedPythonParameter: AnnotatedPythonParameter,
+        annotatedPythonParameter: SerializablePythonParameter,
         parameterInGroup: Boolean
     ) {
         val parameterAnnotations: List<EditorAnnotation> = annotatedPythonParameter.annotations
@@ -139,7 +139,7 @@ class AnnotationValidator(private val annotatedPythonPackage: AnnotatedPythonPac
     }
 
     private fun validateConstructorParameter(
-        annotatedPythonParameter: AnnotatedPythonParameter,
+        annotatedPythonParameter: SerializablePythonParameter,
         parameterInGroup: Boolean
     ) {
         val parameterAnnotations: List<EditorAnnotation> = annotatedPythonParameter.annotations

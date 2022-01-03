@@ -1,19 +1,19 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.AbstractPackageDataTransformer
-import com.larsreimann.api_editor.model.AnnotatedPythonAttribute
-import com.larsreimann.api_editor.model.AnnotatedPythonFunction
-import com.larsreimann.api_editor.model.AnnotatedPythonModule
-import com.larsreimann.api_editor.model.AnnotatedPythonParameter
+import com.larsreimann.api_editor.model.SerializablePythonAttribute
+import com.larsreimann.api_editor.model.SerializablePythonFunction
+import com.larsreimann.api_editor.model.SerializablePythonModule
+import com.larsreimann.api_editor.model.SerializablePythonParameter
 import com.larsreimann.api_editor.model.Boundary
 import com.larsreimann.api_editor.model.BoundaryAnnotation
 import com.larsreimann.api_editor.model.EditorAnnotation
 
 class BoundaryAnnotationProcessor : AbstractPackageDataTransformer() {
-    override fun shouldVisitResultsIn(oldFunction: AnnotatedPythonFunction) = false
-    override fun shouldVisitEnumsIn(oldModule: AnnotatedPythonModule) = false
+    override fun shouldVisitResultsIn(oldFunction: SerializablePythonFunction) = false
+    override fun shouldVisitEnumsIn(oldModule: SerializablePythonModule) = false
 
-    override fun createNewParameter(oldParameter: AnnotatedPythonParameter): AnnotatedPythonParameter {
+    override fun createNewParameter(oldParameter: SerializablePythonParameter): SerializablePythonParameter {
         val annotations = mutableListOf<EditorAnnotation>()
         var newBoundary = oldParameter.boundary
         for (editorAnnotation in oldParameter.annotations) {
@@ -44,8 +44,8 @@ class BoundaryAnnotationProcessor : AbstractPackageDataTransformer() {
     }
 
     override fun createNewAttribute(
-        oldAttribute: AnnotatedPythonAttribute
-    ): AnnotatedPythonAttribute {
+        oldAttribute: SerializablePythonAttribute
+    ): SerializablePythonAttribute {
         val annotations = mutableListOf<EditorAnnotation>()
         var newBoundary = oldAttribute.boundary
         for (editorAnnotation in oldAttribute.annotations) {

@@ -1,8 +1,8 @@
 package com.larsreimann.api_editor.codegen
 
-import com.larsreimann.api_editor.model.AnnotatedPythonFunction
-import com.larsreimann.api_editor.model.AnnotatedPythonParameter
-import com.larsreimann.api_editor.model.AnnotatedPythonResult
+import com.larsreimann.api_editor.model.SerializablePythonFunction
+import com.larsreimann.api_editor.model.SerializablePythonParameter
+import com.larsreimann.api_editor.model.SerializablePythonResult
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.util.createPythonFunction
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
@@ -20,7 +20,7 @@ internal class FunctionStubContentBuilderTest {
     @Test
     fun buildFunctionReturnsFormattedFunctionWithNoParameters() {
         // given
-        val testFunction = AnnotatedPythonFunction(
+        val testFunction = SerializablePythonFunction(
             "testFunction",
             "testModule.testFunction",
             listOf("testDecorator"), mutableListOf(), mutableListOf(),
@@ -43,12 +43,12 @@ internal class FunctionStubContentBuilderTest {
     @Test
     fun buildFunctionReturnsFormattedFunctionWithPositionOnlyParameter() {
         // given
-        val testFunction = AnnotatedPythonFunction(
+        val testFunction = SerializablePythonFunction(
             "testFunction",
             "testModule.testFunction",
             listOf("testDecorator"),
             mutableListOf(
-                AnnotatedPythonParameter(
+                SerializablePythonParameter(
                     "onlyParam",
                     "testModule.testClass.testClassFunction.onlyParam",
                     "13",
@@ -78,12 +78,12 @@ internal class FunctionStubContentBuilderTest {
     @Test
     fun buildFunctionReturnsFormattedFunctionWithPositionOrNameParameter() {
         // given
-        val testFunction = AnnotatedPythonFunction(
+        val testFunction = SerializablePythonFunction(
             "testFunction",
             "testModule.testFunction",
             listOf("testDecorator"),
             mutableListOf(
-                AnnotatedPythonParameter(
+                SerializablePythonParameter(
                     "onlyParam",
                     "testModule.testClass.testClassFunction.onlyParam",
                     "'Test'",
@@ -113,12 +113,12 @@ internal class FunctionStubContentBuilderTest {
     @Test
     fun buildFunctionReturnsFormattedFunctionWithPositionAndPositionOrNameAndNameOnlyParameter() {
         // given
-        val testFunction = AnnotatedPythonFunction(
+        val testFunction = SerializablePythonFunction(
             "testFunction",
             "testModule.testFunction",
             listOf("testDecorator"),
             mutableListOf(
-                AnnotatedPythonParameter(
+                SerializablePythonParameter(
                     "firstParam",
                     "testModule.testClass.testClassFunction.firstParam",
                     null,
@@ -127,7 +127,7 @@ internal class FunctionStubContentBuilderTest {
                     "typeInDocs",
                     "description", mutableListOf()
                 ),
-                AnnotatedPythonParameter(
+                SerializablePythonParameter(
                     "secondParam",
                     "testModule.testClass.testClassFunction.secondParam",
                     null,
@@ -136,7 +136,7 @@ internal class FunctionStubContentBuilderTest {
                     "typeInDocs",
                     "description", mutableListOf()
                 ),
-                AnnotatedPythonParameter(
+                SerializablePythonParameter(
                     "thirdParam",
                     "testModule.testClass.testClassFunction.thirdParam",
                     null,
@@ -165,12 +165,12 @@ internal class FunctionStubContentBuilderTest {
     @Test
     fun buildFunctionReturnsFormattedFunctionWithOneResult() {
         // given
-        val testFunction = AnnotatedPythonFunction(
+        val testFunction = SerializablePythonFunction(
             "testFunction",
             "testModule.testFunction",
             listOf("testDecorator"),
             mutableListOf(
-                AnnotatedPythonParameter(
+                SerializablePythonParameter(
                     "onlyParam",
                     "testModule.testClass.testClassFunction.onlyParam",
                     "1.31e+1",
@@ -181,7 +181,7 @@ internal class FunctionStubContentBuilderTest {
                 )
             ),
             mutableListOf(
-                AnnotatedPythonResult(
+                SerializablePythonResult(
                     "firstResult",
                     "float",
                     "float",
@@ -206,12 +206,12 @@ internal class FunctionStubContentBuilderTest {
     @Test
     fun buildFunctionReturnsFormattedFunctionWithMultipleResults() {
         // given
-        val testFunction = AnnotatedPythonFunction(
+        val testFunction = SerializablePythonFunction(
             "testFunction",
             "testModule.testFunction",
             listOf("testDecorator"),
             mutableListOf(
-                AnnotatedPythonParameter(
+                SerializablePythonParameter(
                     "onlyParam",
                     "testModule.testClass.testClassFunction.onlyParam",
                     "True",
@@ -222,13 +222,13 @@ internal class FunctionStubContentBuilderTest {
                 )
             ),
             mutableListOf(
-                AnnotatedPythonResult(
+                SerializablePythonResult(
                     "firstResult",
                     "float",
                     "float",
                     "description", mutableListOf()
                 ),
-                AnnotatedPythonResult(
+                SerializablePythonResult(
                     "secondResult",
                     "float",
                     "float",
@@ -253,12 +253,12 @@ internal class FunctionStubContentBuilderTest {
     @Test
     fun buildFunctionReturnsFormattedFunctionWithInvalidDefaultValue() {
         // given
-        val testFunction = AnnotatedPythonFunction(
+        val testFunction = SerializablePythonFunction(
             "testFunction",
             "testModule.testFunction",
             listOf("testDecorator"),
             mutableListOf(
-                AnnotatedPythonParameter(
+                SerializablePythonParameter(
                     "onlyParam",
                     "testModule.testClass.testClassFunction.onlyParam",
                     "'13'x",

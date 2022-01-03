@@ -1,6 +1,6 @@
 package com.larsreimann.api_editor.transformation
 
-import com.larsreimann.api_editor.model.AnnotatedPythonParameter
+import com.larsreimann.api_editor.model.SerializablePythonParameter
 import com.larsreimann.api_editor.model.ConstantAnnotation
 import com.larsreimann.api_editor.model.DefaultBoolean
 import com.larsreimann.api_editor.model.DefaultString
@@ -78,7 +78,7 @@ internal class ParameterAnnotationProcessorTest {
         var testParameter1isContained = false
         var testParameter2isContained = false
         var testParameter3isContained = false
-        val actualParameters: List<AnnotatedPythonParameter> = modules[0]
+        val actualParameters: List<SerializablePythonParameter> = modules[0]
             .functions[0]
             .parameters
         for (actualParameter in actualParameters) {
@@ -157,7 +157,7 @@ internal class ParameterAnnotationProcessorTest {
         var testParameter1isContained = false
         var testParameter2isContained = false
         var testParameter3isContained = false
-        val actualParameters: List<AnnotatedPythonParameter> = modules[0]
+        val actualParameters: List<SerializablePythonParameter> = modules[0]
             .functions[0]
             .parameters
         for (actualParameter in actualParameters) {
@@ -232,7 +232,7 @@ internal class ParameterAnnotationProcessorTest {
         var testParameter1isContained = false
         var testParameter2isContained = false
         var testParameter3isContained = false
-        val actualParameters: List<AnnotatedPythonParameter> = modules[0]
+        val actualParameters: List<SerializablePythonParameter> = modules[0]
             .functions[0]
             .parameters
         for (actualParameter in actualParameters) {
@@ -315,7 +315,7 @@ internal class ParameterAnnotationProcessorTest {
         var testParameter1isContained = false
         var testParameter2isContained = false
         var testParameter3isContained = false
-        val actualParameters: List<AnnotatedPythonParameter> = modules[0]
+        val actualParameters: List<SerializablePythonParameter> = modules[0]
             .functions[0]
             .parameters
         for (actualParameter in actualParameters) {
@@ -333,8 +333,8 @@ internal class ParameterAnnotationProcessorTest {
     }
 
     fun parameterIsEqual(
-        firstParameter: AnnotatedPythonParameter,
-        secondParameter: AnnotatedPythonParameter
+        firstParameter: SerializablePythonParameter,
+        secondParameter: SerializablePythonParameter
     ): Boolean {
         if (firstParameter.name != secondParameter.name) {
             return false

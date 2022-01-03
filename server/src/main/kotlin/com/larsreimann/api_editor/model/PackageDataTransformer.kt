@@ -8,42 +8,42 @@ interface PackageDataTransformer {
     /**
      * Whether to visit modules in the package. Used to prune the traversal.
      */
-    fun shouldVisitModulesIn(oldPackage: AnnotatedPythonPackage): Boolean
+    fun shouldVisitModulesIn(oldPackage: SerializablePythonPackage): Boolean
 
     /**
      * Whether to visit classes in the module. Used to prune the traversal.
      */
-    fun shouldVisitClassesIn(oldModule: AnnotatedPythonModule): Boolean
+    fun shouldVisitClassesIn(oldModule: SerializablePythonModule): Boolean
 
     /**
      * Whether to visit enums in the module. Used to prune the traversal.
      */
-    fun shouldVisitEnumsIn(oldModule: AnnotatedPythonModule): Boolean
+    fun shouldVisitEnumsIn(oldModule: SerializablePythonModule): Boolean
 
     /**
      * Whether to visit functions in the module. Used to prune the traversal.
      */
-    fun shouldVisitFunctionsIn(oldModule: AnnotatedPythonModule): Boolean
+    fun shouldVisitFunctionsIn(oldModule: SerializablePythonModule): Boolean
 
     /**
      * Whether to visit attributes of the class. Used to prune the traversal.
      */
-    fun shouldVisitAttributesIn(oldClass: AnnotatedPythonClass): Boolean
+    fun shouldVisitAttributesIn(oldClass: SerializablePythonClass): Boolean
 
     /**
      * Whether to visit methods of the class. Used to prune the traversal.
      */
-    fun shouldVisitMethodsIn(oldClass: AnnotatedPythonClass): Boolean
+    fun shouldVisitMethodsIn(oldClass: SerializablePythonClass): Boolean
 
     /**
      * Whether to visit parameters of the function. Used to prune the traversal.
      */
-    fun shouldVisitParametersIn(oldFunction: AnnotatedPythonFunction): Boolean
+    fun shouldVisitParametersIn(oldFunction: SerializablePythonFunction): Boolean
 
     /**
      * Whether to visit results of the function. Used to prune the traversal.
      */
-    fun shouldVisitResultsIn(oldFunction: AnnotatedPythonFunction): Boolean
+    fun shouldVisitResultsIn(oldFunction: SerializablePythonFunction): Boolean
 
     /**
      * Called before the modules in the package are visited.
@@ -51,7 +51,7 @@ interface PackageDataTransformer {
      * Return the result of transforming the package or `null` to remove it and stop the processing of this package and
      * its children.
      */
-    fun createNewPackageOnEnter(oldPackage: AnnotatedPythonPackage): AnnotatedPythonPackage?
+    fun createNewPackageOnEnter(oldPackage: SerializablePythonPackage): SerializablePythonPackage?
 
     /**
      * Called after the modules in the package were visited. The result of transforming the modules is passed as a
@@ -60,9 +60,9 @@ interface PackageDataTransformer {
      * Return the result of transforming the package or `null` to remove it.
      */
     fun createNewPackageOnLeave(
-        oldPackage: AnnotatedPythonPackage,
-        newModules: List<AnnotatedPythonModule>
-    ): AnnotatedPythonPackage?
+        oldPackage: SerializablePythonPackage,
+        newModules: List<SerializablePythonModule>
+    ): SerializablePythonPackage?
 
     /**
      * Called before the children of the module are visited.
@@ -70,7 +70,7 @@ interface PackageDataTransformer {
      * Return the result of transforming the module or `null` to remove it and stop the processing of this module and
      * its children.
      */
-    fun createNewModuleOnEnter(oldModule: AnnotatedPythonModule): AnnotatedPythonModule?
+    fun createNewModuleOnEnter(oldModule: SerializablePythonModule): SerializablePythonModule?
 
     /**
      * Called after the children of the module were visited. The results of transforming the children are passed as
@@ -79,11 +79,11 @@ interface PackageDataTransformer {
      * Return the result of transforming the module or `null` to remove it.
      */
     fun createNewModuleOnLeave(
-        oldModule: AnnotatedPythonModule,
-        newClasses: List<AnnotatedPythonClass>,
-        newEnums: List<AnnotatedPythonEnum>,
-        newFunctions: List<AnnotatedPythonFunction>
-    ): AnnotatedPythonModule?
+        oldModule: SerializablePythonModule,
+        newClasses: List<SerializablePythonClass>,
+        newEnums: List<SerializablePythonEnum>,
+        newFunctions: List<SerializablePythonFunction>
+    ): SerializablePythonModule?
 
     /**
      * Called before attributes and methods of the class are visited.
@@ -91,7 +91,7 @@ interface PackageDataTransformer {
      * Return the result of transforming the class or `null` to remove it and stop the processing of this class and its
      * children.
      */
-    fun createNewClassOnEnter(oldClass: AnnotatedPythonClass): AnnotatedPythonClass?
+    fun createNewClassOnEnter(oldClass: SerializablePythonClass): SerializablePythonClass?
 
     /**
      * Called after attributes and methods of the class were visited. The results of transforming the children are
@@ -100,20 +100,20 @@ interface PackageDataTransformer {
      * Return the result of transforming the class or `null` to remove it.
      */
     fun createNewClassOnLeave(
-        oldClass: AnnotatedPythonClass,
-        newAttributes: List<AnnotatedPythonAttribute>,
-        newMethods: List<AnnotatedPythonFunction>
-    ): AnnotatedPythonClass?
+        oldClass: SerializablePythonClass,
+        newAttributes: List<SerializablePythonAttribute>,
+        newMethods: List<SerializablePythonFunction>
+    ): SerializablePythonClass?
 
     /**
      * Return the result of transforming the attribute or `null` to remove it.
      */
-    fun createNewAttribute(oldAttribute: AnnotatedPythonAttribute): AnnotatedPythonAttribute?
+    fun createNewAttribute(oldAttribute: SerializablePythonAttribute): SerializablePythonAttribute?
 
     /**
      * Return the result of transforming the enum or `null` to remove it.
      */
-    fun createNewEnum(oldEnum: AnnotatedPythonEnum): AnnotatedPythonEnum?
+    fun createNewEnum(oldEnum: SerializablePythonEnum): SerializablePythonEnum?
 
     /**
      * Called before parameters and results of the function are visited.
@@ -121,7 +121,7 @@ interface PackageDataTransformer {
      * Return the result of transforming the function or `null` to remove it and stop the processing of this function
      * and its children.
      */
-    fun createNewFunctionOnEnter(oldFunction: AnnotatedPythonFunction): AnnotatedPythonFunction?
+    fun createNewFunctionOnEnter(oldFunction: SerializablePythonFunction): SerializablePythonFunction?
 
     /**
      * Called after parameters and results of the function were visited. The results of transforming the children are
@@ -130,57 +130,57 @@ interface PackageDataTransformer {
      * Return the result of transforming the function or `null` to remove it.
      */
     fun createNewFunctionOnLeave(
-        oldFunction: AnnotatedPythonFunction,
-        newParameters: List<AnnotatedPythonParameter>,
-        newResults: List<AnnotatedPythonResult>
-    ): AnnotatedPythonFunction?
+        oldFunction: SerializablePythonFunction,
+        newParameters: List<SerializablePythonParameter>,
+        newResults: List<SerializablePythonResult>
+    ): SerializablePythonFunction?
 
     /**
      * Return the result of transforming the parameter or `null` to remove it.
      */
-    fun createNewParameter(oldParameter: AnnotatedPythonParameter): AnnotatedPythonParameter?
+    fun createNewParameter(oldParameter: SerializablePythonParameter): SerializablePythonParameter?
 
     /**
      * Return the result of transforming the result or `null` to remove it.
      */
-    fun createNewResult(oldResult: AnnotatedPythonResult): AnnotatedPythonResult?
+    fun createNewResult(oldResult: SerializablePythonResult): SerializablePythonResult?
 }
 
 abstract class AbstractPackageDataTransformer : PackageDataTransformer {
 
-    override fun shouldVisitModulesIn(oldPackage: AnnotatedPythonPackage) = true
-    override fun shouldVisitClassesIn(oldModule: AnnotatedPythonModule) = true
-    override fun shouldVisitEnumsIn(oldModule: AnnotatedPythonModule) = true
-    override fun shouldVisitFunctionsIn(oldModule: AnnotatedPythonModule) = true
-    override fun shouldVisitAttributesIn(oldClass: AnnotatedPythonClass) = true
-    override fun shouldVisitMethodsIn(oldClass: AnnotatedPythonClass) = true
-    override fun shouldVisitParametersIn(oldFunction: AnnotatedPythonFunction) = true
-    override fun shouldVisitResultsIn(oldFunction: AnnotatedPythonFunction) = true
+    override fun shouldVisitModulesIn(oldPackage: SerializablePythonPackage) = true
+    override fun shouldVisitClassesIn(oldModule: SerializablePythonModule) = true
+    override fun shouldVisitEnumsIn(oldModule: SerializablePythonModule) = true
+    override fun shouldVisitFunctionsIn(oldModule: SerializablePythonModule) = true
+    override fun shouldVisitAttributesIn(oldClass: SerializablePythonClass) = true
+    override fun shouldVisitMethodsIn(oldClass: SerializablePythonClass) = true
+    override fun shouldVisitParametersIn(oldFunction: SerializablePythonFunction) = true
+    override fun shouldVisitResultsIn(oldFunction: SerializablePythonFunction) = true
 
-    override fun createNewPackageOnEnter(oldPackage: AnnotatedPythonPackage): AnnotatedPythonPackage? {
+    override fun createNewPackageOnEnter(oldPackage: SerializablePythonPackage): SerializablePythonPackage? {
         return oldPackage
     }
 
     override fun createNewPackageOnLeave(
-        oldPackage: AnnotatedPythonPackage,
-        newModules: List<AnnotatedPythonModule>
-    ): AnnotatedPythonPackage? {
+        oldPackage: SerializablePythonPackage,
+        newModules: List<SerializablePythonModule>
+    ): SerializablePythonPackage? {
         return oldPackage.fullCopy(
             modules = newModules.toMutableList(),
             originalDeclaration = oldPackage.originalDeclaration ?: oldPackage
         )
     }
 
-    override fun createNewModuleOnEnter(oldModule: AnnotatedPythonModule): AnnotatedPythonModule? {
+    override fun createNewModuleOnEnter(oldModule: SerializablePythonModule): SerializablePythonModule? {
         return oldModule
     }
 
     override fun createNewModuleOnLeave(
-        oldModule: AnnotatedPythonModule,
-        newClasses: List<AnnotatedPythonClass>,
-        newEnums: List<AnnotatedPythonEnum>,
-        newFunctions: List<AnnotatedPythonFunction>
-    ): AnnotatedPythonModule? {
+        oldModule: SerializablePythonModule,
+        newClasses: List<SerializablePythonClass>,
+        newEnums: List<SerializablePythonEnum>,
+        newFunctions: List<SerializablePythonFunction>
+    ): SerializablePythonModule? {
         return oldModule.fullCopy(
             classes = newClasses.toMutableList(),
             enums = newEnums.toMutableList(),
@@ -189,15 +189,15 @@ abstract class AbstractPackageDataTransformer : PackageDataTransformer {
         )
     }
 
-    override fun createNewClassOnEnter(oldClass: AnnotatedPythonClass): AnnotatedPythonClass? {
+    override fun createNewClassOnEnter(oldClass: SerializablePythonClass): SerializablePythonClass? {
         return oldClass
     }
 
     override fun createNewClassOnLeave(
-        oldClass: AnnotatedPythonClass,
-        newAttributes: List<AnnotatedPythonAttribute>,
-        newMethods: List<AnnotatedPythonFunction>
-    ): AnnotatedPythonClass? {
+        oldClass: SerializablePythonClass,
+        newAttributes: List<SerializablePythonAttribute>,
+        newMethods: List<SerializablePythonFunction>
+    ): SerializablePythonClass? {
         return oldClass.fullCopy(
             attributes = newAttributes.toMutableList(),
             methods = newMethods.toMutableList(),
@@ -205,23 +205,23 @@ abstract class AbstractPackageDataTransformer : PackageDataTransformer {
         )
     }
 
-    override fun createNewAttribute(oldAttribute: AnnotatedPythonAttribute): AnnotatedPythonAttribute? {
+    override fun createNewAttribute(oldAttribute: SerializablePythonAttribute): SerializablePythonAttribute? {
         return oldAttribute
     }
 
-    override fun createNewEnum(oldEnum: AnnotatedPythonEnum): AnnotatedPythonEnum? {
+    override fun createNewEnum(oldEnum: SerializablePythonEnum): SerializablePythonEnum? {
         return oldEnum
     }
 
-    override fun createNewFunctionOnEnter(oldFunction: AnnotatedPythonFunction): AnnotatedPythonFunction? {
+    override fun createNewFunctionOnEnter(oldFunction: SerializablePythonFunction): SerializablePythonFunction? {
         return oldFunction
     }
 
     override fun createNewFunctionOnLeave(
-        oldFunction: AnnotatedPythonFunction,
-        newParameters: List<AnnotatedPythonParameter>,
-        newResults: List<AnnotatedPythonResult>
-    ): AnnotatedPythonFunction? {
+        oldFunction: SerializablePythonFunction,
+        newParameters: List<SerializablePythonParameter>,
+        newResults: List<SerializablePythonResult>
+    ): SerializablePythonFunction? {
         return oldFunction.fullCopy(
             parameters = newParameters.toMutableList(),
             results = newResults.toMutableList(),
@@ -229,11 +229,11 @@ abstract class AbstractPackageDataTransformer : PackageDataTransformer {
         )
     }
 
-    override fun createNewParameter(oldParameter: AnnotatedPythonParameter): AnnotatedPythonParameter? {
+    override fun createNewParameter(oldParameter: SerializablePythonParameter): SerializablePythonParameter? {
         return oldParameter
     }
 
-    override fun createNewResult(oldResult: AnnotatedPythonResult): AnnotatedPythonResult? {
+    override fun createNewResult(oldResult: SerializablePythonResult): SerializablePythonResult? {
         return oldResult
     }
 }

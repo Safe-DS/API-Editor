@@ -1,35 +1,35 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.AbstractPackageDataTransformer
-import com.larsreimann.api_editor.model.AnnotatedPythonAttribute
-import com.larsreimann.api_editor.model.AnnotatedPythonClass
-import com.larsreimann.api_editor.model.AnnotatedPythonDeclaration
-import com.larsreimann.api_editor.model.AnnotatedPythonEnum
-import com.larsreimann.api_editor.model.AnnotatedPythonFunction
-import com.larsreimann.api_editor.model.AnnotatedPythonModule
-import com.larsreimann.api_editor.model.AnnotatedPythonParameter
-import com.larsreimann.api_editor.model.AnnotatedPythonResult
+import com.larsreimann.api_editor.model.SerializablePythonAttribute
+import com.larsreimann.api_editor.model.SerializablePythonClass
+import com.larsreimann.api_editor.model.SerializablePythonDeclaration
+import com.larsreimann.api_editor.model.SerializablePythonEnum
+import com.larsreimann.api_editor.model.SerializablePythonFunction
+import com.larsreimann.api_editor.model.SerializablePythonModule
+import com.larsreimann.api_editor.model.SerializablePythonParameter
+import com.larsreimann.api_editor.model.SerializablePythonResult
 import com.larsreimann.api_editor.model.RenameAnnotation
 
 class RenameAnnotationProcessor : AbstractPackageDataTransformer() {
-    private val declarationStack = ArrayDeque<AnnotatedPythonDeclaration>()
+    private val declarationStack = ArrayDeque<SerializablePythonDeclaration>()
 
-    override fun createNewModuleOnEnter(oldModule: AnnotatedPythonModule): AnnotatedPythonModule {
+    override fun createNewModuleOnEnter(oldModule: SerializablePythonModule): SerializablePythonModule {
         declarationStack.addLast(oldModule)
         return oldModule
     }
 
     override fun createNewModuleOnLeave(
-        oldModule: AnnotatedPythonModule,
-        newClasses: List<AnnotatedPythonClass>,
-        newEnums: List<AnnotatedPythonEnum>,
-        newFunctions: List<AnnotatedPythonFunction>
-    ): AnnotatedPythonModule? {
+        oldModule: SerializablePythonModule,
+        newClasses: List<SerializablePythonClass>,
+        newEnums: List<SerializablePythonEnum>,
+        newFunctions: List<SerializablePythonFunction>
+    ): SerializablePythonModule? {
         declarationStack.removeLast()
         return super.createNewModuleOnLeave(oldModule, newClasses, newEnums, newFunctions)
     }
 
-    override fun createNewClassOnEnter(oldClass: AnnotatedPythonClass): AnnotatedPythonClass {
+    override fun createNewClassOnEnter(oldClass: SerializablePythonClass): SerializablePythonClass {
         val result = oldClass.rename { newName ->
             oldClass.fullCopy(
                 name = newName,
@@ -44,15 +44,15 @@ class RenameAnnotationProcessor : AbstractPackageDataTransformer() {
     }
 
     override fun createNewClassOnLeave(
-        oldClass: AnnotatedPythonClass,
-        newAttributes: List<AnnotatedPythonAttribute>,
-        newMethods: List<AnnotatedPythonFunction>
-    ): AnnotatedPythonClass? {
+        oldClass: SerializablePythonClass,
+        newAttributes: List<SerializablePythonAttribute>,
+        newMethods: List<SerializablePythonFunction>
+    ): SerializablePythonClass? {
         declarationStack.removeLast()
         return super.createNewClassOnLeave(oldClass, newAttributes, newMethods)
     }
 
-    override fun createNewAttribute(oldAttribute: AnnotatedPythonAttribute): AnnotatedPythonAttribute {
+    override fun createNewAttribute(oldAttribute: SerializablePythonAttribute): SerializablePythonAttribute {
         return oldAttribute.rename { newName ->
             oldAttribute.fullCopy(
                 name = newName,
@@ -62,7 +62,7 @@ class RenameAnnotationProcessor : AbstractPackageDataTransformer() {
         }
     }
 
-    override fun createNewFunctionOnEnter(oldFunction: AnnotatedPythonFunction): AnnotatedPythonFunction {
+    override fun createNewFunctionOnEnter(oldFunction: SerializablePythonFunction): SerializablePythonFunction {
         val result = oldFunction.rename { newName ->
             oldFunction.fullCopy(
                 name = newName,
@@ -77,15 +77,15 @@ class RenameAnnotationProcessor : AbstractPackageDataTransformer() {
     }
 
     override fun createNewFunctionOnLeave(
-        oldFunction: AnnotatedPythonFunction,
-        newParameters: List<AnnotatedPythonParameter>,
-        newResults: List<AnnotatedPythonResult>
-    ): AnnotatedPythonFunction? {
+        oldFunction: SerializablePythonFunction,
+        newParameters: List<SerializablePythonParameter>,
+        newResults: List<SerializablePythonResult>
+    ): SerializablePythonFunction? {
         declarationStack.removeLast()
         return super.createNewFunctionOnLeave(oldFunction, newParameters, newResults)
     }
 
-    override fun createNewParameter(oldParameter: AnnotatedPythonParameter): AnnotatedPythonParameter {
+    override fun createNewParameter(oldParameter: SerializablePythonParameter): SerializablePythonParameter {
         return oldParameter.rename { newName ->
             oldParameter.fullCopy(
                 name = newName,
@@ -96,7 +96,7 @@ class RenameAnnotationProcessor : AbstractPackageDataTransformer() {
         }
     }
 
-    private fun <T : AnnotatedPythonDeclaration> T.rename(creator: (String) -> T): T {
+    private fun <T : SerializablePythonDeclaration> T.rename(creator: (String) -> T): T {
         val renameAnnotations = this.annotations.filterIsInstance<RenameAnnotation>()
         val newName = when {
             renameAnnotations.isEmpty() -> this.name

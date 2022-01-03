@@ -1,20 +1,20 @@
 package com.larsreimann.api_editor.codegen;
 
 import com.larsreimann.api_editor.io.FileBuilder;
-import com.larsreimann.api_editor.model.AnnotatedPythonClass;
+import com.larsreimann.api_editor.model.SerializablePythonClass;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClassAdapterContentBuilder extends FileBuilder {
-    AnnotatedPythonClass pythonClass;
+    SerializablePythonClass pythonClass;
 
     /**
      * Constructor for ClassAdapterContentBuilder
      *
      * @param pythonClass The module whose adapter content should be built
      */
-    public ClassAdapterContentBuilder(AnnotatedPythonClass pythonClass) {
+    public ClassAdapterContentBuilder(SerializablePythonClass pythonClass) {
         this.pythonClass = pythonClass;
     }
 

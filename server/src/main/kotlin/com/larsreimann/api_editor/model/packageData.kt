@@ -4,16 +4,16 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 
 @Serializable
-sealed class AnnotatedPythonDeclaration {
+sealed class SerializablePythonDeclaration {
     abstract val name: String
     abstract val annotations: MutableList<EditorAnnotation>
-    abstract val originalDeclaration: AnnotatedPythonDeclaration?
+    abstract val originalDeclaration: SerializablePythonDeclaration?
 
     abstract fun accept(visitor: PackageDataVisitor)
-    abstract fun accept(transformer: PackageDataTransformer): AnnotatedPythonDeclaration?
+    abstract fun accept(transformer: PackageDataTransformer): SerializablePythonDeclaration?
 
-    abstract fun children(): Sequence<AnnotatedPythonDeclaration>
-    fun descendants(): Sequence<AnnotatedPythonDeclaration> = sequence {
+    abstract fun children(): Sequence<SerializablePythonDeclaration>
+    fun descendants(): Sequence<SerializablePythonDeclaration> = sequence {
         children().forEach {
             yield(it)
             yieldAll(it.descendants())
@@ -30,16 +30,16 @@ sealed class AnnotatedPythonDeclaration {
 }
 
 @Serializable
-data class AnnotatedPythonPackage(
+data class SerializablePythonPackage(
     val distribution: String,
     override val name: String,
     val version: String,
-    val modules: MutableList<AnnotatedPythonModule>,
+    val modules: MutableList<SerializablePythonModule>,
     override val annotations: MutableList<EditorAnnotation>
-) : AnnotatedPythonDeclaration() {
+) : SerializablePythonDeclaration() {
 
     @Transient
-    override var originalDeclaration: AnnotatedPythonPackage? = null
+    override var originalDeclaration: SerializablePythonPackage? = null
 
     override fun accept(visitor: PackageDataVisitor) {
         val shouldTraverseChildren = visitor.enterPythonPackage(this)
@@ -51,7 +51,7 @@ data class AnnotatedPythonPackage(
         visitor.leavePythonPackage(this)
     }
 
-    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonPackage? {
+    override fun accept(transformer: PackageDataTransformer): SerializablePythonPackage? {
         val newPackageOnEnter = transformer.createNewPackageOnEnter(this) ?: return null
 
         val newModules = when {
@@ -74,10 +74,10 @@ data class AnnotatedPythonPackage(
         distribution: String = this.distribution,
         name: String = this.name,
         version: String = this.version,
-        modules: MutableList<AnnotatedPythonModule> = this.modules,
+        modules: MutableList<SerializablePythonModule> = this.modules,
         annotations: MutableList<EditorAnnotation> = this.annotations,
-        originalDeclaration: AnnotatedPythonPackage? = this.originalDeclaration
-    ): AnnotatedPythonPackage {
+        originalDeclaration: SerializablePythonPackage? = this.originalDeclaration
+    ): SerializablePythonPackage {
 
         val result = copy(
             distribution = distribution,
@@ -92,20 +92,20 @@ data class AnnotatedPythonPackage(
 }
 
 @Serializable
-data class AnnotatedPythonModule(
+data class SerializablePythonModule(
     override val name: String,
     val imports: List<PythonImport>,
     val fromImports: List<PythonFromImport>,
-    val classes: MutableList<AnnotatedPythonClass>,
-    val functions: MutableList<AnnotatedPythonFunction>,
+    val classes: MutableList<SerializablePythonClass>,
+    val functions: MutableList<SerializablePythonFunction>,
     override val annotations: MutableList<EditorAnnotation>
-) : AnnotatedPythonDeclaration() {
+) : SerializablePythonDeclaration() {
 
     @Transient
-    override var originalDeclaration: AnnotatedPythonModule? = null
+    override var originalDeclaration: SerializablePythonModule? = null
 
     @Transient
-    val enums = mutableListOf<AnnotatedPythonEnum>()
+    val enums = mutableListOf<SerializablePythonEnum>()
 
     override fun accept(visitor: PackageDataVisitor) {
         val shouldTraverseChildren = visitor.enterPythonModule(this)
@@ -119,7 +119,7 @@ data class AnnotatedPythonModule(
         visitor.leavePythonModule(this)
     }
 
-    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonModule? {
+    override fun accept(transformer: PackageDataTransformer): SerializablePythonModule? {
         val newModuleOnEnter = transformer.createNewModuleOnEnter(this) ?: return null
 
         val newClasses = when {
@@ -162,12 +162,12 @@ data class AnnotatedPythonModule(
         name: String = this.name,
         imports: List<PythonImport> = this.imports,
         fromImports: List<PythonFromImport> = this.fromImports,
-        classes: MutableList<AnnotatedPythonClass> = this.classes,
-        enums: MutableList<AnnotatedPythonEnum> = this.enums,
-        functions: MutableList<AnnotatedPythonFunction> = this.functions,
+        classes: MutableList<SerializablePythonClass> = this.classes,
+        enums: MutableList<SerializablePythonEnum> = this.enums,
+        functions: MutableList<SerializablePythonFunction> = this.functions,
         annotations: MutableList<EditorAnnotation> = this.annotations,
-        originalDeclaration: AnnotatedPythonModule? = this.originalDeclaration
-    ): AnnotatedPythonModule {
+        originalDeclaration: SerializablePythonModule? = this.originalDeclaration
+    ): SerializablePythonModule {
 
         val result = copy(
             name = name,
@@ -197,29 +197,29 @@ data class PythonFromImport(
 )
 
 @Serializable
-data class AnnotatedPythonClass(
+data class SerializablePythonClass(
     override val name: String,
     val qualifiedName: String,
     val decorators: List<String>,
     val superclasses: List<String>,
-    val methods: MutableList<AnnotatedPythonFunction>,
+    val methods: MutableList<SerializablePythonFunction>,
     val isPublic: Boolean,
     val description: String,
     val fullDocstring: String,
     override val annotations: MutableList<EditorAnnotation>
-) : AnnotatedPythonDeclaration() {
+) : SerializablePythonDeclaration() {
 
     @Transient
-    override var originalDeclaration: AnnotatedPythonClass? = null
+    override var originalDeclaration: SerializablePythonClass? = null
 
     @Transient
-    var attributes = mutableListOf<AnnotatedPythonAttribute>()
+    var attributes = mutableListOf<SerializablePythonAttribute>()
 
-    fun methodsExceptConstructor(): List<AnnotatedPythonFunction> {
+    fun methodsExceptConstructor(): List<SerializablePythonFunction> {
         return methods.filter { it.name != "__init__" }
     }
 
-    fun constructorOrNull(): AnnotatedPythonFunction? {
+    fun constructorOrNull(): SerializablePythonFunction? {
         return methods.firstOrNull { it.name == "__init__" }
     }
 
@@ -234,7 +234,7 @@ data class AnnotatedPythonClass(
         visitor.leavePythonClass(this)
     }
 
-    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonClass? {
+    override fun accept(transformer: PackageDataTransformer): SerializablePythonClass? {
         val newClassOnEnter = transformer.createNewClassOnEnter(this) ?: return null
 
         val newAttributes = when {
@@ -268,14 +268,14 @@ data class AnnotatedPythonClass(
         qualifiedName: String = this.qualifiedName,
         decorators: List<String> = this.decorators,
         superclasses: List<String> = this.superclasses,
-        attributes: MutableList<AnnotatedPythonAttribute> = this.attributes,
-        methods: MutableList<AnnotatedPythonFunction> = this.methods,
+        attributes: MutableList<SerializablePythonAttribute> = this.attributes,
+        methods: MutableList<SerializablePythonFunction> = this.methods,
         isPublic: Boolean = this.isPublic,
         description: String = this.description,
         fullDocstring: String = this.fullDocstring,
         annotations: MutableList<EditorAnnotation> = this.annotations,
-        originalDeclaration: AnnotatedPythonClass? = this.originalDeclaration
-    ): AnnotatedPythonClass {
+        originalDeclaration: SerializablePythonClass? = this.originalDeclaration
+    ): SerializablePythonClass {
 
         val result = copy(
             name = name,
@@ -294,7 +294,7 @@ data class AnnotatedPythonClass(
     }
 }
 
-data class AnnotatedPythonAttribute(
+data class SerializablePythonAttribute(
     override val name: String,
     val qualifiedName: String,
     val defaultValue: String?,
@@ -302,10 +302,10 @@ data class AnnotatedPythonAttribute(
     val typeInDocs: String,
     val description: String,
     override val annotations: MutableList<EditorAnnotation>
-) : AnnotatedPythonDeclaration() {
+) : SerializablePythonDeclaration() {
 
     @Transient
-    override var originalDeclaration: AnnotatedPythonAttribute? = null
+    override var originalDeclaration: SerializablePythonAttribute? = null
 
     @Transient
     var boundary: Boundary? = null
@@ -315,11 +315,11 @@ data class AnnotatedPythonAttribute(
         visitor.leavePythonAttribute(this)
     }
 
-    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonAttribute? {
+    override fun accept(transformer: PackageDataTransformer): SerializablePythonAttribute? {
         return transformer.createNewAttribute(this)
     }
 
-    override fun children() = emptySequence<AnnotatedPythonDeclaration>()
+    override fun children() = emptySequence<SerializablePythonDeclaration>()
 
     fun fullCopy(
         name: String = this.name,
@@ -330,8 +330,8 @@ data class AnnotatedPythonAttribute(
         description: String = this.description,
         annotations: MutableList<EditorAnnotation> = this.annotations,
         boundary: Boundary? = this.boundary,
-        originalDeclaration: AnnotatedPythonAttribute? = this.originalDeclaration
-    ): AnnotatedPythonAttribute {
+        originalDeclaration: SerializablePythonAttribute? = this.originalDeclaration
+    ): SerializablePythonAttribute {
 
         val result = copy(
             name = name,
@@ -370,32 +370,32 @@ data class Boundary(
     }
 }
 
-data class AnnotatedPythonEnum(
+data class SerializablePythonEnum(
     override val name: String,
     val instances: List<PythonEnumInstance>,
     override val annotations: MutableList<EditorAnnotation>
-) : AnnotatedPythonDeclaration() {
+) : SerializablePythonDeclaration() {
 
     @Transient
-    override var originalDeclaration: AnnotatedPythonEnum? = null
+    override var originalDeclaration: SerializablePythonEnum? = null
 
     override fun accept(visitor: PackageDataVisitor) {
         visitor.enterPythonEnum(this)
         visitor.leavePythonEnum(this)
     }
 
-    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonEnum? {
+    override fun accept(transformer: PackageDataTransformer): SerializablePythonEnum? {
         return transformer.createNewEnum(this)
     }
 
-    override fun children() = emptySequence<AnnotatedPythonDeclaration>()
+    override fun children() = emptySequence<SerializablePythonDeclaration>()
 
     fun fullCopy(
         name: String = this.name,
         instances: List<PythonEnumInstance> = this.instances,
         annotations: MutableList<EditorAnnotation> = this.annotations,
-        originalDeclaration: AnnotatedPythonEnum? = this.originalDeclaration
-    ): AnnotatedPythonEnum {
+        originalDeclaration: SerializablePythonEnum? = this.originalDeclaration
+    ): SerializablePythonEnum {
         val result = copy(
             name = name,
             instances = instances,
@@ -412,23 +412,23 @@ data class PythonEnumInstance(
 )
 
 @Serializable
-data class AnnotatedPythonFunction(
+data class SerializablePythonFunction(
     override val name: String,
     val qualifiedName: String,
     val decorators: List<String>,
-    val parameters: MutableList<AnnotatedPythonParameter>,
-    val results: MutableList<AnnotatedPythonResult>,
+    val parameters: MutableList<SerializablePythonParameter>,
+    val results: MutableList<SerializablePythonResult>,
     val isPublic: Boolean,
     val description: String,
     val fullDocstring: String,
     override val annotations: MutableList<EditorAnnotation>
-) : AnnotatedPythonDeclaration() {
+) : SerializablePythonDeclaration() {
 
     @Transient
-    override var originalDeclaration: AnnotatedPythonFunction? = null
+    override var originalDeclaration: SerializablePythonFunction? = null
 
     @Transient
-    val calledAfter = mutableListOf<AnnotatedPythonFunction>()
+    val calledAfter = mutableListOf<SerializablePythonFunction>()
 
     @Transient
     var isPure = false
@@ -446,7 +446,7 @@ data class AnnotatedPythonFunction(
         visitor.leavePythonFunction(this)
     }
 
-    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonFunction? {
+    override fun accept(transformer: PackageDataTransformer): SerializablePythonFunction? {
         val newFunctionOnEnter = transformer.createNewFunctionOnEnter(this) ?: return null
 
         val newParameters = when {
@@ -479,16 +479,16 @@ data class AnnotatedPythonFunction(
         name: String = this.name,
         qualifiedName: String = this.qualifiedName,
         decorators: List<String> = this.decorators,
-        parameters: MutableList<AnnotatedPythonParameter> = this.parameters,
-        results: MutableList<AnnotatedPythonResult> = this.results,
+        parameters: MutableList<SerializablePythonParameter> = this.parameters,
+        results: MutableList<SerializablePythonResult> = this.results,
         isPublic: Boolean = this.isPublic,
         description: String = this.description,
         fullDocstring: String = this.fullDocstring,
         annotations: MutableList<EditorAnnotation> = this.annotations,
-        calledAfter: MutableList<AnnotatedPythonFunction> = this.calledAfter,
+        calledAfter: MutableList<SerializablePythonFunction> = this.calledAfter,
         isPure: Boolean = this.isPure,
-        originalDeclaration: AnnotatedPythonFunction? = this.originalDeclaration
-    ): AnnotatedPythonFunction {
+        originalDeclaration: SerializablePythonFunction? = this.originalDeclaration
+    ): SerializablePythonFunction {
 
         val result = copy(
             name = name,
@@ -509,7 +509,7 @@ data class AnnotatedPythonFunction(
 }
 
 @Serializable
-data class AnnotatedPythonParameter(
+data class SerializablePythonParameter(
     override val name: String,
     val qualifiedName: String,
     val defaultValue: String?,
@@ -518,10 +518,10 @@ data class AnnotatedPythonParameter(
     val typeInDocs: String,
     val description: String,
     override val annotations: MutableList<EditorAnnotation>
-) : AnnotatedPythonDeclaration() {
+) : SerializablePythonDeclaration() {
 
     @Transient
-    override var originalDeclaration: AnnotatedPythonParameter? = null
+    override var originalDeclaration: SerializablePythonParameter? = null
 
     @Transient
     var boundary: Boundary? = null
@@ -535,11 +535,11 @@ data class AnnotatedPythonParameter(
         visitor.leavePythonParameter(this)
     }
 
-    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonParameter? {
+    override fun accept(transformer: PackageDataTransformer): SerializablePythonParameter? {
         return transformer.createNewParameter(this)
     }
 
-    override fun children() = emptySequence<AnnotatedPythonDeclaration>()
+    override fun children() = emptySequence<SerializablePythonDeclaration>()
 
     fun fullCopy(
         name: String = this.name,
@@ -551,8 +551,8 @@ data class AnnotatedPythonParameter(
         description: String = this.description,
         annotations: MutableList<EditorAnnotation> = this.annotations,
         boundary: Boundary? = this.boundary,
-        originalDeclaration: AnnotatedPythonParameter? = this.originalDeclaration
-    ): AnnotatedPythonParameter {
+        originalDeclaration: SerializablePythonParameter? = this.originalDeclaration
+    ): SerializablePythonParameter {
 
         val result = copy(
             name = name,
@@ -580,16 +580,16 @@ enum class PythonParameterAssignment {
 }
 
 @Serializable
-data class AnnotatedPythonResult(
+data class SerializablePythonResult(
     override val name: String,
     val type: String,
     val typeInDocs: String,
     val description: String,
     override val annotations: MutableList<EditorAnnotation>
-) : AnnotatedPythonDeclaration() {
+) : SerializablePythonDeclaration() {
 
     @Transient
-    override var originalDeclaration: AnnotatedPythonResult? = null
+    override var originalDeclaration: SerializablePythonResult? = null
 
     @Transient
     var boundary: Boundary? = null
@@ -599,11 +599,11 @@ data class AnnotatedPythonResult(
         visitor.leavePythonResult(this)
     }
 
-    override fun accept(transformer: PackageDataTransformer): AnnotatedPythonResult? {
+    override fun accept(transformer: PackageDataTransformer): SerializablePythonResult? {
         return transformer.createNewResult(this)
     }
 
-    override fun children() = emptySequence<AnnotatedPythonDeclaration>()
+    override fun children() = emptySequence<SerializablePythonDeclaration>()
 
     fun fullCopy(
         name: String = this.name,
@@ -612,8 +612,8 @@ data class AnnotatedPythonResult(
         description: String = this.description,
         annotations: MutableList<EditorAnnotation> = this.annotations,
         boundary: Boundary? = this.boundary,
-        originalDeclaration: AnnotatedPythonResult? = this.originalDeclaration
-    ): AnnotatedPythonResult {
+        originalDeclaration: SerializablePythonResult? = this.originalDeclaration
+    ): SerializablePythonResult {
 
         val result = copy(
             name = name,

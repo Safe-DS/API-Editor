@@ -13,7 +13,7 @@ class ClassAdapterContentBuilderTest {
     @Test
     void buildClassReturnsFormattedClassWithNoFunctions() {
         // given
-        AnnotatedPythonClass testClass = new AnnotatedPythonClass(
+        SerializablePythonClass testClass = new SerializablePythonClass(
             "test-class",
             "test-module.test-class",
             List.of("test-decorator"),
@@ -39,17 +39,17 @@ class ClassAdapterContentBuilderTest {
     @Test
     void buildClassReturnsFormattedClassWithOneFunction() {
         // given
-        AnnotatedPythonClass testClass = new AnnotatedPythonClass(
+        SerializablePythonClass testClass = new SerializablePythonClass(
             "test-class",
             "test-module.test-class",
             List.of("test-decorator"),
             List.of("test-superclass"),
-            List.of(new AnnotatedPythonFunction(
+            List.of(new SerializablePythonFunction(
                 "__init__",
                 "test-module.test-class.__init__",
                 List.of("decorators"),
                 List.of(
-                    new AnnotatedPythonParameter(
+                    new SerializablePythonParameter(
                         "self",
                         "test-module.test-class.__init__.self",
                         null,
@@ -59,7 +59,7 @@ class ClassAdapterContentBuilderTest {
                         "description",
                         Collections.emptyList()
                     ),
-                    new AnnotatedPythonParameter(
+                    new SerializablePythonParameter(
                         "only-param",
                         "test-module.test-class.__init__.only-param",
                         "'defaultValue'",
@@ -99,18 +99,18 @@ class ClassAdapterContentBuilderTest {
     @Test
     void buildClassReturnsFormattedClassWithTwoFunctions() {
         // given
-        AnnotatedPythonClass testClass = new AnnotatedPythonClass(
+        SerializablePythonClass testClass = new SerializablePythonClass(
             "test-class",
             "test-module.test-class",
             List.of("test-decorator"),
             List.of("test-superclass"),
             List.of(
-                new AnnotatedPythonFunction(
+                new SerializablePythonFunction(
                     "test-class-function1",
                     "test-module.test-class.test-class-function1",
                     List.of("decorators"),
                     List.of(
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "self",
                             "test-module.test-class.test-class-function1.self",
                             null,
@@ -120,7 +120,7 @@ class ClassAdapterContentBuilderTest {
                             "description",
                             Collections.emptyList()
                         ),
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "only-param",
                             "test-module.test-class.test-class-function1.only-param",
                             null,
@@ -137,12 +137,12 @@ class ClassAdapterContentBuilderTest {
                     "fullDocstring",
                     Collections.emptyList()
                 ),
-                new AnnotatedPythonFunction(
+                new SerializablePythonFunction(
                     "test-class-function2",
                     "test-module.test-class.test-class-function2",
                     List.of("decorators"),
                     List.of(
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "self",
                             "test-module.test-class.test-class-function2.self",
                             null,
@@ -152,7 +152,7 @@ class ClassAdapterContentBuilderTest {
                             "description",
                             Collections.emptyList()
                         ),
-                        new AnnotatedPythonParameter(
+                        new SerializablePythonParameter(
                             "only-param",
                             "test-module.test-class.test-class-function2.only-param",
                             null,
@@ -196,12 +196,12 @@ class ClassAdapterContentBuilderTest {
     @Test
     void buildClassReturnsFormattedClassBasedOnOriginalDeclaration() {
         // given
-        AnnotatedPythonFunction testFunction = new AnnotatedPythonFunction(
+        SerializablePythonFunction testFunction = new SerializablePythonFunction(
             "test-function",
             "test-module.test-class.test-function",
             List.of("test-decorator"),
             List.of(
-                new AnnotatedPythonParameter(
+                new SerializablePythonParameter(
                     "self",
                     "test-module.test-class.test-class-function.self",
                     null,
@@ -211,7 +211,7 @@ class ClassAdapterContentBuilderTest {
                     "description",
                     Collections.emptyList()
                 ),
-                new AnnotatedPythonParameter(
+                new SerializablePythonParameter(
                     "second-param",
                     "test-module.test-class.test-class-function.second-param",
                     null,
@@ -223,7 +223,7 @@ class ClassAdapterContentBuilderTest {
                         new RenameAnnotation("newSecondParamName")
                     )
                 ),
-                new AnnotatedPythonParameter(
+                new SerializablePythonParameter(
                     "third-param",
                     "test-module.test-class.test-class-function.third-param",
                     null,
@@ -245,7 +245,7 @@ class ClassAdapterContentBuilderTest {
             )
         );
 
-        AnnotatedPythonClass testClass = new AnnotatedPythonClass(
+        SerializablePythonClass testClass = new SerializablePythonClass(
             "test-class",
             "test-module.test-class",
             Collections.emptyList(),

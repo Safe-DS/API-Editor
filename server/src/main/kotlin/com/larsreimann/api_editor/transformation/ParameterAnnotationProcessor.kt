@@ -1,11 +1,11 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.AbstractPackageDataTransformer
-import com.larsreimann.api_editor.model.AnnotatedPythonAttribute
-import com.larsreimann.api_editor.model.AnnotatedPythonClass
-import com.larsreimann.api_editor.model.AnnotatedPythonFunction
-import com.larsreimann.api_editor.model.AnnotatedPythonParameter
-import com.larsreimann.api_editor.model.AnnotatedPythonResult
+import com.larsreimann.api_editor.model.SerializablePythonAttribute
+import com.larsreimann.api_editor.model.SerializablePythonClass
+import com.larsreimann.api_editor.model.SerializablePythonFunction
+import com.larsreimann.api_editor.model.SerializablePythonParameter
+import com.larsreimann.api_editor.model.SerializablePythonResult
 import com.larsreimann.api_editor.model.AttributeAnnotation
 import com.larsreimann.api_editor.model.ConstantAnnotation
 import com.larsreimann.api_editor.model.EditorAnnotation
@@ -17,11 +17,11 @@ import com.larsreimann.api_editor.model.RequiredAnnotation
  * Processor for Constant-, Optional- and RequiredAnnotations
  */
 class ParameterAnnotationProcessor : AbstractPackageDataTransformer() {
-    override fun shouldVisitResultsIn(oldFunction: AnnotatedPythonFunction): Boolean {
+    override fun shouldVisitResultsIn(oldFunction: SerializablePythonFunction): Boolean {
         return false
     }
 
-    override fun createNewParameter(oldParameter: AnnotatedPythonParameter): AnnotatedPythonParameter {
+    override fun createNewParameter(oldParameter: SerializablePythonParameter): SerializablePythonParameter {
         var assignedBy = when {
             oldParameter.isOptional() -> PythonParameterAssignment.NAME_ONLY
             else -> PythonParameterAssignment.POSITION_OR_NAME
@@ -68,10 +68,10 @@ class ParameterAnnotationProcessor : AbstractPackageDataTransformer() {
     }
 
     override fun createNewFunctionOnLeave(
-        oldFunction: AnnotatedPythonFunction,
-        newParameters: List<AnnotatedPythonParameter>,
-        newResults: List<AnnotatedPythonResult>
-    ): AnnotatedPythonFunction {
+        oldFunction: SerializablePythonFunction,
+        newParameters: List<SerializablePythonParameter>,
+        newResults: List<SerializablePythonResult>
+    ): SerializablePythonFunction {
         return oldFunction.fullCopy(
             oldFunction.name,
             oldFunction.qualifiedName,
@@ -89,10 +89,10 @@ class ParameterAnnotationProcessor : AbstractPackageDataTransformer() {
     }
 
     override fun createNewClassOnLeave(
-        oldClass: AnnotatedPythonClass,
-        newAttributes: List<AnnotatedPythonAttribute>,
-        newMethods: List<AnnotatedPythonFunction>
-    ): AnnotatedPythonClass {
+        oldClass: SerializablePythonClass,
+        newAttributes: List<SerializablePythonAttribute>,
+        newMethods: List<SerializablePythonFunction>
+    ): SerializablePythonClass {
         val processedNewAttributes = newAttributes.toMutableList()
         for (pythonFunction in newMethods) {
             if (pythonFunction.isConstructor()) {
@@ -142,7 +142,7 @@ class ParameterAnnotationProcessor : AbstractPackageDataTransformer() {
         )
     }
 
-    private fun reorderParameters(unorderedParameters: List<AnnotatedPythonParameter>): List<AnnotatedPythonParameter> {
+    private fun reorderParameters(unorderedParameters: List<SerializablePythonParameter>): List<SerializablePythonParameter> {
         val groups = unorderedParameters.groupBy { it.assignedBy }
         return buildList {
             addAll(groups[PythonParameterAssignment.IMPLICIT].orEmpty())
