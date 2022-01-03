@@ -150,7 +150,12 @@ data class MutablePythonParameter(
     var boundary: Boundary? = null,
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
     var originalDeclaration: SerializablePythonParameter? = null
-) : MutablePythonDeclaration()
+) : MutablePythonDeclaration() {
+
+    fun isRequired() = defaultValue == null
+
+    fun isOptional() = defaultValue != null
+}
 
 data class MutablePythonResult(
     override var name: String,

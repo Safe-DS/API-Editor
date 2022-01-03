@@ -8,7 +8,7 @@ import com.larsreimann.api_editor.util.createPythonPackage
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
-class OriginalDeclarationProcessorTest {
+class PreprocessorTest {
     @Test
     fun `should add original declaration to function`() {
         // given
@@ -17,7 +17,7 @@ class OriginalDeclarationProcessorTest {
             qualifiedName = "testPackage/testFunction",
         )
 
-        val testPackage = createPythonPackage(
+        var testPackage = createPythonPackage(
             "testPackage",
             modules = listOf(
                 createPythonModule(
@@ -29,7 +29,7 @@ class OriginalDeclarationProcessorTest {
 
         // when
         val originalFunction = testPackage.modules[0].functions[0].copy()
-        testPackage.accept(OriginalDeclarationProcessor)
+        testPackage = testPackage.accept(Preprocessor())!!
 
         // then
         testPackage.modules[0]
@@ -46,7 +46,7 @@ class OriginalDeclarationProcessorTest {
             qualifiedName = "testPackage/testClass",
         ).apply { annotations += UnusedAnnotation }
 
-        val testPackage = createPythonPackage(
+        var testPackage = createPythonPackage(
             "testPackage",
             modules = listOf(
                 createPythonModule(
@@ -58,7 +58,7 @@ class OriginalDeclarationProcessorTest {
 
         // when
         val originalClass = testPackage.modules[0].classes[0].copy()
-        testPackage.accept(OriginalDeclarationProcessor)
+        testPackage = testPackage.accept(Preprocessor())!!
 
         // then
         testPackage.modules[0]
@@ -80,7 +80,7 @@ class OriginalDeclarationProcessorTest {
             methods = listOf(testMethod)
         )
 
-        val testPackage = createPythonPackage(
+        var testPackage = createPythonPackage(
             "testPackage",
             modules = listOf(
                 createPythonModule(
@@ -96,7 +96,7 @@ class OriginalDeclarationProcessorTest {
             .classes[0]
             .methods[0]
             .copy()
-        testPackage.accept(OriginalDeclarationProcessor)
+        testPackage = testPackage.accept(Preprocessor())!!
 
         // then
         testPackage.modules[0]

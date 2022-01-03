@@ -4,7 +4,8 @@ import com.larsreimann.api_editor.model.SerializablePythonFunction;
 import com.larsreimann.api_editor.model.SerializablePythonParameter;
 import com.larsreimann.api_editor.model.PythonParameterAssignment;
 import com.larsreimann.api_editor.model.RenameAnnotation;
-import com.larsreimann.api_editor.transformation.OriginalDeclarationProcessor;
+import com.larsreimann.api_editor.transformation.Postprocessor;
+import com.larsreimann.api_editor.transformation.Preprocessor;
 import com.larsreimann.api_editor.transformation.RenameAnnotationProcessor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -27,7 +28,10 @@ class FunctionAdapterContentBuilderTest {
             "fullDocstring",
             Collections.emptyList()
         );
-        testFunction.accept(OriginalDeclarationProcessor.INSTANCE);
+
+        testFunction = testFunction.accept(new Preprocessor());
+        assert testFunction != null;
+        testFunction = testFunction.accept(Postprocessor.INSTANCE);
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -66,7 +70,10 @@ class FunctionAdapterContentBuilderTest {
             "fullDocstring",
             Collections.emptyList()
         );
-        testFunction.accept(OriginalDeclarationProcessor.INSTANCE);
+
+        testFunction = testFunction.accept(new Preprocessor());
+        assert testFunction != null;
+        testFunction = testFunction.accept(Postprocessor.INSTANCE);
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -75,7 +82,7 @@ class FunctionAdapterContentBuilderTest {
 
         // then
         String expectedFormattedFunction = """
-            def test-function(only-param=13, /):
+            def test-function(*, only-param=13):
                 test-module.test-function(only-param)""";
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction);
     }
@@ -105,7 +112,10 @@ class FunctionAdapterContentBuilderTest {
             "fullDocstring",
             Collections.emptyList()
         );
-        testFunction.accept(OriginalDeclarationProcessor.INSTANCE);
+
+        testFunction = testFunction.accept(new Preprocessor());
+        assert testFunction != null;
+        testFunction = testFunction.accept(Postprocessor.INSTANCE);
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -114,7 +124,7 @@ class FunctionAdapterContentBuilderTest {
 
         // then
         String expectedFormattedFunction = """
-            def test-function(only-param=False):
+            def test-function(*, only-param=False):
                 test-module.test-function(only-param)""";
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction);
     }
@@ -144,7 +154,10 @@ class FunctionAdapterContentBuilderTest {
             "fullDocstring",
             Collections.emptyList()
         );
-        testFunction.accept(OriginalDeclarationProcessor.INSTANCE);
+
+        testFunction = testFunction.accept(new Preprocessor());
+        assert testFunction != null;
+        testFunction = testFunction.accept(Postprocessor.INSTANCE);
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -153,7 +166,7 @@ class FunctionAdapterContentBuilderTest {
 
         // then
         String expectedFormattedFunction = """
-            def test-function(*, only-param):
+            def test-function(only-param):
                 test-module.test-function(only-param=only-param)""";
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction);
     }
@@ -193,7 +206,10 @@ class FunctionAdapterContentBuilderTest {
             "fullDocstring",
             Collections.emptyList()
         );
-        testFunction.accept(OriginalDeclarationProcessor.INSTANCE);
+
+        testFunction = testFunction.accept(new Preprocessor());
+        assert testFunction != null;
+        testFunction = testFunction.accept(Postprocessor.INSTANCE);
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -202,7 +218,7 @@ class FunctionAdapterContentBuilderTest {
 
         // then
         String expectedFormattedFunction = """
-            def test-function(first-param, /, second-param):
+            def test-function(first-param, second-param):
                 test-module.test-function(first-param, second-param)""";
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction);
     }
@@ -252,7 +268,10 @@ class FunctionAdapterContentBuilderTest {
             "fullDocstring",
             Collections.emptyList()
         );
-        testFunction.accept(OriginalDeclarationProcessor.INSTANCE);
+
+        testFunction = testFunction.accept(new Preprocessor());
+        assert testFunction != null;
+        testFunction = testFunction.accept(Postprocessor.INSTANCE);
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -261,7 +280,7 @@ class FunctionAdapterContentBuilderTest {
 
         // then
         String expectedFormattedFunction = """
-            def test-function(first-param, /, second-param, *, third-param):
+            def test-function(first-param, second-param, third-param):
                 test-module.test-function(first-param, second-param, third-param=third-param)""";
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction);
     }
@@ -301,7 +320,10 @@ class FunctionAdapterContentBuilderTest {
             "fullDocstring",
             Collections.emptyList()
         );
-        testFunction.accept(OriginalDeclarationProcessor.INSTANCE);
+
+        testFunction = testFunction.accept(new Preprocessor());
+        assert testFunction != null;
+        testFunction = testFunction.accept(Postprocessor.INSTANCE);
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -310,7 +332,7 @@ class FunctionAdapterContentBuilderTest {
 
         // then
         String expectedFormattedFunction = """
-            def test-function(first-param, /, *, second-param):
+            def test-function(first-param, second-param):
                 test-module.test-function(first-param, second-param=second-param)""";
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction);
     }
@@ -350,7 +372,10 @@ class FunctionAdapterContentBuilderTest {
             "fullDocstring",
             Collections.emptyList()
         );
-        testFunction.accept(OriginalDeclarationProcessor.INSTANCE);
+
+        testFunction = testFunction.accept(new Preprocessor());
+        assert testFunction != null;
+        testFunction = testFunction.accept(Postprocessor.INSTANCE);
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -359,7 +384,7 @@ class FunctionAdapterContentBuilderTest {
 
         // then
         String expectedFormattedFunction = """
-            def test-function(first-param, *, second-param):
+            def test-function(first-param, second-param):
                 test-module.test-function(first-param, second-param=second-param)""";
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction);
     }
@@ -417,11 +442,12 @@ class FunctionAdapterContentBuilderTest {
                 new RenameAnnotation("newFunctionName")
             )
         );
-        testFunction.accept(OriginalDeclarationProcessor.INSTANCE);
-        RenameAnnotationProcessor renameAnnotationProcessor =
-            new RenameAnnotationProcessor();
 
-        testFunction = testFunction.accept(renameAnnotationProcessor);
+        testFunction = testFunction.accept(new Preprocessor());
+        assert testFunction != null;
+        testFunction = testFunction.accept(new RenameAnnotationProcessor());
+        assert testFunction != null;
+        testFunction = testFunction.accept(Postprocessor.INSTANCE);
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -430,7 +456,7 @@ class FunctionAdapterContentBuilderTest {
 
         // then
         String expectedFormattedFunction = """
-            def newFunctionName(newFirstParamName, /, newSecondParamName, *, newThirdParamName):
+            def newFunctionName(newFirstParamName, newSecondParamName, newThirdParamName):
                 test-module.test-function(newFirstParamName, newSecondParamName, third-param=newThirdParamName)""";
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction);
     }

@@ -10,7 +10,7 @@ fun processPackage(originalPythonPackage: SerializablePythonPackage): Serializab
     modifiedPythonPackage = modifiedPythonPackage.accept(AttributesInitializer())!!
 
     // Create original declarations
-    modifiedPythonPackage.accept(OriginalDeclarationProcessor)
+    modifiedPythonPackage.accept(Preprocessor())
 
     // Apply annotations (don't change the order)
     modifiedPythonPackage = modifiedPythonPackage.accept(UnusedAnnotationProcessor())!!
@@ -21,11 +21,9 @@ fun processPackage(originalPythonPackage: SerializablePythonPackage): Serializab
     modifiedPythonPackage.accept(moveAnnotationProcessor)
     modifiedPythonPackage = moveAnnotationProcessor.modifiedPackage!!
 
-    modifiedPythonPackage = modifiedPythonPackage.accept(ParameterAnnotationProcessor())!!
-
     val mutablePackage = convertPackage(modifiedPythonPackage)
+    mutablePackage.processParameterAnnotations()
     mutablePackage.processBoundaryAnnotations()
-
     mutablePackage.processPureAnnotations()
     modifiedPythonPackage = convertPackage(mutablePackage)
 
@@ -33,6 +31,8 @@ fun processPackage(originalPythonPackage: SerializablePythonPackage): Serializab
     val cleanupModulesProcessor = CleanupModulesProcessor()
     modifiedPythonPackage.accept(cleanupModulesProcessor)
     modifiedPythonPackage = cleanupModulesProcessor.modifiedPackage
+
+    modifiedPythonPackage = modifiedPythonPackage.accept(Postprocessor)!!
 
     return modifiedPythonPackage
 }

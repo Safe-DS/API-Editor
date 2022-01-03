@@ -1,7 +1,12 @@
 package com.larsreimann.api_editor.codegen;
 
-import com.larsreimann.api_editor.model.*;
-import com.larsreimann.api_editor.transformation.OriginalDeclarationProcessor;
+import com.larsreimann.api_editor.model.PythonParameterAssignment;
+import com.larsreimann.api_editor.model.RenameAnnotation;
+import com.larsreimann.api_editor.model.SerializablePythonClass;
+import com.larsreimann.api_editor.model.SerializablePythonFunction;
+import com.larsreimann.api_editor.model.SerializablePythonParameter;
+import com.larsreimann.api_editor.transformation.Postprocessor;
+import com.larsreimann.api_editor.transformation.Preprocessor;
 import com.larsreimann.api_editor.transformation.RenameAnnotationProcessor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -24,7 +29,10 @@ class ClassAdapterContentBuilderTest {
             "Lorem ipsum",
             Collections.emptyList()
         );
-        testClass.accept(OriginalDeclarationProcessor.INSTANCE);
+
+        testClass = testClass.accept(new Preprocessor());
+        assert testClass != null;
+        testClass = testClass.accept(Postprocessor.INSTANCE);
 
         // when
         ClassAdapterContentBuilder classAdapterContentBuilder =
@@ -81,7 +89,10 @@ class ClassAdapterContentBuilderTest {
             "Lorem ipsum",
             Collections.emptyList()
         );
-        testClass.accept(OriginalDeclarationProcessor.INSTANCE);
+
+        testClass = testClass.accept(new Preprocessor());
+        assert testClass != null;
+        testClass = testClass.accept(Postprocessor.INSTANCE);
 
         // when
         ClassAdapterContentBuilder classAdapterContentBuilder =
@@ -91,7 +102,7 @@ class ClassAdapterContentBuilderTest {
         // then
         String expectedFormattedClass = """
             class test-class:
-                def __init__(self, only-param='defaultValue'):
+                def __init__(self, *, only-param='defaultValue'):
                     test-module.test-class.__init__(only-param)""";
         Assertions.assertEquals(expectedFormattedClass, formattedClass);
     }
@@ -175,7 +186,10 @@ class ClassAdapterContentBuilderTest {
             "Lorem ipsum",
             Collections.emptyList()
         );
-        testClass.accept(OriginalDeclarationProcessor.INSTANCE);
+
+        testClass = testClass.accept(new Preprocessor());
+        assert testClass != null;
+        testClass = testClass.accept(Postprocessor.INSTANCE);
 
         // when
         ClassAdapterContentBuilder classAdapterContentBuilder =
@@ -259,10 +273,11 @@ class ClassAdapterContentBuilderTest {
             )
         );
 
-        testClass.accept(OriginalDeclarationProcessor.INSTANCE);
-        RenameAnnotationProcessor renameAnnotationProcessor =
-            new RenameAnnotationProcessor();
-        testClass = testClass.accept(renameAnnotationProcessor);
+        testClass = testClass.accept(new Preprocessor());
+        assert testClass != null;
+        testClass = testClass.accept(new RenameAnnotationProcessor());
+        assert testClass != null;
+        testClass = testClass.accept(Postprocessor.INSTANCE);
 
         // when
         ClassAdapterContentBuilder classAdapterContentBuilder =
@@ -272,7 +287,7 @@ class ClassAdapterContentBuilderTest {
         // then
         String expectedFormattedClass = """
             class newClassName:
-                def newFunctionName(self, newSecondParamName, *, newThirdParamName):
+                def newFunctionName(self, newSecondParamName, newThirdParamName):
                     test-module.test-class.test-function(newSecondParamName, third-param=newThirdParamName)""";
         Assertions.assertEquals(expectedFormattedClass, formattedClass);
     }

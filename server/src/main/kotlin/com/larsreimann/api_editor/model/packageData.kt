@@ -513,7 +513,7 @@ data class SerializablePythonParameter(
     override val name: String,
     val qualifiedName: String,
     val defaultValue: String?,
-    val assignedBy: PythonParameterAssignment,
+    var assignedBy: PythonParameterAssignment,
     val isPublic: Boolean,
     val typeInDocs: String,
     val description: String,

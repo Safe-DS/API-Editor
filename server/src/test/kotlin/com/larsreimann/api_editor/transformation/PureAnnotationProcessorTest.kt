@@ -10,40 +10,40 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class PureAnnotationProcessorTest {
-    private lateinit var pythonFunction: MutablePythonFunction
-    private lateinit var pythonPackage: MutablePythonPackage
+    private lateinit var testFunction: MutablePythonFunction
+    private lateinit var testPackage: MutablePythonPackage
 
     @BeforeEach
     fun reset() {
-        pythonFunction = MutablePythonFunction("testFunction").apply {
-            annotations += PureAnnotation
-        }
-
-        pythonPackage = MutablePythonPackage(
+        testFunction = MutablePythonFunction(
+            name = "testFunction",
+            annotations = mutableListOf(PureAnnotation)
+        )
+        testPackage = MutablePythonPackage(
             "testPackage",
             "testPackage",
             "1.0.0",
             modules = listOf(
                 MutablePythonModule(
                     "testModule",
-                    functions = listOf(pythonFunction)
+                    functions = listOf(testFunction)
                 )
             )
         )
     }
 
     @Test
-    fun `should mark functions as pure`() {
-        pythonPackage.processPureAnnotations()
+    fun `should process PureAnnotations`() {
+        testPackage.processPureAnnotations()
 
-        pythonFunction.isPure shouldBe true
+        testFunction.isPure shouldBe true
     }
 
     @Test
-    fun `should remove all PureAnnotations`() {
-        pythonPackage.processPureAnnotations()
+    fun `should remove PureAnnotations`() {
+        testPackage.processPureAnnotations()
 
-        pythonFunction.annotations
+        testFunction.annotations
             .filterIsInstance<PureAnnotation>()
             .shouldBeEmpty()
     }
