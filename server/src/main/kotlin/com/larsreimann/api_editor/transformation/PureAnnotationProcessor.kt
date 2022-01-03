@@ -1,22 +1,24 @@
 package com.larsreimann.api_editor.transformation
 
-import com.larsreimann.api_editor.model.AbstractPackageDataVisitor
-import com.larsreimann.api_editor.model.SerializablePythonFunction
 import com.larsreimann.api_editor.model.PureAnnotation
+import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
+import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
+import com.larsreimann.api_editor.mutable_model.descendants
 
-object PureAnnotationProcessor : AbstractPackageDataVisitor() {
+/**
+ * Marks functions with the `@Pure` annotation as pure and removes the annotation.
+ */
+fun MutablePythonPackage.processPureAnnotations() {
+    this.descendants()
+        .filterIsInstance<MutablePythonFunction>()
+        .forEach { it.processPureAnnotations() }
+}
 
-    /**
-     * Marks functions with the `@Pure` annotation as pure and removes the annotation. Mutates the original declaration.
-     */
-    override fun enterPythonFunction(pythonFunction: SerializablePythonFunction): Boolean {
-        pythonFunction.annotations
-            .filterIsInstance<PureAnnotation>()
-            .forEach {
-                pythonFunction.isPure = true
-                pythonFunction.annotations.remove(it)
-            }
-
-        return false
-    }
+private fun MutablePythonFunction.processPureAnnotations() {
+    this.annotations
+        .filterIsInstance<PureAnnotation>()
+        .forEach {
+            this.isPure = true
+            this.annotations.remove(it)
+        }
 }

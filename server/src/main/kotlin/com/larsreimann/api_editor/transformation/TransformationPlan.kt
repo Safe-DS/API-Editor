@@ -1,6 +1,7 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.SerializablePythonPackage
+import com.larsreimann.api_editor.mutable_model.convertPackage
 
 fun processPackage(originalPythonPackage: SerializablePythonPackage): SerializablePythonPackage {
     var modifiedPythonPackage = originalPythonPackage
@@ -12,23 +13,21 @@ fun processPackage(originalPythonPackage: SerializablePythonPackage): Serializab
     modifiedPythonPackage.accept(OriginalDeclarationProcessor)
 
     // Apply annotations (don't change the order)
-    val unusedAnnotationProcessor = UnusedAnnotationProcessor()
-    modifiedPythonPackage = modifiedPythonPackage.accept(unusedAnnotationProcessor)!!
+    modifiedPythonPackage = modifiedPythonPackage.accept(UnusedAnnotationProcessor())!!
 
-    val renameAnnotationProcessor = RenameAnnotationProcessor()
-    modifiedPythonPackage = modifiedPythonPackage.accept(renameAnnotationProcessor)!!
+    modifiedPythonPackage = modifiedPythonPackage.accept(RenameAnnotationProcessor())!!
 
     val moveAnnotationProcessor = MoveAnnotationProcessor()
     modifiedPythonPackage.accept(moveAnnotationProcessor)
     modifiedPythonPackage = moveAnnotationProcessor.modifiedPackage!!
 
-    val parameterAnnotationProcessor = ParameterAnnotationProcessor()
-    modifiedPythonPackage = modifiedPythonPackage.accept(parameterAnnotationProcessor)!!
+    modifiedPythonPackage = modifiedPythonPackage.accept(ParameterAnnotationProcessor())!!
 
-    val boundaryAnnotationProcessor = BoundaryAnnotationProcessor()
-    modifiedPythonPackage = modifiedPythonPackage.accept(boundaryAnnotationProcessor)!!
+    modifiedPythonPackage = modifiedPythonPackage.accept(BoundaryAnnotationProcessor())!!
 
-    modifiedPythonPackage.accept(PureAnnotationProcessor)
+    var mutablePackage = convertPackage(modifiedPythonPackage)
+    mutablePackage.processPureAnnotations()
+    modifiedPythonPackage = convertPackage(mutablePackage)
 
     // Cleanup
     val cleanupModulesProcessor = CleanupModulesProcessor()

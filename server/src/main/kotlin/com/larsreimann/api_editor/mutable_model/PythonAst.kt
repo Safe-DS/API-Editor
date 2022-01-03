@@ -30,6 +30,7 @@ sealed class MutablePythonDeclaration : MutablePythonAstNode() {
     fun qualifiedName(): String {
         return ancestorsOrSelf()
             .filterIsInstance<MutablePythonDeclaration>()
+            .filterNot { it is MutablePythonPackage }
             .toList()
             .asReversed()
             .joinToString(separator = ".") { it.name }
