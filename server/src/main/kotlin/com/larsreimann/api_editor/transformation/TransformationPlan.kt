@@ -15,9 +15,8 @@ fun processPackage(originalPythonPackage: SerializablePythonPackage): Serializab
     // Apply annotations (don't change the order)
     modifiedPythonPackage = modifiedPythonPackage.accept(UnusedAnnotationProcessor())!!
 
-    modifiedPythonPackage = modifiedPythonPackage.accept(RenameAnnotationProcessor())!!
-
     val mutablePackage = convertPackage(modifiedPythonPackage)
+    mutablePackage.processRenameAnnotations()
     mutablePackage.processMoveAnnotations()
     mutablePackage.processParameterAnnotations()
     mutablePackage.processBoundaryAnnotations()

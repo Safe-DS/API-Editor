@@ -6,7 +6,6 @@ import com.larsreimann.api_editor.model.PythonParameterAssignment;
 import com.larsreimann.api_editor.model.RenameAnnotation;
 import com.larsreimann.api_editor.transformation.Postprocessor;
 import com.larsreimann.api_editor.transformation.Preprocessor;
-import com.larsreimann.api_editor.transformation.RenameAnnotationProcessor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -445,8 +444,6 @@ class FunctionAdapterContentBuilderTest {
 
         testFunction = testFunction.accept(new Preprocessor());
         assert testFunction != null;
-        testFunction = testFunction.accept(new RenameAnnotationProcessor());
-        assert testFunction != null;
         testFunction = testFunction.accept(Postprocessor.INSTANCE);
 
         // when
@@ -456,8 +453,8 @@ class FunctionAdapterContentBuilderTest {
 
         // then
         String expectedFormattedFunction = """
-            def newFunctionName(newFirstParamName, newSecondParamName, newThirdParamName):
-                test-module.test-function(newFirstParamName, newSecondParamName, third-param=newThirdParamName)""";
+            def test-function(first-param, second-param, third-param):
+                test-module.test-function(first-param, second-param, third-param=third-param)""";
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction);
     }
 }

@@ -6,6 +6,9 @@ import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
 import com.larsreimann.api_editor.mutable_model.MutablePythonModule
 import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
 
+/**
+ * Processes and removes `@move` annotations.
+ */
 fun MutablePythonPackage.processMoveAnnotations() {
     this.modules
         .flatMap { it.classes }
