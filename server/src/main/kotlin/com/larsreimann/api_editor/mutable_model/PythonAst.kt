@@ -129,7 +129,10 @@ class MutablePythonFunction(
     fun isConstructor() = name == "__init__"
 }
 
-data class OriginalPythonFunction(val qualifiedName: String, val parameters: List<OriginalPythonParameter>)
+data class OriginalPythonFunction(
+    val qualifiedName: String,
+    val parameters: List<OriginalPythonParameter> = emptyList()
+)
 
 data class MutablePythonAttribute(
     override var name: String,

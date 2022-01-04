@@ -99,6 +99,8 @@ fun MutablePythonClass.toPythonCode(): String {
                 """.trimIndent()
         formattedClass = (formattedClass
             + buildAllFunctions(this).joinToString("\n".repeat(2)).prependIndent("    "))
+    } else {
+        formattedClass += "\n    pass"
     }
     return formattedClass
 }
@@ -146,14 +148,10 @@ private fun buildParameters(pythonFunction: MutablePythonFunction): String {
     val nameOnlyParameters: MutableList<String> = ArrayList()
     pythonFunction.parameters.forEach { pythonParameter: MutablePythonParameter ->
         when (pythonParameter.assignedBy) {
-            PythonParameterAssignment.IMPLICIT -> implicitParameters
-                .add(buildFormattedParameter(pythonParameter))
-            PythonParameterAssignment.POSITION_ONLY -> positionOnlyParameters
-                .add(buildFormattedParameter(pythonParameter))
-            PythonParameterAssignment.POSITION_OR_NAME -> positionOrNameParameters
-                .add(buildFormattedParameter(pythonParameter))
-            PythonParameterAssignment.NAME_ONLY -> nameOnlyParameters
-                .add(buildFormattedParameter(pythonParameter))
+            PythonParameterAssignment.IMPLICIT -> implicitParameters.add(pythonParameter.toPythonCode())
+            PythonParameterAssignment.POSITION_ONLY -> positionOnlyParameters.add(pythonParameter.toPythonCode())
+            PythonParameterAssignment.POSITION_OR_NAME -> positionOrNameParameters.add(pythonParameter.toPythonCode())
+            PythonParameterAssignment.NAME_ONLY -> nameOnlyParameters.add(pythonParameter.toPythonCode())
             else -> {}
         }
     }
@@ -162,52 +160,39 @@ private fun buildParameters(pythonFunction: MutablePythonFunction): String {
     val hasPositionOnlyParameters = positionOnlyParameters.isNotEmpty()
     val hasPositionOrNameParameters = positionOrNameParameters.isNotEmpty()
     val hasNameOnlyParameters = nameOnlyParameters.isNotEmpty()
+
     if (hasImplicitParameter) {
-        formattedFunctionParameters = (formattedFunctionParameters
-            + implicitParameters[0])
-        if (hasPositionOnlyParameters ||
-            hasPositionOrNameParameters ||
-            hasNameOnlyParameters
-        ) {
-            formattedFunctionParameters = "$formattedFunctionParameters, "
+        formattedFunctionParameters += implicitParameters[0]
+        if (hasPositionOnlyParameters || hasPositionOrNameParameters || hasNameOnlyParameters) {
+            formattedFunctionParameters += ", "
         }
     }
     if (hasPositionOnlyParameters) {
-        formattedFunctionParameters = (formattedFunctionParameters
-            + java.lang.String.join(", ", positionOnlyParameters))
-        formattedFunctionParameters = if (hasPositionOrNameParameters) {
-            (formattedFunctionParameters
-                + ", /, ")
-        } else if (hasNameOnlyParameters) {
-            (formattedFunctionParameters
-                + ", /")
-        } else {
-            (formattedFunctionParameters
-                + ", /")
+        formattedFunctionParameters += positionOnlyParameters.joinToString()
+        formattedFunctionParameters += when {
+            hasPositionOrNameParameters -> ", /, "
+            hasNameOnlyParameters -> ", /"
+            else -> ", /"
         }
     }
     if (hasPositionOrNameParameters) {
-        formattedFunctionParameters = (formattedFunctionParameters + positionOnlyParameters.joinToString())
+        formattedFunctionParameters += positionOrNameParameters.joinToString()
     }
     if (hasNameOnlyParameters) {
-        formattedFunctionParameters = if (hasPositionOnlyParameters || hasPositionOrNameParameters) {
-            "$formattedFunctionParameters, *, "
-        } else {
-            "$formattedFunctionParameters*, "
+        formattedFunctionParameters += when {
+            hasPositionOnlyParameters || hasPositionOrNameParameters -> ", *, "
+            else -> "*, "
         }
-        formattedFunctionParameters = (formattedFunctionParameters
-            + java.lang.String.join(", ", nameOnlyParameters))
+        formattedFunctionParameters += nameOnlyParameters.joinToString()
     }
     return formattedFunctionParameters
 }
 
-private fun buildFormattedParameter(pythonParameter: MutablePythonParameter): String {
-    var formattedParameter = pythonParameter.name
-    val defaultValue = pythonParameter.defaultValue
+private fun MutablePythonParameter.toPythonCode() = buildString {
+    append(name)
     if (defaultValue != null) {
-        formattedParameter = "$formattedParameter=$defaultValue"
+        append("=$defaultValue")
     }
-    return formattedParameter
 }
 
 private fun buildFunctionBody(pythonFunction: MutablePythonFunction): String {
