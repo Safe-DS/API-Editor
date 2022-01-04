@@ -15,6 +15,7 @@ fun SerializablePythonPackage.transform(): MutablePythonPackage {
 private fun MutablePythonPackage.preprocess() {
     addOriginalDeclarations()
     updateParameterAssignment()
+    changeModulePrefix(newPrefix = "simpleml")
 }
 
 private fun MutablePythonPackage.processAnnotations() {

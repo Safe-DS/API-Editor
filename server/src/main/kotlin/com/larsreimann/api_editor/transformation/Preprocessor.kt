@@ -10,6 +10,9 @@ import com.larsreimann.api_editor.mutable_model.OriginalPythonFunction
 import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
 import com.larsreimann.api_editor.mutable_model.descendants
 
+/**
+ * Stores the original declaration that corresponds to classes, functions, and parameters.
+ */
 fun MutablePythonPackage.addOriginalDeclarations() {
     this.descendants()
         .forEach {
@@ -44,6 +47,10 @@ private fun MutablePythonParameter.addOriginalDeclarations() {
     )
 }
 
+/**
+ * Set the parameter assignment of implicit parameters to implicit, of required parameter to position or name, and of
+ * optional parameters to name only.
+ */
 fun MutablePythonPackage.updateParameterAssignment() {
     this.descendants()
         .filterIsInstance<MutablePythonParameter>()
@@ -63,4 +70,16 @@ private fun MutablePythonParameter.isImplicit(): Boolean {
     return currentFunction.parent is MutablePythonClass
         && "staticmethod" !in currentFunction.decorators
         && currentFunction.parameters.firstOrNull() == this
+}
+
+/**
+ * Changes the first segment of the name of the module to the [newPrefix].
+ */
+fun MutablePythonPackage.changeModulePrefix(newPrefix: String) {
+    this.modules
+        .forEach {
+            val segments = it.name.split(".").toMutableList()
+            segments[0] = newPrefix
+            it.name = segments.joinToString(".")
+        }
 }

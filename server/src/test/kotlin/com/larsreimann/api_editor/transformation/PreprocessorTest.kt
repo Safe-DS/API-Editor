@@ -11,99 +11,151 @@ import com.larsreimann.api_editor.mutable_model.OriginalPythonFunction
 import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
-// TODO: test original declaration
-// TODO: test updateParameterAssignment
-// TODO: test rename all modules to simpleml.something
-
 class PreprocessorTest {
-    private lateinit var testParameter: MutablePythonParameter
+    private lateinit var testRequiredParameter: MutablePythonParameter
+    private lateinit var testOptionalParameter: MutablePythonParameter
     private lateinit var testGlobalFunction: MutablePythonFunction
+    private lateinit var testMethodParameter: MutablePythonParameter
     private lateinit var testMethod: MutablePythonFunction
     private lateinit var testClass: MutablePythonClass
+    private lateinit var testModule: MutablePythonModule
     private lateinit var testPackage: MutablePythonPackage
 
     @BeforeEach
     fun reset() {
-        testParameter = MutablePythonParameter(
-            name = "testParameter"
+        testRequiredParameter = MutablePythonParameter(
+            name = "testRequiredParameter",
+            defaultValue = null,
+            assignedBy = PythonParameterAssignment.POSITION_ONLY
+        )
+        testOptionalParameter = MutablePythonParameter(
+            name = "testOptionalParameter",
+            defaultValue = "'value'",
+            assignedBy = PythonParameterAssignment.POSITION_OR_NAME
         )
         testGlobalFunction = MutablePythonFunction(
             name = "testGlobalFunction",
-            parameters = listOf(testParameter)
+            parameters = listOf(
+                testRequiredParameter,
+                testOptionalParameter
+            )
+        )
+        testMethodParameter = MutablePythonParameter(
+            name = "testMethodParameter",
+            assignedBy = PythonParameterAssignment.POSITION_ONLY
         )
         testMethod = MutablePythonFunction(
             name = "testMethod",
-            parameters = listOf(
-                MutablePythonParameter(
-                    name = "testMethodParameter",
-                    assignedBy = PythonParameterAssignment.POSITION_ONLY
-                )
-            )
+            parameters = listOf(testMethodParameter)
         )
         testClass = MutablePythonClass(
             name = "testClass",
             methods = listOf(testMethod)
         )
+        testModule = MutablePythonModule(
+            "testModule",
+            classes = listOf(testClass),
+            functions = listOf(testGlobalFunction)
+        )
         testPackage = MutablePythonPackage(
             distribution = "testPackage",
             name = "testPackage",
             version = "1.0.0",
-            modules = listOf(
-                MutablePythonModule(
-                    "testModule",
-                    classes = listOf(testClass),
-                    functions = listOf(testGlobalFunction)
+            modules = listOf(testModule)
+        )
+    }
+
+    @Nested
+    inner class AddOriginalDeclarations {
+
+        @Test
+        fun `should add original declaration to classes`() {
+            testPackage.addOriginalDeclarations()
+
+            testClass.originalClass shouldBe OriginalPythonClass("testModule.testClass")
+        }
+
+        @Test
+        fun `should add original declaration to global functions`() {
+            testPackage.addOriginalDeclarations()
+
+            testGlobalFunction.originalFunction shouldBe OriginalPythonFunction(
+                qualifiedName = "testModule.testGlobalFunction",
+                parameters = listOf(
+                    OriginalPythonParameter(
+                        name = "testRequiredParameter",
+                        assignedBy = PythonParameterAssignment.POSITION_ONLY
+                    ),
+                    OriginalPythonParameter(
+                        name = "testOptionalParameter",
+                        assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+                    )
                 )
             )
-        )
-    }
+        }
 
-    @Test
-    fun `should add original declaration to classes`() {
-        testPackage.addOriginalDeclarations()
+        @Test
+        fun `should add original declaration to class methods`() {
+            testPackage.addOriginalDeclarations()
 
-        testClass.originalClass shouldBe OriginalPythonClass("testModule.testClass")
-    }
-
-    @Test
-    fun `should add original declaration to global functions`() {
-        testPackage.addOriginalDeclarations()
-
-        testGlobalFunction.originalFunction shouldBe OriginalPythonFunction(
-            qualifiedName = "testModule.testGlobalFunction",
-            parameters = listOf(
-                OriginalPythonParameter(
-                    name = "testParameter",
-                    assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+            testMethod.originalFunction shouldBe OriginalPythonFunction(
+                qualifiedName = "testModule.testClass.testMethod",
+                parameters = listOf(
+                    OriginalPythonParameter(
+                        name = "testMethodParameter",
+                        assignedBy = PythonParameterAssignment.POSITION_ONLY
+                    )
                 )
             )
-        )
-    }
+        }
 
-    @Test
-    fun `should add original declaration to class methods`() {
-        testPackage.addOriginalDeclarations()
+        @Test
+        fun `should add original declaration to parameters`() {
+            testPackage.addOriginalDeclarations()
 
-        testMethod.originalFunction shouldBe OriginalPythonFunction(
-            qualifiedName = "testModule.testClass.testMethod",
-            parameters = listOf(
-                OriginalPythonParameter(
-                    name = "testMethodParameter",
-                    assignedBy = PythonParameterAssignment.POSITION_ONLY
-                )
+            testRequiredParameter.originalParameter shouldBe OriginalPythonParameter(
+                name = "testRequiredParameter",
+                assignedBy = PythonParameterAssignment.POSITION_ONLY
             )
-        )
+        }
     }
 
-    @Test
-    fun `should add original declaration to parameters`() {
-        testPackage.addOriginalDeclarations()
+    @Nested
+    inner class UpdateParameterAssignment {
 
-        testParameter.originalParameter shouldBe OriginalPythonParameter(
-            name = "testParameter",
-            assignedBy = PythonParameterAssignment.POSITION_OR_NAME
-        )
+        @Test
+        fun `should mark implicit parameters`() {
+            testPackage.updateParameterAssignment()
+
+            testMethodParameter.assignedBy shouldBe PythonParameterAssignment.IMPLICIT
+        }
+
+        @Test
+        fun `should make required parameters assigned by position or name`() {
+            testPackage.updateParameterAssignment()
+
+            testRequiredParameter.assignedBy shouldBe PythonParameterAssignment.POSITION_OR_NAME
+        }
+
+        @Test
+        fun `should make optional parameters assigned by name only`() {
+            testPackage.updateParameterAssignment()
+
+            testOptionalParameter.assignedBy shouldBe PythonParameterAssignment.NAME_ONLY
+        }
+    }
+
+    @Nested
+    inner class ChangeModulePrefix {
+
+        @Test
+        fun `should change the prefix of all modules`() {
+            testPackage.changeModulePrefix("simpleml")
+
+            testModule.name shouldBe "simpleml"
+        }
     }
 }
