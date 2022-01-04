@@ -158,7 +158,10 @@ data class MutablePythonParameter(
     fun isOptional() = defaultValue != null
 }
 
-data class OriginalPythonParameter(val name: String, val assignedBy: PythonParameterAssignment)
+data class OriginalPythonParameter(
+    val name: String,
+    val assignedBy: PythonParameterAssignment = PythonParameterAssignment.POSITION_OR_NAME
+)
 
 data class MutablePythonResult(
     override var name: String,

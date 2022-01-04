@@ -10,6 +10,8 @@ import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
 import com.larsreimann.api_editor.mutable_model.MutablePythonModule
 import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
 import com.larsreimann.api_editor.mutable_model.MutablePythonResult
+import com.larsreimann.api_editor.mutable_model.OriginalPythonFunction
+import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -788,16 +790,29 @@ class PythonCodeGeneratorTest {
         // given
         val testFunction = MutablePythonFunction(
             name = "test-function",
-            parameters = mutableListOf(
+            parameters = listOf(
                 MutablePythonParameter(
-                    "first-param",
-                    null,
-                    PythonParameterAssignment.POSITION_OR_NAME,
+                    name = "first-param",
+                    originalParameter = OriginalPythonParameter(name = "first-param")
                 ),
                 MutablePythonParameter(
-                    "second-param",
-                    null,
-                    PythonParameterAssignment.NAME_ONLY,
+                    name = "second-param",
+                    originalParameter = OriginalPythonParameter(
+                        name = "second-param",
+                        assignedBy = PythonParameterAssignment.NAME_ONLY
+                    )
+                )
+            ),
+            originalFunction = OriginalPythonFunction(
+                qualifiedName = "test-module.test-function",
+                parameters = listOf(
+                    OriginalPythonParameter(
+                        name = "first-param"
+                    ),
+                    OriginalPythonParameter(
+                        name = "second-param",
+                        assignedBy = PythonParameterAssignment.NAME_ONLY
+                    )
                 )
             )
         )
@@ -809,8 +824,10 @@ class PythonCodeGeneratorTest {
         val expectedFormattedFunction: String =
             """
             |def test-function(first-param, second-param):
-            |    test-module.test-function(first-param, second-param=second-param)""".trimMargin()
-        Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
+            |    test-module.test-function(first-param, second-param=second-param)
+            """.trimMargin()
+
+        formattedFunction shouldBe expectedFormattedFunction
     }
 
     @Test
@@ -822,26 +839,17 @@ class PythonCodeGeneratorTest {
                 MutablePythonParameter(
                     "first-param",
                     null,
-                    PythonParameterAssignment.POSITION_ONLY,
-                    true,
-                    "typeInDocs",
-                    "description"
+                    PythonParameterAssignment.POSITION_ONLY
                 ),
                 MutablePythonParameter(
                     "second-param",
                     null,
-                    PythonParameterAssignment.POSITION_OR_NAME,
-                    true,
-                    "typeInDocs",
-                    "description"
+                    PythonParameterAssignment.POSITION_OR_NAME
                 ),
                 MutablePythonParameter(
                     "third-param",
                     null,
-                    PythonParameterAssignment.NAME_ONLY,
-                    true,
-                    "typeInDocs",
-                    "description"
+                    PythonParameterAssignment.NAME_ONLY
                 )
             )
         )
