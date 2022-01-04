@@ -10,7 +10,6 @@ import com.larsreimann.api_editor.model.SerializablePythonFunction;
 import com.larsreimann.api_editor.model.SerializablePythonModule;
 import com.larsreimann.api_editor.model.SerializablePythonParameter;
 import com.larsreimann.api_editor.model.SerializablePythonResult;
-import com.larsreimann.api_editor.transformation.Postprocessor;
 import com.larsreimann.api_editor.transformation.Preprocessor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -159,7 +158,6 @@ class ModuleAdapterContentBuilderTest {
 
         testModule = testModule.accept(new Preprocessor());
         assert testModule != null;
-        testModule = testModule.accept(Postprocessor.INSTANCE);
 
         // when
         ModuleAdapterContentBuilder moduleAdapterContentBuilder =
@@ -279,7 +277,6 @@ class ModuleAdapterContentBuilderTest {
 
         testModule = testModule.accept(new Preprocessor());
         assert testModule != null;
-        testModule = testModule.accept(Postprocessor.INSTANCE);
 
         // when
         ModuleAdapterContentBuilder moduleAdapterContentBuilder =
@@ -339,7 +336,6 @@ class ModuleAdapterContentBuilderTest {
 
         testModule = testModule.accept(new Preprocessor());
         assert testModule != null;
-        testModule = testModule.accept(Postprocessor.INSTANCE);
 
         // when
         ModuleAdapterContentBuilder moduleAdapterContentBuilder =
@@ -476,7 +472,6 @@ class ModuleAdapterContentBuilderTest {
 
         testModule = testModule.accept(new Preprocessor());
         assert testModule != null;
-        testModule = testModule.accept(Postprocessor.INSTANCE);
 
         // when
         ModuleAdapterContentBuilder moduleAdapterContentBuilder =
@@ -547,7 +542,6 @@ class ModuleAdapterContentBuilderTest {
 
         testModule = testModule.accept(new Preprocessor());
         assert testModule != null;
-        testModule = testModule.accept(Postprocessor.INSTANCE);
 
         // when
         ModuleAdapterContentBuilder moduleAdapterContentBuilder =

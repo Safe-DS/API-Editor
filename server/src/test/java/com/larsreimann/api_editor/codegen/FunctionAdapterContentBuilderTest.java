@@ -1,10 +1,9 @@
 package com.larsreimann.api_editor.codegen;
 
-import com.larsreimann.api_editor.model.SerializablePythonFunction;
-import com.larsreimann.api_editor.model.SerializablePythonParameter;
 import com.larsreimann.api_editor.model.PythonParameterAssignment;
 import com.larsreimann.api_editor.model.RenameAnnotation;
-import com.larsreimann.api_editor.transformation.Postprocessor;
+import com.larsreimann.api_editor.model.SerializablePythonFunction;
+import com.larsreimann.api_editor.model.SerializablePythonParameter;
 import com.larsreimann.api_editor.transformation.Preprocessor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -30,7 +29,6 @@ class FunctionAdapterContentBuilderTest {
 
         testFunction = testFunction.accept(new Preprocessor());
         assert testFunction != null;
-        testFunction = testFunction.accept(Postprocessor.INSTANCE);
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -72,7 +70,6 @@ class FunctionAdapterContentBuilderTest {
 
         testFunction = testFunction.accept(new Preprocessor());
         assert testFunction != null;
-        testFunction = testFunction.accept(Postprocessor.INSTANCE);
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -114,7 +111,6 @@ class FunctionAdapterContentBuilderTest {
 
         testFunction = testFunction.accept(new Preprocessor());
         assert testFunction != null;
-        testFunction = testFunction.accept(Postprocessor.INSTANCE);
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -156,7 +152,6 @@ class FunctionAdapterContentBuilderTest {
 
         testFunction = testFunction.accept(new Preprocessor());
         assert testFunction != null;
-        testFunction = testFunction.accept(Postprocessor.INSTANCE);
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -208,7 +203,6 @@ class FunctionAdapterContentBuilderTest {
 
         testFunction = testFunction.accept(new Preprocessor());
         assert testFunction != null;
-        testFunction = testFunction.accept(Postprocessor.INSTANCE);
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -270,7 +264,6 @@ class FunctionAdapterContentBuilderTest {
 
         testFunction = testFunction.accept(new Preprocessor());
         assert testFunction != null;
-        testFunction = testFunction.accept(Postprocessor.INSTANCE);
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -322,7 +315,6 @@ class FunctionAdapterContentBuilderTest {
 
         testFunction = testFunction.accept(new Preprocessor());
         assert testFunction != null;
-        testFunction = testFunction.accept(Postprocessor.INSTANCE);
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -374,7 +366,6 @@ class FunctionAdapterContentBuilderTest {
 
         testFunction = testFunction.accept(new Preprocessor());
         assert testFunction != null;
-        testFunction = testFunction.accept(Postprocessor.INSTANCE);
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -444,7 +435,6 @@ class FunctionAdapterContentBuilderTest {
 
         testFunction = testFunction.accept(new Preprocessor());
         assert testFunction != null;
-        testFunction = testFunction.accept(Postprocessor.INSTANCE);
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
