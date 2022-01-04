@@ -1,14 +1,16 @@
 package com.larsreimann.api_editor.codegen
 
-import com.larsreimann.api_editor.model.PythonParameterAssignment.NAME_ONLY
-import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITION_ONLY
-import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITION_OR_NAME
+import com.larsreimann.api_editor.model.PythonParameterAssignment
+import com.larsreimann.api_editor.mutable_model.MutablePythonAttribute
+import com.larsreimann.api_editor.mutable_model.MutablePythonClass
 import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
+import com.larsreimann.api_editor.mutable_model.MutablePythonModule
 import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
 import com.larsreimann.api_editor.mutable_model.MutablePythonResult
 import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.createSmlAnnotationUse
 import de.unibonn.simpleml.emf.createSmlArgument
+import de.unibonn.simpleml.emf.createSmlAttribute
 import de.unibonn.simpleml.emf.createSmlBoolean
 import de.unibonn.simpleml.emf.createSmlClass
 import de.unibonn.simpleml.emf.createSmlCompilationUnit
@@ -18,6 +20,7 @@ import de.unibonn.simpleml.emf.createSmlFunction
 import de.unibonn.simpleml.emf.createSmlInt
 import de.unibonn.simpleml.emf.createSmlNamedType
 import de.unibonn.simpleml.emf.createSmlNull
+import de.unibonn.simpleml.emf.createSmlPackage
 import de.unibonn.simpleml.emf.createSmlParameter
 import de.unibonn.simpleml.emf.createSmlResult
 import de.unibonn.simpleml.emf.createSmlString
@@ -26,9 +29,140 @@ import de.unibonn.simpleml.serializer.serializeToFormattedString
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractType
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
+import de.unibonn.simpleml.simpleML.SmlAttribute
+import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.simpleML.SmlCompilationUnit
 import de.unibonn.simpleml.simpleML.SmlFunction
+import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlResult
+
+/**
+ * Builds a string containing the formatted module content
+ *
+ * @return The string containing the formatted module content
+ */
+// TODO: only for testing, remove
+fun buildCompilationUnitToString(pythonModule: MutablePythonModule): String {
+    val compilationUnit = buildCompilationUnit(pythonModule)
+
+    // Required to serialize the compilation unit
+    createSmlDummyResource(
+        "compilationUnitStub",
+        SmlFileExtension.Stub,
+        compilationUnit
+    )
+
+    return when (val result = compilationUnit.serializeToFormattedString()) {
+        is SerializationResult.Success -> result.code + "\n"
+        is SerializationResult.Failure -> throw IllegalStateException(result.message)
+    }
+}
+
+fun buildCompilationUnit(pythonModule: MutablePythonModule): SmlCompilationUnit {
+    return createSmlCompilationUnit(listOf(buildPackage(pythonModule)))
+}
+
+fun buildPackage(pythonModule: MutablePythonModule): SmlPackage {
+    val publicClasses = pythonModule.classes
+        .filter { it.isPublic }
+        .map { buildClass(it) }
+
+    val publicFunctions = pythonModule.functions
+        .filter { it.isPublic }
+        .map { buildFunction(it) }
+
+    return createSmlPackage(
+        name = "simpleml.${pythonModule.name}",
+        members = publicClasses + publicFunctions
+    )
+}
+
+/**
+ * Builds a string containing the formatted class content
+ *
+ * @return The string containing the formatted class content
+ */
+// TODO: only for testing, remove
+fun buildClassToString(pythonClass: MutablePythonClass): String {
+    val `class` = buildClass(pythonClass)
+
+    // Required to serialize the class
+    createSmlDummyResource(
+        "classStub",
+        SmlFileExtension.Stub,
+        createSmlCompilationUnit(listOf(`class`))
+    )
+
+    return when (val result = `class`.serializeToFormattedString()) {
+        is SerializationResult.Success -> result.code
+        is SerializationResult.Failure -> throw IllegalStateException(result.message)
+    }
+}
+
+fun buildClass(pythonClass: MutablePythonClass): SmlClass {
+    val stubName = pythonClass.name.snakeCaseToUpperCamelCase()
+
+    return createSmlClass(
+        name = stubName,
+        annotations = buildList {
+            if (pythonClass.description.isNotBlank()) {
+                add(createSmlDescriptionAnnotationUse(pythonClass.description))
+            }
+            if (pythonClass.name != stubName) {
+                add(createSmlPythonNameAnnotationUse(pythonClass.name))
+            }
+        },
+        parameters = buildConstructor(pythonClass),
+        members = buildAttributes(pythonClass) + buildFunctions(pythonClass)
+    )
+}
+
+private fun buildConstructor(pythonClass: MutablePythonClass): List<SmlParameter> {
+    return pythonClass.constructorOrNull()
+        ?.parameters
+        ?.mapNotNull { buildParameter(it) }
+        .orEmpty()
+}
+
+private fun buildAttributes(pythonClass: MutablePythonClass): List<SmlAttribute> {
+    return pythonClass.attributes.map { buildAttribute(it) }
+}
+
+fun buildAttribute(pythonAttribute: MutablePythonAttribute): SmlAttribute {
+    val stubName = pythonAttribute.name.snakeCaseToLowerCamelCase()
+
+    return createSmlAttribute(
+        name = stubName,
+        annotations = buildList {
+            if (pythonAttribute.description.isNotBlank()) {
+                add(createSmlDescriptionAnnotationUse(pythonAttribute.description))
+            }
+            if (pythonAttribute.name != stubName) {
+                add(createSmlPythonNameAnnotationUse(pythonAttribute.name))
+            }
+        },
+        type = buildType(pythonAttribute.typeInDocs)
+    )
+}
+
+private fun buildFunctions(pythonClass: MutablePythonClass): List<SmlFunction> {
+    return pythonClass.methodsExceptConstructor()
+        .filter { it.isPublic }
+        .map { buildFunction(it) }
+}
+
+fun String.snakeCaseToLowerCamelCase(): String {
+    return this.snakeCaseToCamelCase().replaceFirstChar { it.lowercase() }
+}
+
+fun String.snakeCaseToUpperCamelCase(): String {
+    return this.snakeCaseToCamelCase().replaceFirstChar { it.uppercase() }
+}
+
+private fun String.snakeCaseToCamelCase(): String {
+    return this.replace(Regex("_(.)")) { it.groupValues[1].uppercase() }
+}
 
 /**
  * Builds a string containing the formatted function content
@@ -88,7 +222,11 @@ fun createSmlPythonNameAnnotationUse(name: String): SmlAnnotationUse {
 }
 
 fun buildParameter(pythonParameter: MutablePythonParameter): SmlParameter? {
-    if (pythonParameter.assignedBy !in setOf(POSITION_ONLY, POSITION_OR_NAME, NAME_ONLY)) {
+    if (pythonParameter.assignedBy !in setOf(
+            PythonParameterAssignment.POSITION_ONLY,
+            PythonParameterAssignment.POSITION_OR_NAME,
+            PythonParameterAssignment.NAME_ONLY
+        )) {
         return null
     }
 

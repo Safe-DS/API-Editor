@@ -14,17 +14,8 @@ import java.util.function.Consumer
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
-class PackageFileBuilder(var pythonPackage: MutablePythonPackage) {
-    var workingDirectory: Path
-
-    /**
-     * Constructor for PackageFileBuilder
-     *
-     * @param pythonPackage The package whose files should be generated
-     */
-    init {
-        workingDirectory = Paths.get("api-editor_inferredAPI")
-    }
+class CodeGenerationPlan(var pythonPackage: MutablePythonPackage) {
+    var workingDirectory: Path = Paths.get("api-editor_inferredAPI")
 
     /**
      * Builds the module files based on the python package of the
@@ -74,8 +65,8 @@ class PackageFileBuilder(var pythonPackage: MutablePythonPackage) {
         val path = Files.createTempFile(workingDirectory.toString(), ".zip")
         ZipOutputStream(Files.newOutputStream(path)).use { zipOutputStream ->
             Files.walk(workingFolderPath)
-                .filter { currentPath: Path? -> !Files.isDirectory(currentPath) }
-                .forEach { currentPath: Path? ->
+                .filter { currentPath: Path -> !Files.isDirectory(currentPath) }
+                .forEach { currentPath: Path ->
                     val zipEntry = ZipEntry(workingFolderPath.relativize(currentPath).toString())
                     try {
                         zipOutputStream.putNextEntry(zipEntry)
@@ -112,8 +103,7 @@ class PackageFileBuilder(var pythonPackage: MutablePythonPackage) {
     }
 
     private fun buildAdapterContent(pythonModule: MutablePythonModule): String {
-        val moduleAdapterContentBuilder = ModuleAdapterContentBuilder(pythonModule)
-        return moduleAdapterContentBuilder.buildModuleContent()
+        return pythonModule.toPythonCode()
     }
 
     private fun buildStubContent(pythonModule: MutablePythonModule): String {
