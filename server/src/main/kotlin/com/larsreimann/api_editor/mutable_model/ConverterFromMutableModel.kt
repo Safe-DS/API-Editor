@@ -50,12 +50,11 @@ fun convertClass(pythonClass: MutablePythonClass): SerializablePythonClass {
 }
 
 fun convertEnum(pythonEnum: MutablePythonEnum): SerializablePythonEnum {
-    val result = SerializablePythonEnum(
+    return SerializablePythonEnum(
         name = pythonEnum.name,
         instances = pythonEnum.instances,
         annotations = pythonEnum.annotations
     )
-    return result
 }
 
 fun convertFunction(pythonFunction: MutablePythonFunction): SerializablePythonFunction {

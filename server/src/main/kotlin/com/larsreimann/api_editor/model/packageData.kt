@@ -8,7 +8,6 @@ sealed class SerializablePythonDeclaration {
     abstract val name: String
     abstract val annotations: MutableList<EditorAnnotation>
 
-    abstract fun accept(visitor: PackageDataVisitor)
     abstract fun accept(transformer: PackageDataTransformer): SerializablePythonDeclaration?
 
     abstract fun children(): Sequence<SerializablePythonDeclaration>
@@ -17,10 +16,6 @@ sealed class SerializablePythonDeclaration {
             yield(it)
             yieldAll(it.descendants())
         }
-    }
-
-    fun hasAnnotationOfType(type: String): Boolean {
-        return annotations.any { it.type == type }
     }
 
     fun getAnnotationsOfType(type: String): List<EditorAnnotation> {
@@ -36,16 +31,6 @@ data class SerializablePythonPackage(
     val modules: MutableList<SerializablePythonModule>,
     override val annotations: MutableList<EditorAnnotation>
 ) : SerializablePythonDeclaration() {
-
-    override fun accept(visitor: PackageDataVisitor) {
-        val shouldTraverseChildren = visitor.enterPythonPackage(this)
-
-        if (shouldTraverseChildren) {
-            modules.forEach { it.accept(visitor) }
-        }
-
-        visitor.leavePythonPackage(this)
-    }
 
     override fun accept(transformer: PackageDataTransformer): SerializablePythonPackage? {
         val newPackageOnEnter = transformer.createNewPackageOnEnter(this) ?: return null
@@ -79,18 +64,6 @@ data class SerializablePythonModule(
 
     @Transient
     val enums = mutableListOf<SerializablePythonEnum>()
-
-    override fun accept(visitor: PackageDataVisitor) {
-        val shouldTraverseChildren = visitor.enterPythonModule(this)
-
-        if (shouldTraverseChildren) {
-            classes.forEach { it.accept(visitor) }
-            enums.forEach { it.accept(visitor) }
-            functions.forEach { it.accept(visitor) }
-        }
-
-        visitor.leavePythonModule(this)
-    }
 
     override fun accept(transformer: PackageDataTransformer): SerializablePythonModule? {
         val newModuleOnEnter = transformer.createNewModuleOnEnter(this) ?: return null
@@ -194,17 +167,6 @@ data class SerializablePythonClass(
         return methods.firstOrNull { it.name == "__init__" }
     }
 
-    override fun accept(visitor: PackageDataVisitor) {
-        val shouldTraverseChildren = visitor.enterPythonClass(this)
-
-        if (shouldTraverseChildren) {
-            attributes.forEach { it.accept(visitor) }
-            methods.forEach { it.accept(visitor) }
-        }
-
-        visitor.leavePythonClass(this)
-    }
-
     override fun accept(transformer: PackageDataTransformer): SerializablePythonClass? {
         val newClassOnEnter = transformer.createNewClassOnEnter(this) ?: return null
 
@@ -278,11 +240,6 @@ data class SerializablePythonAttribute(
     @Transient
     var boundary: Boundary? = null
 
-    override fun accept(visitor: PackageDataVisitor) {
-        visitor.enterPythonAttribute(this)
-        visitor.leavePythonAttribute(this)
-    }
-
     override fun accept(transformer: PackageDataTransformer): SerializablePythonAttribute? {
         return transformer.createNewAttribute(this)
     }
@@ -342,11 +299,6 @@ data class SerializablePythonEnum(
     override val annotations: MutableList<EditorAnnotation>
 ) : SerializablePythonDeclaration() {
 
-    override fun accept(visitor: PackageDataVisitor) {
-        visitor.enterPythonEnum(this)
-        visitor.leavePythonEnum(this)
-    }
-
     override fun accept(transformer: PackageDataTransformer): SerializablePythonEnum? {
         return transformer.createNewEnum(this)
     }
@@ -382,17 +334,6 @@ data class SerializablePythonFunction(
     var isPure = false
 
     fun isConstructor() = name == "__init__"
-
-    override fun accept(visitor: PackageDataVisitor) {
-        val shouldTraverseChildren = visitor.enterPythonFunction(this)
-
-        if (shouldTraverseChildren) {
-            parameters.forEach { it.accept(visitor) }
-            results.forEach { it.accept(visitor) }
-        }
-
-        visitor.leavePythonFunction(this)
-    }
 
     override fun accept(transformer: PackageDataTransformer): SerializablePythonFunction? {
         val newFunctionOnEnter = transformer.createNewFunctionOnEnter(this) ?: return null
@@ -478,11 +419,6 @@ data class SerializablePythonParameter(
 
     fun isOptional() = defaultValue != null
 
-    override fun accept(visitor: PackageDataVisitor) {
-        visitor.enterPythonParameter(this)
-        visitor.leavePythonParameter(this)
-    }
-
     override fun accept(transformer: PackageDataTransformer): SerializablePythonParameter? {
         return transformer.createNewParameter(this)
     }
@@ -541,11 +477,6 @@ data class SerializablePythonResult(
 
     @Transient
     var boundary: Boundary? = null
-
-    override fun accept(visitor: PackageDataVisitor) {
-        visitor.enterPythonResult(this)
-        visitor.leavePythonResult(this)
-    }
 
     override fun accept(transformer: PackageDataTransformer): SerializablePythonResult? {
         return transformer.createNewResult(this)
