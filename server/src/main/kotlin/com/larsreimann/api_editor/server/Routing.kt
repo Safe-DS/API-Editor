@@ -2,7 +2,7 @@ package com.larsreimann.api_editor.server
 
 import com.larsreimann.api_editor.codegen.CodeGenerationPlan
 import com.larsreimann.api_editor.model.SerializablePythonPackage
-import com.larsreimann.api_editor.transformation.processPackage
+import com.larsreimann.api_editor.transformation.transform
 import com.larsreimann.api_editor.validation.AnnotationValidator
 import io.ktor.application.Application
 import io.ktor.application.call
@@ -107,7 +107,7 @@ fun doInfer(originalPythonPackage: SerializablePythonPackage): DoInferResult {
     }
 
     // Process package
-    val modifiedPythonPackage = processPackage(originalPythonPackage)
+    val modifiedPythonPackage = originalPythonPackage.transform()
 
     // Build files
     val path = CodeGenerationPlan(modifiedPythonPackage).buildModuleFiles()

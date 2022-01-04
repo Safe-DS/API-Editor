@@ -8,9 +8,7 @@ import com.larsreimann.api_editor.model.PythonEnumInstance
 import com.larsreimann.api_editor.model.PythonFromImport
 import com.larsreimann.api_editor.model.PythonImport
 import com.larsreimann.api_editor.model.PythonParameterAssignment
-import com.larsreimann.api_editor.model.SerializablePythonClass
 import com.larsreimann.api_editor.model.SerializablePythonFunction
-import com.larsreimann.api_editor.model.SerializablePythonParameter
 
 sealed class MutablePythonAstNode : TreeNode()
 
@@ -78,7 +76,7 @@ class MutablePythonClass(
     var description: String = "",
     var fullDocstring: String = "",
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
-    var originalDeclaration: SerializablePythonClass? = null
+    var originalClass: OriginalPythonClass? = null
 ) : MutablePythonDeclaration() {
 
     val attributes = ContainmentList(attributes)
@@ -98,6 +96,8 @@ class MutablePythonClass(
     }
 }
 
+data class OriginalPythonClass(val qualifiedName: String)
+
 data class MutablePythonEnum(
     override var name: String,
     val instances: MutableList<PythonEnumInstance> = mutableListOf(),
@@ -115,7 +115,7 @@ class MutablePythonFunction(
     var isPure: Boolean = false,
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
     val calledAfter: MutableList<SerializablePythonFunction> = mutableListOf(),
-    var originalDeclaration: SerializablePythonFunction? = null
+    var originalFunction: OriginalPythonFunction? = null
 ) : MutablePythonDeclaration() {
 
     val parameters = ContainmentList(parameters)
@@ -128,6 +128,8 @@ class MutablePythonFunction(
 
     fun isConstructor() = name == "__init__"
 }
+
+data class OriginalPythonFunction(val qualifiedName: String, val parameters: List<OriginalPythonParameter>)
 
 data class MutablePythonAttribute(
     override var name: String,
@@ -148,13 +150,15 @@ data class MutablePythonParameter(
     var description: String = "",
     var boundary: Boundary? = null,
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
-    var originalDeclaration: SerializablePythonParameter? = null
+    var originalParameter: OriginalPythonParameter? = null
 ) : MutablePythonDeclaration() {
 
     fun isRequired() = defaultValue == null
 
     fun isOptional() = defaultValue != null
 }
+
+data class OriginalPythonParameter(val name: String, val assignedBy: PythonParameterAssignment)
 
 data class MutablePythonResult(
     override var name: String,
@@ -164,11 +168,3 @@ data class MutablePythonResult(
     var boundary: Boundary? = null,
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
 ) : MutablePythonDeclaration()
-
-private sealed class MutablePythonStatement : MutablePythonAstNode() // TODO
-
-private class MutablePythonExpressionStatement : MutablePythonStatement() // TODO
-
-private sealed class MutablePythonExpression : MutablePythonAstNode() // TODO
-
-private class MutablePythonCall : MutablePythonStatement() // TODO

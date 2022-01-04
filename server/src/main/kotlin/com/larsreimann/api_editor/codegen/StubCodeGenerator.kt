@@ -70,7 +70,7 @@ fun buildPackage(pythonModule: MutablePythonModule): SmlPackage {
 
     val publicFunctions = pythonModule.functions
         .filter { it.isPublic }
-        .map { buildFunction(it) }
+        .map { it.toSimpleMLStub() }
 
     return createSmlPackage(
         name = "simpleml.${pythonModule.name}",
@@ -149,7 +149,7 @@ fun buildAttribute(pythonAttribute: MutablePythonAttribute): SmlAttribute {
 private fun buildFunctions(pythonClass: MutablePythonClass): List<SmlFunction> {
     return pythonClass.methodsExceptConstructor()
         .filter { it.isPublic }
-        .map { buildFunction(it) }
+        .map { it.toSimpleMLStub() }
 }
 
 fun String.snakeCaseToLowerCamelCase(): String {
@@ -171,7 +171,7 @@ private fun String.snakeCaseToCamelCase(): String {
  */
 // TODO: only for testing, remove
 fun buildFunctionToString(pythonFunction: MutablePythonFunction): String {
-    val function = buildFunction(pythonFunction)
+    val function = pythonFunction.toSimpleMLStub()
 
     // Required to serialize the function
     createSmlDummyResource(
@@ -186,24 +186,24 @@ fun buildFunctionToString(pythonFunction: MutablePythonFunction): String {
     }
 }
 
-fun buildFunction(pythonFunction: MutablePythonFunction): SmlFunction {
-    val stubName = pythonFunction.name.snakeCaseToLowerCamelCase()
+fun MutablePythonFunction.toSimpleMLStub(): SmlFunction {
+    val stubName = name.snakeCaseToLowerCamelCase()
 
     return createSmlFunction(
         name = stubName,
         annotations = buildList {
-            if (pythonFunction.description.isNotBlank()) {
-                add(createSmlDescriptionAnnotationUse(pythonFunction.description))
+            if (description.isNotBlank()) {
+                add(createSmlDescriptionAnnotationUse(description))
             }
-            if (pythonFunction.isPure) {
+            if (isPure) {
                 add(createSmlAnnotationUse("Pure"))
             }
-            if (pythonFunction.name != stubName) {
-                add(createSmlPythonNameAnnotationUse(pythonFunction.name))
+            if (name != stubName) {
+                add(createSmlPythonNameAnnotationUse(name))
             }
         },
-        parameters = pythonFunction.parameters.mapNotNull { buildParameter(it) },
-        results = pythonFunction.results.map { buildResult(it) }
+        parameters = parameters.mapNotNull { buildParameter(it) },
+        results = results.map { buildResult(it) }
     )
 }
 

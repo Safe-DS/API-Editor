@@ -793,17 +793,11 @@ class PythonCodeGeneratorTest {
                     "first-param",
                     null,
                     PythonParameterAssignment.POSITION_OR_NAME,
-                    true,
-                    "typeInDocs",
-                    "description"
                 ),
                 MutablePythonParameter(
                     "second-param",
                     null,
                     PythonParameterAssignment.NAME_ONLY,
-                    true,
-                    "typeInDocs",
-                    "description"
                 )
             )
         )

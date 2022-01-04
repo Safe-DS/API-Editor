@@ -82,9 +82,6 @@ data class SerializablePythonClass(
 ) : SerializablePythonDeclaration() {
 
     @Transient
-    var originalDeclaration: SerializablePythonClass? = null
-
-    @Transient
     var attributes = mutableListOf<SerializablePythonAttribute>()
 
     fun methodsExceptConstructor(): List<SerializablePythonFunction> {
@@ -167,9 +164,6 @@ data class SerializablePythonFunction(
 ) : SerializablePythonDeclaration() {
 
     @Transient
-    var originalDeclaration: SerializablePythonFunction? = null
-
-    @Transient
     val calledAfter = mutableListOf<SerializablePythonFunction>()
 
     @Transient
@@ -194,9 +188,6 @@ data class SerializablePythonParameter(
     val description: String,
     override val annotations: MutableList<EditorAnnotation>
 ) : SerializablePythonDeclaration() {
-
-    @Transient
-    var originalDeclaration: SerializablePythonParameter? = null
 
     @Transient
     var boundary: Boundary? = null

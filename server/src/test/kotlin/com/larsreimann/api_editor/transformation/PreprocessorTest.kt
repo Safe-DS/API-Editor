@@ -1,104 +1,109 @@
 package com.larsreimann.api_editor.transformation
 
-import com.larsreimann.api_editor.model.UnusedAnnotation
-import com.larsreimann.api_editor.util.createPythonClass
-import com.larsreimann.api_editor.util.createPythonFunction
-import com.larsreimann.api_editor.util.createPythonModule
-import com.larsreimann.api_editor.util.createPythonPackage
+import com.larsreimann.api_editor.model.PythonParameterAssignment
+import com.larsreimann.api_editor.mutable_model.MutablePythonClass
+import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
+import com.larsreimann.api_editor.mutable_model.MutablePythonModule
+import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
+import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
+import com.larsreimann.api_editor.mutable_model.OriginalPythonClass
+import com.larsreimann.api_editor.mutable_model.OriginalPythonFunction
+import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
 import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
+// TODO: test original declaration
+// TODO: test updateParameterAssignment
+// TODO: test rename all modules to simpleml.something
+
 class PreprocessorTest {
-    @Test
-    fun `should add original declaration to function`() {
-        // given
-        val testFunction = createPythonFunction(
-            name = "testFunction",
-            qualifiedName = "testPackage/testFunction",
+    private lateinit var testParameter: MutablePythonParameter
+    private lateinit var testGlobalFunction: MutablePythonFunction
+    private lateinit var testMethod: MutablePythonFunction
+    private lateinit var testClass: MutablePythonClass
+    private lateinit var testPackage: MutablePythonPackage
+
+    @BeforeEach
+    fun reset() {
+        testParameter = MutablePythonParameter(
+            name = "testParameter"
         )
-
-        val testPackage = createPythonPackage(
-            "testPackage",
-            modules = listOf(
-                createPythonModule(
-                    "testModule",
-                    functions = listOf(testFunction)
-                )
-            )
+        testGlobalFunction = MutablePythonFunction(
+            name = "testGlobalFunction",
+            parameters = listOf(testParameter)
         )
-
-        // when
-        val originalFunction = testPackage.modules[0].functions[0].copy()
-
-        // then
-        testPackage.modules[0]
-            .functions[0]
-            .originalDeclaration shouldBe
-            originalFunction
-    }
-
-    @Test
-    fun `should add original declaration to class`() {
-        // given
-        val testClass = createPythonClass(
-            name = "testClass",
-            qualifiedName = "testPackage/testClass",
-        ).apply { annotations += UnusedAnnotation }
-
-        val testPackage = createPythonPackage(
-            "testPackage",
-            modules = listOf(
-                createPythonModule(
-                    "testModule",
-                    classes = listOf(testClass)
-                )
-            )
-        )
-
-        // when
-        val originalClass = testPackage.modules[0].classes[0].copy()
-
-        // then
-        testPackage.modules[0]
-            .classes[0]
-            .originalDeclaration shouldBe originalClass
-    }
-
-    @Test
-    fun `should add original declaration to class method`() {
-        // given
-        val testMethod = createPythonFunction(
+        testMethod = MutablePythonFunction(
             name = "testMethod",
-            qualifiedName = "testPackage/testClass/testMethod",
+            parameters = listOf(
+                MutablePythonParameter(
+                    name = "testMethodParameter",
+                    assignedBy = PythonParameterAssignment.POSITION_ONLY
+                )
+            )
         )
-
-        val testClass = createPythonClass(
+        testClass = MutablePythonClass(
             name = "testClass",
-            qualifiedName = "testPackage/testClass",
             methods = listOf(testMethod)
         )
-
-        val testPackage = createPythonPackage(
-            "testPackage",
+        testPackage = MutablePythonPackage(
+            distribution = "testPackage",
+            name = "testPackage",
+            version = "1.0.0",
             modules = listOf(
-                createPythonModule(
+                MutablePythonModule(
                     "testModule",
-                    classes = listOf(testClass)
+                    classes = listOf(testClass),
+                    functions = listOf(testGlobalFunction)
                 )
             )
         )
+    }
 
-        // when
-        val originalMethod = testPackage
-            .modules[0]
-            .classes[0]
-            .methods[0]
-            .copy()
+    @Test
+    fun `should add original declaration to classes`() {
+        testPackage.addOriginalDeclarations()
 
-        // then
-        testPackage.modules[0]
-            .classes[0]
-            .methods[0]
-            .originalDeclaration shouldBe originalMethod
+        testClass.originalClass shouldBe OriginalPythonClass("testModule.testClass")
+    }
+
+    @Test
+    fun `should add original declaration to global functions`() {
+        testPackage.addOriginalDeclarations()
+
+        testGlobalFunction.originalFunction shouldBe OriginalPythonFunction(
+            qualifiedName = "testModule.testGlobalFunction",
+            parameters = listOf(
+                OriginalPythonParameter(
+                    name = "testParameter",
+                    assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+                )
+            )
+        )
+    }
+
+    @Test
+    fun `should add original declaration to class methods`() {
+        testPackage.addOriginalDeclarations()
+
+        testMethod.originalFunction shouldBe OriginalPythonFunction(
+            qualifiedName = "testModule.testClass.testMethod",
+            parameters = listOf(
+                OriginalPythonParameter(
+                    name = "testMethodParameter",
+                    assignedBy = PythonParameterAssignment.POSITION_ONLY
+                )
+            )
+        )
+    }
+
+    @Test
+    fun `should add original declaration to parameters`() {
+        testPackage.addOriginalDeclarations()
+
+        testParameter.originalParameter shouldBe OriginalPythonParameter(
+            name = "testParameter",
+            assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+        )
     }
 }

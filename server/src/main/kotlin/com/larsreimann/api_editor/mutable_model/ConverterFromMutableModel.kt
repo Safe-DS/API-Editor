@@ -44,7 +44,6 @@ fun convertClass(pythonClass: MutablePythonClass): SerializablePythonClass {
         fullDocstring = pythonClass.fullDocstring,
         annotations = pythonClass.annotations
     )
-    result.originalDeclaration = pythonClass.originalDeclaration
     result.attributes += pythonClass.attributes.map { convertAttribute(it) }
     return result
 }
@@ -69,7 +68,6 @@ fun convertFunction(pythonFunction: MutablePythonFunction): SerializablePythonFu
         fullDocstring = pythonFunction.fullDocstring,
         annotations = pythonFunction.annotations,
     )
-    result.originalDeclaration = pythonFunction.originalDeclaration
     result.calledAfter += pythonFunction.calledAfter
     result.isPure = pythonFunction.isPure
     return result
@@ -100,7 +98,6 @@ fun convertParameter(pythonParameter: MutablePythonParameter): SerializablePytho
         description = pythonParameter.description,
         annotations = pythonParameter.annotations
     )
-    result.originalDeclaration = pythonParameter.originalDeclaration
     result.boundary = pythonParameter.boundary
     return result
 }

@@ -3,18 +3,27 @@ package com.larsreimann.api_editor.codegen
 import com.larsreimann.api_editor.model.PythonFromImport
 import com.larsreimann.api_editor.model.PythonImport
 import com.larsreimann.api_editor.model.PythonParameterAssignment
+import com.larsreimann.api_editor.mutable_model.MutablePythonAttribute
 import com.larsreimann.api_editor.mutable_model.MutablePythonClass
 import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
 import com.larsreimann.api_editor.mutable_model.MutablePythonModule
 import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
 import com.larsreimann.api_editor.mutable_model.MutablePythonResult
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
+import de.unibonn.simpleml.stdlib.uniqueAnnotationUseOrNull
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import org.eclipse.xtext.naming.QualifiedName
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class StubCodeGeneratorTest {
+// TODO: test creation of Description annotations
+// TODO: test creation of PythonName annotations
+// TODO: test conversion of values
+// TODO: test conversion of types
+
+class StubCodeGeneratorTest {
 
     @BeforeEach
     fun initSimpleML() {
@@ -26,17 +35,24 @@ internal class StubCodeGeneratorTest {
         // given
         val testClass = MutablePythonClass(
             name = "TestClass",
+            attributes = mutableListOf(
+                MutablePythonAttribute(
+                    "onlyParam",
+                    "'defaultValue'",
+                )
+            ),
             methods = mutableListOf(
                 MutablePythonFunction(
                     name = "testClassFunction",
                     parameters = mutableListOf(
                         MutablePythonParameter(
+                            name = "self",
+                            assignedBy = PythonParameterAssignment.IMPLICIT,
+                        ),
+                        MutablePythonParameter(
                             "onlyParam",
                             "'defaultValue'",
                             PythonParameterAssignment.POSITION_OR_NAME,
-                            true,
-                            "typeInDocs",
-                            "description",
                         )
                     )
                 ),
@@ -44,12 +60,14 @@ internal class StubCodeGeneratorTest {
                     name = "__init__",
                     parameters = mutableListOf(
                         MutablePythonParameter(
+                            "self",
+                            "'defaultValue'",
+                            PythonParameterAssignment.IMPLICIT,
+                        ),
+                        MutablePythonParameter(
                             "onlyParam",
                             "'defaultValue'",
                             PythonParameterAssignment.POSITION_OR_NAME,
-                            true,
-                            "typeInDocs",
-                            "description"
                         )
                     )
                 )
@@ -68,7 +86,6 @@ internal class StubCodeGeneratorTest {
                             PythonParameterAssignment.NAME_ONLY,
                             true,
                             "str",
-                            "Lorem ipsum"
                         ),
                         MutablePythonParameter(
                             "param2",
@@ -76,7 +93,6 @@ internal class StubCodeGeneratorTest {
                             PythonParameterAssignment.NAME_ONLY,
                             true,
                             "str",
-                            "Lorem ipsum"
                         ),
                         MutablePythonParameter(
                             "param3",
@@ -84,7 +100,6 @@ internal class StubCodeGeneratorTest {
                             PythonParameterAssignment.NAME_ONLY,
                             true,
                             "str",
-                            "Lorem ipsum"
                         )
                     ),
                     results = mutableListOf(
@@ -92,7 +107,6 @@ internal class StubCodeGeneratorTest {
                             "testResult",
                             "str",
                             "str",
-                            "Lorem ipsum"
                         )
                     )
                 ),
@@ -105,7 +119,6 @@ internal class StubCodeGeneratorTest {
                             PythonParameterAssignment.NAME_ONLY,
                             true,
                             "int",
-                            "Lorem ipsum"
                         )
                     ),
                     results = mutableListOf(
@@ -113,7 +126,6 @@ internal class StubCodeGeneratorTest {
                             "testResult",
                             "str",
                             "str",
-                            "Lorem ipsum"
                         )
                     )
                 )
@@ -127,20 +139,15 @@ internal class StubCodeGeneratorTest {
         val expectedModuleContent: String = """
             |package simpleml.testModule
             |
-            |@Description("Lorem ipsum")
-            |class TestClass(@Description("description") onlyParam: Any? or "defaultValue") {
-            |    @Description("description")
+            |class TestClass(onlyParam: Any? or "defaultValue") {
             |    attr onlyParam: Any?
             |
-            |    @Description("description")
-            |    fun testClassFunction(@Description("description") onlyParam: Any? or "defaultValue")
+            |    fun testClassFunction(onlyParam: Any? or "defaultValue")
             |}
             |
-            |@Description("Lorem ipsum")
-            |fun functionModule1(@Description("Lorem ipsum") param1: String, @Description("Lorem ipsum") param2: String, @Description("Lorem ipsum") param3: String) -> @Description("Lorem ipsum") testResult: String
+            |fun functionModule1(param1: String, param2: String, param3: String) -> testResult: String
             |
-            |@Description("Lorem ipsum")
-            |fun testFunction(@Description("Lorem ipsum") testParameter: Int or 42) -> @Description("Lorem ipsum") testResult: String
+            |fun testFunction(testParameter: Int or 42) -> testResult: String
             |""".trimMargin()
         Assertions.assertEquals(expectedModuleContent, moduleContent)
     }
@@ -219,10 +226,8 @@ internal class StubCodeGeneratorTest {
         val expectedModuleContent: String = """
             |package simpleml.testModule
             |
-            |@Description("Lorem ipsum")
             |fun functionModule1(@Description("Lorem ipsum") param1: String, @Description("Lorem ipsum") param2: String, @Description("Lorem ipsum") param3: String) -> @Description("Lorem ipsum") testResult: String
             |
-            |@Description("Lorem ipsum")
             |fun testFunction(@Description("Lorem ipsum") testParameter: Int or 42) -> @Description("Lorem ipsum") testResult: String
             |""".trimMargin()
         Assertions.assertEquals(expectedModuleContent, moduleContent)
@@ -274,11 +279,7 @@ internal class StubCodeGeneratorTest {
         val expectedModuleContent: String = """
             |package simpleml.testModule
             |
-            |@Description("Lorem ipsum")
-            |class TestClass(@Description("description") onlyParam: Any? or "defaultValue") {
-            |    @Description("description")
-            |    attr onlyParam: Any?
-            |}
+            |class TestClass(@Description("description") onlyParam: Any? or "defaultValue")
             |""".trimMargin()
         Assertions.assertEquals(expectedModuleContent, moduleContent)
     }
@@ -308,7 +309,6 @@ internal class StubCodeGeneratorTest {
 
         // then
         val expectedFormattedClass = """
-            |@Description("Lorem ipsum")
             |class TestClass()
         """.trimMargin()
         Assertions.assertEquals(expectedFormattedClass, formattedClass)
@@ -341,9 +341,7 @@ internal class StubCodeGeneratorTest {
 
         // then
         val expectedFormattedClass: String = """
-            |@Description("Lorem ipsum")
             |class TestClass() {
-            |    @Description("description")
             |    fun testClassFunction(@Description("description") onlyParam: String or "defaultValue")
             |}""".trimMargin()
 
@@ -391,12 +389,7 @@ internal class StubCodeGeneratorTest {
         // then
         val expectedFormattedClass: String =
             """
-            |@Description("Lorem ipsum")
             |class TestClass(@Description("description") onlyParam: Any?) {
-            |    @Description("description")
-            |    attr onlyParam: Any?
-            |
-            |    @Description("description")
             |    fun testClassFunction1(@Description("description") onlyParam: Any?)
             |}""".trimMargin()
 
@@ -414,7 +407,6 @@ internal class StubCodeGeneratorTest {
         // then
         val expectedFormattedFunction: String =
             """
-            |@Description("Lorem ipsum")
             |fun testFunction()""".trimMargin()
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
     }
@@ -442,7 +434,6 @@ internal class StubCodeGeneratorTest {
         // then
         val expectedFormattedFunction: String =
             """
-            |@Description("Lorem ipsum")
             |fun testFunction(@Description("description") onlyParam: Int or 13)""".trimMargin()
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
     }
@@ -470,7 +461,6 @@ internal class StubCodeGeneratorTest {
         // then
         val expectedFormattedFunction: String =
             """
-            |@Description("Lorem ipsum")
             |fun testFunction(@Description("description") onlyParam: Any? or "Test")""".trimMargin()
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
     }
@@ -513,7 +503,6 @@ internal class StubCodeGeneratorTest {
 
         // then
         val expectedFormattedFunction: String = """
-            |@Description("Lorem ipsum")
             |fun testFunction(@Description("description") firstParam: Any?, @Description("description") secondParam: Any?, @Description("description") thirdParam: Any?)""".trimMargin()
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
     }
@@ -548,7 +537,6 @@ internal class StubCodeGeneratorTest {
 
         // then
         val expectedFormattedFunction: String = """
-            |@Description("Lorem ipsum")
             |fun testFunction(@Description("description") onlyParam: Float or 13.1) -> @Description("description") firstResult: Float""".trimMargin()
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
     }
@@ -589,7 +577,6 @@ internal class StubCodeGeneratorTest {
 
         // then
         val expectedFormattedFunction: String = """
-            |@Description("Lorem ipsum")
             |fun testFunction(@Description("description") onlyParam: Boolean or true) -> (@Description("description") firstResult: Float, @Description("description") secondResult: Float)""".trimMargin()
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
     }
@@ -616,26 +603,21 @@ internal class StubCodeGeneratorTest {
 
         // then
         val expectedFormattedFunction: String = """
-            |@Description("Lorem ipsum")
             |fun testFunction(@Description("description") onlyParam: Any? or "###invalid###'13'x###")""".trimMargin()
         Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
     }
 
     @Test
-    fun shouldMarkPureFunctionsWithAnnotation() {
-        // given
-        val testFunction = MutablePythonFunction("testFunction")
-        testFunction.isPure = true
+    fun `should mark pure functions with annotation`() {
+        val testFunction = MutablePythonFunction(
+            name = "testFunction",
+            isPure = true
+        )
 
-        // when
-        val formattedFunction = buildFunctionToString(testFunction)
-
-        // then
-        val expectedFormattedFunction: String = """
-            |@Pure
-            |fun testFunction()""".trimMargin()
-
-        Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
+        testFunction
+            .toSimpleMLStub()
+            .uniqueAnnotationUseOrNull(QualifiedName.create("Pure"))
+            .shouldNotBeNull()
     }
 
     @Test
@@ -650,10 +632,7 @@ internal class StubCodeGeneratorTest {
                         MutablePythonParameter(
                             "test_parameter",
                             null,
-                            PythonParameterAssignment.POSITION_OR_NAME,
-                            true,
-                            "",
-                            "",
+                            PythonParameterAssignment.POSITION_OR_NAME
                         )
                     )
                 ),
@@ -663,10 +642,7 @@ internal class StubCodeGeneratorTest {
                         MutablePythonParameter(
                             "test_parameter",
                             null,
-                            PythonParameterAssignment.POSITION_OR_NAME,
-                            true,
-                            "",
-                            "",
+                            PythonParameterAssignment.POSITION_OR_NAME
                         )
                     )
                 ),
@@ -681,9 +657,6 @@ internal class StubCodeGeneratorTest {
             """
             |@PythonName("Test_Class")
             |class TestClass(@PythonName("test_parameter") testParameter: Any?) {
-            |    @PythonName("test_parameter")
-            |    attr testParameter: Any?
-            |
             |    @PythonName("test_function")
             |    fun testFunction(@PythonName("test_parameter") testParameter: Any?)
             |}""".trimMargin()

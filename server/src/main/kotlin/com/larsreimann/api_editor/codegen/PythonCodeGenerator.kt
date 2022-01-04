@@ -2,12 +2,10 @@ package com.larsreimann.api_editor.codegen
 
 import com.larsreimann.api_editor.model.ComparisonOperator
 import com.larsreimann.api_editor.model.PythonParameterAssignment
-import com.larsreimann.api_editor.model.SerializablePythonParameter
 import com.larsreimann.api_editor.mutable_model.MutablePythonClass
 import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
 import com.larsreimann.api_editor.mutable_model.MutablePythonModule
 import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
-import java.util.Objects
 
 /**
  * Builds a string containing the formatted module content
@@ -33,12 +31,12 @@ private fun buildNamespace(pythonModule: MutablePythonModule): String {
     val importedModules = HashSet<String>()
     pythonModule.functions.forEach { pythonFunction: MutablePythonFunction ->
         importedModules.add(
-            buildParentDeclarationName(pythonFunction.originalDeclaration!!.qualifiedName)
+            buildParentDeclarationName(pythonFunction.originalFunction!!.qualifiedName)
         )
     }
     pythonModule.classes.forEach { pythonClass: MutablePythonClass ->
         importedModules.add(
-            buildParentDeclarationName(pythonClass.originalDeclaration!!.qualifiedName)
+            buildParentDeclarationName(pythonClass.originalClass!!.qualifiedName)
         )
     }
     val imports: MutableList<String> = ArrayList()
@@ -106,12 +104,7 @@ fun MutablePythonClass.toPythonCode(): String {
 }
 
 private fun buildAllFunctions(pythonClass: MutablePythonClass): List<String> {
-    val formattedFunctions: MutableList<String> = ArrayList()
-    pythonClass.methods
-        .forEach { pythonFunction: MutablePythonFunction ->
-            formattedFunctions.add(pythonFunction.toPythonCode())
-        }
-    return formattedFunctions
+    return pythonClass.methods.map { it.toPythonCode() }
 }
 
 /**
@@ -139,12 +132,7 @@ private fun buildAttributeAssignments(pythonFunction: MutablePythonFunction): Li
     val attributeAssignments: MutableList<String> = ArrayList()
     for ((name, defaultValue, assignedBy) in pythonFunction.parameters) {
         if (assignedBy == PythonParameterAssignment.ATTRIBUTE) {
-            attributeAssignments.add(
-                "self."
-                    + name
-                    + " = "
-                    + defaultValue
-            )
+            attributeAssignments.add("self.$name = $defaultValue")
         }
     }
     return attributeAssignments
@@ -199,8 +187,7 @@ private fun buildParameters(pythonFunction: MutablePythonFunction): String {
         }
     }
     if (hasPositionOrNameParameters) {
-        formattedFunctionParameters =
-            (formattedFunctionParameters + java.lang.String.join(", ", positionOrNameParameters))
+        formattedFunctionParameters = (formattedFunctionParameters + positionOnlyParameters.joinToString())
     }
     if (hasNameOnlyParameters) {
         formattedFunctionParameters = if (hasPositionOnlyParameters || hasPositionOrNameParameters) {
@@ -226,13 +213,10 @@ private fun buildFormattedParameter(pythonParameter: MutablePythonParameter): St
 private fun buildFunctionBody(pythonFunction: MutablePythonFunction): String {
     var formattedBoundaries = buildBoundaryChecks(pythonFunction).joinToString("\n".repeat(1))
     if (formattedBoundaries.isNotBlank()) {
-        formattedBoundaries = """
-                $formattedBoundaries
-
-                """.trimIndent()
+        formattedBoundaries = "$formattedBoundaries\n"
     }
     return (formattedBoundaries
-        + Objects.requireNonNull(pythonFunction.originalDeclaration)!!.qualifiedName
+        + pythonFunction.originalFunction!!.qualifiedName
         + "("
         + buildParameterCall(pythonFunction)
         + ")")
@@ -242,7 +226,7 @@ private fun buildBoundaryChecks(pythonFunction: MutablePythonFunction): List<Str
     val formattedBoundaries: MutableList<String> = ArrayList()
     pythonFunction
         .parameters
-        .filter { (_, _, _, _, _, _, boundary): MutablePythonParameter -> boundary != null }
+        .filter { it.boundary != null }
         .forEach { (name, _, _, _, _, _, boundary) ->
             assert(boundary != null)
             if (boundary!!.isDiscrete) {
@@ -339,23 +323,23 @@ private fun buildBoundaryChecks(pythonFunction: MutablePythonFunction): List<Str
 private fun buildParameterCall(pythonFunction: MutablePythonFunction): String {
     val formattedParameters: MutableList<String?> = ArrayList()
     val originalNameToValueMap: MutableMap<String, String?> = HashMap()
-    pythonFunction.parameters.forEach { (name, defaultValue, assignedBy, _, _, _, _, _, originalDeclaration): MutablePythonParameter ->
+    pythonFunction.parameters.forEach {
         val value: String? =
-            if (assignedBy == PythonParameterAssignment.CONSTANT || assignedBy == PythonParameterAssignment.ATTRIBUTE) {
-                defaultValue
+            if (it.assignedBy == PythonParameterAssignment.CONSTANT || it.assignedBy == PythonParameterAssignment.ATTRIBUTE) {
+                it.defaultValue
             } else {
-                name
+                it.name
             }
-        originalNameToValueMap[originalDeclaration!!.name] = value
+        originalNameToValueMap[it.originalParameter!!.name] = value
     }
-    pythonFunction.originalDeclaration!!.parameters.stream()
-        .filter { (_, _, _, assignedBy): SerializablePythonParameter -> assignedBy != PythonParameterAssignment.IMPLICIT }
-        .forEach { (name, _, _, assignedBy): SerializablePythonParameter ->
-            if (assignedBy === PythonParameterAssignment.NAME_ONLY) {
-                formattedParameters.add(name + "=" + originalNameToValueMap[name])
+    pythonFunction.originalFunction!!.parameters
+        .filter { it.assignedBy != PythonParameterAssignment.IMPLICIT }
+        .forEach {
+            if (it.assignedBy === PythonParameterAssignment.NAME_ONLY) {
+                formattedParameters.add(it.name + "=" + originalNameToValueMap[it.name])
             } else {
-                formattedParameters.add(originalNameToValueMap[name])
+                formattedParameters.add(originalNameToValueMap[it.name])
             }
         }
-    return java.lang.String.join(", ", formattedParameters)
+    return formattedParameters.joinToString()
 }
