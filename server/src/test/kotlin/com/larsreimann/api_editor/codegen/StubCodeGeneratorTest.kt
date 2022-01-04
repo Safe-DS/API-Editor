@@ -1,16 +1,13 @@
 package com.larsreimann.api_editor.codegen
 
-import com.larsreimann.api_editor.model.AttributeAnnotation
-import com.larsreimann.api_editor.model.DefaultString
 import com.larsreimann.api_editor.model.PythonFromImport
 import com.larsreimann.api_editor.model.PythonImport
 import com.larsreimann.api_editor.model.PythonParameterAssignment
-import com.larsreimann.api_editor.model.SerializablePythonClass
-import com.larsreimann.api_editor.model.SerializablePythonFunction
-import com.larsreimann.api_editor.model.SerializablePythonModule
-import com.larsreimann.api_editor.model.SerializablePythonParameter
-import com.larsreimann.api_editor.model.SerializablePythonResult
-import com.larsreimann.api_editor.util.createPythonFunction
+import com.larsreimann.api_editor.mutable_model.MutablePythonClass
+import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
+import com.larsreimann.api_editor.mutable_model.MutablePythonModule
+import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
+import com.larsreimann.api_editor.mutable_model.MutablePythonResult
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Assertions
@@ -27,139 +24,100 @@ internal class StubCodeGeneratorTest {
     @Test
     fun buildModuleContentReturnsFormattedModuleContent() {
         // given
-        val testClass = SerializablePythonClass(
-            "TestClass",
-            "testModule.TestClass",
-            listOf("testDecorator"),
-            listOf("testSuperclass"),
-            mutableListOf(
-                SerializablePythonFunction(
-                    "testClassFunction",
-                    "testModule.TestClass.testClassFunction",
-                    listOf("decorators"),
-                    mutableListOf(
-                        SerializablePythonParameter(
+        val testClass = MutablePythonClass(
+            name = "TestClass",
+            methods = mutableListOf(
+                MutablePythonFunction(
+                    name = "testClassFunction",
+                    parameters = mutableListOf(
+                        MutablePythonParameter(
                             "onlyParam",
-                            "testModule.TestClass.testClassFunction.onlyParam",
                             "'defaultValue'",
                             PythonParameterAssignment.POSITION_OR_NAME,
                             true,
                             "typeInDocs",
                             "description",
-                            mutableListOf()
                         )
-                    ),
-                    mutableListOf(),
-                    true,
-                    "description",
-                    "fullDocstring",
-                    mutableListOf()
+                    )
                 ),
-                SerializablePythonFunction(
-                    "__init__",
-                    "testModule.TestClass.__init__",
-                    listOf("decorators"),
-                    mutableListOf(
-                        SerializablePythonParameter(
+                MutablePythonFunction(
+                    name = "__init__",
+                    parameters = mutableListOf(
+                        MutablePythonParameter(
                             "onlyParam",
-                            "testModule.TestClass.__init__.onlyParam",
                             "'defaultValue'",
                             PythonParameterAssignment.POSITION_OR_NAME,
                             true,
                             "typeInDocs",
-                            "description", mutableListOf()
+                            "description"
                         )
-                    ),
-                    mutableListOf(),
-                    true,
-                    "description",
-                    "fullDocstring", mutableListOf()
+                    )
                 )
-            ),
-            true,
-            "Lorem ipsum",
-            "Lorem ipsum", mutableListOf()
+            )
         )
-        val testModule = SerializablePythonModule(
-            "testModule", emptyList(), emptyList(),
-            mutableListOf(
-                testClass
-            ),
-            mutableListOf(
-                SerializablePythonFunction(
-                    "functionModule1",
-                    "test.module_1.functionModule1",
-                    listOf("testDecorator"),
-                    mutableListOf(
-                        SerializablePythonParameter(
+        val testModule = MutablePythonModule(
+            name = "testModule",
+            classes = mutableListOf(testClass),
+            functions = mutableListOf(
+                MutablePythonFunction(
+                    name = "functionModule1",
+                    parameters = mutableListOf(
+                        MutablePythonParameter(
                             "param1",
-                            "test.module_1.functionModule1.param1",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
                             true,
                             "str",
-                            "Lorem ipsum", mutableListOf()
+                            "Lorem ipsum"
                         ),
-                        SerializablePythonParameter(
+                        MutablePythonParameter(
                             "param2",
-                            "test.module_1.functionModule1.param2",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
                             true,
                             "str",
-                            "Lorem ipsum", mutableListOf()
+                            "Lorem ipsum"
                         ),
-                        SerializablePythonParameter(
+                        MutablePythonParameter(
                             "param3",
-                            "test.module_1.functionModule1.param3",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
                             true,
                             "str",
-                            "Lorem ipsum", mutableListOf()
+                            "Lorem ipsum"
                         )
                     ),
-                    mutableListOf(
-                        SerializablePythonResult(
+                    results = mutableListOf(
+                        MutablePythonResult(
                             "testResult",
                             "str",
                             "str",
-                            "Lorem ipsum", mutableListOf()
+                            "Lorem ipsum"
                         )
-                    ),
-                    true,
-                    "Lorem ipsum",
-                    "Lorem ipsum", mutableListOf()
+                    )
                 ),
-                SerializablePythonFunction(
-                    "testFunction",
-                    "testModule.testFunction",
-                    listOf("testDecorator"),
-                    mutableListOf(
-                        SerializablePythonParameter(
+                MutablePythonFunction(
+                    name = "testFunction",
+                    parameters = mutableListOf(
+                        MutablePythonParameter(
                             "testParameter",
-                            "testModule.testFunction.testParameter",
                             "42",
                             PythonParameterAssignment.NAME_ONLY,
                             true,
                             "int",
-                            "Lorem ipsum", mutableListOf()
+                            "Lorem ipsum"
                         )
                     ),
-                    mutableListOf(
-                        SerializablePythonResult(
+                    results = mutableListOf(
+                        MutablePythonResult(
                             "testResult",
                             "str",
                             "str",
-                            "Lorem ipsum", mutableListOf()
+                            "Lorem ipsum"
                         )
-                    ),
-                    true,
-                    "Lorem ipsum",
-                    "Lorem ipsum", mutableListOf()
+                    )
                 )
-            ),
-            mutableListOf()
+            )
         )
 
         // when
@@ -190,83 +148,68 @@ internal class StubCodeGeneratorTest {
     @Test
     fun buildModuleContentWithNoClassesReturnsFormattedModuleContent() {
         // given
-        val testModule = SerializablePythonModule(
-            "testModule", emptyList(), emptyList(), mutableListOf(),
-            mutableListOf(
-                SerializablePythonFunction(
-                    "functionModule1",
-                    "test.module_1.functionModule1",
-                    listOf("testDecorator"),
-                    mutableListOf(
-                        SerializablePythonParameter(
+        val testModule = MutablePythonModule(
+            name = "testModule",
+            functions = mutableListOf(
+                MutablePythonFunction(
+                    name = "functionModule1",
+                    parameters = mutableListOf(
+                        MutablePythonParameter(
                             "param1",
-                            "test.module_1.functionModule1.param1",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
                             true,
                             "str",
-                            "Lorem ipsum", mutableListOf()
+                            "Lorem ipsum"
                         ),
-                        SerializablePythonParameter(
+                        MutablePythonParameter(
                             "param2",
-                            "test.module_1.functionModule1.param2",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
                             true,
                             "str",
-                            "Lorem ipsum", mutableListOf()
+                            "Lorem ipsum"
                         ),
-                        SerializablePythonParameter(
+                        MutablePythonParameter(
                             "param3",
-                            "test.module_1.functionModule1.param3",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
                             true,
                             "str",
-                            "Lorem ipsum", mutableListOf()
+                            "Lorem ipsum"
                         )
                     ),
-                    mutableListOf(
-                        SerializablePythonResult(
+                    results = mutableListOf(
+                        MutablePythonResult(
                             "testResult",
                             "str",
                             "str",
-                            "Lorem ipsum", mutableListOf()
+                            "Lorem ipsum"
                         )
-                    ),
-                    true,
-                    "Lorem ipsum",
-                    "Lorem ipsum", mutableListOf()
+                    )
                 ),
-                SerializablePythonFunction(
-                    "testFunction",
-                    "testModule.testFunction",
-                    listOf("testDecorator"),
-                    mutableListOf(
-                        SerializablePythonParameter(
+                MutablePythonFunction(
+                    name = "testFunction",
+                    parameters = mutableListOf(
+                        MutablePythonParameter(
                             "testParameter",
-                            "testModule.testFunction.testParameter",
                             "42",
                             PythonParameterAssignment.NAME_ONLY,
                             true,
                             "int",
-                            "Lorem ipsum", mutableListOf()
+                            "Lorem ipsum",
                         )
                     ),
-                    mutableListOf(
-                        SerializablePythonResult(
+                    results = mutableListOf(
+                        MutablePythonResult(
                             "testResult",
                             "str",
                             "str",
-                            "Lorem ipsum", mutableListOf()
+                            "Lorem ipsum",
                         )
-                    ),
-                    true,
-                    "Lorem ipsum",
-                    "Lorem ipsum", mutableListOf()
+                    )
                 )
-            ),
-            mutableListOf()
+            )
         )
 
         // when
@@ -288,56 +231,40 @@ internal class StubCodeGeneratorTest {
     @Test
     fun buildModuleContentWithOnlyConstructorReturnsFormattedModuleContent() {
         // given
-        val testClass = SerializablePythonClass(
-            "TestClass",
-            "testModule.TestClass",
-            listOf("testDecorator"),
-            listOf("testSuperclass"),
-            mutableListOf(
-                SerializablePythonFunction(
-                    "__init__",
-                    "testModule.TestClass.__init__",
-                    listOf("decorators"),
-                    mutableListOf(
-                        SerializablePythonParameter(
+        val testClass = MutablePythonClass(
+            name = "TestClass",
+            methods = mutableListOf(
+                MutablePythonFunction(
+                    name = "__init__",
+                    parameters = mutableListOf(
+                        MutablePythonParameter(
                             "onlyParam",
-                            "testModule.TestClass.__init__.onlyParam",
                             "'defaultValue'",
                             PythonParameterAssignment.POSITION_OR_NAME,
                             true,
                             "typeInDocs",
-                            "description", mutableListOf()
+                            "description"
                         )
-                    ),
-                    mutableListOf(),
-                    true,
-                    "description",
-                    "fullDocstring", mutableListOf()
+                    )
                 )
-            ),
-            true,
-            "Lorem ipsum",
-            "Lorem ipsum", mutableListOf()
+            )
         )
-        val testModule = SerializablePythonModule(
-            "testModule",
-            listOf(
+        val testModule = MutablePythonModule(
+            name = "testModule",
+            imports = mutableListOf(
                 PythonImport(
                     "testImport1",
                     "testAlias"
                 )
             ),
-            listOf(
+            fromImports = mutableListOf(
                 PythonFromImport(
                     "testFromImport1",
                     "testDeclaration1",
                     null
                 )
             ),
-            mutableListOf(
-                testClass
-            ),
-            mutableListOf(), mutableListOf()
+            classes = mutableListOf(testClass)
         )
 
         // when
@@ -359,9 +286,7 @@ internal class StubCodeGeneratorTest {
     @Test
     fun buildModuleContentWithNoFunctionsAndClassesReturnsFormattedModuleContent() {
         // given
-        val testModule = SerializablePythonModule(
-            "testModule", emptyList(), emptyList(), mutableListOf(), mutableListOf(), mutableListOf()
-        )
+        val testModule = MutablePythonModule("testModule")
 
         // when
         val moduleContent = buildCompilationUnitToString(testModule)
@@ -376,15 +301,7 @@ internal class StubCodeGeneratorTest {
     @Test
     fun buildClassReturnsFormattedClassWithNoConstructorAndFunctions() {
         // given
-        val testClass = SerializablePythonClass(
-            "TestClass",
-            "testModule.TestClass",
-            listOf("TestDecorator"),
-            listOf("TestSuperclass"), mutableListOf(),
-            true,
-            "Lorem ipsum",
-            "Lorem ipsum", mutableListOf()
-        )
+        val testClass = MutablePythonClass("TestClass")
 
         // when
         val formattedClass = buildClassToString(testClass)
@@ -400,41 +317,23 @@ internal class StubCodeGeneratorTest {
     @Test
     fun buildClassReturnsFormattedClassWithOneFunctionAndNoConstructor() {
         // given
-        val testClass = SerializablePythonClass(
-            "TestClass",
-            "testModule.TestClass",
-            listOf("TestDecorator"),
-            listOf("TestSuperclass"),
-            mutableListOf(
-                SerializablePythonFunction(
-                    "testClassFunction",
-                    "testModule.TestClass.testClassFunction",
-                    listOf("decorators"),
-                    mutableListOf(
-                        SerializablePythonParameter(
+        val testClass = MutablePythonClass(
+            name = "TestClass",
+            methods = mutableListOf(
+                MutablePythonFunction(
+                    name = "testClassFunction",
+                    parameters = mutableListOf(
+                        MutablePythonParameter(
                             "onlyParam",
-                            "testModule.TestClass.testClassFunction.onlyParam",
                             "'defaultValue'",
                             PythonParameterAssignment.POSITION_OR_NAME,
                             true,
                             "str",
                             "description",
-                            mutableListOf(
-                                AttributeAnnotation(
-                                    DefaultString("test")
-                                )
-                            )
                         )
-                    ),
-                    mutableListOf(),
-                    true,
-                    "description",
-                    "fullDocstring", mutableListOf()
+                    )
                 )
-            ),
-            true,
-            "Lorem ipsum",
-            "Lorem ipsum", mutableListOf()
+            )
         )
 
         // when
@@ -454,56 +353,36 @@ internal class StubCodeGeneratorTest {
     @Test
     fun buildClassReturnsFormattedClassWithConstructorAndOneFunction() {
         // given
-        val testClass = SerializablePythonClass(
-            "TestClass",
-            "testModule.TestClass",
-            listOf("TestDecorator"),
-            listOf("TestSuperclass"),
-            mutableListOf(
-                SerializablePythonFunction(
-                    "testClassFunction1",
-                    "testModule.TestClass.testClassFunction1",
-                    listOf("decorators"),
-                    mutableListOf(
-                        SerializablePythonParameter(
+        val testClass = MutablePythonClass(
+            name = "TestClass",
+            methods = mutableListOf(
+                MutablePythonFunction(
+                    name = "testClassFunction1",
+                    parameters = mutableListOf(
+                        MutablePythonParameter(
                             "onlyParam",
-                            "testModule.TestClass.testClassFunction.onlyParam",
                             null,
                             PythonParameterAssignment.POSITION_OR_NAME,
                             true,
                             "typeInDocs",
-                            "description", mutableListOf()
+                            "description"
                         )
-                    ),
-                    mutableListOf(),
-                    true,
-                    "description",
-                    "fullDocstring", mutableListOf()
+                    )
                 ),
-                SerializablePythonFunction(
-                    "__init__",
-                    "testModule.TestClass.__init__",
-                    listOf("decorators"),
-                    mutableListOf(
-                        SerializablePythonParameter(
+                MutablePythonFunction(
+                    name = "__init__",
+                    parameters = mutableListOf(
+                        MutablePythonParameter(
                             "onlyParam",
-                            "testModule.TestClass.__init__.onlyParam",
                             null,
                             PythonParameterAssignment.POSITION_OR_NAME,
                             true,
                             "typeInDocs",
-                            "description", mutableListOf()
+                            "description"
                         )
-                    ),
-                    mutableListOf(),
-                    true,
-                    "description",
-                    "fullDocstring", mutableListOf()
+                    )
                 )
-            ),
-            true,
-            "Lorem ipsum",
-            "Lorem ipsum", mutableListOf()
+            )
         )
 
         // when
@@ -527,14 +406,7 @@ internal class StubCodeGeneratorTest {
     @Test
     fun buildFunctionReturnsFormattedFunctionWithNoParameters() {
         // given
-        val testFunction = SerializablePythonFunction(
-            "testFunction",
-            "testModule.testFunction",
-            listOf("testDecorator"), mutableListOf(), mutableListOf(),
-            true,
-            "Lorem ipsum",
-            "fullDocstring", mutableListOf()
-        )
+        val testFunction = MutablePythonFunction("testFunction")
 
         // when
         val formattedFunction = buildFunctionToString(testFunction)
@@ -550,25 +422,18 @@ internal class StubCodeGeneratorTest {
     @Test
     fun buildFunctionReturnsFormattedFunctionWithPositionOnlyParameter() {
         // given
-        val testFunction = SerializablePythonFunction(
-            "testFunction",
-            "testModule.testFunction",
-            listOf("testDecorator"),
-            mutableListOf(
-                SerializablePythonParameter(
+        val testFunction = MutablePythonFunction(
+            name = "testFunction",
+            parameters = mutableListOf(
+                MutablePythonParameter(
                     "onlyParam",
-                    "testModule.testClass.testClassFunction.onlyParam",
                     "13",
                     PythonParameterAssignment.POSITION_ONLY,
                     true,
                     "int",
-                    "description", mutableListOf()
+                    "description"
                 )
-            ),
-            mutableListOf(),
-            true,
-            "Lorem ipsum",
-            "fullDocstring", mutableListOf()
+            )
         )
 
         // when
@@ -585,25 +450,18 @@ internal class StubCodeGeneratorTest {
     @Test
     fun buildFunctionReturnsFormattedFunctionWithPositionOrNameParameter() {
         // given
-        val testFunction = SerializablePythonFunction(
-            "testFunction",
-            "testModule.testFunction",
-            listOf("testDecorator"),
-            mutableListOf(
-                SerializablePythonParameter(
+        val testFunction = MutablePythonFunction(
+            name = "testFunction",
+            parameters = mutableListOf(
+                MutablePythonParameter(
                     "onlyParam",
-                    "testModule.testClass.testClassFunction.onlyParam",
                     "'Test'",
                     PythonParameterAssignment.POSITION_OR_NAME,
                     true,
                     "string",
-                    "description", mutableListOf()
+                    "description"
                 )
-            ),
-            mutableListOf(),
-            true,
-            "Lorem ipsum",
-            "fullDocstring", mutableListOf()
+            )
         )
 
         // when
@@ -620,43 +478,34 @@ internal class StubCodeGeneratorTest {
     @Test
     fun buildFunctionReturnsFormattedFunctionWithPositionAndPositionOrNameAndNameOnlyParameter() {
         // given
-        val testFunction = SerializablePythonFunction(
-            "testFunction",
-            "testModule.testFunction",
-            listOf("testDecorator"),
-            mutableListOf(
-                SerializablePythonParameter(
+        val testFunction = MutablePythonFunction(
+            name = "testFunction",
+            parameters = mutableListOf(
+                MutablePythonParameter(
                     "firstParam",
-                    "testModule.testClass.testClassFunction.firstParam",
                     null,
                     PythonParameterAssignment.POSITION_ONLY,
                     true,
                     "typeInDocs",
-                    "description", mutableListOf()
+                    "description"
                 ),
-                SerializablePythonParameter(
+                MutablePythonParameter(
                     "secondParam",
-                    "testModule.testClass.testClassFunction.secondParam",
                     null,
                     PythonParameterAssignment.POSITION_OR_NAME,
                     true,
                     "typeInDocs",
-                    "description", mutableListOf()
+                    "description"
                 ),
-                SerializablePythonParameter(
+                MutablePythonParameter(
                     "thirdParam",
-                    "testModule.testClass.testClassFunction.thirdParam",
                     null,
                     PythonParameterAssignment.NAME_ONLY,
                     true,
                     "typeInDocs",
-                    "description", mutableListOf()
+                    "description"
                 )
-            ),
-            mutableListOf(),
-            true,
-            "Lorem ipsum",
-            "fullDocstring", mutableListOf()
+            )
         )
 
         // when
@@ -672,32 +521,26 @@ internal class StubCodeGeneratorTest {
     @Test
     fun buildFunctionReturnsFormattedFunctionWithOneResult() {
         // given
-        val testFunction = SerializablePythonFunction(
-            "testFunction",
-            "testModule.testFunction",
-            listOf("testDecorator"),
-            mutableListOf(
-                SerializablePythonParameter(
+        val testFunction = MutablePythonFunction(
+            name = "testFunction",
+            parameters = mutableListOf(
+                MutablePythonParameter(
                     "onlyParam",
-                    "testModule.testClass.testClassFunction.onlyParam",
                     "1.31e+1",
                     PythonParameterAssignment.POSITION_ONLY,
                     true,
                     "float",
-                    "description", mutableListOf()
+                    "description"
                 )
             ),
-            mutableListOf(
-                SerializablePythonResult(
+            results = mutableListOf(
+                MutablePythonResult(
                     "firstResult",
                     "float",
                     "float",
-                    "description", mutableListOf()
+                    "description"
                 )
-            ),
-            true,
-            "Lorem ipsum",
-            "fullDocstring", mutableListOf()
+            )
         )
 
         // when
@@ -713,38 +556,32 @@ internal class StubCodeGeneratorTest {
     @Test
     fun buildFunctionReturnsFormattedFunctionWithMultipleResults() {
         // given
-        val testFunction = SerializablePythonFunction(
-            "testFunction",
-            "testModule.testFunction",
-            listOf("testDecorator"),
-            mutableListOf(
-                SerializablePythonParameter(
+        val testFunction = MutablePythonFunction(
+            name = "testFunction",
+            parameters = mutableListOf(
+                MutablePythonParameter(
                     "onlyParam",
-                    "testModule.testClass.testClassFunction.onlyParam",
                     "True",
                     PythonParameterAssignment.POSITION_ONLY,
                     true,
                     "bool",
-                    "description", mutableListOf()
+                    "description"
                 )
             ),
-            mutableListOf(
-                SerializablePythonResult(
+            results = mutableListOf(
+                MutablePythonResult(
                     "firstResult",
                     "float",
                     "float",
-                    "description", mutableListOf()
+                    "description"
                 ),
-                SerializablePythonResult(
+                MutablePythonResult(
                     "secondResult",
                     "float",
                     "float",
-                    "description", mutableListOf()
+                    "description"
                 )
-            ),
-            true,
-            "Lorem ipsum",
-            "fullDocstring", mutableListOf()
+            )
         )
 
         // when
@@ -760,25 +597,18 @@ internal class StubCodeGeneratorTest {
     @Test
     fun buildFunctionReturnsFormattedFunctionWithInvalidDefaultValue() {
         // given
-        val testFunction = SerializablePythonFunction(
-            "testFunction",
-            "testModule.testFunction",
-            listOf("testDecorator"),
-            mutableListOf(
-                SerializablePythonParameter(
+        val testFunction = MutablePythonFunction(
+            name = "testFunction",
+            parameters = mutableListOf(
+                MutablePythonParameter(
                     "onlyParam",
-                    "testModule.testClass.testClassFunction.onlyParam",
                     "'13'x",
                     PythonParameterAssignment.POSITION_ONLY,
                     true,
                     "string",
-                    "description", mutableListOf()
+                    "description"
                 )
-            ),
-            mutableListOf(),
-            true,
-            "Lorem ipsum",
-            "fullDocstring", mutableListOf()
+            )
         )
 
         // when
@@ -794,9 +624,7 @@ internal class StubCodeGeneratorTest {
     @Test
     fun shouldMarkPureFunctionsWithAnnotation() {
         // given
-        val testFunction = createPythonFunction(
-            "testFunction"
-        )
+        val testFunction = MutablePythonFunction("testFunction")
         testFunction.isPure = true
 
         // when
@@ -813,61 +641,36 @@ internal class StubCodeGeneratorTest {
     @Test
     fun `should convert names to camel case`() {
         // given
-        val testClass = SerializablePythonClass(
-            "Test_Class",
-            "testModule.Test_Class",
-            listOf(),
-            listOf(),
-            mutableListOf(
-                SerializablePythonFunction(
-                    "__init__",
-                    "testModule.Test_Class.__init__",
-                    listOf(),
-                    mutableListOf(
-                        SerializablePythonParameter(
+        val testClass = MutablePythonClass(
+            name = "Test_Class",
+            methods = mutableListOf(
+                MutablePythonFunction(
+                    name = "__init__",
+                    parameters = mutableListOf(
+                        MutablePythonParameter(
                             "test_parameter",
-                            "testModule.Test_Class.__init__.test_parameter",
                             null,
                             PythonParameterAssignment.POSITION_OR_NAME,
                             true,
                             "",
                             "",
-                            mutableListOf()
                         )
-                    ),
-                    mutableListOf(),
-                    true,
-                    "",
-                    "",
-                    mutableListOf()
+                    )
                 ),
-                SerializablePythonFunction(
-                    "test_function",
-                    "testModule.Test_Class.test_function",
-                    listOf(),
-                    mutableListOf(
-                        SerializablePythonParameter(
+                MutablePythonFunction(
+                    name = "test_function",
+                    parameters = mutableListOf(
+                        MutablePythonParameter(
                             "test_parameter",
-                            "testModule.Test_Class.test_function.test_parameter",
                             null,
                             PythonParameterAssignment.POSITION_OR_NAME,
                             true,
                             "",
                             "",
-                            mutableListOf()
                         )
-                    ),
-                    mutableListOf(),
-                    true,
-                    "",
-                    "",
-                    mutableListOf()
+                    )
                 ),
-            ),
-            true,
-            "",
-            "",
-            mutableListOf()
+            )
         )
 
         // when
