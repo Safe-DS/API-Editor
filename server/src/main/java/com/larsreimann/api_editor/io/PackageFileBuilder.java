@@ -3,6 +3,8 @@ package com.larsreimann.api_editor.io;
 import com.larsreimann.api_editor.codegen.ModuleAdapterContentBuilder;
 import com.larsreimann.api_editor.model.SerializablePythonModule;
 import com.larsreimann.api_editor.model.SerializablePythonPackage;
+import com.larsreimann.api_editor.mutable_model.MutablePythonModule;
+import com.larsreimann.api_editor.mutable_model.MutablePythonPackage;
 import de.unibonn.simpleml.constant.SmlFileExtension;
 import kotlin.io.FilesKt;
 
@@ -19,7 +21,7 @@ import java.util.zip.ZipOutputStream;
 import static com.larsreimann.api_editor.codegen.CompilationUnitStubContentBuilderKt.buildCompilationUnitToString;
 
 public class PackageFileBuilder {
-    SerializablePythonPackage pythonPackage;
+    MutablePythonPackage pythonPackage;
     Path workingDirectory;
 
     /**
@@ -27,7 +29,7 @@ public class PackageFileBuilder {
      *
      * @param pythonPackage The package whose files should be generated
      */
-    public PackageFileBuilder(SerializablePythonPackage pythonPackage) {
+    public PackageFileBuilder(MutablePythonPackage pythonPackage) {
         this.pythonPackage = pythonPackage;
         this.workingDirectory = Paths.get("api-editor_inferredAPI");
     }
@@ -114,13 +116,13 @@ public class PackageFileBuilder {
         }
     }
 
-    private String buildAdapterContent(SerializablePythonModule pythonModule) {
+    private String buildAdapterContent(MutablePythonModule pythonModule) {
         ModuleAdapterContentBuilder moduleAdapterContentBuilder =
             new ModuleAdapterContentBuilder(pythonModule);
         return moduleAdapterContentBuilder.buildModuleContent();
     }
 
-    private String buildStubContent(SerializablePythonModule pythonModule) {
+    private String buildStubContent(MutablePythonModule pythonModule) {
         return buildCompilationUnitToString(pythonModule);
     }
 }

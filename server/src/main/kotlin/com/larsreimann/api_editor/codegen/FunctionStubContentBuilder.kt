@@ -3,9 +3,9 @@ package com.larsreimann.api_editor.codegen
 import com.larsreimann.api_editor.model.PythonParameterAssignment.NAME_ONLY
 import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITION_ONLY
 import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITION_OR_NAME
-import com.larsreimann.api_editor.model.SerializablePythonFunction
-import com.larsreimann.api_editor.model.SerializablePythonParameter
-import com.larsreimann.api_editor.model.SerializablePythonResult
+import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
+import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
+import com.larsreimann.api_editor.mutable_model.MutablePythonResult
 import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.createSmlAnnotationUse
 import de.unibonn.simpleml.emf.createSmlArgument
@@ -36,7 +36,7 @@ import de.unibonn.simpleml.simpleML.SmlResult
  * @return The string containing the formatted function content
  */
 // TODO: only for testing, remove
-fun buildFunctionToString(pythonFunction: SerializablePythonFunction): String {
+fun buildFunctionToString(pythonFunction: MutablePythonFunction): String {
     val function = buildFunction(pythonFunction)
 
     // Required to serialize the function
@@ -52,7 +52,7 @@ fun buildFunctionToString(pythonFunction: SerializablePythonFunction): String {
     }
 }
 
-fun buildFunction(pythonFunction: SerializablePythonFunction): SmlFunction {
+fun buildFunction(pythonFunction: MutablePythonFunction): SmlFunction {
     val stubName = pythonFunction.name.snakeCaseToLowerCamelCase()
 
     return createSmlFunction(
@@ -87,7 +87,7 @@ fun createSmlPythonNameAnnotationUse(name: String): SmlAnnotationUse {
     )
 }
 
-fun buildParameter(pythonParameter: SerializablePythonParameter): SmlParameter? {
+fun buildParameter(pythonParameter: MutablePythonParameter): SmlParameter? {
     if (pythonParameter.assignedBy !in setOf(POSITION_ONLY, POSITION_OR_NAME, NAME_ONLY)) {
         return null
     }
@@ -109,7 +109,7 @@ fun buildParameter(pythonParameter: SerializablePythonParameter): SmlParameter? 
     )
 }
 
-fun buildResult(pythonResult: SerializablePythonResult): SmlResult {
+fun buildResult(pythonResult: MutablePythonResult): SmlResult {
     return createSmlResult(
         name = pythonResult.name,
         annotations = buildList {
@@ -157,9 +157,9 @@ fun buildDefaultValue(defaultValue: String): SmlAbstractExpression? {
 
     val invalid = "###invalid###" + defaultValue.replace("\"", "\\\"") + "###"
     if (defaultValue.length >= 2 && (
-        defaultValue[defaultValue.length - 1]
-            == defaultValue[0]
-        ) && defaultValue[0] == '\'' && defaultValue.count { it == '\'' } == 2
+            defaultValue[defaultValue.length - 1]
+                == defaultValue[0]
+            ) && defaultValue[0] == '\'' && defaultValue.count { it == '\'' } == 2
     ) {
         return createSmlString(defaultValue.replace("'".toRegex(), "\"").trim('\'', '"'))
     }

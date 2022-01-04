@@ -1,8 +1,7 @@
 package com.larsreimann.api_editor.codegen
 
-import com.larsreimann.api_editor.model.PythonParameterAssignment
-import com.larsreimann.api_editor.model.SerializablePythonClass
-import com.larsreimann.api_editor.model.SerializablePythonParameter
+import com.larsreimann.api_editor.mutable_model.MutablePythonAttribute
+import com.larsreimann.api_editor.mutable_model.MutablePythonClass
 import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.createSmlAttribute
 import de.unibonn.simpleml.emf.createSmlClass
@@ -21,7 +20,7 @@ import de.unibonn.simpleml.simpleML.SmlParameter
  * @return The string containing the formatted class content
  */
 // TODO: only for testing, remove
-fun buildClassToString(pythonClass: SerializablePythonClass): String {
+fun buildClassToString(pythonClass: MutablePythonClass): String {
     val `class` = buildClass(pythonClass)
 
     // Required to serialize the class
@@ -37,7 +36,7 @@ fun buildClassToString(pythonClass: SerializablePythonClass): String {
     }
 }
 
-fun buildClass(pythonClass: SerializablePythonClass): SmlClass {
+fun buildClass(pythonClass: MutablePythonClass): SmlClass {
     val stubName = pythonClass.name.snakeCaseToUpperCamelCase()
 
     return createSmlClass(
@@ -55,39 +54,35 @@ fun buildClass(pythonClass: SerializablePythonClass): SmlClass {
     )
 }
 
-private fun buildConstructor(pythonClass: SerializablePythonClass): List<SmlParameter> {
+private fun buildConstructor(pythonClass: MutablePythonClass): List<SmlParameter> {
     return pythonClass.constructorOrNull()
         ?.parameters
         ?.mapNotNull { buildParameter(it) }
         .orEmpty()
 }
 
-private fun buildAttributes(pythonClass: SerializablePythonClass): List<SmlAttribute> {
-    return pythonClass.constructorOrNull()
-        ?.parameters
-        ?.filter { it.assignedBy != PythonParameterAssignment.CONSTANT }
-        ?.map { buildAttribute(it) }
-        .orEmpty()
+private fun buildAttributes(pythonClass: MutablePythonClass): List<SmlAttribute> {
+    return pythonClass.attributes.map { buildAttribute(it) }
 }
 
-fun buildAttribute(pythonParameter: SerializablePythonParameter): SmlAttribute {
-    val stubName = pythonParameter.name.snakeCaseToLowerCamelCase()
+fun buildAttribute(pythonAttribute: MutablePythonAttribute): SmlAttribute {
+    val stubName = pythonAttribute.name.snakeCaseToLowerCamelCase()
 
     return createSmlAttribute(
         name = stubName,
         annotations = buildList {
-            if (pythonParameter.description.isNotBlank()) {
-                add(createSmlDescriptionAnnotationUse(pythonParameter.description))
+            if (pythonAttribute.description.isNotBlank()) {
+                add(createSmlDescriptionAnnotationUse(pythonAttribute.description))
             }
-            if (pythonParameter.name != stubName) {
-                add(createSmlPythonNameAnnotationUse(pythonParameter.name))
+            if (pythonAttribute.name != stubName) {
+                add(createSmlPythonNameAnnotationUse(pythonAttribute.name))
             }
         },
-        type = buildType(pythonParameter.typeInDocs)
+        type = buildType(pythonAttribute.typeInDocs)
     )
 }
 
-private fun buildFunctions(pythonClass: SerializablePythonClass): List<SmlFunction> {
+private fun buildFunctions(pythonClass: MutablePythonClass): List<SmlFunction> {
     return pythonClass.methodsExceptConstructor()
         .filter { it.isPublic }
         .map { buildFunction(it) }

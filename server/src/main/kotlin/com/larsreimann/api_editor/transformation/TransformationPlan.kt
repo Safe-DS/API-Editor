@@ -4,11 +4,11 @@ import com.larsreimann.api_editor.model.SerializablePythonPackage
 import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
 import com.larsreimann.api_editor.mutable_model.convertPackage
 
-fun processPackage(originalPythonPackage: SerializablePythonPackage): SerializablePythonPackage {
+fun processPackage(originalPythonPackage: SerializablePythonPackage): MutablePythonPackage {
     val mutablePackage = originalPythonPackage.preprocess()
     mutablePackage.processAnnotations()
     mutablePackage.postprocess()
-    return convertPackage(mutablePackage)
+    return mutablePackage
 }
 
 private fun SerializablePythonPackage.preprocess(): MutablePythonPackage {

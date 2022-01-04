@@ -88,6 +88,14 @@ class MutablePythonClass(
         yieldAll(attributes)
         yieldAll(methods)
     }
+
+    fun constructorOrNull(): MutablePythonFunction? {
+        return methods.firstOrNull { it.name == "__init__" }
+    }
+
+    fun methodsExceptConstructor(): List<MutablePythonFunction> {
+        return methods.filter { it.name != "__init__" }
+    }
 }
 
 data class MutablePythonEnum(

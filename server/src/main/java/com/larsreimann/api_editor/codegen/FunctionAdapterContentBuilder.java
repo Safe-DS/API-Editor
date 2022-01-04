@@ -1,11 +1,12 @@
 package com.larsreimann.api_editor.codegen;
 
 import com.larsreimann.api_editor.io.FileBuilder;
-import com.larsreimann.api_editor.model.SerializablePythonFunction;
-import com.larsreimann.api_editor.model.SerializablePythonParameter;
 import com.larsreimann.api_editor.model.Boundary;
 import com.larsreimann.api_editor.model.ComparisonOperator;
 import com.larsreimann.api_editor.model.PythonParameterAssignment;
+import com.larsreimann.api_editor.model.SerializablePythonParameter;
+import com.larsreimann.api_editor.mutable_model.MutablePythonFunction;
+import com.larsreimann.api_editor.mutable_model.MutablePythonParameter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +15,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class FunctionAdapterContentBuilder extends FileBuilder {
-    SerializablePythonFunction pythonFunction;
+    MutablePythonFunction pythonFunction;
 
     /**
      * Constructor for FunctionAdapterContentBuilder
@@ -22,7 +23,7 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
      * @param pythonFunction The function whose adapter content should be built
      */
     public FunctionAdapterContentBuilder(
-        SerializablePythonFunction pythonFunction
+        MutablePythonFunction pythonFunction
     ) {
         this.pythonFunction = pythonFunction;
     }
@@ -54,7 +55,7 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
 
     private List<String> buildAttributeAssignments() {
         List<String> attributeAssignments = new ArrayList<>();
-        for (SerializablePythonParameter parameterAttribute : pythonFunction.getParameters()) {
+        for (MutablePythonParameter parameterAttribute : pythonFunction.getParameters()) {
             if (parameterAttribute.getAssignedBy().equals(PythonParameterAssignment.ATTRIBUTE)) {
                 attributeAssignments.add(
                     "self."
@@ -144,7 +145,7 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
         return formattedFunctionParameters;
     }
 
-    private String buildFormattedParameter(SerializablePythonParameter pythonParameter) {
+    private String buildFormattedParameter(MutablePythonParameter pythonParameter) {
         String formattedParameter = pythonParameter.getName();
         String defaultValue = pythonParameter.getDefaultValue();
         if (defaultValue != null) {
@@ -167,7 +168,7 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
 
     private List<String> buildBoundaryChecks() {
         List<String> formattedBoundaries = new ArrayList<>();
-        for (SerializablePythonParameter pythonParameter :
+        for (MutablePythonParameter pythonParameter :
             pythonFunction
                 .getParameters()
                 .stream()
@@ -209,7 +210,7 @@ public class FunctionAdapterContentBuilder extends FileBuilder {
                         + boundary.getUpperIntervalLimit()
                         + ":\n"
                         + indent(
-                            "raise ValueError('Valid values of "
+                        "raise ValueError('Valid values of "
                             + pythonParameter.getName()
                             + " must be in "
                             + boundary.asInterval()

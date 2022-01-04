@@ -1,6 +1,6 @@
 package com.larsreimann.api_editor.codegen
 
-import com.larsreimann.api_editor.model.SerializablePythonModule
+import com.larsreimann.api_editor.mutable_model.MutablePythonModule
 import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.createSmlCompilationUnit
 import de.unibonn.simpleml.emf.createSmlDummyResource
@@ -16,7 +16,7 @@ import de.unibonn.simpleml.simpleML.SmlPackage
  * @return The string containing the formatted module content
  */
 // TODO: only for testing, remove
-fun buildCompilationUnitToString(pythonModule: SerializablePythonModule): String {
+fun buildCompilationUnitToString(pythonModule: MutablePythonModule): String {
     val compilationUnit = buildCompilationUnit(pythonModule)
 
     // Required to serialize the compilation unit
@@ -32,11 +32,11 @@ fun buildCompilationUnitToString(pythonModule: SerializablePythonModule): String
     }
 }
 
-fun buildCompilationUnit(pythonModule: SerializablePythonModule): SmlCompilationUnit {
+fun buildCompilationUnit(pythonModule: MutablePythonModule): SmlCompilationUnit {
     return createSmlCompilationUnit(listOf(buildPackage(pythonModule)))
 }
 
-fun buildPackage(pythonModule: SerializablePythonModule): SmlPackage {
+fun buildPackage(pythonModule: MutablePythonModule): SmlPackage {
     val publicClasses = pythonModule.classes
         .filter { it.isPublic }
         .map { buildClass(it) }
