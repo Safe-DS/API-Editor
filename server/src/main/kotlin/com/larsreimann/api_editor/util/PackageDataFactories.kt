@@ -89,9 +89,8 @@ fun createPythonAttribute(
     typeInDocs: String = "",
     description: String = "",
     annotations: MutableList<EditorAnnotation> = mutableListOf(),
-    originalDeclaration: SerializablePythonAttribute? = null,
 ): SerializablePythonAttribute {
-    val result = SerializablePythonAttribute(
+    return SerializablePythonAttribute(
         name,
         qualifiedName,
         defaultValue,
@@ -100,8 +99,6 @@ fun createPythonAttribute(
         description,
         annotations
     )
-    result.originalDeclaration = originalDeclaration
-    return result
 }
 
 @JvmOverloads

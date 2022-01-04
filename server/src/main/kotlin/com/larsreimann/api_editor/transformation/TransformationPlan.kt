@@ -5,20 +5,17 @@ import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
 import com.larsreimann.api_editor.mutable_model.convertPackage
 
 fun processPackage(originalPythonPackage: SerializablePythonPackage): SerializablePythonPackage {
-    var modifiedPythonPackage = originalPythonPackage
-
-    modifiedPythonPackage = modifiedPythonPackage.preprocess()
-
-    val mutablePackage = convertPackage(modifiedPythonPackage)
+    val mutablePackage = originalPythonPackage.preprocess()
     mutablePackage.processAnnotations()
     mutablePackage.postprocess()
-
-    modifiedPythonPackage = convertPackage(mutablePackage)
-    return modifiedPythonPackage
+    return convertPackage(mutablePackage)
 }
 
-private fun SerializablePythonPackage.preprocess(): SerializablePythonPackage {
-    return this.accept(Preprocessor())!!
+private fun SerializablePythonPackage.preprocess(): MutablePythonPackage {
+    val modifiedPythonPackage = this.accept(Preprocessor())!!
+    val mutablePackage = convertPackage(modifiedPythonPackage)
+    mutablePackage.updateParameterAssignment()
+    return mutablePackage
 }
 
 private fun MutablePythonPackage.processAnnotations() {

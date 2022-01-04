@@ -276,9 +276,6 @@ data class SerializablePythonAttribute(
 ) : SerializablePythonDeclaration() {
 
     @Transient
-    var originalDeclaration: SerializablePythonAttribute? = null
-
-    @Transient
     var boundary: Boundary? = null
 
     override fun accept(visitor: PackageDataVisitor) {
@@ -301,7 +298,6 @@ data class SerializablePythonAttribute(
         description: String = this.description,
         annotations: MutableList<EditorAnnotation> = this.annotations,
         boundary: Boundary? = this.boundary,
-        originalDeclaration: SerializablePythonAttribute? = this.originalDeclaration
     ): SerializablePythonAttribute {
 
         val result = copy(
@@ -313,7 +309,6 @@ data class SerializablePythonAttribute(
             description = description,
             annotations = annotations
         )
-        result.originalDeclaration = originalDeclaration
         result.boundary = boundary
         return result
     }
@@ -565,7 +560,6 @@ data class SerializablePythonResult(
         description: String = this.description,
         annotations: MutableList<EditorAnnotation> = this.annotations,
         boundary: Boundary? = this.boundary,
-        originalDeclaration: SerializablePythonResult? = this.originalDeclaration
     ): SerializablePythonResult {
 
         val result = copy(
@@ -575,7 +569,6 @@ data class SerializablePythonResult(
             description = description,
             annotations = annotations
         )
-        result.originalDeclaration = originalDeclaration
         result.boundary = boundary
         return result
     }

@@ -8,11 +8,9 @@ import com.larsreimann.api_editor.model.PythonEnumInstance
 import com.larsreimann.api_editor.model.PythonFromImport
 import com.larsreimann.api_editor.model.PythonImport
 import com.larsreimann.api_editor.model.PythonParameterAssignment
-import com.larsreimann.api_editor.model.SerializablePythonAttribute
 import com.larsreimann.api_editor.model.SerializablePythonClass
 import com.larsreimann.api_editor.model.SerializablePythonFunction
 import com.larsreimann.api_editor.model.SerializablePythonParameter
-import com.larsreimann.api_editor.model.SerializablePythonResult
 
 sealed class MutablePythonAstNode : TreeNode()
 
@@ -131,7 +129,6 @@ data class MutablePythonAttribute(
     var description: String = "",
     var boundary: Boundary? = null,
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
-    var originalDeclaration: SerializablePythonAttribute? = null
 ) : MutablePythonDeclaration()
 
 data class MutablePythonParameter(
@@ -158,7 +155,6 @@ data class MutablePythonResult(
     var description: String = "",
     var boundary: Boundary? = null,
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
-    var originalDeclaration: SerializablePythonResult? = null
 ) : MutablePythonDeclaration()
 
 private sealed class MutablePythonStatement : MutablePythonAstNode() // TODO

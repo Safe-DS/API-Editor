@@ -228,7 +228,9 @@ abstract class AbstractPackageDataTransformer : PackageDataTransformer {
     }
 
     override fun createNewParameter(oldParameter: SerializablePythonParameter): SerializablePythonParameter? {
-        return oldParameter
+        return oldParameter.fullCopy(
+            originalDeclaration = oldParameter.originalDeclaration ?: oldParameter
+        )
     }
 
     override fun createNewResult(oldResult: SerializablePythonResult): SerializablePythonResult? {

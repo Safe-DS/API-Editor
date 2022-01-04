@@ -79,7 +79,6 @@ fun convertAttribute(pythonAttribute: SerializablePythonAttribute): MutablePytho
         description = pythonAttribute.description,
         boundary = pythonAttribute.boundary,
         annotations = pythonAttribute.annotations,
-        originalDeclaration = pythonAttribute.originalDeclaration
     )
 }
 
@@ -105,6 +104,5 @@ fun convertResult(pythonResult: SerializablePythonResult): MutablePythonResult {
         description = pythonResult.description,
         boundary = pythonResult.boundary,
         annotations = pythonResult.annotations,
-        originalDeclaration = pythonResult.originalDeclaration
     )
 }
