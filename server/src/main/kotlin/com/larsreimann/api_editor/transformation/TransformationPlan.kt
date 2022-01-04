@@ -7,7 +7,7 @@ fun processPackage(originalPythonPackage: SerializablePythonPackage): Serializab
     var modifiedPythonPackage = originalPythonPackage
 
     // Create original declarations
-    modifiedPythonPackage.accept(Preprocessor())
+    modifiedPythonPackage = modifiedPythonPackage.accept(Preprocessor())!!
 
     // Apply annotations (don't change the order)
     val mutablePackage = convertPackage(modifiedPythonPackage)
