@@ -41,7 +41,8 @@ fun convertClass(pythonClass: SerializablePythonClass): MutablePythonClass {
         isPublic = pythonClass.isPublic,
         description = pythonClass.description,
         fullDocstring = pythonClass.fullDocstring,
-        annotations = pythonClass.annotations
+        annotations = pythonClass.annotations,
+        originalDeclaration = pythonClass.originalDeclaration
     )
 }
 
@@ -65,6 +66,7 @@ fun convertFunction(pythonFunction: SerializablePythonFunction): MutablePythonFu
 //        calledAfter = pythonFunction.calledAfter,
         isPure = pythonFunction.isPure,
         annotations = pythonFunction.annotations,
+        originalDeclaration = pythonFunction.originalDeclaration
     )
 }
 
@@ -76,7 +78,8 @@ fun convertAttribute(pythonAttribute: SerializablePythonAttribute): MutablePytho
         typeInDocs = pythonAttribute.typeInDocs,
         description = pythonAttribute.description,
         boundary = pythonAttribute.boundary,
-        annotations = pythonAttribute.annotations
+        annotations = pythonAttribute.annotations,
+        originalDeclaration = pythonAttribute.originalDeclaration
     )
 }
 
@@ -89,7 +92,8 @@ fun convertParameter(pythonParameter: SerializablePythonParameter): MutablePytho
         typeInDocs = pythonParameter.typeInDocs,
         description = pythonParameter.description,
         boundary = pythonParameter.boundary,
-        annotations = pythonParameter.annotations
+        annotations = pythonParameter.annotations,
+        originalDeclaration = pythonParameter.originalDeclaration
     )
 }
 
@@ -100,6 +104,7 @@ fun convertResult(pythonResult: SerializablePythonResult): MutablePythonResult {
         typeInDocs = pythonResult.typeInDocs,
         description = pythonResult.description,
         boundary = pythonResult.boundary,
-        annotations = pythonResult.annotations
+        annotations = pythonResult.annotations,
+        originalDeclaration = pythonResult.originalDeclaration
     )
 }

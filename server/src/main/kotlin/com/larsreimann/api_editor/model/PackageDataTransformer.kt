@@ -165,9 +165,8 @@ abstract class AbstractPackageDataTransformer : PackageDataTransformer {
         oldPackage: SerializablePythonPackage,
         newModules: List<SerializablePythonModule>
     ): SerializablePythonPackage? {
-        return oldPackage.fullCopy(
-            modules = newModules.toMutableList(),
-            originalDeclaration = oldPackage.originalDeclaration ?: oldPackage
+        return oldPackage.copy(
+            modules = newModules.toMutableList()
         )
     }
 
@@ -184,8 +183,7 @@ abstract class AbstractPackageDataTransformer : PackageDataTransformer {
         return oldModule.fullCopy(
             classes = newClasses.toMutableList(),
             enums = newEnums.toMutableList(),
-            functions = newFunctions.toMutableList(),
-            originalDeclaration = oldModule.originalDeclaration ?: oldModule
+            functions = newFunctions.toMutableList()
         )
     }
 

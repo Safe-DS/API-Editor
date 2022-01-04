@@ -10,15 +10,13 @@ import com.larsreimann.api_editor.model.SerializablePythonParameter
 import com.larsreimann.api_editor.model.SerializablePythonResult
 
 fun convertPackage(pythonPackage: MutablePythonPackage): SerializablePythonPackage {
-    val result = SerializablePythonPackage(
+    return SerializablePythonPackage(
         distribution = pythonPackage.distribution,
         name = pythonPackage.name,
         version = pythonPackage.version,
         modules = pythonPackage.modules.map { convertModule(it) }.toMutableList(),
         annotations = pythonPackage.annotations
     )
-    result.originalDeclaration = pythonPackage.originalDeclaration
-    return result
 }
 
 fun convertModule(pythonModule: MutablePythonModule): SerializablePythonModule {
@@ -30,7 +28,6 @@ fun convertModule(pythonModule: MutablePythonModule): SerializablePythonModule {
         functions = pythonModule.functions.map { convertFunction(it) }.toMutableList(),
         annotations = pythonModule.annotations
     )
-    result.originalDeclaration = pythonModule.originalDeclaration
     result.enums += pythonModule.enums.map { convertEnum(it) }
     return result
 }
@@ -58,7 +55,6 @@ fun convertEnum(pythonEnum: MutablePythonEnum): SerializablePythonEnum {
         instances = pythonEnum.instances,
         annotations = pythonEnum.annotations
     )
-    result.originalDeclaration = pythonEnum.originalDeclaration
     return result
 }
 

@@ -7,7 +7,6 @@ import kotlinx.serialization.Transient
 sealed class SerializablePythonDeclaration {
     abstract val name: String
     abstract val annotations: MutableList<EditorAnnotation>
-    abstract val originalDeclaration: SerializablePythonDeclaration?
 
     abstract fun accept(visitor: PackageDataVisitor)
     abstract fun accept(transformer: PackageDataTransformer): SerializablePythonDeclaration?
@@ -38,9 +37,6 @@ data class SerializablePythonPackage(
     override val annotations: MutableList<EditorAnnotation>
 ) : SerializablePythonDeclaration() {
 
-    @Transient
-    override var originalDeclaration: SerializablePythonPackage? = null
-
     override fun accept(visitor: PackageDataVisitor) {
         val shouldTraverseChildren = visitor.enterPythonPackage(this)
 
@@ -69,26 +65,6 @@ data class SerializablePythonPackage(
     override fun children() = sequence {
         yieldAll(modules)
     }
-
-    fun fullCopy(
-        distribution: String = this.distribution,
-        name: String = this.name,
-        version: String = this.version,
-        modules: MutableList<SerializablePythonModule> = this.modules,
-        annotations: MutableList<EditorAnnotation> = this.annotations,
-        originalDeclaration: SerializablePythonPackage? = this.originalDeclaration
-    ): SerializablePythonPackage {
-
-        val result = copy(
-            distribution = distribution,
-            name = name,
-            version = version,
-            modules = modules,
-            annotations = annotations
-        )
-        result.originalDeclaration = originalDeclaration
-        return result
-    }
 }
 
 @Serializable
@@ -100,9 +76,6 @@ data class SerializablePythonModule(
     val functions: MutableList<SerializablePythonFunction>,
     override val annotations: MutableList<EditorAnnotation>
 ) : SerializablePythonDeclaration() {
-
-    @Transient
-    override var originalDeclaration: SerializablePythonModule? = null
 
     @Transient
     val enums = mutableListOf<SerializablePythonEnum>()
@@ -166,7 +139,6 @@ data class SerializablePythonModule(
         enums: MutableList<SerializablePythonEnum> = this.enums,
         functions: MutableList<SerializablePythonFunction> = this.functions,
         annotations: MutableList<EditorAnnotation> = this.annotations,
-        originalDeclaration: SerializablePythonModule? = this.originalDeclaration
     ): SerializablePythonModule {
 
         val result = copy(
@@ -177,7 +149,6 @@ data class SerializablePythonModule(
             functions = functions,
             annotations = annotations
         )
-        result.originalDeclaration = originalDeclaration
         result.enums += enums
         return result
     }
@@ -210,7 +181,7 @@ data class SerializablePythonClass(
 ) : SerializablePythonDeclaration() {
 
     @Transient
-    override var originalDeclaration: SerializablePythonClass? = null
+    var originalDeclaration: SerializablePythonClass? = null
 
     @Transient
     var attributes = mutableListOf<SerializablePythonAttribute>()
@@ -305,7 +276,7 @@ data class SerializablePythonAttribute(
 ) : SerializablePythonDeclaration() {
 
     @Transient
-    override var originalDeclaration: SerializablePythonAttribute? = null
+    var originalDeclaration: SerializablePythonAttribute? = null
 
     @Transient
     var boundary: Boundary? = null
@@ -376,9 +347,6 @@ data class SerializablePythonEnum(
     override val annotations: MutableList<EditorAnnotation>
 ) : SerializablePythonDeclaration() {
 
-    @Transient
-    override var originalDeclaration: SerializablePythonEnum? = null
-
     override fun accept(visitor: PackageDataVisitor) {
         visitor.enterPythonEnum(this)
         visitor.leavePythonEnum(this)
@@ -389,21 +357,6 @@ data class SerializablePythonEnum(
     }
 
     override fun children() = emptySequence<SerializablePythonDeclaration>()
-
-    fun fullCopy(
-        name: String = this.name,
-        instances: List<PythonEnumInstance> = this.instances,
-        annotations: MutableList<EditorAnnotation> = this.annotations,
-        originalDeclaration: SerializablePythonEnum? = this.originalDeclaration
-    ): SerializablePythonEnum {
-        val result = copy(
-            name = name,
-            instances = instances,
-            annotations = annotations
-        )
-        result.originalDeclaration = originalDeclaration
-        return result
-    }
 }
 
 data class PythonEnumInstance(
@@ -425,7 +378,7 @@ data class SerializablePythonFunction(
 ) : SerializablePythonDeclaration() {
 
     @Transient
-    override var originalDeclaration: SerializablePythonFunction? = null
+    var originalDeclaration: SerializablePythonFunction? = null
 
     @Transient
     val calledAfter = mutableListOf<SerializablePythonFunction>()
@@ -521,7 +474,7 @@ data class SerializablePythonParameter(
 ) : SerializablePythonDeclaration() {
 
     @Transient
-    override var originalDeclaration: SerializablePythonParameter? = null
+    var originalDeclaration: SerializablePythonParameter? = null
 
     @Transient
     var boundary: Boundary? = null
@@ -589,7 +542,7 @@ data class SerializablePythonResult(
 ) : SerializablePythonDeclaration() {
 
     @Transient
-    override var originalDeclaration: SerializablePythonResult? = null
+    var originalDeclaration: SerializablePythonResult? = null
 
     @Transient
     var boundary: Boundary? = null

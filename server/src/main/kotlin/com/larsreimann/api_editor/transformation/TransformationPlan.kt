@@ -22,16 +22,16 @@ private fun SerializablePythonPackage.preprocess(): SerializablePythonPackage {
 }
 
 private fun MutablePythonPackage.processAnnotations() {
-    this.processUnusedAnnotations()
-    this.processRenameAnnotations()
-    this.processMoveAnnotations()
-    this.processParameterAnnotations()
-    this.processBoundaryAnnotations()
-    this.processPureAnnotations()
+    processUnusedAnnotations()
+    processRenameAnnotations()
+    processMoveAnnotations()
+    processParameterAnnotations()
+    processBoundaryAnnotations()
+    processPureAnnotations()
 }
 
 private fun MutablePythonPackage.postprocess() {
-    this.removeEmptyModules()
-    this.reorderParameters()
-    this.createAttributesForParametersOfConstructor()
+    removeEmptyModules()
+    reorderParameters()
+    createAttributesForParametersOfConstructor()
 }

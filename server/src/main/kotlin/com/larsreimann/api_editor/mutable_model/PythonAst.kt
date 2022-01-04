@@ -10,10 +10,7 @@ import com.larsreimann.api_editor.model.PythonImport
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.model.SerializablePythonAttribute
 import com.larsreimann.api_editor.model.SerializablePythonClass
-import com.larsreimann.api_editor.model.SerializablePythonEnum
 import com.larsreimann.api_editor.model.SerializablePythonFunction
-import com.larsreimann.api_editor.model.SerializablePythonModule
-import com.larsreimann.api_editor.model.SerializablePythonPackage
 import com.larsreimann.api_editor.model.SerializablePythonParameter
 import com.larsreimann.api_editor.model.SerializablePythonResult
 
@@ -42,8 +39,7 @@ class MutablePythonPackage(
     override var name: String,
     var version: String,
     modules: List<MutablePythonModule> = emptyList(),
-    override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
-    var originalDeclaration: SerializablePythonPackage? = null
+    override val annotations: MutableList<EditorAnnotation> = mutableListOf()
 ) : MutablePythonDeclaration() {
 
     val modules = ContainmentList(modules)
@@ -60,8 +56,7 @@ class MutablePythonModule(
     classes: List<MutablePythonClass> = emptyList(),
     enums: List<MutablePythonEnum> = emptyList(),
     functions: List<MutablePythonFunction> = emptyList(),
-    override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
-    var originalDeclaration: SerializablePythonModule? = null
+    override val annotations: MutableList<EditorAnnotation> = mutableListOf()
 ) : MutablePythonDeclaration() {
 
     val classes = ContainmentList(classes)
@@ -100,8 +95,7 @@ class MutablePythonClass(
 data class MutablePythonEnum(
     override var name: String,
     val instances: MutableList<PythonEnumInstance> = mutableListOf(),
-    override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
-    var originalDeclaration: SerializablePythonEnum? = null
+    override val annotations: MutableList<EditorAnnotation> = mutableListOf()
 ) : MutablePythonDeclaration()
 
 class MutablePythonFunction(
