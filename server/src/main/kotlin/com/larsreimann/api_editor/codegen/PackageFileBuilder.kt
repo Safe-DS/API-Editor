@@ -1,37 +1,29 @@
-package com.larsreimann.api_editor.io;
+package com.larsreimann.api_editor.codegen
 
-import com.larsreimann.api_editor.codegen.ModuleAdapterContentBuilder;
-import com.larsreimann.api_editor.model.SerializablePythonModule;
-import com.larsreimann.api_editor.model.SerializablePythonPackage;
-import com.larsreimann.api_editor.mutable_model.MutablePythonModule;
-import com.larsreimann.api_editor.mutable_model.MutablePythonPackage;
-import de.unibonn.simpleml.constant.SmlFileExtension;
-import kotlin.io.FilesKt;
+import com.larsreimann.api_editor.mutable_model.MutablePythonModule
+import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
+import de.unibonn.simpleml.constant.SmlFileExtension
+import java.io.BufferedWriter
+import java.io.File
+import java.io.FileWriter
+import java.io.IOException
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
+import java.util.function.Consumer
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-
-import static com.larsreimann.api_editor.codegen.CompilationUnitStubContentBuilderKt.buildCompilationUnitToString;
-
-public class PackageFileBuilder {
-    MutablePythonPackage pythonPackage;
-    Path workingDirectory;
+class PackageFileBuilder(var pythonPackage: MutablePythonPackage) {
+    var workingDirectory: Path
 
     /**
      * Constructor for PackageFileBuilder
      *
      * @param pythonPackage The package whose files should be generated
      */
-    public PackageFileBuilder(MutablePythonPackage pythonPackage) {
-        this.pythonPackage = pythonPackage;
-        this.workingDirectory = Paths.get("api-editor_inferredAPI");
+    init {
+        workingDirectory = Paths.get("api-editor_inferredAPI")
     }
 
     /**
@@ -39,90 +31,92 @@ public class PackageFileBuilder {
      * initialized class and puts them in the folder
      * at the classes specified zip folder path
      */
-    public String buildModuleFiles() throws Exception {
-        Path workingPath = Files.createTempDirectory(workingDirectory.toString());
-        pythonPackage.getModules().forEach(module -> {
+    @Throws(Exception::class)
+    fun buildModuleFiles(): String {
+        val workingPath = Files.createTempDirectory(workingDirectory.toString())
+        pythonPackage.modules.forEach(Consumer { module: MutablePythonModule ->
             try {
                 buildFile(
-                    module.getName(),
+                    module.name,
                     buildAdapterContent(
                         module
                     ),
-                    Paths.get(workingPath.toString(),
+                    Paths.get(
+                        workingPath.toString(),
                         "adapter",
                         "simpleml"
                     ),
                     "py"
-                );
-
-                var moduleNameParts = module.getName().split("\\.");
-
+                )
+                val moduleNameParts = module.name.split("\\.").toTypedArray()
                 buildFile(
-                    String.join(".", moduleNameParts) + "." + moduleNameParts[moduleNameParts.length - 1],
+                    java.lang.String.join(".", *moduleNameParts) + "." + moduleNameParts[moduleNameParts.size - 1],
                     buildStubContent(module),
-                    Paths.get(workingPath.toString(),
+                    Paths.get(
+                        workingPath.toString(),
                         "stub",
                         "simpleml"
                     ),
                     SmlFileExtension.Stub.toString()
-                );
-            } catch (Exception e) {
-                e.printStackTrace();
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
-        });
-        var zipFolderPath = zip(workingPath);
-        File workingDirectory = new File(workingPath.toString());
-        FilesKt.deleteRecursively(workingDirectory);
-
-        return zipFolderPath;
+        })
+        val zipFolderPath = zip(workingPath)
+        val workingDirectory = File(workingPath.toString())
+        workingDirectory.deleteRecursively()
+        return zipFolderPath
     }
 
-    private String zip(Path workingFolderPath) throws Exception {
-        Path path = Files.createTempFile(workingDirectory.toString(), ".zip");
-        try (ZipOutputStream zipOutputStream = new ZipOutputStream(Files.newOutputStream(path))) {
+    @Throws(Exception::class)
+    private fun zip(workingFolderPath: Path): String {
+        val path = Files.createTempFile(workingDirectory.toString(), ".zip")
+        ZipOutputStream(Files.newOutputStream(path)).use { zipOutputStream ->
             Files.walk(workingFolderPath)
-                .filter(currentPath -> !Files.isDirectory(currentPath))
-                .forEach(currentPath -> {
-                    ZipEntry zipEntry = new ZipEntry(workingFolderPath.relativize(currentPath).toString());
+                .filter { currentPath: Path? -> !Files.isDirectory(currentPath) }
+                .forEach { currentPath: Path? ->
+                    val zipEntry = ZipEntry(workingFolderPath.relativize(currentPath).toString())
                     try {
-                        zipOutputStream.putNextEntry(zipEntry);
-                        Files.copy(currentPath, zipOutputStream);
-                        zipOutputStream.closeEntry();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        zipOutputStream.putNextEntry(zipEntry)
+                        Files.copy(currentPath, zipOutputStream)
+                        zipOutputStream.closeEntry()
+                    } catch (e: IOException) {
+                        e.printStackTrace()
                     }
-                });
+                }
         }
-        return path.toString();
+        return path.toString()
     }
 
-    private void buildFile(
-        String fileName,
-        String content,
-        Path workingFolderPath,
-        String fileExtension
+    private fun buildFile(
+        fileName: String,
+        content: String,
+        workingFolderPath: Path,
+        fileExtension: String
     ) {
-        String formattedFileName = fileName.replaceAll("\\.", "/")
-            + "." + fileExtension;
-        Path filePath = Paths.get(workingFolderPath.toString(), formattedFileName);
-        Path directoryPath = filePath.getParent();
-        File directory = new File(directoryPath.toString());
-        directory.mkdirs();
-        try (BufferedWriter out = new BufferedWriter(new FileWriter(filePath.toString()))) {
-            out.write(content);
-            out.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
+        val formattedFileName = (fileName.replace("\\.".toRegex(), "/")
+            + "." + fileExtension)
+        val filePath = Paths.get(workingFolderPath.toString(), formattedFileName)
+        val directoryPath = filePath.parent
+        val directory = File(directoryPath.toString())
+        directory.mkdirs()
+        try {
+            BufferedWriter(FileWriter(filePath.toString())).use { out ->
+                out.write(content)
+                out.flush()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
-    private String buildAdapterContent(MutablePythonModule pythonModule) {
-        ModuleAdapterContentBuilder moduleAdapterContentBuilder =
-            new ModuleAdapterContentBuilder(pythonModule);
-        return moduleAdapterContentBuilder.buildModuleContent();
+    private fun buildAdapterContent(pythonModule: MutablePythonModule): String {
+        val moduleAdapterContentBuilder = ModuleAdapterContentBuilder(pythonModule)
+        return moduleAdapterContentBuilder.buildModuleContent()
     }
 
-    private String buildStubContent(MutablePythonModule pythonModule) {
-        return buildCompilationUnitToString(pythonModule);
+    private fun buildStubContent(pythonModule: MutablePythonModule): String {
+        return buildCompilationUnitToString(pythonModule)
     }
 }

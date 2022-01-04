@@ -1,50 +1,42 @@
-package com.larsreimann.api_editor.codegen;
+package com.larsreimann.api_editor.codegen
 
-import com.larsreimann.api_editor.io.FileBuilder;
-import com.larsreimann.api_editor.model.SerializablePythonClass;
-import com.larsreimann.api_editor.mutable_model.MutablePythonClass;
+import com.larsreimann.api_editor.mutable_model.MutablePythonClass
+import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class ClassAdapterContentBuilder extends FileBuilder {
-    MutablePythonClass pythonClass;
-
-    /**
-     * Constructor for ClassAdapterContentBuilder
-     *
-     * @param pythonClass The module whose adapter content should be built
-     */
-    public ClassAdapterContentBuilder(MutablePythonClass pythonClass) {
-        this.pythonClass = pythonClass;
-    }
+/**
+ * Constructor for ClassAdapterContentBuilder
+ *
+ * @param pythonClass The module whose adapter content should be built
+ */
+class ClassAdapterContentBuilder(var pythonClass: MutablePythonClass) {
 
     /**
      * Builds a string containing the formatted class content
      *
      * @return The string containing the formatted class content
      */
-    public String buildClass() {
-        String formattedClass = "class " + pythonClass.getName() + ":";
-        if (!pythonClass.getMethods().isEmpty()) {
-            formattedClass = formattedClass + "\n";
-            formattedClass = formattedClass
-                + indent(listToString(buildAllFunctions(), 2));
+    fun buildClass(): String {
+        var formattedClass = "class " + pythonClass.name + ":"
+        if (!pythonClass.methods.isEmpty()) {
+            formattedClass = """
+                $formattedClass
+
+                """.trimIndent()
+            formattedClass = (formattedClass
+                + indent(listToString(buildAllFunctions(), 2)))
         }
-        return formattedClass;
+        return formattedClass
     }
 
-    private List<String> buildAllFunctions() {
-        List<String> formattedFunctions = new ArrayList<>();
-        pythonClass.getMethods()
-            .forEach(pythonFunction -> {
-                    FunctionAdapterContentBuilder functionAdapterContentBuilder =
-                        new FunctionAdapterContentBuilder(pythonFunction);
-                    formattedFunctions.add(
-                        functionAdapterContentBuilder.buildFunction()
-                    );
-                }
-            );
-        return formattedFunctions;
+    private fun buildAllFunctions(): List<String> {
+        val formattedFunctions: MutableList<String> = ArrayList()
+        pythonClass.methods
+            .forEach { pythonFunction: MutablePythonFunction ->
+                val functionAdapterContentBuilder = FunctionAdapterContentBuilder(pythonFunction)
+                formattedFunctions.add(
+                    functionAdapterContentBuilder.buildFunction()
+                )
+            }
+        return formattedFunctions
     }
 }

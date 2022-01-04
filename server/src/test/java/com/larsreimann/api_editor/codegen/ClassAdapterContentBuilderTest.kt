@@ -1,216 +1,203 @@
-package com.larsreimann.api_editor.codegen;
+package com.larsreimann.api_editor.codegen
 
-import com.larsreimann.api_editor.model.PythonParameterAssignment;
-import com.larsreimann.api_editor.model.RenameAnnotation;
-import com.larsreimann.api_editor.model.SerializablePythonClass;
-import com.larsreimann.api_editor.model.SerializablePythonFunction;
-import com.larsreimann.api_editor.model.SerializablePythonParameter;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import com.larsreimann.api_editor.codegen.ClassAdapterContentBuilder.buildClass
+import com.larsreimann.api_editor.model.SerializablePythonClass
+import com.larsreimann.api_editor.model.SerializablePythonFunction
+import com.larsreimann.api_editor.model.EditorAnnotation
+import com.larsreimann.api_editor.codegen.ClassAdapterContentBuilder
+import org.junit.jupiter.api.Assertions
+import com.larsreimann.api_editor.model.SerializablePythonParameter
+import com.larsreimann.api_editor.model.PythonParameterAssignment
+import com.larsreimann.api_editor.model.SerializablePythonResult
+import com.larsreimann.api_editor.model.RenameAnnotation
+import org.junit.jupiter.api.Test
+import java.util.List
 
-import java.util.Collections;
-import java.util.List;
-
-class ClassAdapterContentBuilderTest {
+internal class ClassAdapterContentBuilderTest {
     @Test
-    void buildClassReturnsFormattedClassWithNoFunctions() {
+    fun buildClassReturnsFormattedClassWithNoFunctions() {
         // given
-        SerializablePythonClass testClass = new SerializablePythonClass(
+        val testClass = SerializablePythonClass(
             "test-class",
             "test-module.test-class",
-            List.of("test-decorator"),
-            List.of("test-superclass"),
-            Collections.emptyList(),
+            listOf("test-decorator"),
+            listOf("test-superclass"), mutableListOf(),
             true,
             "Lorem ipsum",
-            "Lorem ipsum",
-            Collections.emptyList()
-        );
+            "Lorem ipsum", mutableListOf()
+        )
 
         // when
-        ClassAdapterContentBuilder classAdapterContentBuilder =
-            new ClassAdapterContentBuilder(testClass);
-        String formattedClass = classAdapterContentBuilder.buildClass();
+        val classAdapterContentBuilder = ClassAdapterContentBuilder(testClass)
+        val formattedClass = classAdapterContentBuilder.buildClass()
 
         // then
-        String expectedFormattedClass = "class test-class:";
-        Assertions.assertEquals(expectedFormattedClass, formattedClass);
+        val expectedFormattedClass = "class test-class:"
+        Assertions.assertEquals(expectedFormattedClass, formattedClass)
     }
 
     @Test
-    void buildClassReturnsFormattedClassWithOneFunction() {
+    fun buildClassReturnsFormattedClassWithOneFunction() {
         // given
-        SerializablePythonClass testClass = new SerializablePythonClass(
+        val testClass = SerializablePythonClass(
             "test-class",
             "test-module.test-class",
-            List.of("test-decorator"),
-            List.of("test-superclass"),
-            List.of(new SerializablePythonFunction(
-                "__init__",
-                "test-module.test-class.__init__",
-                List.of("decorators"),
-                List.of(
-                    new SerializablePythonParameter(
-                        "self",
-                        "test-module.test-class.__init__.self",
-                        null,
-                        PythonParameterAssignment.IMPLICIT,
-                        true,
-                        "typeInDocs",
-                        "description",
-                        Collections.emptyList()
-                    ),
-                    new SerializablePythonParameter(
-                        "only-param",
-                        "test-module.test-class.__init__.only-param",
-                        "'defaultValue'",
-                        PythonParameterAssignment.POSITION_OR_NAME,
-                        true,
-                        "str",
-                        "description",
-                        List.of()
-                    )
-                ),
-                Collections.emptyList(),
-                true,
-                "description",
-                "fullDocstring",
-                Collections.emptyList()
-            )),
+            listOf("test-decorator"),
+            listOf("test-superclass"),
+            mutableListOf(
+                SerializablePythonFunction(
+                    "__init__",
+                    "test-module.test-class.__init__",
+                    listOf("decorators"),
+                    mutableListOf(
+                        SerializablePythonParameter(
+                            "self",
+                            "test-module.test-class.__init__.self",
+                            null,
+                            PythonParameterAssignment.IMPLICIT,
+                            true,
+                            "typeInDocs",
+                            "description", mutableListOf()
+                        ),
+                        SerializablePythonParameter(
+                            "only-param",
+                            "test-module.test-class.__init__.only-param",
+                            "'defaultValue'",
+                            PythonParameterAssignment.POSITION_OR_NAME,
+                            true,
+                            "str",
+                            "description",
+                            mutableListOf()
+                        )
+                    ), mutableListOf(),
+                    true,
+                    "description",
+                    "fullDocstring", mutableListOf()
+                )
+            ),
             true,
             "Lorem ipsum",
-            "Lorem ipsum",
-            Collections.emptyList()
-        );
+            "Lorem ipsum", mutableListOf()
+        )
 
         // when
-        ClassAdapterContentBuilder classAdapterContentBuilder =
-            new ClassAdapterContentBuilder(testClass);
-        String formattedClass = classAdapterContentBuilder.buildClass();
+        val classAdapterContentBuilder = ClassAdapterContentBuilder(testClass)
+        val formattedClass = classAdapterContentBuilder.buildClass()
 
         // then
-        String expectedFormattedClass = """
-            class test-class:
-                def __init__(self, *, only-param='defaultValue'):
-                    test-module.test-class.__init__(only-param)""";
-        Assertions.assertEquals(expectedFormattedClass, formattedClass);
+        val expectedFormattedClass: String =
+            """
+            |class test-class:
+            |    def __init__(self, *, only-param='defaultValue'):
+            |        test-module.test-class.__init__(only-param)""".trimMargin()
+            Assertions.assertEquals(expectedFormattedClass, formattedClass)
     }
 
     @Test
-    void buildClassReturnsFormattedClassWithTwoFunctions() {
+    fun buildClassReturnsFormattedClassWithTwoFunctions() {
         // given
-        SerializablePythonClass testClass = new SerializablePythonClass(
+        val testClass = SerializablePythonClass(
             "test-class",
             "test-module.test-class",
-            List.of("test-decorator"),
-            List.of("test-superclass"),
-            List.of(
-                new SerializablePythonFunction(
+            listOf("test-decorator"),
+            listOf("test-superclass"),
+            mutableListOf(
+                SerializablePythonFunction(
                     "test-class-function1",
                     "test-module.test-class.test-class-function1",
-                    List.of("decorators"),
-                    List.of(
-                        new SerializablePythonParameter(
+                    listOf("decorators"),
+                    mutableListOf(
+                        SerializablePythonParameter(
                             "self",
                             "test-module.test-class.test-class-function1.self",
                             null,
                             PythonParameterAssignment.IMPLICIT,
                             true,
                             "typeInDocs",
-                            "description",
-                            Collections.emptyList()
+                            "description", mutableListOf()
                         ),
-                        new SerializablePythonParameter(
+                        SerializablePythonParameter(
                             "only-param",
                             "test-module.test-class.test-class-function1.only-param",
                             null,
                             PythonParameterAssignment.POSITION_OR_NAME,
                             true,
                             "typeInDocs",
-                            "description",
-                            Collections.emptyList()
+                            "description", mutableListOf()
                         )
-                    ),
-                    Collections.emptyList(),
+                    ), mutableListOf(),
                     true,
                     "description",
-                    "fullDocstring",
-                    Collections.emptyList()
+                    "fullDocstring", mutableListOf()
                 ),
-                new SerializablePythonFunction(
+                SerializablePythonFunction(
                     "test-class-function2",
                     "test-module.test-class.test-class-function2",
-                    List.of("decorators"),
-                    List.of(
-                        new SerializablePythonParameter(
+                    listOf("decorators"),
+                    mutableListOf(
+                        SerializablePythonParameter(
                             "self",
                             "test-module.test-class.test-class-function2.self",
                             null,
                             PythonParameterAssignment.IMPLICIT,
                             true,
                             "typeInDocs",
-                            "description",
-                            Collections.emptyList()
+                            "description", mutableListOf()
                         ),
-                        new SerializablePythonParameter(
+                        SerializablePythonParameter(
                             "only-param",
                             "test-module.test-class.test-class-function2.only-param",
                             null,
                             PythonParameterAssignment.POSITION_OR_NAME,
                             true,
                             "typeInDocs",
-                            "description",
-                            Collections.emptyList()
+                            "description", mutableListOf()
                         )
-                    ),
-                    Collections.emptyList(),
+                    ), mutableListOf(),
                     true,
                     "description",
-                    "fullDocstring",
-                    Collections.emptyList()
+                    "fullDocstring", mutableListOf()
                 )
             ),
             true,
             "Lorem ipsum",
-            "Lorem ipsum",
-            Collections.emptyList()
-        );
+            "Lorem ipsum", mutableListOf()
+        )
 
         // when
-        ClassAdapterContentBuilder classAdapterContentBuilder =
-            new ClassAdapterContentBuilder(testClass);
-        String formattedClass = classAdapterContentBuilder.buildClass();
+        val classAdapterContentBuilder = ClassAdapterContentBuilder(testClass)
+        val formattedClass = classAdapterContentBuilder.buildClass()
 
         // then
-        String expectedFormattedClass = """
-            class test-class:
-                def test-class-function1(self, only-param):
-                    test-module.test-class.test-class-function1(only-param)
-
-                def test-class-function2(self, only-param):
-                    test-module.test-class.test-class-function2(only-param)""";
-        Assertions.assertEquals(expectedFormattedClass, formattedClass);
+        val expectedFormattedClass: String =
+            """
+            |class test-class:
+            |    def test-class-function1(self, only-param):
+            |        test-module.test-class.test-class-function1(only-param)
+            |
+            |    def test-class-function2(self, only-param):
+            |        test-module.test-class.test-class-function2(only-param)""".trimMargin()
+            Assertions.assertEquals(expectedFormattedClass, formattedClass)
     }
 
     @Test
-    void buildClassReturnsFormattedClassBasedOnOriginalDeclaration() {
+    fun buildClassReturnsFormattedClassBasedOnOriginalDeclaration() {
         // given
-        SerializablePythonFunction testFunction = new SerializablePythonFunction(
+        val testFunction = SerializablePythonFunction(
             "test-function",
             "test-module.test-class.test-function",
-            List.of("test-decorator"),
-            List.of(
-                new SerializablePythonParameter(
+            listOf("test-decorator"),
+            mutableListOf(
+                SerializablePythonParameter(
                     "self",
                     "test-module.test-class.test-class-function.self",
                     null,
                     PythonParameterAssignment.IMPLICIT,
                     true,
                     "typeInDocs",
-                    "description",
-                    Collections.emptyList()
+                    "description", mutableListOf()
                 ),
-                new SerializablePythonParameter(
+                SerializablePythonParameter(
                     "second-param",
                     "test-module.test-class.test-class-function.second-param",
                     null,
@@ -218,11 +205,11 @@ class ClassAdapterContentBuilderTest {
                     true,
                     "typeInDocs",
                     "description",
-                    List.of(
-                        new RenameAnnotation("newSecondParamName")
+                    mutableListOf(
+                        RenameAnnotation("newSecondParamName")
                     )
                 ),
-                new SerializablePythonParameter(
+                SerializablePythonParameter(
                     "third-param",
                     "test-module.test-class.test-class-function.third-param",
                     null,
@@ -230,44 +217,40 @@ class ClassAdapterContentBuilderTest {
                     true,
                     "typeInDocs",
                     "description",
-                    List.of(
-                        new RenameAnnotation("newThirdParamName")
+                    mutableListOf(
+                        RenameAnnotation("newThirdParamName")
                     )
                 )
-            ),
-            Collections.emptyList(),
+            ), mutableListOf(),
             true,
             "Lorem ipsum",
             "fullDocstring",
-            List.of(
-                new RenameAnnotation("newFunctionName")
+            mutableListOf(
+                RenameAnnotation("newFunctionName")
             )
-        );
-
-        SerializablePythonClass testClass = new SerializablePythonClass(
+        )
+        val testClass = SerializablePythonClass(
             "test-class",
-            "test-module.test-class",
-            Collections.emptyList(),
-            Collections.emptyList(),
-            List.of(testFunction),
+            "test-module.test-class", emptyList(), emptyList(),
+            mutableListOf(testFunction),
             true,
             "",
             "",
-            List.of(
-                new RenameAnnotation("newClassName")
+            mutableListOf(
+                RenameAnnotation("newClassName")
             )
-        );
+        )
 
         // when
-        ClassAdapterContentBuilder classAdapterContentBuilder =
-            new ClassAdapterContentBuilder(testClass);
-        String formattedClass = classAdapterContentBuilder.buildClass();
+        val classAdapterContentBuilder = ClassAdapterContentBuilder(testClass)
+        val formattedClass = classAdapterContentBuilder.buildClass()
 
         // then
-        String expectedFormattedClass = """
-            class test-class:
-                def test-function(self, second-param, third-param):
-                    test-module.test-class.test-function(second-param, third-param=third-param)""";
-        Assertions.assertEquals(expectedFormattedClass, formattedClass);
+        val expectedFormattedClass: String =
+            """
+            |class test-class:
+            |    def test-function(self, second-param, third-param):
+            |        test-module.test-class.test-function(second-param, third-param=third-param)""".trimMargin()
+            Assertions.assertEquals(expectedFormattedClass, formattedClass)
     }
 }

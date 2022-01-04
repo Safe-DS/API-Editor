@@ -1,6 +1,6 @@
 package com.larsreimann.api_editor.server
 
-import com.larsreimann.api_editor.io.PackageFileBuilder
+import com.larsreimann.api_editor.codegen.PackageFileBuilder
 import com.larsreimann.api_editor.model.SerializablePythonPackage
 import com.larsreimann.api_editor.transformation.processPackage
 import com.larsreimann.api_editor.validation.AnnotationValidator

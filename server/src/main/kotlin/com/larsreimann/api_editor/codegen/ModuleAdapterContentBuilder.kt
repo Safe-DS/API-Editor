@@ -1,134 +1,110 @@
-package com.larsreimann.api_editor.codegen;
+package com.larsreimann.api_editor.codegen
 
-import com.larsreimann.api_editor.io.FileBuilder;
-import com.larsreimann.api_editor.model.SerializablePythonModule;
-import com.larsreimann.api_editor.mutable_model.MutablePythonModule;
+import com.larsreimann.api_editor.mutable_model.MutablePythonClass
+import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
+import com.larsreimann.api_editor.mutable_model.MutablePythonModule
+import java.util.Objects
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-
-public class ModuleAdapterContentBuilder extends FileBuilder {
-    MutablePythonModule pythonModule;
-
-    /**
-     * Constructor for ModuleAdapterContentBuilder
-     *
-     * @param pythonModule The module whose adapter content should be built
-     */
-    public ModuleAdapterContentBuilder(MutablePythonModule pythonModule) {
-        this.pythonModule = pythonModule;
-    }
+/**
+ * Constructor for ModuleAdapterContentBuilder
+ *
+ * @param pythonModule The module whose adapter content should be built
+ */
+class ModuleAdapterContentBuilder(var pythonModule: MutablePythonModule) {
 
     /**
      * Builds a string containing the formatted module content
      *
      * @return The string containing the formatted module content
      */
-    public String buildModuleContent() {
-        String formattedImport = buildNamespace();
-        String formattedClasses = buildAllClasses();
-        String formattedFunctions = buildAllFunctions();
-        String[] separators = buildSeparators(
+    fun buildModuleContent(): String {
+        var formattedImport = buildNamespace()
+        var formattedClasses = buildAllClasses()
+        var formattedFunctions = buildAllFunctions()
+        val separators = buildSeparators(
             formattedImport, formattedClasses, formattedFunctions
-        );
-        formattedImport = formattedImport + separators[0];
-        formattedClasses = formattedClasses + separators[1];
-        formattedFunctions = formattedFunctions + separators[2];
-        return formattedImport
+        )
+        formattedImport += separators[0]
+        formattedClasses += separators[1]
+        formattedFunctions += separators[2]
+        return (formattedImport
             + formattedClasses
-            + formattedFunctions;
+            + formattedFunctions)
     }
 
-    private String buildNamespace() {
-        HashSet<String> importedModules = new HashSet<>();
-        pythonModule.getFunctions().forEach(
-            pythonFunction ->
-                importedModules.add(
-                    buildParentDeclarationName(
-                        Objects.requireNonNull(
-                            pythonFunction
-                                .getOriginalDeclaration()
-                        ).getQualifiedName()
-                    )
+    private fun buildNamespace(): String {
+        val importedModules = HashSet<String>()
+        pythonModule.functions.forEach { pythonFunction: MutablePythonFunction ->
+            importedModules.add(
+                buildParentDeclarationName(
+                    Objects.requireNonNull(pythonFunction.originalDeclaration)!!.qualifiedName
                 )
-        );
-        pythonModule.getClasses().forEach(
-            pythonClass ->
-                importedModules.add(
-                    buildParentDeclarationName(
-                        Objects.requireNonNull(
-                            pythonClass
-                                .getOriginalDeclaration()
-                        ).getQualifiedName()
-                    )
+            )
+        }
+        pythonModule.classes.forEach { pythonClass: MutablePythonClass ->
+            importedModules.add(
+                buildParentDeclarationName(
+                    Objects.requireNonNull(pythonClass.originalDeclaration)!!.qualifiedName
                 )
-        );
-        List<String> imports = new ArrayList<>();
-        importedModules.forEach(
-            moduleName ->
-                imports.add("import " + moduleName)
-        );
-        return listToString(imports, 1);
+            )
+        }
+        val imports: MutableList<String> = ArrayList()
+        importedModules.forEach { moduleName: String -> imports.add("import $moduleName") }
+        return listToString(imports, 1)
     }
 
-    private String buildParentDeclarationName(String qualifiedName) {
-        String PATH_SEPARATOR = ".";
-        int separationPosition = qualifiedName.lastIndexOf(PATH_SEPARATOR);
-        return qualifiedName.substring(0, separationPosition);
+    private fun buildParentDeclarationName(qualifiedName: String): String {
+        val PATH_SEPARATOR = "."
+        val separationPosition = qualifiedName.lastIndexOf(PATH_SEPARATOR)
+        return qualifiedName.substring(0, separationPosition)
     }
 
-    private String buildAllClasses() {
-        List<String> formattedClasses = new ArrayList<>();
-        pythonModule.getClasses().forEach(pythonClass -> {
-                ClassAdapterContentBuilder classAdapterContentBuilder =
-                    new ClassAdapterContentBuilder(pythonClass);
-                formattedClasses.add(classAdapterContentBuilder.buildClass());
+    private fun buildAllClasses(): String {
+        val formattedClasses: MutableList<String> = ArrayList()
+        pythonModule.classes.forEach { pythonClass: MutablePythonClass? ->
+            val classAdapterContentBuilder = ClassAdapterContentBuilder(
+                pythonClass!!
+            )
+            formattedClasses.add(classAdapterContentBuilder.buildClass())
+        }
+        return listToString(formattedClasses, 2)
+    }
+
+    private fun buildAllFunctions(): String {
+        val formattedFunctions: MutableList<String> = ArrayList()
+        pythonModule.functions.forEach { pythonFunction: MutablePythonFunction? ->
+            val functionAdapterContentBuilder = FunctionAdapterContentBuilder(pythonFunction!!)
+            formattedFunctions.add(functionAdapterContentBuilder.buildFunction())
+        }
+        return listToString(formattedFunctions, 2)
+    }
+
+    companion object {
+        private fun buildSeparators(
+            formattedImports: String,
+            formattedClasses: String,
+            formattedFunctions: String
+        ): Array<String> {
+            val importSeparator: String = if (formattedImports.isBlank()) {
+                ""
+            } else if (formattedClasses.isBlank() && formattedFunctions.isBlank()) {
+                "\n"
+            } else {
+                "\n\n"
             }
-        );
-        return listToString(formattedClasses, 2);
-    }
-
-    private String buildAllFunctions() {
-        List<String> formattedFunctions = new ArrayList<>();
-        pythonModule.getFunctions().forEach(pythonFunction -> {
-                FunctionAdapterContentBuilder functionAdapterContentBuilder =
-                    new FunctionAdapterContentBuilder(pythonFunction);
-                formattedFunctions.add(functionAdapterContentBuilder.buildFunction());
+            val classesSeparator: String = if (formattedClasses.isBlank()) {
+                ""
+            } else if (formattedFunctions.isBlank()) {
+                "\n"
+            } else {
+                "\n\n"
             }
-        );
-        return listToString(formattedFunctions, 2);
-    }
-
-    private static String[] buildSeparators(
-        String formattedImports,
-        String formattedClasses,
-        String formattedFunctions
-    ) {
-        String importSeparator;
-        if (formattedImports.isBlank()) {
-            importSeparator = "";
-        } else if (formattedClasses.isBlank() && formattedFunctions.isBlank()) {
-            importSeparator = "\n";
-        } else {
-            importSeparator = "\n\n";
+            val functionSeparator: String = if (formattedFunctions.isBlank()) {
+                ""
+            } else {
+                "\n"
+            }
+            return arrayOf(importSeparator, classesSeparator, functionSeparator)
         }
-        String classesSeparator;
-        if (formattedClasses.isBlank()) {
-            classesSeparator = "";
-        } else if (formattedFunctions.isBlank()) {
-            classesSeparator = "\n";
-        } else {
-            classesSeparator = "\n\n";
-        }
-        String functionSeparator;
-        if (formattedFunctions.isBlank()) {
-            functionSeparator = "";
-        } else {
-            functionSeparator = "\n";
-        }
-
-        return new String[]{importSeparator, classesSeparator, functionSeparator};
     }
 }
