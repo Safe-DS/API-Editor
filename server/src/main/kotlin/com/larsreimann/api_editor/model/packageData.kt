@@ -8,8 +8,6 @@ sealed class SerializablePythonDeclaration {
     abstract val name: String
     abstract val annotations: MutableList<EditorAnnotation>
 
-    abstract fun accept(transformer: PackageDataTransformer): SerializablePythonDeclaration?
-
     abstract fun children(): Sequence<SerializablePythonDeclaration>
     fun descendants(): Sequence<SerializablePythonDeclaration> = sequence {
         children().forEach {
@@ -32,21 +30,6 @@ data class SerializablePythonPackage(
     override val annotations: MutableList<EditorAnnotation>
 ) : SerializablePythonDeclaration() {
 
-    override fun accept(transformer: PackageDataTransformer): SerializablePythonPackage? {
-        val newPackageOnEnter = transformer.createNewPackageOnEnter(this) ?: return null
-
-        val newModules = when {
-            transformer.shouldVisitModulesIn(newPackageOnEnter) -> {
-                newPackageOnEnter.modules.mapNotNull { it.accept(transformer) }
-            }
-            else -> {
-                this.modules
-            }
-        }
-
-        return transformer.createNewPackageOnLeave(newPackageOnEnter, newModules)
-    }
-
     override fun children() = sequence {
         yieldAll(modules)
     }
@@ -65,65 +48,10 @@ data class SerializablePythonModule(
     @Transient
     val enums = mutableListOf<SerializablePythonEnum>()
 
-    override fun accept(transformer: PackageDataTransformer): SerializablePythonModule? {
-        val newModuleOnEnter = transformer.createNewModuleOnEnter(this) ?: return null
-
-        val newClasses = when {
-            transformer.shouldVisitClassesIn(newModuleOnEnter) -> {
-                newModuleOnEnter.classes.mapNotNull { it.accept(transformer) }
-            }
-            else -> {
-                newModuleOnEnter.classes
-            }
-        }
-
-        val newEnums = when {
-            transformer.shouldVisitEnumsIn(newModuleOnEnter) -> {
-                newModuleOnEnter.enums.mapNotNull { it.accept(transformer) }
-            }
-            else -> {
-                newModuleOnEnter.enums
-            }
-        }
-
-        val newFunctions = when {
-            transformer.shouldVisitFunctionsIn(newModuleOnEnter) -> {
-                newModuleOnEnter.functions.mapNotNull { it.accept(transformer) }
-            }
-            else -> {
-                newModuleOnEnter.functions
-            }
-        }
-
-        return transformer.createNewModuleOnLeave(newModuleOnEnter, newClasses, newEnums, newFunctions)
-    }
-
     override fun children() = sequence {
         yieldAll(classes)
         yieldAll(enums)
         yieldAll(functions)
-    }
-
-    fun fullCopy(
-        name: String = this.name,
-        imports: List<PythonImport> = this.imports,
-        fromImports: List<PythonFromImport> = this.fromImports,
-        classes: MutableList<SerializablePythonClass> = this.classes,
-        enums: MutableList<SerializablePythonEnum> = this.enums,
-        functions: MutableList<SerializablePythonFunction> = this.functions,
-        annotations: MutableList<EditorAnnotation> = this.annotations,
-    ): SerializablePythonModule {
-
-        val result = copy(
-            name = name,
-            imports = imports,
-            fromImports = fromImports,
-            classes = classes,
-            functions = functions,
-            annotations = annotations
-        )
-        result.enums += enums
-        return result
     }
 }
 
@@ -167,63 +95,9 @@ data class SerializablePythonClass(
         return methods.firstOrNull { it.name == "__init__" }
     }
 
-    override fun accept(transformer: PackageDataTransformer): SerializablePythonClass? {
-        val newClassOnEnter = transformer.createNewClassOnEnter(this) ?: return null
-
-        val newAttributes = when {
-            transformer.shouldVisitAttributesIn(newClassOnEnter) -> {
-                newClassOnEnter.attributes.mapNotNull { it.accept(transformer) }
-            }
-            else -> {
-                newClassOnEnter.attributes
-            }
-        }
-
-        val newMethods = when {
-            transformer.shouldVisitMethodsIn(newClassOnEnter) -> {
-                newClassOnEnter.methods.mapNotNull { it.accept(transformer) }
-            }
-            else -> {
-                newClassOnEnter.methods
-            }
-        }
-
-        return transformer.createNewClassOnLeave(newClassOnEnter, newAttributes, newMethods)
-    }
-
     override fun children() = sequence {
         yieldAll(attributes)
         yieldAll(methods)
-    }
-
-    fun fullCopy(
-        name: String = this.name,
-        qualifiedName: String = this.qualifiedName,
-        decorators: List<String> = this.decorators,
-        superclasses: List<String> = this.superclasses,
-        attributes: MutableList<SerializablePythonAttribute> = this.attributes,
-        methods: MutableList<SerializablePythonFunction> = this.methods,
-        isPublic: Boolean = this.isPublic,
-        description: String = this.description,
-        fullDocstring: String = this.fullDocstring,
-        annotations: MutableList<EditorAnnotation> = this.annotations,
-        originalDeclaration: SerializablePythonClass? = this.originalDeclaration
-    ): SerializablePythonClass {
-
-        val result = copy(
-            name = name,
-            qualifiedName = qualifiedName,
-            decorators = decorators,
-            superclasses = superclasses,
-            methods = methods,
-            isPublic = isPublic,
-            description = description,
-            fullDocstring = fullDocstring,
-            annotations = annotations
-        )
-        result.originalDeclaration = originalDeclaration
-        result.attributes += attributes
-        return result
     }
 }
 
@@ -240,35 +114,7 @@ data class SerializablePythonAttribute(
     @Transient
     var boundary: Boundary? = null
 
-    override fun accept(transformer: PackageDataTransformer): SerializablePythonAttribute? {
-        return transformer.createNewAttribute(this)
-    }
-
     override fun children() = emptySequence<SerializablePythonDeclaration>()
-
-    fun fullCopy(
-        name: String = this.name,
-        qualifiedName: String = this.qualifiedName,
-        defaultValue: String? = this.defaultValue,
-        isPublic: Boolean = this.isPublic,
-        typeInDocs: String = this.typeInDocs,
-        description: String = this.description,
-        annotations: MutableList<EditorAnnotation> = this.annotations,
-        boundary: Boundary? = this.boundary,
-    ): SerializablePythonAttribute {
-
-        val result = copy(
-            name = name,
-            qualifiedName = qualifiedName,
-            defaultValue = defaultValue,
-            isPublic = isPublic,
-            typeInDocs = typeInDocs,
-            description = description,
-            annotations = annotations
-        )
-        result.boundary = boundary
-        return result
-    }
 }
 
 data class Boundary(
@@ -298,10 +144,6 @@ data class SerializablePythonEnum(
     val instances: List<PythonEnumInstance>,
     override val annotations: MutableList<EditorAnnotation>
 ) : SerializablePythonDeclaration() {
-
-    override fun accept(transformer: PackageDataTransformer): SerializablePythonEnum? {
-        return transformer.createNewEnum(this)
-    }
 
     override fun children() = emptySequence<SerializablePythonDeclaration>()
 }
@@ -335,65 +177,9 @@ data class SerializablePythonFunction(
 
     fun isConstructor() = name == "__init__"
 
-    override fun accept(transformer: PackageDataTransformer): SerializablePythonFunction? {
-        val newFunctionOnEnter = transformer.createNewFunctionOnEnter(this) ?: return null
-
-        val newParameters = when {
-            transformer.shouldVisitParametersIn(newFunctionOnEnter) -> {
-                newFunctionOnEnter.parameters.mapNotNull { it.accept(transformer) }
-            }
-            else -> {
-                newFunctionOnEnter.parameters
-            }
-        }
-
-        val newResults = when {
-            transformer.shouldVisitResultsIn(newFunctionOnEnter) -> {
-                newFunctionOnEnter.results.mapNotNull { it.accept(transformer) }
-            }
-            else -> {
-                newFunctionOnEnter.results
-            }
-        }
-
-        return transformer.createNewFunctionOnLeave(newFunctionOnEnter, newParameters, newResults)
-    }
-
     override fun children() = sequence {
         yieldAll(parameters)
         yieldAll(results)
-    }
-
-    fun fullCopy(
-        name: String = this.name,
-        qualifiedName: String = this.qualifiedName,
-        decorators: List<String> = this.decorators,
-        parameters: MutableList<SerializablePythonParameter> = this.parameters,
-        results: MutableList<SerializablePythonResult> = this.results,
-        isPublic: Boolean = this.isPublic,
-        description: String = this.description,
-        fullDocstring: String = this.fullDocstring,
-        annotations: MutableList<EditorAnnotation> = this.annotations,
-        calledAfter: MutableList<SerializablePythonFunction> = this.calledAfter,
-        isPure: Boolean = this.isPure,
-        originalDeclaration: SerializablePythonFunction? = this.originalDeclaration
-    ): SerializablePythonFunction {
-
-        val result = copy(
-            name = name,
-            qualifiedName = qualifiedName,
-            decorators = decorators,
-            parameters = parameters,
-            results = results,
-            isPublic = isPublic,
-            description = description,
-            fullDocstring = fullDocstring,
-            annotations = annotations,
-        )
-        result.originalDeclaration = originalDeclaration
-        result.calledAfter += calledAfter
-        result.isPure = isPure
-        return result
     }
 }
 
@@ -419,39 +205,7 @@ data class SerializablePythonParameter(
 
     fun isOptional() = defaultValue != null
 
-    override fun accept(transformer: PackageDataTransformer): SerializablePythonParameter? {
-        return transformer.createNewParameter(this)
-    }
-
     override fun children() = emptySequence<SerializablePythonDeclaration>()
-
-    fun fullCopy(
-        name: String = this.name,
-        qualifiedName: String = this.qualifiedName,
-        defaultValue: String? = this.defaultValue,
-        assignedBy: PythonParameterAssignment = this.assignedBy,
-        isPublic: Boolean = this.isPublic,
-        typeInDocs: String = this.typeInDocs,
-        description: String = this.description,
-        annotations: MutableList<EditorAnnotation> = this.annotations,
-        boundary: Boundary? = this.boundary,
-        originalDeclaration: SerializablePythonParameter? = this.originalDeclaration
-    ): SerializablePythonParameter {
-
-        val result = copy(
-            name = name,
-            qualifiedName = qualifiedName,
-            defaultValue = defaultValue,
-            assignedBy = assignedBy,
-            isPublic = isPublic,
-            typeInDocs = typeInDocs,
-            description = description,
-            annotations = annotations
-        )
-        result.originalDeclaration = originalDeclaration
-        result.boundary = boundary
-        return result
-    }
 }
 
 enum class PythonParameterAssignment {
@@ -478,29 +232,5 @@ data class SerializablePythonResult(
     @Transient
     var boundary: Boundary? = null
 
-    override fun accept(transformer: PackageDataTransformer): SerializablePythonResult? {
-        return transformer.createNewResult(this)
-    }
-
     override fun children() = emptySequence<SerializablePythonDeclaration>()
-
-    fun fullCopy(
-        name: String = this.name,
-        type: String = this.type,
-        typeInDocs: String = this.typeInDocs,
-        description: String = this.description,
-        annotations: MutableList<EditorAnnotation> = this.annotations,
-        boundary: Boundary? = this.boundary,
-    ): SerializablePythonResult {
-
-        val result = copy(
-            name = name,
-            type = type,
-            typeInDocs = typeInDocs,
-            description = description,
-            annotations = annotations
-        )
-        result.boundary = boundary
-        return result
-    }
 }

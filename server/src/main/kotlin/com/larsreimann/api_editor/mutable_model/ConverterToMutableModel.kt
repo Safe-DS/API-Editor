@@ -42,7 +42,7 @@ fun convertClass(pythonClass: SerializablePythonClass): MutablePythonClass {
         description = pythonClass.description,
         fullDocstring = pythonClass.fullDocstring,
         annotations = pythonClass.annotations,
-        originalDeclaration = pythonClass.originalDeclaration
+        originalDeclaration = pythonClass.originalDeclaration ?: pythonClass
     )
 }
 
@@ -66,7 +66,7 @@ fun convertFunction(pythonFunction: SerializablePythonFunction): MutablePythonFu
 //        calledAfter = pythonFunction.calledAfter,
         isPure = pythonFunction.isPure,
         annotations = pythonFunction.annotations,
-        originalDeclaration = pythonFunction.originalDeclaration
+        originalDeclaration = pythonFunction.originalDeclaration ?: pythonFunction
     )
 }
 
@@ -92,7 +92,7 @@ fun convertParameter(pythonParameter: SerializablePythonParameter): MutablePytho
         description = pythonParameter.description,
         boundary = pythonParameter.boundary,
         annotations = pythonParameter.annotations,
-        originalDeclaration = pythonParameter.originalDeclaration
+        originalDeclaration = pythonParameter.originalDeclaration ?: pythonParameter
     )
 }
 

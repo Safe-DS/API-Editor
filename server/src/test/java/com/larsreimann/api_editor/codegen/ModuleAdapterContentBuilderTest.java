@@ -10,7 +10,6 @@ import com.larsreimann.api_editor.model.SerializablePythonFunction;
 import com.larsreimann.api_editor.model.SerializablePythonModule;
 import com.larsreimann.api_editor.model.SerializablePythonParameter;
 import com.larsreimann.api_editor.model.SerializablePythonResult;
-import com.larsreimann.api_editor.transformation.Preprocessor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -156,9 +155,6 @@ class ModuleAdapterContentBuilderTest {
             Collections.emptyList()
         );
 
-        testModule = testModule.accept(new Preprocessor());
-        assert testModule != null;
-
         // when
         ModuleAdapterContentBuilder moduleAdapterContentBuilder =
             new ModuleAdapterContentBuilder(testModule);
@@ -275,9 +271,6 @@ class ModuleAdapterContentBuilderTest {
             Collections.emptyList()
         );
 
-        testModule = testModule.accept(new Preprocessor());
-        assert testModule != null;
-
         // when
         ModuleAdapterContentBuilder moduleAdapterContentBuilder =
             new ModuleAdapterContentBuilder(testModule);
@@ -334,9 +327,6 @@ class ModuleAdapterContentBuilderTest {
             Collections.emptyList()
         );
 
-        testModule = testModule.accept(new Preprocessor());
-        assert testModule != null;
-
         // when
         ModuleAdapterContentBuilder moduleAdapterContentBuilder =
             new ModuleAdapterContentBuilder(testModule);
@@ -374,7 +364,6 @@ class ModuleAdapterContentBuilderTest {
             Collections.emptyList(),
             Collections.emptyList()
         );
-        testModule.accept(new Preprocessor());
 
         // when
         ModuleAdapterContentBuilder moduleAdapterContentBuilder =
@@ -470,9 +459,6 @@ class ModuleAdapterContentBuilderTest {
             Collections.emptyList()
         );
 
-        testModule = testModule.accept(new Preprocessor());
-        assert testModule != null;
-
         // when
         ModuleAdapterContentBuilder moduleAdapterContentBuilder =
             new ModuleAdapterContentBuilder(testModule);
@@ -539,9 +525,6 @@ class ModuleAdapterContentBuilderTest {
             List.of(testFunction),
             Collections.emptyList()
         );
-
-        testModule = testModule.accept(new Preprocessor());
-        assert testModule != null;
 
         // when
         ModuleAdapterContentBuilder moduleAdapterContentBuilder =

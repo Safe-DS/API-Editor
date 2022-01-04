@@ -12,8 +12,7 @@ fun processPackage(originalPythonPackage: SerializablePythonPackage): Serializab
 }
 
 private fun SerializablePythonPackage.preprocess(): MutablePythonPackage {
-    val modifiedPythonPackage = this.accept(Preprocessor())!!
-    val mutablePackage = convertPackage(modifiedPythonPackage)
+    val mutablePackage = convertPackage(this)
     mutablePackage.updateParameterAssignment()
     return mutablePackage
 }

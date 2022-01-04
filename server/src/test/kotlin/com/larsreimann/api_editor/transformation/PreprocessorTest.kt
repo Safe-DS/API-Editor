@@ -17,7 +17,7 @@ class PreprocessorTest {
             qualifiedName = "testPackage/testFunction",
         )
 
-        var testPackage = createPythonPackage(
+        val testPackage = createPythonPackage(
             "testPackage",
             modules = listOf(
                 createPythonModule(
@@ -29,7 +29,6 @@ class PreprocessorTest {
 
         // when
         val originalFunction = testPackage.modules[0].functions[0].copy()
-        testPackage = testPackage.accept(Preprocessor())!!
 
         // then
         testPackage.modules[0]
@@ -46,7 +45,7 @@ class PreprocessorTest {
             qualifiedName = "testPackage/testClass",
         ).apply { annotations += UnusedAnnotation }
 
-        var testPackage = createPythonPackage(
+        val testPackage = createPythonPackage(
             "testPackage",
             modules = listOf(
                 createPythonModule(
@@ -58,7 +57,6 @@ class PreprocessorTest {
 
         // when
         val originalClass = testPackage.modules[0].classes[0].copy()
-        testPackage = testPackage.accept(Preprocessor())!!
 
         // then
         testPackage.modules[0]
@@ -80,7 +78,7 @@ class PreprocessorTest {
             methods = listOf(testMethod)
         )
 
-        var testPackage = createPythonPackage(
+        val testPackage = createPythonPackage(
             "testPackage",
             modules = listOf(
                 createPythonModule(
@@ -96,7 +94,6 @@ class PreprocessorTest {
             .classes[0]
             .methods[0]
             .copy()
-        testPackage = testPackage.accept(Preprocessor())!!
 
         // then
         testPackage.modules[0]

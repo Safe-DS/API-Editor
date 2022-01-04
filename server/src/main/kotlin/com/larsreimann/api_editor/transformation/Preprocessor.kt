@@ -1,14 +1,11 @@
 package com.larsreimann.api_editor.transformation
 
-import com.larsreimann.api_editor.model.AbstractPackageDataTransformer
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.mutable_model.MutablePythonClass
 import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
 import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
 import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
 import com.larsreimann.api_editor.mutable_model.descendants
-
-class Preprocessor : AbstractPackageDataTransformer()
 
 fun MutablePythonPackage.updateParameterAssignment() {
     this.descendants()

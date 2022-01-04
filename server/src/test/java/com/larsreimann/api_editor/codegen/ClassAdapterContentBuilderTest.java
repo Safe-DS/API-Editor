@@ -5,7 +5,6 @@ import com.larsreimann.api_editor.model.RenameAnnotation;
 import com.larsreimann.api_editor.model.SerializablePythonClass;
 import com.larsreimann.api_editor.model.SerializablePythonFunction;
 import com.larsreimann.api_editor.model.SerializablePythonParameter;
-import com.larsreimann.api_editor.transformation.Preprocessor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -27,9 +26,6 @@ class ClassAdapterContentBuilderTest {
             "Lorem ipsum",
             Collections.emptyList()
         );
-
-        testClass = testClass.accept(new Preprocessor());
-        assert testClass != null;
 
         // when
         ClassAdapterContentBuilder classAdapterContentBuilder =
@@ -86,9 +82,6 @@ class ClassAdapterContentBuilderTest {
             "Lorem ipsum",
             Collections.emptyList()
         );
-
-        testClass = testClass.accept(new Preprocessor());
-        assert testClass != null;
 
         // when
         ClassAdapterContentBuilder classAdapterContentBuilder =
@@ -183,9 +176,6 @@ class ClassAdapterContentBuilderTest {
             Collections.emptyList()
         );
 
-        testClass = testClass.accept(new Preprocessor());
-        assert testClass != null;
-
         // when
         ClassAdapterContentBuilder classAdapterContentBuilder =
             new ClassAdapterContentBuilder(testClass);
@@ -267,9 +257,6 @@ class ClassAdapterContentBuilderTest {
                 new RenameAnnotation("newClassName")
             )
         );
-
-        testClass = testClass.accept(new Preprocessor());
-        assert testClass != null;
 
         // when
         ClassAdapterContentBuilder classAdapterContentBuilder =

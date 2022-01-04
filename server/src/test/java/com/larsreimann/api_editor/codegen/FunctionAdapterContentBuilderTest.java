@@ -4,7 +4,6 @@ import com.larsreimann.api_editor.model.PythonParameterAssignment;
 import com.larsreimann.api_editor.model.RenameAnnotation;
 import com.larsreimann.api_editor.model.SerializablePythonFunction;
 import com.larsreimann.api_editor.model.SerializablePythonParameter;
-import com.larsreimann.api_editor.transformation.Preprocessor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -26,9 +25,6 @@ class FunctionAdapterContentBuilderTest {
             "fullDocstring",
             Collections.emptyList()
         );
-
-        testFunction = testFunction.accept(new Preprocessor());
-        assert testFunction != null;
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -68,9 +64,6 @@ class FunctionAdapterContentBuilderTest {
             Collections.emptyList()
         );
 
-        testFunction = testFunction.accept(new Preprocessor());
-        assert testFunction != null;
-
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
             new FunctionAdapterContentBuilder(testFunction);
@@ -109,9 +102,6 @@ class FunctionAdapterContentBuilderTest {
             Collections.emptyList()
         );
 
-        testFunction = testFunction.accept(new Preprocessor());
-        assert testFunction != null;
-
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
             new FunctionAdapterContentBuilder(testFunction);
@@ -149,9 +139,6 @@ class FunctionAdapterContentBuilderTest {
             "fullDocstring",
             Collections.emptyList()
         );
-
-        testFunction = testFunction.accept(new Preprocessor());
-        assert testFunction != null;
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -200,9 +187,6 @@ class FunctionAdapterContentBuilderTest {
             "fullDocstring",
             Collections.emptyList()
         );
-
-        testFunction = testFunction.accept(new Preprocessor());
-        assert testFunction != null;
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -262,9 +246,6 @@ class FunctionAdapterContentBuilderTest {
             Collections.emptyList()
         );
 
-        testFunction = testFunction.accept(new Preprocessor());
-        assert testFunction != null;
-
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
             new FunctionAdapterContentBuilder(testFunction);
@@ -313,9 +294,6 @@ class FunctionAdapterContentBuilderTest {
             Collections.emptyList()
         );
 
-        testFunction = testFunction.accept(new Preprocessor());
-        assert testFunction != null;
-
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
             new FunctionAdapterContentBuilder(testFunction);
@@ -363,9 +341,6 @@ class FunctionAdapterContentBuilderTest {
             "fullDocstring",
             Collections.emptyList()
         );
-
-        testFunction = testFunction.accept(new Preprocessor());
-        assert testFunction != null;
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
@@ -432,9 +407,6 @@ class FunctionAdapterContentBuilderTest {
                 new RenameAnnotation("newFunctionName")
             )
         );
-
-        testFunction = testFunction.accept(new Preprocessor());
-        assert testFunction != null;
 
         // when
         FunctionAdapterContentBuilder functionAdapterContentBuilder =
