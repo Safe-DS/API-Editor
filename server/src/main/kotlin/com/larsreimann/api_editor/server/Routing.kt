@@ -1,6 +1,6 @@
 package com.larsreimann.api_editor.server
 
-import com.larsreimann.api_editor.codegen.CodeGenerationPlan
+import com.larsreimann.api_editor.codegen.generateCode
 import com.larsreimann.api_editor.model.SerializablePythonPackage
 import com.larsreimann.api_editor.mutable_model.convertPackage
 import com.larsreimann.api_editor.transformation.transform
@@ -112,7 +112,7 @@ fun doInfer(originalPythonPackage: SerializablePythonPackage): DoInferResult {
     mutablePackage.transform()
 
     // Build files
-    val path = CodeGenerationPlan(mutablePackage).buildModuleFiles()
+    val path = mutablePackage.generateCode()
     return DoInferResult.Success(path)
 }
 
