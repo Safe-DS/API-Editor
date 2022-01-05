@@ -14,7 +14,6 @@ import de.unibonn.simpleml.stdlib.uniqueAnnotationUseOrNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import org.eclipse.xtext.naming.QualifiedName
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -145,7 +144,7 @@ class StubCodeGeneratorTest {
             |
             |fun testFunction(testParameter: Int or 42) -> testResult: String
             |""".trimMargin()
-        Assertions.assertEquals(expectedModuleContent, moduleContent)
+        moduleContent shouldBe expectedModuleContent
     }
 
     @Test
@@ -222,7 +221,7 @@ class StubCodeGeneratorTest {
             |
             |fun testFunction(@Description("Lorem ipsum") testParameter: Int or 42) -> @Description("Lorem ipsum") testResult: String
             |""".trimMargin()
-        Assertions.assertEquals(expectedModuleContent, moduleContent)
+        moduleContent shouldBe expectedModuleContent
     }
 
     @Test
@@ -272,7 +271,7 @@ class StubCodeGeneratorTest {
             |
             |class TestClass(@Description("description") onlyParam: Any? or "defaultValue")
             |""".trimMargin()
-        Assertions.assertEquals(expectedModuleContent, moduleContent)
+        moduleContent shouldBe expectedModuleContent
     }
 
     @Test
@@ -287,7 +286,7 @@ class StubCodeGeneratorTest {
         val expectedModuleContent: String = """
             |package simpleml.testModule
             |""".trimMargin()
-        Assertions.assertEquals(expectedModuleContent, moduleContent)
+        moduleContent shouldBe expectedModuleContent
     }
 
     @Test
@@ -302,7 +301,7 @@ class StubCodeGeneratorTest {
         val expectedFormattedClass = """
             |class TestClass()
         """.trimMargin()
-        Assertions.assertEquals(expectedFormattedClass, formattedClass)
+        formattedClass shouldBe expectedFormattedClass
     }
 
     @Test
@@ -396,7 +395,7 @@ class StubCodeGeneratorTest {
         val expectedFormattedFunction: String =
             """
             |fun testFunction()""".trimMargin()
-        Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
+        formattedFunction shouldBe expectedFormattedFunction
     }
 
     @Test
@@ -422,7 +421,7 @@ class StubCodeGeneratorTest {
         val expectedFormattedFunction: String =
             """
             |fun testFunction(@Description("description") onlyParam: Int or 13)""".trimMargin()
-        Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
+        formattedFunction shouldBe expectedFormattedFunction
     }
 
     @Test
@@ -448,7 +447,7 @@ class StubCodeGeneratorTest {
         val expectedFormattedFunction: String =
             """
             |fun testFunction(@Description("description") onlyParam: Any? or "Test")""".trimMargin()
-        Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
+        formattedFunction shouldBe expectedFormattedFunction
     }
 
     @Test
@@ -487,7 +486,7 @@ class StubCodeGeneratorTest {
         // then
         val expectedFormattedFunction: String = """
             |fun testFunction(@Description("description") firstParam: Any?, @Description("description") secondParam: Any?, @Description("description") thirdParam: Any?)""".trimMargin()
-        Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
+        formattedFunction shouldBe expectedFormattedFunction
     }
 
     @Test
@@ -520,7 +519,7 @@ class StubCodeGeneratorTest {
         // then
         val expectedFormattedFunction: String = """
             |fun testFunction(@Description("description") onlyParam: Float or 13.1) -> @Description("description") firstResult: Float""".trimMargin()
-        Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
+        formattedFunction shouldBe expectedFormattedFunction
     }
 
     @Test
@@ -559,7 +558,7 @@ class StubCodeGeneratorTest {
         // then
         val expectedFormattedFunction: String = """
             |fun testFunction(@Description("description") onlyParam: Boolean or true) -> (@Description("description") firstResult: Float, @Description("description") secondResult: Float)""".trimMargin()
-        Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
+        formattedFunction shouldBe expectedFormattedFunction
     }
 
     @Test
@@ -584,7 +583,7 @@ class StubCodeGeneratorTest {
         // then
         val expectedFormattedFunction: String = """
             |fun testFunction(@Description("description") onlyParam: Any? or "###invalid###'13'x###")""".trimMargin()
-        Assertions.assertEquals(expectedFormattedFunction, formattedFunction)
+        formattedFunction shouldBe expectedFormattedFunction
     }
 
     @Test

@@ -98,7 +98,7 @@ fun MutablePythonClass.toPythonCode(): String {
 
                 """.trimIndent()
         formattedClass = (formattedClass
-            + buildAllFunctions(this).joinToString("\n".repeat(2)).prependIndent("    "))
+            + buildAllFunctions(this).joinToString("\n".repeat(2)))
     } else {
         formattedClass += "\n    pass"
     }
@@ -106,7 +106,7 @@ fun MutablePythonClass.toPythonCode(): String {
 }
 
 private fun buildAllFunctions(pythonClass: MutablePythonClass): List<String> {
-    return pythonClass.methods.map { it.toPythonCode() }
+    return pythonClass.methods.map { it.toPythonCode().prependIndent("    ") }
 }
 
 /**
@@ -125,9 +125,9 @@ fun MutablePythonFunction.toPythonCode(): String {
         constructorSuffix = constructorSeparator + assignments
     }
     return """
-              def $name(${buildParameters(this)}):
-              ${(buildFunctionBody(this) + constructorSuffix).prependIndent("    ")}
-              """.trimIndent()
+      |def $name(${buildParameters(this)}):
+      |${(buildFunctionBody(this) + constructorSuffix).prependIndent("    ")}
+      """.trimMargin()
 }
 
 private fun buildAttributeAssignments(pythonFunction: MutablePythonFunction): List<String> {
@@ -216,24 +216,19 @@ private fun buildBoundaryChecks(pythonFunction: MutablePythonFunction): List<Str
             assert(it.boundary != null)
             if (it.boundary!!.isDiscrete) {
                 formattedBoundaries.add(
-                    """
-                            if not (isinstance(${it.name}, int) or (isinstance(${it.name}, float) and ${it.name}.is_integer())):
-
-                            """.trimIndent()
-                        + ("raise ValueError('"
+                        "if not (isinstance(${it.name}, int) or (isinstance(${it.name}, float) and ${it.name}.is_integer())):\n"
+                        + "    raise ValueError('"
                         + it.name
                         + " needs to be an integer, but {} was assigned."
                         + "'.format("
                         + it.name
                         + "))"
-                        ).prependIndent("    ")
                 )
             }
             if (it.boundary!!.lowerLimitType !== ComparisonOperator.UNRESTRICTED && it.boundary!!.upperLimitType !== ComparisonOperator.UNRESTRICTED) {
                 formattedBoundaries.add(
-                    """if not ${it.boundary!!.lowerIntervalLimit} ${it.boundary!!.lowerLimitType.operator} ${it.name} ${it.boundary!!.upperLimitType.operator} ${it.boundary!!.upperIntervalLimit}:
-    """
-                        + ("raise ValueError('Valid values of "
+                        "if not ${it.boundary!!.lowerIntervalLimit} ${it.boundary!!.lowerLimitType.operator} ${it.name} ${it.boundary!!.upperLimitType.operator} ${it.boundary!!.upperIntervalLimit}:\n"
+                        + "    raise ValueError('Valid values of "
                         + it.name
                         + " must be in "
                         + it.boundary!!.asInterval()
@@ -241,13 +236,11 @@ private fun buildBoundaryChecks(pythonFunction: MutablePythonFunction): List<Str
                         + "'.format("
                         + it.name
                         + "))"
-                        ).prependIndent("    ")
                 )
             } else if (it.boundary!!.lowerLimitType === ComparisonOperator.LESS_THAN) {
                 formattedBoundaries.add(
-                    """if not ${it.boundary!!.lowerIntervalLimit} < ${it.name}:
-    """
-                        + ("raise ValueError('Valid values of "
+                    "if not ${it.boundary!!.lowerIntervalLimit} < ${it.name}:\n"
+                        + "    raise ValueError('Valid values of "
                         + it.name
                         + " must be greater than "
                         + it.boundary!!.lowerIntervalLimit
@@ -255,13 +248,11 @@ private fun buildBoundaryChecks(pythonFunction: MutablePythonFunction): List<Str
                         + "'.format("
                         + it.name
                         + "))"
-                        ).prependIndent("    ")
                 )
             } else if (it.boundary!!.lowerLimitType === ComparisonOperator.LESS_THAN_OR_EQUALS) {
                 formattedBoundaries.add(
-                    """if not ${it.boundary!!.lowerIntervalLimit} <= ${it.name}:
-    """
-                        + ("raise ValueError('Valid values of "
+                    "if not ${it.boundary!!.lowerIntervalLimit} <= ${it.name}:\n"
+                        + "    raise ValueError('Valid values of "
                         + it.name
                         + " must be greater than or equal to "
                         + it.boundary!!.lowerIntervalLimit
@@ -269,14 +260,12 @@ private fun buildBoundaryChecks(pythonFunction: MutablePythonFunction): List<Str
                         + "'.format("
                         + it.name
                         + "))"
-                        ).prependIndent("    ")
                 )
             }
             if (it.boundary!!.upperLimitType === ComparisonOperator.LESS_THAN) {
                 formattedBoundaries.add(
-                    """if not ${it.name} < ${it.boundary!!.upperIntervalLimit}:
-    """
-                        + ("raise ValueError('Valid values of "
+                    "if not ${it.name} < ${it.boundary!!.upperIntervalLimit}:\n"
+                        + "    raise ValueError('Valid values of "
                         + it.name
                         + " must be less than "
                         + it.boundary!!.upperIntervalLimit
@@ -284,13 +273,11 @@ private fun buildBoundaryChecks(pythonFunction: MutablePythonFunction): List<Str
                         + "'.format("
                         + it.name
                         + "))"
-                        ).prependIndent("    ")
                 )
             } else if (it.boundary!!.upperLimitType === ComparisonOperator.LESS_THAN) {
                 formattedBoundaries.add(
-                    """if not ${it.name} <= ${it.boundary!!.upperIntervalLimit}:
-    """
-                        + ("raise ValueError('Valid values of "
+                    "if not ${it.name} <= ${it.boundary!!.upperIntervalLimit}:\n"
+                        + "    raise ValueError('Valid values of "
                         + it.name
                         + " must be less than or equal to "
                         + it.boundary!!.upperIntervalLimit
@@ -298,7 +285,6 @@ private fun buildBoundaryChecks(pythonFunction: MutablePythonFunction): List<Str
                         + "'.format("
                         + it.name
                         + "))"
-                        ).prependIndent("    ")
                 )
             }
         }
