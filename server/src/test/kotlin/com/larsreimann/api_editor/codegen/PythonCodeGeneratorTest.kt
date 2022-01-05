@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test
 
 class PythonCodeGeneratorTest {
     @Test
-    fun buildModuleContentReturnsFormattedModuleContent() {
+    fun buildModuleContentReturnsFormattedModuleContent() { // TODO
         // given
         val testClass = MutablePythonClass(
             name = "test-class",
@@ -165,7 +165,7 @@ class PythonCodeGeneratorTest {
     }
 
     @Test
-    fun buildModuleContentWithNoClassesReturnsFormattedModuleContent() {
+    fun buildModuleContentWithNoClassesReturnsFormattedModuleContent() { // TODO
         // given
         val testModule = MutablePythonModule(
             name = "test-module",
@@ -275,7 +275,7 @@ class PythonCodeGeneratorTest {
     }
 
     @Test
-    fun buildModuleContentWithNoFunctionsReturnsFormattedModuleContent() {
+    fun buildModuleContentWithNoFunctionsReturnsFormattedModuleContent() { // TODO
         // given
         val testClass = MutablePythonClass(
             name = "test-class",
@@ -316,7 +316,7 @@ class PythonCodeGeneratorTest {
     }
 
     @Test
-    fun buildModuleContentWithEmptyModuleReturnsEmptyString() {
+    fun buildModuleContentWithEmptyModuleReturnsEmptyString() { // TODO
         // given
         val testModule = MutablePythonModule(
             name = "test-module",
@@ -348,7 +348,7 @@ class PythonCodeGeneratorTest {
     }
 
     @Test
-    fun buildModuleContentWithBoundaryAnnotationReturnsFormattedModuleContent1() {
+    fun buildModuleContentWithBoundaryAnnotationReturnsFormattedModuleContent1() { // TODO
         // given
         val testParameter1 = MutablePythonParameter(
             name = "param1",
@@ -449,7 +449,7 @@ class PythonCodeGeneratorTest {
     }
 
     @Test
-    fun buildModuleContentWithBoundaryAnnotationReturnsFormattedModuleContent2() {
+    fun buildModuleContentWithBoundaryAnnotationReturnsFormattedModuleContent2() { // TODO
         // given
         val testParameter = MutablePythonParameter(
             name = "param1",
@@ -504,7 +504,7 @@ class PythonCodeGeneratorTest {
     }
 
     @Test
-    fun `should create valid code for empty classes`() {
+    fun `should create valid code for empty classes`() { // TODO
         val testClass = MutablePythonClass("TestClass")
 
         testClass.toPythonCode() shouldBe """
@@ -514,7 +514,7 @@ class PythonCodeGeneratorTest {
     }
 
     @Test
-    fun buildClassReturnsFormattedClassWithOneFunction() {
+    fun buildClassReturnsFormattedClassWithOneFunction() { // TODO
         // given
         val testClass = MutablePythonClass(
             name = "test-class",
@@ -571,7 +571,7 @@ class PythonCodeGeneratorTest {
     }
 
     @Test
-    fun buildClassReturnsFormattedClassWithTwoFunctions() {
+    fun buildClassReturnsFormattedClassWithTwoFunctions() { // TODO
         // given
         val testClass = MutablePythonClass(
             name = "test-class",
@@ -652,7 +652,7 @@ class PythonCodeGeneratorTest {
     }
 
     @Test
-    fun buildClassReturnsFormattedClassBasedOnOriginalDeclaration() {
+    fun buildClassReturnsFormattedClassBasedOnOriginalDeclaration() { // TODO
         // given
         val testFunction = MutablePythonFunction(
             name = "test-function",
@@ -710,7 +710,7 @@ class PythonCodeGeneratorTest {
     }
 
     @Test
-    fun buildFunctionReturnsFormattedFunctionWithNoParameters() {
+    fun buildFunctionReturnsFormattedFunctionWithNoParameters() { // TODO
         // given
         val testFunction = MutablePythonFunction(
             name = "test-function",
@@ -729,7 +729,7 @@ class PythonCodeGeneratorTest {
     }
 
     @Test
-    fun buildFunctionReturnsFormattedFunctionWithPositionOnlyParameter() {
+    fun buildFunctionReturnsFormattedFunctionWithPositionOnlyParameter() { // TODO
         // given
         val testFunction = MutablePythonFunction(
             name = "test-function",
@@ -761,7 +761,7 @@ class PythonCodeGeneratorTest {
     }
 
     @Test
-    fun buildFunctionReturnsFormattedFunctionWithPositionOrNameParameter() {
+    fun buildFunctionReturnsFormattedFunctionWithPositionOrNameParameter() { // TODO
         // given
         val testFunction = MutablePythonFunction(
             name = "test-function",
@@ -793,7 +793,7 @@ class PythonCodeGeneratorTest {
     }
 
     @Test
-    fun buildFunctionReturnsFormattedFunctionWithNameOnlyParameter() {
+    fun buildFunctionReturnsFormattedFunctionWithNameOnlyParameter() { // TODO
         // given
         val testFunction = MutablePythonFunction(
             name = "test-function",
@@ -829,7 +829,7 @@ class PythonCodeGeneratorTest {
     }
 
     @Test
-    fun buildFunctionReturnsFormattedFunctionWithPositionAndPositionOrNameParameter() {
+    fun buildFunctionReturnsFormattedFunctionWithPositionAndPositionOrNameParameter() { // TODO
         // given
         val testFunction = MutablePythonFunction(
             name = "test-function",
@@ -864,7 +864,7 @@ class PythonCodeGeneratorTest {
     }
 
     @Test
-    fun buildFunctionReturnsFormattedFunctionWithPositionAndPositionOrNameAndNameOnlyParameter() {
+    fun buildFunctionReturnsFormattedFunctionWithPositionAndPositionOrNameAndNameOnlyParameter() { // TODO
         // given
         val testFunction = MutablePythonFunction(
             name = "test-function",
@@ -910,7 +910,7 @@ class PythonCodeGeneratorTest {
     }
 
     @Test
-    fun buildFunctionReturnsFormattedFunctionWithPositionAndNameOnlyParameter() {
+    fun buildFunctionReturnsFormattedFunctionWithPositionAndNameOnlyParameter() { // TODO
         // given
         val testFunction = MutablePythonFunction(
             name = "test-function",
@@ -951,7 +951,7 @@ class PythonCodeGeneratorTest {
     }
 
     @Test
-    fun buildFunctionReturnsFormattedFunctionWithPositionOrNameAndNameOnlyParameter() {
+    fun buildFunctionReturnsFormattedFunctionWithPositionOrNameAndNameOnlyParameter() { // TODO
         // given
         val testFunction = MutablePythonFunction(
             name = "test-function",
@@ -996,7 +996,7 @@ class PythonCodeGeneratorTest {
     }
 
     @Test
-    fun buildFunctionsReturnsFormattedFunctionBasedOnOriginalDeclaration() {
+    fun buildFunctionsReturnsFormattedFunctionBasedOnOriginalDeclaration() { // TODO
         // given
         val testFunction = MutablePythonFunction(
             name = "test-function",

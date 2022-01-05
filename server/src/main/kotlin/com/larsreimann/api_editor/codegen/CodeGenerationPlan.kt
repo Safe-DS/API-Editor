@@ -83,8 +83,7 @@ private fun buildFile(
     workingFolderPath: Path,
     fileExtension: String
 ) {
-    val formattedFileName = (fileName.replace("\\.".toRegex(), "/")
-        + "." + fileExtension)
+    val formattedFileName = (fileName.replace("\\.".toRegex(), "/") + "." + fileExtension)
     val filePath = Paths.get(workingFolderPath.toString(), formattedFileName)
     val directoryPath = filePath.parent
     val directory = File(directoryPath.toString())
