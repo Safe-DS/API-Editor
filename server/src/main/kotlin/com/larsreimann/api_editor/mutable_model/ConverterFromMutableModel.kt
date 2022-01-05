@@ -93,7 +93,7 @@ fun convertParameter(pythonParameter: MutablePythonParameter): SerializablePytho
         qualifiedName = pythonParameter.qualifiedName(),
         defaultValue = pythonParameter.defaultValue,
         assignedBy = pythonParameter.assignedBy,
-        isPublic = pythonParameter.isPublic,
+        isPublic = true,
         typeInDocs = pythonParameter.typeInDocs,
         description = pythonParameter.description,
         annotations = pythonParameter.annotations

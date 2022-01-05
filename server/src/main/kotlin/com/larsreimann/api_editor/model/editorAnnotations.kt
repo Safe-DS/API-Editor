@@ -118,7 +118,8 @@ object UnusedAnnotation : EditorAnnotation() {
     @Transient
     override val validTargets = setOf(
         CLASS,
-        GLOBAL_FUNCTION, METHOD
+        GLOBAL_FUNCTION,
+        METHOD
     )
 }
 

@@ -1,6 +1,7 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.PythonParameterAssignment
+import com.larsreimann.api_editor.mutable_model.MutablePythonAttribute
 import com.larsreimann.api_editor.mutable_model.MutablePythonClass
 import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
 import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
@@ -9,6 +10,39 @@ import com.larsreimann.api_editor.mutable_model.OriginalPythonClass
 import com.larsreimann.api_editor.mutable_model.OriginalPythonFunction
 import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
 import com.larsreimann.api_editor.mutable_model.descendants
+
+/**
+ * Removes private declarations.
+ */
+fun MutablePythonPackage.removePrivateDeclarations() {
+    this.descendants()
+        .toList()
+        .forEach {
+            when (it) {
+                is MutablePythonAttribute -> it.removePrivateDeclarations()
+                is MutablePythonClass -> it.removePrivateDeclarations()
+                is MutablePythonFunction -> it.removePrivateDeclarations()
+            }
+        }
+}
+
+fun MutablePythonAttribute.removePrivateDeclarations() {
+    if (!this.isPublic) {
+        this.release()
+    }
+}
+
+fun MutablePythonClass.removePrivateDeclarations() {
+    if (!this.isPublic) {
+        this.release()
+    }
+}
+
+fun MutablePythonFunction.removePrivateDeclarations() {
+    if (!this.isPublic) {
+        this.release()
+    }
+}
 
 /**
  * Stores the original declaration that corresponds to classes, functions, and parameters.

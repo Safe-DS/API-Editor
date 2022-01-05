@@ -52,7 +52,6 @@ class PythonCodeGeneratorTest {
                             "param1",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
-                            true,
                             "str",
                             "Lorem ipsum",
                         ),
@@ -60,7 +59,6 @@ class PythonCodeGeneratorTest {
                             "param2",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
-                            true,
                             "str",
                             "Lorem ipsum",
                         ),
@@ -68,7 +66,6 @@ class PythonCodeGeneratorTest {
                             "param3",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
-                            true,
                             "str",
                             "Lorem ipsum",
                         )
@@ -89,7 +86,6 @@ class PythonCodeGeneratorTest {
                             "test-parameter",
                             "42",
                             PythonParameterAssignment.NAME_ONLY,
-                            true,
                             "int",
                             "Lorem ipsum",
                         )
@@ -139,7 +135,6 @@ class PythonCodeGeneratorTest {
                             "param1",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
-                            true,
                             "str",
                             "Lorem ipsum",
                         ),
@@ -147,7 +142,6 @@ class PythonCodeGeneratorTest {
                             "param2",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
-                            true,
                             "str",
                             "Lorem ipsum"
                         ),
@@ -155,7 +149,6 @@ class PythonCodeGeneratorTest {
                             "param3",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
-                            true,
                             "str",
                             "Lorem ipsum"
                         )
@@ -176,7 +169,6 @@ class PythonCodeGeneratorTest {
                             "test-parameter",
                             "42",
                             PythonParameterAssignment.NAME_ONLY,
-                            true,
                             "int",
                             "Lorem ipsum"
                         )
@@ -289,7 +281,6 @@ class PythonCodeGeneratorTest {
             name = "param1",
             defaultValue = "5",
             assignedBy = PythonParameterAssignment.NAME_ONLY,
-            isPublic = true,
             typeInDocs = "str",
             description = "Lorem ipsum",
         )
@@ -304,7 +295,6 @@ class PythonCodeGeneratorTest {
             "param2",
             "5",
             PythonParameterAssignment.NAME_ONLY,
-            true,
             "str",
             "Lorem ipsum",
         )
@@ -319,7 +309,6 @@ class PythonCodeGeneratorTest {
             "param3",
             "5",
             PythonParameterAssignment.NAME_ONLY,
-            true,
             "str",
             "Lorem ipsum",
         )
@@ -373,7 +362,6 @@ class PythonCodeGeneratorTest {
             "param1",
             "5",
             PythonParameterAssignment.NAME_ONLY,
-            true,
             "str",
             "Lorem ipsum",
         )
@@ -432,7 +420,6 @@ class PythonCodeGeneratorTest {
                             "self",
                             null,
                             PythonParameterAssignment.IMPLICIT,
-                            true,
                             "typeInDocs",
                             "description",
                         ),
@@ -440,7 +427,6 @@ class PythonCodeGeneratorTest {
                             "only-param",
                             "'defaultValue'",
                             PythonParameterAssignment.POSITION_OR_NAME,
-                            true,
                             "str",
                             "description",
                         )
@@ -474,7 +460,6 @@ class PythonCodeGeneratorTest {
                             "self",
                             null,
                             PythonParameterAssignment.IMPLICIT,
-                            true,
                             "typeInDocs",
                             "description",
                         ),
@@ -482,7 +467,6 @@ class PythonCodeGeneratorTest {
                             "only-param",
                             null,
                             PythonParameterAssignment.POSITION_OR_NAME,
-                            true,
                             "typeInDocs",
                             "description",
                         )
@@ -495,7 +479,6 @@ class PythonCodeGeneratorTest {
                             "self",
                             null,
                             PythonParameterAssignment.IMPLICIT,
-                            true,
                             "typeInDocs",
                             "description",
                         ),
@@ -503,7 +486,6 @@ class PythonCodeGeneratorTest {
                             "only-param",
                             null,
                             PythonParameterAssignment.POSITION_OR_NAME,
-                            true,
                             "typeInDocs",
                             "description",
                         )

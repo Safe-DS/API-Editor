@@ -212,91 +212,91 @@ private fun buildBoundaryChecks(pythonFunction: MutablePythonFunction): List<Str
     pythonFunction
         .parameters
         .filter { it.boundary != null }
-        .forEach { (name, _, _, _, _, _, boundary) ->
-            assert(boundary != null)
-            if (boundary!!.isDiscrete) {
+        .forEach {
+            assert(it.boundary != null)
+            if (it.boundary!!.isDiscrete) {
                 formattedBoundaries.add(
                     """
-                            if not (isinstance($name, int) or (isinstance($name, float) and $name.is_integer())):
+                            if not (isinstance(${it.name}, int) or (isinstance(${it.name}, float) and ${it.name}.is_integer())):
 
                             """.trimIndent()
                         + ("raise ValueError('"
-                        + name
+                        + it.name
                         + " needs to be an integer, but {} was assigned."
                         + "'.format("
-                        + name
+                        + it.name
                         + "))"
                         ).prependIndent("    ")
                 )
             }
-            if (boundary.lowerLimitType !== ComparisonOperator.UNRESTRICTED && boundary.upperLimitType !== ComparisonOperator.UNRESTRICTED) {
+            if (it.boundary!!.lowerLimitType !== ComparisonOperator.UNRESTRICTED && it.boundary!!.upperLimitType !== ComparisonOperator.UNRESTRICTED) {
                 formattedBoundaries.add(
-                    """if not ${boundary.lowerIntervalLimit} ${boundary.lowerLimitType.operator} $name ${boundary.upperLimitType.operator} ${boundary.upperIntervalLimit}:
+                    """if not ${it.boundary!!.lowerIntervalLimit} ${it.boundary!!.lowerLimitType.operator} ${it.name} ${it.boundary!!.upperLimitType.operator} ${it.boundary!!.upperIntervalLimit}:
     """
                         + ("raise ValueError('Valid values of "
-                        + name
+                        + it.name
                         + " must be in "
-                        + boundary.asInterval()
+                        + it.boundary!!.asInterval()
                         + ", but {} was assigned."
                         + "'.format("
-                        + name
+                        + it.name
                         + "))"
                         ).prependIndent("    ")
                 )
-            } else if (boundary.lowerLimitType === ComparisonOperator.LESS_THAN) {
+            } else if (it.boundary!!.lowerLimitType === ComparisonOperator.LESS_THAN) {
                 formattedBoundaries.add(
-                    """if not ${boundary.lowerIntervalLimit} < $name:
+                    """if not ${it.boundary!!.lowerIntervalLimit} < ${it.name}:
     """
                         + ("raise ValueError('Valid values of "
-                        + name
+                        + it.name
                         + " must be greater than "
-                        + boundary.lowerIntervalLimit
+                        + it.boundary!!.lowerIntervalLimit
                         + ", but {} was assigned."
                         + "'.format("
-                        + name
+                        + it.name
                         + "))"
                         ).prependIndent("    ")
                 )
-            } else if (boundary.lowerLimitType === ComparisonOperator.LESS_THAN_OR_EQUALS) {
+            } else if (it.boundary!!.lowerLimitType === ComparisonOperator.LESS_THAN_OR_EQUALS) {
                 formattedBoundaries.add(
-                    """if not ${boundary.lowerIntervalLimit} <= $name:
+                    """if not ${it.boundary!!.lowerIntervalLimit} <= ${it.name}:
     """
                         + ("raise ValueError('Valid values of "
-                        + name
+                        + it.name
                         + " must be greater than or equal to "
-                        + boundary.lowerIntervalLimit
+                        + it.boundary!!.lowerIntervalLimit
                         + ", but {} was assigned."
                         + "'.format("
-                        + name
+                        + it.name
                         + "))"
                         ).prependIndent("    ")
                 )
             }
-            if (boundary.upperLimitType === ComparisonOperator.LESS_THAN) {
+            if (it.boundary!!.upperLimitType === ComparisonOperator.LESS_THAN) {
                 formattedBoundaries.add(
-                    """if not $name < ${boundary.upperIntervalLimit}:
+                    """if not ${it.name} < ${it.boundary!!.upperIntervalLimit}:
     """
                         + ("raise ValueError('Valid values of "
-                        + name
+                        + it.name
                         + " must be less than "
-                        + boundary.upperIntervalLimit
+                        + it.boundary!!.upperIntervalLimit
                         + ", but {} was assigned."
                         + "'.format("
-                        + name
+                        + it.name
                         + "))"
                         ).prependIndent("    ")
                 )
-            } else if (boundary.upperLimitType === ComparisonOperator.LESS_THAN) {
+            } else if (it.boundary!!.upperLimitType === ComparisonOperator.LESS_THAN) {
                 formattedBoundaries.add(
-                    """if not $name <= ${boundary.upperIntervalLimit}:
+                    """if not ${it.name} <= ${it.boundary!!.upperIntervalLimit}:
     """
                         + ("raise ValueError('Valid values of "
-                        + name
+                        + it.name
                         + " must be less than or equal to "
-                        + boundary.upperIntervalLimit
+                        + it.boundary!!.upperIntervalLimit
                         + ", but {} was assigned."
                         + "'.format("
-                        + name
+                        + it.name
                         + "))"
                         ).prependIndent("    ")
                 )

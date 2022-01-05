@@ -148,7 +148,6 @@ data class MutablePythonParameter(
     override var name: String,
     var defaultValue: String? = null,
     var assignedBy: PythonParameterAssignment = PythonParameterAssignment.POSITION_OR_NAME,
-    var isPublic: Boolean = true,
     var typeInDocs: String = "",
     var description: String = "",
     var boundary: Boundary? = null,

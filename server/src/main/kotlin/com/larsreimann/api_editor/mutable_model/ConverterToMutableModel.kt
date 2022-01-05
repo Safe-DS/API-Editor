@@ -85,7 +85,6 @@ fun convertParameter(pythonParameter: SerializablePythonParameter): MutablePytho
         name = pythonParameter.name,
         defaultValue = pythonParameter.defaultValue,
         assignedBy = pythonParameter.assignedBy,
-        isPublic = pythonParameter.isPublic,
         typeInDocs = pythonParameter.typeInDocs,
         description = pythonParameter.description,
         boundary = pythonParameter.boundary,

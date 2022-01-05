@@ -57,7 +57,7 @@ private fun MutablePythonClass.createAttributesForParametersOfConstructor() {
             this.attributes += MutablePythonAttribute(
                 name = it.name,
                 defaultValue = it.defaultValue,
-                isPublic = it.isPublic,
+                isPublic = true,
                 typeInDocs = it.typeInDocs,
                 description = it.description,
                 boundary = it.boundary

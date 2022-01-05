@@ -84,21 +84,18 @@ class StubCodeGeneratorTest {
                             "param1",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
-                            true,
                             "str",
                         ),
                         MutablePythonParameter(
                             "param2",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
-                            true,
                             "str",
                         ),
                         MutablePythonParameter(
                             "param3",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
-                            true,
                             "str",
                         )
                     ),
@@ -117,7 +114,6 @@ class StubCodeGeneratorTest {
                             "testParameter",
                             "42",
                             PythonParameterAssignment.NAME_ONLY,
-                            true,
                             "int",
                         )
                     ),
@@ -165,7 +161,6 @@ class StubCodeGeneratorTest {
                             "param1",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
-                            true,
                             "str",
                             "Lorem ipsum"
                         ),
@@ -173,7 +168,6 @@ class StubCodeGeneratorTest {
                             "param2",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
-                            true,
                             "str",
                             "Lorem ipsum"
                         ),
@@ -181,7 +175,6 @@ class StubCodeGeneratorTest {
                             "param3",
                             null,
                             PythonParameterAssignment.NAME_ONLY,
-                            true,
                             "str",
                             "Lorem ipsum"
                         )
@@ -202,7 +195,6 @@ class StubCodeGeneratorTest {
                             "testParameter",
                             "42",
                             PythonParameterAssignment.NAME_ONLY,
-                            true,
                             "int",
                             "Lorem ipsum",
                         )
@@ -246,7 +238,6 @@ class StubCodeGeneratorTest {
                             "onlyParam",
                             "'defaultValue'",
                             PythonParameterAssignment.POSITION_OR_NAME,
-                            true,
                             "typeInDocs",
                             "description"
                         )
@@ -327,7 +318,6 @@ class StubCodeGeneratorTest {
                             "onlyParam",
                             "'defaultValue'",
                             PythonParameterAssignment.POSITION_OR_NAME,
-                            true,
                             "str",
                             "description",
                         )
@@ -361,7 +351,6 @@ class StubCodeGeneratorTest {
                             "onlyParam",
                             null,
                             PythonParameterAssignment.POSITION_OR_NAME,
-                            true,
                             "typeInDocs",
                             "description"
                         )
@@ -374,7 +363,6 @@ class StubCodeGeneratorTest {
                             "onlyParam",
                             null,
                             PythonParameterAssignment.POSITION_OR_NAME,
-                            true,
                             "typeInDocs",
                             "description"
                         )
@@ -421,7 +409,6 @@ class StubCodeGeneratorTest {
                     "onlyParam",
                     "13",
                     PythonParameterAssignment.POSITION_ONLY,
-                    true,
                     "int",
                     "description"
                 )
@@ -448,7 +435,6 @@ class StubCodeGeneratorTest {
                     "onlyParam",
                     "'Test'",
                     PythonParameterAssignment.POSITION_OR_NAME,
-                    true,
                     "string",
                     "description"
                 )
@@ -475,7 +461,6 @@ class StubCodeGeneratorTest {
                     "firstParam",
                     null,
                     PythonParameterAssignment.POSITION_ONLY,
-                    true,
                     "typeInDocs",
                     "description"
                 ),
@@ -483,7 +468,6 @@ class StubCodeGeneratorTest {
                     "secondParam",
                     null,
                     PythonParameterAssignment.POSITION_OR_NAME,
-                    true,
                     "typeInDocs",
                     "description"
                 ),
@@ -491,7 +475,6 @@ class StubCodeGeneratorTest {
                     "thirdParam",
                     null,
                     PythonParameterAssignment.NAME_ONLY,
-                    true,
                     "typeInDocs",
                     "description"
                 )
@@ -517,7 +500,6 @@ class StubCodeGeneratorTest {
                     "onlyParam",
                     "1.31e+1",
                     PythonParameterAssignment.POSITION_ONLY,
-                    true,
                     "float",
                     "description"
                 )
@@ -551,7 +533,6 @@ class StubCodeGeneratorTest {
                     "onlyParam",
                     "True",
                     PythonParameterAssignment.POSITION_ONLY,
-                    true,
                     "bool",
                     "description"
                 )
@@ -591,7 +572,6 @@ class StubCodeGeneratorTest {
                     "onlyParam",
                     "'13'x",
                     PythonParameterAssignment.POSITION_ONLY,
-                    true,
                     "string",
                     "description"
                 )

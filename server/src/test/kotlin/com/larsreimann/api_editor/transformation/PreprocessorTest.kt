@@ -1,6 +1,7 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.PythonParameterAssignment
+import com.larsreimann.api_editor.mutable_model.MutablePythonAttribute
 import com.larsreimann.api_editor.mutable_model.MutablePythonClass
 import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
 import com.larsreimann.api_editor.mutable_model.MutablePythonModule
@@ -9,6 +10,8 @@ import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
 import com.larsreimann.api_editor.mutable_model.OriginalPythonClass
 import com.larsreimann.api_editor.mutable_model.OriginalPythonFunction
 import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
+import io.kotest.matchers.collections.shouldBeEmpty
+import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -19,6 +22,7 @@ class PreprocessorTest {
     private lateinit var testOptionalParameter: MutablePythonParameter
     private lateinit var testGlobalFunction: MutablePythonFunction
     private lateinit var testMethodParameter: MutablePythonParameter
+    private lateinit var testAttribute: MutablePythonAttribute
     private lateinit var testMethod: MutablePythonFunction
     private lateinit var testClass: MutablePythonClass
     private lateinit var testModule: MutablePythonModule
@@ -47,13 +51,15 @@ class PreprocessorTest {
             name = "testMethodParameter",
             assignedBy = PythonParameterAssignment.POSITION_ONLY
         )
+        testAttribute = MutablePythonAttribute(name = "testAttribute")
         testMethod = MutablePythonFunction(
             name = "testMethod",
             parameters = listOf(testMethodParameter)
         )
         testClass = MutablePythonClass(
             name = "testClass",
-            methods = listOf(testMethod)
+            attributes = listOf(testAttribute),
+            methods = listOf(testMethod),
         )
         testModule = MutablePythonModule(
             "testModule",
@@ -66,6 +72,74 @@ class PreprocessorTest {
             version = "1.0.0",
             modules = listOf(testModule)
         )
+    }
+
+    @Nested
+    inner class RemovePrivateDeclarations {
+
+        @Test
+        fun `should remove private attributes`() {
+            testAttribute.isPublic = false
+            testPackage.removePrivateDeclarations()
+
+            testClass.attributes.shouldBeEmpty()
+        }
+
+        @Test
+        fun `should not remove public attributes`() {
+            testAttribute.isPublic = true
+            testPackage.removePrivateDeclarations()
+
+            testClass.attributes.shouldContain(testAttribute)
+        }
+
+        @Test
+        fun `should remove private classes`() {
+            testClass.isPublic = false
+            testPackage.removePrivateDeclarations()
+
+            testModule.classes.shouldBeEmpty()
+        }
+
+        @Test
+        fun `should not remove public classes`() {
+            testClass.isPublic = true
+            testPackage.removePrivateDeclarations()
+
+            testModule.classes.shouldContain(testClass)
+        }
+
+        @Test
+        fun `should remove private global functions`() {
+            testGlobalFunction.isPublic = false
+            testPackage.removePrivateDeclarations()
+
+            testModule.functions.shouldBeEmpty()
+        }
+
+        @Test
+        fun `should not remove public global functions`() {
+            testGlobalFunction.isPublic = true
+            testPackage.removePrivateDeclarations()
+
+            testModule.functions.shouldContain(testGlobalFunction)
+        }
+
+        @Test
+        fun `should remove private methods`() {
+            testMethod.isPublic = false
+            testPackage.removePrivateDeclarations()
+
+            testClass.methods.shouldBeEmpty()
+        }
+
+        @Test
+        fun `should not remove public methods`() {
+            testMethod.isPublic = true
+            testPackage.removePrivateDeclarations()
+
+            testClass.methods.shouldContain(testMethod)
+        }
     }
 
     @Nested

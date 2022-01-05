@@ -64,7 +64,7 @@ enum class Traversal {
 }
 
 /**
- * Returns the descendants of this [TreeNode]. We can switch between preorder and postorder traversal.
+ * Returns the descendants of this [TreeNode] using either preorder and postorder traversal.
  *
  * @param order
  * The traversal order. Preorder means a parent is listed before any of its children and postorder means a parent is
@@ -104,7 +104,7 @@ fun TreeNode.descendants(
 }
 
 /**
- * Returns this [TreeNode] and its descendants. We can switch between preorder and postorder traversal.
+ * Returns this [TreeNode] and its descendants using either preorder and postorder traversal.
  *
  * @param order
  * The traversal order. Preorder means a parent is listed before any of its children and postorder means a parent is

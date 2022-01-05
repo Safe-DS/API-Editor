@@ -200,12 +200,12 @@ data class SerializablePythonParameter(
 }
 
 enum class PythonParameterAssignment {
+    IMPLICIT,
     POSITION_ONLY,
     POSITION_OR_NAME,
     NAME_ONLY,
-    CONSTANT,
     ATTRIBUTE,
-    IMPLICIT
+    CONSTANT
 }
 
 @Serializable
