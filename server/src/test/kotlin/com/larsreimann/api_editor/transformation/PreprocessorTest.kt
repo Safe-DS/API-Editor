@@ -12,6 +12,7 @@ import com.larsreimann.api_editor.mutable_model.OriginalPythonFunction
 import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContain
+import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -198,6 +199,37 @@ class PreprocessorTest {
     }
 
     @Nested
+    inner class ChangeModulePrefix {
+
+        @Test
+        fun `should change the prefix of all modules`() {
+            testPackage.changeModulePrefix("simpleml")
+
+            testModule.name shouldBe "simpleml"
+        }
+    }
+
+    @Nested
+    inner class ReplaceClassMethodsWithStaticMethods {
+
+        @Test
+        fun `should change decorator from @classmethod to @staticmethod`() {
+            testMethod.decorators += "classmethod"
+            testPackage.replaceClassMethodsWithStaticMethods()
+
+            testMethod.decorators.shouldContainExactly("staticmethod")
+        }
+
+        @Test
+        fun `should remove first parameter`() {
+            testMethod.decorators += "classmethod"
+            testPackage.replaceClassMethodsWithStaticMethods()
+
+            testMethod.parameters.shouldBeEmpty()
+        }
+    }
+
+    @Nested
     inner class UpdateParameterAssignment {
 
         @Test
@@ -213,23 +245,11 @@ class PreprocessorTest {
 
             testRequiredParameter.assignedBy shouldBe PythonParameterAssignment.POSITION_OR_NAME
         }
-
         @Test
         fun `should make optional parameters assigned by name only`() {
             testPackage.updateParameterAssignment()
 
             testOptionalParameter.assignedBy shouldBe PythonParameterAssignment.NAME_ONLY
-        }
-    }
-
-    @Nested
-    inner class ChangeModulePrefix {
-
-        @Test
-        fun `should change the prefix of all modules`() {
-            testPackage.changeModulePrefix("simpleml")
-
-            testModule.name shouldBe "simpleml"
         }
     }
 }

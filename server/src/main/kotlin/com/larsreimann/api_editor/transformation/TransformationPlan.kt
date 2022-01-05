@@ -17,8 +17,9 @@ fun MutablePythonPackage.transform() {
 private fun MutablePythonPackage.preprocess() {
     removePrivateDeclarations()
     addOriginalDeclarations()
-    updateParameterAssignment()
     changeModulePrefix(newPrefix = "simpleml")
+    replaceClassMethodsWithStaticMethods()
+    updateParameterAssignment()
 }
 
 /**

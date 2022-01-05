@@ -127,6 +127,8 @@ class MutablePythonFunction(
     }
 
     fun isConstructor() = name == "__init__"
+
+    fun isStatic() = "staticmethod" in decorators
 }
 
 data class OriginalPythonFunction(

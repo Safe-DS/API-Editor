@@ -82,6 +82,42 @@ private fun MutablePythonParameter.addOriginalDeclarations() {
 }
 
 /**
+ * Changes the first segment of the name of the module to the [newPrefix].
+ */
+fun MutablePythonPackage.changeModulePrefix(newPrefix: String) {
+    this.modules
+        .forEach {
+            val segments = it.name.split(".").toMutableList()
+            segments[0] = newPrefix
+            it.name = segments.joinToString(".")
+        }
+}
+
+/**
+ * Replaces methods decorated with `@classmethod` with methods decorated with `@staticmethod`.
+ */
+fun MutablePythonPackage.replaceClassMethodsWithStaticMethods() {
+    this.descendants { it.parent is MutablePythonClass }
+        .filterIsInstance<MutablePythonClass>()
+        .flatMap { it.methods }
+        .filter { "classmethod" in it.decorators }
+        .forEach { it.replaceClassMethodsWithStaticMethods() }
+}
+
+private fun MutablePythonFunction.replaceClassMethodsWithStaticMethods() {
+    decorators.replaceAll {
+        when (it) {
+            "classmethod" -> "staticmethod"
+            else -> it
+        }
+    }
+
+    if (parameters.isNotEmpty()) {
+        parameters.removeAt(0)
+    }
+}
+
+/**
  * Set the parameter assignment of implicit parameters to implicit, of required parameter to position or name, and of
  * optional parameters to name only.
  */
@@ -102,18 +138,6 @@ private fun MutablePythonParameter.updateParameterAssignment() {
 private fun MutablePythonParameter.isImplicit(): Boolean {
     val currentFunction = this.parent as? MutablePythonFunction ?: return false
     return currentFunction.parent is MutablePythonClass
-        && "staticmethod" !in currentFunction.decorators
+        && !currentFunction.isStatic()
         && currentFunction.parameters.firstOrNull() == this
-}
-
-/**
- * Changes the first segment of the name of the module to the [newPrefix].
- */
-fun MutablePythonPackage.changeModulePrefix(newPrefix: String) {
-    this.modules
-        .forEach {
-            val segments = it.name.split(".").toMutableList()
-            segments[0] = newPrefix
-            it.name = segments.joinToString(".")
-        }
 }
