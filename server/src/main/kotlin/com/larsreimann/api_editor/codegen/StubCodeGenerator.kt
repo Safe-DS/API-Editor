@@ -11,12 +11,14 @@ import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
 import com.larsreimann.api_editor.mutable_model.MutablePythonModule
 import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
 import com.larsreimann.api_editor.mutable_model.MutablePythonResult
+import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.createSmlAnnotationUse
 import de.unibonn.simpleml.emf.createSmlArgument
 import de.unibonn.simpleml.emf.createSmlAttribute
 import de.unibonn.simpleml.emf.createSmlBoolean
 import de.unibonn.simpleml.emf.createSmlClass
 import de.unibonn.simpleml.emf.createSmlCompilationUnit
+import de.unibonn.simpleml.emf.createSmlDummyResource
 import de.unibonn.simpleml.emf.createSmlEnum
 import de.unibonn.simpleml.emf.createSmlEnumVariant
 import de.unibonn.simpleml.emf.createSmlFloat
@@ -28,6 +30,8 @@ import de.unibonn.simpleml.emf.createSmlParameter
 import de.unibonn.simpleml.emf.createSmlResult
 import de.unibonn.simpleml.emf.createSmlString
 import de.unibonn.simpleml.emf.smlPackage
+import de.unibonn.simpleml.serializer.SerializationResult
+import de.unibonn.simpleml.serializer.serializeToFormattedString
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractType
 import de.unibonn.simpleml.simpleML.SmlAnnotationUse
@@ -41,9 +45,28 @@ import de.unibonn.simpleml.simpleML.SmlParameter
 import de.unibonn.simpleml.simpleML.SmlResult
 
 /**
+ * Create Simple-ML stub code for the Python module.
+ */
+fun MutablePythonModule.toStubCode(): String {
+    val compilationUnit = toSmlCompilationUnit()
+
+    // Required to serialize the compilation unit
+    createSmlDummyResource(
+        "compilationUnitStub",
+        SmlFileExtension.Stub,
+        compilationUnit
+    )
+
+    return when (val result = compilationUnit.serializeToFormattedString()) {
+        is SerializationResult.Success -> result.code + "\n"
+        is SerializationResult.Failure -> throw IllegalStateException(result.message)
+    }
+}
+
+/**
  * Creates a Simple-ML compilation unit that corresponds to the Python module.
  */
-fun MutablePythonModule.toSmlCompilationUnit(): SmlCompilationUnit {
+internal fun MutablePythonModule.toSmlCompilationUnit(): SmlCompilationUnit {
     val classes = classes.map { it.toSmlClass() }
     val functions = functions.map { it.toSmlFunction() }
     val enums = enums.map { it.toSmlEnum() }
@@ -59,7 +82,7 @@ fun MutablePythonModule.toSmlCompilationUnit(): SmlCompilationUnit {
 /**
  * Creates a Simple-ML class that corresponds to the Python class.
  */
-fun MutablePythonClass.toSmlClass(): SmlClass {
+internal fun MutablePythonClass.toSmlClass(): SmlClass {
     val stubName = name.snakeCaseToUpperCamelCase()
 
     return createSmlClass(
@@ -91,7 +114,7 @@ private fun MutablePythonClass.buildAttributes(): List<SmlAttribute> {
 /**
  * Creates a Simple-ML attribute that corresponds to the Python attribute.
  */
-fun MutablePythonAttribute.toSmlAttribute(): SmlAttribute {
+internal fun MutablePythonAttribute.toSmlAttribute(): SmlAttribute {
     val stubName = name.snakeCaseToLowerCamelCase()
 
     return createSmlAttribute(
@@ -112,7 +135,7 @@ private fun MutablePythonClass.buildMethods(): List<SmlFunction> {
     return methodsExceptConstructor().map { it.toSmlFunction() }
 }
 
-fun MutablePythonFunction.toSmlFunction(): SmlFunction {
+internal fun MutablePythonFunction.toSmlFunction(): SmlFunction {
     val stubName = name.snakeCaseToLowerCamelCase()
 
     return createSmlFunction(
@@ -147,7 +170,7 @@ private fun createSmlPythonNameAnnotationUse(name: String): SmlAnnotationUse {
     )
 }
 
-fun MutablePythonParameter.toSmlParameterOrNull(): SmlParameter? {
+internal fun MutablePythonParameter.toSmlParameterOrNull(): SmlParameter? {
     if (assignedBy !in setOf(POSITION_ONLY, POSITION_OR_NAME, NAME_ONLY)) {
         return null
     }
@@ -169,7 +192,7 @@ fun MutablePythonParameter.toSmlParameterOrNull(): SmlParameter? {
     )
 }
 
-fun MutablePythonResult.toSmlResult(): SmlResult {
+internal fun MutablePythonResult.toSmlResult(): SmlResult {
     val stubName = name.snakeCaseToLowerCamelCase()
 
     return createSmlResult(
@@ -189,7 +212,7 @@ fun MutablePythonResult.toSmlResult(): SmlResult {
 /**
  * Creates a Simple-ML enum that corresponds to the Python enum.
  */
-fun MutablePythonEnum.toSmlEnum(): SmlEnum {
+internal fun MutablePythonEnum.toSmlEnum(): SmlEnum {
     val stubName = name.snakeCaseToUpperCamelCase()
 
     return createSmlEnum(
@@ -209,7 +232,7 @@ fun MutablePythonEnum.toSmlEnum(): SmlEnum {
 /**
  * Creates a Simple-ML enum variant that corresponds to the Python enum instance.
  */
-fun MutablePythonEnumInstance.toSmlEnumVariant(): SmlEnumVariant {
+internal fun MutablePythonEnumInstance.toSmlEnumVariant(): SmlEnumVariant {
     val stubName = name.snakeCaseToUpperCamelCase()
 
     return createSmlEnumVariant(

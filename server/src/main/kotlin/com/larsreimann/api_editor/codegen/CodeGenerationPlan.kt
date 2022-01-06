@@ -3,9 +3,8 @@ package com.larsreimann.api_editor.codegen
 import com.larsreimann.api_editor.mutable_model.MutablePythonModule
 import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
 import de.unibonn.simpleml.constant.SmlFileExtension
-import de.unibonn.simpleml.emf.createSmlDummyResource
-import de.unibonn.simpleml.serializer.SerializationResult
-import de.unibonn.simpleml.serializer.serializeToFormattedString
+import java.io.BufferedInputStream
+import java.io.BufferedOutputStream
 import java.io.File
 import java.io.IOException
 import java.nio.file.Files
@@ -77,6 +76,20 @@ private fun zip(workingFolderPath: Path): String {
     return path.toString()
 }
 
+private fun File.bufferedOutputStream() = BufferedOutputStream(this.outputStream())
+private fun File.zipOutputStream() = ZipOutputStream(this.bufferedOutputStream())
+private fun File.bufferedInputStream() = BufferedInputStream(this.inputStream())
+private fun File.asZipEntry() = ZipEntry(this.name)
+
+fun archive(files: List<File>, destination: File) {
+    destination.zipOutputStream().use {
+        files.forEach { file ->
+            it.putNextEntry(file.asZipEntry())
+            file.bufferedInputStream().use { bis -> bis.copyTo(it) }
+        }
+    }
+}
+
 private fun buildFile(
     fileName: String,
     content: String,
@@ -95,21 +108,5 @@ private fun buildFile(
         }
     } catch (e: IOException) {
         e.printStackTrace()
-    }
-}
-
-private fun MutablePythonModule.toStubCode(): String {
-    val compilationUnit = toSmlCompilationUnit()
-
-    // Required to serialize the compilation unit
-    createSmlDummyResource(
-        "compilationUnitStub",
-        SmlFileExtension.Stub,
-        compilationUnit
-    )
-
-    return when (val result = compilationUnit.serializeToFormattedString()) {
-        is SerializationResult.Success -> result.code + "\n"
-        is SerializationResult.Failure -> throw IllegalStateException(result.message)
     }
 }

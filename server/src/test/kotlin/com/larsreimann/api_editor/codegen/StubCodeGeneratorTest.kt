@@ -58,6 +58,81 @@ class StubCodeGeneratorTest {
     }
 
     @Nested
+    inner class ToStubCode {
+
+        @Test
+        fun `should create valid Simple-ML stubs`() {
+            val pythonModule = MutablePythonModule(
+                name = "testModule",
+                classes = listOf(
+                    MutablePythonClass(
+                        name = "Test_Class",
+                        attributes = listOf(
+                            MutablePythonAttribute(name = "testAttribute")
+                        ),
+                        methods = listOf(
+                            MutablePythonFunction(
+                                name = "testMethod",
+                                isPure = true
+                            )
+                        ),
+                        description = "Lorem ipsum"
+                    )
+                ),
+                functions = listOf(
+                    MutablePythonFunction(
+                        name = "testFunction",
+                        parameters = listOf(
+                            MutablePythonParameter(
+                                name = "testParameter"
+                            ),
+                            MutablePythonParameter(
+                                name = "testParameter",
+                                typeInDocs = "int",
+                                defaultValue = "10"
+                            )
+                        ),
+                        results = listOf(
+                            MutablePythonResult(
+                                name = "testParameter",
+                                type = "str"
+                            )
+                        )
+                    )
+                ),
+                enums = listOf(
+                    MutablePythonEnum(
+                        name = "TestEnum",
+                        instances = listOf(
+                            MutablePythonEnumInstance(name = "TestEnumInstance")
+                        )
+                    )
+                )
+            )
+
+            pythonModule.toStubCode() shouldBe """
+                |package testModule
+                |
+                |@PythonName("Test_Class")
+                |@Description("Lorem ipsum")
+                |class TestClass() {
+                |    attr testAttribute: Any?
+                |
+                |    @Pure
+                |    fun testMethod()
+                |}
+                |
+                |fun testFunction(testParameter: Any?, testParameter: Int or 10) -> testParameter: String
+                |
+                |enum TestEnum {
+                |    TestEnumInstance
+                |}
+                |
+                """.trimMargin()
+        }
+    }
+
+    @Nested
     inner class ToSmlCompilationUnit {
 
         @Test
