@@ -79,13 +79,13 @@ fun Route.infer() {
             }
             is DoInferResult.Success -> {
                 try {
-                    val zipFolderPath = doInferResult.path
-                    val zipFile = File(zipFolderPath)
+                    val zipFile = doInferResult.path
 
                     call.response.header(
                         HttpHeaders.ContentDisposition,
                         ContentDisposition.Attachment.withParameter(
-                            ContentDisposition.Parameters.FileName, zipFolderPath
+                            ContentDisposition.Parameters.FileName,
+                            zipFile.toString()
                         ).toString()
                     )
                     call.respondFile(zipFile)
@@ -117,7 +117,7 @@ fun doInfer(originalPythonPackage: SerializablePythonPackage): DoInferResult {
 }
 
 sealed class DoInferResult {
-    class Success(val path: String) : DoInferResult()
+    class Success(val path: File) : DoInferResult()
     class ValidationFailure(val messages: List<String>) : DoInferResult()
 }
 
