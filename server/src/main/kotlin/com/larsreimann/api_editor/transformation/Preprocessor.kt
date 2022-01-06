@@ -137,7 +137,7 @@ private fun MutablePythonParameter.updateParameterAssignment() {
 
 private fun MutablePythonParameter.isImplicit(): Boolean {
     val currentFunction = this.parent as? MutablePythonFunction ?: return false
-    return currentFunction.parent is MutablePythonClass
-        && !currentFunction.isStatic()
-        && currentFunction.parameters.firstOrNull() == this
+    return currentFunction.parent is MutablePythonClass &&
+        !currentFunction.isStatic() &&
+        currentFunction.parameters.firstOrNull() == this
 }

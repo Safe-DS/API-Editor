@@ -144,7 +144,7 @@ class PythonCodeGeneratorTest {
         // when
         val moduleContent = testModule.toPythonCode()
 
-        //then
+        // then
         val expectedModuleContent: String =
             """
             |import test-module
@@ -302,7 +302,7 @@ class PythonCodeGeneratorTest {
         // when
         val moduleContent = testModule.toPythonCode()
 
-        //then
+        // then
         val expectedModuleContent: String =
             """
             |import test-module
@@ -341,7 +341,7 @@ class PythonCodeGeneratorTest {
         // when
         val moduleContent = testModule.toPythonCode()
 
-        //then
+        // then
         val expectedModuleContent = ""
 
         moduleContent shouldBe expectedModuleContent

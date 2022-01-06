@@ -1,9 +1,9 @@
 package com.larsreimann.api_editor.mutable_model
 
-import com.larsreimann.api_editor.model.SerializablePythonEnumInstance
 import com.larsreimann.api_editor.model.SerializablePythonAttribute
 import com.larsreimann.api_editor.model.SerializablePythonClass
 import com.larsreimann.api_editor.model.SerializablePythonEnum
+import com.larsreimann.api_editor.model.SerializablePythonEnumInstance
 import com.larsreimann.api_editor.model.SerializablePythonFunction
 import com.larsreimann.api_editor.model.SerializablePythonModule
 import com.larsreimann.api_editor.model.SerializablePythonPackage

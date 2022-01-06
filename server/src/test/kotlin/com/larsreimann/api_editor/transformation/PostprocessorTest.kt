@@ -114,14 +114,16 @@ class PostprocessorTest {
 
         testPackage.reorderParameters()
 
-        testFunction.parameters.shouldContainExactly(listOf(
-            implicit,
-            positionOnly,
-            positionOrName,
-            nameOnly,
-            attribute,
-            constant
-        ))
+        testFunction.parameters.shouldContainExactly(
+            listOf(
+                implicit,
+                positionOnly,
+                positionOrName,
+                nameOnly,
+                attribute,
+                constant
+            )
+        )
     }
 
     @Test
