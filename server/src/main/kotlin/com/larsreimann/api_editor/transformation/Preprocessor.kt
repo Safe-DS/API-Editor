@@ -141,3 +141,15 @@ private fun MutablePythonParameter.isImplicit(): Boolean {
         !currentFunction.isStatic() &&
         currentFunction.parameters.firstOrNull() == this
 }
+
+/**
+ * Changes the name of implicit parameters to "self".
+ */
+fun MutablePythonPackage.normalizeNamesOfImplicitParameters() {
+    this.descendants()
+        .filterIsInstance<MutablePythonParameter>()
+        .filter { it.assignedBy == PythonParameterAssignment.IMPLICIT }
+        .forEach {
+            it.name = "self"
+        }
+}

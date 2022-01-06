@@ -252,4 +252,23 @@ class PreprocessorTest {
             testOptionalParameter.assignedBy shouldBe PythonParameterAssignment.NAME_ONLY
         }
     }
+
+    @Nested
+    inner class NormalizeNamesOfImplicitParameters {
+
+        @Test
+        fun `should change the name of implicit parameters to 'self'`() {
+            testMethodParameter.assignedBy = PythonParameterAssignment.IMPLICIT
+            testPackage.normalizeNamesOfImplicitParameters()
+
+            testMethodParameter.name shouldBe "self"
+        }
+
+        @Test
+        fun `should not change name of non-implicit parameters`() {
+            testPackage.normalizeNamesOfImplicitParameters()
+
+            testRequiredParameter.name shouldBe "testRequiredParameter"
+        }
+    }
 }
