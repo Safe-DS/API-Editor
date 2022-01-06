@@ -64,23 +64,23 @@ enum class Traversal {
 }
 
 /**
- * Returns the descendants of this [TreeNode]. We can switch between preorder and postorder traversal.
+ * Returns the descendants of this [TreeNode] using either preorder and postorder traversal.
  *
  * @param order
  * The traversal order. Preorder means a parent is listed before any of its children and postorder means a parent is
  * listed after all its children.
  *
- * @param shouldTraverse
- * Whether the subtree should be traversed. If this function returns false for a concept none of its descendants will be
- * returned.
+ * @param shouldPrune
+ * Whether the subtree should be pruned. If this function returns true for a concept neither the concept itself nor
+ * any of its descendants will be traversed.
  */
 fun TreeNode.descendants(
     order: Traversal = Traversal.PREORDER,
-    shouldTraverse: (TreeNode) -> Boolean = { true }
+    shouldPrune: (TreeNode) -> Boolean = { false }
 ): Sequence<TreeNode> {
 
     // Prevent children from being traversed if this concept should be pruned
-    if (!shouldTraverse(this)) {
+    if (shouldPrune(this)) {
         return emptySequence()
     }
 
@@ -88,14 +88,14 @@ fun TreeNode.descendants(
         for (child in children()) {
 
             // We must prune again here; otherwise the child would be yielded unchecked
-            if (!shouldTraverse(child)) {
+            if (shouldPrune(child)) {
                 continue
             }
 
             if (order == Traversal.PREORDER) {
                 yield(child)
             }
-            yieldAll(child.descendants(order, shouldTraverse))
+            yieldAll(child.descendants(order, shouldPrune))
             if (order == Traversal.POSTORDER) {
                 yield(child)
             }
@@ -104,21 +104,21 @@ fun TreeNode.descendants(
 }
 
 /**
- * Returns this [TreeNode] and its descendants. We can switch between preorder and postorder traversal.
+ * Returns this [TreeNode] and its descendants using either preorder and postorder traversal.
  *
  * @param order
  * The traversal order. Preorder means a parent is listed before any of its children and postorder means a parent is
  * listed after all its children.
  *
- * @param shouldTraverse
- * Whether the subtree should be traversed. If this function returns false for a concept neither the concept itself nor
+ * @param shouldPrune
+ * Whether the subtree should be pruned. If this function returns true for a concept neither the concept itself nor
  * any of its descendants will be traversed.
  */
 fun TreeNode.descendantsOrSelf(
     order: Traversal = Traversal.PREORDER,
-    shouldTraverse: (TreeNode) -> Boolean = { true }
+    shouldPrune: (TreeNode) -> Boolean = { false }
 ): Sequence<TreeNode> {
-    if (!shouldTraverse(this)) {
+    if (shouldPrune(this)) {
         return emptySequence()
     }
 
@@ -126,7 +126,7 @@ fun TreeNode.descendantsOrSelf(
         if (order == Traversal.PREORDER) {
             yield(this@descendantsOrSelf)
         }
-        yieldAll(descendants(order, shouldTraverse))
+        yieldAll(descendants(order, shouldPrune))
         if (order == Traversal.POSTORDER) {
             yield(this@descendantsOrSelf)
         }

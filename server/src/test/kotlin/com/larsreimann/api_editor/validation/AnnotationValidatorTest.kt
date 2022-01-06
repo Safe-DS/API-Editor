@@ -24,6 +24,8 @@ import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import org.junit.jupiter.api.Test
 
+// TODO: update
+
 internal class AnnotationValidatorTest {
     @Test
     fun returnAnnotationTargetErrorsForIncorrectlyPlacedAttributeAnnotations() {

@@ -3,6 +3,7 @@ package com.larsreimann.api_editor.mutable_model
 import com.larsreimann.api_editor.model.SerializablePythonAttribute
 import com.larsreimann.api_editor.model.SerializablePythonClass
 import com.larsreimann.api_editor.model.SerializablePythonEnum
+import com.larsreimann.api_editor.model.SerializablePythonEnumInstance
 import com.larsreimann.api_editor.model.SerializablePythonFunction
 import com.larsreimann.api_editor.model.SerializablePythonModule
 import com.larsreimann.api_editor.model.SerializablePythonPackage
@@ -48,8 +49,17 @@ fun convertClass(pythonClass: SerializablePythonClass): MutablePythonClass {
 fun convertEnum(pythonEnum: SerializablePythonEnum): MutablePythonEnum {
     return MutablePythonEnum(
         name = pythonEnum.name,
-        instances = pythonEnum.instances.toMutableList(),
+        instances = pythonEnum.instances.map { convertEnumInstance(it) }.toMutableList(),
         annotations = pythonEnum.annotations
+    )
+}
+
+fun convertEnumInstance(pythonEnumInstance: SerializablePythonEnumInstance): MutablePythonEnumInstance {
+    return MutablePythonEnumInstance(
+        name = pythonEnumInstance.name,
+        value = pythonEnumInstance.value,
+        description = pythonEnumInstance.description,
+        annotations = mutableListOf()
     )
 }
 
@@ -76,7 +86,7 @@ fun convertAttribute(pythonAttribute: SerializablePythonAttribute): MutablePytho
         typeInDocs = pythonAttribute.typeInDocs,
         description = pythonAttribute.description,
         boundary = pythonAttribute.boundary,
-        annotations = pythonAttribute.annotations
+        annotations = pythonAttribute.annotations,
     )
 }
 
@@ -85,11 +95,10 @@ fun convertParameter(pythonParameter: SerializablePythonParameter): MutablePytho
         name = pythonParameter.name,
         defaultValue = pythonParameter.defaultValue,
         assignedBy = pythonParameter.assignedBy,
-        isPublic = pythonParameter.isPublic,
         typeInDocs = pythonParameter.typeInDocs,
         description = pythonParameter.description,
         boundary = pythonParameter.boundary,
-        annotations = pythonParameter.annotations
+        annotations = pythonParameter.annotations,
     )
 }
 
@@ -100,6 +109,6 @@ fun convertResult(pythonResult: SerializablePythonResult): MutablePythonResult {
         typeInDocs = pythonResult.typeInDocs,
         description = pythonResult.description,
         boundary = pythonResult.boundary,
-        annotations = pythonResult.annotations
+        annotations = pythonResult.annotations,
     )
 }

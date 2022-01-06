@@ -3,6 +3,7 @@ package com.larsreimann.api_editor.mutable_model
 import com.larsreimann.api_editor.model.SerializablePythonAttribute
 import com.larsreimann.api_editor.model.SerializablePythonClass
 import com.larsreimann.api_editor.model.SerializablePythonEnum
+import com.larsreimann.api_editor.model.SerializablePythonEnumInstance
 import com.larsreimann.api_editor.model.SerializablePythonFunction
 import com.larsreimann.api_editor.model.SerializablePythonModule
 import com.larsreimann.api_editor.model.SerializablePythonPackage
@@ -10,15 +11,13 @@ import com.larsreimann.api_editor.model.SerializablePythonParameter
 import com.larsreimann.api_editor.model.SerializablePythonResult
 
 fun convertPackage(pythonPackage: MutablePythonPackage): SerializablePythonPackage {
-    val result = SerializablePythonPackage(
+    return SerializablePythonPackage(
         distribution = pythonPackage.distribution,
         name = pythonPackage.name,
         version = pythonPackage.version,
         modules = pythonPackage.modules.map { convertModule(it) }.toMutableList(),
         annotations = pythonPackage.annotations
     )
-    result.originalDeclaration = pythonPackage.originalDeclaration
-    return result
 }
 
 fun convertModule(pythonModule: MutablePythonModule): SerializablePythonModule {
@@ -30,7 +29,6 @@ fun convertModule(pythonModule: MutablePythonModule): SerializablePythonModule {
         functions = pythonModule.functions.map { convertFunction(it) }.toMutableList(),
         annotations = pythonModule.annotations
     )
-    result.originalDeclaration = pythonModule.originalDeclaration
     result.enums += pythonModule.enums.map { convertEnum(it) }
     return result
 }
@@ -47,19 +45,25 @@ fun convertClass(pythonClass: MutablePythonClass): SerializablePythonClass {
         fullDocstring = pythonClass.fullDocstring,
         annotations = pythonClass.annotations
     )
-    result.originalDeclaration = pythonClass.originalDeclaration
     result.attributes += pythonClass.attributes.map { convertAttribute(it) }
     return result
 }
 
 fun convertEnum(pythonEnum: MutablePythonEnum): SerializablePythonEnum {
-    val result = SerializablePythonEnum(
+    return SerializablePythonEnum(
         name = pythonEnum.name,
-        instances = pythonEnum.instances,
+        instances = pythonEnum.instances.map { convertEnumInstance(it) }.toMutableList(),
         annotations = pythonEnum.annotations
     )
-    result.originalDeclaration = pythonEnum.originalDeclaration
-    return result
+}
+
+fun convertEnumInstance(pythonEnumInstance: MutablePythonEnumInstance): SerializablePythonEnumInstance {
+    val instance = SerializablePythonEnumInstance(
+        name = pythonEnumInstance.name,
+        value = pythonEnumInstance.value
+    )
+    instance.description = pythonEnumInstance.description
+    return instance
 }
 
 fun convertFunction(pythonFunction: MutablePythonFunction): SerializablePythonFunction {
@@ -74,7 +78,6 @@ fun convertFunction(pythonFunction: MutablePythonFunction): SerializablePythonFu
         fullDocstring = pythonFunction.fullDocstring,
         annotations = pythonFunction.annotations,
     )
-    result.originalDeclaration = pythonFunction.originalDeclaration
     result.calledAfter += pythonFunction.calledAfter
     result.isPure = pythonFunction.isPure
     return result
@@ -90,7 +93,6 @@ fun convertAttribute(pythonAttribute: MutablePythonAttribute): SerializablePytho
         description = pythonAttribute.description,
         annotations = pythonAttribute.annotations
     )
-    result.originalDeclaration = pythonAttribute.originalDeclaration
     result.boundary = pythonAttribute.boundary
     return result
 }
@@ -101,12 +103,11 @@ fun convertParameter(pythonParameter: MutablePythonParameter): SerializablePytho
         qualifiedName = pythonParameter.qualifiedName(),
         defaultValue = pythonParameter.defaultValue,
         assignedBy = pythonParameter.assignedBy,
-        isPublic = pythonParameter.isPublic,
+        isPublic = true,
         typeInDocs = pythonParameter.typeInDocs,
         description = pythonParameter.description,
         annotations = pythonParameter.annotations
     )
-    result.originalDeclaration = pythonParameter.originalDeclaration
     result.boundary = pythonParameter.boundary
     return result
 }
@@ -119,7 +120,6 @@ fun convertResult(pythonResult: MutablePythonResult): SerializablePythonResult {
         description = pythonResult.description,
         annotations = pythonResult.annotations
     )
-    result.originalDeclaration = pythonResult.originalDeclaration
     result.boundary = pythonResult.boundary
     return result
 }

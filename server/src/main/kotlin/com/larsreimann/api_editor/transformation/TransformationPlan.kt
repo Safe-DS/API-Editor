@@ -1,26 +1,44 @@
 package com.larsreimann.api_editor.transformation
 
-import com.larsreimann.api_editor.model.SerializablePythonPackage
-import com.larsreimann.api_editor.mutable_model.convertPackage
+import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
 
-fun processPackage(originalPythonPackage: SerializablePythonPackage): SerializablePythonPackage {
-    var modifiedPythonPackage = originalPythonPackage
+/**
+ * Processes all annotations and updates the AST to create adapters.
+ */
+fun MutablePythonPackage.transform() {
+    preprocess()
+    processAnnotations()
+    postprocess()
+}
 
-    // Create original declarations
-    modifiedPythonPackage.accept(Preprocessor())
+/**
+ * Transformation steps that have to be run before annotations can be processed.
+ */
+private fun MutablePythonPackage.preprocess() {
+    removePrivateDeclarations()
+    addOriginalDeclarations()
+    changeModulePrefix(newPrefix = "simpleml")
+    replaceClassMethodsWithStaticMethods()
+    updateParameterAssignment()
+}
 
-    // Apply annotations (don't change the order)
-    val mutablePackage = convertPackage(modifiedPythonPackage)
-    mutablePackage.processUnusedAnnotations()
-    mutablePackage.processRenameAnnotations()
-    mutablePackage.processMoveAnnotations()
-    mutablePackage.processParameterAnnotations()
-    mutablePackage.processBoundaryAnnotations()
-    mutablePackage.processPureAnnotations()
-    modifiedPythonPackage = convertPackage(mutablePackage)
+/**
+ * Processes all annotations.
+ */
+private fun MutablePythonPackage.processAnnotations() {
+    processUnusedAnnotations()
+    processRenameAnnotations()
+    processMoveAnnotations()
+    processParameterAnnotations()
+    processBoundaryAnnotations()
+    processPureAnnotations()
+}
 
-    // Cleanup
-    modifiedPythonPackage = modifiedPythonPackage.accept(Postprocessor)!!
-
-    return modifiedPythonPackage
+/**
+ * Transformation steps that have to be run after annotations were processed.
+ */
+private fun MutablePythonPackage.postprocess() {
+    removeEmptyModules()
+    reorderParameters()
+    createAttributesForParametersOfConstructor()
 }

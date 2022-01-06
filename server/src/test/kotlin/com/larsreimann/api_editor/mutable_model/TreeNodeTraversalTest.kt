@@ -80,7 +80,7 @@ class TreeNodeTraversalTest {
 
     @Test
     fun `descendant() should prune nodes if a filter is passed`() {
-        root.descendants { it !is InnerNode }.toList().shouldContainExactly(leaf2, leaf3)
+        root.descendants { it is InnerNode }.toList().shouldContainExactly(leaf2, leaf3)
     }
 
     @Test
@@ -95,7 +95,7 @@ class TreeNodeTraversalTest {
 
     @Test
     fun `descendantOrSelf() should prune nodes if a filter is passed`() {
-        root.descendantsOrSelf { it !is InnerNode }.toList().shouldContainExactly(root, leaf2, leaf3)
+        root.descendantsOrSelf { it is InnerNode }.toList().shouldContainExactly(root, leaf2, leaf3)
     }
 
     @Test

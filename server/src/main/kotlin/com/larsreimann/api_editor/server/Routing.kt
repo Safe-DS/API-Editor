@@ -1,8 +1,9 @@
 package com.larsreimann.api_editor.server
 
-import com.larsreimann.api_editor.io.PackageFileBuilder
+import com.larsreimann.api_editor.codegen.generateCode
 import com.larsreimann.api_editor.model.SerializablePythonPackage
-import com.larsreimann.api_editor.transformation.processPackage
+import com.larsreimann.api_editor.mutable_model.convertPackage
+import com.larsreimann.api_editor.transformation.transform
 import com.larsreimann.api_editor.validation.AnnotationValidator
 import io.ktor.application.Application
 import io.ktor.application.call
@@ -78,13 +79,13 @@ fun Route.infer() {
             }
             is DoInferResult.Success -> {
                 try {
-                    val zipFolderPath = doInferResult.path
-                    val zipFile = File(zipFolderPath)
+                    val zipFile = doInferResult.path
 
                     call.response.header(
                         HttpHeaders.ContentDisposition,
                         ContentDisposition.Attachment.withParameter(
-                            ContentDisposition.Parameters.FileName, zipFolderPath
+                            ContentDisposition.Parameters.FileName,
+                            zipFile.toString()
                         ).toString()
                     )
                     call.respondFile(zipFile)
@@ -107,15 +108,16 @@ fun doInfer(originalPythonPackage: SerializablePythonPackage): DoInferResult {
     }
 
     // Process package
-    val modifiedPythonPackage = processPackage(originalPythonPackage)
+    val mutablePackage = convertPackage(originalPythonPackage)
+    mutablePackage.transform()
 
     // Build files
-    val path = PackageFileBuilder(modifiedPythonPackage).buildModuleFiles()
+    val path = mutablePackage.generateCode()
     return DoInferResult.Success(path)
 }
 
 sealed class DoInferResult {
-    class Success(val path: String) : DoInferResult()
+    class Success(val path: File) : DoInferResult()
     class ValidationFailure(val messages: List<String>) : DoInferResult()
 }
 
