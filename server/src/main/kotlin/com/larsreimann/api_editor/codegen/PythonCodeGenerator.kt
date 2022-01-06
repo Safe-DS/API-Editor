@@ -102,7 +102,6 @@ fun MutablePythonClass.toPythonCode(): String {
             formattedClass += "\n\n"
         }
         formattedClass += buildAllFunctions(this).joinToString("\n".repeat(2))
-
     }
     return formattedClass
 }
