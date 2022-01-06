@@ -196,7 +196,7 @@ fun MutablePythonParameter.toSmlParameterOrNull(): SmlParameter? {
             }
         },
         type = typeInDocs.toSmlType(),
-        defaultValue = defaultValue?.let { buildDefaultValue(it) }
+        defaultValue = defaultValue?.toSmlExpression()
     )
 }
 
@@ -210,6 +210,20 @@ fun MutablePythonResult.toSmlResult(): SmlResult {
         },
         type = type.toSmlType()
     )
+}
+
+// Name conversions ----------------------------------------------------------------------------------------------------
+
+internal fun String.snakeCaseToLowerCamelCase(): String {
+    return this.snakeCaseToCamelCase().replaceFirstChar { it.lowercase() }
+}
+
+internal fun String.snakeCaseToUpperCamelCase(): String {
+    return this.snakeCaseToCamelCase().replaceFirstChar { it.uppercase() }
+}
+
+private fun String.snakeCaseToCamelCase(): String {
+    return this.replace(Regex("_(.)")) { it.groupValues[1].uppercase() }
 }
 
 // Type conversions ----------------------------------------------------------------------------------------------------
@@ -237,47 +251,27 @@ internal fun String.toSmlType(): SmlAbstractType {
 
 // Value conversions ---------------------------------------------------------------------------------------------------
 
-internal fun buildDefaultValue(defaultValue: String): SmlAbstractExpression? {
-    if (defaultValue.isBlank()) {
-        return null
+internal fun String.toSmlExpression(): SmlAbstractExpression? {
+    return when {
+        isBlank() -> null
+        this == "False" -> createSmlBoolean(false)
+        this == "True" -> createSmlBoolean(true)
+        this == "None" -> createSmlNull()
+        isIntLiteral() -> createSmlInt(toInt())
+        isFloatLiteral() -> createSmlFloat(toDouble())
+        isStringLiteral() -> createSmlString(substring(1, length - 1))
+        else -> createSmlString("###invalid###$this###")
     }
-
-    val invalid = "###invalid###" + defaultValue.replace("\"", "\\\"") + "###"
-    if (defaultValue.length >= 2 && (
-            defaultValue[defaultValue.length - 1]
-                == defaultValue[0]
-            ) && defaultValue[0] == '\'' && defaultValue.count { it == '\'' } == 2
-    ) {
-        return createSmlString(defaultValue.replace("'".toRegex(), "\"").trim('\'', '"'))
-    }
-    if (defaultValue == "False" || defaultValue == "True") {
-        return createSmlBoolean(defaultValue == "True")
-    }
-    if (defaultValue == "None") {
-        return createSmlNull()
-    }
-    try {
-        val numericValue = defaultValue.toDouble()
-        if (numericValue.toInt().toDouble() == numericValue) {
-            return createSmlInt(numericValue.toInt())
-        }
-        return createSmlFloat(numericValue)
-    } catch (e: NumberFormatException) {
-        // do nothing if defaultValue is not numeric
-    }
-    return createSmlString(invalid)
 }
 
-// Name conversions ----------------------------------------------------------------------------------------------------
-
-internal fun String.snakeCaseToLowerCamelCase(): String {
-    return this.snakeCaseToCamelCase().replaceFirstChar { it.lowercase() }
+private fun String.isIntLiteral(): Boolean {
+    return this.toIntOrNull() != null
 }
 
-internal fun String.snakeCaseToUpperCamelCase(): String {
-    return this.snakeCaseToCamelCase().replaceFirstChar { it.uppercase() }
+private fun String.isFloatLiteral(): Boolean {
+    return this.toDoubleOrNull() != null
 }
 
-private fun String.snakeCaseToCamelCase(): String {
-    return this.replace(Regex("_(.)")) { it.groupValues[1].uppercase() }
+private fun String.isStringLiteral(): Boolean {
+    return length >= 2 && this[0] == this[length - 1] && this[0] in setOf('\'', '"')
 }

@@ -18,9 +18,13 @@ import de.unibonn.simpleml.emf.parentTypesOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAttribute
+import de.unibonn.simpleml.simpleML.SmlBoolean
 import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.simpleML.SmlFloat
 import de.unibonn.simpleml.simpleML.SmlFunction
+import de.unibonn.simpleml.simpleML.SmlInt
 import de.unibonn.simpleml.simpleML.SmlNamedType
+import de.unibonn.simpleml.simpleML.SmlNull
 import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.stdlib.uniqueAnnotationUseOrNull
@@ -443,6 +447,42 @@ class StubCodeGeneratorTest {
     }
 
     @Nested
+    inner class NameConversions {
+
+        @ParameterizedTest
+        @CsvSource(
+            delimiter = '|',
+            textBlock = """
+            ''        | ''
+            name      | name
+            Name      | name
+            _name     | name
+            _Name     | name
+            two_words | twoWords
+            Two_words | twoWords"""
+        )
+        fun `snakeCaseToLowerCamelCase should convert snake case to lower camel case`(input: String, expected: String) {
+            input.snakeCaseToLowerCamelCase() shouldBe expected
+        }
+
+        @ParameterizedTest
+        @CsvSource(
+            delimiter = '|',
+            textBlock = """
+            ''        | ''
+            name      | Name
+            Name      | Name
+            _name     | Name
+            _Name     | Name
+            two_words | TwoWords
+            Two_words | TwoWords"""
+        )
+        fun `snakeCaseToUpperCamelCase should convert snake case to upper camel case`(input: String, expected: String) {
+            input.snakeCaseToUpperCamelCase() shouldBe expected
+        }
+    }
+
+    @Nested
     inner class TypeConversions {
 
         @Test
@@ -482,34 +522,58 @@ class StubCodeGeneratorTest {
     }
 
     @Nested
-    inner class NameConversions {
+    inner class ValueConversions {
 
-        @ParameterizedTest
-        @CsvSource(
-            delimiter = '|',
-            textBlock = """
-            ''        | ''
-            name      | name
-            Name      | name
-            two_words | twoWords
-            Two_words | twoWords"""
-        )
-        fun `snakeCaseToLowerCamelCase should convert snake case to lower camel case`(input: String, expected: String) {
-            input.snakeCaseToLowerCamelCase() shouldBe expected
+        @Test
+        fun `should convert blank strings to null`() {
+            " ".toSmlExpression().shouldBeNull()
         }
 
-        @ParameterizedTest
-        @CsvSource(
-            delimiter = '|',
-            textBlock = """
-            ''        | ''
-            name      | Name
-            Name      | Name
-            two_words | TwoWords
-            Two_words | TwoWords"""
-        )
-        fun `snakeCaseToUpperCamelCase should convert snake case to upper camel case`(input: String, expected: String) {
-            input.snakeCaseToUpperCamelCase() shouldBe expected
+        @Test
+        fun `should convert False to a false boolean literal`() {
+            val smlBoolean = "False".toSmlExpression().shouldBeInstanceOf<SmlBoolean>()
+            smlBoolean.isTrue.shouldBeFalse()
+        }
+
+        @Test
+        fun `should convert True to a true boolean literal`() {
+            val smlBoolean = "True".toSmlExpression().shouldBeInstanceOf<SmlBoolean>()
+            smlBoolean.isTrue.shouldBeTrue()
+        }
+
+        @Test
+        fun `should convert None to a null literal`() {
+            "None".toSmlExpression().shouldBeInstanceOf<SmlNull>()
+        }
+
+        @Test
+        fun `should convert ints to integer literals`() {
+            val smlInt = "123".toSmlExpression().shouldBeInstanceOf<SmlInt>()
+            smlInt.value shouldBe 123
+        }
+
+        @Test
+        fun `should convert floats to float literals`() {
+            val smlFloat = "123.45".toSmlExpression().shouldBeInstanceOf<SmlFloat>()
+            smlFloat.value shouldBe 123.45
+        }
+
+        @Test
+        fun `should convert single-quoted strings to string literals`() {
+            val smlString = "'string'".toSmlExpression().shouldBeInstanceOf<SmlString>()
+            smlString.value shouldBe "string"
+        }
+
+        @Test
+        fun `should convert double-quoted strings to string literals`() {
+            val smlString = "\"string\"".toSmlExpression().shouldBeInstanceOf<SmlString>()
+            smlString.value shouldBe "string"
+        }
+
+        @Test
+        fun `should convert other values to '###invalid###' strings`() {
+            val smlString = "unknown".toSmlExpression().shouldBeInstanceOf<SmlString>()
+            smlString.value shouldBe "###invalid###unknown###"
         }
     }
 
