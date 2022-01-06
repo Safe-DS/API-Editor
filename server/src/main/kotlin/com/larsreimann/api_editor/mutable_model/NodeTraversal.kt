@@ -1,17 +1,17 @@
 package com.larsreimann.api_editor.mutable_model
 
 /**
- * Returns the root of the tree that contains this [TreeNode]. This may be this [TreeNode] itself.
+ * Returns the root of the tree that contains this [Node]. This may be this [Node] itself.
  */
-fun TreeNode.root(): TreeNode {
+fun Node.root(): Node {
     return parent?.root() ?: this
 }
 
 /**
- * Returns the ancestors of this [TreeNode] starting with its parent (if we are not at the root already) and then
+ * Returns the ancestors of this [Node] starting with its parent (if we are not at the root already) and then
  * walking up the tree to the root.
  */
-fun TreeNode.ancestors(): Sequence<TreeNode> {
+fun Node.ancestors(): Sequence<Node> {
     return sequence {
         var current = parent
         while (current != null) {
@@ -22,9 +22,9 @@ fun TreeNode.ancestors(): Sequence<TreeNode> {
 }
 
 /**
- * Returns this [TreeNode] and its ancestors starting at this [TreeNode] and then walking up the tree to the root.
+ * Returns this [Node] and its ancestors starting at this [Node] and then walking up the tree to the root.
  */
-fun TreeNode.ancestorsOrSelf(): Sequence<TreeNode> {
+fun Node.ancestorsOrSelf(): Sequence<Node> {
     return sequence {
         yield(this@ancestorsOrSelf)
         yieldAll(ancestors())
@@ -32,18 +32,18 @@ fun TreeNode.ancestorsOrSelf(): Sequence<TreeNode> {
 }
 
 /**
- * Returns the siblings of this [TreeNode], i.e. the children of its parent excluding this [TreeNode]. The
+ * Returns the siblings of this [Node], i.e. the children of its parent excluding this [Node]. The
  * siblings are ordered like the children of the parent.
  */
-fun TreeNode.siblings(): Sequence<TreeNode> {
+fun Node.siblings(): Sequence<Node> {
     return parent?.children()?.filterNot { it == this } ?: emptySequence()
 }
 
 /**
- * Returns the children of the parent of this [TreeNode], including this [TreeNode]. The elements are ordered like
+ * Returns the children of the parent of this [Node], including this [Node]. The elements are ordered like
  * the children of the parent.
  */
-fun TreeNode.siblingsOrSelf(): Sequence<TreeNode> {
+fun Node.siblingsOrSelf(): Sequence<Node> {
     return parent?.children() ?: emptySequence()
 }
 
@@ -64,7 +64,7 @@ enum class Traversal {
 }
 
 /**
- * Returns the descendants of this [TreeNode] using either preorder and postorder traversal.
+ * Returns the descendants of this [Node] using either preorder and postorder traversal.
  *
  * @param order
  * The traversal order. Preorder means a parent is listed before any of its children and postorder means a parent is
@@ -74,10 +74,10 @@ enum class Traversal {
  * Whether the subtree should be pruned. If this function returns true for a concept neither the concept itself nor
  * any of its descendants will be traversed.
  */
-fun TreeNode.descendants(
+fun Node.descendants(
     order: Traversal = Traversal.PREORDER,
-    shouldPrune: (TreeNode) -> Boolean = { false }
-): Sequence<TreeNode> {
+    shouldPrune: (Node) -> Boolean = { false }
+): Sequence<Node> {
 
     // Prevent children from being traversed if this concept should be pruned
     if (shouldPrune(this)) {
@@ -104,7 +104,7 @@ fun TreeNode.descendants(
 }
 
 /**
- * Returns this [TreeNode] and its descendants using either preorder and postorder traversal.
+ * Returns this [Node] and its descendants using either preorder and postorder traversal.
  *
  * @param order
  * The traversal order. Preorder means a parent is listed before any of its children and postorder means a parent is
@@ -114,10 +114,10 @@ fun TreeNode.descendants(
  * Whether the subtree should be pruned. If this function returns true for a concept neither the concept itself nor
  * any of its descendants will be traversed.
  */
-fun TreeNode.descendantsOrSelf(
+fun Node.descendantsOrSelf(
     order: Traversal = Traversal.PREORDER,
-    shouldPrune: (TreeNode) -> Boolean = { false }
-): Sequence<TreeNode> {
+    shouldPrune: (Node) -> Boolean = { false }
+): Sequence<Node> {
     if (shouldPrune(this)) {
         return emptySequence()
     }
@@ -134,8 +134,8 @@ fun TreeNode.descendantsOrSelf(
 }
 
 /**
- * Returns this [TreeNode] or its nearest ancestor with the specified type.
+ * Returns this [Node] or its nearest ancestor with the specified type.
  */
-inline fun <reified T> TreeNode.closest(): T? {
+inline fun <reified T> Node.closest(): T? {
     return ancestorsOrSelf().firstOrNull { it is T } as T?
 }

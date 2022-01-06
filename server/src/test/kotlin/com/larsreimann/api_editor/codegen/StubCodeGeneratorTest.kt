@@ -3,6 +3,7 @@ package com.larsreimann.api_editor.codegen
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.mutable_model.MutablePythonAttribute
 import com.larsreimann.api_editor.mutable_model.MutablePythonClass
+import com.larsreimann.api_editor.mutable_model.MutablePythonConstructor
 import com.larsreimann.api_editor.mutable_model.MutablePythonEnum
 import com.larsreimann.api_editor.mutable_model.MutablePythonEnumInstance
 import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
@@ -303,34 +304,31 @@ class StubCodeGeneratorTest {
         fun `should store parameters of constructor`() {
             val pythonClass = MutablePythonClass(
                 name = "TestClass",
-                methods = listOf(
-                    MutablePythonFunction(
-                        name = "__init__",
-                        parameters = listOf(
-                            MutablePythonParameter(
-                                name = "self",
-                                assignedBy = PythonParameterAssignment.IMPLICIT
-                            ),
-                            MutablePythonParameter(
-                                name = "positionOnly",
-                                assignedBy = PythonParameterAssignment.POSITION_ONLY
-                            ),
-                            MutablePythonParameter(
-                                name = "positionOrName",
-                                assignedBy = PythonParameterAssignment.POSITION_OR_NAME
-                            ),
-                            MutablePythonParameter(
-                                name = "nameOnly",
-                                assignedBy = PythonParameterAssignment.NAME_ONLY
-                            ),
-                            MutablePythonParameter(
-                                name = "attribute",
-                                assignedBy = PythonParameterAssignment.ATTRIBUTE
-                            ),
-                            MutablePythonParameter(
-                                name = "constant",
-                                assignedBy = PythonParameterAssignment.CONSTANT
-                            )
+                constructor = MutablePythonConstructor(
+                    parameters = listOf(
+                        MutablePythonParameter(
+                            name = "self",
+                            assignedBy = PythonParameterAssignment.IMPLICIT
+                        ),
+                        MutablePythonParameter(
+                            name = "positionOnly",
+                            assignedBy = PythonParameterAssignment.POSITION_ONLY
+                        ),
+                        MutablePythonParameter(
+                            name = "positionOrName",
+                            assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+                        ),
+                        MutablePythonParameter(
+                            name = "nameOnly",
+                            assignedBy = PythonParameterAssignment.NAME_ONLY
+                        ),
+                        MutablePythonParameter(
+                            name = "attribute",
+                            assignedBy = PythonParameterAssignment.ATTRIBUTE
+                        ),
+                        MutablePythonParameter(
+                            name = "constant",
+                            assignedBy = PythonParameterAssignment.CONSTANT
                         )
                     )
                 )

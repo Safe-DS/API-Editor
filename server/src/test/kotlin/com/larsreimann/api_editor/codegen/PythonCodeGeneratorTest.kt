@@ -6,6 +6,7 @@ import com.larsreimann.api_editor.model.PythonFromImport
 import com.larsreimann.api_editor.model.PythonImport
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.mutable_model.MutablePythonClass
+import com.larsreimann.api_editor.mutable_model.MutablePythonConstructor
 import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
 import com.larsreimann.api_editor.mutable_model.MutablePythonModule
 import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
@@ -279,6 +280,7 @@ class PythonCodeGeneratorTest {
         // given
         val testClass = MutablePythonClass(
             name = "test-class",
+            constructor = MutablePythonConstructor(),
             originalClass = OriginalPythonClass("test-module.test-class")
         )
         val testModule = MutablePythonModule(
@@ -308,7 +310,8 @@ class PythonCodeGeneratorTest {
             |import test-module
             |
             |class test-class:
-            |    pass
+            |    def __init__():
+            |        pass
             |
             """.trimMargin()
 
@@ -505,11 +508,15 @@ class PythonCodeGeneratorTest {
 
     @Test
     fun `should create valid code for empty classes`() { // TODO
-        val testClass = MutablePythonClass("TestClass")
+        val testClass = MutablePythonClass(
+            name = "TestClass",
+            constructor = MutablePythonConstructor()
+        )
 
         testClass.toPythonCode() shouldBe """
             |class TestClass:
-            |    pass
+            |    def __init__():
+            |        pass
         """.trimMargin()
     }
 
@@ -566,7 +573,8 @@ class PythonCodeGeneratorTest {
             """
             |class test-class:
             |    def __init__(self, *, only-param='defaultValue'):
-            |        test-module.test-class.__init__(only-param)""".trimMargin()
+            |        test-module.test-class.__init__(only-param)
+            """.trimMargin()
         formattedClass shouldBe expectedFormattedClass
     }
 

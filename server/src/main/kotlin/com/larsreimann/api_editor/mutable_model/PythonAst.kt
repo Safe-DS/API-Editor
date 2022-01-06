@@ -9,7 +9,7 @@ import com.larsreimann.api_editor.model.PythonImport
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.model.SerializablePythonFunction
 
-sealed class MutablePythonAstNode : TreeNode()
+sealed class MutablePythonAstNode : Node()
 
 sealed class MutablePythonDeclaration : MutablePythonAstNode() {
 
@@ -37,7 +37,7 @@ class MutablePythonPackage(
     override val annotations: MutableList<EditorAnnotation> = mutableListOf()
 ) : MutablePythonDeclaration() {
 
-    val modules = ContainmentList(modules)
+    val modules = MutableContainmentList(modules)
 
     override fun children() = sequence {
         yieldAll(modules)
@@ -54,9 +54,9 @@ class MutablePythonModule(
     override val annotations: MutableList<EditorAnnotation> = mutableListOf()
 ) : MutablePythonDeclaration() {
 
-    val classes = ContainmentList(classes)
-    val enums = ContainmentList(enums)
-    val functions = ContainmentList(functions)
+    val classes = MutableContainmentList(classes)
+    val enums = MutableContainmentList(enums)
+    val functions = MutableContainmentList(functions)
 
     override fun children() = sequence {
         yieldAll(classes)
@@ -69,6 +69,7 @@ class MutablePythonClass(
     override var name: String,
     val decorators: MutableList<String> = mutableListOf(),
     val superclasses: MutableList<String> = mutableListOf(),
+    constructor: MutablePythonConstructor? = null,
     attributes: List<MutablePythonAttribute> = emptyList(),
     methods: List<MutablePythonFunction> = emptyList(),
     var isPublic: Boolean = true,
@@ -78,20 +79,24 @@ class MutablePythonClass(
     var originalClass: OriginalPythonClass? = null
 ) : MutablePythonDeclaration() {
 
-    val attributes = ContainmentList(attributes)
-    val methods = ContainmentList(methods)
+    var constructor by ContainmentReference(constructor)
+    val attributes = MutableContainmentList(attributes)
+    val methods = MutableContainmentList(methods)
 
     override fun children() = sequence {
         yieldAll(attributes)
         yieldAll(methods)
     }
+}
 
-    fun constructorOrNull(): MutablePythonFunction? {
-        return methods.firstOrNull { it.name == "__init__" }
-    }
+class MutablePythonConstructor(
+    parameters: List<MutablePythonParameter> = emptyList()
+) : MutablePythonAstNode() {
 
-    fun methodsExceptConstructor(): List<MutablePythonFunction> {
-        return methods.filter { it.name != "__init__" }
+    val parameters = MutableContainmentList(parameters)
+
+    override fun children() = sequence {
+        yieldAll(parameters)
     }
 }
 
@@ -104,7 +109,7 @@ class MutablePythonEnum(
     override val annotations: MutableList<EditorAnnotation> = mutableListOf()
 ) : MutablePythonDeclaration() {
 
-    val instances = ContainmentList(instances)
+    val instances = MutableContainmentList(instances)
 }
 
 data class MutablePythonEnumInstance(
@@ -128,15 +133,13 @@ class MutablePythonFunction(
     var originalFunction: OriginalPythonFunction? = null
 ) : MutablePythonDeclaration() {
 
-    val parameters = ContainmentList(parameters)
-    val results = ContainmentList(results)
+    val parameters = MutableContainmentList(parameters)
+    val results = MutableContainmentList(results)
 
     override fun children() = sequence {
         yieldAll(parameters)
         yieldAll(results)
     }
-
-    fun isConstructor() = name == "__init__"
 
     fun isStatic() = "staticmethod" in decorators
 }

@@ -7,21 +7,21 @@ import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class ContainmentListTest {
+class MutableContainmentListTest {
 
-    private class Root(children: List<TreeNode>, someMoreChildren: List<TreeNode>) : TreeNode() {
-        val children = ContainmentList(children)
-        val someMoreChildren = ContainmentList(someMoreChildren)
+    private class Root(children: List<Node>, someMoreChildren: List<Node>) : Node() {
+        val children = MutableContainmentList(children)
+        val someMoreChildren = MutableContainmentList(someMoreChildren)
     }
 
-    private lateinit var innerNode: TreeNode
-    private lateinit var someOtherInnerNode: TreeNode
+    private lateinit var innerNode: Node
+    private lateinit var someOtherInnerNode: Node
     private lateinit var root: Root
 
     @BeforeEach
     fun resetTestData() {
-        innerNode = TreeNode()
-        someOtherInnerNode = TreeNode()
+        innerNode = Node()
+        someOtherInnerNode = Node()
         root = Root(listOf(innerNode), listOf(someOtherInnerNode))
     }
 

@@ -85,6 +85,9 @@ internal fun MutablePythonModule.toSmlCompilationUnit(): SmlCompilationUnit {
 internal fun MutablePythonClass.toSmlClass(): SmlClass {
     val stubName = name.snakeCaseToUpperCamelCase()
 
+    val attributes = attributes.map { it.toSmlAttribute() }
+    val methods = methods.map { it.toSmlFunction() }
+
     return createSmlClass(
         name = stubName,
         annotations = buildList {
@@ -96,19 +99,15 @@ internal fun MutablePythonClass.toSmlClass(): SmlClass {
             }
         },
         parameters = buildConstructor(),
-        members = buildAttributes() + buildMethods()
+        members = attributes + methods
     )
 }
 
 private fun MutablePythonClass.buildConstructor(): List<SmlParameter> {
-    return constructorOrNull()
+    return constructor
         ?.parameters
         ?.mapNotNull { it.toSmlParameterOrNull() }
         .orEmpty()
-}
-
-private fun MutablePythonClass.buildAttributes(): List<SmlAttribute> {
-    return attributes.map { it.toSmlAttribute() }
 }
 
 /**
@@ -129,10 +128,6 @@ internal fun MutablePythonAttribute.toSmlAttribute(): SmlAttribute {
         },
         type = typeInDocs.toSmlType()
     )
-}
-
-private fun MutablePythonClass.buildMethods(): List<SmlFunction> {
-    return methodsExceptConstructor().map { it.toSmlFunction() }
 }
 
 internal fun MutablePythonFunction.toSmlFunction(): SmlFunction {
