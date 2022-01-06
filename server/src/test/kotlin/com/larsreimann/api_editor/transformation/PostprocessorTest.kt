@@ -7,6 +7,9 @@ import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
 import com.larsreimann.api_editor.mutable_model.MutablePythonModule
 import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
 import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
+import com.larsreimann.api_editor.mutable_model.OriginalPythonFunction
+import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
+import io.kotest.assertions.asClue
 import io.kotest.matchers.collections.exist
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContain
@@ -14,6 +17,7 @@ import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldExist
 import io.kotest.matchers.collections.shouldNotContain
 import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNot
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
@@ -50,7 +54,16 @@ class PostprocessorTest {
                 MutablePythonFunction(
                     name = "__init__",
                     parameters = listOf(
-                        MutablePythonParameter(name = "constructorParameter")
+                        MutablePythonParameter(
+                            name = "constructorParameter",
+                            originalParameter = OriginalPythonParameter(name = "constructorParameter")
+                        )
+                    ),
+                    originalFunction = OriginalPythonFunction(
+                        qualifiedName = "testModule.TestClass.__init__",
+                        parameters = listOf(
+                            OriginalPythonParameter(name = "constructorParameter")
+                        )
                     )
                 )
             )
@@ -154,9 +167,13 @@ class PostprocessorTest {
             testPackage.createConstructors()
 
             testClass.constructor
-                .shouldNotBeNull()
-                .parameters
-                .shouldBeEmpty()
+                .shouldNotBeNull().asClue {
+                    it.parameters.shouldBeEmpty()
+                    it.callToOriginalAPI shouldBe OriginalPythonFunction(
+                        qualifiedName = "testModule.TestClass",
+                        parameters = emptyList()
+                    )
+                }
         }
 
         @Test
@@ -170,6 +187,27 @@ class PostprocessorTest {
                 .parameters
                 .map { it.name }
                 .shouldContainExactly("constructorParameter")
+        }
+
+        @Test
+        fun `should store call to original API`() {
+            testClass.constructor = null
+
+            testPackage.createConstructors()
+
+            testClass.constructor
+                .shouldNotBeNull()
+                .callToOriginalAPI
+                .shouldBe(
+                    OriginalPythonFunction(
+                        qualifiedName = "testModule.TestClass",
+                        parameters = listOf(
+                            OriginalPythonParameter(
+                                name = "constructorParameter"
+                            )
+                        )
+                    )
+                )
         }
 
         @Test

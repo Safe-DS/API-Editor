@@ -90,7 +90,8 @@ class MutablePythonClass(
 }
 
 class MutablePythonConstructor(
-    parameters: List<MutablePythonParameter> = emptyList()
+    parameters: List<MutablePythonParameter> = emptyList(),
+    val callToOriginalAPI: OriginalPythonFunction? = null
 ) : MutablePythonAstNode() {
 
     val parameters = MutableContainmentList(parameters)
