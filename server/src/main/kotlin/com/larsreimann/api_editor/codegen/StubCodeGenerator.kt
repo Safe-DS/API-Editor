@@ -64,7 +64,7 @@ fun MutablePythonModule.toSmlCompilationUnit(): SmlCompilationUnit {
 
     return createSmlCompilationUnit {
         smlPackage(
-            name = "simpleml.$name",
+            name = name,
             members = classes + functions
         )
     }
@@ -79,11 +79,11 @@ fun MutablePythonClass.toSmlClass(): SmlClass {
     return createSmlClass(
         name = stubName,
         annotations = buildList {
-            if (description.isNotBlank()) {
-                add(createSmlDescriptionAnnotationUse(description))
-            }
             if (name != stubName) {
                 add(createSmlPythonNameAnnotationUse(name))
+            }
+            if (description.isNotBlank()) {
+                add(createSmlDescriptionAnnotationUse(description))
             }
         },
         parameters = buildConstructor(),
@@ -111,11 +111,11 @@ fun MutablePythonAttribute.toSmlAttribute(): SmlAttribute {
     return createSmlAttribute(
         name = stubName,
         annotations = buildList {
-            if (description.isNotBlank()) {
-                add(createSmlDescriptionAnnotationUse(description))
-            }
             if (name != stubName) {
                 add(createSmlPythonNameAnnotationUse(name))
+            }
+            if (description.isNotBlank()) {
+                add(createSmlDescriptionAnnotationUse(description))
             }
         },
         type = buildType(typeInDocs)
@@ -124,18 +124,6 @@ fun MutablePythonAttribute.toSmlAttribute(): SmlAttribute {
 
 private fun MutablePythonClass.buildMethods(): List<SmlFunction> {
     return methodsExceptConstructor().map { it.toSmlFunction() }
-}
-
-fun String.snakeCaseToLowerCamelCase(): String {
-    return this.snakeCaseToCamelCase().replaceFirstChar { it.lowercase() }
-}
-
-fun String.snakeCaseToUpperCamelCase(): String {
-    return this.snakeCaseToCamelCase().replaceFirstChar { it.uppercase() }
-}
-
-private fun String.snakeCaseToCamelCase(): String {
-    return this.replace(Regex("_(.)")) { it.groupValues[1].uppercase() }
 }
 
 // TODO: only for testing, remove
@@ -161,14 +149,14 @@ fun MutablePythonFunction.toSmlFunction(): SmlFunction {
     return createSmlFunction(
         name = stubName,
         annotations = buildList {
-            if (description.isNotBlank()) {
-                add(createSmlDescriptionAnnotationUse(description))
-            }
             if (isPure) {
                 add(createSmlAnnotationUse("Pure"))
             }
             if (name != stubName) {
                 add(createSmlPythonNameAnnotationUse(name))
+            }
+            if (description.isNotBlank()) {
+                add(createSmlDescriptionAnnotationUse(description))
             }
         },
         parameters = parameters.mapNotNull { it.toSmlParameterOrNull() },
@@ -282,4 +270,16 @@ fun buildDefaultValue(defaultValue: String): SmlAbstractExpression? {
         // do nothing if defaultValue is not numeric
     }
     return createSmlString(invalid)
+}
+
+fun String.snakeCaseToLowerCamelCase(): String {
+    return this.snakeCaseToCamelCase().replaceFirstChar { it.lowercase() }
+}
+
+fun String.snakeCaseToUpperCamelCase(): String {
+    return this.snakeCaseToCamelCase().replaceFirstChar { it.uppercase() }
+}
+
+private fun String.snakeCaseToCamelCase(): String {
+    return this.replace(Regex("_(.)")) { it.groupValues[1].uppercase() }
 }

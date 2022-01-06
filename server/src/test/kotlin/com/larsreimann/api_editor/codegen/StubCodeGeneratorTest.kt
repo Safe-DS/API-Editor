@@ -1,7 +1,5 @@
 package com.larsreimann.api_editor.codegen
 
-import com.larsreimann.api_editor.model.PythonFromImport
-import com.larsreimann.api_editor.model.PythonImport
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.mutable_model.MutablePythonAttribute
 import com.larsreimann.api_editor.mutable_model.MutablePythonClass
@@ -13,12 +11,16 @@ import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import de.unibonn.simpleml.emf.annotationUsesOrEmpty
 import de.unibonn.simpleml.emf.argumentsOrEmpty
 import de.unibonn.simpleml.emf.constraintsOrEmpty
+import de.unibonn.simpleml.emf.memberDeclarationsOrEmpty
 import de.unibonn.simpleml.emf.membersOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.parentTypesOrEmpty
+import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAttribute
+import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlFunction
+import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.stdlib.uniqueAnnotationUseOrNull
 import io.kotest.assertions.asClue
@@ -36,12 +38,11 @@ import org.junit.jupiter.api.Test
 
 // TODO: test creation of Description annotations
 // TODO: test creation of PythonName annotations
+// TODO: test conversion of names
 // TODO: test conversion of values
 // TODO: test conversion of types
-// TODO: test conversion of names
-// TODO: test toSmlCompilationUnit
 // TODO: test toSmlAttribute
-// TODO: test toSmlFunction
+// TODO: test toSmlEnum
 // TODO: test toSmlParameterOrNull
 // TODO: test toSmlResult
 
@@ -52,264 +53,64 @@ class StubCodeGeneratorTest {
         SimpleMLStandaloneSetup.doSetup()
     }
 
-    @Test
-    fun buildModuleContentReturnsFormattedModuleContent() { // TODO
-        // given
-        val testClass = MutablePythonClass(
-            name = "TestClass",
-            attributes = mutableListOf(
-                MutablePythonAttribute(
-                    "onlyParam",
-                    "'defaultValue'",
-                )
-            ),
-            methods = mutableListOf(
-                MutablePythonFunction(
-                    name = "testClassFunction",
-                    parameters = mutableListOf(
-                        MutablePythonParameter(
-                            name = "self",
-                            assignedBy = PythonParameterAssignment.IMPLICIT,
-                        ),
-                        MutablePythonParameter(
-                            "onlyParam",
-                            "'defaultValue'",
-                            PythonParameterAssignment.POSITION_OR_NAME,
-                        )
-                    )
-                ),
-                MutablePythonFunction(
-                    name = "__init__",
-                    parameters = mutableListOf(
-                        MutablePythonParameter(
-                            "self",
-                            "'defaultValue'",
-                            PythonParameterAssignment.IMPLICIT,
-                        ),
-                        MutablePythonParameter(
-                            "onlyParam",
-                            "'defaultValue'",
-                            PythonParameterAssignment.POSITION_OR_NAME,
-                        )
-                    )
+    @Nested
+    inner class ToSmlCompilationUnit {
+
+        @Test
+        fun `should handle empty modules`() {
+            val pythonModule = MutablePythonModule(name = "testModule")
+
+            val smlCompilationUnit = pythonModule.toSmlCompilationUnit()
+            smlCompilationUnit.members.shouldHaveSize(1)
+
+            smlCompilationUnit.members[0].asClue {
+                it.shouldBeInstanceOf<SmlPackage>()
+                it.name shouldBe "testModule"
+                it.annotationUsesOrEmpty().shouldBeEmpty()
+                it.imports.shouldBeEmpty()
+                it.memberDeclarationsOrEmpty().shouldBeEmpty()
+            }
+        }
+
+        @Test
+        fun `should store classes`() {
+            val pythonModule = MutablePythonModule(
+                name = "testModule",
+                classes = listOf(
+                    MutablePythonClass(name = "TestClass")
                 )
             )
-        )
-        val testModule = MutablePythonModule(
-            name = "testModule",
-            classes = mutableListOf(testClass),
-            functions = mutableListOf(
-                MutablePythonFunction(
-                    name = "functionModule1",
-                    parameters = mutableListOf(
-                        MutablePythonParameter(
-                            "param1",
-                            null,
-                            PythonParameterAssignment.NAME_ONLY,
-                            "str",
-                        ),
-                        MutablePythonParameter(
-                            "param2",
-                            null,
-                            PythonParameterAssignment.NAME_ONLY,
-                            "str",
-                        ),
-                        MutablePythonParameter(
-                            "param3",
-                            null,
-                            PythonParameterAssignment.NAME_ONLY,
-                            "str",
-                        )
-                    ),
-                    results = mutableListOf(
-                        MutablePythonResult(
-                            "testResult",
-                            "str",
-                            "str",
-                        )
-                    )
-                ),
-                MutablePythonFunction(
-                    name = "testFunction",
-                    parameters = mutableListOf(
-                        MutablePythonParameter(
-                            "testParameter",
-                            "42",
-                            PythonParameterAssignment.NAME_ONLY,
-                            "int",
-                        )
-                    ),
-                    results = mutableListOf(
-                        MutablePythonResult(
-                            "testResult",
-                            "str",
-                            "str",
-                        )
-                    )
+
+            val smlCompilationUnit = pythonModule.toSmlCompilationUnit()
+            smlCompilationUnit.members.shouldHaveSize(1)
+
+            smlCompilationUnit.members[0]
+                .shouldBeInstanceOf<SmlPackage>()
+                .memberDeclarationsOrEmpty()
+                .filterIsInstance<SmlClass>()
+                .map { it.name }
+                .shouldContainExactly("TestClass")
+        }
+
+        @Test
+        fun `should store functions`() {
+            val pythonModule = MutablePythonModule(
+                name = "testModule",
+                functions = listOf(
+                    MutablePythonFunction(name = "testFunction")
                 )
             )
-        )
 
-        // when
-        val moduleContent = buildCompilationUnitToString(testModule)
+            val smlCompilationUnit = pythonModule.toSmlCompilationUnit()
+            smlCompilationUnit.members.shouldHaveSize(1)
 
-        // then
-        val expectedModuleContent: String = """
-            |package simpleml.testModule
-            |
-            |class TestClass(onlyParam: Any? or "defaultValue") {
-            |    attr onlyParam: Any?
-            |
-            |    fun testClassFunction(onlyParam: Any? or "defaultValue")
-            |}
-            |
-            |fun functionModule1(param1: String, param2: String, param3: String) -> testResult: String
-            |
-            |fun testFunction(testParameter: Int or 42) -> testResult: String
-            |""".trimMargin()
-        moduleContent shouldBe expectedModuleContent
-    }
-
-    @Test
-    fun buildModuleContentWithNoClassesReturnsFormattedModuleContent() { // TODO
-        // given
-        val testModule = MutablePythonModule(
-            name = "testModule",
-            functions = mutableListOf(
-                MutablePythonFunction(
-                    name = "functionModule1",
-                    parameters = mutableListOf(
-                        MutablePythonParameter(
-                            "param1",
-                            null,
-                            PythonParameterAssignment.NAME_ONLY,
-                            "str",
-                            "Lorem ipsum"
-                        ),
-                        MutablePythonParameter(
-                            "param2",
-                            null,
-                            PythonParameterAssignment.NAME_ONLY,
-                            "str",
-                            "Lorem ipsum"
-                        ),
-                        MutablePythonParameter(
-                            "param3",
-                            null,
-                            PythonParameterAssignment.NAME_ONLY,
-                            "str",
-                            "Lorem ipsum"
-                        )
-                    ),
-                    results = mutableListOf(
-                        MutablePythonResult(
-                            "testResult",
-                            "str",
-                            "str",
-                            "Lorem ipsum"
-                        )
-                    )
-                ),
-                MutablePythonFunction(
-                    name = "testFunction",
-                    parameters = mutableListOf(
-                        MutablePythonParameter(
-                            "testParameter",
-                            "42",
-                            PythonParameterAssignment.NAME_ONLY,
-                            "int",
-                            "Lorem ipsum",
-                        )
-                    ),
-                    results = mutableListOf(
-                        MutablePythonResult(
-                            "testResult",
-                            "str",
-                            "str",
-                            "Lorem ipsum",
-                        )
-                    )
-                )
-            )
-        )
-
-        // when
-        val moduleContent = buildCompilationUnitToString(testModule)
-
-        // then
-        val expectedModuleContent: String = """
-            |package simpleml.testModule
-            |
-            |fun functionModule1(@Description("Lorem ipsum") param1: String, @Description("Lorem ipsum") param2: String, @Description("Lorem ipsum") param3: String) -> @Description("Lorem ipsum") testResult: String
-            |
-            |fun testFunction(@Description("Lorem ipsum") testParameter: Int or 42) -> @Description("Lorem ipsum") testResult: String
-            |""".trimMargin()
-        moduleContent shouldBe expectedModuleContent
-    }
-
-    @Test
-    fun buildModuleContentWithOnlyConstructorReturnsFormattedModuleContent() { // TODO
-        // given
-        val testClass = MutablePythonClass(
-            name = "TestClass",
-            methods = mutableListOf(
-                MutablePythonFunction(
-                    name = "__init__",
-                    parameters = mutableListOf(
-                        MutablePythonParameter(
-                            "onlyParam",
-                            "'defaultValue'",
-                            PythonParameterAssignment.POSITION_OR_NAME,
-                            "typeInDocs",
-                            "description"
-                        )
-                    )
-                )
-            )
-        )
-        val testModule = MutablePythonModule(
-            name = "testModule",
-            imports = mutableListOf(
-                PythonImport(
-                    "testImport1",
-                    "testAlias"
-                )
-            ),
-            fromImports = mutableListOf(
-                PythonFromImport(
-                    "testFromImport1",
-                    "testDeclaration1",
-                    null
-                )
-            ),
-            classes = mutableListOf(testClass)
-        )
-
-        // when
-        val moduleContent = buildCompilationUnitToString(testModule)
-
-        // then
-        val expectedModuleContent: String = """
-            |package simpleml.testModule
-            |
-            |class TestClass(@Description("description") onlyParam: Any? or "defaultValue")
-            |""".trimMargin()
-        moduleContent shouldBe expectedModuleContent
-    }
-
-    @Test
-    fun buildModuleContentWithNoFunctionsAndClassesReturnsFormattedModuleContent() { // TODO
-        // given
-        val testModule = MutablePythonModule("testModule")
-
-        // when
-        val moduleContent = buildCompilationUnitToString(testModule)
-
-        // then
-        val expectedModuleContent: String = """
-            |package simpleml.testModule
-            |""".trimMargin()
-        moduleContent shouldBe expectedModuleContent
+            smlCompilationUnit.members[0]
+                .shouldBeInstanceOf<SmlPackage>()
+                .memberDeclarationsOrEmpty()
+                .filterIsInstance<SmlFunction>()
+                .map { it.name }
+                .shouldContainExactly("testFunction")
+        }
     }
 
     @Nested
@@ -456,9 +257,10 @@ class StubCodeGeneratorTest {
             )
 
             val smlClass = pythonClass.toSmlClass()
-            val attributeNames = smlClass.membersOrEmpty().filterIsInstance<SmlAttribute>().map { it.name }
-
-            attributeNames.shouldContainExactly("testAttribute")
+            smlClass.membersOrEmpty()
+                .filterIsInstance<SmlAttribute>()
+                .map { it.name }
+                .shouldContainExactly("testAttribute")
         }
 
         @Test
@@ -471,226 +273,170 @@ class StubCodeGeneratorTest {
             )
 
             val smlClass = pythonClass.toSmlClass()
-            val methodNames = smlClass.membersOrEmpty().filterIsInstance<SmlFunction>().map { it.name }
-
-            methodNames.shouldContainExactly("testMethod")
+            smlClass.membersOrEmpty()
+                .filterIsInstance<SmlFunction>()
+                .map { it.name }
+                .shouldContainExactly("testMethod")
         }
     }
 
-    @Test
-    fun buildFunctionReturnsFormattedFunctionWithNoParameters() { // TODO
-        // given
-        val testFunction = MutablePythonFunction("testFunction")
+    @Nested
+    inner class ToSmlFunction {
 
-        // when
-        val formattedFunction = buildFunctionToString(testFunction)
+        @Test
+        fun `should handle empty functions`() {
+            val pythonFunction = MutablePythonFunction(name = "testFunction")
 
-        // then
-        val expectedFormattedFunction: String =
-            """
-            |fun testFunction()""".trimMargin()
-        formattedFunction shouldBe expectedFormattedFunction
-    }
+            pythonFunction.toSmlFunction().asClue {
+                it.name shouldBe "testFunction"
+                it.annotationUsesOrEmpty().shouldBeEmpty()
+                it.typeParametersOrEmpty().shouldBeEmpty()
+                it.parametersOrEmpty().shouldBeEmpty()
+                it.resultsOrEmpty().shouldBeEmpty()
+                it.constraintsOrEmpty().shouldBeEmpty()
+            }
+        }
 
-    @Test
-    fun buildFunctionReturnsFormattedFunctionWithPositionOnlyParameter() { // TODO
-        // given
-        val testFunction = MutablePythonFunction(
-            name = "testFunction",
-            parameters = mutableListOf(
-                MutablePythonParameter(
-                    "onlyParam",
-                    "13",
-                    PythonParameterAssignment.POSITION_ONLY,
-                    "int",
-                    "description"
+        @Test
+        fun `should mark pure functions with annotation`() {
+            val pythonFunction = MutablePythonFunction(
+                name = "testFunction",
+                isPure = true
+            )
+
+            pythonFunction
+                .toSmlFunction()
+                .uniqueAnnotationUseOrNull(QualifiedName.create("Pure"))
+                .shouldNotBeNull()
+        }
+
+        @Test
+        fun `should convert name to camel case`() {
+            val pythonFunction = MutablePythonFunction(name = "Test_function")
+
+            val smlFunction = pythonFunction.toSmlFunction()
+            smlFunction.name shouldBe "testFunction"
+        }
+
+        @Test
+        fun `should store python name if it differs from stub name`() {
+            val pythonFunction = MutablePythonFunction(name = "Test_function")
+
+            val smlFunction = pythonFunction.toSmlFunction()
+
+            val pythonNameAnnotationUseOrNull =
+                smlFunction.uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
+            pythonNameAnnotationUseOrNull.shouldNotBeNull()
+
+            val arguments = pythonNameAnnotationUseOrNull.argumentsOrEmpty()
+            arguments.shouldHaveSize(1)
+
+            val pythonName = arguments[0].value
+            pythonName.shouldBeInstanceOf<SmlString>()
+            pythonName.value shouldBe "Test_function"
+        }
+
+        @Test
+        fun `should not store python name if it is identical to stub name`() {
+            val pythonFunction = MutablePythonFunction(name = "testFunction")
+
+            val smlFunction = pythonFunction.toSmlFunction()
+
+            val pythonNameAnnotationUseOrNull =
+                smlFunction.uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
+            pythonNameAnnotationUseOrNull.shouldBeNull()
+        }
+
+        @Test
+        fun `should store description if it is not blank`() {
+            val pythonFunction = MutablePythonFunction(
+                name = "testFunction",
+                description = "Lorem ipsum"
+            )
+
+            val smlFunction = pythonFunction.toSmlFunction()
+
+            val descriptionAnnotationUseOrNull =
+                smlFunction.uniqueAnnotationUseOrNull(QualifiedName.create("Description"))
+            descriptionAnnotationUseOrNull.shouldNotBeNull()
+
+            val arguments = descriptionAnnotationUseOrNull.argumentsOrEmpty()
+            arguments.shouldHaveSize(1)
+
+            val description = arguments[0].value
+            description.shouldBeInstanceOf<SmlString>()
+            description.value shouldBe "Lorem ipsum"
+        }
+
+        @Test
+        fun `should not store description if it is blank`() {
+            val pythonFunction = MutablePythonFunction(
+                name = "testFunction",
+                description = ""
+            )
+
+            val smlFunction = pythonFunction.toSmlFunction()
+
+            val descriptionOrNull = smlFunction.uniqueAnnotationUseOrNull(QualifiedName.create("Description"))
+            descriptionOrNull.shouldBeNull()
+        }
+
+        @Test
+        fun `should store parameters`() {
+            val pythonFunction = MutablePythonFunction(
+                name = "testFunction",
+                parameters = listOf(
+                    MutablePythonParameter(
+                        name = "self",
+                        assignedBy = PythonParameterAssignment.IMPLICIT
+                    ),
+                    MutablePythonParameter(
+                        name = "positionOnly",
+                        assignedBy = PythonParameterAssignment.POSITION_ONLY
+                    ),
+                    MutablePythonParameter(
+                        name = "positionOrName",
+                        assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+                    ),
+                    MutablePythonParameter(
+                        name = "nameOnly",
+                        assignedBy = PythonParameterAssignment.NAME_ONLY
+                    ),
+                    MutablePythonParameter(
+                        name = "attribute",
+                        assignedBy = PythonParameterAssignment.ATTRIBUTE
+                    ),
+                    MutablePythonParameter(
+                        name = "constant",
+                        assignedBy = PythonParameterAssignment.CONSTANT
+                    )
                 )
             )
-        )
 
-        // when
-        val formattedFunction = buildFunctionToString(testFunction)
+            pythonFunction.toSmlFunction()
+                .parametersOrEmpty().map { it.name }
+                .shouldContainExactly(
+                    "positionOnly",
+                    "positionOrName",
+                    "nameOnly"
+                )
+        }
 
-        // then
-        val expectedFormattedFunction: String =
-            """
-            |fun testFunction(@Description("description") onlyParam: Int or 13)""".trimMargin()
-        formattedFunction shouldBe expectedFormattedFunction
-    }
-
-    @Test
-    fun buildFunctionReturnsFormattedFunctionWithPositionOrNameParameter() { // TODO
-        // given
-        val testFunction = MutablePythonFunction(
-            name = "testFunction",
-            parameters = mutableListOf(
-                MutablePythonParameter(
-                    "onlyParam",
-                    "'Test'",
-                    PythonParameterAssignment.POSITION_OR_NAME,
-                    "string",
-                    "description"
+        @Test
+        fun `should store results`() {
+            val pythonFunction = MutablePythonFunction(
+                name = "testFunction",
+                results = listOf(
+                    MutablePythonResult(name = "testResult")
                 )
             )
-        )
 
-        // when
-        val formattedFunction = buildFunctionToString(testFunction)
-
-        // then
-        val expectedFormattedFunction: String =
-            """
-            |fun testFunction(@Description("description") onlyParam: Any? or "Test")""".trimMargin()
-        formattedFunction shouldBe expectedFormattedFunction
-    }
-
-    @Test
-    fun buildFunctionReturnsFormattedFunctionWithPositionAndPositionOrNameAndNameOnlyParameter() { // TODO
-        // given
-        val testFunction = MutablePythonFunction(
-            name = "testFunction",
-            parameters = mutableListOf(
-                MutablePythonParameter(
-                    "firstParam",
-                    null,
-                    PythonParameterAssignment.POSITION_ONLY,
-                    "typeInDocs",
-                    "description"
-                ),
-                MutablePythonParameter(
-                    "secondParam",
-                    null,
-                    PythonParameterAssignment.POSITION_OR_NAME,
-                    "typeInDocs",
-                    "description"
-                ),
-                MutablePythonParameter(
-                    "thirdParam",
-                    null,
-                    PythonParameterAssignment.NAME_ONLY,
-                    "typeInDocs",
-                    "description"
+            pythonFunction.toSmlFunction()
+                .resultsOrEmpty().map { it.name }
+                .shouldContainExactly(
+                    "testResult"
                 )
-            )
-        )
-
-        // when
-        val formattedFunction = buildFunctionToString(testFunction)
-
-        // then
-        val expectedFormattedFunction: String = """
-            |fun testFunction(@Description("description") firstParam: Any?, @Description("description") secondParam: Any?, @Description("description") thirdParam: Any?)""".trimMargin()
-        formattedFunction shouldBe expectedFormattedFunction
-    }
-
-    @Test
-    fun buildFunctionReturnsFormattedFunctionWithOneResult() { // TODO
-        // given
-        val testFunction = MutablePythonFunction(
-            name = "testFunction",
-            parameters = mutableListOf(
-                MutablePythonParameter(
-                    "onlyParam",
-                    "1.31e+1",
-                    PythonParameterAssignment.POSITION_ONLY,
-                    "float",
-                    "description"
-                )
-            ),
-            results = mutableListOf(
-                MutablePythonResult(
-                    "firstResult",
-                    "float",
-                    "float",
-                    "description"
-                )
-            )
-        )
-
-        // when
-        val formattedFunction = buildFunctionToString(testFunction)
-
-        // then
-        val expectedFormattedFunction: String = """
-            |fun testFunction(@Description("description") onlyParam: Float or 13.1) -> @Description("description") firstResult: Float""".trimMargin()
-        formattedFunction shouldBe expectedFormattedFunction
-    }
-
-    @Test
-    fun buildFunctionReturnsFormattedFunctionWithMultipleResults() { // TODO
-        // given
-        val testFunction = MutablePythonFunction(
-            name = "testFunction",
-            parameters = mutableListOf(
-                MutablePythonParameter(
-                    "onlyParam",
-                    "True",
-                    PythonParameterAssignment.POSITION_ONLY,
-                    "bool",
-                    "description"
-                )
-            ),
-            results = mutableListOf(
-                MutablePythonResult(
-                    "firstResult",
-                    "float",
-                    "float",
-                    "description"
-                ),
-                MutablePythonResult(
-                    "secondResult",
-                    "float",
-                    "float",
-                    "description"
-                )
-            )
-        )
-
-        // when
-        val formattedFunction = buildFunctionToString(testFunction)
-
-        // then
-        val expectedFormattedFunction: String = """
-            |fun testFunction(@Description("description") onlyParam: Boolean or true) -> (@Description("description") firstResult: Float, @Description("description") secondResult: Float)""".trimMargin()
-        formattedFunction shouldBe expectedFormattedFunction
-    }
-
-    @Test
-    fun buildFunctionReturnsFormattedFunctionWithInvalidDefaultValue() { // TODO
-        // given
-        val testFunction = MutablePythonFunction(
-            name = "testFunction",
-            parameters = mutableListOf(
-                MutablePythonParameter(
-                    "onlyParam",
-                    "'13'x",
-                    PythonParameterAssignment.POSITION_ONLY,
-                    "string",
-                    "description"
-                )
-            )
-        )
-
-        // when
-        val formattedFunction = buildFunctionToString(testFunction)
-
-        // then
-        val expectedFormattedFunction: String = """
-            |fun testFunction(@Description("description") onlyParam: Any? or "###invalid###'13'x###")""".trimMargin()
-        formattedFunction shouldBe expectedFormattedFunction
-    }
-
-    @Test
-    fun `should mark pure functions with annotation`() { // TODO
-        val testFunction = MutablePythonFunction(
-            name = "testFunction",
-            isPure = true
-        )
-
-        testFunction
-            .toSmlFunction()
-            .uniqueAnnotationUseOrNull(QualifiedName.create("Pure"))
-            .shouldNotBeNull()
+        }
     }
 
     @Test
