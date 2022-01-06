@@ -3,15 +3,17 @@ package com.larsreimann.api_editor.codegen
 import com.larsreimann.api_editor.mutable_model.MutablePythonModule
 import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
 import de.unibonn.simpleml.constant.SmlFileExtension
-import java.io.BufferedWriter
+import de.unibonn.simpleml.emf.createSmlDummyResource
+import de.unibonn.simpleml.serializer.SerializationResult
+import de.unibonn.simpleml.serializer.serializeToFormattedString
 import java.io.File
-import java.io.FileWriter
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
+import kotlin.io.path.bufferedWriter
 
 private val workingDirectory: Path = Paths.get("api-editor_inferredAPI")
 
@@ -27,9 +29,7 @@ fun MutablePythonPackage.generateCode(): String {
         try {
             buildFile(
                 module.name,
-                buildAdapterContent(
-                    module
-                ),
+                module.toPythonCode(),
                 Paths.get(
                     workingPath.toString(),
                     "adapter",
@@ -39,8 +39,8 @@ fun MutablePythonPackage.generateCode(): String {
             )
             val moduleNameParts = module.name.split("\\.").toTypedArray()
             buildFile(
-                java.lang.String.join(".", *moduleNameParts) + "." + moduleNameParts[moduleNameParts.size - 1],
-                buildStubContent(module),
+                moduleNameParts.joinToString(".") + "." + moduleNameParts[moduleNameParts.size - 1],
+                module.toStubCode(),
                 Paths.get(
                     workingPath.toString(),
                     "stub",
@@ -61,13 +61,13 @@ fun MutablePythonPackage.generateCode(): String {
 private fun zip(workingFolderPath: Path): String {
     val path = Files.createTempFile(workingDirectory.toString(), ".zip")
     ZipOutputStream(Files.newOutputStream(path)).use { zipOutputStream ->
-        Files.walk(workingFolderPath)
-            .filter { currentPath: Path -> !Files.isDirectory(currentPath) }
-            .forEach { currentPath: Path ->
-                val zipEntry = ZipEntry(workingFolderPath.relativize(currentPath).toString())
+        workingFolderPath.toFile().walk()
+            .filter { it.isFile }
+            .forEach {
+                val zipEntry = ZipEntry(workingFolderPath.relativize(it.toPath()).toString())
                 try {
                     zipOutputStream.putNextEntry(zipEntry)
-                    Files.copy(currentPath, zipOutputStream)
+                    Files.copy(it.toPath(), zipOutputStream)
                     zipOutputStream.closeEntry()
                 } catch (e: IOException) {
                     e.printStackTrace()
@@ -89,19 +89,27 @@ private fun buildFile(
     val directory = File(directoryPath.toString())
     directory.mkdirs()
     try {
-        BufferedWriter(FileWriter(filePath.toString())).use { out ->
-            out.write(content)
-            out.flush()
+        filePath.bufferedWriter().use {
+            it.write(content)
+            it.flush()
         }
-    } catch (e: Exception) {
+    } catch (e: IOException) {
         e.printStackTrace()
     }
 }
 
-private fun buildAdapterContent(pythonModule: MutablePythonModule): String {
-    return pythonModule.toPythonCode()
-}
+private fun MutablePythonModule.toStubCode(): String {
+    val compilationUnit = toSmlCompilationUnit()
 
-private fun buildStubContent(pythonModule: MutablePythonModule): String {
-    return buildCompilationUnitToString(pythonModule)
+    // Required to serialize the compilation unit
+    createSmlDummyResource(
+        "compilationUnitStub",
+        SmlFileExtension.Stub,
+        compilationUnit
+    )
+
+    return when (val result = compilationUnit.serializeToFormattedString()) {
+        is SerializationResult.Success -> result.code + "\n"
+        is SerializationResult.Failure -> throw IllegalStateException(result.message)
+    }
 }

@@ -1,5 +1,6 @@
 package com.larsreimann.api_editor.mutable_model
 
+import com.larsreimann.api_editor.model.SerializablePythonEnumInstance
 import com.larsreimann.api_editor.model.SerializablePythonAttribute
 import com.larsreimann.api_editor.model.SerializablePythonClass
 import com.larsreimann.api_editor.model.SerializablePythonEnum
@@ -51,9 +52,18 @@ fun convertClass(pythonClass: MutablePythonClass): SerializablePythonClass {
 fun convertEnum(pythonEnum: MutablePythonEnum): SerializablePythonEnum {
     return SerializablePythonEnum(
         name = pythonEnum.name,
-        instances = pythonEnum.instances,
+        instances = pythonEnum.instances.map { convertEnumInstance(it) }.toMutableList(),
         annotations = pythonEnum.annotations
     )
+}
+
+fun convertEnumInstance(pythonEnumInstance: MutablePythonEnumInstance): SerializablePythonEnumInstance {
+    val instance = SerializablePythonEnumInstance(
+        name = pythonEnumInstance.name,
+        value = pythonEnumInstance.value
+    )
+    instance.description = pythonEnumInstance.description
+    return instance
 }
 
 fun convertFunction(pythonFunction: MutablePythonFunction): SerializablePythonFunction {

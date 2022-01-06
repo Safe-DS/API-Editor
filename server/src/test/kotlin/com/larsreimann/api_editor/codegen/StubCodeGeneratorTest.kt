@@ -3,6 +3,8 @@ package com.larsreimann.api_editor.codegen
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.mutable_model.MutablePythonAttribute
 import com.larsreimann.api_editor.mutable_model.MutablePythonClass
+import com.larsreimann.api_editor.mutable_model.MutablePythonEnum
+import com.larsreimann.api_editor.mutable_model.MutablePythonEnumInstance
 import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
 import com.larsreimann.api_editor.mutable_model.MutablePythonModule
 import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
@@ -17,9 +19,11 @@ import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.parentTypesOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
 import de.unibonn.simpleml.emf.typeParametersOrEmpty
+import de.unibonn.simpleml.emf.variantsOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlBoolean
 import de.unibonn.simpleml.simpleML.SmlClass
+import de.unibonn.simpleml.simpleML.SmlEnum
 import de.unibonn.simpleml.simpleML.SmlFloat
 import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlInt
@@ -45,9 +49,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import org.junit.jupiter.params.provider.EnumSource
-
-// TODO: test toSmlAttribute
-// TODO: test toSmlEnum
 
 class StubCodeGeneratorTest {
 
@@ -113,6 +114,26 @@ class StubCodeGeneratorTest {
                 .filterIsInstance<SmlFunction>()
                 .map { it.name }
                 .shouldContainExactly("testFunction")
+        }
+
+        @Test
+        fun `should store enums`() {
+            val pythonModule = MutablePythonModule(
+                name = "testModule",
+                enums = listOf(
+                    MutablePythonEnum(name = "TestEnum")
+                )
+            )
+
+            val smlCompilationUnit = pythonModule.toSmlCompilationUnit()
+            smlCompilationUnit.members.shouldHaveSize(1)
+
+            smlCompilationUnit.members[0]
+                .shouldBeInstanceOf<SmlPackage>()
+                .memberDeclarationsOrEmpty()
+                .filterIsInstance<SmlEnum>()
+                .map { it.name }
+                .shouldContainExactly("TestEnum")
         }
     }
 
@@ -280,6 +301,105 @@ class StubCodeGeneratorTest {
                 .filterIsInstance<SmlFunction>()
                 .map { it.name }
                 .shouldContainExactly("testMethod")
+        }
+    }
+
+    @Nested
+    inner class ToSmlAttribute {
+
+        @Test
+        fun `should handle simple attributes`() {
+            val pythonAttribute = MutablePythonAttribute(name = "testAttribute")
+            pythonAttribute.toSmlAttribute().asClue {
+                it.name shouldBe "testAttribute"
+                it.annotationUsesOrEmpty().shouldBeEmpty()
+
+                val type = it.type
+                type.shouldBeInstanceOf<SmlNamedType>()
+                type.declaration.name shouldBe "Any"
+                type.isNullable.shouldBeTrue()
+            }
+        }
+
+        @Test
+        fun `should convert name to camel case`() {
+            val pythonAttribute = MutablePythonAttribute(name = "Test_attribute")
+
+            val smlParameter = pythonAttribute.toSmlAttribute()
+            smlParameter.name shouldBe "testAttribute"
+        }
+
+        @Test
+        fun `should store python name if it differs from stub name`() {
+            val pythonAttribute = MutablePythonAttribute(name = "Test_attribute")
+
+            val arguments = pythonAttribute
+                .toSmlAttribute()
+                .uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
+                .shouldNotBeNull()
+                .argumentsOrEmpty()
+            arguments.shouldHaveSize(1)
+
+            val pythonName = arguments[0].value
+            pythonName.shouldBeInstanceOf<SmlString>()
+            pythonName.value shouldBe "Test_attribute"
+        }
+
+        @Test
+        fun `should not store python name if it is identical to stub name`() {
+            val pythonAttribute = MutablePythonAttribute(name = "testAttribute")
+            pythonAttribute.toSmlAttribute()
+                .uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
+                .shouldBeNull()
+        }
+
+        @Test
+        fun `should store description if it is not blank`() {
+            val pythonAttribute = MutablePythonAttribute(
+                name = "testAttribute",
+                description = "Lorem ipsum"
+            )
+
+            val arguments = pythonAttribute
+                .toSmlAttribute()
+                .uniqueAnnotationUseOrNull(QualifiedName.create("Description"))
+                .shouldNotBeNull()
+                .argumentsOrEmpty()
+            arguments.shouldHaveSize(1)
+
+            val description = arguments[0].value
+            description.shouldBeInstanceOf<SmlString>()
+            description.value shouldBe "Lorem ipsum"
+        }
+
+        @Test
+        fun `should not store description if it is blank`() {
+            val pythonAttribute = MutablePythonAttribute(
+                name = "testAttribute",
+                description = ""
+            )
+
+            pythonAttribute
+                .toSmlAttribute()
+                .uniqueAnnotationUseOrNull(QualifiedName.create("Description"))
+                .shouldBeNull()
+        }
+
+        @Test
+        fun `should store type`() {
+            val pythonAttribute = MutablePythonAttribute(
+                name = "testAttribute",
+                typeInDocs = "str"
+            )
+
+            pythonAttribute
+                .toSmlAttribute()
+                .type
+                .shouldBeInstanceOf<SmlNamedType>()
+                .asClue {
+                    it.declaration.name shouldBe "String"
+                    it.isNullable.shouldBeFalse()
+                }
         }
     }
 
@@ -678,6 +798,180 @@ class StubCodeGeneratorTest {
     }
 
     @Nested
+    inner class ToSmlEnum {
+
+        @Test
+        fun `should handle empty enums`() {
+            val pythonEnum = MutablePythonEnum(name = "TestEnum")
+
+            pythonEnum.toSmlEnum().asClue {
+                it.name shouldBe "TestEnum"
+                it.annotationUsesOrEmpty().shouldBeEmpty()
+                it.variantsOrEmpty().shouldBeEmpty()
+            }
+        }
+
+        @Test
+        fun `should convert name to camel case`() {
+            val pythonEnum = MutablePythonEnum(name = "test_enum")
+
+            val smlEnum = pythonEnum.toSmlEnum()
+            smlEnum.name shouldBe "TestEnum"
+        }
+
+        @Test
+        fun `should store python name if it differs from stub name`() {
+            val pythonEnum = MutablePythonEnum(name = "test_enum")
+
+            val smlEnum = pythonEnum.toSmlEnum()
+
+            val pythonNameAnnotationUseOrNull = smlEnum.uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
+            pythonNameAnnotationUseOrNull.shouldNotBeNull()
+
+            val arguments = pythonNameAnnotationUseOrNull.argumentsOrEmpty()
+            arguments.shouldHaveSize(1)
+
+            val pythonName = arguments[0].value
+            pythonName.shouldBeInstanceOf<SmlString>()
+            pythonName.value shouldBe "test_enum"
+        }
+
+        @Test
+        fun `should not store python name if it is identical to stub name`() {
+            val pythonEnum = MutablePythonEnum(name = "TestEnum")
+
+            val smlEnum = pythonEnum.toSmlEnum()
+
+            val pythonNameAnnotationUseOrNull = smlEnum.uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
+            pythonNameAnnotationUseOrNull.shouldBeNull()
+        }
+
+        @Test
+        fun `should store description if it is not blank`() {
+            val pythonEnum = MutablePythonEnum(
+                name = "TestEnum",
+                description = "Lorem ipsum"
+            )
+
+            val arguments = pythonEnum.toSmlEnum()
+                .uniqueAnnotationUseOrNull(QualifiedName.create("Description"))
+                .shouldNotBeNull().argumentsOrEmpty()
+            arguments.shouldHaveSize(1)
+
+            val description = arguments[0].value
+            description.shouldBeInstanceOf<SmlString>()
+            description.value shouldBe "Lorem ipsum"
+        }
+
+        @Test
+        fun `should not store description if it is blank`() {
+            val pythonEnum = MutablePythonEnum(
+                name = "TestEnum",
+                description = ""
+            )
+
+            pythonEnum
+                .toSmlEnum()
+                .uniqueAnnotationUseOrNull(QualifiedName.create("Description"))
+                .shouldBeNull()
+        }
+
+        @Test
+        fun `should store variants`() {
+            val pythonEnum = MutablePythonEnum(
+                name = "TestEnum",
+                instances = listOf(
+                    MutablePythonEnumInstance(name = "TestEnumInstance")
+                )
+            )
+
+            pythonEnum.toSmlEnum()
+                .variantsOrEmpty()
+                .map { it.name }
+                .shouldContainExactly("TestEnumInstance")
+        }
+    }
+
+    @Nested
+    inner class ToSmlEnumVariant {
+
+        @Test
+        fun `should handle empty enum variant`() {
+            val pythonEnumInstance = MutablePythonEnumInstance(name = "TestEnumInstance")
+
+            pythonEnumInstance.toSmlEnumVariant().asClue {
+                it.name shouldBe "TestEnumInstance"
+                it.annotationUsesOrEmpty().shouldBeEmpty()
+                it.typeParametersOrEmpty().shouldBeEmpty()
+                it.parametersOrEmpty().shouldBeEmpty()
+                it.constraintsOrEmpty().shouldBeEmpty()
+            }
+        }
+
+        @Test
+        fun `should convert name to camel case`() {
+            val pythonEnumInstance = MutablePythonEnumInstance(name = "test_enum_instance")
+
+            val smlEnumVariant = pythonEnumInstance.toSmlEnumVariant()
+            smlEnumVariant.name shouldBe "TestEnumInstance"
+        }
+
+        @Test
+        fun `should store python name if it differs from stub name`() {
+            val pythonEnumInstance = MutablePythonEnumInstance(name = "test_enum_instance")
+
+            val arguments = pythonEnumInstance.toSmlEnumVariant()
+                .uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
+                .shouldNotBeNull()
+                .argumentsOrEmpty()
+            arguments.shouldHaveSize(1)
+
+            val pythonName = arguments[0].value
+            pythonName.shouldBeInstanceOf<SmlString>()
+            pythonName.value shouldBe "test_enum_instance"
+        }
+
+        @Test
+        fun `should not store python name if it is identical to stub name`() {
+            val pythonEnumInstance = MutablePythonEnumInstance(name = "TestEnumInstance")
+
+            pythonEnumInstance.toSmlEnumVariant()
+                .uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
+                .shouldBeNull()
+        }
+
+        @Test
+        fun `should store description if it is not blank`() {
+            val pythonEnumInstance = MutablePythonEnumInstance(
+                name = "TestEnumInstance",
+                description = "Lorem ipsum"
+            )
+
+            val arguments = pythonEnumInstance.toSmlEnumVariant()
+                .uniqueAnnotationUseOrNull(QualifiedName.create("Description"))
+                .shouldNotBeNull()
+                .argumentsOrEmpty()
+            arguments.shouldHaveSize(1)
+
+            val description = arguments[0].value
+            description.shouldBeInstanceOf<SmlString>()
+            description.value shouldBe "Lorem ipsum"
+        }
+
+        @Test
+        fun `should not store description if it is blank`() {
+            val pythonEnumInstance = MutablePythonEnumInstance(
+                name = "TestEnumInstance",
+                description = ""
+            )
+
+            pythonEnumInstance.toSmlEnumVariant()
+                .uniqueAnnotationUseOrNull(QualifiedName.create("Description"))
+                .shouldBeNull()
+        }
+    }
+
+    @Nested
     inner class NameConversions {
 
         @ParameterizedTest
@@ -806,33 +1100,5 @@ class StubCodeGeneratorTest {
             val smlString = "unknown".toSmlExpression().shouldBeInstanceOf<SmlString>()
             smlString.value shouldBe "###invalid###unknown###"
         }
-    }
-
-    @Test
-    fun `should convert names to camel case`() { // TODO
-        // given
-        val testFunction =
-            MutablePythonFunction(
-                name = "test_function",
-                parameters = mutableListOf(
-                    MutablePythonParameter(
-                        "test_parameter",
-                        null,
-                        PythonParameterAssignment.POSITION_OR_NAME
-                    )
-                )
-            )
-
-        // when
-        val formattedFunction = buildFunctionToString(testFunction)
-
-        // then
-        val expectedFormattedFunction: String =
-            """
-            |@PythonName("test_function")
-            |fun testFunction(@PythonName("test_parameter") testParameter: Any?)
-            """.trimMargin()
-
-        formattedFunction shouldBe expectedFormattedFunction
     }
 }

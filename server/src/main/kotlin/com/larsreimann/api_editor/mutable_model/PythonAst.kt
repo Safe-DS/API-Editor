@@ -4,7 +4,6 @@ package com.larsreimann.api_editor.mutable_model
 
 import com.larsreimann.api_editor.model.Boundary
 import com.larsreimann.api_editor.model.EditorAnnotation
-import com.larsreimann.api_editor.model.PythonEnumInstance
 import com.larsreimann.api_editor.model.PythonFromImport
 import com.larsreimann.api_editor.model.PythonImport
 import com.larsreimann.api_editor.model.PythonParameterAssignment
@@ -98,9 +97,20 @@ class MutablePythonClass(
 
 data class OriginalPythonClass(val qualifiedName: String)
 
-data class MutablePythonEnum(
+class MutablePythonEnum(
     override var name: String,
-    val instances: MutableList<PythonEnumInstance> = mutableListOf(),
+    instances: List<MutablePythonEnumInstance> = emptyList(),
+    var description: String = "",
+    override val annotations: MutableList<EditorAnnotation> = mutableListOf()
+) : MutablePythonDeclaration() {
+
+    val instances = ContainmentList(instances)
+}
+
+data class MutablePythonEnumInstance(
+    override var name: String,
+    val value: String = name,
+    var description: String = "",
     override val annotations: MutableList<EditorAnnotation> = mutableListOf()
 ) : MutablePythonDeclaration()
 

@@ -138,17 +138,20 @@ data class Boundary(
 
 data class SerializablePythonEnum(
     override val name: String,
-    val instances: List<PythonEnumInstance>,
+    val instances: List<SerializablePythonEnumInstance>,
     override val annotations: MutableList<EditorAnnotation>
 ) : SerializablePythonDeclaration() {
 
     override fun children() = emptySequence<SerializablePythonDeclaration>()
 }
 
-data class PythonEnumInstance(
+data class SerializablePythonEnumInstance(
     val name: String,
     val value: String
-)
+) {
+    @Transient
+    var description: String = ""
+}
 
 @Serializable
 data class SerializablePythonFunction(
