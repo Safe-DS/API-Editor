@@ -2,22 +2,25 @@ package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.mutable_model.MutablePythonClass
+import com.larsreimann.api_editor.mutable_model.MutablePythonConstructor
 import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
 import com.larsreimann.api_editor.mutable_model.MutablePythonModule
 import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
 import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
 import io.kotest.matchers.collections.exist
+import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldExist
 import io.kotest.matchers.collections.shouldNotContain
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldNot
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class PostprocessorTest {
     private lateinit var testFunction: MutablePythonFunction
-    private lateinit var testConstructor: MutablePythonFunction
     private lateinit var testClass: MutablePythonClass
     private lateinit var testModule: MutablePythonModule
     private lateinit var testPackage: MutablePythonPackage
@@ -25,26 +28,32 @@ class PostprocessorTest {
     @BeforeEach
     fun reset() {
         testFunction = MutablePythonFunction(name = "testFunction")
-        testConstructor = MutablePythonFunction(
-            name = "__init__",
-            parameters = listOf(
-                MutablePythonParameter(
-                    name = "self",
-                    assignedBy = PythonParameterAssignment.IMPLICIT
-                ),
-                MutablePythonParameter(
-                    name = "positionOrName",
-                    assignedBy = PythonParameterAssignment.POSITION_OR_NAME
-                ),
-                MutablePythonParameter(
-                    name = "constant",
-                    assignedBy = PythonParameterAssignment.CONSTANT
-                )
-            )
-        )
         testClass = MutablePythonClass(
             name = "TestClass",
-            methods = listOf(testConstructor)
+            constructor = MutablePythonConstructor(
+                parameters = listOf(
+                    MutablePythonParameter(
+                        name = "self",
+                        assignedBy = PythonParameterAssignment.IMPLICIT
+                    ),
+                    MutablePythonParameter(
+                        name = "positionOrName",
+                        assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+                    ),
+                    MutablePythonParameter(
+                        name = "constant",
+                        assignedBy = PythonParameterAssignment.CONSTANT
+                    )
+                )
+            ),
+            methods = listOf(
+                MutablePythonFunction(
+                    name = "__init__",
+                    parameters = listOf(
+                        MutablePythonParameter(name = "constructorParameter")
+                    )
+                )
+            )
         )
         testModule = MutablePythonModule(
             name = "testModule",
@@ -59,91 +68,142 @@ class PostprocessorTest {
         )
     }
 
-    @Test
-    fun `should remove empty modules`() {
-        val emptyTestModule = MutablePythonModule(name = "emptyTestModule")
-        testPackage.modules += emptyTestModule
+    @Nested
+    inner class RemoveEmptyModules {
 
-        testPackage.removeEmptyModules()
+        @Test
+        fun `should remove empty modules`() {
+            val emptyTestModule = MutablePythonModule(name = "emptyTestModule")
+            testPackage.modules += emptyTestModule
 
-        testPackage.modules.shouldNotContain(emptyTestModule)
+            testPackage.removeEmptyModules()
+
+            testPackage.modules.shouldNotContain(emptyTestModule)
+        }
+
+        @Test
+        fun `should not remove non-empty modules`() {
+            testPackage.removeEmptyModules()
+
+            testPackage.modules.shouldContain(testModule)
+        }
     }
 
-    @Test
-    fun `should not remove non-empty modules`() {
-        testPackage.removeEmptyModules()
+    @Nested
+    inner class ReorderParameters {
 
-        testPackage.modules.shouldContain(testModule)
-    }
-
-    @Test
-    fun `should reorder parameters`() {
-        val implicit = MutablePythonParameter(
-            name = "implicit",
-            assignedBy = PythonParameterAssignment.IMPLICIT
-        )
-        val positionOnly = MutablePythonParameter(
-            name = "positionOnly",
-            assignedBy = PythonParameterAssignment.POSITION_ONLY
-        )
-        val positionOrName = MutablePythonParameter(
-            name = "positionOrName",
-            assignedBy = PythonParameterAssignment.POSITION_OR_NAME
-        )
-        val nameOnly = MutablePythonParameter(
-            name = "nameOnly",
-            assignedBy = PythonParameterAssignment.NAME_ONLY
-        )
-        val attribute = MutablePythonParameter(
-            name = "attribute",
-            assignedBy = PythonParameterAssignment.ATTRIBUTE
-        )
-        val constant = MutablePythonParameter(
-            name = "constant",
-            assignedBy = PythonParameterAssignment.CONSTANT
-        )
-
-        testFunction.parameters += listOf(
-            constant,
-            attribute,
-            nameOnly,
-            positionOrName,
-            positionOnly,
-            implicit
-        )
-
-        testPackage.reorderParameters()
-
-        testFunction.parameters.shouldContainExactly(
-            listOf(
-                implicit,
-                positionOnly,
-                positionOrName,
-                nameOnly,
-                attribute,
-                constant
+        @Test
+        fun `should reorder parameters`() {
+            val implicit = MutablePythonParameter(
+                name = "implicit",
+                assignedBy = PythonParameterAssignment.IMPLICIT
             )
-        )
+            val positionOnly = MutablePythonParameter(
+                name = "positionOnly",
+                assignedBy = PythonParameterAssignment.POSITION_ONLY
+            )
+            val positionOrName = MutablePythonParameter(
+                name = "positionOrName",
+                assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+            )
+            val nameOnly = MutablePythonParameter(
+                name = "nameOnly",
+                assignedBy = PythonParameterAssignment.NAME_ONLY
+            )
+            val attribute = MutablePythonParameter(
+                name = "attribute",
+                assignedBy = PythonParameterAssignment.ATTRIBUTE
+            )
+            val constant = MutablePythonParameter(
+                name = "constant",
+                assignedBy = PythonParameterAssignment.CONSTANT
+            )
+
+            testFunction.parameters += listOf(
+                constant,
+                attribute,
+                nameOnly,
+                positionOrName,
+                positionOnly,
+                implicit
+            )
+
+            testPackage.reorderParameters()
+
+            testFunction.parameters.shouldContainExactly(
+                listOf(
+                    implicit,
+                    positionOnly,
+                    positionOrName,
+                    nameOnly,
+                    attribute,
+                    constant
+                )
+            )
+        }
     }
 
-    @Test
-    fun `should create attributes for parameters of constructors that are neither implicit nor constant`() {
-        testPackage.createAttributesForParametersOfConstructor()
+    @Nested
+    inner class CreateConstructors {
 
-        testClass.attributes.shouldExist { it.name == "positionOrName" }
+        @Test
+        fun `should create empty constructors if no __init__ method exists`() {
+            testClass.constructor = null
+            testClass.methods.clear()
+
+            testPackage.createConstructors()
+
+            testClass.constructor
+                .shouldNotBeNull()
+                .parameters
+                .shouldBeEmpty()
+        }
+
+        @Test
+        fun `should copy parameters of __init__ methods`() {
+            testClass.constructor = null
+
+            testPackage.createConstructors()
+
+            testClass.constructor
+                .shouldNotBeNull()
+                .parameters
+                .map { it.name }
+                .shouldContainExactly("constructorParameter")
+        }
+
+        @Test
+        fun `should remove __init__ methods`() {
+            testClass.constructor = null
+
+            testPackage.createConstructors()
+
+            testClass.methods shouldNot exist { it.name == "__init__" }
+        }
     }
 
-    @Test
-    fun `should not create attributes for implicit parameters of constructors`() {
-        testPackage.createAttributesForParametersOfConstructor()
+    @Nested
+    inner class CreateAttributesForParametersOfConstructor {
 
-        testClass.attributes shouldNot exist { it.name == "self" }
-    }
+        @Test
+        fun `should create attributes for parameters of constructors that are neither implicit nor constant`() {
+            testPackage.createAttributesForParametersOfConstructor()
 
-    @Test
-    fun `should not create attributes for constant parameters of constructors`() {
-        testPackage.createAttributesForParametersOfConstructor()
+            testClass.attributes.shouldExist { it.name == "positionOrName" }
+        }
 
-        testClass.attributes shouldNot exist { it.name == "constant" }
+        @Test
+        fun `should not create attributes for implicit parameters of constructors`() {
+            testPackage.createAttributesForParametersOfConstructor()
+
+            testClass.attributes shouldNot exist { it.name == "self" }
+        }
+
+        @Test
+        fun `should not create attributes for constant parameters of constructors`() {
+            testPackage.createAttributesForParametersOfConstructor()
+
+            testClass.attributes shouldNot exist { it.name == "constant" }
+        }
     }
 }

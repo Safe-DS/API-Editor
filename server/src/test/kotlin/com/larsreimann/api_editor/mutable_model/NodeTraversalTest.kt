@@ -5,17 +5,17 @@ import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class TreeNodeTraversalTest {
+class NodeTraversalTest {
 
-    private class Root(children: List<TreeNode>) : TreeNode() {
+    private class Root(children: List<Node>) : Node() {
         val children = ContainmentList(children)
 
-        override fun children(): Sequence<TreeNode> {
+        override fun children(): Sequence<Node> {
             return children.asSequence()
         }
     }
 
-    private class InnerNode(child: TreeNode) : TreeNode() {
+    private class InnerNode(child: Node) : Node() {
         val child by ContainmentReference(child)
 
         override fun children() = sequence {
@@ -23,17 +23,17 @@ class TreeNodeTraversalTest {
         }
     }
 
-    private lateinit var leaf1: TreeNode
-    private lateinit var leaf2: TreeNode
-    private lateinit var leaf3: TreeNode
+    private lateinit var leaf1: Node
+    private lateinit var leaf2: Node
+    private lateinit var leaf3: Node
     private lateinit var inner: InnerNode
     private lateinit var root: Root
 
     @BeforeEach
     fun resetTestData() {
-        leaf1 = TreeNode()
-        leaf2 = TreeNode()
-        leaf3 = TreeNode()
+        leaf1 = Node()
+        leaf2 = Node()
+        leaf3 = Node()
         inner = InnerNode(leaf1)
         root = Root(listOf(inner, leaf2, leaf3))
     }

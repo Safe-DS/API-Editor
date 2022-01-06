@@ -12,21 +12,21 @@ import org.junit.jupiter.api.Test
 
 class CrossReferenceTest {
 
-    private class Root(child: TreeNode) : TreeNode() {
+    private class Root(child: Node) : Node() {
         var child by ContainmentReference(child)
     }
 
-    private lateinit var innerNode: TreeNode
-    private lateinit var someOtherInnerNode: TreeNode
+    private lateinit var innerNode: Node
+    private lateinit var someOtherInnerNode: Node
     private lateinit var root: Root
-    private lateinit var crossReference: TreeNode.CrossReference<TreeNode>
+    private lateinit var crossReference: Node.CrossReference<Node>
 
     @BeforeEach
     fun resetTestData() {
-        innerNode = TreeNode()
-        someOtherInnerNode = TreeNode()
+        innerNode = Node()
+        someOtherInnerNode = Node()
         root = Root(innerNode)
-        crossReference = TreeNode.CrossReference(innerNode)
+        crossReference = Node.CrossReference(innerNode)
     }
 
     @Test
@@ -50,7 +50,7 @@ class CrossReferenceTest {
     @Test
     fun `onMove should be called when the node is moved`() {
         var wasCalled = false
-        crossReference = TreeNode.CrossReference(innerNode) { _, _ -> wasCalled = true }
+        crossReference = Node.CrossReference(innerNode) { _, _ -> wasCalled = true }
         innerNode.release()
 
         wasCalled.shouldBeTrue()
@@ -59,7 +59,7 @@ class CrossReferenceTest {
     @Test
     fun `onMove should not called when the node was not moved`() {
         var wasCalled = false
-        crossReference = TreeNode.CrossReference(someOtherInnerNode) { _, _ -> wasCalled = true }
+        crossReference = Node.CrossReference(someOtherInnerNode) { _, _ -> wasCalled = true }
         someOtherInnerNode.release()
 
         wasCalled.shouldBeFalse()

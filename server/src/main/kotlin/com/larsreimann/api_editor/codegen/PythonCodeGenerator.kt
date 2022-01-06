@@ -93,18 +93,16 @@ private fun buildSeparators(
  * @return The string containing the formatted class content
  */
 fun MutablePythonClass.toPythonCode(): String {
-    var formattedClass = "class $name:"
+    var formattedClass = "class $name:\n"
+    if (constructor != null) {
+        formattedClass += buildConstructor().prependIndent("    ")
+    }
     if (!methods.isEmpty()) {
-        formattedClass = """
-                $formattedClass
+        if (constructor != null) {
+            formattedClass += "\n\n"
+        }
+        formattedClass += buildAllFunctions(this).joinToString("\n".repeat(2))
 
-        """.trimIndent()
-        formattedClass = (
-            formattedClass +
-                buildAllFunctions(this).joinToString("\n".repeat(2))
-            )
-    } else {
-        formattedClass += "\n    pass"
     }
     return formattedClass
 }
@@ -113,44 +111,47 @@ private fun buildAllFunctions(pythonClass: MutablePythonClass): List<String> {
     return pythonClass.methods.map { it.toPythonCode().prependIndent("    ") }
 }
 
+private fun MutablePythonClass.buildConstructor(): String {
+    var constructorSeparator = ""
+    val assignments = buildAttributeAssignments(this).joinToString("\n".repeat(1))
+    if (assignments.isNotBlank()) {
+        constructorSeparator = "\n"
+    }
+    var constructorSuffix = constructorSeparator + assignments
+    if (constructorSuffix.isBlank()) {
+        constructorSuffix = "pass"
+    }
+    return """
+      |def __init__(${buildParameters(this.constructor?.parameters.orEmpty())}):
+      |${(constructorSuffix).prependIndent("    ")}
+      """.trimMargin()
+}
+
 /**
  * Builds a string containing the formatted function content
  * @receiver The function whose adapter content should be built
  * @return The string containing the formatted function content
  */
 fun MutablePythonFunction.toPythonCode(): String {
-    var constructorSuffix = ""
-    if (isConstructor()) {
-        var constructorSeparator = ""
-        val assignments = buildAttributeAssignments(this).joinToString("\n".repeat(1))
-        if (assignments.isNotBlank()) {
-            constructorSeparator = "\n"
-        }
-        constructorSuffix = constructorSeparator + assignments
-    }
     return """
-      |def $name(${buildParameters(this)}):
-      |${(buildFunctionBody(this) + constructorSuffix).prependIndent("    ")}
+      |def $name(${buildParameters(this.parameters)}):
+      |${(buildFunctionBody(this)).prependIndent("    ")}
       """.trimMargin()
 }
 
-private fun buildAttributeAssignments(pythonFunction: MutablePythonFunction): List<String> {
-    val attributeAssignments: MutableList<String> = ArrayList()
-    for ((name, defaultValue, assignedBy) in pythonFunction.parameters) {
-        if (assignedBy == PythonParameterAssignment.ATTRIBUTE) {
-            attributeAssignments.add("self.$name = $defaultValue")
-        }
+private fun buildAttributeAssignments(pythonClass: MutablePythonClass): List<String> {
+    return pythonClass.attributes.map {
+        "self.${it.name} = ${it.defaultValue}"
     }
-    return attributeAssignments
 }
 
-private fun buildParameters(pythonFunction: MutablePythonFunction): String {
+private fun buildParameters(parameters: List<MutablePythonParameter>): String {
     var formattedFunctionParameters = ""
     val implicitParameters: MutableList<String> = ArrayList()
     val positionOnlyParameters: MutableList<String> = ArrayList()
     val positionOrNameParameters: MutableList<String> = ArrayList()
     val nameOnlyParameters: MutableList<String> = ArrayList()
-    pythonFunction.parameters.forEach { pythonParameter: MutablePythonParameter ->
+    parameters.forEach { pythonParameter: MutablePythonParameter ->
         when (pythonParameter.assignedBy) {
             PythonParameterAssignment.IMPLICIT -> implicitParameters.add(pythonParameter.toPythonCode())
             PythonParameterAssignment.POSITION_ONLY -> positionOnlyParameters.add(pythonParameter.toPythonCode())

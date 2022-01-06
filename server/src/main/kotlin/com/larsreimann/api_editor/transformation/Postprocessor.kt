@@ -3,6 +3,7 @@ package com.larsreimann.api_editor.transformation
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.mutable_model.MutablePythonAttribute
 import com.larsreimann.api_editor.mutable_model.MutablePythonClass
+import com.larsreimann.api_editor.mutable_model.MutablePythonConstructor
 import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
 import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
 import com.larsreimann.api_editor.mutable_model.descendants
@@ -40,6 +41,25 @@ private fun MutablePythonFunction.reorderParameters() {
 }
 
 /**
+ * Converts `__init__` methods to constructors or adds a constructor without parameters if none exists.
+ */
+fun MutablePythonPackage.createConstructors() {
+    this.descendants { it is MutablePythonFunction }
+        .toList()
+        .filterIsInstance<MutablePythonClass>()
+        .forEach { it.createConstructor() }
+}
+
+private fun MutablePythonClass.createConstructor() {
+    this.constructor = MutablePythonConstructor()
+
+    val constructorMethod = this.methods.firstOrNull { it.name == "__init__" } ?: return
+
+    this.constructor?.parameters?.addAll(constructorMethod.parameters.toList())
+    constructorMethod.release()
+}
+
+/**
  * Creates attributes for each class based on its constructor.
  */
 fun MutablePythonPackage.createAttributesForParametersOfConstructor() {
@@ -49,8 +69,7 @@ fun MutablePythonPackage.createAttributesForParametersOfConstructor() {
 }
 
 private fun MutablePythonClass.createAttributesForParametersOfConstructor() {
-    this.methods
-        .firstOrNull { it.isConstructor() }
+    this.constructor
         ?.parameters
         ?.filter { it.assignedBy !in setOf(PythonParameterAssignment.IMPLICIT, PythonParameterAssignment.CONSTANT) }
         ?.forEach {
