@@ -118,7 +118,7 @@ fun MutablePythonAttribute.toSmlAttribute(): SmlAttribute {
                 add(createSmlDescriptionAnnotationUse(description))
             }
         },
-        type = buildType(typeInDocs)
+        type = typeInDocs.toSmlType()
     )
 }
 
@@ -195,7 +195,7 @@ fun MutablePythonParameter.toSmlParameterOrNull(): SmlParameter? {
                 add(createSmlPythonNameAnnotationUse(name))
             }
         },
-        type = buildType(typeInDocs),
+        type = typeInDocs.toSmlType(),
         defaultValue = defaultValue?.let { buildDefaultValue(it) }
     )
 }
@@ -208,13 +208,14 @@ fun MutablePythonResult.toSmlResult(): SmlResult {
                 add(createSmlDescriptionAnnotationUse(description))
             }
         },
-        type = buildType(type)
+        type = type.toSmlType()
     )
 }
 
-fun buildType(pythonType: String): SmlAbstractType {
-    // TODO: create the correct type
-    return when (pythonType) {
+// Type conversions ----------------------------------------------------------------------------------------------------
+
+internal fun String.toSmlType(): SmlAbstractType {
+    return when (this) {
         "bool" -> createSmlNamedType(
             declaration = createSmlClass("Boolean")
         )
@@ -234,14 +235,9 @@ fun buildType(pythonType: String): SmlAbstractType {
     }
 }
 
-/**
- * Converts the given default value string to a formatted version that
- * matches stub file convention
- *
- * @param defaultValue The default value to format
- * @return The formatted default value
- */
-fun buildDefaultValue(defaultValue: String): SmlAbstractExpression? {
+// Value conversions ---------------------------------------------------------------------------------------------------
+
+internal fun buildDefaultValue(defaultValue: String): SmlAbstractExpression? {
     if (defaultValue.isBlank()) {
         return null
     }
@@ -272,11 +268,13 @@ fun buildDefaultValue(defaultValue: String): SmlAbstractExpression? {
     return createSmlString(invalid)
 }
 
-fun String.snakeCaseToLowerCamelCase(): String {
+// Name conversions ----------------------------------------------------------------------------------------------------
+
+internal fun String.snakeCaseToLowerCamelCase(): String {
     return this.snakeCaseToCamelCase().replaceFirstChar { it.lowercase() }
 }
 
-fun String.snakeCaseToUpperCamelCase(): String {
+internal fun String.snakeCaseToUpperCamelCase(): String {
     return this.snakeCaseToCamelCase().replaceFirstChar { it.uppercase() }
 }
 

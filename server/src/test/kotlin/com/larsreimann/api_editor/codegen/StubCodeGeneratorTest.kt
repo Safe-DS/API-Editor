@@ -20,10 +20,13 @@ import de.unibonn.simpleml.emf.typeParametersOrEmpty
 import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlFunction
+import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlString
 import de.unibonn.simpleml.stdlib.uniqueAnnotationUseOrNull
 import io.kotest.assertions.asClue
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
@@ -35,12 +38,12 @@ import org.eclipse.xtext.naming.QualifiedName
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvSource
 
 // TODO: test creation of Description annotations
 // TODO: test creation of PythonName annotations
-// TODO: test conversion of names
 // TODO: test conversion of values
-// TODO: test conversion of types
 // TODO: test toSmlAttribute
 // TODO: test toSmlEnum
 // TODO: test toSmlParameterOrNull
@@ -436,6 +439,77 @@ class StubCodeGeneratorTest {
                 .shouldContainExactly(
                     "testResult"
                 )
+        }
+    }
+
+    @Nested
+    inner class TypeConversions {
+
+        @Test
+        fun `should convert bool to Boolean`() {
+            val smlType = "bool".toSmlType().shouldBeInstanceOf<SmlNamedType>()
+            smlType.declaration.name shouldBe "Boolean"
+            smlType.isNullable.shouldBeFalse()
+        }
+
+        @Test
+        fun `should convert float to Float`() {
+            val smlType = "float".toSmlType().shouldBeInstanceOf<SmlNamedType>()
+            smlType.declaration.name shouldBe "Float"
+            smlType.isNullable.shouldBeFalse()
+        }
+
+        @Test
+        fun `should convert int to Int`() {
+            val smlType = "int".toSmlType().shouldBeInstanceOf<SmlNamedType>()
+            smlType.declaration.name shouldBe "Int"
+            smlType.isNullable.shouldBeFalse()
+        }
+
+        @Test
+        fun `should convert str to String`() {
+            val smlType = "str".toSmlType().shouldBeInstanceOf<SmlNamedType>()
+            smlType.declaration.name shouldBe "String"
+            smlType.isNullable.shouldBeFalse()
+        }
+
+        @Test
+        fun `should convert other types to nullable Any`() {
+            val smlType = "other".toSmlType().shouldBeInstanceOf<SmlNamedType>()
+            smlType.declaration.name shouldBe "Any"
+            smlType.isNullable.shouldBeTrue()
+        }
+    }
+
+    @Nested
+    inner class NameConversions {
+
+        @ParameterizedTest
+        @CsvSource(
+            delimiter = '|',
+            textBlock = """
+            ''        | ''
+            name      | name
+            Name      | name
+            two_words | twoWords
+            Two_words | twoWords"""
+        )
+        fun `snakeCaseToLowerCamelCase should convert snake case to lower camel case`(input: String, expected: String) {
+            input.snakeCaseToLowerCamelCase() shouldBe expected
+        }
+
+        @ParameterizedTest
+        @CsvSource(
+            delimiter = '|',
+            textBlock = """
+            ''        | ''
+            name      | Name
+            Name      | Name
+            two_words | TwoWords
+            Two_words | TwoWords"""
+        )
+        fun `snakeCaseToUpperCamelCase should convert snake case to upper camel case`(input: String, expected: String) {
+            input.snakeCaseToUpperCamelCase() shouldBe expected
         }
     }
 
