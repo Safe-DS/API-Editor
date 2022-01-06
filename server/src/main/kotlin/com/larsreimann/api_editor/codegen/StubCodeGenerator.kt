@@ -188,11 +188,11 @@ fun MutablePythonParameter.toSmlParameterOrNull(): SmlParameter? {
     return createSmlParameter(
         name = stubName,
         annotations = buildList {
-            if (description.isNotBlank()) {
-                add(createSmlDescriptionAnnotationUse(description))
-            }
             if (name != stubName) {
                 add(createSmlPythonNameAnnotationUse(name))
+            }
+            if (description.isNotBlank()) {
+                add(createSmlDescriptionAnnotationUse(description))
             }
         },
         type = typeInDocs.toSmlType(),
@@ -201,9 +201,14 @@ fun MutablePythonParameter.toSmlParameterOrNull(): SmlParameter? {
 }
 
 fun MutablePythonResult.toSmlResult(): SmlResult {
+    val stubName = name.snakeCaseToLowerCamelCase()
+
     return createSmlResult(
-        name = name,
+        name = stubName,
         annotations = buildList {
+            if (name != stubName) {
+                add(createSmlPythonNameAnnotationUse(name))
+            }
             if (description.isNotBlank()) {
                 add(createSmlDescriptionAnnotationUse(description))
             }

@@ -44,14 +44,10 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
+import org.junit.jupiter.params.provider.EnumSource
 
-// TODO: test creation of Description annotations
-// TODO: test creation of PythonName annotations
-// TODO: test conversion of values
 // TODO: test toSmlAttribute
 // TODO: test toSmlEnum
-// TODO: test toSmlParameterOrNull
-// TODO: test toSmlResult
 
 class StubCodeGeneratorTest {
 
@@ -443,6 +439,241 @@ class StubCodeGeneratorTest {
                 .shouldContainExactly(
                     "testResult"
                 )
+        }
+    }
+
+    @Nested
+    inner class ToSmlParameter {
+
+        @ParameterizedTest
+        @EnumSource(PythonParameterAssignment::class, names = ["IMPLICIT", "ATTRIBUTE", "CONSTANT"])
+        fun `should return null for invisible parameters`(assignedBy: PythonParameterAssignment) {
+            val pythonParameter = MutablePythonParameter(
+                name = "testParameter",
+                assignedBy = assignedBy
+            )
+
+            pythonParameter.toSmlParameterOrNull().shouldBeNull()
+        }
+
+        @Test
+        fun `should handle simple parameters`() {
+            val pythonParameter = MutablePythonParameter(name = "testParameter")
+            pythonParameter.toSmlParameterOrNull()
+                .shouldNotBeNull()
+                .asClue {
+                    it.name shouldBe "testParameter"
+                    it.annotationUsesOrEmpty().shouldBeEmpty()
+
+                    val type = it.type
+                    type.shouldBeInstanceOf<SmlNamedType>()
+                    type.declaration.name shouldBe "Any"
+                    type.isNullable.shouldBeTrue()
+
+                    it.defaultValue.shouldBeNull()
+                }
+        }
+
+        @Test
+        fun `should convert name to camel case`() {
+            val pythonParameter = MutablePythonParameter(name = "Test_parameter")
+
+            val smlParameter = pythonParameter
+                .toSmlParameterOrNull()
+                .shouldNotBeNull()
+            smlParameter.name shouldBe "testParameter"
+        }
+
+        @Test
+        fun `should store python name if it differs from stub name`() {
+            val pythonParameter = MutablePythonParameter(name = "Test_parameter")
+
+            val arguments = pythonParameter
+                .toSmlParameterOrNull()
+                .shouldNotBeNull()
+                .uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
+                .shouldNotBeNull()
+                .argumentsOrEmpty()
+            arguments.shouldHaveSize(1)
+
+            val pythonName = arguments[0].value
+            pythonName.shouldBeInstanceOf<SmlString>()
+            pythonName.value shouldBe "Test_parameter"
+        }
+
+        @Test
+        fun `should not store python name if it is identical to stub name`() {
+            val pythonParameter = MutablePythonParameter(name = "testParameter")
+
+            pythonParameter.toSmlParameterOrNull()
+                .shouldNotBeNull()
+                .uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
+                .shouldBeNull()
+        }
+
+        @Test
+        fun `should store description if it is not blank`() {
+            val pythonParameter = MutablePythonParameter(
+                name = "testParameter",
+                description = "Lorem ipsum"
+            )
+
+            val arguments = pythonParameter
+                .toSmlParameterOrNull()
+                .shouldNotBeNull()
+                .uniqueAnnotationUseOrNull(QualifiedName.create("Description"))
+                .shouldNotBeNull()
+                .argumentsOrEmpty()
+            arguments.shouldHaveSize(1)
+
+            val description = arguments[0].value
+            description.shouldBeInstanceOf<SmlString>()
+            description.value shouldBe "Lorem ipsum"
+        }
+
+        @Test
+        fun `should not store description if it is blank`() {
+            val pythonParameter = MutablePythonParameter(
+                name = "testParameter",
+                description = ""
+            )
+
+            pythonParameter
+                .toSmlParameterOrNull()
+                .shouldNotBeNull()
+                .uniqueAnnotationUseOrNull(QualifiedName.create("Description"))
+                .shouldBeNull()
+        }
+
+        @Test
+        fun `should store type`() {
+            val pythonParameter = MutablePythonParameter(
+                name = "testParameter",
+                typeInDocs = "str"
+            )
+
+            pythonParameter
+                .toSmlParameterOrNull()
+                .shouldNotBeNull()
+                .type
+                .shouldBeInstanceOf<SmlNamedType>()
+                .asClue {
+                    it.declaration.name shouldBe "String"
+                    it.isNullable.shouldBeFalse()
+                }
+        }
+
+        @Test
+        fun `should store default value`() {
+            val pythonParameter = MutablePythonParameter(
+                name = "testParameter",
+                defaultValue = "None"
+            )
+
+            pythonParameter
+                .toSmlParameterOrNull()
+                .shouldNotBeNull()
+                .defaultValue
+                .shouldBeInstanceOf<SmlNull>()
+        }
+    }
+
+    @Nested
+    inner class ToSmlResult {
+
+        @Test
+        fun `should handle simple results`() {
+            val pythonResult = MutablePythonResult(name = "testResult")
+
+            pythonResult.toSmlResult().asClue {
+                it.name shouldBe "testResult"
+                it.annotationUsesOrEmpty().shouldBeEmpty()
+
+                val type = it.type
+                type.shouldBeInstanceOf<SmlNamedType>()
+                type.declaration.name shouldBe "Any"
+                type.isNullable.shouldBeTrue()
+            }
+        }
+
+        @Test
+        fun `should convert name to camel case`() {
+            val pythonResult = MutablePythonResult(name = "Test_result")
+
+            val smlResult = pythonResult.toSmlResult()
+            smlResult.name shouldBe "testResult"
+        }
+
+        @Test
+        fun `should store python name if it differs from stub name`() {
+            val pythonResult = MutablePythonResult(name = "Test_result")
+
+            val smlFunction = pythonResult.toSmlResult()
+
+            val pythonNameAnnotationUseOrNull = smlFunction
+                .uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
+                .shouldNotBeNull()
+
+            val arguments = pythonNameAnnotationUseOrNull.argumentsOrEmpty()
+            arguments.shouldHaveSize(1)
+
+            val pythonName = arguments[0].value
+            pythonName.shouldBeInstanceOf<SmlString>()
+            pythonName.value shouldBe "Test_result"
+        }
+
+        @Test
+        fun `should not store python name if it is identical to stub name`() {
+            val pythonResult = MutablePythonResult(name = "testResult")
+
+            pythonResult.toSmlResult()
+                .uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
+                .shouldBeNull()
+        }
+
+        @Test
+        fun `should store description if it is not blank`() {
+            val pythonResult = MutablePythonResult(
+                name = "testResult",
+                description = "Lorem ipsum"
+            )
+
+            val smlResult = pythonResult.toSmlResult()
+
+            val arguments = smlResult
+                .uniqueAnnotationUseOrNull(QualifiedName.create("Description"))
+                .shouldNotBeNull()
+                .argumentsOrEmpty()
+            arguments.shouldHaveSize(1)
+
+            val description = arguments[0].value
+            description.shouldBeInstanceOf<SmlString>()
+            description.value shouldBe "Lorem ipsum"
+        }
+
+        @Test
+        fun `should not store description if it is blank`() {
+            val pythonResult = MutablePythonResult(
+                name = "testResult",
+                description = ""
+            )
+
+            val smlFunction = pythonResult.toSmlResult()
+
+            val descriptionOrNull = smlFunction.uniqueAnnotationUseOrNull(QualifiedName.create("Description"))
+            descriptionOrNull.shouldBeNull()
+        }
+
+        @Test
+        fun `should store type`() {
+            val pythonResult = MutablePythonResult(
+                name = "testResult",
+                type = "str"
+            )
+
+            val type = pythonResult.toSmlResult().type.shouldBeInstanceOf<SmlNamedType>()
+            type.declaration.name shouldBe "String"
+            type.isNullable.shouldBeFalse()
         }
     }
 
