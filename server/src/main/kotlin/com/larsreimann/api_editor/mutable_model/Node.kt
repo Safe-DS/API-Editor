@@ -181,11 +181,11 @@ open class Node {
             }
         }
 
-        operator fun getValue(node: Node, property: KProperty<*>): T? {
+        operator fun getValue(thisRef: Any?, property: KProperty<*>): T? {
             return this.node
         }
 
-        operator fun setValue(oldNode: Node, property: KProperty<*>, newNode: T?) {
+        operator fun setValue(thisRef: Any?, property: KProperty<*>, newNode: T?) {
             this.node = newNode
         }
     }
@@ -382,11 +382,11 @@ open class Node {
             handleMove(from, to)
         }
 
-        operator fun getValue(node: T, property: KProperty<*>): T? {
+        operator fun getValue(thisRef: Any?, property: KProperty<*>): T? {
             return this.node
         }
 
-        operator fun setValue(oldNode: T, property: KProperty<*>, newNode: T?) {
+        operator fun setValue(thisRef: Any?, property: KProperty<*>, newNode: T?) {
             this.node = newNode
         }
     }
