@@ -235,7 +235,6 @@ private fun buildFunctionBody(pythonFunction: MutablePythonFunction): String {
             pythonFunction.buildParameterCall() +
             ")"
         )
-
 }
 
 private fun buildBoundaryChecks(pythonFunction: MutablePythonFunction): List<String> {
