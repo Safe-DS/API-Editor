@@ -1,8 +1,8 @@
 dependency_matcher_patterns = {
-    "dependency_action_if_param_is_val": [
-        {"RIGHT_ID": "action", "RIGHT_ATTRS": {"POS": "VERB"}},
+    "pattern_parameter_used_condition": [
+        {"RIGHT_ID": "used", "RIGHT_ATTRS": {"ORTH": {"IN": ["used", "Used"]}}},
         {
-            "LEFT_ID": "action",
+            "LEFT_ID": "used",
             "REL_OP": ">",
             "RIGHT_ID": "condition",
             "RIGHT_ATTRS": {"DEP": "advcl"},
@@ -10,14 +10,44 @@ dependency_matcher_patterns = {
         {
             "LEFT_ID": "condition",
             "REL_OP": ">",
-            "RIGHT_ID": "condition_param",
-            "RIGHT_ATTRS": {"DEP": "nsubj"},
+            "RIGHT_ID": "dependee_param",
+            "RIGHT_ATTRS": {"DEP": {"IN": ["nsubj", "nsubjpass"]}},
+        },
+    ],
+    "pattern_parameter_ignored_condition": [
+        {
+            "RIGHT_ID": "ignored",
+            "RIGHT_ATTRS": {"ORTH": {"IN": ["ignored", "Ignored"]}},
+        },
+        {
+            "LEFT_ID": "ignored",
+            "REL_OP": ">",
+            "RIGHT_ID": "condition",
+            "RIGHT_ATTRS": {"DEP": "advcl"},
         },
         {
             "LEFT_ID": "condition",
             "REL_OP": ">",
-            "RIGHT_ID": "condition_bool",
-            "RIGHT_ATTRS": {"DEP": {"IN": ["attr", "acomp", "dobj"]}},
+            "RIGHT_ID": "dependee_param",
+            "RIGHT_ATTRS": {"DEP": {"IN": ["nsubj", "nsubjpass"]}},
         },
-    ]
+    ],
+    "pattern_parameter_applies_condition": [
+        {
+            "RIGHT_ID": "applies",
+            "RIGHT_ATTRS": {"ORTH": {"IN": ["applies", "Applies"]}},
+        },
+        {
+            "LEFT_ID": "applies",
+            "REL_OP": ">",
+            "RIGHT_ID": "condition",
+            "RIGHT_ATTRS": {"DEP": "advcl"},
+        },
+        {
+            "LEFT_ID": "condition",
+            "REL_OP": ">",
+            "RIGHT_ID": "dependee_param",
+            "RIGHT_ATTRS": {"DEP": {"IN": ["nsubj", "nsubjpass"]}},
+        },
+    ],
 }

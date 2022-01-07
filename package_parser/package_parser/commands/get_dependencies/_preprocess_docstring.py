@@ -9,7 +9,8 @@ def preprocess_docstring(docstring: str) -> str:
     Note ordered dict since "=" is a substring of the other symbols.
     """
 
-    docstring = re.sub(r'"', "", docstring)
+    docstring = re.sub(r'["“”`]', "", docstring)
+    docstring = re.sub(r"'", "", docstring)
     docstring = re.sub(r"!=", " does not equal ", docstring)
     docstring = re.sub(r"==?", " equals ", docstring)
     docstring = re.sub(r"\s+", " ", docstring)

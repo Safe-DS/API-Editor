@@ -1,9 +1,10 @@
-from typing import Any, Callable, Type
+from typing import Any, Callable, Optional, Type
 
 import astroid
 
-EnterAndLeaveFunctions = tuple[
-    Callable[[astroid.NodeNG], None], Callable[[astroid.NodeNG], None]
+_EnterAndLeaveFunctions = tuple[
+    Optional[Callable[[astroid.NodeNG], None]],
+    Optional[Callable[[astroid.NodeNG], None]],
 ]
 
 
@@ -19,7 +20,7 @@ class ASTWalker:
 
     def __init__(self, handler: Any) -> None:
         self._handler = handler
-        self._cache: dict[Type, EnterAndLeaveFunctions] = {}
+        self._cache: dict[Type, _EnterAndLeaveFunctions] = {}
 
     def walk(self, node: astroid.NodeNG) -> None:
         self.__walk(node, set())
@@ -44,7 +45,7 @@ class ASTWalker:
         if method is not None:
             method(node)
 
-    def __get_callbacks(self, node: astroid.NodeNG) -> EnterAndLeaveFunctions:
+    def __get_callbacks(self, node: astroid.NodeNG) -> _EnterAndLeaveFunctions:
         klass = node.__class__
         methods = self._cache.get(klass)
 
