@@ -20,6 +20,7 @@ private fun MutablePythonPackage.preprocess() {
     changeModulePrefix(newPrefix = "simpleml")
     replaceClassMethodsWithStaticMethods()
     updateParameterAssignment()
+    normalizeNamesOfImplicitParameters()
 }
 
 /**
@@ -40,5 +41,6 @@ private fun MutablePythonPackage.processAnnotations() {
 private fun MutablePythonPackage.postprocess() {
     removeEmptyModules()
     reorderParameters()
+    createConstructors()
     createAttributesForParametersOfConstructor()
 }

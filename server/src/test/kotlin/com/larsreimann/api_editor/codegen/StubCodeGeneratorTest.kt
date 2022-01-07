@@ -485,11 +485,28 @@ class StubCodeGeneratorTest {
 
             pythonFunction.toSmlFunction().asClue {
                 it.name shouldBe "testFunction"
+                it.isStatic.shouldBeFalse()
                 it.annotationUsesOrEmpty().shouldBeEmpty()
                 it.typeParametersOrEmpty().shouldBeEmpty()
                 it.parametersOrEmpty().shouldBeEmpty()
                 it.resultsOrEmpty().shouldBeEmpty()
                 it.constraintsOrEmpty().shouldBeEmpty()
+            }
+        }
+
+        @Test
+        fun `should mark static methods with modifier`() {
+            val pythonFunction = MutablePythonFunction(
+                name = "testFunction",
+                decorators = mutableListOf("staticmethod")
+            )
+            MutablePythonClass(
+                name = "TestClass",
+                methods = listOf(pythonFunction)
+            )
+
+            pythonFunction.toSmlFunction().asClue {
+                it.isStatic.shouldBeTrue()
             }
         }
 

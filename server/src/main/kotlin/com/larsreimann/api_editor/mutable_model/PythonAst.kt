@@ -90,7 +90,8 @@ class MutablePythonClass(
 }
 
 class MutablePythonConstructor(
-    parameters: List<MutablePythonParameter> = emptyList()
+    parameters: List<MutablePythonParameter> = emptyList(),
+    val callToOriginalAPI: OriginalPythonFunction? = null
 ) : MutablePythonAstNode() {
 
     val parameters = MutableContainmentList(parameters)
@@ -141,7 +142,8 @@ class MutablePythonFunction(
         yieldAll(results)
     }
 
-    fun isStatic() = "staticmethod" in decorators
+    fun isMethod() = parent is MutablePythonClass
+    fun isStaticMethod() = isMethod() && "staticmethod" in decorators
 }
 
 data class OriginalPythonFunction(

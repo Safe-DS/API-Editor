@@ -152,7 +152,7 @@ class PythonCodeGeneratorTest {
             |
             |class test-class:
             |    def test-class-function(self, *, only-param='defaultValue'):
-            |        test-module.test-class.test-class-function(only-param)
+            |        self.instance.test-class-function(only-param)
             |
             |def function_module(param1, param2, param3):
             |    test-module.function_module(param1=param1, param2=param2, param3=param3)
@@ -280,7 +280,9 @@ class PythonCodeGeneratorTest {
         // given
         val testClass = MutablePythonClass(
             name = "test-class",
-            constructor = MutablePythonConstructor(),
+            constructor = MutablePythonConstructor(
+                callToOriginalAPI = OriginalPythonFunction(qualifiedName = "test-class")
+            ),
             originalClass = OriginalPythonClass("test-module.test-class")
         )
         val testModule = MutablePythonModule(
@@ -311,7 +313,7 @@ class PythonCodeGeneratorTest {
             |
             |class test-class:
             |    def __init__():
-            |        pass
+            |        self.instance = test-class()
             |
             """.trimMargin()
 
@@ -510,13 +512,17 @@ class PythonCodeGeneratorTest {
     fun `should create valid code for empty classes`() { // TODO
         val testClass = MutablePythonClass(
             name = "TestClass",
-            constructor = MutablePythonConstructor()
+            constructor = MutablePythonConstructor(
+                callToOriginalAPI = OriginalPythonFunction(
+                    qualifiedName = "TestClass"
+                )
+            )
         )
 
         testClass.toPythonCode() shouldBe """
             |class TestClass:
             |    def __init__():
-            |        pass
+            |        self.instance = TestClass()
         """.trimMargin()
     }
 
@@ -525,39 +531,36 @@ class PythonCodeGeneratorTest {
         // given
         val testClass = MutablePythonClass(
             name = "test-class",
-            methods = mutableListOf(
-                MutablePythonFunction(
-                    name = "__init__",
-                    parameters = mutableListOf(
-                        MutablePythonParameter(
+            constructor = MutablePythonConstructor(
+                parameters = mutableListOf(
+                    MutablePythonParameter(
+                        name = "self",
+                        assignedBy = PythonParameterAssignment.IMPLICIT,
+                        originalParameter = OriginalPythonParameter(
                             name = "self",
-                            assignedBy = PythonParameterAssignment.IMPLICIT,
-                            originalParameter = OriginalPythonParameter(
-                                name = "self",
-                                assignedBy = PythonParameterAssignment.IMPLICIT
-                            )
-                        ),
-                        MutablePythonParameter(
-                            name = "only-param",
-                            defaultValue = "'defaultValue'",
-                            assignedBy = PythonParameterAssignment.NAME_ONLY,
-                            originalParameter = OriginalPythonParameter(
-                                name = "only-param",
-                                assignedBy = PythonParameterAssignment.POSITION_OR_NAME
-                            )
+                            assignedBy = PythonParameterAssignment.IMPLICIT
                         )
                     ),
-                    originalFunction = OriginalPythonFunction(
-                        qualifiedName = "test-module.test-class.__init__",
-                        parameters = listOf(
-                            OriginalPythonParameter(
-                                name = "self",
-                                assignedBy = PythonParameterAssignment.IMPLICIT
-                            ),
-                            OriginalPythonParameter(
-                                name = "only-param",
-                                assignedBy = PythonParameterAssignment.POSITION_OR_NAME
-                            )
+                    MutablePythonParameter(
+                        name = "only-param",
+                        defaultValue = "'defaultValue'",
+                        assignedBy = PythonParameterAssignment.NAME_ONLY,
+                        originalParameter = OriginalPythonParameter(
+                            name = "only-param",
+                            assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+                        )
+                    )
+                ),
+                callToOriginalAPI = OriginalPythonFunction(
+                    qualifiedName = "test-module.test-class",
+                    parameters = listOf(
+                        OriginalPythonParameter(
+                            name = "self",
+                            assignedBy = PythonParameterAssignment.IMPLICIT
+                        ),
+                        OriginalPythonParameter(
+                            name = "only-param",
+                            assignedBy = PythonParameterAssignment.POSITION_OR_NAME
                         )
                     )
                 )
@@ -573,7 +576,7 @@ class PythonCodeGeneratorTest {
             """
             |class test-class:
             |    def __init__(self, *, only-param='defaultValue'):
-            |        test-module.test-class.__init__(only-param)
+            |        self.instance = test-module.test-class(only-param)
             """.trimMargin()
         formattedClass shouldBe expectedFormattedClass
     }
@@ -651,10 +654,10 @@ class PythonCodeGeneratorTest {
             """
             |class test-class:
             |    def test-class-function1(self, only-param):
-            |        test-module.test-class.test-class-function1(only-param)
+            |        self.instance.test-class-function1(only-param)
             |
             |    def test-class-function2(self, only-param):
-            |        test-module.test-class.test-class-function2(only-param)""".trimMargin()
+            |        self.instance.test-class-function2(only-param)""".trimMargin()
 
         formattedClass shouldBe expectedFormattedClass
     }
@@ -713,7 +716,7 @@ class PythonCodeGeneratorTest {
             """
             |class test-class:
             |    def test-function(self, second-param, third-param):
-            |        test-module.test-class.test-function(second-param, third-param=third-param)""".trimMargin()
+            |        self.instance.test-function(second-param, third-param=third-param)""".trimMargin()
         formattedClass shouldBe expectedFormattedClass
     }
 
@@ -1047,5 +1050,44 @@ class PythonCodeGeneratorTest {
             |def test-function(first-param, second-param, third-param):
             |    test-module.test-function(first-param, second-param, third-param=third-param)""".trimMargin()
         formattedFunction shouldBe expectedFormattedFunction
+    }
+
+    @Test
+    fun buildClassReturnsFormattedClassWithStaticMethodDecorator() {
+        // given
+        val testClass = MutablePythonClass(
+            name = "test-class",
+            methods = listOf(
+                MutablePythonFunction(
+                    name = "test-class-function1",
+                    decorators = mutableListOf("staticmethod"),
+                    parameters = listOf(
+                        MutablePythonParameter(
+                            name = "only-param",
+                            originalParameter = OriginalPythonParameter(name = "only-param")
+                        )
+                    ),
+                    originalFunction = OriginalPythonFunction(
+                        qualifiedName = "test-module.test-class.test-class-function1",
+                        parameters = listOf(
+                            OriginalPythonParameter(name = "only-param")
+                        )
+                    )
+                )
+            )
+        )
+
+        // when
+        val formattedClass: String = testClass.toPythonCode()
+
+        // then
+        val expectedFormattedClass: String =
+            """
+           |class test-class:
+           |    @staticmethod
+           |    def test-class-function1(only-param):
+           |        test-module.test-class.test-class-function1(only-param)""".trimMargin()
+
+        formattedClass shouldBe expectedFormattedClass
     }
 }

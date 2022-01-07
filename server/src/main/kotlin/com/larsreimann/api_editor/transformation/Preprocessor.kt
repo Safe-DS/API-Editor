@@ -138,6 +138,18 @@ private fun MutablePythonParameter.updateParameterAssignment() {
 private fun MutablePythonParameter.isImplicit(): Boolean {
     val currentFunction = this.parent as? MutablePythonFunction ?: return false
     return currentFunction.parent is MutablePythonClass &&
-        !currentFunction.isStatic() &&
+        !currentFunction.isStaticMethod() &&
         currentFunction.parameters.firstOrNull() == this
+}
+
+/**
+ * Changes the name of implicit parameters to "self".
+ */
+fun MutablePythonPackage.normalizeNamesOfImplicitParameters() {
+    this.descendants()
+        .filterIsInstance<MutablePythonParameter>()
+        .filter { it.assignedBy == PythonParameterAssignment.IMPLICIT }
+        .forEach {
+            it.name = "self"
+        }
 }

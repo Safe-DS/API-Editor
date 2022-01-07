@@ -6,6 +6,7 @@ import com.larsreimann.api_editor.mutable_model.MutablePythonClass
 import com.larsreimann.api_editor.mutable_model.MutablePythonConstructor
 import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
 import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
+import com.larsreimann.api_editor.mutable_model.OriginalPythonFunction
 import com.larsreimann.api_editor.mutable_model.descendants
 
 /**
@@ -51,12 +52,36 @@ fun MutablePythonPackage.createConstructors() {
 }
 
 private fun MutablePythonClass.createConstructor() {
-    this.constructor = MutablePythonConstructor()
+    when (val constructorMethod = this.methods.firstOrNull { it.name == "__init__" }) {
+        null -> {
+            this.constructor = MutablePythonConstructor(
+                parameters = emptyList(),
+                callToOriginalAPI = OriginalPythonFunction(
+                    qualifiedName = this.qualifiedName()
+                )
+            )
+        }
+        else -> {
+            val qualifiedName = constructorMethod.originalFunction
+                ?.qualifiedName
+                ?.removeSuffix(".__init__")
+                ?: qualifiedName()
 
-    val constructorMethod = this.methods.firstOrNull { it.name == "__init__" } ?: return
+            val parameters = constructorMethod.originalFunction
+                ?.parameters
+                ?: emptyList()
 
-    this.constructor?.parameters?.addAll(constructorMethod.parameters.toList())
-    constructorMethod.release()
+            this.constructor = MutablePythonConstructor(
+                parameters = constructorMethod.parameters.toList(),
+                callToOriginalAPI = OriginalPythonFunction(
+                    qualifiedName = qualifiedName,
+                    parameters = parameters
+                )
+            )
+
+            constructorMethod.release()
+        }
+    }
 }
 
 /**
