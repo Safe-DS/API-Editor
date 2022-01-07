@@ -3,9 +3,11 @@ package com.larsreimann.api_editor.codegen
 import com.larsreimann.api_editor.model.ComparisonOperator
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.mutable_model.MutablePythonClass
+import com.larsreimann.api_editor.mutable_model.MutablePythonConstructor
 import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
 import com.larsreimann.api_editor.mutable_model.MutablePythonModule
 import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
+import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
 
 /**
  * Builds a string containing the formatted module content
@@ -117,6 +119,7 @@ private fun MutablePythonClass.buildConstructor(): String {
         constructorSeparator = "\n"
     }
     var constructorSuffix = constructorSeparator + assignments
+    constructorSuffix += this.constructor?.buildConstructorCall() ?: ""
     if (constructorSuffix.isBlank()) {
         constructorSuffix = "pass"
     }
@@ -126,16 +129,25 @@ private fun MutablePythonClass.buildConstructor(): String {
       """.trimMargin()
 }
 
+private fun MutablePythonConstructor.buildConstructorCall(): String {
+    return "self.instance = ${callToOriginalAPI!!.qualifiedName}(${this.buildParameterCall()})"
+}
+
 /**
  * Builds a string containing the formatted function content
  * @receiver The function whose adapter content should be built
  * @return The string containing the formatted function content
  */
 fun MutablePythonFunction.toPythonCode(): String {
-    return """
+    val function = """
       |def $name(${buildParameters(this.parameters)}):
       |${(buildFunctionBody(this)).prependIndent("    ")}
       """.trimMargin()
+
+    return when {
+        isStaticMethod() -> "@staticmethod\n$function"
+        else -> function
+    }
 }
 
 private fun buildAttributeAssignments(pythonClass: MutablePythonClass): List<String> {
@@ -204,13 +216,26 @@ private fun buildFunctionBody(pythonFunction: MutablePythonFunction): String {
     if (formattedBoundaries.isNotBlank()) {
         formattedBoundaries = "$formattedBoundaries\n"
     }
+
+    if (!pythonFunction.isMethod() || pythonFunction.isStaticMethod()) {
+        return (
+            formattedBoundaries +
+                pythonFunction.originalFunction!!.qualifiedName +
+                "(" +
+                pythonFunction.buildParameterCall() +
+                ")"
+            )
+    }
+
     return (
         formattedBoundaries +
-            pythonFunction.originalFunction!!.qualifiedName +
+            "self.instance." +
+            pythonFunction.originalFunction!!.qualifiedName.split(".").last() +
             "(" +
-            buildParameterCall(pythonFunction) +
+            pythonFunction.buildParameterCall() +
             ")"
         )
+
 }
 
 private fun buildBoundaryChecks(pythonFunction: MutablePythonFunction): List<String> {
@@ -297,10 +322,28 @@ private fun buildBoundaryChecks(pythonFunction: MutablePythonFunction): List<Str
     return formattedBoundaries
 }
 
-private fun buildParameterCall(pythonFunction: MutablePythonFunction): String {
+private fun MutablePythonFunction.buildParameterCall(): String {
+    return buildParameterCall(
+        parameters,
+        originalFunction!!.parameters
+    )
+}
+
+private fun MutablePythonConstructor.buildParameterCall(): String {
+    return buildParameterCall(
+        parameters,
+        callToOriginalAPI!!.parameters
+    )
+}
+
+private fun buildParameterCall(
+    parameters: List<MutablePythonParameter>,
+    originalParameters: List<OriginalPythonParameter>
+): String {
+
     val formattedParameters: MutableList<String?> = ArrayList()
     val originalNameToValueMap: MutableMap<String, String?> = HashMap()
-    pythonFunction.parameters.forEach {
+    parameters.forEach {
         val value: String? =
             if (it.assignedBy == PythonParameterAssignment.CONSTANT || it.assignedBy == PythonParameterAssignment.ATTRIBUTE) {
                 it.defaultValue
@@ -309,7 +352,7 @@ private fun buildParameterCall(pythonFunction: MutablePythonFunction): String {
             }
         originalNameToValueMap[it.originalParameter!!.name] = value
     }
-    pythonFunction.originalFunction!!.parameters
+    originalParameters
         .filter { it.assignedBy != PythonParameterAssignment.IMPLICIT }
         .forEach {
             if (it.assignedBy === PythonParameterAssignment.NAME_ONLY) {

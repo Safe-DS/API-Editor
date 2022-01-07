@@ -280,7 +280,9 @@ class PythonCodeGeneratorTest {
         // given
         val testClass = MutablePythonClass(
             name = "test-class",
-            constructor = MutablePythonConstructor(),
+            constructor = MutablePythonConstructor(
+                callToOriginalAPI = OriginalPythonFunction(qualifiedName = "test-class")
+            ),
             originalClass = OriginalPythonClass("test-module.test-class")
         )
         val testModule = MutablePythonModule(
@@ -311,7 +313,7 @@ class PythonCodeGeneratorTest {
             |
             |class test-class:
             |    def __init__():
-            |        pass
+            |        self.instance = test-class()
             |
             """.trimMargin()
 
@@ -510,13 +512,17 @@ class PythonCodeGeneratorTest {
     fun `should create valid code for empty classes`() { // TODO
         val testClass = MutablePythonClass(
             name = "TestClass",
-            constructor = MutablePythonConstructor()
+            constructor = MutablePythonConstructor(
+                callToOriginalAPI = OriginalPythonFunction(
+                    qualifiedName = "TestClass"
+                )
+            )
         )
 
         testClass.toPythonCode() shouldBe """
             |class TestClass:
             |    def __init__():
-            |        pass
+            |        self.instance = TestClass()
         """.trimMargin()
     }
 
@@ -525,39 +531,36 @@ class PythonCodeGeneratorTest {
         // given
         val testClass = MutablePythonClass(
             name = "test-class",
-            methods = mutableListOf(
-                MutablePythonFunction(
-                    name = "__init__",
-                    parameters = mutableListOf(
-                        MutablePythonParameter(
+            constructor = MutablePythonConstructor(
+                parameters = mutableListOf(
+                    MutablePythonParameter(
+                        name = "self",
+                        assignedBy = PythonParameterAssignment.IMPLICIT,
+                        originalParameter = OriginalPythonParameter(
                             name = "self",
-                            assignedBy = PythonParameterAssignment.IMPLICIT,
-                            originalParameter = OriginalPythonParameter(
-                                name = "self",
-                                assignedBy = PythonParameterAssignment.IMPLICIT
-                            )
-                        ),
-                        MutablePythonParameter(
-                            name = "only-param",
-                            defaultValue = "'defaultValue'",
-                            assignedBy = PythonParameterAssignment.NAME_ONLY,
-                            originalParameter = OriginalPythonParameter(
-                                name = "only-param",
-                                assignedBy = PythonParameterAssignment.POSITION_OR_NAME
-                            )
+                            assignedBy = PythonParameterAssignment.IMPLICIT
                         )
                     ),
-                    originalFunction = OriginalPythonFunction(
-                        qualifiedName = "test-module.test-class.__init__",
-                        parameters = listOf(
-                            OriginalPythonParameter(
-                                name = "self",
-                                assignedBy = PythonParameterAssignment.IMPLICIT
-                            ),
-                            OriginalPythonParameter(
-                                name = "only-param",
-                                assignedBy = PythonParameterAssignment.POSITION_OR_NAME
-                            )
+                    MutablePythonParameter(
+                        name = "only-param",
+                        defaultValue = "'defaultValue'",
+                        assignedBy = PythonParameterAssignment.NAME_ONLY,
+                        originalParameter = OriginalPythonParameter(
+                            name = "only-param",
+                            assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+                        )
+                    )
+                ),
+                callToOriginalAPI = OriginalPythonFunction(
+                    qualifiedName = "test-module.test-class",
+                    parameters = listOf(
+                        OriginalPythonParameter(
+                            name = "self",
+                            assignedBy = PythonParameterAssignment.IMPLICIT
+                        ),
+                        OriginalPythonParameter(
+                            name = "only-param",
+                            assignedBy = PythonParameterAssignment.POSITION_OR_NAME
                         )
                     )
                 )

@@ -135,7 +135,7 @@ internal fun MutablePythonFunction.toSmlFunction(): SmlFunction {
 
     return createSmlFunction(
         name = stubName,
-        isStatic = isStatic(),
+        isStatic = isStaticMethod(),
         annotations = buildList {
             if (isPure) {
                 add(createSmlAnnotationUse("Pure"))

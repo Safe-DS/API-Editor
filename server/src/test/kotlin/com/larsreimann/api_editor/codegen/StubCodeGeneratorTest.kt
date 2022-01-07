@@ -500,6 +500,10 @@ class StubCodeGeneratorTest {
                 name = "testFunction",
                 decorators = mutableListOf("staticmethod")
             )
+            MutablePythonClass(
+                name = "TestClass",
+                methods = listOf(pythonFunction)
+            )
 
             pythonFunction.toSmlFunction().asClue {
                 it.isStatic.shouldBeTrue()
