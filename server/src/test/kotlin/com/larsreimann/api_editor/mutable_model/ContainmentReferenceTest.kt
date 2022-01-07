@@ -10,19 +10,19 @@ import java.util.concurrent.TimeUnit
 
 class ContainmentReferenceTest {
 
-    private class Root(child: TreeNode, someOtherChild: TreeNode) : TreeNode() {
+    private class Root(child: Node, someOtherChild: Node) : Node() {
         val child = ContainmentReference(child)
         val someOtherChild = ContainmentReference(someOtherChild)
     }
 
-    private lateinit var innerNode: TreeNode
-    private lateinit var someOtherInnerNode: TreeNode
+    private lateinit var innerNode: Node
+    private lateinit var someOtherInnerNode: Node
     private lateinit var root: Root
 
     @BeforeEach
     fun resetTestData() {
-        innerNode = TreeNode()
-        someOtherInnerNode = TreeNode()
+        innerNode = Node()
+        someOtherInnerNode = Node()
         root = Root(innerNode, someOtherInnerNode)
     }
 

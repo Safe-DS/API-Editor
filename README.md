@@ -1,4 +1,4 @@
-# <img src="client/public/favicon.svg" alt="logo" width="64"> api-editor
+<img src="img/logo_with_text.svg" alt="logo" height="75">
 
 [![Master](https://github.com/lars-reimann/api-editor/actions/workflows/master.yml/badge.svg?branch=master)](https://github.com/lars-reimann/api-editor/actions/workflows/master.yml)
 

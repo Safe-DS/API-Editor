@@ -37,9 +37,9 @@ interface BoundaryFormProps {
 interface BoundaryFormState {
     interval: {
         isDiscrete: boolean;
-        lowerIntervalLimit: number;
+        lowerIntervalLimit: Optional<number>;
         lowerLimitType: ComparisonOperator;
-        upperIntervalLimit: number;
+        upperIntervalLimit: Optional<number>;
         upperLimitType: ComparisonOperator;
     };
 }
@@ -89,18 +89,20 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
     // Event handlers --------------------------------------------------------------------------------------------------
 
     const handleIsDiscreteChange = (value: string) => {
-        if (value === 'true') {
-            setValue('interval.isDiscrete', true);
-        } else {
-            setValue('interval.isDiscrete', false);
-        }
+        setValue('interval.isDiscrete', value === 'true');
     };
 
     const onSave = (data: BoundaryFormState) => {
         dispatch(
             upsertBoundary({
                 target: targetPath,
-                interval: { ...data.interval },
+                interval: {
+                    isDiscrete: data.interval.isDiscrete,
+                    lowerIntervalLimit: data.interval.lowerIntervalLimit ?? 0,
+                    lowerLimitType: data.interval.lowerLimitType,
+                    upperIntervalLimit: data.interval.upperIntervalLimit ?? 0,
+                    upperLimitType: data.interval.upperLimitType,
+                },
             }),
         );
         dispatch(hideAnnotationForms());
@@ -129,6 +131,9 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
         const upperLimitType = getValues('interval.upperLimitType');
 
         // Already handled by making the fields required
+        if (typeof lowerLimit !== 'number' || typeof upperLimit !== 'number') {
+            return true;
+        }
         if (Number.isNaN(lowerLimit) || Number.isNaN(upperLimit)) {
             return true;
         }
@@ -187,6 +192,8 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
                                 nonEmptyInterval,
                             },
                         })}
+                        min={undefined}
+                        max={undefined}
                         onChange={(_, valueAsNumber) =>
                             setValue(
                                 'interval.lowerIntervalLimit',
@@ -288,6 +295,8 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
                                 nonEmptyInterval,
                             },
                         })}
+                        min={undefined}
+                        max={undefined}
                         onChange={(_, valueAsNumber) =>
                             setValue(
                                 'interval.upperIntervalLimit',
