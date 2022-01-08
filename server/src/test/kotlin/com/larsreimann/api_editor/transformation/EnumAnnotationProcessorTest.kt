@@ -10,12 +10,12 @@ import com.larsreimann.api_editor.mutable_model.MutablePythonModule
 import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
 import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
 import com.larsreimann.api_editor.transformation.processing_exceptions.ConflictingEnumException
+import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 class EnumAnnotationProcessorTest {
     private lateinit var testParameter: MutablePythonParameter
@@ -139,7 +139,7 @@ class EnumAnnotationProcessorTest {
         val mutableEnum = MutablePythonEnum("TestEnum")
         testModule.enums.add(mutableEnum)
 
-        assertThrows<ConflictingEnumException> {
+        shouldThrowExactly<ConflictingEnumException> {
             testPackage.processEnumAnnotations()
         }
     }
@@ -155,7 +155,7 @@ class EnumAnnotationProcessorTest {
         )
         testModule.enums.add(mutableEnum)
 
-        assertThrows<ConflictingEnumException> {
+        shouldThrowExactly<ConflictingEnumException> {
             testPackage.processEnumAnnotations()
         }
     }
