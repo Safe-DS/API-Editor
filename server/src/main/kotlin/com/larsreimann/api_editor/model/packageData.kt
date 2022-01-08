@@ -208,7 +208,8 @@ enum class PythonParameterAssignment {
     POSITION_OR_NAME,
     NAME_ONLY,
     ATTRIBUTE,
-    CONSTANT
+    CONSTANT,
+    GROUP
 }
 
 @Serializable
