@@ -377,7 +377,7 @@ private fun buildParameterCall(
 }
 
 internal fun MutablePythonEnum.toPythonCode() = buildString {
-    appendLine("class ${name}(Enum):")
+    appendLine("class $name(Enum):")
     appendIndented(4) {
         if (instances.isEmpty()) {
             append("pass")
