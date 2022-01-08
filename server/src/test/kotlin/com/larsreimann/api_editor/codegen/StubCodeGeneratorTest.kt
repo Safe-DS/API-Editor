@@ -612,6 +612,10 @@ class StubCodeGeneratorTest {
                         assignedBy = PythonParameterAssignment.POSITION_OR_NAME
                     ),
                     MutablePythonParameter(
+                        name = "enum",
+                        assignedBy = PythonParameterAssignment.ENUM
+                    ),
+                    MutablePythonParameter(
                         name = "nameOnly",
                         assignedBy = PythonParameterAssignment.NAME_ONLY
                     ),
@@ -631,6 +635,7 @@ class StubCodeGeneratorTest {
                 .shouldContainExactly(
                     "positionOnly",
                     "positionOrName",
+                    "enum",
                     "nameOnly"
                 )
         }

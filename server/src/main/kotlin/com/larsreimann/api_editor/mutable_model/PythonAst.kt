@@ -8,8 +8,10 @@ import com.larsreimann.api_editor.model.PythonFromImport
 import com.larsreimann.api_editor.model.PythonImport
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.model.SerializablePythonFunction
+import com.larsreimann.modeling.ModelNode
+import com.larsreimann.modeling.ancestorsOrSelf
 
-sealed class MutablePythonAstNode : Node()
+sealed class MutablePythonAstNode : ModelNode()
 
 sealed class MutablePythonDeclaration : MutablePythonAstNode() {
 

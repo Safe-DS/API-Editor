@@ -7,6 +7,8 @@ import com.larsreimann.api_editor.model.PythonImport
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.mutable_model.MutablePythonClass
 import com.larsreimann.api_editor.mutable_model.MutablePythonConstructor
+import com.larsreimann.api_editor.mutable_model.MutablePythonEnum
+import com.larsreimann.api_editor.mutable_model.MutablePythonEnumInstance
 import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
 import com.larsreimann.api_editor.mutable_model.MutablePythonModule
 import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
@@ -15,6 +17,7 @@ import com.larsreimann.api_editor.mutable_model.OriginalPythonClass
 import com.larsreimann.api_editor.mutable_model.OriginalPythonFunction
 import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
 import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class PythonCodeGeneratorTest {
@@ -1089,5 +1092,100 @@ class PythonCodeGeneratorTest {
            |        test-module.test-class.test-class-function1(only-param)""".trimMargin()
 
         formattedClass shouldBe expectedFormattedClass
+    }
+
+    @Nested
+    inner class ModuleToPythonCode {
+
+        @Test
+        fun `should import Enum if the module contains enums`() {
+            val testModule = MutablePythonModule(
+                name = "testModule",
+                enums = listOf(
+                    MutablePythonEnum(name = "TestEnum")
+                )
+            )
+
+            testModule.toPythonCode() shouldBe """
+                |from enum import Enum
+                |
+                |class TestEnum(Enum):
+                |    pass
+                |
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should not import Enum if the module does not contain enums`() {
+            val testModule = MutablePythonModule(name = "testModule")
+
+            testModule.toPythonCode() shouldBe ""
+        }
+    }
+
+    @Nested
+    inner class FunctionToPythonCode {
+
+        @Test
+        fun `should access value of enum parameters`() {
+            val testFunction = MutablePythonFunction(
+                name = "testFunction",
+                parameters = listOf(
+                    MutablePythonParameter(
+                        name = "testParameter",
+                        assignedBy = PythonParameterAssignment.ENUM,
+                        originalParameter = OriginalPythonParameter(name = "testParameter")
+                    )
+                ),
+                originalFunction = OriginalPythonFunction(
+                    qualifiedName = "testModule.testFunction",
+                    parameters = listOf(
+                        OriginalPythonParameter(name = "testParameter")
+                    )
+                )
+            )
+
+            testFunction.toPythonCode() shouldBe """
+                |def testFunction(testParameter):
+                |    testModule.testFunction(testParameter.value)
+            """.trimMargin()
+        }
+    }
+
+    @Nested
+    inner class EnumToPythonCode {
+
+        @Test
+        fun `should create valid Python code for enums without instances`() {
+            val testEnum = MutablePythonEnum(name = "TestEnum")
+
+            testEnum.toPythonCode() shouldBe """
+                |class TestEnum(Enum):
+                |    pass
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should create valid Python code for enums with instances`() {
+            val testEnum = MutablePythonEnum(
+                name = "TestEnum",
+                instances = listOf(
+                    MutablePythonEnumInstance(
+                        name = "TestEnumInstance1",
+                        value = "inst1"
+                    ),
+                    MutablePythonEnumInstance(
+                        name = "TestEnumInstance2",
+                        value = "inst2"
+                    )
+                )
+            )
+
+            testEnum.toPythonCode() shouldBe """
+                |class TestEnum(Enum):
+                |    TestEnumInstance1 = "inst1",
+                |    TestEnumInstance2 = "inst2"
+            """.trimMargin()
+        }
     }
 }

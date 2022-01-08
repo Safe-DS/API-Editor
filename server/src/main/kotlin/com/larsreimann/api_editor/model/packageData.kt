@@ -209,6 +209,7 @@ enum class PythonParameterAssignment {
     NAME_ONLY,
     ATTRIBUTE,
     CONSTANT,
+    ENUM,
     GROUP
 }
 
