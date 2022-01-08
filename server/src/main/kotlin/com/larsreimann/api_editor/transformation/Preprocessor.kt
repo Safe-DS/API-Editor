@@ -9,7 +9,7 @@ import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
 import com.larsreimann.api_editor.mutable_model.OriginalPythonClass
 import com.larsreimann.api_editor.mutable_model.OriginalPythonFunction
 import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
-import com.larsreimann.api_editor.mutable_model.descendants
+import com.larsreimann.modeling.descendants
 
 /**
  * Removes private declarations.
