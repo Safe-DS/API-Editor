@@ -7,7 +7,7 @@ import com.larsreimann.api_editor.mutable_model.MutablePythonConstructor
 import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
 import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
 import com.larsreimann.api_editor.mutable_model.OriginalPythonFunction
-import com.larsreimann.api_editor.mutable_model.descendants
+import com.larsreimann.modeling.descendants
 
 /**
  * Removes modules that don't contain declarations.

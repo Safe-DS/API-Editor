@@ -3,7 +3,7 @@ package com.larsreimann.api_editor.transformation
 import com.larsreimann.api_editor.model.UnusedAnnotation
 import com.larsreimann.api_editor.mutable_model.MutablePythonDeclaration
 import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
-import com.larsreimann.api_editor.mutable_model.descendants
+import com.larsreimann.modeling.descendants
 
 /**
  * Processes and removes `@unused` annotations.
