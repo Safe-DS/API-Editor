@@ -41,9 +41,6 @@ private fun MutablePythonFunction.processGroupAnnotations(
             assignedBy = PythonParameterAssignment.GROUP,
             groupedParameterNames = groupedParameterNames
         )
-        this.parameters.removeIf { parameter -> parameter.name in it.parameters }
-        this.parameters.add(firstOccurrence, groupedParameter)
-
         val constructorParameters = mutableListOf(
             MutablePythonParameter(
                 name = "self",
@@ -55,6 +52,8 @@ private fun MutablePythonFunction.processGroupAnnotations(
                 parameter.name in it.parameters
             }
         )
+        this.parameters.removeIf { parameter -> parameter.name in it.parameters }
+        this.parameters.add(firstOccurrence, groupedParameter)
         val groupedParameterClass = MutablePythonClass(
             name = it.groupName.replaceFirstChar { firstChar -> firstChar.uppercase() },
             constructor = MutablePythonConstructor(
@@ -82,7 +81,8 @@ private fun hasConflictingGroups(
 ): Boolean {
     return moduleClasses.any {
         (groupToCheck.name == it.name) &&
-            (groupToCheck.constructor != it.constructor)
+            (groupToCheck.constructor?.parameters?.toList().toString()
+                != it.constructor?.parameters?.toList().toString())
     }
 }
 
