@@ -60,8 +60,10 @@ private fun hasConflictingEnums(
 ): Boolean {
     return moduleEnums.any {
         (enumToCheck.name == it.name) &&
-            (enumToCheck.instances.size != it.instances.size ||
-                !enumToCheck.instances.containsAll(it.instances))
+            (
+                enumToCheck.instances.size != it.instances.size ||
+                    !enumToCheck.instances.containsAll(it.instances)
+                )
     }
 }
 
