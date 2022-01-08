@@ -45,7 +45,6 @@ private fun MutablePythonParameter.processEnumAnnotations(module: MutablePythonM
             this.typeInDocs = it.enumName
             this.assignedBy = PythonParameterAssignment.ENUM
             this.annotations.remove(it)
-
         }
 }
 
