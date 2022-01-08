@@ -39,9 +39,15 @@ private fun MutablePythonParameter.processEnumAnnotations(module: MutablePythonM
                 }
             )
             if (hasConflictingEnums(module.enums, enumToAdd)) {
-                throw ConflictingEnumException(enumToAdd.name, module.name, this.qualifiedName())
+                throw ConflictingEnumException(
+                    enumToAdd.name,
+                    module.name,
+                    this.qualifiedName()
+                )
             }
-            module.enums.add(enumToAdd)
+            if (!isAlreadyDefinedInModule(module.enums, enumToAdd)) {
+                module.enums.add(enumToAdd)
+            }
             this.typeInDocs = it.enumName
             this.assignedBy = PythonParameterAssignment.ENUM
             this.annotations.remove(it)
@@ -52,15 +58,18 @@ private fun hasConflictingEnums(
     moduleEnums: List<MutablePythonEnum>,
     enumToCheck: MutablePythonEnum
 ): Boolean {
-    moduleEnums.forEach {
-        if (enumToCheck.name == it.name) {
-            if (
-                enumToCheck.instances.size != it.instances.size ||
-                !enumToCheck.instances.containsAll(it.instances)
-            ) {
-                return true
-            }
-        }
+    return moduleEnums.any {
+        (enumToCheck.name == it.name) &&
+            (enumToCheck.instances.size != it.instances.size ||
+                !enumToCheck.instances.containsAll(it.instances))
     }
-    return false
+}
+
+private fun isAlreadyDefinedInModule(
+    moduleEnums: List<MutablePythonEnum>,
+    enumToCheck: MutablePythonEnum
+): Boolean {
+    return moduleEnums.any {
+        (enumToCheck.name == it.name)
+    }
 }

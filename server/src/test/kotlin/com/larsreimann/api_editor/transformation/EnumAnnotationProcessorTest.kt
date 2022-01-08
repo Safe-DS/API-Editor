@@ -111,6 +111,21 @@ class EnumAnnotationProcessorTest {
     }
 
     @Test
+    fun `should not add duplicate enums on module level`() {
+        val mutableEnum = MutablePythonEnum(
+            "TestEnum",
+            mutableListOf(
+                MutablePythonEnumInstance("name1", "value1"),
+                MutablePythonEnumInstance("name2", "value2")
+            )
+        )
+        testModule.enums.add(mutableEnum)
+        testPackage.processEnumAnnotations()
+
+        testModule.enums.size shouldBe 1
+    }
+
+    @Test
     fun `should remove EnumAnnotations`() {
         testPackage.processEnumAnnotations()
 
