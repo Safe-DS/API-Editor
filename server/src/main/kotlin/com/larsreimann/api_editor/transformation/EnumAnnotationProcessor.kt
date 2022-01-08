@@ -39,7 +39,7 @@ private fun MutablePythonParameter.processEnumAnnotations(module: MutablePythonM
                 }
             )
             if (hasConflictingEnums(module.enums, enumToAdd)) {
-                throw ConflictingEnumException(enumToAdd.name, module.name)
+                throw ConflictingEnumException(enumToAdd.name, module.name, this.qualifiedName())
             }
             module.enums.add(enumToAdd)
             this.typeInDocs = it.enumName
