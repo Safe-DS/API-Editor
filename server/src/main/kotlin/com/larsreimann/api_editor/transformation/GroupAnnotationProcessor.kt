@@ -81,8 +81,10 @@ private fun hasConflictingGroups(
 ): Boolean {
     return moduleClasses.any {
         (groupToCheck.name == it.name) &&
-            (groupToCheck.constructor?.parameters?.toList().toString()
-                != it.constructor?.parameters?.toList().toString())
+            (
+                groupToCheck.constructor?.parameters?.toList().toString()
+                    != it.constructor?.parameters?.toList().toString()
+                )
     }
 }
 
