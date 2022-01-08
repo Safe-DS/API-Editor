@@ -7,8 +7,8 @@ import com.larsreimann.api_editor.mutable_model.MutablePythonEnumInstance
 import com.larsreimann.api_editor.mutable_model.MutablePythonModule
 import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
 import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
-import com.larsreimann.api_editor.mutable_model.descendants
 import com.larsreimann.api_editor.transformation.processing_exceptions.ConflictingEnumException
+import com.larsreimann.modeling.descendants
 
 /**
  * Processes and removes `@enum` annotations.
