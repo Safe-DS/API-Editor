@@ -8,8 +8,8 @@ import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
 import com.larsreimann.api_editor.mutable_model.MutablePythonModule
 import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
 import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
-import com.larsreimann.api_editor.mutable_model.descendants
 import com.larsreimann.api_editor.transformation.processing_exceptions.ConflictingGroupException
+import com.larsreimann.modeling.descendants
 
 /**
  * Processes and removes `@group` annotations.
