@@ -7,7 +7,7 @@ import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.model.RequiredAnnotation
 import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
 import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
-import com.larsreimann.api_editor.mutable_model.descendants
+import com.larsreimann.modeling.descendants
 
 /**
  * Processes and removes `@attribute`, `@constant`, `@optional`, and `@required` annotations.
