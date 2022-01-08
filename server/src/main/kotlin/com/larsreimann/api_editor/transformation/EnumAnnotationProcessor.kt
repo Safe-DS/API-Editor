@@ -33,7 +33,7 @@ private fun MutablePythonParameter.processEnumAnnotations(module: MutablePythonM
                 val enumToAdd = MutablePythonEnum(
                     it.enumName,
                     it.pairs.map {
-                            enumPair ->
+                        enumPair ->
                         MutablePythonEnumInstance(
                             enumPair.instanceName,
                             enumPair.stringValue
@@ -47,8 +47,7 @@ private fun MutablePythonParameter.processEnumAnnotations(module: MutablePythonM
                 this.typeInDocs = it.enumName
                 this.assignedBy = PythonParameterAssignment.ENUM
                 this.annotations.remove(it)
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
