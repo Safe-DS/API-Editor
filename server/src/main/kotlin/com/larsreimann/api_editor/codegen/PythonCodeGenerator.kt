@@ -2,8 +2,14 @@ package com.larsreimann.api_editor.codegen
 
 import com.larsreimann.api_editor.model.ComparisonOperator
 import com.larsreimann.api_editor.model.PythonParameterAssignment
+import com.larsreimann.api_editor.model.PythonParameterAssignment.ATTRIBUTE
+import com.larsreimann.api_editor.model.PythonParameterAssignment.CONSTANT
+import com.larsreimann.api_editor.model.PythonParameterAssignment.ENUM
+import com.larsreimann.api_editor.model.PythonParameterAssignment.IMPLICIT
+import com.larsreimann.api_editor.model.PythonParameterAssignment.NAME_ONLY
 import com.larsreimann.api_editor.mutable_model.MutablePythonClass
 import com.larsreimann.api_editor.mutable_model.MutablePythonConstructor
+import com.larsreimann.api_editor.mutable_model.MutablePythonEnum
 import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
 import com.larsreimann.api_editor.mutable_model.MutablePythonModule
 import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
@@ -16,16 +22,21 @@ import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
  */
 fun MutablePythonModule.toPythonCode(): String {
     var formattedImport = buildNamespace(this)
+    var formattedEnums = enums.joinToString("\n") { it.toPythonCode() }
     var formattedClasses = buildAllClasses(this)
     var formattedFunctions = buildAllFunctions(this)
     val separators = buildSeparators(
         formattedImport, formattedClasses, formattedFunctions
     )
     formattedImport += separators[0]
+    if (formattedEnums.isNotBlank()) {
+        formattedEnums += "\n"
+    }
     formattedClasses += separators[1]
     formattedFunctions += separators[2]
     return (
         formattedImport +
+            formattedEnums +
             formattedClasses +
             formattedFunctions
         )
@@ -43,9 +54,11 @@ private fun buildNamespace(pythonModule: MutablePythonModule): String {
             buildParentDeclarationName(pythonClass.originalClass!!.qualifiedName)
         )
     }
-    val imports: MutableList<String> = ArrayList()
-    importedModules.forEach { moduleName: String -> imports.add("import $moduleName") }
-    return imports.joinToString("\n".repeat(1))
+    var result = importedModules.joinToString("\n") { "import $it" }
+    if (pythonModule.enums.isNotEmpty()) {
+        result = "from enum import Enum\n$result"
+    }
+    return result
 }
 
 private fun buildParentDeclarationName(qualifiedName: String): String {
@@ -164,10 +177,11 @@ private fun buildParameters(parameters: List<MutablePythonParameter>): String {
     val nameOnlyParameters: MutableList<String> = ArrayList()
     parameters.forEach { pythonParameter: MutablePythonParameter ->
         when (pythonParameter.assignedBy) {
-            PythonParameterAssignment.IMPLICIT -> implicitParameters.add(pythonParameter.toPythonCode())
+            IMPLICIT -> implicitParameters.add(pythonParameter.toPythonCode())
             PythonParameterAssignment.POSITION_ONLY -> positionOnlyParameters.add(pythonParameter.toPythonCode())
             PythonParameterAssignment.POSITION_OR_NAME -> positionOrNameParameters.add(pythonParameter.toPythonCode())
-            PythonParameterAssignment.NAME_ONLY -> nameOnlyParameters.add(pythonParameter.toPythonCode())
+            ENUM -> positionOrNameParameters.add(pythonParameter.toPythonCode())
+            NAME_ONLY -> nameOnlyParameters.add(pythonParameter.toPythonCode())
             else -> {}
         }
     }
@@ -344,21 +358,43 @@ private fun buildParameterCall(
     val originalNameToValueMap: MutableMap<String, String?> = HashMap()
     parameters.forEach {
         val value: String? =
-            if (it.assignedBy == PythonParameterAssignment.CONSTANT || it.assignedBy == PythonParameterAssignment.ATTRIBUTE) {
-                it.defaultValue
-            } else {
-                it.name
+            when (it.assignedBy) {
+                CONSTANT, ATTRIBUTE -> it.defaultValue
+                ENUM -> "${it.name}.value"
+                else -> it.name
             }
         originalNameToValueMap[it.originalParameter!!.name] = value
     }
     originalParameters
-        .filter { it.assignedBy != PythonParameterAssignment.IMPLICIT }
+        .filter { it.assignedBy != IMPLICIT }
         .forEach {
-            if (it.assignedBy === PythonParameterAssignment.NAME_ONLY) {
-                formattedParameters.add(it.name + "=" + originalNameToValueMap[it.name])
-            } else {
-                formattedParameters.add(originalNameToValueMap[it.name])
+            when (it.assignedBy) {
+                NAME_ONLY -> formattedParameters.add(it.name + "=" + originalNameToValueMap[it.name])
+                else -> formattedParameters.add(originalNameToValueMap[it.name])
             }
         }
     return formattedParameters.joinToString()
+}
+
+internal fun MutablePythonEnum.toPythonCode() = buildString {
+    appendLine("class $name(Enum):")
+    appendIndented(4) {
+        if (instances.isEmpty()) {
+            append("pass")
+        } else {
+            instances.forEach {
+                append("${it.name} = \"${it.value}\"")
+                if (it != instances.last()) {
+                    appendLine(",")
+                }
+            }
+        }
+    }
+}
+
+private fun StringBuilder.appendIndented(numberOfSpaces: Int, init: StringBuilder.() -> Unit): StringBuilder {
+    val stringToIndent = StringBuilder().apply(init).toString()
+    val indent = " ".repeat(numberOfSpaces)
+    append(stringToIndent.prependIndent(indent))
+    return this
 }
