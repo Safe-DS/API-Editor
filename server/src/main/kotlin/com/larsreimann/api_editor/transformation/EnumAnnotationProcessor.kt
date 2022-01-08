@@ -29,28 +29,23 @@ private fun MutablePythonParameter.processEnumAnnotations(module: MutablePythonM
     this.annotations
         .filterIsInstance<EnumAnnotation>()
         .forEach {
-            try {
-                val enumToAdd = MutablePythonEnum(
-                    it.enumName,
-                    it.pairs.map {
-                            enumPair ->
-                        MutablePythonEnumInstance(
-                            enumPair.instanceName,
-                            enumPair.stringValue
-                        )
-                    }
-                )
-                if (hasConflictingEnums(module.enums, enumToAdd)) {
-                    throw ConflictingEnumException(enumToAdd.name, module.name)
+            val enumToAdd = MutablePythonEnum(
+                it.enumName,
+                it.pairs.map { enumPair ->
+                    MutablePythonEnumInstance(
+                        enumPair.instanceName,
+                        enumPair.stringValue
+                    )
                 }
-                module.enums.add(enumToAdd)
-                this.typeInDocs = it.enumName
-                this.assignedBy = PythonParameterAssignment.ENUM
-                this.annotations.remove(it)
+            )
+            if (hasConflictingEnums(module.enums, enumToAdd)) {
+                throw ConflictingEnumException(enumToAdd.name, module.name)
             }
-            catch (e: Exception) {
-                e.printStackTrace()
-            }
+            module.enums.add(enumToAdd)
+            this.typeInDocs = it.enumName
+            this.assignedBy = PythonParameterAssignment.ENUM
+            this.annotations.remove(it)
+
         }
 }
 
