@@ -49,7 +49,6 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
-import org.junit.jupiter.params.provider.EnumSource
 
 class StubCodeGeneratorTest {
 
@@ -321,14 +320,6 @@ class StubCodeGeneratorTest {
                         PythonParameter(
                             name = "nameOnly",
                             assignedBy = PythonParameterAssignment.NAME_ONLY
-                        ),
-                        PythonParameter(
-                            name = "attribute",
-                            assignedBy = PythonParameterAssignment.ATTRIBUTE
-                        ),
-                        PythonParameter(
-                            name = "constant",
-                            assignedBy = PythonParameterAssignment.CONSTANT
                         )
                     )
                 )
@@ -612,24 +603,8 @@ class StubCodeGeneratorTest {
                         assignedBy = PythonParameterAssignment.POSITION_OR_NAME
                     ),
                     PythonParameter(
-                        name = "enum",
-                        assignedBy = PythonParameterAssignment.ENUM
-                    ),
-                    PythonParameter(
-                        name = "group",
-                        assignedBy = PythonParameterAssignment.GROUP
-                    ),
-                    PythonParameter(
                         name = "nameOnly",
                         assignedBy = PythonParameterAssignment.NAME_ONLY
-                    ),
-                    PythonParameter(
-                        name = "attribute",
-                        assignedBy = PythonParameterAssignment.ATTRIBUTE
-                    ),
-                    PythonParameter(
-                        name = "constant",
-                        assignedBy = PythonParameterAssignment.CONSTANT
                     )
                 )
             )
@@ -639,8 +614,6 @@ class StubCodeGeneratorTest {
                 .shouldContainExactly(
                     "positionOnly",
                     "positionOrName",
-                    "enum",
-                    "group",
                     "nameOnly"
                 )
         }
@@ -665,12 +638,11 @@ class StubCodeGeneratorTest {
     @Nested
     inner class ToSmlParameter {
 
-        @ParameterizedTest
-        @EnumSource(PythonParameterAssignment::class, names = ["IMPLICIT", "ATTRIBUTE", "CONSTANT"])
-        fun `should return null for invisible parameters`(assignedBy: PythonParameterAssignment) {
+        @Test
+        fun `should return null for implicit parameters`() {
             val pythonParameter = PythonParameter(
                 name = "testParameter",
-                assignedBy = assignedBy
+                assignedBy = PythonParameterAssignment.IMPLICIT
             )
 
             pythonParameter.toSmlParameterOrNull().shouldBeNull()

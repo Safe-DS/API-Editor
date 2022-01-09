@@ -1,10 +1,6 @@
 package com.larsreimann.api_editor.codegen
 
-import com.larsreimann.api_editor.model.PythonParameterAssignment.ENUM
-import com.larsreimann.api_editor.model.PythonParameterAssignment.GROUP
-import com.larsreimann.api_editor.model.PythonParameterAssignment.NAME_ONLY
-import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITION_ONLY
-import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITION_OR_NAME
+import com.larsreimann.api_editor.model.PythonParameterAssignment.IMPLICIT
 import com.larsreimann.api_editor.mutable_model.PythonAttribute
 import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonEnum
@@ -169,7 +165,7 @@ private fun createSmlPythonNameAnnotationUse(name: String): SmlAnnotationUse {
 }
 
 internal fun PythonParameter.toSmlParameterOrNull(): SmlParameter? {
-    if (assignedBy !in setOf(POSITION_ONLY, POSITION_OR_NAME, ENUM, GROUP, NAME_ONLY)) {
+    if (assignedBy == IMPLICIT) {
         return null
     }
 

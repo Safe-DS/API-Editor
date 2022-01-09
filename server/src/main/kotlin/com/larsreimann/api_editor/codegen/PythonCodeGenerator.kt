@@ -1,8 +1,6 @@
 package com.larsreimann.api_editor.codegen
 
 import com.larsreimann.api_editor.model.ComparisonOperator
-import com.larsreimann.api_editor.model.PythonParameterAssignment.ENUM
-import com.larsreimann.api_editor.model.PythonParameterAssignment.GROUP
 import com.larsreimann.api_editor.model.PythonParameterAssignment.IMPLICIT
 import com.larsreimann.api_editor.model.PythonParameterAssignment.NAME_ONLY
 import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITION_ONLY
@@ -191,10 +189,7 @@ private fun buildParameters(parameters: List<PythonParameter>): String {
             IMPLICIT -> implicitParameters.add(pythonParameter.toPythonCode())
             POSITION_ONLY -> positionOnlyParameters.add(pythonParameter.toPythonCode())
             POSITION_OR_NAME -> positionOrNameParameters.add(pythonParameter.toPythonCode())
-            ENUM -> positionOrNameParameters.add(pythonParameter.toPythonCode())
-            GROUP -> positionOrNameParameters.add(pythonParameter.toPythonCode())
             NAME_ONLY -> nameOnlyParameters.add(pythonParameter.toPythonCode())
-            else -> {}
         }
     }
     assert(implicitParameters.size < 2)

@@ -50,10 +50,6 @@ class PostprocessorTest {
                     PythonParameter(
                         name = "positionOrName",
                         assignedBy = PythonParameterAssignment.POSITION_OR_NAME
-                    ),
-                    PythonParameter(
-                        name = "constant",
-                        assignedBy = PythonParameterAssignment.CONSTANT
                     )
                 )
             ),
@@ -126,18 +122,8 @@ class PostprocessorTest {
                 name = "nameOnly",
                 assignedBy = PythonParameterAssignment.NAME_ONLY
             )
-            val attribute = PythonParameter(
-                name = "attribute",
-                assignedBy = PythonParameterAssignment.ATTRIBUTE
-            )
-            val constant = PythonParameter(
-                name = "constant",
-                assignedBy = PythonParameterAssignment.CONSTANT
-            )
 
             testFunction.parameters += listOf(
-                constant,
-                attribute,
                 nameOnly,
                 positionOrName,
                 positionOnly,
@@ -151,9 +137,7 @@ class PostprocessorTest {
                     implicit,
                     positionOnly,
                     positionOrName,
-                    nameOnly,
-                    attribute,
-                    constant
+                    nameOnly
                 )
             )
         }

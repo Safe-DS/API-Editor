@@ -2,7 +2,6 @@ package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.EnumAnnotation
 import com.larsreimann.api_editor.model.EnumPair
-import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.mutable_model.PythonArgument
 import com.larsreimann.api_editor.mutable_model.PythonCall
 import com.larsreimann.api_editor.mutable_model.PythonDeclaration

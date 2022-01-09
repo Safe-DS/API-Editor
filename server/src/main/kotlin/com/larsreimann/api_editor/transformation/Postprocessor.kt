@@ -37,8 +37,6 @@ private fun PythonFunction.reorderParameters() {
     this.parameters.addAll(groups[PythonParameterAssignment.POSITION_ONLY].orEmpty())
     this.parameters.addAll(groups[PythonParameterAssignment.POSITION_OR_NAME].orEmpty())
     this.parameters.addAll(groups[PythonParameterAssignment.NAME_ONLY].orEmpty())
-    this.parameters.addAll(groups[PythonParameterAssignment.ATTRIBUTE].orEmpty())
-    this.parameters.addAll(groups[PythonParameterAssignment.CONSTANT].orEmpty())
 }
 
 /**
@@ -85,7 +83,7 @@ fun PythonPackage.createAttributesForParametersOfConstructor() {
 private fun PythonClass.createAttributesForParametersOfConstructor() {
     this.constructor
         ?.parameters
-        ?.filter { it.assignedBy !in setOf(PythonParameterAssignment.IMPLICIT, PythonParameterAssignment.CONSTANT) }
+        ?.filter { it.assignedBy != PythonParameterAssignment.IMPLICIT }
         ?.forEach {
             this.attributes += PythonAttribute(
                 name = it.name,
