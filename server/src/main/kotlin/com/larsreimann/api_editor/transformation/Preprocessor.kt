@@ -74,14 +74,14 @@ private fun PythonFunction.addOriginalDeclarations() {
         arguments = this.parameters
             .filter { !it.isImplicit() }
             .map {
-            PythonArgument(
-                name = when (it.assignedBy) {
-                    PythonParameterAssignment.NAME_ONLY -> it.name
-                    else -> null
-                },
-                value = PythonReference(it)
-            )
-        }
+                PythonArgument(
+                    name = when (it.assignedBy) {
+                        PythonParameterAssignment.NAME_ONLY -> it.name
+                        else -> null
+                    },
+                    value = PythonReference(it)
+                )
+            }
     )
 }
 

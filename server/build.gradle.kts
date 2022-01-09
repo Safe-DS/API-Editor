@@ -26,7 +26,6 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = javaVersion
 }
 
-
 // Dependencies --------------------------------------------------------------------------------------------------------
 
 val ktorVersion = "1.6.7"
