@@ -6,8 +6,6 @@ import com.larsreimann.api_editor.model.PythonFromImport
 import com.larsreimann.api_editor.model.PythonImport
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.mutable_model.OriginalPythonClass
-import com.larsreimann.api_editor.mutable_model.OriginalPythonFunction
-import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonArgument
 import com.larsreimann.api_editor.mutable_model.PythonAttribute
 import com.larsreimann.api_editor.mutable_model.PythonCall
@@ -247,7 +245,7 @@ class PythonCodeGeneratorTest {
         val testClass = PythonClass(
             name = "test-class",
             constructor = PythonConstructor(
-                callToOriginalAPI = OriginalPythonFunction(qualifiedName = "test-class")
+                callToOriginalAPI = PythonCall(receiver = "test-module.test-class")
             ),
             originalClass = OriginalPythonClass("test-module.test-class")
         )
@@ -279,7 +277,7 @@ class PythonCodeGeneratorTest {
             |
             |class test-class:
             |    def __init__():
-            |        self.instance = test-class()
+            |        self.instance = test-module.test-class()
             |
             """.trimMargin()
 
@@ -463,8 +461,8 @@ class PythonCodeGeneratorTest {
         val testClass = PythonClass(
             name = "TestClass",
             constructor = PythonConstructor(
-                callToOriginalAPI = OriginalPythonFunction(
-                    qualifiedName = "TestClass"
+                callToOriginalAPI = PythonCall(
+                    receiver = "testModule.TestClass"
                 )
             )
         )
@@ -472,45 +470,33 @@ class PythonCodeGeneratorTest {
         testClass.toPythonCode() shouldBe """
             |class TestClass:
             |    def __init__():
-            |        self.instance = TestClass()
+            |        self.instance = testModule.TestClass()
         """.trimMargin()
     }
 
     @Test
     fun buildClassReturnsFormattedClassWithOneFunction() { // TODO
         // given
+        val testParameter = PythonParameter(
+            name = "only-param",
+            defaultValue = "'defaultValue'",
+            assignedBy = PythonParameterAssignment.NAME_ONLY
+        )
         val testClass = PythonClass(
             name = "test-class",
             constructor = PythonConstructor(
                 parameters = mutableListOf(
                     PythonParameter(
                         name = "self",
-                        assignedBy = PythonParameterAssignment.IMPLICIT,
-                        originalParameter = OriginalPythonParameter(
-                            name = "self",
-                            assignedBy = PythonParameterAssignment.IMPLICIT
-                        )
+                        assignedBy = PythonParameterAssignment.IMPLICIT
                     ),
-                    PythonParameter(
-                        name = "only-param",
-                        defaultValue = "'defaultValue'",
-                        assignedBy = PythonParameterAssignment.NAME_ONLY,
-                        originalParameter = OriginalPythonParameter(
-                            name = "only-param",
-                            assignedBy = PythonParameterAssignment.POSITION_OR_NAME
-                        )
-                    )
+                    testParameter
                 ),
-                callToOriginalAPI = OriginalPythonFunction(
-                    qualifiedName = "test-module.test-class",
-                    parameters = listOf(
-                        OriginalPythonParameter(
-                            name = "self",
-                            assignedBy = PythonParameterAssignment.IMPLICIT
-                        ),
-                        OriginalPythonParameter(
-                            name = "only-param",
-                            assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+                callToOriginalAPI = PythonCall(
+                    receiver = "test-module.test-class",
+                    arguments = listOf(
+                        PythonArgument(
+                            value = PythonReference(testParameter)
                         )
                     )
                 )
@@ -537,12 +523,10 @@ class PythonCodeGeneratorTest {
         val testMethod1Parameter = PythonParameter(
             name = "only-param",
             assignedBy = PythonParameterAssignment.POSITION_OR_NAME,
-            originalParameter = OriginalPythonParameter(name = "only-param")
         )
         val testMethod2Parameter = PythonParameter(
             name = "only-param",
             assignedBy = PythonParameterAssignment.POSITION_OR_NAME,
-            originalParameter = OriginalPythonParameter(name = "only-param")
         )
         val testClass = PythonClass(
             name = "test-class",
@@ -568,11 +552,7 @@ class PythonCodeGeneratorTest {
                     parameters = mutableListOf(
                         PythonParameter(
                             name = "self",
-                            assignedBy = PythonParameterAssignment.IMPLICIT,
-                            originalParameter = OriginalPythonParameter(
-                                name = "self",
-                                assignedBy = PythonParameterAssignment.IMPLICIT
-                            )
+                            assignedBy = PythonParameterAssignment.IMPLICIT
                         ),
                         testMethod2Parameter
                     ),

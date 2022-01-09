@@ -43,6 +43,6 @@ private fun PythonPackage.processAnnotations() {
 private fun PythonPackage.postprocess() {
     removeEmptyModules()
     reorderParameters()
-    createConstructors()
+    extractConstructors()
     createAttributesForParametersOfConstructor()
 }

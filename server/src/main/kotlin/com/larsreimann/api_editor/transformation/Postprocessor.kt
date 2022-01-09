@@ -2,11 +2,11 @@ package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.mutable_model.PythonAttribute
+import com.larsreimann.api_editor.mutable_model.PythonCall
 import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonConstructor
 import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonPackage
-import com.larsreimann.api_editor.mutable_model.OriginalPythonFunction
 import com.larsreimann.modeling.descendants
 
 /**
@@ -44,7 +44,7 @@ private fun PythonFunction.reorderParameters() {
 /**
  * Converts `__init__` methods to constructors or adds a constructor without parameters if none exists.
  */
-fun PythonPackage.createConstructors() {
+fun PythonPackage.extractConstructors() {
     this.descendants { it is PythonFunction }
         .toList()
         .filterIsInstance<PythonClass>()
@@ -53,29 +53,19 @@ fun PythonPackage.createConstructors() {
 
 private fun PythonClass.createConstructor() {
     when (val constructorMethod = this.methods.firstOrNull { it.name == "__init__" }) {
+        // TODO: we must call the original class not the new one -> create constructor function in the preprocessor
         null -> {
             this.constructor = PythonConstructor(
                 parameters = emptyList(),
-                callToOriginalAPI = OriginalPythonFunction(
-                    qualifiedName = this.qualifiedName()
-                )
+                callToOriginalAPI = PythonCall(receiver = this.qualifiedName())
             )
         }
         else -> {
-            val qualifiedName = constructorMethod.originalFunction
-                ?.qualifiedName
-                ?.removeSuffix(".__init__")
-                ?: qualifiedName()
-
-            val parameters = constructorMethod.originalFunction
-                ?.parameters
-                ?: emptyList()
-
             this.constructor = PythonConstructor(
                 parameters = constructorMethod.parameters.toList(),
-                callToOriginalAPI = OriginalPythonFunction(
-                    qualifiedName = qualifiedName,
-                    parameters = parameters
+                callToOriginalAPI = PythonCall(
+                    receiver = constructorMethod.callToOriginalAPI!!.receiver.removeSuffix(".__init__"),
+                    arguments = constructorMethod.callToOriginalAPI!!.arguments.toList()
                 )
             )
 

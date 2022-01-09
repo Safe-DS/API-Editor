@@ -37,12 +37,6 @@ private fun PythonFunction.processGroupAnnotations(module: PythonModule) {
             val groupedParameter = PythonParameter(
                 name = annotation.groupName.replaceFirstChar { it.lowercase() },
                 typeInDocs = annotation.groupName.replaceFirstChar { it.uppercase() },
-                assignedBy = PythonParameterAssignment.GROUP,
-                groupedParametersOldToNewName = buildMap {
-                    parameters
-                        .filter { it.originalParameter!!.name in annotation.parameters }
-                        .forEach { this[it.originalParameter!!.name] = it.name }
-                }.toMutableMap()
             )
             val constructorParameters = mutableListOf(
                 PythonParameter(

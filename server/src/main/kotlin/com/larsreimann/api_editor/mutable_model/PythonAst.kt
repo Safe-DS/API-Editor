@@ -97,7 +97,7 @@ class PythonClass(
 
 class PythonConstructor(
     parameters: List<PythonParameter> = emptyList(),
-    val callToOriginalAPI: OriginalPythonFunction? = null
+    val callToOriginalAPI: PythonCall? = null
 ) : PythonAstNode() {
 
     val parameters = MutableContainmentList(parameters)
@@ -137,7 +137,6 @@ class PythonFunction(
     var isPure: Boolean = false,
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
     val calledAfter: MutableList<SerializablePythonFunction> = mutableListOf(),
-    var originalFunction: OriginalPythonFunction? = null,
     var callToOriginalAPI: PythonCall? = null
 ) : PythonDeclaration() {
 
@@ -152,11 +151,6 @@ class PythonFunction(
     fun isMethod() = parent is PythonClass
     fun isStaticMethod() = isMethod() && "staticmethod" in decorators
 }
-
-data class OriginalPythonFunction(
-    val qualifiedName: String,
-    val parameters: List<OriginalPythonParameter> = emptyList()
-)
 
 data class PythonAttribute(
     override var name: String,
@@ -175,20 +169,13 @@ data class PythonParameter(
     var typeInDocs: String = "",
     var description: String = "",
     var boundary: Boundary? = null,
-    var groupedParametersOldToNewName: MutableMap<String, String> = mutableMapOf(),
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
-    var originalParameter: OriginalPythonParameter? = null
 ) : PythonDeclaration() {
 
     fun isRequired() = defaultValue == null
 
     fun isOptional() = defaultValue != null
 }
-
-data class OriginalPythonParameter(
-    val name: String,
-    val assignedBy: PythonParameterAssignment = PythonParameterAssignment.POSITION_OR_NAME
-)
 
 data class PythonResult(
     override var name: String,
@@ -206,7 +193,7 @@ data class PythonResult(
 sealed class PythonExpression : PythonAstNode()
 
 class PythonCall(val receiver: String, arguments: List<PythonArgument> = emptyList()) : PythonExpression() {
-    val arguments = ContainmentList(arguments)
+    val arguments = MutableContainmentList(arguments)
 
     override fun children() = sequence {
         yieldAll(arguments)

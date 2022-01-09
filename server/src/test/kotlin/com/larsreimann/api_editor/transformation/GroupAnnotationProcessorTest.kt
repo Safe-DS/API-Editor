@@ -2,7 +2,6 @@ package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.GroupAnnotation
 import com.larsreimann.api_editor.model.PythonParameterAssignment
-import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonArgument
 import com.larsreimann.api_editor.mutable_model.PythonCall
 import com.larsreimann.api_editor.mutable_model.PythonClass
@@ -36,18 +35,9 @@ class GroupAnnotationProcessorTest {
 
     @BeforeEach
     fun reset() {
-        testParameter1 = PythonParameter(
-            name = "testParameter1",
-            originalParameter = OriginalPythonParameter(name = "testParameter1")
-        )
-        testParameter2 = PythonParameter(
-            name = "testParameter2",
-            originalParameter = OriginalPythonParameter(name = "testParameter2")
-        )
-        testParameter3 = PythonParameter(
-            name = "testParameter3",
-            originalParameter = OriginalPythonParameter(name = "testParameter3")
-        )
+        testParameter1 = PythonParameter(name = "testParameter1")
+        testParameter2 = PythonParameter(name = "testParameter2")
+        testParameter3 = PythonParameter(name = "testParameter3")
         testFunction = PythonFunction(
             name = "testFunction",
             parameters = mutableListOf(
@@ -130,12 +120,7 @@ class GroupAnnotationProcessorTest {
         parameters[0] shouldBe testParameter1
         parameters[1] shouldBe parameters[1].copy(
             name = "testGroup",
-            assignedBy = PythonParameterAssignment.GROUP,
-            typeInDocs = "TestGroup",
-            groupedParametersOldToNewName = mutableMapOf(
-                "testParameter2" to "testParameter2",
-                "testParameter3" to "testParameter3"
-            )
+            typeInDocs = "TestGroup"
         )
     }
 
@@ -176,12 +161,7 @@ class GroupAnnotationProcessorTest {
         parameters[0] shouldBe testParameter1
         parameters[1] shouldBe parameters[1].copy(
             name = "testGroup",
-            assignedBy = PythonParameterAssignment.GROUP,
-            typeInDocs = "TestGroup",
-            groupedParametersOldToNewName = mutableMapOf(
-                "testParameter2" to "testParameter2",
-                "testParameter3" to "testParameter3"
-            )
+            typeInDocs = "TestGroup"
         )
     }
 

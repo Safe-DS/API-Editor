@@ -1,30 +1,35 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.PythonParameterAssignment
+import com.larsreimann.api_editor.mutable_model.PythonArgument
+import com.larsreimann.api_editor.mutable_model.PythonCall
 import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonConstructor
 import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonModule
 import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.api_editor.mutable_model.PythonParameter
-import com.larsreimann.api_editor.mutable_model.OriginalPythonFunction
-import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonReference
 import io.kotest.assertions.asClue
 import io.kotest.matchers.collections.exist
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldExist
+import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.collections.shouldNotContain
+import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNot
+import io.kotest.matchers.types.shouldBeInstanceOf
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class PostprocessorTest {
     private lateinit var testFunction: PythonFunction
+    private lateinit var testConstructorParameter: PythonParameter
     private lateinit var testClass: PythonClass
     private lateinit var testModule: PythonModule
     private lateinit var testPackage: PythonPackage
@@ -32,6 +37,7 @@ class PostprocessorTest {
     @BeforeEach
     fun reset() {
         testFunction = PythonFunction(name = "testFunction")
+        testConstructorParameter = PythonParameter(name = "constructorParameter")
         testClass = PythonClass(
             name = "TestClass",
             constructor = PythonConstructor(
@@ -53,16 +59,11 @@ class PostprocessorTest {
             methods = listOf(
                 PythonFunction(
                     name = "__init__",
-                    parameters = listOf(
-                        PythonParameter(
-                            name = "constructorParameter",
-                            originalParameter = OriginalPythonParameter(name = "constructorParameter")
-                        )
-                    ),
-                    originalFunction = OriginalPythonFunction(
-                        qualifiedName = "testModule.TestClass.__init__",
-                        parameters = listOf(
-                            OriginalPythonParameter(name = "constructorParameter")
+                    parameters = listOf(testConstructorParameter),
+                    callToOriginalAPI = PythonCall(
+                        receiver = "testModule.TestClass.__init__",
+                        arguments = listOf(
+                            PythonArgument(value = PythonReference(testConstructorParameter))
                         )
                     )
                 )
@@ -164,15 +165,15 @@ class PostprocessorTest {
             testClass.constructor = null
             testClass.methods.clear()
 
-            testPackage.createConstructors()
+            testPackage.extractConstructors()
 
             testClass.constructor
                 .shouldNotBeNull().asClue {
                     it.parameters.shouldBeEmpty()
-                    it.callToOriginalAPI shouldBe OriginalPythonFunction(
-                        qualifiedName = "testModule.TestClass",
-                        parameters = emptyList()
-                    )
+
+                    val callToOriginalAPI = it.callToOriginalAPI.shouldNotBeNull()
+                    callToOriginalAPI.receiver shouldBe "testModule.TestClass"
+                    callToOriginalAPI.arguments.shouldBeEmpty()
                 }
         }
 
@@ -180,7 +181,7 @@ class PostprocessorTest {
         fun `should copy parameters of __init__ methods`() {
             testClass.constructor = null
 
-            testPackage.createConstructors()
+            testPackage.extractConstructors()
 
             testClass.constructor
                 .shouldNotBeNull()
@@ -193,28 +194,29 @@ class PostprocessorTest {
         fun `should store call to original API`() {
             testClass.constructor = null
 
-            testPackage.createConstructors()
+            testPackage.extractConstructors()
 
             testClass.constructor
                 .shouldNotBeNull()
                 .callToOriginalAPI
-                .shouldBe(
-                    OriginalPythonFunction(
-                        qualifiedName = "testModule.TestClass",
-                        parameters = listOf(
-                            OriginalPythonParameter(
-                                name = "constructorParameter"
-                            )
-                        )
-                    )
-                )
+                .asClue {
+                    it.shouldNotBeNull()
+                    it.receiver shouldBe "testModule.TestClass"
+                    it.arguments.shouldHaveSize(1)
+
+                    val argument = it.arguments[0]
+                    argument.name.shouldBeNull()
+
+                    val value = argument.value.shouldBeInstanceOf<PythonReference>()
+                    value.declaration?.name shouldBe "constructorParameter"
+                }
         }
 
         @Test
         fun `should remove __init__ methods`() {
             testClass.constructor = null
 
-            testPackage.createConstructors()
+            testPackage.extractConstructors()
 
             testClass.methods shouldNot exist { it.name == "__init__" }
         }

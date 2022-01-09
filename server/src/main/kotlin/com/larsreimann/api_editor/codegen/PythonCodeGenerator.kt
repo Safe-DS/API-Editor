@@ -1,15 +1,12 @@
 package com.larsreimann.api_editor.codegen
 
 import com.larsreimann.api_editor.model.ComparisonOperator
-import com.larsreimann.api_editor.model.PythonParameterAssignment.ATTRIBUTE
-import com.larsreimann.api_editor.model.PythonParameterAssignment.CONSTANT
 import com.larsreimann.api_editor.model.PythonParameterAssignment.ENUM
 import com.larsreimann.api_editor.model.PythonParameterAssignment.GROUP
 import com.larsreimann.api_editor.model.PythonParameterAssignment.IMPLICIT
 import com.larsreimann.api_editor.model.PythonParameterAssignment.NAME_ONLY
 import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITION_ONLY
 import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITION_OR_NAME
-import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonArgument
 import com.larsreimann.api_editor.mutable_model.PythonBoolean
 import com.larsreimann.api_editor.mutable_model.PythonCall
@@ -154,7 +151,7 @@ private fun PythonClass.buildConstructor(): String {
 }
 
 private fun PythonConstructor.buildConstructorCall(): String {
-    return "self.instance = ${callToOriginalAPI!!.qualifiedName}(${this.buildParameterCall()})"
+    return "self.instance = ${callToOriginalAPI!!.toPythonCode()}"
 }
 
 /**
@@ -340,13 +337,6 @@ private fun buildBoundaryChecks(pythonFunction: PythonFunction): List<String> {
     return formattedBoundaries
 }
 
-private fun PythonConstructor.buildParameterCall(): String {
-    return buildParameterCall(
-        parameters,
-        callToOriginalAPI!!.parameters
-    )
-}
-
 private fun PythonExpression.toPythonCode(): String {
     return when (this) {
         is PythonBoolean -> value.toString()
@@ -364,39 +354,6 @@ private fun PythonArgument.toPythonCode() = buildString {
         append("$name=")
     }
     append(value!!.toPythonCode())
-}
-
-private fun buildParameterCall(
-    parameters: List<PythonParameter>,
-    originalParameters: List<OriginalPythonParameter>
-): String {
-
-    val formattedParameters: MutableList<String?> = ArrayList()
-    val originalNameToValueMap: MutableMap<String, String?> = HashMap()
-    parameters.forEach {
-        if (it.assignedBy == GROUP) {
-            it.groupedParametersOldToNewName.forEach { (oldName, newName) ->
-                originalNameToValueMap[oldName] = "${it.name}.$newName"
-            }
-        } else {
-            val value: String? =
-                when (it.assignedBy) {
-                    CONSTANT, ATTRIBUTE -> it.defaultValue
-                    ENUM -> "${it.name}.value"
-                    else -> it.name
-                }
-            originalNameToValueMap[it.originalParameter!!.name] = value
-        }
-    }
-    originalParameters
-        .filter { it.assignedBy != IMPLICIT }
-        .forEach {
-            when (it.assignedBy) {
-                NAME_ONLY -> formattedParameters.add(it.name + "=" + originalNameToValueMap[it.name])
-                else -> formattedParameters.add(originalNameToValueMap[it.name])
-            }
-        }
-    return formattedParameters.joinToString()
 }
 
 internal fun PythonEnum.toPythonCode() = buildString {
