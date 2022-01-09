@@ -53,11 +53,10 @@ fun PythonPackage.extractConstructors() {
 
 private fun PythonClass.createConstructor() {
     when (val constructorMethod = this.methods.firstOrNull { it.name == "__init__" }) {
-        // TODO: we must call the original class not the new one -> create constructor function in the preprocessor
         null -> {
             this.constructor = PythonConstructor(
                 parameters = emptyList(),
-                callToOriginalAPI = PythonCall(receiver = this.qualifiedName())
+                callToOriginalAPI = PythonCall(receiver = this.originalClass!!.qualifiedName)
             )
         }
         else -> {

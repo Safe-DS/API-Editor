@@ -1,6 +1,7 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.PythonParameterAssignment
+import com.larsreimann.api_editor.mutable_model.OriginalPythonClass
 import com.larsreimann.api_editor.mutable_model.PythonArgument
 import com.larsreimann.api_editor.mutable_model.PythonCall
 import com.larsreimann.api_editor.mutable_model.PythonClass
@@ -67,7 +68,8 @@ class PostprocessorTest {
                         )
                     )
                 )
-            )
+            ),
+            originalClass = OriginalPythonClass(qualifiedName = "testModule.TestClass")
         )
         testModule = PythonModule(
             name = "testModule",
