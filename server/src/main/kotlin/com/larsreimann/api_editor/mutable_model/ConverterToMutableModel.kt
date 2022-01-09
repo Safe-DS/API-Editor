@@ -10,8 +10,8 @@ import com.larsreimann.api_editor.model.SerializablePythonPackage
 import com.larsreimann.api_editor.model.SerializablePythonParameter
 import com.larsreimann.api_editor.model.SerializablePythonResult
 
-fun convertPackage(pythonPackage: SerializablePythonPackage): MutablePythonPackage {
-    return MutablePythonPackage(
+fun convertPackage(pythonPackage: SerializablePythonPackage): PythonPackage {
+    return PythonPackage(
         distribution = pythonPackage.distribution,
         name = pythonPackage.name,
         version = pythonPackage.version,
@@ -20,8 +20,8 @@ fun convertPackage(pythonPackage: SerializablePythonPackage): MutablePythonPacka
     )
 }
 
-fun convertModule(pythonModule: SerializablePythonModule): MutablePythonModule {
-    return MutablePythonModule(
+fun convertModule(pythonModule: SerializablePythonModule): PythonModule {
+    return PythonModule(
         name = pythonModule.name,
         imports = pythonModule.imports.toMutableList(),
         fromImports = pythonModule.fromImports.toMutableList(),
@@ -32,8 +32,8 @@ fun convertModule(pythonModule: SerializablePythonModule): MutablePythonModule {
     )
 }
 
-fun convertClass(pythonClass: SerializablePythonClass): MutablePythonClass {
-    return MutablePythonClass(
+fun convertClass(pythonClass: SerializablePythonClass): PythonClass {
+    return PythonClass(
         name = pythonClass.name,
         decorators = pythonClass.decorators.toMutableList(),
         superclasses = pythonClass.superclasses.toMutableList(),
@@ -46,16 +46,16 @@ fun convertClass(pythonClass: SerializablePythonClass): MutablePythonClass {
     )
 }
 
-fun convertEnum(pythonEnum: SerializablePythonEnum): MutablePythonEnum {
-    return MutablePythonEnum(
+fun convertEnum(pythonEnum: SerializablePythonEnum): PythonEnum {
+    return PythonEnum(
         name = pythonEnum.name,
         instances = pythonEnum.instances.map { convertEnumInstance(it) }.toMutableList(),
         annotations = pythonEnum.annotations
     )
 }
 
-fun convertEnumInstance(pythonEnumInstance: SerializablePythonEnumInstance): MutablePythonEnumInstance {
-    return MutablePythonEnumInstance(
+fun convertEnumInstance(pythonEnumInstance: SerializablePythonEnumInstance): PythonEnumInstance {
+    return PythonEnumInstance(
         name = pythonEnumInstance.name,
         value = pythonEnumInstance.value,
         description = pythonEnumInstance.description,
@@ -63,8 +63,8 @@ fun convertEnumInstance(pythonEnumInstance: SerializablePythonEnumInstance): Mut
     )
 }
 
-fun convertFunction(pythonFunction: SerializablePythonFunction): MutablePythonFunction {
-    return MutablePythonFunction(
+fun convertFunction(pythonFunction: SerializablePythonFunction): PythonFunction {
+    return PythonFunction(
         name = pythonFunction.name,
         decorators = pythonFunction.decorators.toMutableList(),
         parameters = pythonFunction.parameters.map { convertParameter(it) },
@@ -78,8 +78,8 @@ fun convertFunction(pythonFunction: SerializablePythonFunction): MutablePythonFu
     )
 }
 
-fun convertAttribute(pythonAttribute: SerializablePythonAttribute): MutablePythonAttribute {
-    return MutablePythonAttribute(
+fun convertAttribute(pythonAttribute: SerializablePythonAttribute): PythonAttribute {
+    return PythonAttribute(
         name = pythonAttribute.name,
         defaultValue = pythonAttribute.defaultValue,
         isPublic = pythonAttribute.isPublic,
@@ -90,8 +90,8 @@ fun convertAttribute(pythonAttribute: SerializablePythonAttribute): MutablePytho
     )
 }
 
-fun convertParameter(pythonParameter: SerializablePythonParameter): MutablePythonParameter {
-    return MutablePythonParameter(
+fun convertParameter(pythonParameter: SerializablePythonParameter): PythonParameter {
+    return PythonParameter(
         name = pythonParameter.name,
         defaultValue = pythonParameter.defaultValue,
         assignedBy = pythonParameter.assignedBy,
@@ -102,8 +102,8 @@ fun convertParameter(pythonParameter: SerializablePythonParameter): MutablePytho
     )
 }
 
-fun convertResult(pythonResult: SerializablePythonResult): MutablePythonResult {
-    return MutablePythonResult(
+fun convertResult(pythonResult: SerializablePythonResult): PythonResult {
+    return PythonResult(
         name = pythonResult.name,
         type = pythonResult.type,
         typeInDocs = pythonResult.typeInDocs,

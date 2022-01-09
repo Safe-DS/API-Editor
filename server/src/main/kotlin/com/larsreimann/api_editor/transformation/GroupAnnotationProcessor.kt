@@ -2,36 +2,36 @@ package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.GroupAnnotation
 import com.larsreimann.api_editor.model.PythonParameterAssignment
-import com.larsreimann.api_editor.mutable_model.MutablePythonClass
-import com.larsreimann.api_editor.mutable_model.MutablePythonConstructor
-import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
-import com.larsreimann.api_editor.mutable_model.MutablePythonModule
-import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
-import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonClass
+import com.larsreimann.api_editor.mutable_model.PythonConstructor
+import com.larsreimann.api_editor.mutable_model.PythonFunction
+import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonPackage
+import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.transformation.processing_exceptions.ConflictingGroupException
 import com.larsreimann.modeling.descendants
 
 /**
  * Processes and removes `@group` annotations.
  */
-fun MutablePythonPackage.processGroupAnnotations() {
+fun PythonPackage.processGroupAnnotations() {
     this.descendants()
-        .filterIsInstance<MutablePythonModule>()
+        .filterIsInstance<PythonModule>()
         .forEach { it.processGroupAnnotations() }
 }
 
-private fun MutablePythonModule.processGroupAnnotations() {
+private fun PythonModule.processGroupAnnotations() {
     this.descendants()
-        .filterIsInstance<MutablePythonFunction>()
+        .filterIsInstance<PythonFunction>()
         .forEach { it.processGroupAnnotations(this) }
 }
 
-private fun MutablePythonFunction.processGroupAnnotations(module: MutablePythonModule) {
+private fun PythonFunction.processGroupAnnotations(module: PythonModule) {
     this.annotations
         .filterIsInstance<GroupAnnotation>()
         .forEach { annotation ->
             val firstOccurrence = this.parameters.indexOfFirst { it.name in annotation.parameters }
-            val groupedParameter = MutablePythonParameter(
+            val groupedParameter = PythonParameter(
                 name = annotation.groupName.replaceFirstChar { it.lowercase() },
                 typeInDocs = annotation.groupName.replaceFirstChar { it.uppercase() },
                 assignedBy = PythonParameterAssignment.GROUP,
@@ -42,7 +42,7 @@ private fun MutablePythonFunction.processGroupAnnotations(module: MutablePythonM
                 }.toMutableMap()
             )
             val constructorParameters = mutableListOf(
-                MutablePythonParameter(
+                PythonParameter(
                     name = "self",
                     assignedBy = PythonParameterAssignment.IMPLICIT
                 )
@@ -50,9 +50,9 @@ private fun MutablePythonFunction.processGroupAnnotations(module: MutablePythonM
             constructorParameters += this.parameters.filter { it.name in annotation.parameters }
             this.parameters.removeIf { it.name in annotation.parameters }
             this.parameters.add(firstOccurrence, groupedParameter)
-            val groupedParameterClass = MutablePythonClass(
+            val groupedParameterClass = PythonClass(
                 name = annotation.groupName.replaceFirstChar { it.uppercase() },
-                constructor = MutablePythonConstructor(
+                constructor = PythonConstructor(
                     parameters = constructorParameters
                 )
             )
@@ -72,8 +72,8 @@ private fun MutablePythonFunction.processGroupAnnotations(module: MutablePythonM
 }
 
 private fun hasConflictingGroups(
-    moduleClasses: List<MutablePythonClass>,
-    groupToCheck: MutablePythonClass
+    moduleClasses: List<PythonClass>,
+    groupToCheck: PythonClass
 ): Boolean {
     return moduleClasses.any { `class` ->
         (groupToCheck.name == `class`.name) &&
@@ -85,8 +85,8 @@ private fun hasConflictingGroups(
 }
 
 private fun isAlreadyDefinedInModule(
-    moduleClasses: List<MutablePythonClass>,
-    groupToCheck: MutablePythonClass
+    moduleClasses: List<PythonClass>,
+    groupToCheck: PythonClass
 ): Boolean {
     return moduleClasses.any { groupToCheck.name == it.name }
 }

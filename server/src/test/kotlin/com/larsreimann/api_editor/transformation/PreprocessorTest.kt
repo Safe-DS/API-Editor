@@ -1,12 +1,12 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.PythonParameterAssignment
-import com.larsreimann.api_editor.mutable_model.MutablePythonAttribute
-import com.larsreimann.api_editor.mutable_model.MutablePythonClass
-import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
-import com.larsreimann.api_editor.mutable_model.MutablePythonModule
-import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
-import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonAttribute
+import com.larsreimann.api_editor.mutable_model.PythonClass
+import com.larsreimann.api_editor.mutable_model.PythonFunction
+import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonPackage
+import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.OriginalPythonClass
 import com.larsreimann.api_editor.mutable_model.OriginalPythonFunction
 import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
@@ -19,55 +19,55 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class PreprocessorTest {
-    private lateinit var testRequiredParameter: MutablePythonParameter
-    private lateinit var testOptionalParameter: MutablePythonParameter
-    private lateinit var testGlobalFunction: MutablePythonFunction
-    private lateinit var testMethodParameter: MutablePythonParameter
-    private lateinit var testAttribute: MutablePythonAttribute
-    private lateinit var testMethod: MutablePythonFunction
-    private lateinit var testClass: MutablePythonClass
-    private lateinit var testModule: MutablePythonModule
-    private lateinit var testPackage: MutablePythonPackage
+    private lateinit var testRequiredParameter: PythonParameter
+    private lateinit var testOptionalParameter: PythonParameter
+    private lateinit var testGlobalFunction: PythonFunction
+    private lateinit var testMethodParameter: PythonParameter
+    private lateinit var testAttribute: PythonAttribute
+    private lateinit var testMethod: PythonFunction
+    private lateinit var testClass: PythonClass
+    private lateinit var testModule: PythonModule
+    private lateinit var testPackage: PythonPackage
 
     @BeforeEach
     fun reset() {
-        testRequiredParameter = MutablePythonParameter(
+        testRequiredParameter = PythonParameter(
             name = "testRequiredParameter",
             defaultValue = null,
             assignedBy = PythonParameterAssignment.POSITION_ONLY
         )
-        testOptionalParameter = MutablePythonParameter(
+        testOptionalParameter = PythonParameter(
             name = "testOptionalParameter",
             defaultValue = "'value'",
             assignedBy = PythonParameterAssignment.POSITION_OR_NAME
         )
-        testGlobalFunction = MutablePythonFunction(
+        testGlobalFunction = PythonFunction(
             name = "testGlobalFunction",
             parameters = listOf(
                 testRequiredParameter,
                 testOptionalParameter
             )
         )
-        testMethodParameter = MutablePythonParameter(
+        testMethodParameter = PythonParameter(
             name = "testMethodParameter",
             assignedBy = PythonParameterAssignment.POSITION_ONLY
         )
-        testAttribute = MutablePythonAttribute(name = "testAttribute")
-        testMethod = MutablePythonFunction(
+        testAttribute = PythonAttribute(name = "testAttribute")
+        testMethod = PythonFunction(
             name = "testMethod",
             parameters = listOf(testMethodParameter)
         )
-        testClass = MutablePythonClass(
+        testClass = PythonClass(
             name = "testClass",
             attributes = listOf(testAttribute),
             methods = listOf(testMethod),
         )
-        testModule = MutablePythonModule(
+        testModule = PythonModule(
             "testModule",
             classes = listOf(testClass),
             functions = listOf(testGlobalFunction)
         )
-        testPackage = MutablePythonPackage(
+        testPackage = PythonPackage(
             distribution = "testPackage",
             name = "testPackage",
             version = "1.0.0",

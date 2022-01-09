@@ -1,7 +1,7 @@
 package com.larsreimann.api_editor.codegen
 
-import com.larsreimann.api_editor.mutable_model.MutablePythonModule
-import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
+import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonPackage
 import de.unibonn.simpleml.constant.SmlFileExtension
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
@@ -11,7 +11,7 @@ import java.util.zip.ZipOutputStream
 import kotlin.io.path.createTempDirectory
 import kotlin.io.path.createTempFile
 
-fun MutablePythonPackage.generateCode(): File {
+fun PythonPackage.generateCode(): File {
     val workingDirectory = createTempDirectory(prefix = "api-editor_inferredAPI").toFile()
     val zipFile = createTempFile(prefix = "api-editor_inferredAPI", suffix = ".zip").toFile()
 
@@ -30,14 +30,14 @@ fun MutablePythonPackage.generateCode(): File {
     return zipFile
 }
 
-private fun createPythonFile(workingDirectory: File, module: MutablePythonModule) {
+private fun createPythonFile(workingDirectory: File, module: PythonModule) {
     workingDirectory
         .resolve("adapter")
         .resolve(module.name.replace('.', '/') + ".py")
         .createFile(module.toPythonCode())
 }
 
-private fun createStubFile(workingDirectory: File, module: MutablePythonModule) {
+private fun createStubFile(workingDirectory: File, module: PythonModule) {
     workingDirectory
         .resolve("stub")
         .resolve(module.name.replace('.', '/'))

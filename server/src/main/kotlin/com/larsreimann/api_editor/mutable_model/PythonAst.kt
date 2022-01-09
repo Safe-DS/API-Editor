@@ -11,9 +11,13 @@ import com.larsreimann.api_editor.model.SerializablePythonFunction
 import com.larsreimann.modeling.ModelNode
 import com.larsreimann.modeling.ancestorsOrSelf
 
-sealed class MutablePythonAstNode : ModelNode()
+sealed class PythonAstNode : ModelNode()
 
-sealed class MutablePythonDeclaration : MutablePythonAstNode() {
+/* ********************************************************************************************************************
+ * Declarations
+ * ********************************************************************************************************************/
+
+sealed class PythonDeclaration : PythonAstNode() {
 
     abstract var name: String
     abstract val annotations: MutableList<EditorAnnotation>
@@ -23,21 +27,21 @@ sealed class MutablePythonDeclaration : MutablePythonAstNode() {
      */
     fun qualifiedName(): String {
         return ancestorsOrSelf()
-            .filterIsInstance<MutablePythonDeclaration>()
-            .filterNot { it is MutablePythonPackage }
+            .filterIsInstance<PythonDeclaration>()
+            .filterNot { it is PythonPackage }
             .toList()
             .asReversed()
             .joinToString(separator = ".") { it.name }
     }
 }
 
-class MutablePythonPackage(
+class PythonPackage(
     var distribution: String,
     override var name: String,
     var version: String,
-    modules: List<MutablePythonModule> = emptyList(),
+    modules: List<PythonModule> = emptyList(),
     override val annotations: MutableList<EditorAnnotation> = mutableListOf()
-) : MutablePythonDeclaration() {
+) : PythonDeclaration() {
 
     val modules = MutableContainmentList(modules)
 
@@ -46,15 +50,15 @@ class MutablePythonPackage(
     }
 }
 
-class MutablePythonModule(
+class PythonModule(
     override var name: String,
     val imports: MutableList<PythonImport> = mutableListOf(),
     val fromImports: MutableList<PythonFromImport> = mutableListOf(),
-    classes: List<MutablePythonClass> = emptyList(),
-    enums: List<MutablePythonEnum> = emptyList(),
-    functions: List<MutablePythonFunction> = emptyList(),
+    classes: List<PythonClass> = emptyList(),
+    enums: List<PythonEnum> = emptyList(),
+    functions: List<PythonFunction> = emptyList(),
     override val annotations: MutableList<EditorAnnotation> = mutableListOf()
-) : MutablePythonDeclaration() {
+) : PythonDeclaration() {
 
     val classes = MutableContainmentList(classes)
     val enums = MutableContainmentList(enums)
@@ -67,19 +71,19 @@ class MutablePythonModule(
     }
 }
 
-class MutablePythonClass(
+class PythonClass(
     override var name: String,
     val decorators: MutableList<String> = mutableListOf(),
     val superclasses: MutableList<String> = mutableListOf(),
-    constructor: MutablePythonConstructor? = null,
-    attributes: List<MutablePythonAttribute> = emptyList(),
-    methods: List<MutablePythonFunction> = emptyList(),
+    constructor: PythonConstructor? = null,
+    attributes: List<PythonAttribute> = emptyList(),
+    methods: List<PythonFunction> = emptyList(),
     var isPublic: Boolean = true,
     var description: String = "",
     var fullDocstring: String = "",
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
     var originalClass: OriginalPythonClass? = null
-) : MutablePythonDeclaration() {
+) : PythonDeclaration() {
 
     var constructor by ContainmentReference(constructor)
     val attributes = MutableContainmentList(attributes)
@@ -91,10 +95,10 @@ class MutablePythonClass(
     }
 }
 
-class MutablePythonConstructor(
-    parameters: List<MutablePythonParameter> = emptyList(),
+class PythonConstructor(
+    parameters: List<PythonParameter> = emptyList(),
     val callToOriginalAPI: OriginalPythonFunction? = null
-) : MutablePythonAstNode() {
+) : PythonAstNode() {
 
     val parameters = MutableContainmentList(parameters)
 
@@ -105,36 +109,37 @@ class MutablePythonConstructor(
 
 data class OriginalPythonClass(val qualifiedName: String)
 
-class MutablePythonEnum(
+class PythonEnum(
     override var name: String,
-    instances: List<MutablePythonEnumInstance> = emptyList(),
+    instances: List<PythonEnumInstance> = emptyList(),
     var description: String = "",
     override val annotations: MutableList<EditorAnnotation> = mutableListOf()
-) : MutablePythonDeclaration() {
+) : PythonDeclaration() {
 
     val instances = MutableContainmentList(instances)
 }
 
-data class MutablePythonEnumInstance(
+data class PythonEnumInstance(
     override var name: String,
     val value: String = name,
     var description: String = "",
     override val annotations: MutableList<EditorAnnotation> = mutableListOf()
-) : MutablePythonDeclaration()
+) : PythonDeclaration()
 
-class MutablePythonFunction(
+class PythonFunction(
     override var name: String,
     val decorators: MutableList<String> = mutableListOf(),
-    parameters: List<MutablePythonParameter> = emptyList(),
-    results: List<MutablePythonResult> = emptyList(),
+    parameters: List<PythonParameter> = emptyList(),
+    results: List<PythonResult> = emptyList(),
     var isPublic: Boolean = true,
     var description: String = "",
     var fullDocstring: String = "",
     var isPure: Boolean = false,
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
     val calledAfter: MutableList<SerializablePythonFunction> = mutableListOf(),
-    var originalFunction: OriginalPythonFunction? = null
-) : MutablePythonDeclaration() {
+    var originalFunction: OriginalPythonFunction? = null,
+    var callToOriginalAPI: PythonCall? = null
+) : PythonDeclaration() {
 
     val parameters = MutableContainmentList(parameters)
     val results = MutableContainmentList(results)
@@ -144,7 +149,7 @@ class MutablePythonFunction(
         yieldAll(results)
     }
 
-    fun isMethod() = parent is MutablePythonClass
+    fun isMethod() = parent is PythonClass
     fun isStaticMethod() = isMethod() && "staticmethod" in decorators
 }
 
@@ -153,7 +158,7 @@ data class OriginalPythonFunction(
     val parameters: List<OriginalPythonParameter> = emptyList()
 )
 
-data class MutablePythonAttribute(
+data class PythonAttribute(
     override var name: String,
     var defaultValue: String? = null,
     var isPublic: Boolean = true,
@@ -161,9 +166,9 @@ data class MutablePythonAttribute(
     var description: String = "",
     var boundary: Boundary? = null,
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
-) : MutablePythonDeclaration()
+) : PythonDeclaration()
 
-data class MutablePythonParameter(
+data class PythonParameter(
     override var name: String,
     var defaultValue: String? = null,
     var assignedBy: PythonParameterAssignment = PythonParameterAssignment.POSITION_OR_NAME,
@@ -173,7 +178,7 @@ data class MutablePythonParameter(
     var groupedParametersOldToNewName: MutableMap<String, String> = mutableMapOf(),
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
     var originalParameter: OriginalPythonParameter? = null
-) : MutablePythonDeclaration() {
+) : PythonDeclaration() {
 
     fun isRequired() = defaultValue == null
 
@@ -185,11 +190,44 @@ data class OriginalPythonParameter(
     val assignedBy: PythonParameterAssignment = PythonParameterAssignment.POSITION_OR_NAME
 )
 
-data class MutablePythonResult(
+data class PythonResult(
     override var name: String,
     var type: String = "",
     var typeInDocs: String = "",
     var description: String = "",
     var boundary: Boundary? = null,
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
-) : MutablePythonDeclaration()
+) : PythonDeclaration()
+
+/* ********************************************************************************************************************
+ * Expressions
+ * ********************************************************************************************************************/
+
+sealed class PythonExpression: PythonAstNode()
+
+class PythonCall(val receiver: String, arguments: List<PythonArgument> = emptyList()): PythonExpression() {
+    val arguments = ContainmentList(arguments)
+
+    override fun children() = sequence {
+        yieldAll(arguments)
+    }
+}
+
+class PythonArgument(val name: String? = null, value: PythonExpression): PythonAstNode() {
+    var value by ContainmentReference(value)
+
+    override fun children() = sequence {
+        value?.let { yield(it) }
+    }
+}
+
+class PythonReference(declaration: PythonDeclaration): PythonExpression() {
+    var declaration by CrossReference(declaration)
+}
+
+sealed class PythonLiteral: PythonExpression()
+
+data class PythonBoolean(val value: Boolean): PythonLiteral()
+data class PythonFloat(val value: Double): PythonLiteral()
+data class PythonInt(val value: Int): PythonLiteral()
+data class PythonString(val value: String): PythonLiteral()

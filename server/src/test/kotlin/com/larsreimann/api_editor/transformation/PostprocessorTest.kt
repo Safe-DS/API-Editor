@@ -1,12 +1,12 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.PythonParameterAssignment
-import com.larsreimann.api_editor.mutable_model.MutablePythonClass
-import com.larsreimann.api_editor.mutable_model.MutablePythonConstructor
-import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
-import com.larsreimann.api_editor.mutable_model.MutablePythonModule
-import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
-import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonClass
+import com.larsreimann.api_editor.mutable_model.PythonConstructor
+import com.larsreimann.api_editor.mutable_model.PythonFunction
+import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonPackage
+import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.OriginalPythonFunction
 import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
 import io.kotest.assertions.asClue
@@ -24,37 +24,37 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class PostprocessorTest {
-    private lateinit var testFunction: MutablePythonFunction
-    private lateinit var testClass: MutablePythonClass
-    private lateinit var testModule: MutablePythonModule
-    private lateinit var testPackage: MutablePythonPackage
+    private lateinit var testFunction: PythonFunction
+    private lateinit var testClass: PythonClass
+    private lateinit var testModule: PythonModule
+    private lateinit var testPackage: PythonPackage
 
     @BeforeEach
     fun reset() {
-        testFunction = MutablePythonFunction(name = "testFunction")
-        testClass = MutablePythonClass(
+        testFunction = PythonFunction(name = "testFunction")
+        testClass = PythonClass(
             name = "TestClass",
-            constructor = MutablePythonConstructor(
+            constructor = PythonConstructor(
                 parameters = listOf(
-                    MutablePythonParameter(
+                    PythonParameter(
                         name = "self",
                         assignedBy = PythonParameterAssignment.IMPLICIT
                     ),
-                    MutablePythonParameter(
+                    PythonParameter(
                         name = "positionOrName",
                         assignedBy = PythonParameterAssignment.POSITION_OR_NAME
                     ),
-                    MutablePythonParameter(
+                    PythonParameter(
                         name = "constant",
                         assignedBy = PythonParameterAssignment.CONSTANT
                     )
                 )
             ),
             methods = listOf(
-                MutablePythonFunction(
+                PythonFunction(
                     name = "__init__",
                     parameters = listOf(
-                        MutablePythonParameter(
+                        PythonParameter(
                             name = "constructorParameter",
                             originalParameter = OriginalPythonParameter(name = "constructorParameter")
                         )
@@ -68,12 +68,12 @@ class PostprocessorTest {
                 )
             )
         )
-        testModule = MutablePythonModule(
+        testModule = PythonModule(
             name = "testModule",
             classes = listOf(testClass),
             functions = listOf(testFunction)
         )
-        testPackage = MutablePythonPackage(
+        testPackage = PythonPackage(
             distribution = "testPackage",
             name = "testPackage",
             version = "1.0.0",
@@ -86,7 +86,7 @@ class PostprocessorTest {
 
         @Test
         fun `should remove empty modules`() {
-            val emptyTestModule = MutablePythonModule(name = "emptyTestModule")
+            val emptyTestModule = PythonModule(name = "emptyTestModule")
             testPackage.modules += emptyTestModule
 
             testPackage.removeEmptyModules()
@@ -107,27 +107,27 @@ class PostprocessorTest {
 
         @Test
         fun `should reorder parameters`() {
-            val implicit = MutablePythonParameter(
+            val implicit = PythonParameter(
                 name = "implicit",
                 assignedBy = PythonParameterAssignment.IMPLICIT
             )
-            val positionOnly = MutablePythonParameter(
+            val positionOnly = PythonParameter(
                 name = "positionOnly",
                 assignedBy = PythonParameterAssignment.POSITION_ONLY
             )
-            val positionOrName = MutablePythonParameter(
+            val positionOrName = PythonParameter(
                 name = "positionOrName",
                 assignedBy = PythonParameterAssignment.POSITION_OR_NAME
             )
-            val nameOnly = MutablePythonParameter(
+            val nameOnly = PythonParameter(
                 name = "nameOnly",
                 assignedBy = PythonParameterAssignment.NAME_ONLY
             )
-            val attribute = MutablePythonParameter(
+            val attribute = PythonParameter(
                 name = "attribute",
                 assignedBy = PythonParameterAssignment.ATTRIBUTE
             )
-            val constant = MutablePythonParameter(
+            val constant = PythonParameter(
                 name = "constant",
                 assignedBy = PythonParameterAssignment.CONSTANT
             )

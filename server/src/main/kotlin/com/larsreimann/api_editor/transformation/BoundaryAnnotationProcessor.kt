@@ -2,20 +2,20 @@ package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.Boundary
 import com.larsreimann.api_editor.model.BoundaryAnnotation
-import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
-import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonPackage
+import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.modeling.descendants
 
 /**
  * Processes and removes `@boundary` annotations.
  */
-fun MutablePythonPackage.processBoundaryAnnotations() {
+fun PythonPackage.processBoundaryAnnotations() {
     this.descendants()
-        .filterIsInstance<MutablePythonParameter>()
+        .filterIsInstance<PythonParameter>()
         .forEach { it.processBoundaryAnnotations() }
 }
 
-private fun MutablePythonParameter.processBoundaryAnnotations() {
+private fun PythonParameter.processBoundaryAnnotations() {
     this.annotations
         .filterIsInstance<BoundaryAnnotation>()
         .forEach {

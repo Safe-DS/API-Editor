@@ -9,12 +9,12 @@ import com.larsreimann.api_editor.model.PythonParameterAssignment.IMPLICIT
 import com.larsreimann.api_editor.model.PythonParameterAssignment.NAME_ONLY
 import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITION_ONLY
 import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITION_OR_NAME
-import com.larsreimann.api_editor.mutable_model.MutablePythonClass
-import com.larsreimann.api_editor.mutable_model.MutablePythonConstructor
-import com.larsreimann.api_editor.mutable_model.MutablePythonEnum
-import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
-import com.larsreimann.api_editor.mutable_model.MutablePythonModule
-import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonClass
+import com.larsreimann.api_editor.mutable_model.PythonConstructor
+import com.larsreimann.api_editor.mutable_model.PythonEnum
+import com.larsreimann.api_editor.mutable_model.PythonFunction
+import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
 
 /**
@@ -22,7 +22,7 @@ import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
  * @receiver The module whose adapter content should be built
  * @return The string containing the formatted module content
  */
-fun MutablePythonModule.toPythonCode(): String {
+fun PythonModule.toPythonCode(): String {
     var formattedImport = buildNamespace(this)
     var formattedEnums = enums.joinToString("\n") { it.toPythonCode() }
     var formattedClasses = buildAllClasses(this)
@@ -44,14 +44,14 @@ fun MutablePythonModule.toPythonCode(): String {
         )
 }
 
-private fun buildNamespace(pythonModule: MutablePythonModule): String {
+private fun buildNamespace(pythonModule: PythonModule): String {
     val importedModules = HashSet<String>()
-    pythonModule.functions.forEach { pythonFunction: MutablePythonFunction ->
+    pythonModule.functions.forEach { pythonFunction: PythonFunction ->
         importedModules.add(
             buildParentDeclarationName(pythonFunction.originalFunction!!.qualifiedName)
         )
     }
-    pythonModule.classes.forEach { pythonClass: MutablePythonClass ->
+    pythonModule.classes.forEach { pythonClass: PythonClass ->
         importedModules.add(
             buildParentDeclarationName(pythonClass.originalClass!!.qualifiedName)
         )
@@ -69,11 +69,11 @@ private fun buildParentDeclarationName(qualifiedName: String): String {
     return qualifiedName.substring(0, separationPosition)
 }
 
-private fun buildAllClasses(pythonModule: MutablePythonModule): String {
+private fun buildAllClasses(pythonModule: PythonModule): String {
     return pythonModule.classes.joinToString("\n".repeat(2)) { it.toPythonCode() }
 }
 
-private fun buildAllFunctions(pythonModule: MutablePythonModule): String {
+private fun buildAllFunctions(pythonModule: PythonModule): String {
     return pythonModule.functions.joinToString("\n".repeat(2)) { it.toPythonCode() }
 }
 
@@ -109,7 +109,7 @@ private fun buildSeparators(
  * @receiver The module whose adapter content should be built
  * @return The string containing the formatted class content
  */
-fun MutablePythonClass.toPythonCode(): String {
+fun PythonClass.toPythonCode(): String {
     var formattedClass = "class $name:\n"
     if (constructor != null) {
         formattedClass += buildConstructor().prependIndent("    ")
@@ -123,11 +123,11 @@ fun MutablePythonClass.toPythonCode(): String {
     return formattedClass
 }
 
-private fun buildAllFunctions(pythonClass: MutablePythonClass): List<String> {
+private fun buildAllFunctions(pythonClass: PythonClass): List<String> {
     return pythonClass.methods.map { it.toPythonCode().prependIndent("    ") }
 }
 
-private fun MutablePythonClass.buildConstructor(): String {
+private fun PythonClass.buildConstructor(): String {
     var constructorSeparator = ""
     val assignments = buildAttributeAssignments(this).joinToString("\n".repeat(1))
     if (assignments.isNotBlank()) {
@@ -144,7 +144,7 @@ private fun MutablePythonClass.buildConstructor(): String {
       """.trimMargin()
 }
 
-private fun MutablePythonConstructor.buildConstructorCall(): String {
+private fun PythonConstructor.buildConstructorCall(): String {
     return "self.instance = ${callToOriginalAPI!!.qualifiedName}(${this.buildParameterCall()})"
 }
 
@@ -153,7 +153,7 @@ private fun MutablePythonConstructor.buildConstructorCall(): String {
  * @receiver The function whose adapter content should be built
  * @return The string containing the formatted function content
  */
-fun MutablePythonFunction.toPythonCode(): String {
+fun PythonFunction.toPythonCode(): String {
     val function = """
       |def $name(${buildParameters(this.parameters)}):
       |${(buildFunctionBody(this)).prependIndent("    ")}
@@ -165,19 +165,19 @@ fun MutablePythonFunction.toPythonCode(): String {
     }
 }
 
-private fun buildAttributeAssignments(pythonClass: MutablePythonClass): List<String> {
+private fun buildAttributeAssignments(pythonClass: PythonClass): List<String> {
     return pythonClass.attributes.map {
         "self.${it.name} = ${it.defaultValue}"
     }
 }
 
-private fun buildParameters(parameters: List<MutablePythonParameter>): String {
+private fun buildParameters(parameters: List<PythonParameter>): String {
     var formattedFunctionParameters = ""
     val implicitParameters: MutableList<String> = ArrayList()
     val positionOnlyParameters: MutableList<String> = ArrayList()
     val positionOrNameParameters: MutableList<String> = ArrayList()
     val nameOnlyParameters: MutableList<String> = ArrayList()
-    parameters.forEach { pythonParameter: MutablePythonParameter ->
+    parameters.forEach { pythonParameter: PythonParameter ->
         when (pythonParameter.assignedBy) {
             IMPLICIT -> implicitParameters.add(pythonParameter.toPythonCode())
             POSITION_ONLY -> positionOnlyParameters.add(pythonParameter.toPythonCode())
@@ -221,14 +221,14 @@ private fun buildParameters(parameters: List<MutablePythonParameter>): String {
     return formattedFunctionParameters
 }
 
-private fun MutablePythonParameter.toPythonCode() = buildString {
+private fun PythonParameter.toPythonCode() = buildString {
     append(name)
     if (defaultValue != null) {
         append("=$defaultValue")
     }
 }
 
-private fun buildFunctionBody(pythonFunction: MutablePythonFunction): String {
+private fun buildFunctionBody(pythonFunction: PythonFunction): String {
     var formattedBoundaries = buildBoundaryChecks(pythonFunction).joinToString("\n".repeat(1))
     if (formattedBoundaries.isNotBlank()) {
         formattedBoundaries = "$formattedBoundaries\n"
@@ -254,7 +254,7 @@ private fun buildFunctionBody(pythonFunction: MutablePythonFunction): String {
         )
 }
 
-private fun buildBoundaryChecks(pythonFunction: MutablePythonFunction): List<String> {
+private fun buildBoundaryChecks(pythonFunction: PythonFunction): List<String> {
     val formattedBoundaries: MutableList<String> = ArrayList()
     pythonFunction
         .parameters
@@ -338,14 +338,14 @@ private fun buildBoundaryChecks(pythonFunction: MutablePythonFunction): List<Str
     return formattedBoundaries
 }
 
-private fun MutablePythonFunction.buildParameterCall(): String {
+private fun PythonFunction.buildParameterCall(): String {
     return buildParameterCall(
         parameters,
         originalFunction!!.parameters
     )
 }
 
-private fun MutablePythonConstructor.buildParameterCall(): String {
+private fun PythonConstructor.buildParameterCall(): String {
     return buildParameterCall(
         parameters,
         callToOriginalAPI!!.parameters
@@ -353,7 +353,7 @@ private fun MutablePythonConstructor.buildParameterCall(): String {
 }
 
 private fun buildParameterCall(
-    parameters: List<MutablePythonParameter>,
+    parameters: List<PythonParameter>,
     originalParameters: List<OriginalPythonParameter>
 ): String {
 
@@ -385,7 +385,7 @@ private fun buildParameterCall(
     return formattedParameters.joinToString()
 }
 
-internal fun MutablePythonEnum.toPythonCode() = buildString {
+internal fun PythonEnum.toPythonCode() = buildString {
     appendLine("class $name(Enum):")
     appendIndented(4) {
         if (instances.isEmpty()) {

@@ -10,7 +10,7 @@ import com.larsreimann.api_editor.model.SerializablePythonPackage
 import com.larsreimann.api_editor.model.SerializablePythonParameter
 import com.larsreimann.api_editor.model.SerializablePythonResult
 
-fun convertPackage(pythonPackage: MutablePythonPackage): SerializablePythonPackage {
+fun convertPackage(pythonPackage: PythonPackage): SerializablePythonPackage {
     return SerializablePythonPackage(
         distribution = pythonPackage.distribution,
         name = pythonPackage.name,
@@ -20,7 +20,7 @@ fun convertPackage(pythonPackage: MutablePythonPackage): SerializablePythonPacka
     )
 }
 
-fun convertModule(pythonModule: MutablePythonModule): SerializablePythonModule {
+fun convertModule(pythonModule: PythonModule): SerializablePythonModule {
     val result = SerializablePythonModule(
         name = pythonModule.name,
         imports = pythonModule.imports,
@@ -33,7 +33,7 @@ fun convertModule(pythonModule: MutablePythonModule): SerializablePythonModule {
     return result
 }
 
-fun convertClass(pythonClass: MutablePythonClass): SerializablePythonClass {
+fun convertClass(pythonClass: PythonClass): SerializablePythonClass {
     val result = SerializablePythonClass(
         name = pythonClass.name,
         qualifiedName = pythonClass.qualifiedName(),
@@ -49,7 +49,7 @@ fun convertClass(pythonClass: MutablePythonClass): SerializablePythonClass {
     return result
 }
 
-fun convertEnum(pythonEnum: MutablePythonEnum): SerializablePythonEnum {
+fun convertEnum(pythonEnum: PythonEnum): SerializablePythonEnum {
     return SerializablePythonEnum(
         name = pythonEnum.name,
         instances = pythonEnum.instances.map { convertEnumInstance(it) }.toMutableList(),
@@ -57,7 +57,7 @@ fun convertEnum(pythonEnum: MutablePythonEnum): SerializablePythonEnum {
     )
 }
 
-fun convertEnumInstance(pythonEnumInstance: MutablePythonEnumInstance): SerializablePythonEnumInstance {
+fun convertEnumInstance(pythonEnumInstance: PythonEnumInstance): SerializablePythonEnumInstance {
     val instance = SerializablePythonEnumInstance(
         name = pythonEnumInstance.name,
         value = pythonEnumInstance.value
@@ -66,7 +66,7 @@ fun convertEnumInstance(pythonEnumInstance: MutablePythonEnumInstance): Serializ
     return instance
 }
 
-fun convertFunction(pythonFunction: MutablePythonFunction): SerializablePythonFunction {
+fun convertFunction(pythonFunction: PythonFunction): SerializablePythonFunction {
     val result = SerializablePythonFunction(
         name = pythonFunction.name,
         qualifiedName = pythonFunction.qualifiedName(),
@@ -83,7 +83,7 @@ fun convertFunction(pythonFunction: MutablePythonFunction): SerializablePythonFu
     return result
 }
 
-fun convertAttribute(pythonAttribute: MutablePythonAttribute): SerializablePythonAttribute {
+fun convertAttribute(pythonAttribute: PythonAttribute): SerializablePythonAttribute {
     val result = SerializablePythonAttribute(
         name = pythonAttribute.name,
         qualifiedName = pythonAttribute.qualifiedName(),
@@ -97,7 +97,7 @@ fun convertAttribute(pythonAttribute: MutablePythonAttribute): SerializablePytho
     return result
 }
 
-fun convertParameter(pythonParameter: MutablePythonParameter): SerializablePythonParameter {
+fun convertParameter(pythonParameter: PythonParameter): SerializablePythonParameter {
     val result = SerializablePythonParameter(
         name = pythonParameter.name,
         qualifiedName = pythonParameter.qualifiedName(),
@@ -112,7 +112,7 @@ fun convertParameter(pythonParameter: MutablePythonParameter): SerializablePytho
     return result
 }
 
-fun convertResult(pythonResult: MutablePythonResult): SerializablePythonResult {
+fun convertResult(pythonResult: PythonResult): SerializablePythonResult {
     val result = SerializablePythonResult(
         name = pythonResult.name,
         type = pythonResult.type,

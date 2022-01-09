@@ -1,15 +1,15 @@
 package com.larsreimann.api_editor.codegen
 
 import com.larsreimann.api_editor.model.PythonParameterAssignment
-import com.larsreimann.api_editor.mutable_model.MutablePythonAttribute
-import com.larsreimann.api_editor.mutable_model.MutablePythonClass
-import com.larsreimann.api_editor.mutable_model.MutablePythonConstructor
-import com.larsreimann.api_editor.mutable_model.MutablePythonEnum
-import com.larsreimann.api_editor.mutable_model.MutablePythonEnumInstance
-import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
-import com.larsreimann.api_editor.mutable_model.MutablePythonModule
-import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
-import com.larsreimann.api_editor.mutable_model.MutablePythonResult
+import com.larsreimann.api_editor.mutable_model.PythonAttribute
+import com.larsreimann.api_editor.mutable_model.PythonClass
+import com.larsreimann.api_editor.mutable_model.PythonConstructor
+import com.larsreimann.api_editor.mutable_model.PythonEnum
+import com.larsreimann.api_editor.mutable_model.PythonEnumInstance
+import com.larsreimann.api_editor.mutable_model.PythonFunction
+import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonResult
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import de.unibonn.simpleml.emf.annotationUsesOrEmpty
 import de.unibonn.simpleml.emf.argumentsOrEmpty
@@ -63,16 +63,16 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should create valid Simple-ML stubs`() {
-            val pythonModule = MutablePythonModule(
+            val pythonModule = PythonModule(
                 name = "testModule",
                 classes = listOf(
-                    MutablePythonClass(
+                    PythonClass(
                         name = "Test_Class",
                         attributes = listOf(
-                            MutablePythonAttribute(name = "testAttribute")
+                            PythonAttribute(name = "testAttribute")
                         ),
                         methods = listOf(
-                            MutablePythonFunction(
+                            PythonFunction(
                                 name = "testMethod",
                                 isPure = true
                             )
@@ -81,20 +81,20 @@ class StubCodeGeneratorTest {
                     )
                 ),
                 functions = listOf(
-                    MutablePythonFunction(
+                    PythonFunction(
                         name = "testFunction",
                         parameters = listOf(
-                            MutablePythonParameter(
+                            PythonParameter(
                                 name = "testParameter"
                             ),
-                            MutablePythonParameter(
+                            PythonParameter(
                                 name = "testParameter",
                                 typeInDocs = "int",
                                 defaultValue = "10"
                             )
                         ),
                         results = listOf(
-                            MutablePythonResult(
+                            PythonResult(
                                 name = "testParameter",
                                 type = "str"
                             )
@@ -102,10 +102,10 @@ class StubCodeGeneratorTest {
                     )
                 ),
                 enums = listOf(
-                    MutablePythonEnum(
+                    PythonEnum(
                         name = "TestEnum",
                         instances = listOf(
-                            MutablePythonEnumInstance(name = "TestEnumInstance")
+                            PythonEnumInstance(name = "TestEnumInstance")
                         )
                     )
                 )
@@ -138,7 +138,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should handle empty modules`() {
-            val pythonModule = MutablePythonModule(name = "testModule")
+            val pythonModule = PythonModule(name = "testModule")
 
             val smlCompilationUnit = pythonModule.toSmlCompilationUnit()
             smlCompilationUnit.members.shouldHaveSize(1)
@@ -154,10 +154,10 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should store classes`() {
-            val pythonModule = MutablePythonModule(
+            val pythonModule = PythonModule(
                 name = "testModule",
                 classes = listOf(
-                    MutablePythonClass(name = "TestClass")
+                    PythonClass(name = "TestClass")
                 )
             )
 
@@ -174,10 +174,10 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should store functions`() {
-            val pythonModule = MutablePythonModule(
+            val pythonModule = PythonModule(
                 name = "testModule",
                 functions = listOf(
-                    MutablePythonFunction(name = "testFunction")
+                    PythonFunction(name = "testFunction")
                 )
             )
 
@@ -194,10 +194,10 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should store enums`() {
-            val pythonModule = MutablePythonModule(
+            val pythonModule = PythonModule(
                 name = "testModule",
                 enums = listOf(
-                    MutablePythonEnum(name = "TestEnum")
+                    PythonEnum(name = "TestEnum")
                 )
             )
 
@@ -218,7 +218,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should handle empty classes`() {
-            val pythonClass = MutablePythonClass(name = "TestClass")
+            val pythonClass = PythonClass(name = "TestClass")
 
             pythonClass.toSmlClass().asClue {
                 it.name shouldBe "TestClass"
@@ -233,7 +233,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should convert name to camel case`() {
-            val pythonClass = MutablePythonClass(name = "test_class")
+            val pythonClass = PythonClass(name = "test_class")
 
             val smlClass = pythonClass.toSmlClass()
 
@@ -242,7 +242,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should store python name if it differs from stub name`() {
-            val pythonClass = MutablePythonClass(name = "test_class")
+            val pythonClass = PythonClass(name = "test_class")
 
             val smlClass = pythonClass.toSmlClass()
 
@@ -259,7 +259,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should not store python name if it is identical to stub name`() {
-            val pythonClass = MutablePythonClass(name = "TestClass")
+            val pythonClass = PythonClass(name = "TestClass")
 
             val smlClass = pythonClass.toSmlClass()
 
@@ -269,7 +269,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should store description if it is not blank`() {
-            val pythonClass = MutablePythonClass(
+            val pythonClass = PythonClass(
                 name = "TestClass",
                 description = "Lorem ipsum"
             )
@@ -289,7 +289,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should not store description if it is blank`() {
-            val pythonClass = MutablePythonClass(
+            val pythonClass = PythonClass(
                 name = "TestClass",
                 description = ""
             )
@@ -302,31 +302,31 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should store parameters of constructor`() {
-            val pythonClass = MutablePythonClass(
+            val pythonClass = PythonClass(
                 name = "TestClass",
-                constructor = MutablePythonConstructor(
+                constructor = PythonConstructor(
                     parameters = listOf(
-                        MutablePythonParameter(
+                        PythonParameter(
                             name = "self",
                             assignedBy = PythonParameterAssignment.IMPLICIT
                         ),
-                        MutablePythonParameter(
+                        PythonParameter(
                             name = "positionOnly",
                             assignedBy = PythonParameterAssignment.POSITION_ONLY
                         ),
-                        MutablePythonParameter(
+                        PythonParameter(
                             name = "positionOrName",
                             assignedBy = PythonParameterAssignment.POSITION_OR_NAME
                         ),
-                        MutablePythonParameter(
+                        PythonParameter(
                             name = "nameOnly",
                             assignedBy = PythonParameterAssignment.NAME_ONLY
                         ),
-                        MutablePythonParameter(
+                        PythonParameter(
                             name = "attribute",
                             assignedBy = PythonParameterAssignment.ATTRIBUTE
                         ),
-                        MutablePythonParameter(
+                        PythonParameter(
                             name = "constant",
                             assignedBy = PythonParameterAssignment.CONSTANT
                         )
@@ -346,10 +346,10 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should store attributes`() {
-            val pythonClass = MutablePythonClass(
+            val pythonClass = PythonClass(
                 name = "TestClass",
                 attributes = listOf(
-                    MutablePythonAttribute(name = "testAttribute")
+                    PythonAttribute(name = "testAttribute")
                 )
             )
 
@@ -362,10 +362,10 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should store methods`() {
-            val pythonClass = MutablePythonClass(
+            val pythonClass = PythonClass(
                 name = "TestClass",
                 methods = listOf(
-                    MutablePythonFunction(name = "testMethod")
+                    PythonFunction(name = "testMethod")
                 )
             )
 
@@ -382,7 +382,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should handle simple attributes`() {
-            val pythonAttribute = MutablePythonAttribute(name = "testAttribute")
+            val pythonAttribute = PythonAttribute(name = "testAttribute")
             pythonAttribute.toSmlAttribute().asClue {
                 it.name shouldBe "testAttribute"
                 it.annotationUsesOrEmpty().shouldBeEmpty()
@@ -396,7 +396,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should convert name to camel case`() {
-            val pythonAttribute = MutablePythonAttribute(name = "Test_attribute")
+            val pythonAttribute = PythonAttribute(name = "Test_attribute")
 
             val smlParameter = pythonAttribute.toSmlAttribute()
             smlParameter.name shouldBe "testAttribute"
@@ -404,7 +404,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should store python name if it differs from stub name`() {
-            val pythonAttribute = MutablePythonAttribute(name = "Test_attribute")
+            val pythonAttribute = PythonAttribute(name = "Test_attribute")
 
             val arguments = pythonAttribute
                 .toSmlAttribute()
@@ -420,7 +420,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should not store python name if it is identical to stub name`() {
-            val pythonAttribute = MutablePythonAttribute(name = "testAttribute")
+            val pythonAttribute = PythonAttribute(name = "testAttribute")
             pythonAttribute.toSmlAttribute()
                 .uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
                 .shouldBeNull()
@@ -428,7 +428,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should store description if it is not blank`() {
-            val pythonAttribute = MutablePythonAttribute(
+            val pythonAttribute = PythonAttribute(
                 name = "testAttribute",
                 description = "Lorem ipsum"
             )
@@ -447,7 +447,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should not store description if it is blank`() {
-            val pythonAttribute = MutablePythonAttribute(
+            val pythonAttribute = PythonAttribute(
                 name = "testAttribute",
                 description = ""
             )
@@ -460,7 +460,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should store type`() {
-            val pythonAttribute = MutablePythonAttribute(
+            val pythonAttribute = PythonAttribute(
                 name = "testAttribute",
                 typeInDocs = "str"
             )
@@ -481,7 +481,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should handle empty functions`() {
-            val pythonFunction = MutablePythonFunction(name = "testFunction")
+            val pythonFunction = PythonFunction(name = "testFunction")
 
             pythonFunction.toSmlFunction().asClue {
                 it.name shouldBe "testFunction"
@@ -496,11 +496,11 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should mark static methods with modifier`() {
-            val pythonFunction = MutablePythonFunction(
+            val pythonFunction = PythonFunction(
                 name = "testFunction",
                 decorators = mutableListOf("staticmethod")
             )
-            MutablePythonClass(
+            PythonClass(
                 name = "TestClass",
                 methods = listOf(pythonFunction)
             )
@@ -512,7 +512,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should mark pure functions with annotation`() {
-            val pythonFunction = MutablePythonFunction(
+            val pythonFunction = PythonFunction(
                 name = "testFunction",
                 isPure = true
             )
@@ -525,7 +525,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should convert name to camel case`() {
-            val pythonFunction = MutablePythonFunction(name = "Test_function")
+            val pythonFunction = PythonFunction(name = "Test_function")
 
             val smlFunction = pythonFunction.toSmlFunction()
             smlFunction.name shouldBe "testFunction"
@@ -533,7 +533,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should store python name if it differs from stub name`() {
-            val pythonFunction = MutablePythonFunction(name = "Test_function")
+            val pythonFunction = PythonFunction(name = "Test_function")
 
             val smlFunction = pythonFunction.toSmlFunction()
 
@@ -551,7 +551,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should not store python name if it is identical to stub name`() {
-            val pythonFunction = MutablePythonFunction(name = "testFunction")
+            val pythonFunction = PythonFunction(name = "testFunction")
 
             val smlFunction = pythonFunction.toSmlFunction()
 
@@ -562,7 +562,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should store description if it is not blank`() {
-            val pythonFunction = MutablePythonFunction(
+            val pythonFunction = PythonFunction(
                 name = "testFunction",
                 description = "Lorem ipsum"
             )
@@ -583,7 +583,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should not store description if it is blank`() {
-            val pythonFunction = MutablePythonFunction(
+            val pythonFunction = PythonFunction(
                 name = "testFunction",
                 description = ""
             )
@@ -596,38 +596,38 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should store parameters`() {
-            val pythonFunction = MutablePythonFunction(
+            val pythonFunction = PythonFunction(
                 name = "testFunction",
                 parameters = listOf(
-                    MutablePythonParameter(
+                    PythonParameter(
                         name = "self",
                         assignedBy = PythonParameterAssignment.IMPLICIT
                     ),
-                    MutablePythonParameter(
+                    PythonParameter(
                         name = "positionOnly",
                         assignedBy = PythonParameterAssignment.POSITION_ONLY
                     ),
-                    MutablePythonParameter(
+                    PythonParameter(
                         name = "positionOrName",
                         assignedBy = PythonParameterAssignment.POSITION_OR_NAME
                     ),
-                    MutablePythonParameter(
+                    PythonParameter(
                         name = "enum",
                         assignedBy = PythonParameterAssignment.ENUM
                     ),
-                    MutablePythonParameter(
+                    PythonParameter(
                         name = "group",
                         assignedBy = PythonParameterAssignment.GROUP
                     ),
-                    MutablePythonParameter(
+                    PythonParameter(
                         name = "nameOnly",
                         assignedBy = PythonParameterAssignment.NAME_ONLY
                     ),
-                    MutablePythonParameter(
+                    PythonParameter(
                         name = "attribute",
                         assignedBy = PythonParameterAssignment.ATTRIBUTE
                     ),
-                    MutablePythonParameter(
+                    PythonParameter(
                         name = "constant",
                         assignedBy = PythonParameterAssignment.CONSTANT
                     )
@@ -647,10 +647,10 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should store results`() {
-            val pythonFunction = MutablePythonFunction(
+            val pythonFunction = PythonFunction(
                 name = "testFunction",
                 results = listOf(
-                    MutablePythonResult(name = "testResult")
+                    PythonResult(name = "testResult")
                 )
             )
 
@@ -668,7 +668,7 @@ class StubCodeGeneratorTest {
         @ParameterizedTest
         @EnumSource(PythonParameterAssignment::class, names = ["IMPLICIT", "ATTRIBUTE", "CONSTANT"])
         fun `should return null for invisible parameters`(assignedBy: PythonParameterAssignment) {
-            val pythonParameter = MutablePythonParameter(
+            val pythonParameter = PythonParameter(
                 name = "testParameter",
                 assignedBy = assignedBy
             )
@@ -678,7 +678,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should handle simple parameters`() {
-            val pythonParameter = MutablePythonParameter(name = "testParameter")
+            val pythonParameter = PythonParameter(name = "testParameter")
             pythonParameter.toSmlParameterOrNull()
                 .shouldNotBeNull()
                 .asClue {
@@ -696,7 +696,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should convert name to camel case`() {
-            val pythonParameter = MutablePythonParameter(name = "Test_parameter")
+            val pythonParameter = PythonParameter(name = "Test_parameter")
 
             val smlParameter = pythonParameter
                 .toSmlParameterOrNull()
@@ -706,7 +706,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should store python name if it differs from stub name`() {
-            val pythonParameter = MutablePythonParameter(name = "Test_parameter")
+            val pythonParameter = PythonParameter(name = "Test_parameter")
 
             val arguments = pythonParameter
                 .toSmlParameterOrNull()
@@ -723,7 +723,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should not store python name if it is identical to stub name`() {
-            val pythonParameter = MutablePythonParameter(name = "testParameter")
+            val pythonParameter = PythonParameter(name = "testParameter")
 
             pythonParameter.toSmlParameterOrNull()
                 .shouldNotBeNull()
@@ -733,7 +733,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should store description if it is not blank`() {
-            val pythonParameter = MutablePythonParameter(
+            val pythonParameter = PythonParameter(
                 name = "testParameter",
                 description = "Lorem ipsum"
             )
@@ -753,7 +753,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should not store description if it is blank`() {
-            val pythonParameter = MutablePythonParameter(
+            val pythonParameter = PythonParameter(
                 name = "testParameter",
                 description = ""
             )
@@ -767,7 +767,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should store type`() {
-            val pythonParameter = MutablePythonParameter(
+            val pythonParameter = PythonParameter(
                 name = "testParameter",
                 typeInDocs = "str"
             )
@@ -785,7 +785,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should store default value`() {
-            val pythonParameter = MutablePythonParameter(
+            val pythonParameter = PythonParameter(
                 name = "testParameter",
                 defaultValue = "None"
             )
@@ -803,7 +803,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should handle simple results`() {
-            val pythonResult = MutablePythonResult(name = "testResult")
+            val pythonResult = PythonResult(name = "testResult")
 
             pythonResult.toSmlResult().asClue {
                 it.name shouldBe "testResult"
@@ -818,7 +818,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should convert name to camel case`() {
-            val pythonResult = MutablePythonResult(name = "Test_result")
+            val pythonResult = PythonResult(name = "Test_result")
 
             val smlResult = pythonResult.toSmlResult()
             smlResult.name shouldBe "testResult"
@@ -826,7 +826,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should store python name if it differs from stub name`() {
-            val pythonResult = MutablePythonResult(name = "Test_result")
+            val pythonResult = PythonResult(name = "Test_result")
 
             val smlFunction = pythonResult.toSmlResult()
 
@@ -844,7 +844,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should not store python name if it is identical to stub name`() {
-            val pythonResult = MutablePythonResult(name = "testResult")
+            val pythonResult = PythonResult(name = "testResult")
 
             pythonResult.toSmlResult()
                 .uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
@@ -853,7 +853,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should store description if it is not blank`() {
-            val pythonResult = MutablePythonResult(
+            val pythonResult = PythonResult(
                 name = "testResult",
                 description = "Lorem ipsum"
             )
@@ -873,7 +873,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should not store description if it is blank`() {
-            val pythonResult = MutablePythonResult(
+            val pythonResult = PythonResult(
                 name = "testResult",
                 description = ""
             )
@@ -886,7 +886,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should store type`() {
-            val pythonResult = MutablePythonResult(
+            val pythonResult = PythonResult(
                 name = "testResult",
                 type = "str"
             )
@@ -902,7 +902,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should handle empty enums`() {
-            val pythonEnum = MutablePythonEnum(name = "TestEnum")
+            val pythonEnum = PythonEnum(name = "TestEnum")
 
             pythonEnum.toSmlEnum().asClue {
                 it.name shouldBe "TestEnum"
@@ -913,7 +913,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should convert name to camel case`() {
-            val pythonEnum = MutablePythonEnum(name = "test_enum")
+            val pythonEnum = PythonEnum(name = "test_enum")
 
             val smlEnum = pythonEnum.toSmlEnum()
             smlEnum.name shouldBe "TestEnum"
@@ -921,7 +921,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should store python name if it differs from stub name`() {
-            val pythonEnum = MutablePythonEnum(name = "test_enum")
+            val pythonEnum = PythonEnum(name = "test_enum")
 
             val smlEnum = pythonEnum.toSmlEnum()
 
@@ -938,7 +938,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should not store python name if it is identical to stub name`() {
-            val pythonEnum = MutablePythonEnum(name = "TestEnum")
+            val pythonEnum = PythonEnum(name = "TestEnum")
 
             val smlEnum = pythonEnum.toSmlEnum()
 
@@ -948,7 +948,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should store description if it is not blank`() {
-            val pythonEnum = MutablePythonEnum(
+            val pythonEnum = PythonEnum(
                 name = "TestEnum",
                 description = "Lorem ipsum"
             )
@@ -965,7 +965,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should not store description if it is blank`() {
-            val pythonEnum = MutablePythonEnum(
+            val pythonEnum = PythonEnum(
                 name = "TestEnum",
                 description = ""
             )
@@ -978,10 +978,10 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should store variants`() {
-            val pythonEnum = MutablePythonEnum(
+            val pythonEnum = PythonEnum(
                 name = "TestEnum",
                 instances = listOf(
-                    MutablePythonEnumInstance(name = "TestEnumInstance")
+                    PythonEnumInstance(name = "TestEnumInstance")
                 )
             )
 
@@ -997,7 +997,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should handle empty enum variant`() {
-            val pythonEnumInstance = MutablePythonEnumInstance(name = "TestEnumInstance")
+            val pythonEnumInstance = PythonEnumInstance(name = "TestEnumInstance")
 
             pythonEnumInstance.toSmlEnumVariant().asClue {
                 it.name shouldBe "TestEnumInstance"
@@ -1010,7 +1010,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should convert name to camel case`() {
-            val pythonEnumInstance = MutablePythonEnumInstance(name = "test_enum_instance")
+            val pythonEnumInstance = PythonEnumInstance(name = "test_enum_instance")
 
             val smlEnumVariant = pythonEnumInstance.toSmlEnumVariant()
             smlEnumVariant.name shouldBe "TestEnumInstance"
@@ -1018,7 +1018,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should store python name if it differs from stub name`() {
-            val pythonEnumInstance = MutablePythonEnumInstance(name = "test_enum_instance")
+            val pythonEnumInstance = PythonEnumInstance(name = "test_enum_instance")
 
             val arguments = pythonEnumInstance.toSmlEnumVariant()
                 .uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
@@ -1033,7 +1033,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should not store python name if it is identical to stub name`() {
-            val pythonEnumInstance = MutablePythonEnumInstance(name = "TestEnumInstance")
+            val pythonEnumInstance = PythonEnumInstance(name = "TestEnumInstance")
 
             pythonEnumInstance.toSmlEnumVariant()
                 .uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
@@ -1042,7 +1042,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should store description if it is not blank`() {
-            val pythonEnumInstance = MutablePythonEnumInstance(
+            val pythonEnumInstance = PythonEnumInstance(
                 name = "TestEnumInstance",
                 description = "Lorem ipsum"
             )
@@ -1060,7 +1060,7 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should not store description if it is blank`() {
-            val pythonEnumInstance = MutablePythonEnumInstance(
+            val pythonEnumInstance = PythonEnumInstance(
                 name = "TestEnumInstance",
                 description = ""
             )

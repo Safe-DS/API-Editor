@@ -5,20 +5,20 @@ import com.larsreimann.api_editor.model.ConstantAnnotation
 import com.larsreimann.api_editor.model.OptionalAnnotation
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.model.RequiredAnnotation
-import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
-import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonPackage
+import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.modeling.descendants
 
 /**
  * Processes and removes `@attribute`, `@constant`, `@optional`, and `@required` annotations.
  */
-fun MutablePythonPackage.processParameterAnnotations() {
+fun PythonPackage.processParameterAnnotations() {
     this.descendants()
-        .filterIsInstance<MutablePythonParameter>()
+        .filterIsInstance<PythonParameter>()
         .forEach { it.processParameterAnnotations() }
 }
 
-private fun MutablePythonParameter.processParameterAnnotations() {
+private fun PythonParameter.processParameterAnnotations() {
     annotations
         .toList()
         .forEach {

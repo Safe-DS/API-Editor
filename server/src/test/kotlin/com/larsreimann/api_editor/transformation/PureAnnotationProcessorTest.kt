@@ -1,30 +1,30 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.PureAnnotation
-import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
-import com.larsreimann.api_editor.mutable_model.MutablePythonModule
-import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
+import com.larsreimann.api_editor.mutable_model.PythonFunction
+import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonPackage
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class PureAnnotationProcessorTest {
-    private lateinit var testFunction: MutablePythonFunction
-    private lateinit var testPackage: MutablePythonPackage
+    private lateinit var testFunction: PythonFunction
+    private lateinit var testPackage: PythonPackage
 
     @BeforeEach
     fun reset() {
-        testFunction = MutablePythonFunction(
+        testFunction = PythonFunction(
             name = "testFunction",
             annotations = mutableListOf(PureAnnotation)
         )
-        testPackage = MutablePythonPackage(
+        testPackage = PythonPackage(
             "testPackage",
             "testPackage",
             "1.0.0",
             modules = listOf(
-                MutablePythonModule(
+                PythonModule(
                     "testModule",
                     functions = listOf(testFunction)
                 )

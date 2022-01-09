@@ -1,11 +1,11 @@
 package com.larsreimann.api_editor.transformation
 
-import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
+import com.larsreimann.api_editor.mutable_model.PythonPackage
 
 /**
  * Processes all annotations and updates the AST to create adapters.
  */
-fun MutablePythonPackage.transform() {
+fun PythonPackage.transform() {
     preprocess()
     processAnnotations()
     postprocess()
@@ -14,7 +14,7 @@ fun MutablePythonPackage.transform() {
 /**
  * Transformation steps that have to be run before annotations can be processed.
  */
-private fun MutablePythonPackage.preprocess() {
+private fun PythonPackage.preprocess() {
     removePrivateDeclarations()
     addOriginalDeclarations()
     changeModulePrefix(newPrefix = "simpleml")
@@ -26,7 +26,7 @@ private fun MutablePythonPackage.preprocess() {
 /**
  * Processes all annotations.
  */
-private fun MutablePythonPackage.processAnnotations() {
+private fun PythonPackage.processAnnotations() {
     processUnusedAnnotations()
     processRenameAnnotations()
     processMoveAnnotations()
@@ -40,7 +40,7 @@ private fun MutablePythonPackage.processAnnotations() {
 /**
  * Transformation steps that have to be run after annotations were processed.
  */
-private fun MutablePythonPackage.postprocess() {
+private fun PythonPackage.postprocess() {
     removeEmptyModules()
     reorderParameters()
     createConstructors()
