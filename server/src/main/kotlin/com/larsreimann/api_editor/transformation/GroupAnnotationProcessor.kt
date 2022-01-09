@@ -26,53 +26,45 @@ private fun MutablePythonModule.processGroupAnnotations() {
         .forEach { it.processGroupAnnotations(this) }
 }
 
-private fun MutablePythonFunction.processGroupAnnotations(
-    module: MutablePythonModule
-) {
-    this.annotations.filterIsInstance<GroupAnnotation>().forEach {
-        val firstOccurrence = this.parameters.indexOfFirst { parameter ->
-            parameter.name in it.parameters
-        }
-        val groupedParameterNames = mutableListOf<String>()
-        groupedParameterNames.addAll(it.parameters)
-        val groupedParameter = MutablePythonParameter(
-            name = it.groupName.replaceFirstChar { firstChar -> firstChar.lowercase() },
-            typeInDocs = it.groupName.replaceFirstChar { firstChar -> firstChar.uppercase() },
-            assignedBy = PythonParameterAssignment.GROUP,
-            groupedParameterNames = groupedParameterNames
-        )
-        val constructorParameters = mutableListOf(
-            MutablePythonParameter(
-                name = "self",
-                assignedBy = PythonParameterAssignment.IMPLICIT
+private fun MutablePythonFunction.processGroupAnnotations(module: MutablePythonModule) {
+    this.annotations
+        .filterIsInstance<GroupAnnotation>()
+        .forEach { annotation ->
+            val firstOccurrence = this.parameters.indexOfFirst { it.name in annotation.parameters }
+            val groupedParameter = MutablePythonParameter(
+                name = annotation.groupName.replaceFirstChar { it.lowercase() },
+                typeInDocs = annotation.groupName.replaceFirstChar { it.uppercase() },
+                assignedBy = PythonParameterAssignment.GROUP,
+                groupedParameterNames = annotation.parameters.toMutableList()
             )
-        )
-        constructorParameters.addAll(
-            this.parameters.filter { parameter ->
-                parameter.name in it.parameters
+            val constructorParameters = mutableListOf(
+                MutablePythonParameter(
+                    name = "self",
+                    assignedBy = PythonParameterAssignment.IMPLICIT
+                )
+            )
+            constructorParameters += this.parameters.filter { it.name in annotation.parameters }
+            this.parameters.removeIf { it.name in annotation.parameters }
+            this.parameters.add(firstOccurrence, groupedParameter)
+            val groupedParameterClass = MutablePythonClass(
+                name = annotation.groupName.replaceFirstChar { it.uppercase() },
+                constructor = MutablePythonConstructor(
+                    parameters = constructorParameters
+                )
+            )
+            if (hasConflictingGroups(module.classes, groupedParameterClass)) {
+                throw ConflictingGroupException(
+                    groupedParameterClass.name,
+                    module.name,
+                    this.qualifiedName()
+                )
             }
-        )
-        this.parameters.removeIf { parameter -> parameter.name in it.parameters }
-        this.parameters.add(firstOccurrence, groupedParameter)
-        val groupedParameterClass = MutablePythonClass(
-            name = it.groupName.replaceFirstChar { firstChar -> firstChar.uppercase() },
-            constructor = MutablePythonConstructor(
-                parameters = constructorParameters
-            )
-        )
-        if (hasConflictingGroups(module.classes, groupedParameterClass)) {
-            throw ConflictingGroupException(
-                groupedParameterClass.name,
-                module.name,
-                this.qualifiedName()
-            )
-        }
-        if (!isAlreadyDefinedInModule(module.classes, groupedParameterClass)) {
-            module.classes.add(groupedParameterClass)
-        }
+            if (!isAlreadyDefinedInModule(module.classes, groupedParameterClass)) {
+                module.classes.add(groupedParameterClass)
+            }
 
-        this.annotations.remove(it)
-    }
+            this.annotations.remove(annotation)
+        }
 }
 
 private fun hasConflictingGroups(
@@ -81,10 +73,8 @@ private fun hasConflictingGroups(
 ): Boolean {
     return moduleClasses.any {
         (groupToCheck.name == it.name) &&
-            (
-                groupToCheck.constructor?.parameters?.toList().toString()
-                    != it.constructor?.parameters?.toList().toString()
-                )
+            (groupToCheck.constructor?.parameters?.toList().toString()
+                != it.constructor?.parameters?.toList().toString())
     }
 }
 
