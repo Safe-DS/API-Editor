@@ -181,20 +181,13 @@ class PreprocessorTest {
         }
 
         @Test
-        fun `should add original declaration to class methods`() {
+        fun `should add original declaration to class methods but skip implicit parameters`() {
             testPackage.addOriginalDeclarations()
 
             val callToOriginalAPI = testMethod.callToOriginalAPI.shouldNotBeNull()
             callToOriginalAPI.receiver shouldBe "self.instance.testMethod"
 
-            val arguments = callToOriginalAPI.arguments
-            arguments.shouldHaveSize(1)
-
-            arguments[0].name.shouldBeNull()
-            arguments[0].value.asClue {
-                it.shouldBeInstanceOf<PythonReference>()
-                it.declaration shouldBe testMethodParameter
-            }
+            callToOriginalAPI.arguments.shouldHaveSize(0)
         }
     }
 

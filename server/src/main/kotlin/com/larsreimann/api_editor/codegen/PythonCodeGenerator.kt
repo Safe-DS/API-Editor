@@ -118,7 +118,7 @@ private fun buildSeparators(
 fun PythonClass.toPythonCode(): String {
     var formattedClass = "class $name:\n"
     if (constructor != null) {
-        formattedClass += buildConstructor().prependIndent("    ")
+        formattedClass += buildConstructor(this).prependIndent("    ")
     }
     if (!methods.isEmpty()) {
         if (constructor != null) {
@@ -133,21 +133,24 @@ private fun buildAllFunctions(pythonClass: PythonClass): List<String> {
     return pythonClass.methods.map { it.toPythonCode().prependIndent("    ") }
 }
 
-private fun PythonClass.buildConstructor(): String {
-    var constructorSeparator = ""
-    val assignments = buildAttributeAssignments(this).joinToString("\n".repeat(1))
-    if (assignments.isNotBlank()) {
-        constructorSeparator = "\n"
+private fun buildConstructor(`class`: PythonClass) = buildString {
+    appendLine("def __init__(${buildParameters(`class`.constructor?.parameters.orEmpty())}):")
+
+    appendIndented(4) {
+        val attributes = buildAttributeAssignments(`class`).joinToString("\n")
+        if (attributes.isNotBlank()) {
+            append("$attributes\n\n")
+        }
+
+        val constructorCall = `class`.constructor?.buildConstructorCall() ?: ""
+        if (constructorCall.isNotBlank()) {
+            append(constructorCall)
+        }
+
+        if (attributes.isBlank() && constructorCall.isBlank()) {
+            append("pass")
+        }
     }
-    var constructorSuffix = constructorSeparator + assignments
-    constructorSuffix += this.constructor?.buildConstructorCall() ?: ""
-    if (constructorSuffix.isBlank()) {
-        constructorSuffix = "pass"
-    }
-    return """
-      |def __init__(${buildParameters(this.constructor?.parameters.orEmpty())}):
-      |${(constructorSuffix).prependIndent("    ")}
-      """.trimMargin()
 }
 
 private fun PythonConstructor.buildConstructorCall(): String {

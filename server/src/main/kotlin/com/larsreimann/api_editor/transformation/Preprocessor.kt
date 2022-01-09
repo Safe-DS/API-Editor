@@ -10,6 +10,7 @@ import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonReference
+import com.larsreimann.modeling.closest
 import com.larsreimann.modeling.descendants
 
 /**
@@ -63,12 +64,16 @@ private fun PythonClass.addOriginalDeclarations() {
 }
 
 private fun PythonFunction.addOriginalDeclarations() {
+    val containingClass = closest<PythonClass>()
     this.callToOriginalAPI = PythonCall(
         receiver = when {
+            name == "__init__" && containingClass != null -> containingClass.originalClass!!.qualifiedName
             isMethod() -> "self.instance.$name"
             else -> qualifiedName()
         },
-        arguments = this.parameters.map {
+        arguments = this.parameters
+            .filter { !it.isImplicit() }
+            .map {
             PythonArgument(
                 name = when (it.assignedBy) {
                     PythonParameterAssignment.NAME_ONLY -> it.name
