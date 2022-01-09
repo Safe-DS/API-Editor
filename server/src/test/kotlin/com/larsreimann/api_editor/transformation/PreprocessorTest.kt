@@ -2,8 +2,6 @@ package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.mutable_model.OriginalPythonClass
-import com.larsreimann.api_editor.mutable_model.OriginalPythonFunction
-import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonAttribute
 import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonFunction
@@ -163,22 +161,6 @@ class PreprocessorTest {
         fun `should add original declaration to global functions`() {
             testPackage.addOriginalDeclarations()
 
-            // TODO: remove
-            testGlobalFunction.originalFunction shouldBe OriginalPythonFunction(
-                qualifiedName = "testModule.testGlobalFunction",
-                parameters = listOf(
-                    OriginalPythonParameter(
-                        name = "testRequiredParameter",
-                        assignedBy = PythonParameterAssignment.POSITION_ONLY
-                    ),
-                    OriginalPythonParameter(
-                        name = "testOptionalParameter",
-                        assignedBy = PythonParameterAssignment.POSITION_OR_NAME
-                    )
-                )
-            )
-            // end remove
-
             val callToOriginalAPI = testGlobalFunction.callToOriginalAPI.shouldNotBeNull()
             callToOriginalAPI.receiver shouldBe "testModule.testGlobalFunction"
 
@@ -202,20 +184,8 @@ class PreprocessorTest {
         fun `should add original declaration to class methods`() {
             testPackage.addOriginalDeclarations()
 
-            // TODO: remove
-            testMethod.originalFunction shouldBe OriginalPythonFunction(
-                qualifiedName = "testModule.testClass.testMethod",
-                parameters = listOf(
-                    OriginalPythonParameter(
-                        name = "testMethodParameter",
-                        assignedBy = PythonParameterAssignment.POSITION_ONLY
-                    )
-                )
-            )
-            // end remove
-
             val callToOriginalAPI = testMethod.callToOriginalAPI.shouldNotBeNull()
-            callToOriginalAPI.receiver shouldBe "testModule.testClass.testMethod"
+            callToOriginalAPI.receiver shouldBe "self.instance.testMethod"
 
             val arguments = callToOriginalAPI.arguments
             arguments.shouldHaveSize(1)
@@ -225,16 +195,6 @@ class PreprocessorTest {
                 it.shouldBeInstanceOf<PythonReference>()
                 it.declaration shouldBe testMethodParameter
             }
-        }
-
-        @Test
-        fun `should add original declaration to parameters`() {
-            testPackage.addOriginalDeclarations()
-
-            testRequiredParameter.originalParameter shouldBe OriginalPythonParameter(
-                name = "testRequiredParameter",
-                assignedBy = PythonParameterAssignment.POSITION_ONLY
-            )
         }
     }
 

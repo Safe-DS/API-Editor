@@ -2,8 +2,6 @@ package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.mutable_model.OriginalPythonClass
-import com.larsreimann.api_editor.mutable_model.OriginalPythonFunction
-import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonArgument
 import com.larsreimann.api_editor.mutable_model.PythonAttribute
 import com.larsreimann.api_editor.mutable_model.PythonCall
@@ -56,7 +54,6 @@ fun PythonPackage.addOriginalDeclarations() {
             when (it) {
                 is PythonClass -> it.addOriginalDeclarations()
                 is PythonFunction -> it.addOriginalDeclarations()
-                is PythonParameter -> it.addOriginalDeclarations()
             }
         }
 }
@@ -66,20 +63,11 @@ private fun PythonClass.addOriginalDeclarations() {
 }
 
 private fun PythonFunction.addOriginalDeclarations() {
-    // TODO: remove
-    this.originalFunction = OriginalPythonFunction(
-        this.qualifiedName(),
-        this.parameters.map {
-            OriginalPythonParameter(
-                name = it.name,
-                assignedBy = it.assignedBy
-            )
-        }
-    )
-    // end remove
-
     this.callToOriginalAPI = PythonCall(
-        receiver = this.qualifiedName(),
+        receiver = when {
+            isMethod() -> "self.instance.$name"
+            else -> qualifiedName()
+        },
         arguments = this.parameters.map {
             PythonArgument(
                 name = when (it.assignedBy) {
@@ -91,15 +79,6 @@ private fun PythonFunction.addOriginalDeclarations() {
         }
     )
 }
-
-// TODO: remove
-private fun PythonParameter.addOriginalDeclarations() {
-    this.originalParameter = OriginalPythonParameter(
-        name = this.name,
-        assignedBy = this.assignedBy
-    )
-}
-// end remove
 
 /**
  * Changes the first segment of the name of the module to the [newPrefix].

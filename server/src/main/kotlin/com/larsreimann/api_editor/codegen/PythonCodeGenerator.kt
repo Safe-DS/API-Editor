@@ -9,13 +9,22 @@ import com.larsreimann.api_editor.model.PythonParameterAssignment.IMPLICIT
 import com.larsreimann.api_editor.model.PythonParameterAssignment.NAME_ONLY
 import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITION_ONLY
 import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITION_OR_NAME
+import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonArgument
+import com.larsreimann.api_editor.mutable_model.PythonBoolean
+import com.larsreimann.api_editor.mutable_model.PythonCall
 import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonConstructor
 import com.larsreimann.api_editor.mutable_model.PythonEnum
+import com.larsreimann.api_editor.mutable_model.PythonExpression
+import com.larsreimann.api_editor.mutable_model.PythonFloat
 import com.larsreimann.api_editor.mutable_model.PythonFunction
+import com.larsreimann.api_editor.mutable_model.PythonInt
+import com.larsreimann.api_editor.mutable_model.PythonMemberAccess
 import com.larsreimann.api_editor.mutable_model.PythonModule
 import com.larsreimann.api_editor.mutable_model.PythonParameter
-import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonReference
+import com.larsreimann.api_editor.mutable_model.PythonString
 
 /**
  * Builds a string containing the formatted module content
@@ -48,7 +57,7 @@ private fun buildNamespace(pythonModule: PythonModule): String {
     val importedModules = HashSet<String>()
     pythonModule.functions.forEach { pythonFunction: PythonFunction ->
         importedModules.add(
-            buildParentDeclarationName(pythonFunction.originalFunction!!.qualifiedName)
+            buildParentDeclarationName(pythonFunction.callToOriginalAPI!!.receiver)
         )
     }
     pythonModule.classes.forEach { pythonClass: PythonClass ->
@@ -237,20 +246,13 @@ private fun buildFunctionBody(pythonFunction: PythonFunction): String {
     if (!pythonFunction.isMethod() || pythonFunction.isStaticMethod()) {
         return (
             formattedBoundaries +
-                pythonFunction.originalFunction!!.qualifiedName +
-                "(" +
-                pythonFunction.buildParameterCall() +
-                ")"
+                pythonFunction.callToOriginalAPI!!.toPythonCode()
             )
     }
 
     return (
         formattedBoundaries +
-            "self.instance." +
-            pythonFunction.originalFunction!!.qualifiedName.split(".").last() +
-            "(" +
-            pythonFunction.buildParameterCall() +
-            ")"
+            pythonFunction.callToOriginalAPI!!.toPythonCode()
         )
 }
 
@@ -338,18 +340,30 @@ private fun buildBoundaryChecks(pythonFunction: PythonFunction): List<String> {
     return formattedBoundaries
 }
 
-private fun PythonFunction.buildParameterCall(): String {
-    return buildParameterCall(
-        parameters,
-        originalFunction!!.parameters
-    )
-}
-
 private fun PythonConstructor.buildParameterCall(): String {
     return buildParameterCall(
         parameters,
         callToOriginalAPI!!.parameters
     )
+}
+
+private fun PythonExpression.toPythonCode(): String {
+    return when (this) {
+        is PythonBoolean -> value.toString()
+        is PythonCall -> "$receiver(${arguments.joinToString { it.toPythonCode() }})"
+        is PythonFloat -> value.toString()
+        is PythonInt -> value.toString()
+        is PythonString -> "'$value'"
+        is PythonMemberAccess -> "${receiver!!.toPythonCode()}.${member!!.toPythonCode()}"
+        is PythonReference -> declaration!!.name
+    }
+}
+
+private fun PythonArgument.toPythonCode() = buildString {
+    if (name != null) {
+        append("$name=")
+    }
+    append(value!!.toPythonCode())
 }
 
 private fun buildParameterCall(
