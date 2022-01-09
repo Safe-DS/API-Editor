@@ -1,19 +1,25 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.PythonParameterAssignment
+import com.larsreimann.api_editor.mutable_model.OriginalPythonClass
+import com.larsreimann.api_editor.mutable_model.OriginalPythonFunction
+import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonAttribute
 import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonModule
 import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.api_editor.mutable_model.PythonParameter
-import com.larsreimann.api_editor.mutable_model.OriginalPythonClass
-import com.larsreimann.api_editor.mutable_model.OriginalPythonFunction
-import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonReference
+import io.kotest.assertions.asClue
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -157,6 +163,7 @@ class PreprocessorTest {
         fun `should add original declaration to global functions`() {
             testPackage.addOriginalDeclarations()
 
+            // TODO: remove
             testGlobalFunction.originalFunction shouldBe OriginalPythonFunction(
                 qualifiedName = "testModule.testGlobalFunction",
                 parameters = listOf(
@@ -170,12 +177,32 @@ class PreprocessorTest {
                     )
                 )
             )
+            // end remove
+
+            val callToOriginalAPI = testGlobalFunction.callToOriginalAPI.shouldNotBeNull()
+            callToOriginalAPI.receiver shouldBe "testModule.testGlobalFunction"
+
+            val arguments = callToOriginalAPI.arguments
+            arguments.shouldHaveSize(2)
+
+            arguments[0].name.shouldBeNull()
+            arguments[0].value.asClue {
+                it.shouldBeInstanceOf<PythonReference>()
+                it.declaration shouldBe testRequiredParameter
+            }
+
+            arguments[1].name.shouldBeNull()
+            arguments[1].value.asClue {
+                it.shouldBeInstanceOf<PythonReference>()
+                it.declaration shouldBe testOptionalParameter
+            }
         }
 
         @Test
         fun `should add original declaration to class methods`() {
             testPackage.addOriginalDeclarations()
 
+            // TODO: remove
             testMethod.originalFunction shouldBe OriginalPythonFunction(
                 qualifiedName = "testModule.testClass.testMethod",
                 parameters = listOf(
@@ -185,6 +212,19 @@ class PreprocessorTest {
                     )
                 )
             )
+            // end remove
+
+            val callToOriginalAPI = testMethod.callToOriginalAPI.shouldNotBeNull()
+            callToOriginalAPI.receiver shouldBe "testModule.testClass.testMethod"
+
+            val arguments = callToOriginalAPI.arguments
+            arguments.shouldHaveSize(1)
+
+            arguments[0].name.shouldBeNull()
+            arguments[0].value.asClue {
+                it.shouldBeInstanceOf<PythonReference>()
+                it.declaration shouldBe testMethodParameter
+            }
         }
 
         @Test
@@ -245,6 +285,7 @@ class PreprocessorTest {
 
             testRequiredParameter.assignedBy shouldBe PythonParameterAssignment.POSITION_OR_NAME
         }
+
         @Test
         fun `should make optional parameters assigned by name only`() {
             testPackage.updateParameterAssignment()

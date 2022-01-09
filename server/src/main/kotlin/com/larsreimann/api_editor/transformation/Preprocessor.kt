@@ -1,14 +1,17 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.PythonParameterAssignment
+import com.larsreimann.api_editor.mutable_model.OriginalPythonClass
+import com.larsreimann.api_editor.mutable_model.OriginalPythonFunction
+import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonArgument
 import com.larsreimann.api_editor.mutable_model.PythonAttribute
+import com.larsreimann.api_editor.mutable_model.PythonCall
 import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.api_editor.mutable_model.PythonParameter
-import com.larsreimann.api_editor.mutable_model.OriginalPythonClass
-import com.larsreimann.api_editor.mutable_model.OriginalPythonFunction
-import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonReference
 import com.larsreimann.modeling.descendants
 
 /**
@@ -69,6 +72,19 @@ private fun PythonFunction.addOriginalDeclarations() {
             OriginalPythonParameter(
                 name = it.name,
                 assignedBy = it.assignedBy
+            )
+        }
+    )
+
+    this.callToOriginalAPI = PythonCall(
+        receiver = this.qualifiedName(),
+        arguments = this.parameters.map {
+            PythonArgument(
+                name = when (it.assignedBy) {
+                    PythonParameterAssignment.NAME_ONLY -> it.name
+                    else -> null
+                },
+                value = PythonReference(it)
             )
         }
     )
