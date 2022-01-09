@@ -2,46 +2,43 @@ package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.GroupAnnotation
 import com.larsreimann.api_editor.model.PythonParameterAssignment
-import com.larsreimann.api_editor.mutable_model.MutablePythonClass
-import com.larsreimann.api_editor.mutable_model.MutablePythonConstructor
-import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
-import com.larsreimann.api_editor.mutable_model.MutablePythonModule
-import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
-import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
-import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonArgument
+import com.larsreimann.api_editor.mutable_model.PythonCall
+import com.larsreimann.api_editor.mutable_model.PythonClass
+import com.larsreimann.api_editor.mutable_model.PythonConstructor
+import com.larsreimann.api_editor.mutable_model.PythonFunction
+import com.larsreimann.api_editor.mutable_model.PythonMemberAccess
+import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonPackage
+import com.larsreimann.api_editor.mutable_model.PythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonReference
 import com.larsreimann.api_editor.transformation.processing_exceptions.ConflictingGroupException
+import io.kotest.assertions.asClue
 import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class GroupAnnotationProcessorTest {
-    private lateinit var testParameter1: MutablePythonParameter
-    private lateinit var testParameter2: MutablePythonParameter
-    private lateinit var testParameter3: MutablePythonParameter
-    private lateinit var testFunction: MutablePythonFunction
-    private lateinit var testModule: MutablePythonModule
-    private lateinit var testPackage: MutablePythonPackage
+    private lateinit var testParameter1: PythonParameter
+    private lateinit var testParameter2: PythonParameter
+    private lateinit var testParameter3: PythonParameter
+    private lateinit var testFunction: PythonFunction
+    private lateinit var testModule: PythonModule
+    private lateinit var testPackage: PythonPackage
 
     @BeforeEach
     fun reset() {
-        testParameter1 = MutablePythonParameter(
-            name = "testParameter1",
-            originalParameter = OriginalPythonParameter(name = "testParameter1")
-        )
-        testParameter2 = MutablePythonParameter(
-            name = "testParameter2",
-            originalParameter = OriginalPythonParameter(name = "testParameter2")
-        )
-        testParameter3 = MutablePythonParameter(
-            name = "testParameter3",
-            originalParameter = OriginalPythonParameter(name = "testParameter3")
-        )
-        testFunction = MutablePythonFunction(
+        testParameter1 = PythonParameter(name = "testParameter1")
+        testParameter2 = PythonParameter(name = "testParameter2")
+        testParameter3 = PythonParameter(name = "testParameter3")
+        testFunction = PythonFunction(
             name = "testFunction",
             parameters = mutableListOf(
                 testParameter1,
@@ -53,18 +50,65 @@ class GroupAnnotationProcessorTest {
                     groupName = "TestGroup",
                     parameters = mutableListOf("testParameter2", "testParameter3")
                 )
+            ),
+            callToOriginalAPI = PythonCall(
+                receiver = "testModule.testFunction",
+                arguments = listOf(
+                    PythonArgument(value = PythonReference(testParameter1)),
+                    PythonArgument(value = PythonReference(testParameter2)),
+                    PythonArgument(value = PythonReference(testParameter3)),
+                )
             )
         )
-        testModule = MutablePythonModule(
+        testModule = PythonModule(
             name = "testModule",
             functions = mutableListOf(testFunction)
         )
-        testPackage = MutablePythonPackage(
+        testPackage = PythonPackage(
             distribution = "testPackage",
             name = "testPackage",
             version = "1.0.0",
             modules = mutableListOf(testModule)
         )
+    }
+
+    @Test
+    fun `should update the function call when processing GroupAnnotations`() {
+        testPackage.processGroupAnnotations()
+
+        val callToOriginalAPI = testFunction.callToOriginalAPI.shouldNotBeNull()
+        callToOriginalAPI.arguments.shouldHaveSize(3)
+
+        val firstArgument = callToOriginalAPI.arguments[0]
+        firstArgument.name.shouldBeNull()
+        firstArgument.value.asClue {
+            it.shouldBeInstanceOf<PythonReference>()
+            it.declaration shouldBe testParameter1
+        }
+
+        val secondArgument = callToOriginalAPI.arguments[1]
+        val secondArgumentValue = secondArgument.value.shouldBeInstanceOf<PythonMemberAccess>()
+        secondArgumentValue.receiver.asClue {
+            it.shouldBeInstanceOf<PythonReference>()
+            it.declaration?.name shouldBe "TestGroup"
+        }
+        secondArgumentValue.member.asClue {
+            it.shouldNotBeNull()
+            it.declaration.shouldNotBeNull()
+            it.declaration?.name shouldBe "testParameter2"
+        }
+
+        val thirdArgument = callToOriginalAPI.arguments[2]
+        val thirdArgumentValue = thirdArgument.value.shouldBeInstanceOf<PythonMemberAccess>()
+        thirdArgumentValue.receiver.asClue {
+            it.shouldBeInstanceOf<PythonReference>()
+            it.declaration?.name shouldBe "TestGroup"
+        }
+        thirdArgumentValue.member.asClue {
+            it.shouldNotBeNull()
+            it.declaration.shouldNotBeNull()
+            it.declaration?.name shouldBe "testParameter3"
+        }
     }
 
     @Test
@@ -76,12 +120,7 @@ class GroupAnnotationProcessorTest {
         parameters[0] shouldBe testParameter1
         parameters[1] shouldBe parameters[1].copy(
             name = "testGroup",
-            assignedBy = PythonParameterAssignment.GROUP,
-            typeInDocs = "TestGroup",
-            groupedParametersOldToNewName = mutableMapOf(
-                "testParameter2" to "testParameter2",
-                "testParameter3" to "testParameter3"
-            )
+            typeInDocs = "TestGroup"
         )
     }
 
@@ -101,16 +140,16 @@ class GroupAnnotationProcessorTest {
 
     @Test
     fun `should process GroupAnnotations on function level with identical class on module level`() {
-        testModule.classes += MutablePythonClass(
+        testModule.classes += PythonClass(
             name = "TestGroup",
-            constructor = MutablePythonConstructor(
+            constructor = PythonConstructor(
                 mutableListOf(
-                    MutablePythonParameter(
+                    PythonParameter(
                         name = "self",
                         assignedBy = PythonParameterAssignment.IMPLICIT
                     ),
-                    MutablePythonParameter(name = "testParameter2"),
-                    MutablePythonParameter(name = "testParameter3")
+                    PythonParameter(name = "testParameter2"),
+                    PythonParameter(name = "testParameter3")
                 )
             )
         )
@@ -122,27 +161,22 @@ class GroupAnnotationProcessorTest {
         parameters[0] shouldBe testParameter1
         parameters[1] shouldBe parameters[1].copy(
             name = "testGroup",
-            assignedBy = PythonParameterAssignment.GROUP,
-            typeInDocs = "TestGroup",
-            groupedParametersOldToNewName = mutableMapOf(
-                "testParameter2" to "testParameter2",
-                "testParameter3" to "testParameter3"
-            )
+            typeInDocs = "TestGroup"
         )
     }
 
     @Test
     fun `should process GroupAnnotations on module level with identical class on module level`() {
-        testModule.classes += MutablePythonClass(
+        testModule.classes += PythonClass(
             name = "TestGroup",
-            constructor = MutablePythonConstructor(
+            constructor = PythonConstructor(
                 mutableListOf(
-                    MutablePythonParameter(
+                    PythonParameter(
                         name = "self",
                         assignedBy = PythonParameterAssignment.IMPLICIT
                     ),
-                    MutablePythonParameter(name = "testParameter2"),
-                    MutablePythonParameter(name = "testParameter3")
+                    PythonParameter(name = "testParameter2"),
+                    PythonParameter(name = "testParameter3")
                 )
             )
         )
@@ -161,16 +195,16 @@ class GroupAnnotationProcessorTest {
 
     @Test
     fun `should not add duplicate class on module level`() {
-        testModule.classes += MutablePythonClass(
+        testModule.classes += PythonClass(
             name = "TestGroup",
-            constructor = MutablePythonConstructor(
+            constructor = PythonConstructor(
                 mutableListOf(
-                    MutablePythonParameter(
+                    PythonParameter(
                         name = "self",
                         assignedBy = PythonParameterAssignment.IMPLICIT
                     ),
-                    MutablePythonParameter(name = "testParameter2"),
-                    MutablePythonParameter(name = "testParameter3")
+                    PythonParameter(name = "testParameter2"),
+                    PythonParameter(name = "testParameter3")
                 )
             )
         )
@@ -191,15 +225,15 @@ class GroupAnnotationProcessorTest {
 
     @Test
     fun `should throw ConflictingGroupException for conflicting class in module`() {
-        testModule.classes += MutablePythonClass(
+        testModule.classes += PythonClass(
             name = "TestGroup",
-            constructor = MutablePythonConstructor(
+            constructor = PythonConstructor(
                 mutableListOf(
-                    MutablePythonParameter(
+                    PythonParameter(
                         name = "self",
                         assignedBy = PythonParameterAssignment.IMPLICIT
                     ),
-                    MutablePythonParameter(name = "otherParameter")
+                    PythonParameter(name = "otherParameter")
                 )
             )
         )
@@ -207,76 +241,5 @@ class GroupAnnotationProcessorTest {
         shouldThrowExactly<ConflictingGroupException> {
             testPackage.processGroupAnnotations()
         }
-    }
-
-    @Test
-    fun `should process two GroupAnnotations on function level`() {
-        val testParameter4 = MutablePythonParameter(
-            name = "testParameter4",
-            originalParameter = OriginalPythonParameter(name = "testParameter4")
-        )
-        testFunction.parameters.add(testParameter4)
-        testFunction.annotations.add(
-            GroupAnnotation(
-                "TestGroup2",
-                mutableListOf("testParameter1", "testParameter4")
-            )
-        )
-        testPackage.processGroupAnnotations()
-
-        val parameters = testFunction.parameters
-        parameters.shouldHaveSize(2)
-        parameters[0] shouldBe parameters[0].copy(
-            name = "testGroup2",
-            assignedBy = PythonParameterAssignment.GROUP,
-            typeInDocs = "TestGroup2",
-            groupedParametersOldToNewName = mutableMapOf(
-                "testParameter1" to "testParameter1",
-                "testParameter4" to "testParameter4"
-            )
-        )
-        parameters[1] shouldBe parameters[1].copy(
-            name = "testGroup",
-            assignedBy = PythonParameterAssignment.GROUP,
-            typeInDocs = "TestGroup",
-            groupedParametersOldToNewName = mutableMapOf(
-                "testParameter2" to "testParameter2",
-                "testParameter3" to "testParameter3"
-            )
-        )
-    }
-
-    @Test
-    fun `should process two GroupAnnotations on module level`() {
-        val testParameter4 = MutablePythonParameter(
-            name = "testParameter4",
-            originalParameter = OriginalPythonParameter(name = "testParameter4")
-        )
-        testFunction.parameters.add(testParameter4)
-        testFunction.annotations.add(
-            GroupAnnotation(
-                "TestGroup2",
-                mutableListOf("testParameter1", "testParameter4")
-            )
-        )
-        testPackage.processGroupAnnotations()
-
-        val testGroup = testModule.classes[0]
-        testGroup.name shouldBe "TestGroup"
-
-        testGroup.constructor
-            .shouldNotBeNull()
-            .parameters
-            .map { it.name }
-            .shouldContainExactly("self", "testParameter2", "testParameter3")
-
-        val testGroup2 = testModule.classes[1]
-        testGroup2.name shouldBe "TestGroup2"
-
-        testGroup2.constructor
-            .shouldNotBeNull()
-            .parameters
-            .map { it.name }
-            .shouldContainExactly("self", "testParameter1", "testParameter4")
     }
 }

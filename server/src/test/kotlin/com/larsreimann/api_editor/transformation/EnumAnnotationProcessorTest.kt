@@ -2,25 +2,35 @@ package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.EnumAnnotation
 import com.larsreimann.api_editor.model.EnumPair
-import com.larsreimann.api_editor.model.PythonParameterAssignment
-import com.larsreimann.api_editor.mutable_model.MutablePythonEnum
-import com.larsreimann.api_editor.mutable_model.MutablePythonEnumInstance
-import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
-import com.larsreimann.api_editor.mutable_model.MutablePythonModule
-import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
-import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonArgument
+import com.larsreimann.api_editor.mutable_model.PythonCall
+import com.larsreimann.api_editor.mutable_model.PythonDeclaration
+import com.larsreimann.api_editor.mutable_model.PythonEnum
+import com.larsreimann.api_editor.mutable_model.PythonEnumInstance
+import com.larsreimann.api_editor.mutable_model.PythonFunction
+import com.larsreimann.api_editor.mutable_model.PythonMemberAccess
+import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonPackage
+import com.larsreimann.api_editor.mutable_model.PythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonReference
 import com.larsreimann.api_editor.transformation.processing_exceptions.ConflictingEnumException
+import io.kotest.assertions.asClue
 import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContain
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class EnumAnnotationProcessorTest {
-    private lateinit var testParameter: MutablePythonParameter
-    private lateinit var testModule: MutablePythonModule
-    private lateinit var testPackage: MutablePythonPackage
+    private lateinit var testParameter: PythonParameter
+    private lateinit var testFunction: PythonFunction
+    private lateinit var testModule: PythonModule
+    private lateinit var testPackage: PythonPackage
 
     @BeforeEach
     fun reset() {
@@ -28,7 +38,7 @@ class EnumAnnotationProcessorTest {
             EnumPair("value1", "name1"),
             EnumPair("value2", "name2"),
         )
-        testParameter = MutablePythonParameter(
+        testParameter = PythonParameter(
             name = "testParameter",
             annotations = mutableListOf(
                 EnumAnnotation(
@@ -37,30 +47,56 @@ class EnumAnnotationProcessorTest {
                 )
             )
         )
-        testModule = MutablePythonModule(
-            name = "testModule",
-            functions = mutableListOf(
-                MutablePythonFunction(
-                    name = "testFunction",
-                    parameters = mutableListOf(testParameter)
+        testFunction = PythonFunction(
+            name = "testFunction",
+            parameters = listOf(testParameter),
+            callToOriginalAPI = PythonCall(
+                receiver = "testModule.testFunction",
+                arguments = listOf(
+                    PythonArgument(
+                        value = PythonReference(testParameter)
+                    )
                 )
             )
         )
-        testPackage = MutablePythonPackage(
+        testModule = PythonModule(
+            name = "testModule",
+            functions = listOf(testFunction)
+        )
+        testPackage = PythonPackage(
             distribution = "testPackage",
             name = "testPackage",
             version = "1.0.0",
-            modules = mutableListOf(
-                testModule
-            )
+            modules = listOf(testModule)
         )
+    }
+
+    @Test
+    fun `should update the function call when processing EnumAnnotations`() {
+        testPackage.processEnumAnnotations()
+
+        val callToOriginalAPI = testFunction.callToOriginalAPI.shouldNotBeNull()
+        callToOriginalAPI.arguments.shouldHaveSize(1)
+
+        val argument = callToOriginalAPI.arguments[0]
+        argument.name.shouldBeNull()
+
+        val value = argument.value.shouldBeInstanceOf<PythonMemberAccess>()
+        value.receiver.asClue {
+            it.shouldBeInstanceOf<PythonReference>()
+            it.declaration shouldBe testParameter
+        }
+        value.member.asClue {
+            it.shouldNotBeNull()
+            it.declaration.shouldBeInstanceOf<PythonDeclaration>()
+            it.declaration?.name shouldBe "value"
+        }
     }
 
     @Test
     fun `should process EnumAnnotations on parameter level`() {
         testPackage.processEnumAnnotations()
 
-        testParameter.assignedBy shouldBe PythonParameterAssignment.ENUM
         testParameter.typeInDocs shouldBe "TestEnum"
     }
 
@@ -69,54 +105,49 @@ class EnumAnnotationProcessorTest {
         testPackage.processEnumAnnotations()
 
         testModule.enums[0].name shouldBe "TestEnum"
-        testModule.enums[0].instances shouldContain
-            MutablePythonEnumInstance("name1", "value1")
-        testModule.enums[0].instances shouldContain
-            MutablePythonEnumInstance("name2", "value2")
+        testModule.enums[0].instances shouldContain PythonEnumInstance("name1", "value1")
+        testModule.enums[0].instances shouldContain PythonEnumInstance("name2", "value2")
     }
 
     @Test
     fun `should process EnumAnnotations on parameter level with identical enum on module level`() {
-        val mutableEnum = MutablePythonEnum(
+        val mutableEnum = PythonEnum(
             "TestEnum",
             mutableListOf(
-                MutablePythonEnumInstance("name1", "value1"),
-                MutablePythonEnumInstance("name2", "value2")
+                PythonEnumInstance("name1", "value1"),
+                PythonEnumInstance("name2", "value2")
             )
         )
-        testModule.enums.add(mutableEnum)
+        testModule.enums += mutableEnum
         testPackage.processEnumAnnotations()
 
-        testParameter.assignedBy shouldBe PythonParameterAssignment.ENUM
         testParameter.typeInDocs shouldBe "TestEnum"
     }
 
     @Test
     fun `should process EnumAnnotations on module level with identical enum on module level`() {
-        val mutableEnum = MutablePythonEnum(
+        val mutableEnum = PythonEnum(
             "TestEnum",
             mutableListOf(
-                MutablePythonEnumInstance("name1", "value1"),
-                MutablePythonEnumInstance("name2", "value2")
+                PythonEnumInstance("name1", "value1"),
+                PythonEnumInstance("name2", "value2")
             )
         )
         testModule.enums.add(mutableEnum)
         testPackage.processEnumAnnotations()
 
         testModule.enums[0].name shouldBe "TestEnum"
-        testModule.enums[0].instances shouldContain
-            MutablePythonEnumInstance("name1", "value1")
-        testModule.enums[0].instances shouldContain
-            MutablePythonEnumInstance("name2", "value2")
+        testModule.enums[0].instances shouldContain PythonEnumInstance("name1", "value1")
+        testModule.enums[0].instances shouldContain PythonEnumInstance("name2", "value2")
     }
 
     @Test
     fun `should not add duplicate enums on module level`() {
-        val mutableEnum = MutablePythonEnum(
+        val mutableEnum = PythonEnum(
             "TestEnum",
             mutableListOf(
-                MutablePythonEnumInstance("name1", "value1"),
-                MutablePythonEnumInstance("name2", "value2")
+                PythonEnumInstance("name1", "value1"),
+                PythonEnumInstance("name2", "value2")
             )
         )
         testModule.enums.add(mutableEnum)
@@ -136,7 +167,7 @@ class EnumAnnotationProcessorTest {
 
     @Test
     fun `should throw ConflictingEnumException for conflicting enums in module`() {
-        val mutableEnum = MutablePythonEnum("TestEnum")
+        val mutableEnum = PythonEnum("TestEnum")
         testModule.enums.add(mutableEnum)
 
         shouldThrowExactly<ConflictingEnumException> {
@@ -146,14 +177,14 @@ class EnumAnnotationProcessorTest {
 
     @Test
     fun `should throw ConflictingEnumException for conflicting enums in module with same number of instances`() {
-        val mutableEnum = MutablePythonEnum(
+        val mutableEnum = PythonEnum(
             "TestEnum",
             mutableListOf(
-                MutablePythonEnumInstance("name1", "value1"),
-                MutablePythonEnumInstance("name3", "value3")
+                PythonEnumInstance("name1", "value1"),
+                PythonEnumInstance("name3", "value3")
             )
         )
-        testModule.enums.add(mutableEnum)
+        testModule.enums += mutableEnum
 
         shouldThrowExactly<ConflictingEnumException> {
             testPackage.processEnumAnnotations()

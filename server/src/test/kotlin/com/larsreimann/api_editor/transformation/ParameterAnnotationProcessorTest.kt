@@ -6,49 +6,101 @@ import com.larsreimann.api_editor.model.DefaultBoolean
 import com.larsreimann.api_editor.model.OptionalAnnotation
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.model.RequiredAnnotation
-import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
-import com.larsreimann.api_editor.mutable_model.MutablePythonModule
-import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
-import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonArgument
+import com.larsreimann.api_editor.mutable_model.PythonBoolean
+import com.larsreimann.api_editor.mutable_model.PythonCall
+import com.larsreimann.api_editor.mutable_model.PythonClass
+import com.larsreimann.api_editor.mutable_model.PythonFunction
+import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonPackage
+import com.larsreimann.api_editor.mutable_model.PythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonReference
+import io.kotest.assertions.asClue
 import io.kotest.matchers.collections.shouldBeEmpty
+import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class ParameterAnnotationProcessorTest {
-    private lateinit var testParameter: MutablePythonParameter
-    private lateinit var testPackage: MutablePythonPackage
+    private lateinit var testParameter: PythonParameter
+    private lateinit var testClass: PythonClass
+    private lateinit var testMethod: PythonFunction
+    private lateinit var testPackage: PythonPackage
 
     @BeforeEach
     fun reset() {
-        testParameter = MutablePythonParameter(name = "testParameter")
-        testPackage = MutablePythonPackage(
+        testParameter = PythonParameter(name = "testParameter")
+        testMethod = PythonFunction(
+            name = "testMethod",
+            parameters = listOf(testParameter),
+            callToOriginalAPI = PythonCall(
+                receiver = "testModule.TestClass.testMethod",
+                arguments = listOf(
+                    PythonArgument(
+                        value = PythonReference(testParameter)
+                    )
+                )
+            )
+        )
+        testClass = PythonClass(
+            name = "TestClass",
+            methods = listOf(testMethod)
+        )
+        testPackage = PythonPackage(
             distribution = "testPackage",
             name = "testPackage",
             version = "1.0.0",
             modules = listOf(
-                MutablePythonModule(
+                PythonModule(
                     name = "testModule",
-                    functions = listOf(
-                        MutablePythonFunction(
-                            name = "testFunction",
-                            parameters = listOf(testParameter)
-                        )
-                    )
+                    classes = listOf(testClass)
                 )
             )
         )
     }
 
     @Test
-    fun `should process AttributeAnnotations`() {
+    fun `should update the function call when processing AttributeAnnotations`() {
         testParameter.annotations += AttributeAnnotation(DefaultBoolean(true))
 
         testPackage.processParameterAnnotations()
 
-        testParameter.assignedBy shouldBe PythonParameterAssignment.ATTRIBUTE
-        testParameter.defaultValue shouldBe "true"
+        val callToOriginalAPI = testMethod.callToOriginalAPI.shouldNotBeNull()
+        callToOriginalAPI.arguments.shouldHaveSize(1)
+
+        val argument = callToOriginalAPI.arguments[0]
+        argument.name.shouldBeNull()
+        argument.value.asClue {
+            it.shouldBeInstanceOf<PythonBoolean>()
+            it.value shouldBe true
+        }
+    }
+
+    @Test
+    fun `should add attributes to the containing class`() {
+        testParameter.annotations += AttributeAnnotation(DefaultBoolean(true))
+
+        testPackage.processParameterAnnotations()
+
+        val attributes = testClass.attributes
+        attributes.shouldHaveSize(1)
+        attributes[0] shouldBe attributes[0].copy(
+            name = "testParameter",
+            value = "true"
+        )
+    }
+
+    @Test
+    fun `should remove parameters marked with AttributeAnnotation`() {
+        testParameter.annotations += AttributeAnnotation(DefaultBoolean(true))
+
+        testPackage.processParameterAnnotations()
+
+        testMethod.parameters.shouldBeEmpty()
     }
 
     @Test
@@ -63,13 +115,29 @@ class ParameterAnnotationProcessorTest {
     }
 
     @Test
-    fun `should process ConstantAnnotations`() {
+    fun `should update the function call when processing ConstantAnnotations`() {
         testParameter.annotations += ConstantAnnotation(DefaultBoolean(true))
 
         testPackage.processParameterAnnotations()
 
-        testParameter.assignedBy shouldBe PythonParameterAssignment.CONSTANT
-        testParameter.defaultValue shouldBe "true"
+        val callToOriginalAPI = testMethod.callToOriginalAPI.shouldNotBeNull()
+        callToOriginalAPI.arguments.shouldHaveSize(1)
+
+        val argument = callToOriginalAPI.arguments[0]
+        argument.name.shouldBeNull()
+        argument.value.asClue {
+            it.shouldBeInstanceOf<PythonBoolean>()
+            it.value shouldBe true
+        }
+    }
+
+    @Test
+    fun `should remove parameters marked with ConstantAnnotation`() {
+        testParameter.annotations += ConstantAnnotation(DefaultBoolean(true))
+
+        testPackage.processParameterAnnotations()
+
+        testMethod.parameters.shouldBeEmpty()
     }
 
     @Test

@@ -1,79 +1,78 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.PythonParameterAssignment
-import com.larsreimann.api_editor.mutable_model.MutablePythonClass
-import com.larsreimann.api_editor.mutable_model.MutablePythonConstructor
-import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
-import com.larsreimann.api_editor.mutable_model.MutablePythonModule
-import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
-import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
-import com.larsreimann.api_editor.mutable_model.OriginalPythonFunction
-import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
+import com.larsreimann.api_editor.mutable_model.OriginalPythonClass
+import com.larsreimann.api_editor.mutable_model.PythonArgument
+import com.larsreimann.api_editor.mutable_model.PythonCall
+import com.larsreimann.api_editor.mutable_model.PythonClass
+import com.larsreimann.api_editor.mutable_model.PythonConstructor
+import com.larsreimann.api_editor.mutable_model.PythonFunction
+import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonPackage
+import com.larsreimann.api_editor.mutable_model.PythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonReference
 import io.kotest.assertions.asClue
 import io.kotest.matchers.collections.exist
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldExist
+import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.collections.shouldNotContain
+import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNot
+import io.kotest.matchers.types.shouldBeInstanceOf
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class PostprocessorTest {
-    private lateinit var testFunction: MutablePythonFunction
-    private lateinit var testClass: MutablePythonClass
-    private lateinit var testModule: MutablePythonModule
-    private lateinit var testPackage: MutablePythonPackage
+    private lateinit var testFunction: PythonFunction
+    private lateinit var testConstructorParameter: PythonParameter
+    private lateinit var testClass: PythonClass
+    private lateinit var testModule: PythonModule
+    private lateinit var testPackage: PythonPackage
 
     @BeforeEach
     fun reset() {
-        testFunction = MutablePythonFunction(name = "testFunction")
-        testClass = MutablePythonClass(
+        testFunction = PythonFunction(name = "testFunction")
+        testConstructorParameter = PythonParameter(name = "constructorParameter")
+        testClass = PythonClass(
             name = "TestClass",
-            constructor = MutablePythonConstructor(
+            constructor = PythonConstructor(
                 parameters = listOf(
-                    MutablePythonParameter(
+                    PythonParameter(
                         name = "self",
                         assignedBy = PythonParameterAssignment.IMPLICIT
                     ),
-                    MutablePythonParameter(
+                    PythonParameter(
                         name = "positionOrName",
                         assignedBy = PythonParameterAssignment.POSITION_OR_NAME
-                    ),
-                    MutablePythonParameter(
-                        name = "constant",
-                        assignedBy = PythonParameterAssignment.CONSTANT
                     )
                 )
             ),
             methods = listOf(
-                MutablePythonFunction(
+                PythonFunction(
                     name = "__init__",
-                    parameters = listOf(
-                        MutablePythonParameter(
-                            name = "constructorParameter",
-                            originalParameter = OriginalPythonParameter(name = "constructorParameter")
-                        )
-                    ),
-                    originalFunction = OriginalPythonFunction(
-                        qualifiedName = "testModule.TestClass.__init__",
-                        parameters = listOf(
-                            OriginalPythonParameter(name = "constructorParameter")
+                    parameters = listOf(testConstructorParameter),
+                    callToOriginalAPI = PythonCall(
+                        receiver = "testModule.TestClass.__init__",
+                        arguments = listOf(
+                            PythonArgument(value = PythonReference(testConstructorParameter))
                         )
                     )
                 )
-            )
+            ),
+            originalClass = OriginalPythonClass(qualifiedName = "testModule.TestClass")
         )
-        testModule = MutablePythonModule(
+        testModule = PythonModule(
             name = "testModule",
             classes = listOf(testClass),
             functions = listOf(testFunction)
         )
-        testPackage = MutablePythonPackage(
+        testPackage = PythonPackage(
             distribution = "testPackage",
             name = "testPackage",
             version = "1.0.0",
@@ -86,7 +85,7 @@ class PostprocessorTest {
 
         @Test
         fun `should remove empty modules`() {
-            val emptyTestModule = MutablePythonModule(name = "emptyTestModule")
+            val emptyTestModule = PythonModule(name = "emptyTestModule")
             testPackage.modules += emptyTestModule
 
             testPackage.removeEmptyModules()
@@ -107,34 +106,24 @@ class PostprocessorTest {
 
         @Test
         fun `should reorder parameters`() {
-            val implicit = MutablePythonParameter(
+            val implicit = PythonParameter(
                 name = "implicit",
                 assignedBy = PythonParameterAssignment.IMPLICIT
             )
-            val positionOnly = MutablePythonParameter(
+            val positionOnly = PythonParameter(
                 name = "positionOnly",
                 assignedBy = PythonParameterAssignment.POSITION_ONLY
             )
-            val positionOrName = MutablePythonParameter(
+            val positionOrName = PythonParameter(
                 name = "positionOrName",
                 assignedBy = PythonParameterAssignment.POSITION_OR_NAME
             )
-            val nameOnly = MutablePythonParameter(
+            val nameOnly = PythonParameter(
                 name = "nameOnly",
                 assignedBy = PythonParameterAssignment.NAME_ONLY
             )
-            val attribute = MutablePythonParameter(
-                name = "attribute",
-                assignedBy = PythonParameterAssignment.ATTRIBUTE
-            )
-            val constant = MutablePythonParameter(
-                name = "constant",
-                assignedBy = PythonParameterAssignment.CONSTANT
-            )
 
             testFunction.parameters += listOf(
-                constant,
-                attribute,
                 nameOnly,
                 positionOrName,
                 positionOnly,
@@ -148,9 +137,7 @@ class PostprocessorTest {
                     implicit,
                     positionOnly,
                     positionOrName,
-                    nameOnly,
-                    attribute,
-                    constant
+                    nameOnly
                 )
             )
         }
@@ -164,15 +151,15 @@ class PostprocessorTest {
             testClass.constructor = null
             testClass.methods.clear()
 
-            testPackage.createConstructors()
+            testPackage.extractConstructors()
 
             testClass.constructor
                 .shouldNotBeNull().asClue {
                     it.parameters.shouldBeEmpty()
-                    it.callToOriginalAPI shouldBe OriginalPythonFunction(
-                        qualifiedName = "testModule.TestClass",
-                        parameters = emptyList()
-                    )
+
+                    val callToOriginalAPI = it.callToOriginalAPI.shouldNotBeNull()
+                    callToOriginalAPI.receiver shouldBe "testModule.TestClass"
+                    callToOriginalAPI.arguments.shouldBeEmpty()
                 }
         }
 
@@ -180,7 +167,7 @@ class PostprocessorTest {
         fun `should copy parameters of __init__ methods`() {
             testClass.constructor = null
 
-            testPackage.createConstructors()
+            testPackage.extractConstructors()
 
             testClass.constructor
                 .shouldNotBeNull()
@@ -193,28 +180,29 @@ class PostprocessorTest {
         fun `should store call to original API`() {
             testClass.constructor = null
 
-            testPackage.createConstructors()
+            testPackage.extractConstructors()
 
             testClass.constructor
                 .shouldNotBeNull()
                 .callToOriginalAPI
-                .shouldBe(
-                    OriginalPythonFunction(
-                        qualifiedName = "testModule.TestClass",
-                        parameters = listOf(
-                            OriginalPythonParameter(
-                                name = "constructorParameter"
-                            )
-                        )
-                    )
-                )
+                .asClue {
+                    it.shouldNotBeNull()
+                    it.receiver shouldBe "testModule.TestClass"
+                    it.arguments.shouldHaveSize(1)
+
+                    val argument = it.arguments[0]
+                    argument.name.shouldBeNull()
+
+                    val value = argument.value.shouldBeInstanceOf<PythonReference>()
+                    value.declaration?.name shouldBe "constructorParameter"
+                }
         }
 
         @Test
         fun `should remove __init__ methods`() {
             testClass.constructor = null
 
-            testPackage.createConstructors()
+            testPackage.extractConstructors()
 
             testClass.methods shouldNot exist { it.name == "__init__" }
         }

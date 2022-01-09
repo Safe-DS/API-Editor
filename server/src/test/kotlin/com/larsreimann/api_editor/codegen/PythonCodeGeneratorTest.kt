@@ -5,17 +5,20 @@ import com.larsreimann.api_editor.model.ComparisonOperator
 import com.larsreimann.api_editor.model.PythonFromImport
 import com.larsreimann.api_editor.model.PythonImport
 import com.larsreimann.api_editor.model.PythonParameterAssignment
-import com.larsreimann.api_editor.mutable_model.MutablePythonClass
-import com.larsreimann.api_editor.mutable_model.MutablePythonConstructor
-import com.larsreimann.api_editor.mutable_model.MutablePythonEnum
-import com.larsreimann.api_editor.mutable_model.MutablePythonEnumInstance
-import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
-import com.larsreimann.api_editor.mutable_model.MutablePythonModule
-import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
-import com.larsreimann.api_editor.mutable_model.MutablePythonResult
 import com.larsreimann.api_editor.mutable_model.OriginalPythonClass
-import com.larsreimann.api_editor.mutable_model.OriginalPythonFunction
-import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonArgument
+import com.larsreimann.api_editor.mutable_model.PythonAttribute
+import com.larsreimann.api_editor.mutable_model.PythonCall
+import com.larsreimann.api_editor.mutable_model.PythonClass
+import com.larsreimann.api_editor.mutable_model.PythonConstructor
+import com.larsreimann.api_editor.mutable_model.PythonEnum
+import com.larsreimann.api_editor.mutable_model.PythonEnumInstance
+import com.larsreimann.api_editor.mutable_model.PythonFunction
+import com.larsreimann.api_editor.mutable_model.PythonMemberAccess
+import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonReference
+import com.larsreimann.api_editor.mutable_model.PythonResult
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -24,120 +27,96 @@ class PythonCodeGeneratorTest {
     @Test
     fun buildModuleContentReturnsFormattedModuleContent() { // TODO
         // given
-        val testClass = MutablePythonClass(
+        val testMethodParameter = PythonParameter(
+            name = "only-param",
+            defaultValue = "'defaultValue'",
+            assignedBy = PythonParameterAssignment.NAME_ONLY
+        )
+        val testClass = PythonClass(
             name = "test-class",
             methods = listOf(
-                MutablePythonFunction(
+                PythonFunction(
                     name = "test-class-function",
                     parameters = listOf(
-                        MutablePythonParameter(
+                        PythonParameter(
                             name = "self",
-                            assignedBy = PythonParameterAssignment.IMPLICIT,
-                            originalParameter = OriginalPythonParameter(
-                                name = "self",
-                                assignedBy = PythonParameterAssignment.IMPLICIT,
-                            )
+                            assignedBy = PythonParameterAssignment.IMPLICIT
                         ),
-                        MutablePythonParameter(
-                            name = "only-param",
-                            defaultValue = "'defaultValue'",
-                            assignedBy = PythonParameterAssignment.NAME_ONLY,
-                            originalParameter = OriginalPythonParameter(name = "only-param")
-                        )
+                        testMethodParameter
                     ),
-                    originalFunction = OriginalPythonFunction(
-                        qualifiedName = "test-module.test-class.test-class-function",
-                        parameters = listOf(
-                            OriginalPythonParameter(
-                                name = "self",
-                                assignedBy = PythonParameterAssignment.IMPLICIT,
-                            ),
-                            OriginalPythonParameter(name = "only-param")
+                    callToOriginalAPI = PythonCall(
+                        receiver = "self.instance.test-class-function",
+                        arguments = listOf(
+                            PythonArgument(
+                                value = PythonReference(testMethodParameter)
+                            )
                         )
                     )
                 )
             ),
             originalClass = OriginalPythonClass(qualifiedName = "test-module.test-class")
         )
-        val testModule = MutablePythonModule(
+        val testFunction1Parameter1 = PythonParameter(name = "param1")
+        val testFunction1Parameter2 = PythonParameter(name = "param2")
+        val testFunction1Parameter3 = PythonParameter(name = "param3")
+        val testFunction2Parameter = PythonParameter(
+            name = "test-parameter",
+            defaultValue = "42",
+            assignedBy = PythonParameterAssignment.NAME_ONLY
+        )
+        val testModule = PythonModule(
             name = "test-module",
             classes = mutableListOf(testClass),
             functions = listOf(
-                MutablePythonFunction(
+                PythonFunction(
                     name = "function_module",
                     parameters = listOf(
-                        MutablePythonParameter(
-                            name = "param1",
-                            originalParameter = OriginalPythonParameter(
-                                name = "param1",
-                                assignedBy = PythonParameterAssignment.NAME_ONLY,
-                            )
-                        ),
-                        MutablePythonParameter(
-                            name = "param2",
-                            originalParameter = OriginalPythonParameter(
-                                name = "param2",
-                                assignedBy = PythonParameterAssignment.NAME_ONLY,
-                            )
-                        ),
-                        MutablePythonParameter(
-                            name = "param3",
-                            originalParameter = OriginalPythonParameter(
-                                name = "param3",
-                                assignedBy = PythonParameterAssignment.NAME_ONLY,
-                            )
-                        )
+                        testFunction1Parameter1,
+                        testFunction1Parameter2,
+                        testFunction1Parameter3
                     ),
                     results = listOf(
-                        MutablePythonResult(
+                        PythonResult(
                             name = "test-result",
                             type = "str"
                         )
                     ),
-                    originalFunction = OriginalPythonFunction(
-                        qualifiedName = "test-module.function_module",
-                        parameters = listOf(
-                            OriginalPythonParameter(
+                    callToOriginalAPI = PythonCall(
+                        receiver = "test-module.function_module",
+                        arguments = listOf(
+                            PythonArgument(
                                 name = "param1",
-                                assignedBy = PythonParameterAssignment.NAME_ONLY,
+                                value = PythonReference(testFunction1Parameter1)
                             ),
-                            OriginalPythonParameter(
+                            PythonArgument(
                                 name = "param2",
-                                assignedBy = PythonParameterAssignment.NAME_ONLY,
+                                value = PythonReference(testFunction1Parameter2)
                             ),
-                            OriginalPythonParameter(
+                            PythonArgument(
                                 name = "param3",
-                                assignedBy = PythonParameterAssignment.NAME_ONLY,
+                                value = PythonReference(testFunction1Parameter3)
                             )
                         )
                     )
                 ),
-                MutablePythonFunction(
+                PythonFunction(
                     name = "test-function",
-                    parameters = mutableListOf(
-                        MutablePythonParameter(
-                            name = "test-parameter",
-                            defaultValue = "42",
-                            assignedBy = PythonParameterAssignment.NAME_ONLY,
-                            originalParameter = OriginalPythonParameter(
-                                name = "test-parameter",
-                                assignedBy = PythonParameterAssignment.NAME_ONLY,
-                            )
-                        )
+                    parameters = listOf(
+                        testFunction2Parameter
                     ),
-                    results = mutableListOf(
-                        MutablePythonResult(
+                    results = listOf(
+                        PythonResult(
                             "test-result",
                             "str",
                             "str"
                         )
                     ),
-                    originalFunction = OriginalPythonFunction(
-                        qualifiedName = "test-module.test-function",
-                        parameters = listOf(
-                            OriginalPythonParameter(
+                    callToOriginalAPI = PythonCall(
+                        receiver = "test-module.test-function",
+                        arguments = listOf(
+                            PythonArgument(
                                 name = "test-parameter",
-                                assignedBy = PythonParameterAssignment.NAME_ONLY,
+                                value = PythonReference(testFunction2Parameter)
                             )
                         )
                     )
@@ -171,87 +150,69 @@ class PythonCodeGeneratorTest {
     @Test
     fun buildModuleContentWithNoClassesReturnsFormattedModuleContent() { // TODO
         // given
-        val testModule = MutablePythonModule(
+        val testFunction1Parameter1 = PythonParameter(name = "param1")
+        val testFunction1Parameter2 = PythonParameter(name = "param2")
+        val testFunction1Parameter3 = PythonParameter(name = "param3")
+        val testFunction2Parameter = PythonParameter(
+            "test-parameter",
+            "42",
+            PythonParameterAssignment.NAME_ONLY
+        )
+        val testModule = PythonModule(
             name = "test-module",
             functions = mutableListOf(
-                MutablePythonFunction(
+                PythonFunction(
                     name = "function_module",
                     parameters = mutableListOf(
-                        MutablePythonParameter(
-                            name = "param1",
-                            originalParameter = OriginalPythonParameter(
-                                name = "param1",
-                                assignedBy = PythonParameterAssignment.NAME_ONLY
-                            )
-                        ),
-                        MutablePythonParameter(
-                            name = "param2",
-                            originalParameter = OriginalPythonParameter(
-                                name = "param2",
-                                assignedBy = PythonParameterAssignment.NAME_ONLY
-                            )
-                        ),
-                        MutablePythonParameter(
-                            name = "param3",
-                            originalParameter = OriginalPythonParameter(
-                                name = "param3",
-                                assignedBy = PythonParameterAssignment.NAME_ONLY
-                            )
-                        )
+                        testFunction1Parameter1,
+                        testFunction1Parameter2,
+                        testFunction1Parameter3
                     ),
                     results = mutableListOf(
-                        MutablePythonResult(
+                        PythonResult(
                             "test-result",
                             "str",
                             "str",
                             "Lorem ipsum"
                         )
                     ),
-                    originalFunction = OriginalPythonFunction(
-                        qualifiedName = "test-module.function_module",
-                        parameters = listOf(
-                            OriginalPythonParameter(
+                    callToOriginalAPI = PythonCall(
+                        receiver = "test-module.function_module",
+                        arguments = listOf(
+                            PythonArgument(
                                 name = "param1",
-                                assignedBy = PythonParameterAssignment.NAME_ONLY
+                                value = PythonReference(testFunction1Parameter1)
                             ),
-                            OriginalPythonParameter(
+                            PythonArgument(
                                 name = "param2",
-                                assignedBy = PythonParameterAssignment.NAME_ONLY
+                                value = PythonReference(testFunction1Parameter2)
                             ),
-                            OriginalPythonParameter(
+                            PythonArgument(
                                 name = "param3",
-                                assignedBy = PythonParameterAssignment.NAME_ONLY
+                                value = PythonReference(testFunction1Parameter3)
                             )
                         )
                     )
                 ),
-                MutablePythonFunction(
+                PythonFunction(
                     name = "test-function",
                     parameters = mutableListOf(
-                        MutablePythonParameter(
-                            "test-parameter",
-                            "42",
-                            PythonParameterAssignment.NAME_ONLY,
-                            originalParameter = OriginalPythonParameter(
-                                name = "test-parameter",
-                                assignedBy = PythonParameterAssignment.NAME_ONLY
-                            )
-                        )
+                        testFunction2Parameter
                     ),
                     results = mutableListOf(
-                        MutablePythonResult(
+                        PythonResult(
                             "test-result",
                             "str",
                             "str",
                             "Lorem ipsum"
                         )
                     ),
-                    originalFunction = OriginalPythonFunction(
-                        qualifiedName = "test-module.test-function",
-                        parameters = listOf(
-                            OriginalPythonParameter(
+                    callToOriginalAPI = PythonCall(
+                        receiver = "test-module.test-function",
+                        arguments = listOf(
+                            PythonArgument(
                                 name = "test-parameter",
-                                assignedBy = PythonParameterAssignment.NAME_ONLY
+                                value = PythonReference(testFunction2Parameter)
                             )
                         )
                     )
@@ -281,14 +242,14 @@ class PythonCodeGeneratorTest {
     @Test
     fun buildModuleContentWithNoFunctionsReturnsFormattedModuleContent() { // TODO
         // given
-        val testClass = MutablePythonClass(
+        val testClass = PythonClass(
             name = "test-class",
-            constructor = MutablePythonConstructor(
-                callToOriginalAPI = OriginalPythonFunction(qualifiedName = "test-class")
+            constructor = PythonConstructor(
+                callToOriginalAPI = PythonCall(receiver = "test-module.test-class")
             ),
             originalClass = OriginalPythonClass("test-module.test-class")
         )
-        val testModule = MutablePythonModule(
+        val testModule = PythonModule(
             name = "test-module",
             imports = mutableListOf(
                 PythonImport(
@@ -316,7 +277,7 @@ class PythonCodeGeneratorTest {
             |
             |class test-class:
             |    def __init__():
-            |        self.instance = test-class()
+            |        self.instance = test-module.test-class()
             |
             """.trimMargin()
 
@@ -326,7 +287,7 @@ class PythonCodeGeneratorTest {
     @Test
     fun buildModuleContentWithEmptyModuleReturnsEmptyString() { // TODO
         // given
-        val testModule = MutablePythonModule(
+        val testModule = PythonModule(
             name = "test-module",
             imports = mutableListOf(
                 PythonImport(
@@ -358,14 +319,10 @@ class PythonCodeGeneratorTest {
     @Test
     fun buildModuleContentWithBoundaryAnnotationReturnsFormattedModuleContent1() { // TODO
         // given
-        val testParameter1 = MutablePythonParameter(
+        val testParameter1 = PythonParameter(
             name = "param1",
             defaultValue = "5",
-            assignedBy = PythonParameterAssignment.NAME_ONLY,
-            originalParameter = OriginalPythonParameter(
-                name = "param1",
-                assignedBy = PythonParameterAssignment.NAME_ONLY
-            )
+            assignedBy = PythonParameterAssignment.NAME_ONLY
         )
         testParameter1.boundary = Boundary(
             true,
@@ -374,14 +331,10 @@ class PythonCodeGeneratorTest {
             10.0,
             ComparisonOperator.LESS_THAN_OR_EQUALS
         )
-        val testParameter2 = MutablePythonParameter(
+        val testParameter2 = PythonParameter(
             "param2",
             "5",
-            PythonParameterAssignment.NAME_ONLY,
-            originalParameter = OriginalPythonParameter(
-                name = "param2",
-                assignedBy = PythonParameterAssignment.NAME_ONLY
-            )
+            PythonParameterAssignment.NAME_ONLY
         )
         testParameter2.boundary = Boundary(
             false,
@@ -390,14 +343,10 @@ class PythonCodeGeneratorTest {
             0.0,
             ComparisonOperator.UNRESTRICTED
         )
-        val testParameter3 = MutablePythonParameter(
+        val testParameter3 = PythonParameter(
             "param3",
             "5",
-            PythonParameterAssignment.NAME_ONLY,
-            originalParameter = OriginalPythonParameter(
-                name = "param3",
-                assignedBy = PythonParameterAssignment.NAME_ONLY
-            )
+            PythonParameterAssignment.NAME_ONLY
         )
         testParameter3.boundary = Boundary(
             false,
@@ -406,28 +355,28 @@ class PythonCodeGeneratorTest {
             10.0,
             ComparisonOperator.LESS_THAN
         )
-        val testFunction = MutablePythonFunction(
+        val testFunction = PythonFunction(
             name = "function_module",
             parameters = mutableListOf(testParameter1, testParameter2, testParameter3),
-            originalFunction = OriginalPythonFunction(
-                qualifiedName = "test-module.function_module",
-                parameters = listOf(
-                    OriginalPythonParameter(
+            callToOriginalAPI = PythonCall(
+                receiver = "test-module.function_module",
+                arguments = listOf(
+                    PythonArgument(
                         name = "param1",
-                        assignedBy = PythonParameterAssignment.NAME_ONLY
+                        value = PythonReference(testParameter1)
                     ),
-                    OriginalPythonParameter(
+                    PythonArgument(
                         name = "param2",
-                        assignedBy = PythonParameterAssignment.NAME_ONLY
+                        value = PythonReference(testParameter2)
                     ),
-                    OriginalPythonParameter(
+                    PythonArgument(
                         name = "param3",
-                        assignedBy = PythonParameterAssignment.NAME_ONLY
+                        value = PythonReference(testParameter3)
                     )
                 )
             )
         )
-        val testModule = MutablePythonModule(
+        val testModule = PythonModule(
             name = "test-module",
             functions = mutableListOf(testFunction),
         )
@@ -459,14 +408,10 @@ class PythonCodeGeneratorTest {
     @Test
     fun buildModuleContentWithBoundaryAnnotationReturnsFormattedModuleContent2() { // TODO
         // given
-        val testParameter = MutablePythonParameter(
+        val testParameter = PythonParameter(
             name = "param1",
             defaultValue = "5",
-            assignedBy = PythonParameterAssignment.NAME_ONLY,
-            originalParameter = OriginalPythonParameter(
-                name = "param1",
-                assignedBy = PythonParameterAssignment.NAME_ONLY
-            )
+            assignedBy = PythonParameterAssignment.NAME_ONLY
         )
         testParameter.boundary = Boundary(
             false,
@@ -475,20 +420,20 @@ class PythonCodeGeneratorTest {
             0.0,
             ComparisonOperator.UNRESTRICTED
         )
-        val testFunction = MutablePythonFunction(
+        val testFunction = PythonFunction(
             name = "function_module",
             parameters = listOf(testParameter),
-            originalFunction = OriginalPythonFunction(
-                qualifiedName = "test-module.function_module",
-                parameters = listOf(
-                    OriginalPythonParameter(
+            callToOriginalAPI = PythonCall(
+                receiver = "test-module.function_module",
+                arguments = listOf(
+                    PythonArgument(
                         name = "param1",
-                        assignedBy = PythonParameterAssignment.NAME_ONLY
+                        value = PythonReference(testParameter)
                     )
                 )
             )
         )
-        val testModule = MutablePythonModule(
+        val testModule = PythonModule(
             name = "test-module",
             functions = listOf(testFunction),
         )
@@ -513,11 +458,11 @@ class PythonCodeGeneratorTest {
 
     @Test
     fun `should create valid code for empty classes`() { // TODO
-        val testClass = MutablePythonClass(
+        val testClass = PythonClass(
             name = "TestClass",
-            constructor = MutablePythonConstructor(
-                callToOriginalAPI = OriginalPythonFunction(
-                    qualifiedName = "TestClass"
+            constructor = PythonConstructor(
+                callToOriginalAPI = PythonCall(
+                    receiver = "testModule.TestClass"
                 )
             )
         )
@@ -525,45 +470,33 @@ class PythonCodeGeneratorTest {
         testClass.toPythonCode() shouldBe """
             |class TestClass:
             |    def __init__():
-            |        self.instance = TestClass()
+            |        self.instance = testModule.TestClass()
         """.trimMargin()
     }
 
     @Test
     fun buildClassReturnsFormattedClassWithOneFunction() { // TODO
         // given
-        val testClass = MutablePythonClass(
+        val testParameter = PythonParameter(
+            name = "only-param",
+            defaultValue = "'defaultValue'",
+            assignedBy = PythonParameterAssignment.NAME_ONLY
+        )
+        val testClass = PythonClass(
             name = "test-class",
-            constructor = MutablePythonConstructor(
+            constructor = PythonConstructor(
                 parameters = mutableListOf(
-                    MutablePythonParameter(
+                    PythonParameter(
                         name = "self",
-                        assignedBy = PythonParameterAssignment.IMPLICIT,
-                        originalParameter = OriginalPythonParameter(
-                            name = "self",
-                            assignedBy = PythonParameterAssignment.IMPLICIT
-                        )
+                        assignedBy = PythonParameterAssignment.IMPLICIT
                     ),
-                    MutablePythonParameter(
-                        name = "only-param",
-                        defaultValue = "'defaultValue'",
-                        assignedBy = PythonParameterAssignment.NAME_ONLY,
-                        originalParameter = OriginalPythonParameter(
-                            name = "only-param",
-                            assignedBy = PythonParameterAssignment.POSITION_OR_NAME
-                        )
-                    )
+                    testParameter
                 ),
-                callToOriginalAPI = OriginalPythonFunction(
-                    qualifiedName = "test-module.test-class",
-                    parameters = listOf(
-                        OriginalPythonParameter(
-                            name = "self",
-                            assignedBy = PythonParameterAssignment.IMPLICIT
-                        ),
-                        OriginalPythonParameter(
-                            name = "only-param",
-                            assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+                callToOriginalAPI = PythonCall(
+                    receiver = "test-module.test-class",
+                    arguments = listOf(
+                        PythonArgument(
+                            value = PythonReference(testParameter)
                         )
                     )
                 )
@@ -587,62 +520,46 @@ class PythonCodeGeneratorTest {
     @Test
     fun buildClassReturnsFormattedClassWithTwoFunctions() { // TODO
         // given
-        val testClass = MutablePythonClass(
+        val testMethod1Parameter = PythonParameter(
+            name = "only-param",
+            assignedBy = PythonParameterAssignment.POSITION_OR_NAME,
+        )
+        val testMethod2Parameter = PythonParameter(
+            name = "only-param",
+            assignedBy = PythonParameterAssignment.POSITION_OR_NAME,
+        )
+        val testClass = PythonClass(
             name = "test-class",
             methods = mutableListOf(
-                MutablePythonFunction(
+                PythonFunction(
                     name = "test-class-function1",
                     parameters = mutableListOf(
-                        MutablePythonParameter(
+                        PythonParameter(
                             name = "self",
                             assignedBy = PythonParameterAssignment.IMPLICIT,
-                            originalParameter = OriginalPythonParameter(
-                                name = "self",
-                                assignedBy = PythonParameterAssignment.IMPLICIT
-                            )
                         ),
-                        MutablePythonParameter(
-                            name = "only-param",
-                            assignedBy = PythonParameterAssignment.POSITION_OR_NAME,
-                            originalParameter = OriginalPythonParameter(name = "only-param")
-                        )
+                        testMethod1Parameter
                     ),
-                    originalFunction = OriginalPythonFunction(
-                        qualifiedName = "test-module.test-class.test-class-function1",
-                        parameters = listOf(
-                            OriginalPythonParameter(
-                                name = "self",
-                                assignedBy = PythonParameterAssignment.IMPLICIT
-                            ),
-                            OriginalPythonParameter(name = "only-param")
+                    callToOriginalAPI = PythonCall(
+                        receiver = "self.instance.test-class-function1",
+                        arguments = listOf(
+                            PythonArgument(value = PythonReference(testMethod1Parameter))
                         )
                     )
                 ),
-                MutablePythonFunction(
+                PythonFunction(
                     name = "test-class-function2",
                     parameters = mutableListOf(
-                        MutablePythonParameter(
+                        PythonParameter(
                             name = "self",
-                            assignedBy = PythonParameterAssignment.IMPLICIT,
-                            originalParameter = OriginalPythonParameter(
-                                name = "self",
-                                assignedBy = PythonParameterAssignment.IMPLICIT
-                            )
+                            assignedBy = PythonParameterAssignment.IMPLICIT
                         ),
-                        MutablePythonParameter(
-                            name = "only-param",
-                            assignedBy = PythonParameterAssignment.POSITION_OR_NAME,
-                            originalParameter = OriginalPythonParameter(name = "only-param")
-                        )
+                        testMethod2Parameter
                     ),
-                    originalFunction = OriginalPythonFunction(
-                        qualifiedName = "test-module.test-class.test-class-function2",
-                        parameters = listOf(
-                            OriginalPythonParameter(
-                                name = "self",
-                                assignedBy = PythonParameterAssignment.IMPLICIT
-                            ),
-                            OriginalPythonParameter(name = "only-param")
+                    callToOriginalAPI = PythonCall(
+                        receiver = "self.instance.test-class-function2",
+                        arguments = listOf(
+                            PythonArgument(value = PythonReference(testMethod2Parameter))
                         )
                     )
                 )
@@ -668,45 +585,30 @@ class PythonCodeGeneratorTest {
     @Test
     fun buildClassReturnsFormattedClassBasedOnOriginalDeclaration() { // TODO
         // given
-        val testFunction = MutablePythonFunction(
+        val testParameter1 = PythonParameter(name = "second-param")
+        val testParameter2 = PythonParameter(name = "third-param")
+        val testFunction = PythonFunction(
             name = "test-function",
             parameters = mutableListOf(
-                MutablePythonParameter(
+                PythonParameter(
                     name = "self",
-                    assignedBy = PythonParameterAssignment.IMPLICIT,
-                    originalParameter = OriginalPythonParameter(
-                        name = "self",
-                        assignedBy = PythonParameterAssignment.IMPLICIT
-                    )
+                    assignedBy = PythonParameterAssignment.IMPLICIT
                 ),
-                MutablePythonParameter(
-                    name = "second-param",
-                    originalParameter = OriginalPythonParameter(name = "second-param")
-                ),
-                MutablePythonParameter(
-                    name = "third-param",
-                    originalParameter = OriginalPythonParameter(
-                        name = "third-param",
-                        assignedBy = PythonParameterAssignment.NAME_ONLY
-                    )
-                )
+                testParameter1,
+                testParameter2
             ),
-            originalFunction = OriginalPythonFunction(
-                qualifiedName = "test-module.test-class.test-function",
-                parameters = listOf(
-                    OriginalPythonParameter(
-                        name = "self",
-                        assignedBy = PythonParameterAssignment.IMPLICIT
-                    ),
-                    OriginalPythonParameter(name = "second-param"),
-                    OriginalPythonParameter(
+            callToOriginalAPI = PythonCall(
+                receiver = "self.instance.test-function",
+                arguments = listOf(
+                    PythonArgument(value = PythonReference(testParameter1)),
+                    PythonArgument(
                         name = "third-param",
-                        assignedBy = PythonParameterAssignment.NAME_ONLY
+                        value = PythonReference(testParameter2)
                     )
                 )
             )
         )
-        val testClass = MutablePythonClass(
+        val testClass = PythonClass(
             name = "test-class",
             methods = mutableListOf(testFunction)
         )
@@ -726,9 +628,9 @@ class PythonCodeGeneratorTest {
     @Test
     fun buildFunctionReturnsFormattedFunctionWithNoParameters() { // TODO
         // given
-        val testFunction = MutablePythonFunction(
+        val testFunction = PythonFunction(
             name = "test-function",
-            originalFunction = OriginalPythonFunction(qualifiedName = "test-module.test-function")
+            callToOriginalAPI = PythonCall(receiver = "test-module.test-function")
         )
 
         // when
@@ -745,20 +647,20 @@ class PythonCodeGeneratorTest {
     @Test
     fun buildFunctionReturnsFormattedFunctionWithPositionOnlyParameter() { // TODO
         // given
-        val testFunction = MutablePythonFunction(
+        val testParameter = PythonParameter(
+            name = "only-param",
+            defaultValue = "13",
+            assignedBy = PythonParameterAssignment.NAME_ONLY
+        )
+        val testFunction = PythonFunction(
             name = "test-function",
             parameters = mutableListOf(
-                MutablePythonParameter(
-                    name = "only-param",
-                    defaultValue = "13",
-                    assignedBy = PythonParameterAssignment.NAME_ONLY,
-                    originalParameter = OriginalPythonParameter(name = "only-param")
-                )
+                testParameter
             ),
-            originalFunction = OriginalPythonFunction(
-                qualifiedName = "test-module.test-function",
-                parameters = listOf(
-                    OriginalPythonParameter(name = "only-param")
+            callToOriginalAPI = PythonCall(
+                receiver = "test-module.test-function",
+                arguments = listOf(
+                    PythonArgument(value = PythonReference(testParameter))
                 )
             )
         )
@@ -777,20 +679,20 @@ class PythonCodeGeneratorTest {
     @Test
     fun buildFunctionReturnsFormattedFunctionWithPositionOrNameParameter() { // TODO
         // given
-        val testFunction = MutablePythonFunction(
+        val testParameter = PythonParameter(
+            name = "only-param",
+            defaultValue = "False",
+            assignedBy = PythonParameterAssignment.NAME_ONLY
+        )
+        val testFunction = PythonFunction(
             name = "test-function",
             parameters = mutableListOf(
-                MutablePythonParameter(
-                    name = "only-param",
-                    defaultValue = "False",
-                    assignedBy = PythonParameterAssignment.NAME_ONLY,
-                    originalParameter = OriginalPythonParameter("only-param")
-                )
+                testParameter
             ),
-            originalFunction = OriginalPythonFunction(
-                qualifiedName = "test-module.test-function",
-                parameters = listOf(
-                    OriginalPythonParameter("only-param")
+            callToOriginalAPI = PythonCall(
+                receiver = "test-module.test-function",
+                arguments = listOf(
+                    PythonArgument(value = PythonReference(testParameter))
                 )
             )
         )
@@ -809,23 +711,18 @@ class PythonCodeGeneratorTest {
     @Test
     fun buildFunctionReturnsFormattedFunctionWithNameOnlyParameter() { // TODO
         // given
-        val testFunction = MutablePythonFunction(
+        val testParameter = PythonParameter(name = "only-param")
+        val testFunction = PythonFunction(
             name = "test-function",
             parameters = mutableListOf(
-                MutablePythonParameter(
-                    name = "only-param",
-                    originalParameter = OriginalPythonParameter(
-                        name = "only-param",
-                        PythonParameterAssignment.NAME_ONLY
-                    )
-                )
+                testParameter
             ),
-            originalFunction = OriginalPythonFunction(
-                qualifiedName = "test-module.test-function",
-                parameters = listOf(
-                    OriginalPythonParameter(
+            callToOriginalAPI = PythonCall(
+                receiver = "test-module.test-function",
+                arguments = listOf(
+                    PythonArgument(
                         name = "only-param",
-                        PythonParameterAssignment.NAME_ONLY
+                        value = PythonReference(testParameter)
                     )
                 )
             )
@@ -845,23 +742,20 @@ class PythonCodeGeneratorTest {
     @Test
     fun buildFunctionReturnsFormattedFunctionWithPositionAndPositionOrNameParameter() { // TODO
         // given
-        val testFunction = MutablePythonFunction(
+
+        val testParameter1 = PythonParameter(name = "first-param")
+        val testParameter2 = PythonParameter(name = "second-param")
+        val testFunction = PythonFunction(
             name = "test-function",
             parameters = mutableListOf(
-                MutablePythonParameter(
-                    name = "first-param",
-                    originalParameter = OriginalPythonParameter(name = "first-param")
-                ),
-                MutablePythonParameter(
-                    name = "second-param",
-                    originalParameter = OriginalPythonParameter(name = "second-param")
-                )
+                testParameter1,
+                testParameter2
             ),
-            originalFunction = OriginalPythonFunction(
-                qualifiedName = "test-module.test-function",
-                parameters = listOf(
-                    OriginalPythonParameter(name = "first-param"),
-                    OriginalPythonParameter(name = "second-param")
+            callToOriginalAPI = PythonCall(
+                receiver = "test-module.test-function",
+                arguments = listOf(
+                    PythonArgument(value = PythonReference(testParameter1)),
+                    PythonArgument(value = PythonReference(testParameter2))
                 )
             )
         )
@@ -880,33 +774,24 @@ class PythonCodeGeneratorTest {
     @Test
     fun buildFunctionReturnsFormattedFunctionWithPositionAndPositionOrNameAndNameOnlyParameter() { // TODO
         // given
-        val testFunction = MutablePythonFunction(
+        val testParameter1 = PythonParameter(name = "first-param")
+        val testParameter2 = PythonParameter(name = "second-param")
+        val testParameter3 = PythonParameter(name = "third-param")
+        val testFunction = PythonFunction(
             name = "test-function",
             parameters = listOf(
-                MutablePythonParameter(
-                    name = "first-param",
-                    originalParameter = OriginalPythonParameter(name = "first-param")
-                ),
-                MutablePythonParameter(
-                    name = "second-param",
-                    originalParameter = OriginalPythonParameter(name = "second-param")
-                ),
-                MutablePythonParameter(
-                    name = "third-param",
-                    originalParameter = OriginalPythonParameter(
-                        name = "third-param",
-                        assignedBy = PythonParameterAssignment.NAME_ONLY
-                    )
-                )
+                testParameter1,
+                testParameter2,
+                testParameter3
             ),
-            originalFunction = OriginalPythonFunction(
-                qualifiedName = "test-module.test-function",
-                parameters = listOf(
-                    OriginalPythonParameter(name = "first-param"),
-                    OriginalPythonParameter(name = "second-param"),
-                    OriginalPythonParameter(
+            callToOriginalAPI = PythonCall(
+                receiver = "test-module.test-function",
+                arguments = listOf(
+                    PythonArgument(value = PythonReference(testParameter1)),
+                    PythonArgument(value = PythonReference(testParameter2)),
+                    PythonArgument(
                         name = "third-param",
-                        assignedBy = PythonParameterAssignment.NAME_ONLY
+                        value = PythonReference(testParameter3)
                     )
                 )
             )
@@ -926,28 +811,21 @@ class PythonCodeGeneratorTest {
     @Test
     fun buildFunctionReturnsFormattedFunctionWithPositionAndNameOnlyParameter() { // TODO
         // given
-        val testFunction = MutablePythonFunction(
+        val testParameter1 = PythonParameter(name = "first-param")
+        val testParameter2 = PythonParameter(name = "second-param")
+        val testFunction = PythonFunction(
             name = "test-function",
             parameters = listOf(
-                MutablePythonParameter(
-                    name = "first-param",
-                    originalParameter = OriginalPythonParameter(name = "first-param")
-                ),
-                MutablePythonParameter(
-                    name = "second-param",
-                    originalParameter = OriginalPythonParameter(
-                        name = "second-param",
-                        assignedBy = PythonParameterAssignment.NAME_ONLY
-                    )
-                )
+                testParameter1,
+                testParameter2
             ),
-            originalFunction = OriginalPythonFunction(
-                qualifiedName = "test-module.test-function",
-                parameters = listOf(
-                    OriginalPythonParameter(name = "first-param"),
-                    OriginalPythonParameter(
+            callToOriginalAPI = PythonCall(
+                receiver = "test-module.test-function",
+                arguments = listOf(
+                    PythonArgument(value = PythonReference(testParameter1)),
+                    PythonArgument(
                         name = "second-param",
-                        assignedBy = PythonParameterAssignment.NAME_ONLY
+                        value = PythonReference(testParameter2)
                     )
                 )
             )
@@ -967,30 +845,23 @@ class PythonCodeGeneratorTest {
     @Test
     fun buildFunctionReturnsFormattedFunctionWithPositionOrNameAndNameOnlyParameter() { // TODO
         // given
-        val testFunction = MutablePythonFunction(
+        val testParameter1 = PythonParameter(name = "first-param")
+        val testParameter2 = PythonParameter(name = "second-param")
+        val testFunction = PythonFunction(
             name = "test-function",
             parameters = listOf(
-                MutablePythonParameter(
-                    name = "first-param",
-                    originalParameter = OriginalPythonParameter(name = "first-param")
-                ),
-                MutablePythonParameter(
-                    name = "second-param",
-                    originalParameter = OriginalPythonParameter(
-                        name = "second-param",
-                        assignedBy = PythonParameterAssignment.NAME_ONLY
-                    )
-                )
+                testParameter1,
+                testParameter2
             ),
-            originalFunction = OriginalPythonFunction(
-                qualifiedName = "test-module.test-function",
-                parameters = listOf(
-                    OriginalPythonParameter(
-                        name = "first-param"
+            callToOriginalAPI = PythonCall(
+                receiver = "test-module.test-function",
+                arguments = listOf(
+                    PythonArgument(
+                        value = PythonReference(testParameter1)
                     ),
-                    OriginalPythonParameter(
+                    PythonArgument(
                         name = "second-param",
-                        assignedBy = PythonParameterAssignment.NAME_ONLY
+                        value = PythonReference(testParameter2)
                     )
                 )
             )
@@ -1012,33 +883,24 @@ class PythonCodeGeneratorTest {
     @Test
     fun buildFunctionsReturnsFormattedFunctionBasedOnOriginalDeclaration() { // TODO
         // given
-        val testFunction = MutablePythonFunction(
+        val testParameter1 = PythonParameter(name = "first-param")
+        val testParameter2 = PythonParameter(name = "second-param")
+        val testParameter3 = PythonParameter(name = "third-param")
+        val testFunction = PythonFunction(
             name = "test-function",
             parameters = mutableListOf(
-                MutablePythonParameter(
-                    name = "first-param",
-                    originalParameter = OriginalPythonParameter(name = "first-param")
-                ),
-                MutablePythonParameter(
-                    name = "second-param",
-                    originalParameter = OriginalPythonParameter(name = "second-param")
-                ),
-                MutablePythonParameter(
-                    name = "third-param",
-                    originalParameter = OriginalPythonParameter(
-                        name = "third-param",
-                        assignedBy = PythonParameterAssignment.NAME_ONLY
-                    )
-                )
+                testParameter1,
+                testParameter2,
+                testParameter3
             ),
-            originalFunction = OriginalPythonFunction(
-                qualifiedName = "test-module.test-function",
-                parameters = listOf(
-                    OriginalPythonParameter(name = "first-param"),
-                    OriginalPythonParameter(name = "second-param"),
-                    OriginalPythonParameter(
+            callToOriginalAPI = PythonCall(
+                receiver = "test-module.test-function",
+                arguments = listOf(
+                    PythonArgument(value = PythonReference(testParameter1)),
+                    PythonArgument(value = PythonReference(testParameter2)),
+                    PythonArgument(
                         name = "third-param",
-                        assignedBy = PythonParameterAssignment.NAME_ONLY
+                        value = PythonReference(testParameter3)
                     )
                 )
             )
@@ -1058,22 +920,18 @@ class PythonCodeGeneratorTest {
     @Test
     fun buildClassReturnsFormattedClassWithStaticMethodDecorator() {
         // given
-        val testClass = MutablePythonClass(
+        val testParameter = PythonParameter(name = "only-param")
+        val testClass = PythonClass(
             name = "test-class",
             methods = listOf(
-                MutablePythonFunction(
+                PythonFunction(
                     name = "test-class-function1",
                     decorators = mutableListOf("staticmethod"),
-                    parameters = listOf(
-                        MutablePythonParameter(
-                            name = "only-param",
-                            originalParameter = OriginalPythonParameter(name = "only-param")
-                        )
-                    ),
-                    originalFunction = OriginalPythonFunction(
-                        qualifiedName = "test-module.test-class.test-class-function1",
-                        parameters = listOf(
-                            OriginalPythonParameter(name = "only-param")
+                    parameters = listOf(testParameter),
+                    callToOriginalAPI = PythonCall(
+                        receiver = "test-module.test-class.test-class-function1",
+                        arguments = listOf(
+                            PythonArgument(value = PythonReference(testParameter))
                         )
                     )
                 )
@@ -1099,10 +957,10 @@ class PythonCodeGeneratorTest {
 
         @Test
         fun `should import Enum if the module contains enums`() {
-            val testModule = MutablePythonModule(
+            val testModule = PythonModule(
                 name = "testModule",
                 enums = listOf(
-                    MutablePythonEnum(name = "TestEnum")
+                    PythonEnum(name = "TestEnum")
                 )
             )
 
@@ -1117,7 +975,7 @@ class PythonCodeGeneratorTest {
 
         @Test
         fun `should not import Enum if the module does not contain enums`() {
-            val testModule = MutablePythonModule(name = "testModule")
+            val testModule = PythonModule(name = "testModule")
 
             testModule.toPythonCode() shouldBe ""
         }
@@ -1128,19 +986,21 @@ class PythonCodeGeneratorTest {
 
         @Test
         fun `should access value of enum parameters`() {
-            val testFunction = MutablePythonFunction(
+            val testParameter = PythonParameter(name = "testParameter")
+            val testFunction = PythonFunction(
                 name = "testFunction",
                 parameters = listOf(
-                    MutablePythonParameter(
-                        name = "testParameter",
-                        assignedBy = PythonParameterAssignment.ENUM,
-                        originalParameter = OriginalPythonParameter(name = "testParameter")
-                    )
+                    testParameter
                 ),
-                originalFunction = OriginalPythonFunction(
-                    qualifiedName = "testModule.testFunction",
-                    parameters = listOf(
-                        OriginalPythonParameter(name = "testParameter")
+                callToOriginalAPI = PythonCall(
+                    receiver = "testModule.testFunction",
+                    arguments = listOf(
+                        PythonArgument(
+                            value = PythonMemberAccess(
+                                receiver = PythonReference(testParameter),
+                                member = PythonReference(PythonAttribute(name = "value"))
+                            )
+                        )
                     )
                 )
             )
@@ -1153,28 +1013,31 @@ class PythonCodeGeneratorTest {
 
         @Test
         fun `should access attribute of parameter objects`() {
-            val testFunction = MutablePythonFunction(
+            val testParameter = PythonParameter(name = "testGroup")
+            val testFunction = PythonFunction(
                 name = "testFunction",
                 parameters = listOf(
-                    MutablePythonParameter(
-                        name = "testGroup",
-                        assignedBy = PythonParameterAssignment.GROUP,
-                        groupedParametersOldToNewName = mutableMapOf(
-                            "oldParameter1" to "newParameter1",
-                            "oldParameter2" to "newParameter2"
-                        )
-                    )
+                    testParameter
                 ),
-                originalFunction = OriginalPythonFunction(
-                    qualifiedName = "testModule.testFunction",
-                    parameters = listOf(
-                        OriginalPythonParameter(
-                            name = "oldParameter1",
-                            assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+                callToOriginalAPI = PythonCall(
+                    receiver = "testModule.testFunction",
+                    arguments = listOf(
+                        PythonArgument(
+                            value = PythonMemberAccess(
+                                receiver = PythonReference(testParameter),
+                                member = PythonReference(
+                                    PythonAttribute(name = "newParameter1")
+                                )
+                            )
                         ),
-                        OriginalPythonParameter(
+                        PythonArgument(
                             name = "oldParameter2",
-                            assignedBy = PythonParameterAssignment.NAME_ONLY
+                            value = PythonMemberAccess(
+                                receiver = PythonReference(testParameter),
+                                member = PythonReference(
+                                    PythonAttribute(name = "newParameter2")
+                                )
+                            )
                         )
                     )
                 )
@@ -1192,7 +1055,7 @@ class PythonCodeGeneratorTest {
 
         @Test
         fun `should create valid Python code for enums without instances`() {
-            val testEnum = MutablePythonEnum(name = "TestEnum")
+            val testEnum = PythonEnum(name = "TestEnum")
 
             testEnum.toPythonCode() shouldBe """
                 |class TestEnum(Enum):
@@ -1202,14 +1065,14 @@ class PythonCodeGeneratorTest {
 
         @Test
         fun `should create valid Python code for enums with instances`() {
-            val testEnum = MutablePythonEnum(
+            val testEnum = PythonEnum(
                 name = "TestEnum",
                 instances = listOf(
-                    MutablePythonEnumInstance(
+                    PythonEnumInstance(
                         name = "TestEnumInstance1",
                         value = "inst1"
                     ),
-                    MutablePythonEnumInstance(
+                    PythonEnumInstance(
                         name = "TestEnumInstance2",
                         value = "inst2"
                     )

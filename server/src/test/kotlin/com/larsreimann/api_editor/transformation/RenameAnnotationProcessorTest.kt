@@ -1,48 +1,48 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.RenameAnnotation
-import com.larsreimann.api_editor.mutable_model.MutablePythonClass
-import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
-import com.larsreimann.api_editor.mutable_model.MutablePythonModule
-import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
-import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonClass
+import com.larsreimann.api_editor.mutable_model.PythonFunction
+import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonPackage
+import com.larsreimann.api_editor.mutable_model.PythonParameter
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class RenameAnnotationProcessorTest {
-    private lateinit var testClass: MutablePythonClass
-    private lateinit var testFunction: MutablePythonFunction
-    private lateinit var testParameter: MutablePythonParameter
-    private lateinit var testPackage: MutablePythonPackage
+    private lateinit var testClass: PythonClass
+    private lateinit var testFunction: PythonFunction
+    private lateinit var testParameter: PythonParameter
+    private lateinit var testPackage: PythonPackage
 
     @BeforeEach
     fun reset() {
-        testClass = MutablePythonClass(
+        testClass = PythonClass(
             name = "TestClass",
             annotations = mutableListOf(RenameAnnotation("NewTestClass"))
         )
-        testFunction = MutablePythonFunction(
+        testFunction = PythonFunction(
             name = "testFunction",
             annotations = mutableListOf(RenameAnnotation("newTestFunction"))
         )
-        testParameter = MutablePythonParameter(
+        testParameter = PythonParameter(
             name = "testParameter",
             annotations = mutableListOf(RenameAnnotation("newTestParameter"))
         )
 
-        testPackage = MutablePythonPackage(
+        testPackage = PythonPackage(
             distribution = "testPackage",
             name = "testPackage",
             version = "1.0.0",
             modules = listOf(
-                MutablePythonModule(
+                PythonModule(
                     name = "testModule",
                     classes = listOf(testClass),
                     functions = listOf(
                         testFunction,
-                        MutablePythonFunction(
+                        PythonFunction(
                             name = "testFunction",
                             parameters = listOf(testParameter)
                         )

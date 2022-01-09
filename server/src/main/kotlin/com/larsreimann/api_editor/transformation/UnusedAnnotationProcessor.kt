@@ -1,21 +1,21 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.UnusedAnnotation
-import com.larsreimann.api_editor.mutable_model.MutablePythonDeclaration
-import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
+import com.larsreimann.api_editor.mutable_model.PythonDeclaration
+import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.modeling.descendants
 
 /**
  * Processes and removes `@unused` annotations.
  */
-fun MutablePythonPackage.processUnusedAnnotations() {
+fun PythonPackage.processUnusedAnnotations() {
     this.descendants()
-        .filterIsInstance<MutablePythonDeclaration>()
+        .filterIsInstance<PythonDeclaration>()
         .toList()
         .forEach { it.processUnusedAnnotations() }
 }
 
-private fun MutablePythonDeclaration.processUnusedAnnotations() {
+private fun PythonDeclaration.processUnusedAnnotations() {
     if (UnusedAnnotation in this.annotations) {
         this.release()
     }

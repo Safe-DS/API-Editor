@@ -1,20 +1,20 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.RenameAnnotation
-import com.larsreimann.api_editor.mutable_model.MutablePythonDeclaration
-import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
+import com.larsreimann.api_editor.mutable_model.PythonDeclaration
+import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.modeling.descendants
 
 /**
  * Processes and removes `@rename` annotations.
  */
-fun MutablePythonPackage.processRenameAnnotations() {
+fun PythonPackage.processRenameAnnotations() {
     this.descendants()
-        .filterIsInstance<MutablePythonDeclaration>()
+        .filterIsInstance<PythonDeclaration>()
         .forEach { it.processRenameAnnotations() }
 }
 
-private fun MutablePythonDeclaration.processRenameAnnotations() {
+private fun PythonDeclaration.processRenameAnnotations() {
     this.annotations
         .filterIsInstance<RenameAnnotation>()
         .forEach {

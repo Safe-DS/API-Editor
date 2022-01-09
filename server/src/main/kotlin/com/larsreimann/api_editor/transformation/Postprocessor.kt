@@ -1,18 +1,18 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.PythonParameterAssignment
-import com.larsreimann.api_editor.mutable_model.MutablePythonAttribute
-import com.larsreimann.api_editor.mutable_model.MutablePythonClass
-import com.larsreimann.api_editor.mutable_model.MutablePythonConstructor
-import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
-import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
-import com.larsreimann.api_editor.mutable_model.OriginalPythonFunction
+import com.larsreimann.api_editor.mutable_model.PythonAttribute
+import com.larsreimann.api_editor.mutable_model.PythonCall
+import com.larsreimann.api_editor.mutable_model.PythonClass
+import com.larsreimann.api_editor.mutable_model.PythonConstructor
+import com.larsreimann.api_editor.mutable_model.PythonFunction
+import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.modeling.descendants
 
 /**
  * Removes modules that don't contain declarations.
  */
-fun MutablePythonPackage.removeEmptyModules() {
+fun PythonPackage.removeEmptyModules() {
     this.modules
         .toList()
         .forEach {
@@ -25,57 +25,44 @@ fun MutablePythonPackage.removeEmptyModules() {
 /**
  * Reorders parameters by the means they have to be assigned.
  */
-fun MutablePythonPackage.reorderParameters() {
+fun PythonPackage.reorderParameters() {
     this.descendants()
-        .filterIsInstance<MutablePythonFunction>()
+        .filterIsInstance<PythonFunction>()
         .forEach { it.reorderParameters() }
 }
 
-private fun MutablePythonFunction.reorderParameters() {
+private fun PythonFunction.reorderParameters() {
     val groups = this.parameters.groupBy { it.assignedBy }
     this.parameters.addAll(groups[PythonParameterAssignment.IMPLICIT].orEmpty())
     this.parameters.addAll(groups[PythonParameterAssignment.POSITION_ONLY].orEmpty())
     this.parameters.addAll(groups[PythonParameterAssignment.POSITION_OR_NAME].orEmpty())
     this.parameters.addAll(groups[PythonParameterAssignment.NAME_ONLY].orEmpty())
-    this.parameters.addAll(groups[PythonParameterAssignment.ATTRIBUTE].orEmpty())
-    this.parameters.addAll(groups[PythonParameterAssignment.CONSTANT].orEmpty())
 }
 
 /**
  * Converts `__init__` methods to constructors or adds a constructor without parameters if none exists.
  */
-fun MutablePythonPackage.createConstructors() {
-    this.descendants { it is MutablePythonFunction }
+fun PythonPackage.extractConstructors() {
+    this.descendants { it is PythonFunction }
         .toList()
-        .filterIsInstance<MutablePythonClass>()
+        .filterIsInstance<PythonClass>()
         .forEach { it.createConstructor() }
 }
 
-private fun MutablePythonClass.createConstructor() {
+private fun PythonClass.createConstructor() {
     when (val constructorMethod = this.methods.firstOrNull { it.name == "__init__" }) {
         null -> {
-            this.constructor = MutablePythonConstructor(
+            this.constructor = PythonConstructor(
                 parameters = emptyList(),
-                callToOriginalAPI = OriginalPythonFunction(
-                    qualifiedName = this.qualifiedName()
-                )
+                callToOriginalAPI = PythonCall(receiver = this.originalClass!!.qualifiedName)
             )
         }
         else -> {
-            val qualifiedName = constructorMethod.originalFunction
-                ?.qualifiedName
-                ?.removeSuffix(".__init__")
-                ?: qualifiedName()
-
-            val parameters = constructorMethod.originalFunction
-                ?.parameters
-                ?: emptyList()
-
-            this.constructor = MutablePythonConstructor(
+            this.constructor = PythonConstructor(
                 parameters = constructorMethod.parameters.toList(),
-                callToOriginalAPI = OriginalPythonFunction(
-                    qualifiedName = qualifiedName,
-                    parameters = parameters
+                callToOriginalAPI = PythonCall(
+                    receiver = constructorMethod.callToOriginalAPI!!.receiver.removeSuffix(".__init__"),
+                    arguments = constructorMethod.callToOriginalAPI!!.arguments.toList()
                 )
             )
 
@@ -87,20 +74,20 @@ private fun MutablePythonClass.createConstructor() {
 /**
  * Creates attributes for each class based on its constructor.
  */
-fun MutablePythonPackage.createAttributesForParametersOfConstructor() {
+fun PythonPackage.createAttributesForParametersOfConstructor() {
     this.descendants()
-        .filterIsInstance<MutablePythonClass>()
+        .filterIsInstance<PythonClass>()
         .forEach { it.createAttributesForParametersOfConstructor() }
 }
 
-private fun MutablePythonClass.createAttributesForParametersOfConstructor() {
+private fun PythonClass.createAttributesForParametersOfConstructor() {
     this.constructor
         ?.parameters
-        ?.filter { it.assignedBy !in setOf(PythonParameterAssignment.IMPLICIT, PythonParameterAssignment.CONSTANT) }
+        ?.filter { it.assignedBy != PythonParameterAssignment.IMPLICIT }
         ?.forEach {
-            this.attributes += MutablePythonAttribute(
+            this.attributes += PythonAttribute(
                 name = it.name,
-                defaultValue = it.defaultValue,
+                value = it.defaultValue,
                 isPublic = true,
                 typeInDocs = it.typeInDocs,
                 description = it.description,

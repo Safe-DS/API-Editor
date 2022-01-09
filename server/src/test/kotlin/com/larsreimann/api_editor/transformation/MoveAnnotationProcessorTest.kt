@@ -1,31 +1,31 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.MoveAnnotation
-import com.larsreimann.api_editor.mutable_model.MutablePythonClass
-import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
-import com.larsreimann.api_editor.mutable_model.MutablePythonModule
-import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
+import com.larsreimann.api_editor.mutable_model.PythonClass
+import com.larsreimann.api_editor.mutable_model.PythonFunction
+import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonPackage
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class MoveAnnotationProcessorTest {
-    private lateinit var testClass: MutablePythonClass
-    private lateinit var testFunction: MutablePythonFunction
-    private lateinit var testPackage: MutablePythonPackage
+    private lateinit var testClass: PythonClass
+    private lateinit var testFunction: PythonFunction
+    private lateinit var testPackage: PythonPackage
 
     @BeforeEach
     fun reset() {
-        testClass = MutablePythonClass(name = "TestClass")
-        testFunction = MutablePythonFunction(name = "testFunction")
-        testPackage = MutablePythonPackage(
+        testClass = PythonClass(name = "TestClass")
+        testFunction = PythonFunction(name = "testFunction")
+        testPackage = PythonPackage(
             distribution = "testPackage",
             name = "testPackage",
             version = "1.0.0",
             modules = listOf(
-                MutablePythonModule(name = "existingTestModule"),
-                MutablePythonModule(
+                PythonModule(name = "existingTestModule"),
+                PythonModule(
                     name = "testModule",
                     classes = listOf(testClass),
                     functions = listOf(testFunction)
