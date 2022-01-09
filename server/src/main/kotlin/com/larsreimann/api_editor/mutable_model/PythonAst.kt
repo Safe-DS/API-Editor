@@ -170,6 +170,7 @@ data class MutablePythonParameter(
     var typeInDocs: String = "",
     var description: String = "",
     var boundary: Boundary? = null,
+    var groupedParametersOldToNewName: MutableMap<String, String> = mutableMapOf(),
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
     var originalParameter: OriginalPythonParameter? = null
 ) : MutablePythonDeclaration() {

@@ -34,6 +34,7 @@ private fun MutablePythonPackage.processAnnotations() {
     processBoundaryAnnotations()
     processPureAnnotations()
     processEnumAnnotations()
+    processGroupAnnotations()
 }
 
 /**

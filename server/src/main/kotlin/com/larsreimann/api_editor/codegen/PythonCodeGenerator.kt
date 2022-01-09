@@ -1,12 +1,14 @@
 package com.larsreimann.api_editor.codegen
 
 import com.larsreimann.api_editor.model.ComparisonOperator
-import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.model.PythonParameterAssignment.ATTRIBUTE
 import com.larsreimann.api_editor.model.PythonParameterAssignment.CONSTANT
 import com.larsreimann.api_editor.model.PythonParameterAssignment.ENUM
+import com.larsreimann.api_editor.model.PythonParameterAssignment.GROUP
 import com.larsreimann.api_editor.model.PythonParameterAssignment.IMPLICIT
 import com.larsreimann.api_editor.model.PythonParameterAssignment.NAME_ONLY
+import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITION_ONLY
+import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITION_OR_NAME
 import com.larsreimann.api_editor.mutable_model.MutablePythonClass
 import com.larsreimann.api_editor.mutable_model.MutablePythonConstructor
 import com.larsreimann.api_editor.mutable_model.MutablePythonEnum
@@ -178,9 +180,10 @@ private fun buildParameters(parameters: List<MutablePythonParameter>): String {
     parameters.forEach { pythonParameter: MutablePythonParameter ->
         when (pythonParameter.assignedBy) {
             IMPLICIT -> implicitParameters.add(pythonParameter.toPythonCode())
-            PythonParameterAssignment.POSITION_ONLY -> positionOnlyParameters.add(pythonParameter.toPythonCode())
-            PythonParameterAssignment.POSITION_OR_NAME -> positionOrNameParameters.add(pythonParameter.toPythonCode())
+            POSITION_ONLY -> positionOnlyParameters.add(pythonParameter.toPythonCode())
+            POSITION_OR_NAME -> positionOrNameParameters.add(pythonParameter.toPythonCode())
             ENUM -> positionOrNameParameters.add(pythonParameter.toPythonCode())
+            GROUP -> positionOrNameParameters.add(pythonParameter.toPythonCode())
             NAME_ONLY -> nameOnlyParameters.add(pythonParameter.toPythonCode())
             else -> {}
         }
@@ -357,13 +360,19 @@ private fun buildParameterCall(
     val formattedParameters: MutableList<String?> = ArrayList()
     val originalNameToValueMap: MutableMap<String, String?> = HashMap()
     parameters.forEach {
-        val value: String? =
-            when (it.assignedBy) {
-                CONSTANT, ATTRIBUTE -> it.defaultValue
-                ENUM -> "${it.name}.value"
-                else -> it.name
+        if (it.assignedBy == GROUP) {
+            it.groupedParametersOldToNewName.forEach { (oldName, newName) ->
+                originalNameToValueMap[oldName] = "${it.name}.$newName"
             }
-        originalNameToValueMap[it.originalParameter!!.name] = value
+        } else {
+            val value: String? =
+                when (it.assignedBy) {
+                    CONSTANT, ATTRIBUTE -> it.defaultValue
+                    ENUM -> "${it.name}.value"
+                    else -> it.name
+                }
+            originalNameToValueMap[it.originalParameter!!.name] = value
+        }
     }
     originalParameters
         .filter { it.assignedBy != IMPLICIT }
