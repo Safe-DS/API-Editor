@@ -43,7 +43,8 @@ private fun MutablePythonFunction.processGroupAnnotations(module: MutablePythonM
                         .forEach { this[it.originalParameter!!.name] = it.name }
                 }.toMutableMap(),
                 originalParameter = OriginalPythonParameter(
-                    name = annotation.groupName.replaceFirstChar { it.lowercase() }
+                    name = annotation.groupName.replaceFirstChar { it.lowercase() },
+                    assignedBy = PythonParameterAssignment.GROUP
                 )
             )
             val constructorParameters = mutableListOf(
