@@ -26,7 +26,7 @@ idea {
 // Subprojects ---------------------------------------------------------------------------------------------------------
 
 subprojects {
-    group = "com.larsreimann.api_editor"
+    group = "com.larsreimann"
     version = "0.0.1"
 
     repositories {

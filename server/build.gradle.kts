@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 val javaVersion: String by project
 
 // Plugins -------------------------------------------------------------------------------------------------------------
@@ -20,6 +22,11 @@ java {
     }
 }
 
+tasks.withType<KotlinCompile> {
+    kotlinOptions.jvmTarget = javaVersion
+}
+
+
 // Dependencies --------------------------------------------------------------------------------------------------------
 
 val ktorVersion = "1.6.7"
@@ -30,7 +37,7 @@ dependencies {
     implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-server-host-common:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
-    implementation("com.larsreimann:modeling-core:1.0.0")
+    implementation("com.larsreimann:modeling-core:2.0.0")
 
     // We can later pull this from Maven Central (or some other repo) once published
     implementation(files("lib/de.unibonn.simpleml-1.0.0-SNAPSHOT.jar"))

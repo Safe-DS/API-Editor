@@ -64,18 +64,6 @@ class ParameterAnnotationProcessorTest {
     }
 
     @Test
-    // TODO: remove
-    fun `should process AttributeAnnotations`() {
-        testParameter.annotations += AttributeAnnotation(DefaultBoolean(true))
-
-        testPackage.processParameterAnnotations()
-
-        testParameter.assignedBy shouldBe PythonParameterAssignment.ATTRIBUTE
-        testParameter.defaultValue shouldBe "true"
-    }
-    // end remove
-
-    @Test
     fun `should update the function call when processing AttributeAnnotations`() {
         testParameter.annotations += AttributeAnnotation(DefaultBoolean(true))
 
@@ -125,18 +113,6 @@ class ParameterAnnotationProcessorTest {
             .filterIsInstance<AttributeAnnotation>()
             .shouldBeEmpty()
     }
-
-    @Test
-    // TODO: remove
-    fun `should process ConstantAnnotations`() {
-        testParameter.annotations += ConstantAnnotation(DefaultBoolean(true))
-
-        testPackage.processParameterAnnotations()
-
-        testParameter.assignedBy shouldBe PythonParameterAssignment.CONSTANT
-        testParameter.defaultValue shouldBe "true"
-    }
-    // end remove
 
     @Test
     fun `should update the function call when processing ConstantAnnotations`() {
