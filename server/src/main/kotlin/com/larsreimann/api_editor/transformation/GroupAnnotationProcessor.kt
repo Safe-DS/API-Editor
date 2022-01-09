@@ -77,8 +77,10 @@ private fun hasConflictingGroups(
 ): Boolean {
     return moduleClasses.any { `class` ->
         (groupToCheck.name == `class`.name) &&
-            (groupToCheck.constructor?.parameters?.map { it.name }?.toList()
-                != `class`.constructor?.parameters?.map { it.name }?.toList())
+            (
+                groupToCheck.constructor?.parameters?.map { it.name }?.toList()
+                    != `class`.constructor?.parameters?.map { it.name }?.toList()
+                )
     }
 }
 
