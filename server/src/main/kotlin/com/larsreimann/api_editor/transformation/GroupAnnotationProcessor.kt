@@ -8,6 +8,7 @@ import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
 import com.larsreimann.api_editor.mutable_model.MutablePythonModule
 import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
 import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
+import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
 import com.larsreimann.api_editor.transformation.processing_exceptions.ConflictingGroupException
 import com.larsreimann.modeling.descendants
 
@@ -31,6 +32,7 @@ private fun MutablePythonFunction.processGroupAnnotations(module: MutablePythonM
         .filterIsInstance<GroupAnnotation>()
         .forEach { annotation ->
             val firstOccurrence = this.parameters.indexOfFirst { it.name in annotation.parameters }
+            println(parameters.toList().toString())
             val groupedParameter = MutablePythonParameter(
                 name = annotation.groupName.replaceFirstChar { it.lowercase() },
                 typeInDocs = annotation.groupName.replaceFirstChar { it.uppercase() },
@@ -39,12 +41,15 @@ private fun MutablePythonFunction.processGroupAnnotations(module: MutablePythonM
                     parameters
                         .filter { it.originalParameter!!.name in annotation.parameters }
                         .forEach { this[it.originalParameter!!.name] = it.name }
-                }.toMutableMap()
+                }.toMutableMap(),
+                originalParameter = OriginalPythonParameter(
+                    name = annotation.groupName.replaceFirstChar { it.lowercase() }
+                )
             )
             val constructorParameters = mutableListOf(
                 MutablePythonParameter(
                     name = "self",
-                    assignedBy = PythonParameterAssignment.IMPLICIT
+                    assignedBy = PythonParameterAssignment.IMPLICIT,
                 )
             )
             constructorParameters += this.parameters.filter { it.name in annotation.parameters }
