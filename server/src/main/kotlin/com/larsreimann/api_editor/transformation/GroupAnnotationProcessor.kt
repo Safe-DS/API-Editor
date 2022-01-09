@@ -2,12 +2,15 @@ package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.GroupAnnotation
 import com.larsreimann.api_editor.model.PythonParameterAssignment
+import com.larsreimann.api_editor.mutable_model.PythonAttribute
 import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonConstructor
 import com.larsreimann.api_editor.mutable_model.PythonFunction
+import com.larsreimann.api_editor.mutable_model.PythonMemberAccess
 import com.larsreimann.api_editor.mutable_model.PythonModule
 import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.api_editor.mutable_model.PythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonReference
 import com.larsreimann.api_editor.transformation.processing_exceptions.ConflictingGroupException
 import com.larsreimann.modeling.descendants
 
@@ -65,6 +68,17 @@ private fun PythonFunction.processGroupAnnotations(module: PythonModule) {
             }
             if (!isAlreadyDefinedInModule(module.classes, groupedParameterClass)) {
                 module.classes.add(groupedParameterClass)
+            }
+
+            // Update argument that references this parameter
+            this.callToOriginalAPI!!.arguments.forEach {
+                val value = it.value
+                if (value is PythonReference && value.declaration?.name in annotation.parameters) {
+                    it.value = PythonMemberAccess(
+                        receiver = PythonReference(declaration = groupedParameterClass),
+                        member = PythonReference(PythonAttribute(name = value.declaration!!.name))
+                    )
+                }
             }
 
             this.annotations.remove(annotation)

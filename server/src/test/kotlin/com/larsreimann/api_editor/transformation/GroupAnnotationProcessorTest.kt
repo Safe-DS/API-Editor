@@ -3,9 +3,10 @@ package com.larsreimann.api_editor.transformation
 import com.larsreimann.api_editor.model.GroupAnnotation
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonArgument
+import com.larsreimann.api_editor.mutable_model.PythonCall
 import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonConstructor
-import com.larsreimann.api_editor.mutable_model.PythonDeclaration
 import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonMemberAccess
 import com.larsreimann.api_editor.mutable_model.PythonModule
@@ -59,6 +60,14 @@ class GroupAnnotationProcessorTest {
                     groupName = "TestGroup",
                     parameters = mutableListOf("testParameter2", "testParameter3")
                 )
+            ),
+            callToOriginalAPI = PythonCall(
+                receiver = "testModule.testFunction",
+                arguments = listOf(
+                    PythonArgument(value = PythonReference(testParameter1)),
+                    PythonArgument(value = PythonReference(testParameter2)),
+                    PythonArgument(value = PythonReference(testParameter3)),
+                )
             )
         )
         testModule = PythonModule(
@@ -94,18 +103,20 @@ class GroupAnnotationProcessorTest {
             it.declaration?.name shouldBe "TestGroup"
         }
         secondArgumentValue.member.asClue {
-            it.shouldBeInstanceOf<PythonDeclaration>()
+            it.shouldNotBeNull()
+            it.declaration.shouldNotBeNull()
             it.declaration?.name shouldBe "testParameter2"
         }
 
-        val thirdArgument = callToOriginalAPI.arguments[1]
+        val thirdArgument = callToOriginalAPI.arguments[2]
         val thirdArgumentValue = thirdArgument.value.shouldBeInstanceOf<PythonMemberAccess>()
         thirdArgumentValue.receiver.asClue {
             it.shouldBeInstanceOf<PythonReference>()
             it.declaration?.name shouldBe "TestGroup"
         }
         thirdArgumentValue.member.asClue {
-            it.shouldBeInstanceOf<PythonDeclaration>()
+            it.shouldNotBeNull()
+            it.declaration.shouldNotBeNull()
             it.declaration?.name shouldBe "testParameter3"
         }
     }

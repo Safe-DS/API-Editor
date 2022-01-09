@@ -3,6 +3,8 @@ package com.larsreimann.api_editor.transformation
 import com.larsreimann.api_editor.model.EnumAnnotation
 import com.larsreimann.api_editor.model.EnumPair
 import com.larsreimann.api_editor.model.PythonParameterAssignment
+import com.larsreimann.api_editor.mutable_model.PythonArgument
+import com.larsreimann.api_editor.mutable_model.PythonCall
 import com.larsreimann.api_editor.mutable_model.PythonDeclaration
 import com.larsreimann.api_editor.mutable_model.PythonEnum
 import com.larsreimann.api_editor.mutable_model.PythonEnumInstance
@@ -48,7 +50,15 @@ class EnumAnnotationProcessorTest {
         )
         testFunction = PythonFunction(
             name = "testFunction",
-            parameters = listOf(testParameter)
+            parameters = listOf(testParameter),
+            callToOriginalAPI = PythonCall(
+                receiver = "testModule.testFunction",
+                arguments = listOf(
+                    PythonArgument(
+                        value = PythonReference(testParameter)
+                    )
+                )
+            )
         )
         testModule = PythonModule(
             name = "testModule",
@@ -78,8 +88,9 @@ class EnumAnnotationProcessorTest {
             it.declaration shouldBe testParameter
         }
         value.member.asClue {
-            it.shouldBeInstanceOf<PythonDeclaration>()
-            it.name shouldBe "value"
+            it.shouldNotBeNull()
+            it.declaration.shouldBeInstanceOf<PythonDeclaration>()
+            it.declaration?.name shouldBe "value"
         }
     }
 
@@ -87,7 +98,6 @@ class EnumAnnotationProcessorTest {
     fun `should process EnumAnnotations on parameter level`() {
         testPackage.processEnumAnnotations()
 
-        testParameter.assignedBy shouldBe PythonParameterAssignment.ENUM
         testParameter.typeInDocs shouldBe "TestEnum"
     }
 
@@ -109,10 +119,9 @@ class EnumAnnotationProcessorTest {
                 PythonEnumInstance("name2", "value2")
             )
         )
-        testModule.enums.add(mutableEnum)
+        testModule.enums += mutableEnum
         testPackage.processEnumAnnotations()
 
-        testParameter.assignedBy shouldBe PythonParameterAssignment.ENUM
         testParameter.typeInDocs shouldBe "TestEnum"
     }
 
@@ -176,7 +185,7 @@ class EnumAnnotationProcessorTest {
                 PythonEnumInstance("name3", "value3")
             )
         )
-        testModule.enums.add(mutableEnum)
+        testModule.enums += mutableEnum
 
         shouldThrowExactly<ConflictingEnumException> {
             testPackage.processEnumAnnotations()
