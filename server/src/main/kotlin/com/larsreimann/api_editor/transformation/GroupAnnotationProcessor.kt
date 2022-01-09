@@ -32,7 +32,6 @@ private fun MutablePythonFunction.processGroupAnnotations(module: MutablePythonM
         .filterIsInstance<GroupAnnotation>()
         .forEach { annotation ->
             val firstOccurrence = this.parameters.indexOfFirst { it.name in annotation.parameters }
-            println(parameters.toList().toString())
             val groupedParameter = MutablePythonParameter(
                 name = annotation.groupName.replaceFirstChar { it.lowercase() },
                 typeInDocs = annotation.groupName.replaceFirstChar { it.uppercase() },
