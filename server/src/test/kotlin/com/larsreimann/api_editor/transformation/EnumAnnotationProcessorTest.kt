@@ -3,22 +3,31 @@ package com.larsreimann.api_editor.transformation
 import com.larsreimann.api_editor.model.EnumAnnotation
 import com.larsreimann.api_editor.model.EnumPair
 import com.larsreimann.api_editor.model.PythonParameterAssignment
+import com.larsreimann.api_editor.mutable_model.PythonDeclaration
 import com.larsreimann.api_editor.mutable_model.PythonEnum
 import com.larsreimann.api_editor.mutable_model.PythonEnumInstance
 import com.larsreimann.api_editor.mutable_model.PythonFunction
+import com.larsreimann.api_editor.mutable_model.PythonMemberAccess
 import com.larsreimann.api_editor.mutable_model.PythonModule
 import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.api_editor.mutable_model.PythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonReference
 import com.larsreimann.api_editor.transformation.processing_exceptions.ConflictingEnumException
+import io.kotest.assertions.asClue
 import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContain
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class EnumAnnotationProcessorTest {
     private lateinit var testParameter: PythonParameter
+    private lateinit var testFunction: PythonFunction
     private lateinit var testModule: PythonModule
     private lateinit var testPackage: PythonPackage
 
@@ -37,23 +46,41 @@ class EnumAnnotationProcessorTest {
                 )
             )
         )
+        testFunction = PythonFunction(
+            name = "testFunction",
+            parameters = listOf(testParameter)
+        )
         testModule = PythonModule(
             name = "testModule",
-            functions = mutableListOf(
-                PythonFunction(
-                    name = "testFunction",
-                    parameters = mutableListOf(testParameter)
-                )
-            )
+            functions = listOf(testFunction)
         )
         testPackage = PythonPackage(
             distribution = "testPackage",
             name = "testPackage",
             version = "1.0.0",
-            modules = mutableListOf(
-                testModule
-            )
+            modules = listOf(testModule)
         )
+    }
+
+    @Test
+    fun `should update the function call when processing EnumAnnotations`() {
+        testPackage.processEnumAnnotations()
+
+        val callToOriginalAPI = testFunction.callToOriginalAPI.shouldNotBeNull()
+        callToOriginalAPI.arguments.shouldHaveSize(1)
+
+        val argument = callToOriginalAPI.arguments[0]
+        argument.name.shouldBeNull()
+
+        val value = argument.value.shouldBeInstanceOf<PythonMemberAccess>()
+        value.receiver.asClue {
+            it.shouldBeInstanceOf<PythonReference>()
+            it.declaration shouldBe testParameter
+        }
+        value.member.asClue {
+            it.shouldBeInstanceOf<PythonDeclaration>()
+            it.name shouldBe "value"
+        }
     }
 
     @Test
@@ -69,10 +96,8 @@ class EnumAnnotationProcessorTest {
         testPackage.processEnumAnnotations()
 
         testModule.enums[0].name shouldBe "TestEnum"
-        testModule.enums[0].instances shouldContain
-            PythonEnumInstance("name1", "value1")
-        testModule.enums[0].instances shouldContain
-            PythonEnumInstance("name2", "value2")
+        testModule.enums[0].instances shouldContain PythonEnumInstance("name1", "value1")
+        testModule.enums[0].instances shouldContain PythonEnumInstance("name2", "value2")
     }
 
     @Test
@@ -104,10 +129,8 @@ class EnumAnnotationProcessorTest {
         testPackage.processEnumAnnotations()
 
         testModule.enums[0].name shouldBe "TestEnum"
-        testModule.enums[0].instances shouldContain
-            PythonEnumInstance("name1", "value1")
-        testModule.enums[0].instances shouldContain
-            PythonEnumInstance("name2", "value2")
+        testModule.enums[0].instances shouldContain PythonEnumInstance("name1", "value1")
+        testModule.enums[0].instances shouldContain PythonEnumInstance("name2", "value2")
     }
 
     @Test

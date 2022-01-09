@@ -160,7 +160,7 @@ data class OriginalPythonFunction(
 
 data class PythonAttribute(
     override var name: String,
-    var defaultValue: String? = null,
+    var value: String? = null,
     var isPublic: Boolean = true,
     var typeInDocs: String = "",
     var description: String = "",
@@ -203,9 +203,9 @@ data class PythonResult(
  * Expressions
  * ********************************************************************************************************************/
 
-sealed class PythonExpression: PythonAstNode()
+sealed class PythonExpression : PythonAstNode()
 
-class PythonCall(val receiver: String, arguments: List<PythonArgument> = emptyList()): PythonExpression() {
+class PythonCall(val receiver: String, arguments: List<PythonArgument> = emptyList()) : PythonExpression() {
     val arguments = ContainmentList(arguments)
 
     override fun children() = sequence {
@@ -213,7 +213,7 @@ class PythonCall(val receiver: String, arguments: List<PythonArgument> = emptyLi
     }
 }
 
-class PythonArgument(val name: String? = null, value: PythonExpression): PythonAstNode() {
+class PythonArgument(val name: String? = null, value: PythonExpression) : PythonAstNode() {
     var value by ContainmentReference(value)
 
     override fun children() = sequence {
@@ -221,13 +221,27 @@ class PythonArgument(val name: String? = null, value: PythonExpression): PythonA
     }
 }
 
-class PythonReference(declaration: PythonDeclaration): PythonExpression() {
+class PythonMemberAccess(
+    receiver: PythonExpression,
+    member: PythonReference
+) : PythonExpression() {
+
+    var receiver by ContainmentReference(receiver)
+    var member by ContainmentReference(member)
+
+    override fun children() = sequence {
+        receiver?.let { yield(it) }
+        member?.let { yield(it) }
+    }
+}
+
+class PythonReference(declaration: PythonDeclaration) : PythonExpression() {
     var declaration by CrossReference(declaration)
 }
 
-sealed class PythonLiteral: PythonExpression()
+sealed class PythonLiteral : PythonExpression()
 
-data class PythonBoolean(val value: Boolean): PythonLiteral()
-data class PythonFloat(val value: Double): PythonLiteral()
-data class PythonInt(val value: Int): PythonLiteral()
-data class PythonString(val value: String): PythonLiteral()
+data class PythonBoolean(val value: Boolean) : PythonLiteral()
+data class PythonFloat(val value: Double) : PythonLiteral()
+data class PythonInt(val value: Int) : PythonLiteral()
+data class PythonString(val value: String) : PythonLiteral()

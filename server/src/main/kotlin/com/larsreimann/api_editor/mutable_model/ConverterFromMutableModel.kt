@@ -87,7 +87,7 @@ fun convertAttribute(pythonAttribute: PythonAttribute): SerializablePythonAttrib
     val result = SerializablePythonAttribute(
         name = pythonAttribute.name,
         qualifiedName = pythonAttribute.qualifiedName(),
-        defaultValue = pythonAttribute.defaultValue,
+        defaultValue = pythonAttribute.value,
         isPublic = pythonAttribute.isPublic,
         typeInDocs = pythonAttribute.typeInDocs,
         description = pythonAttribute.description,

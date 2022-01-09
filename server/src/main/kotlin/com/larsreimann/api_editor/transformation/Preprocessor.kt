@@ -66,6 +66,7 @@ private fun PythonClass.addOriginalDeclarations() {
 }
 
 private fun PythonFunction.addOriginalDeclarations() {
+    // TODO: remove
     this.originalFunction = OriginalPythonFunction(
         this.qualifiedName(),
         this.parameters.map {
@@ -75,6 +76,7 @@ private fun PythonFunction.addOriginalDeclarations() {
             )
         }
     )
+    // end remove
 
     this.callToOriginalAPI = PythonCall(
         receiver = this.qualifiedName(),
@@ -90,12 +92,14 @@ private fun PythonFunction.addOriginalDeclarations() {
     )
 }
 
+// TODO: remove
 private fun PythonParameter.addOriginalDeclarations() {
     this.originalParameter = OriginalPythonParameter(
         name = this.name,
         assignedBy = this.assignedBy
     )
 }
+// end remove
 
 /**
  * Changes the first segment of the name of the module to the [newPrefix].

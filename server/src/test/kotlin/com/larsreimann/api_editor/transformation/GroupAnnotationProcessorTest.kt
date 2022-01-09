@@ -2,20 +2,26 @@ package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.GroupAnnotation
 import com.larsreimann.api_editor.model.PythonParameterAssignment
+import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonConstructor
+import com.larsreimann.api_editor.mutable_model.PythonDeclaration
 import com.larsreimann.api_editor.mutable_model.PythonFunction
+import com.larsreimann.api_editor.mutable_model.PythonMemberAccess
 import com.larsreimann.api_editor.mutable_model.PythonModule
 import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.api_editor.mutable_model.PythonParameter
-import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonReference
 import com.larsreimann.api_editor.transformation.processing_exceptions.ConflictingGroupException
+import io.kotest.assertions.asClue
 import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -65,6 +71,43 @@ class GroupAnnotationProcessorTest {
             version = "1.0.0",
             modules = mutableListOf(testModule)
         )
+    }
+
+    @Test
+    fun `should update the function call when processing GroupAnnotations`() {
+        testPackage.processGroupAnnotations()
+
+        val callToOriginalAPI = testFunction.callToOriginalAPI.shouldNotBeNull()
+        callToOriginalAPI.arguments.shouldHaveSize(3)
+
+        val firstArgument = callToOriginalAPI.arguments[0]
+        firstArgument.name.shouldBeNull()
+        firstArgument.value.asClue {
+            it.shouldBeInstanceOf<PythonReference>()
+            it.declaration shouldBe testParameter1
+        }
+
+        val secondArgument = callToOriginalAPI.arguments[1]
+        val secondArgumentValue = secondArgument.value.shouldBeInstanceOf<PythonMemberAccess>()
+        secondArgumentValue.receiver.asClue {
+            it.shouldBeInstanceOf<PythonReference>()
+            it.declaration?.name shouldBe "TestGroup"
+        }
+        secondArgumentValue.member.asClue {
+            it.shouldBeInstanceOf<PythonDeclaration>()
+            it.declaration?.name shouldBe "testParameter2"
+        }
+
+        val thirdArgument = callToOriginalAPI.arguments[1]
+        val thirdArgumentValue = thirdArgument.value.shouldBeInstanceOf<PythonMemberAccess>()
+        thirdArgumentValue.receiver.asClue {
+            it.shouldBeInstanceOf<PythonReference>()
+            it.declaration?.name shouldBe "TestGroup"
+        }
+        thirdArgumentValue.member.asClue {
+            it.shouldBeInstanceOf<PythonDeclaration>()
+            it.declaration?.name shouldBe "testParameter3"
+        }
     }
 
     @Test

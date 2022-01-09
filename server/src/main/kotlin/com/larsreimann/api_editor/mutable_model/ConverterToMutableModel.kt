@@ -81,7 +81,7 @@ fun convertFunction(pythonFunction: SerializablePythonFunction): PythonFunction 
 fun convertAttribute(pythonAttribute: SerializablePythonAttribute): PythonAttribute {
     return PythonAttribute(
         name = pythonAttribute.name,
-        defaultValue = pythonAttribute.defaultValue,
+        value = pythonAttribute.defaultValue,
         isPublic = pythonAttribute.isPublic,
         typeInDocs = pythonAttribute.typeInDocs,
         description = pythonAttribute.description,

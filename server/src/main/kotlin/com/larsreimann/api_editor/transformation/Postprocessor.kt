@@ -100,7 +100,7 @@ private fun PythonClass.createAttributesForParametersOfConstructor() {
         ?.forEach {
             this.attributes += PythonAttribute(
                 name = it.name,
-                defaultValue = it.defaultValue,
+                value = it.defaultValue,
                 isPublic = true,
                 typeInDocs = it.typeInDocs,
                 description = it.description,
