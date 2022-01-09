@@ -35,7 +35,11 @@ private fun MutablePythonFunction.processGroupAnnotations(module: MutablePythonM
                 name = annotation.groupName.replaceFirstChar { it.lowercase() },
                 typeInDocs = annotation.groupName.replaceFirstChar { it.uppercase() },
                 assignedBy = PythonParameterAssignment.GROUP,
-                groupedParameterNames = annotation.parameters.toMutableList()
+                groupedParametersOldToNewName = buildMap {
+                    parameters
+                        .filter { it.originalParameter!!.name in annotation.parameters }
+                        .forEach { this[it.originalParameter!!.name] = it.name }
+                }.toMutableMap()
             )
             val constructorParameters = mutableListOf(
                 MutablePythonParameter(
@@ -71,10 +75,10 @@ private fun hasConflictingGroups(
     moduleClasses: List<MutablePythonClass>,
     groupToCheck: MutablePythonClass
 ): Boolean {
-    return moduleClasses.any {
-        (groupToCheck.name == it.name) &&
-            (groupToCheck.constructor?.parameters?.toList().toString()
-                != it.constructor?.parameters?.toList().toString())
+    return moduleClasses.any { `class` ->
+        (groupToCheck.name == `class`.name) &&
+            (groupToCheck.constructor?.parameters?.map { it.name }?.toList()
+                != `class`.constructor?.parameters?.map { it.name }?.toList())
     }
 }
 

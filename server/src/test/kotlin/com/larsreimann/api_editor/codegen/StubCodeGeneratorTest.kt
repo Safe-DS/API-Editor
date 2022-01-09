@@ -616,6 +616,10 @@ class StubCodeGeneratorTest {
                         assignedBy = PythonParameterAssignment.ENUM
                     ),
                     MutablePythonParameter(
+                        name = "group",
+                        assignedBy = PythonParameterAssignment.GROUP
+                    ),
+                    MutablePythonParameter(
                         name = "nameOnly",
                         assignedBy = PythonParameterAssignment.NAME_ONLY
                     ),
@@ -636,6 +640,7 @@ class StubCodeGeneratorTest {
                     "positionOnly",
                     "positionOrName",
                     "enum",
+                    "group",
                     "nameOnly"
                 )
         }

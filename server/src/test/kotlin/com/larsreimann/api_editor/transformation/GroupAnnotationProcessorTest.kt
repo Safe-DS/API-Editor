@@ -8,6 +8,7 @@ import com.larsreimann.api_editor.mutable_model.MutablePythonFunction
 import com.larsreimann.api_editor.mutable_model.MutablePythonModule
 import com.larsreimann.api_editor.mutable_model.MutablePythonPackage
 import com.larsreimann.api_editor.mutable_model.MutablePythonParameter
+import com.larsreimann.api_editor.mutable_model.OriginalPythonParameter
 import com.larsreimann.api_editor.transformation.processing_exceptions.ConflictingGroupException
 import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.matchers.collections.shouldBeEmpty
@@ -28,9 +29,18 @@ class GroupAnnotationProcessorTest {
 
     @BeforeEach
     fun reset() {
-        testParameter1 = MutablePythonParameter(name = "testParameter1")
-        testParameter2 = MutablePythonParameter(name = "testParameter2")
-        testParameter3 = MutablePythonParameter(name = "testParameter3")
+        testParameter1 = MutablePythonParameter(
+            name = "testParameter1",
+            originalParameter = OriginalPythonParameter(name = "testParameter1")
+        )
+        testParameter2 = MutablePythonParameter(
+            name = "testParameter2",
+            originalParameter = OriginalPythonParameter(name = "testParameter2")
+        )
+        testParameter3 = MutablePythonParameter(
+            name = "testParameter3",
+            originalParameter = OriginalPythonParameter(name = "testParameter3")
+        )
         testFunction = MutablePythonFunction(
             name = "testFunction",
             parameters = mutableListOf(
@@ -68,7 +78,10 @@ class GroupAnnotationProcessorTest {
             name = "testGroup",
             assignedBy = PythonParameterAssignment.GROUP,
             typeInDocs = "TestGroup",
-            groupedParameterNames = mutableListOf("testParameter2", "testParameter3")
+            groupedParametersOldToNewName = mutableMapOf(
+                "testParameter2" to "testParameter2",
+                "testParameter3" to "testParameter3"
+            )
         )
     }
 
@@ -111,7 +124,10 @@ class GroupAnnotationProcessorTest {
             name = "testGroup",
             assignedBy = PythonParameterAssignment.GROUP,
             typeInDocs = "TestGroup",
-            groupedParameterNames = mutableListOf("testParameter2", "testParameter3")
+            groupedParametersOldToNewName = mutableMapOf(
+                "testParameter2" to "testParameter2",
+                "testParameter3" to "testParameter3"
+            )
         )
     }
 

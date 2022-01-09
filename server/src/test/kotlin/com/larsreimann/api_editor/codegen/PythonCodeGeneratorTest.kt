@@ -1150,6 +1150,41 @@ class PythonCodeGeneratorTest {
                 |    testModule.testFunction(testParameter.value)
             """.trimMargin()
         }
+
+        @Test
+        fun `should access attribute of parameter objects`() {
+            val testFunction = MutablePythonFunction(
+                name = "testFunction",
+                parameters = listOf(
+                    MutablePythonParameter(
+                        name = "testGroup",
+                        assignedBy = PythonParameterAssignment.GROUP,
+                        groupedParametersOldToNewName = mutableMapOf(
+                            "oldParameter1" to "newParameter1",
+                            "oldParameter2" to "newParameter2"
+                        )
+                    )
+                ),
+                originalFunction = OriginalPythonFunction(
+                    qualifiedName = "testModule.testFunction",
+                    parameters = listOf(
+                        OriginalPythonParameter(
+                            name = "oldParameter1",
+                            assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+                        ),
+                        OriginalPythonParameter(
+                            name = "oldParameter2",
+                            assignedBy = PythonParameterAssignment.NAME_ONLY
+                        )
+                    )
+                )
+            )
+
+            testFunction.toPythonCode() shouldBe """
+                |def testFunction(testGroup):
+                |    testModule.testFunction(testGroup.newParameter1, oldParameter2=testGroup.newParameter2)
+            """.trimMargin()
+        }
     }
 
     @Nested
