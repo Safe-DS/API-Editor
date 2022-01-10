@@ -31,92 +31,57 @@ import com.larsreimann.api_editor.mutable_model.PythonStringifiedType
 import com.larsreimann.api_editor.mutable_model.PythonType
 import com.larsreimann.modeling.closest
 
-/**
- * Builds a string containing the formatted module content
- * @receiver The module whose adapter content should be built
- * @return The string containing the formatted module content
- */
-fun PythonModule.toPythonCode(): String {
-    var formattedImport = buildNamespace(this)
-    var formattedEnums = enums.joinToString("\n") { it.toPythonCode() }
-    var formattedClasses = this.classes.joinToString("\n".repeat(2)) { it.toPythonCode() }
-    var formattedFunctions = this.functions.joinToString("\n".repeat(2)) { it.toPythonCode() }
-    val separators = buildSeparators(
-        formattedImport, formattedClasses, formattedFunctions
-    )
-    formattedImport += separators[0]
-    if (formattedEnums.isNotBlank()) {
-        formattedEnums += "\n"
-    }
-    formattedClasses += separators[1]
-    formattedFunctions += separators[2]
-    return (
-        formattedImport +
-            formattedEnums +
-            formattedClasses +
-            formattedFunctions
-        )
-}
-
-private fun buildNamespace(pythonModule: PythonModule): String {
-    val importedModules = HashSet<String>()
-    pythonModule.functions.forEach { pythonFunction: PythonFunction ->
-        val receiver = pythonFunction.callToOriginalAPI?.receiver
-        if (receiver is PythonStringifiedExpression) {
-            importedModules.add(buildParentDeclarationName(receiver.string))
-        }
-    }
-    pythonModule.classes.forEach { pythonClass: PythonClass ->
-        if (pythonClass.originalClass != null) {
-            importedModules.add(
-                buildParentDeclarationName(pythonClass.originalClass!!.qualifiedName)
-            )
-        }
-
-    }
-    var result = importedModules.joinToString("\n") { "import $it" }
-    if (pythonModule.enums.isNotEmpty()) {
-        result = "from enum import Enum\n$result"
-    }
-    return result
-}
-
-private fun buildParentDeclarationName(qualifiedName: String): String {
-    val pathSeparator = "."
-    val separationPosition = qualifiedName.lastIndexOf(pathSeparator)
-    return qualifiedName.substring(0, separationPosition)
-}
-
-private fun buildSeparators(
-    formattedImports: String,
-    formattedClasses: String,
-    formattedFunctions: String
-): Array<String> {
-    val importSeparator: String = if (formattedImports.isBlank()) {
-        ""
-    } else if (formattedClasses.isBlank() && formattedFunctions.isBlank()) {
-        "\n"
-    } else {
-        "\n\n"
-    }
-    val classesSeparator: String = if (formattedClasses.isBlank()) {
-        ""
-    } else if (formattedFunctions.isBlank()) {
-        "\n"
-    } else {
-        "\n\n"
-    }
-    val functionSeparator: String = if (formattedFunctions.isBlank()) {
-        ""
-    } else {
-        "\n"
-    }
-    return arrayOf(importSeparator, classesSeparator, functionSeparator)
-}
-
 /* ********************************************************************************************************************
  * Declarations
  * ********************************************************************************************************************/
+
+fun PythonModule.toPythonCode(): String {
+    val strings = listOf(
+        importsToPythonCode(),
+        classes.joinToString("\n\n") { it.toPythonCode() },
+        functions.joinToString("\n\n") { it.toPythonCode() },
+        enums.joinToString("\n\n") { it.toPythonCode() }
+    )
+
+    val joinedStrings = strings
+        .filter { it.isNotBlank() }
+        .joinToString("\n\n")
+
+    return "$joinedStrings\n"
+}
+
+private fun PythonModule.importsToPythonCode() = buildString {
+    val imports = functions
+        .mapNotNull {
+            when (val receiver = it.callToOriginalAPI?.receiver) {
+                is PythonStringifiedExpression -> receiver.string.parentQualifiedName()
+                else -> null
+            }
+        }.toSet()
+
+    val importsString = imports.joinToString("\n") { "import $it" }
+    val fromImportsString = when {
+        enums.isEmpty() -> ""
+        else -> "from enum import Enum"
+    }
+
+    if (importsString.isNotBlank()) {
+        append(importsString)
+
+        if (fromImportsString.isNotBlank()) {
+            append("\n\n")
+        }
+    }
+    if (fromImportsString.isNotBlank()) {
+        append(fromImportsString)
+    }
+}
+
+private fun String.parentQualifiedName(): String {
+    val pathSeparator = "."
+    val separationPosition = lastIndexOf(pathSeparator)
+    return substring(0, separationPosition)
+}
 
 internal fun PythonAttribute.toPythonCode() = buildString {
     append("self.$name")

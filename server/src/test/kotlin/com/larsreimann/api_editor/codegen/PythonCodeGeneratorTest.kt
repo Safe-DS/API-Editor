@@ -5,6 +5,7 @@ import com.larsreimann.api_editor.model.ComparisonOperator.LESS_THAN
 import com.larsreimann.api_editor.model.ComparisonOperator.LESS_THAN_OR_EQUALS
 import com.larsreimann.api_editor.model.ComparisonOperator.UNRESTRICTED
 import com.larsreimann.api_editor.model.PythonParameterAssignment
+import com.larsreimann.api_editor.mutable_model.OriginalPythonClass
 import com.larsreimann.api_editor.mutable_model.PythonArgument
 import com.larsreimann.api_editor.mutable_model.PythonAttribute
 import com.larsreimann.api_editor.mutable_model.PythonBoolean
@@ -557,14 +558,49 @@ class PythonCodeGeneratorTest {
     @Nested
     inner class ModuleToPythonCode {
 
-        @Test
-        fun `should import Enum if the module contains enums`() {
-            val testModule = PythonModule(
-                name = "testModule",
-                enums = listOf(
-                    PythonEnum(name = "TestEnum")
+        private lateinit var testModule: PythonModule
+        private lateinit var testClasses: List<PythonClass>
+        private lateinit var testFunctions: List<PythonFunction>
+        private lateinit var testEnum: PythonEnum
+
+        @BeforeEach
+        fun reset() {
+            testModule = PythonModule(name = "testModule")
+            testClasses = listOf(
+                PythonClass(
+                    name = "TestClass",
+                    methods = listOf(
+                        PythonFunction(name = "testMethod1"),
+                        PythonFunction(name = "testMethod2")
+                    )
+                ),
+                PythonClass(
+                    name = "TestClassWithOriginalClass",
+                    originalClass = OriginalPythonClass(
+                        qualifiedName = "originalModule.TestClassWithOriginalClass"
+                    )
                 )
             )
+            testFunctions = listOf(
+                PythonFunction(name = "testFunction"),
+                PythonFunction(
+                    name = "testFunctionWithOriginalFunction",
+                    callToOriginalAPI = PythonCall(
+                        receiver = PythonStringifiedExpression("originalModule.testFunctionWithOriginalFunction")
+                    )
+                )
+            )
+            testEnum = PythonEnum(name = "TestEnum")
+        }
+
+        @Test
+        fun `should create Python code for modules (no classes, no functions, no enums)`() {
+            testModule.toPythonCode() shouldBe "\n"
+        }
+
+        @Test
+        fun `should create Python code for modules (no classes, no functions, enums)`() {
+            testModule.enums += testEnum
 
             testModule.toPythonCode() shouldBe """
                 |from enum import Enum
@@ -576,12 +612,145 @@ class PythonCodeGeneratorTest {
         }
 
         @Test
-        fun `should not import Enum if the module does not contain enums`() {
-            val testModule = PythonModule(name = "testModule")
+        fun `should create Python code for modules (no classes, functions, no enums)`() {
+            testModule.functions += testFunctions
 
-            testModule.toPythonCode() shouldBe ""
+            testModule.toPythonCode() shouldBe """
+                |import originalModule
+                |
+                |def testFunction():
+                |    pass
+                |
+                |def testFunctionWithOriginalFunction():
+                |    return originalModule.testFunctionWithOriginalFunction()
+                |
+            """.trimMargin()
         }
-    } // TODO
+
+        @Test
+        fun `should create Python code for modules (no classes, functions, enums)`() {
+            testModule.functions += testFunctions
+            testModule.enums += testEnum
+
+            testModule.toPythonCode() shouldBe """
+                |import originalModule
+                |
+                |from enum import Enum
+                |
+                |def testFunction():
+                |    pass
+                |
+                |def testFunctionWithOriginalFunction():
+                |    return originalModule.testFunctionWithOriginalFunction()
+                |
+                |class TestEnum(Enum):
+                |    pass
+                |
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should create Python code for modules (classes, no functions, no enums)`() {
+            testModule.classes += testClasses
+
+            testModule.toPythonCode() shouldBe """
+                |class TestClass:
+                |    def testMethod1():
+                |        pass
+                |
+                |    def testMethod2():
+                |        pass
+                |
+                |class TestClassWithOriginalClass:
+                |    pass
+                |
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should create Python code for modules (classes, no functions, enums)`() {
+            testModule.classes += testClasses
+            testModule.enums += testEnum
+
+            testModule.toPythonCode() shouldBe """
+                |from enum import Enum
+                |
+                |class TestClass:
+                |    def testMethod1():
+                |        pass
+                |
+                |    def testMethod2():
+                |        pass
+                |
+                |class TestClassWithOriginalClass:
+                |    pass
+                |
+                |class TestEnum(Enum):
+                |    pass
+                |
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should create Python code for modules (classes, functions, no enums)`() {
+            testModule.classes += testClasses
+            testModule.functions += testFunctions
+
+            testModule.toPythonCode() shouldBe """
+                |import originalModule
+                |
+                |class TestClass:
+                |    def testMethod1():
+                |        pass
+                |
+                |    def testMethod2():
+                |        pass
+                |
+                |class TestClassWithOriginalClass:
+                |    pass
+                |
+                |def testFunction():
+                |    pass
+                |
+                |def testFunctionWithOriginalFunction():
+                |    return originalModule.testFunctionWithOriginalFunction()
+                |
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should create Python code for modules (classes, functions, enums)`() {
+            testModule.classes += testClasses
+            testModule.functions += testFunctions
+            testModule.enums += testEnum
+
+            testModule.toPythonCode() shouldBe """
+                |import originalModule
+                |
+                |from enum import Enum
+                |
+                |class TestClass:
+                |    def testMethod1():
+                |        pass
+                |
+                |    def testMethod2():
+                |        pass
+                |
+                |class TestClassWithOriginalClass:
+                |    pass
+                |
+                |def testFunction():
+                |    pass
+                |
+                |def testFunctionWithOriginalFunction():
+                |    return originalModule.testFunctionWithOriginalFunction()
+                |
+                |class TestEnum(Enum):
+                |    pass
+                |
+            """.trimMargin()
+        }
+    }
 
     @Nested
     inner class ParameterListToPythonCode {
@@ -612,112 +781,112 @@ class PythonCodeGeneratorTest {
         }
 
         @Test
-        fun `should handle parameter lists (no IMPLICIT, no POSITION_ONLY, no POSITION_OR_NAME, no NAME_ONLY`() {
+        fun `should handle parameter lists (no IMPLICIT, no POSITION_ONLY, no POSITION_OR_NAME, no NAME_ONLY)`() {
             val parameters = listOf<PythonParameter>()
 
             parameters.toPythonCode() shouldBe ""
         }
 
         @Test
-        fun `should handle parameter lists (no IMPLICIT, no POSITION_ONLY, no POSITION_OR_NAME, NAME_ONLY`() {
+        fun `should handle parameter lists (no IMPLICIT, no POSITION_ONLY, no POSITION_OR_NAME, NAME_ONLY)`() {
             val parameters = listOf(nameOnly)
 
             parameters.toPythonCode() shouldBe "*, nameOnly"
         }
 
         @Test
-        fun `should handle parameter lists (no IMPLICIT, no POSITION_ONLY, POSITION_OR_NAME, no NAME_ONLY`() {
+        fun `should handle parameter lists (no IMPLICIT, no POSITION_ONLY, POSITION_OR_NAME, no NAME_ONLY)`() {
             val parameters = listOf(positionOrName)
 
             parameters.toPythonCode() shouldBe "positionOrName"
         }
 
         @Test
-        fun `should handle parameter lists (no IMPLICIT, no POSITION_ONLY, POSITION_OR_NAME, NAME_ONLY`() {
+        fun `should handle parameter lists (no IMPLICIT, no POSITION_ONLY, POSITION_OR_NAME, NAME_ONLY)`() {
             val parameters = listOf(positionOrName, nameOnly)
 
             parameters.toPythonCode() shouldBe "positionOrName, *, nameOnly"
         }
 
         @Test
-        fun `should handle parameter lists (no IMPLICIT, POSITION_ONLY, no POSITION_OR_NAME, no NAME_ONLY`() {
+        fun `should handle parameter lists (no IMPLICIT, POSITION_ONLY, no POSITION_OR_NAME, no NAME_ONLY)`() {
             val parameters = listOf(positionOnly)
 
             parameters.toPythonCode() shouldBe "positionOnly, /"
         }
 
         @Test
-        fun `should handle parameter lists (no IMPLICIT, POSITION_ONLY, no POSITION_OR_NAME, NAME_ONLY`() {
+        fun `should handle parameter lists (no IMPLICIT, POSITION_ONLY, no POSITION_OR_NAME, NAME_ONLY)`() {
             val parameters = listOf(positionOnly, nameOnly)
 
             parameters.toPythonCode() shouldBe "positionOnly, /, *, nameOnly"
         }
 
         @Test
-        fun `should handle parameter lists (no IMPLICIT, POSITION_ONLY, POSITION_OR_NAME, no NAME_ONLY`() {
+        fun `should handle parameter lists (no IMPLICIT, POSITION_ONLY, POSITION_OR_NAME, no NAME_ONLY)`() {
             val parameters = listOf(positionOnly, positionOrName)
 
             parameters.toPythonCode() shouldBe "positionOnly, /, positionOrName"
         }
 
         @Test
-        fun `should handle parameter lists (no IMPLICIT, POSITION_ONLY, POSITION_OR_NAME, NAME_ONLY`() {
+        fun `should handle parameter lists (no IMPLICIT, POSITION_ONLY, POSITION_OR_NAME, NAME_ONLY)`() {
             val parameters = listOf(positionOnly, positionOrName, nameOnly)
 
             parameters.toPythonCode() shouldBe "positionOnly, /, positionOrName, *, nameOnly"
         }
 
         @Test
-        fun `should handle parameter lists (IMPLICIT, no POSITION_ONLY, no POSITION_OR_NAME, no NAME_ONLY`() {
+        fun `should handle parameter lists (IMPLICIT, no POSITION_ONLY, no POSITION_OR_NAME, no NAME_ONLY)`() {
             val parameters = listOf(implicit)
 
             parameters.toPythonCode() shouldBe "implicit"
         }
 
         @Test
-        fun `should handle parameter lists (IMPLICIT, no POSITION_ONLY, no POSITION_OR_NAME, NAME_ONLY`() {
+        fun `should handle parameter lists (IMPLICIT, no POSITION_ONLY, no POSITION_OR_NAME, NAME_ONLY)`() {
             val parameters = listOf(implicit, nameOnly)
 
             parameters.toPythonCode() shouldBe "implicit, *, nameOnly"
         }
 
         @Test
-        fun `should handle parameter lists (IMPLICIT, no POSITION_ONLY, POSITION_OR_NAME, no NAME_ONLY`() {
+        fun `should handle parameter lists (IMPLICIT, no POSITION_ONLY, POSITION_OR_NAME, no NAME_ONLY)`() {
             val parameters = listOf(implicit, positionOrName)
 
             parameters.toPythonCode() shouldBe "implicit, positionOrName"
         }
 
         @Test
-        fun `should handle parameter lists (IMPLICIT, no POSITION_ONLY, POSITION_OR_NAME, NAME_ONLY`() {
+        fun `should handle parameter lists (IMPLICIT, no POSITION_ONLY, POSITION_OR_NAME, NAME_ONLY)`() {
             val parameters = listOf(implicit, positionOrName, nameOnly)
 
             parameters.toPythonCode() shouldBe "implicit, positionOrName, *, nameOnly"
         }
 
         @Test
-        fun `should handle parameter lists (IMPLICIT, POSITION_ONLY, no POSITION_OR_NAME, no NAME_ONLY`() {
+        fun `should handle parameter lists (IMPLICIT, POSITION_ONLY, no POSITION_OR_NAME, no NAME_ONLY)`() {
             val parameters = listOf(implicit, positionOnly)
 
             parameters.toPythonCode() shouldBe "implicit, positionOnly, /"
         }
 
         @Test
-        fun `should handle parameter lists (IMPLICIT, POSITION_ONLY, no POSITION_OR_NAME, NAME_ONLY`() {
+        fun `should handle parameter lists (IMPLICIT, POSITION_ONLY, no POSITION_OR_NAME, NAME_ONLY)`() {
             val parameters = listOf(implicit, positionOnly, nameOnly)
 
             parameters.toPythonCode() shouldBe "implicit, positionOnly, /, *, nameOnly"
         }
 
         @Test
-        fun `should handle parameter lists (IMPLICIT, POSITION_ONLY, POSITION_OR_NAME, no NAME_ONLY`() {
+        fun `should handle parameter lists (IMPLICIT, POSITION_ONLY, POSITION_OR_NAME, no NAME_ONLY)`() {
             val parameters = listOf(implicit, positionOnly, positionOrName)
 
             parameters.toPythonCode() shouldBe "implicit, positionOnly, /, positionOrName"
         }
 
         @Test
-        fun `should handle parameter lists (IMPLICIT, POSITION_ONLY, POSITION_OR_NAME, NAME_ONLY`() {
+        fun `should handle parameter lists (IMPLICIT, POSITION_ONLY, POSITION_OR_NAME, NAME_ONLY)`() {
             val parameters = listOf(implicit, positionOnly, positionOrName, nameOnly)
 
             parameters.toPythonCode() shouldBe "implicit, positionOnly, /, positionOrName, *, nameOnly"
