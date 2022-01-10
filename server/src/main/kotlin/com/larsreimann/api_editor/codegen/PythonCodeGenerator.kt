@@ -114,29 +114,6 @@ private fun buildSeparators(
     return arrayOf(importSeparator, classesSeparator, functionSeparator)
 }
 
-/**
- * Builds a string containing the formatted class content
- * @receiver The module whose adapter content should be built
- * @return The string containing the formatted class content
- */
-fun PythonClass.toPythonCode(): String {
-    var formattedClass = "class $name:\n"
-    if (constructor != null) {
-        formattedClass += constructor!!.toPythonCode().prependIndent("    ")
-    }
-    if (!methods.isEmpty()) {
-        if (constructor != null) {
-            formattedClass += "\n\n"
-        }
-        formattedClass += this.methods.map { it.toPythonCode().prependIndent("    ") }.joinToString("\n".repeat(2))
-    }
-    if (constructor == null && methods.isEmpty()) {
-        formattedClass += "    pass"
-    }
-    return formattedClass
-}
-
-
 /* ********************************************************************************************************************
  * Declarations
  * ********************************************************************************************************************/
@@ -148,6 +125,27 @@ internal fun PythonAttribute.toPythonCode() = buildString {
     }
     value?.toPythonCode()?.let {
         append(" = $it")
+    }
+}
+
+internal fun PythonClass.toPythonCode() = buildString {
+    val constructorString = constructor?.toPythonCode() ?: ""
+    val methodsString = methods.joinToString("\n\n") {
+        it.toPythonCode().prependIndent("    ")
+    }
+
+    appendLine("class $name:")
+    if (constructorString.isNotBlank()) {
+        appendIndented(constructorString)
+        if (methodsString.isNotBlank()) {
+            append("\n\n")
+        }
+    }
+    if (methodsString.isNotBlank()) {
+        append(methodsString)
+    }
+    if (constructorString.isBlank() && methodsString.isBlank()) {
+        appendIndented("pass")
     }
 }
 

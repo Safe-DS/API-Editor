@@ -84,15 +84,75 @@ class PythonCodeGeneratorTest {
     inner class ClassToPythonCode {
 
         @Test
-        fun `should create valid code for empty classes`() {
-            val testClass = PythonClass(name = "TestClass")
+        fun `should create valid code without constructor and methods`() {
+            val testClass = PythonClass(
+                name = "TestClass"
+            )
 
             testClass.toPythonCode() shouldBe """
                     |class TestClass:
                     |    pass
                 """.trimMargin()
         }
-    } // TODO
+
+        @Test
+        fun `should create valid code without constructor but with methods`() {
+            val testClass = PythonClass(
+                name = "TestClass",
+                methods = listOf(
+                    PythonFunction(name = "testFunction1"),
+                    PythonFunction(name = "testFunction2")
+                )
+            )
+
+            testClass.toPythonCode() shouldBe """
+                    |class TestClass:
+                    |    def testFunction1():
+                    |        pass
+                    |
+                    |    def testFunction2():
+                    |        pass
+                """.trimMargin()
+        }
+
+        @Test
+        fun `should create valid code with constructor but without methods`() {
+            val testClass = PythonClass(
+                name = "TestClass",
+                constructor = PythonConstructor()
+            )
+
+            testClass.toPythonCode() shouldBe """
+                    |class TestClass:
+                    |    def __init__():
+                    |        pass
+                """.trimMargin()
+        }
+
+        @Test
+        fun `should create valid code with constructor and methods`() {
+            val testClass = PythonClass(
+                name = "TestClass",
+                constructor = PythonConstructor(),
+                methods = listOf(
+                    PythonFunction(name = "testFunction1"),
+                    PythonFunction(name = "testFunction2")
+                )
+            )
+
+            testClass.toPythonCode() shouldBe """
+                    |class TestClass:
+                    |    def __init__():
+                    |        pass
+                    |
+                    |    def testFunction1():
+                    |        pass
+                    |
+                    |    def testFunction2():
+                    |        pass
+                """.trimMargin()
+        }
+    }
 
     @Nested
     inner class ConstructorToPythonCode {
