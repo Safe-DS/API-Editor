@@ -19,11 +19,13 @@ import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonInt
 import com.larsreimann.api_editor.mutable_model.PythonMemberAccess
 import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonNamedType
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonReference
 import com.larsreimann.api_editor.mutable_model.PythonResult
 import com.larsreimann.api_editor.mutable_model.PythonString
 import com.larsreimann.api_editor.mutable_model.PythonStringifiedType
+import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -1054,23 +1056,46 @@ class PythonCodeGeneratorTest {
     }
 
     @Nested
-    inner class ArgumentToPythonCode {
+    inner class ParameterToPythonCode {
 
         @Test
-        fun `should handle positional arguments`() {
-            val testArgument = PythonArgument(value = PythonInt(1))
+        fun `should handle parameters without type and default value`() {
+            val testParameter = PythonParameter(
+                name = "param"
+            )
 
-            testArgument.toPythonCode() shouldBe "1"
+            testParameter.toPythonCode() shouldBe "param"
         }
 
         @Test
-        fun `should handle named arguments`() {
-            val testArgument = PythonArgument(
-                name = "arg",
-                value = PythonInt(1)
+        fun `should handle parameters with type but without default value`() {
+            val testParameter = PythonParameter(
+                name = "param",
+                type = PythonStringifiedType("int")
             )
 
-            testArgument.toPythonCode() shouldBe "arg=1"
+            testParameter.toPythonCode() shouldBe "param: int"
+        }
+
+        @Test
+        fun `should handle parameters without type but with default value`() {
+            val testParameter = PythonParameter(
+                name = "param",
+                defaultValue = "1"
+            )
+
+            testParameter.toPythonCode() shouldBe "param=1"
+        }
+
+        @Test
+        fun `should handle parameters with type and default value`() {
+            val testParameter = PythonParameter(
+                name = "param",
+                type = PythonStringifiedType("int"),
+                defaultValue = "1"
+            )
+
+            testParameter.toPythonCode() shouldBe "param: int = 1"
         }
     }
 
@@ -1108,6 +1133,27 @@ class PythonCodeGeneratorTest {
                 |    TestEnumInstance1 = "inst1",
                 |    TestEnumInstance2 = "inst2"
             """.trimMargin()
+        }
+    }
+
+    @Nested
+    inner class ArgumentToPythonCode {
+
+        @Test
+        fun `should handle positional arguments`() {
+            val testArgument = PythonArgument(value = PythonInt(1))
+
+            testArgument.toPythonCode() shouldBe "1"
+        }
+
+        @Test
+        fun `should handle named arguments`() {
+            val testArgument = PythonArgument(
+                name = "arg",
+                value = PythonInt(1)
+            )
+
+            testArgument.toPythonCode() shouldBe "arg=1"
         }
     }
 
@@ -1172,6 +1218,46 @@ class PythonCodeGeneratorTest {
         fun `should handle strings`() {
             val expression = PythonString("string")
             expression.toPythonCode() shouldBe "'string'"
+        }
+    }
+
+    @Nested
+    inner class TypeToPythonCodeOrNull {
+
+        @Test
+        fun `should handle named types`() {
+            val type = PythonNamedType(PythonEnum("TestEnum"))
+            type.toPythonCodeOrNull() shouldBe "TestEnum"
+        }
+
+        @Test
+        fun `should convert stringified type 'bool' to Boolean`() {
+            val smlType = PythonStringifiedType("bool")
+            smlType.toPythonCodeOrNull() shouldBe "bool"
+        }
+
+        @Test
+        fun `should convert stringified type 'float' to Float`() {
+            val smlType = PythonStringifiedType("float")
+            smlType.toPythonCodeOrNull() shouldBe "float"
+        }
+
+        @Test
+        fun `should convert stringified type 'int' to Int`() {
+            val smlType = PythonStringifiedType("int")
+            smlType.toPythonCodeOrNull() shouldBe "int"
+        }
+
+        @Test
+        fun `should convert stringified type 'str' to String`() {
+            val smlType = PythonStringifiedType("str")
+            smlType.toPythonCodeOrNull() shouldBe "str"
+        }
+
+        @Test
+        fun `should return null for other types`() {
+            val type = PythonStringifiedType("")
+            type.toPythonCodeOrNull().shouldBeNull()
         }
     }
 }

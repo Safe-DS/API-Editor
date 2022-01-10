@@ -261,7 +261,7 @@ private fun String.snakeCaseToCamelCase(): String {
 
 // Type conversions ----------------------------------------------------------------------------------------------------
 
-internal fun PythonType.toSmlType(): SmlAbstractType {
+internal fun PythonType?.toSmlType(): SmlAbstractType {
     return when (this) {
         is PythonNamedType -> {
             createSmlNamedType(
@@ -288,6 +288,10 @@ internal fun PythonType.toSmlType(): SmlAbstractType {
                 )
             }
         }
+        null -> createSmlNamedType(
+            declaration = createSmlClass("Any"),
+            isNullable = true
+        )
     }
 }
 

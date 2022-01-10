@@ -17,9 +17,12 @@ import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonInt
 import com.larsreimann.api_editor.mutable_model.PythonMemberAccess
 import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonNamedType
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonReference
 import com.larsreimann.api_editor.mutable_model.PythonString
+import com.larsreimann.api_editor.mutable_model.PythonStringifiedType
+import com.larsreimann.api_editor.mutable_model.PythonType
 
 /**
  * Builds a string containing the formatted module content
@@ -237,13 +240,6 @@ private fun buildParameters(parameters: List<PythonParameter>): String {
     return formattedFunctionParameters
 }
 
-private fun PythonParameter.toPythonCode() = buildString {
-    append(name)
-    if (defaultValue != null) {
-        append("=$defaultValue")
-    }
-}
-
 private fun buildFunctionBody(pythonFunction: PythonFunction): String {
     var formattedBoundaries = buildBoundaryChecks(pythonFunction).joinToString("\n")
     if (formattedBoundaries.isNotBlank()) {
@@ -379,6 +375,36 @@ internal fun PythonExpression.toPythonCode(): String {
         is PythonMemberAccess -> "${receiver!!.toPythonCode()}.${member!!.toPythonCode()}"
         is PythonReference -> declaration!!.name
         is PythonString -> "'$value'"
+    }
+}
+
+internal fun PythonParameter.toPythonCode() = buildString {
+    val typeStringOrNull = type.toPythonCodeOrNull()
+
+    append(name)
+    if (typeStringOrNull != null) {
+        append(": $typeStringOrNull")
+        if (defaultValue != null) {
+            append(" = $defaultValue")
+        }
+    } else if (defaultValue != null) {
+        append("=$defaultValue")
+    }
+}
+
+internal fun PythonType?.toPythonCodeOrNull(): String? {
+    return when (this) {
+        is PythonNamedType -> this.declaration?.name
+        is PythonStringifiedType -> {
+            when (this.type) {
+                "bool" -> "bool"
+                "float" -> "float"
+                "int" -> "int"
+                "str" -> "str"
+                else -> null
+            }
+        }
+        null -> null
     }
 }
 

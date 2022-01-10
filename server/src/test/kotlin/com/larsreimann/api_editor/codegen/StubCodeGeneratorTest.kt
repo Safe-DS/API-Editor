@@ -8,6 +8,7 @@ import com.larsreimann.api_editor.mutable_model.PythonEnum
 import com.larsreimann.api_editor.mutable_model.PythonEnumInstance
 import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonNamedType
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonResult
 import com.larsreimann.api_editor.mutable_model.PythonStringifiedType
@@ -1084,28 +1085,35 @@ class StubCodeGeneratorTest {
     inner class TypeConversions {
 
         @Test
-        fun `should convert bool to Boolean`() {
+        fun `should convert named types`() {
+            val smlType = PythonNamedType(PythonEnum(name = "MyEnum")).toSmlType().shouldBeInstanceOf<SmlNamedType>()
+            smlType.declaration.name shouldBe "MyEnum"
+            smlType.isNullable.shouldBeFalse()
+        }
+
+        @Test
+        fun `should convert stringified type 'bool' to Boolean`() {
             val smlType = PythonStringifiedType("bool").toSmlType().shouldBeInstanceOf<SmlNamedType>()
             smlType.declaration.name shouldBe "Boolean"
             smlType.isNullable.shouldBeFalse()
         }
 
         @Test
-        fun `should convert float to Float`() {
+        fun `should convert stringified type 'float' to Float`() {
             val smlType = PythonStringifiedType("float").toSmlType().shouldBeInstanceOf<SmlNamedType>()
             smlType.declaration.name shouldBe "Float"
             smlType.isNullable.shouldBeFalse()
         }
 
         @Test
-        fun `should convert int to Int`() {
+        fun `should convert stringified type 'int' to Int`() {
             val smlType = PythonStringifiedType("int").toSmlType().shouldBeInstanceOf<SmlNamedType>()
             smlType.declaration.name shouldBe "Int"
             smlType.isNullable.shouldBeFalse()
         }
 
         @Test
-        fun `should convert str to String`() {
+        fun `should convert stringified type 'str' to String`() {
             val smlType = PythonStringifiedType("str").toSmlType().shouldBeInstanceOf<SmlNamedType>()
             smlType.declaration.name shouldBe "String"
             smlType.isNullable.shouldBeFalse()
@@ -1114,6 +1122,13 @@ class StubCodeGeneratorTest {
         @Test
         fun `should convert other types to nullable Any`() {
             val smlType = PythonStringifiedType("other").toSmlType().shouldBeInstanceOf<SmlNamedType>()
+            smlType.declaration.name shouldBe "Any"
+            smlType.isNullable.shouldBeTrue()
+        }
+
+        @Test
+        fun `should convert null to nullable Any`() {
+            val smlType = null.toSmlType().shouldBeInstanceOf<SmlNamedType>()
             smlType.declaration.name shouldBe "Any"
             smlType.isNullable.shouldBeTrue()
         }

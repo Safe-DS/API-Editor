@@ -154,7 +154,7 @@ class PythonFunction(
 
 data class PythonAttribute(
     override var name: String,
-    var type: PythonType = PythonStringifiedType(""),
+    var type: PythonType? = null,
     var value: String? = null,
     var isPublic: Boolean = true,
     var description: String = "",
@@ -162,15 +162,17 @@ data class PythonAttribute(
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
 ) : PythonDeclaration()
 
-data class PythonParameter(
+class PythonParameter(
     override var name: String,
-    var type: PythonType = PythonStringifiedType(""),
+    type: PythonType? = null,
     var defaultValue: String? = null,
     var assignedBy: PythonParameterAssignment = PythonParameterAssignment.POSITION_OR_NAME,
     var description: String = "",
     var boundary: Boundary? = null,
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
 ) : PythonDeclaration() {
+
+    var type by CrossReference(type)
 
     fun isRequired() = defaultValue == null
 
