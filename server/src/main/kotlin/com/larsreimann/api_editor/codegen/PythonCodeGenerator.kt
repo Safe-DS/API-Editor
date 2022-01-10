@@ -192,7 +192,7 @@ fun PythonFunction.toPythonCode(): String {
 
 private fun buildAttributeAssignments(pythonClass: PythonClass): List<String> {
     return pythonClass.attributes.map {
-        "self.${it.name} = ${it.value}"
+        "self.${it.name} = ${it.value!!.toPythonCode()}"
     }
 }
 
