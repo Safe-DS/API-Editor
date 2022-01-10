@@ -8,17 +8,21 @@ import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.mutable_model.OriginalPythonClass
 import com.larsreimann.api_editor.mutable_model.PythonArgument
 import com.larsreimann.api_editor.mutable_model.PythonAttribute
+import com.larsreimann.api_editor.mutable_model.PythonBoolean
 import com.larsreimann.api_editor.mutable_model.PythonCall
 import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonConstructor
 import com.larsreimann.api_editor.mutable_model.PythonEnum
 import com.larsreimann.api_editor.mutable_model.PythonEnumInstance
+import com.larsreimann.api_editor.mutable_model.PythonFloat
 import com.larsreimann.api_editor.mutable_model.PythonFunction
+import com.larsreimann.api_editor.mutable_model.PythonInt
 import com.larsreimann.api_editor.mutable_model.PythonMemberAccess
 import com.larsreimann.api_editor.mutable_model.PythonModule
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonReference
 import com.larsreimann.api_editor.mutable_model.PythonResult
+import com.larsreimann.api_editor.mutable_model.PythonString
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -134,13 +138,13 @@ class PythonCodeGeneratorTest {
             |
             |class test-class:
             |    def test-class-function(self, *, only-param='defaultValue'):
-            |        self.instance.test-class-function(only-param)
+            |        return self.instance.test-class-function(only-param)
             |
             |def function_module(param1, param2, param3):
-            |    test-module.function_module(param1=param1, param2=param2, param3=param3)
+            |    return test-module.function_module(param1=param1, param2=param2, param3=param3)
             |
             |def test-function(*, test-parameter=42):
-            |    test-module.test-function(test-parameter=test-parameter)
+            |    return test-module.test-function(test-parameter=test-parameter)
             |
             """.trimMargin()
 
@@ -229,10 +233,10 @@ class PythonCodeGeneratorTest {
             |import test-module
             |
             |def function_module(param1, param2, param3):
-            |    test-module.function_module(param1=param1, param2=param2, param3=param3)
+            |    return test-module.function_module(param1=param1, param2=param2, param3=param3)
             |
             |def test-function(*, test-parameter=42):
-            |    test-module.test-function(test-parameter=test-parameter)
+            |    return test-module.test-function(test-parameter=test-parameter)
             |
             """.trimMargin()
 
@@ -398,7 +402,7 @@ class PythonCodeGeneratorTest {
             |        raise ValueError('Valid values of param2 must be greater than or equal to 5.0, but {} was assigned.'.format(param2))
             |    if not param3 < 10.0:
             |        raise ValueError('Valid values of param3 must be less than 10.0, but {} was assigned.'.format(param3))
-            |    test-module.function_module(param1=param1, param2=param2, param3=param3)
+            |    return test-module.function_module(param1=param1, param2=param2, param3=param3)
             |
             """.trimMargin()
 
@@ -449,7 +453,7 @@ class PythonCodeGeneratorTest {
             |def function_module(*, param1=5):
             |    if not 2.0 <= param1:
             |        raise ValueError('Valid values of param1 must be greater than or equal to 2.0, but {} was assigned.'.format(param1))
-            |    test-module.function_module(param1=param1)
+            |    return test-module.function_module(param1=param1)
             |
             """.trimMargin()
 
@@ -574,10 +578,10 @@ class PythonCodeGeneratorTest {
             """
             |class test-class:
             |    def test-class-function1(self, only-param):
-            |        self.instance.test-class-function1(only-param)
+            |        return self.instance.test-class-function1(only-param)
             |
             |    def test-class-function2(self, only-param):
-            |        self.instance.test-class-function2(only-param)""".trimMargin()
+            |        return self.instance.test-class-function2(only-param)""".trimMargin()
 
         formattedClass shouldBe expectedFormattedClass
     }
@@ -621,7 +625,7 @@ class PythonCodeGeneratorTest {
             """
             |class test-class:
             |    def test-function(self, second-param, third-param):
-            |        self.instance.test-function(second-param, third-param=third-param)""".trimMargin()
+            |        return self.instance.test-function(second-param, third-param=third-param)""".trimMargin()
         formattedClass shouldBe expectedFormattedClass
     }
 
@@ -640,7 +644,7 @@ class PythonCodeGeneratorTest {
         val expectedFormattedFunction: String =
             """
             |def test-function():
-            |    test-module.test-function()""".trimMargin()
+            |    return test-module.test-function()""".trimMargin()
         formattedFunction shouldBe expectedFormattedFunction
     }
 
@@ -672,7 +676,7 @@ class PythonCodeGeneratorTest {
         val expectedFormattedFunction: String =
             """
             |def test-function(*, only-param=13):
-            |    test-module.test-function(only-param)""".trimMargin()
+            |    return test-module.test-function(only-param)""".trimMargin()
         formattedFunction shouldBe expectedFormattedFunction
     }
 
@@ -704,7 +708,7 @@ class PythonCodeGeneratorTest {
         val expectedFormattedFunction: String =
             """
             |def test-function(*, only-param=False):
-            |    test-module.test-function(only-param)""".trimMargin()
+            |    return test-module.test-function(only-param)""".trimMargin()
         formattedFunction shouldBe expectedFormattedFunction
     }
 
@@ -735,7 +739,7 @@ class PythonCodeGeneratorTest {
         val expectedFormattedFunction: String =
             """
             |def test-function(only-param):
-            |    test-module.test-function(only-param=only-param)""".trimMargin()
+            |    return test-module.test-function(only-param=only-param)""".trimMargin()
         formattedFunction shouldBe expectedFormattedFunction
     }
 
@@ -767,7 +771,7 @@ class PythonCodeGeneratorTest {
         val expectedFormattedFunction: String =
             """
             |def test-function(first-param, second-param):
-            |    test-module.test-function(first-param, second-param)""".trimMargin()
+            |    return test-module.test-function(first-param, second-param)""".trimMargin()
         formattedFunction shouldBe expectedFormattedFunction
     }
 
@@ -804,7 +808,7 @@ class PythonCodeGeneratorTest {
         val expectedFormattedFunction: String =
             """
             |def test-function(first-param, second-param, third-param):
-            |    test-module.test-function(first-param, second-param, third-param=third-param)""".trimMargin()
+            |    return test-module.test-function(first-param, second-param, third-param=third-param)""".trimMargin()
         formattedFunction shouldBe expectedFormattedFunction
     }
 
@@ -838,7 +842,7 @@ class PythonCodeGeneratorTest {
         val expectedFormattedFunction: String =
             """
             |def test-function(first-param, second-param):
-            |    test-module.test-function(first-param, second-param=second-param)""".trimMargin()
+            |    return test-module.test-function(first-param, second-param=second-param)""".trimMargin()
         formattedFunction shouldBe expectedFormattedFunction
     }
 
@@ -874,7 +878,7 @@ class PythonCodeGeneratorTest {
         val expectedFormattedFunction: String =
             """
             |def test-function(first-param, second-param):
-            |    test-module.test-function(first-param, second-param=second-param)
+            |    return test-module.test-function(first-param, second-param=second-param)
             """.trimMargin()
 
         formattedFunction shouldBe expectedFormattedFunction
@@ -913,7 +917,7 @@ class PythonCodeGeneratorTest {
         val expectedFormattedFunction: String =
             """
             |def test-function(first-param, second-param, third-param):
-            |    test-module.test-function(first-param, second-param, third-param=third-param)""".trimMargin()
+            |    return test-module.test-function(first-param, second-param, third-param=third-param)""".trimMargin()
         formattedFunction shouldBe expectedFormattedFunction
     }
 
@@ -947,7 +951,7 @@ class PythonCodeGeneratorTest {
            |class test-class:
            |    @staticmethod
            |    def test-class-function1(only-param):
-           |        test-module.test-class.test-class-function1(only-param)""".trimMargin()
+           |        return test-module.test-class.test-class-function1(only-param)""".trimMargin()
 
         formattedClass shouldBe expectedFormattedClass
     }
@@ -1007,7 +1011,7 @@ class PythonCodeGeneratorTest {
 
             testFunction.toPythonCode() shouldBe """
                 |def testFunction(testParameter):
-                |    testModule.testFunction(testParameter.value)
+                |    return testModule.testFunction(testParameter.value)
             """.trimMargin()
         }
 
@@ -1045,8 +1049,29 @@ class PythonCodeGeneratorTest {
 
             testFunction.toPythonCode() shouldBe """
                 |def testFunction(testGroup):
-                |    testModule.testFunction(testGroup.newParameter1, oldParameter2=testGroup.newParameter2)
+                |    return testModule.testFunction(testGroup.newParameter1, oldParameter2=testGroup.newParameter2)
             """.trimMargin()
+        }
+    }
+
+    @Nested
+    inner class ArgumentToPythonCode {
+
+        @Test
+        fun `should handle positional arguments`() {
+            val testArgument = PythonArgument(value = PythonInt(1))
+
+            testArgument.toPythonCode() shouldBe "1"
+        }
+
+        @Test
+        fun `should handle named arguments`() {
+            val testArgument = PythonArgument(
+                name = "arg",
+                value = PythonInt(1)
+            )
+
+            testArgument.toPythonCode() shouldBe "arg=1"
         }
     }
 
@@ -1084,6 +1109,70 @@ class PythonCodeGeneratorTest {
                 |    TestEnumInstance1 = "inst1",
                 |    TestEnumInstance2 = "inst2"
             """.trimMargin()
+        }
+    }
+
+    @Nested
+    inner class ExpressionToPythonCode {
+
+        @Test
+        fun `should handle false boolean`() {
+            val expression = PythonBoolean(false)
+            expression.toPythonCode() shouldBe "False"
+        }
+
+        @Test
+        fun `should handle true boolean`() {
+            val expression = PythonBoolean(true)
+            expression.toPythonCode() shouldBe "True"
+        }
+
+        @Test
+        fun `should handle calls`() {
+            val expression = PythonCall(
+                receiver = "function",
+                arguments = listOf(
+                    PythonArgument(value = PythonInt(1)),
+                    PythonArgument(
+                        name = "param",
+                        value = PythonInt(1)
+                    )
+                )
+            )
+            expression.toPythonCode() shouldBe "function(1, param=1)"
+        }
+
+        @Test
+        fun `should handle floats`() {
+            val expression = PythonFloat(1.0)
+            expression.toPythonCode() shouldBe "1.0"
+        }
+
+        @Test
+        fun `should handle ints`() {
+            val expression = PythonInt(1)
+            expression.toPythonCode() shouldBe "1"
+        }
+
+        @Test
+        fun `should handle member accesses`() {
+            val expression = PythonMemberAccess(
+                receiver = PythonReference(PythonParameter(name = "param")),
+                member = PythonReference(PythonAttribute(name = "value"))
+            )
+            expression.toPythonCode() shouldBe "param.value"
+        }
+
+        @Test
+        fun `should handle references`() {
+            val expression = PythonReference(PythonParameter("param"))
+            expression.toPythonCode() shouldBe "param"
+        }
+
+        @Test
+        fun `should handle strings`() {
+            val expression = PythonString("string")
+            expression.toPythonCode() shouldBe "'string'"
         }
     }
 }

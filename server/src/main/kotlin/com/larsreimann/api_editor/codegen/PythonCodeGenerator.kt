@@ -135,15 +135,21 @@ private fun buildAllFunctions(pythonClass: PythonClass): List<String> {
 }
 
 private fun buildConstructor(`class`: PythonClass) = buildString {
-    appendLine("def __init__(${buildParameters(`class`.constructor?.parameters.orEmpty())}):")
+    val constructor = `class`.constructor ?: return ""
 
+    appendLine("def __init__(${buildParameters(constructor.parameters)}):")
     appendIndented(4) {
+        val boundaries = buildBoundaryChecks(constructor).joinToString("\n")
+        if (boundaries.isNotBlank()) {
+            append("$boundaries\n\n")
+        }
+
         val attributes = buildAttributeAssignments(`class`).joinToString("\n")
         if (attributes.isNotBlank()) {
             append("$attributes\n\n")
         }
 
-        val constructorCall = `class`.constructor?.buildConstructorCall() ?: ""
+        val constructorCall = constructor.buildConstructorCall()
         if (constructorCall.isNotBlank()) {
             append(constructorCall)
         }
@@ -239,7 +245,7 @@ private fun PythonParameter.toPythonCode() = buildString {
 }
 
 private fun buildFunctionBody(pythonFunction: PythonFunction): String {
-    var formattedBoundaries = buildBoundaryChecks(pythonFunction).joinToString("\n".repeat(1))
+    var formattedBoundaries = buildBoundaryChecks(pythonFunction).joinToString("\n")
     if (formattedBoundaries.isNotBlank()) {
         formattedBoundaries = "$formattedBoundaries\n"
     }
@@ -250,10 +256,17 @@ private fun buildFunctionBody(pythonFunction: PythonFunction): String {
         )
 }
 
+private fun buildBoundaryChecks(pythonConstructor: PythonConstructor): List<String> {
+    return buildBoundaryChecks(pythonConstructor.parameters)
+}
+
 private fun buildBoundaryChecks(pythonFunction: PythonFunction): List<String> {
+    return buildBoundaryChecks(pythonFunction.parameters)
+}
+
+private fun buildBoundaryChecks(parameters: List<PythonParameter>): List<String> {
     val formattedBoundaries: MutableList<String> = ArrayList()
-    pythonFunction
-        .parameters
+    parameters
         .filter { it.boundary != null }
         .forEach {
             assert(it.boundary != null)
@@ -334,19 +347,7 @@ private fun buildBoundaryChecks(pythonFunction: PythonFunction): List<String> {
     return formattedBoundaries
 }
 
-private fun PythonExpression.toPythonCode(): String {
-    return when (this) {
-        is PythonBoolean -> value.toString()
-        is PythonCall -> "$receiver(${arguments.joinToString { it.toPythonCode() }})"
-        is PythonFloat -> value.toString()
-        is PythonInt -> value.toString()
-        is PythonString -> "'$value'"
-        is PythonMemberAccess -> "${receiver!!.toPythonCode()}.${member!!.toPythonCode()}"
-        is PythonReference -> declaration!!.name
-    }
-}
-
-private fun PythonArgument.toPythonCode() = buildString {
+internal fun PythonArgument.toPythonCode() = buildString {
     if (name != null) {
         append("$name=")
     }
@@ -366,6 +367,18 @@ internal fun PythonEnum.toPythonCode() = buildString {
                 }
             }
         }
+    }
+}
+
+internal fun PythonExpression.toPythonCode(): String {
+    return when (this) {
+        is PythonBoolean -> value.toString().replaceFirstChar { it.uppercase() }
+        is PythonCall -> "$receiver(${arguments.joinToString { it.toPythonCode() }})"
+        is PythonFloat -> value.toString()
+        is PythonInt -> value.toString()
+        is PythonMemberAccess -> "${receiver!!.toPythonCode()}.${member!!.toPythonCode()}"
+        is PythonReference -> declaration!!.name
+        is PythonString -> "'$value'"
     }
 }
 
