@@ -219,7 +219,6 @@ class PythonResult(
 
 data class OriginalPythonClass(val qualifiedName: String)
 
-
 /* ********************************************************************************************************************
  * Expressions
  * ********************************************************************************************************************/
@@ -267,7 +266,6 @@ class PythonReference(declaration: PythonDeclaration) : PythonExpression() {
 
 data class PythonStringifiedExpression(val string: String) : PythonExpression()
 
-
 /* ********************************************************************************************************************
  * Types
  * ********************************************************************************************************************/
@@ -289,7 +287,6 @@ data class PythonStringifiedType(val string: String) : PythonType() {
         return PythonStringifiedType(string)
     }
 }
-
 
 /* ********************************************************************************************************************
  * Other

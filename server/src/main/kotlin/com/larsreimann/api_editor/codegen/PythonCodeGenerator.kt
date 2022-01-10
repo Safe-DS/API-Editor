@@ -242,7 +242,6 @@ internal fun PythonParameter.toPythonCode() = buildString {
     }
 }
 
-
 /* ********************************************************************************************************************
  * Expressions
  * ********************************************************************************************************************/
@@ -259,7 +258,6 @@ internal fun PythonExpression.toPythonCode(): String {
         is PythonStringifiedExpression -> string
     }
 }
-
 
 /* ********************************************************************************************************************
  * Types
@@ -280,7 +278,6 @@ internal fun PythonType?.toPythonCodeOrNull(): String? {
         null -> null
     }
 }
-
 
 /* ********************************************************************************************************************
  * Other
@@ -303,23 +300,22 @@ internal fun Boundary.toPythonCode(parameterName: String) = buildString {
     }
 
     if (lowerLimitType != UNRESTRICTED && upperLimitType != UNRESTRICTED) {
-        appendLine("if not $lowerIntervalLimit ${lowerLimitType.operator} $parameterName ${upperLimitType.operator} ${upperIntervalLimit}:")
+        appendLine("if not $lowerIntervalLimit ${lowerLimitType.operator} $parameterName ${upperLimitType.operator} $upperIntervalLimit:")
         appendIndented("raise ValueError('Valid values of $parameterName must be in ${asInterval()}, but {} was assigned.'.format($parameterName))")
     } else if (lowerLimitType == LESS_THAN) {
-        appendLine("if not $lowerIntervalLimit < ${parameterName}:")
+        appendLine("if not $lowerIntervalLimit < $parameterName:")
         appendIndented("raise ValueError('Valid values of $parameterName must be greater than $lowerIntervalLimit, but {} was assigned.'.format($parameterName))")
     } else if (lowerLimitType == LESS_THAN_OR_EQUALS) {
-        appendLine("if not $lowerIntervalLimit <= ${parameterName}:")
+        appendLine("if not $lowerIntervalLimit <= $parameterName:")
         appendIndented("raise ValueError('Valid values of $parameterName must be greater than or equal to $lowerIntervalLimit, but {} was assigned.'.format($parameterName))")
     } else if (upperLimitType == LESS_THAN) {
-        appendLine("if not $parameterName < ${upperIntervalLimit}:")
+        appendLine("if not $parameterName < $upperIntervalLimit:")
         appendIndented("raise ValueError('Valid values of $parameterName must be less than $upperIntervalLimit, but {} was assigned.'.format($parameterName))")
     } else if (upperLimitType == LESS_THAN_OR_EQUALS) {
-        appendLine("if not $parameterName <= ${upperIntervalLimit}:")
+        appendLine("if not $parameterName <= $upperIntervalLimit:")
         appendIndented("raise ValueError('Valid values of $parameterName must be less than or equal to $upperIntervalLimit, but {} was assigned.'.format($parameterName))")
     }
 }
-
 
 /* ********************************************************************************************************************
  * Util

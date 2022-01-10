@@ -88,7 +88,6 @@ private fun PythonClass.createConstructor() {
                 )
             }
 
-
             constructorMethod.release()
         }
     }

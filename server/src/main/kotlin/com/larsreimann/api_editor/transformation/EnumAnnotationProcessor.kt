@@ -83,8 +83,8 @@ private fun hasConflictingEnums(
         (enumToCheck.name == enum.name) &&
             (
                 enumToCheck.instances.size != enum.instances.size ||
-                    !enumToCheck.instances.mapNotNull { (it.value as? PythonString)?.value}
-                        .containsAll(enum.instances.mapNotNull { (it.value as? PythonString)?.value})
+                    !enumToCheck.instances.mapNotNull { (it.value as? PythonString)?.value }
+                        .containsAll(enum.instances.mapNotNull { (it.value as? PythonString)?.value })
                 )
     }
 }
