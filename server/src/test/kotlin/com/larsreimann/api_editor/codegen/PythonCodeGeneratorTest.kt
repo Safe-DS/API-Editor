@@ -526,7 +526,143 @@ class PythonCodeGeneratorTest {
     @Nested
     inner class ParameterListToPythonCode {
 
-    } // TODO
+        private lateinit var implicit: PythonParameter
+        private lateinit var positionOnly: PythonParameter
+        private lateinit var positionOrName: PythonParameter
+        private lateinit var nameOnly: PythonParameter
+
+        @BeforeEach
+        fun reset() {
+            implicit = PythonParameter(
+                name = "implicit",
+                assignedBy = PythonParameterAssignment.IMPLICIT
+            )
+            positionOnly = PythonParameter(
+                name = "positionOnly",
+                assignedBy = PythonParameterAssignment.POSITION_ONLY
+            )
+            positionOrName = PythonParameter(
+                name = "positionOrName",
+                assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+            )
+            nameOnly = PythonParameter(
+                name = "nameOnly",
+                assignedBy = PythonParameterAssignment.NAME_ONLY
+            )
+        }
+
+        @Test
+        fun `should handle parameter lists (no IMPLICIT, no POSITION_ONLY, no POSITION_OR_NAME, no NAME_ONLY`() {
+            val parameters = listOf<PythonParameter>()
+
+            parameters.toPythonCode() shouldBe ""
+        }
+
+        @Test
+        fun `should handle parameter lists (no IMPLICIT, no POSITION_ONLY, no POSITION_OR_NAME, NAME_ONLY`() {
+            val parameters = listOf(nameOnly)
+
+            parameters.toPythonCode() shouldBe "*, nameOnly"
+        }
+
+        @Test
+        fun `should handle parameter lists (no IMPLICIT, no POSITION_ONLY, POSITION_OR_NAME, no NAME_ONLY`() {
+            val parameters = listOf(positionOrName)
+
+            parameters.toPythonCode() shouldBe "positionOrName"
+        }
+
+        @Test
+        fun `should handle parameter lists (no IMPLICIT, no POSITION_ONLY, POSITION_OR_NAME, NAME_ONLY`() {
+            val parameters = listOf(positionOrName, nameOnly)
+
+            parameters.toPythonCode() shouldBe "positionOrName, *, nameOnly"
+        }
+
+        @Test
+        fun `should handle parameter lists (no IMPLICIT, POSITION_ONLY, no POSITION_OR_NAME, no NAME_ONLY`() {
+            val parameters = listOf(positionOnly)
+
+            parameters.toPythonCode() shouldBe "positionOnly, /"
+        }
+
+        @Test
+        fun `should handle parameter lists (no IMPLICIT, POSITION_ONLY, no POSITION_OR_NAME, NAME_ONLY`() {
+            val parameters = listOf(positionOnly, nameOnly)
+
+            parameters.toPythonCode() shouldBe "positionOnly, /, *, nameOnly"
+        }
+
+        @Test
+        fun `should handle parameter lists (no IMPLICIT, POSITION_ONLY, POSITION_OR_NAME, no NAME_ONLY`() {
+            val parameters = listOf(positionOnly, positionOrName)
+
+            parameters.toPythonCode() shouldBe "positionOnly, /, positionOrName"
+        }
+
+        @Test
+        fun `should handle parameter lists (no IMPLICIT, POSITION_ONLY, POSITION_OR_NAME, NAME_ONLY`() {
+            val parameters = listOf(positionOnly, positionOrName, nameOnly)
+
+            parameters.toPythonCode() shouldBe "positionOnly, /, positionOrName, *, nameOnly"
+        }
+
+        @Test
+        fun `should handle parameter lists (IMPLICIT, no POSITION_ONLY, no POSITION_OR_NAME, no NAME_ONLY`() {
+            val parameters = listOf(implicit)
+
+            parameters.toPythonCode() shouldBe "implicit"
+        }
+
+        @Test
+        fun `should handle parameter lists (IMPLICIT, no POSITION_ONLY, no POSITION_OR_NAME, NAME_ONLY`() {
+            val parameters = listOf(implicit, nameOnly)
+
+            parameters.toPythonCode() shouldBe "implicit, *, nameOnly"
+        }
+
+        @Test
+        fun `should handle parameter lists (IMPLICIT, no POSITION_ONLY, POSITION_OR_NAME, no NAME_ONLY`() {
+            val parameters = listOf(implicit, positionOrName)
+
+            parameters.toPythonCode() shouldBe "implicit, positionOrName"
+        }
+
+        @Test
+        fun `should handle parameter lists (IMPLICIT, no POSITION_ONLY, POSITION_OR_NAME, NAME_ONLY`() {
+            val parameters = listOf(implicit, positionOrName, nameOnly)
+
+            parameters.toPythonCode() shouldBe "implicit, positionOrName, *, nameOnly"
+        }
+
+        @Test
+        fun `should handle parameter lists (IMPLICIT, POSITION_ONLY, no POSITION_OR_NAME, no NAME_ONLY`() {
+            val parameters = listOf(implicit, positionOnly)
+
+            parameters.toPythonCode() shouldBe "implicit, positionOnly, /"
+        }
+
+        @Test
+        fun `should handle parameter lists (IMPLICIT, POSITION_ONLY, no POSITION_OR_NAME, NAME_ONLY`() {
+            val parameters = listOf(implicit, positionOnly, nameOnly)
+
+            parameters.toPythonCode() shouldBe "implicit, positionOnly, /, *, nameOnly"
+        }
+
+        @Test
+        fun `should handle parameter lists (IMPLICIT, POSITION_ONLY, POSITION_OR_NAME, no NAME_ONLY`() {
+            val parameters = listOf(implicit, positionOnly, positionOrName)
+
+            parameters.toPythonCode() shouldBe "implicit, positionOnly, /, positionOrName"
+        }
+
+        @Test
+        fun `should handle parameter lists (IMPLICIT, POSITION_ONLY, POSITION_OR_NAME, NAME_ONLY`() {
+            val parameters = listOf(implicit, positionOnly, positionOrName, nameOnly)
+
+            parameters.toPythonCode() shouldBe "implicit, positionOnly, /, positionOrName, *, nameOnly"
+        }
+    }
 
     @Nested
     inner class ParameterToPythonCode {

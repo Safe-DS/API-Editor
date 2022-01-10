@@ -39,8 +39,8 @@ import com.larsreimann.modeling.closest
 fun PythonModule.toPythonCode(): String {
     var formattedImport = buildNamespace(this)
     var formattedEnums = enums.joinToString("\n") { it.toPythonCode() }
-    var formattedClasses = buildAllClasses(this)
-    var formattedFunctions = buildAllFunctions(this)
+    var formattedClasses = this.classes.joinToString("\n".repeat(2)) { it.toPythonCode() }
+    var formattedFunctions = this.functions.joinToString("\n".repeat(2)) { it.toPythonCode() }
     val separators = buildSeparators(
         formattedImport, formattedClasses, formattedFunctions
     )
@@ -87,14 +87,6 @@ private fun buildParentDeclarationName(qualifiedName: String): String {
     return qualifiedName.substring(0, separationPosition)
 }
 
-private fun buildAllClasses(pythonModule: PythonModule): String {
-    return pythonModule.classes.joinToString("\n".repeat(2)) { it.toPythonCode() }
-}
-
-private fun buildAllFunctions(pythonModule: PythonModule): String {
-    return pythonModule.functions.joinToString("\n".repeat(2)) { it.toPythonCode() }
-}
-
 private fun buildSeparators(
     formattedImports: String,
     formattedClasses: String,
@@ -136,16 +128,12 @@ fun PythonClass.toPythonCode(): String {
         if (constructor != null) {
             formattedClass += "\n\n"
         }
-        formattedClass += buildAllFunctions(this).joinToString("\n".repeat(2))
+        formattedClass += this.methods.map { it.toPythonCode().prependIndent("    ") }.joinToString("\n".repeat(2))
     }
     if (constructor == null && methods.isEmpty()) {
         formattedClass += "    pass"
     }
     return formattedClass
-}
-
-private fun buildAllFunctions(pythonClass: PythonClass): List<String> {
-    return pythonClass.methods.map { it.toPythonCode().prependIndent("    ") }
 }
 
 
