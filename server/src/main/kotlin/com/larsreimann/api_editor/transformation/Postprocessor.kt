@@ -7,6 +7,8 @@ import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonConstructor
 import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonPackage
+import com.larsreimann.api_editor.mutable_model.PythonParameter
+import com.larsreimann.modeling.ModelNode
 import com.larsreimann.modeling.descendants
 
 /**
@@ -27,16 +29,20 @@ fun PythonPackage.removeEmptyModules() {
  */
 fun PythonPackage.reorderParameters() {
     this.descendants()
-        .filterIsInstance<PythonFunction>()
-        .forEach { it.reorderParameters() }
+        .forEach {
+            when (it) {
+                is PythonConstructor -> it.parameters.reorderParameters()
+                is PythonFunction -> it.parameters.reorderParameters()
+            }
+        }
 }
 
-private fun PythonFunction.reorderParameters() {
-    val groups = this.parameters.groupBy { it.assignedBy }
-    this.parameters.addAll(groups[PythonParameterAssignment.IMPLICIT].orEmpty())
-    this.parameters.addAll(groups[PythonParameterAssignment.POSITION_ONLY].orEmpty())
-    this.parameters.addAll(groups[PythonParameterAssignment.POSITION_OR_NAME].orEmpty())
-    this.parameters.addAll(groups[PythonParameterAssignment.NAME_ONLY].orEmpty())
+private fun ModelNode.MutableContainmentList<PythonParameter>.reorderParameters() {
+    val groups = this.groupBy { it.assignedBy }
+    this.addAll(groups[PythonParameterAssignment.IMPLICIT].orEmpty())
+    this.addAll(groups[PythonParameterAssignment.POSITION_ONLY].orEmpty())
+    this.addAll(groups[PythonParameterAssignment.POSITION_OR_NAME].orEmpty())
+    this.addAll(groups[PythonParameterAssignment.NAME_ONLY].orEmpty())
 }
 
 /**

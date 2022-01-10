@@ -90,6 +90,7 @@ class PythonClass(
     val methods = MutableContainmentList(methods)
 
     override fun children() = sequence {
+        constructor?.let { yield(it) }
         yieldAll(attributes)
         yieldAll(methods)
     }
@@ -117,6 +118,10 @@ class PythonEnum(
 ) : PythonDeclaration() {
 
     val instances = MutableContainmentList(instances)
+
+    override fun children() = sequence {
+        yieldAll(instances)
+    }
 }
 
 data class PythonEnumInstance(
@@ -152,15 +157,22 @@ class PythonFunction(
     fun isStaticMethod() = isMethod() && "staticmethod" in decorators
 }
 
-data class PythonAttribute(
+class PythonAttribute(
     override var name: String,
-    var type: PythonType? = null,
+    type: PythonType? = null,
     var value: String? = null,
     var isPublic: Boolean = true,
     var description: String = "",
     var boundary: Boundary? = null,
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
-) : PythonDeclaration()
+) : PythonDeclaration() {
+
+    var type by CrossReference(type)
+
+    override fun children() = sequence {
+        type?.let { yield(it) }
+    }
+}
 
 class PythonParameter(
     override var name: String,
@@ -174,18 +186,29 @@ class PythonParameter(
 
     var type by CrossReference(type)
 
+    override fun children() = sequence {
+        type?.let { yield(it) }
+    }
+
     fun isRequired() = defaultValue == null
 
     fun isOptional() = defaultValue != null
 }
 
-data class PythonResult(
+class PythonResult(
     override var name: String,
-    var type: PythonType = PythonStringifiedType(""),
+    type: PythonType? = null,
     var description: String = "",
     var boundary: Boundary? = null,
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
-) : PythonDeclaration()
+) : PythonDeclaration() {
+
+    var type by CrossReference(type)
+
+    override fun children() = sequence {
+        type?.let { yield(it) }
+    }
+}
 
 /* ********************************************************************************************************************
  * Expressions
@@ -193,7 +216,11 @@ data class PythonResult(
 
 sealed class PythonExpression : PythonAstNode()
 
-class PythonCall(val receiver: String, arguments: List<PythonArgument> = emptyList()) : PythonExpression() {
+class PythonCall(
+    val receiver: String,
+    arguments: List<PythonArgument> = emptyList()
+) : PythonExpression() {
+
     val arguments = MutableContainmentList(arguments)
 
     override fun children() = sequence {
@@ -225,6 +252,10 @@ class PythonMemberAccess(
 
 class PythonReference(declaration: PythonDeclaration) : PythonExpression() {
     var declaration by CrossReference(declaration)
+
+    override fun children() = sequence {
+        declaration?.let { yield(it) }
+    }
 }
 
 sealed class PythonLiteral : PythonExpression()
@@ -242,6 +273,10 @@ sealed class PythonType : PythonAstNode()
 
 class PythonNamedType(declaration: PythonDeclaration) : PythonType() {
     var declaration by CrossReference(declaration)
+
+    override fun children() = sequence {
+        declaration?.let { yield(it) }
+    }
 }
 
 data class PythonStringifiedType(val type: String) : PythonType()

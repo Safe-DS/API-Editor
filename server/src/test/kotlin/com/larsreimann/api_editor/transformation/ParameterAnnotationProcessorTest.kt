@@ -88,10 +88,10 @@ class ParameterAnnotationProcessorTest {
 
         val attributes = testClass.attributes
         attributes.shouldHaveSize(1)
-        attributes[0] shouldBe attributes[0].copy(
-            name = "testParameter",
-            value = "True"
-        )
+        attributes[0].asClue {
+            it.name shouldBe "testParameter"
+            it.value shouldBe "True"
+        }
     }
 
     @Test
