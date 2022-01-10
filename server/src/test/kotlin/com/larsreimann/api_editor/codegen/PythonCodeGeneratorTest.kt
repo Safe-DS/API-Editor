@@ -349,71 +349,148 @@ class PythonCodeGeneratorTest {
     @Nested
     inner class FunctionToPythonCode {
 
+        private lateinit var callToOriginalAPI: PythonCall
+        private lateinit var parametersWithBoundaries: List<PythonParameter>
+
+        @BeforeEach
+        fun reset() {
+            callToOriginalAPI = PythonCall(
+                PythonReference(
+                    PythonFunction(name = "testModule.testFunction")
+                )
+            )
+            parametersWithBoundaries = listOf(
+                PythonParameter(
+                    name = "testParameter1",
+                    boundary = Boundary(
+                        isDiscrete = false,
+                        lowerIntervalLimit = 0.0,
+                        lowerLimitType = ComparisonOperator.LESS_THAN_OR_EQUALS,
+                        upperIntervalLimit = 1.0,
+                        upperLimitType = ComparisonOperator.LESS_THAN_OR_EQUALS
+                    )
+                ),
+                PythonParameter(
+                    name = "testParameter2",
+                    boundary = Boundary(
+                        isDiscrete = false,
+                        lowerIntervalLimit = 0.0,
+                        lowerLimitType = ComparisonOperator.LESS_THAN,
+                        upperIntervalLimit = 1.0,
+                        upperLimitType = ComparisonOperator.UNRESTRICTED
+                    )
+                )
+            )
+        }
+
         @Test
-        fun `should access value of enum parameters`() {
-            val testParameter = PythonParameter(name = "testParameter")
+        fun `should add staticmethod decorator to static methods`() {
+            val testFunction = PythonFunction(
+                name = "testFunction",
+                decorators = mutableListOf("staticmethod")
+            )
+            PythonClass(
+                name = "TestClass",
+                methods = listOf(testFunction)
+            )
+
+            testFunction.toPythonCode() shouldBe """
+                |@staticmethod
+                |def testFunction():
+                |    pass
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should create code for parameters`() {
             val testFunction = PythonFunction(
                 name = "testFunction",
                 parameters = listOf(
-                    testParameter
-                ),
-                callToOriginalAPI = PythonCall(
-                    receiver = PythonStringifiedExpression("testModule.testFunction"),
-                    arguments = listOf(
-                        PythonArgument(
-                            value = PythonMemberAccess(
-                                receiver = PythonReference(testParameter),
-                                member = PythonReference(PythonAttribute(name = "value"))
-                            )
-                        )
+                    PythonParameter(
+                        name = "self",
+                        assignedBy = PythonParameterAssignment.IMPLICIT
+                    ),
+                    PythonParameter(
+                        name = "positionOnly",
+                        assignedBy = PythonParameterAssignment.POSITION_ONLY
+                    ),
+                    PythonParameter(
+                        name = "positionOrName",
+                        assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+                    ),
+                    PythonParameter(
+                        name = "nameOnly",
+                        assignedBy = PythonParameterAssignment.NAME_ONLY
                     )
                 )
             )
 
             testFunction.toPythonCode() shouldBe """
-                |def testFunction(testParameter):
-                |    return testModule.testFunction(testParameter.value)
+                |def testFunction(self, positionOnly, /, positionOrName, *, nameOnly):
+                |    pass
             """.trimMargin()
         }
 
         @Test
-        fun `should access attribute of parameter objects`() {
-            val testParameter = PythonParameter(name = "testGroup")
+        fun `should handle functions (no boundaries, no call)`() {
             val testFunction = PythonFunction(
-                name = "testFunction",
-                parameters = listOf(
-                    testParameter
-                ),
-                callToOriginalAPI = PythonCall(
-                    receiver = PythonStringifiedExpression("testModule.testFunction"),
-                    arguments = listOf(
-                        PythonArgument(
-                            value = PythonMemberAccess(
-                                receiver = PythonReference(testParameter),
-                                member = PythonReference(
-                                    PythonAttribute(name = "newParameter1")
-                                )
-                            )
-                        ),
-                        PythonArgument(
-                            name = "oldParameter2",
-                            value = PythonMemberAccess(
-                                receiver = PythonReference(testParameter),
-                                member = PythonReference(
-                                    PythonAttribute(name = "newParameter2")
-                                )
-                            )
-                        )
-                    )
-                )
+                name = "testFunction"
             )
 
             testFunction.toPythonCode() shouldBe """
-                |def testFunction(testGroup):
-                |    return testModule.testFunction(testGroup.newParameter1, oldParameter2=testGroup.newParameter2)
+                |def testFunction():
+                |    pass
             """.trimMargin()
         }
-    } // TODO
+
+        @Test
+        fun `should handle functions (no boundaries, call)`() {
+            val testFunction = PythonFunction(
+                name = "testFunction",
+                callToOriginalAPI = callToOriginalAPI
+            )
+
+            testFunction.toPythonCode() shouldBe """
+                |def testFunction():
+                |    return testModule.testFunction()
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should handle functions (boundaries, no call)`() {
+            val testFunction = PythonFunction(
+                name = "testFunction",
+                parameters = parametersWithBoundaries
+            )
+
+            testFunction.toPythonCode() shouldBe """
+                |def testFunction(testParameter1, testParameter2):
+                |    if not 0.0 <= testParameter1 <= 1.0:
+                |        raise ValueError('Valid values of testParameter1 must be in [0.0, 1.0], but {} was assigned.'.format(testParameter1))
+                |    if not 0.0 < testParameter2:
+                |        raise ValueError('Valid values of testParameter2 must be greater than 0.0, but {} was assigned.'.format(testParameter2))
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should handle functions (boundaries, call)`() {
+            val testFunction = PythonFunction(
+                name = "testFunction",
+                callToOriginalAPI = callToOriginalAPI,
+                parameters = parametersWithBoundaries
+            )
+
+            testFunction.toPythonCode() shouldBe """
+                |def testFunction(testParameter1, testParameter2):
+                |    if not 0.0 <= testParameter1 <= 1.0:
+                |        raise ValueError('Valid values of testParameter1 must be in [0.0, 1.0], but {} was assigned.'.format(testParameter1))
+                |    if not 0.0 < testParameter2:
+                |        raise ValueError('Valid values of testParameter2 must be greater than 0.0, but {} was assigned.'.format(testParameter2))
+                |
+                |    return testModule.testFunction()
+            """.trimMargin()
+        }
+    }
 
     @Nested
     inner class ModuleToPythonCode {

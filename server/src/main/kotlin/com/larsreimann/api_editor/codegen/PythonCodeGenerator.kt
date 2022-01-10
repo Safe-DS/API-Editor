@@ -146,35 +146,6 @@ private fun buildAllFunctions(pythonClass: PythonClass): List<String> {
     return pythonClass.methods.map { it.toPythonCode().prependIndent("    ") }
 }
 
-/**
- * Builds a string containing the formatted function content
- * @receiver The function whose adapter content should be built
- * @return The string containing the formatted function content
- */
-fun PythonFunction.toPythonCode(): String {
-    val function = """
-      |def $name(${this.parameters.toPythonCode()}):
-      |${(buildFunctionBody(this)).prependIndent("    ")}
-      """.trimMargin()
-
-    return when {
-        isStaticMethod() -> "@staticmethod\n$function"
-        else -> function
-    }
-}
-
-private fun buildFunctionBody(pythonFunction: PythonFunction): String {
-    var formattedBoundaries = "" // pythonFunction.parameters.buildBoundaryChecks().joinToString("\n")
-    if (formattedBoundaries.isNotBlank()) {
-        formattedBoundaries = "$formattedBoundaries\n"
-    }
-
-    return (
-        formattedBoundaries +
-            "return " + pythonFunction.callToOriginalAPI!!.toPythonCode()
-        )
-}
-
 
 /* ********************************************************************************************************************
  * Declarations
@@ -242,6 +213,33 @@ internal fun PythonEnum.toPythonCode() = buildString {
 
 internal fun PythonEnumInstance.toPythonCode(): String {
     return "$name = ${value!!.toPythonCode()}"
+}
+
+internal fun PythonFunction.toPythonCode() = buildString {
+    val parametersString = parameters.toPythonCode()
+    val boundariesString = parameters
+        .mapNotNull { it.boundary?.toPythonCode(it.name) }
+        .joinToString("\n")
+    val callString = callToOriginalAPI
+        ?.let { "return ${it.toPythonCode()}" }
+        ?: ""
+
+    if (isStaticMethod()) {
+        appendLine("@staticmethod")
+    }
+    appendLine("def $name($parametersString):")
+    if (boundariesString.isNotBlank()) {
+        appendIndented(boundariesString)
+        if (callString.isNotBlank()) {
+            append("\n\n")
+        }
+    }
+    if (callString.isNotBlank()) {
+        appendIndented(callString)
+    }
+    if (boundariesString.isBlank() && callString.isBlank()) {
+        appendIndented("pass")
+    }
 }
 
 internal fun List<PythonParameter>.toPythonCode(): String {
