@@ -595,7 +595,7 @@ class PythonCodeGeneratorTest {
 
         @Test
         fun `should create Python code for modules (no classes, no functions, no enums)`() {
-            testModule.toPythonCode() shouldBe "\n"
+            testModule.toPythonCode() shouldBe "from __future__ import annotations\n"
         }
 
         @Test
@@ -603,6 +603,7 @@ class PythonCodeGeneratorTest {
             testModule.enums += testEnum
 
             testModule.toPythonCode() shouldBe """
+                |from __future__ import annotations
                 |from enum import Enum
                 |
                 |class TestEnum(Enum):
@@ -617,6 +618,8 @@ class PythonCodeGeneratorTest {
 
             testModule.toPythonCode() shouldBe """
                 |import originalModule
+                |
+                |from __future__ import annotations
                 |
                 |def testFunction():
                 |    pass
@@ -635,6 +638,7 @@ class PythonCodeGeneratorTest {
             testModule.toPythonCode() shouldBe """
                 |import originalModule
                 |
+                |from __future__ import annotations
                 |from enum import Enum
                 |
                 |def testFunction():
@@ -654,6 +658,8 @@ class PythonCodeGeneratorTest {
             testModule.classes += testClasses
 
             testModule.toPythonCode() shouldBe """
+                |from __future__ import annotations
+                |
                 |class TestClass:
                 |    def testMethod1():
                 |        pass
@@ -673,6 +679,7 @@ class PythonCodeGeneratorTest {
             testModule.enums += testEnum
 
             testModule.toPythonCode() shouldBe """
+                |from __future__ import annotations
                 |from enum import Enum
                 |
                 |class TestClass:
@@ -698,6 +705,8 @@ class PythonCodeGeneratorTest {
 
             testModule.toPythonCode() shouldBe """
                 |import originalModule
+                |
+                |from __future__ import annotations
                 |
                 |class TestClass:
                 |    def testMethod1():
@@ -727,6 +736,7 @@ class PythonCodeGeneratorTest {
             testModule.toPythonCode() shouldBe """
                 |import originalModule
                 |
+                |from __future__ import annotations
                 |from enum import Enum
                 |
                 |class TestClass:

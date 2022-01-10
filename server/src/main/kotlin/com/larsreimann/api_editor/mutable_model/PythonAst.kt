@@ -272,13 +272,23 @@ data class PythonStringifiedExpression(val string: String) : PythonExpression()
  * Types
  * ********************************************************************************************************************/
 
-sealed class PythonType : PythonAstNode()
-
-class PythonNamedType(declaration: PythonDeclaration) : PythonType() {
-    var declaration by CrossReference(declaration)
+sealed class PythonType : PythonAstNode() {
+    abstract fun copy(): PythonType
 }
 
-data class PythonStringifiedType(val string: String) : PythonType()
+class PythonNamedType(declaration: PythonDeclaration?) : PythonType() {
+    var declaration by CrossReference(declaration)
+
+    override fun copy(): PythonNamedType {
+        return PythonNamedType(declaration)
+    }
+}
+
+data class PythonStringifiedType(val string: String) : PythonType() {
+    override fun copy(): PythonStringifiedType {
+        return PythonStringifiedType(string)
+    }
+}
 
 
 /* ********************************************************************************************************************

@@ -60,9 +60,9 @@ private fun PythonModule.importsToPythonCode() = buildString {
         }.toSet()
 
     val importsString = imports.joinToString("\n") { "import $it" }
-    val fromImportsString = when {
-        enums.isEmpty() -> ""
-        else -> "from enum import Enum"
+    var fromImportsString = "from __future__ import annotations"
+    if (enums.isNotEmpty()) {
+        fromImportsString += "\nfrom enum import Enum"
     }
 
     if (importsString.isNotBlank()) {

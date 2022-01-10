@@ -78,10 +78,27 @@ private fun PythonFunction.processGroupAnnotations(module: PythonModule) {
                         receiver = PythonReference(declaration = groupedParameter),
                         member = PythonReference(PythonAttribute(name = value.declaration!!.name))
                     )
-                }
-            }
+                } else if (value is PythonMemberAccess) {
+                    val receiver = value.receiver
+                    val member = value.member
+                    if (receiver is PythonReference && member is PythonReference) {
+                        val receiverMatches = receiver.declaration?.name in annotation.parameters
+                        val memberMatches = member.declaration is PythonAttribute && member.declaration?.name == "value"
 
-            this.annotations.remove(annotation)
+                        if (receiverMatches && memberMatches) {
+                            it.value = PythonMemberAccess(
+                                receiver = PythonMemberAccess(
+                                    receiver = PythonReference(declaration = groupedParameter),
+                                    member = receiver
+                                ),
+                                member = member
+                            )
+                        }
+                    }
+                }
+
+                this.annotations.remove(annotation)
+            }
         }
 }
 

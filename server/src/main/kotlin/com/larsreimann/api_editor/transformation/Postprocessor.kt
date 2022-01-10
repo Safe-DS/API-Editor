@@ -110,7 +110,7 @@ private fun PythonClass.createAttributesForParametersOfConstructor() {
         ?.forEach {
             this.attributes += PythonAttribute(
                 name = it.name,
-                type = it.type,
+                type = it.type?.copy(),
                 value = PythonStringifiedExpression(it.name),
                 isPublic = true,
                 description = it.description,
