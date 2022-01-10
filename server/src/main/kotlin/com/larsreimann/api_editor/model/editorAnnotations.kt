@@ -129,14 +129,14 @@ sealed class DefaultValue
 @Serializable
 class DefaultBoolean(val value: Boolean) : DefaultValue() {
     override fun toString(): String {
-        return "$value"
+        return value.toString().replaceFirstChar { it.uppercase() }
     }
 }
 
 @Serializable
 class DefaultNumber(val value: Double) : DefaultValue() {
     override fun toString(): String {
-        return "$value"
+        return value.toString()
     }
 }
 
