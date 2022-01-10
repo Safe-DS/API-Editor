@@ -10,6 +10,7 @@ import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonModule
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonResult
+import com.larsreimann.api_editor.mutable_model.PythonStringifiedType
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import de.unibonn.simpleml.emf.annotationUsesOrEmpty
 import de.unibonn.simpleml.emf.argumentsOrEmpty
@@ -88,14 +89,14 @@ class StubCodeGeneratorTest {
                             ),
                             PythonParameter(
                                 name = "testParameter",
-                                typeInDocs = "int",
+                                type = PythonStringifiedType("int"),
                                 defaultValue = "10"
                             )
                         ),
                         results = listOf(
                             PythonResult(
                                 name = "testParameter",
-                                type = "str"
+                                type = PythonStringifiedType("str")
                             )
                         )
                     )
@@ -453,7 +454,7 @@ class StubCodeGeneratorTest {
         fun `should store type`() {
             val pythonAttribute = PythonAttribute(
                 name = "testAttribute",
-                typeInDocs = "str"
+                type = PythonStringifiedType("str")
             )
 
             pythonAttribute
@@ -741,7 +742,7 @@ class StubCodeGeneratorTest {
         fun `should store type`() {
             val pythonParameter = PythonParameter(
                 name = "testParameter",
-                typeInDocs = "str"
+                type = PythonStringifiedType("str")
             )
 
             pythonParameter
@@ -860,7 +861,7 @@ class StubCodeGeneratorTest {
         fun `should store type`() {
             val pythonResult = PythonResult(
                 name = "testResult",
-                type = "str"
+                type = PythonStringifiedType("str")
             )
 
             val type = pythonResult.toSmlResult().type.shouldBeInstanceOf<SmlNamedType>()
@@ -1084,35 +1085,35 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should convert bool to Boolean`() {
-            val smlType = "bool".toSmlType().shouldBeInstanceOf<SmlNamedType>()
+            val smlType = PythonStringifiedType("bool").toSmlType().shouldBeInstanceOf<SmlNamedType>()
             smlType.declaration.name shouldBe "Boolean"
             smlType.isNullable.shouldBeFalse()
         }
 
         @Test
         fun `should convert float to Float`() {
-            val smlType = "float".toSmlType().shouldBeInstanceOf<SmlNamedType>()
+            val smlType = PythonStringifiedType("float").toSmlType().shouldBeInstanceOf<SmlNamedType>()
             smlType.declaration.name shouldBe "Float"
             smlType.isNullable.shouldBeFalse()
         }
 
         @Test
         fun `should convert int to Int`() {
-            val smlType = "int".toSmlType().shouldBeInstanceOf<SmlNamedType>()
+            val smlType = PythonStringifiedType("int").toSmlType().shouldBeInstanceOf<SmlNamedType>()
             smlType.declaration.name shouldBe "Int"
             smlType.isNullable.shouldBeFalse()
         }
 
         @Test
         fun `should convert str to String`() {
-            val smlType = "str".toSmlType().shouldBeInstanceOf<SmlNamedType>()
+            val smlType = PythonStringifiedType("str").toSmlType().shouldBeInstanceOf<SmlNamedType>()
             smlType.declaration.name shouldBe "String"
             smlType.isNullable.shouldBeFalse()
         }
 
         @Test
         fun `should convert other types to nullable Any`() {
-            val smlType = "other".toSmlType().shouldBeInstanceOf<SmlNamedType>()
+            val smlType = PythonStringifiedType("other").toSmlType().shouldBeInstanceOf<SmlNamedType>()
             smlType.declaration.name shouldBe "Any"
             smlType.isNullable.shouldBeTrue()
         }

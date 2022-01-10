@@ -53,9 +53,9 @@ private fun PythonParameter.processAttributeAnnotation(annotation: AttributeAnno
     val containingClass = this.closest<PythonClass>()!!
     containingClass.attributes += PythonAttribute(
         name = name,
+        type = type,
         value = annotation.defaultValue.toString(),
         isPublic = true,
-        typeInDocs = typeInDocs,
         description = description,
         boundary = boundary
     )

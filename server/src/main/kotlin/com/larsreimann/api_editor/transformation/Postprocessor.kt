@@ -89,9 +89,9 @@ private fun PythonClass.createAttributesForParametersOfConstructor() {
         ?.forEach {
             this.attributes += PythonAttribute(
                 name = it.name,
+                type = it.type,
                 value = it.name,
                 isPublic = true,
-                typeInDocs = it.typeInDocs,
                 description = it.description,
                 boundary = it.boundary
             )

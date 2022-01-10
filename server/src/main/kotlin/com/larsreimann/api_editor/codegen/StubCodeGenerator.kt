@@ -7,8 +7,11 @@ import com.larsreimann.api_editor.mutable_model.PythonEnum
 import com.larsreimann.api_editor.mutable_model.PythonEnumInstance
 import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonNamedType
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonResult
+import com.larsreimann.api_editor.mutable_model.PythonStringifiedType
+import com.larsreimann.api_editor.mutable_model.PythonType
 import de.unibonn.simpleml.constant.SmlFileExtension
 import de.unibonn.simpleml.emf.createSmlAnnotationUse
 import de.unibonn.simpleml.emf.createSmlArgument
@@ -124,7 +127,7 @@ internal fun PythonAttribute.toSmlAttribute(): SmlAttribute {
                 add(createSmlDescriptionAnnotationUse(description))
             }
         },
-        type = typeInDocs.toSmlType()
+        type = type.toSmlType()
     )
 }
 
@@ -181,7 +184,7 @@ internal fun PythonParameter.toSmlParameterOrNull(): SmlParameter? {
                 add(createSmlDescriptionAnnotationUse(description))
             }
         },
-        type = typeInDocs.toSmlType(),
+        type = type.toSmlType(),
         defaultValue = defaultValue?.toSmlExpression()
     )
 }
@@ -258,24 +261,33 @@ private fun String.snakeCaseToCamelCase(): String {
 
 // Type conversions ----------------------------------------------------------------------------------------------------
 
-internal fun String.toSmlType(): SmlAbstractType {
+internal fun PythonType.toSmlType(): SmlAbstractType {
     return when (this) {
-        "bool" -> createSmlNamedType(
-            declaration = createSmlClass("Boolean")
-        )
-        "float" -> createSmlNamedType(
-            declaration = createSmlClass("Float")
-        )
-        "int" -> createSmlNamedType(
-            declaration = createSmlClass("Int")
-        )
-        "str" -> createSmlNamedType(
-            declaration = createSmlClass("String")
-        )
-        else -> createSmlNamedType(
-            declaration = createSmlClass("Any"),
-            isNullable = true
-        )
+        is PythonNamedType -> {
+            createSmlNamedType(
+                declaration = createSmlClass(this.declaration!!.name)
+            )
+        }
+        is PythonStringifiedType -> {
+            when (this.type) {
+                "bool" -> createSmlNamedType(
+                    declaration = createSmlClass("Boolean")
+                )
+                "float" -> createSmlNamedType(
+                    declaration = createSmlClass("Float")
+                )
+                "int" -> createSmlNamedType(
+                    declaration = createSmlClass("Int")
+                )
+                "str" -> createSmlNamedType(
+                    declaration = createSmlClass("String")
+                )
+                else -> createSmlNamedType(
+                    declaration = createSmlClass("Any"),
+                    isNullable = true
+                )
+            }
+        }
     }
 }
 

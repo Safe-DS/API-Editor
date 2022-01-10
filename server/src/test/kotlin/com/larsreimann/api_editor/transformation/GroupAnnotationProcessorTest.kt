@@ -9,6 +9,7 @@ import com.larsreimann.api_editor.mutable_model.PythonConstructor
 import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonMemberAccess
 import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonNamedType
 import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonReference
@@ -118,10 +119,13 @@ class GroupAnnotationProcessorTest {
         val parameters = testFunction.parameters
         parameters.shouldHaveSize(2)
         parameters[0] shouldBe testParameter1
-        parameters[1] shouldBe parameters[1].copy(
-            name = "testGroup",
-            typeInDocs = "TestGroup"
-        )
+        parameters[1].asClue {
+            it.name shouldBe "testGroup"
+
+            val type = it.type
+            type.shouldBeInstanceOf<PythonNamedType>()
+            type.declaration?.name shouldBe "TestGroup"
+        }
     }
 
     @Test
@@ -159,10 +163,13 @@ class GroupAnnotationProcessorTest {
         val parameters = testFunction.parameters
         parameters.shouldHaveSize(2)
         parameters[0] shouldBe testParameter1
-        parameters[1] shouldBe parameters[1].copy(
-            name = "testGroup",
-            typeInDocs = "TestGroup"
-        )
+        parameters[1].asClue {
+            it.name shouldBe "testGroup"
+
+            val type = it.type
+            type.shouldBeInstanceOf<PythonNamedType>()
+            type.declaration?.name shouldBe "TestGroup"
+        }
     }
 
     @Test

@@ -10,6 +10,7 @@ import com.larsreimann.api_editor.mutable_model.PythonEnumInstance
 import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonMemberAccess
 import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonNamedType
 import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonReference
@@ -97,7 +98,12 @@ class EnumAnnotationProcessorTest {
     fun `should process EnumAnnotations on parameter level`() {
         testPackage.processEnumAnnotations()
 
-        testParameter.typeInDocs shouldBe "TestEnum"
+        val type = testParameter.type
+        type.shouldBeInstanceOf<PythonNamedType>()
+
+        val declaration = type.declaration
+        declaration.shouldBeInstanceOf<PythonEnum>()
+        declaration.name shouldBe "TestEnum"
     }
 
     @Test
@@ -121,7 +127,12 @@ class EnumAnnotationProcessorTest {
         testModule.enums += mutableEnum
         testPackage.processEnumAnnotations()
 
-        testParameter.typeInDocs shouldBe "TestEnum"
+        val type = testParameter.type
+        type.shouldBeInstanceOf<PythonNamedType>()
+
+        val declaration = type.declaration
+        declaration.shouldBeInstanceOf<PythonEnum>()
+        declaration.name shouldBe "TestEnum"
     }
 
     @Test

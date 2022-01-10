@@ -154,9 +154,9 @@ class PythonFunction(
 
 data class PythonAttribute(
     override var name: String,
+    var type: PythonType = PythonStringifiedType(""),
     var value: String? = null,
     var isPublic: Boolean = true,
-    var typeInDocs: String = "",
     var description: String = "",
     var boundary: Boundary? = null,
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
@@ -164,9 +164,9 @@ data class PythonAttribute(
 
 data class PythonParameter(
     override var name: String,
+    var type: PythonType = PythonStringifiedType(""),
     var defaultValue: String? = null,
     var assignedBy: PythonParameterAssignment = PythonParameterAssignment.POSITION_OR_NAME,
-    var typeInDocs: String = "",
     var description: String = "",
     var boundary: Boundary? = null,
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
@@ -179,8 +179,7 @@ data class PythonParameter(
 
 data class PythonResult(
     override var name: String,
-    var type: String = "",
-    var typeInDocs: String = "",
+    var type: PythonType = PythonStringifiedType(""),
     var description: String = "",
     var boundary: Boundary? = null,
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
@@ -232,3 +231,15 @@ data class PythonBoolean(val value: Boolean) : PythonLiteral()
 data class PythonFloat(val value: Double) : PythonLiteral()
 data class PythonInt(val value: Int) : PythonLiteral()
 data class PythonString(val value: String) : PythonLiteral()
+
+/* ********************************************************************************************************************
+ * Types
+ * ********************************************************************************************************************/
+
+sealed class PythonType : PythonAstNode()
+
+class PythonNamedType(declaration: PythonDeclaration) : PythonType() {
+    var declaration by CrossReference(declaration)
+}
+
+data class PythonStringifiedType(val type: String) : PythonType()

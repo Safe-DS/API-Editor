@@ -23,6 +23,7 @@ import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonReference
 import com.larsreimann.api_editor.mutable_model.PythonResult
 import com.larsreimann.api_editor.mutable_model.PythonString
+import com.larsreimann.api_editor.mutable_model.PythonStringifiedType
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -82,7 +83,7 @@ class PythonCodeGeneratorTest {
                     results = listOf(
                         PythonResult(
                             name = "test-result",
-                            type = "str"
+                            type = PythonStringifiedType("str")
                         )
                     ),
                     callToOriginalAPI = PythonCall(
@@ -111,7 +112,7 @@ class PythonCodeGeneratorTest {
                     results = listOf(
                         PythonResult(
                             "test-result",
-                            "str",
+                            PythonStringifiedType("str"),
                             "str"
                         )
                     ),
@@ -159,8 +160,8 @@ class PythonCodeGeneratorTest {
         val testFunction1Parameter3 = PythonParameter(name = "param3")
         val testFunction2Parameter = PythonParameter(
             "test-parameter",
-            "42",
-            PythonParameterAssignment.NAME_ONLY
+            defaultValue = "42",
+            assignedBy = PythonParameterAssignment.NAME_ONLY
         )
         val testModule = PythonModule(
             name = "test-module",
@@ -175,8 +176,7 @@ class PythonCodeGeneratorTest {
                     results = mutableListOf(
                         PythonResult(
                             "test-result",
-                            "str",
-                            "str",
+                            PythonStringifiedType("str"),
                             "Lorem ipsum"
                         )
                     ),
@@ -206,8 +206,7 @@ class PythonCodeGeneratorTest {
                     results = mutableListOf(
                         PythonResult(
                             "test-result",
-                            "str",
-                            "str",
+                            PythonStringifiedType("str"),
                             "Lorem ipsum"
                         )
                     ),
@@ -337,8 +336,8 @@ class PythonCodeGeneratorTest {
         )
         val testParameter2 = PythonParameter(
             "param2",
-            "5",
-            PythonParameterAssignment.NAME_ONLY
+            defaultValue = "5",
+            assignedBy = PythonParameterAssignment.NAME_ONLY
         )
         testParameter2.boundary = Boundary(
             false,
@@ -349,8 +348,8 @@ class PythonCodeGeneratorTest {
         )
         val testParameter3 = PythonParameter(
             "param3",
-            "5",
-            PythonParameterAssignment.NAME_ONLY
+            defaultValue = "5",
+            assignedBy = PythonParameterAssignment.NAME_ONLY
         )
         testParameter3.boundary = Boundary(
             false,

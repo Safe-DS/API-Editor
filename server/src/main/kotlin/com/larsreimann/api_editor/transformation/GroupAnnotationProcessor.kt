@@ -8,6 +8,7 @@ import com.larsreimann.api_editor.mutable_model.PythonConstructor
 import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonMemberAccess
 import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonNamedType
 import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonReference
@@ -34,10 +35,8 @@ private fun PythonFunction.processGroupAnnotations(module: PythonModule) {
         .filterIsInstance<GroupAnnotation>()
         .forEach { annotation ->
             val firstOccurrence = this.parameters.indexOfFirst { it.name in annotation.parameters }
-            val groupedParameter = PythonParameter(
-                name = annotation.groupName.replaceFirstChar { it.lowercase() },
-                typeInDocs = annotation.groupName.replaceFirstChar { it.uppercase() },
-            )
+
+            // Create class
             val constructorParameters = mutableListOf(
                 PythonParameter(
                     name = "self",
@@ -45,14 +44,21 @@ private fun PythonFunction.processGroupAnnotations(module: PythonModule) {
                 )
             )
             constructorParameters += this.parameters.filter { it.name in annotation.parameters }
-            this.parameters.removeIf { it.name in annotation.parameters }
-            this.parameters.add(firstOccurrence, groupedParameter)
             val groupedParameterClass = PythonClass(
                 name = annotation.groupName.replaceFirstChar { it.uppercase() },
                 constructor = PythonConstructor(
                     parameters = constructorParameters
                 )
             )
+
+            // Update parameters
+            val groupedParameter = PythonParameter(
+                name = annotation.groupName.replaceFirstChar { it.lowercase() },
+                type = PythonNamedType(groupedParameterClass)
+            )
+            this.parameters.removeIf { it.name in annotation.parameters }
+            this.parameters.add(firstOccurrence, groupedParameter)
+
             if (hasConflictingGroups(module.classes, groupedParameterClass)) {
                 throw ConflictingGroupException(
                     groupedParameterClass.name,

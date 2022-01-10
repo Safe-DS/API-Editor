@@ -7,6 +7,7 @@ import com.larsreimann.api_editor.mutable_model.PythonEnum
 import com.larsreimann.api_editor.mutable_model.PythonEnumInstance
 import com.larsreimann.api_editor.mutable_model.PythonMemberAccess
 import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonNamedType
 import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonReference
@@ -68,7 +69,7 @@ private fun PythonParameter.processEnumAnnotations(module: PythonModule) {
                 member = PythonReference(PythonAttribute(name = "value"))
             )
 
-            this.typeInDocs = annotation.enumName
+            this.type = PythonNamedType(enumToAdd)
             this.annotations -= annotation
         }
 }

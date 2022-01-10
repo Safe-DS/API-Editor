@@ -81,9 +81,9 @@ fun convertFunction(pythonFunction: SerializablePythonFunction): PythonFunction 
 fun convertAttribute(pythonAttribute: SerializablePythonAttribute): PythonAttribute {
     return PythonAttribute(
         name = pythonAttribute.name,
+        type = PythonStringifiedType(pythonAttribute.typeInDocs),
         value = pythonAttribute.defaultValue,
         isPublic = pythonAttribute.isPublic,
-        typeInDocs = pythonAttribute.typeInDocs,
         description = pythonAttribute.description,
         boundary = pythonAttribute.boundary,
         annotations = pythonAttribute.annotations,
@@ -93,9 +93,9 @@ fun convertAttribute(pythonAttribute: SerializablePythonAttribute): PythonAttrib
 fun convertParameter(pythonParameter: SerializablePythonParameter): PythonParameter {
     return PythonParameter(
         name = pythonParameter.name,
+        type = PythonStringifiedType(pythonParameter.typeInDocs),
         defaultValue = pythonParameter.defaultValue,
         assignedBy = pythonParameter.assignedBy,
-        typeInDocs = pythonParameter.typeInDocs,
         description = pythonParameter.description,
         boundary = pythonParameter.boundary,
         annotations = pythonParameter.annotations,
@@ -105,8 +105,7 @@ fun convertParameter(pythonParameter: SerializablePythonParameter): PythonParame
 fun convertResult(pythonResult: SerializablePythonResult): PythonResult {
     return PythonResult(
         name = pythonResult.name,
-        type = pythonResult.type,
-        typeInDocs = pythonResult.typeInDocs,
+        type = PythonStringifiedType(pythonResult.type),
         description = pythonResult.description,
         boundary = pythonResult.boundary,
         annotations = pythonResult.annotations,
