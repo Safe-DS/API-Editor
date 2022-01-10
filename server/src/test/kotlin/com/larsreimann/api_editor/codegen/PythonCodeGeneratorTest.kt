@@ -465,24 +465,6 @@ class PythonCodeGeneratorTest {
     }
 
     @Test
-    fun `should create valid code for empty classes`() { // TODO
-        val testClass = PythonClass(
-            name = "TestClass",
-            constructor = PythonConstructor(
-                callToOriginalAPI = PythonCall(
-                    receiver = PythonStringifiedExpression("testModule.TestClass")
-                )
-            )
-        )
-
-        testClass.toPythonCode() shouldBe """
-            |class TestClass:
-            |    def __init__():
-            |        self.instance = testModule.TestClass()
-        """.trimMargin()
-    }
-
-    @Test
     fun buildClassReturnsFormattedClassWithOneFunction() { // TODO
         // given
         val testParameter = PythonParameter(
@@ -962,32 +944,146 @@ class PythonCodeGeneratorTest {
         formattedClass shouldBe expectedFormattedClass
     }
 
+
+    /* ****************************************************************************************************************
+     * Declarations
+     * ****************************************************************************************************************/
+
     @Nested
-    inner class ModuleToPythonCode {
+    inner class AttributeToPythonCode {
 
         @Test
-        fun `should import Enum if the module contains enums`() {
-            val testModule = PythonModule(
-                name = "testModule",
-                enums = listOf(
-                    PythonEnum(name = "TestEnum")
-                )
+        fun `should handle attributes without type and default value`() {
+            val testAttribute = PythonAttribute(
+                name = "attr"
             )
 
-            testModule.toPythonCode() shouldBe """
-                |from enum import Enum
-                |
+            testAttribute.toPythonCode() shouldBe "self.attr"
+        }
+
+        @Test
+        fun `should handle attributes with type but without default value`() {
+            val testAttribute = PythonAttribute(
+                name = "attr",
+                type = PythonStringifiedType("int")
+            )
+
+            testAttribute.toPythonCode() shouldBe "self.attr: int"
+        }
+
+        @Test
+        fun `should handle attributes without type but with default value`() {
+            val testAttribute = PythonAttribute(
+                name = "attr",
+                value = PythonStringifiedExpression("1")
+            )
+
+            testAttribute.toPythonCode() shouldBe "self.attr = 1"
+        }
+
+        @Test
+        fun `should handle attributes with type and default value`() {
+            val testAttribute = PythonAttribute(
+                name = "attr",
+                type = PythonStringifiedType("int"),
+                value = PythonStringifiedExpression("1")
+            )
+
+            testAttribute.toPythonCode() shouldBe "self.attr: int = 1"
+        }
+    }
+
+    @Nested
+    inner class ClassToPythonCode { // TODO
+
+        @Test
+        fun `should create valid code for empty classes`() {
+            val testClass = PythonClass(name = "TestClass")
+
+            testClass.toPythonCode() shouldBe """
+                    |class TestClass:
+                    |    pass
+                """.trimMargin()
+        }
+    }
+
+    @Nested
+    inner class ConstructorToPythonCode {
+
+        @Test
+        fun `should handle simple constructors`() { // TODO
+            val testConstructor = PythonConstructor()
+        }
+
+        @Test
+        fun `should create code for parameters`() { // TODO
+
+        }
+
+        @Test
+        fun `should create code for boundaries`() { // TODO
+
+        }
+
+        @Test
+        fun `should create code for attributes`() { // TODO
+
+        }
+
+        @Test
+        fun `should create instance`() { // TODO
+            val testConstructor = PythonConstructor()
+        }
+    }
+
+    @Nested
+    inner class EnumToPythonCode {
+
+        @Test
+        fun `should create valid Python code for enums without instances`() {
+            val testEnum = PythonEnum(name = "TestEnum")
+
+            testEnum.toPythonCode() shouldBe """
                 |class TestEnum(Enum):
                 |    pass
-                |
             """.trimMargin()
         }
 
         @Test
-        fun `should not import Enum if the module does not contain enums`() {
-            val testModule = PythonModule(name = "testModule")
+        fun `should create valid Python code for enums with instances`() {
+            val testEnum = PythonEnum(
+                name = "TestEnum",
+                instances = listOf(
+                    PythonEnumInstance(
+                        name = "TestEnumInstance1",
+                        value = PythonString("inst1")
+                    ),
+                    PythonEnumInstance(
+                        name = "TestEnumInstance2",
+                        value = PythonString("inst2")
+                    )
+                )
+            )
 
-            testModule.toPythonCode() shouldBe ""
+            testEnum.toPythonCode() shouldBe """
+                |class TestEnum(Enum):
+                |    TestEnumInstance1 = 'inst1',
+                |    TestEnumInstance2 = 'inst2'
+            """.trimMargin()
+        }
+    }
+
+    @Nested
+    inner class EnumInstanceToPythonCode {
+
+        @Test
+        fun `should create Python code`() {
+            val testEnumInstance = PythonEnumInstance(
+                name = "TestEnumInstance1",
+                value = PythonString("inst1")
+            )
+
+            testEnumInstance.toPythonCode() shouldBe "TestEnumInstance1 = 'inst1'"
         }
     }
 
@@ -1058,7 +1154,36 @@ class PythonCodeGeneratorTest {
                 |    return testModule.testFunction(testGroup.newParameter1, oldParameter2=testGroup.newParameter2)
             """.trimMargin()
         }
-    }
+    } // TODO
+
+    @Nested
+    inner class ModuleToPythonCode {
+
+        @Test
+        fun `should import Enum if the module contains enums`() {
+            val testModule = PythonModule(
+                name = "testModule",
+                enums = listOf(
+                    PythonEnum(name = "TestEnum")
+                )
+            )
+
+            testModule.toPythonCode() shouldBe """
+                |from enum import Enum
+                |
+                |class TestEnum(Enum):
+                |    pass
+                |
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should not import Enum if the module does not contain enums`() {
+            val testModule = PythonModule(name = "testModule")
+
+            testModule.toPythonCode() shouldBe ""
+        }
+    } // TODO
 
     @Nested
     inner class ParameterToPythonCode {
@@ -1104,77 +1229,10 @@ class PythonCodeGeneratorTest {
         }
     }
 
-    @Nested
-    inner class EnumToPythonCode {
 
-        @Test
-        fun `should create valid Python code for enums without instances`() {
-            val testEnum = PythonEnum(name = "TestEnum")
-
-            testEnum.toPythonCode() shouldBe """
-                |class TestEnum(Enum):
-                |    pass
-            """.trimMargin()
-        }
-
-        @Test
-        fun `should create valid Python code for enums with instances`() {
-            val testEnum = PythonEnum(
-                name = "TestEnum",
-                instances = listOf(
-                    PythonEnumInstance(
-                        name = "TestEnumInstance1",
-                        value = PythonString("inst1")
-                    ),
-                    PythonEnumInstance(
-                        name = "TestEnumInstance2",
-                        value = PythonString("inst2")
-                    )
-                )
-            )
-
-            testEnum.toPythonCode() shouldBe """
-                |class TestEnum(Enum):
-                |    TestEnumInstance1 = 'inst1',
-                |    TestEnumInstance2 = 'inst2'
-            """.trimMargin()
-        }
-    }
-
-    @Nested
-    inner class EnumInstanceToPythonCode {
-
-        @Test
-        fun `should create Python code`() {
-            val testEnumInstance = PythonEnumInstance(
-                name = "TestEnumInstance1",
-                value = PythonString("inst1")
-            )
-
-            testEnumInstance.toPythonCode() shouldBe "TestEnumInstance1 = 'inst1'"
-        }
-    }
-
-    @Nested
-    inner class ArgumentToPythonCode {
-
-        @Test
-        fun `should handle positional arguments`() {
-            val testArgument = PythonArgument(value = PythonInt(1))
-
-            testArgument.toPythonCode() shouldBe "1"
-        }
-
-        @Test
-        fun `should handle named arguments`() {
-            val testArgument = PythonArgument(
-                name = "arg",
-                value = PythonInt(1)
-            )
-
-            testArgument.toPythonCode() shouldBe "arg=1"
-        }
-    }
+/* ****************************************************************************************************************
+ * Expressions
+ * ****************************************************************************************************************/
 
     @Nested
     inner class ExpressionToPythonCode {
@@ -1246,6 +1304,11 @@ class PythonCodeGeneratorTest {
         }
     }
 
+
+/* ****************************************************************************************************************
+ * Types
+ * ****************************************************************************************************************/
+
     @Nested
     inner class TypeToPythonCodeOrNull {
 
@@ -1283,6 +1346,32 @@ class PythonCodeGeneratorTest {
         fun `should return null for other types`() {
             val type = PythonStringifiedType("")
             type.toPythonCodeOrNull().shouldBeNull()
+        }
+    }
+
+
+/* ****************************************************************************************************************
+ * Other
+ * ****************************************************************************************************************/
+
+    @Nested
+    inner class ArgumentToPythonCode {
+
+        @Test
+        fun `should handle positional arguments`() {
+            val testArgument = PythonArgument(value = PythonInt(1))
+
+            testArgument.toPythonCode() shouldBe "1"
+        }
+
+        @Test
+        fun `should handle named arguments`() {
+            val testArgument = PythonArgument(
+                name = "arg",
+                value = PythonInt(1)
+            )
+
+            testArgument.toPythonCode() shouldBe "arg=1"
         }
     }
 }

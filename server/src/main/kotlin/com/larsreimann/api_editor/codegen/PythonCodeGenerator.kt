@@ -6,6 +6,7 @@ import com.larsreimann.api_editor.model.PythonParameterAssignment.NAME_ONLY
 import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITION_ONLY
 import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITION_OR_NAME
 import com.larsreimann.api_editor.mutable_model.PythonArgument
+import com.larsreimann.api_editor.mutable_model.PythonAttribute
 import com.larsreimann.api_editor.mutable_model.PythonBoolean
 import com.larsreimann.api_editor.mutable_model.PythonCall
 import com.larsreimann.api_editor.mutable_model.PythonClass
@@ -133,6 +134,9 @@ fun PythonClass.toPythonCode(): String {
         }
         formattedClass += buildAllFunctions(this).joinToString("\n".repeat(2))
     }
+    if (constructor == null && methods.isEmpty()) {
+        formattedClass += "    pass"
+    }
     return formattedClass
 }
 
@@ -145,7 +149,7 @@ private fun buildConstructor(`class`: PythonClass) = buildString {
 
     appendLine("def __init__(${buildParameters(constructor.parameters)}):")
     appendIndented(4) {
-        val boundaries = buildBoundaryChecks(constructor).joinToString("\n")
+        val boundaries = buildBoundaryChecks(constructor.parameters).joinToString("\n")
         if (boundaries.isNotBlank()) {
             append("$boundaries\n\n")
         }
@@ -191,9 +195,7 @@ fun PythonFunction.toPythonCode(): String {
 }
 
 private fun buildAttributeAssignments(pythonClass: PythonClass): List<String> {
-    return pythonClass.attributes.map {
-        "self.${it.name} = ${it.value!!.toPythonCode()}"
-    }
+    return pythonClass.attributes.map { it.toPythonCode() }
 }
 
 private fun buildParameters(parameters: List<PythonParameter>): String {
@@ -244,7 +246,7 @@ private fun buildParameters(parameters: List<PythonParameter>): String {
 }
 
 private fun buildFunctionBody(pythonFunction: PythonFunction): String {
-    var formattedBoundaries = buildBoundaryChecks(pythonFunction).joinToString("\n")
+    var formattedBoundaries = buildBoundaryChecks(pythonFunction.parameters).joinToString("\n")
     if (formattedBoundaries.isNotBlank()) {
         formattedBoundaries = "$formattedBoundaries\n"
     }
@@ -253,14 +255,6 @@ private fun buildFunctionBody(pythonFunction: PythonFunction): String {
         formattedBoundaries +
             "return " + pythonFunction.callToOriginalAPI!!.toPythonCode()
         )
-}
-
-private fun buildBoundaryChecks(pythonConstructor: PythonConstructor): List<String> {
-    return buildBoundaryChecks(pythonConstructor.parameters)
-}
-
-private fun buildBoundaryChecks(pythonFunction: PythonFunction): List<String> {
-    return buildBoundaryChecks(pythonFunction.parameters)
 }
 
 private fun buildBoundaryChecks(parameters: List<PythonParameter>): List<String> {
@@ -346,11 +340,19 @@ private fun buildBoundaryChecks(parameters: List<PythonParameter>): List<String>
     return formattedBoundaries
 }
 
-internal fun PythonArgument.toPythonCode() = buildString {
-    if (name != null) {
-        append("$name=")
+
+/* ********************************************************************************************************************
+ * Declarations
+ * ********************************************************************************************************************/
+
+internal fun PythonAttribute.toPythonCode() = buildString {
+    append("self.$name")
+    type?.toPythonCodeOrNull()?.let {
+        append(": $it")
     }
-    append(value!!.toPythonCode())
+    value?.toPythonCode()?.let {
+        append(" = $it")
+    }
 }
 
 internal fun PythonEnum.toPythonCode() = buildString {
@@ -373,6 +375,23 @@ internal fun PythonEnumInstance.toPythonCode(): String {
     return "$name = ${value!!.toPythonCode()}"
 }
 
+internal fun PythonParameter.toPythonCode() = buildString {
+    val typeStringOrNull = type.toPythonCodeOrNull()
+
+    append(name)
+    if (typeStringOrNull != null) {
+        append(": $typeStringOrNull")
+        defaultValue?.toPythonCode()?.let { append(" = $it") }
+    } else {
+        defaultValue?.toPythonCode()?.let { append("=$it") }
+    }
+}
+
+
+/* ********************************************************************************************************************
+ * Expressions
+ * ********************************************************************************************************************/
+
 internal fun PythonExpression.toPythonCode(): String {
     return when (this) {
         is PythonBoolean -> value.toString().replaceFirstChar { it.uppercase() }
@@ -386,19 +405,10 @@ internal fun PythonExpression.toPythonCode(): String {
     }
 }
 
-internal fun PythonParameter.toPythonCode() = buildString {
-    val typeStringOrNull = type.toPythonCodeOrNull()
 
-    append(name)
-    if (typeStringOrNull != null) {
-        append(": $typeStringOrNull")
-        if (defaultValue != null) {
-            append(" = ${defaultValue!!.toPythonCode()}")
-        }
-    } else if (defaultValue != null) {
-        append("=${defaultValue!!.toPythonCode()}")
-    }
-}
+/* ********************************************************************************************************************
+ * Types
+ * ********************************************************************************************************************/
 
 internal fun PythonType?.toPythonCodeOrNull(): String? {
     return when (this) {
@@ -415,6 +425,23 @@ internal fun PythonType?.toPythonCodeOrNull(): String? {
         null -> null
     }
 }
+
+
+/* ********************************************************************************************************************
+ * Other
+ * ********************************************************************************************************************/
+
+internal fun PythonArgument.toPythonCode() = buildString {
+    if (name != null) {
+        append("$name=")
+    }
+    append(value!!.toPythonCode())
+}
+
+
+/* ********************************************************************************************************************
+ * Util
+ * ********************************************************************************************************************/
 
 private fun StringBuilder.appendIndented(numberOfSpaces: Int, init: StringBuilder.() -> Unit): StringBuilder {
     val stringToIndent = StringBuilder().apply(init).toString()
