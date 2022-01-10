@@ -1,5 +1,6 @@
 package com.larsreimann.api_editor.codegen
 
+import com.larsreimann.api_editor.model.Boundary
 import com.larsreimann.api_editor.model.ComparisonOperator
 import com.larsreimann.api_editor.model.PythonParameterAssignment.IMPLICIT
 import com.larsreimann.api_editor.model.PythonParameterAssignment.NAME_ONLY
@@ -26,6 +27,7 @@ import com.larsreimann.api_editor.mutable_model.PythonString
 import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
 import com.larsreimann.api_editor.mutable_model.PythonStringifiedType
 import com.larsreimann.api_editor.mutable_model.PythonType
+import com.larsreimann.modeling.closest
 
 /**
  * Builds a string containing the formatted module content
@@ -126,7 +128,7 @@ private fun buildSeparators(
 fun PythonClass.toPythonCode(): String {
     var formattedClass = "class $name:\n"
     if (constructor != null) {
-        formattedClass += buildConstructor(this).prependIndent("    ")
+        formattedClass += constructor!!.toPythonCode().prependIndent("    ")
     }
     if (!methods.isEmpty()) {
         if (constructor != null) {
@@ -144,39 +146,6 @@ private fun buildAllFunctions(pythonClass: PythonClass): List<String> {
     return pythonClass.methods.map { it.toPythonCode().prependIndent("    ") }
 }
 
-private fun buildConstructor(`class`: PythonClass) = buildString {
-    val constructor = `class`.constructor ?: return ""
-
-    appendLine("def __init__(${buildParameters(constructor.parameters)}):")
-    appendIndented(4) {
-        val boundaries = buildBoundaryChecks(constructor.parameters).joinToString("\n")
-        if (boundaries.isNotBlank()) {
-            append("$boundaries\n\n")
-        }
-
-        val attributes = buildAttributeAssignments(`class`).joinToString("\n")
-        if (attributes.isNotBlank()) {
-            append("$attributes\n\n")
-        }
-
-        val constructorCall = constructor.buildConstructorCall()
-        if (constructorCall.isNotBlank()) {
-            append(constructorCall)
-        }
-
-        if (attributes.isBlank() && constructorCall.isBlank()) {
-            append("pass")
-        }
-    }
-}
-
-private fun PythonConstructor.buildConstructorCall(): String {
-    return when (callToOriginalAPI) {
-        null -> ""
-        else -> "self.instance = ${callToOriginalAPI.toPythonCode()}"
-    }
-}
-
 /**
  * Builds a string containing the formatted function content
  * @receiver The function whose adapter content should be built
@@ -184,7 +153,7 @@ private fun PythonConstructor.buildConstructorCall(): String {
  */
 fun PythonFunction.toPythonCode(): String {
     val function = """
-      |def $name(${buildParameters(this.parameters)}):
+      |def $name(${this.parameters.toPythonCode()}):
       |${(buildFunctionBody(this)).prependIndent("    ")}
       """.trimMargin()
 
@@ -194,59 +163,8 @@ fun PythonFunction.toPythonCode(): String {
     }
 }
 
-private fun buildAttributeAssignments(pythonClass: PythonClass): List<String> {
-    return pythonClass.attributes.map { it.toPythonCode() }
-}
-
-private fun buildParameters(parameters: List<PythonParameter>): String {
-    var formattedFunctionParameters = ""
-    val implicitParameters: MutableList<String> = ArrayList()
-    val positionOnlyParameters: MutableList<String> = ArrayList()
-    val positionOrNameParameters: MutableList<String> = ArrayList()
-    val nameOnlyParameters: MutableList<String> = ArrayList()
-    parameters.forEach { pythonParameter: PythonParameter ->
-        when (pythonParameter.assignedBy) {
-            IMPLICIT -> implicitParameters.add(pythonParameter.toPythonCode())
-            POSITION_ONLY -> positionOnlyParameters.add(pythonParameter.toPythonCode())
-            POSITION_OR_NAME -> positionOrNameParameters.add(pythonParameter.toPythonCode())
-            NAME_ONLY -> nameOnlyParameters.add(pythonParameter.toPythonCode())
-        }
-    }
-    assert(implicitParameters.size < 2)
-    val hasImplicitParameter = implicitParameters.isNotEmpty()
-    val hasPositionOnlyParameters = positionOnlyParameters.isNotEmpty()
-    val hasPositionOrNameParameters = positionOrNameParameters.isNotEmpty()
-    val hasNameOnlyParameters = nameOnlyParameters.isNotEmpty()
-
-    if (hasImplicitParameter) {
-        formattedFunctionParameters += implicitParameters[0]
-        if (hasPositionOnlyParameters || hasPositionOrNameParameters || hasNameOnlyParameters) {
-            formattedFunctionParameters += ", "
-        }
-    }
-    if (hasPositionOnlyParameters) {
-        formattedFunctionParameters += positionOnlyParameters.joinToString()
-        formattedFunctionParameters += when {
-            hasPositionOrNameParameters -> ", /, "
-            hasNameOnlyParameters -> ", /"
-            else -> ", /"
-        }
-    }
-    if (hasPositionOrNameParameters) {
-        formattedFunctionParameters += positionOrNameParameters.joinToString()
-    }
-    if (hasNameOnlyParameters) {
-        formattedFunctionParameters += when {
-            hasPositionOnlyParameters || hasPositionOrNameParameters -> ", *, "
-            else -> "*, "
-        }
-        formattedFunctionParameters += nameOnlyParameters.joinToString()
-    }
-    return formattedFunctionParameters
-}
-
 private fun buildFunctionBody(pythonFunction: PythonFunction): String {
-    var formattedBoundaries = buildBoundaryChecks(pythonFunction.parameters).joinToString("\n")
+    var formattedBoundaries = "" // pythonFunction.parameters.buildBoundaryChecks().joinToString("\n")
     if (formattedBoundaries.isNotBlank()) {
         formattedBoundaries = "$formattedBoundaries\n"
     }
@@ -255,89 +173,6 @@ private fun buildFunctionBody(pythonFunction: PythonFunction): String {
         formattedBoundaries +
             "return " + pythonFunction.callToOriginalAPI!!.toPythonCode()
         )
-}
-
-private fun buildBoundaryChecks(parameters: List<PythonParameter>): List<String> {
-    val formattedBoundaries: MutableList<String> = ArrayList()
-    parameters
-        .filter { it.boundary != null }
-        .forEach {
-            assert(it.boundary != null)
-            if (it.boundary!!.isDiscrete) {
-                formattedBoundaries.add(
-                    "if not (isinstance(${it.name}, int) or (isinstance(${it.name}, float) and ${it.name}.is_integer())):\n" +
-                        "    raise ValueError('" +
-                        it.name +
-                        " needs to be an integer, but {} was assigned." +
-                        "'.format(" +
-                        it.name +
-                        "))"
-                )
-            }
-            if (it.boundary!!.lowerLimitType !== ComparisonOperator.UNRESTRICTED && it.boundary!!.upperLimitType !== ComparisonOperator.UNRESTRICTED) {
-                formattedBoundaries.add(
-                    "if not ${it.boundary!!.lowerIntervalLimit} ${it.boundary!!.lowerLimitType.operator} ${it.name} ${it.boundary!!.upperLimitType.operator} ${it.boundary!!.upperIntervalLimit}:\n" +
-                        "    raise ValueError('Valid values of " +
-                        it.name +
-                        " must be in " +
-                        it.boundary!!.asInterval() +
-                        ", but {} was assigned." +
-                        "'.format(" +
-                        it.name +
-                        "))"
-                )
-            } else if (it.boundary!!.lowerLimitType === ComparisonOperator.LESS_THAN) {
-                formattedBoundaries.add(
-                    "if not ${it.boundary!!.lowerIntervalLimit} < ${it.name}:\n" +
-                        "    raise ValueError('Valid values of " +
-                        it.name +
-                        " must be greater than " +
-                        it.boundary!!.lowerIntervalLimit +
-                        ", but {} was assigned." +
-                        "'.format(" +
-                        it.name +
-                        "))"
-                )
-            } else if (it.boundary!!.lowerLimitType === ComparisonOperator.LESS_THAN_OR_EQUALS) {
-                formattedBoundaries.add(
-                    "if not ${it.boundary!!.lowerIntervalLimit} <= ${it.name}:\n" +
-                        "    raise ValueError('Valid values of " +
-                        it.name +
-                        " must be greater than or equal to " +
-                        it.boundary!!.lowerIntervalLimit +
-                        ", but {} was assigned." +
-                        "'.format(" +
-                        it.name +
-                        "))"
-                )
-            }
-            if (it.boundary!!.upperLimitType === ComparisonOperator.LESS_THAN) {
-                formattedBoundaries.add(
-                    "if not ${it.name} < ${it.boundary!!.upperIntervalLimit}:\n" +
-                        "    raise ValueError('Valid values of " +
-                        it.name +
-                        " must be less than " +
-                        it.boundary!!.upperIntervalLimit +
-                        ", but {} was assigned." +
-                        "'.format(" +
-                        it.name +
-                        "))"
-                )
-            } else if (it.boundary!!.upperLimitType === ComparisonOperator.LESS_THAN) {
-                formattedBoundaries.add(
-                    "if not ${it.name} <= ${it.boundary!!.upperIntervalLimit}:\n" +
-                        "    raise ValueError('Valid values of " +
-                        it.name +
-                        " must be less than or equal to " +
-                        it.boundary!!.upperIntervalLimit +
-                        ", but {} was assigned." +
-                        "'.format(" +
-                        it.name +
-                        "))"
-                )
-            }
-        }
-    return formattedBoundaries
 }
 
 
@@ -355,9 +190,43 @@ internal fun PythonAttribute.toPythonCode() = buildString {
     }
 }
 
+internal fun PythonConstructor.toPythonCode() = buildString {
+    val parametersString = parameters.toPythonCode()
+    val boundariesString = parameters
+        .mapNotNull { it.boundary?.toPythonCode(it.name) }
+        .joinToString("\n")
+    val attributesString = closest<PythonClass>()
+        ?.attributes
+        ?.joinToString("\n") { it.toPythonCode() }
+        ?: ""
+    val callString = callToOriginalAPI
+        ?.let { "self.instance = ${it.toPythonCode()}" }
+        ?: ""
+
+    appendLine("def __init__($parametersString):")
+    if (boundariesString.isNotBlank()) {
+        appendIndented(boundariesString)
+        if (attributesString.isNotBlank() || callString.isNotBlank()) {
+            append("\n\n")
+        }
+    }
+    if (attributesString.isNotBlank()) {
+        appendIndented(attributesString)
+        if (callString.isNotBlank()) {
+            append("\n\n")
+        }
+    }
+    if (callString.isNotBlank()) {
+        appendIndented(callString)
+    }
+    if (boundariesString.isBlank() && attributesString.isBlank() && callString.isBlank()) {
+        appendIndented("pass")
+    }
+}
+
 internal fun PythonEnum.toPythonCode() = buildString {
     appendLine("class $name(Enum):")
-    appendIndented(4) {
+    appendIndented {
         if (instances.isEmpty()) {
             append("pass")
         } else {
@@ -373,6 +242,41 @@ internal fun PythonEnum.toPythonCode() = buildString {
 
 internal fun PythonEnumInstance.toPythonCode(): String {
     return "$name = ${value!!.toPythonCode()}"
+}
+
+internal fun List<PythonParameter>.toPythonCode(): String {
+    val assignedByToParameter = this@toPythonCode.groupBy { it.assignedBy }
+    val implicitParametersString = assignedByToParameter[IMPLICIT]
+        ?.joinToString { it.toPythonCode() }
+        ?: ""
+    var positionOnlyParametersString = assignedByToParameter[POSITION_ONLY]
+        ?.joinToString { it.toPythonCode() }
+        ?: ""
+    val positionOrNameParametersString = assignedByToParameter[POSITION_OR_NAME]
+        ?.joinToString { it.toPythonCode() }
+        ?: ""
+    var nameOnlyParametersString = assignedByToParameter[NAME_ONLY]
+        ?.joinToString { it.toPythonCode() }
+        ?: ""
+
+    if (positionOnlyParametersString.isNotBlank()) {
+        positionOnlyParametersString = "$positionOnlyParametersString, /"
+    }
+
+    if (nameOnlyParametersString.isNotBlank()) {
+        nameOnlyParametersString = "*, $nameOnlyParametersString"
+    }
+
+    val parameterStrings = listOf(
+        implicitParametersString,
+        positionOnlyParametersString,
+        positionOrNameParametersString,
+        nameOnlyParametersString
+    )
+
+    return parameterStrings
+        .filter { it.isNotBlank() }
+        .joinToString()
 }
 
 internal fun PythonParameter.toPythonCode() = buildString {
@@ -438,14 +342,45 @@ internal fun PythonArgument.toPythonCode() = buildString {
     append(value!!.toPythonCode())
 }
 
+internal fun Boundary.toPythonCode(parameterName: String) = buildString {
+    if (isDiscrete) {
+        appendLine("if not (isinstance($parameterName, int) or (isinstance($parameterName, float) and $parameterName.is_integer())):")
+        appendIndented("raise ValueError('$parameterName' needs to be an integer, but {} was assigned.'.format($parameterName))")
+        appendLine()
+    }
+
+    if (lowerLimitType != ComparisonOperator.UNRESTRICTED && upperLimitType != ComparisonOperator.UNRESTRICTED) {
+        appendLine("if not $lowerIntervalLimit ${lowerLimitType.operator} $parameterName ${upperLimitType.operator} ${upperIntervalLimit}:")
+        appendIndented("raise ValueError('Valid values of $parameterName must be in ${asInterval()}, but {} was assigned.'.format($parameterName))")
+    } else if (lowerLimitType == ComparisonOperator.LESS_THAN) {
+        appendLine("if not $lowerIntervalLimit < ${parameterName}:")
+        appendIndented("raise ValueError('Valid values of $parameterName must be greater than $lowerIntervalLimit, but {} was assigned.'.format($parameterName))")
+    } else if (lowerLimitType == ComparisonOperator.LESS_THAN_OR_EQUALS) {
+        appendLine("if not $lowerIntervalLimit <= ${parameterName}:")
+        appendIndented("raise ValueError('Valid values of $parameterName must be greater than or equal to $lowerIntervalLimit, but {} was assigned.'.format($parameterName))")
+    } else if (upperLimitType == ComparisonOperator.LESS_THAN) {
+        appendLine("if not $parameterName < ${upperIntervalLimit}:")
+        appendIndented("raise ValueError('Valid values of $parameterName must be less than $upperIntervalLimit, but {} was assigned.'.format($parameterName))")
+    } else if (upperLimitType == ComparisonOperator.LESS_THAN_OR_EQUALS) {
+        appendLine("if not $parameterName <= ${upperIntervalLimit}:")
+        appendIndented("raise ValueError('Valid values of $parameterName must be less than or equal to $upperIntervalLimit, but {} was assigned.'.format($parameterName))")
+    }
+}
+
 
 /* ********************************************************************************************************************
  * Util
  * ********************************************************************************************************************/
 
-private fun StringBuilder.appendIndented(numberOfSpaces: Int, init: StringBuilder.() -> Unit): StringBuilder {
+private fun StringBuilder.appendIndented(init: StringBuilder.() -> Unit): StringBuilder {
     val stringToIndent = StringBuilder().apply(init).toString()
-    val indent = " ".repeat(numberOfSpaces)
+    val indent = " ".repeat(4)
     append(stringToIndent.prependIndent(indent))
+    return this
+}
+
+private fun StringBuilder.appendIndented(value: String): StringBuilder {
+    val indent = " ".repeat(4)
+    append(value.prependIndent(indent))
     return this
 }
