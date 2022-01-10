@@ -90,7 +90,7 @@ class ParameterAnnotationProcessorTest {
         attributes.shouldHaveSize(1)
         attributes[0] shouldBe attributes[0].copy(
             name = "testParameter",
-            value = "true"
+            value = "True"
         )
     }
 
@@ -158,7 +158,7 @@ class ParameterAnnotationProcessorTest {
         testPackage.processParameterAnnotations()
 
         testParameter.assignedBy shouldBe PythonParameterAssignment.NAME_ONLY
-        testParameter.defaultValue shouldBe "true"
+        testParameter.defaultValue shouldBe "True"
     }
 
     @Test

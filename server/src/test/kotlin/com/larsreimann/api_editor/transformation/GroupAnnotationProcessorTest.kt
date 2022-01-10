@@ -90,7 +90,7 @@ class GroupAnnotationProcessorTest {
         val secondArgumentValue = secondArgument.value.shouldBeInstanceOf<PythonMemberAccess>()
         secondArgumentValue.receiver.asClue {
             it.shouldBeInstanceOf<PythonReference>()
-            it.declaration?.name shouldBe "TestGroup"
+            it.declaration?.name shouldBe "testGroup"
         }
         secondArgumentValue.member.asClue {
             it.shouldNotBeNull()
@@ -102,7 +102,7 @@ class GroupAnnotationProcessorTest {
         val thirdArgumentValue = thirdArgument.value.shouldBeInstanceOf<PythonMemberAccess>()
         thirdArgumentValue.receiver.asClue {
             it.shouldBeInstanceOf<PythonReference>()
-            it.declaration?.name shouldBe "TestGroup"
+            it.declaration?.name shouldBe "testGroup"
         }
         thirdArgumentValue.member.asClue {
             it.shouldNotBeNull()

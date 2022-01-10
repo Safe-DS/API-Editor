@@ -69,7 +69,7 @@ private fun PythonFunction.processGroupAnnotations(module: PythonModule) {
                 val value = it.value
                 if (value is PythonReference && value.declaration?.name in annotation.parameters) {
                     it.value = PythonMemberAccess(
-                        receiver = PythonReference(declaration = groupedParameterClass),
+                        receiver = PythonReference(declaration = groupedParameter),
                         member = PythonReference(PythonAttribute(name = value.declaration!!.name))
                     )
                 }
