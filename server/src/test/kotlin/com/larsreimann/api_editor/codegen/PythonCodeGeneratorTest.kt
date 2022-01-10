@@ -1,7 +1,9 @@
 package com.larsreimann.api_editor.codegen
 
 import com.larsreimann.api_editor.model.Boundary
-import com.larsreimann.api_editor.model.ComparisonOperator
+import com.larsreimann.api_editor.model.ComparisonOperator.LESS_THAN
+import com.larsreimann.api_editor.model.ComparisonOperator.LESS_THAN_OR_EQUALS
+import com.larsreimann.api_editor.model.ComparisonOperator.UNRESTRICTED
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.mutable_model.PythonArgument
 import com.larsreimann.api_editor.mutable_model.PythonAttribute
@@ -129,9 +131,9 @@ class PythonCodeGeneratorTest {
                     boundary = Boundary(
                         isDiscrete = false,
                         lowerIntervalLimit = 0.0,
-                        lowerLimitType = ComparisonOperator.LESS_THAN_OR_EQUALS,
+                        lowerLimitType = LESS_THAN_OR_EQUALS,
                         upperIntervalLimit = 1.0,
-                        upperLimitType = ComparisonOperator.LESS_THAN_OR_EQUALS
+                        upperLimitType = LESS_THAN_OR_EQUALS
                     )
                 ),
                 PythonParameter(
@@ -139,9 +141,9 @@ class PythonCodeGeneratorTest {
                     boundary = Boundary(
                         isDiscrete = false,
                         lowerIntervalLimit = 0.0,
-                        lowerLimitType = ComparisonOperator.LESS_THAN,
+                        lowerLimitType = LESS_THAN,
                         upperIntervalLimit = 1.0,
-                        upperLimitType = ComparisonOperator.UNRESTRICTED
+                        upperLimitType = UNRESTRICTED
                     )
                 )
             )
@@ -365,9 +367,9 @@ class PythonCodeGeneratorTest {
                     boundary = Boundary(
                         isDiscrete = false,
                         lowerIntervalLimit = 0.0,
-                        lowerLimitType = ComparisonOperator.LESS_THAN_OR_EQUALS,
+                        lowerLimitType = LESS_THAN_OR_EQUALS,
                         upperIntervalLimit = 1.0,
-                        upperLimitType = ComparisonOperator.LESS_THAN_OR_EQUALS
+                        upperLimitType = LESS_THAN_OR_EQUALS
                     )
                 ),
                 PythonParameter(
@@ -375,9 +377,9 @@ class PythonCodeGeneratorTest {
                     boundary = Boundary(
                         isDiscrete = false,
                         lowerIntervalLimit = 0.0,
-                        lowerLimitType = ComparisonOperator.LESS_THAN,
+                        lowerLimitType = LESS_THAN,
                         upperIntervalLimit = 1.0,
-                        upperLimitType = ComparisonOperator.UNRESTRICTED
+                        upperLimitType = UNRESTRICTED
                     )
                 )
             )
@@ -719,5 +721,161 @@ class PythonCodeGeneratorTest {
     @Nested
     inner class BoundaryToPythonCode {
 
-    } // TODO
+        @Test
+        fun `should add an extra check for discrete boundaries`() {
+            val boundary = Boundary(
+                isDiscrete = true,
+                lowerIntervalLimit = 0.0,
+                lowerLimitType = UNRESTRICTED,
+                upperIntervalLimit = 1.0,
+                upperLimitType = UNRESTRICTED
+            )
+
+            boundary.toPythonCode("testParameter") shouldBe """
+                |if not (isinstance(testParameter, int) or (isinstance(testParameter, float) and testParameter.is_integer())):
+                |    raise ValueError('testParameter' needs to be an integer, but {} was assigned.'.format(testParameter))
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should handle continuous boundaries (UNRESTRICTED, UNRESTRICTED)`() {
+            val boundary = Boundary(
+                isDiscrete = false,
+                lowerIntervalLimit = 0.0,
+                lowerLimitType = UNRESTRICTED,
+                upperIntervalLimit = 1.0,
+                upperLimitType = UNRESTRICTED
+            )
+
+            boundary.toPythonCode("testParameter") shouldBe ""
+        }
+
+        @Test
+        fun `should handle continuous boundaries (UNRESTRICTED, LESS_THAN)`() {
+            val boundary = Boundary(
+                isDiscrete = false,
+                lowerIntervalLimit = 0.0,
+                lowerLimitType = UNRESTRICTED,
+                upperIntervalLimit = 1.0,
+                upperLimitType = LESS_THAN
+            )
+
+            boundary.toPythonCode("testParameter") shouldBe """
+                |if not testParameter < 1.0:
+                |    raise ValueError('Valid values of testParameter must be less than 1.0, but {} was assigned.'.format(testParameter))
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should handle continuous boundaries (UNRESTRICTED, LESS_THAN_OR_EQUALS)`() {
+            val boundary = Boundary(
+                isDiscrete = false,
+                lowerIntervalLimit = 0.0,
+                lowerLimitType = UNRESTRICTED,
+                upperIntervalLimit = 1.0,
+                upperLimitType = LESS_THAN_OR_EQUALS
+            )
+
+            boundary.toPythonCode("testParameter") shouldBe """
+                |if not testParameter <= 1.0:
+                |    raise ValueError('Valid values of testParameter must be less than or equal to 1.0, but {} was assigned.'.format(testParameter))
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should handle continuous boundaries (LESS_THAN, UNRESTRICTED)`() {
+            val boundary = Boundary(
+                isDiscrete = false,
+                lowerIntervalLimit = 0.0,
+                lowerLimitType = LESS_THAN,
+                upperIntervalLimit = 1.0,
+                upperLimitType = UNRESTRICTED
+            )
+
+            boundary.toPythonCode("testParameter") shouldBe """
+                |if not 0.0 < testParameter:
+                |    raise ValueError('Valid values of testParameter must be greater than 0.0, but {} was assigned.'.format(testParameter))
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should handle continuous boundaries (LESS_THAN, LESS_THAN)`() {
+            val boundary = Boundary(
+                isDiscrete = false,
+                lowerIntervalLimit = 0.0,
+                lowerLimitType = LESS_THAN,
+                upperIntervalLimit = 1.0,
+                upperLimitType = LESS_THAN
+            )
+
+            boundary.toPythonCode("testParameter") shouldBe """
+                |if not 0.0 < testParameter < 1.0:
+                |    raise ValueError('Valid values of testParameter must be in (0.0, 1.0), but {} was assigned.'.format(testParameter))
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should handle continuous boundaries (LESS_THAN, LESS_THAN_OR_EQUALS)`() {
+            val boundary = Boundary(
+                isDiscrete = false,
+                lowerIntervalLimit = 0.0,
+                lowerLimitType = LESS_THAN,
+                upperIntervalLimit = 1.0,
+                upperLimitType = LESS_THAN_OR_EQUALS
+            )
+
+            boundary.toPythonCode("testParameter") shouldBe """
+                |if not 0.0 < testParameter <= 1.0:
+                |    raise ValueError('Valid values of testParameter must be in (0.0, 1.0], but {} was assigned.'.format(testParameter))
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should handle continuous boundaries (LESS_THAN_OR_EQUALS, UNRESTRICTED)`() {
+            val boundary = Boundary(
+                isDiscrete = false,
+                lowerIntervalLimit = 0.0,
+                lowerLimitType = LESS_THAN_OR_EQUALS,
+                upperIntervalLimit = 1.0,
+                upperLimitType = UNRESTRICTED
+            )
+
+            boundary.toPythonCode("testParameter") shouldBe """
+                |if not 0.0 <= testParameter:
+                |    raise ValueError('Valid values of testParameter must be greater than or equal to 0.0, but {} was assigned.'.format(testParameter))
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should handle continuous boundaries (LESS_THAN_OR_EQUALS, LESS_THAN)`() {
+            val boundary = Boundary(
+                isDiscrete = false,
+                lowerIntervalLimit = 0.0,
+                lowerLimitType = LESS_THAN_OR_EQUALS,
+                upperIntervalLimit = 1.0,
+                upperLimitType = LESS_THAN
+            )
+
+            boundary.toPythonCode("testParameter") shouldBe """
+                |if not 0.0 <= testParameter < 1.0:
+                |    raise ValueError('Valid values of testParameter must be in [0.0, 1.0), but {} was assigned.'.format(testParameter))
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should handle continuous boundaries (LESS_THAN_OR_EQUALS, LESS_THAN_OR_EQUALS)`() {
+            val boundary = Boundary(
+                isDiscrete = false,
+                lowerIntervalLimit = 0.0,
+                lowerLimitType = LESS_THAN_OR_EQUALS,
+                upperIntervalLimit = 1.0,
+                upperLimitType = LESS_THAN_OR_EQUALS
+            )
+
+            boundary.toPythonCode("testParameter") shouldBe """
+                |if not 0.0 <= testParameter <= 1.0:
+                |    raise ValueError('Valid values of testParameter must be in [0.0, 1.0], but {} was assigned.'.format(testParameter))
+            """.trimMargin()
+        }
+    }
 }
