@@ -167,7 +167,7 @@ class PythonAttribute(
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
 ) : PythonDeclaration() {
 
-    var type by CrossReference(type)
+    var type by ContainmentReference(type)
 
     override fun children() = sequence {
         type?.let { yield(it) }
@@ -184,7 +184,7 @@ class PythonParameter(
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
 ) : PythonDeclaration() {
 
-    var type by CrossReference(type)
+    var type by ContainmentReference(type)
 
     override fun children() = sequence {
         type?.let { yield(it) }
@@ -203,7 +203,7 @@ class PythonResult(
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
 ) : PythonDeclaration() {
 
-    var type by CrossReference(type)
+    var type by ContainmentReference(type)
 
     override fun children() = sequence {
         type?.let { yield(it) }
@@ -252,10 +252,6 @@ class PythonMemberAccess(
 
 class PythonReference(declaration: PythonDeclaration) : PythonExpression() {
     var declaration by CrossReference(declaration)
-
-    override fun children() = sequence {
-        declaration?.let { yield(it) }
-    }
 }
 
 sealed class PythonLiteral : PythonExpression()
@@ -273,10 +269,6 @@ sealed class PythonType : PythonAstNode()
 
 class PythonNamedType(declaration: PythonDeclaration) : PythonType() {
     var declaration by CrossReference(declaration)
-
-    override fun children() = sequence {
-        declaration?.let { yield(it) }
-    }
 }
 
 data class PythonStringifiedType(val type: String) : PythonType()
