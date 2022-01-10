@@ -15,6 +15,7 @@ import com.larsreimann.api_editor.mutable_model.PythonModule
 import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonReference
+import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
 import io.kotest.assertions.asClue
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldHaveSize
@@ -38,7 +39,7 @@ class ParameterAnnotationProcessorTest {
             name = "testMethod",
             parameters = listOf(testParameter),
             callToOriginalAPI = PythonCall(
-                receiver = "testModule.TestClass.testMethod",
+                receiver = PythonStringifiedExpression("testModule.TestClass.testMethod"),
                 arguments = listOf(
                     PythonArgument(
                         value = PythonReference(testParameter)
@@ -90,7 +91,7 @@ class ParameterAnnotationProcessorTest {
         attributes.shouldHaveSize(1)
         attributes[0].asClue {
             it.name shouldBe "testParameter"
-            it.value shouldBe "True"
+            it.value shouldBe PythonStringifiedExpression("True")
         }
     }
 
@@ -158,7 +159,7 @@ class ParameterAnnotationProcessorTest {
         testPackage.processParameterAnnotations()
 
         testParameter.assignedBy shouldBe PythonParameterAssignment.NAME_ONLY
-        testParameter.defaultValue shouldBe "True"
+        testParameter.defaultValue shouldBe PythonStringifiedExpression("True")
     }
 
     @Test
@@ -174,7 +175,7 @@ class ParameterAnnotationProcessorTest {
 
     @Test
     fun `should process RequiredAnnotations`() {
-        testParameter.defaultValue = "true"
+        testParameter.defaultValue = PythonStringifiedExpression("true")
         testParameter.annotations += RequiredAnnotation
 
         testPackage.processParameterAnnotations()
@@ -185,7 +186,7 @@ class ParameterAnnotationProcessorTest {
 
     @Test
     fun `should remove RequiredAnnotations`() {
-        testParameter.defaultValue = "true"
+        testParameter.defaultValue = PythonStringifiedExpression("true")
         testParameter.annotations += RequiredAnnotation
 
         testPackage.processParameterAnnotations()

@@ -8,8 +8,10 @@ import com.larsreimann.api_editor.mutable_model.PythonConstructor
 import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.api_editor.mutable_model.PythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
 import com.larsreimann.modeling.ModelNode
 import com.larsreimann.modeling.descendants
+import java.lang.IllegalStateException
 
 /**
  * Removes modules that don't contain declarations.
@@ -61,18 +63,31 @@ private fun PythonClass.createConstructor() {
             if (this.originalClass != null) {
                 this.constructor = PythonConstructor(
                     parameters = emptyList(),
-                    callToOriginalAPI = PythonCall(receiver = this.originalClass!!.qualifiedName)
+                    callToOriginalAPI = PythonCall(
+                        receiver = PythonStringifiedExpression(this.originalClass!!.qualifiedName)
+                    )
                 )
             }
         }
         else -> {
-            this.constructor = PythonConstructor(
-                parameters = constructorMethod.parameters.toList(),
-                callToOriginalAPI = PythonCall(
-                    receiver = constructorMethod.callToOriginalAPI!!.receiver.removeSuffix(".__init__"),
-                    arguments = constructorMethod.callToOriginalAPI!!.arguments.toList()
+            constructorMethod.callToOriginalAPI?.let { callToOriginalAPI ->
+                val newReceiver = when (val receiver = callToOriginalAPI.receiver) {
+                    is PythonStringifiedExpression -> PythonStringifiedExpression(
+                        receiver.string.removeSuffix(".__init__")
+                    )
+                    null -> throw IllegalStateException("Receiver of call is null: $callToOriginalAPI")
+                    else -> receiver
+                }
+
+                this.constructor = PythonConstructor(
+                    parameters = constructorMethod.parameters.toList(),
+                    callToOriginalAPI = PythonCall(
+                        receiver = newReceiver,
+                        arguments = callToOriginalAPI.arguments.toList()
+                    )
                 )
-            )
+            }
+
 
             constructorMethod.release()
         }
@@ -96,7 +111,7 @@ private fun PythonClass.createAttributesForParametersOfConstructor() {
             this.attributes += PythonAttribute(
                 name = it.name,
                 type = it.type,
-                value = it.name,
+                value = PythonStringifiedExpression(it.name),
                 isPublic = true,
                 description = it.description,
                 boundary = it.boundary

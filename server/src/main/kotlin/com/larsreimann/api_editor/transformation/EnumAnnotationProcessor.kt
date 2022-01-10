@@ -11,6 +11,7 @@ import com.larsreimann.api_editor.mutable_model.PythonNamedType
 import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonReference
+import com.larsreimann.api_editor.mutable_model.PythonString
 import com.larsreimann.api_editor.transformation.processing_exceptions.ConflictingEnumException
 import com.larsreimann.modeling.closest
 import com.larsreimann.modeling.descendants
@@ -39,7 +40,7 @@ private fun PythonParameter.processEnumAnnotations(module: PythonModule) {
                 annotation.pairs.map { enumPair ->
                     PythonEnumInstance(
                         enumPair.instanceName,
-                        enumPair.stringValue
+                        PythonString(enumPair.stringValue)
                     )
                 }
             )
@@ -78,11 +79,12 @@ private fun hasConflictingEnums(
     moduleEnums: List<PythonEnum>,
     enumToCheck: PythonEnum
 ): Boolean {
-    return moduleEnums.any {
-        (enumToCheck.name == it.name) &&
+    return moduleEnums.any { enum ->
+        (enumToCheck.name == enum.name) &&
             (
-                enumToCheck.instances.size != it.instances.size ||
-                    !enumToCheck.instances.containsAll(it.instances)
+                enumToCheck.instances.size != enum.instances.size ||
+                    !enumToCheck.instances.mapNotNull { (it.value as? PythonString)?.value}
+                        .containsAll(enum.instances.mapNotNull { (it.value as? PythonString)?.value})
                 )
     }
 }

@@ -11,6 +11,7 @@ import com.larsreimann.api_editor.mutable_model.PythonModule
 import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonReference
+import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
 import io.kotest.assertions.asClue
 import io.kotest.matchers.collections.exist
 import io.kotest.matchers.collections.shouldBeEmpty
@@ -60,7 +61,7 @@ class PostprocessorTest {
                     name = "__init__",
                     parameters = listOf(testConstructorParameter),
                     callToOriginalAPI = PythonCall(
-                        receiver = "testModule.TestClass.__init__",
+                        receiver = PythonStringifiedExpression("testModule.TestClass.__init__"),
                         arguments = listOf(
                             PythonArgument(value = PythonReference(testConstructorParameter))
                         )
@@ -195,7 +196,7 @@ class PostprocessorTest {
                     it.parameters.shouldBeEmpty()
 
                     val callToOriginalAPI = it.callToOriginalAPI.shouldNotBeNull()
-                    callToOriginalAPI.receiver shouldBe "testModule.TestClass"
+                    callToOriginalAPI.receiver shouldBe PythonStringifiedExpression("testModule.TestClass")
                     callToOriginalAPI.arguments.shouldBeEmpty()
                 }
         }
@@ -224,7 +225,7 @@ class PostprocessorTest {
                 .callToOriginalAPI
                 .asClue {
                     it.shouldNotBeNull()
-                    it.receiver shouldBe "testModule.TestClass"
+                    it.receiver shouldBe PythonStringifiedExpression("testModule.TestClass")
                     it.arguments.shouldHaveSize(1)
 
                     val argument = it.arguments[0]

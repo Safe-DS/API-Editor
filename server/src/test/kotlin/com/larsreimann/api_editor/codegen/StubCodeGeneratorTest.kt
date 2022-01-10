@@ -11,6 +11,8 @@ import com.larsreimann.api_editor.mutable_model.PythonModule
 import com.larsreimann.api_editor.mutable_model.PythonNamedType
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonResult
+import com.larsreimann.api_editor.mutable_model.PythonString
+import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
 import com.larsreimann.api_editor.mutable_model.PythonStringifiedType
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import de.unibonn.simpleml.emf.annotationUsesOrEmpty
@@ -91,7 +93,7 @@ class StubCodeGeneratorTest {
                             PythonParameter(
                                 name = "testParameter",
                                 type = PythonStringifiedType("int"),
-                                defaultValue = "10"
+                                defaultValue = PythonStringifiedExpression("10")
                             )
                         ),
                         results = listOf(
@@ -761,7 +763,7 @@ class StubCodeGeneratorTest {
         fun `should store default value`() {
             val pythonParameter = PythonParameter(
                 name = "testParameter",
-                defaultValue = "None"
+                defaultValue = PythonStringifiedExpression("None")
             )
 
             pythonParameter
@@ -1139,54 +1141,80 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should convert blank strings to null`() {
-            " ".toSmlExpression().shouldBeNull()
+            PythonStringifiedExpression(" ")
+                .toSmlExpression()
+                .shouldBeNull()
         }
 
         @Test
         fun `should convert False to a false boolean literal`() {
-            val smlBoolean = "False".toSmlExpression().shouldBeInstanceOf<SmlBoolean>()
+            val smlBoolean = PythonStringifiedExpression("False")
+                .toSmlExpression()
+                .shouldBeInstanceOf<SmlBoolean>()
             smlBoolean.isTrue.shouldBeFalse()
         }
 
         @Test
         fun `should convert True to a true boolean literal`() {
-            val smlBoolean = "True".toSmlExpression().shouldBeInstanceOf<SmlBoolean>()
+            val smlBoolean = PythonStringifiedExpression("True")
+                .toSmlExpression()
+                .shouldBeInstanceOf<SmlBoolean>()
             smlBoolean.isTrue.shouldBeTrue()
         }
 
         @Test
         fun `should convert None to a null literal`() {
-            "None".toSmlExpression().shouldBeInstanceOf<SmlNull>()
+            PythonStringifiedExpression("None")
+                .toSmlExpression()
+                .shouldBeInstanceOf<SmlNull>()
         }
 
         @Test
         fun `should convert ints to integer literals`() {
-            val smlInt = "123".toSmlExpression().shouldBeInstanceOf<SmlInt>()
+            val smlInt = PythonStringifiedExpression("123")
+                .toSmlExpression()
+                .shouldBeInstanceOf<SmlInt>()
             smlInt.value shouldBe 123
         }
 
         @Test
         fun `should convert floats to float literals`() {
-            val smlFloat = "123.45".toSmlExpression().shouldBeInstanceOf<SmlFloat>()
+            val smlFloat = PythonStringifiedExpression("123.45")
+                .toSmlExpression()
+                .shouldBeInstanceOf<SmlFloat>()
             smlFloat.value shouldBe 123.45
         }
 
         @Test
         fun `should convert single-quoted strings to string literals`() {
-            val smlString = "'string'".toSmlExpression().shouldBeInstanceOf<SmlString>()
+            val smlString = PythonStringifiedExpression("'string'")
+                .toSmlExpression()
+                .shouldBeInstanceOf<SmlString>()
             smlString.value shouldBe "string"
         }
 
         @Test
         fun `should convert double-quoted strings to string literals`() {
-            val smlString = "\"string\"".toSmlExpression().shouldBeInstanceOf<SmlString>()
+            val smlString = PythonStringifiedExpression("\"string\"")
+                .toSmlExpression()
+                .shouldBeInstanceOf<SmlString>()
             smlString.value shouldBe "string"
         }
 
         @Test
-        fun `should convert other values to '###invalid###' strings`() {
-            val smlString = "unknown".toSmlExpression().shouldBeInstanceOf<SmlString>()
+        fun `should convert other stringified expressions to '###invalid###' strings`() {
+            val smlString = PythonStringifiedExpression("unknown")
+                .toSmlExpression()
+                .shouldBeInstanceOf<SmlString>()
             smlString.value shouldBe "###invalid###unknown###"
+        }
+
+        @Test
+        fun `should convert other expressions to '###invalid###' strings`() {
+            val smlString = PythonString("unknown")
+                .toSmlExpression()
+                .shouldBeInstanceOf<SmlString>()
+            smlString.value shouldBe "###invalid###PythonString(value=unknown)###"
         }
     }
 }

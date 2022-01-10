@@ -11,6 +11,7 @@ import com.larsreimann.api_editor.mutable_model.PythonCall
 import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonConstructor
 import com.larsreimann.api_editor.mutable_model.PythonEnum
+import com.larsreimann.api_editor.mutable_model.PythonEnumInstance
 import com.larsreimann.api_editor.mutable_model.PythonExpression
 import com.larsreimann.api_editor.mutable_model.PythonFloat
 import com.larsreimann.api_editor.mutable_model.PythonFunction
@@ -21,6 +22,7 @@ import com.larsreimann.api_editor.mutable_model.PythonNamedType
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonReference
 import com.larsreimann.api_editor.mutable_model.PythonString
+import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
 import com.larsreimann.api_editor.mutable_model.PythonStringifiedType
 import com.larsreimann.api_editor.mutable_model.PythonType
 
@@ -54,9 +56,10 @@ fun PythonModule.toPythonCode(): String {
 private fun buildNamespace(pythonModule: PythonModule): String {
     val importedModules = HashSet<String>()
     pythonModule.functions.forEach { pythonFunction: PythonFunction ->
-        importedModules.add(
-            buildParentDeclarationName(pythonFunction.callToOriginalAPI!!.receiver)
-        )
+        val receiver = pythonFunction.callToOriginalAPI?.receiver
+        if (receiver is PythonStringifiedExpression) {
+            importedModules.add(buildParentDeclarationName(receiver.string))
+        }
     }
     pythonModule.classes.forEach { pythonClass: PythonClass ->
         if (pythonClass.originalClass != null) {
@@ -357,7 +360,7 @@ internal fun PythonEnum.toPythonCode() = buildString {
             append("pass")
         } else {
             instances.forEach {
-                append("${it.name} = \"${it.value}\"")
+                append(it.toPythonCode())
                 if (it != instances.last()) {
                     appendLine(",")
                 }
@@ -366,15 +369,20 @@ internal fun PythonEnum.toPythonCode() = buildString {
     }
 }
 
+internal fun PythonEnumInstance.toPythonCode(): String {
+    return "$name = ${value!!.toPythonCode()}"
+}
+
 internal fun PythonExpression.toPythonCode(): String {
     return when (this) {
         is PythonBoolean -> value.toString().replaceFirstChar { it.uppercase() }
-        is PythonCall -> "$receiver(${arguments.joinToString { it.toPythonCode() }})"
+        is PythonCall -> "${receiver!!.toPythonCode()}(${arguments.joinToString { it.toPythonCode() }})"
         is PythonFloat -> value.toString()
         is PythonInt -> value.toString()
         is PythonMemberAccess -> "${receiver!!.toPythonCode()}.${member!!.toPythonCode()}"
         is PythonReference -> declaration!!.name
         is PythonString -> "'$value'"
+        is PythonStringifiedExpression -> string
     }
 }
 
@@ -385,10 +393,10 @@ internal fun PythonParameter.toPythonCode() = buildString {
     if (typeStringOrNull != null) {
         append(": $typeStringOrNull")
         if (defaultValue != null) {
-            append(" = $defaultValue")
+            append(" = ${defaultValue!!.toPythonCode()}")
         }
     } else if (defaultValue != null) {
-        append("=$defaultValue")
+        append("=${defaultValue!!.toPythonCode()}")
     }
 }
 
@@ -396,7 +404,7 @@ internal fun PythonType?.toPythonCodeOrNull(): String? {
     return when (this) {
         is PythonNamedType -> this.declaration?.name
         is PythonStringifiedType -> {
-            when (this.type) {
+            when (this.string) {
                 "bool" -> "bool"
                 "float" -> "float"
                 "int" -> "int"

@@ -5,11 +5,13 @@ import com.larsreimann.api_editor.mutable_model.PythonAttribute
 import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonEnum
 import com.larsreimann.api_editor.mutable_model.PythonEnumInstance
+import com.larsreimann.api_editor.mutable_model.PythonExpression
 import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonModule
 import com.larsreimann.api_editor.mutable_model.PythonNamedType
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonResult
+import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
 import com.larsreimann.api_editor.mutable_model.PythonStringifiedType
 import com.larsreimann.api_editor.mutable_model.PythonType
 import de.unibonn.simpleml.constant.SmlFileExtension
@@ -269,7 +271,7 @@ internal fun PythonType?.toSmlType(): SmlAbstractType {
             )
         }
         is PythonStringifiedType -> {
-            when (this.type) {
+            when (this.string) {
                 "bool" -> createSmlNamedType(
                     declaration = createSmlClass("Boolean")
                 )
@@ -297,16 +299,20 @@ internal fun PythonType?.toSmlType(): SmlAbstractType {
 
 // Value conversions ---------------------------------------------------------------------------------------------------
 
-internal fun String.toSmlExpression(): SmlAbstractExpression? {
+internal fun PythonExpression.toSmlExpression(): SmlAbstractExpression? {
+    if (this !is PythonStringifiedExpression) {
+        return createSmlString("###invalid###$this###")
+    }
+
     return when {
-        isBlank() -> null
-        this == "False" -> createSmlBoolean(false)
-        this == "True" -> createSmlBoolean(true)
-        this == "None" -> createSmlNull()
-        isIntLiteral() -> createSmlInt(toInt())
-        isFloatLiteral() -> createSmlFloat(toDouble())
-        isStringLiteral() -> createSmlString(substring(1, length - 1))
-        else -> createSmlString("###invalid###$this###")
+        string.isBlank() -> null
+        string == "False" -> createSmlBoolean(false)
+        string == "True" -> createSmlBoolean(true)
+        string == "None" -> createSmlNull()
+        string.isIntLiteral() -> createSmlInt(string.toInt())
+        string.isFloatLiteral() -> createSmlFloat(string.toDouble())
+        string.isStringLiteral() -> createSmlString(string.substring(1, string.length - 1))
+        else -> createSmlString("###invalid###$string###")
     }
 }
 

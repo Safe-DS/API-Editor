@@ -24,6 +24,7 @@ import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonReference
 import com.larsreimann.api_editor.mutable_model.PythonResult
 import com.larsreimann.api_editor.mutable_model.PythonString
+import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
 import com.larsreimann.api_editor.mutable_model.PythonStringifiedType
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
@@ -36,7 +37,7 @@ class PythonCodeGeneratorTest {
         // given
         val testMethodParameter = PythonParameter(
             name = "only-param",
-            defaultValue = "'defaultValue'",
+            defaultValue = PythonStringifiedExpression("'defaultValue'"),
             assignedBy = PythonParameterAssignment.NAME_ONLY
         )
         val testClass = PythonClass(
@@ -52,7 +53,7 @@ class PythonCodeGeneratorTest {
                         testMethodParameter
                     ),
                     callToOriginalAPI = PythonCall(
-                        receiver = "self.instance.test-class-function",
+                        receiver = PythonStringifiedExpression("self.instance.test-class-function"),
                         arguments = listOf(
                             PythonArgument(
                                 value = PythonReference(testMethodParameter)
@@ -68,7 +69,7 @@ class PythonCodeGeneratorTest {
         val testFunction1Parameter3 = PythonParameter(name = "param3")
         val testFunction2Parameter = PythonParameter(
             name = "test-parameter",
-            defaultValue = "42",
+            defaultValue = PythonStringifiedExpression("42"),
             assignedBy = PythonParameterAssignment.NAME_ONLY
         )
         val testModule = PythonModule(
@@ -89,7 +90,7 @@ class PythonCodeGeneratorTest {
                         )
                     ),
                     callToOriginalAPI = PythonCall(
-                        receiver = "test-module.function_module",
+                        receiver = PythonStringifiedExpression("test-module.function_module"),
                         arguments = listOf(
                             PythonArgument(
                                 name = "param1",
@@ -119,7 +120,7 @@ class PythonCodeGeneratorTest {
                         )
                     ),
                     callToOriginalAPI = PythonCall(
-                        receiver = "test-module.test-function",
+                        receiver = PythonStringifiedExpression("test-module.test-function"),
                         arguments = listOf(
                             PythonArgument(
                                 name = "test-parameter",
@@ -162,7 +163,7 @@ class PythonCodeGeneratorTest {
         val testFunction1Parameter3 = PythonParameter(name = "param3")
         val testFunction2Parameter = PythonParameter(
             "test-parameter",
-            defaultValue = "42",
+            defaultValue = PythonStringifiedExpression("42"),
             assignedBy = PythonParameterAssignment.NAME_ONLY
         )
         val testModule = PythonModule(
@@ -183,7 +184,7 @@ class PythonCodeGeneratorTest {
                         )
                     ),
                     callToOriginalAPI = PythonCall(
-                        receiver = "test-module.function_module",
+                        receiver = PythonStringifiedExpression("test-module.function_module"),
                         arguments = listOf(
                             PythonArgument(
                                 name = "param1",
@@ -213,7 +214,7 @@ class PythonCodeGeneratorTest {
                         )
                     ),
                     callToOriginalAPI = PythonCall(
-                        receiver = "test-module.test-function",
+                        receiver = PythonStringifiedExpression("test-module.test-function"),
                         arguments = listOf(
                             PythonArgument(
                                 name = "test-parameter",
@@ -250,7 +251,9 @@ class PythonCodeGeneratorTest {
         val testClass = PythonClass(
             name = "test-class",
             constructor = PythonConstructor(
-                callToOriginalAPI = PythonCall(receiver = "test-module.test-class")
+                callToOriginalAPI = PythonCall(
+                    receiver = PythonStringifiedExpression("test-module.test-class")
+                )
             ),
             originalClass = OriginalPythonClass("test-module.test-class")
         )
@@ -326,7 +329,7 @@ class PythonCodeGeneratorTest {
         // given
         val testParameter1 = PythonParameter(
             name = "param1",
-            defaultValue = "5",
+            defaultValue = PythonStringifiedExpression("5"),
             assignedBy = PythonParameterAssignment.NAME_ONLY
         )
         testParameter1.boundary = Boundary(
@@ -338,7 +341,7 @@ class PythonCodeGeneratorTest {
         )
         val testParameter2 = PythonParameter(
             "param2",
-            defaultValue = "5",
+            defaultValue = PythonStringifiedExpression("5"),
             assignedBy = PythonParameterAssignment.NAME_ONLY
         )
         testParameter2.boundary = Boundary(
@@ -350,7 +353,7 @@ class PythonCodeGeneratorTest {
         )
         val testParameter3 = PythonParameter(
             "param3",
-            defaultValue = "5",
+            defaultValue = PythonStringifiedExpression("5"),
             assignedBy = PythonParameterAssignment.NAME_ONLY
         )
         testParameter3.boundary = Boundary(
@@ -364,7 +367,7 @@ class PythonCodeGeneratorTest {
             name = "function_module",
             parameters = mutableListOf(testParameter1, testParameter2, testParameter3),
             callToOriginalAPI = PythonCall(
-                receiver = "test-module.function_module",
+                receiver = PythonStringifiedExpression("test-module.function_module"),
                 arguments = listOf(
                     PythonArgument(
                         name = "param1",
@@ -415,7 +418,7 @@ class PythonCodeGeneratorTest {
         // given
         val testParameter = PythonParameter(
             name = "param1",
-            defaultValue = "5",
+            defaultValue = PythonStringifiedExpression("5"),
             assignedBy = PythonParameterAssignment.NAME_ONLY
         )
         testParameter.boundary = Boundary(
@@ -429,7 +432,7 @@ class PythonCodeGeneratorTest {
             name = "function_module",
             parameters = listOf(testParameter),
             callToOriginalAPI = PythonCall(
-                receiver = "test-module.function_module",
+                receiver = PythonStringifiedExpression("test-module.function_module"),
                 arguments = listOf(
                     PythonArgument(
                         name = "param1",
@@ -467,7 +470,7 @@ class PythonCodeGeneratorTest {
             name = "TestClass",
             constructor = PythonConstructor(
                 callToOriginalAPI = PythonCall(
-                    receiver = "testModule.TestClass"
+                    receiver = PythonStringifiedExpression("testModule.TestClass")
                 )
             )
         )
@@ -484,7 +487,7 @@ class PythonCodeGeneratorTest {
         // given
         val testParameter = PythonParameter(
             name = "only-param",
-            defaultValue = "'defaultValue'",
+            defaultValue = PythonStringifiedExpression("'defaultValue'"),
             assignedBy = PythonParameterAssignment.NAME_ONLY
         )
         val testClass = PythonClass(
@@ -498,7 +501,7 @@ class PythonCodeGeneratorTest {
                     testParameter
                 ),
                 callToOriginalAPI = PythonCall(
-                    receiver = "test-module.test-class",
+                    receiver = PythonStringifiedExpression("test-module.test-class"),
                     arguments = listOf(
                         PythonArgument(
                             value = PythonReference(testParameter)
@@ -546,7 +549,7 @@ class PythonCodeGeneratorTest {
                         testMethod1Parameter
                     ),
                     callToOriginalAPI = PythonCall(
-                        receiver = "self.instance.test-class-function1",
+                        receiver = PythonStringifiedExpression("self.instance.test-class-function1"),
                         arguments = listOf(
                             PythonArgument(value = PythonReference(testMethod1Parameter))
                         )
@@ -562,7 +565,7 @@ class PythonCodeGeneratorTest {
                         testMethod2Parameter
                     ),
                     callToOriginalAPI = PythonCall(
-                        receiver = "self.instance.test-class-function2",
+                        receiver = PythonStringifiedExpression("self.instance.test-class-function2"),
                         arguments = listOf(
                             PythonArgument(value = PythonReference(testMethod2Parameter))
                         )
@@ -603,7 +606,7 @@ class PythonCodeGeneratorTest {
                 testParameter2
             ),
             callToOriginalAPI = PythonCall(
-                receiver = "self.instance.test-function",
+                receiver = PythonStringifiedExpression("self.instance.test-function"),
                 arguments = listOf(
                     PythonArgument(value = PythonReference(testParameter1)),
                     PythonArgument(
@@ -635,7 +638,9 @@ class PythonCodeGeneratorTest {
         // given
         val testFunction = PythonFunction(
             name = "test-function",
-            callToOriginalAPI = PythonCall(receiver = "test-module.test-function")
+            callToOriginalAPI = PythonCall(
+                receiver = PythonStringifiedExpression("test-module.test-function")
+            )
         )
 
         // when
@@ -654,7 +659,7 @@ class PythonCodeGeneratorTest {
         // given
         val testParameter = PythonParameter(
             name = "only-param",
-            defaultValue = "13",
+            defaultValue = PythonStringifiedExpression("13"),
             assignedBy = PythonParameterAssignment.NAME_ONLY
         )
         val testFunction = PythonFunction(
@@ -663,7 +668,7 @@ class PythonCodeGeneratorTest {
                 testParameter
             ),
             callToOriginalAPI = PythonCall(
-                receiver = "test-module.test-function",
+                receiver = PythonStringifiedExpression("test-module.test-function"),
                 arguments = listOf(
                     PythonArgument(value = PythonReference(testParameter))
                 )
@@ -686,7 +691,7 @@ class PythonCodeGeneratorTest {
         // given
         val testParameter = PythonParameter(
             name = "only-param",
-            defaultValue = "False",
+            defaultValue = PythonStringifiedExpression("False"),
             assignedBy = PythonParameterAssignment.NAME_ONLY
         )
         val testFunction = PythonFunction(
@@ -695,7 +700,7 @@ class PythonCodeGeneratorTest {
                 testParameter
             ),
             callToOriginalAPI = PythonCall(
-                receiver = "test-module.test-function",
+                receiver = PythonStringifiedExpression("test-module.test-function"),
                 arguments = listOf(
                     PythonArgument(value = PythonReference(testParameter))
                 )
@@ -723,7 +728,7 @@ class PythonCodeGeneratorTest {
                 testParameter
             ),
             callToOriginalAPI = PythonCall(
-                receiver = "test-module.test-function",
+                receiver = PythonStringifiedExpression("test-module.test-function"),
                 arguments = listOf(
                     PythonArgument(
                         name = "only-param",
@@ -757,7 +762,7 @@ class PythonCodeGeneratorTest {
                 testParameter2
             ),
             callToOriginalAPI = PythonCall(
-                receiver = "test-module.test-function",
+                receiver = PythonStringifiedExpression("test-module.test-function"),
                 arguments = listOf(
                     PythonArgument(value = PythonReference(testParameter1)),
                     PythonArgument(value = PythonReference(testParameter2))
@@ -790,7 +795,7 @@ class PythonCodeGeneratorTest {
                 testParameter3
             ),
             callToOriginalAPI = PythonCall(
-                receiver = "test-module.test-function",
+                receiver = PythonStringifiedExpression("test-module.test-function"),
                 arguments = listOf(
                     PythonArgument(value = PythonReference(testParameter1)),
                     PythonArgument(value = PythonReference(testParameter2)),
@@ -825,7 +830,7 @@ class PythonCodeGeneratorTest {
                 testParameter2
             ),
             callToOriginalAPI = PythonCall(
-                receiver = "test-module.test-function",
+                receiver = PythonStringifiedExpression("test-module.test-function"),
                 arguments = listOf(
                     PythonArgument(value = PythonReference(testParameter1)),
                     PythonArgument(
@@ -859,7 +864,7 @@ class PythonCodeGeneratorTest {
                 testParameter2
             ),
             callToOriginalAPI = PythonCall(
-                receiver = "test-module.test-function",
+                receiver = PythonStringifiedExpression("test-module.test-function"),
                 arguments = listOf(
                     PythonArgument(
                         value = PythonReference(testParameter1)
@@ -899,7 +904,7 @@ class PythonCodeGeneratorTest {
                 testParameter3
             ),
             callToOriginalAPI = PythonCall(
-                receiver = "test-module.test-function",
+                receiver = PythonStringifiedExpression("test-module.test-function"),
                 arguments = listOf(
                     PythonArgument(value = PythonReference(testParameter1)),
                     PythonArgument(value = PythonReference(testParameter2)),
@@ -934,7 +939,7 @@ class PythonCodeGeneratorTest {
                     decorators = mutableListOf("staticmethod"),
                     parameters = listOf(testParameter),
                     callToOriginalAPI = PythonCall(
-                        receiver = "test-module.test-class.test-class-function1",
+                        receiver = PythonStringifiedExpression("test-module.test-class.test-class-function1"),
                         arguments = listOf(
                             PythonArgument(value = PythonReference(testParameter))
                         )
@@ -998,7 +1003,7 @@ class PythonCodeGeneratorTest {
                     testParameter
                 ),
                 callToOriginalAPI = PythonCall(
-                    receiver = "testModule.testFunction",
+                    receiver = PythonStringifiedExpression("testModule.testFunction"),
                     arguments = listOf(
                         PythonArgument(
                             value = PythonMemberAccess(
@@ -1025,7 +1030,7 @@ class PythonCodeGeneratorTest {
                     testParameter
                 ),
                 callToOriginalAPI = PythonCall(
-                    receiver = "testModule.testFunction",
+                    receiver = PythonStringifiedExpression("testModule.testFunction"),
                     arguments = listOf(
                         PythonArgument(
                             value = PythonMemberAccess(
@@ -1081,7 +1086,7 @@ class PythonCodeGeneratorTest {
         fun `should handle parameters without type but with default value`() {
             val testParameter = PythonParameter(
                 name = "param",
-                defaultValue = "1"
+                defaultValue = PythonStringifiedExpression("1")
             )
 
             testParameter.toPythonCode() shouldBe "param=1"
@@ -1092,7 +1097,7 @@ class PythonCodeGeneratorTest {
             val testParameter = PythonParameter(
                 name = "param",
                 type = PythonStringifiedType("int"),
-                defaultValue = "1"
+                defaultValue = PythonStringifiedExpression("1")
             )
 
             testParameter.toPythonCode() shouldBe "param: int = 1"
@@ -1119,20 +1124,34 @@ class PythonCodeGeneratorTest {
                 instances = listOf(
                     PythonEnumInstance(
                         name = "TestEnumInstance1",
-                        value = "inst1"
+                        value = PythonString("inst1")
                     ),
                     PythonEnumInstance(
                         name = "TestEnumInstance2",
-                        value = "inst2"
+                        value = PythonString("inst2")
                     )
                 )
             )
 
             testEnum.toPythonCode() shouldBe """
                 |class TestEnum(Enum):
-                |    TestEnumInstance1 = "inst1",
-                |    TestEnumInstance2 = "inst2"
+                |    TestEnumInstance1 = 'inst1',
+                |    TestEnumInstance2 = 'inst2'
             """.trimMargin()
+        }
+    }
+
+    @Nested
+    inner class EnumInstanceToPythonCode {
+
+        @Test
+        fun `should create Python code`() {
+            val testEnumInstance = PythonEnumInstance(
+                name = "TestEnumInstance1",
+                value = PythonString("inst1")
+            )
+
+            testEnumInstance.toPythonCode() shouldBe "TestEnumInstance1 = 'inst1'"
         }
     }
 
@@ -1175,7 +1194,7 @@ class PythonCodeGeneratorTest {
         @Test
         fun `should handle calls`() {
             val expression = PythonCall(
-                receiver = "function",
+                receiver = PythonStringifiedExpression("function"),
                 arguments = listOf(
                     PythonArgument(value = PythonInt(1)),
                     PythonArgument(
@@ -1218,6 +1237,12 @@ class PythonCodeGeneratorTest {
         fun `should handle strings`() {
             val expression = PythonString("string")
             expression.toPythonCode() shouldBe "'string'"
+        }
+
+        @Test
+        fun `should handle stringified expression`() {
+            val expression = PythonStringifiedExpression("1")
+            expression.toPythonCode() shouldBe "1"
         }
     }
 

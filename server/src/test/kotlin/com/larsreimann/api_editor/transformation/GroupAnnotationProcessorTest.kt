@@ -13,6 +13,7 @@ import com.larsreimann.api_editor.mutable_model.PythonNamedType
 import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonReference
+import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
 import com.larsreimann.api_editor.transformation.processing_exceptions.ConflictingGroupException
 import io.kotest.assertions.asClue
 import io.kotest.assertions.throwables.shouldThrowExactly
@@ -53,7 +54,7 @@ class GroupAnnotationProcessorTest {
                 )
             ),
             callToOriginalAPI = PythonCall(
-                receiver = "testModule.testFunction",
+                receiver = PythonStringifiedExpression("testModule.testFunction"),
                 arguments = listOf(
                     PythonArgument(value = PythonReference(testParameter1)),
                     PythonArgument(value = PythonReference(testParameter2)),

@@ -9,6 +9,7 @@ import com.larsreimann.api_editor.mutable_model.PythonModule
 import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonReference
+import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
 import io.kotest.assertions.asClue
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContain
@@ -42,7 +43,7 @@ class PreprocessorTest {
         )
         testOptionalParameter = PythonParameter(
             name = "testOptionalParameter",
-            defaultValue = "'value'",
+            defaultValue = PythonStringifiedExpression("'value'"),
             assignedBy = PythonParameterAssignment.POSITION_OR_NAME
         )
         testGlobalFunction = PythonFunction(
@@ -162,7 +163,7 @@ class PreprocessorTest {
             testPackage.addOriginalDeclarations()
 
             val callToOriginalAPI = testGlobalFunction.callToOriginalAPI.shouldNotBeNull()
-            callToOriginalAPI.receiver shouldBe "testModule.testGlobalFunction"
+            callToOriginalAPI.receiver shouldBe PythonStringifiedExpression("testModule.testGlobalFunction")
 
             val arguments = callToOriginalAPI.arguments
             arguments.shouldHaveSize(2)
@@ -185,8 +186,7 @@ class PreprocessorTest {
             testPackage.addOriginalDeclarations()
 
             val callToOriginalAPI = testMethod.callToOriginalAPI.shouldNotBeNull()
-            callToOriginalAPI.receiver shouldBe "self.instance.testMethod"
-
+            callToOriginalAPI.receiver shouldBe PythonStringifiedExpression("self.instance.testMethod")
             callToOriginalAPI.arguments.shouldHaveSize(0)
         }
     }
