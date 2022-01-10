@@ -186,7 +186,7 @@ class AnnotationValidator(private val annotatedPythonPackage: SerializablePython
             this["CalledAfter"] = mutableSetOf("CalledAfter", "Group", "Move", "Rename")
             this["Constant"] = mutableSetOf()
             this["Enum"] = mutableSetOf("Attribute", "Group", "Optional", "Rename", "Required")
-            this["Group"] = mutableSetOf("CalledAfter", "Group", "Move", "Rename")
+            this["Group"] = mutableSetOf("Boundary", "CalledAfter", "Enum", "Group", "Move", "Optional", "Rename", "Required")
             this["Move"] = mutableSetOf("CalledAfter", "Group", "Rename")
             this["Optional"] = mutableSetOf("Boundary", "Enum", "Group", "Rename")
             this["Rename"] = mutableSetOf(

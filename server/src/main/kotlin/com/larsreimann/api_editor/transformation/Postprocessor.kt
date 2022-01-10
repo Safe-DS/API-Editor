@@ -52,10 +52,12 @@ fun PythonPackage.extractConstructors() {
 private fun PythonClass.createConstructor() {
     when (val constructorMethod = this.methods.firstOrNull { it.name == "__init__" }) {
         null -> {
-            this.constructor = PythonConstructor(
-                parameters = emptyList(),
-                callToOriginalAPI = PythonCall(receiver = this.originalClass!!.qualifiedName)
-            )
+            if (this.originalClass != null) {
+                this.constructor = PythonConstructor(
+                    parameters = emptyList(),
+                    callToOriginalAPI = PythonCall(receiver = this.originalClass!!.qualifiedName)
+                )
+            }
         }
         else -> {
             this.constructor = PythonConstructor(
@@ -87,7 +89,7 @@ private fun PythonClass.createAttributesForParametersOfConstructor() {
         ?.forEach {
             this.attributes += PythonAttribute(
                 name = it.name,
-                value = it.defaultValue,
+                value = it.name,
                 isPublic = true,
                 typeInDocs = it.typeInDocs,
                 description = it.description,

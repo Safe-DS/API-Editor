@@ -56,9 +56,12 @@ private fun buildNamespace(pythonModule: PythonModule): String {
         )
     }
     pythonModule.classes.forEach { pythonClass: PythonClass ->
-        importedModules.add(
-            buildParentDeclarationName(pythonClass.originalClass!!.qualifiedName)
-        )
+        if (pythonClass.originalClass != null) {
+            importedModules.add(
+                buildParentDeclarationName(pythonClass.originalClass!!.qualifiedName)
+            )
+        }
+
     }
     var result = importedModules.joinToString("\n") { "import $it" }
     if (pythonModule.enums.isNotEmpty()) {
@@ -152,7 +155,10 @@ private fun buildConstructor(`class`: PythonClass) = buildString {
 }
 
 private fun PythonConstructor.buildConstructorCall(): String {
-    return "self.instance = ${callToOriginalAPI!!.toPythonCode()}"
+    return when (callToOriginalAPI) {
+        null -> ""
+        else -> "self.instance = ${callToOriginalAPI.toPythonCode()}"
+    }
 }
 
 /**
@@ -238,16 +244,9 @@ private fun buildFunctionBody(pythonFunction: PythonFunction): String {
         formattedBoundaries = "$formattedBoundaries\n"
     }
 
-    if (!pythonFunction.isMethod() || pythonFunction.isStaticMethod()) {
-        return (
-            formattedBoundaries +
-                pythonFunction.callToOriginalAPI!!.toPythonCode()
-            )
-    }
-
     return (
         formattedBoundaries +
-            pythonFunction.callToOriginalAPI!!.toPythonCode()
+            "return " + pythonFunction.callToOriginalAPI!!.toPythonCode()
         )
 }
 
