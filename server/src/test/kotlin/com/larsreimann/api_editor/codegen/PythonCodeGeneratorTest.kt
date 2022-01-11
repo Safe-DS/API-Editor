@@ -5,7 +5,6 @@ import com.larsreimann.api_editor.model.ComparisonOperator.LESS_THAN
 import com.larsreimann.api_editor.model.ComparisonOperator.LESS_THAN_OR_EQUALS
 import com.larsreimann.api_editor.model.ComparisonOperator.UNRESTRICTED
 import com.larsreimann.api_editor.model.PythonParameterAssignment
-import com.larsreimann.api_editor.mutable_model.OriginalPythonClass
 import com.larsreimann.api_editor.mutable_model.PythonArgument
 import com.larsreimann.api_editor.mutable_model.PythonAttribute
 import com.larsreimann.api_editor.mutable_model.PythonBoolean
@@ -597,13 +596,21 @@ class PythonCodeGeneratorTest {
                     name = "TestClass",
                     methods = listOf(
                         PythonFunction(name = "testMethod1"),
-                        PythonFunction(name = "testMethod2")
+                        PythonFunction(
+                            name = "testMethodWithOriginalMethod",
+                            decorators = mutableListOf("staticmethod"),
+                            callToOriginalAPI = PythonCall(
+                                receiver = PythonStringifiedExpression("originalModule.testMethod")
+                            )
+                        )
                     )
                 ),
                 PythonClass(
-                    name = "TestClassWithOriginalClass",
-                    originalClass = OriginalPythonClass(
-                        qualifiedName = "originalModule.TestClassWithOriginalClass"
+                    name = "TestClassWithConstructor",
+                    constructor = PythonConstructor(
+                        callToOriginalAPI = PythonCall(
+                            receiver = PythonStringifiedExpression("originalModule.TestClass")
+                        )
                     )
                 )
             )
@@ -612,7 +619,7 @@ class PythonCodeGeneratorTest {
                 PythonFunction(
                     name = "testFunctionWithOriginalFunction",
                     callToOriginalAPI = PythonCall(
-                        receiver = PythonStringifiedExpression("originalModule.testFunctionWithOriginalFunction")
+                        receiver = PythonStringifiedExpression("originalModule2.testFunction")
                     )
                 )
             )
@@ -643,7 +650,7 @@ class PythonCodeGeneratorTest {
             testModule.functions += testFunctions
 
             testModule.toPythonCode() shouldBe """
-                |import originalModule
+                |import originalModule2
                 |
                 |from __future__ import annotations
                 |
@@ -651,7 +658,7 @@ class PythonCodeGeneratorTest {
                 |    pass
                 |
                 |def testFunctionWithOriginalFunction():
-                |    return originalModule.testFunctionWithOriginalFunction()
+                |    return originalModule2.testFunction()
                 |
             """.trimMargin()
         }
@@ -662,7 +669,7 @@ class PythonCodeGeneratorTest {
             testModule.enums += testEnum
 
             testModule.toPythonCode() shouldBe """
-                |import originalModule
+                |import originalModule2
                 |
                 |from __future__ import annotations
                 |from enum import Enum
@@ -671,7 +678,7 @@ class PythonCodeGeneratorTest {
                 |    pass
                 |
                 |def testFunctionWithOriginalFunction():
-                |    return originalModule.testFunctionWithOriginalFunction()
+                |    return originalModule2.testFunction()
                 |
                 |class TestEnum(Enum):
                 |    pass
@@ -684,17 +691,21 @@ class PythonCodeGeneratorTest {
             testModule.classes += testClasses
 
             testModule.toPythonCode() shouldBe """
+                |import originalModule
+                |
                 |from __future__ import annotations
                 |
                 |class TestClass:
                 |    def testMethod1():
                 |        pass
                 |
-                |    def testMethod2():
-                |        pass
+                |    @staticmethod
+                |    def testMethodWithOriginalMethod():
+                |        return originalModule.testMethod()
                 |
-                |class TestClassWithOriginalClass:
-                |    pass
+                |class TestClassWithConstructor:
+                |    def __init__():
+                |        self.instance = originalModule.TestClass()
                 |
             """.trimMargin()
         }
@@ -705,6 +716,8 @@ class PythonCodeGeneratorTest {
             testModule.enums += testEnum
 
             testModule.toPythonCode() shouldBe """
+                |import originalModule
+                |
                 |from __future__ import annotations
                 |from enum import Enum
                 |
@@ -712,11 +725,13 @@ class PythonCodeGeneratorTest {
                 |    def testMethod1():
                 |        pass
                 |
-                |    def testMethod2():
-                |        pass
+                |    @staticmethod
+                |    def testMethodWithOriginalMethod():
+                |        return originalModule.testMethod()
                 |
-                |class TestClassWithOriginalClass:
-                |    pass
+                |class TestClassWithConstructor:
+                |    def __init__():
+                |        self.instance = originalModule.TestClass()
                 |
                 |class TestEnum(Enum):
                 |    pass
@@ -731,6 +746,7 @@ class PythonCodeGeneratorTest {
 
             testModule.toPythonCode() shouldBe """
                 |import originalModule
+                |import originalModule2
                 |
                 |from __future__ import annotations
                 |
@@ -738,17 +754,19 @@ class PythonCodeGeneratorTest {
                 |    def testMethod1():
                 |        pass
                 |
-                |    def testMethod2():
-                |        pass
+                |    @staticmethod
+                |    def testMethodWithOriginalMethod():
+                |        return originalModule.testMethod()
                 |
-                |class TestClassWithOriginalClass:
-                |    pass
+                |class TestClassWithConstructor:
+                |    def __init__():
+                |        self.instance = originalModule.TestClass()
                 |
                 |def testFunction():
                 |    pass
                 |
                 |def testFunctionWithOriginalFunction():
-                |    return originalModule.testFunctionWithOriginalFunction()
+                |    return originalModule2.testFunction()
                 |
             """.trimMargin()
         }
@@ -761,6 +779,7 @@ class PythonCodeGeneratorTest {
 
             testModule.toPythonCode() shouldBe """
                 |import originalModule
+                |import originalModule2
                 |
                 |from __future__ import annotations
                 |from enum import Enum
@@ -769,17 +788,19 @@ class PythonCodeGeneratorTest {
                 |    def testMethod1():
                 |        pass
                 |
-                |    def testMethod2():
-                |        pass
+                |    @staticmethod
+                |    def testMethodWithOriginalMethod():
+                |        return originalModule.testMethod()
                 |
-                |class TestClassWithOriginalClass:
-                |    pass
+                |class TestClassWithConstructor:
+                |    def __init__():
+                |        self.instance = originalModule.TestClass()
                 |
                 |def testFunction():
                 |    pass
                 |
                 |def testFunctionWithOriginalFunction():
-                |    return originalModule.testFunctionWithOriginalFunction()
+                |    return originalModule2.testFunction()
                 |
                 |class TestEnum(Enum):
                 |    pass

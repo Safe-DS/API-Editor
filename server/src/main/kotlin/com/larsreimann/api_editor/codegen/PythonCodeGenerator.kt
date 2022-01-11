@@ -14,6 +14,7 @@ import com.larsreimann.api_editor.mutable_model.PythonBoolean
 import com.larsreimann.api_editor.mutable_model.PythonCall
 import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonConstructor
+import com.larsreimann.api_editor.mutable_model.PythonDeclaration
 import com.larsreimann.api_editor.mutable_model.PythonEnum
 import com.larsreimann.api_editor.mutable_model.PythonEnumInstance
 import com.larsreimann.api_editor.mutable_model.PythonExpression
@@ -30,6 +31,7 @@ import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
 import com.larsreimann.api_editor.mutable_model.PythonStringifiedType
 import com.larsreimann.api_editor.mutable_model.PythonType
 import com.larsreimann.modeling.closest
+import com.larsreimann.modeling.descendants
 
 /* ********************************************************************************************************************
  * Declarations
@@ -51,13 +53,29 @@ fun PythonModule.toPythonCode(): String {
 }
 
 private fun PythonModule.importsToPythonCode() = buildString {
-    val imports = functions
-        .mapNotNull {
-            when (val receiver = it.callToOriginalAPI?.receiver) {
-                is PythonStringifiedExpression -> receiver.string.parentQualifiedName()
-                else -> null
+    val imports = buildSet<String> {
+
+        // Functions
+        this += descendants { it !is PythonDeclaration }
+            .filterIsInstance<PythonFunction>()
+            .filter { !it.isMethod() || it.isStaticMethod() }
+            .mapNotNull {
+                when (val receiver = it.callToOriginalAPI?.receiver) {
+                    is PythonStringifiedExpression -> receiver.string.parentQualifiedName()
+                    else -> null
+                }
             }
-        }.toSet()
+
+        // Constructors
+        this += descendants()
+            .filterIsInstance<PythonConstructor>()
+            .mapNotNull {
+                when (val receiver = it.callToOriginalAPI?.receiver) {
+                    is PythonStringifiedExpression -> receiver.string.parentQualifiedName()
+                    else -> null
+                }
+            }
+    }
 
     val importsString = imports.joinToString("\n") { "import $it" }
     var fromImportsString = "from __future__ import annotations"
