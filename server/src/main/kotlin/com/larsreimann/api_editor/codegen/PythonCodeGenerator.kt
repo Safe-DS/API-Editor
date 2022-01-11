@@ -95,9 +95,7 @@ internal fun PythonAttribute.toPythonCode() = buildString {
 
 internal fun PythonClass.toPythonCode() = buildString {
     val constructorString = constructor?.toPythonCode() ?: ""
-    val methodsString = methods.joinToString("\n\n") {
-        it.toPythonCode().prependIndent("    ")
-    }
+    val methodsString = methods.joinToString("\n\n") { it.toPythonCode() }
 
     appendLine("class $name:")
     if (constructorString.isNotBlank()) {
@@ -107,7 +105,7 @@ internal fun PythonClass.toPythonCode() = buildString {
         }
     }
     if (methodsString.isNotBlank()) {
-        append(methodsString)
+        appendIndented(methodsString)
     }
     if (constructorString.isBlank() && methodsString.isBlank()) {
         appendIndented("pass")
@@ -321,15 +319,24 @@ internal fun Boundary.toPythonCode(parameterName: String) = buildString {
  * Util
  * ********************************************************************************************************************/
 
+private fun String.prependIndentUnlessBlank(indent: String = "    "): String {
+    return lineSequence()
+        .map {
+            when {
+                it.isBlank() -> it.trim()
+                else -> it.prependIndent(indent)
+            }
+        }
+        .joinToString("\n")
+}
+
 private fun StringBuilder.appendIndented(init: StringBuilder.() -> Unit): StringBuilder {
     val stringToIndent = StringBuilder().apply(init).toString()
-    val indent = " ".repeat(4)
-    append(stringToIndent.prependIndent(indent))
+    append(stringToIndent.prependIndentUnlessBlank())
     return this
 }
 
 private fun StringBuilder.appendIndented(value: String): StringBuilder {
-    val indent = " ".repeat(4)
-    append(value.prependIndent(indent))
+    append(value.prependIndentUnlessBlank())
     return this
 }

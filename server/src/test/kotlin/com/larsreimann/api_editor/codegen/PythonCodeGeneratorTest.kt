@@ -85,7 +85,7 @@ class PythonCodeGeneratorTest {
     inner class ClassToPythonCode {
 
         @Test
-        fun `should create valid code without constructor and methods`() {
+        fun `should create valid code for classes without constructor and methods`() {
             val testClass = PythonClass(
                 name = "TestClass"
             )
@@ -97,7 +97,7 @@ class PythonCodeGeneratorTest {
         }
 
         @Test
-        fun `should create valid code without constructor but with methods`() {
+        fun `should create valid code for classes without constructor but with methods`() {
             val testClass = PythonClass(
                 name = "TestClass",
                 methods = listOf(
@@ -117,7 +117,7 @@ class PythonCodeGeneratorTest {
         }
 
         @Test
-        fun `should create valid code with constructor but without methods`() {
+        fun `should create valid code for classes with constructor but without methods`() {
             val testClass = PythonClass(
                 name = "TestClass",
                 constructor = PythonConstructor()
@@ -131,7 +131,7 @@ class PythonCodeGeneratorTest {
         }
 
         @Test
-        fun `should create valid code with constructor and methods`() {
+        fun `should create valid code for classes with constructor and methods`() {
             val testClass = PythonClass(
                 name = "TestClass",
                 constructor = PythonConstructor(),
@@ -151,6 +151,32 @@ class PythonCodeGeneratorTest {
                     |
                     |    def testFunction2():
                     |        pass
+                """.trimMargin()
+        }
+
+        @Test
+        fun `should not indent blank lines`() {
+            val testClass = PythonClass(
+                name = "TestClass",
+                constructor = PythonConstructor(
+                    callToOriginalAPI = PythonCall(
+                        receiver = PythonStringifiedExpression("testModule.TestClass")
+                    )
+                ),
+                attributes = listOf(
+                    PythonAttribute(
+                        name = "testAttribute",
+                        value = PythonInt(1)
+                    )
+                )
+            )
+
+            testClass.toPythonCode() shouldBe """
+                    |class TestClass:
+                    |    def __init__():
+                    |        self.testAttribute = 1
+                    |
+                    |        self.instance = testModule.TestClass()
                 """.trimMargin()
         }
     }
