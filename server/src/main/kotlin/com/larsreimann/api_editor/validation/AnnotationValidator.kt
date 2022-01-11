@@ -181,14 +181,14 @@ class AnnotationValidator(private val annotatedPythonPackage: SerializablePython
 
     companion object {
         private var possibleCombinations = buildMap<String, Set<String>> {
-            this["Attribute"] = mutableSetOf("Boundary", "Enum", "Rename")
+            this["Attribute"] = mutableSetOf("Boundary", "Rename")
             this["Boundary"] = mutableSetOf("Attribute", "Group", "Optional", "Rename", "Required")
             this["CalledAfter"] = mutableSetOf("CalledAfter", "Group", "Move", "Rename")
             this["Constant"] = mutableSetOf()
-            this["Enum"] = mutableSetOf("Attribute", "Group", "Optional", "Rename", "Required")
+            this["Enum"] = mutableSetOf("Group", "Rename", "Required")
             this["Group"] = mutableSetOf("Boundary", "CalledAfter", "Enum", "Group", "Move", "Optional", "Rename", "Required")
             this["Move"] = mutableSetOf("CalledAfter", "Group", "Rename")
-            this["Optional"] = mutableSetOf("Boundary", "Enum", "Group", "Rename")
+            this["Optional"] = mutableSetOf("Boundary", "Group", "Rename")
             this["Rename"] = mutableSetOf(
                 "Attribute",
                 "Boundary",
