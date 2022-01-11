@@ -28,6 +28,7 @@ class ConstructorPythonCodeGeneratorTest {
     private lateinit var testParameter1: PythonParameter
     private lateinit var testParameter2: PythonParameter
     private lateinit var testParameter3: PythonParameter
+    private lateinit var testParameterSelf: PythonParameter
     private lateinit var testClass: PythonClass
     private lateinit var testFunction: PythonFunction
     private lateinit var testModule: PythonModule
@@ -35,18 +36,22 @@ class ConstructorPythonCodeGeneratorTest {
 
     @BeforeEach
     fun reset() {
+        testParameterSelf = PythonParameter(
+            name = "self"
+        )
         testParameter1 = PythonParameter(
-            name = "testParameter1",
+            name = "testParameter1"
         )
         testParameter2 = PythonParameter(
-            name = "testParameter2",
+            name = "testParameter2"
         )
         testParameter3 = PythonParameter(
-            name = "testParameter3",
+            name = "testParameter3"
         )
         testFunction = PythonFunction(
             name = "__init__",
             parameters = mutableListOf(
+                testParameterSelf,
                 testParameter1,
                 testParameter2,
                 testParameter3
@@ -80,7 +85,7 @@ class ConstructorPythonCodeGeneratorTest {
         testFunction.annotations.add(
             GroupAnnotation(
                 groupName = "TestGroup",
-                parameters = mutableListOf("testParameter1", "testParameter3")
+                parameters = mutableListOf("testParameter1", "testParameter2")
             )
         )
         // when
@@ -117,7 +122,7 @@ class ConstructorPythonCodeGeneratorTest {
         testFunction.annotations.add(
             GroupAnnotation(
                 groupName = "TestGroup",
-                parameters = mutableListOf("testParameter2", "testParameter3")
+                parameters = mutableListOf("testParameter1", "testParameter2")
             )
         )
         // when

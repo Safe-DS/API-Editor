@@ -338,58 +338,6 @@ class FunctionPythonCodeGeneratorTest {
     }
 
     @Test
-    fun `should process Enum-, Optional- and GroupAnnotation on function level`() {
-        // given
-        testParameter1.annotations.add(
-            EnumAnnotation(
-                enumName = "TestEnum",
-                pairs = listOf(
-                    EnumPair("testValue1", "testName1"),
-                    EnumPair("testValue2", "testName2")
-                )
-            )
-        )
-        testParameter1.annotations.add(
-            OptionalAnnotation(
-                DefaultBoolean(true)
-            )
-        )
-        testFunction.annotations.add(
-            GroupAnnotation(
-                groupName = "TestGroup",
-                parameters = mutableListOf("testParameter1", "testParameter2")
-            )
-        )
-        // when
-        testPackage.transform()
-        val moduleContent = testPackage.modules[0].toPythonCode()
-
-        // then
-        val expectedModuleContent: String =
-            """
-            |import testModule
-            |
-            |from __future__ import annotations
-            |from enum import Enum
-            |
-            |class TestGroup:
-            |    def __init__(self, testParameter2, *, testParameter1: TestEnum = True):
-            |        self.testParameter2 = testParameter2
-            |        self.testParameter1: TestEnum = testParameter1
-            |
-            |def __init__(testGroup: TestGroup, testParameter3):
-            |    return testModule.__init__(testGroup.testParameter1.value, testGroup.testParameter2, testParameter3)
-            |
-            |class TestEnum(Enum):
-            |    testName1 = 'testValue1',
-            |    testName2 = 'testValue2'
-            |
-            """.trimMargin()
-
-        moduleContent shouldBe expectedModuleContent
-    }
-
-    @Test
     fun `should process Enum-, Required- and GroupAnnotation on function level`() {
         // given
         testParameter1.annotations.add(
