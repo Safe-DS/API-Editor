@@ -9,7 +9,6 @@ import com.larsreimann.api_editor.model.EnumAnnotation
 import com.larsreimann.api_editor.model.EnumPair
 import com.larsreimann.api_editor.model.GroupAnnotation
 import com.larsreimann.api_editor.model.OptionalAnnotation
-import com.larsreimann.api_editor.model.RenameAnnotation
 import com.larsreimann.api_editor.model.RequiredAnnotation
 import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonModule
@@ -350,9 +349,6 @@ class FunctionPythonCodeGeneratorTest {
             )
         )
         testParameter1.annotations.add(
-            RenameAnnotation("newName")
-        )
-        testParameter1.annotations.add(
             RequiredAnnotation
         )
         testParameter1.defaultValue = PythonStringifiedExpression("toRemove")
@@ -375,11 +371,12 @@ class FunctionPythonCodeGeneratorTest {
             |from enum import Enum
             |
             |class TestGroup:
-            |    def __init__(self, testParameter2):
+            |    def __init__(self, testParameter1: TestEnum, testParameter2):
+            |        self.testParameter1: TestEnum = testParameter1
             |        self.testParameter2 = testParameter2
             |
-            |def __init__(newName: TestEnum, testGroup: TestGroup, testParameter3):
-            |    return testModule.__init__(newName.value, testGroup.testParameter2, testParameter3)
+            |def __init__(testGroup: TestGroup, testParameter3):
+            |    return testModule.__init__(testGroup.testParameter1.value, testGroup.testParameter2, testParameter3)
             |
             |class TestEnum(Enum):
             |    testName1 = 'testValue1',
