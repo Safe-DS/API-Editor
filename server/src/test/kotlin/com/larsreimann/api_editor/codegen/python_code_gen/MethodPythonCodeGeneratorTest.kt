@@ -9,6 +9,7 @@ import com.larsreimann.api_editor.model.EnumAnnotation
 import com.larsreimann.api_editor.model.EnumPair
 import com.larsreimann.api_editor.model.GroupAnnotation
 import com.larsreimann.api_editor.model.OptionalAnnotation
+import com.larsreimann.api_editor.model.RenameAnnotation
 import com.larsreimann.api_editor.model.RequiredAnnotation
 import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonFunction
@@ -590,6 +591,46 @@ class MethodPythonCodeGeneratorTest {
             |class TestGroup:
             |    def __init__(self, testParameter3, *, testParameter2=False):
             |        self.testParameter3 = testParameter3
+            |        self.testParameter2 = testParameter2
+            |
+            """.trimMargin()
+
+        moduleContent shouldBe expectedModuleContent
+    }
+
+    @Test
+    fun `should process GroupAnnotation on class method with RenameAnnotation on parameter level`() {
+        // given
+        testFunction.annotations.add(
+            GroupAnnotation(
+                groupName = "TestGroup",
+                parameters = mutableListOf("testParameter1", "testParameter2")
+            )
+        )
+        testParameter1.annotations.add(
+            RenameAnnotation("renamedTestParameter1")
+        )
+        // when
+        testPackage.transform()
+        val moduleContent = testPackage.modules[0].toPythonCode()
+
+        // then
+        val expectedModuleContent: String =
+            """
+            |import testModule
+            |
+            |from __future__ import annotations
+            |
+            |class testClass:
+            |    def __init__():
+            |        self.instance = testModule.testClass()
+            |
+            |    def testMethod(self, testGroup: TestGroup, testParameter3):
+            |        return self.instance.testMethod(testGroup.renamedTestParameter1, testGroup.testParameter2, testParameter3)
+            |
+            |class TestGroup:
+            |    def __init__(self, renamedTestParameter1, testParameter2):
+            |        self.renamedTestParameter1 = renamedTestParameter1
             |        self.testParameter2 = testParameter2
             |
             """.trimMargin()
