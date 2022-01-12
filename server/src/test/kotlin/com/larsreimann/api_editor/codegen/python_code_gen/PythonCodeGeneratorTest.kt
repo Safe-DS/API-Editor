@@ -7,7 +7,6 @@ import com.larsreimann.api_editor.model.ComparisonOperator.LESS_THAN
 import com.larsreimann.api_editor.model.ComparisonOperator.LESS_THAN_OR_EQUALS
 import com.larsreimann.api_editor.model.ComparisonOperator.UNRESTRICTED
 import com.larsreimann.api_editor.model.PythonParameterAssignment
-import com.larsreimann.api_editor.mutable_model.OriginalPythonClass
 import com.larsreimann.api_editor.mutable_model.PythonArgument
 import com.larsreimann.api_editor.mutable_model.PythonAttribute
 import com.larsreimann.api_editor.mutable_model.PythonBoolean
@@ -87,7 +86,7 @@ class PythonCodeGeneratorTest {
     inner class ClassToPythonCode {
 
         @Test
-        fun `should create valid code without constructor and methods`() {
+        fun `should create valid code for classes without constructor and methods`() {
             val testClass = PythonClass(
                 name = "TestClass"
             )
@@ -99,7 +98,7 @@ class PythonCodeGeneratorTest {
         }
 
         @Test
-        fun `should create valid code without constructor but with methods`() {
+        fun `should create valid code for classes without constructor but with methods`() {
             val testClass = PythonClass(
                 name = "TestClass",
                 methods = listOf(
@@ -119,7 +118,7 @@ class PythonCodeGeneratorTest {
         }
 
         @Test
-        fun `should create valid code with constructor but without methods`() {
+        fun `should create valid code for classes with constructor but without methods`() {
             val testClass = PythonClass(
                 name = "TestClass",
                 constructor = PythonConstructor()
@@ -133,7 +132,7 @@ class PythonCodeGeneratorTest {
         }
 
         @Test
-        fun `should create valid code with constructor and methods`() {
+        fun `should create valid code for classes with constructor and methods`() {
             val testClass = PythonClass(
                 name = "TestClass",
                 constructor = PythonConstructor(),
@@ -153,6 +152,32 @@ class PythonCodeGeneratorTest {
                     |
                     |    def testFunction2():
                     |        pass
+                """.trimMargin()
+        }
+
+        @Test
+        fun `should not indent blank lines`() {
+            val testClass = PythonClass(
+                name = "TestClass",
+                constructor = PythonConstructor(
+                    callToOriginalAPI = PythonCall(
+                        receiver = PythonStringifiedExpression("testModule.TestClass")
+                    )
+                ),
+                attributes = listOf(
+                    PythonAttribute(
+                        name = "testAttribute",
+                        value = PythonInt(1)
+                    )
+                )
+            )
+
+            testClass.toPythonCode() shouldBe """
+                    |class TestClass:
+                    |    def __init__():
+                    |        self.testAttribute = 1
+                    |
+                    |        self.instance = testModule.TestClass()
                 """.trimMargin()
         }
     }
@@ -294,9 +319,9 @@ class PythonCodeGeneratorTest {
             testConstructor.toPythonCode() shouldBe """
                 |def __init__(self, testParameter1, testParameter2):
                 |    if not 0.0 <= testParameter1 <= 1.0:
-                |        raise ValueError('Valid values of testParameter1 must be in [0.0, 1.0], but {} was assigned.'.format(testParameter1))
+                |        raise ValueError(f'Valid values of testParameter1 must be in [0.0, 1.0], but {testParameter1} was assigned.')
                 |    if not 0.0 < testParameter2:
-                |        raise ValueError('Valid values of testParameter2 must be greater than 0.0, but {} was assigned.'.format(testParameter2))
+                |        raise ValueError(f'Valid values of testParameter2 must be greater than 0.0, but {testParameter2} was assigned.')
             """.trimMargin()
         }
 
@@ -310,9 +335,9 @@ class PythonCodeGeneratorTest {
             testConstructor.toPythonCode() shouldBe """
                 |def __init__(self, testParameter1, testParameter2):
                 |    if not 0.0 <= testParameter1 <= 1.0:
-                |        raise ValueError('Valid values of testParameter1 must be in [0.0, 1.0], but {} was assigned.'.format(testParameter1))
+                |        raise ValueError(f'Valid values of testParameter1 must be in [0.0, 1.0], but {testParameter1} was assigned.')
                 |    if not 0.0 < testParameter2:
-                |        raise ValueError('Valid values of testParameter2 must be greater than 0.0, but {} was assigned.'.format(testParameter2))
+                |        raise ValueError(f'Valid values of testParameter2 must be greater than 0.0, but {testParameter2} was assigned.')
                 |
                 |    self.instance = OriginalClass()
             """.trimMargin()
@@ -328,9 +353,9 @@ class PythonCodeGeneratorTest {
             testConstructor.toPythonCode() shouldBe """
                 |def __init__(self, testParameter1, testParameter2):
                 |    if not 0.0 <= testParameter1 <= 1.0:
-                |        raise ValueError('Valid values of testParameter1 must be in [0.0, 1.0], but {} was assigned.'.format(testParameter1))
+                |        raise ValueError(f'Valid values of testParameter1 must be in [0.0, 1.0], but {testParameter1} was assigned.')
                 |    if not 0.0 < testParameter2:
-                |        raise ValueError('Valid values of testParameter2 must be greater than 0.0, but {} was assigned.'.format(testParameter2))
+                |        raise ValueError(f'Valid values of testParameter2 must be greater than 0.0, but {testParameter2} was assigned.')
                 |
                 |    self.testAttribute1 = 1
                 |    self.testAttribute2 = 2
@@ -348,9 +373,9 @@ class PythonCodeGeneratorTest {
             testConstructor.toPythonCode() shouldBe """
                 |def __init__(self, testParameter1, testParameter2):
                 |    if not 0.0 <= testParameter1 <= 1.0:
-                |        raise ValueError('Valid values of testParameter1 must be in [0.0, 1.0], but {} was assigned.'.format(testParameter1))
+                |        raise ValueError(f'Valid values of testParameter1 must be in [0.0, 1.0], but {testParameter1} was assigned.')
                 |    if not 0.0 < testParameter2:
-                |        raise ValueError('Valid values of testParameter2 must be greater than 0.0, but {} was assigned.'.format(testParameter2))
+                |        raise ValueError(f'Valid values of testParameter2 must be greater than 0.0, but {testParameter2} was assigned.')
                 |
                 |    self.testAttribute1 = 1
                 |    self.testAttribute2 = 2
@@ -531,9 +556,9 @@ class PythonCodeGeneratorTest {
             testFunction.toPythonCode() shouldBe """
                 |def testFunction(testParameter1, testParameter2):
                 |    if not 0.0 <= testParameter1 <= 1.0:
-                |        raise ValueError('Valid values of testParameter1 must be in [0.0, 1.0], but {} was assigned.'.format(testParameter1))
+                |        raise ValueError(f'Valid values of testParameter1 must be in [0.0, 1.0], but {testParameter1} was assigned.')
                 |    if not 0.0 < testParameter2:
-                |        raise ValueError('Valid values of testParameter2 must be greater than 0.0, but {} was assigned.'.format(testParameter2))
+                |        raise ValueError(f'Valid values of testParameter2 must be greater than 0.0, but {testParameter2} was assigned.')
             """.trimMargin()
         }
 
@@ -548,9 +573,9 @@ class PythonCodeGeneratorTest {
             testFunction.toPythonCode() shouldBe """
                 |def testFunction(testParameter1, testParameter2):
                 |    if not 0.0 <= testParameter1 <= 1.0:
-                |        raise ValueError('Valid values of testParameter1 must be in [0.0, 1.0], but {} was assigned.'.format(testParameter1))
+                |        raise ValueError(f'Valid values of testParameter1 must be in [0.0, 1.0], but {testParameter1} was assigned.')
                 |    if not 0.0 < testParameter2:
-                |        raise ValueError('Valid values of testParameter2 must be greater than 0.0, but {} was assigned.'.format(testParameter2))
+                |        raise ValueError(f'Valid values of testParameter2 must be greater than 0.0, but {testParameter2} was assigned.')
                 |
                 |    return testModule.testFunction()
             """.trimMargin()
@@ -573,13 +598,21 @@ class PythonCodeGeneratorTest {
                     name = "TestClass",
                     methods = listOf(
                         PythonFunction(name = "testMethod1"),
-                        PythonFunction(name = "testMethod2")
+                        PythonFunction(
+                            name = "testMethodWithOriginalMethod",
+                            decorators = mutableListOf("staticmethod"),
+                            callToOriginalAPI = PythonCall(
+                                receiver = PythonStringifiedExpression("originalModule.testMethod")
+                            )
+                        )
                     )
                 ),
                 PythonClass(
-                    name = "TestClassWithOriginalClass",
-                    originalClass = OriginalPythonClass(
-                        qualifiedName = "originalModule.TestClassWithOriginalClass"
+                    name = "TestClassWithConstructor",
+                    constructor = PythonConstructor(
+                        callToOriginalAPI = PythonCall(
+                            receiver = PythonStringifiedExpression("originalModule.TestClass")
+                        )
                     )
                 )
             )
@@ -588,7 +621,7 @@ class PythonCodeGeneratorTest {
                 PythonFunction(
                     name = "testFunctionWithOriginalFunction",
                     callToOriginalAPI = PythonCall(
-                        receiver = PythonStringifiedExpression("originalModule.testFunctionWithOriginalFunction")
+                        receiver = PythonStringifiedExpression("originalModule2.testFunction")
                     )
                 )
             )
@@ -619,7 +652,7 @@ class PythonCodeGeneratorTest {
             testModule.functions += testFunctions
 
             testModule.toPythonCode() shouldBe """
-                |import originalModule
+                |import originalModule2
                 |
                 |from __future__ import annotations
                 |
@@ -627,7 +660,7 @@ class PythonCodeGeneratorTest {
                 |    pass
                 |
                 |def testFunctionWithOriginalFunction():
-                |    return originalModule.testFunctionWithOriginalFunction()
+                |    return originalModule2.testFunction()
                 |
             """.trimMargin()
         }
@@ -638,7 +671,7 @@ class PythonCodeGeneratorTest {
             testModule.enums += testEnum
 
             testModule.toPythonCode() shouldBe """
-                |import originalModule
+                |import originalModule2
                 |
                 |from __future__ import annotations
                 |from enum import Enum
@@ -647,7 +680,7 @@ class PythonCodeGeneratorTest {
                 |    pass
                 |
                 |def testFunctionWithOriginalFunction():
-                |    return originalModule.testFunctionWithOriginalFunction()
+                |    return originalModule2.testFunction()
                 |
                 |class TestEnum(Enum):
                 |    pass
@@ -660,17 +693,21 @@ class PythonCodeGeneratorTest {
             testModule.classes += testClasses
 
             testModule.toPythonCode() shouldBe """
+                |import originalModule
+                |
                 |from __future__ import annotations
                 |
                 |class TestClass:
                 |    def testMethod1():
                 |        pass
                 |
-                |    def testMethod2():
-                |        pass
+                |    @staticmethod
+                |    def testMethodWithOriginalMethod():
+                |        return originalModule.testMethod()
                 |
-                |class TestClassWithOriginalClass:
-                |    pass
+                |class TestClassWithConstructor:
+                |    def __init__():
+                |        self.instance = originalModule.TestClass()
                 |
             """.trimMargin()
         }
@@ -681,6 +718,8 @@ class PythonCodeGeneratorTest {
             testModule.enums += testEnum
 
             testModule.toPythonCode() shouldBe """
+                |import originalModule
+                |
                 |from __future__ import annotations
                 |from enum import Enum
                 |
@@ -688,11 +727,13 @@ class PythonCodeGeneratorTest {
                 |    def testMethod1():
                 |        pass
                 |
-                |    def testMethod2():
-                |        pass
+                |    @staticmethod
+                |    def testMethodWithOriginalMethod():
+                |        return originalModule.testMethod()
                 |
-                |class TestClassWithOriginalClass:
-                |    pass
+                |class TestClassWithConstructor:
+                |    def __init__():
+                |        self.instance = originalModule.TestClass()
                 |
                 |class TestEnum(Enum):
                 |    pass
@@ -707,6 +748,7 @@ class PythonCodeGeneratorTest {
 
             testModule.toPythonCode() shouldBe """
                 |import originalModule
+                |import originalModule2
                 |
                 |from __future__ import annotations
                 |
@@ -714,17 +756,19 @@ class PythonCodeGeneratorTest {
                 |    def testMethod1():
                 |        pass
                 |
-                |    def testMethod2():
-                |        pass
+                |    @staticmethod
+                |    def testMethodWithOriginalMethod():
+                |        return originalModule.testMethod()
                 |
-                |class TestClassWithOriginalClass:
-                |    pass
+                |class TestClassWithConstructor:
+                |    def __init__():
+                |        self.instance = originalModule.TestClass()
                 |
                 |def testFunction():
                 |    pass
                 |
                 |def testFunctionWithOriginalFunction():
-                |    return originalModule.testFunctionWithOriginalFunction()
+                |    return originalModule2.testFunction()
                 |
             """.trimMargin()
         }
@@ -737,6 +781,7 @@ class PythonCodeGeneratorTest {
 
             testModule.toPythonCode() shouldBe """
                 |import originalModule
+                |import originalModule2
                 |
                 |from __future__ import annotations
                 |from enum import Enum
@@ -745,17 +790,19 @@ class PythonCodeGeneratorTest {
                 |    def testMethod1():
                 |        pass
                 |
-                |    def testMethod2():
-                |        pass
+                |    @staticmethod
+                |    def testMethodWithOriginalMethod():
+                |        return originalModule.testMethod()
                 |
-                |class TestClassWithOriginalClass:
-                |    pass
+                |class TestClassWithConstructor:
+                |    def __init__():
+                |        self.instance = originalModule.TestClass()
                 |
                 |def testFunction():
                 |    pass
                 |
                 |def testFunctionWithOriginalFunction():
-                |    return originalModule.testFunctionWithOriginalFunction()
+                |    return originalModule2.testFunction()
                 |
                 |class TestEnum(Enum):
                 |    pass
@@ -1107,7 +1154,7 @@ class PythonCodeGeneratorTest {
 
             boundary.toPythonCode("testParameter") shouldBe """
                 |if not (isinstance(testParameter, int) or (isinstance(testParameter, float) and testParameter.is_integer())):
-                |    raise ValueError('testParameter' needs to be an integer, but {} was assigned.'.format(testParameter))
+                |    raise ValueError(f'testParameter needs to be an integer, but {testParameter} was assigned.')
             """.trimMargin()
         }
 
@@ -1136,7 +1183,7 @@ class PythonCodeGeneratorTest {
 
             boundary.toPythonCode("testParameter") shouldBe """
                 |if not testParameter < 1.0:
-                |    raise ValueError('Valid values of testParameter must be less than 1.0, but {} was assigned.'.format(testParameter))
+                |    raise ValueError(f'Valid values of testParameter must be less than 1.0, but {testParameter} was assigned.')
             """.trimMargin()
         }
 
@@ -1152,7 +1199,7 @@ class PythonCodeGeneratorTest {
 
             boundary.toPythonCode("testParameter") shouldBe """
                 |if not testParameter <= 1.0:
-                |    raise ValueError('Valid values of testParameter must be less than or equal to 1.0, but {} was assigned.'.format(testParameter))
+                |    raise ValueError(f'Valid values of testParameter must be less than or equal to 1.0, but {testParameter} was assigned.')
             """.trimMargin()
         }
 
@@ -1168,7 +1215,7 @@ class PythonCodeGeneratorTest {
 
             boundary.toPythonCode("testParameter") shouldBe """
                 |if not 0.0 < testParameter:
-                |    raise ValueError('Valid values of testParameter must be greater than 0.0, but {} was assigned.'.format(testParameter))
+                |    raise ValueError(f'Valid values of testParameter must be greater than 0.0, but {testParameter} was assigned.')
             """.trimMargin()
         }
 
@@ -1184,7 +1231,7 @@ class PythonCodeGeneratorTest {
 
             boundary.toPythonCode("testParameter") shouldBe """
                 |if not 0.0 < testParameter < 1.0:
-                |    raise ValueError('Valid values of testParameter must be in (0.0, 1.0), but {} was assigned.'.format(testParameter))
+                |    raise ValueError(f'Valid values of testParameter must be in (0.0, 1.0), but {testParameter} was assigned.')
             """.trimMargin()
         }
 
@@ -1200,7 +1247,7 @@ class PythonCodeGeneratorTest {
 
             boundary.toPythonCode("testParameter") shouldBe """
                 |if not 0.0 < testParameter <= 1.0:
-                |    raise ValueError('Valid values of testParameter must be in (0.0, 1.0], but {} was assigned.'.format(testParameter))
+                |    raise ValueError(f'Valid values of testParameter must be in (0.0, 1.0], but {testParameter} was assigned.')
             """.trimMargin()
         }
 
@@ -1216,7 +1263,7 @@ class PythonCodeGeneratorTest {
 
             boundary.toPythonCode("testParameter") shouldBe """
                 |if not 0.0 <= testParameter:
-                |    raise ValueError('Valid values of testParameter must be greater than or equal to 0.0, but {} was assigned.'.format(testParameter))
+                |    raise ValueError(f'Valid values of testParameter must be greater than or equal to 0.0, but {testParameter} was assigned.')
             """.trimMargin()
         }
 
@@ -1232,7 +1279,7 @@ class PythonCodeGeneratorTest {
 
             boundary.toPythonCode("testParameter") shouldBe """
                 |if not 0.0 <= testParameter < 1.0:
-                |    raise ValueError('Valid values of testParameter must be in [0.0, 1.0), but {} was assigned.'.format(testParameter))
+                |    raise ValueError(f'Valid values of testParameter must be in [0.0, 1.0), but {testParameter} was assigned.')
             """.trimMargin()
         }
 
@@ -1248,7 +1295,7 @@ class PythonCodeGeneratorTest {
 
             boundary.toPythonCode("testParameter") shouldBe """
                 |if not 0.0 <= testParameter <= 1.0:
-                |    raise ValueError('Valid values of testParameter must be in [0.0, 1.0], but {} was assigned.'.format(testParameter))
+                |    raise ValueError(f'Valid values of testParameter must be in [0.0, 1.0], but {testParameter} was assigned.')
             """.trimMargin()
         }
     }

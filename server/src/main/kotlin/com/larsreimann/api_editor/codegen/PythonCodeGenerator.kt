@@ -14,6 +14,7 @@ import com.larsreimann.api_editor.mutable_model.PythonBoolean
 import com.larsreimann.api_editor.mutable_model.PythonCall
 import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonConstructor
+import com.larsreimann.api_editor.mutable_model.PythonDeclaration
 import com.larsreimann.api_editor.mutable_model.PythonEnum
 import com.larsreimann.api_editor.mutable_model.PythonEnumInstance
 import com.larsreimann.api_editor.mutable_model.PythonExpression
@@ -30,6 +31,7 @@ import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
 import com.larsreimann.api_editor.mutable_model.PythonStringifiedType
 import com.larsreimann.api_editor.mutable_model.PythonType
 import com.larsreimann.modeling.closest
+import com.larsreimann.modeling.descendants
 
 /* ********************************************************************************************************************
  * Declarations
@@ -51,13 +53,29 @@ fun PythonModule.toPythonCode(): String {
 }
 
 private fun PythonModule.importsToPythonCode() = buildString {
-    val imports = functions
-        .mapNotNull {
-            when (val receiver = it.callToOriginalAPI?.receiver) {
-                is PythonStringifiedExpression -> receiver.string.parentQualifiedName()
-                else -> null
+    val imports = buildSet<String> {
+
+        // Functions
+        this += descendants { it !is PythonDeclaration }
+            .filterIsInstance<PythonFunction>()
+            .filter { !it.isMethod() || it.isStaticMethod() }
+            .mapNotNull {
+                when (val receiver = it.callToOriginalAPI?.receiver) {
+                    is PythonStringifiedExpression -> receiver.string.parentQualifiedName()
+                    else -> null
+                }
             }
-        }.toSet()
+
+        // Constructors
+        this += descendants()
+            .filterIsInstance<PythonConstructor>()
+            .mapNotNull {
+                when (val receiver = it.callToOriginalAPI?.receiver) {
+                    is PythonStringifiedExpression -> receiver.string.parentQualifiedName()
+                    else -> null
+                }
+            }
+    }
 
     val importsString = imports.joinToString("\n") { "import $it" }
     var fromImportsString = "from __future__ import annotations"
@@ -95,9 +113,7 @@ internal fun PythonAttribute.toPythonCode() = buildString {
 
 internal fun PythonClass.toPythonCode() = buildString {
     val constructorString = constructor?.toPythonCode() ?: ""
-    val methodsString = methods.joinToString("\n\n") {
-        it.toPythonCode().prependIndent("    ")
-    }
+    val methodsString = methods.joinToString("\n\n") { it.toPythonCode() }
 
     appendLine("class $name:")
     if (constructorString.isNotBlank()) {
@@ -107,7 +123,7 @@ internal fun PythonClass.toPythonCode() = buildString {
         }
     }
     if (methodsString.isNotBlank()) {
-        append(methodsString)
+        appendIndented(methodsString)
     }
     if (constructorString.isBlank() && methodsString.isBlank()) {
         appendIndented("pass")
@@ -293,7 +309,7 @@ internal fun PythonArgument.toPythonCode() = buildString {
 internal fun Boundary.toPythonCode(parameterName: String) = buildString {
     if (isDiscrete) {
         appendLine("if not (isinstance($parameterName, int) or (isinstance($parameterName, float) and $parameterName.is_integer())):")
-        appendIndented("raise ValueError('$parameterName' needs to be an integer, but {} was assigned.'.format($parameterName))")
+        appendIndented("raise ValueError(f'$parameterName needs to be an integer, but {$parameterName} was assigned.')")
         if (lowerLimitType != UNRESTRICTED || upperLimitType != UNRESTRICTED) {
             appendLine()
         }
@@ -301,19 +317,19 @@ internal fun Boundary.toPythonCode(parameterName: String) = buildString {
 
     if (lowerLimitType != UNRESTRICTED && upperLimitType != UNRESTRICTED) {
         appendLine("if not $lowerIntervalLimit ${lowerLimitType.operator} $parameterName ${upperLimitType.operator} $upperIntervalLimit:")
-        appendIndented("raise ValueError('Valid values of $parameterName must be in ${asInterval()}, but {} was assigned.'.format($parameterName))")
+        appendIndented("raise ValueError(f'Valid values of $parameterName must be in ${asInterval()}, but {$parameterName} was assigned.')")
     } else if (lowerLimitType == LESS_THAN) {
         appendLine("if not $lowerIntervalLimit < $parameterName:")
-        appendIndented("raise ValueError('Valid values of $parameterName must be greater than $lowerIntervalLimit, but {} was assigned.'.format($parameterName))")
+        appendIndented("raise ValueError(f'Valid values of $parameterName must be greater than $lowerIntervalLimit, but {$parameterName} was assigned.')")
     } else if (lowerLimitType == LESS_THAN_OR_EQUALS) {
         appendLine("if not $lowerIntervalLimit <= $parameterName:")
-        appendIndented("raise ValueError('Valid values of $parameterName must be greater than or equal to $lowerIntervalLimit, but {} was assigned.'.format($parameterName))")
+        appendIndented("raise ValueError(f'Valid values of $parameterName must be greater than or equal to $lowerIntervalLimit, but {$parameterName} was assigned.')")
     } else if (upperLimitType == LESS_THAN) {
         appendLine("if not $parameterName < $upperIntervalLimit:")
-        appendIndented("raise ValueError('Valid values of $parameterName must be less than $upperIntervalLimit, but {} was assigned.'.format($parameterName))")
+        appendIndented("raise ValueError(f'Valid values of $parameterName must be less than $upperIntervalLimit, but {$parameterName} was assigned.')")
     } else if (upperLimitType == LESS_THAN_OR_EQUALS) {
         appendLine("if not $parameterName <= $upperIntervalLimit:")
-        appendIndented("raise ValueError('Valid values of $parameterName must be less than or equal to $upperIntervalLimit, but {} was assigned.'.format($parameterName))")
+        appendIndented("raise ValueError(f'Valid values of $parameterName must be less than or equal to $upperIntervalLimit, but {$parameterName} was assigned.')")
     }
 }
 
@@ -321,15 +337,24 @@ internal fun Boundary.toPythonCode(parameterName: String) = buildString {
  * Util
  * ********************************************************************************************************************/
 
+private fun String.prependIndentUnlessBlank(indent: String = "    "): String {
+    return lineSequence()
+        .map {
+            when {
+                it.isBlank() -> it.trim()
+                else -> it.prependIndent(indent)
+            }
+        }
+        .joinToString("\n")
+}
+
 private fun StringBuilder.appendIndented(init: StringBuilder.() -> Unit): StringBuilder {
     val stringToIndent = StringBuilder().apply(init).toString()
-    val indent = " ".repeat(4)
-    append(stringToIndent.prependIndent(indent))
+    append(stringToIndent.prependIndentUnlessBlank())
     return this
 }
 
 private fun StringBuilder.appendIndented(value: String): StringBuilder {
-    val indent = " ".repeat(4)
-    append(value.prependIndent(indent))
+    append(value.prependIndentUnlessBlank())
     return this
 }

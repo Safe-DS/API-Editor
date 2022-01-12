@@ -27,6 +27,7 @@ fun PythonPackage.processGroupAnnotations() {
 private fun PythonModule.processGroupAnnotations() {
     this.descendants()
         .filterIsInstance<PythonFunction>()
+        .toList()
         .forEach { it.processGroupAnnotations(this) }
 }
 
