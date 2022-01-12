@@ -240,9 +240,9 @@ class FunctionPythonCodeGeneratorTest {
             |
             |def testFunction(testParameter2, testParameter3, *, testParameter1=0.5):
             |    if not (isinstance(testParameter1, int) or (isinstance(testParameter1, float) and testParameter1.is_integer())):
-            |        raise ValueError('testParameter1' needs to be an integer, but {} was assigned.'.format(testParameter1))
+            |        raise ValueError(f'testParameter1 needs to be an integer, but {testParameter1} was assigned.')
             |    if not 0.0 <= testParameter1 <= 1.0:
-            |        raise ValueError('Valid values of testParameter1 must be in [0.0, 1.0], but {} was assigned.'.format(testParameter1))
+            |        raise ValueError(f'Valid values of testParameter1 must be in [0.0, 1.0], but {testParameter1} was assigned.')
             |
             |    return testModule.testFunction(testParameter1, testParameter2, testParameter3)
             |
