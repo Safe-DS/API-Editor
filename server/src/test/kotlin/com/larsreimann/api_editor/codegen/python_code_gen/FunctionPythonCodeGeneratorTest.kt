@@ -678,7 +678,7 @@ class FunctionPythonCodeGeneratorTest {
             |from __future__ import annotations
             |
             |class TestGroup:
-            |    def __init__(self, testParameter3, *, renamedTestParameter2):
+            |    def __init__(self, testParameter3, *, renamedTestParameter2=0.5):
             |        if not (isinstance(renamedTestParameter2, int) or (isinstance(renamedTestParameter2, float) and renamedTestParameter2.is_integer())):
             |            raise ValueError(f'renamedTestParameter2 needs to be an integer, but {renamedTestParameter2} was assigned.')
             |        if not 0.0 <= renamedTestParameter2 <= 1.0:
@@ -688,7 +688,7 @@ class FunctionPythonCodeGeneratorTest {
             |        self.renamedTestParameter2 = renamedTestParameter2
             |
             |def testFunction(testParameter1, testGroup: TestGroup):
-            |    return testModule.testFunction(testParameter1, renamedTestParameter2, testGroup.testParameter3)
+            |    return testModule.testFunction(testParameter1, testGroup.renamedTestParameter2, testGroup.testParameter3)
             |
             """.trimMargin()
 

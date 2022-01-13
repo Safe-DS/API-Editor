@@ -301,7 +301,7 @@ internal class AnnotationValidatorTest {
                                 CalledAfterAnnotation("calledAfterName2"),
                                 GroupAnnotation(
                                     "groupName",
-                                    listOf("test-module.test-function.test-parameter")
+                                    mutableListOf("test-module.test-function.test-parameter")
                                 ),
                                 RenameAnnotation("newName")
                             )
@@ -548,7 +548,7 @@ internal class AnnotationValidatorTest {
                                     mutableListOf(
                                         GroupAnnotation(
                                             "paramGroup",
-                                            listOf("first-param", "second-param")
+                                            mutableListOf("first-param", "second-param")
                                         )
                                     )
                                 ),
@@ -591,7 +591,7 @@ internal class AnnotationValidatorTest {
                                     mutableListOf(
                                         GroupAnnotation(
                                             "paramGroup",
-                                            listOf("second-param")
+                                            mutableListOf("second-param")
                                         )
                                     )
                                 )
@@ -641,7 +641,7 @@ internal class AnnotationValidatorTest {
                             mutableListOf(
                                 GroupAnnotation(
                                     "paramGroup",
-                                    listOf("second-param")
+                                    mutableListOf("second-param")
                                 )
                             )
                         )

@@ -131,7 +131,7 @@ class ApplicationTest {
                     ),
                     GroupAnnotation(
                         groupName = "test-group",
-                        parameters = listOf(
+                        parameters = mutableListOf(
                             "test-parameter"
                         )
                     ),
