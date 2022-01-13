@@ -8,8 +8,12 @@ import com.larsreimann.api_editor.mutable_model.PythonEnum
 import com.larsreimann.api_editor.mutable_model.PythonEnumInstance
 import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonNamedType
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonResult
+import com.larsreimann.api_editor.mutable_model.PythonString
+import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
+import com.larsreimann.api_editor.mutable_model.PythonStringifiedType
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
 import de.unibonn.simpleml.emf.annotationUsesOrEmpty
 import de.unibonn.simpleml.emf.argumentsOrEmpty
@@ -88,14 +92,14 @@ class StubCodeGeneratorTest {
                             ),
                             PythonParameter(
                                 name = "testParameter",
-                                typeInDocs = "int",
-                                defaultValue = "10"
+                                type = PythonStringifiedType("int"),
+                                defaultValue = PythonStringifiedExpression("10")
                             )
                         ),
                         results = listOf(
                             PythonResult(
                                 name = "testParameter",
-                                type = "str"
+                                type = PythonStringifiedType("str")
                             )
                         )
                     )
@@ -453,7 +457,7 @@ class StubCodeGeneratorTest {
         fun `should store type`() {
             val pythonAttribute = PythonAttribute(
                 name = "testAttribute",
-                typeInDocs = "str"
+                type = PythonStringifiedType("str")
             )
 
             pythonAttribute
@@ -741,7 +745,7 @@ class StubCodeGeneratorTest {
         fun `should store type`() {
             val pythonParameter = PythonParameter(
                 name = "testParameter",
-                typeInDocs = "str"
+                type = PythonStringifiedType("str")
             )
 
             pythonParameter
@@ -759,7 +763,7 @@ class StubCodeGeneratorTest {
         fun `should store default value`() {
             val pythonParameter = PythonParameter(
                 name = "testParameter",
-                defaultValue = "None"
+                defaultValue = PythonStringifiedExpression("None")
             )
 
             pythonParameter
@@ -860,7 +864,7 @@ class StubCodeGeneratorTest {
         fun `should store type`() {
             val pythonResult = PythonResult(
                 name = "testResult",
-                type = "str"
+                type = PythonStringifiedType("str")
             )
 
             val type = pythonResult.toSmlResult().type.shouldBeInstanceOf<SmlNamedType>()
@@ -1083,36 +1087,50 @@ class StubCodeGeneratorTest {
     inner class TypeConversions {
 
         @Test
-        fun `should convert bool to Boolean`() {
-            val smlType = "bool".toSmlType().shouldBeInstanceOf<SmlNamedType>()
+        fun `should convert named types`() {
+            val smlType = PythonNamedType(PythonEnum(name = "MyEnum")).toSmlType().shouldBeInstanceOf<SmlNamedType>()
+            smlType.declaration.name shouldBe "MyEnum"
+            smlType.isNullable.shouldBeFalse()
+        }
+
+        @Test
+        fun `should convert stringified type 'bool' to Boolean`() {
+            val smlType = PythonStringifiedType("bool").toSmlType().shouldBeInstanceOf<SmlNamedType>()
             smlType.declaration.name shouldBe "Boolean"
             smlType.isNullable.shouldBeFalse()
         }
 
         @Test
-        fun `should convert float to Float`() {
-            val smlType = "float".toSmlType().shouldBeInstanceOf<SmlNamedType>()
+        fun `should convert stringified type 'float' to Float`() {
+            val smlType = PythonStringifiedType("float").toSmlType().shouldBeInstanceOf<SmlNamedType>()
             smlType.declaration.name shouldBe "Float"
             smlType.isNullable.shouldBeFalse()
         }
 
         @Test
-        fun `should convert int to Int`() {
-            val smlType = "int".toSmlType().shouldBeInstanceOf<SmlNamedType>()
+        fun `should convert stringified type 'int' to Int`() {
+            val smlType = PythonStringifiedType("int").toSmlType().shouldBeInstanceOf<SmlNamedType>()
             smlType.declaration.name shouldBe "Int"
             smlType.isNullable.shouldBeFalse()
         }
 
         @Test
-        fun `should convert str to String`() {
-            val smlType = "str".toSmlType().shouldBeInstanceOf<SmlNamedType>()
+        fun `should convert stringified type 'str' to String`() {
+            val smlType = PythonStringifiedType("str").toSmlType().shouldBeInstanceOf<SmlNamedType>()
             smlType.declaration.name shouldBe "String"
             smlType.isNullable.shouldBeFalse()
         }
 
         @Test
         fun `should convert other types to nullable Any`() {
-            val smlType = "other".toSmlType().shouldBeInstanceOf<SmlNamedType>()
+            val smlType = PythonStringifiedType("other").toSmlType().shouldBeInstanceOf<SmlNamedType>()
+            smlType.declaration.name shouldBe "Any"
+            smlType.isNullable.shouldBeTrue()
+        }
+
+        @Test
+        fun `should convert null to nullable Any`() {
+            val smlType = null.toSmlType().shouldBeInstanceOf<SmlNamedType>()
             smlType.declaration.name shouldBe "Any"
             smlType.isNullable.shouldBeTrue()
         }
@@ -1123,54 +1141,80 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should convert blank strings to null`() {
-            " ".toSmlExpression().shouldBeNull()
+            PythonStringifiedExpression(" ")
+                .toSmlExpression()
+                .shouldBeNull()
         }
 
         @Test
         fun `should convert False to a false boolean literal`() {
-            val smlBoolean = "False".toSmlExpression().shouldBeInstanceOf<SmlBoolean>()
+            val smlBoolean = PythonStringifiedExpression("False")
+                .toSmlExpression()
+                .shouldBeInstanceOf<SmlBoolean>()
             smlBoolean.isTrue.shouldBeFalse()
         }
 
         @Test
         fun `should convert True to a true boolean literal`() {
-            val smlBoolean = "True".toSmlExpression().shouldBeInstanceOf<SmlBoolean>()
+            val smlBoolean = PythonStringifiedExpression("True")
+                .toSmlExpression()
+                .shouldBeInstanceOf<SmlBoolean>()
             smlBoolean.isTrue.shouldBeTrue()
         }
 
         @Test
         fun `should convert None to a null literal`() {
-            "None".toSmlExpression().shouldBeInstanceOf<SmlNull>()
+            PythonStringifiedExpression("None")
+                .toSmlExpression()
+                .shouldBeInstanceOf<SmlNull>()
         }
 
         @Test
         fun `should convert ints to integer literals`() {
-            val smlInt = "123".toSmlExpression().shouldBeInstanceOf<SmlInt>()
+            val smlInt = PythonStringifiedExpression("123")
+                .toSmlExpression()
+                .shouldBeInstanceOf<SmlInt>()
             smlInt.value shouldBe 123
         }
 
         @Test
         fun `should convert floats to float literals`() {
-            val smlFloat = "123.45".toSmlExpression().shouldBeInstanceOf<SmlFloat>()
+            val smlFloat = PythonStringifiedExpression("123.45")
+                .toSmlExpression()
+                .shouldBeInstanceOf<SmlFloat>()
             smlFloat.value shouldBe 123.45
         }
 
         @Test
         fun `should convert single-quoted strings to string literals`() {
-            val smlString = "'string'".toSmlExpression().shouldBeInstanceOf<SmlString>()
+            val smlString = PythonStringifiedExpression("'string'")
+                .toSmlExpression()
+                .shouldBeInstanceOf<SmlString>()
             smlString.value shouldBe "string"
         }
 
         @Test
         fun `should convert double-quoted strings to string literals`() {
-            val smlString = "\"string\"".toSmlExpression().shouldBeInstanceOf<SmlString>()
+            val smlString = PythonStringifiedExpression("\"string\"")
+                .toSmlExpression()
+                .shouldBeInstanceOf<SmlString>()
             smlString.value shouldBe "string"
         }
 
         @Test
-        fun `should convert other values to '###invalid###' strings`() {
-            val smlString = "unknown".toSmlExpression().shouldBeInstanceOf<SmlString>()
+        fun `should convert other stringified expressions to '###invalid###' strings`() {
+            val smlString = PythonStringifiedExpression("unknown")
+                .toSmlExpression()
+                .shouldBeInstanceOf<SmlString>()
             smlString.value shouldBe "###invalid###unknown###"
+        }
+
+        @Test
+        fun `should convert other expressions to '###invalid###' strings`() {
+            val smlString = PythonString("unknown")
+                .toSmlExpression()
+                .shouldBeInstanceOf<SmlString>()
+            smlString.value shouldBe "###invalid###PythonString(value=unknown)###"
         }
     }
 }

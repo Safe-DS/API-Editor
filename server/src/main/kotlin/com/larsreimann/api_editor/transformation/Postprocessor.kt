@@ -7,7 +7,11 @@ import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonConstructor
 import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonPackage
+import com.larsreimann.api_editor.mutable_model.PythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
+import com.larsreimann.modeling.ModelNode
 import com.larsreimann.modeling.descendants
+import java.lang.IllegalStateException
 
 /**
  * Removes modules that don't contain declarations.
@@ -27,16 +31,20 @@ fun PythonPackage.removeEmptyModules() {
  */
 fun PythonPackage.reorderParameters() {
     this.descendants()
-        .filterIsInstance<PythonFunction>()
-        .forEach { it.reorderParameters() }
+        .forEach {
+            when (it) {
+                is PythonConstructor -> it.parameters.reorderParameters()
+                is PythonFunction -> it.parameters.reorderParameters()
+            }
+        }
 }
 
-private fun PythonFunction.reorderParameters() {
-    val groups = this.parameters.groupBy { it.assignedBy }
-    this.parameters.addAll(groups[PythonParameterAssignment.IMPLICIT].orEmpty())
-    this.parameters.addAll(groups[PythonParameterAssignment.POSITION_ONLY].orEmpty())
-    this.parameters.addAll(groups[PythonParameterAssignment.POSITION_OR_NAME].orEmpty())
-    this.parameters.addAll(groups[PythonParameterAssignment.NAME_ONLY].orEmpty())
+private fun ModelNode.MutableContainmentList<PythonParameter>.reorderParameters() {
+    val groups = this.groupBy { it.assignedBy }
+    this.addAll(groups[PythonParameterAssignment.IMPLICIT].orEmpty())
+    this.addAll(groups[PythonParameterAssignment.POSITION_ONLY].orEmpty())
+    this.addAll(groups[PythonParameterAssignment.POSITION_OR_NAME].orEmpty())
+    this.addAll(groups[PythonParameterAssignment.NAME_ONLY].orEmpty())
 }
 
 /**
@@ -52,19 +60,33 @@ fun PythonPackage.extractConstructors() {
 private fun PythonClass.createConstructor() {
     when (val constructorMethod = this.methods.firstOrNull { it.name == "__init__" }) {
         null -> {
-            this.constructor = PythonConstructor(
-                parameters = emptyList(),
-                callToOriginalAPI = PythonCall(receiver = this.originalClass!!.qualifiedName)
-            )
+            if (this.originalClass != null) {
+                this.constructor = PythonConstructor(
+                    parameters = emptyList(),
+                    callToOriginalAPI = PythonCall(
+                        receiver = PythonStringifiedExpression(this.originalClass!!.qualifiedName)
+                    )
+                )
+            }
         }
         else -> {
-            this.constructor = PythonConstructor(
-                parameters = constructorMethod.parameters.toList(),
-                callToOriginalAPI = PythonCall(
-                    receiver = constructorMethod.callToOriginalAPI!!.receiver.removeSuffix(".__init__"),
-                    arguments = constructorMethod.callToOriginalAPI!!.arguments.toList()
+            constructorMethod.callToOriginalAPI?.let { callToOriginalAPI ->
+                val newReceiver = when (val receiver = callToOriginalAPI.receiver) {
+                    is PythonStringifiedExpression -> PythonStringifiedExpression(
+                        receiver.string.removeSuffix(".__init__")
+                    )
+                    null -> throw IllegalStateException("Receiver of call is null: $callToOriginalAPI")
+                    else -> receiver
+                }
+
+                this.constructor = PythonConstructor(
+                    parameters = constructorMethod.parameters.toList(),
+                    callToOriginalAPI = PythonCall(
+                        receiver = newReceiver,
+                        arguments = callToOriginalAPI.arguments.toList()
+                    )
                 )
-            )
+            }
 
             constructorMethod.release()
         }
@@ -87,9 +109,9 @@ private fun PythonClass.createAttributesForParametersOfConstructor() {
         ?.forEach {
             this.attributes += PythonAttribute(
                 name = it.name,
-                value = it.defaultValue,
+                type = it.type?.copy(),
+                value = PythonStringifiedExpression(it.name),
                 isPublic = true,
-                typeInDocs = it.typeInDocs,
                 description = it.description,
                 boundary = it.boundary
             )

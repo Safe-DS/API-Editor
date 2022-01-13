@@ -8,6 +8,7 @@ import com.larsreimann.api_editor.mutable_model.PythonConstructor
 import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonMemberAccess
 import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonNamedType
 import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonReference
@@ -26,6 +27,7 @@ fun PythonPackage.processGroupAnnotations() {
 private fun PythonModule.processGroupAnnotations() {
     this.descendants()
         .filterIsInstance<PythonFunction>()
+        .toList()
         .forEach { it.processGroupAnnotations(this) }
 }
 
@@ -34,10 +36,8 @@ private fun PythonFunction.processGroupAnnotations(module: PythonModule) {
         .filterIsInstance<GroupAnnotation>()
         .forEach { annotation ->
             val firstOccurrence = this.parameters.indexOfFirst { it.name in annotation.parameters }
-            val groupedParameter = PythonParameter(
-                name = annotation.groupName.replaceFirstChar { it.lowercase() },
-                typeInDocs = annotation.groupName.replaceFirstChar { it.uppercase() },
-            )
+
+            // Create class
             val constructorParameters = mutableListOf(
                 PythonParameter(
                     name = "self",
@@ -45,14 +45,21 @@ private fun PythonFunction.processGroupAnnotations(module: PythonModule) {
                 )
             )
             constructorParameters += this.parameters.filter { it.name in annotation.parameters }
-            this.parameters.removeIf { it.name in annotation.parameters }
-            this.parameters.add(firstOccurrence, groupedParameter)
             val groupedParameterClass = PythonClass(
                 name = annotation.groupName.replaceFirstChar { it.uppercase() },
                 constructor = PythonConstructor(
                     parameters = constructorParameters
                 )
             )
+
+            // Update parameters
+            val groupedParameter = PythonParameter(
+                name = annotation.groupName.replaceFirstChar { it.lowercase() },
+                type = PythonNamedType(groupedParameterClass)
+            )
+            this.parameters.removeIf { it.name in annotation.parameters }
+            this.parameters.add(firstOccurrence, groupedParameter)
+
             if (hasConflictingGroups(module.classes, groupedParameterClass)) {
                 throw ConflictingGroupException(
                     groupedParameterClass.name,
@@ -69,13 +76,30 @@ private fun PythonFunction.processGroupAnnotations(module: PythonModule) {
                 val value = it.value
                 if (value is PythonReference && value.declaration?.name in annotation.parameters) {
                     it.value = PythonMemberAccess(
-                        receiver = PythonReference(declaration = groupedParameterClass),
+                        receiver = PythonReference(declaration = groupedParameter),
                         member = PythonReference(PythonAttribute(name = value.declaration!!.name))
                     )
-                }
-            }
+                } else if (value is PythonMemberAccess) {
+                    val receiver = value.receiver
+                    val member = value.member
+                    if (receiver is PythonReference && member is PythonReference) {
+                        val receiverMatches = receiver.declaration?.name in annotation.parameters
+                        val memberMatches = member.declaration is PythonAttribute && member.declaration?.name == "value"
 
-            this.annotations.remove(annotation)
+                        if (receiverMatches && memberMatches) {
+                            it.value = PythonMemberAccess(
+                                receiver = PythonMemberAccess(
+                                    receiver = PythonReference(declaration = groupedParameter),
+                                    member = receiver
+                                ),
+                                member = member
+                            )
+                        }
+                    }
+                }
+
+                this.annotations.remove(annotation)
+            }
         }
 }
 

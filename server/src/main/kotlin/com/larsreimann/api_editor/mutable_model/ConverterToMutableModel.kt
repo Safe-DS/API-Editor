@@ -36,12 +36,11 @@ fun convertClass(pythonClass: SerializablePythonClass): PythonClass {
     return PythonClass(
         name = pythonClass.name,
         decorators = pythonClass.decorators.toMutableList(),
-        superclasses = pythonClass.superclasses.toMutableList(),
+        superclasses = pythonClass.superclasses.map { PythonNamedType(PythonClass(name = it)) }.toMutableList(),
         attributes = pythonClass.attributes.map { convertAttribute(it) },
         methods = pythonClass.methods.map { convertFunction(it) },
         isPublic = pythonClass.isPublic,
         description = pythonClass.description,
-        fullDocstring = pythonClass.fullDocstring,
         annotations = pythonClass.annotations
     )
 }
@@ -57,7 +56,7 @@ fun convertEnum(pythonEnum: SerializablePythonEnum): PythonEnum {
 fun convertEnumInstance(pythonEnumInstance: SerializablePythonEnumInstance): PythonEnumInstance {
     return PythonEnumInstance(
         name = pythonEnumInstance.name,
-        value = pythonEnumInstance.value,
+        value = PythonStringifiedExpression(pythonEnumInstance.value),
         description = pythonEnumInstance.description,
         annotations = mutableListOf()
     )
@@ -71,8 +70,6 @@ fun convertFunction(pythonFunction: SerializablePythonFunction): PythonFunction 
         results = pythonFunction.results.map { convertResult(it) },
         isPublic = pythonFunction.isPublic,
         description = pythonFunction.description,
-        fullDocstring = pythonFunction.fullDocstring,
-//        calledAfter = pythonFunction.calledAfter,
         isPure = pythonFunction.isPure,
         annotations = pythonFunction.annotations,
     )
@@ -81,9 +78,9 @@ fun convertFunction(pythonFunction: SerializablePythonFunction): PythonFunction 
 fun convertAttribute(pythonAttribute: SerializablePythonAttribute): PythonAttribute {
     return PythonAttribute(
         name = pythonAttribute.name,
-        value = pythonAttribute.defaultValue,
+        type = PythonStringifiedType(pythonAttribute.typeInDocs),
+        value = pythonAttribute.defaultValue?.let { PythonStringifiedExpression(it) },
         isPublic = pythonAttribute.isPublic,
-        typeInDocs = pythonAttribute.typeInDocs,
         description = pythonAttribute.description,
         boundary = pythonAttribute.boundary,
         annotations = pythonAttribute.annotations,
@@ -93,9 +90,9 @@ fun convertAttribute(pythonAttribute: SerializablePythonAttribute): PythonAttrib
 fun convertParameter(pythonParameter: SerializablePythonParameter): PythonParameter {
     return PythonParameter(
         name = pythonParameter.name,
-        defaultValue = pythonParameter.defaultValue,
+        type = PythonStringifiedType(pythonParameter.typeInDocs),
+        defaultValue = pythonParameter.defaultValue?.let { PythonStringifiedExpression(it) },
         assignedBy = pythonParameter.assignedBy,
-        typeInDocs = pythonParameter.typeInDocs,
         description = pythonParameter.description,
         boundary = pythonParameter.boundary,
         annotations = pythonParameter.annotations,
@@ -105,8 +102,7 @@ fun convertParameter(pythonParameter: SerializablePythonParameter): PythonParame
 fun convertResult(pythonResult: SerializablePythonResult): PythonResult {
     return PythonResult(
         name = pythonResult.name,
-        type = pythonResult.type,
-        typeInDocs = pythonResult.typeInDocs,
+        type = PythonStringifiedType(pythonResult.type),
         description = pythonResult.description,
         boundary = pythonResult.boundary,
         annotations = pythonResult.annotations,

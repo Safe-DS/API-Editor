@@ -71,7 +71,7 @@ data class EnumAnnotation(val enumName: String, val pairs: List<EnumPair>) : Edi
 data class EnumPair(val stringValue: String, val instanceName: String)
 
 @Serializable
-data class GroupAnnotation(val groupName: String, val parameters: List<String>) : EditorAnnotation() {
+data class GroupAnnotation(val groupName: String, val parameters: MutableList<String>) : EditorAnnotation() {
 
     @Transient
     override val validTargets = FUNCTIONS
@@ -129,14 +129,14 @@ sealed class DefaultValue
 @Serializable
 class DefaultBoolean(val value: Boolean) : DefaultValue() {
     override fun toString(): String {
-        return "$value"
+        return value.toString().replaceFirstChar { it.uppercase() }
     }
 }
 
 @Serializable
 class DefaultNumber(val value: Double) : DefaultValue() {
     override fun toString(): String {
-        return "$value"
+        return value.toString()
     }
 }
 

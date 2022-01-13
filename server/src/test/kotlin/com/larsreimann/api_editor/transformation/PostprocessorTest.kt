@@ -11,6 +11,7 @@ import com.larsreimann.api_editor.mutable_model.PythonModule
 import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonReference
+import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
 import io.kotest.assertions.asClue
 import io.kotest.matchers.collections.exist
 import io.kotest.matchers.collections.shouldBeEmpty
@@ -30,6 +31,7 @@ import org.junit.jupiter.api.Test
 
 class PostprocessorTest {
     private lateinit var testFunction: PythonFunction
+    private lateinit var testConstructor: PythonConstructor
     private lateinit var testConstructorParameter: PythonParameter
     private lateinit var testClass: PythonClass
     private lateinit var testModule: PythonModule
@@ -38,27 +40,28 @@ class PostprocessorTest {
     @BeforeEach
     fun reset() {
         testFunction = PythonFunction(name = "testFunction")
+        testConstructor = PythonConstructor(
+            parameters = listOf(
+                PythonParameter(
+                    name = "self",
+                    assignedBy = PythonParameterAssignment.IMPLICIT
+                ),
+                PythonParameter(
+                    name = "positionOrName",
+                    assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+                )
+            )
+        )
         testConstructorParameter = PythonParameter(name = "constructorParameter")
         testClass = PythonClass(
             name = "TestClass",
-            constructor = PythonConstructor(
-                parameters = listOf(
-                    PythonParameter(
-                        name = "self",
-                        assignedBy = PythonParameterAssignment.IMPLICIT
-                    ),
-                    PythonParameter(
-                        name = "positionOrName",
-                        assignedBy = PythonParameterAssignment.POSITION_OR_NAME
-                    )
-                )
-            ),
+            constructor = testConstructor,
             methods = listOf(
                 PythonFunction(
                     name = "__init__",
                     parameters = listOf(testConstructorParameter),
                     callToOriginalAPI = PythonCall(
-                        receiver = "testModule.TestClass.__init__",
+                        receiver = PythonStringifiedExpression("testModule.TestClass.__init__"),
                         arguments = listOf(
                             PythonArgument(value = PythonReference(testConstructorParameter))
                         )
@@ -105,7 +108,44 @@ class PostprocessorTest {
     inner class ReorderParameters {
 
         @Test
-        fun `should reorder parameters`() {
+        fun `should reorder parameters of constructors`() {
+            val implicit = PythonParameter(
+                name = "implicit",
+                assignedBy = PythonParameterAssignment.IMPLICIT
+            )
+            val positionOnly = PythonParameter(
+                name = "positionOnly",
+                assignedBy = PythonParameterAssignment.POSITION_ONLY
+            )
+            val positionOrName = PythonParameter(
+                name = "positionOrName",
+                assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+            )
+            val nameOnly = PythonParameter(
+                name = "nameOnly",
+                assignedBy = PythonParameterAssignment.NAME_ONLY
+            )
+
+            testConstructor.parameters.clear()
+            testConstructor.parameters += listOf(
+                nameOnly,
+                positionOrName,
+                positionOnly,
+                implicit
+            )
+
+            testPackage.reorderParameters()
+
+            testConstructor.parameters.shouldContainExactly(
+                implicit,
+                positionOnly,
+                positionOrName,
+                nameOnly
+            )
+        }
+
+        @Test
+        fun `should reorder parameters of functions`() {
             val implicit = PythonParameter(
                 name = "implicit",
                 assignedBy = PythonParameterAssignment.IMPLICIT
@@ -133,12 +173,10 @@ class PostprocessorTest {
             testPackage.reorderParameters()
 
             testFunction.parameters.shouldContainExactly(
-                listOf(
-                    implicit,
-                    positionOnly,
-                    positionOrName,
-                    nameOnly
-                )
+                implicit,
+                positionOnly,
+                positionOrName,
+                nameOnly
             )
         }
     }
@@ -158,7 +196,7 @@ class PostprocessorTest {
                     it.parameters.shouldBeEmpty()
 
                     val callToOriginalAPI = it.callToOriginalAPI.shouldNotBeNull()
-                    callToOriginalAPI.receiver shouldBe "testModule.TestClass"
+                    callToOriginalAPI.receiver shouldBe PythonStringifiedExpression("testModule.TestClass")
                     callToOriginalAPI.arguments.shouldBeEmpty()
                 }
         }
@@ -187,7 +225,7 @@ class PostprocessorTest {
                 .callToOriginalAPI
                 .asClue {
                     it.shouldNotBeNull()
-                    it.receiver shouldBe "testModule.TestClass"
+                    it.receiver shouldBe PythonStringifiedExpression("testModule.TestClass")
                     it.arguments.shouldHaveSize(1)
 
                     val argument = it.arguments[0]

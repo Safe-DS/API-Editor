@@ -20,6 +20,7 @@ import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonReference
 import com.larsreimann.api_editor.mutable_model.PythonString
+import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
 import com.larsreimann.modeling.closest
 import com.larsreimann.modeling.descendants
 
@@ -53,9 +54,9 @@ private fun PythonParameter.processAttributeAnnotation(annotation: AttributeAnno
     val containingClass = this.closest<PythonClass>()!!
     containingClass.attributes += PythonAttribute(
         name = name,
-        value = annotation.defaultValue.toString(),
+        type = type,
+        value = PythonStringifiedExpression(annotation.defaultValue.toString()),
         isPublic = true,
-        typeInDocs = typeInDocs,
         description = description,
         boundary = boundary
     )
@@ -96,7 +97,7 @@ private fun PythonParameter.processConstantAnnotation(annotation: ConstantAnnota
 
 private fun PythonParameter.processOptionalAnnotation(annotation: OptionalAnnotation) {
     this.assignedBy = PythonParameterAssignment.NAME_ONLY
-    this.defaultValue = annotation.defaultValue.toString()
+    this.defaultValue = PythonStringifiedExpression(annotation.defaultValue.toString())
     this.annotations.remove(annotation)
 }
 

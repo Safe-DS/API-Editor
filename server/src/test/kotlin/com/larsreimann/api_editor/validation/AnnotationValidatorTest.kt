@@ -14,6 +14,7 @@ import com.larsreimann.api_editor.model.PythonFromImport
 import com.larsreimann.api_editor.model.PythonImport
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.model.RenameAnnotation
+import com.larsreimann.api_editor.model.RequiredAnnotation
 import com.larsreimann.api_editor.model.SerializablePythonClass
 import com.larsreimann.api_editor.model.SerializablePythonFunction
 import com.larsreimann.api_editor.model.SerializablePythonModule
@@ -223,10 +224,8 @@ internal class AnnotationValidatorTest {
                                             "typeInDocs",
                                             "description",
                                             mutableListOf(
-                                                AttributeAnnotation(
-                                                    DefaultString("test")
-                                                ),
                                                 RenameAnnotation("newName"),
+                                                RequiredAnnotation,
                                                 BoundaryAnnotation(
                                                     false,
                                                     1.0,
@@ -302,7 +301,7 @@ internal class AnnotationValidatorTest {
                                 CalledAfterAnnotation("calledAfterName2"),
                                 GroupAnnotation(
                                     "groupName",
-                                    listOf("test-module.test-function.test-parameter")
+                                    mutableListOf("test-module.test-function.test-parameter")
                                 ),
                                 RenameAnnotation("newName")
                             )
@@ -549,7 +548,7 @@ internal class AnnotationValidatorTest {
                                     mutableListOf(
                                         GroupAnnotation(
                                             "paramGroup",
-                                            listOf("first-param", "second-param")
+                                            mutableListOf("first-param", "second-param")
                                         )
                                     )
                                 ),
@@ -592,7 +591,7 @@ internal class AnnotationValidatorTest {
                                     mutableListOf(
                                         GroupAnnotation(
                                             "paramGroup",
-                                            listOf("second-param")
+                                            mutableListOf("second-param")
                                         )
                                     )
                                 )
@@ -642,7 +641,7 @@ internal class AnnotationValidatorTest {
                             mutableListOf(
                                 GroupAnnotation(
                                     "paramGroup",
-                                    listOf("second-param")
+                                    mutableListOf("second-param")
                                 )
                             )
                         )

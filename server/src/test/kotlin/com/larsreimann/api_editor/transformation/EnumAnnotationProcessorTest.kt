@@ -10,14 +10,16 @@ import com.larsreimann.api_editor.mutable_model.PythonEnumInstance
 import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonMemberAccess
 import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonNamedType
 import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonReference
+import com.larsreimann.api_editor.mutable_model.PythonString
+import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
 import com.larsreimann.api_editor.transformation.processing_exceptions.ConflictingEnumException
 import io.kotest.assertions.asClue
 import io.kotest.assertions.throwables.shouldThrowExactly
 import io.kotest.matchers.collections.shouldBeEmpty
-import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -51,7 +53,7 @@ class EnumAnnotationProcessorTest {
             name = "testFunction",
             parameters = listOf(testParameter),
             callToOriginalAPI = PythonCall(
-                receiver = "testModule.testFunction",
+                receiver = PythonStringifiedExpression("testModule.testFunction"),
                 arguments = listOf(
                     PythonArgument(
                         value = PythonReference(testParameter)
@@ -97,16 +99,32 @@ class EnumAnnotationProcessorTest {
     fun `should process EnumAnnotations on parameter level`() {
         testPackage.processEnumAnnotations()
 
-        testParameter.typeInDocs shouldBe "TestEnum"
+        val type = testParameter.type
+        type.shouldBeInstanceOf<PythonNamedType>()
+
+        val declaration = type.declaration
+        declaration.shouldBeInstanceOf<PythonEnum>()
+        declaration.name shouldBe "TestEnum"
     }
 
     @Test
     fun `should process EnumAnnotations on module level`() {
         testPackage.processEnumAnnotations()
 
-        testModule.enums[0].name shouldBe "TestEnum"
-        testModule.enums[0].instances shouldContain PythonEnumInstance("name1", "value1")
-        testModule.enums[0].instances shouldContain PythonEnumInstance("name2", "value2")
+        val enum = testModule.enums[0]
+        enum.name shouldBe "TestEnum"
+
+        val instances = enum.instances
+        instances.shouldHaveSize(2)
+
+        instances[0].asClue {
+            it.name shouldBe "name1"
+            it.value shouldBe PythonString("value1")
+        }
+        instances[1].asClue {
+            it.name shouldBe "name2"
+            it.value shouldBe PythonString("value2")
+        }
     }
 
     @Test
@@ -114,14 +132,25 @@ class EnumAnnotationProcessorTest {
         val mutableEnum = PythonEnum(
             "TestEnum",
             mutableListOf(
-                PythonEnumInstance("name1", "value1"),
-                PythonEnumInstance("name2", "value2")
+                PythonEnumInstance(
+                    name = "name1",
+                    value = PythonString("value1")
+                ),
+                PythonEnumInstance(
+                    name = "name2",
+                    value = PythonString("value2")
+                )
             )
         )
         testModule.enums += mutableEnum
         testPackage.processEnumAnnotations()
 
-        testParameter.typeInDocs shouldBe "TestEnum"
+        val type = testParameter.type
+        type.shouldBeInstanceOf<PythonNamedType>()
+
+        val declaration = type.declaration
+        declaration.shouldBeInstanceOf<PythonEnum>()
+        declaration.name shouldBe "TestEnum"
     }
 
     @Test
@@ -129,16 +158,35 @@ class EnumAnnotationProcessorTest {
         val mutableEnum = PythonEnum(
             "TestEnum",
             mutableListOf(
-                PythonEnumInstance("name1", "value1"),
-                PythonEnumInstance("name2", "value2")
+                PythonEnumInstance(
+                    name = "name1",
+                    value = PythonString("value1")
+                ),
+                PythonEnumInstance(
+                    name = "name2",
+                    value = PythonString("value2")
+                )
             )
         )
         testModule.enums.add(mutableEnum)
         testPackage.processEnumAnnotations()
 
-        testModule.enums[0].name shouldBe "TestEnum"
-        testModule.enums[0].instances shouldContain PythonEnumInstance("name1", "value1")
-        testModule.enums[0].instances shouldContain PythonEnumInstance("name2", "value2")
+        testModule.enums.shouldHaveSize(1)
+
+        val enum = testModule.enums[0]
+        enum.name shouldBe "TestEnum"
+
+        val instances = enum.instances
+        instances.shouldHaveSize(2)
+
+        instances[0].asClue {
+            it.name shouldBe "name1"
+            it.value shouldBe PythonString("value1")
+        }
+        instances[1].asClue {
+            it.name shouldBe "name2"
+            it.value shouldBe PythonString("value2")
+        }
     }
 
     @Test
@@ -146,8 +194,14 @@ class EnumAnnotationProcessorTest {
         val mutableEnum = PythonEnum(
             "TestEnum",
             mutableListOf(
-                PythonEnumInstance("name1", "value1"),
-                PythonEnumInstance("name2", "value2")
+                PythonEnumInstance(
+                    name = "name1",
+                    value = PythonString("value1")
+                ),
+                PythonEnumInstance(
+                    name = "name2",
+                    value = PythonString("value2")
+                )
             )
         )
         testModule.enums.add(mutableEnum)
@@ -180,8 +234,14 @@ class EnumAnnotationProcessorTest {
         val mutableEnum = PythonEnum(
             "TestEnum",
             mutableListOf(
-                PythonEnumInstance("name1", "value1"),
-                PythonEnumInstance("name3", "value3")
+                PythonEnumInstance(
+                    name = "name1",
+                    value = PythonString("value1")
+                ),
+                PythonEnumInstance(
+                    name = "name3",
+                    value = PythonString("value3")
+                )
             )
         )
         testModule.enums += mutableEnum
