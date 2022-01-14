@@ -26,17 +26,28 @@ def get_class_name(filepath: str) -> str:
     return filepath
 
 
-def extract_docstrings():
+def get_ground_truth() -> dict:
     with open("ground_truth.json", "r") as fin:
         ground_truth = json.load(fin)
+    return ground_truth
 
-    with open("docstrings.txt", "w") as fout:
-        for class_name in ground_truth:
-            class_props = ground_truth[class_name]
-            for prop in class_props:
-                for doc in class_props[prop]["docs"]:
-                    fout.write(f"{doc}\n")
-                fout.write("\n")
+
+def get_boundaries():
+    ground_truth = get_ground_truth()
+    boundaries = {}
+    for cls, props in ground_truth.items():
+        for prop_name, prop_body in props.items():
+            ref_type = prop_body["refined_type"]
+            if ref_type["kind"] == "BoundaryType":
+                key = f"{cls}.{prop_name}"
+                boundaries[key] = prop_body
+            if ref_type["kind"] == "UnionType":
+                for type in ref_type["types"]:
+                    if type["kind"] == "BoundaryType":
+                        key = f"{cls}.{prop_name}"
+                        boundaries[key] = prop_body
+    with open("boundaries.json", "w") as fout:
+        json.dump(boundaries, fout, indent=4)
 
 
 def stats():
@@ -50,21 +61,7 @@ def stats():
     print(f"Number of properties with refined types: {num_props}")
 
 
-def replace_doc_with_docs():
-    for filepath in glob.glob("sklearn/**/*json", recursive=True):
-        with open(filepath, "r") as fin:
-            jsonfile = json.load(fin)
-
-        class_name = get_class_name(filepath)
-        class_props = jsonfile[class_name]
-        for prop in class_props:
-            if "doc" in class_props[prop]:
-                class_props[prop]["docs"] = class_props[prop].pop("doc")
-        with open(filepath, "w") as fout:
-            json.dump(jsonfile, fout, indent=4)
-
-
 if __name__ == "__main__":
     sync()
-    stats()
-    # extract_docstrings()
+    # stats()
+    get_boundaries()

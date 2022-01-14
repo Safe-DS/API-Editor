@@ -1,0 +1,461 @@
+{
+    "sklearn.tree.DecisionTreeClassifier.ccp_alpha": {
+        "refined_type": {
+            "kind": "BoundaryType",
+            "baseType": "float",
+            "min": 0,
+            "minInclusive": true,
+            "max": null,
+            "maxInclusive": false
+        },
+        "docstring": {
+            "type": "non-negative float, default=0.0",
+            "description": "Complexity parameter used for Minimal Cost-Complexity Pruning. The\nsubtree with the largest cost complexity that is smaller than\n``ccp_alpha`` will be chosen. By default, no pruning is performed. See\n:ref:`minimal_cost_complexity_pruning` for details.\n\n.. versionadded:: 0.22"
+        }
+    },
+    "sklearn.decomposition.PCA.tol": {
+        "refined_type": {
+            "kind": "BoundaryType",
+            "baseType": "float",
+            "min": 0,
+            "minInclusive": true,
+            "max": null,
+            "maxInclusive": false
+        },
+        "docstring": {
+            "type": "float, default=0.0",
+            "description": "Tolerance for singular values computed by svd_solver == 'arpack'.\nMust be of range [0.0, infinity).\n\n.. versionadded:: 0.18.0"
+        }
+    },
+    "sklearn.decomposition.PCA.iterated_power": {
+        "refined_type": {
+            "kind": "UnionType",
+            "types": [
+                {
+                    "kind": "BoundaryType",
+                    "baseType": "int",
+                    "min": 0,
+                    "minInclusive": true,
+                    "max": null,
+                    "maxInclusive": false
+                },
+                {
+                    "kind": "EnumType",
+                    "values": ["auto"]
+                }
+            ]
+        },
+        "docstring": {
+            "type": "int or 'auto', default='auto'",
+            "description": "Number of iterations for the power method computed by\nsvd_solver == 'randomized'.\nMust be of range [0, infinity).\n\n.. versionadded:: 0.18.0"
+        }
+    },
+    "sklearn.ensemble.GradientBoostingRegressor.validation_fraction": {
+        "refined_type": {
+            "kind": "BoundaryType",
+            "baseType": "float",
+            "min": 0,
+            "minInclusive": false,
+            "max": 1,
+            "maxInclusive": false
+        },
+        "docstring": {
+            "type": "float, default=0.1",
+            "description": "The proportion of training data to set aside as validation set for\nearly stopping. Must be between 0 and 1.\nOnly used if ``n_iter_no_change`` is set to an integer.\n\n.. versionadded:: 0.20"
+        }
+    },
+    "sklearn.ensemble.GradientBoostingRegressor.ccp_alpha": {
+        "refined_type": {
+            "kind": "BoundaryType",
+            "baseType": "float",
+            "min": 0,
+            "minInclusive": true,
+            "max": null,
+            "maxInclusive": false
+        },
+        "docstring": {
+            "type": "non-negative float, default=0.0",
+            "description": "Complexity parameter used for Minimal Cost-Complexity Pruning. The\nsubtree with the largest cost complexity that is smaller than\n``ccp_alpha`` will be chosen. By default, no pruning is performed. See\n:ref:`minimal_cost_complexity_pruning` for details.\n\n.. versionadded:: 0.22"
+        }
+    },
+    "sklearn.ensemble.RandomForestClassifier.ccp_alpha": {
+        "refined_type": {
+            "kind": "BoundaryType",
+            "baseType": "float",
+            "min": 0,
+            "minInclusive": true,
+            "max": null,
+            "maxInclusive": false
+        },
+        "docstring": {
+            "type": "non-negative float, default=0.0",
+            "description": "Complexity parameter used for Minimal Cost-Complexity Pruning. The\nsubtree with the largest cost complexity that is smaller than\n``ccp_alpha`` will be chosen. By default, no pruning is performed. See\n:ref:`minimal_cost_complexity_pruning` for details.\n\n.. versionadded:: 0.22"
+        }
+    },
+    "sklearn.ensemble.RandomForestClassifier.max_samples": {
+        "refined_type": {
+            "kind": "UnionType",
+            "types": [
+                {
+                    "kind": "NamedType",
+                    "name": "int"
+                },
+                {
+                    "kind": "BoundaryType",
+                    "baseType": "float",
+                    "min": 0,
+                    "minInclusive": false,
+                    "max": 1,
+                    "maxInclusive": true
+                }
+            ]
+        },
+        "docstring": {
+            "type": "int or float, default=None",
+            "description": "If bootstrap is True, the number of samples to draw from X\nto train each base estimator.\n\n- If None (default), then draw `X.shape[0]` samples.\n- If int, then draw `max_samples` samples.\n- If float, then draw `max_samples * X.shape[0]` samples. Thus,\n  `max_samples` should be in the interval `(0.0, 1.0]`.\n\n.. versionadded:: 0.22"
+        }
+    },
+    "sklearn.ensemble.ExtraTreesClassifier.ccp_alpha": {
+        "refined_type": {
+            "kind": "BoundaryType",
+            "baseType": "float",
+            "min": 0,
+            "minInclusive": true,
+            "max": null,
+            "maxInclusive": false
+        },
+        "docstring": {
+            "type": "non-negative float, default=0.0",
+            "description": "Complexity parameter used for Minimal Cost-Complexity Pruning. The\nsubtree with the largest cost complexity that is smaller than\n``ccp_alpha`` will be chosen. By default, no pruning is performed. See\n:ref:`minimal_cost_complexity_pruning` for details.\n\n.. versionadded:: 0.22"
+        }
+    },
+    "sklearn.ensemble.ExtraTreesClassifier.max_samples": {
+        "refined_type": {
+            "kind": "UnionType",
+            "types": [
+                {
+                    "kind": "NamedType",
+                    "name": "int"
+                },
+                {
+                    "kind": "BoundaryType",
+                    "baseType": "float",
+                    "min": 0,
+                    "minInclusive": false,
+                    "max": 1,
+                    "maxInclusive": true
+                }
+            ]
+        },
+        "docstring": {
+            "type": "int or float, default=None",
+            "description": "If bootstrap is True, the number of samples to draw from X\nto train each base estimator.\n\n- If None (default), then draw `X.shape[0]` samples.\n- If int, then draw `max_samples` samples.\n- If float, then draw `max_samples * X.shape[0]` samples. Thus,\n  `max_samples` should be in the interval `(0.0, 1.0]`.\n\n.. versionadded:: 0.22"
+        }
+    },
+    "sklearn.metrics.roc_auc_score.max_fpr": {
+        "refined_type": {
+            "kind": "BoundaryType",
+            "baseType": "float",
+            "min": 0,
+            "max": 1,
+            "minInclusive": false,
+            "maxInclusive": true
+        },
+        "docstring": {
+            "type": "float > 0 and <= 1, default=None",
+            "description": "If not ``None``, the standardized partial AUC [2]_ over the range\n[0, max_fpr] is returned. For the multiclass case, ``max_fpr``,\nshould be either equal to ``None`` or ``1.0`` as AUC ROC partial\ncomputation currently is not supported for multiclass."
+        }
+    },
+    "sklearn.feature_extraction.text.TfidfVectorizer.max_df": {
+        "refined_type": {
+            "kind": "UnionType",
+            "types": [
+                {
+                    "kind": "BoundaryType",
+                    "baseType": "float",
+                    "min": 0,
+                    "minInclusive": true,
+                    "max": 1,
+                    "maxInclusive": true
+                },
+                {
+                    "kind": "NamedType",
+                    "name": "int"
+                }
+            ]
+        },
+        "docstring": {
+            "type": "float or int, default=1.0",
+            "description": "When building the vocabulary ignore terms that have a document\nfrequency strictly higher than the given threshold (corpus-specific\nstop words).\nIf float in range [0.0, 1.0], the parameter represents a proportion of\ndocuments, integer absolute counts.\nThis parameter is ignored if vocabulary is not None."
+        }
+    },
+    "sklearn.feature_extraction.text.TfidfVectorizer.min_df": {
+        "refined_type": {
+            "kind": "UnionType",
+            "types": [
+                {
+                    "kind": "BoundaryType",
+                    "baseType": "float",
+                    "min": 0,
+                    "minInclusive": true,
+                    "max": 1,
+                    "maxInclusive": true
+                },
+                {
+                    "kind": "NamedType",
+                    "name": "int"
+                }
+            ]
+        },
+        "docstring": {
+            "type": "float or int, default=1",
+            "description": "When building the vocabulary ignore terms that have a document\nfrequency strictly lower than the given threshold. This value is also\ncalled cut-off in the literature.\nIf float in range of [0.0, 1.0], the parameter represents a proportion\nof documents, integer absolute counts.\nThis parameter is ignored if vocabulary is not None."
+        }
+    },
+    "sklearn.feature_extraction.text.CountVectorizer.max_df": {
+        "refined_type": {
+            "kind": "UnionType",
+            "types": [
+                {
+                    "kind": "BoundaryType",
+                    "baseType": "float",
+                    "min": 0,
+                    "minInclusive": true,
+                    "max": 1,
+                    "maxInclusive": true
+                },
+                {
+                    "kind": "NamedType",
+                    "name": "int"
+                }
+            ]
+        },
+        "docstring": {
+            "type": "float in range [0.0, 1.0] or int, default=1.0",
+            "description": "When building the vocabulary ignore terms that have a document\nfrequency strictly higher than the given threshold (corpus-specific\nstop words).\nIf float, the parameter represents a proportion of documents, integer\nabsolute counts.\nThis parameter is ignored if vocabulary is not None."
+        }
+    },
+    "sklearn.feature_extraction.text.CountVectorizer.min_df": {
+        "refined_type": {
+            "kind": "UnionType",
+            "types": [
+                {
+                    "kind": "BoundaryType",
+                    "baseType": "float",
+                    "min": 0,
+                    "minInclusive": true,
+                    "max": 1,
+                    "maxInclusive": true
+                },
+                {
+                    "kind": "NamedType",
+                    "name": "int"
+                }
+            ]
+        },
+        "docstring": {
+            "type": "float in range [0.0, 1.0] or int, default=1",
+            "description": "When building the vocabulary ignore terms that have a document\nfrequency strictly lower than the given threshold. This value is also\ncalled cut-off in the literature.\nIf float, the parameter represents a proportion of documents, integer\nabsolute counts.\nThis parameter is ignored if vocabulary is not None."
+        }
+    },
+    "sklearn.svm.SVC.C": {
+        "refined_type": {
+            "kind": "BoundaryType",
+            "baseType": "float",
+            "min": 0,
+            "minInclusive": false,
+            "max": null,
+            "maxInclusive": false
+        },
+        "docstring": {
+            "type": "float, default=1.0",
+            "description": "Regularization parameter. The strength of the regularization is\ninversely proportional to C. Must be strictly positive. The penalty\nis a squared l2 penalty."
+        }
+    },
+    "sklearn.preprocessing.RobustScaler.quantile_range": {
+        "refined_type": {
+            "kind": "BoundaryType",
+            "baseType": "tuple",
+            "min": 0,
+            "max": 100,
+            "minInclusive": false,
+            "maxInclusive": false
+        },
+        "docstring": {
+            "type": "tuple (q_min, q_max), 0.0 < q_min < q_max < 100.0,         default=(25.0, 75.0)",
+            "description": "Quantile range used to calculate `scale_`. By default this is equal to\nthe IQR, i.e., `q_min` is the first quantile and `q_max` is the third\nquantile.\n\n.. versionadded:: 0.18"
+        }
+    },
+    "sklearn.linear_model.ElasticNet.l1_ratio": {
+        "refined_type": {
+            "kind": "BoundaryType",
+            "baseType": "float",
+            "min": 0,
+            "minInclusive": true,
+            "max": 1,
+            "maxInclusive": true
+        },
+        "docstring": {
+            "type": "float, default=0.5",
+            "description": "The ElasticNet mixing parameter, with 0 <= l1_ratio <= 1. For l1_ratio = 0 the penalty is an L2 penalty. For l1_ratio = 1 it is an L1 penalty. For 0 < l1_ratio < 1, the penalty is a combination of L1 and L2.\n\n"
+        }
+    },
+    "sklearn.linear_model.LogisticRegression.C": {
+        "refined_type": {
+            "kind": "BoundaryType",
+            "baseType": "float",
+            "min": 0,
+            "minInclusive": false,
+            "max": null,
+            "maxInclusive": false
+        },
+        "docstring": {
+            "type": "float, default=1.0",
+            "description": "Inverse of regularization strength; must be a positive float.\nLike in support vector machines, smaller values specify stronger\nregularization."
+        }
+    },
+    "sklearn.linear_model.LogisticRegression.verbose": {
+        "refined_type": {
+            "kind": "BoundaryType",
+            "baseType": "int",
+            "min": 0,
+            "minInclusive": false,
+            "max": null,
+            "maxInclusive": false
+        },
+        "docstring": {
+            "type": "int, default=0",
+            "description": "For the liblinear and lbfgs solvers set verbose to any positive\nnumber for verbosity."
+        }
+    },
+    "sklearn.linear_model.LogisticRegression.l1_ratio": {
+        "refined_type": {
+            "kind": "BoundaryType",
+            "baseType": "float",
+            "min": 0,
+            "minInclusive": true,
+            "max": 1,
+            "maxInclusive": true
+        },
+        "docstring": {
+            "type": "float, default=None",
+            "description": "The Elastic-Net mixing parameter, with ``0 <= l1_ratio <= 1``. Only\nused if ``penalty='elasticnet'``. Setting ``l1_ratio=0`` is equivalent\nto using ``penalty='l2'``, while setting ``l1_ratio=1`` is equivalent\nto using ``penalty='l1'``. For ``0 < l1_ratio <1``, the penalty is a\ncombination of L1 and L2."
+        }
+    },
+    "sklearn.linear_model.SGDClassifier.l1_ratio": {
+        "refined_type": {
+            "kind": "BoundaryType",
+            "baseType": "float",
+            "min": 0,
+            "minInclusive": true,
+            "max": 1,
+            "maxInclusive": true
+        },
+        "docstring": {
+            "type": "float, default=0.15",
+            "description": "The Elastic Net mixing parameter, with 0 <= l1_ratio <= 1.\nl1_ratio=0 corresponds to L2 penalty, l1_ratio=1 to L1.\nOnly used if `penalty` is 'elasticnet'."
+        }
+    },
+    "sklearn.linear_model.SGDClassifier.validation_fraction": {
+        "refined_type": {
+            "kind": "BoundaryType",
+            "baseType": "float",
+            "min": 0,
+            "minInclusive": false,
+            "max": 1,
+            "maxInclusive": false
+        },
+        "docstring": {
+            "type": "float, default=0.1",
+            "description": "The proportion of training data to set aside as validation set for\nearly stopping. Must be between 0 and 1.\nOnly used if `early_stopping` is True.\n\n.. versionadded:: 0.20\n    Added 'validation_fraction' option"
+        }
+    },
+    "sklearn.model_selection.StratifiedKFold.n_splits": {
+        "refined_type": {
+            "kind": "BoundaryType",
+            "baseType": "int",
+            "min": 2,
+            "minInclusive": true,
+            "max": null,
+            "maxInclusive": false
+        },
+        "docstring": {
+            "type": "int, default=5",
+            "description": "Number of folds. Must be at least 2.\n\n.. versionchanged:: 0.22\n    ``n_splits`` default value changed from 3 to 5."
+        }
+    },
+    "sklearn.model_selection.KFold.n_splits": {
+        "refined_type": {
+            "kind": "BoundaryType",
+            "baseType": "int",
+            "min": 2,
+            "minInclusive": true,
+            "max": null,
+            "maxInclusive": false
+        },
+        "docstring": {
+            "type": "int, default=5",
+            "description": "Number of folds. Must be at least 2.\n\n.. versionchanged:: 0.22\n    ``n_splits`` default value changed from 3 to 5."
+        }
+    },
+    "sklearn.model_selection.train_test_split.test_size": {
+        "refined_type": {
+            "kind": "UnionType",
+            "types": [
+                {
+                    "kind": "BoundaryType",
+                    "baseType": "float",
+                    "min": 0,
+                    "max": 1,
+                    "minInclusive": true,
+                    "maxInclusive": true
+                },
+                {
+                    "kind": "NamedType",
+                    "name": "int"
+                }
+            ]
+        },
+        "docstring": {
+            "type": "float or int, default=None",
+            "description": "If float, should be between 0.0 and 1.0 and represent the proportion\nof the dataset to include in the test split. If int, represents the\nabsolute number of test samples. If None, the value is set to the\ncomplement of the train size. If ``train_size`` is also None, it will\nbe set to 0.25."
+        }
+    },
+    "sklearn.model_selection.train_test_split.train_size": {
+        "refined_type": {
+            "kind": "UnionType",
+            "types": [
+                {
+                    "kind": "BoundaryType",
+                    "baseType": "float",
+                    "min": 0,
+                    "max": 1,
+                    "minInclusive": true,
+                    "maxInclusive": true
+                },
+                {
+                    "kind": "NamedType",
+                    "name": "int"
+                }
+            ]
+        },
+        "docstring": {
+            "type": "float or int, default=None",
+            "description": "If float, should be between 0.0 and 1.0 and represent the\nproportion of the dataset to include in the train split. If\nint, represents the absolute number of train samples. If None,\nthe value is automatically set to the complement of the test size."
+        }
+    },
+    "sklearn.model_selection.GroupKFold.n_splits": {
+        "refined_type": {
+            "kind": "BoundaryType",
+            "baseType": "int",
+            "min": 2,
+            "minInclusive": true,
+            "max": null,
+            "maxInclusive": false
+        },
+        "docstring": {
+            "type": "int, default=5",
+            "description": "Number of folds. Must be at least 2.\n\n.. versionchanged:: 0.22\n    ``n_splits`` default value changed from 3 to 5."
+        }
+    }
+}
