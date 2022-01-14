@@ -1,7 +1,7 @@
 from typing import Optional
 
 import pytest
-from package_parser.commands.get_api._model import ParameterEnum
+from package_parser.commands.get_api._refined_types import EnumType
 
 
 @pytest.mark.parametrize(
@@ -34,5 +34,5 @@ from package_parser.commands.get_api._model import ParameterEnum
     ],
 )
 def test_enum_from_docstring_type(docstring_type: str, expected: Optional[set[str]]):
-    result = ParameterEnum._from_docstring_type(docstring_type)
-    assert result == expected
+    result = EnumType.from_string(docstring_type)
+    assert result.values == expected
