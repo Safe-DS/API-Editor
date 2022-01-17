@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any
 
 from .commands.get_api import get_api
+from .commands.get_dependencies import get_dependencies
 from .utils import ensure_file_exists
 
 __API_COMMAND = "api"
@@ -22,6 +23,7 @@ def cli() -> None:
 
     if args.command == __API_COMMAND:
         public_api = get_api(args.package)
+        get_dependencies(public_api)
 
         out_dir: Path = args.out
         out_file = out_dir.joinpath(

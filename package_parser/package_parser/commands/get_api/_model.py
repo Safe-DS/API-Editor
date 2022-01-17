@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import inspect
 import re
-from dataclasses import asdict
+from dataclasses import asdict, dataclass
 from enum import Enum, auto
 from typing import Any, Dict, Optional, Union
 
@@ -445,6 +445,7 @@ class ParameterAndResultDocstring:
         return {"type": self.type, "description": self.description}
 
 
+@dataclass
 class Action:
     @classmethod
     def from_json(cls, json: Any):
@@ -477,6 +478,7 @@ class ParameterIsIllegal(StaticAction):
         super().__init__(action)
 
 
+@dataclass
 class Condition:
     @classmethod
     def from_json(cls, json: Any):
@@ -504,7 +506,7 @@ class ParameterHasValue(StaticCondition):
         super().__init__(condition)
 
 
-class ParameterIsSet(StaticCondition):
+class ParameterIsOptional(StaticCondition):
     def __init__(self, condition: str) -> None:
         super().__init__(condition)
 
