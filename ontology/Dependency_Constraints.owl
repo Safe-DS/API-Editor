@@ -14,15 +14,23 @@
 #################################################################
 
 ###  http://www.semanticweb.org/praja/ontologies/2021/11/Dependency_Constraints#hasAction
-:hasAction rdf:type owl:ObjectProperty ;
-           rdfs:domain :Dependency .
+:hasAction rdf:type owl:ObjectProperty ,
+                    owl:IrreflexiveProperty ;
+           rdfs:domain :Dependency ;
+           rdfs:range [ rdf:type owl:Restriction ;
+                        owl:onProperty :hasCondition ;
+                        owl:someValuesFrom :Action
+                      ] .
 
 
 ###  http://www.semanticweb.org/praja/ontologies/2021/11/Dependency_Constraints#hasCondition
-:hasCondition rdf:type owl:ObjectProperty ;
-              rdfs:domain :Action ,
-                          :Condition ,
-                          :Dependency .
+:hasCondition rdf:type owl:ObjectProperty ,
+                       owl:IrreflexiveProperty ;
+              rdfs:domain :Dependency ;
+              rdfs:range [ rdf:type owl:Restriction ;
+                           owl:onProperty :hasCondition ;
+                           owl:someValuesFrom :Condition
+                         ] .
 
 
 ###  http://www.semanticweb.org/praja/ontologies/2021/11/Dependency_Constraints#hasDependentParameter
@@ -55,11 +63,6 @@
               rdfs:range xsd:string .
 
 
-###  http://www.semanticweb.org/praja/ontologies/2021/11/Dependency_Constraints#hasType
-:hasType rdf:type owl:DatatypeProperty ;
-         rdfs:comment "Each parameter has a type." .
-
-
 ###  http://www.w3.org/2002/07/owl#topDataProperty
 owl:topDataProperty rdfs:subPropertyOf owl:topDataProperty .
 
@@ -83,11 +86,6 @@ owl:topDataProperty rdfs:subPropertyOf owl:topDataProperty .
             rdfs:comment "This class describes Dependencies."@en .
 
 
-###  http://www.semanticweb.org/praja/ontologies/2021/11/Dependency_Constraints#IsIgnored
-:IsIgnored rdf:type owl:Class ;
-           rdfs:subClassOf :StaticAction .
-
-
 ###  http://www.semanticweb.org/praja/ontologies/2021/11/Dependency_Constraints#Parameter
 :Parameter rdf:type owl:Class ;
            rdfs:comment "This describes Parameters of Scikit-lean APIs." .
@@ -98,9 +96,19 @@ owl:topDataProperty rdfs:subPropertyOf owl:topDataProperty .
                    rdfs:subClassOf :StaticCondition .
 
 
-###  http://www.semanticweb.org/praja/ontologies/2021/11/Dependency_Constraints#ParameterOnlyUsedWhen
-:ParameterOnlyUsedWhen rdf:type owl:Class ;
-                       rdfs:subClassOf :StaticCondition .
+###  http://www.semanticweb.org/praja/ontologies/2021/11/Dependency_Constraints#ParameterIsIgnored
+:ParameterIsIgnored rdf:type owl:Class ;
+                    rdfs:subClassOf :StaticAction .
+
+
+###  http://www.semanticweb.org/praja/ontologies/2021/11/Dependency_Constraints#ParameterIsIllegal
+:ParameterIsIllegal rdf:type owl:Class ;
+                    rdfs:subClassOf :StaticAction .
+
+
+###  http://www.semanticweb.org/praja/ontologies/2021/11/Dependency_Constraints#ParameterIsNone
+:ParameterIsNone rdf:type owl:Class ;
+                 rdfs:subClassOf :StaticCondition .
 
 
 ###  http://www.semanticweb.org/praja/ontologies/2021/11/Dependency_Constraints#RuntimeAction

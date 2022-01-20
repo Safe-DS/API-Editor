@@ -23,15 +23,20 @@ def cli() -> None:
 
     if args.command == __API_COMMAND:
         public_api = get_api(args.package)
-        get_dependencies(public_api)
+        public_api_dependencies = get_dependencies(public_api)
 
         out_dir: Path = args.out
-        out_file = out_dir.joinpath(
+        out_file_api = out_dir.joinpath(
             f"{public_api.distribution}__{public_api.package}__{public_api.version}__api.json"
         )
-        ensure_file_exists(out_file)
-        with out_file.open("w") as f:
+        out_file_api_dependencies = out_dir.joinpath(
+            f"{public_api.distribution}__{public_api.package}__{public_api.version}__api_dependencies.json"
+        )
+        ensure_file_exists(out_file_api)
+        with out_file_api.open("w") as f:
             json.dump(public_api.to_json(), f, indent=2, cls=CustomEncoder)
+        with out_file_api_dependencies.open("w") as f:
+            json.dump(public_api_dependencies.to_json(), f, indent=2, cls=CustomEncoder)
 
 
 def __get_args() -> argparse.Namespace:

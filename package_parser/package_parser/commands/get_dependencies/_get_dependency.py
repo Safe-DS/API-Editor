@@ -8,13 +8,14 @@ from spacy.tokens.doc import Doc
 from ..get_api._model import (
     API,
     Action,
+    APIDependencies,
     Condition,
     Dependency,
     Parameter,
     ParameterHasValue,
     ParameterIsIgnored,
     ParameterIsIllegal,
-    ParameterIsOptional,
+    ParameterIsNone,
 )
 from ._dependency_patterns import dependency_matcher_patterns
 from ._preprocess_docstring import preprocess_docstring
@@ -23,6 +24,9 @@ PIPELINE = "en_core_web_sm"
 
 
 def extract_lefts_and_rights(curr_token: Token, extracted: Union[List, None] = None):
+    """
+    Given a spaCy token, extract recursively all tokens in its dependency subtree in inorder traversal.
+    """
     if extracted is None:
         extracted = []
 
@@ -40,6 +44,10 @@ def extract_lefts_and_rights(curr_token: Token, extracted: Union[List, None] = N
 
 
 def extract_action(action_token: Token, condition_token: Token) -> Action:
+    """
+    Create action object given head token of action phrase in docstring.
+    Condition token used to avoid traversing into the condition phrase dependency subtree of the docstring.
+    """
     action_tokens = []
     action_lefts = list(action_token.lefts)
     action_rights = list(action_token.rights)
@@ -52,6 +60,9 @@ def extract_action(action_token: Token, condition_token: Token) -> Action:
         if token != condition_token:
             action_tokens.extend(extract_lefts_and_rights(token))
 
+    # Remove trailing punctiation
+    if any(p == action_tokens[-1] for p in [",", "."]):
+        del action_tokens[-1]
     action_text = " ".join(action_tokens)
 
     ignored_phrases = [
@@ -71,20 +82,30 @@ def extract_action(action_token: Token, condition_token: Token) -> Action:
 
 
 def extract_condition(condition_token: Token) -> Condition:
+    """
+    Create condition object given head token of condition phrase in docstring.
+    """
     condition_token_subtree = list(condition_token.subtree)
     condition_text = " ".join([token.text for token in condition_token_subtree])
 
-    is_optional_phrases = [
+    is_none_phrases = [
         "is none",
-        "is not set",
+        "is also none" "is not set",
         "is not specified",
         "is not none",
         "if none",
         "if not none",
     ]
-    has_value_phrases = ["equals", "is true", "is false", "is set to"]
-    if any(phrase in condition_text.lower() for phrase in is_optional_phrases):
-        return ParameterIsOptional(condition=condition_text)
+    has_value_phrases = [
+        "equals",
+        "is true",
+        "is false",
+        "is set to",
+        "is greater than",
+        "is less than",
+    ]
+    if any(phrase in condition_text.lower() for phrase in is_none_phrases):
+        return ParameterIsNone(condition=condition_text)
     elif any(phrase in condition_text.lower() for phrase in has_value_phrases):
         return ParameterHasValue(condition=condition_text)
     else:
@@ -92,6 +113,10 @@ def extract_condition(condition_token: Token) -> Condition:
 
 
 class DependencyExtractor:
+    """
+    Functions to extract each type of pattern in _dependency_patterns
+    """
+
     @staticmethod
     def extract_pattern_parameter_subordinating_conjunction(
         dependent_param: Parameter,
@@ -133,7 +158,8 @@ def extract_dependencies_from_docstring(
     spacy_id_to_pattern_id_mapping: Dict,
 ) -> List[Dependency]:
     """
-    Extract readable dependencies in a Docstring from pattern matches
+    Extract readable dependencies in a Docstring from pattern matches.
+    Function fetched from class DependencyExtractor, when 'extract_' + pattern name match function name in the class.
     """
     dependencies = list()
     for match in matches:
@@ -149,7 +175,7 @@ def extract_dependencies_from_docstring(
     return dependencies
 
 
-def get_dependencies(api: API) -> Dict:
+def get_dependencies(api: API) -> APIDependencies:
     """
     Loop through all functions in the API
     Parse and preprocess each doc string from every function
@@ -187,4 +213,4 @@ def get_dependencies(api: API) -> Dict:
             if param_dependencies:
                 all_dependencies[function_name][parameter.name] = param_dependencies
 
-    return all_dependencies
+    return APIDependencies(dependencies=all_dependencies)
