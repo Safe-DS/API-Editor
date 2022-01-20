@@ -33,6 +33,7 @@ from package_parser.commands.get_api._refined_types import EnumType
         ("""{'best\\', \\'random'}""", {"best', 'random"}),
     ],
 )
-def test_enum_from_docstring_type(docstring_type: str, expected: Optional[set[str]]):
+def test_enum_from_string(docstring_type: str, expected: Optional[set[str]]):
     result = EnumType.from_string(docstring_type)
-    assert result.values == expected
+    if result is not None:
+        assert result.values == expected
