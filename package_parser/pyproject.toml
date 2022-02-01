@@ -12,7 +12,7 @@ parse-package = "package_parser.main:main"
 python = "^3.9"
 astroid = "^2.9.3"
 scikit-learn = "^1.0"
-importlib-metadata = "^4.10.0"
+importlib-metadata = "^4.10.1"
 numpydoc = "^1.1.0"
 spacy = "^3.2.1"
 
