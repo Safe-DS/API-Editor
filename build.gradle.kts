@@ -1,7 +1,7 @@
 // Plugins -------------------------------------------------------------------------------------------------------------
 
 plugins {
-    id("org.jetbrains.kotlinx.kover") version "0.4.4"
+    id("org.jetbrains.kotlinx.kover") version "0.5.0"
     idea
 
     // Pin versions for subprojects
