@@ -286,18 +286,18 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "numpydoc"
-version = "1.1.0"
+version = "1.2"
 description = "Sphinx extension to support docstrings in Numpy format"
 category = "main"
 optional = false
-python-versions = ">=3.5"
+python-versions = ">=3.7"
 
 [package.dependencies]
-Jinja2 = ">=2.3"
-sphinx = ">=1.6.5"
+Jinja2 = ">=2.10"
+sphinx = ">=1.8"
 
 [package.extras]
-testing = ["matplotlib", "pytest", "pytest-cov"]
+testing = ["pytest", "pytest-cov", "matplotlib"]
 
 [[package]]
 name = "packaging"
@@ -842,7 +842,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "912e1e82b809f13a88bb458cba1972af8376764ac35ba1dd5e0dcf8ae9324614"
+content-hash = "0c504f2270988a6d30a8dc91459e5fad5504a9c67e33afc6b3382c675543847c"
 
 [metadata.files]
 alabaster = [
@@ -1170,8 +1170,8 @@ numpy = [
     {file = "numpy-1.21.1.zip", hash = "sha256:dff4af63638afcc57a3dfb9e4b26d434a7a602d225b42d746ea7fe2edf1342fd"},
 ]
 numpydoc = [
-    {file = "numpydoc-1.1.0-py3-none-any.whl", hash = "sha256:c53d6311190b9e3b9285bc979390ba0257ba9acde5eca1a7065fc8dfca9d46e8"},
-    {file = "numpydoc-1.1.0.tar.gz", hash = "sha256:c36fd6cb7ffdc9b4e165a43f67bf6271a7b024d0bb6b00ac468c9e2bfc76448e"},
+    {file = "numpydoc-1.2-py3-none-any.whl", hash = "sha256:3ecbb9feae080031714b63128912988ebdfd4c582a085d25b8d9f7ac23c2d9ef"},
+    {file = "numpydoc-1.2.tar.gz", hash = "sha256:0cec233740c6b125913005d16e8a9996e060528afcb8b7cad3f2706629dfd6f7"},
 ]
 packaging = [
     {file = "packaging-21.3-py3-none-any.whl", hash = "sha256:ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522"},
