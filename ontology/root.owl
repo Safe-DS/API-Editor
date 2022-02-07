@@ -93,6 +93,14 @@ Merging in Protege: Refactor -&gt; Merge ontologies...</rdfs:comment>
     
 
 
+    <!-- http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#BoundaryType -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#BoundaryType">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Type"/>
+    </owl:Class>
+    
+
+
     <!-- http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Class -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Class"/>
@@ -107,17 +115,9 @@ Merging in Protege: Refactor -&gt; Merge ontologies...</rdfs:comment>
     
 
 
-    <!-- http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#FloatType -->
+    <!-- http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#NamedType -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#FloatType">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Type"/>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#IntegerType -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#IntegerType">
+    <owl:Class rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#NamedType">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Type"/>
     </owl:Class>
     
@@ -129,17 +129,17 @@ Merging in Protege: Refactor -&gt; Merge ontologies...</rdfs:comment>
     
 
 
-    <!-- http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#StringType -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#StringType">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Type"/>
-    </owl:Class>
-    
-
-
     <!-- http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Type -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Type"/>
+    
+
+
+    <!-- http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#UnionType -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#UnionType">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Type"/>
+    </owl:Class>
     
 
 
@@ -157,15 +157,6 @@ Merging in Protege: Refactor -&gt; Merge ontologies...</rdfs:comment>
             <rdf:Description rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Class"/>
             <rdf:Description rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Parameter"/>
             <rdf:Description rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#Type"/>
-        </owl:members>
-    </rdf:Description>
-    <rdf:Description>
-        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
-        <owl:members rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#EnumType"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#FloatType"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#IntegerType"/>
-            <rdf:Description rdf:about="http://www.semanticweb.org/duklin/ontologies/2021/11/sklearn-api#StringType"/>
         </owl:members>
     </rdf:Description>
 </rdf:RDF>
