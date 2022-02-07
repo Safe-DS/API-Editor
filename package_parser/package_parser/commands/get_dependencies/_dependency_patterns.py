@@ -1,5 +1,5 @@
 dependency_matcher_patterns = {
-    "pattern_parameter_subordinating_conjunction": [
+    "pattern_parameter_adverbial_clause": [
         {"RIGHT_ID": "action_head", "RIGHT_ATTRS": {"POS": "VERB"}},
         {
             "LEFT_ID": "action_head",

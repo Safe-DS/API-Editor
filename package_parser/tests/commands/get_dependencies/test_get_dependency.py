@@ -93,7 +93,7 @@ def test_extract_condition():
     assert condition == Condition(condition="If metric is a string")
 
 
-def test_extract_dependencies_from_docstring_pattern_subordinating_conjunction():
+def test_extract_dependencies_from_docstring_pattern_adverbial_clause():
     param_docstring_nlp = nlp("ignored when probability is False")
     dependent_param = Parameter(
         name="random_state",
@@ -127,7 +127,7 @@ def test_extract_dependencies_from_docstring_pattern_subordinating_conjunction()
     )
 
     extracted_dependency = (
-        DependencyExtractor.extract_pattern_parameter_subordinating_conjunction(
+        DependencyExtractor.extract_pattern_parameter_adverbial_clause(
             dependent_param=dependent_param,
             func_parameters=func_params,
             match=match,
