@@ -172,6 +172,9 @@ def __add_unused_api_elements(usages: UsageStore, api: API) -> None:
 def __add_implicit_usages_of_default_value(usages: UsageStore, api: API) -> None:
     for parameter_qname, parameter_usage_list in list(usages.parameter_usages.items()):
         default_value = api.get_default_value(parameter_qname)
+        if default_value is None:
+            continue
+
         function_qname = parent_qname(parameter_qname)
         function_usage_list = usages.function_usages[function_qname]
 
