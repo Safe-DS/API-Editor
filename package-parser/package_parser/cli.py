@@ -24,16 +24,14 @@ class CustomEncoder(json.JSONEncoder):
 
 def cli() -> None:
     args = __get_args()
-
     if args.command == __API_COMMAND:
         public_api = get_api(args.package)
         public_api_dependencies = get_dependencies(public_api)
 
-        out_dir: Path = args.out
-        out_file_api = out_dir.joinpath(
+        out_file_api = args.out.joinpath(
             f"{public_api.distribution}__{public_api.package}__{public_api.version}__api.json"
         )
-        out_file_api_dependencies = out_dir.joinpath(
+        out_file_api_dependencies = args.out.joinpath(
             f"{public_api.distribution}__{public_api.package}__{public_api.version}__api_dependencies.json"
         )
         ensure_file_exists(out_file_api)
@@ -47,8 +45,7 @@ def cli() -> None:
 
         dist = distribution(args.package)
 
-        out_dir: Path = args.out
-        out_file = out_dir.joinpath(
+        out_file = args.out.joinpath(
             f"{dist}__{args.package}__{distribution_version(dist)}__usages.json"
         )
         ensure_file_exists(out_file)
