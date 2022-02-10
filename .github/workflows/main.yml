@@ -25,7 +25,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
-          cache-dependency-path: client/package-lock.json
+          cache-dependency-path: api-editor/client/package-lock.json
 
       - name: Set up JDK ${{ matrix.java-version }}
         uses: actions/setup-java@v2.5.0
@@ -45,7 +45,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: API-Editor
-          path: server/build/libs/*-all.jar
+          path: api-editor/server/build/libs/*-all.jar
           if-no-files-found: error
 
   build-package-parser:
