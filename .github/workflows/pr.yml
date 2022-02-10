@@ -11,6 +11,9 @@ concurrency:
 jobs:
   build-api-editor:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./api-editor
 
     strategy:
       matrix:
@@ -54,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./package_parser
+        working-directory: ./package-parser
     strategy:
       matrix:
         python-version: [ 3.9 ]
@@ -99,4 +102,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Test coverage
-          path: package_parser/htmlcov
+          path: package-parser/htmlcov

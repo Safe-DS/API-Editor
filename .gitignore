@@ -18,7 +18,7 @@ build/
 dist/
 dist-ssr/
 
-/server/src/main/resources/static/
+api-editor/server/src/main/resources/static/
 
 # Other
 .DS_Store/
