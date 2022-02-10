@@ -1,10 +1,51 @@
 name: Main
+
 on:
   push:
     branches: [main]
 
 jobs:
-  build:
+  build-api-editor:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+        java-version: [17]
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+
+      - name: Set up JDK ${{ matrix.java-version }}
+        uses: actions/setup-java@v2.5.0
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java-version }}
+          cache: gradle
+
+      # See https://docs.github.com/en/actions/guides/building-and-testing-java-with-gradle
+      - name: Setup Gradle
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Upload distribution
+        uses: actions/upload-artifact@v2
+        with:
+          name: API-Editor
+          path: server/build/libs/*-all.jar
+          if-no-files-found: error
+
+  build-package-parser:
     runs-on: ubuntu-latest
     defaults:
       run:

@@ -1,9 +1,0 @@
-{
-    "name": "sem21",
-    "version": "0.0.1",
-    "private": true,
-    "prettier": "@lars-reimann/prettier-config",
-    "devDependencies": {
-        "@lars-reimann/prettier-config": "^4.0.4"
-    }
-}

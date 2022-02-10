@@ -16,7 +16,7 @@ Parsing a dependency subtree in an InOrder traversal, we can rebuild a sentence 
 
 ### Dependency Tree Example
 
-![Alt text](dependency_tree_example.png "Dependency Tree Example")
+![Alt text](../../../package_parser/commands/get_dependencies/dependency_tree_example.png "Dependency Tree Example")
 
 
 ## Where to continue work?

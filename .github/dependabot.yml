@@ -25,3 +25,8 @@ updates:
     schedule:
       interval: 'monthly'
     rebase-strategy: 'disabled'
+  - package-ecosystem: 'pip'
+    directory: '/package_parser'
+    schedule:
+      interval: 'monthly'
+    rebase-strategy: 'disabled'
