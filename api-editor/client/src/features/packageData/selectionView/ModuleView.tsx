@@ -17,7 +17,7 @@ import {
 import remarkGfm from 'remark-gfm';
 import { groupBy, isEmptyList } from '../../../common/util/listOperations';
 import PythonModule from '../model/PythonModule';
-import {CodeComponent} from "react-markdown/lib/ast-to-react";
+import { CodeComponent } from 'react-markdown/lib/ast-to-react';
 
 // See https://github.com/remarkjs/react-markdown#use-custom-components-syntax-highlight
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

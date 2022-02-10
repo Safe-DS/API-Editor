@@ -1,6 +1,11 @@
 import { Code, Flex, HStack, IconButton, Stack, Text } from '@chakra-ui/react';
 import 'katex/dist/katex.min.css';
-import React, {ClassAttributes, FunctionComponent, HTMLAttributes, useState} from 'react';
+import React, {
+    ClassAttributes,
+    FunctionComponent,
+    HTMLAttributes,
+    useState,
+} from 'react';
 import { FaChevronDown, FaChevronRight } from 'react-icons/fa';
 import ReactMarkdown from 'react-markdown';
 import {
@@ -17,8 +22,8 @@ interface DocumentationTextProps {
 
 type ParagraphComponent = FunctionComponent<
     ClassAttributes<HTMLParagraphElement> &
-    HTMLAttributes<HTMLParagraphElement> &
-    ReactMarkdownProps
+        HTMLAttributes<HTMLParagraphElement> &
+        ReactMarkdownProps
 >;
 
 const CustomText: ParagraphComponent = function ({ className, children }) {
