@@ -63,7 +63,7 @@ def __create_usage_distributions(usages: UsageStore, out_dir: Path, base_file_na
 
 
 def __create_class_or_function_usage_distribution(
-    usages: dict[str, list[Union[ClassUsage, FunctionUsage]]]
+    usages: Union[dict[str, list[ClassUsage]], dict[str, list[FunctionUsage]]]
 ) -> dict[int, int]:
     """
     Creates a dictionary X -> N where N indicates the number of classes/functions that are used at most X times.
