@@ -1,0 +1,23 @@
+{
+    "sklearn.model_selection.RandomizedSearchCV": {
+        "error_score": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": ["raise"]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "numeric"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "'raise' or numeric, default=np.nan",
+                "description": "Value to assign to the score if an error occurs in estimator fitting.\nIf set to 'raise', the error is raised. If a numeric value is given,\nFitFailedWarning is raised. This parameter does not affect the refit\nstep, which will always raise the error."
+            }
+        }
+    }
+}

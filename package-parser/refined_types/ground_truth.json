@@ -1,0 +1,1624 @@
+{
+    "sklearn.tree.DecisionTreeClassifier": {
+        "criterion": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["gini", "entropy"]
+            },
+            "docstring": {
+                "type": "{\"gini\", \"entropy\"}, default=\"gini\"",
+                "description": "The function to measure the quality of a split. Supported criteria are\n\"gini\" for the Gini impurity and \"entropy\" for the information gain."
+            }
+        },
+        "splitter": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["best", "random"]
+            },
+            "docstring": {
+                "type": "{\"best\", \"random\"}, default=\"best\"",
+                "description": "The strategy used to choose the split at each node. Supported\nstrategies are \"best\" to choose the best split and \"random\" to choose\nthe best random split."
+            }
+        },
+        "max_features": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "NamedType",
+                        "name": "int"
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "float"
+                    },
+                    {
+                        "kind": "EnumType",
+                        "values": ["auto", "sqrt", "log2"]
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "int, float or {\"auto\", \"sqrt\", \"log2\"}, default=None",
+                "description": "The number of features to consider when looking for the best split:\n\n    - If int, then consider `max_features` features at each split.\n    - If float, then `max_features` is a fraction and\n      `int(max_features * n_features)` features are considered at each\n      split.\n    - If \"auto\", then `max_features=sqrt(n_features)`.\n    - If \"sqrt\", then `max_features=sqrt(n_features)`.\n    - If \"log2\", then `max_features=log2(n_features)`.\n    - If None, then `max_features=n_features`.\n\nNote: the search for a split does not stop until at least one\nvalid partition of the node samples is found, even if it requires to\neffectively inspect more than ``max_features`` features."
+            }
+        },
+        "class_weight": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "NamedType",
+                        "name": "dict"
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "list of dicts"
+                    },
+                    {
+                        "kind": "EnumType",
+                        "values": ["balanced"]
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "dict, list of dict or \"balanced\", default=None",
+                "description": "Weights associated with classes in the form ``{class_label: weight}``.\nIf None, all classes are supposed to have weight one. For\nmulti-output problems, a list of dicts can be provided in the same\norder as the columns of y.\n\nNote that for multioutput (including multilabel) weights should be\ndefined for each class of every column in its own dict. For example,\nfor four-class multilabel classification weights should be\n[{0: 1, 1: 1}, {0: 1, 1: 5}, {0: 1, 1: 1}, {0: 1, 1: 1}] instead of\n[{1:1}, {2:5}, {3:1}, {4:1}].\n\nThe \"balanced\" mode uses the values of y to automatically adjust\nweights inversely proportional to class frequencies in the input data\nas ``n_samples / (n_classes * np.bincount(y))``\n\nFor multi-output, the weights of each column of y will be multiplied.\n\nNote that these weights will be multiplied with sample_weight (passed\nthrough the fit method) if sample_weight is specified."
+            }
+        },
+        "ccp_alpha": {
+            "refined_type": {
+                "kind": "BoundaryType",
+                "baseType": "float",
+                "min": 0,
+                "minInclusive": true,
+                "max": null,
+                "maxInclusive": false
+            },
+            "docstring": {
+                "type": "non-negative float, default=0.0",
+                "description": "Complexity parameter used for Minimal Cost-Complexity Pruning. The\nsubtree with the largest cost complexity that is smaller than\n``ccp_alpha`` will be chosen. By default, no pruning is performed. See\n:ref:`minimal_cost_complexity_pruning` for details.\n\n.. versionadded:: 0.22"
+            }
+        }
+    },
+    "sklearn.decomposition.PCA": {
+        "n_components": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "NamedType",
+                        "name": "int"
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "float"
+                    },
+                    {
+                        "kind": "EnumType",
+                        "values": ["mle"]
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "int, float or 'mle', default=None",
+                "description": "Number of components to keep.\nif n_components is not set all components are kept::\n\n    n_components == min(n_samples, n_features)\n\nIf ``n_components == 'mle'`` and ``svd_solver == 'full'``, Minka's\nMLE is used to guess the dimension. Use of ``n_components == 'mle'``\nwill interpret ``svd_solver == 'auto'`` as ``svd_solver == 'full'``.\n\nIf ``0 < n_components < 1`` and ``svd_solver == 'full'``, select the\nnumber of components such that the amount of variance that needs to be\nexplained is greater than the percentage specified by n_components.\n\nIf ``svd_solver == 'arpack'``, the number of components must be\nstrictly less than the minimum of n_features and n_samples.\n\nHence, the None case results in::\n\n    n_components == min(n_samples, n_features) - 1"
+            }
+        },
+        "svd_solver": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["full", "arpack", "randomized", "auto"]
+            },
+            "docstring": {
+                "type": "{'auto', 'full', 'arpack', 'randomized'}, default='auto'",
+                "description": "If auto :\n    The solver is selected by a default policy based on `X.shape` and\n    `n_components`: if the input data is larger than 500x500 and the\n    number of components to extract is lower than 80% of the smallest\n    dimension of the data, then the more efficient 'randomized'\n    method is enabled. Otherwise the exact full SVD is computed and\n    optionally truncated afterwards.\nIf full :\n    run exact full SVD calling the standard LAPACK solver via\n    `scipy.linalg.svd` and select the components by postprocessing\nIf arpack :\n    run SVD truncated to n_components calling ARPACK solver via\n    `scipy.sparse.linalg.svds`. It requires strictly\n    0 < n_components < min(X.shape)\nIf randomized :\n    run randomized SVD by the method of Halko et al.\n\n.. versionadded:: 0.18.0"
+            }
+        },
+        "tol": {
+            "refined_type": {
+                "kind": "BoundaryType",
+                "baseType": "float",
+                "min": 0,
+                "minInclusive": true,
+                "max": null,
+                "maxInclusive": false
+            },
+            "docstring": {
+                "type": "float, default=0.0",
+                "description": "Tolerance for singular values computed by svd_solver == 'arpack'.\nMust be of range [0.0, infinity).\n\n.. versionadded:: 0.18.0"
+            }
+        },
+        "iterated_power": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "BoundaryType",
+                        "baseType": "int",
+                        "min": 0,
+                        "minInclusive": true,
+                        "max": null,
+                        "maxInclusive": false
+                    },
+                    {
+                        "kind": "EnumType",
+                        "values": ["auto"]
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "int or 'auto', default='auto'",
+                "description": "Number of iterations for the power method computed by\nsvd_solver == 'randomized'.\nMust be of range [0, infinity).\n\n.. versionadded:: 0.18.0"
+            }
+        }
+    },
+    "sklearn.decomposition.TruncatedSVD": {
+        "algorithm": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["arpack", "randomized"]
+            },
+            "docstring": {
+                "type": "{'arpack', 'randomized'}, default='randomized'",
+                "description": "SVD solver to use. Either \"arpack\" for the ARPACK wrapper in SciPy\n(scipy.sparse.linalg.svds), or \"randomized\" for the randomized\nalgorithm due to Halko (2009)."
+            }
+        }
+    },
+    "sklearn.impute.SimpleImputer": {
+        "strategy": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["mean", "median", "most_frequent", "constant"]
+            },
+            "docstring": {
+                "type": "str, default='mean'",
+                "description": "The imputation strategy.\n\n- If \"mean\", then replace missing values using the mean along\n  each column. Can only be used with numeric data.\n- If \"median\", then replace missing values using the median along\n  each column. Can only be used with numeric data.\n- If \"most_frequent\", then replace missing using the most frequent\n  value along each column. Can be used with strings or numeric data.\n  If there is more than one such value, only the smallest is returned.\n- If \"constant\", then replace missing values with fill_value. Can be\n  used with strings or numeric data.\n\n.. versionadded:: 0.20\n   strategy=\"constant\" for fixed value imputation."
+            }
+        }
+    },
+    "sklearn.ensemble.GradientBoostingRegressor": {
+        "loss": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": [
+                    "quantile",
+                    "huber",
+                    "absolute_error",
+                    "squared_error"
+                ]
+            },
+            "docstring": {
+                "type": "{'squared_error', 'absolute_error', 'huber', 'quantile'},             default='squared_error'",
+                "description": "Loss function to be optimized. 'squared_error' refers to the squared\nerror for regression. 'absolute_error' refers to the absolute error of\nregression and is a robust loss function. 'huber' is a\ncombination of the two. 'quantile' allows quantile regression (use\n`alpha` to specify the quantile).\n\n.. deprecated:: 1.0\n    The loss 'ls' was deprecated in v1.0 and will be removed in\n    version 1.2. Use `loss='squared_error'` which is equivalent.\n\n.. deprecated:: 1.0\n    The loss 'lad' was deprecated in v1.0 and will be removed in\n    version 1.2. Use `loss='absolute_error'` which is equivalent."
+            }
+        },
+        "criterion": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["squared_error", "mse", "friedman_mse", "mae"]
+            },
+            "docstring": {
+                "type": "{'friedman_mse', 'squared_error', 'mse', 'mae'},             default='friedman_mse'",
+                "description": "The function to measure the quality of a split. Supported criteria\nare \"friedman_mse\" for the mean squared error with improvement\nscore by Friedman, \"squared_error\" for mean squared error, and \"mae\"\nfor the mean absolute error. The default value of \"friedman_mse\" is\ngenerally the best as it can provide a better approximation in some\ncases.\n\n.. versionadded:: 0.18\n\n.. deprecated:: 0.24\n    `criterion='mae'` is deprecated and will be removed in version\n    1.1 (renaming of 0.26). The correct way of minimizing the absolute\n    error is to use `loss='absolute_error'` instead.\n\n.. deprecated:: 1.0\n    Criterion 'mse' was deprecated in v1.0 and will be removed in\n    version 1.2. Use `criterion='squared_error'` which is equivalent."
+            }
+        },
+        "max_features": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": ["sqrt", "auto", "log2"]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "float"
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "int"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "{'auto', 'sqrt', 'log2'}, int or float, default=None",
+                "description": "The number of features to consider when looking for the best split:\n\n- If int, then consider `max_features` features at each split.\n- If float, then `max_features` is a fraction and\n  `int(max_features * n_features)` features are considered at each\n  split.\n- If \"auto\", then `max_features=n_features`.\n- If \"sqrt\", then `max_features=sqrt(n_features)`.\n- If \"log2\", then `max_features=log2(n_features)`.\n- If None, then `max_features=n_features`.\n\nChoosing `max_features < n_features` leads to a reduction of variance\nand an increase in bias.\n\nNote: the search for a split does not stop until at least one\nvalid partition of the node samples is found, even if it requires to\neffectively inspect more than ``max_features`` features."
+            }
+        },
+        "validation_fraction": {
+            "refined_type": {
+                "kind": "BoundaryType",
+                "baseType": "float",
+                "min": 0,
+                "minInclusive": false,
+                "max": 1,
+                "maxInclusive": false
+            },
+            "docstring": {
+                "type": "float, default=0.1",
+                "description": "The proportion of training data to set aside as validation set for\nearly stopping. Must be between 0 and 1.\nOnly used if ``n_iter_no_change`` is set to an integer.\n\n.. versionadded:: 0.20"
+            }
+        },
+        "ccp_alpha": {
+            "refined_type": {
+                "kind": "BoundaryType",
+                "baseType": "float",
+                "min": 0,
+                "minInclusive": true,
+                "max": null,
+                "maxInclusive": false
+            },
+            "docstring": {
+                "type": "non-negative float, default=0.0",
+                "description": "Complexity parameter used for Minimal Cost-Complexity Pruning. The\nsubtree with the largest cost complexity that is smaller than\n``ccp_alpha`` will be chosen. By default, no pruning is performed. See\n:ref:`minimal_cost_complexity_pruning` for details.\n\n.. versionadded:: 0.22"
+            }
+        }
+    },
+    "sklearn.ensemble.AdaBoostClassifier": {
+        "algorithm": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["SAMME", "SAMME.R"]
+            },
+            "docstring": {
+                "type": "{'SAMME', 'SAMME.R'}, default='SAMME.R'",
+                "description": "If 'SAMME.R' then use the SAMME.R real boosting algorithm.\n``base_estimator`` must support calculation of class probabilities.\nIf 'SAMME' then use the SAMME discrete boosting algorithm.\nThe SAMME.R algorithm typically converges faster than SAMME,\nachieving a lower test error with fewer boosting iterations."
+            }
+        }
+    },
+    "sklearn.ensemble.RandomForestClassifier": {
+        "criterion": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["gini", "entropy"]
+            },
+            "docstring": {
+                "type": "{\"gini\", \"entropy\"}, default=\"gini\"",
+                "description": "The function to measure the quality of a split. Supported criteria are\n\"gini\" for the Gini impurity and \"entropy\" for the information gain.\nNote: this parameter is tree-specific."
+            }
+        },
+        "max_features": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": ["sqrt", "auto", "log2"]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "int"
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "float"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "{\"auto\", \"sqrt\", \"log2\"}, int or float, default=\"auto\"",
+                "description": "The number of features to consider when looking for the best split:\n\n- If int, then consider `max_features` features at each split.\n- If float, then `max_features` is a fraction and\n  `round(max_features * n_features)` features are considered at each\n  split.\n- If \"auto\", then `max_features=sqrt(n_features)`.\n- If \"sqrt\", then `max_features=sqrt(n_features)` (same as \"auto\").\n- If \"log2\", then `max_features=log2(n_features)`.\n- If None, then `max_features=n_features`.\n\nNote: the search for a split does not stop until at least one\nvalid partition of the node samples is found, even if it requires to\neffectively inspect more than ``max_features`` features."
+            }
+        },
+        "class_weight": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": ["balanced", "balanced_subsample"]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "dict"
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "list of dicts"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "{\"balanced\", \"balanced_subsample\"}, dict or list of dicts,             default=None",
+                "description": "Weights associated with classes in the form ``{class_label: weight}``.\nIf not given, all classes are supposed to have weight one. For\nmulti-output problems, a list of dicts can be provided in the same\norder as the columns of y.\n\nNote that for multioutput (including multilabel) weights should be\ndefined for each class of every column in its own dict. For example,\nfor four-class multilabel classification weights should be\n[{0: 1, 1: 1}, {0: 1, 1: 5}, {0: 1, 1: 1}, {0: 1, 1: 1}] instead of\n[{1:1}, {2:5}, {3:1}, {4:1}].\n\nThe \"balanced\" mode uses the values of y to automatically adjust\nweights inversely proportional to class frequencies in the input data\nas ``n_samples / (n_classes * np.bincount(y))``\n\nThe \"balanced_subsample\" mode is the same as \"balanced\" except that\nweights are computed based on the bootstrap sample for every tree\ngrown.\n\nFor multi-output, the weights of each column of y will be multiplied.\n\nNote that these weights will be multiplied with sample_weight (passed\nthrough the fit method) if sample_weight is specified."
+            }
+        },
+        "ccp_alpha": {
+            "refined_type": {
+                "kind": "BoundaryType",
+                "baseType": "float",
+                "min": 0,
+                "minInclusive": true,
+                "max": null,
+                "maxInclusive": false
+            },
+            "docstring": {
+                "type": "non-negative float, default=0.0",
+                "description": "Complexity parameter used for Minimal Cost-Complexity Pruning. The\nsubtree with the largest cost complexity that is smaller than\n``ccp_alpha`` will be chosen. By default, no pruning is performed. See\n:ref:`minimal_cost_complexity_pruning` for details.\n\n.. versionadded:: 0.22"
+            }
+        },
+        "max_samples": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "NamedType",
+                        "name": "int"
+                    },
+                    {
+                        "kind": "BoundaryType",
+                        "baseType": "float",
+                        "min": 0,
+                        "minInclusive": false,
+                        "max": 1,
+                        "maxInclusive": true
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "int or float, default=None",
+                "description": "If bootstrap is True, the number of samples to draw from X\nto train each base estimator.\n\n- If None (default), then draw `X.shape[0]` samples.\n- If int, then draw `max_samples` samples.\n- If float, then draw `max_samples * X.shape[0]` samples. Thus,\n  `max_samples` should be in the interval `(0.0, 1.0]`.\n\n.. versionadded:: 0.22"
+            }
+        }
+    },
+    "sklearn.ensemble.ExtraTreesClassifier": {
+        "criterion": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["gini", "entropy"]
+            },
+            "docstring": {
+                "type": "{\"gini\", \"entropy\"}, default=\"gini\"",
+                "description": "The function to measure the quality of a split. Supported criteria are\n\"gini\" for the Gini impurity and \"entropy\" for the information gain."
+            }
+        },
+        "max_features": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": ["sqrt", "auto", "log2"]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "int"
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "float"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "{\"auto\", \"sqrt\", \"log2\"}, int or float, default=\"auto\"",
+                "description": "The number of features to consider when looking for the best split:\n\n- If int, then consider `max_features` features at each split.\n- If float, then `max_features` is a fraction and\n  `round(max_features * n_features)` features are considered at each\n  split.\n- If \"auto\", then `max_features=sqrt(n_features)`.\n- If \"sqrt\", then `max_features=sqrt(n_features)`.\n- If \"log2\", then `max_features=log2(n_features)`.\n- If None, then `max_features=n_features`.\n\nNote: the search for a split does not stop until at least one\nvalid partition of the node samples is found, even if it requires to\neffectively inspect more than ``max_features`` features."
+            }
+        },
+        "class_weight": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": ["balanced", "balanced_subsample"]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "dict"
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "list of dicts"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "{\"balanced\", \"balanced_subsample\"}, dict or list of dicts,             default=None",
+                "description": "Weights associated with classes in the form ``{class_label: weight}``.\nIf not given, all classes are supposed to have weight one. For\nmulti-output problems, a list of dicts can be provided in the same\norder as the columns of y.\n\nNote that for multioutput (including multilabel) weights should be\ndefined for each class of every column in its own dict. For example,\nfor four-class multilabel classification weights should be\n[{0: 1, 1: 1}, {0: 1, 1: 5}, {0: 1, 1: 1}, {0: 1, 1: 1}] instead of\n[{1:1}, {2:5}, {3:1}, {4:1}].\n\nThe \"balanced\" mode uses the values of y to automatically adjust\nweights inversely proportional to class frequencies in the input data\nas ``n_samples / (n_classes * np.bincount(y))``\n\nThe \"balanced_subsample\" mode is the same as \"balanced\" except that\nweights are computed based on the bootstrap sample for every tree\ngrown.\n\nFor multi-output, the weights of each column of y will be multiplied.\n\nNote that these weights will be multiplied with sample_weight (passed\nthrough the fit method) if sample_weight is specified."
+            }
+        },
+        "ccp_alpha": {
+            "refined_type": {
+                "kind": "BoundaryType",
+                "baseType": "float",
+                "min": 0,
+                "minInclusive": true,
+                "max": null,
+                "maxInclusive": false
+            },
+            "docstring": {
+                "type": "non-negative float, default=0.0",
+                "description": "Complexity parameter used for Minimal Cost-Complexity Pruning. The\nsubtree with the largest cost complexity that is smaller than\n``ccp_alpha`` will be chosen. By default, no pruning is performed. See\n:ref:`minimal_cost_complexity_pruning` for details.\n\n.. versionadded:: 0.22"
+            }
+        },
+        "max_samples": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "NamedType",
+                        "name": "int"
+                    },
+                    {
+                        "kind": "BoundaryType",
+                        "baseType": "float",
+                        "min": 0,
+                        "minInclusive": false,
+                        "max": 1,
+                        "maxInclusive": true
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "int or float, default=None",
+                "description": "If bootstrap is True, the number of samples to draw from X\nto train each base estimator.\n\n- If None (default), then draw `X.shape[0]` samples.\n- If int, then draw `max_samples` samples.\n- If float, then draw `max_samples * X.shape[0]` samples. Thus,\n  `max_samples` should be in the interval `(0.0, 1.0]`.\n\n.. versionadded:: 0.22"
+            }
+        }
+    },
+    "sklearn.metrics.mean_squared_log_error": {
+        "multioutput": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": ["raw_values", "uniform_average"]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "array-like"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "{'raw_values', 'uniform_average'} or array-like of shape             (n_outputs,), default='uniform_average'",
+                "description": "Defines aggregating of multiple output values.\nArray-like value defines weights used to average errors.\n\n'raw_values' :\n    Returns a full set of errors when the input is of multioutput\n    format.\n\n'uniform_average' :\n    Errors of all outputs are averaged with uniform weight."
+            }
+        }
+    },
+    "sklearn.metrics.f1_score": {
+        "average": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["micro", "macro", "samples", "weighted", "binary"]
+            },
+            "docstring": {
+                "type": "{'micro', 'macro', 'samples','weighted', 'binary'} or None,             default='binary'",
+                "description": "This parameter is required for multiclass/multilabel targets.\nIf ``None``, the scores for each class are returned. Otherwise, this\ndetermines the type of averaging performed on the data:\n\n``'binary'``:\n    Only report results for the class specified by ``pos_label``.\n    This is applicable only if targets (``y_{true,pred}``) are binary.\n``'micro'``:\n    Calculate metrics globally by counting the total true positives,\n    false negatives and false positives.\n``'macro'``:\n    Calculate metrics for each label, and find their unweighted\n    mean.  This does not take label imbalance into account.\n``'weighted'``:\n    Calculate metrics for each label, and find their average weighted\n    by support (the number of true instances for each label). This\n    alters 'macro' to account for label imbalance; it can result in an\n    F-score that is not between precision and recall.\n``'samples'``:\n    Calculate metrics for each instance, and find their average (only\n    meaningful for multilabel classification where this differs from\n    :func:`accuracy_score`)."
+            }
+        },
+        "zero_division": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": ["warn"]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "0"
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "1"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "\"warn\", 0 or 1, default=\"warn\"",
+                "description": "Sets the value to return when there is a zero division, i.e. when all\npredictions and labels are negative. If set to \"warn\", this acts as 0,\nbut warnings are also raised."
+            }
+        }
+    },
+    "sklearn.metrics.recall_score": {
+        "average": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["micro", "macro", "samples", "weighted", "binary"]
+            },
+            "docstring": {
+                "type": "{'micro', 'macro', 'samples', 'weighted', 'binary'} or None,             default='binary'",
+                "description": "This parameter is required for multiclass/multilabel targets.\nIf ``None``, the scores for each class are returned. Otherwise, this\ndetermines the type of averaging performed on the data:\n\n``'binary'``:\n    Only report results for the class specified by ``pos_label``.\n    This is applicable only if targets (``y_{true,pred}``) are binary.\n``'micro'``:\n    Calculate metrics globally by counting the total true positives,\n    false negatives and false positives.\n``'macro'``:\n    Calculate metrics for each label, and find their unweighted\n    mean.  This does not take label imbalance into account.\n``'weighted'``:\n    Calculate metrics for each label, and find their average weighted\n    by support (the number of true instances for each label). This\n    alters 'macro' to account for label imbalance; it can result in an\n    F-score that is not between precision and recall. Weighted recall\n    is equal to accuracy.\n``'samples'``:\n    Calculate metrics for each instance, and find their average (only\n    meaningful for multilabel classification where this differs from\n    :func:`accuracy_score`)."
+            }
+        },
+        "zero_division": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": ["warn"]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "0"
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "1"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "\"warn\", 0 or 1, default=\"warn\"",
+                "description": "Sets the value to return when there is a zero division. If set to\n\"warn\", this acts as 0, but warnings are also raised."
+            }
+        }
+    },
+    "sklearn.metrics.roc_auc_score": {
+        "average": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["micro", "macro", "samples", "weighted"]
+            },
+            "docstring": {
+                "type": "{'micro', 'macro', 'samples', 'weighted'} or None,             default='macro'",
+                "description": "If ``None``, the scores for each class are returned. Otherwise,\nthis determines the type of averaging performed on the data:\nNote: multiclass ROC AUC currently only handles the 'macro' and\n'weighted' averages.\n\n``'micro'``:\n    Calculate metrics globally by considering each element of the label\n    indicator matrix as a label.\n``'macro'``:\n    Calculate metrics for each label, and find their unweighted\n    mean.  This does not take label imbalance into account.\n``'weighted'``:\n    Calculate metrics for each label, and find their average, weighted\n    by support (the number of true instances for each label).\n``'samples'``:\n    Calculate metrics for each instance, and find their average.\n\nWill be ignored when ``y_true`` is binary."
+            }
+        },
+        "max_fpr": {
+            "refined_type": {
+                "kind": "BoundaryType",
+                "baseType": "float",
+                "min": 0,
+                "max": 1,
+                "minInclusive": false,
+                "maxInclusive": true
+            },
+            "docstring": {
+                "type": "float > 0 and <= 1, default=None",
+                "description": "If not ``None``, the standardized partial AUC [2]_ over the range\n[0, max_fpr] is returned. For the multiclass case, ``max_fpr``,\nshould be either equal to ``None`` or ``1.0`` as AUC ROC partial\ncomputation currently is not supported for multiclass."
+            }
+        },
+        "multi_class": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["raise", "ovr", "ovo"]
+            },
+            "docstring": {
+                "type": "{'raise', 'ovr', 'ovo'}, default='raise'",
+                "description": "Only used for multiclass targets. Determines the type of configuration\nto use. The default value raises an error, so either\n``'ovr'`` or ``'ovo'`` must be passed explicitly.\n\n``'ovr'``:\n    Stands for One-vs-rest. Computes the AUC of each class\n    against the rest [3]_ [4]_. This\n    treats the multiclass case in the same way as the multilabel case.\n    Sensitive to class imbalance even when ``average == 'macro'``,\n    because class imbalance affects the composition of each of the\n    'rest' groupings.\n``'ovo'``:\n    Stands for One-vs-one. Computes the average AUC of all\n    possible pairwise combinations of classes [5]_.\n    Insensitive to class imbalance when\n    ``average == 'macro'``."
+            }
+        }
+    },
+    "sklearn.metrics.roc_curve": {},
+    "sklearn.metrics.mean_absolute_error": {
+        "multioutput": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": ["raw_values", "uniform_average"]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "array-like"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "{'raw_values', 'uniform_average'}  or array-like of shape             (n_outputs,), default='uniform_average'",
+                "description": "Defines aggregating of multiple output values.\nArray-like value defines weights used to average errors.\n\n'raw_values' :\n    Returns a full set of errors in case of multioutput input.\n\n'uniform_average' :\n    Errors of all outputs are averaged with uniform weight."
+            }
+        }
+    },
+    "sklearn.metrics.accuracy_score": {},
+    "sklearn.metrics.cohen_kappa_score": {
+        "weights": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["linear", "quadratic"]
+            },
+            "docstring": {
+                "type": "{'linear', 'quadratic'}, default=None",
+                "description": "Weighting type to calculate the score. `None` means no weighted;\n\"linear\" means linear weighted; \"quadratic\" means quadratic weighted."
+            }
+        }
+    },
+    "sklearn.metrics.confusion_matrix": {
+        "normalize": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["true", "pred", "all"]
+            },
+            "docstring": {
+                "type": "{'true', 'pred', 'all'}, default=None",
+                "description": "Normalizes confusion matrix over the true (rows), predicted (columns)\nconditions or all the population. If None, confusion matrix will not be\nnormalized."
+            }
+        }
+    },
+    "sklearn.metrics.precision_score": {
+        "average": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["micro", "macro", "samples", "weighted", "binary"]
+            },
+            "docstring": {
+                "type": "{'micro', 'macro', 'samples', 'weighted', 'binary'} or None,             default='binary'",
+                "description": "This parameter is required for multiclass/multilabel targets.\nIf ``None``, the scores for each class are returned. Otherwise, this\ndetermines the type of averaging performed on the data:\n\n``'binary'``:\n    Only report results for the class specified by ``pos_label``.\n    This is applicable only if targets (``y_{true,pred}``) are binary.\n``'micro'``:\n    Calculate metrics globally by counting the total true positives,\n    false negatives and false positives.\n``'macro'``:\n    Calculate metrics for each label, and find their unweighted\n    mean.  This does not take label imbalance into account.\n``'weighted'``:\n    Calculate metrics for each label, and find their average weighted\n    by support (the number of true instances for each label). This\n    alters 'macro' to account for label imbalance; it can result in an\n    F-score that is not between precision and recall.\n``'samples'``:\n    Calculate metrics for each instance, and find their average (only\n    meaningful for multilabel classification where this differs from\n    :func:`accuracy_score`)."
+            }
+        },
+        "zero_division": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": ["warn"]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "0"
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "1"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "\"warn\", 0 or 1, default=\"warn\"",
+                "description": "Sets the value to return when there is a zero division. If set to\n\"warn\", this acts as 0, but warnings are also raised."
+            }
+        }
+    },
+    "sklearn.metrics.mean_squared_error": {
+        "multioutput": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": ["raw_values", "uniform_average"]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "array-like"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "{'raw_values', 'uniform_average'} or array-like of shape             (n_outputs,), default='uniform_average'",
+                "description": "Defines aggregating of multiple output values.\nArray-like value defines weights used to average errors.\n\n'raw_values' :\n    Returns a full set of errors in case of multioutput input.\n\n'uniform_average' :\n    Errors of all outputs are averaged with uniform weight."
+            }
+        }
+    },
+    "sklearn.metrics.classification_report": {
+        "zero_division": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": ["warn"]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "0"
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "1"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "\"warn\", 0 or 1, default=\"warn\"",
+                "description": "Sets the value to return when there is a zero division. If set to\n\"warn\", this acts as 0, but warnings are also raised."
+            }
+        }
+    },
+    "sklearn.metrics.r2_score": {
+        "multioutput": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": [
+                            "raw_values",
+                            "uniform_average",
+                            "variance_weighted"
+                        ]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "array-like"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "{'raw_values', 'uniform_average', 'variance_weighted'},             array-like of shape (n_outputs,) or None, default='uniform_average'",
+                "description": "Defines aggregating of multiple output scores.\nArray-like value defines weights used to average scores.\nDefault is \"uniform_average\".\n\n'raw_values' :\n    Returns a full set of scores in case of multioutput input.\n\n'uniform_average' :\n    Scores of all outputs are averaged with uniform weight.\n\n'variance_weighted' :\n    Scores of all outputs are averaged, weighted by the variances\n    of each individual output.\n\n.. versionchanged:: 0.19\n    Default value of multioutput is 'uniform_average'."
+            }
+        }
+    },
+    "sklearn.pipeline.FeatureUnion": {},
+    "sklearn.pipeline.Pipeline": {},
+    "sklearn.naive_bayes.MultinomialNB": {},
+    "sklearn.naive_bayes.GaussianNB": {},
+    "sklearn.feature_extraction.text.TfidfVectorizer": {
+        "input": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["file", "filename", "content"]
+            },
+            "docstring": {
+                "type": "{'filename', 'file', 'content'}, default='content'",
+                "description": "- If `'filename'`, the sequence passed as an argument to fit is\n  expected to be a list of filenames that need reading to fetch\n  the raw content to analyze.\n\n- If `'file'`, the sequence items must have a 'read' method (file-like\n  object) that is called to fetch the bytes in memory.\n\n- If `'content'`, the input is expected to be a sequence of items that\n  can be of type string or byte."
+            }
+        },
+        "decode_error": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["ignore", "replace", "strict"]
+            },
+            "docstring": {
+                "type": "{'strict', 'ignore', 'replace'}, default='strict'",
+                "description": "Instruction on what to do if a byte sequence is given to analyze that\ncontains characters not of the given `encoding`. By default, it is\n'strict', meaning that a UnicodeDecodeError will be raised. Other\nvalues are 'ignore' and 'replace'."
+            }
+        },
+        "strip_accents": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["ascii", "unicode"]
+            },
+            "docstring": {
+                "type": "{'ascii', 'unicode'}, default=None",
+                "description": "Remove accents and perform other character normalization\nduring the preprocessing step.\n'ascii' is a fast method that only works on characters that have\nan direct ASCII mapping.\n'unicode' is a slightly slower method that works on any characters.\nNone (default) does nothing.\n\nBoth 'ascii' and 'unicode' use NFKD normalization from\n:func:`unicodedata.normalize`."
+            }
+        },
+        "analyzer": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": ["char_wb", "char", "word"]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "callable"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "{'word', 'char', 'char_wb'} or callable, default='word'",
+                "description": "Whether the feature should be made of word or character n-grams.\nOption 'char_wb' creates character n-grams only from text inside\nword boundaries; n-grams at the edges of words are padded with space.\n\nIf a callable is passed it is used to extract the sequence of features\nout of the raw, unprocessed input.\n\n.. versionchanged:: 0.21\n    Since v0.21, if ``input`` is ``'filename'`` or ``'file'``, the data\n    is first read from the file and then passed to the given callable\n    analyzer."
+            }
+        },
+        "stop_words": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": ["english"]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "list"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "{'english'}, list, default=None",
+                "description": "If a string, it is passed to _check_stop_list and the appropriate stop\nlist is returned. 'english' is currently the only supported string\nvalue.\nThere are several known issues with 'english' and you should\nconsider an alternative (see :ref:`stop_words`).\n\nIf a list, that list is assumed to contain stop words, all of which\nwill be removed from the resulting tokens.\nOnly applies if ``analyzer == 'word'``.\n\nIf None, no stop words will be used. max_df can be set to a value\nin the range [0.7, 1.0) to automatically detect and filter stop\nwords based on intra corpus document frequency of terms."
+            }
+        },
+        "max_df": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "BoundaryType",
+                        "baseType": "float",
+                        "min": 0,
+                        "minInclusive": true,
+                        "max": 1,
+                        "maxInclusive": true
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "int"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "float or int, default=1.0",
+                "description": "When building the vocabulary ignore terms that have a document\nfrequency strictly higher than the given threshold (corpus-specific\nstop words).\nIf float in range [0.0, 1.0], the parameter represents a proportion of\ndocuments, integer absolute counts.\nThis parameter is ignored if vocabulary is not None."
+            }
+        },
+        "min_df": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "BoundaryType",
+                        "baseType": "float",
+                        "min": 0,
+                        "minInclusive": true,
+                        "max": 1,
+                        "maxInclusive": true
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "int"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "float or int, default=1",
+                "description": "When building the vocabulary ignore terms that have a document\nfrequency strictly lower than the given threshold. This value is also\ncalled cut-off in the literature.\nIf float in range of [0.0, 1.0], the parameter represents a proportion\nof documents, integer absolute counts.\nThis parameter is ignored if vocabulary is not None."
+            }
+        },
+        "norm": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["l1", "l2"]
+            },
+            "docstring": {
+                "type": "{'l1', 'l2'}, default='l2'",
+                "description": "Each output row will have unit norm, either:\n\n- 'l2': Sum of squares of vector elements is 1. The cosine\n  similarity between two vectors is their dot product when l2 norm has\n  been applied.\n- 'l1': Sum of absolute values of vector elements is 1.\n  See :func:`preprocessing.normalize`."
+            }
+        }
+    },
+    "sklearn.feature_extraction.text.CountVectorizer": {
+        "input": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["file", "filename", "content"]
+            },
+            "docstring": {
+                "type": "{'filename', 'file', 'content'}, default='content'",
+                "description": "- If `'filename'`, the sequence passed as an argument to fit is\n  expected to be a list of filenames that need reading to fetch\n  the raw content to analyze.\n\n- If `'file'`, the sequence items must have a 'read' method (file-like\n  object) that is called to fetch the bytes in memory.\n\n- If `'content'`, the input is expected to be a sequence of items that\n  can be of type string or byte."
+            }
+        },
+        "decode_error": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["ignore", "replace", "strict"]
+            },
+            "docstring": {
+                "type": "{'strict', 'ignore', 'replace'}, default='strict'",
+                "description": "Instruction on what to do if a byte sequence is given to analyze that\ncontains characters not of the given `encoding`. By default, it is\n'strict', meaning that a UnicodeDecodeError will be raised. Other\nvalues are 'ignore' and 'replace'."
+            }
+        },
+        "strip_accents": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["ascii", "unicode"]
+            },
+            "docstring": {
+                "type": "{'ascii', 'unicode'}, default=None",
+                "description": "Remove accents and perform other character normalization\nduring the preprocessing step.\n'ascii' is a fast method that only works on characters that have\nan direct ASCII mapping.\n'unicode' is a slightly slower method that works on any characters.\nNone (default) does nothing.\n\nBoth 'ascii' and 'unicode' use NFKD normalization from\n:func:`unicodedata.normalize`."
+            }
+        },
+        "stop_words": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": ["english"]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "list"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "{'english'}, list, default=None",
+                "description": "If 'english', a built-in stop word list for English is used.\nThere are several known issues with 'english' and you should\nconsider an alternative (see :ref:`stop_words`).\n\nIf a list, that list is assumed to contain stop words, all of which\nwill be removed from the resulting tokens.\nOnly applies if ``analyzer == 'word'``.\n\nIf None, no stop words will be used. max_df can be set to a value\nin the range [0.7, 1.0) to automatically detect and filter stop\nwords based on intra corpus document frequency of terms."
+            }
+        },
+        "analyzer": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": ["char_wb", "char", "word"]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "callable"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "{'word', 'char', 'char_wb'} or callable, default='word'",
+                "description": "Whether the feature should be made of word n-gram or character\nn-grams.\nOption 'char_wb' creates character n-grams only from text inside\nword boundaries; n-grams at the edges of words are padded with space.\n\nIf a callable is passed it is used to extract the sequence of features\nout of the raw, unprocessed input.\n\n.. versionchanged:: 0.21\n\nSince v0.21, if ``input`` is ``filename`` or ``file``, the data is\nfirst read from the file and then passed to the given callable\nanalyzer."
+            }
+        },
+        "max_df": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "BoundaryType",
+                        "baseType": "float",
+                        "min": 0,
+                        "minInclusive": true,
+                        "max": 1,
+                        "maxInclusive": true
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "int"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "float in range [0.0, 1.0] or int, default=1.0",
+                "description": "When building the vocabulary ignore terms that have a document\nfrequency strictly higher than the given threshold (corpus-specific\nstop words).\nIf float, the parameter represents a proportion of documents, integer\nabsolute counts.\nThis parameter is ignored if vocabulary is not None."
+            }
+        },
+        "min_df": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "BoundaryType",
+                        "baseType": "float",
+                        "min": 0,
+                        "minInclusive": true,
+                        "max": 1,
+                        "maxInclusive": true
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "int"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "float in range [0.0, 1.0] or int, default=1",
+                "description": "When building the vocabulary ignore terms that have a document\nfrequency strictly lower than the given threshold. This value is also\ncalled cut-off in the literature.\nIf float, the parameter represents a proportion of documents, integer\nabsolute counts.\nThis parameter is ignored if vocabulary is not None."
+            }
+        }
+    },
+    "sklearn.svm.SVC": {
+        "C": {
+            "refined_type": {
+                "kind": "BoundaryType",
+                "baseType": "float",
+                "min": 0,
+                "minInclusive": false,
+                "max": null,
+                "maxInclusive": false
+            },
+            "docstring": {
+                "type": "float, default=1.0",
+                "description": "Regularization parameter. The strength of the regularization is\ninversely proportional to C. Must be strictly positive. The penalty\nis a squared l2 penalty."
+            }
+        },
+        "kernel": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": [
+                            "linear",
+                            "poly",
+                            "rbf",
+                            "sigmoid",
+                            "precomputed"
+                        ]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "callable"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "{'linear', 'poly', 'rbf', 'sigmoid', 'precomputed'}, default='rbf'",
+                "description": "Specifies the kernel type to be used in the algorithm.\nIt must be one of 'linear', 'poly', 'rbf', 'sigmoid', 'precomputed' or\na callable.\nIf none is given, 'rbf' will be used. If a callable is given it is\nused to pre-compute the kernel matrix from data matrices; that matrix\nshould be an array of shape ``(n_samples, n_samples)``."
+            }
+        },
+        "gamma": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": ["scale", "auto"]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "float"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "{'scale', 'auto'} or float, default='scale'",
+                "description": "Kernel coefficient for 'rbf', 'poly' and 'sigmoid'.\n\n- if ``gamma='scale'`` (default) is passed then it uses\n  1 / (n_features * X.var()) as value of gamma,\n- if 'auto', uses 1 / n_features.\n\n.. versionchanged:: 0.22\n   The default value of ``gamma`` changed from 'auto' to 'scale'."
+            }
+        },
+        "class_weight": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "NamedType",
+                        "name": "dict"
+                    },
+                    {
+                        "kind": "EnumType",
+                        "values": ["balanced"]
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "dict or 'balanced', default=None",
+                "description": "Set the parameter C of class i to class_weight[i]*C for\nSVC. If not given, all classes are supposed to have\nweight one.\nThe \"balanced\" mode uses the values of y to automatically adjust\nweights inversely proportional to class frequencies in the input data\nas ``n_samples / (n_classes * np.bincount(y))``."
+            }
+        },
+        "decision_function_shape": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["ovo", "ovr"]
+            },
+            "docstring": {
+                "type": "{'ovo', 'ovr'}, default='ovr'",
+                "description": "Whether to return a one-vs-rest ('ovr') decision function of shape\n(n_samples, n_classes) as all other classifiers, or the original\none-vs-one ('ovo') decision function of libsvm which has shape\n(n_samples, n_classes * (n_classes - 1) / 2). However, one-vs-one\n('ovo') is always used as multi-class strategy. The parameter is\nignored for binary classification.\n\n.. versionchanged:: 0.19\n    decision_function_shape is 'ovr' by default.\n\n.. versionadded:: 0.17\n   *decision_function_shape='ovr'* is recommended.\n\n.. versionchanged:: 0.17\n   Deprecated *decision_function_shape='ovo' and None*."
+            }
+        }
+    },
+    "sklearn.cluster.KMeans": {
+        "init": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "NamedType",
+                        "name": "callable"
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "array-like"
+                    },
+                    {
+                        "kind": "EnumType",
+                        "values": ["k-means++", "random"]
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "{'k-means++', 'random'}, callable or array-like of shape (n_clusters, n_features), default='k-means++'",
+                "description": "Method for initialization:\n\n'k-means++' : selects initial cluster centers for k-mean\nclustering in a smart way to speed up convergence. See section\nNotes in k_init for more details.\n\n'random': choose `n_clusters` observations (rows) at random from data\nfor the initial centroids.\n\nIf an array is passed, it should be of shape (n_clusters, n_features)\nand gives the initial centers.\n\nIf a callable is passed, it should take arguments X, n_clusters and a\nrandom state and return an initialization."
+            }
+        },
+        "algorithm": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["full", "elkan", "auto"]
+            },
+            "docstring": {
+                "type": "{'auto', 'full', 'elkan'}, default='auto'",
+                "description": "K-means algorithm to use. The classical EM-style algorithm is \"full\". The \"elkan\" variation is more efficient on data with well-defined clusters, by using the triangle inequality. However it\u2019s more memory intensive due to the allocation of an extra array of shape (n_samples, n_clusters).\n\nFor now \"auto\" (kept for backward compatibility) chooses \"elkan\" but it might change in the future for a better heuristic.\n\n"
+            }
+        }
+    },
+    "sklearn.preprocessing.RobustScaler": {
+        "quantile_range": {
+            "refined_type": {
+                "kind": "BoundaryType",
+                "baseType": "tuple",
+                "min": 0,
+                "max": 100,
+                "minInclusive": false,
+                "maxInclusive": false
+            },
+            "docstring": {
+                "type": "tuple (q_min, q_max), 0.0 < q_min < q_max < 100.0,         default=(25.0, 75.0)",
+                "description": "Quantile range used to calculate `scale_`. By default this is equal to\nthe IQR, i.e., `q_min` is the first quantile and `q_max` is the third\nquantile.\n\n.. versionadded:: 0.18"
+            }
+        }
+    },
+    "sklearn.preprocessing.OneHotEncoder": {
+        "categories": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": ["auto"]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "list of array-like"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "'auto' or a list of array-like, default='auto'",
+                "description": "Categories (unique values) per feature:\n\n- 'auto' : Determine categories automatically from the training data.\n- list : ``categories[i]`` holds the categories expected in the ith\n  column. The passed categories should not mix strings and numeric\n  values within a single feature, and should be sorted in case of\n  numeric values.\n\nThe used categories can be found in the ``categories_`` attribute.\n\n.. versionadded:: 0.20"
+            }
+        },
+        "drop": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": ["first", "if_binary"]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "array-like"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "{'first', 'if_binary'} or a array-like of shape (n_features,),             default=None",
+                "description": "Specifies a methodology to use to drop one of the categories per\nfeature. This is useful in situations where perfectly collinear\nfeatures cause problems, such as when feeding the resulting data\ninto a neural network or an unregularized regression.\n\nHowever, dropping one category breaks the symmetry of the original\nrepresentation and can therefore induce a bias in downstream models,\nfor instance for penalized linear classification or regression models.\n\n- None : retain all features (the default).\n- 'first' : drop the first category in each feature. If only one\n  category is present, the feature will be dropped entirely.\n- 'if_binary' : drop the first category in each feature with two\n  categories. Features with 1 or more than 2 categories are\n  left intact.\n- array : ``drop[i]`` is the category in feature ``X[:, i]`` that\n  should be dropped.\n\n.. versionadded:: 0.21\n   The parameter `drop` was added in 0.21.\n\n.. versionchanged:: 0.23\n   The option `drop='if_binary'` was added in 0.23."
+            }
+        },
+        "handle_unknown": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["error", "ignore"]
+            },
+            "docstring": {
+                "type": "{'error', 'ignore'}, default='error'",
+                "description": "Whether to raise an error or ignore if an unknown categorical feature\nis present during transform (default is to raise). When this parameter\nis set to 'ignore' and an unknown category is encountered during\ntransform, the resulting one-hot encoded columns for this feature\nwill be all zeros. In the inverse transform, an unknown category\nwill be denoted as None."
+            }
+        }
+    },
+    "sklearn.preprocessing.StandardScaler": {},
+    "sklearn.preprocessing.MinMaxScaler": {},
+    "sklearn.preprocessing.LabelEncoder": {},
+    "sklearn.preprocessing.PolynomialFeatures": {
+        "order": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["C", "F"]
+            },
+            "docstring": {
+                "type": "{'C', 'F'}, default='C'",
+                "description": "Order of output array in the dense case. `'F'` order is faster to\ncompute, but may slow down subsequent estimators.\n\n.. versionadded:: 0.21"
+            }
+        }
+    },
+    "sklearn.utils.shuffle": {},
+    "sklearn.neighbors.KNeighborsRegressor": {
+        "weights": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": ["uniform", "distance"]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "callable"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "{'uniform', 'distance'} or callable, default='uniform'",
+                "description": "Weight function used in prediction.  Possible values:\n\n- 'uniform' : uniform weights.  All points in each neighborhood\n  are weighted equally.\n- 'distance' : weight points by the inverse of their distance.\n  in this case, closer neighbors of a query point will have a\n  greater influence than neighbors which are further away.\n- [callable] : a user-defined function which accepts an\n  array of distances, and returns an array of the same shape\n  containing the weights.\n\nUniform weights are used by default."
+            }
+        },
+        "algorithm": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["auto", "ball_tree", "kd_tree", "brute"]
+            },
+            "docstring": {
+                "type": "{'auto', 'ball_tree', 'kd_tree', 'brute'}, default='auto'",
+                "description": "Algorithm used to compute the nearest neighbors:\n\n- 'ball_tree' will use :class:`BallTree`\n- 'kd_tree' will use :class:`KDTree`\n- 'brute' will use a brute-force search.\n- 'auto' will attempt to decide the most appropriate algorithm\n  based on the values passed to :meth:`fit` method.\n\nNote: fitting on sparse input will override the setting of\nthis parameter, using brute force."
+            }
+        }
+    },
+    "sklearn.linear_model.Lasso": {
+        "selection": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["cyclic", "random"]
+            },
+            "docstring": {
+                "type": "{'cyclic', 'random'}, default='cyclic'",
+                "description": "If set to 'random', a random coefficient is updated every iteration\nrather than looping over features sequentially by default. This\n(setting to 'random') often leads to significantly faster convergence\nespecially when tol is higher than 1e-4."
+            }
+        }
+    },
+    "sklearn.linear_model.Ridge": {
+        "solver": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": [
+                    "sparse_cg",
+                    "sag",
+                    "cholesky",
+                    "lsqr",
+                    "auto",
+                    "svd",
+                    "lbfgs",
+                    "saga"
+                ]
+            },
+            "docstring": {
+                "type": "{'auto', 'svd', 'cholesky', 'lsqr', 'sparse_cg',             'sag', 'saga', 'lbfgs'}, default='auto'",
+                "description": "Solver to use in the computational routines:\n\n- 'auto' chooses the solver automatically based on the type of data.\n\n- 'svd' uses a Singular Value Decomposition of X to compute the Ridge\n  coefficients. More stable for singular matrices than 'cholesky'.\n\n- 'cholesky' uses the standard scipy.linalg.solve function to\n  obtain a closed-form solution.\n\n- 'sparse_cg' uses the conjugate gradient solver as found in\n  scipy.sparse.linalg.cg. As an iterative algorithm, this solver is\n  more appropriate than 'cholesky' for large-scale data\n  (possibility to set `tol` and `max_iter`).\n\n- 'lsqr' uses the dedicated regularized least-squares routine\n  scipy.sparse.linalg.lsqr. It is the fastest and uses an iterative\n  procedure.\n\n- 'sag' uses a Stochastic Average Gradient descent, and 'saga' uses\n  its improved, unbiased version named SAGA. Both methods also use an\n  iterative procedure, and are often faster than other solvers when\n  both n_samples and n_features are large. Note that 'sag' and\n  'saga' fast convergence is only guaranteed on features with\n  approximately the same scale. You can preprocess the data with a\n  scaler from sklearn.preprocessing.\n\n- 'lbfgs' uses L-BFGS-B algorithm implemented in\n  `scipy.optimize.minimize`. It can be used only when `positive`\n  is True.\n\nAll last six solvers support both dense and sparse data. However, only\n'sag', 'sparse_cg', and 'lbfgs' support sparse input when `fit_intercept`\nis True.\n\n.. versionadded:: 0.17\n   Stochastic Average Gradient descent solver.\n.. versionadded:: 0.19\n   SAGA solver."
+            }
+        }
+    },
+    "sklearn.linear_model.LinearRegression": {},
+    "sklearn.linear_model.ElasticNet": {
+        "l1_ratio": {
+            "refined_type": {
+                "kind": "BoundaryType",
+                "baseType": "float",
+                "min": 0,
+                "minInclusive": true,
+                "max": 1,
+                "maxInclusive": true
+            },
+            "docstring": {
+                "type": "float, default=0.5",
+                "description": "The ElasticNet mixing parameter, with 0 <= l1_ratio <= 1. For l1_ratio = 0 the penalty is an L2 penalty. For l1_ratio = 1 it is an L1 penalty. For 0 < l1_ratio < 1, the penalty is a combination of L1 and L2.\n\n"
+            }
+        },
+        "selection": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["cyclic", "random"]
+            },
+            "docstring": {
+                "type": "{'cyclic', 'random'}, default='cyclic'",
+                "description": "If set to 'random', a random coefficient is updated every iteration\nrather than looping over features sequentially by default. This\n(setting to 'random') often leads to significantly faster convergence\nespecially when tol is higher than 1e-4."
+            }
+        }
+    },
+    "sklearn.linear_model.LogisticRegression": {
+        "penalty": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["none", "elasticnet", "l1", "l2"]
+            },
+            "docstring": {
+                "type": "{'l1', 'l2', 'elasticnet', 'none'}, default='l2'",
+                "description": "Specify the norm of the penalty:\n\n- `'none'`: no penalty is added;\n- `'l2'`: add a L2 penalty term and it is the default choice;\n- `'l1'`: add a L1 penalty term;\n- `'elasticnet'`: both L1 and L2 penalty terms are added.\n\n.. warning::\n   Some penalties may not work with some solvers. See the parameter\n   `solver` below, to know the compatibility between the penalty and\n   solver.\n\n.. versionadded:: 0.19\n   l1 penalty with SAGA solver (allowing 'multinomial' + L1)"
+            }
+        },
+        "C": {
+            "refined_type": {
+                "kind": "BoundaryType",
+                "baseType": "float",
+                "min": 0,
+                "minInclusive": false,
+                "max": null,
+                "maxInclusive": false
+            },
+            "docstring": {
+                "type": "float, default=1.0",
+                "description": "Inverse of regularization strength; must be a positive float.\nLike in support vector machines, smaller values specify stronger\nregularization."
+            }
+        },
+        "class_weight": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "NamedType",
+                        "name": "dict"
+                    },
+                    {
+                        "kind": "EnumType",
+                        "values": ["balanced"]
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "dict or 'balanced', default=None",
+                "description": "Weights associated with classes in the form {class_label: weight}. If not given, all classes are supposed to have weight one.\n\nThe \u201cbalanced\u201d mode uses the values of y to automatically adjust weights inversely proportional to class frequencies in the input data as n_samples / (n_classes * np.bincount(y)).\n\nNote that these weights will be multiplied with sample_weight (passed through the fit method) if sample_weight is specified."
+            }
+        },
+        "solver": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["lbfgs", "newton-cg", "liblinear", "sag", "saga"]
+            },
+            "docstring": {
+                "type": "{'newton-cg', 'lbfgs', 'liblinear', 'sag', 'saga'},             default='lbfgs'",
+                "description": "Algorithm to use in the optimization problem. Default is 'lbfgs'.\nTo choose a solver, you might want to consider the following aspects:\n\n    - For small datasets, 'liblinear' is a good choice, whereas 'sag'\n      and 'saga' are faster for large ones;\n    - For multiclass problems, only 'newton-cg', 'sag', 'saga' and\n      'lbfgs' handle multinomial loss;\n    - 'liblinear' is limited to one-versus-rest schemes.\n\n.. warning::\n   The choice of the algorithm depends on the penalty chosen:\n   Supported penalties by solver:\n\n   - 'newton-cg'   -   ['l2', 'none']\n   - 'lbfgs'       -   ['l2', 'none']\n   - 'liblinear'   -   ['l1', 'l2']\n   - 'sag'         -   ['l2', 'none']\n   - 'saga'        -   ['elasticnet', 'l1', 'l2', 'none']\n\n.. note::\n   'sag' and 'saga' fast convergence is only guaranteed on\n   features with approximately the same scale. You can\n   preprocess the data with a scaler from :mod:`sklearn.preprocessing`.\n\n.. seealso::\n   Refer to the User Guide for more information regarding\n   :class:`LogisticRegression` and more specifically the\n   `Table <https://scikit-learn.org/dev/modules/linear_model.html#logistic-regression>`_\n   summarazing solver/penalty supports.\n   <!--\n   # noqa: E501\n   -->\n\n.. versionadded:: 0.17\n   Stochastic Average Gradient descent solver.\n.. versionadded:: 0.19\n   SAGA solver.\n.. versionchanged:: 0.22\n    The default solver changed from 'liblinear' to 'lbfgs' in 0.22."
+            }
+        },
+        "multi_class": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["multinomial", "ovr", "auto"]
+            },
+            "docstring": {
+                "type": "{'auto', 'ovr', 'multinomial'}, default='auto'",
+                "description": "If the option chosen is 'ovr', then a binary problem is fit for each\nlabel. For 'multinomial' the loss minimised is the multinomial loss fit\nacross the entire probability distribution, *even when the data is\nbinary*. 'multinomial' is unavailable when solver='liblinear'.\n'auto' selects 'ovr' if the data is binary, or if solver='liblinear',\nand otherwise selects 'multinomial'.\n\n.. versionadded:: 0.18\n   Stochastic Average Gradient descent solver for 'multinomial' case.\n.. versionchanged:: 0.22\n    Default changed from 'ovr' to 'auto' in 0.22."
+            }
+        },
+        "verbose": {
+            "refined_type": {
+                "kind": "BoundaryType",
+                "baseType": "int",
+                "min": 0,
+                "minInclusive": false,
+                "max": null,
+                "maxInclusive": false
+            },
+            "docstring": {
+                "type": "int, default=0",
+                "description": "For the liblinear and lbfgs solvers set verbose to any positive\nnumber for verbosity."
+            }
+        },
+        "l1_ratio": {
+            "refined_type": {
+                "kind": "BoundaryType",
+                "baseType": "float",
+                "min": 0,
+                "minInclusive": true,
+                "max": 1,
+                "maxInclusive": true
+            },
+            "docstring": {
+                "type": "float, default=None",
+                "description": "The Elastic-Net mixing parameter, with ``0 <= l1_ratio <= 1``. Only\nused if ``penalty='elasticnet'``. Setting ``l1_ratio=0`` is equivalent\nto using ``penalty='l2'``, while setting ``l1_ratio=1`` is equivalent\nto using ``penalty='l1'``. For ``0 < l1_ratio <1``, the penalty is a\ncombination of L1 and L2."
+            }
+        }
+    },
+    "sklearn.linear_model.SGDClassifier": {
+        "loss": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": [
+                    "hinge",
+                    "log",
+                    "modified_huber",
+                    "squared_hinge",
+                    "perceptron",
+                    "squared_error",
+                    "huber",
+                    "epsilon_insensitive",
+                    "squared_epsilon_insensitive"
+                ]
+            },
+            "docstring": {
+                "type": "str, default='hinge'",
+                "description": "The loss function to be used. Defaults to 'hinge', which gives a\nlinear SVM.\n\nThe possible options are 'hinge', 'log', 'modified_huber',\n'squared_hinge', 'perceptron', or a regression loss: 'squared_error',\n'huber', 'epsilon_insensitive', or 'squared_epsilon_insensitive'.\n\nThe 'log' loss gives logistic regression, a probabilistic classifier.\n'modified_huber' is another smooth loss that brings tolerance to\noutliers as well as probability estimates.\n'squared_hinge' is like hinge but is quadratically penalized.\n'perceptron' is the linear loss used by the perceptron algorithm.\nThe other losses are designed for regression but can be useful in\nclassification as well; see\n:class:`~sklearn.linear_model.SGDRegressor` for a description.\n\nMore details about the losses formulas can be found in the\n:ref:`User Guide <sgd_mathematical_formulation>`.\n\n.. deprecated:: 1.0\n    The loss 'squared_loss' was deprecated in v1.0 and will be removed\n    in version 1.2. Use `loss='squared_error'` which is equivalent."
+            }
+        },
+        "penalty": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["elasticnet", "l1", "l2"]
+            },
+            "docstring": {
+                "type": "{'l2', 'l1', 'elasticnet'}, default='l2'",
+                "description": "The penalty (aka regularization term) to be used. Defaults to 'l2'\nwhich is the standard regularizer for linear SVM models. 'l1' and\n'elasticnet' might bring sparsity to the model (feature selection)\nnot achievable with 'l2'."
+            }
+        },
+        "l1_ratio": {
+            "refined_type": {
+                "kind": "BoundaryType",
+                "baseType": "float",
+                "min": 0,
+                "minInclusive": true,
+                "max": 1,
+                "maxInclusive": true
+            },
+            "docstring": {
+                "type": "float, default=0.15",
+                "description": "The Elastic Net mixing parameter, with 0 <= l1_ratio <= 1.\nl1_ratio=0 corresponds to L2 penalty, l1_ratio=1 to L1.\nOnly used if `penalty` is 'elasticnet'."
+            }
+        },
+        "learning_rate": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["constant", "optimal", "invscaling", "adaptive"]
+            },
+            "docstring": {
+                "type": "str, default='optimal'",
+                "description": "The learning rate schedule:\n\n- 'constant': `eta = eta0`\n- 'optimal': `eta = 1.0 / (alpha * (t + t0))`\n  where t0 is chosen by a heuristic proposed by Leon Bottou.\n- 'invscaling': `eta = eta0 / pow(t, power_t)`\n- 'adaptive': eta = eta0, as long as the training keeps decreasing.\n  Each time n_iter_no_change consecutive epochs fail to decrease the\n  training loss by tol or fail to increase validation score by tol if\n  early_stopping is True, the current learning rate is divided by 5.\n\n    .. versionadded:: 0.20\n        Added 'adaptive' option"
+            }
+        },
+        "validation_fraction": {
+            "refined_type": {
+                "kind": "BoundaryType",
+                "baseType": "float",
+                "min": 0,
+                "minInclusive": false,
+                "max": 1,
+                "maxInclusive": false
+            },
+            "docstring": {
+                "type": "float, default=0.1",
+                "description": "The proportion of training data to set aside as validation set for\nearly stopping. Must be between 0 and 1.\nOnly used if `early_stopping` is True.\n\n.. versionadded:: 0.20\n    Added 'validation_fraction' option"
+            }
+        },
+        "class_weight": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "NamedType",
+                        "name": "dict"
+                    },
+                    {
+                        "kind": "EnumType",
+                        "values": ["balanced"]
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "dict, {class_label: weight} or \"balanced\", default=None",
+                "description": "Preset for the class_weight fit parameter.\n\nWeights associated with classes. If not given, all classes\nare supposed to have weight one.\n\nThe \"balanced\" mode uses the values of y to automatically adjust\nweights inversely proportional to class frequencies in the input data\nas ``n_samples / (n_classes * np.bincount(y))``."
+            }
+        }
+    },
+    "sklearn.model_selection.StratifiedKFold": {
+        "n_splits": {
+            "refined_type": {
+                "kind": "BoundaryType",
+                "baseType": "int",
+                "min": 2,
+                "minInclusive": true,
+                "max": null,
+                "maxInclusive": false
+            },
+            "docstring": {
+                "type": "int, default=5",
+                "description": "Number of folds. Must be at least 2.\n\n.. versionchanged:: 0.22\n    ``n_splits`` default value changed from 3 to 5."
+            }
+        }
+    },
+    "sklearn.model_selection.GridSearchCV": {
+        "error_score": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": ["raise"]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "numeric"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "'raise' or numeric, default=np.nan",
+                "description": "Value to assign to the score if an error occurs in estimator fitting.\nIf set to 'raise', the error is raised. If a numeric value is given,\nFitFailedWarning is raised. This parameter does not affect the refit\nstep, which will always raise the error."
+            }
+        }
+    },
+    "sklearn.model_selection.KFold": {
+        "n_splits": {
+            "refined_type": {
+                "kind": "BoundaryType",
+                "baseType": "int",
+                "min": 2,
+                "minInclusive": true,
+                "max": null,
+                "maxInclusive": false
+            },
+            "docstring": {
+                "type": "int, default=5",
+                "description": "Number of folds. Must be at least 2.\n\n.. versionchanged:: 0.22\n    ``n_splits`` default value changed from 3 to 5."
+            }
+        }
+    },
+    "sklearn.model_selection.RandomizedSearchCV": {
+        "error_score": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": ["raise"]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "numeric"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "'raise' or numeric, default=np.nan",
+                "description": "Value to assign to the score if an error occurs in estimator fitting.\nIf set to 'raise', the error is raised. If a numeric value is given,\nFitFailedWarning is raised. This parameter does not affect the refit\nstep, which will always raise the error."
+            }
+        }
+    },
+    "sklearn.model_selection.train_test_split": {
+        "test_size": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "BoundaryType",
+                        "baseType": "float",
+                        "min": 0,
+                        "max": 1,
+                        "minInclusive": true,
+                        "maxInclusive": true
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "int"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "float or int, default=None",
+                "description": "If float, should be between 0.0 and 1.0 and represent the proportion\nof the dataset to include in the test split. If int, represents the\nabsolute number of test samples. If None, the value is set to the\ncomplement of the train size. If ``train_size`` is also None, it will\nbe set to 0.25."
+            }
+        },
+        "train_size": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "BoundaryType",
+                        "baseType": "float",
+                        "min": 0,
+                        "max": 1,
+                        "minInclusive": true,
+                        "maxInclusive": true
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "int"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "float or int, default=None",
+                "description": "If float, should be between 0.0 and 1.0 and represent the\nproportion of the dataset to include in the train split. If\nint, represents the absolute number of train samples. If None,\nthe value is automatically set to the complement of the test size."
+            }
+        }
+    },
+    "sklearn.model_selection.GroupKFold": {
+        "n_splits": {
+            "refined_type": {
+                "kind": "BoundaryType",
+                "baseType": "int",
+                "min": 2,
+                "minInclusive": true,
+                "max": null,
+                "maxInclusive": false
+            },
+            "docstring": {
+                "type": "int, default=5",
+                "description": "Number of folds. Must be at least 2.\n\n.. versionchanged:: 0.22\n    ``n_splits`` default value changed from 3 to 5."
+            }
+        }
+    },
+    "sklearn.model_selection.cross_val_score": {
+        "error_score": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": ["raise"]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "numeric"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "'raise' or numeric, default=np.nan",
+                "description": "Value to assign to the score if an error occurs in estimator fitting.\nIf set to 'raise', the error is raised.\nIf a numeric value is given, FitFailedWarning is raised.\n\n.. versionadded:: 0.20"
+            }
+        }
+    }
+}

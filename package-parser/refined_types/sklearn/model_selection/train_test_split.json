@@ -1,0 +1,50 @@
+{
+    "sklearn.model_selection.train_test_split": {
+        "test_size": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "BoundaryType",
+                        "baseType": "float",
+                        "min": 0,
+                        "max": 1,
+                        "minInclusive": true,
+                        "maxInclusive": true
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "int"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "float or int, default=None",
+                "description": "If float, should be between 0.0 and 1.0 and represent the proportion\nof the dataset to include in the test split. If int, represents the\nabsolute number of test samples. If None, the value is set to the\ncomplement of the train size. If ``train_size`` is also None, it will\nbe set to 0.25."
+            }
+        },
+        "train_size": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "BoundaryType",
+                        "baseType": "float",
+                        "min": 0,
+                        "max": 1,
+                        "minInclusive": true,
+                        "maxInclusive": true
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "int"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "float or int, default=None",
+                "description": "If float, should be between 0.0 and 1.0 and represent the\nproportion of the dataset to include in the train split. If\nint, represents the absolute number of train samples. If None,\nthe value is automatically set to the complement of the test size."
+            }
+        }
+    }
+}

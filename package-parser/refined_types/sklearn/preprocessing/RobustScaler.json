@@ -1,0 +1,18 @@
+{
+    "sklearn.preprocessing.RobustScaler": {
+        "quantile_range": {
+            "refined_type": {
+                "kind": "BoundaryType",
+                "baseType": "tuple",
+                "min": 0,
+                "max": 100,
+                "minInclusive": false,
+                "maxInclusive": false
+            },
+            "docstring": {
+                "type": "tuple (q_min, q_max), 0.0 < q_min < q_max < 100.0,         default=(25.0, 75.0)",
+                "description": "Quantile range used to calculate `scale_`. By default this is equal to\nthe IQR, i.e., `q_min` is the first quantile and `q_max` is the third\nquantile.\n\n.. versionadded:: 0.18"
+            }
+        }
+    }
+}

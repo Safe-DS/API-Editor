@@ -1,0 +1,14 @@
+{
+    "sklearn.impute.SimpleImputer": {
+        "strategy": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["mean", "median", "most_frequent", "constant"]
+            },
+            "docstring": {
+                "type": "str, default='mean'",
+                "description": "The imputation strategy.\n\n- If \"mean\", then replace missing values using the mean along\n  each column. Can only be used with numeric data.\n- If \"median\", then replace missing values using the median along\n  each column. Can only be used with numeric data.\n- If \"most_frequent\", then replace missing using the most frequent\n  value along each column. Can be used with strings or numeric data.\n  If there is more than one such value, only the smallest is returned.\n- If \"constant\", then replace missing values with fill_value. Can be\n  used with strings or numeric data.\n\n.. versionadded:: 0.20\n   strategy=\"constant\" for fixed value imputation."
+            }
+        }
+    }
+}

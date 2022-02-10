@@ -1,0 +1,84 @@
+{
+    "sklearn.tree.DecisionTreeClassifier": {
+        "criterion": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["gini", "entropy"]
+            },
+            "docstring": {
+                "type": "{\"gini\", \"entropy\"}, default=\"gini\"",
+                "description": "The function to measure the quality of a split. Supported criteria are\n\"gini\" for the Gini impurity and \"entropy\" for the information gain."
+            }
+        },
+        "splitter": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["best", "random"]
+            },
+            "docstring": {
+                "type": "{\"best\", \"random\"}, default=\"best\"",
+                "description": "The strategy used to choose the split at each node. Supported\nstrategies are \"best\" to choose the best split and \"random\" to choose\nthe best random split."
+            }
+        },
+        "max_features": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "NamedType",
+                        "name": "int"
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "float"
+                    },
+                    {
+                        "kind": "EnumType",
+                        "values": ["auto", "sqrt", "log2"]
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "int, float or {\"auto\", \"sqrt\", \"log2\"}, default=None",
+                "description": "The number of features to consider when looking for the best split:\n\n    - If int, then consider `max_features` features at each split.\n    - If float, then `max_features` is a fraction and\n      `int(max_features * n_features)` features are considered at each\n      split.\n    - If \"auto\", then `max_features=sqrt(n_features)`.\n    - If \"sqrt\", then `max_features=sqrt(n_features)`.\n    - If \"log2\", then `max_features=log2(n_features)`.\n    - If None, then `max_features=n_features`.\n\nNote: the search for a split does not stop until at least one\nvalid partition of the node samples is found, even if it requires to\neffectively inspect more than ``max_features`` features."
+            }
+        },
+        "class_weight": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "NamedType",
+                        "name": "dict"
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "list of dicts"
+                    },
+                    {
+                        "kind": "EnumType",
+                        "values": ["balanced"]
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "dict, list of dict or \"balanced\", default=None",
+                "description": "Weights associated with classes in the form ``{class_label: weight}``.\nIf None, all classes are supposed to have weight one. For\nmulti-output problems, a list of dicts can be provided in the same\norder as the columns of y.\n\nNote that for multioutput (including multilabel) weights should be\ndefined for each class of every column in its own dict. For example,\nfor four-class multilabel classification weights should be\n[{0: 1, 1: 1}, {0: 1, 1: 5}, {0: 1, 1: 1}, {0: 1, 1: 1}] instead of\n[{1:1}, {2:5}, {3:1}, {4:1}].\n\nThe \"balanced\" mode uses the values of y to automatically adjust\nweights inversely proportional to class frequencies in the input data\nas ``n_samples / (n_classes * np.bincount(y))``\n\nFor multi-output, the weights of each column of y will be multiplied.\n\nNote that these weights will be multiplied with sample_weight (passed\nthrough the fit method) if sample_weight is specified."
+            }
+        },
+        "ccp_alpha": {
+            "refined_type": {
+                "kind": "BoundaryType",
+                "baseType": "float",
+                "min": 0,
+                "minInclusive": true,
+                "max": null,
+                "maxInclusive": false
+            },
+            "docstring": {
+                "type": "non-negative float, default=0.0",
+                "description": "Complexity parameter used for Minimal Cost-Complexity Pruning. The\nsubtree with the largest cost complexity that is smaller than\n``ccp_alpha`` will be chosen. By default, no pruning is performed. See\n:ref:`minimal_cost_complexity_pruning` for details.\n\n.. versionadded:: 0.22"
+            }
+        }
+    }
+}

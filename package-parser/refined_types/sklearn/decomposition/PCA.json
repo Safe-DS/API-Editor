@@ -1,0 +1,74 @@
+{
+    "sklearn.decomposition.PCA": {
+        "n_components": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "NamedType",
+                        "name": "int"
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "float"
+                    },
+                    {
+                        "kind": "EnumType",
+                        "values": ["mle"]
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "int, float or 'mle', default=None",
+                "description": "Number of components to keep.\nif n_components is not set all components are kept::\n\n    n_components == min(n_samples, n_features)\n\nIf ``n_components == 'mle'`` and ``svd_solver == 'full'``, Minka's\nMLE is used to guess the dimension. Use of ``n_components == 'mle'``\nwill interpret ``svd_solver == 'auto'`` as ``svd_solver == 'full'``.\n\nIf ``0 < n_components < 1`` and ``svd_solver == 'full'``, select the\nnumber of components such that the amount of variance that needs to be\nexplained is greater than the percentage specified by n_components.\n\nIf ``svd_solver == 'arpack'``, the number of components must be\nstrictly less than the minimum of n_features and n_samples.\n\nHence, the None case results in::\n\n    n_components == min(n_samples, n_features) - 1"
+            }
+        },
+        "svd_solver": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["full", "arpack", "randomized", "auto"]
+            },
+            "docstring": {
+                "type": "{'auto', 'full', 'arpack', 'randomized'}, default='auto'",
+                "description": "If auto :\n    The solver is selected by a default policy based on `X.shape` and\n    `n_components`: if the input data is larger than 500x500 and the\n    number of components to extract is lower than 80% of the smallest\n    dimension of the data, then the more efficient 'randomized'\n    method is enabled. Otherwise the exact full SVD is computed and\n    optionally truncated afterwards.\nIf full :\n    run exact full SVD calling the standard LAPACK solver via\n    `scipy.linalg.svd` and select the components by postprocessing\nIf arpack :\n    run SVD truncated to n_components calling ARPACK solver via\n    `scipy.sparse.linalg.svds`. It requires strictly\n    0 < n_components < min(X.shape)\nIf randomized :\n    run randomized SVD by the method of Halko et al.\n\n.. versionadded:: 0.18.0"
+            }
+        },
+        "tol": {
+            "refined_type": {
+                "kind": "BoundaryType",
+                "baseType": "float",
+                "min": 0,
+                "minInclusive": true,
+                "max": null,
+                "maxInclusive": false
+            },
+            "docstring": {
+                "type": "float, default=0.0",
+                "description": "Tolerance for singular values computed by svd_solver == 'arpack'.\nMust be of range [0.0, infinity).\n\n.. versionadded:: 0.18.0"
+            }
+        },
+        "iterated_power": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "BoundaryType",
+                        "baseType": "int",
+                        "min": 0,
+                        "minInclusive": true,
+                        "max": null,
+                        "maxInclusive": false
+                    },
+                    {
+                        "kind": "EnumType",
+                        "values": ["auto"]
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "int or 'auto', default='auto'",
+                "description": "Number of iterations for the power method computed by\nsvd_solver == 'randomized'.\nMust be of range [0, infinity).\n\n.. versionadded:: 0.18.0"
+            }
+        }
+    }
+}

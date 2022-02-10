@@ -1,0 +1,95 @@
+{
+    "sklearn.linear_model.LogisticRegression": {
+        "penalty": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["none", "elasticnet", "l1", "l2"]
+            },
+            "docstring": {
+                "type": "{'l1', 'l2', 'elasticnet', 'none'}, default='l2'",
+                "description": "Specify the norm of the penalty:\n\n- `'none'`: no penalty is added;\n- `'l2'`: add a L2 penalty term and it is the default choice;\n- `'l1'`: add a L1 penalty term;\n- `'elasticnet'`: both L1 and L2 penalty terms are added.\n\n.. warning::\n   Some penalties may not work with some solvers. See the parameter\n   `solver` below, to know the compatibility between the penalty and\n   solver.\n\n.. versionadded:: 0.19\n   l1 penalty with SAGA solver (allowing 'multinomial' + L1)"
+            }
+        },
+        "C": {
+            "refined_type": {
+                "kind": "BoundaryType",
+                "baseType": "float",
+                "min": 0,
+                "minInclusive": false,
+                "max": null,
+                "maxInclusive": false
+            },
+            "docstring": {
+                "type": "float, default=1.0",
+                "description": "Inverse of regularization strength; must be a positive float.\nLike in support vector machines, smaller values specify stronger\nregularization."
+            }
+        },
+        "class_weight": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "NamedType",
+                        "name": "dict"
+                    },
+                    {
+                        "kind": "EnumType",
+                        "values": ["balanced"]
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "dict or 'balanced', default=None",
+                "description": "Weights associated with classes in the form {class_label: weight}. If not given, all classes are supposed to have weight one.\n\nThe “balanced” mode uses the values of y to automatically adjust weights inversely proportional to class frequencies in the input data as n_samples / (n_classes * np.bincount(y)).\n\nNote that these weights will be multiplied with sample_weight (passed through the fit method) if sample_weight is specified."
+            }
+        },
+        "solver": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["lbfgs", "newton-cg", "liblinear", "sag", "saga"]
+            },
+            "docstring": {
+                "type": "{'newton-cg', 'lbfgs', 'liblinear', 'sag', 'saga'},             default='lbfgs'",
+                "description": "Algorithm to use in the optimization problem. Default is 'lbfgs'.\nTo choose a solver, you might want to consider the following aspects:\n\n    - For small datasets, 'liblinear' is a good choice, whereas 'sag'\n      and 'saga' are faster for large ones;\n    - For multiclass problems, only 'newton-cg', 'sag', 'saga' and\n      'lbfgs' handle multinomial loss;\n    - 'liblinear' is limited to one-versus-rest schemes.\n\n.. warning::\n   The choice of the algorithm depends on the penalty chosen:\n   Supported penalties by solver:\n\n   - 'newton-cg'   -   ['l2', 'none']\n   - 'lbfgs'       -   ['l2', 'none']\n   - 'liblinear'   -   ['l1', 'l2']\n   - 'sag'         -   ['l2', 'none']\n   - 'saga'        -   ['elasticnet', 'l1', 'l2', 'none']\n\n.. note::\n   'sag' and 'saga' fast convergence is only guaranteed on\n   features with approximately the same scale. You can\n   preprocess the data with a scaler from :mod:`sklearn.preprocessing`.\n\n.. seealso::\n   Refer to the User Guide for more information regarding\n   :class:`LogisticRegression` and more specifically the\n   `Table <https://scikit-learn.org/dev/modules/linear_model.html#logistic-regression>`_\n   summarazing solver/penalty supports.\n   <!--\n   # noqa: E501\n   -->\n\n.. versionadded:: 0.17\n   Stochastic Average Gradient descent solver.\n.. versionadded:: 0.19\n   SAGA solver.\n.. versionchanged:: 0.22\n    The default solver changed from 'liblinear' to 'lbfgs' in 0.22."
+            }
+        },
+        "multi_class": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["multinomial", "ovr", "auto"]
+            },
+            "docstring": {
+                "type": "{'auto', 'ovr', 'multinomial'}, default='auto'",
+                "description": "If the option chosen is 'ovr', then a binary problem is fit for each\nlabel. For 'multinomial' the loss minimised is the multinomial loss fit\nacross the entire probability distribution, *even when the data is\nbinary*. 'multinomial' is unavailable when solver='liblinear'.\n'auto' selects 'ovr' if the data is binary, or if solver='liblinear',\nand otherwise selects 'multinomial'.\n\n.. versionadded:: 0.18\n   Stochastic Average Gradient descent solver for 'multinomial' case.\n.. versionchanged:: 0.22\n    Default changed from 'ovr' to 'auto' in 0.22."
+            }
+        },
+        "verbose": {
+            "refined_type": {
+                "kind": "BoundaryType",
+                "baseType": "int",
+                "min": 0,
+                "minInclusive": false,
+                "max": null,
+                "maxInclusive": false
+            },
+            "docstring": {
+                "type": "int, default=0",
+                "description": "For the liblinear and lbfgs solvers set verbose to any positive\nnumber for verbosity."
+            }
+        },
+        "l1_ratio": {
+            "refined_type": {
+                "kind": "BoundaryType",
+                "baseType": "float",
+                "min": 0,
+                "minInclusive": true,
+                "max": 1,
+                "maxInclusive": true
+            },
+            "docstring": {
+                "type": "float, default=None",
+                "description": "The Elastic-Net mixing parameter, with ``0 <= l1_ratio <= 1``. Only\nused if ``penalty='elasticnet'``. Setting ``l1_ratio=0`` is equivalent\nto using ``penalty='l2'``, while setting ``l1_ratio=1`` is equivalent\nto using ``penalty='l1'``. For ``0 < l1_ratio <1``, the penalty is a\ncombination of L1 and L2."
+            }
+        }
+    }
+}

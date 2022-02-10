@@ -1,0 +1,37 @@
+{
+    "sklearn.metrics.recall_score": {
+        "average": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["micro", "macro", "samples", "weighted", "binary"]
+            },
+            "docstring": {
+                "type": "{'micro', 'macro', 'samples', 'weighted', 'binary'} or None,             default='binary'",
+                "description": "This parameter is required for multiclass/multilabel targets.\nIf ``None``, the scores for each class are returned. Otherwise, this\ndetermines the type of averaging performed on the data:\n\n``'binary'``:\n    Only report results for the class specified by ``pos_label``.\n    This is applicable only if targets (``y_{true,pred}``) are binary.\n``'micro'``:\n    Calculate metrics globally by counting the total true positives,\n    false negatives and false positives.\n``'macro'``:\n    Calculate metrics for each label, and find their unweighted\n    mean.  This does not take label imbalance into account.\n``'weighted'``:\n    Calculate metrics for each label, and find their average weighted\n    by support (the number of true instances for each label). This\n    alters 'macro' to account for label imbalance; it can result in an\n    F-score that is not between precision and recall. Weighted recall\n    is equal to accuracy.\n``'samples'``:\n    Calculate metrics for each instance, and find their average (only\n    meaningful for multilabel classification where this differs from\n    :func:`accuracy_score`)."
+            }
+        },
+        "zero_division": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": ["warn"]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "0"
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "1"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "\"warn\", 0 or 1, default=\"warn\"",
+                "description": "Sets the value to return when there is a zero division. If set to\n\"warn\", this acts as 0, but warnings are also raised."
+            }
+        }
+    }
+}

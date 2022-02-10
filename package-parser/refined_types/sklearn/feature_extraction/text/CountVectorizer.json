@@ -1,0 +1,118 @@
+{
+    "sklearn.feature_extraction.text.CountVectorizer": {
+        "input": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["file", "filename", "content"]
+            },
+            "docstring": {
+                "type": "{'filename', 'file', 'content'}, default='content'",
+                "description": "- If `'filename'`, the sequence passed as an argument to fit is\n  expected to be a list of filenames that need reading to fetch\n  the raw content to analyze.\n\n- If `'file'`, the sequence items must have a 'read' method (file-like\n  object) that is called to fetch the bytes in memory.\n\n- If `'content'`, the input is expected to be a sequence of items that\n  can be of type string or byte."
+            }
+        },
+        "decode_error": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["ignore", "replace", "strict"]
+            },
+            "docstring": {
+                "type": "{'strict', 'ignore', 'replace'}, default='strict'",
+                "description": "Instruction on what to do if a byte sequence is given to analyze that\ncontains characters not of the given `encoding`. By default, it is\n'strict', meaning that a UnicodeDecodeError will be raised. Other\nvalues are 'ignore' and 'replace'."
+            }
+        },
+        "strip_accents": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["ascii", "unicode"]
+            },
+            "docstring": {
+                "type": "{'ascii', 'unicode'}, default=None",
+                "description": "Remove accents and perform other character normalization\nduring the preprocessing step.\n'ascii' is a fast method that only works on characters that have\nan direct ASCII mapping.\n'unicode' is a slightly slower method that works on any characters.\nNone (default) does nothing.\n\nBoth 'ascii' and 'unicode' use NFKD normalization from\n:func:`unicodedata.normalize`."
+            }
+        },
+        "stop_words": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": ["english"]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "list"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "{'english'}, list, default=None",
+                "description": "If 'english', a built-in stop word list for English is used.\nThere are several known issues with 'english' and you should\nconsider an alternative (see :ref:`stop_words`).\n\nIf a list, that list is assumed to contain stop words, all of which\nwill be removed from the resulting tokens.\nOnly applies if ``analyzer == 'word'``.\n\nIf None, no stop words will be used. max_df can be set to a value\nin the range [0.7, 1.0) to automatically detect and filter stop\nwords based on intra corpus document frequency of terms."
+            }
+        },
+        "analyzer": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "EnumType",
+                        "values": ["char_wb", "char", "word"]
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "callable"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "{'word', 'char', 'char_wb'} or callable, default='word'",
+                "description": "Whether the feature should be made of word n-gram or character\nn-grams.\nOption 'char_wb' creates character n-grams only from text inside\nword boundaries; n-grams at the edges of words are padded with space.\n\nIf a callable is passed it is used to extract the sequence of features\nout of the raw, unprocessed input.\n\n.. versionchanged:: 0.21\n\nSince v0.21, if ``input`` is ``filename`` or ``file``, the data is\nfirst read from the file and then passed to the given callable\nanalyzer."
+            }
+        },
+        "max_df": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "BoundaryType",
+                        "baseType": "float",
+                        "min": 0,
+                        "minInclusive": true,
+                        "max": 1,
+                        "maxInclusive": true
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "int"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "float in range [0.0, 1.0] or int, default=1.0",
+                "description": "When building the vocabulary ignore terms that have a document\nfrequency strictly higher than the given threshold (corpus-specific\nstop words).\nIf float, the parameter represents a proportion of documents, integer\nabsolute counts.\nThis parameter is ignored if vocabulary is not None."
+            }
+        },
+        "min_df": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "BoundaryType",
+                        "baseType": "float",
+                        "min": 0,
+                        "minInclusive": true,
+                        "max": 1,
+                        "maxInclusive": true
+                    },
+                    {
+                        "kind": "NamedType",
+                        "name": "int"
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "float in range [0.0, 1.0] or int, default=1",
+                "description": "When building the vocabulary ignore terms that have a document\nfrequency strictly lower than the given threshold. This value is also\ncalled cut-off in the literature.\nIf float, the parameter represents a proportion of documents, integer\nabsolute counts.\nThis parameter is ignored if vocabulary is not None."
+            }
+        }
+    }
+}

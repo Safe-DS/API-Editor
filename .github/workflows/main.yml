@@ -1,12 +1,8 @@
-name: Pull Request
+name: Main
 
 on:
-  pull_request:
+  push:
     branches: [main]
-
-concurrency:
-  group: ${{ github.head_ref }}-${{ github.workflow }}
-  cancel-in-progress: true
 
 jobs:
   build-api-editor:
@@ -45,13 +41,12 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Upload test report
-        if: ${{ failure() }}
+      - name: Upload distribution
         uses: actions/upload-artifact@v2
         with:
-          name: Test report
-          path: api-editor/server/build/reports
-          if-no-files-found: ignore
+          name: API-Editor
+          path: api-editor/server/build/libs/*-all.jar
+          if-no-files-found: error
 
   build-package-parser:
     runs-on: ubuntu-latest
@@ -60,7 +55,7 @@ jobs:
         working-directory: ./package-parser
     strategy:
       matrix:
-        python-version: [ 3.9 ]
+        python-version: [3.9]
 
     steps:
       - name: Checkout repository

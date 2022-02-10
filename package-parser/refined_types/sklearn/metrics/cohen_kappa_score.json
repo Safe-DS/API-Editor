@@ -1,0 +1,14 @@
+{
+    "sklearn.metrics.cohen_kappa_score": {
+        "weights": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["linear", "quadratic"]
+            },
+            "docstring": {
+                "type": "{'linear', 'quadratic'}, default=None",
+                "description": "Weighting type to calculate the score. `None` means no weighted;\n\"linear\" means linear weighted; \"quadratic\" means quadratic weighted."
+            }
+        }
+    }
+}

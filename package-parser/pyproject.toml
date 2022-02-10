@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "package-parser"
+version = "0.0.1"
+description = "Analyze Python code."
+authors = ["Lars Reimann <mail@larsreimann.com>"]
+license = "MIT"
+
+[tool.poetry.scripts]
+parse-package = "package_parser.main:main"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+astroid = "^2.9.3"
+scikit-learn = "^1.0"
+importlib-metadata = "^4.10.1"
+numpydoc = "^1.2"
+spacy = "^3.2.1"
+
+[tool.poetry.dependencies.en_core_web_sm]
+url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.2.0/en_core_web_sm-3.2.0-py3-none-any.whl"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.5"
+pytest-cov = "^3.0.0"
+mypy = "^0.931"
+
+[tool.mypy]
+ignore_missing_imports = true # https://github.com/megalinter/megalinter/blob/main/TEMPLATES/.mypy.ini
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,91 @@
+{
+    "sklearn.linear_model.SGDClassifier": {
+        "loss": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": [
+                    "hinge",
+                    "log",
+                    "modified_huber",
+                    "squared_hinge",
+                    "perceptron",
+                    "squared_error",
+                    "huber",
+                    "epsilon_insensitive",
+                    "squared_epsilon_insensitive"
+                ]
+            },
+            "docstring": {
+                "type": "str, default='hinge'",
+                "description": "The loss function to be used. Defaults to 'hinge', which gives a\nlinear SVM.\n\nThe possible options are 'hinge', 'log', 'modified_huber',\n'squared_hinge', 'perceptron', or a regression loss: 'squared_error',\n'huber', 'epsilon_insensitive', or 'squared_epsilon_insensitive'.\n\nThe 'log' loss gives logistic regression, a probabilistic classifier.\n'modified_huber' is another smooth loss that brings tolerance to\noutliers as well as probability estimates.\n'squared_hinge' is like hinge but is quadratically penalized.\n'perceptron' is the linear loss used by the perceptron algorithm.\nThe other losses are designed for regression but can be useful in\nclassification as well; see\n:class:`~sklearn.linear_model.SGDRegressor` for a description.\n\nMore details about the losses formulas can be found in the\n:ref:`User Guide <sgd_mathematical_formulation>`.\n\n.. deprecated:: 1.0\n    The loss 'squared_loss' was deprecated in v1.0 and will be removed\n    in version 1.2. Use `loss='squared_error'` which is equivalent."
+            }
+        },
+        "penalty": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["elasticnet", "l1", "l2"]
+            },
+            "docstring": {
+                "type": "{'l2', 'l1', 'elasticnet'}, default='l2'",
+                "description": "The penalty (aka regularization term) to be used. Defaults to 'l2'\nwhich is the standard regularizer for linear SVM models. 'l1' and\n'elasticnet' might bring sparsity to the model (feature selection)\nnot achievable with 'l2'."
+            }
+        },
+        "l1_ratio": {
+            "refined_type": {
+                "kind": "BoundaryType",
+                "baseType": "float",
+                "min": 0,
+                "minInclusive": true,
+                "max": 1,
+                "maxInclusive": true
+            },
+            "docstring": {
+                "type": "float, default=0.15",
+                "description": "The Elastic Net mixing parameter, with 0 <= l1_ratio <= 1.\nl1_ratio=0 corresponds to L2 penalty, l1_ratio=1 to L1.\nOnly used if `penalty` is 'elasticnet'."
+            }
+        },
+        "learning_rate": {
+            "refined_type": {
+                "kind": "EnumType",
+                "values": ["constant", "optimal", "invscaling", "adaptive"]
+            },
+            "docstring": {
+                "type": "str, default='optimal'",
+                "description": "The learning rate schedule:\n\n- 'constant': `eta = eta0`\n- 'optimal': `eta = 1.0 / (alpha * (t + t0))`\n  where t0 is chosen by a heuristic proposed by Leon Bottou.\n- 'invscaling': `eta = eta0 / pow(t, power_t)`\n- 'adaptive': eta = eta0, as long as the training keeps decreasing.\n  Each time n_iter_no_change consecutive epochs fail to decrease the\n  training loss by tol or fail to increase validation score by tol if\n  early_stopping is True, the current learning rate is divided by 5.\n\n    .. versionadded:: 0.20\n        Added 'adaptive' option"
+            }
+        },
+        "validation_fraction": {
+            "refined_type": {
+                "kind": "BoundaryType",
+                "baseType": "float",
+                "min": 0,
+                "minInclusive": false,
+                "max": 1,
+                "maxInclusive": false
+            },
+            "docstring": {
+                "type": "float, default=0.1",
+                "description": "The proportion of training data to set aside as validation set for\nearly stopping. Must be between 0 and 1.\nOnly used if `early_stopping` is True.\n\n.. versionadded:: 0.20\n    Added 'validation_fraction' option"
+            }
+        },
+        "class_weight": {
+            "refined_type": {
+                "kind": "UnionType",
+                "types": [
+                    {
+                        "kind": "NamedType",
+                        "name": "dict"
+                    },
+                    {
+                        "kind": "EnumType",
+                        "values": ["balanced"]
+                    }
+                ]
+            },
+            "docstring": {
+                "type": "dict, {class_label: weight} or \"balanced\", default=None",
+                "description": "Preset for the class_weight fit parameter.\n\nWeights associated with classes. If not given, all classes\nare supposed to have weight one.\n\nThe \"balanced\" mode uses the values of y to automatically adjust\nweights inversely proportional to class frequencies in the input data\nas ``n_samples / (n_classes * np.bincount(y))``."
+            }
+        }
+    }
+}
