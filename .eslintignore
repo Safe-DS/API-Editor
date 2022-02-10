@@ -1,0 +1,14 @@
+# Compilation/build outputs
+build/
+dist/
+dist-ssr/
+
+# Configuration
+.eslintrc.js
+
+# Client
+/client/vite.config.ts
+/client/src/theme/index.d.ts
+
+# Server
+/server/src/main/resources/static/

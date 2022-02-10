@@ -1,0 +1,416 @@
+{
+    "distribution": "test",
+    "package": "test",
+    "version": "0.0.1",
+    "modules": [
+        {
+            "name": "folder1.folder2.folder3.module_1",
+            "imports": [
+                {
+                    "module": "folder1.module_2",
+                    "alias": null
+                }
+            ],
+            "from_imports": [
+                {
+                    "module": "test.module_3",
+                    "declaration": "function_module_3",
+                    "alias": "test_alias"
+                }
+            ],
+            "classes": ["folder1.folder2.folder3.module_1.Class_1_Module_1"],
+            "functions": [
+                "folder1.folder2.folder3.module_1.function_module_1",
+                "folder1.folder2.folder3.module_1.function_module_1_2",
+                "folder1.folder2.folder3.module_1.function_module_1_3",
+                "folder1.folder2.folder3.module_1.function_module_1_4",
+                "folder1.folder2.folder3.module_1.function_module_1_5",
+                "folder1.folder2.folder3.module_1.function_module_1_6",
+                "folder1.folder2.folder3.module_1.function_module_1_7",
+                "folder1.folder2.folder3.module_1.function_module_1_8"
+            ]
+        },
+        {
+            "name": "folder1.module_2",
+            "imports": [],
+            "from_imports": [
+                {
+                    "module": "folder1.folder2.folder3.module_1",
+                    "declaration": "function_module_1",
+                    "alias": null
+                }
+            ],
+            "classes": [],
+            "functions": []
+        },
+        {
+            "name": "module_3",
+            "imports": [
+                {
+                    "module": "test.module_1",
+                    "alias": null
+                }
+            ],
+            "from_imports": [],
+            "classes": [],
+            "functions": ["module_3.function_module_3"]
+        }
+    ],
+    "classes": [
+        {
+            "name": "Class_1_Module_1",
+            "qname": "folder1.folder2.folder3.module_1.Class_1_Module_1",
+            "decorators": [],
+            "superclasses": [],
+            "methods": [
+                "folder1.folder2.folder3.module_1.Class_1_Module_1.class_method_1",
+                "folder1.folder2.folder3.module_1.Class_1_Module_1.__init__"
+            ]
+        }
+    ],
+    "functions": [
+        {
+            "name": "function_module_1",
+            "unique_name": "function_module_1",
+            "qname": "folder1.folder2.folder3.module_1.function_module_1",
+            "unique_qname": "folder1.folder2.folder3.module_1.function_module_1",
+            "decorators": [],
+            "parameters": [
+                {
+                    "name": "param1",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": "first param"
+                    }
+                },
+                {
+                    "name": "param2",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": "second param"
+                    }
+                },
+                {
+                    "name": "param3",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "NAME_ONLY",
+                    "docstring": {
+                        "type": "bool",
+                        "description": "third param"
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "description": "description",
+            "docstring": "docstring",
+            "source_code": ""
+        },
+        {
+            "name": "function_module_1_2",
+            "unique_name": "function_module_1_2",
+            "qname": "folder1.folder2.folder3.module_1.function_module_1_2",
+            "unique_qname": "folder1.folder2.folder3.module_1.function_module_1_2",
+            "decorators": [],
+            "parameters": [
+                {
+                    "name": "param1",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "POSITION_ONLY",
+                    "docstring": {
+                        "type": "str",
+                        "description": "first param"
+                    }
+                },
+                {
+                    "name": "param2",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": "second param"
+                    }
+                },
+                {
+                    "name": "param3",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "NAME_ONLY",
+                    "docstring": {
+                        "type": "bool",
+                        "description": "third param"
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "description": "description",
+            "docstring": "docstring",
+            "source_code": ""
+        },
+        {
+            "name": "function_module_1_3",
+            "unique_name": "function_module_1_3",
+            "qname": "folder1.folder2.folder3.module_1.function_module_1_3",
+            "unique_qname": "folder1.folder2.folder3.module_1.function_module_1_3",
+            "decorators": [],
+            "parameters": [
+                {
+                    "name": "param1",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "POSITION_ONLY",
+                    "docstring": {
+                        "type": "str",
+                        "description": "first param"
+                    }
+                },
+                {
+                    "name": "param2",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "POSITION_ONLY",
+                    "docstring": {
+                        "type": "str",
+                        "description": "second param"
+                    }
+                },
+                {
+                    "name": "param3",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "NAME_ONLY",
+                    "docstring": {
+                        "type": "bool",
+                        "description": "third param"
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "description": "description",
+            "docstring": "docstring",
+            "source_code": ""
+        },
+        {
+            "name": "function_module_1_4",
+            "unique_name": "function_module_1_4",
+            "qname": "folder1.folder2.folder3.module_1.function_module_1_4",
+            "unique_qname": "folder1.folder2.folder3.module_1.function_module_1_4",
+            "decorators": [],
+            "parameters": [
+                {
+                    "name": "param1",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "POSITION_ONLY",
+                    "docstring": {
+                        "type": "str",
+                        "description": "first param"
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "description": "description",
+            "docstring": "docstring",
+            "source_code": ""
+        },
+        {
+            "name": "function_module_1_5",
+            "unique_name": "function_module_1_5",
+            "qname": "folder1.folder2.folder3.module_1.function_module_1_5",
+            "unique_qname": "folder1.folder2.folder3.module_1.function_module_1_5",
+            "decorators": [],
+            "parameters": [
+                {
+                    "name": "param1",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": "first param"
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "description": "description",
+            "docstring": "docstring",
+            "source_code": ""
+        },
+        {
+            "name": "function_module_1_6",
+            "unique_name": "function_module_1_6",
+            "qname": "folder1.folder2.folder3.module_1.function_module_1_6",
+            "unique_qname": "folder1.folder2.folder3.module_1.function_module_1_6",
+            "decorators": [],
+            "parameters": [
+                {
+                    "name": "param1",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "NAME_ONLY",
+                    "docstring": {
+                        "type": "str",
+                        "description": "first param"
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "description": "description",
+            "docstring": "docstring",
+            "source_code": ""
+        },
+        {
+            "name": "function_module_1_7",
+            "unique_name": "function_module_1_7",
+            "qname": "folder1.folder2.folder3.module_1.function_module_1_7",
+            "unique_qname": "folder1.folder2.folder3.module_1.function_module_1_7",
+            "decorators": [],
+            "parameters": [
+                {
+                    "name": "param1",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "POSITION_ONLY",
+                    "docstring": {
+                        "type": "str",
+                        "description": "first param"
+                    }
+                },
+                {
+                    "name": "param2",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": "second param"
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "description": "description",
+            "docstring": "docstring",
+            "source_code": ""
+        },
+        {
+            "name": "function_module_1_8",
+            "unique_name": "function_module_1_8",
+            "qname": "folder1.folder2.folder3.module_1.function_module_1_8",
+            "unique_qname": "folder1.folder2.folder3.module_1.function_module_1_8",
+            "decorators": [],
+            "parameters": [],
+            "results": [],
+            "is_public": true,
+            "description": "description",
+            "docstring": "docstring",
+            "source_code": ""
+        },
+        {
+            "name": "function_module_3",
+            "unique_name": "function_module_3",
+            "qname": "module_3.function_module_3",
+            "unique_qname": "module_3.function_module_3",
+            "decorators": [],
+            "parameters": [
+                {
+                    "name": "only_param",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": "only param"
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "description": "description",
+            "docstring": "docstring",
+            "source_code": ""
+        },
+        {
+            "name": "class_method_1",
+            "unique_name": "class_method_1",
+            "qname": "folder1.folder2.folder3.module_1.Class_1_Module_1.class_method_1",
+            "unique_qname": "folder1.folder2.folder3.module_1.Class_1_Module_1.class_method_1",
+            "decorators": [],
+            "parameters": [
+                {
+                    "name": "self",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": "only param"
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "description": "description",
+            "docstring": "docstring",
+            "source_code": ""
+        },
+        {
+            "name": "__init__",
+            "unique_name": "__init__",
+            "qname": "folder1.folder2.folder3.module_1.Class_1_Module_1.__init__",
+            "unique_qname": "folder1.folder2.folder3.module_1.Class_1_Module_1.__init__",
+            "decorators": [],
+            "parameters": [
+                {
+                    "name": "self",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": "first param"
+                    }
+                },
+                {
+                    "name": "param2",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": "second param"
+                    }
+                },
+                {
+                    "name": "param3",
+                    "default_value": null,
+                    "is_public": false,
+                    "assigned_by": "NAME_ONLY",
+                    "docstring": {
+                        "type": "bool",
+                        "description": "third param"
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "description": "description",
+            "docstring": "docstring",
+            "source_code": ""
+        }
+    ]
+}

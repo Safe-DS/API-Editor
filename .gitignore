@@ -1,0 +1,25 @@
+# Eclipse (also used by Gradle support in VS Code)
+.settings/
+.project
+
+# Gradle
+.gradle/
+
+# Node
+node_modules/
+pnpm-lock.yaml
+yarn.lock
+
+# mega-linter
+report/
+
+# Compilation/build outputs
+build/
+dist/
+dist-ssr/
+
+/server/src/main/resources/static/
+
+# Other
+.DS_Store/
+*.log

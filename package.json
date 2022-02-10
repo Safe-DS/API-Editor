@@ -1,0 +1,10 @@
+{
+    "name": "com.larsreimann.api_editor",
+    "version": "0.0.1",
+    "private": true,
+    "prettier": "@lars-reimann/prettier-config",
+    "devDependencies": {
+        "@lars-reimann/eslint-config": "^4.1.2",
+        "@lars-reimann/prettier-config": "^4.0.4"
+    }
+}
