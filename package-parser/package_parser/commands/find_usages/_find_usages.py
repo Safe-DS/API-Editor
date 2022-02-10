@@ -1,5 +1,6 @@
 import json
 import multiprocessing
+from multiprocessing import synchronize
 from pathlib import Path
 from typing import Optional
 
@@ -38,10 +39,10 @@ def find_usages(package_name: str, src_dir: Path, tmp_dir: Path):
     return _merge_results(tmp_dir)
 
 
-_lock: Optional[multiprocessing.Lock] = None
+_lock: Optional[synchronize.Lock] = None
 
 
-def __initialize_process_environment(lock: multiprocessing.Lock):
+def __initialize_process_environment(lock: synchronize.Lock):
     global _lock
     _lock = lock
 
