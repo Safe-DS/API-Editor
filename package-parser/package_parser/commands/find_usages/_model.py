@@ -156,25 +156,29 @@ class UsageStore:
         """
 
         # Merge class usages
-        for usages in other_usage_store.class_usages.values():
-            for usage in usages:
-                self.add_class_usage(usage.qname, usage.location)
+        for class_usages in other_usage_store.class_usages.values():
+            for class_usage in class_usages:
+                self.add_class_usage(class_usage.qname, class_usage.location)
 
         # Merge function usages
-        for usages in other_usage_store.function_usages.values():
-            for usage in usages:
-                self.add_function_usage(usage.qname, usage.location)
+        for function_usages in other_usage_store.function_usages.values():
+            for function_usage in function_usages:
+                self.add_function_usage(function_usage.qname, function_usage.location)
 
         # Merge parameter usages
-        for usages in other_usage_store.parameter_usages.values():
-            for usage in usages:
-                self.add_parameter_usage(usage.qname, usage.location)
+        for parameter_usages in other_usage_store.parameter_usages.values():
+            for parameter_usage in parameter_usages:
+                self.add_parameter_usage(parameter_usage.qname, parameter_usage.location)
 
         # Merge value usages
-        for values in other_usage_store.value_usages.values():
-            for usages in values.values():
-                for usage in usages:
-                    self.add_value_usage(usage.parameter_qname, usage.value, usage.location)
+        for value_usages in other_usage_store.value_usages.values():
+            for value_usages_of_parameter in value_usages.values():
+                for value_usage_of_parameter in value_usages_of_parameter:
+                    self.add_value_usage(
+                        value_usage_of_parameter.parameter_qname,
+                        value_usage_of_parameter.value,
+                        value_usage_of_parameter.location
+                    )
 
         return self
 
@@ -252,8 +256,10 @@ class UsageStore:
             }
         }
 
+
 class Usage:
     pass
+
 
 class ClassUsage(Usage):
     def __init__(self, qname: ClassQName, location: Location) -> None:
