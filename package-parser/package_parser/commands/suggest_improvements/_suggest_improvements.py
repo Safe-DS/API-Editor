@@ -3,8 +3,7 @@ from io import TextIOWrapper
 from pathlib import Path
 from typing import Any, Union
 
-from commands.find_usages import ClassUsage, FunctionUsage, ValueUsage
-from package_parser.commands.find_usages import UsageStore, Usage
+from package_parser.commands.find_usages import ClassUsage, FunctionUsage, ValueUsage, UsageStore
 from package_parser.commands.get_api import API
 from package_parser.utils import ensure_file_exists, parent_qname
 
