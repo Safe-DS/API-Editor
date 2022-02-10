@@ -9,7 +9,6 @@ StringifiedValue = str
 
 
 class UsageStore:
-
     @staticmethod
     def from_json(json: Any) -> UsageStore:
         result = UsageStore()
@@ -37,7 +36,9 @@ class UsageStore:
         for parameter_qname, values in value_usages.items():
             for value, locations in values.items():
                 for location in locations:
-                    result.add_value_usage(parameter_qname, value, Location.from_json(location))
+                    result.add_value_usage(
+                        parameter_qname, value, Location.from_json(location)
+                    )
 
         return result
 
@@ -45,7 +46,9 @@ class UsageStore:
         self.class_usages: dict[ClassQName, list[ClassUsage]] = {}
         self.function_usages: dict[FunctionQName, list[FunctionUsage]] = {}
         self.parameter_usages: dict[ParameterQName, list[ParameterUsage]] = {}
-        self.value_usages: dict[ParameterQName, dict[StringifiedValue, list[ValueUsage]]] = {}
+        self.value_usages: dict[
+            ParameterQName, dict[StringifiedValue, list[ValueUsage]]
+        ] = {}
 
     def add_class_usage(self, qname: ClassQName, location: Location) -> None:
         self.init_class(qname)
@@ -93,13 +96,20 @@ class UsageStore:
 
         self.remove_value(qname)
 
-    def add_value_usage(self, parameter_qname: ParameterQName, value: StringifiedValue, location: Location) -> None:
+    def add_value_usage(
+        self,
+        parameter_qname: ParameterQName,
+        value: StringifiedValue,
+        location: Location,
+    ) -> None:
         self.init_value(parameter_qname)
 
         if value not in self.value_usages[parameter_qname]:
             self.value_usages[parameter_qname][value] = []
 
-        self.value_usages[parameter_qname][value].append(ValueUsage(parameter_qname, value, location))
+        self.value_usages[parameter_qname][value].append(
+            ValueUsage(parameter_qname, value, location)
+        )
 
     def init_value(self, parameter_qname: ParameterQName) -> None:
         if parameter_qname not in self.value_usages:
@@ -168,7 +178,9 @@ class UsageStore:
         # Merge parameter usages
         for parameter_usages in other_usage_store.parameter_usages.values():
             for parameter_usage in parameter_usages:
-                self.add_parameter_usage(parameter_usage.qname, parameter_usage.location)
+                self.add_parameter_usage(
+                    parameter_usage.qname, parameter_usage.location
+                )
 
         # Merge value usages
         for value_usages in other_usage_store.value_usages.values():
@@ -177,7 +189,7 @@ class UsageStore:
                     self.add_value_usage(
                         value_usage_of_parameter.parameter_qname,
                         value_usage_of_parameter.value,
-                        value_usage_of_parameter.location
+                        value_usage_of_parameter.location,
                     )
 
         return self
@@ -185,32 +197,20 @@ class UsageStore:
     def to_json(self) -> Any:
         return {
             "class_usages": {
-                qname: [
-                    usage.location.to_json()
-                    for usage in usages
-                ]
+                qname: [usage.location.to_json() for usage in usages]
                 for qname, usages in self.class_usages.items()
             },
             "function_usages": {
-                qname: [
-                    usage.location.to_json()
-                    for usage in usages
-                ]
+                qname: [usage.location.to_json() for usage in usages]
                 for qname, usages in self.function_usages.items()
             },
             "parameter_usages": {
-                qname: [
-                    usage.location.to_json()
-                    for usage in usages
-                ]
+                qname: [usage.location.to_json() for usage in usages]
                 for qname, usages in self.parameter_usages.items()
             },
             "value_usages": {
                 parameter_qname: {
-                    value: [
-                        usage.location.to_json()
-                        for usage in usages
-                    ]
+                    value: [usage.location.to_json() for usage in usages]
                     for value, usages in values.items()
                 }
                 for parameter_qname, values in self.value_usages.items()
@@ -224,7 +224,7 @@ class UsageStore:
                 for qname, usages in sorted(
                     self.class_usages.items(),
                     key=lambda item: len(item[1]),
-                    reverse=True
+                    reverse=True,
                 )
             },
             "function_counts": {
@@ -232,7 +232,7 @@ class UsageStore:
                 for qname, usages in sorted(
                     self.function_usages.items(),
                     key=lambda item: len(item[1]),
-                    reverse=True
+                    reverse=True,
                 )
             },
             "parameter_counts": {
@@ -240,20 +240,18 @@ class UsageStore:
                 for qname, usages in sorted(
                     self.parameter_usages.items(),
                     key=lambda item: len(item[1]),
-                    reverse=True
+                    reverse=True,
                 )
             },
             "value_counts": {
                 parameter_qname: {
                     value: len(usages)
                     for value, usages in sorted(
-                        values.items(),
-                        key=lambda item: len(item[1]),
-                        reverse=True
+                        values.items(), key=lambda item: len(item[1]), reverse=True
                     )
                 }
                 for parameter_qname, values in self.value_usages.items()
-            }
+            },
         }
 
 
@@ -267,10 +265,7 @@ class ClassUsage(Usage):
         self.location: Location = location
 
     def to_json(self) -> Any:
-        return {
-            "qname": self.qname,
-            "location": self.location.to_json()
-        }
+        return {"qname": self.qname, "location": self.location.to_json()}
 
 
 class FunctionUsage(Usage):
@@ -279,10 +274,7 @@ class FunctionUsage(Usage):
         self.location: Location = location
 
     def to_json(self) -> Any:
-        return {
-            "qname": self.qname,
-            "location": self.location.to_json()
-        }
+        return {"qname": self.qname, "location": self.location.to_json()}
 
 
 class ParameterUsage(Usage):
@@ -291,14 +283,16 @@ class ParameterUsage(Usage):
         self.location: Location = location
 
     def to_json(self) -> Any:
-        return {
-            "qname": self.qname,
-            "location": self.location.to_json()
-        }
+        return {"qname": self.qname, "location": self.location.to_json()}
 
 
 class ValueUsage(Usage):
-    def __init__(self, parameter_qname: ParameterQName, value: StringifiedValue, location: Location) -> None:
+    def __init__(
+        self,
+        parameter_qname: ParameterQName,
+        value: StringifiedValue,
+        location: Location,
+    ) -> None:
         self.parameter_qname: ParameterQName = parameter_qname
         self.value: StringifiedValue = value
         self.location: Location = location
@@ -307,7 +301,7 @@ class ValueUsage(Usage):
         return {
             "parameter_qname": self.parameter_qname,
             "value": self.value,
-            "location": self.location.to_json()
+            "location": self.location.to_json(),
         }
 
 
@@ -317,16 +311,13 @@ ColumnNumber = int
 
 
 class Location:
-
     @staticmethod
     def from_json(json: Any) -> Location:
-        return Location(
-            json["file"],
-            json["line"],
-            json["column"]
-        )
+        return Location(json["file"], json["line"], json["column"])
 
-    def __init__(self, file: FileName, line: Optional[LineNumber], column: Optional[ColumnNumber]) -> None:
+    def __init__(
+        self, file: FileName, line: Optional[LineNumber], column: Optional[ColumnNumber]
+    ) -> None:
         self.file: FileName = file
         self.line: Optional[LineNumber] = line
         self.column: Optional[ColumnNumber] = column
@@ -335,15 +326,16 @@ class Location:
         return f"{self.file}@{self.line}:{self.column}"
 
     def __eq__(self, other: object) -> bool:
-        if not isinstance(other, type(self)): return NotImplemented
-        return self.file == other.file and self.line == other.line and self.column == other.column
+        if not isinstance(other, type(self)):
+            return NotImplemented
+        return (
+            self.file == other.file
+            and self.line == other.line
+            and self.column == other.column
+        )
 
     def __hash__(self) -> int:
         return hash((self.file, self.line, self.column))
 
     def to_json(self) -> Any:
-        return {
-            "file": self.file,
-            "line": self.line,
-            "column": self.column
-        }
+        return {"file": self.file, "line": self.line, "column": self.column}

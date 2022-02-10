@@ -5,8 +5,8 @@ from pathlib import Path
 from typing import Optional
 
 import astroid
+from package_parser.utils import ASTWalker, initialize_and_read_exclude_file, list_files
 
-from package_parser.utils import initialize_and_read_exclude_file, list_files, ASTWalker
 from ._ast_visitor import _UsageFinder
 from ._model import UsageStore
 
@@ -19,7 +19,9 @@ def find_usages(package_name: str, src_dir: Path, tmp_dir: Path):
     exclude_file = tmp_dir.joinpath("$$$$$exclude$$$$$.txt")
     excluded_python_files = set(initialize_and_read_exclude_file(exclude_file))
 
-    python_files = [it for it in candidate_python_files if it not in excluded_python_files]
+    python_files = [
+        it for it in candidate_python_files if it not in excluded_python_files
+    ]
 
     tmp_dir.mkdir(parents=True, exist_ok=True)
 
@@ -27,11 +29,11 @@ def find_usages(package_name: str, src_dir: Path, tmp_dir: Path):
     with multiprocessing.Pool(
         processes=__N_PROCESSES,
         initializer=__initialize_process_environment,
-        initargs=(lock,)
+        initargs=(lock,),
     ) as pool:
         pool.starmap(
             __find_usages_in_single_file,
-            [[package_name, it, exclude_file, tmp_dir] for it in python_files]
+            [[package_name, it, exclude_file, tmp_dir] for it in python_files],
         )
     pool.join()
     pool.close()
@@ -64,7 +66,9 @@ def __find_usages_in_single_file(
             ASTWalker(usage_finder).walk(astroid.parse(source))
 
             tmp_file = tmp_dir.joinpath(
-                python_file.replace("/", "__").replace("\\", "__").replace(".py", ".json")
+                python_file.replace("/", "__")
+                .replace("\\", "__")
+                .replace(".py", ".json")
             )
             with tmp_file.open("w") as f:
                 json.dump(usage_finder.usages.to_json(), f, indent=2)

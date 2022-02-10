@@ -69,10 +69,7 @@ def __get_args() -> argparse.Namespace:
 
 
 def __add_api_subparser(subparsers: _SubParsersAction) -> None:
-    api_parser = subparsers.add_parser(
-        __API_COMMAND,
-        help="List the API of a package."
-    )
+    api_parser = subparsers.add_parser(__API_COMMAND, help="List the API of a package.")
     api_parser.add_argument(
         "-p",
         "--package",
@@ -81,18 +78,13 @@ def __add_api_subparser(subparsers: _SubParsersAction) -> None:
         required=True,
     )
     api_parser.add_argument(
-        "-o",
-        "--out",
-        help="Output directory.",
-        type=Path,
-        required=True
+        "-o", "--out", help="Output directory.", type=Path, required=True
     )
 
 
 def __add_usages_subparser(subparsers: _SubParsersAction) -> None:
     usages_parser = subparsers.add_parser(
-        __USAGES_COMMAND,
-        help="Find usages of API elements."
+        __USAGES_COMMAND, help="Find usages of API elements."
     )
     usages_parser.add_argument(
         "-p",
@@ -116,39 +108,30 @@ def __add_usages_subparser(subparsers: _SubParsersAction) -> None:
         required=True,
     )
     usages_parser.add_argument(
-        "-o",
-        "--out",
-        help="Output directory.",
-        type=Path,
-        required=True
+        "-o", "--out", help="Output directory.", type=Path, required=True
     )
 
 
 def __add_improve_subparser(subparsers: _SubParsersAction) -> None:
     improve_parser = subparsers.add_parser(
-        __IMPROVE_COMMAND,
-        help="Suggest how to improve an existing API."
+        __IMPROVE_COMMAND, help="Suggest how to improve an existing API."
     )
     improve_parser.add_argument(
         "-a",
         "--api",
         help="File created by the 'api' command.",
-        type=argparse.FileType('r'),
+        type=argparse.FileType("r"),
         required=True,
     )
     improve_parser.add_argument(
         "-u",
         "--usages",
         help="File created by the 'usages' command.",
-        type=argparse.FileType('r'),
+        type=argparse.FileType("r"),
         required=True,
     )
     improve_parser.add_argument(
-        "-o",
-        "--out",
-        help="Output directory.",
-        type=Path,
-        required=True
+        "-o", "--out", help="Output directory.", type=Path, required=True
     )
     improve_parser.add_argument(
         "-m",
@@ -156,5 +139,5 @@ def __add_improve_subparser(subparsers: _SubParsersAction) -> None:
         help="Minimum number of usages required to keep an API element.",
         type=int,
         required=False,
-        default=1
+        default=1,
     )
