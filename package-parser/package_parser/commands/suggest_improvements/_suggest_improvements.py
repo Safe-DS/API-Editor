@@ -1,8 +1,9 @@
 import json
 from io import TextIOWrapper
 from pathlib import Path
-from typing import Any
+from typing import Any, Union
 
+from commands.find_usages import ClassUsage, FunctionUsage, ValueUsage
 from package_parser.commands.find_usages import UsageStore, Usage
 from package_parser.commands.get_api import API
 from package_parser.utils import ensure_file_exists, parent_qname
@@ -47,6 +48,7 @@ def __print_usage_counts(usages, out_dir, base_file_name):
     with out_file.open("w") as f:
         json.dump(usages.to_count_json(), f, indent=2)
 
+
 def __create_usage_distributions(usages: UsageStore, out_dir: Path, base_file_name: str) -> None:
     class_usage_distribution = __create_class_or_function_usage_distribution(usages.class_usages)
     with out_dir.joinpath(f"{base_file_name}__class_usage_distribution.json").open("w") as f:
@@ -61,7 +63,9 @@ def __create_usage_distributions(usages: UsageStore, out_dir: Path, base_file_na
         json.dump(parameter_usage_distribution, f, indent=2)
 
 
-def __create_class_or_function_usage_distribution(usages: dict[str, list[Usage]]) -> dict[int, int]:
+def __create_class_or_function_usage_distribution(
+    usages: dict[str, list[Union[ClassUsage, FunctionUsage]]]
+) -> dict[int, int]:
     """
     Creates a dictionary X -> N where N indicates the number of classes/functions that are used at most X times.
 
@@ -183,8 +187,8 @@ def __add_implicit_usages_of_default_value(usages: UsageStore, api: API) -> None
 
 def __n_not_set_to_most_common_value(
     parameter_qname: str,
-    function_usages: dict[str, list[Usage]],
-    value_usages: dict[str, dict[str, list[Usage]]]
+    function_usages: dict[str, list[FunctionUsage]],
+    value_usages: dict[str, dict[str, list[ValueUsage]]]
 ) -> int:
     """Counts how often a parameter is set to a value other than the most commonly used value."""
 
@@ -245,7 +249,9 @@ def __remove_rarely_used_api_elements(
         len(usages.function_usages),
         len(usages.parameter_usages)
     )
-    with out_dir.joinpath(f"{base_file_name}__parameters_set_fewer_than_{min_usages}_times_to_value_other_than_most_common.json").open("w") as f:
+    with out_dir.joinpath(
+        f"{base_file_name}__parameters_set_fewer_than_{min_usages}_times_to_value_other_than_most_common.json").open(
+        "w") as f:
         json.dump(mostly_useless_parameters, f, indent=2)
 
     return {
@@ -277,6 +283,7 @@ def __remove_rarely_used_functions(usages: UsageStore, min_usages: int) -> list[
 
     return sorted(result)
 
+
 def __remove_rarely_used_parameters(usages: UsageStore, min_usages: int) -> list[str]:
     result = []
 
@@ -286,6 +293,7 @@ def __remove_rarely_used_parameters(usages: UsageStore, min_usages: int) -> list
             usages.remove_parameter(parameter_qname)
 
     return sorted(result)
+
 
 def __remove_mostly_useless_parameters(usages: UsageStore, min_usages: int) -> list[str]:
     result = []
