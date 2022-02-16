@@ -40,7 +40,7 @@ dependencies {
 
     // We can later pull this from Maven Central (or some other repo) once published
     implementation(files("lib/de.unibonn.simpleml-1.0.0-SNAPSHOT.jar"))
-    implementation("org.eclipse.xtext:org.eclipse.xtext:2.26.0.M2")
+    implementation("org.eclipse.xtext:org.eclipse.xtext:2.26.0.M3")
 
     testImplementation(kotlin("test"))
     testImplementation("io.kotest:kotest-assertions-core-jvm:5.1.0")
