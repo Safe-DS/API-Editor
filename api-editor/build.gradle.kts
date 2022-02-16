@@ -1,7 +1,7 @@
 // Plugins -------------------------------------------------------------------------------------------------------------
 
 plugins {
-    id("org.jetbrains.kotlinx.kover") version "0.4.4"
+    id("org.jetbrains.kotlinx.kover") version "0.5.0"
     idea
 
     // Pin versions for subprojects
@@ -20,6 +20,10 @@ idea {
         excludeDirs.add(file("gradle"))
         excludeDirs.add(file("node_modules"))
     }
+}
+
+kover {
+    coverageEngine.set(kotlinx.kover.api.CoverageEngine.INTELLIJ)
 }
 
 // Subprojects ---------------------------------------------------------------------------------------------------------
