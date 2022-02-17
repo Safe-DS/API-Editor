@@ -4,6 +4,7 @@ import com.larsreimann.api_editor.codegen.toPythonCode
 import com.larsreimann.api_editor.model.BoundaryAnnotation
 import com.larsreimann.api_editor.model.ComparisonOperator
 import com.larsreimann.api_editor.model.DefaultBoolean
+import com.larsreimann.api_editor.model.DefaultNone
 import com.larsreimann.api_editor.model.DefaultNumber
 import com.larsreimann.api_editor.model.EnumAnnotation
 import com.larsreimann.api_editor.model.EnumPair
@@ -559,9 +560,7 @@ class ConstructorPythonCodeGeneratorTest {
     fun `should process Group-, Required- and OptionalAnnotation on constructor level`() {
         // given
         testParameter2.annotations.add(
-            OptionalAnnotation(
-                DefaultBoolean(false)
-            )
+            OptionalAnnotation(DefaultNone)
         )
         testParameter3.annotations.add(
             RequiredAnnotation
@@ -592,7 +591,7 @@ class ConstructorPythonCodeGeneratorTest {
             |        self.instance = testModule.testClass(testParameter1, testGroup.testParameter2, testGroup.testParameter3)
             |
             |class TestGroup:
-            |    def __init__(self, testParameter3, *, testParameter2=False):
+            |    def __init__(self, testParameter3, *, testParameter2=None):
             |        self.testParameter3 = testParameter3
             |        self.testParameter2 = testParameter2
             |
