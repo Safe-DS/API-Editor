@@ -421,8 +421,7 @@ class Result:
     @staticmethod
     def from_json(json: Any) -> Result:
         return Result(
-            json["name"],
-            ParameterAndResultDocstring.from_json(json["docstring"])
+            json["name"], ParameterAndResultDocstring.from_json(json["docstring"])
         )
 
     def to_json(self) -> Any:
