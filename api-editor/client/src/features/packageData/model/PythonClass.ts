@@ -52,7 +52,7 @@ export default class PythonClass extends PythonDeclaration {
     }
 
     isPublicDeclaration(): boolean {
-        return this.isPublic
+        return this.isPublic;
     }
 
     toString(): string {

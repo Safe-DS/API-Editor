@@ -50,7 +50,7 @@ export default class PythonParameter extends PythonDeclaration {
     }
 
     isPublicDeclaration(): boolean {
-        return this.isPublic
+        return this.isPublic;
     }
 
     isExplicitParameter(): boolean {

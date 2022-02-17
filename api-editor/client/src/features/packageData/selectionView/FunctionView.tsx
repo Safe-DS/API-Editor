@@ -38,9 +38,10 @@ const FunctionView: React.FC<FunctionViewProps> = function ({
             <Stack spacing={4}>
                 <HStack>
                     <Heading as="h3" size="lg">
-                        {pythonFunction.name} {!pythonFunction.isPublic && '(private)'}
+                        {pythonFunction.name}{' '}
+                        {!pythonFunction.isPublic && '(private)'}
                     </Heading>
-                    {pythonFunction.isPublic &&
+                    {pythonFunction.isPublic && (
                         <AnnotationDropdown
                             target={id}
                             showCalledAfter={hasRemainingCalledAfters}
@@ -55,7 +56,7 @@ const FunctionView: React.FC<FunctionViewProps> = function ({
                             showRename
                             showUnused
                         />
-                    }
+                    )}
                 </HStack>
 
                 <AnnotationView target={id} />

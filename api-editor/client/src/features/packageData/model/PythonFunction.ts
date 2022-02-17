@@ -63,7 +63,7 @@ export default class PythonFunction extends PythonDeclaration {
     }
 
     isPublicDeclaration(): boolean {
-        return this.isPublic
+        return this.isPublic;
     }
 
     getUniqueName(): string {

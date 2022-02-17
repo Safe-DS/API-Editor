@@ -39,8 +39,8 @@ const packageDataSlice = createSlice({
             state.showImportDialog = !state.showImportDialog;
         },
         toggleShowPrivateDeclarations(state) {
-            state.showPrivateDeclarations = !state.showPrivateDeclarations
-        }
+            state.showPrivateDeclarations = !state.showPrivateDeclarations;
+        },
     },
 });
 

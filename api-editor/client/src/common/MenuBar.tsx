@@ -49,7 +49,7 @@ import PythonPackage from '../features/packageData/model/PythonPackage';
 import {
     selectShowPrivateDeclarations,
     togglePackageDataImportDialog,
-    toggleShowPrivateDeclarations
+    toggleShowPrivateDeclarations,
 } from '../features/packageData/packageDataSlice';
 import { Setter } from './util/types';
 
@@ -255,12 +255,12 @@ const MenuBar: React.FC<MenuBarProps> = function ({
                 </Box>
                 <Button onClick={exportAnnotations}>Export</Button>
                 <DeleteAllAnnotations />
-                <Button onClick={() => dispatch(toggleShowPrivateDeclarations())}>
-                    {useAppSelector(selectShowPrivateDeclarations) ?
-                        'Hide private declarations'
-                        :
-                        'Show private declarations'
-                    }
+                <Button
+                    onClick={() => dispatch(toggleShowPrivateDeclarations())}
+                >
+                    {useAppSelector(selectShowPrivateDeclarations)
+                        ? 'Hide private declarations'
+                        : 'Show private declarations'}
                 </Button>
                 <Button onClick={toggleColorMode}>
                     Toggle {colorMode === 'light' ? 'dark' : 'light'}

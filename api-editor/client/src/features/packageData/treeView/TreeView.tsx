@@ -1,8 +1,8 @@
-import {Box} from '@chakra-ui/react';
-import React, {memo, useCallback, useEffect, useRef} from 'react';
+import { Box } from '@chakra-ui/react';
+import React, { memo, useCallback, useEffect, useRef } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import {FixedSizeList, ListChildComponentProps} from 'react-window';
-import {useAppDispatch, useAppSelector} from '../../../app/hooks';
+import { FixedSizeList, ListChildComponentProps } from 'react-window';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import PythonClass from '../model/PythonClass';
 import PythonDeclaration from '../model/PythonDeclaration';
 import PythonFunction from '../model/PythonFunction';
@@ -28,13 +28,13 @@ interface TreeViewProps {
     pythonPackage: PythonPackage;
 }
 
-const TreeView: React.FC<TreeViewProps> = memo(({pythonPackage}) => {
+const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage }) => {
     const dispatch = useAppDispatch();
     const allExpanded = useAppSelector(selectAllExpandedInTreeView);
 
     let children = walkChildrenInPreorder(allExpanded, pythonPackage);
     if (!useAppSelector(selectShowPrivateDeclarations)) {
-        children = children.filter((it) => it.isPublicDeclaration())
+        children = children.filter((it) => it.isPublicDeclaration());
     }
     const previousScrollOffset = useAppSelector(selectTreeViewScrollOffset);
 
@@ -67,7 +67,7 @@ const TreeView: React.FC<TreeViewProps> = memo(({pythonPackage}) => {
 
     return (
         <AutoSizer disableWidth>
-            {({height}) => (
+            {({ height }) => (
                 <FixedSizeList
                     itemSize={24}
                     itemCount={children.length}
@@ -93,37 +93,35 @@ const walkChildrenInPreorder = function (
     allExpandedItemsInTreeView: { [target: string]: true },
     declaration: PythonDeclaration,
 ): PythonDeclaration[] {
-    return declaration
-        .children()
-        .flatMap((it) => {
-            if (allExpandedItemsInTreeView[it.pathAsString()]) {
-                return [
-                    it,
-                    ...walkChildrenInPreorder(allExpandedItemsInTreeView, it),
-                ];
-            } else {
-                return [it];
-            }
-        });
+    return declaration.children().flatMap((it) => {
+        if (allExpandedItemsInTreeView[it.pathAsString()]) {
+            return [
+                it,
+                ...walkChildrenInPreorder(allExpandedItemsInTreeView, it),
+            ];
+        } else {
+            return [it];
+        }
+    });
 };
 
 const TreeNodeGenerator: React.FC<ListChildComponentProps> = memo(
-    ({data, index, style}) => {
+    ({ data, index, style }) => {
         const declaration = data[index];
 
         return (
             <Box style={style}>
                 {declaration instanceof PythonModule && (
-                    <ModuleNode pythonModule={declaration}/>
+                    <ModuleNode pythonModule={declaration} />
                 )}
                 {declaration instanceof PythonClass && (
-                    <ClassNode pythonClass={declaration}/>
+                    <ClassNode pythonClass={declaration} />
                 )}
                 {declaration instanceof PythonFunction && (
-                    <FunctionNode pythonFunction={declaration}/>
+                    <FunctionNode pythonFunction={declaration} />
                 )}
                 {declaration instanceof PythonParameter && (
-                    <ParameterNode pythonParameter={declaration}/>
+                    <ParameterNode pythonParameter={declaration} />
                 )}
             </Box>
         );

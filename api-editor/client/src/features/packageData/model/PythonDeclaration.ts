@@ -13,7 +13,7 @@ export default abstract class PythonDeclaration {
     }
 
     isPublicDeclaration(): boolean {
-        return true
+        return true;
     }
 
     path(): string[] {
