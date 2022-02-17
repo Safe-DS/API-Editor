@@ -10,6 +10,15 @@ from ._model import (
     ParameterAndResultDocstring,
     ParameterAssignment,
     Result,
+
+    Action,
+    APIDependencies,
+    Condition,
+    Dependency,
+    ParameterHasValue,
+    ParameterIsIgnored,
+    ParameterIsIllegal,
+    ParameterIsNone,
 )
 from ._package_metadata import (
     distribution,
