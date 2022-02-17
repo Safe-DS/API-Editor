@@ -5,10 +5,11 @@ from package_parser.commands.get_api._model import (
     Dependency,
     Parameter,
     ParameterAndResultDocstring,
+    ParameterAssignment,
     ParameterHasValue,
     ParameterIsIgnored,
     ParameterIsIllegal,
-    ParameterIsNone, ParameterAssignment,
+    ParameterIsNone,
 )
 from package_parser.commands.get_dependencies._get_dependency import (
     DependencyExtractor,
