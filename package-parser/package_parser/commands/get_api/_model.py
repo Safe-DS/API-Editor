@@ -167,28 +167,28 @@ class Module:
         }
 
 
+@dataclass
 class Import:
+    module_name: str
+    alias: Optional[str]
+
     @staticmethod
     def from_json(json: Any) -> Import:
         return Import(json["module"], json["alias"])
 
-    def __init__(self, module_name: str, alias: Optional[str]):
-        self.module: str = module_name
-        self.alias: Optional[str] = alias
-
     def to_json(self) -> Any:
-        return {"module": self.module, "alias": self.alias}
+        return {"module": self.module_name, "alias": self.alias}
 
 
+@dataclass
 class FromImport:
+    module_name: str
+    declaration_name: str
+    alias: Optional[str]
+
     @staticmethod
     def from_json(json: Any) -> FromImport:
         return FromImport(json["module"], json["declaration"], json["alias"])
-
-    def __init__(self, module_name: str, declaration_name: str, alias: Optional[str]):
-        self.module_name: str = module_name
-        self.declaration_name: str = declaration_name
-        self.alias: Optional[str] = alias
 
     def to_json(self) -> Any:
         return {
@@ -256,7 +256,17 @@ class Class:
         }
 
 
+@dataclass
 class Function:
+    qname: str
+    decorators: list[str]
+    parameters: list[Parameter]
+    results: list[Result]
+    is_public: bool
+    description: str
+    docstring: str
+    source_code: str
+
     @staticmethod
     def from_json(json: Any) -> Function:
         return Function(
@@ -272,26 +282,6 @@ class Function:
             json["docstring"],
             json["source_code"],
         )
-
-    def __init__(
-        self,
-        qname: str,
-        decorators: list[str],
-        parameters: list[Parameter],
-        results: list[Result],
-        is_public: bool,
-        description: str,
-        docstring: str,
-        source_code: str,
-    ) -> None:
-        self.qname: str = qname
-        self.decorators: list[str] = decorators
-        self.parameters: list[Parameter] = parameters
-        self.results: list[Result] = results
-        self.is_public: bool = is_public
-        self.description: str = description
-        self.docstring: str = inspect.cleandoc(docstring or "")
-        self.source_code: str = source_code
 
     @property
     def name(self) -> str:
@@ -370,7 +360,7 @@ class RefinedType:
 
     def __init__(
         self,
-        ref_type: Optional[Union[UnionType, BoundaryType, EnumType, NamedType]] = None,
+        ref_type: Union[UnionType, BoundaryType, EnumType, NamedType, None] = None,
     ) -> None:
         self.ref_type = ref_type
 
@@ -423,33 +413,29 @@ class ParameterAssignment(Enum):
     NAME_ONLY = (auto(),)
 
 
+@dataclass
 class Result:
+    name: str
+    docstring: ParameterAndResultDocstring
+
     @staticmethod
     def from_json(json: Any) -> Result:
         return Result(
             json["name"], ParameterAndResultDocstring.from_json(json["docstring"])
         )
 
-    def __init__(self, name: str, docstring: ParameterAndResultDocstring) -> None:
-        self.name: str = name
-        self.docstring = docstring
-
     def to_json(self) -> Any:
         return {"name": self.name, "docstring": self.docstring.to_json()}
 
 
+@dataclass
 class ParameterAndResultDocstring:
+    type: str
+    description: str
+
     @classmethod
     def from_json(cls, json: Any):
         return cls(json["type"], json["description"])
-
-    def __init__(
-        self,
-        type_: str,
-        description: str,
-    ) -> None:
-        self.type: str = type_
-        self.description: str = description
 
     def to_json(self) -> Any:
         return {"type": self.type, "description": self.description}
@@ -529,10 +515,10 @@ class Dependency:
     @classmethod
     def from_json(cls, json: Any):
         return cls(
-            Parameter.from_json(["hasDependentParameter"]),
-            Parameter.from_json(["isDependingOn"]),
-            Condition.from_json(["hasCondition"]),
-            Action.from_json(["hasAction"]),
+            Parameter.from_json(json["hasDependentParameter"]),
+            Parameter.from_json(json["isDependingOn"]),
+            Condition.from_json(json["hasCondition"]),
+            Action.from_json(json["hasAction"]),
         )
 
     def to_json(self) -> Dict:

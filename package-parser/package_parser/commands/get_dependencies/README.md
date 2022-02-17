@@ -1,4 +1,4 @@
-# Dependency Extaction
+# Dependency Extraction
 
 ## How do we imagine a Dependency
 
@@ -16,13 +16,13 @@ Parsing a dependency subtree in an InOrder traversal, we can rebuild a sentence 
 
 ### Dependency Tree Example
 
-![Alt text](../../../package_parser/commands/get_dependencies/dependency_tree_example.png "Dependency Tree Example")
+![Alt text](dependency_tree_example.png "Dependency Tree Example")
 
 
 ## Where to continue work?
 * Development of more patterns in _dependency_patterns.py, see [Dependency Parser](https://spacy.io/usage/linguistic-features#dependency-parse), [Dependency Matcher](https://spacy.io/usage/rule-based-matching#dependencymatcher)
 * Look into pattern matching over multiple sentences. Have a more theoretical understanding of the meaning of a dependency in the english language.
-* Better classification of the subclasses of Actions, Condtions. These classes are found in __../get_api/_model.py__.
+* Better classification of the subclasses of Actions, Conditions. These classes are found in __../get_api/_model.py__.
 
 ### How to continue work?
 It is currently constructed such that for each pattern, there exists a corresponding function __extract_(pattern_name)__ within the class DependencyExtractor. This is due to the assumption that different types of dependency patterns will have different structured sentences, and thus require slightly different combinations of methods to extract the wanted information.

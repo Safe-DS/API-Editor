@@ -160,11 +160,11 @@ class _AstVisitor:
 
         result = ""
         if has_summary:
-            result += " ".join(numpydoc["Summary"])
+            result += "\n".join(numpydoc["Summary"])
         if has_summary and has_extended_summary:
             result += "\n\n"
         if has_extended_summary:
-            result += " ".join(numpydoc["Extended Summary"])
+            result += "\n".join(numpydoc["Extended Summary"])
         return result
 
     @staticmethod

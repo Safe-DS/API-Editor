@@ -1,7 +1,11 @@
 from ._get_api import get_api
 from ._model import (
     API,
+    Action,
+    APIDependencies,
     Class,
+    Condition,
+    Dependency,
     FromImport,
     Function,
     Import,
@@ -9,6 +13,10 @@ from ._model import (
     Parameter,
     ParameterAndResultDocstring,
     ParameterAssignment,
+    ParameterHasValue,
+    ParameterIsIgnored,
+    ParameterIsIllegal,
+    ParameterIsNone,
     Result,
 )
 from ._package_metadata import (

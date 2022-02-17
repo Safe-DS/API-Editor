@@ -43,8 +43,11 @@ const DocumentationText: React.FC<DocumentationTextProps> = function ({
     inputText = '',
 }) {
     const preprocessedText = inputText
+        // replace single new-lines by spaces
         .replaceAll(/(?<!\n)\n(?!\n)/gu, ' ')
+        // replace inline math elements
         .replaceAll(/:math:`([^`]*)`/gu, '$$1$')
+        // replace block math elements
         .replaceAll(/\.\. math::\s*(\S.*)\n\n/gu, '$$\n$1\n$$\n\n');
 
     const shortenedText = preprocessedText.split('\n\n')[0];

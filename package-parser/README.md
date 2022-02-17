@@ -1,6 +1,6 @@
-# library-analyzer
+# package-parser
 
-A tool to analyzer client and API code written in Python.
+A tool to analyze client and API code written in Python.
 
 ## Usage
 

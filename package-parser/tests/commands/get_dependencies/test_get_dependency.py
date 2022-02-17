@@ -5,6 +5,7 @@ from package_parser.commands.get_api._model import (
     Dependency,
     Parameter,
     ParameterAndResultDocstring,
+    ParameterAssignment,
     ParameterHasValue,
     ParameterIsIgnored,
     ParameterIsIllegal,
@@ -99,18 +100,18 @@ def test_extract_dependencies_from_docstring_pattern_adverbial_clause():
         name="random_state",
         default_value=None,
         is_public=True,
-        assigned_by="NAME_ONLY",
+        assigned_by=ParameterAssignment.NAME_ONLY,
         docstring=ParameterAndResultDocstring(
-            type_="param possible types", description=param_docstring_nlp.text
+            type="param possible types", description=param_docstring_nlp.text
         ),
     )
     dependee_param = Parameter(
         name="probability",
         default_value=None,
         is_public=True,
-        assigned_by="NAME_ONLY",
+        assigned_by=ParameterAssignment.NAME_ONLY,
         docstring=ParameterAndResultDocstring(
-            type_="param possible types", description="param probability docstring"
+            type="param possible types", description="param probability docstring"
         ),
     )
     pattern_parameter_subordinating_conjunction = nlp(
