@@ -35,7 +35,7 @@ const convertDefaultValue = (type: DefaultType, value: DefaultValue) => {
             };
         case 'none':
             return {
-                type: `${dataPathPrefix}DefaultNone`
+                type: `${dataPathPrefix}DefaultNone`,
             };
     }
 };
@@ -55,7 +55,7 @@ export class InferableAttributeAnnotation extends InferableAnnotation {
         super(dataPathPrefix + 'AttributeAnnotation');
         this.defaultValue = convertDefaultValue(
             attributeAnnotation.defaultType,
-            attributeAnnotation.defaultValue
+            attributeAnnotation.defaultValue,
         );
     }
 }
@@ -97,7 +97,7 @@ export class InferableConstantAnnotation extends InferableAnnotation {
         super(dataPathPrefix + 'ConstantAnnotation');
         this.defaultValue = convertDefaultValue(
             constantAnnotation.defaultType,
-            constantAnnotation.defaultValue
+            constantAnnotation.defaultValue,
         );
     }
 }
@@ -140,7 +140,7 @@ export class InferableOptionalAnnotation extends InferableAnnotation {
         super(dataPathPrefix + 'OptionalAnnotation');
         this.defaultValue = convertDefaultValue(
             optionalAnnotation.defaultType,
-            optionalAnnotation.defaultValue
+            optionalAnnotation.defaultValue,
         );
     }
 }

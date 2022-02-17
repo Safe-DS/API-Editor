@@ -6,8 +6,8 @@ import {
     Text as ChakraText,
 } from '@chakra-ui/react';
 import React from 'react';
-import {FaTrash, FaWrench} from 'react-icons/fa';
-import {useAppDispatch, useAppSelector} from '../../app/hooks';
+import { FaTrash, FaWrench } from 'react-icons/fa';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
     BoundaryAnnotation,
     ComparisonOperator,
@@ -51,7 +51,7 @@ interface AnnotationViewProps {
     target: string;
 }
 
-const AnnotationView: React.FC<AnnotationViewProps> = function ({target}) {
+const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
     const dispatch = useAppDispatch();
 
     const attributeAnnotation = useAppSelector(selectAttribute(target));
@@ -112,7 +112,7 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({target}) {
                     name={calledAfterName}
                     key={calledAfterName}
                     onDelete={() =>
-                        dispatch(removeCalledAfter({target, calledAfterName}))
+                        dispatch(removeCalledAfter({ target, calledAfterName }))
                     }
                 />
             ))}
@@ -141,10 +141,10 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({target}) {
                     type="group"
                     name={groupName}
                     onEdit={() =>
-                        dispatch(showGroupAnnotationForm({target, groupName}))
+                        dispatch(showGroupAnnotationForm({ target, groupName }))
                     }
                     onDelete={() =>
-                        dispatch(removeGroup({target, groupName}))
+                        dispatch(removeGroup({ target, groupName }))
                     }
                 />
             ))}
@@ -206,7 +206,7 @@ const valueToString = (value: DefaultValue, type: DefaultType): string => {
         case 'boolean':
             return value === true ? 'True' : 'False';
         case 'none':
-            return "None";
+            return 'None';
     }
 };
 
@@ -243,15 +243,15 @@ interface AnnotationProps {
 }
 
 const Annotation: React.FC<AnnotationProps> = function ({
-                                                            name,
-                                                            onDelete,
-                                                            onEdit,
-                                                            type,
-                                                        }) {
+    name,
+    onDelete,
+    onEdit,
+    type,
+}) {
     return (
         <ButtonGroup size="sm" variant="outline" isAttached>
             <Button
-                leftIcon={<FaWrench/>}
+                leftIcon={<FaWrench />}
                 flexGrow={1}
                 justifyContent="flex-start"
                 disabled={!onEdit}
@@ -269,7 +269,7 @@ const Annotation: React.FC<AnnotationProps> = function ({
                 )}
             </Button>
             <IconButton
-                icon={<FaTrash/>}
+                icon={<FaTrash />}
                 aria-label="Delete annotation"
                 colorScheme="red"
                 onClick={onDelete}

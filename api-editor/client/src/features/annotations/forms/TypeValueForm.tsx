@@ -14,11 +14,11 @@ import {
     Select,
     Stack,
 } from '@chakra-ui/react';
-import React, {useEffect} from 'react';
-import {useForm} from 'react-hook-form';
-import {useAppDispatch} from '../../../app/hooks';
-import {Optional} from '../../../common/util/types';
-import {booleanPattern, numberPattern} from '../../../common/validation';
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useAppDispatch } from '../../../app/hooks';
+import { Optional } from '../../../common/util/types';
+import { booleanPattern, numberPattern } from '../../../common/validation';
 import PythonDeclaration from '../../packageData/model/PythonDeclaration';
 import {
     DefaultType,
@@ -41,12 +41,12 @@ export interface TypeValueFormState {
 }
 
 const TypeValueForm: React.FC<TypeValueFormProps> = function ({
-                                                                  target,
-                                                                  annotationType,
-                                                                  previousDefaultType,
-                                                                  previousDefaultValue,
-                                                                  onUpsertAnnotation,
-                                                              }) {
+    target,
+    annotationType,
+    previousDefaultType,
+    previousDefaultValue,
+    onUpsertAnnotation,
+}) {
     const dispatch = useAppDispatch();
 
     const {
@@ -55,7 +55,7 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
         reset,
         setValue,
         watch,
-        formState: {errors},
+        formState: { errors },
     } = useForm<TypeValueFormState>({
         defaultValues: {
             defaultType: 'string',
@@ -83,11 +83,11 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
     };
 
     const handleSave = (data: TypeValueFormState) => {
-        let toUpsert = {...data};
+        let toUpsert = { ...data };
         if (data.defaultType === 'boolean') {
-            toUpsert = {...data, defaultValue: data.defaultValue === 'true'};
-        } else if (data.defaultType === "none") {
-            toUpsert = {...data, defaultValue: null}
+            toUpsert = { ...data, defaultValue: data.defaultValue === 'true' };
+        } else if (data.defaultType === 'none') {
+            toUpsert = { ...data, defaultValue: null };
         }
         onUpsertAnnotation(toUpsert);
         dispatch(hideAnnotationForms());
@@ -122,7 +122,7 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
                 </Stack>
             </RadioGroup>
 
-            {watchDefaultType !== "none" && (
+            {watchDefaultType !== 'none' && (
                 <FormControl isInvalid={Boolean(errors?.defaultValue)}>
                     <FormLabel>
                         Default value for &quot;{target.name}&quot;:
@@ -143,8 +143,8 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
                                 })}
                             />
                             <NumberInputStepper>
-                                <NumberIncrementStepper/>
-                                <NumberDecrementStepper/>
+                                <NumberIncrementStepper />
+                                <NumberDecrementStepper />
                             </NumberInputStepper>
                         </NumberInput>
                     )}
@@ -160,11 +160,10 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
                         </Select>
                     )}
                     <FormErrorMessage>
-                        <FormErrorIcon/> {errors.defaultValue?.message}
+                        <FormErrorIcon /> {errors.defaultValue?.message}
                     </FormErrorMessage>
                 </FormControl>
             )}
-
         </AnnotationForm>
     );
 };
