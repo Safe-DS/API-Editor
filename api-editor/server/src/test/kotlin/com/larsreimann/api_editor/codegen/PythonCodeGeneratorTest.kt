@@ -1,7 +1,5 @@
-package com.larsreimann.api_editor.codegen.python_code_gen
+package com.larsreimann.api_editor.codegen
 
-import com.larsreimann.api_editor.codegen.toPythonCode
-import com.larsreimann.api_editor.codegen.toPythonCodeOrNull
 import com.larsreimann.api_editor.model.Boundary
 import com.larsreimann.api_editor.model.ComparisonOperator.LESS_THAN
 import com.larsreimann.api_editor.model.ComparisonOperator.LESS_THAN_OR_EQUALS
