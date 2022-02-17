@@ -245,6 +245,7 @@ data class PythonBoolean(val value: Boolean) : PythonLiteral()
 data class PythonFloat(val value: Double) : PythonLiteral()
 data class PythonInt(val value: Int) : PythonLiteral()
 data class PythonString(val value: String) : PythonLiteral()
+object PythonNone : PythonLiteral()
 
 class PythonMemberAccess(
     receiver: PythonExpression,

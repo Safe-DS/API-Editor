@@ -21,6 +21,7 @@ import com.larsreimann.api_editor.mutable_model.PythonInt
 import com.larsreimann.api_editor.mutable_model.PythonMemberAccess
 import com.larsreimann.api_editor.mutable_model.PythonModule
 import com.larsreimann.api_editor.mutable_model.PythonNamedType
+import com.larsreimann.api_editor.mutable_model.PythonNone
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonReference
 import com.larsreimann.api_editor.mutable_model.PythonString
@@ -1049,6 +1050,12 @@ class PythonCodeGeneratorTest {
                 member = PythonReference(PythonAttribute(name = "value"))
             )
             expression.toPythonCode() shouldBe "param.value"
+        }
+
+        @Test
+        fun `should handle None`() {
+            val expression = PythonNone
+            expression.toPythonCode() shouldBe "None"
         }
 
         @Test

@@ -147,6 +147,13 @@ class DefaultString(val value: String) : DefaultValue() {
     }
 }
 
+@Serializable
+object DefaultNone : DefaultValue() {
+    override fun toString(): String {
+        return "None"
+    }
+}
+
 enum class AnnotationTarget(private val target: String) {
     CLASS("class"),
     GLOBAL_FUNCTION("global function"),
