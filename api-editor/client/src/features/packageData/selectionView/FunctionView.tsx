@@ -38,22 +38,24 @@ const FunctionView: React.FC<FunctionViewProps> = function ({
             <Stack spacing={4}>
                 <HStack>
                     <Heading as="h3" size="lg">
-                        {pythonFunction.name}
+                        {pythonFunction.name} {!pythonFunction.isPublic && '(private)'}
                     </Heading>
-                    <AnnotationDropdown
-                        target={id}
-                        showCalledAfter={hasRemainingCalledAfters}
-                        showGroup={
-                            pythonFunction.explicitParameters().length >= 2
-                        }
-                        showMove={
-                            pythonFunction.containingModuleOrClass instanceof
-                            PythonModule
-                        }
-                        showPure
-                        showRename
-                        showUnused
-                    />
+                    {pythonFunction.isPublic &&
+                        <AnnotationDropdown
+                            target={id}
+                            showCalledAfter={hasRemainingCalledAfters}
+                            showGroup={
+                                pythonFunction.explicitParameters().length >= 2
+                            }
+                            showMove={
+                                pythonFunction.containingModuleOrClass instanceof
+                                PythonModule
+                            }
+                            showPure
+                            showRename
+                            showUnused
+                        />
+                    }
                 </HStack>
 
                 <AnnotationView target={id} />

@@ -12,6 +12,10 @@ export default abstract class PythonDeclaration {
         return this.name;
     }
 
+    isPublicDeclaration(): boolean {
+        return true
+    }
+
     path(): string[] {
         let current: Optional<PythonDeclaration> = this;
         const result: string[] = [];
