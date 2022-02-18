@@ -24,6 +24,7 @@ import com.larsreimann.api_editor.mutable_model.PythonInt
 import com.larsreimann.api_editor.mutable_model.PythonMemberAccess
 import com.larsreimann.api_editor.mutable_model.PythonModule
 import com.larsreimann.api_editor.mutable_model.PythonNamedType
+import com.larsreimann.api_editor.mutable_model.PythonNone
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonReference
 import com.larsreimann.api_editor.mutable_model.PythonString
@@ -101,7 +102,7 @@ private fun String.parentQualifiedName(): String {
     return substring(0, separationPosition)
 }
 
-internal fun PythonAttribute.toPythonCode() = buildString {
+fun PythonAttribute.toPythonCode() = buildString {
     append("self.$name")
     type?.toPythonCodeOrNull()?.let {
         append(": $it")
@@ -111,7 +112,7 @@ internal fun PythonAttribute.toPythonCode() = buildString {
     }
 }
 
-internal fun PythonClass.toPythonCode() = buildString {
+fun PythonClass.toPythonCode() = buildString {
     val constructorString = constructor?.toPythonCode() ?: ""
     val methodsString = methods.joinToString("\n\n") { it.toPythonCode() }
 
@@ -130,7 +131,7 @@ internal fun PythonClass.toPythonCode() = buildString {
     }
 }
 
-internal fun PythonConstructor.toPythonCode() = buildString {
+fun PythonConstructor.toPythonCode() = buildString {
     val parametersString = parameters.toPythonCode()
     val boundariesString = parameters
         .mapNotNull { it.boundary?.toPythonCode(it.name) }
@@ -164,7 +165,7 @@ internal fun PythonConstructor.toPythonCode() = buildString {
     }
 }
 
-internal fun PythonEnum.toPythonCode() = buildString {
+fun PythonEnum.toPythonCode() = buildString {
     appendLine("class $name(Enum):")
     appendIndented {
         if (instances.isEmpty()) {
@@ -180,11 +181,11 @@ internal fun PythonEnum.toPythonCode() = buildString {
     }
 }
 
-internal fun PythonEnumInstance.toPythonCode(): String {
+fun PythonEnumInstance.toPythonCode(): String {
     return "$name = ${value!!.toPythonCode()}"
 }
 
-internal fun PythonFunction.toPythonCode() = buildString {
+fun PythonFunction.toPythonCode() = buildString {
     val parametersString = parameters.toPythonCode()
     val boundariesString = parameters
         .mapNotNull { it.boundary?.toPythonCode(it.name) }
@@ -211,7 +212,7 @@ internal fun PythonFunction.toPythonCode() = buildString {
     }
 }
 
-internal fun List<PythonParameter>.toPythonCode(): String {
+fun List<PythonParameter>.toPythonCode(): String {
     val assignedByToParameter = this@toPythonCode.groupBy { it.assignedBy }
     val implicitParametersString = assignedByToParameter[IMPLICIT]
         ?.joinToString { it.toPythonCode() }
@@ -246,7 +247,7 @@ internal fun List<PythonParameter>.toPythonCode(): String {
         .joinToString()
 }
 
-internal fun PythonParameter.toPythonCode() = buildString {
+fun PythonParameter.toPythonCode() = buildString {
     val typeStringOrNull = type.toPythonCodeOrNull()
 
     append(name)
@@ -262,13 +263,14 @@ internal fun PythonParameter.toPythonCode() = buildString {
  * Expressions
  * ********************************************************************************************************************/
 
-internal fun PythonExpression.toPythonCode(): String {
+fun PythonExpression.toPythonCode(): String {
     return when (this) {
         is PythonBoolean -> value.toString().replaceFirstChar { it.uppercase() }
         is PythonCall -> "${receiver!!.toPythonCode()}(${arguments.joinToString { it.toPythonCode() }})"
         is PythonFloat -> value.toString()
         is PythonInt -> value.toString()
         is PythonMemberAccess -> "${receiver!!.toPythonCode()}.${member!!.toPythonCode()}"
+        is PythonNone -> "None"
         is PythonReference -> declaration!!.name
         is PythonString -> "'$value'"
         is PythonStringifiedExpression -> string
@@ -279,7 +281,7 @@ internal fun PythonExpression.toPythonCode(): String {
  * Types
  * ********************************************************************************************************************/
 
-internal fun PythonType?.toPythonCodeOrNull(): String? {
+fun PythonType?.toPythonCodeOrNull(): String? {
     return when (this) {
         is PythonNamedType -> this.declaration?.name
         is PythonStringifiedType -> {
@@ -299,14 +301,14 @@ internal fun PythonType?.toPythonCodeOrNull(): String? {
  * Other
  * ********************************************************************************************************************/
 
-internal fun PythonArgument.toPythonCode() = buildString {
+fun PythonArgument.toPythonCode() = buildString {
     if (name != null) {
         append("$name=")
     }
     append(value!!.toPythonCode())
 }
 
-internal fun Boundary.toPythonCode(parameterName: String) = buildString {
+fun Boundary.toPythonCode(parameterName: String) = buildString {
     if (isDiscrete) {
         appendLine("if not (isinstance($parameterName, int) or (isinstance($parameterName, float) and $parameterName.is_integer())):")
         appendIndented("raise ValueError(f'$parameterName needs to be an integer, but {$parameterName} was assigned.')")

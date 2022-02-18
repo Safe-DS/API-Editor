@@ -69,7 +69,7 @@ fun PythonModule.toStubCode(): String {
 /**
  * Creates a Simple-ML compilation unit that corresponds to the Python module.
  */
-internal fun PythonModule.toSmlCompilationUnit(): SmlCompilationUnit {
+fun PythonModule.toSmlCompilationUnit(): SmlCompilationUnit {
     val classes = classes.map { it.toSmlClass() }
     val functions = functions.map { it.toSmlFunction() }
     val enums = enums.map { it.toSmlEnum() }
@@ -85,7 +85,7 @@ internal fun PythonModule.toSmlCompilationUnit(): SmlCompilationUnit {
 /**
  * Creates a Simple-ML class that corresponds to the Python class.
  */
-internal fun PythonClass.toSmlClass(): SmlClass {
+fun PythonClass.toSmlClass(): SmlClass {
     val stubName = name.snakeCaseToUpperCamelCase()
 
     val attributes = attributes.map { it.toSmlAttribute() }
@@ -116,7 +116,7 @@ private fun PythonClass.buildConstructor(): List<SmlParameter> {
 /**
  * Creates a Simple-ML attribute that corresponds to the Python attribute.
  */
-internal fun PythonAttribute.toSmlAttribute(): SmlAttribute {
+fun PythonAttribute.toSmlAttribute(): SmlAttribute {
     val stubName = name.snakeCaseToLowerCamelCase()
 
     return createSmlAttribute(
@@ -133,7 +133,7 @@ internal fun PythonAttribute.toSmlAttribute(): SmlAttribute {
     )
 }
 
-internal fun PythonFunction.toSmlFunction(): SmlFunction {
+fun PythonFunction.toSmlFunction(): SmlFunction {
     val stubName = name.snakeCaseToLowerCamelCase()
 
     return createSmlFunction(
@@ -169,7 +169,7 @@ private fun createSmlPythonNameAnnotationUse(name: String): SmlAnnotationUse {
     )
 }
 
-internal fun PythonParameter.toSmlParameterOrNull(): SmlParameter? {
+fun PythonParameter.toSmlParameterOrNull(): SmlParameter? {
     if (assignedBy == IMPLICIT) {
         return null
     }
@@ -191,7 +191,7 @@ internal fun PythonParameter.toSmlParameterOrNull(): SmlParameter? {
     )
 }
 
-internal fun PythonResult.toSmlResult(): SmlResult {
+fun PythonResult.toSmlResult(): SmlResult {
     val stubName = name.snakeCaseToLowerCamelCase()
 
     return createSmlResult(
@@ -211,7 +211,7 @@ internal fun PythonResult.toSmlResult(): SmlResult {
 /**
  * Creates a Simple-ML enum that corresponds to the Python enum.
  */
-internal fun PythonEnum.toSmlEnum(): SmlEnum {
+fun PythonEnum.toSmlEnum(): SmlEnum {
     val stubName = name.snakeCaseToUpperCamelCase()
 
     return createSmlEnum(
@@ -231,7 +231,7 @@ internal fun PythonEnum.toSmlEnum(): SmlEnum {
 /**
  * Creates a Simple-ML enum variant that corresponds to the Python enum instance.
  */
-internal fun PythonEnumInstance.toSmlEnumVariant(): SmlEnumVariant {
+fun PythonEnumInstance.toSmlEnumVariant(): SmlEnumVariant {
     val stubName = name.snakeCaseToUpperCamelCase()
 
     return createSmlEnumVariant(
@@ -249,11 +249,11 @@ internal fun PythonEnumInstance.toSmlEnumVariant(): SmlEnumVariant {
 
 // Name conversions ----------------------------------------------------------------------------------------------------
 
-internal fun String.snakeCaseToLowerCamelCase(): String {
+fun String.snakeCaseToLowerCamelCase(): String {
     return this.snakeCaseToCamelCase().replaceFirstChar { it.lowercase() }
 }
 
-internal fun String.snakeCaseToUpperCamelCase(): String {
+fun String.snakeCaseToUpperCamelCase(): String {
     return this.snakeCaseToCamelCase().replaceFirstChar { it.uppercase() }
 }
 
@@ -263,7 +263,7 @@ private fun String.snakeCaseToCamelCase(): String {
 
 // Type conversions ----------------------------------------------------------------------------------------------------
 
-internal fun PythonType?.toSmlType(): SmlAbstractType {
+fun PythonType?.toSmlType(): SmlAbstractType {
     return when (this) {
         is PythonNamedType -> {
             createSmlNamedType(
@@ -299,7 +299,7 @@ internal fun PythonType?.toSmlType(): SmlAbstractType {
 
 // Value conversions ---------------------------------------------------------------------------------------------------
 
-internal fun PythonExpression.toSmlExpression(): SmlAbstractExpression? {
+fun PythonExpression.toSmlExpression(): SmlAbstractExpression? {
     if (this !is PythonStringifiedExpression) {
         return createSmlString("###invalid###$this###")
     }

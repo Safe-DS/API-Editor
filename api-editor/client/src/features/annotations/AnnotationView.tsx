@@ -205,6 +205,8 @@ const valueToString = (value: DefaultValue, type: DefaultType): string => {
             return String(value);
         case 'boolean':
             return value === true ? 'True' : 'False';
+        case 'none':
+            return 'None';
     }
 };
 
