@@ -46,7 +46,11 @@ import {
 import AnnotatedPythonPackageBuilder from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
 import { PythonFilter } from '../features/packageData/model/PythonFilter';
 import PythonPackage from '../features/packageData/model/PythonPackage';
-import { togglePackageDataImportDialog } from '../features/packageData/packageDataSlice';
+import {
+    selectShowPrivateDeclarations,
+    togglePackageDataImportDialog,
+    toggleShowPrivateDeclarations,
+} from '../features/packageData/packageDataSlice';
 import { Setter } from './util/types';
 
 interface MenuBarProps {
@@ -251,6 +255,13 @@ const MenuBar: React.FC<MenuBarProps> = function ({
                 </Box>
                 <Button onClick={exportAnnotations}>Export</Button>
                 <DeleteAllAnnotations />
+                <Button
+                    onClick={() => dispatch(toggleShowPrivateDeclarations())}
+                >
+                    {useAppSelector(selectShowPrivateDeclarations)
+                        ? 'Hide private declarations'
+                        : 'Show private declarations'}
+                </Button>
                 <Button onClick={toggleColorMode}>
                     Toggle {colorMode === 'light' ? 'dark' : 'light'}
                 </Button>

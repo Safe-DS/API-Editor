@@ -11,6 +11,7 @@ import PythonPackage from '../model/PythonPackage';
 import PythonParameter from '../model/PythonParameter';
 import {
     selectAllExpandedInTreeView,
+    selectShowPrivateDeclarations,
     selectTreeViewScrollOffset,
     setTreeViewScrollOffset,
 } from '../packageDataSlice';
@@ -31,7 +32,10 @@ const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage }) => {
     const dispatch = useAppDispatch();
     const allExpanded = useAppSelector(selectAllExpandedInTreeView);
 
-    const children = walkChildrenInPreorder(allExpanded, pythonPackage);
+    let children = walkChildrenInPreorder(allExpanded, pythonPackage);
+    if (!useAppSelector(selectShowPrivateDeclarations)) {
+        children = children.filter((it) => it.isPublicDeclaration());
+    }
     const previousScrollOffset = useAppSelector(selectTreeViewScrollOffset);
 
     // Keep a reference to the last FixedSizeList before everything is dismounted

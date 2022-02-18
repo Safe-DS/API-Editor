@@ -62,6 +62,10 @@ export default class PythonFunction extends PythonDeclaration {
         return this.parameters;
     }
 
+    isPublicDeclaration(): boolean {
+        return this.isPublic;
+    }
+
     getUniqueName(): string {
         return this.uniqueName;
     }

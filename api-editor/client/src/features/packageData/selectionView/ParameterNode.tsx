@@ -31,14 +31,16 @@ const ParameterNode: React.FC<ParameterNodeProps> = function ({
             <HStack>
                 {isTitle ? (
                     <Heading as="h3" size="lg">
-                        {pythonParameter.name}
+                        {pythonParameter.name}{' '}
+                        {!pythonParameter.isPublic && '(private)'}
                     </Heading>
                 ) : (
                     <Heading as="h4" size="sm">
-                        {pythonParameter.name}
+                        {pythonParameter.name}{' '}
+                        {!pythonParameter.isPublic && '(private)'}
                     </Heading>
                 )}
-                {isExplicitParameter && (
+                {pythonParameter.isPublic && isExplicitParameter && (
                     <AnnotationDropdown
                         target={id}
                         showAttribute={isConstructorParameter}
