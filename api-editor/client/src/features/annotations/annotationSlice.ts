@@ -60,8 +60,8 @@ export interface AttributeAnnotation {
     readonly defaultValue: DefaultValue;
 }
 
-export type DefaultType = 'string' | 'number' | 'boolean';
-export type DefaultValue = string | number | boolean;
+export type DefaultType = 'string' | 'number' | 'boolean' | 'none';
+export type DefaultValue = string | number | boolean | null;
 
 export interface BoundaryAnnotation {
     /**

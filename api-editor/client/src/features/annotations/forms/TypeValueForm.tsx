@@ -86,6 +86,8 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
         let toUpsert = { ...data };
         if (data.defaultType === 'boolean') {
             toUpsert = { ...data, defaultValue: data.defaultValue === 'true' };
+        } else if (data.defaultType === 'none') {
+            toUpsert = { ...data, defaultValue: null };
         }
         onUpsertAnnotation(toUpsert);
         dispatch(hideAnnotationForms());
@@ -116,49 +118,52 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
                     <Radio value="string">String</Radio>
                     <Radio value="number">Number</Radio>
                     <Radio value="boolean">Boolean</Radio>
+                    <Radio value="none">None</Radio>
                 </Stack>
             </RadioGroup>
 
-            <FormControl isInvalid={Boolean(errors?.defaultValue)}>
-                <FormLabel>
-                    Default value for &quot;{target.name}&quot;:
-                </FormLabel>
-                {watchDefaultType === 'string' && (
-                    <Input
-                        {...register('defaultValue', {
-                            required: 'This is required.',
-                        })}
-                    />
-                )}
-                {watchDefaultType === 'number' && (
-                    <NumberInput>
-                        <NumberInputField
+            {watchDefaultType !== 'none' && (
+                <FormControl isInvalid={Boolean(errors?.defaultValue)}>
+                    <FormLabel>
+                        Default value for &quot;{target.name}&quot;:
+                    </FormLabel>
+                    {watchDefaultType === 'string' && (
+                        <Input
                             {...register('defaultValue', {
                                 required: 'This is required.',
-                                pattern: numberPattern,
                             })}
                         />
-                        <NumberInputStepper>
-                            <NumberIncrementStepper />
-                            <NumberDecrementStepper />
-                        </NumberInputStepper>
-                    </NumberInput>
-                )}
-                {watchDefaultType === 'boolean' && (
-                    <Select
-                        {...register('defaultValue', {
-                            required: 'This is required.',
-                            pattern: booleanPattern,
-                        })}
-                    >
-                        <option value="true">True</option>
-                        <option value="false">False</option>
-                    </Select>
-                )}
-                <FormErrorMessage>
-                    <FormErrorIcon /> {errors.defaultValue?.message}
-                </FormErrorMessage>
-            </FormControl>
+                    )}
+                    {watchDefaultType === 'number' && (
+                        <NumberInput>
+                            <NumberInputField
+                                {...register('defaultValue', {
+                                    required: 'This is required.',
+                                    pattern: numberPattern,
+                                })}
+                            />
+                            <NumberInputStepper>
+                                <NumberIncrementStepper />
+                                <NumberDecrementStepper />
+                            </NumberInputStepper>
+                        </NumberInput>
+                    )}
+                    {watchDefaultType === 'boolean' && (
+                        <Select
+                            {...register('defaultValue', {
+                                required: 'This is required.',
+                                pattern: booleanPattern,
+                            })}
+                        >
+                            <option value="true">True</option>
+                            <option value="false">False</option>
+                        </Select>
+                    )}
+                    <FormErrorMessage>
+                        <FormErrorIcon /> {errors.defaultValue?.message}
+                    </FormErrorMessage>
+                </FormControl>
+            )}
         </AnnotationForm>
     );
 };

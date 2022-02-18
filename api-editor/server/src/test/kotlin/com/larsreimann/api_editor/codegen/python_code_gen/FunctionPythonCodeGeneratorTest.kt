@@ -5,6 +5,7 @@ import com.larsreimann.api_editor.model.BoundaryAnnotation
 import com.larsreimann.api_editor.model.ComparisonOperator
 import com.larsreimann.api_editor.model.DefaultBoolean
 import com.larsreimann.api_editor.model.DefaultNumber
+import com.larsreimann.api_editor.model.DefaultString
 import com.larsreimann.api_editor.model.EnumAnnotation
 import com.larsreimann.api_editor.model.EnumPair
 import com.larsreimann.api_editor.model.GroupAnnotation
@@ -472,7 +473,7 @@ class FunctionPythonCodeGeneratorTest {
         // given
         testParameter2.annotations.add(
             OptionalAnnotation(
-                DefaultBoolean(false)
+                DefaultString("string")
             )
         )
         testFunction.annotations.add(
@@ -493,7 +494,7 @@ class FunctionPythonCodeGeneratorTest {
             |from __future__ import annotations
             |
             |class TestGroup:
-            |    def __init__(self, testParameter3, *, testParameter2=False):
+            |    def __init__(self, testParameter3, *, testParameter2='string'):
             |        self.testParameter3 = testParameter3
             |        self.testParameter2 = testParameter2
             |

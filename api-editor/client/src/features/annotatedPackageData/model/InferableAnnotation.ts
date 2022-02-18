@@ -16,14 +16,27 @@ import {
 
 const dataPathPrefix = 'com.larsreimann.api_editor.model.';
 
-const getDefaultValueTypeSuffix = (type: DefaultType) => {
+const convertDefaultValue = (type: DefaultType, value: DefaultValue) => {
     switch (type) {
         case 'string':
-            return 'DefaultString';
+            return {
+                type: `${dataPathPrefix}DefaultString`,
+                value,
+            };
         case 'boolean':
-            return 'DefaultBoolean';
+            return {
+                type: `${dataPathPrefix}DefaultBoolean`,
+                value,
+            };
         case 'number':
-            return 'DefaultNumber';
+            return {
+                type: `${dataPathPrefix}DefaultNumber`,
+                value,
+            };
+        case 'none':
+            return {
+                type: `${dataPathPrefix}DefaultNone`,
+            };
     }
 };
 
@@ -36,16 +49,14 @@ export class InferableAnnotation {
 }
 
 export class InferableAttributeAnnotation extends InferableAnnotation {
-    readonly defaultValue: { type: string; value: DefaultValue };
+    readonly defaultValue: { type: string; value?: DefaultValue };
 
     constructor(attributeAnnotation: AttributeAnnotation) {
         super(dataPathPrefix + 'AttributeAnnotation');
-        this.defaultValue = {
-            type:
-                dataPathPrefix +
-                getDefaultValueTypeSuffix(attributeAnnotation.defaultType),
-            value: attributeAnnotation.defaultValue,
-        };
+        this.defaultValue = convertDefaultValue(
+            attributeAnnotation.defaultType,
+            attributeAnnotation.defaultValue,
+        );
     }
 }
 
@@ -78,19 +89,19 @@ export class InferableCalledAfterAnnotation extends InferableAnnotation {
         this.calledAfterName = calledAfterAnnotation.calledAfterName;
     }
 }
+
 export class InferableConstantAnnotation extends InferableAnnotation {
-    readonly defaultValue: { type: string; value: DefaultValue };
+    readonly defaultValue: { type: string; value?: DefaultValue };
 
     constructor(constantAnnotation: ConstantAnnotation) {
         super(dataPathPrefix + 'ConstantAnnotation');
-        this.defaultValue = {
-            type:
-                dataPathPrefix +
-                getDefaultValueTypeSuffix(constantAnnotation.defaultType),
-            value: constantAnnotation.defaultValue,
-        };
+        this.defaultValue = convertDefaultValue(
+            constantAnnotation.defaultType,
+            constantAnnotation.defaultValue,
+        );
     }
 }
+
 export class InferableGroupAnnotation extends InferableAnnotation {
     readonly groupName: string;
     readonly parameters: string[];
@@ -101,6 +112,7 @@ export class InferableGroupAnnotation extends InferableAnnotation {
         this.parameters = groupAnnotation.parameters;
     }
 }
+
 export class InferableEnumAnnotation extends InferableAnnotation {
     readonly enumName: string;
     readonly pairs: EnumPair[];
@@ -111,6 +123,7 @@ export class InferableEnumAnnotation extends InferableAnnotation {
         this.pairs = enumAnnotation.pairs;
     }
 }
+
 export class InferableMoveAnnotation extends InferableAnnotation {
     readonly destination: string;
 
@@ -119,24 +132,25 @@ export class InferableMoveAnnotation extends InferableAnnotation {
         this.destination = moveAnnotation.destination;
     }
 }
+
 export class InferableOptionalAnnotation extends InferableAnnotation {
-    readonly defaultValue: { type: string; value: DefaultValue };
+    readonly defaultValue: { type: string; value?: DefaultValue };
 
     constructor(optionalAnnotation: OptionalAnnotation) {
         super(dataPathPrefix + 'OptionalAnnotation');
-        this.defaultValue = {
-            type:
-                dataPathPrefix +
-                getDefaultValueTypeSuffix(optionalAnnotation.defaultType),
-            value: optionalAnnotation.defaultValue,
-        };
+        this.defaultValue = convertDefaultValue(
+            optionalAnnotation.defaultType,
+            optionalAnnotation.defaultValue,
+        );
     }
 }
+
 export class InferablePureAnnotation extends InferableAnnotation {
     constructor() {
         super(dataPathPrefix + 'PureAnnotation');
     }
 }
+
 export class InferableRenameAnnotation extends InferableAnnotation {
     readonly newName: string;
 
@@ -145,11 +159,13 @@ export class InferableRenameAnnotation extends InferableAnnotation {
         this.newName = renameAnnotation.newName;
     }
 }
+
 export class InferableRequiredAnnotation extends InferableAnnotation {
     constructor() {
         super(dataPathPrefix + 'RequiredAnnotation');
     }
 }
+
 export class InferableUnusedAnnotation extends InferableAnnotation {
     constructor() {
         super(dataPathPrefix + 'UnusedAnnotation');

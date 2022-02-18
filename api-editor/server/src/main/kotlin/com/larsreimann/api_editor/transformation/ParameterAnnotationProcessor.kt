@@ -3,6 +3,7 @@ package com.larsreimann.api_editor.transformation
 import com.larsreimann.api_editor.model.AttributeAnnotation
 import com.larsreimann.api_editor.model.ConstantAnnotation
 import com.larsreimann.api_editor.model.DefaultBoolean
+import com.larsreimann.api_editor.model.DefaultNone
 import com.larsreimann.api_editor.model.DefaultNumber
 import com.larsreimann.api_editor.model.DefaultString
 import com.larsreimann.api_editor.model.DefaultValue
@@ -16,6 +17,7 @@ import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonFloat
 import com.larsreimann.api_editor.mutable_model.PythonInt
 import com.larsreimann.api_editor.mutable_model.PythonLiteral
+import com.larsreimann.api_editor.mutable_model.PythonNone
 import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonReference
@@ -118,5 +120,6 @@ private fun DefaultValue.toPythonLiteral(): PythonLiteral {
             }
         }
         is DefaultString -> PythonString(this.value)
+        is DefaultNone -> PythonNone
     }
 }
