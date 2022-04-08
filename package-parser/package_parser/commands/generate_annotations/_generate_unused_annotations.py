@@ -5,7 +5,7 @@ from typing import Dict, List, Tuple
 
 
 def generate_unused_annotations(in_file_path: str):
-    with open(in_file_path, 'r', encoding="UTF-8") as in_file:
+    with open(in_file_path, "r", encoding="UTF-8") as in_file:
         data = json.load(in_file)
 
     unuseds: Dict[str, Dict[str, str]] = {}

@@ -1,37 +1,43 @@
 from package_parser.commands.generate_annotations._generate_unused_annotations import (
+    format_name,
     generate_unused_annotations,
-    format_name
 )
 
 EXPECTED_VALUE = {
-    'sklearn/sklearn.base/_BaseEstimator/__setstate__': {
-        'target': 'sklearn/sklearn.base/_BaseEstimator/__setstate__'
+    "sklearn/sklearn.base/_BaseEstimator/__setstate__": {
+        "target": "sklearn/sklearn.base/_BaseEstimator/__setstate__"
     },
-    'sklearn/sklearn.base/is_regressor': {
-        'target': 'sklearn/sklearn.base/is_regressor'
+    "sklearn/sklearn.base/is_regressor": {
+        "target": "sklearn/sklearn.base/is_regressor"
     },
-    'sklearn/sklearn.cluster._agglomerative/linkage_tree': {
-        'target': 'sklearn/sklearn.cluster._agglomerative/linkage_tree'
+    "sklearn/sklearn.cluster._agglomerative/linkage_tree": {
+        "target": "sklearn/sklearn.cluster._agglomerative/linkage_tree"
     },
-    'sklearn/sklearn.cluster._kmeans/MiniBatchKMeans/init_size_': {
-        'target': 'sklearn/sklearn.cluster._kmeans/MiniBatchKMeans/init_size_'
-    }
+    "sklearn/sklearn.cluster._kmeans/MiniBatchKMeans/init_size_": {
+        "target": "sklearn/sklearn.cluster._kmeans/MiniBatchKMeans/init_size_"
+    },
 }
 
 
 def test_format_underscores():
-    assert format_name("sklearn.cluster._kmeans._MiniBatchKMeans.random_state_") \
-           == "sklearn/sklearn.cluster._kmeans/_MiniBatchKMeans/random_state_"
+    assert (
+        format_name("sklearn.cluster._kmeans._MiniBatchKMeans.random_state_")
+        == "sklearn/sklearn.cluster._kmeans/_MiniBatchKMeans/random_state_"
+    )
 
 
 def test_format_uppercase():
-    assert format_name("sklearn.cluster._kmeans.MiniBatchKMeans.random_state_") \
-           == "sklearn/sklearn.cluster._kmeans/MiniBatchKMeans/random_state_"
+    assert (
+        format_name("sklearn.cluster._kmeans.MiniBatchKMeans.random_state_")
+        == "sklearn/sklearn.cluster._kmeans/MiniBatchKMeans/random_state_"
+    )
 
 
 def test_format_normal():
-    assert format_name("sklearn.cluster._mean_shift.get_bin_seeds") \
-           == "sklearn/sklearn.cluster._mean_shift/get_bin_seeds"
+    assert (
+        format_name("sklearn.cluster._mean_shift.get_bin_seeds")
+        == "sklearn/sklearn.cluster._mean_shift/get_bin_seeds"
+    )
 
 
 def test_format_one_part():
