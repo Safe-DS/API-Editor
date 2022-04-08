@@ -1,3 +1,4 @@
+import pytest
 from package_parser.commands.generate_annotations._generate_unused_annotations import (
     format_name,
     generate_unused_annotations,
@@ -57,8 +58,5 @@ def test_generate():
 
 
 def test_generate_bad_path():
-    try:
+    with pytest.raises(FileNotFoundError):
         generate_unused_annotations("aaaaaaaaaaaAAAAAAAAAAAA")
-    except FileNotFoundError:
-        return
-    assert False
