@@ -1,0 +1,6 @@
+[
+    "sklearn.base._BaseEstimator.__setstate__",
+    "sklearn.base.is_regressor",
+    "sklearn.cluster._agglomerative.linkage_tree",
+    "sklearn.cluster._kmeans.MiniBatchKMeans.init_size_"
+]
