@@ -8,7 +8,7 @@ def generate_unused_annotations(in_file_path: str):
     with open(in_file_path, 'r', encoding="UTF-8") as in_file:
         data = json.load(in_file)
 
-    unuseds: Dict[Str, Dict[Str, Str]] = {}
+    unuseds: Dict[str, Dict[str, str]] = {}
     for name in data:
         formatted_name = format_name(name)
         unuseds[formatted_name] = {"target": formatted_name}
