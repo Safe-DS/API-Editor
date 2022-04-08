@@ -54,7 +54,12 @@ def test_format_empty():
 
 
 def test_generate():
-    assert generate_unused_annotations("commands/generate_annotations/unused_functions_list.json") == EXPECTED_VALUE
+    assert (
+        generate_unused_annotations(
+            "commands/generate_annotations/unused_functions_list.json"
+        )
+        == EXPECTED_VALUE
+    )
 
 
 def test_generate_bad_path():
