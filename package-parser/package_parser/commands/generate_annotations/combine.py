@@ -1,9 +1,15 @@
 import argparse
 import json
 
+# Funktion zum kombinieren der constant und unused anotations
+# @params:
+# output : Dateipfad für Output JSON
+# constant_path : Dateipfad zur Constant Annotation File
+# unused_path : Dateipfad zur Unused Annotation File
 
 def combine(output, constant_path, unused_path):
 
+    # Platzhalter für echte Funktion
     # unused_dict = find_unused(unused_path)
 
     unused_dict = {
@@ -11,6 +17,7 @@ def combine(output, constant_path, unused_path):
             "target": "sklearn/sklearn.__check_build/raise_build_error"
         }
     }
+    # Platzhalter für echte Funktion
     # constant_dict = find_constant(constant_path)
 
     constant_dict = {
@@ -37,6 +44,12 @@ def combine(output, constant_path, unused_path):
     }
     create_file(output, unused_dict, constant_dict)
 
+
+# Funktion, die die Dictionarys kombiniert und daraus eine JSON-FILE generiert
+# @params:
+# output : Dateipfad der JSON-File
+# unused_dict : Dictionary der unused annotations
+# constant_dict : Dictionary der constant annotations
 
 def create_file(output, unused_dict, constant_dict):
     with open(f"{output}\\annotations.json", "w") as file:
