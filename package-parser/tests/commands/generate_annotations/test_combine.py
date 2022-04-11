@@ -1,4 +1,5 @@
 import json
+import os
 
 import package_parser.commands.generate_annotations.combine as comb
 import pytest
@@ -70,8 +71,8 @@ test_combined_dict = {
     ],
 )
 def test_create_annotations(test_unused, test_constant, expected):
-    comb.create_file(".", test_unused, test_constant)
-    with open("./annotations.json", "r") as file:
+    comb.create_file(os.getcwd(), test_unused, test_constant)
+    with open(os.getcwd() + "/annotations.json", "r") as file:
         eval_dict = json.load(file)
 
         assert eval_dict == expected
