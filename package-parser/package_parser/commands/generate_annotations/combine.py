@@ -7,6 +7,7 @@ import json
 # constant_path : Dateipfad zur Constant Annotation File
 # unused_path : Dateipfad zur Unused Annotation File
 
+
 def combine(output, constant_path, unused_path):
 
     # Platzhalter für echte Funktion
@@ -24,23 +25,23 @@ def combine(output, constant_path, unused_path):
         "sklearn/sklearn._config/config_context/assume_finite": {
             "target": "sklearn/sklearn._config/config_context/assume_finite",
             "defaultType": "boolean",
-            "defaultValue": True
+            "defaultValue": True,
         },
         "sklearn/sklearn._config/config_context/working_memory": {
             "target": "sklearn/sklearn._config/config_context/working_memory",
             "defaultType": "string",
-            "defaultValue": "bla"
+            "defaultValue": "bla",
         },
         "sklearn/sklearn._config/config_context/print_changed_only": {
             "target": "sklearn/sklearn._config/config_context/print_changed_only",
             "defaultType": "none",
-            "defaultValue": None
+            "defaultValue": None,
         },
         "sklearn/sklearn._config/config_context/display": {
             "target": "sklearn/sklearn._config/config_context/display",
             "defaultType": "number",
-            "defaultValue": "3"
-        }
+            "defaultValue": "3",
+        },
     }
     create_file(output, unused_dict, constant_dict)
 
@@ -50,6 +51,7 @@ def combine(output, constant_path, unused_path):
 # output : Dateipfad der JSON-File
 # unused_dict : Dictionary der unused annotations
 # constant_dict : Dictionary der constant annotations
+
 
 def create_file(output, unused_dict, constant_dict):
     with open(f"{output}\\annotations.json", "w") as file:
@@ -63,17 +65,29 @@ def create_file(output, unused_dict, constant_dict):
         )
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(prog='combine')
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(prog="combine")
 
-    parser.add_argument('outputPath', metavar='output-filepath', type=str,
-                        help='paste the location of the output file in here ')
+    parser.add_argument(
+        "outputPath",
+        metavar="output-filepath",
+        type=str,
+        help="paste the location of the output file in here ",
+    )
 
-    parser.add_argument('constantPath', metavar='input-filepath', type=str,
-                        help='paste the location of the "constant" file in here ')
+    parser.add_argument(
+        "constantPath",
+        metavar="input-filepath",
+        type=str,
+        help='paste the location of the "constant" file in here ',
+    )
 
-    parser.add_argument('unusedPath', metavar='input-filepath', type=str,
-                        help='paste the location of the "unused" file in here ')
+    parser.add_argument(
+        "unusedPath",
+        metavar="input-filepath",
+        type=str,
+        help='paste the location of the "unused" file in here ',
+    )
 
     args = parser.parse_args()
 
