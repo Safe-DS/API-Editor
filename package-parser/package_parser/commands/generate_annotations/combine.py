@@ -35,7 +35,10 @@ def combine(output, constant_path, unused_path):
             "defaultValue": "3"
         }
     }
+    create_file(output, unused_dict, constant_dict)
 
+
+def create_file(output, unused_dict, constant_dict):
     with open(f"{output}\\annotations.json", "w") as file:
         json.dump(
             {
