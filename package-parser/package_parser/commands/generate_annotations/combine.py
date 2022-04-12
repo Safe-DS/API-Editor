@@ -45,13 +45,18 @@ def write_json(output_path, constant_path, unused_path):
     result_dict = combine_dictionaries(unused_dict, constant_dict)
 
     with open(f"{output}\\annotations.json", "w") as file:
-        json.dump(result_dict, file, indent=2,)
+        json.dump(
+            result_dict,
+            file,
+            indent=2,
+        )
 
 
 # Funktion, die die Dictionarys kombiniert
 # @params:
 # unused_dict : Dictionary der unused annotations
 # constant_dict : Dictionary der constant annotations
+
 
 def combine_dictionaries(unused_dict, constant_dict):
     result_dict = {
