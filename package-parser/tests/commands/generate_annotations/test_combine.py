@@ -70,9 +70,6 @@ test_combined_dict = {
         (test_unused_dict, test_constant_dict, test_combined_dict),
     ],
 )
-def test_create_annotations(test_unused, test_constant, expected):
-    comb.create_file(os.getcwd(), test_unused, test_constant)
-    with open(os.getcwd() + "/annotations.json", "r") as file:
-        eval_dict = json.load(file)
-
-        assert eval_dict == expected
+def test_combine_dictionaries(test_unused, test_constant, expected):
+    eval_dict = comb.combine_dictionaries(test_unused, test_constant)
+    assert eval_dict == expected

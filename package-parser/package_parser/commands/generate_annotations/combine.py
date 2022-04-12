@@ -1,15 +1,14 @@
 import argparse
 import json
 
-# Funktion zum kombinieren der constant und unused anotations
+# Funktion zum kombinieren der constant und unused anotations und zur Erzeugung einer JSON - File
 # @params:
 # output : Dateipfad für Output JSON
 # constant_path : Dateipfad zur Constant Annotation File
 # unused_path : Dateipfad zur Unused Annotation File
 
 
-def combine(output, constant_path, unused_path):
-
+def write_json(output_path, constant_path, unused_path):
     # Platzhalter für echte Funktion
     # unused_dict = find_unused(unused_path)
 
@@ -43,26 +42,23 @@ def combine(output, constant_path, unused_path):
             "defaultValue": "3",
         },
     }
-    create_file(output, unused_dict, constant_dict)
+    result_dict = combine_dictionaries(unused_dict, constant_dict)
+
+    with open(f"{output}\\annotations.json", "w") as file:
+        json.dump(result_dict, file, indent=2,)
 
 
-# Funktion, die die Dictionarys kombiniert und daraus eine JSON-FILE generiert
+# Funktion, die die Dictionarys kombiniert
 # @params:
-# output : Dateipfad der JSON-File
 # unused_dict : Dictionary der unused annotations
 # constant_dict : Dictionary der constant annotations
 
-
-def create_file(output, unused_dict, constant_dict):
-    with open(f"{output}\\annotations.json", "w") as file:
-        json.dump(
-            {
-                "unused": unused_dict,
-                "constant": constant_dict,
-            },
-            file,
-            indent=2,
-        )
+def combine_dictionaries(unused_dict, constant_dict):
+    result_dict = {
+        "unused": unused_dict,
+        "constant": constant_dict,
+    }
+    return result_dict
 
 
 if __name__ == "__main__":
@@ -91,4 +87,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    combine(args.outputPath, args.constantPath, args.unusedPath)
+    write_json(args.outputPath, args.constantPath, args.unusedPath)
