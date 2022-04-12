@@ -1,0 +1,1 @@
+from ._generate_constant_annotations import suggest_improvements

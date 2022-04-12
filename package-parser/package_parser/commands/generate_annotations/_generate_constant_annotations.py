@@ -1,16 +1,15 @@
 import json
 from io import TextIOWrapper
 from pathlib import Path
-from typing import Any, Union
+from typing import Any
 
 from package_parser.commands.find_usages import (
-    ClassUsage,
     FunctionUsage,
     UsageStore,
     ValueUsage,
 )
 from package_parser.commands.get_api import API
-from package_parser.utils import ensure_file_exists, parent_qname
+from package_parser.utils import parent_qname
 
 
 def suggest_improvements(
@@ -24,60 +23,19 @@ def suggest_improvements(
         usages_json = json.load(usages_file)
         usages = UsageStore.from_json(usages_json)
 
-    out_dir.mkdir(parents=True, exist_ok=True)
     base_file_name = api_file.name.replace("__api.json", "")
 
     __preprocess_usages(usages, api)
-    __print_usage_counts(usages, out_dir, base_file_name)
-    __create_usage_distributions(usages, out_dir, base_file_name)
     api_size_after_removal = __remove_rarely_used_api_elements(
-        usages, min_usages, out_dir, base_file_name
+        usages, out_dir, base_file_name
     )
     __write_api_size(api, api_size_after_removal, out_dir, base_file_name)
-    __optional_vs_required_parameters(usages, api, out_dir, base_file_name)
+
 
 def __preprocess_usages(usages: UsageStore, api: API) -> None:
     __remove_internal_usages(usages, api)
     __add_unused_api_elements(usages, api)
     __add_implicit_usages_of_default_value(usages, api)
-
-
-def __create_parameter_usage_distribution(usages: UsageStore) -> dict[int, int]:
-    """
-    Creates a dictionary X -> N where N indicates the number of parameters that are set at most X times to a value other
-    than the most commonly used value (which might differ from the default value).
-
-    :param usages: Usage store.
-    :return: The usage distribution.
-    """
-
-    result = {}
-
-    function_usages = usages.function_usages
-    parameter_usages = usages.parameter_usages
-    value_usages = usages.value_usages
-
-    max_usages = max(
-        __n_not_set_to_most_common_value(it, function_usages, value_usages)[1]
-        for it in parameter_usages.keys()
-    )
-
-    for i in range(max_usages + 1):
-        result[i] = len(
-            [
-                it
-                for it in parameter_usages.keys()
-                if usages.n_function_usages(parent_qname(it)) >= i
-                   and (
-                       parent_qname(parent_qname(it)) not in usages.class_usages
-                       or usages.n_class_usages(parent_qname(parent_qname(it))) >= i
-                   )
-                   and __n_not_set_to_most_common_value(it, function_usages, value_usages)[1]
-                   >= i
-            ]
-        )
-
-    return result
 
 
 def __remove_internal_usages(usages: UsageStore, api: API) -> None:
@@ -174,7 +132,7 @@ def __n_not_set_to_most_common_value(
 
 
 def __remove_rarely_used_api_elements(
-    usages: UsageStore, min_usages: int, out_dir: Path, base_file_name: str
+    usages: UsageStore, out_dir: Path, base_file_name: str
 ) -> dict[str, Any]:
     """
     Removes API elements that are used fewer than min_usages times.
@@ -182,89 +140,20 @@ def __remove_rarely_used_api_elements(
     :return: The API size after the individual steps.
     """
 
-    rarely_used_classes = __remove_rarely_used_classes(usages, min_usages)
-    api_size_after_unused_class_removal = __api_size_to_json(
-        len(usages.class_usages),
-        len(usages.function_usages),
-        len(usages.parameter_usages),
-    )
-    with out_dir.joinpath(
-        f"{base_file_name}__classes_used_fewer_than_{min_usages}_times.json"
-    ).open("w") as f:
-        json.dump(rarely_used_classes, f, indent=2)
-
-    rarely_used_functions = __remove_rarely_used_functions(usages, min_usages)
-    api_size_after_unused_function_removal = __api_size_to_json(
-        len(usages.class_usages),
-        len(usages.function_usages),
-        len(usages.parameter_usages),
-    )
-    with out_dir.joinpath(
-        f"{base_file_name}__functions_used_fewer_than_{min_usages}_times.json"
-    ).open("w") as f:
-        json.dump(rarely_used_functions, f, indent=2)
-
-    rarely_used_parameters = __remove_rarely_used_parameters(usages, min_usages)
-    api_size_after_unused_parameter_removal = __api_size_to_json(
-        len(usages.class_usages),
-        len(usages.function_usages),
-        len(usages.parameter_usages),
-    )
-    with out_dir.joinpath(
-        f"{base_file_name}__parameters_used_fewer_than_{min_usages}_times.json"
-    ).open("w") as f:
-        json.dump(rarely_used_parameters, f, indent=2)
-
-    mostly_useless_parameters = __remove_mostly_useless_parameters(usages, min_usages)
+    mostly_useless_parameters = __remove_mostly_useless_parameters(usages)
     api_size_after_useless_parameter_removal = __api_size_to_json(
         len(usages.class_usages),
         len(usages.function_usages),
         len(usages.parameter_usages),
     )
     with out_dir.joinpath(
-        f"{base_file_name}__parameters_set_fewer_than_{min_usages}_times_to_value_other_than_most_common.json"
+        f"{base_file_name}__parameters_set_fewer_than_1_times_to_value_other_than_most_common.json"
     ).open("w") as f:
         json.dump(mostly_useless_parameters, f, indent=2)
 
     return {
-        "after_unused_class_removal": api_size_after_unused_class_removal,
-        "after_unused_function_removal": api_size_after_unused_function_removal,
-        "after_unused_parameter_removal": api_size_after_unused_parameter_removal,
         "after_useless_parameter_removal": api_size_after_useless_parameter_removal,
     }
-
-
-def __remove_rarely_used_classes(usages: UsageStore, min_usages: int) -> list[str]:
-    result = []
-
-    for class_qname in list(usages.class_usages.keys()):
-        if usages.n_class_usages(class_qname) < min_usages:
-            result.append(class_qname)
-            usages.remove_class(class_qname)
-
-    return sorted(result)
-
-
-def __remove_rarely_used_functions(usages: UsageStore, min_usages: int) -> list[str]:
-    result = []
-
-    for function_qname in list(usages.function_usages.keys()):
-        if usages.n_function_usages(function_qname) < min_usages:
-            result.append(function_qname)
-            usages.remove_function(function_qname)
-
-    return sorted(result)
-
-
-def __remove_rarely_used_parameters(usages: UsageStore, min_usages: int) -> list[str]:
-    result = []
-
-    for parameter_qname in list(usages.parameter_usages.keys()):
-        if usages.n_parameter_usages(parameter_qname) < min_usages:
-            result.append(parameter_qname)
-            usages.remove_parameter(parameter_qname)
-
-    return sorted(result)
 
 
 def __remove_mostly_useless_parameters(usages: UsageStore) -> dict[str, int]:
@@ -320,12 +209,3 @@ def __api_size_to_json(n_classes: int, n_functions: int, n_parameters: int) -> A
         "n_functions": n_functions,
         "n_parameters": n_parameters,
     }
-
-
-def __optional_vs_required_parameters(
-    usages: UsageStore, public_api: API, out_dir: Path, base_file_name: str
-) -> None:
-    # TODO: Determine whether parameter should be constant (already removed)/required/optional based on entropy
-    # TODO: Use must commonly set value as default
-
-    pass
