@@ -1,1 +1,1 @@
-from ._generate_annotations import suggest_improvements
+from ._generate_annotations import generate_annotations
