@@ -43,10 +43,10 @@ def write_json(output_path, constant_path, unused_path):
         },
     }
     result_dict = combine_dictionaries(unused_dict, constant_dict)
-    '''
+    """
     result_dict = combine_dictionaries(module.unusedDictFunction, module.constantDictFunction)
      Those 2 functions have each to return the different dictionaries, comming soon.
-     '''
+     """
     with open(f"{output_path}\\annotations.json", "w") as file:
         json.dump(
             result_dict,
