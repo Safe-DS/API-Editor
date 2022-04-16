@@ -71,12 +71,12 @@ test_combined_dict = {
     ],
 )
 def test_combine_dictionaries(test_unused, test_constant, expected):
-    '''
+    """
     Funktion, die feststellt ob die kombinierte JSON-Datei gleich der gefragten JSON-Datei ist oder nicht
     :param test_unused:  Unused Dictionary  als Parameter
     :param test_constant:  Constant Dictionary als  Parameter
     :param expected: gemergte JSON-Datei aus den 2 Dictionaries, die entsteht
-    '''
+    """
 
     eval_dict = comb.combine_dictionaries(test_unused, test_constant)
     assert eval_dict == expected
