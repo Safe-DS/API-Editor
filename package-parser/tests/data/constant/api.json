@@ -10,7 +10,6 @@
             "classes": [],
             "functions": [
                 "test.unused_global_function",
-                "test.rarely_used_global_function",
                 "test.commonly_used_global_function"
             ]
         }
@@ -36,7 +35,7 @@
                 },
                 {
                     "name": "unused_optional_parameter",
-                    "default_value": "bla",
+                    "default_value": "'bla'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
                     "docstring": {
@@ -80,7 +79,7 @@
                 },
                 {
                     "name": "unused_optional_parameter",
-                    "default_value": "bla",
+                    "default_value": "'bla'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
                     "docstring": {
@@ -90,7 +89,7 @@
                 },
                 {
                     "name": "useless_optional_parameter",
-                    "default_value": "bla",
+                    "default_value": "'bla'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
                     "docstring": {
@@ -100,7 +99,7 @@
                 },
                 {
                     "name": "useful_optional_parameter",
-                    "default_value": "bla",
+                    "default_value": "'bla'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
                     "docstring": {
