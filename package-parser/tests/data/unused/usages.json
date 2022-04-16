@@ -1,0 +1,113 @@
+{
+    "class_usages": {
+        "test.Unused_Class": [],
+        "test.Rarely_Used_Class": [
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            }
+        ],
+        "test.Commonly_Used_Class": [
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            },
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            },
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            },
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            },
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            }
+        ]
+    },
+    "function_usages": {
+        "test.unused_global_function": [],
+        "test.rarely_used_global_function": [
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            }
+        ],
+        "test.commonly_used_global_function": [
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            },
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            },
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            },
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            },
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            }
+        ],
+        "test.Commonly_Used_Class.unused_method": [],
+        "test.Commonly_Used_Class.rarely_used_method": [
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            }
+        ],
+        "test.Commonly_Used_Class.commonly_used_method": [
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            },
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            },
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            },
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            },
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            }
+        ]
+    },
+    "parameter_usages": {},
+    "value_usages": {}
+}
