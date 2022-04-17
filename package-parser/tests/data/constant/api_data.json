@@ -1,0 +1,118 @@
+{
+    "distribution": "test",
+    "package": "test",
+    "version": "0.0.1",
+    "modules": [
+        {
+            "name": "test",
+            "imports": [],
+            "from_imports": [],
+            "classes": [],
+            "functions": [
+                "test.unused_global_function",
+                "test.commonly_used_global_function"
+            ]
+        }
+    ],
+    "classes": [],
+    "functions": [
+        {
+            "name": "unused_global_function",
+            "unique_name": "unused_global_function",
+            "qname": "test.unused_global_function",
+            "unique_qname": "test.unused_global_function",
+            "decorators": [],
+            "parameters": [
+                {
+                    "name": "unused_required_parameter",
+                    "default_value": null,
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                },
+                {
+                    "name": "unused_optional_parameter",
+                    "default_value": "'bla'",
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "description": "",
+            "docstring": "",
+            "source_code": ""
+        },
+        {
+            "name": "commonly_used_global_function",
+            "unique_name": "commonly_used_global_function",
+            "qname": "test.commonly_used_global_function",
+            "unique_qname": "test.commonly_used_global_function",
+            "decorators": [],
+            "parameters": [
+                {
+                    "name": "useless_required_parameter",
+                    "default_value": null,
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                },
+                {
+                    "name": "useful_required_parameter",
+                    "default_value": null,
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                },
+                {
+                    "name": "unused_optional_parameter",
+                    "default_value": "'bla'",
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                },
+                {
+                    "name": "useless_optional_parameter",
+                    "default_value": "'bla'",
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                },
+                {
+                    "name": "useful_optional_parameter",
+                    "default_value": "'bla'",
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "description": "",
+            "docstring": "",
+            "source_code": ""
+        }
+    ]
+}
