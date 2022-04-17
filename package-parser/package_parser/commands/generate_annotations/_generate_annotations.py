@@ -113,8 +113,8 @@ def __determine_constant_parameters(usages: UsageStore) -> dict[str, str]:
 
     result = {}
 
-    for parameter_qname in list(usages.parameter_parent_qnameusages.keys()):
-        
+    for parameter_qname in list(usages.parameter_usages.keys()):
+
         if len(value_usages[parameter_qname].values()) == 0:
             continue
 
