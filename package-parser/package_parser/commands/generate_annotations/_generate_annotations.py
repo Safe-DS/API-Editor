@@ -105,7 +105,9 @@ def __add_implicit_usages_of_default_value(usages: UsageStore, api: API) -> None
 
         for location in locations_of_implicit_usages_of_default_value:
             usages.add_value_usage(parameter_qname, default_value, location)
-            print(f"DEBUG: default value usage was added - qname: {parameter_qname}, default value: {default_value}, location: {location}")
+            print(
+                f"DEBUG: default value usage was added - qname: {parameter_qname}, default value: {default_value}, location: {location}"
+            )
 
 
 def __determine_constant_parameters(usages: UsageStore) -> dict[str, str]:
