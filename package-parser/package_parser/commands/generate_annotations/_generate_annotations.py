@@ -115,7 +115,7 @@ def __determine_constant_parameters(usages: UsageStore) -> dict[str, str]:
 
     for parameter_qname in list(usages.parameter_usages.keys()):
 
-        if len(value_usages[parameter_qname].values()) == 0:
+        if len(usages.value_usages[parameter_qname].values()) == 0:
             continue
 
         if len(usages.value_usages[parameter_qname].keys()) == 1:
