@@ -113,12 +113,9 @@ def __determine_constant_parameters(usages: UsageStore) -> dict[str, str]:
 
     result = {}
 
-    for parameter_qname in list(usages.parameter_usages.keys()):
-
-        # Check if parameter is unused
-        # Checking both conditions even though one implies the other to ensure correctness of the program
-        n_total_usage = len(function_usages[parent_qname(parameter_qname)])
-        if n_total_usage == 0 and len(value_usages[parameter_qname].values()) == 0:
+    for parameter_qname in list(usages.parameter_parent_qnameusages.keys()):
+        
+        if len(value_usages[parameter_qname].values()) == 0:
             continue
 
         if len(usages.value_usages[parameter_qname].keys()) == 1:
