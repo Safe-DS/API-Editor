@@ -118,6 +118,12 @@ def __determine_constant_parameters(usages: UsageStore) -> dict[str, str]:
             continue
 
         if len(usages.value_usages[parameter_qname].keys()) == 1:
+<<<<<<< HEAD
             result[parameter_qname] = str(usages.most_common_value(parameter_qname))
+=======
+            result[parameter_qname] = str(usages.most_common_value(parameter_qname))[
+                1:-1
+            ]
+>>>>>>> 3eb4b16fd04f6d87efa49a38547b253e2976ef1b
 
     return result
