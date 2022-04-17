@@ -29,7 +29,7 @@ def test_determination_of_constant_parameters():
     api_json_path = os.path.join(os.getcwd(), "tests", "data", "constant", "api_data.json")
     usages_json_path = os.path.join(os.getcwd(), "tests" , "data", "constant", "usage_data.json")
 
-    api_file = pen(api_json_path)
+    api_file = open(api_json_path)
     usages_file = open(usages_json_path)
 
     constant_parameters = generate_annotations(api_file, usages_file, "/.")
