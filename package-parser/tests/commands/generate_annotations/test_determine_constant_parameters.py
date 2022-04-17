@@ -16,17 +16,17 @@ from package_parser.commands.generate_annotations._generate_annotations import (
 #
 # @Constant annotations should be created for the following parameters:
 #
-# test.commonly_used_global_function.useless_required_parameter (with value "blup")
-# test.commonly_used_global_function.unused_optional_parameter (with value "bla", i.e. the default value)
-# test.commonly_used_global_function.useless_optional_parameter (with value "bla")
+# test.commonly_used_global_function.useless_required_parameter (with value "'blup'")
+# test.commonly_used_global_function.unused_optional_parameter (with value "'bla'", i.e. the default value)
+# test.commonly_used_global_function.useless_optional_parameter (with value "'bla'")
 
 
 def test_determination_of_constant_parameters():
 
     expected = {
-        "test.commonly_used_global_function.useless_required_parameter": "blup",
-        "test.commonly_used_global_function.unused_optional_parameter": "bla",
-        "test.commonly_used_global_function.useless_optional_parameter": "bla",
+        "test.commonly_used_global_function.useless_required_parameter": "'blup'",
+        "test.commonly_used_global_function.unused_optional_parameter": "'bla'",
+        "test.commonly_used_global_function.useless_optional_parameter": "'bla'",
     }
 
     api_json_path = os.path.join(
