@@ -24,13 +24,12 @@ def generate_annotations(
         usages_json = json.load(usages_file)
         usages = UsageStore.from_json(usages_json)
 
-    out_dir.mkdir(parents=True, exist_ok=True)
-    base_file_name = api_file.name.replace("__api.json", "")
+    #out_dir.mkdir(parents=True, exist_ok=True)
+    #base_file_name = api_file.name.replace("__api.json", "")
 
     __preprocess_usages(usages, api)
-
     constant_parameters = __determine_constant_parameters(usages)
-
+    return constant_parameters
 
 
 def __preprocess_usages(usages: UsageStore, api: API) -> None:

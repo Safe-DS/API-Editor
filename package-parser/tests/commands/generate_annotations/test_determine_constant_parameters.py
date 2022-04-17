@@ -1,7 +1,7 @@
 import pytest
 import os
 import json
-from package_parser.commands.generate_annotations._generate_annotations import __determine_constant_parameters
+from package_parser.commands.generate_annotations._generate_annotations import generate_annotations
 from package_parser.commands.find_usages._model import UsageStore
 
 # Expected output:
@@ -26,12 +26,16 @@ def test_determination_of_constant_parameters():
         "test.commonly_used_global_function.useless_optional_parameter": "bla"
     }
 
-    json_path = os.path.join(os.getcwd(), "tests" , "data", "constant", "usage_data.json")
-    with open(json_path) as usages_file:
-        usages_json = json.load(usages_file)
-        usages = UsageStore.from_json(usages_json)
+    api_json_path = os.path.join(os.getcwd(), "tests", "data", "constant", "api_data.json")
+    usages_json_path = os.path.join(os.getcwd(), "tests" , "data", "constant", "usage_data.json")
 
-    constant_parameters = __determine_constant_parameters(usages)
+    api_file = pen(api_json_path)
+    usages_file = open(usages_json_path)
+
+    constant_parameters = generate_annotations(api_file, usages_file, "/.")
+
+    api_file.close()
+    usages_file.close()
 
     assert constant_parameters == expected
 
