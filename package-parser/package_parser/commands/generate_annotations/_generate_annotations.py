@@ -107,7 +107,7 @@ def __add_implicit_usages_of_default_value(usages: UsageStore, api: API) -> None
             usages.add_value_usage(parameter_qname, default_value, location)
 
 
-def __determine_constant_parameters(usages: UsageStore) -> dict[str, Optional[str]]:
+def __determine_constant_parameters(usages: UsageStore) -> dict[str, str]:
     """Returns all parameters that are only ever assigned a single value."""
 
     result = {}
@@ -118,6 +118,6 @@ def __determine_constant_parameters(usages: UsageStore) -> dict[str, Optional[st
             continue
 
         if len(usages.value_usages[parameter_qname].keys()) == 1:
-            result[parameter_qname] = usages.most_common_value(parameter_qname)
+            result[parameter_qname] = str(usages.most_common_value(parameter_qname))
 
     return result
