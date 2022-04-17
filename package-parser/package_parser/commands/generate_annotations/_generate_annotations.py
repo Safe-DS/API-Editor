@@ -121,10 +121,6 @@ def __determine_constant_parameters(usages: UsageStore) -> dict[str, str]:
         if n_total_usage == 0 and len(value_usages[parameter_qname].values()) == 0:
             continue
 
-        usage_key, usage_count = __n_not_set_to_most_common_value(
-            parameter_qname, usages.function_usages, usages.value_usages
-        )
-
         if len(usages.value_usages[parameter_qname].keys()) == 1:
             result[parameter_qname] = usages.most_common_value(parameter_qname)
 
