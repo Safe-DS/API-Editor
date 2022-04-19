@@ -1,16 +1,14 @@
 import argparse
 import json
+import os
 
-# Funktion zum kombinieren der constant und unused anotations und zur Erzeugung einer JSON - File
-# @params:
-# output : Dateipfad für Output JSON aus beiden Dictionaries
-# constant_path : Dateipfad zur Constant Annotation File, die eine Constant Dictionary enthält
-# unused_path : Dateipfad zur Unused Annotation File, die eine Unused Dictionary enthält
+
 
 
 def write_json(output_path, constant_path, unused_path):
     """
-    Dient zum Mergen von Unused-Dictionary und Constant-Dictionary in ein Json
+    Dient zum Mergen von Unused-Dictionary und Constant-Dictionary und anschließende Erzeugen einer JSON - File,
+    die das erzeugte Dictionary beinhaltet.
 
     :param output_path: Dateipfad für Output-JSON aus beiden Dictionaries(Unused und Constant)
     :param constant_path: Dateipfad zur Constant Annotation File, die eine Constant Dictionary enthält
@@ -55,7 +53,8 @@ def write_json(output_path, constant_path, unused_path):
     # als 2 Parameter können die Rückgabewerte der Funktionen, die die jw. gefragten Dictionaries sind
     # eingesetzt werden; derzeit in Bearbeitung
 
-    with open(f"{output_path}\\annotations.json", "w") as file:
+    with open(os.path.join(output_path, "annotations.json"), "w") as file:
+    #with open(f"{output_path}\\annotations.json", "w") as file:
         json.dump(
             result_dict,
             file,
@@ -63,18 +62,16 @@ def write_json(output_path, constant_path, unused_path):
         )
 
 
-# Funktion, die die Dictionarys kombiniert
-# @params:
-# unused_dict : Dictionary der unused annotations
-# constant_dict : Dictionary der constant annotations
 
 
 def combine_dictionaries(unused_dict, constant_dict):
     """
-     Funktion, die die Dictionaries kombiniert
-     :param  unused_dict : Dictionary der unused annotations
+    Funktion, die die Dictionaries kombiniert
+    :param  unused_dict : Dictionary der unused annotations
     :param constant_dict : Dictionary der constant annotations
+    :return result_dict : Kombiniertes Dictionary
     """
+
     result_dict = {
         "unused": unused_dict,
         "constant": constant_dict,
