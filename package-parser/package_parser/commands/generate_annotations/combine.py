@@ -3,8 +3,6 @@ import json
 import os
 
 
-
-
 def write_json(output_path, constant_path, unused_path):
     """
     Dient zum Mergen von Unused-Dictionary und Constant-Dictionary und anschließende Erzeugen einer JSON - File,
@@ -54,14 +52,12 @@ def write_json(output_path, constant_path, unused_path):
     # eingesetzt werden; derzeit in Bearbeitung
 
     with open(os.path.join(output_path, "annotations.json"), "w") as file:
-    #with open(f"{output_path}\\annotations.json", "w") as file:
+        # with open(f"{output_path}\\annotations.json", "w") as file:
         json.dump(
             result_dict,
             file,
             indent=2,
         )
-
-
 
 
 def combine_dictionaries(unused_dict, constant_dict):
