@@ -1,10 +1,15 @@
-import argparse
 import json
 import re
 from typing import Dict, List, Tuple
 
 
 def generate_unused_annotations(in_file_path: str):
+    """
+    Returns a Dict of unused functions or classes
+
+    :param in_file_path: JSON file that contains a list of unused functions or classes
+    """
+
     with open(in_file_path, "r", encoding="UTF-8") as in_file:
         data = json.load(in_file)
 
