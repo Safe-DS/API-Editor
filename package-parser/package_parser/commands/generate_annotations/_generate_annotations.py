@@ -141,7 +141,7 @@ def __find_constant_parameters(
 
         if len(usages.value_usages[parameter_qname].keys()) == 1:
             target_name = __qname_to_target_name(api, parameter_qname)
-            default_type, default_value = __get_default_type_from_value(usages.most_common_value(parameter_qname))
+            default_type, default_value = __get_default_type_from_value(str(usages.most_common_value(parameter_qname)))
             print(target_name)
             result[target_name] = {
                 "target": target_name,
@@ -171,7 +171,7 @@ def __qname_to_target_name(api: API, qname: str) -> str:
 
 def __get_default_type_from_value(default_value: str) -> tuple[str, str]:
     default_value = str(default_value)[1:-1]
-    
+
     if default_value == "null":
         default_type = "none"
     elif default_value == "True" or default_value == "False":
