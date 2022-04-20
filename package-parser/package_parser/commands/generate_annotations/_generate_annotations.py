@@ -4,9 +4,9 @@ from pathlib import Path
 from typing import Any
 
 from package_parser.commands.find_usages import (
+    UsageStore,
     ClassUsage,
     FunctionUsage,
-    UsageStore,
     ValueUsage,
 )
 from package_parser.commands.get_api import API
@@ -28,7 +28,7 @@ def generate_annotations(
     # base_file_name = api_file.name.replace("__api.json", "")
 
     __preprocess_usages(usages, api)
-    constant_parameters = __find_constant_parameters(usages)
+    constant_parameters = __find_constant_parameters(usages, api)
     return constant_parameters
 
 
@@ -123,7 +123,7 @@ def __add_implicit_usages_of_default_value(usages: UsageStore, api: API) -> None
             usages.add_value_usage(parameter_qname, default_value, location)
 
 
-def __find_constant_parameters(usages: UsageStore) -> dict[str, str]:
+def __find_constant_parameters(usages: UsageStore, api: API) -> dict[str, dict[str, str]]:
     """
     Returns all parameters that are only ever assigned a single value.
 
@@ -138,6 +138,40 @@ def __find_constant_parameters(usages: UsageStore) -> dict[str, str]:
             continue
 
         if len(usages.value_usages[parameter_qname].keys()) == 1:
-            result[parameter_qname] = str(usages.most_common_value(parameter_qname))
 
+            # Change format of name
+            target_elements = parameter_qname.split(".")
+
+            package_name = api.package
+            module_name = class_name = ""
+
+            parameter_name = f"/{target_elements.pop()}"
+            function_name = f"/{target_elements.pop()}"
+            if ".".join(target_elements) in api.classes.keys():
+                class_name = f"/{target_elements.pop()}"
+            if ".".join(target_elements) in api.modules.keys():
+                module_name = "/" + ".".join(target_elements)
+
+            target_name = '"' + package_name + module_name + class_name + function_name + parameter_name + '"'
+
+            # Change format of defaultValue and detect defaultType
+            default_value = str(usages.most_common_value(parameter_qname))[1:-1]
+            if default_value == "None":
+                default_type = '"none"'
+                default_value = None
+            elif default_value == "True" or default_value == "False":
+                default_type = "boolean"
+                default_value = "F" in default_value
+            elif default_value.isnumeric():
+                default_type = '"number"'
+                default_value = '"' + default_value + '"'
+            else:
+                default_type = '"string"'
+                default_value = '"' + default_value + '"'
+
+            result[target_name] = {
+                '"target"': target_name,
+                '"defaultType"': default_type,
+                '"defaultValue"': default_value
+                }
     return result
