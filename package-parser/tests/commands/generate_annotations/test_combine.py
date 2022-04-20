@@ -1,7 +1,7 @@
 import json
 import os
 
-import package_parser.commands.generate_annotations.combine as comb
+import package_parser.commands.generate_annotations as comb
 import pytest
 
 test_unused_dict = {
@@ -78,5 +78,5 @@ def test_combine_dictionaries(test_unused, test_constant, expected):
     :param expected: gemergte JSON-Datei aus den 2 Dictionaries, die entsteht
     """
 
-    eval_dict = comb.combine_dictionaries(test_unused, test_constant)
+    eval_dict = comb.__combine_dictionaries(test_unused, test_constant)
     assert eval_dict == expected

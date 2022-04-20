@@ -3,7 +3,7 @@ import json
 import os
 
 
-def write_json(output_path, constant_path, unused_path):
+def write_json(output_path: str, constant_path: str,  unused_path: str) -> None:
     """
     Dient zum Mergen von Unused-Dictionary und Constant-Dictionary und anschließende Erzeugen einer JSON - File,
     die das erzeugte Dictionary beinhaltet.
@@ -15,6 +15,7 @@ def write_json(output_path, constant_path, unused_path):
     # Platzhalter für echte Funktion
     # unused_dict = find_unused(unused_path)
 
+    # entfernen, wenn Funktion aus Issue 433 fertig
     unused_dict = {
         "sklearn/sklearn.__check_build/raise_build_error": {
             "target": "sklearn/sklearn.__check_build/raise_build_error"
@@ -23,6 +24,7 @@ def write_json(output_path, constant_path, unused_path):
     # Platzhalter für echte Funktion
     # constant_dict = find_constant(constant_path)
 
+    # entfernen, wenn Funktion aus Issue 434 fertig
     constant_dict = {
         "sklearn/sklearn._config/config_context/assume_finite": {
             "target": "sklearn/sklearn._config/config_context/assume_finite",
@@ -45,14 +47,9 @@ def write_json(output_path, constant_path, unused_path):
             "defaultValue": "3",
         },
     }
-    result_dict = combine_dictionaries(unused_dict, constant_dict)
-
-    # result_dict = combine_dictionaries(module.unusedDictFunction, module.constantDictFunction)
-    # als 2 Parameter können die Rückgabewerte der Funktionen, die die jw. gefragten Dictionaries sind
-    # eingesetzt werden; derzeit in Bearbeitung
+    result_dict = __combine_dictionaries(unused_dict, constant_dict)
 
     with open(os.path.join(output_path, "annotations.json"), "w") as file:
-        # with open(f"{output_path}\\annotations.json", "w") as file:
         json.dump(
             result_dict,
             file,
@@ -60,7 +57,7 @@ def write_json(output_path, constant_path, unused_path):
         )
 
 
-def combine_dictionaries(unused_dict, constant_dict):
+def __combine_dictionaries(unused_dict: dict, constant_dict: dict) -> dict:
     """
     Funktion, die die Dictionaries kombiniert
     :param  unused_dict : Dictionary der unused annotations
@@ -75,31 +72,31 @@ def combine_dictionaries(unused_dict, constant_dict):
     return result_dict
 
 
+# sollte, sobald final eingebunden wird entfernt werden, da es nicht weiter benötigt wird, dient zZ. nur zur Anschauung
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="combine")
 
+    # Argument 1: outputPath
     parser.add_argument(
         "outputPath",
         metavar="output-filepath",
         type=str,
         help="paste the location of the output file in here ",
     )
-    # Argument 1: outputPath
+    # Argument 2: inputPath(Pfad einer Constant-Datei)
     parser.add_argument(
         "constantPath",
         metavar="input-filepath",
         type=str,
         help='paste the location of the "constant" file in here ',
     )
-    # Argument 2: inputPath(Pfad einer Constant-Datei)
+    # Argument 3: inputPath(Pfad einer Unused-Datei)
     parser.add_argument(
         "unusedPath",
         metavar="input-filepath",
         type=str,
         help='paste the location of the "unused" file in here ',
     )
-    # Argument 3: inputPath(Pfad einer Unused-Datei)
+    # Erzeuge kombinierte JSON-Datei jeweils aus der Constant- und der Unused-Dictionary
     args = parser.parse_args()  # Argumente werden auf Nutzen als Parameter vorbereitet
     write_json(args.outputPath, args.constantPath, args.unusedPath)
-
-    # Erzeuge kombinierte JSON-Datei  jw. aus der Constant- und der Unused-Dictionary
