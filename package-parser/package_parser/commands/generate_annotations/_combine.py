@@ -3,7 +3,7 @@ import json
 import os
 
 
-def write_json(output_path: str, constant_path: str,  unused_path: str) -> None:
+def write_json(output_path: str, constant_path: str, unused_path: str) -> None:
     """
     Dient zum Mergen von Unused-Dictionary und Constant-Dictionary und anschließende Erzeugen einer JSON - File,
     die das erzeugte Dictionary beinhaltet.
