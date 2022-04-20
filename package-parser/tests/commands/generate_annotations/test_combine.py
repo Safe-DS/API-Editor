@@ -1,7 +1,7 @@
 import json
 import os
 
-import package_parser.commands.generate_annotations as comb
+import package_parser.commands.generate_annotations._combine as comb
 import pytest
 
 test_unused_dict = {
