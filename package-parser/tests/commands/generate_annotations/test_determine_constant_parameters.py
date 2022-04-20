@@ -27,15 +27,18 @@ def test_determination_of_constant_parameters():
         "test/test/commonly_used_global_function/useless_required_parameter": {
             "target": "test/test/commonly_used_global_function/useless_required_parameter",
             "defaultType": "string",
-            "defaultValue": "blup"},
+            "defaultValue": "blup",
+        },
         "test/test/commonly_used_global_function/unused_optional_parameter": {
             "target": "test/test/commonly_used_global_function/unused_optional_parameter",
             "defaultType": "string",
-            "defaultValue": "bla"},
+            "defaultValue": "bla",
+        },
         "test/test/commonly_used_global_function/useless_optional_parameter": {
             "target": "test/test/commonly_used_global_function/useless_optional_parameter",
             "defaultType": "string",
-            "defaultValue": "bla"}
+            "defaultValue": "bla",
+        },
     }
 
     api_json_path = os.path.join(
