@@ -152,26 +152,25 @@ def __find_constant_parameters(usages: UsageStore, api: API) -> dict[str, dict[s
             if ".".join(target_elements) in api.modules.keys():
                 module_name = "/" + ".".join(target_elements)
 
-            target_name = '"' + package_name + module_name + class_name + function_name + parameter_name + '"'
+            target_name = package_name + module_name + class_name + function_name + parameter_name
 
             # Change format of defaultValue and detect defaultType
             default_value = str(usages.most_common_value(parameter_qname))[1:-1]
-            if default_value == "None":
-                default_type = '"none"'
-                default_value = None
+            if default_value == "null":
+                default_type = "none"
             elif default_value == "True" or default_value == "False":
                 default_type = "boolean"
-                default_value = "F" in default_value
             elif default_value.isnumeric():
-                default_type = '"number"'
-                default_value = '"' + default_value + '"'
+                default_type = "number"
+                default_value = default_value
             else:
-                default_type = '"string"'
-                default_value = '"' + default_value + '"'
+                default_type = "string"
+                default_value = default_value
 
             result[target_name] = {
-                '"target"': target_name,
-                '"defaultType"': default_type,
-                '"defaultValue"': default_value
+                "target": target_name,
+                "defaultType": default_type,
+                "defaultValue": default_value
                 }
+    print(json.dumps(result))
     return result

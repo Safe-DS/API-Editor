@@ -24,18 +24,18 @@ from package_parser.commands.generate_annotations._generate_annotations import (
 def test_determination_of_constant_parameters():
 
     expected = {
-        '"test/test/commonly_used_global_function/useless_required_parameter"': {
-            '"target"': '"test/test/commonly_used_global_function/useless_required_parameter"',
-            '"defaultType"': '"string"',
-            '"defaultValue"': '"blup"'},
-        '"test/test/commonly_used_global_function/unused_optional_parameter"': {
-            '"target"': '"test/test/commonly_used_global_function/unused_optional_parameter"',
-            '"defaultType"': '"string"',
-            '"defaultValue"': '"bla"'},
-        '"test/test/commonly_used_global_function/useless_optional_parameter"': {
-            '"target"': '"test/test/commonly_used_global_function/useless_optional_parameter"',
-            '"defaultType"': '"string"',
-            '"defaultValue"': '"bla"'}
+        "test/test/commonly_used_global_function/useless_required_parameter": {
+            "target": "test/test/commonly_used_global_function/useless_required_parameter",
+            "defaultType": "string",
+            "defaultValue": "blup"},
+        "test/test/commonly_used_global_function/unused_optional_parameter": {
+            "target": "test/test/commonly_used_global_function/unused_optional_parameter",
+            "defaultType": "string",
+            "defaultValue": "bla"},
+        "test/test/commonly_used_global_function/useless_optional_parameter": {
+            "target": "test/test/commonly_used_global_function/useless_optional_parameter",
+            "defaultType": "string",
+            "defaultValue": "bla"}
     }
 
     api_json_path = os.path.join(
