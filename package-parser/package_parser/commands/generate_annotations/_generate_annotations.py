@@ -138,39 +138,44 @@ def __find_constant_parameters(usages: UsageStore, api: API) -> dict[str, dict[s
             continue
 
         if len(usages.value_usages[parameter_qname].keys()) == 1:
-
-            # Change format of name
-            target_elements = parameter_qname.split(".")
-
-            package_name = api.package
-            module_name = class_name = ""
-
-            parameter_name = f"/{target_elements.pop()}"
-            function_name = f"/{target_elements.pop()}"
-            if ".".join(target_elements) in api.classes.keys():
-                class_name = f"/{target_elements.pop()}"
-            if ".".join(target_elements) in api.modules.keys():
-                module_name = "/" + ".".join(target_elements)
-
-            target_name = package_name + module_name + class_name + function_name + parameter_name
-
-            # Change format of defaultValue and detect defaultType
-            default_value = str(usages.most_common_value(parameter_qname))[1:-1]
-            if default_value == "null":
-                default_type = "none"
-            elif default_value == "True" or default_value == "False":
-                default_type = "boolean"
-            elif default_value.isnumeric():
-                default_type = "number"
-                default_value = default_value
-            else:
-                default_type = "string"
-                default_value = default_value
+            target_name = __qname_to_target_name(api, parameter_qname)
+            default_type, default_value = __get_default_type_from_value(usages.most_common_value(parameter_qname)[1:-1])
 
             result[target_name] = {
                 "target": target_name,
                 "defaultType": default_type,
                 "defaultValue": default_value
                 }
-    print(json.dumps(result))
+
     return result
+
+def __qname_to_target_name(api: API, parameter_qname: str) -> str:
+    target_elements = parameter_qname.split(".")
+
+    package_name = api.package
+    module_name = class_name = function_name = parameter_name = ""
+
+    if ".".join(target_elements) in api.parameters().keys():
+        parameter_name = "/" + target_elements.pop()
+    if ".".join(target_elements) in api.functions.keys():
+        function_name = f"/{target_elements.pop()}"
+    if ".".join(target_elements) in api.classes.keys():
+        class_name = f"/{target_elements.pop()}"
+    if ".".join(target_elements) in api.modules.keys():
+        module_name = "/" + ".".join(target_elements)
+
+    return package_name + module_name + class_name + function_name + parameter_name
+
+def __get_default_type_from_value(default_value: str) -> (str, str):
+    if default_value == "null":
+        default_type = "none"
+    elif default_value == "True" or default_value == "False":
+        default_type = "boolean"
+    elif default_value.isnumeric():
+        default_type = "number"
+        default_value = default_value
+    else:
+        default_type = "string"
+        default_value = default_value
+
+    return default_type, default_value
