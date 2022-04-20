@@ -28,7 +28,7 @@ def generate_annotations(
     # base_file_name = api_file.name.replace("__api.json", "")
 
     __preprocess_usages(usages, api)
-    constant_parameters = __determine_constant_parameters(usages)
+    constant_parameters = __find_constant_parameters(usages)
     return constant_parameters
 
 
@@ -73,6 +73,14 @@ def __remove_internal_usages(usages: UsageStore, api: API) -> None:
 
 
 def __add_unused_api_elements(usages: UsageStore, api: API) -> None:
+    """
+    Adds unused API elements to the UsageStore. When a class, function or parameter is not used, it is not content of
+    the UsageStore, so we need to add it.
+
+    :param usages: Usage store
+    :param api: Description of the API
+    """
+
     # Public classes
     for class_qname in api.classes:
         if api.is_public_class(class_qname):
@@ -91,6 +99,14 @@ def __add_unused_api_elements(usages: UsageStore, api: API) -> None:
 
 
 def __add_implicit_usages_of_default_value(usages: UsageStore, api: API) -> None:
+    """
+    Adds the implicit usages of a parameters default value. When a function is called and a parameter is used with its
+    default value, that usage of a value is not part of the UsageStore, so  we need to add it.
+
+    :param usages: Usage store
+    :param api: Description of the API
+    """
+
     for parameter_qname, parameter_usage_list in list(usages.parameter_usages.items()):
         default_value = api.get_default_value(parameter_qname)
         if default_value is None:
@@ -107,8 +123,12 @@ def __add_implicit_usages_of_default_value(usages: UsageStore, api: API) -> None
             usages.add_value_usage(parameter_qname, default_value, location)
 
 
-def __determine_constant_parameters(usages: UsageStore) -> dict[str, str]:
-    """Returns all parameters that are only ever assigned a single value."""
+def __find_constant_parameters(usages: UsageStore) -> dict[str, str]:
+    """
+    Returns all parameters that are only ever assigned a single value.
+
+    :param usages: Usage store
+    """
 
     result = {}
 
