@@ -141,18 +141,19 @@ def __find_constant_parameters(
 
         if len(usages.value_usages[parameter_qname].keys()) == 1:
             target_name = __qname_to_target_name(api, parameter_qname)
-            default_type, default_value = __get_default_type_from_value(usages.most_common_value(parameter_qname)[1:-1])
-
+            default_type, default_value = __get_default_type_from_value(usages.most_common_value(parameter_qname))
+            print(target_name)
             result[target_name] = {
                 "target": target_name,
                 "defaultType": default_type,
                 "defaultValue": default_value,
             }
 
+    print(json.dumps(result))
     return result
 
-def __qname_to_target_name(api: API, parameter_qname: str) -> str:
-    target_elements = parameter_qname.split(".")
+def __qname_to_target_name(api: API, qname: str) -> str:
+    target_elements = qname.split(".")
 
     package_name = api.package
     module_name = class_name = function_name = parameter_name = ""
@@ -168,7 +169,9 @@ def __qname_to_target_name(api: API, parameter_qname: str) -> str:
 
     return package_name + module_name + class_name + function_name + parameter_name
 
-def __get_default_type_from_value(default_value: str) -> (str, str):
+def __get_default_type_from_value(default_value: str) -> tuple[str, str]:
+    default_value = str(default_value)[1:-1]
+    
     if default_value == "null":
         default_type = "none"
     elif default_value == "True" or default_value == "False":
