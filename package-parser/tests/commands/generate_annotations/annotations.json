@@ -1,0 +1,29 @@
+{
+    "unused": {
+        "sklearn/sklearn.__check_build/raise_build_error": {
+            "target": "sklearn/sklearn.__check_build/raise_build_error"
+        }
+    },
+    "constant": {
+        "sklearn/sklearn._config/config_context/assume_finite": {
+            "target": "sklearn/sklearn._config/config_context/assume_finite",
+            "defaultType": "boolean",
+            "defaultValue": true
+        },
+        "sklearn/sklearn._config/config_context/working_memory": {
+            "target": "sklearn/sklearn._config/config_context/working_memory",
+            "defaultType": "string",
+            "defaultValue": "bla"
+        },
+        "sklearn/sklearn._config/config_context/print_changed_only": {
+            "target": "sklearn/sklearn._config/config_context/print_changed_only",
+            "defaultType": "none",
+            "defaultValue": null
+        },
+        "sklearn/sklearn._config/config_context/display": {
+            "target": "sklearn/sklearn._config/config_context/display",
+            "defaultType": "number",
+            "defaultValue": "3"
+        }
+    }
+}
