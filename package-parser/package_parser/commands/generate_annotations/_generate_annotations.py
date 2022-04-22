@@ -1,7 +1,10 @@
+from __future__ import annotations
+
 import json
 from io import TextIOWrapper
 from pathlib import Path
 from typing import Any
+from enum import Enum, auto
 
 from package_parser.commands.find_usages import (
     ClassUsage,
@@ -123,9 +126,7 @@ def __add_implicit_usages_of_default_value(usages: UsageStore, api: API) -> None
             usages.add_value_usage(parameter_qname, default_value, location)
 
 
-def __find_constant_parameters(
-    usages: UsageStore, api: API
-) -> dict[str, dict[str, str]]:
+def __find_constant_parameters(usages: UsageStore, api: API) -> dict[str, dict[str, str]]:
     """
     Returns all parameters that are only ever assigned a single value.
 
@@ -188,3 +189,43 @@ def __get_default_type_from_value(default_value: str) -> tuple[str, str]:
         default_value = default_value
 
     return default_type, default_value
+
+
+def __get_required_annotations(usages: UsageStore, api: API) -> dict[str, dict[str, dict[str, str]]]:
+    result = {}
+
+    parameters = (api.parameters())
+    optional_parameter = [(it, parameters[it]) for it in parameters if parameters[it].default_value is not None]
+
+    for qname, parameter in optional_parameter:
+        values = usages.value_usages[qname].items()
+        values = [(it[0], len(it[1])) for it in values]
+        if __get_parameter_type(values)[0] is ParameterType.Required:
+            target_name = __qname_to_target_name(api, qname)
+            result[target_name] = {"target": target_name}
+
+    return {"requireds": result}
+
+
+def __get_parameter_type(values: list[tuple[str, int]]) -> (ParameterType, str):
+    if len(values) == 0:
+        return ParameterType.Unused, None
+    elif len(values) == 1:
+        return ParameterType.Constant, values[0][0]
+
+    n = len(values)
+    m = sum([count for value, count in values])
+
+    most_used_value, seconds_most_used_value = sorted(values, key=lambda tup: tup[1])[:2]
+
+    if most_used_value[1] - seconds_most_used_value[1] <= n/m:
+        return ParameterType.Required, None
+    else:
+        return ParameterType.Optional, most_used_value[0]
+
+
+class ParameterType(Enum):
+    Constant = 0
+    Optional = 1
+    Required = 2
+    Unused = 3
