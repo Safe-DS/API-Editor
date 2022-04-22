@@ -7,7 +7,9 @@ from package_parser.commands.get_api import API
 from package_parser.utils import parent_qname
 
 
-def generate_annotations(api_file: TextIOWrapper, usages_file: TextIOWrapper, output_file: TextIOWrapper) -> None:
+def generate_annotations(
+    api_file: TextIOWrapper, usages_file: TextIOWrapper, output_file: TextIOWrapper
+) -> None:
     # TODO: Make this a command line function?
     """
     Generates an annotation file from the given API and UsageStore files, and writes it to the given output file.
@@ -43,7 +45,9 @@ def __generate_annotation_dict(api: API, usages: UsageStore, functions: list[Cal
     return annotations_dict
 
 
-def __get_constant_annotations(usages: UsageStore, api: API) -> dict[str, dict[str, dict[str, str]]]:
+def __get_constant_annotations(
+    usages: UsageStore, api: API
+) -> dict[str, dict[str, dict[str, str]]]:
     """
     Returns all parameters that are only ever assigned a single value.
     :param usages: UsageStore object
@@ -76,7 +80,9 @@ def __get_constant_annotations(usages: UsageStore, api: API) -> dict[str, dict[s
     return {"constant": result}
 
 
-def __get_unused_annotations(usages: UsageStore, api: API) -> dict[str, dict[str, dict[str, str]]]:
+def __get_unused_annotations(
+    usages: UsageStore, api: API
+) -> dict[str, dict[str, dict[str, str]]]:
     """
     Returns all parameters that are never used.
     :param usages: UsageStore object
