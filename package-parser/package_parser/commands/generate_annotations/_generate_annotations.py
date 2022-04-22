@@ -1,5 +1,6 @@
 import json
 from io import TextIOWrapper
+from typing import Callable
 
 from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.get_api import API
@@ -34,7 +35,7 @@ def generate_annotations(api_file: TextIOWrapper, usages_file: TextIOWrapper, ou
     json.dump(annotations_dict, output_file, indent=2)
 
 
-def __generate_annotation_dict(api: API, usages: UsageStore, functions: list[callable]):
+def __generate_annotation_dict(api: API, usages: UsageStore, functions: list[Callable]):
     __preprocess_usages(usages, api)
 
     annotations_dict = {function(usages, api) for function in functions}
