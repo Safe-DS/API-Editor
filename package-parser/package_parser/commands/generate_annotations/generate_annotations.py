@@ -283,7 +283,7 @@ def __get_required_annotations(
         for it in parameters
         if parameters[it].default_value is not None
     ]
-    for qname, parameter in optional_parameter:
+    for qname, _ in optional_parameter:
         values_dict = usages.value_usages[qname].items()
         values = [(it[0], len(it[1])) for it in values_dict]
 
