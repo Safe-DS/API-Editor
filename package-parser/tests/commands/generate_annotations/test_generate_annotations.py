@@ -3,7 +3,6 @@ import os
 import pytest
 from pathlib import Path
 
-from models.annotation_models import AnnotationStore
 from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.generate_annotations.generate_annotations import (
     __get_constant_annotations,
@@ -13,6 +12,7 @@ from package_parser.commands.generate_annotations.generate_annotations import (
     generate_annotations,
 )
 from package_parser.commands.get_api import API
+from package_parser.models.annotation_models import AnnotationStore
 
 UNUSED_EXPECTED = {
     "test/test/Unused_Class": {"target": "test/test/Unused_Class"},
