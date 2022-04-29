@@ -8,7 +8,13 @@
       <sourceFolder url="file://$MODULE_DIR$/refined_types" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
     </content>
-    <orderEntry type="jdk" jdkName="Poetry (api-editor)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Poetry (package-parser)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+  <component name="PackageRequirementsSettings">
+    <option name="requirementsPath" value="" />
+  </component>
+  <component name="TestRunnerService">
+    <option name="PROJECT_TEST_RUNNER" value="py.test" />
   </component>
 </module>

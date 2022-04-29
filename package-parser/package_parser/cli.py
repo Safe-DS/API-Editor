@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any
 
 from .commands.find_usages import find_usages
+from .commands.generate_annotations.generate_annotations import generate_annotations
 from .commands.get_api import distribution, distribution_version, get_api
 from .commands.get_dependencies import get_dependencies
 from .commands.suggest_improvements import suggest_improvements
@@ -13,6 +14,7 @@ from .utils import ensure_file_exists
 __API_COMMAND = "api"
 __USAGES_COMMAND = "usages"
 __IMPROVE_COMMAND = "improve"
+__GENERATE_COMMAND = "generate"
 
 
 class CustomEncoder(json.JSONEncoder):
@@ -55,6 +57,9 @@ def cli() -> None:
     elif args.command == __IMPROVE_COMMAND:
         suggest_improvements(args.api, args.usages, args.out, args.min)
 
+    elif args.command == __GENERATE_COMMAND:
+        generate_annotations(args.api, args.usages, args.out)
+
 
 def __get_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Analyze Python code.")
@@ -64,6 +69,7 @@ def __get_args() -> argparse.Namespace:
     __add_api_subparser(subparsers)
     __add_usages_subparser(subparsers)
     __add_improve_subparser(subparsers)
+    __add_generate_subparser(subparsers)
 
     return parser.parse_args()
 
@@ -140,4 +146,27 @@ def __add_improve_subparser(subparsers: _SubParsersAction) -> None:
         type=int,
         required=False,
         default=1,
+    )
+
+
+def __add_generate_subparser(subparsers):
+    generate_parser = subparsers.add_parser(
+        __GENERATE_COMMAND, help="Generate Annotations automatically."
+    )
+    generate_parser.add_argument(
+        "-a",
+        "--api",
+        help="File created by the 'api' command.",
+        type=argparse.FileType("r"),
+        required=True,
+    )
+    generate_parser.add_argument(
+        "-u",
+        "--usages",
+        help="File created by the 'usages' command.",
+        type=argparse.FileType("r"),
+        required=True,
+    )
+    generate_parser.add_argument(
+        "-o", "--out", help="Output directory.", type=Path, required=True
     )
