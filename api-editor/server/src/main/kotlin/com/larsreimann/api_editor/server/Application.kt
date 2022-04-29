@@ -1,16 +1,16 @@
 package com.larsreimann.api_editor.server
 
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
-import io.ktor.application.Application
-import io.ktor.application.install
-import io.ktor.features.CallLogging
-import io.ktor.features.Compression
-import io.ktor.features.deflate
-import io.ktor.features.gzip
-import io.ktor.features.minimumSize
-import io.ktor.request.path
+import io.ktor.server.application.Application
+import io.ktor.server.application.install
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
+import io.ktor.server.plugins.callloging.CallLogging
+import io.ktor.server.plugins.compression.Compression
+import io.ktor.server.plugins.compression.deflate
+import io.ktor.server.plugins.compression.gzip
+import io.ktor.server.plugins.compression.minimumSize
+import io.ktor.server.request.path
 import org.slf4j.event.Level
 
 fun main() {
