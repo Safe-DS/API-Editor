@@ -4,6 +4,7 @@ import json
 from io import TextIOWrapper
 from pathlib import Path
 from typing import Callable
+from enum import Enum
 
 from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.get_api import API
@@ -258,6 +259,7 @@ def __add_implicit_usages_of_default_value(usages: UsageStore, api: API) -> None
         for location in locations_of_implicit_usages_of_default_value:
             usages.add_value_usage(parameter_qname, default_value, location)
 
+
 def __get_required_annotations(usages: UsageStore, api: API) -> dict[str, dict[str, dict[str, str]]]:
     """
     Returns all required annotations
@@ -270,10 +272,14 @@ def __get_required_annotations(usages: UsageStore, api: API) -> dict[str, dict[s
     parameters = (api.parameters())
     # Takes all parameters with default value
     optional_parameter = [(it, parameters[it]) for it in parameters if parameters[it].default_value is not None]
-
     for qname, parameter in optional_parameter:
         values = usages.value_usages[qname].items()
+
+        
+
+
         values = [(it[0], len(it[1])) for it in values]
+
         if __get_parameter_type(values)[0] is ParameterType.Required:
             target_name = __qname_to_target_name(api, qname)
             result[target_name] = {"target": target_name}

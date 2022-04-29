@@ -7,6 +7,7 @@ from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.generate_annotations.generate_annotations import (
     __get_constant_annotations,
     __get_unused_annotations,
+    __get_required_annotations,
     __qname_to_target_name,
     _preprocess_usages,
     generate_annotations,
@@ -48,22 +49,32 @@ CONSTANT_EXPECTED = {
             "defaultValue": "blup",
             "target": "test/test/commonly_used_global_function/useless_required_parameter",
         },
+        "test/test/commonly_used_global_required_and_optional_function/constant_parameter": {
+            "defaultType": "string",
+            "defaultValue": "bockwurst",
+            "target": "test/test/commonly_used_global_required_and_optional_function/constant_parameter",
+        }
     }
 }
 
 
-REQUIRED_EXPECTED = {"constant": {
-                          'test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_required':
-                              {'target': 'test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_required'},
-                          'test/test/commonly_used_global_required_and_optional_function/required_that_should_be_required':
-                              {'target': 'test/test/commonly_used_global_required_and_optional_function/required_that_should_be_required'},
-                          'test/test/commonly_used_global_required_and_optional_function/commonly_used_barely_required':
-                              {'target': 'test/test/commonly_used_global_required_and_optional_function/commonly_used_barely_required'}}
-                     }
+REQUIRED_EXPECTED = {
+    "requireds": {
+        'test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_required':{
+            'target': 'test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_required'
+        },
+        'test/test/commonly_used_global_required_and_optional_function/required_that_should_be_required':{
+            'target': 'test/test/commonly_used_global_required_and_optional_function/required_that_should_be_required'
+        },
+        'test/test/commonly_used_global_required_and_optional_function/commonly_used_barely_required':{
+            'target': 'test/test/commonly_used_global_required_and_optional_function/commonly_used_barely_required'
+        },
+    }
+}
 
 
 # Reihenfolge ist wichtig, siehe Reihenfolge von annotation_functions in generate_annotations.py
-FULL_EXPECTED = {**UNUSED_EXPECTED, **CONSTANT_EXPECTED}
+FULL_EXPECTED = {**UNUSED_EXPECTED, **CONSTANT_EXPECTED, **REQUIRED_EXPECTED}
 
 
 def setup():
@@ -117,6 +128,13 @@ def test_get_constant():
     usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
     _preprocess_usages(usages, api)
     assert __get_constant_annotations(usages, api) == CONSTANT_EXPECTED
+
+
+def test_get_required():
+    usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
+    _preprocess_usages(usages, api)
+    #import pdb; pdb.set_trace()
+    assert __get_required_annotations(usages, api) == REQUIRED_EXPECTED
 
 
 def test_generate():
