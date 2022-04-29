@@ -5,6 +5,11 @@ from typing import Callable
 
 from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.get_api import API
+from package_parser.models.annotation_models import (
+    AnnotationStore,
+    ConstantAnnotation,
+    UnusedAnnotation,
+)
 from package_parser.utils import parent_qname
 
 
@@ -30,36 +35,36 @@ def generate_annotations(
         usages_json = json.load(usages_file)
         usages = UsageStore.from_json(usages_json)
 
+    annotations = AnnotationStore()
     annotation_functions = [__get_unused_annotations, __get_constant_annotations]
 
-    annotations_dict = __generate_annotation_dict(api, usages, annotation_functions)
+    __generate_annotation_dict(api, usages, annotations, annotation_functions)
 
     with output_file.open("w") as f:
-        json.dump(annotations_dict, f, indent=2)
+        json.dump(annotations.to_json(), f, indent=2)
 
 
-def __generate_annotation_dict(api: API, usages: UsageStore, functions: list[Callable]):
+def __generate_annotation_dict(
+    api: API,
+    usages: UsageStore,
+    annotations: AnnotationStore,
+    functions: list[Callable],
+):
     _preprocess_usages(usages, api)
 
-    annotations_dict: dict[str, dict[str, dict[str, str]]] = {}
     for generate_annotation in functions:
-        annotations_dict.update(generate_annotation(usages, api))
-
-    return annotations_dict
+        generate_annotation(usages, api, annotations)
 
 
 def __get_constant_annotations(
-    usages: UsageStore, api: API
-) -> dict[str, dict[str, dict[str, str]]]:
+    usages: UsageStore, api: API, annotations: AnnotationStore
+) -> None:
     """
     Returns all parameters that are only ever assigned a single value.
     :param usages: UsageStore object
     :param api: API object for usages
     :return: {"constant": dict[str, dict[str, str]]}
     """
-    constant = "constant"
-    constants: dict[str, dict[str, str]] = {}
-
     for parameter_qname in list(usages.parameter_usages.keys()):
         if len(usages.value_usages[parameter_qname].values()) == 0:
             continue
@@ -73,34 +78,31 @@ def __get_constant_annotations(
                 str(usages.most_common_value(parameter_qname))
             )
 
-            constants[target_name] = {
-                "target": target_name,
-                "defaultType": default_type,
-                "defaultValue": default_value,
-            }
-
-    return {constant: constants}
+            annotations.constant.append(
+                ConstantAnnotation(
+                    target=target_name,
+                    defaultType=default_type,
+                    defaultValue=default_value,
+                )
+            )
 
 
 def __get_unused_annotations(
-    usages: UsageStore, api: API
-) -> dict[str, dict[str, dict[str, str]]]:
+    usages: UsageStore, api: API, annotations: AnnotationStore
+) -> None:
     """
     Returns all parameters that are never used.
     :param usages: UsageStore object
     :param api: API object for usages
     :return: {"unused": dict[str, dict[str, str]]}
     """
-    unused = "unused"
-    unuseds: dict[str, dict[str, str]] = {}
-
     for parameter_name in list(api.parameters().keys()):
         if (
             parameter_name not in usages.parameter_usages
             or len(usages.parameter_usages[parameter_name]) == 0
         ):
             formatted_name = __qname_to_target_name(api, parameter_name)
-            unuseds[formatted_name] = {"target": formatted_name}
+            annotations.unused.append(UnusedAnnotation(formatted_name))
 
     for function_name in list(api.functions.keys()):
         if (
@@ -108,7 +110,7 @@ def __get_unused_annotations(
             or len(usages.function_usages[function_name]) == 0
         ):
             formatted_name = __qname_to_target_name(api, function_name)
-            unuseds[formatted_name] = {"target": formatted_name}
+            annotations.unused.append(UnusedAnnotation(formatted_name))
 
     for class_name in list(api.classes.keys()):
         if (
@@ -116,9 +118,7 @@ def __get_unused_annotations(
             or len(usages.class_usages[class_name]) == 0
         ):
             formatted_name = __qname_to_target_name(api, class_name)
-            unuseds[formatted_name] = {"target": formatted_name}
-
-    return {unused: unuseds}
+            annotations.unused.append(UnusedAnnotation(formatted_name))
 
 
 def __qname_to_target_name(api: API, qname: str) -> str:
