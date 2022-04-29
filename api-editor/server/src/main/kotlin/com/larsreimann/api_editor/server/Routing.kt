@@ -24,17 +24,11 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
-import kotlinx.serialization.json.Json
 import java.io.File
 
 fun Application.configureRouting() {
     install(ContentNegotiation) {
-        // Necessary due to https://youtrack.jetbrains.com/issue/KTOR-435
-        json(
-            Json {
-                useArrayPolymorphism = false
-            }
-        )
+        json()
     }
 
     routing {
