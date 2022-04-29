@@ -5,11 +5,17 @@ from typing import Callable
 
 from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.get_api import API
-from package_parser.models.annotation_models import UnusedAnnotation, ConstantAnnotation, AnnotationStore
+from package_parser.models.annotation_models import (
+    AnnotationStore,
+    ConstantAnnotation,
+    UnusedAnnotation,
+)
 from package_parser.utils import parent_qname
 
 
-def generate_annotations(api_file: TextIOWrapper, usages_file: TextIOWrapper, output_file: Path) -> None:
+def generate_annotations(
+    api_file: TextIOWrapper, usages_file: TextIOWrapper, output_file: Path
+) -> None:
     """
     Generates an annotation file from the given API and UsageStore files, and writes it to the given output file.
     Annotations that are generated are: constant, unused,
@@ -38,14 +44,21 @@ def generate_annotations(api_file: TextIOWrapper, usages_file: TextIOWrapper, ou
         json.dump(annotations.to_json(), f, indent=2)
 
 
-def __generate_annotation_dict(api: API, usages: UsageStore, annotations: AnnotationStore, functions: list[Callable]):
+def __generate_annotation_dict(
+    api: API,
+    usages: UsageStore,
+    annotations: AnnotationStore,
+    functions: list[Callable],
+):
     _preprocess_usages(usages, api)
 
     for generate_annotation in functions:
         generate_annotation(usages, api, annotations)
 
 
-def __get_constant_annotations(usages: UsageStore, api: API, annotations: AnnotationStore) -> None:
+def __get_constant_annotations(
+    usages: UsageStore, api: API, annotations: AnnotationStore
+) -> None:
     """
     Returns all parameters that are only ever assigned a single value.
     :param usages: UsageStore object
@@ -65,11 +78,18 @@ def __get_constant_annotations(usages: UsageStore, api: API, annotations: Annota
                 str(usages.most_common_value(parameter_qname))
             )
 
-            annotations.constant.append(ConstantAnnotation(target=target_name, defaultType=default_type,
-                                                           defaultValue=default_value))
+            annotations.constant.append(
+                ConstantAnnotation(
+                    target=target_name,
+                    defaultType=default_type,
+                    defaultValue=default_value,
+                )
+            )
 
 
-def __get_unused_annotations(usages: UsageStore, api: API, annotations: AnnotationStore) -> None:
+def __get_unused_annotations(
+    usages: UsageStore, api: API, annotations: AnnotationStore
+) -> None:
     """
     Returns all parameters that are never used.
     :param usages: UsageStore object

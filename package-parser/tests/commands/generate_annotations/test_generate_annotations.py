@@ -1,8 +1,8 @@
 import json
 import os
-import pytest
 from pathlib import Path
 
+import pytest
 from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.generate_annotations.generate_annotations import (
     __get_constant_annotations,
@@ -19,9 +19,7 @@ UNUSED_EXPECTED: dict[str, dict[str, str]] = {
     "test/test/commonly_used_global_function/unused_optional_parameter": {
         "target": "test/test/commonly_used_global_function/unused_optional_parameter"
     },
-    "test/test/unused_global_function": {
-        "target": "test/test/unused_global_function"
-    },
+    "test/test/unused_global_function": {"target": "test/test/unused_global_function"},
     "test/test/unused_global_function/unused_optional_parameter": {
         "target": "test/test/unused_global_function/unused_optional_parameter"
     },
@@ -54,9 +52,14 @@ BOUNDARIES_EXPECTED: dict[str, dict[str, str]] = {}
 ENUMS_EXPECTED: dict[str, dict[str, str]] = {}
 
 # Reihenfolge ist wichtig, siehe Reihenfolge von annotation_functions in generate_annotations.py
-FULL_EXPECTED = {"constant": {**CONSTANT_EXPECTED}, "unused": {**UNUSED_EXPECTED}, "requireds": {**REQUIREDS_EXPECTED},
-                 "optionals": {**OPTIONALS_EXPECTED}, "boundaries": {**BOUNDARIES_EXPECTED},
-                 "enums": {**ENUMS_EXPECTED}}
+FULL_EXPECTED = {
+    "constant": {**CONSTANT_EXPECTED},
+    "unused": {**UNUSED_EXPECTED},
+    "requireds": {**REQUIREDS_EXPECTED},
+    "optionals": {**OPTIONALS_EXPECTED},
+    "boundaries": {**BOUNDARIES_EXPECTED},
+    "enums": {**ENUMS_EXPECTED},
+}
 
 
 def setup():
@@ -105,7 +108,9 @@ def test_get_unused():
     annotations = AnnotationStore()
     _preprocess_usages(usages, api)
     __get_unused_annotations(usages, api, annotations)
-    assert {annotation.target: annotation.to_json() for annotation in annotations.unused} == UNUSED_EXPECTED
+    assert {
+        annotation.target: annotation.to_json() for annotation in annotations.unused
+    } == UNUSED_EXPECTED
 
 
 def test_get_constant():
@@ -113,7 +118,9 @@ def test_get_constant():
     annotations = AnnotationStore()
     _preprocess_usages(usages, api)
     __get_constant_annotations(usages, api, annotations)
-    assert {annotation.target: annotation.to_json() for annotation in annotations.constant} == CONSTANT_EXPECTED
+    assert {
+        annotation.target: annotation.to_json() for annotation in annotations.constant
+    } == CONSTANT_EXPECTED
 
 
 def test_generate():

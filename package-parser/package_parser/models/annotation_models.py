@@ -83,10 +83,23 @@ class AnnotationStore:
 
     def to_json(self) -> dict:
         return {
-            "constant": {annotation.target: annotation.to_json() for annotation in self.constant},
-            "unused": {annotation.target: annotation.to_json() for annotation in self.unused},
-            "requireds": {annotation.target: annotation.to_json() for annotation in self.requireds},
-            "optionals": {annotation.target: annotation.to_json() for annotation in self.optionals},
-            "boundaries": {annotation.target: annotation.to_json() for annotation in self.boundaries},
-            "enums": {annotation.target: annotation.to_json() for annotation in self.enums},
+            "constant": {
+                annotation.target: annotation.to_json() for annotation in self.constant
+            },
+            "unused": {
+                annotation.target: annotation.to_json() for annotation in self.unused
+            },
+            "requireds": {
+                annotation.target: annotation.to_json() for annotation in self.requireds
+            },
+            "optionals": {
+                annotation.target: annotation.to_json() for annotation in self.optionals
+            },
+            "boundaries": {
+                annotation.target: annotation.to_json()
+                for annotation in self.boundaries
+            },
+            "enums": {
+                annotation.target: annotation.to_json() for annotation in self.enums
+            },
         }
