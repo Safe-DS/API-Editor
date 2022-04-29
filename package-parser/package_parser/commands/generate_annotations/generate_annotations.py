@@ -1,7 +1,7 @@
 import json
 from io import TextIOWrapper
 from pathlib import Path
-from typing import Callable
+from typing import Callable, re
 
 from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.get_api import API
@@ -255,3 +255,47 @@ def __add_implicit_usages_of_default_value(usages: UsageStore, api: API) -> None
 
         for location in locations_of_implicit_usages_of_default_value:
             usages.add_value_usage(parameter_qname, default_value, location)
+
+def __get_enum_annotations(api: API, usages: UsageStore) -> dict[str, dict[str, dict[str, str]]]:
+    enums = {}
+    for methode, function in api.functions.items():
+        for parameter in function.parameters:
+            refined_type = parameter.refined_type.as_dict()
+            if 'kind' in refined_type:
+                if refined_type["kind"] == "EnumType":
+                    parameter_dict = dict()
+                    target = __qname_to_target_name(api, methode + "." + parameter.name)
+                    parameter_dict["target"] = target
+                    enumName = parameter.name
+                    enumName = re.sub("[^a-zA-Z_]", "", enumName)
+                    name_split = re.split("_", enumName)
+                    enumName = ""
+                    for name in name_split:
+                        enumName += name.capitalize()
+                    parameter_dict["enumName"] = enumName
+                    values = list(refined_type["values"])
+                    pairs = []
+                    for value in values:
+                        old_value = value
+                        value = re.sub("[^a-zA-Z_]", "", value)
+                        value_split = re.split("_", value)
+                        value = ""
+                        for split in value_split:
+                            value += split.capitalize()
+                        value_dict = {
+                            "stringValue": old_value,
+                            "instanceName": value
+                        }
+                        pairs.append(value_dict)
+
+                    parameter_dict["pairs"] = pairs
+                    enums[target] = parameter_dict
+    return enums
+
+if __name__ == "__main__":
+   # api_file = open("D:\\GitHubRepositorys\\API-Editor\\package-parser\\tests\\commands\\generate_annotations\\api.json")
+    api_file = open("F:\\scikit-learn__sklearn__1.0.2__api.json", "r")
+    api_json = json.load(api_file)
+    api = API.from_json(api_json)
+    __get_enum_annotations(api, None)
+# return {"enums": enums}
