@@ -7,10 +7,10 @@ from package_parser.commands.generate_annotations._generate_annotations import (
 
 def test_determination_of_constant_parameters():
     expected = {
-        "sklearn/sklearn._config/config_context/working_memory": {
-            "target": "sklearn/sklearn._config/config_context/working_memory",
+        "test/test/commonly_used_global_function/useful_required_parameter": {
+            "target": "test/test/commonly_used_global_function/useful_required_parameter",
             "defaultType": "string",
-            "defaultValue": "bla"
+            "defaultValue": "winner"
         }
     }
 
@@ -29,7 +29,4 @@ def test_determination_of_constant_parameters():
     api_file.close()
     usages_file.close()
 
-    # print('allParams: ' + all_parameters);
-    # print('expected: ' + expected['optional']);
-
-    assert all_parameters == expected['optional']
+    assert all_parameters['optional'] == expected

@@ -31,8 +31,6 @@
         ]
     },
     "parameter_usages": {
-        "test.unused_global_function.unused_required_parameter": [],
-        "test.unused_global_function.unused_optional_parameter": [],
         "test.commonly_used_global_function.useless_required_parameter": [
             {
                 "file": "test.py",
@@ -85,9 +83,13 @@
                 "file": "test.py",
                 "line": 1,
                 "column": 1
+            },
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
             }
         ],
-        "test.commonly_used_global_function.unused_optional_parameter": [],
         "test.commonly_used_global_function.useless_optional_parameter": [
             {
                 "file": "test.py",
@@ -98,9 +100,7 @@
                 "file": "test.py",
                 "line": 1,
                 "column": 1
-            }
-        ],
-        "test.commonly_used_global_function.useful_optional_parameter": [
+            },
             {
                 "file": "test.py",
                 "line": 1,
@@ -152,21 +152,6 @@
                 }
             ],
             "'winner'": [
-                {
-                    "file": "test.py",
-                    "line": 1,
-                    "column": 1
-                },
-                {
-                    "file": "test.py",
-                    "line": 1,
-                    "column": 1
-                },
-                {
-                    "file": "test.py",
-                    "line": 1,
-                    "column": 1
-                },
                 {
                     "file": "test.py",
                     "line": 1,
