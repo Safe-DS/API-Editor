@@ -10,7 +10,7 @@
             "classes": [],
             "functions": [
                 "test.unused_global_function",
-                "test.commonly_used_global_function"
+                "test.commonly_used_global_required_and_optional_function"
             ]
         }
     ],
@@ -24,18 +24,8 @@
             "decorators": [],
             "parameters": [
                 {
-                    "name": "unused_required_parameter",
+                    "name": "unused_parameter",
                     "default_value": null,
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
-                },
-                {
-                    "name": "unused_optional_parameter",
-                    "default_value": "'bla'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
                     "docstring": {
@@ -51,14 +41,24 @@
             "source_code": ""
         },
         {
-            "name": "commonly_used_global_function",
-            "unique_name": "commonly_used_global_function",
-            "qname": "test.commonly_used_global_function",
-            "unique_qname": "test.commonly_used_global_function",
+            "name": "commonly_used_global_required_and_optional_function",
+            "unique_name": "commonly_used_global_required_and_optional_function",
+            "qname": "test.commonly_used_global_required_and_optional_function",
+            "unique_qname": "test.commonly_used_global_required_and_optional_function",
             "decorators": [],
             "parameters": [
                 {
-                    "name": "useless_required_parameter",
+                    "name": "optional_that_should_be_required",
+                    "default_value": "'test'",
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                },
+                {
+                    "name": "required_that_should_be_required",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -68,7 +68,7 @@
                     }
                 },
                 {
-                    "name": "useful_required_parameter",
+                    "name": "required_that_should_be_optional",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -78,8 +78,8 @@
                     }
                 },
                 {
-                    "name": "unused_optional_parameter",
-                    "default_value": "'bla'",
+                    "name": "optional_that_should_be_optional",
+                    "default_value": "'captain_morgan'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
                     "docstring": {
@@ -88,8 +88,8 @@
                     }
                 },
                 {
-                    "name": "useless_optional_parameter",
-                    "default_value": "'bla'",
+                    "name": "commonly_used_almost_required",
+                    "default_value": "'marvel'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
                     "docstring": {
@@ -98,8 +98,18 @@
                     }
                 },
                 {
-                    "name": "useful_optional_parameter",
-                    "default_value": "'bla'",
+                    "name": "commonly_used_barely_required",
+                    "default_value": "'otto'",
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                },
+                {
+                    "name": "constant_parameter",
+                    "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
                     "docstring": {

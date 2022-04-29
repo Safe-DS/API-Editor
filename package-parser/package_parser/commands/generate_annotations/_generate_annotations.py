@@ -192,9 +192,16 @@ def __get_default_type_from_value(default_value: str) -> tuple[str, str]:
 
 
 def __get_required_annotations(usages: UsageStore, api: API) -> dict[str, dict[str, dict[str, str]]]:
+    """
+    Returns all required annotations
+
+    :param usages: Usage store
+    :param api: Description of the API
+    """
     result = {}
 
     parameters = (api.parameters())
+    # Takes all parameters with default value
     optional_parameter = [(it, parameters[it]) for it in parameters if parameters[it].default_value is not None]
 
     for qname, parameter in optional_parameter:
@@ -208,6 +215,11 @@ def __get_required_annotations(usages: UsageStore, api: API) -> dict[str, dict[s
 
 
 def __get_parameter_type(values: list[tuple[str, int]]) -> (ParameterType, str):
+    """
+       Returns a tuple of the parameter Typ and parameter value
+
+       :param values: list of tuples where the first value represents the parameter name and the second represents the count of occurrences
+       """
     if len(values) == 0:
         return ParameterType.Unused, None
     elif len(values) == 1:
@@ -216,9 +228,9 @@ def __get_parameter_type(values: list[tuple[str, int]]) -> (ParameterType, str):
     n = len(values)
     m = sum([count for value, count in values])
 
-    most_used_value, seconds_most_used_value = sorted(values, key=lambda tup: tup[1])[:2]
+    seconds_most_used_value, most_used_value = sorted(values, key=lambda tup: tup[1])[-2:]
 
-    if most_used_value[1] - seconds_most_used_value[1] <= n/m:
+    if most_used_value[1] - seconds_most_used_value[1] <= m/n:
         return ParameterType.Required, None
     else:
         return ParameterType.Optional, most_used_value[0]
