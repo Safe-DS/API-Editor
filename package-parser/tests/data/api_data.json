@@ -156,6 +156,36 @@
             "description": "",
             "docstring": "",
             "source_code": ""
+        },
+        {
+            "name": "__init__",
+            "unique_name": "__init__",
+            "qname": "sklearn.decomposition._pca.PCA.__init__",
+            "unique_qname": "sklearn.decomposition._pca.PCA.__init__",
+            "parameters": [
+                {
+                    "name": "iterated_power",
+                    "refined_type": {
+                        "kind": "BoundaryType",
+                        "base_type": "float",
+                        "min": 0.0,
+                        "max": "Infinity",
+                        "min_inclusive": true,
+                        "max_inclusive": false
+                    }
+                },
+                {
+                    "name": "svd_solver",
+                    "refined_type": {
+                        "kind": "EnumType",
+                        "values": [
+                            "auto",
+                            "kd_tree",
+                            "k-means++"
+                        ]
+                    }
+                }
+            ]
         }
     ]
 }

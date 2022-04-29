@@ -7,6 +7,7 @@ from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.generate_annotations.generate_annotations import (
     __get_constant_annotations,
     __get_unused_annotations,
+    __get_enum_annotations,
     __qname_to_target_name,
     _preprocess_usages,
     generate_annotations,
@@ -50,6 +51,27 @@ REQUIREDS_EXPECTED: dict[str, dict[str, str]] = {}
 OPTIONALS_EXPECTED: dict[str, dict[str, str]] = {}
 BOUNDARIES_EXPECTED: dict[str, dict[str, str]] = {}
 ENUMS_EXPECTED: dict[str, dict[str, str]] = {}
+
+ENUM_EXPECTED = {
+"sklearn/sklearn.decomposition._pca/PCA/__init__/svd_solver": {
+    "target": "sklearn/sklearn.decomposition._pca/PCA/__init__/svd_solver",
+    "enumName": "SvdSolver",
+    "pairs": [
+      {
+        "stringValue": "auto",
+        "instanceName": "Auto"
+      },
+      {
+        "stringValue": "k-means++",
+        "instanceName": "Kmeans"
+      },
+      {
+        "stringValue": "kd_tree",
+        "instanceName": "KdTree"
+      }
+    ]
+  }
+}
 
 # Reihenfolge ist wichtig, siehe Reihenfolge von annotation_functions in generate_annotations.py
 FULL_EXPECTED = {
@@ -147,3 +169,7 @@ def test_generate():
 def test_generate_bad_path():
     with pytest.raises(ValueError):
         generate_annotations(None, None, None)
+
+def test_get_enum():
+    _, api, _, api_file, _, api_json_path = setup()
+    assert __get_enum_annotations(api, None) == ENUM_EXPECTED
