@@ -1,54 +1,38 @@
 import json
 import os
-
 import pytest
-from package_parser.commands.find_usages import UsageStore
+from pathlib import Path
+
+from commands.find_usages import UsageStore
+from commands.get_api import API
 from package_parser.commands.generate_annotations.generate_annotations import (
-    __get_constant_annotations,
-    __get_unused_annotations,
-    __qname_to_target_name,
-    _preprocess_usages,
-    generate_annotations,
-)
-from package_parser.commands.get_api import API
+    generate_annotations, __get_unused_annotations, __get_constant_annotations, __qname_to_target_name,
+    _preprocess_usages)
 
-UNUSED_EXPECTED = {
-    "unused": {
-        "test/test/Unused_Class": {"target": "test/test/Unused_Class"},
-        "test/test/commonly_used_global_function/unused_optional_parameter": {
-            "target": "test/test/commonly_used_global_function/unused_optional_parameter"
-        },
-        "test/test/unused_global_function": {
-            "target": "test/test/unused_global_function"
-        },
-        "test/test/unused_global_function/unused_optional_parameter": {
-            "target": "test/test/unused_global_function/unused_optional_parameter"
-        },
-        "test/test/unused_global_function/unused_required_parameter": {
-            "target": "test/test/unused_global_function/unused_required_parameter"
-        },
-    }
-}
+UNUSED_EXPECTED = {"unused": {'test/test/Unused_Class': {'target': 'test/test/Unused_Class'},
+                              'test/test/commonly_used_global_function/unused_optional_parameter': {
+                                  'target': 'test/test/commonly_used_global_function/unused_optional_parameter'},
+                              'test/test/unused_global_function': {'target': 'test/test/unused_global_function'},
+                              'test/test/unused_global_function/unused_optional_parameter': {
+                                  'target': 'test/test/unused_global_function/unused_optional_parameter'},
+                              'test/test/unused_global_function/unused_required_parameter': {
+                                  'target': 'test/test/unused_global_function/unused_required_parameter'}}
+                   }
 
-CONSTANT_EXPECTED = {
-    "constant": {
-        "test/test/commonly_used_global_function/unused_optional_parameter": {
-            "defaultType": "string",
-            "defaultValue": "bla",
-            "target": "test/test/commonly_used_global_function/unused_optional_parameter",
-        },
-        "test/test/commonly_used_global_function/useless_optional_parameter": {
-            "defaultType": "string",
-            "defaultValue": "bla",
-            "target": "test/test/commonly_used_global_function/useless_optional_parameter",
-        },
-        "test/test/commonly_used_global_function/useless_required_parameter": {
-            "defaultType": "string",
-            "defaultValue": "blup",
-            "target": "test/test/commonly_used_global_function/useless_required_parameter",
-        },
-    }
-}
+CONSTANT_EXPECTED = {"constant":
+                         {'test/test/commonly_used_global_function/unused_optional_parameter':
+                              {'defaultType': 'string',
+                               'defaultValue': 'bla',
+                               'target': 'test/test/commonly_used_global_function/unused_optional_parameter'},
+                          'test/test/commonly_used_global_function/useless_optional_parameter':
+                              {'defaultType': 'string',
+                               'defaultValue': 'bla',
+                               'target': 'test/test/commonly_used_global_function/useless_optional_parameter'},
+                          'test/test/commonly_used_global_function/useless_required_parameter':
+                              {'defaultType': 'string',
+                               'defaultValue': 'blup',
+                               'target': 'test/test/commonly_used_global_function/useless_required_parameter'}}
+                     }
 
 # Reihenfolge ist wichtig, siehe Reihenfolge von annotation_functions in generate_annotations.py
 FULL_EXPECTED = {**UNUSED_EXPECTED, **CONSTANT_EXPECTED}
@@ -80,9 +64,7 @@ def test_format_function():
 def test_format_parameter():
     usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
     assert (
-        __qname_to_target_name(
-            api, "test.commonly_used_global_function.useless_required_parameter"
-        )
+        __qname_to_target_name(api, "test.commonly_used_global_function.useless_required_parameter")
         == "test/test/commonly_used_global_function/useless_required_parameter"
     )
 
@@ -109,9 +91,7 @@ def test_get_constant():
 
 def test_generate():
     usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
-    out_file_path = os.path.join(
-        os.getcwd(), "tests", "out", "test_generate_out_file.json"
-    )
+    out_file_path = os.path.join(os.getcwd(), "tests", "out", "test_generate_out_file.json")
 
     if not os.path.exists(os.path.join(os.getcwd(), "tests", "out")):
         os.makedirs(os.path.join(os.getcwd(), "tests", "out"))
@@ -120,9 +100,7 @@ def test_generate():
         with open(out_file_path, "x") as out_file:
             out_file.write("")
 
-    generate_annotations(
-        open(api_json_path, "r"), open(usages_json_path, "r"), open(out_file_path, "w")
-    )
+    generate_annotations(open(api_json_path, "r"), open(usages_json_path, "r"), Path(out_file_path))
     with open(out_file_path, "r") as out_file:
         out_json = json.load(out_file)
         assert out_json == FULL_EXPECTED

@@ -1,5 +1,6 @@
 import json
 from io import TextIOWrapper
+from pathlib import Path
 from typing import Callable
 
 from package_parser.commands.find_usages import UsageStore
@@ -8,7 +9,7 @@ from package_parser.utils import parent_qname
 
 
 def generate_annotations(
-    api_file: TextIOWrapper, usages_file: TextIOWrapper, output_file: TextIOWrapper
+    api_file: TextIOWrapper, usages_file: TextIOWrapper, output_file: Path
 ) -> None:
     """
     Generates an annotation file from the given API and UsageStore files, and writes it to the given output file.
@@ -33,7 +34,8 @@ def generate_annotations(
 
     annotations_dict = __generate_annotation_dict(api, usages, annotation_functions)
 
-    json.dump(annotations_dict, output_file, indent=2)
+    with output_file.open("w") as f:
+        json.dump(annotations_dict, f, indent=2)
 
 
 def __generate_annotation_dict(api: API, usages: UsageStore, functions: list[Callable]):
