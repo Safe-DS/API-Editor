@@ -59,6 +59,19 @@ optional arguments:
   -m MIN, --min MIN     Minimum number of usages required to keep an API element.
 ```
 
+### generate command
+
+```text
+usage: parse-package generate [-h] -a API -u USAGES -o OUT
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -a API, --api API     File created by the 'api' command.
+  -u USAGES, --usages USAGES
+                        File created by the 'usages' command.
+  -o OUT, --out OUT     Output directory.
+```
+
 ### Example usage
 
 1. Install Python 3.9.

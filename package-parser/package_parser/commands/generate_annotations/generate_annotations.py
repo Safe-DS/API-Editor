@@ -3,22 +3,27 @@ from __future__ import annotations
 import json
 from io import TextIOWrapper
 from pathlib import Path
-from typing import Any
-from enum import Enum, auto
+from typing import Callable
 
-from package_parser.commands.find_usages import (
-    ClassUsage,
-    FunctionUsage,
-    UsageStore,
-    ValueUsage,
-)
+from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.get_api import API
 from package_parser.utils import parent_qname
 
 
 def generate_annotations(
-    api_file: TextIOWrapper, usages_file: TextIOWrapper, out_dir: Path
-):
+    api_file: TextIOWrapper, usages_file: TextIOWrapper, output_file: Path
+) -> None:
+    """
+    Generates an annotation file from the given API and UsageStore files, and writes it to the given output file.
+    Annotations that are generated are: constant, unused,
+    :param api_file: API file
+    :param usages_file: UsageStore file
+    :param output_file: Output file
+    :return: None
+    """
+    if api_file is None or usages_file is None or output_file is None:
+        raise ValueError("api_file, usages_file, and output_file must be specified.")
+
     with api_file:
         api_json = json.load(api_file)
         api = API.from_json(api_json)
@@ -27,15 +32,143 @@ def generate_annotations(
         usages_json = json.load(usages_file)
         usages = UsageStore.from_json(usages_json)
 
-    # out_dir.mkdir(parents=True, exist_ok=True)
-    # base_file_name = api_file.name.replace("__api.json", "")
+    annotation_functions = [__get_unused_annotations, __get_constant_annotations]
 
-    __preprocess_usages(usages, api)
-    constant_parameters = __find_constant_parameters(usages, api)
-    return constant_parameters
+    annotations_dict = __generate_annotation_dict(api, usages, annotation_functions)
+
+    with output_file.open("w") as f:
+        json.dump(annotations_dict, f, indent=2)
 
 
-def __preprocess_usages(usages: UsageStore, api: API) -> None:
+def __generate_annotation_dict(api: API, usages: UsageStore, functions: list[Callable]):
+    _preprocess_usages(usages, api)
+
+    annotations_dict: dict[str, dict[str, dict[str, str]]] = {}
+    for generate_annotation in functions:
+        annotations_dict.update(generate_annotation(usages, api))
+
+    return annotations_dict
+
+
+def __get_constant_annotations(
+    usages: UsageStore, api: API
+) -> dict[str, dict[str, dict[str, str]]]:
+    """
+    Returns all parameters that are only ever assigned a single value.
+    :param usages: UsageStore object
+    :param api: API object for usages
+    :return: {"constant": dict[str, dict[str, str]]}
+    """
+    constant = "constant"
+    constants: dict[str, dict[str, str]] = {}
+
+    for parameter_qname in list(usages.parameter_usages.keys()):
+        if len(usages.value_usages[parameter_qname].values()) == 0:
+            continue
+
+        if len(usages.value_usages[parameter_qname].keys()) == 1:
+            if usages.most_common_value(parameter_qname) is None:
+                continue
+
+            target_name = __qname_to_target_name(api, parameter_qname)
+            default_type, default_value = __get_default_type_from_value(
+                str(usages.most_common_value(parameter_qname))
+            )
+
+            constants[target_name] = {
+                "target": target_name,
+                "defaultType": default_type,
+                "defaultValue": default_value,
+            }
+
+    return {constant: constants}
+
+
+def __get_unused_annotations(
+    usages: UsageStore, api: API
+) -> dict[str, dict[str, dict[str, str]]]:
+    """
+    Returns all parameters that are never used.
+    :param usages: UsageStore object
+    :param api: API object for usages
+    :return: {"unused": dict[str, dict[str, str]]}
+    """
+    unused = "unused"
+    unuseds: dict[str, dict[str, str]] = {}
+
+    for parameter_name in list(api.parameters().keys()):
+        if (
+            parameter_name not in usages.parameter_usages
+            or len(usages.parameter_usages[parameter_name]) == 0
+        ):
+            formatted_name = __qname_to_target_name(api, parameter_name)
+            unuseds[formatted_name] = {"target": formatted_name}
+
+    for function_name in list(api.functions.keys()):
+        if (
+            function_name not in usages.function_usages
+            or len(usages.function_usages[function_name]) == 0
+        ):
+            formatted_name = __qname_to_target_name(api, function_name)
+            unuseds[formatted_name] = {"target": formatted_name}
+
+    for class_name in list(api.classes.keys()):
+        if (
+            class_name not in usages.class_usages
+            or len(usages.class_usages[class_name]) == 0
+        ):
+            formatted_name = __qname_to_target_name(api, class_name)
+            unuseds[formatted_name] = {"target": formatted_name}
+
+    return {unused: unuseds}
+
+
+def __qname_to_target_name(api: API, qname: str) -> str:
+    """
+    Formats the given name to the wanted format. This method is to be removed as soon as the UsageStore is updated to
+    use the new format.
+    :param api: API object
+    :param qname: Name pre-formatting
+    :return: Formatted name
+    """
+    if qname is None or api is None:
+        raise ValueError("qname and api must be specified.")
+
+    target_elements = qname.split(".")
+
+    package_name = api.package
+    module_name = class_name = function_name = parameter_name = ""
+
+    if ".".join(target_elements) in api.parameters().keys():
+        parameter_name = "/" + target_elements.pop()
+    if ".".join(target_elements) in api.functions.keys():
+        function_name = f"/{target_elements.pop()}"
+    if ".".join(target_elements) in api.classes.keys():
+        class_name = f"/{target_elements.pop()}"
+    if ".".join(target_elements) in api.modules.keys():
+        module_name = "/" + ".".join(target_elements)
+
+    return package_name + module_name + class_name + function_name + parameter_name
+
+
+def __get_default_type_from_value(default_value: str) -> tuple[str, str]:
+    default_value = str(default_value)[1:-1]
+
+    if default_value == "null":
+        default_type = "none"
+    elif default_value == "True" or default_value == "False":
+        default_type = "boolean"
+    elif default_value.isnumeric():
+        default_type = "number"
+        default_value = default_value
+    else:
+        default_type = "string"
+        default_value = default_value
+
+    return default_type, default_value
+
+
+def _preprocess_usages(usages: UsageStore, api: API) -> None:
     __remove_internal_usages(usages, api)
     __add_unused_api_elements(usages, api)
     __add_implicit_usages_of_default_value(usages, api)
@@ -125,72 +258,6 @@ def __add_implicit_usages_of_default_value(usages: UsageStore, api: API) -> None
         for location in locations_of_implicit_usages_of_default_value:
             usages.add_value_usage(parameter_qname, default_value, location)
 
-
-def __find_constant_parameters(usages: UsageStore, api: API) -> dict[str, dict[str, str]]:
-    """
-    Returns all parameters that are only ever assigned a single value.
-
-    :param usages: Usage store
-    """
-
-    result = {}
-
-    for parameter_qname in list(usages.parameter_usages.keys()):
-
-        if len(usages.value_usages[parameter_qname].values()) == 0:
-            continue
-
-        if len(usages.value_usages[parameter_qname].keys()) == 1:
-            target_name = __qname_to_target_name(api, parameter_qname)
-            default_type, default_value = __get_default_type_from_value(
-                str(usages.most_common_value(parameter_qname))
-            )
-            print(target_name)
-            result[target_name] = {
-                "target": target_name,
-                "defaultType": default_type,
-                "defaultValue": default_value,
-            }
-
-    print(json.dumps(result))
-    return result
-
-
-def __qname_to_target_name(api: API, qname: str) -> str:
-    target_elements = qname.split(".")
-
-    package_name = api.package
-    module_name = class_name = function_name = parameter_name = ""
-
-    if ".".join(target_elements) in api.parameters().keys():
-        parameter_name = "/" + target_elements.pop()
-    if ".".join(target_elements) in api.functions.keys():
-        function_name = f"/{target_elements.pop()}"
-    if ".".join(target_elements) in api.classes.keys():
-        class_name = f"/{target_elements.pop()}"
-    if ".".join(target_elements) in api.modules.keys():
-        module_name = "/" + ".".join(target_elements)
-
-    return package_name + module_name + class_name + function_name + parameter_name
-
-
-def __get_default_type_from_value(default_value: str) -> tuple[str, str]:
-    default_value = str(default_value)[1:-1]
-
-    if default_value == "null":
-        default_type = "none"
-    elif default_value == "True" or default_value == "False":
-        default_type = "boolean"
-    elif default_value.isnumeric():
-        default_type = "number"
-        default_value = default_value
-    else:
-        default_type = "string"
-        default_value = default_value
-
-    return default_type, default_value
-
-
 def __get_required_annotations(usages: UsageStore, api: API) -> dict[str, dict[str, dict[str, str]]]:
     """
     Returns all required annotations
@@ -232,8 +299,7 @@ def __get_parameter_type(values: list[tuple[str, int]]) -> (ParameterType, str):
 
     if most_used_value[1] - seconds_most_used_value[1] <= m/n:
         return ParameterType.Required, None
-    else:
-        return ParameterType.Optional, most_used_value[0]
+    return ParameterType.Optional, most_used_value[0]
 
 
 class ParameterType(Enum):
