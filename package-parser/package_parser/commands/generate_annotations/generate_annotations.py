@@ -33,7 +33,7 @@ def generate_annotations(
         usages_json = json.load(usages_file)
         usages = UsageStore.from_json(usages_json)
 
-    annotation_functions = [__get_unused_annotations, __get_constant_annotations]
+    annotation_functions = [__get_unused_annotations, __get_constant_annotations, __get_required_annotations]
 
     annotations_dict = __generate_annotation_dict(api, usages, annotation_functions)
 
@@ -266,6 +266,7 @@ def __get_required_annotations(usages: UsageStore, api: API) -> dict[str, dict[s
 
     :param usages: Usage store
     :param api: Description of the API
+    :return: {"requireds": dict[str, dict[str, str]]}
     """
     result = {}
 
@@ -276,14 +277,10 @@ def __get_required_annotations(usages: UsageStore, api: API) -> dict[str, dict[s
         values = usages.value_usages[qname].items()
         values = [(it[0], len(it[1])) for it in values]
 
-        #if qname == 'test.commonly_used_global_required_and_optional_function.commonly_used_barely_required':
-        #    print(values)
-        print(qname)
         if __get_parameter_type(values)[0] is ParameterType.Required:
             target_name = __qname_to_target_name(api, qname)
             result[target_name] = {"target": target_name}
 
-    print(result.keys())
     return {"requireds": result}
 
 
