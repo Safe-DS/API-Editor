@@ -26,24 +26,27 @@ import com.larsreimann.api_editor.model.SerializablePythonPackage
 import com.larsreimann.api_editor.model.SerializablePythonParameter
 import com.larsreimann.api_editor.model.SerializablePythonResult
 import com.larsreimann.api_editor.model.UnusedAnnotation
+import io.ktor.client.call.body
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
-import io.ktor.server.testing.handleRequest
-import io.ktor.server.testing.setBody
-import io.ktor.server.testing.withTestApplication
-import kotlinx.serialization.ExperimentalSerializationApi
+import io.ktor.http.contentType
+import io.ktor.server.testing.testApplication
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ApplicationTest {
+
     @Test
-    @ExperimentalSerializationApi
     fun testEcho() {
-        withTestApplication({ configureRouting() }) {
+        testApplication {
+            application {
+                configureRouting()
+            }
+
             val testPythonPackage = SerializablePythonPackage(
                 distribution = "test-distribution",
                 name = "test-package",
@@ -146,13 +149,13 @@ class ApplicationTest {
 
             val requestBody = Json.encodeToString(testPythonPackage)
 
-            handleRequest(HttpMethod.Post, "/api-editor/echo") {
-                addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+            val response = client.post("/api-editor/echo") {
+                contentType(ContentType.Application.Json)
                 setBody(requestBody)
-            }.apply {
-                assertEquals(HttpStatusCode.OK, response.status())
-                assertEquals(requestBody, response.content)
             }
+
+            assertEquals(HttpStatusCode.OK, response.status)
+            assertEquals(requestBody, response.body())
         }
     }
 }

@@ -5,26 +5,25 @@ import com.larsreimann.api_editor.model.SerializablePythonPackage
 import com.larsreimann.api_editor.mutable_model.convertPackage
 import com.larsreimann.api_editor.transformation.transform
 import com.larsreimann.api_editor.validation.AnnotationValidator
-import io.ktor.application.Application
-import io.ktor.application.call
-import io.ktor.application.install
-import io.ktor.features.ContentNegotiation
-import io.ktor.features.StatusPages
 import io.ktor.http.ContentDisposition
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
-import io.ktor.http.content.defaultResource
-import io.ktor.http.content.resources
-import io.ktor.http.content.static
-import io.ktor.request.receive
-import io.ktor.response.header
-import io.ktor.response.respond
-import io.ktor.response.respondFile
-import io.ktor.routing.Route
-import io.ktor.routing.post
-import io.ktor.routing.route
-import io.ktor.routing.routing
-import io.ktor.serialization.json
+import io.ktor.serialization.kotlinx.json.json
+import io.ktor.server.application.Application
+import io.ktor.server.application.call
+import io.ktor.server.application.install
+import io.ktor.server.http.content.defaultResource
+import io.ktor.server.http.content.resources
+import io.ktor.server.http.content.static
+import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.server.request.receive
+import io.ktor.server.response.header
+import io.ktor.server.response.respond
+import io.ktor.server.response.respondFile
+import io.ktor.server.routing.Route
+import io.ktor.server.routing.post
+import io.ktor.server.routing.route
+import io.ktor.server.routing.routing
 import kotlinx.serialization.json.Json
 import java.io.File
 
@@ -47,15 +46,6 @@ fun Application.configureRouting() {
         route("/api-editor") {
             echo()
             infer()
-        }
-
-        install(StatusPages) {
-            exception<AuthenticationException> {
-                call.respond(HttpStatusCode.Unauthorized)
-            }
-            exception<AuthorizationException> {
-                call.respond(HttpStatusCode.Forbidden)
-            }
         }
     }
 }
@@ -120,6 +110,3 @@ sealed class DoInferResult {
     class Success(val path: File) : DoInferResult()
     class ValidationFailure(val messages: List<String>) : DoInferResult()
 }
-
-class AuthenticationException : RuntimeException()
-class AuthorizationException : RuntimeException()
