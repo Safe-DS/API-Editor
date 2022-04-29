@@ -3,9 +3,9 @@ from io import TextIOWrapper
 from pathlib import Path
 from typing import Callable
 
-from models.annotation_models import UnusedAnnotation, ConstantAnnotation, AnnotationStore
 from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.get_api import API
+from package_parser.models.annotation_models import UnusedAnnotation, ConstantAnnotation, AnnotationStore
 from package_parser.utils import parent_qname
 
 
