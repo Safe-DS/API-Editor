@@ -53,24 +53,17 @@ BOUNDARIES_EXPECTED: dict[str, dict[str, str]] = {}
 ENUMS_EXPECTED: dict[str, dict[str, str]] = {}
 
 ENUM_EXPECTED = {
-"sklearn/sklearn.decomposition._pca/PCA/__init__/svd_solver": {
-    "target": "sklearn/sklearn.decomposition._pca/PCA/__init__/svd_solver",
-    "enumName": "SvdSolver",
-    "pairs": [
-      {
-        "stringValue": "auto",
-        "instanceName": "Auto"
-      },
-      {
-        "stringValue": "k-means++",
-        "instanceName": "Kmeans"
-      },
-      {
-        "stringValue": "kd_tree",
-        "instanceName": "KdTree"
-      }
-    ]
-  }
+'test/config_context/display': {'enumName': 'Display',
+                                 'pairs': [{'instanceName': 'Auto',
+                                            'stringValue': 'auto'},
+                                            {'instanceName': 'KdTree',
+                                            'stringValue': 'kd_tree'},
+                                           {'instanceName': 'KdMeans',
+                                            'stringValue': 'kd-means++'},
+
+
+                                           ],
+                                 'target': 'test/config_context/display'}
 }
 
 # Reihenfolge ist wichtig, siehe Reihenfolge von annotation_functions in generate_annotations.py

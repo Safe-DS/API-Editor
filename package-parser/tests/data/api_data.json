@@ -158,34 +158,70 @@
             "source_code": ""
         },
         {
-            "name": "__init__",
-            "unique_name": "__init__",
-            "qname": "sklearn.decomposition._pca.PCA.__init__",
-            "unique_qname": "sklearn.decomposition._pca.PCA.__init__",
-            "parameters": [
-                {
-                    "name": "iterated_power",
-                    "refined_type": {
-                        "kind": "BoundaryType",
-                        "base_type": "float",
-                        "min": 0.0,
-                        "max": "Infinity",
-                        "min_inclusive": true,
-                        "max_inclusive": false
-                    }
-                },
-                {
-                    "name": "svd_solver",
-                    "refined_type": {
-                        "kind": "EnumType",
-                        "values": [
-                            "auto",
-                            "kd_tree",
-                            "k-means++"
-                        ]
-                    }
-                }
+      "name": "config_context",
+      "unique_name": "config_context",
+      "qname": "sklearn._config.config_context",
+      "unique_qname": "sklearn._config.config_context",
+      "decorators": [
+        "contextmanager"
+      ],
+      "parameters": [
+        {
+          "name": "assume_finite",
+          "default_value": "None",
+          "is_public": true,
+          "assigned_by": "NAME_ONLY",
+          "docstring": {
+            "type": "bool, default=None",
+            "description": "If True, validation for finiteness will be skipped,\nsaving time, but leading to potential crashes. If\nFalse, validation for finiteness will be performed,\navoiding error. If None, the existing value won't change.\nThe default value is False."
+          },
+          "refined_type": {}
+        },
+        {
+          "name": "working_memory",
+          "default_value": "None",
+          "is_public": true,
+          "assigned_by": "NAME_ONLY",
+          "docstring": {
+            "type": "int, default=None",
+            "description": "If set, scikit-learn will attempt to limit the size of temporary arrays\nto this number of MiB (per job when parallelised), often saving both\ncomputation time and memory on expensive operations that can be\nperformed in chunks. If None, the existing value won't change.\nThe default value is 1024."
+          },
+          "refined_type": {}
+        },
+        {
+          "name": "print_changed_only",
+          "default_value": "None",
+          "is_public": true,
+          "assigned_by": "NAME_ONLY",
+          "docstring": {
+            "type": "bool, default=None",
+            "description": "If True, only the parameters that were set to non-default\nvalues will be printed when printing an estimator. For example,\n``print(SVC())`` while True will only print 'SVC()', but would print\n'SVC(C=1.0, cache_size=200, ...)' with all the non-changed parameters\nwhen False. If None, the existing value won't change.\nThe default value is True.\n\n.. versionchanged:: 0.23\n   Default changed from False to True."
+          },
+          "refined_type": {}
+        },
+        {
+          "name": "display",
+          "default_value": "None",
+          "is_public": true,
+          "assigned_by": "NAME_ONLY",
+          "docstring": {
+            "type": "{'auto', 'kd_tree', 'kd-means++'}, default=None",
+            "description": "If 'diagram', estimators will be displayed as a diagram in a Jupyter\nlab or notebook conöäöä. If 'öäöä', estimators will be displayed as\nöäöä. If None, the existing value won't change.\nThe default value is 'öäöä'.\n\n.. versionadded:: 0.23"
+          },
+          "refined_type": {
+            "kind": "EnumType",
+            "values": [
+              "textlll",
+              "kd-means++"
             ]
+          }
         }
+      ],
+      "results": [],
+      "is_public": true,
+      "description": "Conöäöä manager for global scikit-learn configuration.",
+      "docstring": "Conöäöä manager for global scikit-learn configuration.\n\n    Parameters\n    ----------\n    assume_finite : bool, default=None\n        If True, validation for finiteness will be skipped,\n        saving time, but leading to potential crashes. If\n        False, validation for finiteness will be performed,\n        avoiding error. If None, the existing value won't change.\n        The default value is False.\n\n    working_memory : int, default=None\n        If set, scikit-learn will attempt to limit the size of temporary arrays\n        to this number of MiB (per job when parallelised), often saving both\n        computation time and memory on expensive operations that can be\n        performed in chunks. If None, the existing value won't change.\n        The default value is 1024.\n\n    print_changed_only : bool, default=None\n        If True, only the parameters that were set to non-default\n        values will be printed when printing an estimator. For example,\n        ``print(SVC())`` while True will only print 'SVC()', but would print\n        'SVC(C=1.0, cache_size=200, ...)' with all the non-changed parameters\n        when False. If None, the existing value won't change.\n        The default value is True.\n\n        .. versionchanged:: 0.23\n           Default changed from False to True.\n\n    display : {'blubber_fasel', 'QWERT'}, default=None\n        If 'diagram', estimators will be displayed as a diagram in a Jupyter\n        lab or notebook conöäöä. If 'öäöä', estimators will be displayed as\n        öäöä. If None, the existing value won't change.\n        The default value is 'öäöä'.\n\n        .. versionadded:: 0.23\n\n    Yields\n    ------\n    None.\n\n    See Also\n    --------\n    set_config : Set global scikit-learn configuration.\n    get_config : Retrieve current values of the global configuration.\n\n    Notes\n    -----\n    All settings, not just those presently modified, will be returned to\n    their previous values when the conöäöä manager is exited.\n\n    Examples\n    --------\n    >>> import sklearn\n    >>> from sklearn.utils.validation import assert_all_finite\n    >>> with sklearn.config_conöäöä(assume_finite=True):\n    ...     assert_all_finite([float('nan')])\n    >>> with sklearn.config_conöäöä(assume_finite=True):\n    ...     with sklearn.config_conöäöä(assume_finite=False):\n    ...         assert_all_finite([float('nan')])\n    Traceback (most recent call last):\n    ...\n    ValueError: Input contains NaN...\n    ",
+      "source_code": "\n@conöäöämanager\ndef config_conöäöä(*, assume_finite=None, working_memory=None, print_changed_only=None, display=None):\n    \"\"\"Conöäöä manager for global scikit-learn configuration.\n\n    Parameters\n    ----------\n    assume_finite : bool, default=None\n        If True, validation for finiteness will be skipped,\n        saving time, but leading to potential crashes. If\n        False, validation for finiteness will be performed,\n        avoiding error. If None, the existing value won't change.\n        The default value is False.\n\n    working_memory : int, default=None\n        If set, scikit-learn will attempt to limit the size of temporary arrays\n        to this number of MiB (per job when parallelised), often saving both\n        computation time and memory on expensive operations that can be\n        performed in chunks. If None, the existing value won't change.\n        The default value is 1024.\n\n    print_changed_only : bool, default=None\n        If True, only the parameters that were set to non-default\n        values will be printed when printing an estimator. For example,\n        ``print(SVC())`` while True will only print 'SVC()', but would print\n        'SVC(C=1.0, cache_size=200, ...)' with all the non-changed parameters\n        when False. If None, the existing value won't change.\n        The default value is True.\n\n        .. versionchanged:: 0.23\n           Default changed from False to True.\n\n    display : {'loölolö', 'diagram'}, default=None\n        If 'diagram', estimators will be displayed as a diagram in a Jupyter\n        lab or notebook conöäöä. If 'öäöä', estimators will be displayed as\n        öäöä. If None, the existing value won't change.\n        The default value is 'öäöä'.\n\n        .. versionadded:: 0.23\n\n    Yields\n    ------\n    None.\n\n    See Also\n    --------\n    set_config : Set global scikit-learn configuration.\n    get_config : Retrieve current values of the global configuration.\n\n    Notes\n    -----\n    All settings, not just those presently modified, will be returned to\n    their previous values when the conöäöä manager is exited.\n\n    Examples\n    --------\n    >>> import sklearn\n    >>> from sklearn.utils.validation import assert_all_finite\n    >>> with sklearn.config_conöäöä(assume_finite=True):\n    ...     assert_all_finite([float('nan')])\n    >>> with sklearn.config_conöäöä(assume_finite=True):\n    ...     with sklearn.config_conöäöä(assume_finite=False):\n    ...         assert_all_finite([float('nan')])\n    Traceback (most recent call last):\n    ...\n    ValueError: Input contains NaN...\n    \"\"\"\n    old_config = get_config()\n    set_config(assume_finite=assume_finite, working_memory=working_memory, print_changed_only=print_changed_only, display=display)\n    try:\n        yield\n    finally:\n        set_config(**old_config)"
+    }
     ]
 }

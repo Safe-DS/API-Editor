@@ -1,7 +1,8 @@
 import json
 from io import TextIOWrapper
 from pathlib import Path
-from typing import Callable, re
+from typing import Callable
+import re
 
 from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.get_api import API
@@ -261,7 +262,7 @@ def __get_enum_annotations(api: API, usages: UsageStore) -> dict[str, dict[str, 
     for methode, function in api.functions.items():
         for parameter in function.parameters:
             refined_type = parameter.refined_type.as_dict()
-            if 'kind' in refined_type:
+            if "kind" in refined_type:
                 if refined_type["kind"] == "EnumType":
                     parameter_dict = dict()
                     target = __qname_to_target_name(api, methode + "." + parameter.name)
@@ -294,8 +295,9 @@ def __get_enum_annotations(api: API, usages: UsageStore) -> dict[str, dict[str, 
 
 if __name__ == "__main__":
    # api_file = open("D:\\GitHubRepositorys\\API-Editor\\package-parser\\tests\\commands\\generate_annotations\\api.json")
-    api_file = open("F:\\scikit-learn__sklearn__1.0.2__api.json", "r")
+    api_file = open("D:\\GitHubRepositorys\\API-Editor\\package-parser\\tests\\data\\api_data.json")
+    # open("C:\\Users\\Nils\\Desktop\\scikit-learn__sklearn__1.0.2__api.json", "r")
     api_json = json.load(api_file)
     api = API.from_json(api_json)
-    __get_enum_annotations(api, None)
+    print(__get_enum_annotations(api, None))
 # return {"enums": enums}
