@@ -1,13 +1,12 @@
+from __future__ import annotations
+
 import json
+from enum import Enum
 from io import TextIOWrapper
 from pathlib import Path
-from typing import Any
 
 from package_parser.commands.find_usages import (
-    ClassUsage,
-    FunctionUsage,
     UsageStore,
-    ValueUsage,
 )
 from package_parser.commands.get_api import API
 from package_parser.utils import parent_qname
@@ -24,12 +23,10 @@ def generate_annotations(
         usages_json = json.load(usages_file)
         usages = UsageStore.from_json(usages_json)
 
-    # out_dir.mkdir(parents=True, exist_ok=True)
-    # base_file_name = api_file.name.replace("__api.json", "")
-
     __preprocess_usages(usages, api)
     constant_parameters = __find_constant_parameters(usages, api)
-    return constant_parameters
+    optional_parameters = __get_optional_parameters(usages, api)
+    return {"constant": constant_parameters, "optional": optional_parameters}
 
 
 def __preprocess_usages(usages: UsageStore, api: API) -> None:
@@ -155,6 +152,55 @@ def __find_constant_parameters(
     return result
 
 
+def __get_optional_parameters(usages: UsageStore, api: API) -> dict[str, dict[str, str]]:
+    result = {}
+
+    for parameter_qname in list(usages.parameter_usages.keys()):
+
+        if len(usages.value_usages[parameter_qname].values()) <= 1:
+            continue
+
+        parameter_used_counter = []
+        for used_parameter in list(usages.value_usages[parameter_qname].keys()):
+            usage_count = len(usages.value_usages[parameter_qname][used_parameter])
+            parameter_used_counter.append((used_parameter, usage_count))
+
+        type_result = __get_parameter_type(parameter_used_counter)
+        if type_result[0] != ParameterType.Optional:
+            continue
+
+        target_name = __qname_to_target_name(api, parameter_qname)
+        default_type, default_value = __get_default_type_from_value(
+            str(usages.most_common_value(parameter_qname))
+        )
+        print(target_name)
+        result[target_name] = {
+            "target": target_name,
+            "defaultType": default_type,
+            "defaultValue": default_value
+        }
+
+    print(json.dumps(result))
+    return result
+
+
+def __get_parameter_type(values: list[tuple[str, int]]) -> (ParameterType, str):
+    if len(values) == 0:
+        return ParameterType.Unused, None
+    elif len(values) == 1:
+        return ParameterType.Constant, values[0][0]
+
+    n = len(values)
+    m = sum([count for value, count in values])
+
+    most_used_value, seconds_most_used_value = sorted(values, key=lambda tup: tup[1])[:2]
+
+    if most_used_value[1] - seconds_most_used_value[1] <= n / m:
+        return ParameterType.Required, None
+    else:
+        return ParameterType.Optional, most_used_value[0]
+
+
 def __qname_to_target_name(api: API, qname: str) -> str:
     target_elements = qname.split(".")
 
@@ -188,3 +234,10 @@ def __get_default_type_from_value(default_value: str) -> tuple[str, str]:
         default_value = default_value
 
     return default_type, default_value
+
+
+class ParameterType(Enum):
+    Constant = 0
+    Optional = 1
+    Required = 2
+    Unused = 3
