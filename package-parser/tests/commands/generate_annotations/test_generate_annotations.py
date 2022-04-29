@@ -32,6 +32,7 @@ UNUSED_EXPECTED = {
     }
 }
 
+
 CONSTANT_EXPECTED = {
     "constant": {
         "test/test/commonly_used_global_function/unused_optional_parameter": {
@@ -60,15 +61,15 @@ CONSTANT_EXPECTED = {
 
 REQUIRED_EXPECTED = {
     "requireds": {
-        'test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_required':{
+        'test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_required': {
             'target': 'test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_required'
         },
-        'test/test/commonly_used_global_required_and_optional_function/required_that_should_be_required':{
-            'target': 'test/test/commonly_used_global_required_and_optional_function/required_that_should_be_required'
-        },
-        'test/test/commonly_used_global_required_and_optional_function/commonly_used_barely_required':{
+        'test/test/commonly_used_global_required_and_optional_function/commonly_used_barely_required': {
             'target': 'test/test/commonly_used_global_required_and_optional_function/commonly_used_barely_required'
         },
+        "test/test/commonly_used_global_function/useful_optional_parameter": {
+            "target": "test/test/commonly_used_global_function/useful_optional_parameter"
+        }
     }
 }
 
@@ -133,7 +134,6 @@ def test_get_constant():
 def test_get_required():
     usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
     _preprocess_usages(usages, api)
-    #import pdb; pdb.set_trace()
     assert __get_required_annotations(usages, api) == REQUIRED_EXPECTED
 
 

@@ -167,7 +167,7 @@
             "parameters": [
                 {
                     "name": "optional_that_should_be_required",
-                    "default_value": "'test'",
+                    "default_value": "'brains'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
                     "docstring": {

@@ -274,16 +274,16 @@ def __get_required_annotations(usages: UsageStore, api: API) -> dict[str, dict[s
     optional_parameter = [(it, parameters[it]) for it in parameters if parameters[it].default_value is not None]
     for qname, parameter in optional_parameter:
         values = usages.value_usages[qname].items()
-
-        
-
-
         values = [(it[0], len(it[1])) for it in values]
 
+        #if qname == 'test.commonly_used_global_required_and_optional_function.commonly_used_barely_required':
+        #    print(values)
+        print(qname)
         if __get_parameter_type(values)[0] is ParameterType.Required:
             target_name = __qname_to_target_name(api, qname)
             result[target_name] = {"target": target_name}
 
+    print(result.keys())
     return {"requireds": result}
 
 
@@ -302,6 +302,9 @@ def __get_parameter_type(values: list[tuple[str, int]]) -> (ParameterType, str):
     m = sum([count for value, count in values])
 
     seconds_most_used_value, most_used_value = sorted(values, key=lambda tup: tup[1])[-2:]
+
+    print(str(n) + str(m) + str(most_used_value[1] - seconds_most_used_value[1]))
+    print([it for it, es in values])
 
     if most_used_value[1] - seconds_most_used_value[1] <= m/n:
         return ParameterType.Required, None

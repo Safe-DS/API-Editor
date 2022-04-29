@@ -47,123 +47,8 @@
 "test.commonly_used_global_required_and_optional_function": [
             {
                 "file": "test.py",
-                "line": 1,
-                "column": 1
-            },
-            {
-                "file": "test.py",
-                "line":2,
-                "column": 2
-            },
-            {
-                "file": "test.py",
-                "line": 3,
-                "column": 3
-            },
-            {
-                "file": "test.py",
-                "line": 4,
-                "column": 4
-            },
-            {
-                "file": "test.py",
-                "line": 5,
-                "column": 5
-            },
-            {
-                "file": "test.py",
-                "line": 6,
-                "column": 6
-            },
-            {
-                "file": "test.py",
-                "line": 7,
-                "column": 7
-            },
-            {
-                "file": "test.py",
-                "line": 8,
-                "column": 8
-            },
-            {
-                "file": "test.py",
-                "line": 9,
-                "column": 9
-            },
-            {
-                "file": "test.py",
-                "line": 10,
-                "column": 10
-            },
-            {
-                "file": "test.py",
-                "line": 11,
-                "column": 11
-            },
-            {
-                "file": "test.py",
-                "line": 12,
-                "column": 12
-            },
-            {
-                "file": "test.py",
-                "line": 13,
-                "column": 13
-            },
-            {
-                "file": "test.py",
-                "line": 14,
-                "column": 14
-            },
-            {
-                "file": "test.py",
-                "line": 15,
-                "column": 15
-            },
-            {
-                "file": "test.py",
-                "line": 16,
-                "column": 16
-            },
-            {
-                "file": "test.py",
-                "line": 17,
-                "column": 17
-            },
-            {
-                "file": "test.py",
-                "line": 18,
-                "column": 18
-            },
-            {
-                "file": "test.py",
-                "line": 19,
-                "column": 19
-            },
-            {
-                "file": "test.py",
                 "line": 20,
                 "column": 20
-            },
-            {
-                "file": "test.py",
-                "line": 21,
-                "column": 21
-            },
-            {
-                "file": "test.py",
-                "line": 22,
-                "column": 22
-            },
-            {
-                "file": "test.py",
-                "line": 23,
-                "column": 23
-            },
-            {
-                "file": "test.py",
-                "line": 24,
-                "column": 24
             }
         ]
     },
@@ -264,13 +149,13 @@
         "test.commonly_used_global_required_and_optional_function.required_that_should_be_required": [
             {
                 "file": "test.py",
-                "line": 3,
-                "column": 3
+                "line": 1,
+                "column": 1
             },
             {
                 "file": "test.py",
-                "line": 4,
-                "column": 4
+                "line": 1,
+                "column": 1
             }
         ],
         "test.commonly_used_global_required_and_optional_function.required_that_should_be_optional": [
@@ -477,7 +362,7 @@
             ]
         },
         "test.commonly_used_global_required_and_optional_function.optional_that_should_be_required": {
-            "'test'": [
+            "'brains'": [
                 {
                     "file": "test.py",
                     "line": 1,
@@ -487,8 +372,8 @@
             "'irgendwas_anderes'": [
                 {
                     "file": "test.py",
-                    "line": 2,
-                    "column": 2
+                    "line": 1,
+                    "column": 1
                 }
             ]
         },
@@ -496,15 +381,15 @@
              "'hallo'": [
                 {
                     "file": "test.py",
-                    "line": 3,
-                    "column": 3
+                    "line": 1,
+                    "column": 1
                 }
             ],
             "'irgendwas_anderes'": [
                 {
                     "file": "test.py",
-                    "line": 4,
-                    "column": 4
+                    "line": 1,
+                    "column": 1
                 }
             ]
         },
@@ -512,30 +397,30 @@
             "'miau'": [
                 {
                     "file": "test.py",
-                    "line": 5,
-                    "column": 5
+                    "line": 1,
+                    "column": 1
                 },
                 {
                     "file": "test.py",
-                    "line": 6,
-                    "column": 6
+                    "line": 1,
+                    "column": 1
                 },
                 {
                     "file": "test.py",
-                    "line": 7,
-                    "column": 7
+                    "line": 1,
+                    "column": 1
                 },
                 {
                     "file": "test.py",
-                    "line": 8,
-                    "column": 8
+                    "line": 1,
+                    "column": 1
                 }
             ],
             "'irgendwas_anderes'": [
                 {
                     "file": "test.py",
-                    "line": 9,
-                    "column": 9
+                    "line": 1,
+                    "column": 1
                 }
             ]
         },
@@ -543,30 +428,30 @@
             "'captain_morgan'": [
                 {
                     "file": "test.py",
-                    "line": 10,
-                    "column": 10
+                    "line": 1,
+                    "column": 1
                 },
                 {
                     "file": "test.py",
-                    "line": 11,
-                    "column": 11
+                    "line": 1,
+                    "column": 1
                 },
                 {
                     "file": "test.py",
-                    "line": 12,
-                    "column": 12
+                    "line": 1,
+                    "column": 1
                 },
                 {
                     "file": "test.py",
-                    "line": 13,
-                    "column": 13
+                    "line": 1,
+                    "column": 1
                 }
             ],
             "'irgendwas_anderes'": [
                 {
                     "file": "test.py",
-                    "line": 14,
-                    "column": 14
+                    "line": 1,
+                    "column": 1
                 }
             ]
         },
@@ -574,30 +459,30 @@
             "'marvel'": [
                 {
                     "file": "test.py",
-                    "line": 15,
-                    "column": 15
+                    "line": 1,
+                    "column": 1
                 },
                 {
                     "file": "test.py",
-                    "line": 16,
-                    "column": 16
+                    "line": 1,
+                    "column": 1
                 },
                 {
                     "file": "test.py",
-                    "line": 17,
-                    "column": 17
+                    "line": 1,
+                    "column": 1
                 },
                 {
                     "file": "test.py",
-                    "line": 18,
-                    "column": 18
+                    "line": 1,
+                    "column": 1
                 }
             ],
             "'irgendwas_anderes'": [
                 {
                     "file": "test.py",
-                    "line": 19,
-                    "column": 19
+                    "line": 1,
+                    "column": 1
                 }
             ]
         },
@@ -605,25 +490,25 @@
             "'otto'": [
                 {
                     "file": "test.py",
-                    "line": 20,
-                    "column": 20
+                    "line": 1,
+                    "column": 1
                 },
                 {
                     "file": "test.py",
-                    "line": 21,
-                    "column": 21
+                    "line": 1,
+                    "column": 1
                 },
                 {
                     "file": "test.py",
-                    "line": 22,
-                    "column": 22
+                    "line": 1,
+                    "column": 1
                 }
             ],
             "'irgendwas_anderes'": [
                 {
                     "file": "test.py",
-                    "line": 23,
-                    "column": 23
+                    "line": 1,
+                    "column": 1
                 }
             ]
         },
