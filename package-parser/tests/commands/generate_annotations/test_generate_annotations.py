@@ -14,7 +14,7 @@ from package_parser.commands.generate_annotations.generate_annotations import (
 from package_parser.commands.get_api import API
 from package_parser.models.annotation_models import AnnotationStore
 
-UNUSED_EXPECTED = {
+UNUSED_EXPECTED: dict[str, dict[str, str]] = {
     "test/test/Unused_Class": {"target": "test/test/Unused_Class"},
     "test/test/commonly_used_global_function/unused_optional_parameter": {
         "target": "test/test/commonly_used_global_function/unused_optional_parameter"
@@ -30,7 +30,7 @@ UNUSED_EXPECTED = {
     },
 }
 
-CONSTANT_EXPECTED = {
+CONSTANT_EXPECTED: dict[str, dict[str, str]] = {
     "test/test/commonly_used_global_function/unused_optional_parameter": {
         "defaultType": "string",
         "defaultValue": "bla",
@@ -48,10 +48,10 @@ CONSTANT_EXPECTED = {
     },
 }
 
-REQUIREDS_EXPECTED = {}
-OPTIONALS_EXPECTED = {}
-BOUNDARIES_EXPECTED = {}
-ENUMS_EXPECTED = {}
+REQUIREDS_EXPECTED: dict[str, dict[str, str]] = {}
+OPTIONALS_EXPECTED: dict[str, dict[str, str]] = {}
+BOUNDARIES_EXPECTED: dict[str, dict[str, str]] = {}
+ENUMS_EXPECTED: dict[str, dict[str, str]] = {}
 
 # Reihenfolge ist wichtig, siehe Reihenfolge von annotation_functions in generate_annotations.py
 FULL_EXPECTED = {"constant": {**CONSTANT_EXPECTED}, "unused": {**UNUSED_EXPECTED}, "requireds": {**REQUIREDS_EXPECTED},
