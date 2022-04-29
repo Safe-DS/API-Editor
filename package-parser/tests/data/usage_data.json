@@ -1,5 +1,20 @@
 {
-    "class_usages": {},
+    "class_usages": {
+        "test.Commonly_Used_Class": [
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            }
+        ],
+        "test.Rarely_Used_Class": [
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            }
+        ]
+    },
     "function_usages": {
         "test.unused_global_function": [],
         "test.commonly_used_global_function": [
