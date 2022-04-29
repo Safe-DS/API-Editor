@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from io import TextIOWrapper
 from pathlib import Path
-from typing import Callable
+from typing import Callable, Optional
 from enum import Enum
 
 from package_parser.commands.find_usages import UsageStore
@@ -274,8 +274,8 @@ def __get_required_annotations(usages: UsageStore, api: API) -> dict[str, dict[s
     # Takes all parameters with default value
     optional_parameter = [(it, parameters[it]) for it in parameters if parameters[it].default_value is not None]
     for qname, parameter in optional_parameter:
-        values = usages.value_usages[qname].items()
-        values = [(it[0], len(it[1])) for it in values]
+        values_dict = usages.value_usages[qname].items()
+        values = [(it[0], len(it[1])) for it in values_dict]
 
         if __get_parameter_type(values)[0] is ParameterType.Required:
             target_name = __qname_to_target_name(api, qname)
@@ -284,12 +284,12 @@ def __get_required_annotations(usages: UsageStore, api: API) -> dict[str, dict[s
     return {"requireds": result}
 
 
-def __get_parameter_type(values: list[tuple[str, int]]) -> (ParameterType, str):
+def __get_parameter_type(values: list[tuple[str, int]]) -> tuple[ParameterType, Optional[str]]:
     """
-       Returns a tuple of the parameter Typ and parameter value
+    Returns a tuple of the parameter Typ and parameter value
 
-       :param values: list of tuples where the first value represents the parameter name and the second represents the count of occurrences
-       """
+    :param values: list of tuples where the first value represents the parameter name and the second represents the count of occurrences
+    """
     if len(values) == 0:
         return ParameterType.Unused, None
     elif len(values) == 1:
