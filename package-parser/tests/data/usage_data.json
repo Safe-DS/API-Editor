@@ -44,7 +44,7 @@
                 "column": 2
             }
         ],
-"test.commonly_used_global_required_and_optional_function": [
+        "test.commonly_used_global_required_and_optional_function": [
             {
                 "file": "test.py",
                 "line": 20,
@@ -142,7 +142,7 @@
             },
             {
                 "file": "test.py",
-                "line":2,
+                "line": 2,
                 "column": 2
             }
         ],
@@ -378,7 +378,7 @@
             ]
         },
         "test.commonly_used_global_required_and_optional_function.required_that_should_be_required": {
-             "'hallo'": [
+            "'hallo'": [
                 {
                     "file": "test.py",
                     "line": 1,

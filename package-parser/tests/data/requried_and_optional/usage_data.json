@@ -10,7 +10,7 @@
             },
             {
                 "file": "test.py",
-                "line":2,
+                "line": 2,
                 "column": 2
             },
             {
@@ -135,7 +135,7 @@
             },
             {
                 "file": "test.py",
-                "line":2,
+                "line": 2,
                 "column": 2
             }
         ],
@@ -281,7 +281,7 @@
             ]
         },
         "test.commonly_used_global_required_and_optional_function.required_that_should_be_required": {
-             "'hallo'": [
+            "'hallo'": [
                 {
                     "file": "test.py",
                     "line": 3,

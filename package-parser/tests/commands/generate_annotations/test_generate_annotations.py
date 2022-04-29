@@ -6,8 +6,8 @@ import pytest
 from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.generate_annotations.generate_annotations import (
     __get_constant_annotations,
-    __get_unused_annotations,
     __get_required_annotations,
+    __get_unused_annotations,
     __qname_to_target_name,
     _preprocess_usages,
     generate_annotations,
@@ -54,22 +54,22 @@ CONSTANT_EXPECTED = {
             "defaultType": "string",
             "defaultValue": "bockwurst",
             "target": "test/test/commonly_used_global_required_and_optional_function/constant_parameter",
-        }
+        },
     }
 }
 
 
 REQUIRED_EXPECTED = {
     "requireds": {
-        'test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_required': {
-            'target': 'test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_required'
+        "test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_required": {
+            "target": "test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_required"
         },
-        'test/test/commonly_used_global_required_and_optional_function/commonly_used_barely_required': {
-            'target': 'test/test/commonly_used_global_required_and_optional_function/commonly_used_barely_required'
+        "test/test/commonly_used_global_required_and_optional_function/commonly_used_barely_required": {
+            "target": "test/test/commonly_used_global_required_and_optional_function/commonly_used_barely_required"
         },
         "test/test/commonly_used_global_function/useful_optional_parameter": {
             "target": "test/test/commonly_used_global_function/useful_optional_parameter"
-        }
+        },
     }
 }
 

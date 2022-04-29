@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 import json
+from enum import Enum
 from io import TextIOWrapper
 from pathlib import Path
 from typing import Callable, Optional
-from enum import Enum
 
 from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.get_api import API
@@ -33,7 +33,11 @@ def generate_annotations(
         usages_json = json.load(usages_file)
         usages = UsageStore.from_json(usages_json)
 
-    annotation_functions = [__get_unused_annotations, __get_constant_annotations, __get_required_annotations]
+    annotation_functions = [
+        __get_unused_annotations,
+        __get_constant_annotations,
+        __get_required_annotations,
+    ]
 
     annotations_dict = __generate_annotation_dict(api, usages, annotation_functions)
 
@@ -260,7 +264,9 @@ def __add_implicit_usages_of_default_value(usages: UsageStore, api: API) -> None
             usages.add_value_usage(parameter_qname, default_value, location)
 
 
-def __get_required_annotations(usages: UsageStore, api: API) -> dict[str, dict[str, dict[str, str]]]:
+def __get_required_annotations(
+    usages: UsageStore, api: API
+) -> dict[str, dict[str, dict[str, str]]]:
     """
     Returns all required annotations
 
@@ -270,9 +276,13 @@ def __get_required_annotations(usages: UsageStore, api: API) -> dict[str, dict[s
     """
     result = {}
 
-    parameters = (api.parameters())
+    parameters = api.parameters()
     # Takes all parameters with default value
-    optional_parameter = [(it, parameters[it]) for it in parameters if parameters[it].default_value is not None]
+    optional_parameter = [
+        (it, parameters[it])
+        for it in parameters
+        if parameters[it].default_value is not None
+    ]
     for qname, parameter in optional_parameter:
         values_dict = usages.value_usages[qname].items()
         values = [(it[0], len(it[1])) for it in values_dict]
@@ -284,7 +294,9 @@ def __get_required_annotations(usages: UsageStore, api: API) -> dict[str, dict[s
     return {"requireds": result}
 
 
-def __get_parameter_type(values: list[tuple[str, int]]) -> tuple[ParameterType, Optional[str]]:
+def __get_parameter_type(
+    values: list[tuple[str, int]]
+) -> tuple[ParameterType, Optional[str]]:
     """
     Returns a tuple of the parameter Typ and parameter value
 
@@ -298,12 +310,14 @@ def __get_parameter_type(values: list[tuple[str, int]]) -> tuple[ParameterType, 
     n = len(values)
     m = sum([count for value, count in values])
 
-    seconds_most_used_value, most_used_value = sorted(values, key=lambda tup: tup[1])[-2:]
+    seconds_most_used_value, most_used_value = sorted(values, key=lambda tup: tup[1])[
+        -2:
+    ]
 
     print(str(n) + str(m) + str(most_used_value[1] - seconds_most_used_value[1]))
     print([it for it, es in values])
 
-    if most_used_value[1] - seconds_most_used_value[1] <= m/n:
+    if most_used_value[1] - seconds_most_used_value[1] <= m / n:
         return ParameterType.Required, None
     return ParameterType.Optional, most_used_value[0]
 
