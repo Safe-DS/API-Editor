@@ -7,7 +7,9 @@ from package_parser.commands.get_api import API
 from package_parser.utils import parent_qname
 
 
-def generate_annotations(api_file: TextIOWrapper, usages_file: TextIOWrapper, output_file: TextIOWrapper) -> None:
+def generate_annotations(
+    api_file: TextIOWrapper, usages_file: TextIOWrapper, output_file: TextIOWrapper
+) -> None:
     """
     Generates an annotation file from the given API and UsageStore files, and writes it to the given output file.
     Annotations that are generated are: constant, unused,
@@ -44,7 +46,9 @@ def __generate_annotation_dict(api: API, usages: UsageStore, functions: list[Cal
     return annotations_dict
 
 
-def __get_constant_annotations(usages: UsageStore, api: API) -> dict[str, dict[str, dict[str, str]]]:
+def __get_constant_annotations(
+    usages: UsageStore, api: API
+) -> dict[str, dict[str, dict[str, str]]]:
     """
     Returns all parameters that are only ever assigned a single value.
     :param usages: UsageStore object
@@ -76,7 +80,9 @@ def __get_constant_annotations(usages: UsageStore, api: API) -> dict[str, dict[s
     return {constant: constants}
 
 
-def __get_unused_annotations(usages: UsageStore, api: API) -> dict[str, dict[str, dict[str, str]]]:
+def __get_unused_annotations(
+    usages: UsageStore, api: API
+) -> dict[str, dict[str, dict[str, str]]]:
     """
     Returns all parameters that are never used.
     :param usages: UsageStore object
@@ -87,17 +93,26 @@ def __get_unused_annotations(usages: UsageStore, api: API) -> dict[str, dict[str
     unuseds: dict[str, dict[str, str]] = {}
 
     for parameter_name in list(api.parameters().keys()):
-        if parameter_name not in usages.parameter_usages or len(usages.parameter_usages[parameter_name]) == 0:
+        if (
+            parameter_name not in usages.parameter_usages
+            or len(usages.parameter_usages[parameter_name]) == 0
+        ):
             formatted_name = __qname_to_target_name(api, parameter_name)
             unuseds[formatted_name] = {"target": formatted_name}
 
     for function_name in list(api.functions.keys()):
-        if function_name not in usages.function_usages or len(usages.function_usages[function_name]) == 0:
+        if (
+            function_name not in usages.function_usages
+            or len(usages.function_usages[function_name]) == 0
+        ):
             formatted_name = __qname_to_target_name(api, function_name)
             unuseds[formatted_name] = {"target": formatted_name}
 
     for class_name in list(api.classes.keys()):
-        if class_name not in usages.class_usages or len(usages.class_usages[class_name]) == 0:
+        if (
+            class_name not in usages.class_usages
+            or len(usages.class_usages[class_name]) == 0
+        ):
             formatted_name = __qname_to_target_name(api, class_name)
             unuseds[formatted_name] = {"target": formatted_name}
 
