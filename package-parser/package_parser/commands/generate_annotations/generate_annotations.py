@@ -292,20 +292,27 @@ def __get_parameter_info(qname: str, usages: UsageStore) -> ParameterInfo:
             ParameterType.Constant, value, __get_default_type_from_value(value)
         )
 
-    # The following section is used to differentiate between an optional and a required parameter
+    if is_required(values):
+        return ParameterInfo(ParameterType.Required)
+
+    value = max(values, key=lambda item: item[1])[0]
+    if value[0] == "'":
+        value = value[1:-1]
+    return ParameterInfo(
+        ParameterType.Optional, value, __get_default_type_from_value(value)
+    )
+
+
+def is_required(values: list[tuple[str, int]]) -> bool:
+    """
+    This replaceable function determines how to differentiate between an optional and a required parameter
+    :param values: List of all associated values and the amount they get used with
+    :return True means the parameter should be required, False means it should be optional
+    """
     n = len(values)
     m = sum([count for value, count in values])
 
     seconds_most_used_value_tupel, most_used_value_tupel = sorted(
         values, key=lambda tup: tup[1]
     )[-2:]
-    required = most_used_value_tupel[1] - seconds_most_used_value_tupel[1] <= m / n
-
-    if required:
-        return ParameterInfo(ParameterType.Required)
-    value = most_used_value_tupel[0]
-    if value[0] == "'":
-        value = value[1:-1]
-    return ParameterInfo(
-        ParameterType.Optional, value, __get_default_type_from_value(value)
-    )
+    return most_used_value_tupel[1] - seconds_most_used_value_tupel[1] <= m / n
