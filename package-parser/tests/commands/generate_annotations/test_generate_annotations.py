@@ -16,11 +16,15 @@ from package_parser.commands.get_api import API
 from package_parser.models.annotation_models import AnnotationStore
 
 UNUSED_EXPECTED: dict[str, dict[str, str]] = {
-    "test/test/Unused_Class": {"target": "test/test/Unused_Class"},
+    "test/test/Unused_Class": {
+        "target": "test/test/Unused_Class"
+    },
     "test/test/commonly_used_global_function/unused_optional_parameter": {
         "target": "test/test/commonly_used_global_function/unused_optional_parameter"
     },
-    "test/test/unused_global_function": {"target": "test/test/unused_global_function"},
+    "test/test/unused_global_function": {
+        "target": "test/test/unused_global_function"
+    },
     "test/test/unused_global_function/unused_optional_parameter": {
         "target": "test/test/unused_global_function/unused_optional_parameter"
     },
@@ -28,7 +32,8 @@ UNUSED_EXPECTED: dict[str, dict[str, str]] = {
         "target": "test/test/unused_global_function/unused_required_parameter"
     },
 }
-  
+
+
 CONSTANT_EXPECTED: dict[str, dict[str, str]] = {
     "test/test/commonly_used_global_function/unused_optional_parameter": {
         "defaultType": "string",
@@ -45,22 +50,25 @@ CONSTANT_EXPECTED: dict[str, dict[str, str]] = {
         "defaultValue": "blup",
         "target": "test/test/commonly_used_global_function/useless_required_parameter",
     },
+    "test/test/commonly_used_global_required_and_optional_function/constant_parameter": {
+        "defaultType": "string",
+        "defaultValue": "bockwurst",
+        "target": "test/test/commonly_used_global_required_and_optional_function/constant_parameter",
+    },
 }
 
-REQUIRED_EXPECTED = {
+REQUIREDS_EXPECTED: dict[str, dict[str, str]] = {
     "test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_required": {
-            "target": "test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_required"
-        },
-        "test/test/commonly_used_global_required_and_optional_function/commonly_used_barely_required": {
-            "target": "test/test/commonly_used_global_required_and_optional_function/commonly_used_barely_required"
-        },
-        "test/test/commonly_used_global_function/useful_optional_parameter": {
-            "target": "test/test/commonly_used_global_function/useful_optional_parameter"
-        },
-    }  
-  
-  
-REQUIREDS_EXPECTED: dict[str, dict[str, str]] = {}
+        "target": "test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_required"
+    },
+    "test/test/commonly_used_global_required_and_optional_function/commonly_used_barely_required": {
+        "target": "test/test/commonly_used_global_required_and_optional_function/commonly_used_barely_required"
+    },
+    "test/test/commonly_used_global_function/useful_optional_parameter": {
+        "target": "test/test/commonly_used_global_function/useful_optional_parameter"
+    },
+}
+
 OPTIONALS_EXPECTED: dict[str, dict[str, str]] = {}
 BOUNDARIES_EXPECTED: dict[str, dict[str, str]] = {}
 ENUMS_EXPECTED: dict[str, dict[str, str]] = {}
@@ -74,7 +82,6 @@ FULL_EXPECTED = {
     "boundaries": {**BOUNDARIES_EXPECTED},
     "enums": {**ENUMS_EXPECTED},
 }
-
 
 
 def setup():
@@ -140,8 +147,10 @@ def test_get_constant():
 
 def test_get_required():
     usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
+    annotations = AnnotationStore()
     _preprocess_usages(usages, api)
-    assert __get_required_annotations(usages, api) == REQUIRED_EXPECTED
+    __get_required_annotations(usages, api, annotations)
+    assert {annotation.target: annotation.to_json() for annotation in annotations.requireds} == REQUIREDS_EXPECTED
 
 
 def test_generate():

@@ -1,4 +1,6 @@
 import dataclasses
+from typing import Optional
+from enum import Enum
 
 
 @dataclasses.dataclass
@@ -103,3 +105,21 @@ class AnnotationStore:
                 annotation.target: annotation.to_json() for annotation in self.enums
             },
         }
+
+
+class ParameterType(Enum):
+    Constant = 0
+    Optional = 1
+    Required = 2
+    Unused = 3
+
+
+class ParameterInfo:
+    type: ParameterType
+    value: Optional[str]
+    value_type: Optional[str]
+
+    def __init__(self, parameter_type, value=None, value_type=None):
+        self.type = parameter_type
+        self.value = value
+        self.value_type = value_type

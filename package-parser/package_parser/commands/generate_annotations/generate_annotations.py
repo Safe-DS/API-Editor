@@ -1,7 +1,4 @@
-from __future__ import annotations
-
 import json
-from enum import Enum
 from io import TextIOWrapper
 from pathlib import Path
 from typing import Callable, Optional
@@ -9,9 +6,12 @@ from typing import Callable, Optional
 from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.get_api import API
 from package_parser.models.annotation_models import (
+    ParameterType,
+    ParameterInfo,
     AnnotationStore,
     ConstantAnnotation,
     UnusedAnnotation,
+    RequiredAnnotation,
 )
 from package_parser.utils import parent_qname
 
@@ -25,10 +25,9 @@ def generate_annotations(
     :param api_file: API file
     :param usages_file: UsageStore file
     :param output_file: Output file
-    :return: None
     """
     if api_file is None or usages_file is None or output_file is None:
-        raise ValueError("api_file, usages_file, and output_file must be specified.")
+        raise ValueError("Api_file, usages_file, and output_file must be specified.")
 
     with api_file:
         api_json = json.load(api_file)
@@ -38,6 +37,7 @@ def generate_annotations(
         usages_json = json.load(usages_file)
         usages = UsageStore.from_json(usages_json)
 
+    annotations = AnnotationStore()
     annotation_functions = [
         __get_unused_annotations,
         __get_constant_annotations,
@@ -66,29 +66,21 @@ def __get_constant_annotations(
     usages: UsageStore, api: API, annotations: AnnotationStore
 ) -> None:
     """
-    Returns all parameters that are only ever assigned a single value.
+    Collect all parameters that are only ever assigned a single value.
     :param usages: UsageStore object
     :param api: API object for usages
-    :return: {"constant": dict[str, dict[str, str]]}
+    :param annotations: AnnotationStore, that holds all annotations
     """
-    for parameter_qname in list(usages.parameter_usages.keys()):
-        if len(usages.value_usages[parameter_qname].values()) == 0:
-            continue
+    for qname in list(usages.parameter_usages.keys()):
+        parameter_info = __get_parameter_type(qname, usages)
 
-        if len(usages.value_usages[parameter_qname].keys()) == 1:
-            if usages.most_common_value(parameter_qname) is None:
-                continue
-
-            target_name = __qname_to_target_name(api, parameter_qname)
-            default_type, default_value = __get_default_type_from_value(
-                str(usages.most_common_value(parameter_qname))
-            )
-
+        if parameter_info.type == ParameterType.Constant:
+            formatted_name = __qname_to_target_name(api, qname)
             annotations.constant.append(
                 ConstantAnnotation(
-                    target=target_name,
-                    defaultType=default_type,
-                    defaultValue=default_value,
+                    target=formatted_name,
+                    defaultValue=parameter_info.value,
+                    defaultType=parameter_info.value_type,
                 )
             )
 
@@ -97,10 +89,10 @@ def __get_unused_annotations(
     usages: UsageStore, api: API, annotations: AnnotationStore
 ) -> None:
     """
-    Returns all parameters that are never used.
+    Collect all parameters, functions and classes that are never used.
     :param usages: UsageStore object
     :param api: API object for usages
-    :return: {"unused": dict[str, dict[str, str]]}
+    :param annotations: AnnotationStore, that holds all annotations
     """
     for parameter_name in list(api.parameters().keys()):
         if (
@@ -127,9 +119,31 @@ def __get_unused_annotations(
             annotations.unused.append(UnusedAnnotation(formatted_name))
 
 
+def __get_required_annotations(
+    usages: UsageStore, api: API, annotations: AnnotationStore
+) -> None:
+    """
+    Collects all parameters that are currently optional but should be required to be assign a value
+    :param usages: Usage store
+    :param api: Description of the API
+    :param annotations: AnnotationStore, that holds all annotations
+    """
+    parameters = api.parameters()
+    optional_parameter = [
+        (it, parameters[it])
+        for it in parameters
+        if parameters[it].default_value is not None
+    ]
+    for qname, _ in optional_parameter:
+
+        if __get_parameter_type(qname, usages).type is ParameterType.Required:
+            formatted_name = __qname_to_target_name(api, qname)
+            annotations.requireds.append(RequiredAnnotation(formatted_name))
+
+
 def __qname_to_target_name(api: API, qname: str) -> str:
     """
-    Formats the given name to the wanted format. This method is to be removed as soon as the UsageStore is updated to
+    Formats the given name to the output format. This method is to be removed as soon as the UsageStore is updated to
     use the new format.
     :param api: API object
     :param qname: Name pre-formatting
@@ -155,8 +169,9 @@ def __qname_to_target_name(api: API, qname: str) -> str:
     return package_name + module_name + class_name + function_name + parameter_name
 
 
-def __get_default_type_from_value(default_value: str) -> tuple[str, str]:
-    default_value = str(default_value)[1:-1]
+def __get_default_type_from_value(default_value: Optional[str]) -> str:
+    if str(default_value)[0] == "'":
+        default_value = str(default_value)[1:-1]
 
     if default_value == "null":
         default_type = "none"
@@ -164,12 +179,10 @@ def __get_default_type_from_value(default_value: str) -> tuple[str, str]:
         default_type = "boolean"
     elif default_value.isnumeric():
         default_type = "number"
-        default_value = default_value
     else:
         default_type = "string"
-        default_value = default_value
 
-    return default_type, default_value
+    return default_type
 
 
 def _preprocess_usages(usages: UsageStore, api: API) -> None:
@@ -263,66 +276,33 @@ def __add_implicit_usages_of_default_value(usages: UsageStore, api: API) -> None
             usages.add_value_usage(parameter_qname, default_value, location)
 
 
-def __get_required_annotations(
-    usages: UsageStore, api: API
-) -> dict[str, dict[str, dict[str, str]]]:
-    """
-    Returns all required annotations
-
-    :param usages: Usage store
-    :param api: Description of the API
-    :return: {"requireds": dict[str, dict[str, str]]}
-    """
-    result = {}
-
-    parameters = api.parameters()
-    # Takes all parameters with default value
-    optional_parameter = [
-        (it, parameters[it])
-        for it in parameters
-        if parameters[it].default_value is not None
-    ]
-    for qname, _ in optional_parameter:
-        values_dict = usages.value_usages[qname].items()
-        values = [(it[0], len(it[1])) for it in values_dict]
-
-        if __get_parameter_type(values)[0] is ParameterType.Required:
-            target_name = __qname_to_target_name(api, qname)
-            result[target_name] = {"target": target_name}
-
-    return {"requireds": result}
-
-
 def __get_parameter_type(
-    values: list[tuple[str, int]]
-) -> tuple[ParameterType, Optional[str]]:
+    qname: str, usages: UsageStore
+) -> ParameterInfo:
     """
-    Returns a tuple of the parameter Typ and parameter value
+    Returns a ParameterInfo object, that contains the type of the parameter, the value that is associated with it, and the values type
+    :param qname: name of the parameter
+    :param usages: UsageStore
+    :return ParameterInfo
+    """
+    values = [(it[0], len(it[1])) for it in usages.value_usages[qname].items()]
 
-    :param values: list of tuples where the first value represents the parameter name and the second represents the count of occurrences
-    """
     if len(values) == 0:
-        return ParameterType.Unused, None
+        return ParameterInfo(ParameterType.Unused)
     elif len(values) == 1:
-        return ParameterType.Constant, values[0][0]
+        value = values[0][0]
+        if value[0] == "'":
+            value = value[1:-1]
+        return ParameterInfo(ParameterType.Constant, value, __get_default_type_from_value(value))
 
+    # The following section is used to differentiate beteween a optional and a required parameter
     n = len(values)
     m = sum([count for value, count in values])
 
-    seconds_most_used_value, most_used_value = sorted(values, key=lambda tup: tup[1])[
-        -2:
-    ]
+    seconds_most_used_value_tupel, most_used_value_tupel = sorted(values, key=lambda tup: tup[1])[-2:]
+    required = most_used_value_tupel[1] - seconds_most_used_value_tupel[1] <= m / n
 
-    print(str(n) + str(m) + str(most_used_value[1] - seconds_most_used_value[1]))
-    print([it for it, es in values])
-
-    if most_used_value[1] - seconds_most_used_value[1] <= m / n:
-        return ParameterType.Required, None
-    return ParameterType.Optional, most_used_value[0]
-
-
-class ParameterType(Enum):
-    Constant = 0
-    Optional = 1
-    Required = 2
-    Unused = 3
+    if required:
+        return ParameterInfo(ParameterType.Required)
+    value = most_used_value_tupel[0]
+    return ParameterInfo(ParameterType.Optional, value, __get_default_type_from_value(value))
