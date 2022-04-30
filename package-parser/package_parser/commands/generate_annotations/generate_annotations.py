@@ -72,7 +72,7 @@ def __get_constant_annotations(
     :param annotations: AnnotationStore, that holds all annotations
     """
     for qname in list(usages.parameter_usages.keys()):
-        parameter_info = __get_parameter_type(qname, usages)
+        parameter_info = __get_parameter_info(qname, usages)
 
         if parameter_info.type == ParameterType.Constant:
             formatted_name = __qname_to_target_name(api, qname)
@@ -136,7 +136,7 @@ def __get_required_annotations(
     ]
     for qname, _ in optional_parameter:
 
-        if __get_parameter_type(qname, usages).type is ParameterType.Required:
+        if __get_parameter_info(qname, usages).type is ParameterType.Required:
             formatted_name = __qname_to_target_name(api, qname)
             annotations.requireds.append(RequiredAnnotation(formatted_name))
 
@@ -276,7 +276,7 @@ def __add_implicit_usages_of_default_value(usages: UsageStore, api: API) -> None
             usages.add_value_usage(parameter_qname, default_value, location)
 
 
-def __get_parameter_type(
+def __get_parameter_info(
     qname: str, usages: UsageStore
 ) -> ParameterInfo:
     """
