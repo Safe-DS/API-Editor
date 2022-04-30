@@ -16,15 +16,11 @@ from package_parser.commands.get_api import API
 from package_parser.models.annotation_models import AnnotationStore
 
 UNUSED_EXPECTED: dict[str, dict[str, str]] = {
-    "test/test/Unused_Class": {
-        "target": "test/test/Unused_Class"
-    },
+    "test/test/Unused_Class": {"target": "test/test/Unused_Class"},
     "test/test/commonly_used_global_function/unused_optional_parameter": {
         "target": "test/test/commonly_used_global_function/unused_optional_parameter"
     },
-    "test/test/unused_global_function": {
-        "target": "test/test/unused_global_function"
-    },
+    "test/test/unused_global_function": {"target": "test/test/unused_global_function"},
     "test/test/unused_global_function/unused_optional_parameter": {
         "target": "test/test/unused_global_function/unused_optional_parameter"
     },
@@ -150,7 +146,9 @@ def test_get_required():
     annotations = AnnotationStore()
     _preprocess_usages(usages, api)
     __get_required_annotations(usages, api, annotations)
-    assert {annotation.target: annotation.to_json() for annotation in annotations.requireds} == REQUIREDS_EXPECTED
+    assert {
+        annotation.target: annotation.to_json() for annotation in annotations.requireds
+    } == REQUIREDS_EXPECTED
 
 
 def test_generate():

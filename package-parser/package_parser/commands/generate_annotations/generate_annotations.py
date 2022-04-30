@@ -6,12 +6,12 @@ from typing import Callable, Optional
 from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.get_api import API
 from package_parser.models.annotation_models import (
-    ParameterType,
-    ParameterInfo,
     AnnotationStore,
     ConstantAnnotation,
-    UnusedAnnotation,
+    ParameterInfo,
+    ParameterType,
     RequiredAnnotation,
+    UnusedAnnotation,
 )
 from package_parser.utils import parent_qname
 
@@ -273,9 +273,7 @@ def __add_implicit_usages_of_default_value(usages: UsageStore, api: API) -> None
             usages.add_value_usage(parameter_qname, default_value, location)
 
 
-def __get_parameter_info(
-    qname: str, usages: UsageStore
-) -> ParameterInfo:
+def __get_parameter_info(qname: str, usages: UsageStore) -> ParameterInfo:
     """
     Returns a ParameterInfo object, that contains the type of the parameter, the value that is associated with it, and the values type
     :param qname: name of the parameter
@@ -290,13 +288,17 @@ def __get_parameter_info(
         value = values[0][0]
         if value[0] == "'":
             value = value[1:-1]
-        return ParameterInfo(ParameterType.Constant, value, __get_default_type_from_value(value))
+        return ParameterInfo(
+            ParameterType.Constant, value, __get_default_type_from_value(value)
+        )
 
     # The following section is used to differentiate between an optional and a required parameter
     n = len(values)
     m = sum([count for value, count in values])
 
-    seconds_most_used_value_tupel, most_used_value_tupel = sorted(values, key=lambda tup: tup[1])[-2:]
+    seconds_most_used_value_tupel, most_used_value_tupel = sorted(
+        values, key=lambda tup: tup[1]
+    )[-2:]
     required = most_used_value_tupel[1] - seconds_most_used_value_tupel[1] <= m / n
 
     if required:
@@ -304,4 +306,6 @@ def __get_parameter_info(
     value = most_used_value_tupel[0]
     if value[0] == "'":
         value = value[1:-1]
-    return ParameterInfo(ParameterType.Optional, value, __get_default_type_from_value(value))
+    return ParameterInfo(
+        ParameterType.Optional, value, __get_default_type_from_value(value)
+    )
