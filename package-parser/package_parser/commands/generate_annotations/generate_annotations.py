@@ -169,10 +169,7 @@ def __qname_to_target_name(api: API, qname: str) -> str:
     return package_name + module_name + class_name + function_name + parameter_name
 
 
-def __get_default_type_from_value(default_value: Optional[str]) -> str:
-    if str(default_value)[0] == "'":
-        default_value = str(default_value)[1:-1]
-
+def __get_default_type_from_value(default_value: str) -> str:
     if default_value == "null":
         default_type = "none"
     elif default_value == "True" or default_value == "False":
@@ -295,7 +292,7 @@ def __get_parameter_info(
             value = value[1:-1]
         return ParameterInfo(ParameterType.Constant, value, __get_default_type_from_value(value))
 
-    # The following section is used to differentiate beteween a optional and a required parameter
+    # The following section is used to differentiate between an optional and a required parameter
     n = len(values)
     m = sum([count for value, count in values])
 
@@ -305,4 +302,6 @@ def __get_parameter_info(
     if required:
         return ParameterInfo(ParameterType.Required)
     value = most_used_value_tupel[0]
+    if value[0] == "'":
+        value = value[1:-1]
     return ParameterInfo(ParameterType.Optional, value, __get_default_type_from_value(value))

@@ -1,5 +1,4 @@
 import dataclasses
-from typing import Optional
 from enum import Enum
 
 
@@ -116,10 +115,10 @@ class ParameterType(Enum):
 
 class ParameterInfo:
     type: ParameterType
-    value: Optional[str]
-    value_type: Optional[str]
+    value: str
+    value_type: str
 
-    def __init__(self, parameter_type, value=None, value_type=None):
+    def __init__(self, parameter_type, value="", value_type=""):
         self.type = parameter_type
         self.value = value
         self.value_type = value_type
