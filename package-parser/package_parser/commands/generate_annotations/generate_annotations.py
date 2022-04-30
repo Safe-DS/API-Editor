@@ -292,7 +292,7 @@ def __get_parameter_info(qname: str, usages: UsageStore) -> ParameterInfo:
             ParameterType.Constant, value, __get_default_type_from_value(value)
         )
 
-    if is_required(values):
+    if __is_required(values):
         return ParameterInfo(ParameterType.Required)
 
     value = max(values, key=lambda item: item[1])[0]
@@ -303,7 +303,7 @@ def __get_parameter_info(qname: str, usages: UsageStore) -> ParameterInfo:
     )
 
 
-def is_required(values: list[tuple[str, int]]) -> bool:
+def __is_required(values: list[tuple[str, int]]) -> bool:
     """
     This replaceable function determines how to differentiate between an optional and a required parameter
     :param values: List of all associated values and the amount they get used with
