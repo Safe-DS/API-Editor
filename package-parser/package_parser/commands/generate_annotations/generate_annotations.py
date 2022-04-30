@@ -1,7 +1,7 @@
 import json
 from io import TextIOWrapper
 from pathlib import Path
-from typing import Callable, Optional
+from typing import Callable
 
 from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.get_api import API
