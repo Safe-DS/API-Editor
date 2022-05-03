@@ -4,23 +4,13 @@ import { PythonFilter } from './PythonFilter';
 import PythonModule from './PythonModule';
 
 export default class PythonPackage extends PythonDeclaration {
-    readonly distribution: string;
-    readonly name: string;
-    readonly version: string;
-    readonly modules: PythonModule[];
-
     constructor(
-        distribution: string,
-        name: string,
-        version: string,
-        modules: PythonModule[] = [],
+        readonly distribution: string,
+        readonly name: string,
+        readonly version: string,
+        readonly modules: PythonModule[] = [],
     ) {
         super();
-
-        this.distribution = distribution;
-        this.name = name;
-        this.version = version;
-        this.modules = modules;
 
         this.modules.forEach((it) => {
             it.containingPackage = this;

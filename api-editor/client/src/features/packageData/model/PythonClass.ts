@@ -6,36 +6,20 @@ import PythonFunction from './PythonFunction';
 import PythonModule from './PythonModule';
 
 export default class PythonClass extends PythonDeclaration {
-    readonly name: string;
-    readonly qualifiedName: string;
-    readonly decorators: string[];
-    readonly superclasses: string[];
-    readonly methods: PythonFunction[];
-    readonly isPublic: boolean;
-    readonly description: string;
-    readonly fullDocstring: string;
     containingModule: Optional<PythonModule>;
 
     constructor(
-        name: string,
-        qualifiedName: string,
-        decorators: string[] = [],
-        superclasses: string[] = [],
-        methods: PythonFunction[] = [],
-        isPublic: boolean = true,
-        description = '',
-        fullDocstring = '',
+        readonly name: string,
+        readonly qualifiedName: string,
+        readonly decorators: string[] = [],
+        readonly superclasses: string[] = [],
+        readonly methods: PythonFunction[] = [],
+        readonly isPublic: boolean = true,
+        readonly description = '',
+        readonly fullDocstring = '',
     ) {
         super();
 
-        this.name = name;
-        this.qualifiedName = qualifiedName;
-        this.decorators = decorators;
-        this.superclasses = superclasses;
-        this.methods = methods;
-        this.isPublic = isPublic;
-        this.description = description;
-        this.fullDocstring = fullDocstring;
         this.containingModule = null;
 
         this.methods.forEach((it) => {

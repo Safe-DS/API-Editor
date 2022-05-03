@@ -3,19 +3,16 @@ import PythonDeclaration from './PythonDeclaration';
 import PythonFunction from './PythonFunction';
 
 export default class PythonResult extends PythonDeclaration {
-    readonly name: string;
-    readonly type: string;
-    readonly typeInDocs: string;
-    readonly description: string;
     containingFunction: Optional<PythonFunction>;
 
-    constructor(name: string, type = 'Any', typeInDocs = '', description = '') {
+    constructor(
+        readonly name: string,
+        readonly type: string = 'Any',
+        readonly typeInDocs: string = '',
+        readonly description: string = '',
+    ) {
         super();
 
-        this.name = name;
-        this.type = type;
-        this.typeInDocs = typeInDocs;
-        this.description = description;
         this.containingFunction = null;
     }
 
