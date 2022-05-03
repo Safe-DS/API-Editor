@@ -7,42 +7,22 @@ import PythonParameter from './PythonParameter';
 import PythonResult from './PythonResult';
 
 export default class PythonFunction extends PythonDeclaration {
-    readonly name: string;
-    readonly uniqueName: string;
-    readonly qualifiedName: string;
-    readonly uniqueQualifiedName: string;
-    readonly decorators: string[];
-    readonly parameters: PythonParameter[];
-    readonly results: PythonResult[];
-    readonly isPublic: boolean;
-    readonly description: string;
-    readonly fullDocstring: string;
     containingModuleOrClass: Optional<PythonModule | PythonClass>;
 
     constructor(
-        name: string,
-        uniqueName: string,
-        qualifiedName: string,
-        uniqueQualifiedName: string,
-        decorators: string[] = [],
-        parameters: PythonParameter[] = [],
-        results: PythonResult[] = [],
-        isPublic: boolean = false,
-        description = '',
-        fullDocstring = '',
+        readonly name: string,
+        readonly uniqueName: string,
+        readonly qualifiedName: string,
+        readonly uniqueQualifiedName: string,
+        readonly decorators: string[] = [],
+        readonly parameters: PythonParameter[] = [],
+        readonly results: PythonResult[] = [],
+        readonly isPublic: boolean = false,
+        readonly description = '',
+        readonly fullDocstring = '',
     ) {
         super();
 
-        this.name = name;
-        this.uniqueName = uniqueName;
-        this.qualifiedName = qualifiedName;
-        this.uniqueQualifiedName = uniqueQualifiedName;
-        this.decorators = decorators;
-        this.parameters = parameters;
-        this.results = results;
-        this.isPublic = isPublic;
-        this.description = description;
-        this.fullDocstring = fullDocstring;
         this.containingModuleOrClass = null;
 
         this.parameters.forEach((it) => {
