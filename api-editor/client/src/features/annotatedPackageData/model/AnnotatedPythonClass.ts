@@ -1,4 +1,4 @@
-import {InferableAnnotation} from './InferableAnnotation';
+import { InferableAnnotation } from './InferableAnnotation';
 import AnnotatedPythonFunction from './AnnotatedPythonFunction';
 
 export default class AnnotatedPythonClass {
