@@ -1,4 +1,4 @@
-import {Optional} from '../../../common/util/types';
+import { Optional } from '../../../common/util/types';
 import PythonDeclaration from './PythonDeclaration';
 import PythonFunction from './PythonFunction';
 
@@ -9,7 +9,7 @@ export default class PythonResult extends PythonDeclaration {
         readonly name: string,
         readonly type: string = 'Any',
         readonly typeInDocs: string = '',
-        readonly description: string = ''
+        readonly description: string = '',
     ) {
         super();
 

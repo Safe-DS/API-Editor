@@ -3,7 +3,7 @@ import { Optional } from '../../../common/util/types';
 export default class PythonImport {
     constructor(
         readonly module: string,
-        readonly alias: Optional<string> = null
+        readonly alias: Optional<string> = null,
     ) {}
 
     toString(): string {
