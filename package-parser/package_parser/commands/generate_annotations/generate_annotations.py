@@ -404,8 +404,23 @@ def __get_boundary_annotations(
                 target = __qname_to_target_name(api, methode + "." + parameter.name)
                 min_value = refined_type["min"]
                 max_value = refined_type["max"]
-                is_discrete = float == type(min_value) and float == type(max_value)
+
+                is_discrete = isinstance(min_value, int) and isinstance(max_value, int)
+
+                min_limit_type = 0
+                max_limit_type = 0
+                if not refined_type["min_inclusive"]:
+                    min_limit_type = 1
+                if not refined_type["max_inclusive"]:
+                    max_limit_type = 1
+                if min_value == "NegativeInfinity":
+                    min_limit_type = 2
+                    is_discrete = False
+                if max_value == "Infinity":
+                    max_limit_type = 2
+                    is_discrete = False
+
                 interval = Interval(isDiscrete=is_discrete, lowerIntervalLimit=min_value, upperIntervalLimit=max_value,
-                                    lowerLimitType=min_value.__class__.__name__, upperLimitType=max_value.__class__.__name__)
+                                    lowerLimitType=min_limit_type, upperLimitType=max_limit_type)
                 boundary = BoundaryAnnotation(defaultType=refined_type["base_type"], target=target, interval=interval)
                 annotations.boundaries.append(boundary)

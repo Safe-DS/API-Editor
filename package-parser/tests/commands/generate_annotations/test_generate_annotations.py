@@ -103,18 +103,18 @@ OPTIONALS_EXPECTED: dict[str, dict[str, str]] = {
 
 BOUNDARIES_EXPECTED: dict[str, dict[str, any]] = {
     'test/__init__/max_df': {'defaultType': 'int',
-                             'interval': {'isDiscrete': False,
+                             'interval': {'isDiscrete': True,
                                           'lowerIntervalLimit': 0,
-                                          'lowerLimitType': 'int',
+                                          'lowerLimitType': 1,
                                           'upperIntervalLimit': 1,
-                                          'upperLimitType': 'int'},
+                                          'upperLimitType': 1},
                              'target': 'test/__init__/max_df'},
     'test/__init__/min_df': {'defaultType': 'float',
-                             'interval': {'isDiscrete': True,
+                             'interval': {'isDiscrete': False,
                                           'lowerIntervalLimit': 0.0,
-                                          'lowerLimitType': 'float',
-                                          'upperIntervalLimit': 1.0,
-                                          'upperLimitType': 'float'},
+                                          'lowerLimitType': 0,
+                                          'upperIntervalLimit': "Infinity",
+                                          'upperLimitType': 2},
                              'target': 'test/__init__/min_df'}
 }
 
@@ -188,8 +188,8 @@ def test_get_unused():
     _preprocess_usages(usages, api)
     __get_unused_annotations(usages, api, annotations)
     assert {
-        annotation.target: annotation.to_json() for annotation in annotations.unused
-    } == UNUSED_EXPECTED
+               annotation.target: annotation.to_json() for annotation in annotations.unused
+           } == UNUSED_EXPECTED
 
 
 def test_get_constant():
@@ -198,8 +198,8 @@ def test_get_constant():
     _preprocess_usages(usages, api)
     __get_constant_annotations(usages, api, annotations)
     assert {
-        annotation.target: annotation.to_json() for annotation in annotations.constant
-    } == CONSTANT_EXPECTED
+               annotation.target: annotation.to_json() for annotation in annotations.constant
+           } == CONSTANT_EXPECTED
 
 
 def test_get_required():
