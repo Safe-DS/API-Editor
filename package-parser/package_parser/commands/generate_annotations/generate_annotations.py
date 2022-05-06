@@ -285,10 +285,9 @@ def __get_optional_annotations(
     :param annotations: AnnotationStore, that holds all annotations
     """
     parameters = api.parameters()
-    # Takes all parameters with default value
-    required_parameter = [(it, parameters[it]) for it in parameters]
+    all_parameter = [(it, parameters[it]) for it in parameters]
 
-    for qname, _ in required_parameter:
+    for qname, _ in all_parameter:
         parameter_info = __get_parameter_info(qname, usages)
 
         if parameter_info.type == ParameterType.Optional:
@@ -329,7 +328,7 @@ def __get_parameter_info(qname: str, usages: UsageStore) -> ParameterInfo:
     if value[0] == "'":
         value = value[1:-1]
 
-    # If its neither required, constant nor unsed, return optional
+    # If its neither required nor constant, return optional
     return ParameterInfo(
         ParameterType.Optional, value, __get_default_type_from_value(value)
     )
