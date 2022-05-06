@@ -10,8 +10,8 @@ from package_parser.commands.generate_annotations.generate_annotations import (
     __get_optional_annotations,
     __get_required_annotations,
     __get_unused_annotations,
-    __qname_to_target_name,
-    preprocess_usages,
+    _preprocess_usages,
+    generate_annotations,
 )
 from package_parser.commands.get_api import (
     API,
