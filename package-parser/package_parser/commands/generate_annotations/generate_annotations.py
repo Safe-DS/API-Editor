@@ -405,37 +405,37 @@ def __get_boundary_annotations(
     :param annotations: AnnotationStore, that holds all annotations
     """
     for _, parameter in api.parameters().items():
-            refined_type = parameter.refined_type.as_dict()
-            if "kind" in refined_type and refined_type["kind"] == "BoundaryType":
-                target = __qname_to_target_name(api, parameter.qname)
-                min_value = refined_type["min"]
-                max_value = refined_type["max"]
+        refined_type = parameter.refined_type.as_dict()
+        if "kind" in refined_type and refined_type["kind"] == "BoundaryType":
+            target = __qname_to_target_name(api, parameter.qname)
+            min_value = refined_type["min"]
+            max_value = refined_type["max"]
 
-                is_discrete = isinstance(min_value, int) and isinstance(max_value, int)
+            is_discrete = isinstance(min_value, int) and isinstance(max_value, int)
 
-                min_limit_type = 0
-                max_limit_type = 0
-                if not refined_type["min_inclusive"]:
-                    min_limit_type = 1
-                if not refined_type["max_inclusive"]:
-                    max_limit_type = 1
-                if min_value == "NegativeInfinity":
-                    min_limit_type = 2
-                    is_discrete = False
-                if max_value == "Infinity":
-                    max_limit_type = 2
-                    is_discrete = False
+            min_limit_type = 0
+            max_limit_type = 0
+            if not refined_type["min_inclusive"]:
+                min_limit_type = 1
+            if not refined_type["max_inclusive"]:
+                max_limit_type = 1
+            if min_value == "NegativeInfinity":
+                min_limit_type = 2
+                is_discrete = False
+            if max_value == "Infinity":
+                max_limit_type = 2
+                is_discrete = False
 
-                interval = Interval(
-                    isDiscrete=is_discrete,
-                    lowerIntervalLimit=min_value,
-                    upperIntervalLimit=max_value,
-                    lowerLimitType=min_limit_type,
-                    upperLimitType=max_limit_type,
-                )
-                boundary = BoundaryAnnotation(
-                    defaultType=refined_type["base_type"],
-                    target=target,
-                    interval=interval,
-                )
-                annotations.boundaries.append(boundary)
+            interval = Interval(
+                isDiscrete=is_discrete,
+                lowerIntervalLimit=min_value,
+                upperIntervalLimit=max_value,
+                lowerLimitType=min_limit_type,
+                upperLimitType=max_limit_type,
+            )
+            boundary = BoundaryAnnotation(
+                defaultType=refined_type["base_type"],
+                target=target,
+                interval=interval,
+            )
+            annotations.boundaries.append(boundary)

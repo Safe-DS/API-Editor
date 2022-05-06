@@ -42,13 +42,12 @@ UNUSED_EXPECTED: dict[str, dict[str, str]] = {
     "test/config_context/working_memory": {
         "target": "test/config_context/working_memory"
     },
-    'test/__init__': {'target': 'test/__init__'},
-    'test/__init__/max_df': {'target': 'test/__init__/max_df'},
-    'test/__init__/min_df': {'target': 'test/__init__/min_df'},
-"test/__init__": {"target": "test/__init__"},
+    "test/__init__": {"target": "test/__init__"},
     "test/__init__/max_df": {"target": "test/__init__/max_df"},
     "test/__init__/min_df": {"target": "test/__init__/min_df"},
-
+    "test/__init__": {"target": "test/__init__"},
+    "test/__init__/max_df": {"target": "test/__init__/max_df"},
+    "test/__init__/min_df": {"target": "test/__init__/min_df"},
 }
 
 
@@ -130,7 +129,7 @@ BOUNDARIES_EXPECTED: dict[str, dict[str, typing.Any]] = {
     },
 }
 
-ENUMS_EXPECTED= {
+ENUMS_EXPECTED = {
     "test/config_context/display": {
         "enumName": "Display",
         "pairs": [
