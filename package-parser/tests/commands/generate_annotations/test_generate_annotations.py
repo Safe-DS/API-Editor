@@ -101,7 +101,7 @@ OPTIONALS_EXPECTED: dict[str, dict[str, str]] = {
     },
 }
 
-BOUNDARIES_EXPECTED: dict[str, dict[str, str]] = {
+BOUNDARIES_EXPECTED: dict[str, dict[str, any]] = {
     'test/__init__/max_df': {'defaultType': 'int',
                              'interval': {'isDiscrete': False,
                                           'lowerIntervalLimit': 0,
