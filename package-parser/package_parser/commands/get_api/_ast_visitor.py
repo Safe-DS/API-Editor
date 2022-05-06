@@ -3,8 +3,8 @@ from typing import Optional, Union
 
 import astroid
 from numpydoc.docscrape import NumpyDocString
-
 from package_parser.utils import parent_qname
+
 from ._file_filters import _is_init_file
 from ._model import (
     API,

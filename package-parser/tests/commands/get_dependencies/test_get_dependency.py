@@ -1,5 +1,4 @@
 import spacy
-
 from package_parser.commands.get_api._model import (
     Action,
     Condition,
