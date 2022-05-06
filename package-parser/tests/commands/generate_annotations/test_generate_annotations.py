@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 
 import pytest
+
 from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.generate_annotations.generate_annotations import (
     __get_constant_annotations,
@@ -10,7 +11,6 @@ from package_parser.commands.generate_annotations.generate_annotations import (
     __get_optional_annotations,
     __get_required_annotations,
     __get_unused_annotations,
-    __qname_to_target_name,
     _preprocess_usages,
     generate_annotations,
 )
@@ -18,28 +18,26 @@ from package_parser.commands.get_api import API
 from package_parser.models.annotation_models import AnnotationStore
 
 UNUSED_EXPECTED: dict[str, dict[str, str]] = {
-    "test/test/Unused_Class": {"target": "test/test/Unused_Class"},
-    "test/test/commonly_used_global_function/unused_optional_parameter": {
-        "target": "test/test/commonly_used_global_function/unused_optional_parameter"
-    },
-    "test/test/unused_global_function": {"target": "test/test/unused_global_function"},
-    "test/test/unused_global_function/unused_optional_parameter": {
-        "target": "test/test/unused_global_function/unused_optional_parameter"
-    },
-    "test/test/unused_global_function/unused_required_parameter": {
-        "target": "test/test/unused_global_function/unused_required_parameter"
-    },
-    "test/config_context": {"target": "test/config_context"},
-    "test/config_context/assume_finite": {
-        "target": "test/config_context/assume_finite"
-    },
-    "test/config_context/display": {"target": "test/config_context/display"},
-    "test/config_context/print_changed_only": {
-        "target": "test/config_context/print_changed_only"
-    },
-    "test/config_context/working_memory": {
-        "target": "test/config_context/working_memory"
-    },
+    'test/test._config/config_context': {
+        'target': 'test/test._config/config_context'},
+    'test/test._config/config_context/assume_finite': {
+        'target': 'test/test._config/config_context/assume_finite'},
+    'test/test._config/config_context/display': {
+        'target': 'test/test._config/config_context/display'},
+    'test/test._config/config_context/print_changed_only': {
+        'target': 'test/test._config/config_context/print_changed_only'},
+    'test/test._config/config_context/working_memory': {
+        'target': 'test/test._config/config_context/working_memory'},
+    'test/test/Unused_Class': {
+        'target': 'test/test/Unused_Class'},
+    'test/test/commonly_used_global_function/unused_optional_parameter': {
+        'target': 'test/test/commonly_used_global_function/unused_optional_parameter'},
+    'test/test/unused_global_function': {
+        'target': 'test/test/unused_global_function'},
+    'test/test/unused_global_function/unused_optional_parameter': {
+        'target': 'test/test/unused_global_function/unused_optional_parameter'},
+    'test/test/unused_global_function/unused_required_parameter': {
+        'target': 'test/test/unused_global_function/unused_required_parameter'}
 }
 
 
@@ -106,7 +104,7 @@ ENUMS_EXPECTED = {
             {"instanceName": "Kdmeans", "stringValue": "kd-means++"},
             {"instanceName": "KdTree", "stringValue": "kd_tree"},
         ],
-        "target": "test/config_context/display",
+        "target": "test/test.config_context/display",
     }
 }
 
@@ -136,40 +134,14 @@ def setup():
     return usages, api, usages_file, api_file, usages_json_path, api_json_path
 
 
-def test_format_function():
-    usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
-    assert (
-        __qname_to_target_name(api, "test.unused_global_function")
-        == "test/test/unused_global_function"
-    )
-
-
-def test_format_parameter():
-    usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
-    assert (
-        __qname_to_target_name(
-            api, "test.commonly_used_global_function.useless_required_parameter"
-        )
-        == "test/test/commonly_used_global_function/useless_required_parameter"
-    )
-
-
-def test_format_none():
-    usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
-    with pytest.raises(ValueError):
-        __qname_to_target_name(None, "test")
-    with pytest.raises(ValueError):
-        __qname_to_target_name(api, None)
-
-
 def test_get_unused():
     usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
     annotations = AnnotationStore()
     _preprocess_usages(usages, api)
     __get_unused_annotations(usages, api, annotations)
     assert {
-        annotation.target: annotation.to_json() for annotation in annotations.unused
-    } == UNUSED_EXPECTED
+               annotation.target: annotation.to_json() for annotation in annotations.unused
+           } == UNUSED_EXPECTED
 
 
 def test_get_constant():
@@ -178,8 +150,8 @@ def test_get_constant():
     _preprocess_usages(usages, api)
     __get_constant_annotations(usages, api, annotations)
     assert {
-        annotation.target: annotation.to_json() for annotation in annotations.constant
-    } == CONSTANT_EXPECTED
+               annotation.target: annotation.to_json() for annotation in annotations.constant
+           } == CONSTANT_EXPECTED
 
 
 def test_get_required():
@@ -236,3 +208,13 @@ def test_generate():
 def test_generate_bad_path():
     with pytest.raises(ValueError):
         generate_annotations(None, None, None)
+
+
+def test_get_enum():
+    usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
+    annotations = AnnotationStore()
+    _preprocess_usages(usages, api)
+    __get_enum_annotations(usages, api, annotations)
+    assert {
+               annotation.target: annotation.to_json() for annotation in annotations.enums
+           } == ENUMS_EXPECTED

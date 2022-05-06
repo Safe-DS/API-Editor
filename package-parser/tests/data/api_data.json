@@ -5,6 +5,7 @@
     "modules": [
         {
             "name": "test",
+            "pname": "test/test",
             "imports": [],
             "from_imports": [],
             "classes": [
@@ -24,6 +25,7 @@
         {
             "name": "Unused_Class",
             "qname": "test.Unused_Class",
+            "pname": "test/test/Unused_Class",
             "decorators": [],
             "is_public": true,
             "description": "",
@@ -35,6 +37,7 @@
         {
             "name": "Rarely_Used_Class",
             "qname": "test.Rarely_Used_Class",
+            "pname": "test/test/Rarely_Used_Class",
             "decorators": [],
             "is_public": true,
             "description": "This class is used rarely",
@@ -46,6 +49,7 @@
         {
             "name": "Commonly_Used_Class",
             "qname": "test.Commonly_Used_Class",
+            "pname": "test/test/Commonly_Used_Class",
             "decorators": [],
             "is_public": true,
             "description": "This class is used commonly",
@@ -64,12 +68,14 @@
             "name": "unused_global_function",
             "unique_name": "unused_global_function",
             "qname": "test.unused_global_function",
+            "pname": "test/test/unused_global_function",
             "unique_qname": "test.unused_global_function",
             "decorators": [],
             "parameters": [
                 {
                     "name": "unused_required_parameter",
                     "qname": "test.unused_global_function.unused_required_parameter",
+                    "pname": "test/test/unused_global_function/unused_required_parameter",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -81,6 +87,7 @@
                 {
                     "name": "unused_optional_parameter",
                     "qname": "test.unused_global_function.unused_optional_parameter",
+                    "pname": "test/test/unused_global_function/unused_optional_parameter",
                     "default_value": "'bla'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -100,12 +107,14 @@
             "name": "commonly_used_global_function",
             "unique_name": "commonly_used_global_function",
             "qname": "test.commonly_used_global_function",
+            "pname": "test/test/commonly_used_global_function",
             "unique_qname": "test.commonly_used_global_function",
             "decorators": [],
             "parameters": [
                 {
                     "name": "useless_required_parameter",
                     "qname": "test.commonly_used_global_function.useless_required_parameter",
+                    "pname": "test/test/commonly_used_global_function/useless_required_parameter",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -117,6 +126,7 @@
                 {
                     "name": "useful_required_parameter",
                     "qname": "test.commonly_used_global_function.useful_required_parameter",
+                    "pname": "test/test/commonly_used_global_function/useful_required_parameter",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -128,6 +138,7 @@
                 {
                     "name": "unused_optional_parameter",
                     "qname": "test.commonly_used_global_function.unused_optional_parameter",
+                    "pname": "test/test/commonly_used_global_function/unused_optional_parameter",
                     "default_value": "'bla'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -139,6 +150,7 @@
                 {
                     "name": "useless_optional_parameter",
                     "qname": "test.commonly_used_global_function.useless_optional_parameter",
+                    "pname": "test/test/commonly_used_global_function/useless_optional_parameter",
                     "default_value": "'bla'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -150,6 +162,7 @@
                 {
                     "name": "useful_optional_parameter",
                     "qname": "test.commonly_used_global_function.useful_optional_parameter",
+                    "pname": "test/test/commonly_used_global_function/useful_optional_parameter",
                     "default_value": "'bla'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -168,13 +181,17 @@
         {
             "name": "config_context",
             "unique_name": "config_context",
-            "qname": "sklearn._config.config_context",
-            "unique_qname": "sklearn._config.config_context",
-            "decorators": ["contextmanager"],
+            "qname": "test._config.config_context",
+            "pname": "test/test._config/config_context",
+            "unique_qname": "test._config.config_context",
+            "decorators": [
+                "contextmanager"
+            ],
             "parameters": [
                 {
                     "name": "assume_finite",
-                    "qname": "sklearn._config.config_context.assume_finite",
+                    "qname": "test._config.config_context.assume_finite",
+                    "pname": "test/test._config/config_context/assume_finite",
                     "default_value": "None",
                     "is_public": true,
                     "assigned_by": "NAME_ONLY",
@@ -186,7 +203,8 @@
                 },
                 {
                     "name": "working_memory",
-                    "qname": "sklearn._config.config_context.working_memory",
+                    "qname": "test._config.config_context.working_memory",
+                    "pname": "test/test._config/config_context/working_memory",
                     "default_value": "None",
                     "is_public": true,
                     "assigned_by": "NAME_ONLY",
@@ -198,7 +216,8 @@
                 },
                 {
                     "name": "print_changed_only",
-                    "qname": "sklearn._config.config_context.print_changed_only",
+                    "qname": "test._config.config_context.print_changed_only",
+                    "pname": "test/test._config/config_context/print_changed_only",
                     "default_value": "None",
                     "is_public": true,
                     "assigned_by": "NAME_ONLY",
@@ -210,7 +229,8 @@
                 },
                 {
                     "name": "display",
-                    "qname": "sklearn._config.config_context.display",
+                    "qname": "test._config.config_context.display",
+                    "pname": "test/test._config/config_context/display",
                     "default_value": "None",
                     "is_public": true,
                     "assigned_by": "NAME_ONLY",
@@ -318,8 +338,8 @@
             "results": [],
             "is_public": true,
             "description": "Conöäöä manager for global scikit-learn configuration.",
-            "docstring": "Conöäöä manager for global scikit-learn configuration.\n\n    Parameters\n    ----------\n    assume_finite : bool, default=None\n        If True, validation for finiteness will be skipped,\n        saving time, but leading to potential crashes. If\n        False, validation for finiteness will be performed,\n        avoiding error. If None, the existing value won't change.\n        The default value is False.\n\n    working_memory : int, default=None\n        If set, scikit-learn will attempt to limit the size of temporary arrays\n        to this number of MiB (per job when parallelised), often saving both\n        computation time and memory on expensive operations that can be\n        performed in chunks. If None, the existing value won't change.\n        The default value is 1024.\n\n    print_changed_only : bool, default=None\n        If True, only the parameters that were set to non-default\n        values will be printed when printing an estimator. For example,\n        ``print(SVC())`` while True will only print 'SVC()', but would print\n        'SVC(C=1.0, cache_size=200, ...)' with all the non-changed parameters\n        when False. If None, the existing value won't change.\n        The default value is True.\n\n        .. versionchanged:: 0.23\n           Default changed from False to True.\n\n    display : {'blubber_fasel', 'QWERT'}, default=None\n        If 'diagram', estimators will be displayed as a diagram in a Jupyter\n        lab or notebook conöäöä. If 'öäöä', estimators will be displayed as\n        öäöä. If None, the existing value won't change.\n        The default value is 'öäöä'.\n\n        .. versionadded:: 0.23\n\n    Yields\n    ------\n    None.\n\n    See Also\n    --------\n    set_config : Set global scikit-learn configuration.\n    get_config : Retrieve current values of the global configuration.\n\n    Notes\n    -----\n    All settings, not just those presently modified, will be returned to\n    their previous values when the conöäöä manager is exited.\n\n    Examples\n    --------\n    >>> import sklearn\n    >>> from sklearn.utils.validation import assert_all_finite\n    >>> with sklearn.config_conöäöä(assume_finite=True):\n    ...     assert_all_finite([float('nan')])\n    >>> with sklearn.config_conöäöä(assume_finite=True):\n    ...     with sklearn.config_conöäöä(assume_finite=False):\n    ...         assert_all_finite([float('nan')])\n    Traceback (most recent call last):\n    ...\n    ValueError: Input contains NaN...\n    ",
-            "source_code": "\n@conöäöämanager\ndef config_conöäöä(*, assume_finite=None, working_memory=None, print_changed_only=None, display=None):\n    \"\"\"Conöäöä manager for global scikit-learn configuration.\n\n    Parameters\n    ----------\n    assume_finite : bool, default=None\n        If True, validation for finiteness will be skipped,\n        saving time, but leading to potential crashes. If\n        False, validation for finiteness will be performed,\n        avoiding error. If None, the existing value won't change.\n        The default value is False.\n\n    working_memory : int, default=None\n        If set, scikit-learn will attempt to limit the size of temporary arrays\n        to this number of MiB (per job when parallelised), often saving both\n        computation time and memory on expensive operations that can be\n        performed in chunks. If None, the existing value won't change.\n        The default value is 1024.\n\n    print_changed_only : bool, default=None\n        If True, only the parameters that were set to non-default\n        values will be printed when printing an estimator. For example,\n        ``print(SVC())`` while True will only print 'SVC()', but would print\n        'SVC(C=1.0, cache_size=200, ...)' with all the non-changed parameters\n        when False. If None, the existing value won't change.\n        The default value is True.\n\n        .. versionchanged:: 0.23\n           Default changed from False to True.\n\n    display : {'loölolö', 'diagram'}, default=None\n        If 'diagram', estimators will be displayed as a diagram in a Jupyter\n        lab or notebook conöäöä. If 'öäöä', estimators will be displayed as\n        öäöä. If None, the existing value won't change.\n        The default value is 'öäöä'.\n\n        .. versionadded:: 0.23\n\n    Yields\n    ------\n    None.\n\n    See Also\n    --------\n    set_config : Set global scikit-learn configuration.\n    get_config : Retrieve current values of the global configuration.\n\n    Notes\n    -----\n    All settings, not just those presently modified, will be returned to\n    their previous values when the conöäöä manager is exited.\n\n    Examples\n    --------\n    >>> import sklearn\n    >>> from sklearn.utils.validation import assert_all_finite\n    >>> with sklearn.config_conöäöä(assume_finite=True):\n    ...     assert_all_finite([float('nan')])\n    >>> with sklearn.config_conöäöä(assume_finite=True):\n    ...     with sklearn.config_conöäöä(assume_finite=False):\n    ...         assert_all_finite([float('nan')])\n    Traceback (most recent call last):\n    ...\n    ValueError: Input contains NaN...\n    \"\"\"\n    old_config = get_config()\n    set_config(assume_finite=assume_finite, working_memory=working_memory, print_changed_only=print_changed_only, display=display)\n    try:\n        yield\n    finally:\n        set_config(**old_config)"
+            "docstring": "Conöäöä manager for global scikit-learn configuration.\n\n    Parameters\n    ----------\n    assume_finite : bool, default=None\n        If True, validation for finiteness will be skipped,\n        saving time, but leading to potential crashes. If\n        False, validation for finiteness will be performed,\n        avoiding error. If None, the existing value won't change.\n        The default value is False.\n\n    working_memory : int, default=None\n        If set, scikit-learn will attempt to limit the size of temporary arrays\n        to this number of MiB (per job when parallelised), often saving both\n        computation time and memory on expensive operations that can be\n        performed in chunks. If None, the existing value won't change.\n        The default value is 1024.\n\n    print_changed_only : bool, default=None\n        If True, only the parameters that were set to non-default\n        values will be printed when printing an estimator. For example,\n        ``print(SVC())`` while True will only print 'SVC()', but would print\n        'SVC(C=1.0, cache_size=200, ...)' with all the non-changed parameters\n        when False. If None, the existing value won't change.\n        The default value is True.\n\n        .. versionchanged:: 0.23\n           Default changed from False to True.\n\n    display : {'blubber_fasel', 'QWERT'}, default=None\n        If 'diagram', estimators will be displayed as a diagram in a Jupyter\n        lab or notebook conöäöä. If 'öäöä', estimators will be displayed as\n        öäöä. If None, the existing value won't change.\n        The default value is 'öäöä'.\n\n        .. versionadded:: 0.23\n\n    Yields\n    ------\n    None.\n\n    See Also\n    --------\n    set_config : Set global scikit-learn configuration.\n    get_config : Retrieve current values of the global configuration.\n\n    Notes\n    -----\n    All settings, not just those presently modified, will be returned to\n    their previous values when the conöäöä manager is exited.\n\n    Examples\n    --------\n    >>> import test\n    >>> from test.utils.validation import assert_all_finite\n    >>> with test.config_conöäöä(assume_finite=True):\n    ...     assert_all_finite([float('nan')])\n    >>> with test.config_conöäöä(assume_finite=True):\n    ...     with test.config_conöäöä(assume_finite=False):\n    ...         assert_all_finite([float('nan')])\n    Traceback (most recent call last):\n    ...\n    ValueError: Input contains NaN...\n    ",
+            "source_code": "\n@conöäöämanager\ndef config_conöäöä(*, assume_finite=None, working_memory=None, print_changed_only=None, display=None):\n    \"\"\"Conöäöä manager for global scikit-learn configuration.\n\n    Parameters\n    ----------\n    assume_finite : bool, default=None\n        If True, validation for finiteness will be skipped,\n        saving time, but leading to potential crashes. If\n        False, validation for finiteness will be performed,\n        avoiding error. If None, the existing value won't change.\n        The default value is False.\n\n    working_memory : int, default=None\n        If set, scikit-learn will attempt to limit the size of temporary arrays\n        to this number of MiB (per job when parallelised), often saving both\n        computation time and memory on expensive operations that can be\n        performed in chunks. If None, the existing value won't change.\n        The default value is 1024.\n\n    print_changed_only : bool, default=None\n        If True, only the parameters that were set to non-default\n        values will be printed when printing an estimator. For example,\n        ``print(SVC())`` while True will only print 'SVC()', but would print\n        'SVC(C=1.0, cache_size=200, ...)' with all the non-changed parameters\n        when False. If None, the existing value won't change.\n        The default value is True.\n\n        .. versionchanged:: 0.23\n           Default changed from False to True.\n\n    display : {'loölolö', 'diagram'}, default=None\n        If 'diagram', estimators will be displayed as a diagram in a Jupyter\n        lab or notebook conöäöä. If 'öäöä', estimators will be displayed as\n        öäöä. If None, the existing value won't change.\n        The default value is 'öäöä'.\n\n        .. versionadded:: 0.23\n\n    Yields\n    ------\n    None.\n\n    See Also\n    --------\n    set_config : Set global scikit-learn configuration.\n    get_config : Retrieve current values of the global configuration.\n\n    Notes\n    -----\n    All settings, not just those presently modified, will be returned to\n    their previous values when the conöäöä manager is exited.\n\n    Examples\n    --------\n    >>> import test\n    >>> from test.utils.validation import assert_all_finite\n    >>> with test.config_conöäöä(assume_finite=True):\n    ...     assert_all_finite([float('nan')])\n    >>> with test.config_conöäöä(assume_finite=True):\n    ...     with test.config_conöäöä(assume_finite=False):\n    ...         assert_all_finite([float('nan')])\n    Traceback (most recent call last):\n    ...\n    ValueError: Input contains NaN...\n    \"\"\"\n    old_config = get_config()\n    set_config(assume_finite=assume_finite, working_memory=working_memory, print_changed_only=print_changed_only, display=display)\n    try:\n        yield\n    finally:\n        set_config(**old_config)"
         }
     ]
 }
