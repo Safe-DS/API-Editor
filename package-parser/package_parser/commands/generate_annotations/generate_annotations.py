@@ -398,11 +398,16 @@ def __is_required(values: list[tuple[str, int]]) -> bool:
 def __get_boundary_annotations(
     usages: UsageStore, api: API, annotations: AnnotationStore
 ) -> None:
-    for methode, function in api.functions.items():
-        for parameter in function.parameters:
+    """
+    Annotates all parameters which are a boundary.
+    :param usages: Usage store
+    :param api: Description of the API
+    :param annotations: AnnotationStore, that holds all annotations
+    """
+    for _, parameter in api.parameters().items():
             refined_type = parameter.refined_type.as_dict()
             if "kind" in refined_type and refined_type["kind"] == "BoundaryType":
-                target = __qname_to_target_name(api, methode + "." + parameter.name)
+                target = __qname_to_target_name(api, parameter.qname)
                 min_value = refined_type["min"]
                 max_value = refined_type["max"]
 
