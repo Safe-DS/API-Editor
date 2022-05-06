@@ -13,6 +13,7 @@ from package_parser.commands.generate_annotations.generate_annotations import (
     __qname_to_target_name,
     _preprocess_usages,
     generate_annotations,
+    __get_boundary_annotations
 )
 from package_parser.commands.get_api import API
 from package_parser.models.annotation_models import AnnotationStore
@@ -40,6 +41,10 @@ UNUSED_EXPECTED: dict[str, dict[str, str]] = {
     "test/config_context/working_memory": {
         "target": "test/config_context/working_memory"
     },
+    'test/__init__': {'target': 'test/__init__'},
+    'test/__init__/max_df': {'target': 'test/__init__/max_df'},
+    'test/__init__/min_df': {'target': 'test/__init__/min_df'},
+
 }
 
 
@@ -96,9 +101,24 @@ OPTIONALS_EXPECTED: dict[str, dict[str, str]] = {
     },
 }
 
-BOUNDARIES_EXPECTED: dict[str, dict[str, str]] = {}
+BOUNDARIES_EXPECTED: dict[str, dict[str, str]] = {
+    'test/__init__/max_df': {'defaultType': 'int',
+                             'interval': {'isDiscrete': False,
+                                          'lowerIntervalLimit': 0,
+                                          'lowerLimitType': 'int',
+                                          'upperIntervalLimit': 1,
+                                          'upperLimitType': 'int'},
+                             'target': 'test/__init__/max_df'},
+    'test/__init__/min_df': {'defaultType': 'float',
+                             'interval': {'isDiscrete': True,
+                                          'lowerIntervalLimit': 0.0,
+                                          'lowerLimitType': 'float',
+                                          'upperIntervalLimit': 1.0,
+                                          'upperLimitType': 'float'},
+                             'target': 'test/__init__/min_df'}
+}
 
-ENUMS_EXPECTED = {
+ENUMS_EXPECTED= {
     "test/config_context/display": {
         "enumName": "Display",
         "pairs": [
@@ -236,3 +256,13 @@ def test_generate():
 def test_generate_bad_path():
     with pytest.raises(ValueError):
         generate_annotations(None, None, None)
+
+
+def test_get_boundary():
+    usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
+    annotations = AnnotationStore()
+    _preprocess_usages(usages, api)
+    __get_boundary_annotations(usages, api, annotations)
+    assert {
+               annotation.target: annotation.to_json() for annotation in annotations.boundaries
+           } == BOUNDARIES_EXPECTED

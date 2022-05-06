@@ -16,6 +16,8 @@ from package_parser.models.annotation_models import (
     ParameterType,
     RequiredAnnotation,
     UnusedAnnotation,
+    BoundaryAnnotation,
+    Interval
 )
 from package_parser.utils import parent_qname
 
@@ -48,6 +50,7 @@ def generate_annotations(
         __get_required_annotations,
         __get_optional_annotations,
         __get_enum_annotations,
+        __get_boundary_annotations
     ]
 
     __generate_annotation_dict(api, usages, annotations, annotation_functions)
@@ -390,3 +393,19 @@ def __is_required(values: list[tuple[str, int]]) -> bool:
         values, key=lambda tup: tup[1]
     )[-2:]
     return most_used_value_tupel[1] - seconds_most_used_value_tupel[1] <= m / n
+
+def __get_boundary_annotations(
+    usages: UsageStore, api: API, annotations: AnnotationStore
+) -> None:
+    for methode, function in api.functions.items():
+        for parameter in function.parameters:
+            refined_type = parameter.refined_type.as_dict()
+            if "kind" in refined_type and refined_type["kind"] == "BoundaryType":
+                target = __qname_to_target_name(api, methode + "." + parameter.name)
+                min_value = refined_type["min"]
+                max_value = refined_type["max"]
+                is_discrete = float == type(min_value) and float == type(max_value)
+                interval = Interval(isDiscrete=is_discrete, lowerIntervalLimit=min_value, upperIntervalLimit=max_value,
+                                    lowerLimitType=min_value.__class__.__name__, upperLimitType=max_value.__class__.__name__)
+                boundary = BoundaryAnnotation(defaultType=refined_type["base_type"], target=target, interval=interval)
+                annotations.boundaries.append(boundary)

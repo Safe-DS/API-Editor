@@ -47,7 +47,7 @@ class Interval:
 @dataclasses.dataclass
 class BoundaryAnnotation(BaseAnnotation):
     defaultType: str
-    interval: list[Interval]
+    interval: Interval
 
 
 @dataclasses.dataclass
