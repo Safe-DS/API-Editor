@@ -8,16 +8,16 @@ from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.get_api import API
 from package_parser.models.annotation_models import (
     AnnotationStore,
+    BoundaryAnnotation,
     ConstantAnnotation,
     EnumAnnotation,
     EnumPair,
+    Interval,
     OptionalAnnotation,
     ParameterInfo,
     ParameterType,
     RequiredAnnotation,
     UnusedAnnotation,
-    BoundaryAnnotation,
-    Interval
 )
 from package_parser.utils import parent_qname
 
@@ -50,7 +50,7 @@ def generate_annotations(
         __get_required_annotations,
         __get_optional_annotations,
         __get_enum_annotations,
-        __get_boundary_annotations
+        __get_boundary_annotations,
     ]
 
     __generate_annotation_dict(api, usages, annotations, annotation_functions)
@@ -394,6 +394,7 @@ def __is_required(values: list[tuple[str, int]]) -> bool:
     )[-2:]
     return most_used_value_tupel[1] - seconds_most_used_value_tupel[1] <= m / n
 
+
 def __get_boundary_annotations(
     usages: UsageStore, api: API, annotations: AnnotationStore
 ) -> None:
@@ -420,7 +421,16 @@ def __get_boundary_annotations(
                     max_limit_type = 2
                     is_discrete = False
 
-                interval = Interval(isDiscrete=is_discrete, lowerIntervalLimit=min_value, upperIntervalLimit=max_value,
-                                    lowerLimitType=min_limit_type, upperLimitType=max_limit_type)
-                boundary = BoundaryAnnotation(defaultType=refined_type["base_type"], target=target, interval=interval)
+                interval = Interval(
+                    isDiscrete=is_discrete,
+                    lowerIntervalLimit=min_value,
+                    upperIntervalLimit=max_value,
+                    lowerLimitType=min_limit_type,
+                    upperLimitType=max_limit_type,
+                )
+                boundary = BoundaryAnnotation(
+                    defaultType=refined_type["base_type"],
+                    target=target,
+                    interval=interval,
+                )
                 annotations.boundaries.append(boundary)

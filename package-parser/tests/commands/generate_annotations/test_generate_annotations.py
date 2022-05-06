@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.generate_annotations.generate_annotations import (
+    __get_boundary_annotations,
     __get_constant_annotations,
     __get_enum_annotations,
     __get_optional_annotations,
@@ -14,7 +15,6 @@ from package_parser.commands.generate_annotations.generate_annotations import (
     __qname_to_target_name,
     _preprocess_usages,
     generate_annotations,
-    __get_boundary_annotations
 )
 from package_parser.commands.get_api import API
 from package_parser.models.annotation_models import AnnotationStore
@@ -45,6 +45,9 @@ UNUSED_EXPECTED: dict[str, dict[str, str]] = {
     'test/__init__': {'target': 'test/__init__'},
     'test/__init__/max_df': {'target': 'test/__init__/max_df'},
     'test/__init__/min_df': {'target': 'test/__init__/min_df'},
+"test/__init__": {"target": "test/__init__"},
+    "test/__init__/max_df": {"target": "test/__init__/max_df"},
+    "test/__init__/min_df": {"target": "test/__init__/min_df"},
 
 }
 
@@ -103,20 +106,28 @@ OPTIONALS_EXPECTED: dict[str, dict[str, str]] = {
 }
 
 BOUNDARIES_EXPECTED: dict[str, dict[str, typing.Any]] = {
-    'test/__init__/max_df': {'defaultType': 'int',
-                             'interval': {'isDiscrete': True,
-                                          'lowerIntervalLimit': 0,
-                                          'lowerLimitType': 1,
-                                          'upperIntervalLimit': 1,
-                                          'upperLimitType': 1},
-                             'target': 'test/__init__/max_df'},
-    'test/__init__/min_df': {'defaultType': 'float',
-                             'interval': {'isDiscrete': False,
-                                          'lowerIntervalLimit': 0.0,
-                                          'lowerLimitType': 0,
-                                          'upperIntervalLimit': "Infinity",
-                                          'upperLimitType': 2},
-                             'target': 'test/__init__/min_df'}
+    "test/__init__/max_df": {
+        "defaultType": "int",
+        "interval": {
+            "isDiscrete": True,
+            "lowerIntervalLimit": 0,
+            "lowerLimitType": 1,
+            "upperIntervalLimit": 1,
+            "upperLimitType": 1,
+        },
+        "target": "test/__init__/max_df",
+    },
+    "test/__init__/min_df": {
+        "defaultType": "float",
+        "interval": {
+            "isDiscrete": False,
+            "lowerIntervalLimit": 0.0,
+            "lowerLimitType": 0,
+            "upperIntervalLimit": "Infinity",
+            "upperLimitType": 2,
+        },
+        "target": "test/__init__/min_df",
+    },
 }
 
 ENUMS_EXPECTED= {
@@ -189,8 +200,8 @@ def test_get_unused():
     _preprocess_usages(usages, api)
     __get_unused_annotations(usages, api, annotations)
     assert {
-               annotation.target: annotation.to_json() for annotation in annotations.unused
-           } == UNUSED_EXPECTED
+        annotation.target: annotation.to_json() for annotation in annotations.unused
+    } == UNUSED_EXPECTED
 
 
 def test_get_constant():
@@ -199,8 +210,8 @@ def test_get_constant():
     _preprocess_usages(usages, api)
     __get_constant_annotations(usages, api, annotations)
     assert {
-               annotation.target: annotation.to_json() for annotation in annotations.constant
-           } == CONSTANT_EXPECTED
+        annotation.target: annotation.to_json() for annotation in annotations.constant
+    } == CONSTANT_EXPECTED
 
 
 def test_get_required():
@@ -265,5 +276,5 @@ def test_get_boundary():
     _preprocess_usages(usages, api)
     __get_boundary_annotations(usages, api, annotations)
     assert {
-               annotation.target: annotation.to_json() for annotation in annotations.boundaries
-           } == BOUNDARIES_EXPECTED
+        annotation.target: annotation.to_json() for annotation in annotations.boundaries
+    } == BOUNDARIES_EXPECTED
