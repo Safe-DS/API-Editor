@@ -1,5 +1,6 @@
 import json
 import os
+import typing
 from pathlib import Path
 
 import pytest
@@ -101,7 +102,7 @@ OPTIONALS_EXPECTED: dict[str, dict[str, str]] = {
     },
 }
 
-BOUNDARIES_EXPECTED: dict[str, dict[str, any]] = {
+BOUNDARIES_EXPECTED: dict[str, dict[str, typing.Any]] = {
     'test/__init__/max_df': {'defaultType': 'int',
                              'interval': {'isDiscrete': True,
                                           'lowerIntervalLimit': 0,
