@@ -6,12 +6,12 @@ import pytest
 from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.generate_annotations.generate_annotations import (
     __get_constant_annotations,
+    __get_optional_annotations,
     __get_required_annotations,
     __get_unused_annotations,
     __qname_to_target_name,
     _preprocess_usages,
     generate_annotations,
-    __get_optional_annotations
 )
 from package_parser.commands.get_api import API
 from package_parser.models.annotation_models import AnnotationStore
@@ -66,21 +66,21 @@ REQUIREDS_EXPECTED: dict[str, dict[str, str]] = {
 }
 
 OPTIONALS_EXPECTED: dict[str, dict[str, str]] = {
-    'test/test/commonly_used_global_required_and_optional_function/required_that_should_be_optional': {
-        'target': 'test/test/commonly_used_global_required_and_optional_function/required_that_should_be_optional',
-        'defaultType': 'string',
-        'defaultValue': 'miau'
+    "test/test/commonly_used_global_required_and_optional_function/required_that_should_be_optional": {
+        "target": "test/test/commonly_used_global_required_and_optional_function/required_that_should_be_optional",
+        "defaultType": "string",
+        "defaultValue": "miau",
     },
-    'test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_optional': {
-        'target': 'test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_optional',
-        'defaultType': 'string',
-        'defaultValue': 'captain_morgan'
+    "test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_optional": {
+        "target": "test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_optional",
+        "defaultType": "string",
+        "defaultValue": "captain_morgan",
     },
-    'test/test/commonly_used_global_required_and_optional_function/commonly_used_almost_required': {
-        'target': 'test/test/commonly_used_global_required_and_optional_function/commonly_used_almost_required',
-        'defaultType': 'string',
-        'defaultValue': 'marvel'
-    }
+    "test/test/commonly_used_global_required_and_optional_function/commonly_used_almost_required": {
+        "target": "test/test/commonly_used_global_required_and_optional_function/commonly_used_almost_required",
+        "defaultType": "string",
+        "defaultValue": "marvel",
+    },
 }
 
 BOUNDARIES_EXPECTED: dict[str, dict[str, str]] = {}
@@ -144,8 +144,8 @@ def test_get_unused():
     _preprocess_usages(usages, api)
     __get_unused_annotations(usages, api, annotations)
     assert {
-               annotation.target: annotation.to_json() for annotation in annotations.unused
-           } == UNUSED_EXPECTED
+        annotation.target: annotation.to_json() for annotation in annotations.unused
+    } == UNUSED_EXPECTED
 
 
 def test_get_constant():
@@ -154,8 +154,8 @@ def test_get_constant():
     _preprocess_usages(usages, api)
     __get_constant_annotations(usages, api, annotations)
     assert {
-               annotation.target: annotation.to_json() for annotation in annotations.constant
-           } == CONSTANT_EXPECTED
+        annotation.target: annotation.to_json() for annotation in annotations.constant
+    } == CONSTANT_EXPECTED
 
 
 def test_get_required():
@@ -164,8 +164,8 @@ def test_get_required():
     _preprocess_usages(usages, api)
     __get_required_annotations(usages, api, annotations)
     assert {
-               annotation.target: annotation.to_json() for annotation in annotations.requireds
-           } == REQUIREDS_EXPECTED
+        annotation.target: annotation.to_json() for annotation in annotations.requireds
+    } == REQUIREDS_EXPECTED
 
 
 def test_get_optional():
@@ -174,8 +174,8 @@ def test_get_optional():
     _preprocess_usages(usages, api)
     __get_optional_annotations(usages, api, annotations)
     assert {
-               annotation.target: annotation.to_json() for annotation in annotations.optionals
-           } == OPTIONALS_EXPECTED
+        annotation.target: annotation.to_json() for annotation in annotations.optionals
+    } == OPTIONALS_EXPECTED
 
 
 def test_generate():

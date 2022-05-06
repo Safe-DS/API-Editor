@@ -8,11 +8,11 @@ from package_parser.commands.get_api import API
 from package_parser.models.annotation_models import (
     AnnotationStore,
     ConstantAnnotation,
+    OptionalAnnotation,
     ParameterInfo,
     ParameterType,
     RequiredAnnotation,
     UnusedAnnotation,
-    OptionalAnnotation
 )
 from package_parser.utils import parent_qname
 
@@ -43,7 +43,7 @@ def generate_annotations(
         __get_unused_annotations,
         __get_constant_annotations,
         __get_required_annotations,
-        __get_optional_annotations
+        __get_optional_annotations,
     ]
 
     __generate_annotation_dict(api, usages, annotations, annotation_functions)
@@ -275,7 +275,9 @@ def __add_implicit_usages_of_default_value(usages: UsageStore, api: API) -> None
             usages.add_value_usage(parameter_qname, default_value, location)
 
 
-def __get_optional_annotations(usages: UsageStore, api: API, annotations: AnnotationStore) -> None:
+def __get_optional_annotations(
+    usages: UsageStore, api: API, annotations: AnnotationStore
+) -> None:
     """
     Collects all parameters that are currently required but should be optional to be assign a value
     :param usages: Usage store
@@ -284,10 +286,7 @@ def __get_optional_annotations(usages: UsageStore, api: API, annotations: Annota
     """
     parameters = api.parameters()
     # Takes all parameters with default value
-    required_parameter = [
-        (it, parameters[it])
-        for it in parameters
-    ]
+    required_parameter = [(it, parameters[it]) for it in parameters]
 
     for qname, _ in required_parameter:
         parameter_info = __get_parameter_info(qname, usages)
