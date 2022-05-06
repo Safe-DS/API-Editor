@@ -10,34 +10,21 @@ export enum PythonParameterAssignment {
 }
 
 export default class PythonParameter extends PythonDeclaration {
-    readonly name: string;
-
-    /**
-     * If this is `null` or `undefined` the parameter is required.
-     */
-    readonly defaultValue: Optional<string>;
-    readonly assignedBy: PythonParameterAssignment;
-    readonly isPublic: boolean;
-    readonly typeInDocs: string;
-    readonly description: string;
     containingFunction: Optional<PythonFunction>;
 
+    /**
+     * @param defaultValue If this is `null` or `undefined` the parameter is required.
+     */
     constructor(
-        name: string,
-        defaultValue: Optional<string> = null,
-        assignedBy: PythonParameterAssignment = PythonParameterAssignment.POSITION_OR_NAME,
-        isPublic: boolean = false,
-        typeInDocs: string = '',
-        description: string = '',
+        readonly name: string,
+        readonly defaultValue: Optional<string> = null,
+        readonly assignedBy: PythonParameterAssignment = PythonParameterAssignment.POSITION_OR_NAME,
+        readonly isPublic: boolean = false,
+        readonly typeInDocs: string = '',
+        readonly description: string = '',
     ) {
         super();
 
-        this.name = name;
-        this.defaultValue = defaultValue;
-        this.assignedBy = assignedBy;
-        this.isPublic = isPublic;
-        this.typeInDocs = typeInDocs;
-        this.description = description;
         this.containingFunction = null;
     }
 

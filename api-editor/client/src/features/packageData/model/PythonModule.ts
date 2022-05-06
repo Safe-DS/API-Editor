@@ -9,27 +9,17 @@ import PythonImport from './PythonImport';
 import PythonPackage from './PythonPackage';
 
 export default class PythonModule extends PythonDeclaration {
-    readonly name: string;
-    readonly imports: PythonImport[];
-    readonly fromImports: PythonFromImport[];
-    readonly classes: PythonClass[];
-    readonly functions: PythonFunction[];
     containingPackage: Optional<PythonPackage>;
 
     constructor(
-        name: string,
-        imports: PythonImport[] = [],
-        fromImports: PythonFromImport[] = [],
-        classes: PythonClass[] = [],
-        functions: PythonFunction[] = [],
+        readonly name: string,
+        readonly imports: PythonImport[] = [],
+        readonly fromImports: PythonFromImport[] = [],
+        readonly classes: PythonClass[] = [],
+        readonly functions: PythonFunction[] = [],
     ) {
         super();
 
-        this.name = name;
-        this.imports = imports;
-        this.fromImports = fromImports;
-        this.classes = classes;
-        this.functions = functions;
         this.containingPackage = null;
 
         this.classes.forEach((it) => {
