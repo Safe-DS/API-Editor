@@ -70,12 +70,12 @@ def test_boundary_annotation_to_json():
 
 def test_enum_annotation_to_json():
     annotation = EnumAnnotation(
-        target="test/test", enumName="test", enumValues=[EnumPair("test", "test")]
+        target="test/test", enumName="test", pairs=[EnumPair("test", "test")]
     )
     assert annotation.to_json() == {
         "target": "test/test",
         "enumName": "test",
-        "enumValues": [{"instanceName": "test", "stringValue": "test"}],
+        "pairs": [{"instanceName": "test", "stringValue": "test"}],
     }
 
 
@@ -102,7 +102,7 @@ def test_annotation_store():
     )
     annotations.enums.append(
         EnumAnnotation(
-            target="test/enum", enumName="test", enumValues=[EnumPair("test", "test")]
+            target="test/enum", enumName="test", pairs=[EnumPair("test", "test")]
         )
     )
     assert annotations.to_json() == {
@@ -131,7 +131,7 @@ def test_annotation_store():
         "enums": {
             "test/enum": {
                 "enumName": "test",
-                "enumValues": [{"instanceName": "test", "stringValue": "test"}],
+                "pairs": [{"instanceName": "test", "stringValue": "test"}],
                 "target": "test/enum",
             }
         },

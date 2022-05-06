@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import inspect
 import re
 from dataclasses import asdict, dataclass
 from enum import Enum, auto
@@ -375,6 +374,7 @@ class Parameter:
     def from_json(cls, json: Any):
         return cls(
             json["name"],
+            json["qname"],
             json["default_value"],
             json["is_public"],
             ParameterAssignment[json["assigned_by"]],
@@ -384,12 +384,14 @@ class Parameter:
     def __init__(
         self,
         name: str,
+        qname: str,
         default_value: Optional[str],
         is_public: bool,
         assigned_by: ParameterAssignment,
         docstring: ParameterAndResultDocstring,
     ) -> None:
         self.name: str = name
+        self.qname: str = qname
         self.default_value: Optional[str] = default_value
         self.is_public: bool = is_public
         self.assigned_by: ParameterAssignment = assigned_by
@@ -399,6 +401,7 @@ class Parameter:
     def to_json(self) -> Any:
         return {
             "name": self.name,
+            "qname": self.qname,
             "default_value": self.default_value,
             "is_public": self.is_public,
             "assigned_by": self.assigned_by.name,

@@ -1,4 +1,5 @@
 import json
+import re
 from io import TextIOWrapper
 from pathlib import Path
 from typing import Callable
@@ -8,6 +9,8 @@ from package_parser.commands.get_api import API
 from package_parser.models.annotation_models import (
     AnnotationStore,
     ConstantAnnotation,
+    EnumAnnotation,
+    EnumPair,
     OptionalAnnotation,
     ParameterInfo,
     ParameterType,
@@ -44,6 +47,7 @@ def generate_annotations(
         __get_constant_annotations,
         __get_required_annotations,
         __get_optional_annotations,
+        __get_enum_annotations,
     ]
 
     __generate_annotation_dict(api, usages, annotations, annotation_functions)
@@ -71,7 +75,8 @@ def __get_constant_annotations(
     Collect all parameters that are only ever assigned a single value.
     :param usages: UsageStore object
     :param api: API object for usages
-    :param annotations: AnnotationStore, that holds all annotations
+    :param annotations: AnnotationStore object
+    :return: None
     """
     for qname in list(usages.parameter_usages.keys()):
         parameter_info = __get_parameter_info(qname, usages)
@@ -94,7 +99,8 @@ def __get_unused_annotations(
     Collect all parameters, functions and classes that are never used.
     :param usages: UsageStore object
     :param api: API object for usages
-    :param annotations: AnnotationStore, that holds all annotations
+    :param annotations: AnnotationStore object
+    :return: None
     """
     for parameter_name in list(api.parameters().keys()):
         if (
@@ -119,6 +125,43 @@ def __get_unused_annotations(
         ):
             formatted_name = __qname_to_target_name(api, class_name)
             annotations.unused.append(UnusedAnnotation(formatted_name))
+
+
+def __get_enum_annotations(
+    usages: UsageStore, api: API, annotations: AnnotationStore
+) -> None:
+    """
+    Returns all parameters that are never used.
+    :param usages: UsageStore object
+    :param api: API object for usages
+    :param annotations: AnnotationStore object
+    :return: None
+    """
+    for _, parameter in api.parameters().items():
+        refined_type = parameter.refined_type.as_dict()
+        if "kind" in refined_type and refined_type["kind"] == "EnumType":
+            target = __qname_to_target_name(api, parameter.qname)
+            enum_name = __to_enum_name(parameter.name)
+            values = sorted(list(refined_type["values"]))
+            pairs = []
+            for string_value in values:
+                instance_name = __to_enum_name(string_value)
+                pairs.append(
+                    EnumPair(stringValue=string_value, instanceName=instance_name)
+                )
+
+            annotations.enums.append(
+                EnumAnnotation(target=target, enumName=enum_name, pairs=pairs)
+            )
+
+
+def __to_enum_name(parameter_name: str) -> str:
+    parameter_name = re.sub("[^a-zA-Z_]", "", parameter_name)
+    value_split = re.split("_", parameter_name)
+    parameter_name = ""
+    for split in value_split:
+        parameter_name += split.capitalize()
+    return parameter_name
 
 
 def __get_required_annotations(

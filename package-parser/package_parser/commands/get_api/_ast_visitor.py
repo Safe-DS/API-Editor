@@ -126,7 +126,7 @@ class _AstVisitor:
         function = Function(
             qname,
             decorator_names,
-            self.__function_parameters(function_node, is_public),
+            self.__function_parameters(function_node, is_public, qname),
             [],  # TODO: results
             is_public,
             _AstVisitor.__description(numpydoc),
@@ -169,7 +169,7 @@ class _AstVisitor:
 
     @staticmethod
     def __function_parameters(
-        node: astroid.FunctionDef, function_is_public: bool
+        node: astroid.FunctionDef, function_is_public: bool, function_qname: str
     ) -> list[Parameter]:
         parameters = node.args
         n_implicit_parameters = node.implicit_parameters()
@@ -185,6 +185,7 @@ class _AstVisitor:
         result = [
             Parameter(
                 it.name,
+                qname=function_qname + "." + it.name,
                 default_value=None,
                 is_public=function_is_public,
                 assigned_by=ParameterAssignment.POSITION_ONLY,
@@ -197,6 +198,7 @@ class _AstVisitor:
         result += [
             Parameter(
                 it.name,
+                function_qname + "." + it.name,
                 _AstVisitor.__parameter_default(
                     parameters.defaults,
                     index - len(parameters.args) + len(parameters.defaults),
@@ -212,6 +214,7 @@ class _AstVisitor:
         result += [
             Parameter(
                 it.name,
+                function_qname + "." + it.name,
                 _AstVisitor.__parameter_default(
                     parameters.kw_defaults,
                     index - len(parameters.kwonlyargs) + len(parameters.kw_defaults),

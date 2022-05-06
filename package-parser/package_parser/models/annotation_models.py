@@ -62,7 +62,7 @@ class EnumPair:
 @dataclasses.dataclass
 class EnumAnnotation(BaseAnnotation):
     enumName: str
-    enumValues: list[EnumPair]
+    pairs: list[EnumPair]
 
 
 @dataclasses.dataclass

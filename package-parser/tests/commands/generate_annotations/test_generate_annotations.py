@@ -6,6 +6,7 @@ import pytest
 from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.generate_annotations.generate_annotations import (
     __get_constant_annotations,
+    __get_enum_annotations,
     __get_optional_annotations,
     __get_required_annotations,
     __get_unused_annotations,
@@ -27,6 +28,17 @@ UNUSED_EXPECTED: dict[str, dict[str, str]] = {
     },
     "test/test/unused_global_function/unused_required_parameter": {
         "target": "test/test/unused_global_function/unused_required_parameter"
+    },
+    "test/config_context": {"target": "test/config_context"},
+    "test/config_context/assume_finite": {
+        "target": "test/config_context/assume_finite"
+    },
+    "test/config_context/display": {"target": "test/config_context/display"},
+    "test/config_context/print_changed_only": {
+        "target": "test/config_context/print_changed_only"
+    },
+    "test/config_context/working_memory": {
+        "target": "test/config_context/working_memory"
     },
 }
 
@@ -85,7 +97,18 @@ OPTIONALS_EXPECTED: dict[str, dict[str, str]] = {
 }
 
 BOUNDARIES_EXPECTED: dict[str, dict[str, str]] = {}
-ENUMS_EXPECTED: dict[str, dict[str, str]] = {}
+
+ENUMS_EXPECTED = {
+    "test/config_context/display": {
+        "enumName": "Display",
+        "pairs": [
+            {"instanceName": "Auto", "stringValue": "auto"},
+            {"instanceName": "Kdmeans", "stringValue": "kd-means++"},
+            {"instanceName": "KdTree", "stringValue": "kd_tree"},
+        ],
+        "target": "test/config_context/display",
+    }
+}
 
 # Reihenfolge ist wichtig, siehe Reihenfolge von annotation_functions in generate_annotations.py
 FULL_EXPECTED = {
@@ -167,6 +190,16 @@ def test_get_required():
     assert {
         annotation.target: annotation.to_json() for annotation in annotations.requireds
     } == REQUIREDS_EXPECTED
+
+
+def test_get_enum():
+    usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
+    annotations = AnnotationStore()
+    _preprocess_usages(usages, api)
+    __get_enum_annotations(usages, api, annotations)
+    assert {
+        annotation.target: annotation.to_json() for annotation in annotations.enums
+    } == ENUMS_EXPECTED
 
 
 def test_get_optional():
