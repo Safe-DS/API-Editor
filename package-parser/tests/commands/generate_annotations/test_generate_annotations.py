@@ -30,7 +30,6 @@ UNUSED_EXPECTED: dict[str, dict[str, str]] = {
     },
 }
 
-
 CONSTANT_EXPECTED: dict[str, dict[str, str]] = {
     "test/test/commonly_used_global_function/unused_optional_parameter": {
         "defaultType": "string",
@@ -67,12 +66,23 @@ REQUIREDS_EXPECTED: dict[str, dict[str, str]] = {
 }
 
 OPTIONALS_EXPECTED: dict[str, dict[str, str]] = {
-    "optional": {
+    'test/test/commonly_used_global_required_and_optional_function/required_that_should_be_optional': {
         'target': 'test/test/commonly_used_global_required_and_optional_function/required_that_should_be_optional',
         'defaultType': 'string',
         'defaultValue': 'miau'
+    },
+    'test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_optional': {
+        'target': 'test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_optional',
+        'defaultType': 'string',
+        'defaultValue': 'captain_morgan'
+    },
+    'test/test/commonly_used_global_required_and_optional_function/commonly_used_almost_required': {
+        'target': 'test/test/commonly_used_global_required_and_optional_function/commonly_used_almost_required',
+        'defaultType': 'string',
+        'defaultValue': 'marvel'
     }
 }
+
 BOUNDARIES_EXPECTED: dict[str, dict[str, str]] = {}
 ENUMS_EXPECTED: dict[str, dict[str, str]] = {}
 
@@ -134,8 +144,8 @@ def test_get_unused():
     _preprocess_usages(usages, api)
     __get_unused_annotations(usages, api, annotations)
     assert {
-        annotation.target: annotation.to_json() for annotation in annotations.unused
-    } == UNUSED_EXPECTED
+               annotation.target: annotation.to_json() for annotation in annotations.unused
+           } == UNUSED_EXPECTED
 
 
 def test_get_constant():
@@ -144,8 +154,8 @@ def test_get_constant():
     _preprocess_usages(usages, api)
     __get_constant_annotations(usages, api, annotations)
     assert {
-        annotation.target: annotation.to_json() for annotation in annotations.constant
-    } == CONSTANT_EXPECTED
+               annotation.target: annotation.to_json() for annotation in annotations.constant
+           } == CONSTANT_EXPECTED
 
 
 def test_get_required():
@@ -154,14 +164,18 @@ def test_get_required():
     _preprocess_usages(usages, api)
     __get_required_annotations(usages, api, annotations)
     assert {
-        annotation.target: annotation.to_json() for annotation in annotations.requireds
-    } == REQUIREDS_EXPECTED
+               annotation.target: annotation.to_json() for annotation in annotations.requireds
+           } == REQUIREDS_EXPECTED
 
 
 def test_get_optional():
     usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
+    annotations = AnnotationStore()
     _preprocess_usages(usages, api)
-    assert __get_optional_annotations(usages, api) == OPTIONAL_EXPECTED
+    __get_optional_annotations(usages, api, annotations)
+    assert {
+               annotation.target: annotation.to_json() for annotation in annotations.optionals
+           } == OPTIONALS_EXPECTED
 
 
 def test_generate():

@@ -12,6 +12,7 @@ from package_parser.models.annotation_models import (
     ParameterType,
     RequiredAnnotation,
     UnusedAnnotation,
+    OptionalAnnotation
 )
 from package_parser.utils import parent_qname
 
@@ -274,53 +275,38 @@ def __add_implicit_usages_of_default_value(usages: UsageStore, api: API) -> None
             usages.add_value_usage(parameter_qname, default_value, location)
 
 
-def __get_optional_annotations(usages: UsageStore, api: API) -> dict[str, dict[str, str]]:
+def __get_optional_annotations(usages: UsageStore, api: API, annotations: AnnotationStore) -> None:
     """
-    Returns all function parameters that are identified as being optional.
-
+    Collects all parameters that are currently required but should be optional to be assign a value
     :param usages: Usage store
     :param api: Description of the API
+    :param annotations: AnnotationStore, that holds all annotations
     """
-    result = {}
-
     parameters = api.parameters()
     # Takes all parameters with default value
     required_parameter = [
         (it, parameters[it])
         for it in parameters
-        if parameters[it].default_value is None
     ]
 
     for qname, _ in required_parameter:
-    # for parameter_qname in list(usages.parameter_usages.keys()):
-        # Count parameter usages
-        parameter_used_counter = []
-        for used_parameter in list(usages.value_usages[qname].keys()):
-            usage_count = len(usages.value_usages[qname][used_parameter])
-            parameter_used_counter.append((used_parameter, usage_count))
+        parameter_info = __get_parameter_info(qname, usages)
 
-        # Check if optional
-        type_result = __get_parameter_type(parameter_used_counter)
-        if type_result[0] != ParameterType.Optional:
-            continue
-
-        # Create Json Data
-        target_name = __qname_to_target_name(api, qname)
-        default_type, default_value = __get_default_type_from_value(
-            str(usages.most_common_value(qname))
-        )
-        result[target_name] = {
-            "target": target_name,
-            "defaultType": default_type,
-            "defaultValue": default_value
-        }
-
-    return {"optional": result}
+        if parameter_info.type == ParameterType.Optional:
+            formatted_name = __qname_to_target_name(api, qname)
+            annotations.optionals.append(
+                OptionalAnnotation(
+                    target=formatted_name,
+                    defaultValue=parameter_info.value,
+                    defaultType=parameter_info.value_type,
+                )
+            )
 
 
 def __get_parameter_info(qname: str, usages: UsageStore) -> ParameterInfo:
     """
-    Returns a ParameterInfo object, that contains the type of the parameter, the value that is associated with it, and the values type
+    Returns a ParameterInfo object, that contains the type of the parameter, the value that is associated with it,
+    and the values type.
     :param qname: name of the parameter
     :param usages: UsageStore
     :return ParameterInfo
@@ -343,6 +329,8 @@ def __get_parameter_info(qname: str, usages: UsageStore) -> ParameterInfo:
     value = max(values, key=lambda item: item[1])[0]
     if value[0] == "'":
         value = value[1:-1]
+
+    # If its neither required, constant nor unsed, return optional
     return ParameterInfo(
         ParameterType.Optional, value, __get_default_type_from_value(value)
     )
