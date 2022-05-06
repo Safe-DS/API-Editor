@@ -63,7 +63,7 @@ REQUIREDS_EXPECTED: dict[str, dict[str, str]] = {
     },
     "test/test/commonly_used_global_function/useful_optional_parameter": {
         "target": "test/test/commonly_used_global_function/useful_optional_parameter"
-    }
+    },
 }
 
 OPTIONALS_EXPECTED: dict[str, dict[str, str]] = {
@@ -81,7 +81,7 @@ OPTIONALS_EXPECTED: dict[str, dict[str, str]] = {
         "target": "test/test/commonly_used_global_required_and_optional_function/commonly_used_almost_required",
         "defaultType": "string",
         "defaultValue": "marvel",
-    }
+    },
 }
 
 BOUNDARIES_EXPECTED: dict[str, dict[str, str]] = {}
@@ -177,7 +177,6 @@ def test_get_optional():
     assert {
         annotation.target: annotation.to_json() for annotation in annotations.optionals
     } == OPTIONALS_EXPECTED
-
 
 
 def test_generate():
