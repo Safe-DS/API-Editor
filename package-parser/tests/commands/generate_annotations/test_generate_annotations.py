@@ -201,7 +201,7 @@ def test_get_enum():
         annotation.target: annotation.to_json() for annotation in annotations.enums
     } == ENUMS_EXPECTED
 
-    
+
 def test_get_optional():
     usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
     annotations = AnnotationStore()

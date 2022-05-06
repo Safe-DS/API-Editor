@@ -220,10 +220,7 @@
                     },
                     "refined_type": {
                         "kind": "EnumType",
-                        "values": [
-                            "textlll",
-                            "kd-means++"
-                        ]
+                        "values": ["textlll", "kd-means++"]
                     }
                 }
             ],
