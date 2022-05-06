@@ -45,6 +45,7 @@ def generate_annotations(
         __get_unused_annotations,
         __get_constant_annotations,
         __get_required_annotations,
+        __get_enum_annotations
     ]
 
     __generate_annotation_dict(api, usages, annotations, annotation_functions)
@@ -160,7 +161,7 @@ def __to_enum_name(parameter_name: str) -> str:
         parameter_name += split.capitalize()
     return parameter_name
 
-  
+
 def __get_required_annotations(
     usages: UsageStore, api: API, annotations: AnnotationStore
 ) -> None:

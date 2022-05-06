@@ -79,9 +79,8 @@ REQUIREDS_EXPECTED: dict[str, dict[str, str]] = {
 
 OPTIONALS_EXPECTED: dict[str, dict[str, str]] = {}
 BOUNDARIES_EXPECTED: dict[str, dict[str, str]] = {}
-ENUMS_EXPECTED: dict[str, dict[str, str]] = {}
 
-ENUM_EXPECTED = {
+ENUMS_EXPECTED = {
     "test/config_context/display": {
         "enumName": "Display",
         "pairs": [
@@ -175,6 +174,16 @@ def test_get_required():
     } == REQUIREDS_EXPECTED
 
 
+def test_get_enum():
+    usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
+    annotations = AnnotationStore()
+    _preprocess_usages(usages, api)
+    __get_enum_annotations(usages, api, annotations)
+    assert {
+        annotation.target: annotation.to_json() for annotation in annotations.enums
+    } == ENUMS_EXPECTED
+
+
 def test_generate():
     usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
     out_file_path = os.path.join(
@@ -199,13 +208,3 @@ def test_generate():
 def test_generate_bad_path():
     with pytest.raises(ValueError):
         generate_annotations(None, None, None)
-
-
-def test_get_enum():
-    usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
-    annotations = AnnotationStore()
-    _preprocess_usages(usages, api)
-    __get_enum_annotations(usages, api, annotations)
-    assert {
-        annotation.target: annotation.to_json() for annotation in annotations.enums
-    } == ENUM_EXPECTED
