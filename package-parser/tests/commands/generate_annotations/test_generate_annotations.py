@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 
 import pytest
+
 from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.generate_annotations.generate_annotations import (
     __get_constant_annotations,
@@ -170,5 +171,10 @@ def test_generate_bad_path():
 
 
 def test_get_enum():
-    _, api, _, api_file, _, api_json_path = setup()
-    assert __get_enum_annotations(api, None) == ENUM_EXPECTED
+    usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
+    annotations = AnnotationStore()
+    _preprocess_usages(usages, api)
+    __get_enum_annotations(usages, api, annotations)
+    assert {
+               annotation.target: annotation.to_json() for annotation in annotations.enums
+           } == ENUM_EXPECTED

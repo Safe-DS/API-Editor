@@ -1,15 +1,15 @@
 import json
+import re
 from io import TextIOWrapper
 from pathlib import Path
 from typing import Callable
-import re
 
 from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.get_api import API
 from package_parser.models.annotation_models import (
     AnnotationStore,
     ConstantAnnotation,
-    UnusedAnnotation,
+    UnusedAnnotation, EnumAnnotation, EnumPair,
 )
 from package_parser.utils import parent_qname
 
@@ -64,7 +64,8 @@ def __get_constant_annotations(
     Returns all parameters that are only ever assigned a single value.
     :param usages: UsageStore object
     :param api: API object for usages
-    :return: {"constant": dict[str, dict[str, str]]}
+    :param annotations: AnnotationStore object
+    :return: None
     """
     for parameter_qname in list(usages.parameter_usages.keys()):
         if len(usages.value_usages[parameter_qname].values()) == 0:
@@ -95,7 +96,8 @@ def __get_unused_annotations(
     Returns all parameters that are never used.
     :param usages: UsageStore object
     :param api: API object for usages
-    :return: {"unused": dict[str, dict[str, str]]}
+    :param annotations: AnnotationStore object
+    :return: None
     """
     for parameter_name in list(api.parameters().keys()):
         if (
@@ -120,6 +122,40 @@ def __get_unused_annotations(
         ):
             formatted_name = __qname_to_target_name(api, class_name)
             annotations.unused.append(UnusedAnnotation(formatted_name))
+
+
+def __get_enum_annotations(usages: UsageStore, api: API, annotations: AnnotationStore) -> None:
+    """
+        Returns all parameters that are never used.
+        :param usages: UsageStore object
+        :param api: API object for usages
+        :param annotations: AnnotationStore object
+        :return: None
+        """
+    for methode, function in api.functions.items():
+        for parameter in function.parameters:
+            refined_type = parameter.refined_type.as_dict()
+            if "kind" in refined_type and refined_type["kind"] == "EnumType":
+                target = __qname_to_target_name(api, methode + "." + parameter.name)
+                enum_name = parameter.name
+                enum_name = re.sub("[^a-zA-Z_]", "", enum_name)
+                name_split = re.split("_", enum_name)
+                enum_name = ""
+                for name in name_split:
+                    enum_name += name.capitalize()
+                values = list(refined_type["values"])
+                values.sort()
+                pairs = []
+                for instance_name in values:
+                    string_value = instance_name
+                    instance_name = re.sub("[^a-zA-Z_]", "", instance_name)
+                    value_split = re.split("_", instance_name)
+                    instance_name = ""
+                    for split in value_split:
+                        instance_name += split.capitalize()
+                    pairs.append(EnumPair(stringValue=string_value, instanceName=instance_name))
+
+                annotations.enums.append(EnumAnnotation(target=target, enumName=enum_name, pairs=pairs))
 
 
 def __qname_to_target_name(api: API, qname: str) -> str:
@@ -256,49 +292,3 @@ def __add_implicit_usages_of_default_value(usages: UsageStore, api: API) -> None
 
         for location in locations_of_implicit_usages_of_default_value:
             usages.add_value_usage(parameter_qname, default_value, location)
-
-def __get_enum_annotations(api: API, usages: UsageStore) -> dict[str, dict[str, dict[str, str]]]:
-    enums = {}
-    for methode, function in api.functions.items():
-        for parameter in function.parameters:
-            refined_type = parameter.refined_type.as_dict()
-            if "kind" in refined_type:
-                if refined_type["kind"] == "EnumType":
-                    parameter_dict = dict()
-                    target = __qname_to_target_name(api, methode + "." + parameter.name)
-                    parameter_dict["target"] = target
-                    enumName = parameter.name
-                    enumName = re.sub("[^a-zA-Z_]", "", enumName)
-                    name_split = re.split("_", enumName)
-                    enumName = ""
-                    for name in name_split:
-                        enumName += name.capitalize()
-                    parameter_dict["enumName"] = enumName
-                    values = list(refined_type["values"])
-                    values.sort()
-                    pairs = []
-                    for value in values:
-                        old_value = value
-                        value = re.sub("[^a-zA-Z_]", "", value)
-                        value_split = re.split("_", value)
-                        value = ""
-                        for split in value_split:
-                            value += split.capitalize()
-                        value_dict = {
-                            "stringValue": old_value,
-                            "instanceName": value
-                        }
-                        pairs.append(value_dict)
-
-                    parameter_dict["pairs"] = pairs
-                    enums[target] = parameter_dict
-    return enums
-
-if __name__ == "__main__":
-   # api_file = open("D:\\GitHubRepositorys\\API-Editor\\package-parser\\tests\\commands\\generate_annotations\\api.json")
-    api_file = open("D:\\GitHubRepositorys\\API-Editor\\package-parser\\tests\\data\\api_data.json")
-    # open("C:\\Users\\Nils\\Desktop\\scikit-learn__sklearn__1.0.2__api.json", "r")
-    api_json = json.load(api_file)
-    api = API.from_json(api_json)
-    print(__get_enum_annotations(api, None))
-# return {"enums": enums}
