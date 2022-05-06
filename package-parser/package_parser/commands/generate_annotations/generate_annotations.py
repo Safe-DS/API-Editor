@@ -8,6 +8,7 @@ from package_parser.commands.get_api import API
 from package_parser.models.annotation_models import (
     AnnotationStore,
     ConstantAnnotation,
+    OptionalAnnotation,
     ParameterInfo,
     ParameterType,
     RequiredAnnotation,
@@ -42,6 +43,7 @@ def generate_annotations(
         __get_unused_annotations,
         __get_constant_annotations,
         __get_required_annotations,
+        __get_optional_annotations,
     ]
 
     __generate_annotation_dict(api, usages, annotations, annotation_functions)
@@ -273,9 +275,36 @@ def __add_implicit_usages_of_default_value(usages: UsageStore, api: API) -> None
             usages.add_value_usage(parameter_qname, default_value, location)
 
 
+def __get_optional_annotations(
+    usages: UsageStore, api: API, annotations: AnnotationStore
+) -> None:
+    """
+    Collects all parameters that are currently required but should be optional to be assign a value
+    :param usages: Usage store
+    :param api: Description of the API
+    :param annotations: AnnotationStore, that holds all annotations
+    """
+    parameters = api.parameters()
+    all_parameter = [(it, parameters[it]) for it in parameters]
+
+    for qname, _ in all_parameter:
+        parameter_info = __get_parameter_info(qname, usages)
+
+        if parameter_info.type == ParameterType.Optional:
+            formatted_name = __qname_to_target_name(api, qname)
+            annotations.optionals.append(
+                OptionalAnnotation(
+                    target=formatted_name,
+                    defaultValue=parameter_info.value,
+                    defaultType=parameter_info.value_type,
+                )
+            )
+
+
 def __get_parameter_info(qname: str, usages: UsageStore) -> ParameterInfo:
     """
-    Returns a ParameterInfo object, that contains the type of the parameter, the value that is associated with it, and the values type
+    Returns a ParameterInfo object, that contains the type of the parameter, the value that is associated with it,
+    and the values type.
     :param qname: name of the parameter
     :param usages: UsageStore
     :return ParameterInfo
@@ -298,6 +327,8 @@ def __get_parameter_info(qname: str, usages: UsageStore) -> ParameterInfo:
     value = max(values, key=lambda item: item[1])[0]
     if value[0] == "'":
         value = value[1:-1]
+
+    # If its neither required nor constant, return optional
     return ParameterInfo(
         ParameterType.Optional, value, __get_default_type_from_value(value)
     )
