@@ -185,8 +185,8 @@ class _AstVisitor:
         result = [
             Parameter(
                 it.name,
-                default_value=None,
                 qname=function_qname + "." + it.name,
+                default_value=None,
                 is_public=function_is_public,
                 assigned_by=ParameterAssignment.POSITION_ONLY,
                 docstring=_AstVisitor.__parameter_docstring(function_numpydoc, it.name),
@@ -198,11 +198,11 @@ class _AstVisitor:
         result += [
             Parameter(
                 it.name,
+                function_qname + "." + it.name,
                 _AstVisitor.__parameter_default(
                     parameters.defaults,
                     index - len(parameters.args) + len(parameters.defaults),
                 ),
-                function_qname + "." + it.name,
                 function_is_public,
                 ParameterAssignment.POSITION_OR_NAME,
                 _AstVisitor.__parameter_docstring(function_numpydoc, it.name),
@@ -214,11 +214,11 @@ class _AstVisitor:
         result += [
             Parameter(
                 it.name,
+                function_qname + "." + it.name,
                 _AstVisitor.__parameter_default(
                     parameters.kw_defaults,
                     index - len(parameters.kwonlyargs) + len(parameters.kw_defaults),
                 ),
-                function_qname + "." + it.name,
                 function_is_public,
                 ParameterAssignment.NAME_ONLY,
                 _AstVisitor.__parameter_docstring(function_numpydoc, it.name),

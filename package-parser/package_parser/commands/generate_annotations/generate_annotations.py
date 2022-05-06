@@ -136,25 +136,22 @@ def __get_enum_annotations(
     :param annotations: AnnotationStore object
     :return: None
     """
-    for methode, function in api.functions.items():
-        for parameter in function.parameters:
-            refined_type = parameter.refined_type.as_dict()
-            if "kind" in refined_type and refined_type["kind"] == "EnumType":
-                target = __qname_to_target_name(api, parameter.qname)
-                enum_name = __to_enum_name(parameter.name)
-                values = list(refined_type["values"])
-                values.sort()
-                pairs = []
-                for instance_name in values:
-                    string_value = instance_name
-                    instance_name = __to_enum_name(instance_name)
-                    pairs.append(
-                        EnumPair(stringValue=string_value, instanceName=instance_name)
-                    )
-
-                annotations.enums.append(
-                    EnumAnnotation(target=target, enumName=enum_name, pairs=pairs)
+    for _, parameter in api.parameters().items():
+        refined_type = parameter.refined_type.as_dict()
+        if "kind" in refined_type and refined_type["kind"] == "EnumType":
+            target = __qname_to_target_name(api, parameter.qname)
+            enum_name = __to_enum_name(parameter.name)
+            values = sorted(list(refined_type["values"]))
+            pairs = []
+            for string_value in values:
+                instance_name = __to_enum_name(string_value)
+                pairs.append(
+                    EnumPair(stringValue=string_value, instanceName=instance_name)
                 )
+
+            annotations.enums.append(
+                EnumAnnotation(target=target, enumName=enum_name, pairs=pairs)
+            )
 
 
 def __to_enum_name(parameter_name: str) -> str:
