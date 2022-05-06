@@ -14,77 +14,77 @@ from package_parser.commands.generate_annotations.generate_annotations import (
     __get_optional_annotations
 )
 from package_parser.commands.get_api import API
+from package_parser.models.annotation_models import AnnotationStore
 
-UNUSED_EXPECTED = {
-    "unused": {
-        "test/test/Unused_Class": {"target": "test/test/Unused_Class"},
-        "test/test/commonly_used_global_function/unused_optional_parameter": {
-            "target": "test/test/commonly_used_global_function/unused_optional_parameter"
-        },
-        "test/test/unused_global_function": {
-            "target": "test/test/unused_global_function"
-        },
-        "test/test/unused_global_function/unused_optional_parameter": {
-            "target": "test/test/unused_global_function/unused_optional_parameter"
-        },
-        "test/test/unused_global_function/unused_required_parameter": {
-            "target": "test/test/unused_global_function/unused_required_parameter"
-        },
-    }
+UNUSED_EXPECTED: dict[str, dict[str, str]] = {
+    "test/test/Unused_Class": {"target": "test/test/Unused_Class"},
+    "test/test/commonly_used_global_function/unused_optional_parameter": {
+        "target": "test/test/commonly_used_global_function/unused_optional_parameter"
+    },
+    "test/test/unused_global_function": {"target": "test/test/unused_global_function"},
+    "test/test/unused_global_function/unused_optional_parameter": {
+        "target": "test/test/unused_global_function/unused_optional_parameter"
+    },
+    "test/test/unused_global_function/unused_required_parameter": {
+        "target": "test/test/unused_global_function/unused_required_parameter"
+    },
 }
 
 
-CONSTANT_EXPECTED = {
-    "constant": {
-        "test/test/commonly_used_global_function/unused_optional_parameter": {
-            "defaultType": "string",
-            "defaultValue": "bla",
-            "target": "test/test/commonly_used_global_function/unused_optional_parameter",
-        },
-        "test/test/commonly_used_global_function/useless_optional_parameter": {
-            "defaultType": "string",
-            "defaultValue": "bla",
-            "target": "test/test/commonly_used_global_function/useless_optional_parameter",
-        },
-        "test/test/commonly_used_global_function/useless_required_parameter": {
-            "defaultType": "string",
-            "defaultValue": "blup",
-            "target": "test/test/commonly_used_global_function/useless_required_parameter",
-        },
-        "test/test/commonly_used_global_required_and_optional_function/constant_parameter": {
-            "defaultType": "string",
-            "defaultValue": "bockwurst",
-            "target": "test/test/commonly_used_global_required_and_optional_function/constant_parameter",
-        },
-    }
+CONSTANT_EXPECTED: dict[str, dict[str, str]] = {
+    "test/test/commonly_used_global_function/unused_optional_parameter": {
+        "defaultType": "string",
+        "defaultValue": "bla",
+        "target": "test/test/commonly_used_global_function/unused_optional_parameter",
+    },
+    "test/test/commonly_used_global_function/useless_optional_parameter": {
+        "defaultType": "string",
+        "defaultValue": "bla",
+        "target": "test/test/commonly_used_global_function/useless_optional_parameter",
+    },
+    "test/test/commonly_used_global_function/useless_required_parameter": {
+        "defaultType": "string",
+        "defaultValue": "blup",
+        "target": "test/test/commonly_used_global_function/useless_required_parameter",
+    },
+    "test/test/commonly_used_global_required_and_optional_function/constant_parameter": {
+        "defaultType": "string",
+        "defaultValue": "bockwurst",
+        "target": "test/test/commonly_used_global_required_and_optional_function/constant_parameter",
+    },
 }
 
-
-REQUIRED_EXPECTED = {
-    "requireds": {
-        "test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_required": {
-            "target": "test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_required"
-        },
-        "test/test/commonly_used_global_required_and_optional_function/commonly_used_barely_required": {
-            "target": "test/test/commonly_used_global_required_and_optional_function/commonly_used_barely_required"
-        },
-        "test/test/commonly_used_global_function/useful_optional_parameter": {
-            "target": "test/test/commonly_used_global_function/useful_optional_parameter"
-        },
-    }
+REQUIREDS_EXPECTED: dict[str, dict[str, str]] = {
+    "test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_required": {
+        "target": "test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_required"
+    },
+    "test/test/commonly_used_global_required_and_optional_function/commonly_used_barely_required": {
+        "target": "test/test/commonly_used_global_required_and_optional_function/commonly_used_barely_required"
+    },
+    "test/test/commonly_used_global_function/useful_optional_parameter": {
+        "target": "test/test/commonly_used_global_function/useful_optional_parameter"
+    },
 }
 
-OPTIONAL_EXPECTED = {
+OPTIONALS_EXPECTED: dict[str, dict[str, str]] = {
     "optional": {
         'target': 'test/test/commonly_used_global_required_and_optional_function/required_that_should_be_optional',
         'defaultType': 'string',
         'defaultValue': 'miau'
     }
 }
-
+BOUNDARIES_EXPECTED: dict[str, dict[str, str]] = {}
+ENUMS_EXPECTED: dict[str, dict[str, str]] = {}
 
 # Reihenfolge ist wichtig, siehe Reihenfolge von annotation_functions in generate_annotations.py
-FULL_EXPECTED = {**UNUSED_EXPECTED, **CONSTANT_EXPECTED, **REQUIRED_EXPECTED, **OPTIONAL_EXPECTED}
+FULL_EXPECTED = {
+    "constant": {**CONSTANT_EXPECTED},
+    "unused": {**UNUSED_EXPECTED},
+    "requireds": {**REQUIREDS_EXPECTED},
+    "optionals": {**OPTIONALS_EXPECTED},
+    "boundaries": {**BOUNDARIES_EXPECTED},
+    "enums": {**ENUMS_EXPECTED},
+}
 
 
 def setup():
@@ -130,20 +130,32 @@ def test_format_none():
 
 def test_get_unused():
     usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
+    annotations = AnnotationStore()
     _preprocess_usages(usages, api)
-    assert __get_unused_annotations(usages, api) == UNUSED_EXPECTED
+    __get_unused_annotations(usages, api, annotations)
+    assert {
+        annotation.target: annotation.to_json() for annotation in annotations.unused
+    } == UNUSED_EXPECTED
 
 
 def test_get_constant():
     usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
+    annotations = AnnotationStore()
     _preprocess_usages(usages, api)
-    assert __get_constant_annotations(usages, api) == CONSTANT_EXPECTED
+    __get_constant_annotations(usages, api, annotations)
+    assert {
+        annotation.target: annotation.to_json() for annotation in annotations.constant
+    } == CONSTANT_EXPECTED
 
 
 def test_get_required():
     usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
+    annotations = AnnotationStore()
     _preprocess_usages(usages, api)
-    assert __get_required_annotations(usages, api) == REQUIRED_EXPECTED
+    __get_required_annotations(usages, api, annotations)
+    assert {
+        annotation.target: annotation.to_json() for annotation in annotations.requireds
+    } == REQUIREDS_EXPECTED
 
 
 def test_get_optional():

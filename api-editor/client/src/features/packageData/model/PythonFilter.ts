@@ -1,22 +1,12 @@
 export type FilterString = string;
 
 export class PythonFilter {
-    readonly pythonModule: FilterString | void;
-    readonly pythonClass: FilterString | void;
-    readonly pythonFunction: FilterString | void;
-    readonly pythonParameter: FilterString | void;
-
     constructor(
-        pythonModule: FilterString | void,
-        pythonClass: FilterString | void,
-        pythonFunction: FilterString | void,
-        pythonParameter: FilterString | void,
-    ) {
-        this.pythonModule = pythonModule;
-        this.pythonClass = pythonClass;
-        this.pythonFunction = pythonFunction;
-        this.pythonParameter = pythonParameter;
-    }
+        readonly pythonModule: FilterString | void,
+        readonly pythonClass: FilterString | void,
+        readonly pythonFunction: FilterString | void,
+        readonly pythonParameter: FilterString | void,
+    ) {}
 
     static fromFilterBoxInput(filterBoxInput: string): PythonFilter | void {
         let pythonModule;
