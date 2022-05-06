@@ -275,6 +275,7 @@ def __get_enum_annotations(api: API, usages: UsageStore) -> dict[str, dict[str, 
                         enumName += name.capitalize()
                     parameter_dict["enumName"] = enumName
                     values = list(refined_type["values"])
+                    values.sort()
                     pairs = []
                     for value in values:
                         old_value = value

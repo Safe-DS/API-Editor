@@ -27,6 +27,12 @@ UNUSED_EXPECTED: dict[str, dict[str, str]] = {
     "test/test/unused_global_function/unused_required_parameter": {
         "target": "test/test/unused_global_function/unused_required_parameter"
     },
+    'test/config_context': {'target': 'test/config_context'},
+    'test/config_context/assume_finite': {'target': 'test/config_context/assume_finite'},
+    'test/config_context/display': {'target': 'test/config_context/display'},
+    'test/config_context/print_changed_only': {'target': 'test/config_context/print_changed_only'},
+    'test/config_context/working_memory': {'target': 'test/config_context/working_memory'},
+
 }
 
 CONSTANT_EXPECTED: dict[str, dict[str, str]] = {
@@ -53,17 +59,16 @@ BOUNDARIES_EXPECTED: dict[str, dict[str, str]] = {}
 ENUMS_EXPECTED: dict[str, dict[str, str]] = {}
 
 ENUM_EXPECTED = {
-'test/config_context/display': {'enumName': 'Display',
-                                 'pairs': [{'instanceName': 'Auto',
-                                            'stringValue': 'auto'},
-                                            {'instanceName': 'KdTree',
-                                            'stringValue': 'kd_tree'},
-                                           {'instanceName': 'KdMeans',
-                                            'stringValue': 'kd-means++'},
+    'test/config_context/display': {'enumName': 'Display',
+                                    'pairs': [{'instanceName': 'Auto',
+                                               'stringValue': 'auto'},
+                                              {'instanceName': 'Kdmeans',
+                                               'stringValue': 'kd-means++'},
+                                              {'instanceName': 'KdTree',
+                                               'stringValue': 'kd_tree'},
 
-
-                                           ],
-                                 'target': 'test/config_context/display'}
+                                              ],
+                                    'target': 'test/config_context/display'}
 }
 
 # Reihenfolge ist wichtig, siehe Reihenfolge von annotation_functions in generate_annotations.py
@@ -124,8 +129,8 @@ def test_get_unused():
     _preprocess_usages(usages, api)
     __get_unused_annotations(usages, api, annotations)
     assert {
-        annotation.target: annotation.to_json() for annotation in annotations.unused
-    } == UNUSED_EXPECTED
+               annotation.target: annotation.to_json() for annotation in annotations.unused
+           } == UNUSED_EXPECTED
 
 
 def test_get_constant():
@@ -134,8 +139,8 @@ def test_get_constant():
     _preprocess_usages(usages, api)
     __get_constant_annotations(usages, api, annotations)
     assert {
-        annotation.target: annotation.to_json() for annotation in annotations.constant
-    } == CONSTANT_EXPECTED
+               annotation.target: annotation.to_json() for annotation in annotations.constant
+           } == CONSTANT_EXPECTED
 
 
 def test_generate():
@@ -162,6 +167,7 @@ def test_generate():
 def test_generate_bad_path():
     with pytest.raises(ValueError):
         generate_annotations(None, None, None)
+
 
 def test_get_enum():
     _, api, _, api_file, _, api_json_path = setup()
