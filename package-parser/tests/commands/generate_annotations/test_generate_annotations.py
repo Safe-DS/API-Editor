@@ -6,6 +6,7 @@ import pytest
 from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.generate_annotations.generate_annotations import (
     __get_constant_annotations,
+    __get_required_annotations,
     __get_unused_annotations,
     __qname_to_target_name,
     _preprocess_usages,
@@ -28,6 +29,7 @@ UNUSED_EXPECTED: dict[str, dict[str, str]] = {
     },
 }
 
+
 CONSTANT_EXPECTED: dict[str, dict[str, str]] = {
     "test/test/commonly_used_global_function/unused_optional_parameter": {
         "defaultType": "string",
@@ -44,9 +46,25 @@ CONSTANT_EXPECTED: dict[str, dict[str, str]] = {
         "defaultValue": "blup",
         "target": "test/test/commonly_used_global_function/useless_required_parameter",
     },
+    "test/test/commonly_used_global_required_and_optional_function/constant_parameter": {
+        "defaultType": "string",
+        "defaultValue": "bockwurst",
+        "target": "test/test/commonly_used_global_required_and_optional_function/constant_parameter",
+    },
 }
 
-REQUIREDS_EXPECTED: dict[str, dict[str, str]] = {}
+REQUIREDS_EXPECTED: dict[str, dict[str, str]] = {
+    "test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_required": {
+        "target": "test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_required"
+    },
+    "test/test/commonly_used_global_required_and_optional_function/commonly_used_barely_required": {
+        "target": "test/test/commonly_used_global_required_and_optional_function/commonly_used_barely_required"
+    },
+    "test/test/commonly_used_global_function/useful_optional_parameter": {
+        "target": "test/test/commonly_used_global_function/useful_optional_parameter"
+    },
+}
+
 OPTIONALS_EXPECTED: dict[str, dict[str, str]] = {}
 BOUNDARIES_EXPECTED: dict[str, dict[str, str]] = {}
 ENUMS_EXPECTED: dict[str, dict[str, str]] = {}
@@ -121,6 +139,16 @@ def test_get_constant():
     assert {
         annotation.target: annotation.to_json() for annotation in annotations.constant
     } == CONSTANT_EXPECTED
+
+
+def test_get_required():
+    usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
+    annotations = AnnotationStore()
+    _preprocess_usages(usages, api)
+    __get_required_annotations(usages, api, annotations)
+    assert {
+        annotation.target: annotation.to_json() for annotation in annotations.requireds
+    } == REQUIREDS_EXPECTED
 
 
 def test_generate():
