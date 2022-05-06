@@ -11,6 +11,7 @@ from package_parser.commands.generate_annotations.generate_annotations import (
     __qname_to_target_name,
     _preprocess_usages,
     generate_annotations,
+    __get_optional_annotations
 )
 from package_parser.commands.get_api import API
 
@@ -73,9 +74,17 @@ REQUIRED_EXPECTED = {
     }
 }
 
+OPTIONAL_EXPECTED = {
+    "optional": {
+        'target': 'test/test/commonly_used_global_required_and_optional_function/required_that_should_be_optional',
+        'defaultType': 'string',
+        'defaultValue': 'miau'
+    }
+}
+
 
 # Reihenfolge ist wichtig, siehe Reihenfolge von annotation_functions in generate_annotations.py
-FULL_EXPECTED = {**UNUSED_EXPECTED, **CONSTANT_EXPECTED, **REQUIRED_EXPECTED}
+FULL_EXPECTED = {**UNUSED_EXPECTED, **CONSTANT_EXPECTED, **REQUIRED_EXPECTED, **OPTIONAL_EXPECTED}
 
 
 def setup():
@@ -135,6 +144,12 @@ def test_get_required():
     usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
     _preprocess_usages(usages, api)
     assert __get_required_annotations(usages, api) == REQUIRED_EXPECTED
+
+
+def test_get_optional():
+    usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
+    _preprocess_usages(usages, api)
+    assert __get_optional_annotations(usages, api) == OPTIONAL_EXPECTED
 
 
 def test_generate():

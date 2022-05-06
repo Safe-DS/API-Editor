@@ -267,22 +267,27 @@ def __add_implicit_usages_of_default_value(usages: UsageStore, api: API) -> None
 
 def __get_optional_annotations(usages: UsageStore, api: API) -> dict[str, dict[str, str]]:
     """
-      Returns all function parameters that are identified as being optional.
+    Returns all function parameters that are identified as being optional.
 
-      :param usages: Usage store
-      :param api: Description of the API
-      """
+    :param usages: Usage store
+    :param api: Description of the API
+    """
     result = {}
 
-    for parameter_qname in list(usages.parameter_usages.keys()):
-        # Check if the parameter is relevant for us or not
-        if len(usages.value_usages[parameter_qname].values()) <= 1:
-            continue
+    parameters = api.parameters()
+    # Takes all parameters with default value
+    required_parameter = [
+        (it, parameters[it])
+        for it in parameters
+        if parameters[it].default_value is None
+    ]
 
+    for qname, _ in required_parameter:
+    # for parameter_qname in list(usages.parameter_usages.keys()):
         # Count parameter usages
         parameter_used_counter = []
-        for used_parameter in list(usages.value_usages[parameter_qname].keys()):
-            usage_count = len(usages.value_usages[parameter_qname][used_parameter])
+        for used_parameter in list(usages.value_usages[qname].keys()):
+            usage_count = len(usages.value_usages[qname][used_parameter])
             parameter_used_counter.append((used_parameter, usage_count))
 
         # Check if optional
@@ -291,9 +296,9 @@ def __get_optional_annotations(usages: UsageStore, api: API) -> dict[str, dict[s
             continue
 
         # Create Json Data
-        target_name = __qname_to_target_name(api, parameter_qname)
+        target_name = __qname_to_target_name(api, qname)
         default_type, default_value = __get_default_type_from_value(
-            str(usages.most_common_value(parameter_qname))
+            str(usages.most_common_value(qname))
         )
         result[target_name] = {
             "target": target_name,
