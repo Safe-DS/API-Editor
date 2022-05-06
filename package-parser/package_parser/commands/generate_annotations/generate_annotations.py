@@ -9,7 +9,9 @@ from package_parser.commands.get_api import API
 from package_parser.models.annotation_models import (
     AnnotationStore,
     ConstantAnnotation,
-    UnusedAnnotation, EnumAnnotation, EnumPair,
+    EnumAnnotation,
+    EnumPair,
+    UnusedAnnotation,
 )
 from package_parser.utils import parent_qname
 
@@ -124,14 +126,16 @@ def __get_unused_annotations(
             annotations.unused.append(UnusedAnnotation(formatted_name))
 
 
-def __get_enum_annotations(usages: UsageStore, api: API, annotations: AnnotationStore) -> None:
+def __get_enum_annotations(
+    usages: UsageStore, api: API, annotations: AnnotationStore
+) -> None:
     """
-        Returns all parameters that are never used.
-        :param usages: UsageStore object
-        :param api: API object for usages
-        :param annotations: AnnotationStore object
-        :return: None
-        """
+    Returns all parameters that are never used.
+    :param usages: UsageStore object
+    :param api: API object for usages
+    :param annotations: AnnotationStore object
+    :return: None
+    """
     for methode, function in api.functions.items():
         for parameter in function.parameters:
             refined_type = parameter.refined_type.as_dict()
@@ -153,9 +157,13 @@ def __get_enum_annotations(usages: UsageStore, api: API, annotations: Annotation
                     instance_name = ""
                     for split in value_split:
                         instance_name += split.capitalize()
-                    pairs.append(EnumPair(stringValue=string_value, instanceName=instance_name))
+                    pairs.append(
+                        EnumPair(stringValue=string_value, instanceName=instance_name)
+                    )
 
-                annotations.enums.append(EnumAnnotation(target=target, enumName=enum_name, pairs=pairs))
+                annotations.enums.append(
+                    EnumAnnotation(target=target, enumName=enum_name, pairs=pairs)
+                )
 
 
 def __qname_to_target_name(api: API, qname: str) -> str:
