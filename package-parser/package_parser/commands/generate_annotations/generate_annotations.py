@@ -141,22 +141,13 @@ def __get_enum_annotations(
             refined_type = parameter.refined_type.as_dict()
             if "kind" in refined_type and refined_type["kind"] == "EnumType":
                 target = __qname_to_target_name(api, methode + "." + parameter.name)
-                enum_name = parameter.name
-                enum_name = re.sub("[^a-zA-Z_]", "", enum_name)
-                name_split = re.split("_", enum_name)
-                enum_name = ""
-                for name in name_split:
-                    enum_name += name.capitalize()
+                enum_name = __to_enum_name(parameter.name)
                 values = list(refined_type["values"])
                 values.sort()
                 pairs = []
                 for instance_name in values:
                     string_value = instance_name
-                    instance_name = re.sub("[^a-zA-Z_]", "", instance_name)
-                    value_split = re.split("_", instance_name)
-                    instance_name = ""
-                    for split in value_split:
-                        instance_name += split.capitalize()
+                    instance_name = __to_enum_name(instance_name)
                     pairs.append(
                         EnumPair(stringValue=string_value, instanceName=instance_name)
                     )
@@ -164,6 +155,15 @@ def __get_enum_annotations(
                 annotations.enums.append(
                     EnumAnnotation(target=target, enumName=enum_name, pairs=pairs)
                 )
+
+
+def __to_enum_name(parameter_name: str) -> str:
+    parameter_name = re.sub("[^a-zA-Z_]", "", parameter_name)
+    value_split = re.split("_", parameter_name)
+    parameter_name = ""
+    for split in value_split:
+        parameter_name += split.capitalize()
+    return parameter_name
 
 
 def __qname_to_target_name(api: API, qname: str) -> str:
