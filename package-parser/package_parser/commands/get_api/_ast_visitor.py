@@ -3,8 +3,8 @@ from typing import Optional, Union
 
 import astroid
 from numpydoc.docscrape import NumpyDocString
-from package_parser.utils import parent_qname
 
+from package_parser.utils import parent_qname
 from ._file_filters import _is_init_file
 from ._model import (
     API,
@@ -126,7 +126,7 @@ class _AstVisitor:
         function = Function(
             qname,
             decorator_names,
-            self.__function_parameters(function_node, is_public),
+            self.__function_parameters(function_node, is_public, qname),
             [],  # TODO: results
             is_public,
             _AstVisitor.__description(numpydoc),
@@ -169,7 +169,7 @@ class _AstVisitor:
 
     @staticmethod
     def __function_parameters(
-        node: astroid.FunctionDef, function_is_public: bool
+        node: astroid.FunctionDef, function_is_public: bool, function_qname: str
     ) -> list[Parameter]:
         parameters = node.args
         n_implicit_parameters = node.implicit_parameters()
@@ -186,6 +186,7 @@ class _AstVisitor:
             Parameter(
                 it.name,
                 default_value=None,
+                qname=function_qname + "." + it.name,
                 is_public=function_is_public,
                 assigned_by=ParameterAssignment.POSITION_ONLY,
                 docstring=_AstVisitor.__parameter_docstring(function_numpydoc, it.name),
@@ -201,6 +202,7 @@ class _AstVisitor:
                     parameters.defaults,
                     index - len(parameters.args) + len(parameters.defaults),
                 ),
+                function_qname + "." + it.name,
                 function_is_public,
                 ParameterAssignment.POSITION_OR_NAME,
                 _AstVisitor.__parameter_docstring(function_numpydoc, it.name),
@@ -216,6 +218,7 @@ class _AstVisitor:
                     parameters.kw_defaults,
                     index - len(parameters.kwonlyargs) + len(parameters.kw_defaults),
                 ),
+                function_qname + "." + it.name,
                 function_is_public,
                 ParameterAssignment.NAME_ONLY,
                 _AstVisitor.__parameter_docstring(function_numpydoc, it.name),

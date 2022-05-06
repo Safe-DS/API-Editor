@@ -68,6 +68,7 @@
             "parameters": [
                 {
                     "name": "unused_required_parameter",
+                    "qname": "test.unused_global_function.unused_required_parameter",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -78,6 +79,7 @@
                 },
                 {
                     "name": "unused_optional_parameter",
+                    "qname": "test.unused_global_function.unused_optional_parameter",
                     "default_value": "'bla'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -102,6 +104,7 @@
             "parameters": [
                 {
                     "name": "useless_required_parameter",
+                    "qname": "test.commonly_used_global_function.useless_required_parameter",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -112,6 +115,7 @@
                 },
                 {
                     "name": "useful_required_parameter",
+                    "qname": "test.commonly_used_global_function.useful_required_parameter",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -122,6 +126,7 @@
                 },
                 {
                     "name": "unused_optional_parameter",
+                    "qname": "test.commonly_used_global_function.unused_optional_parameter",
                     "default_value": "'bla'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -132,6 +137,7 @@
                 },
                 {
                     "name": "useless_optional_parameter",
+                    "qname": "test.commonly_used_global_function.useless_optional_parameter",
                     "default_value": "'bla'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -142,6 +148,7 @@
                 },
                 {
                     "name": "useful_optional_parameter",
+                    "qname": "test.commonly_used_global_function.useful_optional_parameter",
                     "default_value": "'bla'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -162,10 +169,13 @@
             "unique_name": "config_context",
             "qname": "sklearn._config.config_context",
             "unique_qname": "sklearn._config.config_context",
-            "decorators": ["contextmanager"],
+            "decorators": [
+                "contextmanager"
+            ],
             "parameters": [
                 {
                     "name": "assume_finite",
+                    "qname": "sklearn._config.config_context.assume_finite",
                     "default_value": "None",
                     "is_public": true,
                     "assigned_by": "NAME_ONLY",
@@ -177,6 +187,7 @@
                 },
                 {
                     "name": "working_memory",
+                    "qname": "sklearn._config.config_context.working_memory",
                     "default_value": "None",
                     "is_public": true,
                     "assigned_by": "NAME_ONLY",
@@ -188,6 +199,7 @@
                 },
                 {
                     "name": "print_changed_only",
+                    "qname": "sklearn._config.config_context.print_changed_only",
                     "default_value": "None",
                     "is_public": true,
                     "assigned_by": "NAME_ONLY",
@@ -199,6 +211,7 @@
                 },
                 {
                     "name": "display",
+                    "qname": "sklearn._config.config_context.display",
                     "default_value": "None",
                     "is_public": true,
                     "assigned_by": "NAME_ONLY",
@@ -208,7 +221,10 @@
                     },
                     "refined_type": {
                         "kind": "EnumType",
-                        "values": ["textlll", "kd-means++"]
+                        "values": [
+                            "textlll",
+                            "kd-means++"
+                        ]
                     }
                 }
             ],

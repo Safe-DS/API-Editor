@@ -1,4 +1,5 @@
 import spacy
+
 from package_parser.commands.get_api._model import (
     Action,
     Condition,
@@ -98,6 +99,7 @@ def test_extract_dependencies_from_docstring_pattern_adverbial_clause():
     param_docstring_nlp = nlp("ignored when probability is False")
     dependent_param = Parameter(
         name="random_state",
+        qname="sklearn.linear_model.LogisticRegression.random_state",
         default_value=None,
         is_public=True,
         assigned_by=ParameterAssignment.NAME_ONLY,
@@ -107,6 +109,7 @@ def test_extract_dependencies_from_docstring_pattern_adverbial_clause():
     )
     dependee_param = Parameter(
         name="probability",
+        qname="sklearn.linear_model.LogisticRegression.probability",
         default_value=None,
         is_public=True,
         assigned_by=ParameterAssignment.NAME_ONLY,

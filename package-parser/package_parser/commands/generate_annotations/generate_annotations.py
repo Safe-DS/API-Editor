@@ -140,7 +140,7 @@ def __get_enum_annotations(
         for parameter in function.parameters:
             refined_type = parameter.refined_type.as_dict()
             if "kind" in refined_type and refined_type["kind"] == "EnumType":
-                target = __qname_to_target_name(api, methode + "." + parameter.name)
+                target = __qname_to_target_name(api, parameter.qname)
                 enum_name = __to_enum_name(parameter.name)
                 values = list(refined_type["values"])
                 values.sort()
