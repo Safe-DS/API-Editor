@@ -330,6 +330,7 @@
             "parameters": [
                 {
                     "name": "min_df",
+                    "qname": "sklearn.feature_extraction.text.CountVectorizer.__init__.min_df",
                     "default_value": "1",
                     "is_public": true,
                     "assigned_by": "NAME_ONLY",
@@ -348,6 +349,7 @@
                 },
                 {
                     "name": "max_df",
+                    "qname": "sklearn.feature_extraction.text.CountVectorizer.__init__.max_df",
                     "default_value": "1",
                     "is_public": true,
                     "assigned_by": "NAME_ONLY",
