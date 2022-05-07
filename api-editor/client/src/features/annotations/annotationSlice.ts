@@ -558,7 +558,7 @@ const annotationsSlice = createSlice({
         },
         toggleImportDialog(state) {
             state.showImportDialog = !state.showImportDialog;
-        },        
+        },
         hideImportDialog(state) {
             state.showImportDialog = false;
         },

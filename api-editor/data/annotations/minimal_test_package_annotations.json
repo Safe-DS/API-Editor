@@ -83,10 +83,7 @@
             "ConstructorParams": {
                 "target": "test/folder1.folder2.folder3.module_1/Class_1_Module_1/__init__",
                 "groupName": "ConstructorParams",
-                "parameters": [
-                    "param2",
-                    "param3"
-                ]
+                "parameters": ["param2", "param3"]
             }
         }
     },
