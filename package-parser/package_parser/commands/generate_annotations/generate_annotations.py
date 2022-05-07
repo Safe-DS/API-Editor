@@ -17,7 +17,7 @@ from package_parser.models.annotation_models import (
     RequiredAnnotation,
     UnusedAnnotation,
 )
-from package_parser.utils import parent_qname, ensure_file_exists
+from package_parser.utils import ensure_file_exists, parent_qname
 
 
 def generate_annotations(
