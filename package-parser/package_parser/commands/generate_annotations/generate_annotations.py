@@ -17,7 +17,7 @@ from package_parser.models.annotation_models import (
     RequiredAnnotation,
     UnusedAnnotation,
 )
-from package_parser.utils import parent_qname
+from package_parser.utils import parent_qname, ensure_file_exists
 
 
 def generate_annotations(
@@ -52,6 +52,7 @@ def generate_annotations(
 
     __generate_annotation_dict(api, usages, annotations, annotation_functions)
 
+    ensure_file_exists(output_file)
     with output_file.open("w") as f:
         json.dump(annotations.to_json(), f, indent=2)
 
