@@ -46,7 +46,6 @@ class Interval:
 
 @dataclasses.dataclass
 class BoundaryAnnotation(BaseAnnotation):
-    defaultType: str
     interval: Interval
 
 

@@ -106,7 +106,6 @@ OPTIONALS_EXPECTED: dict[str, dict[str, str]] = {
 
 BOUNDARIES_EXPECTED: dict[str, dict[str, typing.Any]] = {
     "test/__init__/max_df": {
-        "defaultType": "int",
         "interval": {
             "isDiscrete": True,
             "lowerIntervalLimit": 0,
@@ -117,10 +116,9 @@ BOUNDARIES_EXPECTED: dict[str, dict[str, typing.Any]] = {
         "target": "test/__init__/max_df",
     },
     "test/__init__/min_df": {
-        "defaultType": "float",
         "interval": {
             "isDiscrete": False,
-            "lowerIntervalLimit": 0.0,
+            "lowerIntervalLimit": 0.5,
             "lowerLimitType": 0,
             "upperIntervalLimit": "Infinity",
             "upperLimitType": 2,

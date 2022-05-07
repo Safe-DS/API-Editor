@@ -434,7 +434,6 @@ def __get_boundary_annotations(
                 upperLimitType=max_limit_type,
             )
             boundary = BoundaryAnnotation(
-                defaultType=refined_type["base_type"],
                 target=target,
                 interval=interval,
             )
