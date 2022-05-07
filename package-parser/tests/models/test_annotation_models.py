@@ -51,7 +51,7 @@ def test_optional_annotation_to_json():
 
 def test_boundary_annotation_to_json():
     annotation = BoundaryAnnotation(
-        target="test/test",  interval=[Interval(False, 0, 0, 0, 0)]
+        target="test/test", interval=[Interval(False, 0, 0, 0, 0)]
     )
     assert annotation.to_json() == {
         "target": "test/test",
