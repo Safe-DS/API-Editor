@@ -424,7 +424,6 @@ def __get_boundary_annotations(
             if max_value == "Infinity":
                 max_limit_type = 2
 
-
             interval = Interval(
                 isDiscrete=is_discrete,
                 lowerIntervalLimit=min_value,
@@ -439,7 +438,9 @@ def __get_boundary_annotations(
             annotations.boundaries.append(boundary)
 
 
-def __is_discrete(min_value: Union[str, int, float], max_value: Union[str, int, float]) -> bool:
+def __is_discrete(
+    min_value: Union[str, int, float], max_value: Union[str, int, float]
+) -> bool:
     """
     Checks whether an interval is discrete or not.
     :param min_value: Union[str, int, float]

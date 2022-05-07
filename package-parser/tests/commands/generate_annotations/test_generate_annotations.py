@@ -48,7 +48,7 @@ UNUSED_EXPECTED: dict[str, dict[str, str]] = {
     "test/__init__": {"target": "test/__init__"},
     "test/__init__/max_df": {"target": "test/__init__/max_df"},
     "test/__init__/min_df": {"target": "test/__init__/min_df"},
-    'test/__init__/avg_df': {'target': 'test/__init__/avg_df'},
+    "test/__init__/avg_df": {"target": "test/__init__/avg_df"},
 }
 
 CONSTANT_EXPECTED: dict[str, dict[str, str]] = {
@@ -125,13 +125,16 @@ BOUNDARIES_EXPECTED: dict[str, dict[str, typing.Any]] = {
         },
         "target": "test/__init__/min_df",
     },
-    'test/__init__/avg_df': {'interval': {
-        'isDiscrete': True,
-        'lowerIntervalLimit': 0,
-        'lowerLimitType': 0,
-        'upperIntervalLimit': 'Infinity',
-        'upperLimitType': 2},
-        'target': 'test/__init__/avg_df'},
+    "test/__init__/avg_df": {
+        "interval": {
+            "isDiscrete": True,
+            "lowerIntervalLimit": 0,
+            "lowerLimitType": 0,
+            "upperIntervalLimit": "Infinity",
+            "upperLimitType": 2,
+        },
+        "target": "test/__init__/avg_df",
+    },
 }
 
 ENUMS_EXPECTED = {
@@ -204,8 +207,8 @@ def test_get_unused():
     _preprocess_usages(usages, api)
     __get_unused_annotations(usages, api, annotations)
     assert {
-               annotation.target: annotation.to_json() for annotation in annotations.unused
-           } == UNUSED_EXPECTED
+        annotation.target: annotation.to_json() for annotation in annotations.unused
+    } == UNUSED_EXPECTED
 
 
 def test_get_constant():
@@ -214,8 +217,8 @@ def test_get_constant():
     _preprocess_usages(usages, api)
     __get_constant_annotations(usages, api, annotations)
     assert {
-               annotation.target: annotation.to_json() for annotation in annotations.constant
-           } == CONSTANT_EXPECTED
+        annotation.target: annotation.to_json() for annotation in annotations.constant
+    } == CONSTANT_EXPECTED
 
 
 def test_get_required():
@@ -224,8 +227,8 @@ def test_get_required():
     _preprocess_usages(usages, api)
     __get_required_annotations(usages, api, annotations)
     assert {
-               annotation.target: annotation.to_json() for annotation in annotations.requireds
-           } == REQUIREDS_EXPECTED
+        annotation.target: annotation.to_json() for annotation in annotations.requireds
+    } == REQUIREDS_EXPECTED
 
 
 def test_get_enum():
@@ -234,8 +237,8 @@ def test_get_enum():
     _preprocess_usages(usages, api)
     __get_enum_annotations(usages, api, annotations)
     assert {
-               annotation.target: annotation.to_json() for annotation in annotations.enums
-           } == ENUMS_EXPECTED
+        annotation.target: annotation.to_json() for annotation in annotations.enums
+    } == ENUMS_EXPECTED
 
 
 def test_get_optional():
@@ -244,8 +247,8 @@ def test_get_optional():
     _preprocess_usages(usages, api)
     __get_optional_annotations(usages, api, annotations)
     assert {
-               annotation.target: annotation.to_json() for annotation in annotations.optionals
-           } == OPTIONALS_EXPECTED
+        annotation.target: annotation.to_json() for annotation in annotations.optionals
+    } == OPTIONALS_EXPECTED
 
 
 def test_generate():
@@ -280,5 +283,5 @@ def test_get_boundary():
     _preprocess_usages(usages, api)
     __get_boundary_annotations(usages, api, annotations)
     assert {
-               annotation.target: annotation.to_json() for annotation in annotations.boundaries
-           } == BOUNDARIES_EXPECTED
+        annotation.target: annotation.to_json() for annotation in annotations.boundaries
+    } == BOUNDARIES_EXPECTED

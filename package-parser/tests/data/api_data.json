@@ -366,7 +366,7 @@
                         "max_inclusive": false
                     }
                 },
-                                {
+                {
                     "name": "avg_df",
                     "qname": "sklearn.feature_extraction.text.CountVectorizer.__init__.avg_df",
                     "default_value": "1",
