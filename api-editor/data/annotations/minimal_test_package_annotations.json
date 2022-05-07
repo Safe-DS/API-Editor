@@ -58,6 +58,10 @@
             "defaultValue": true
         }
     },
+    "currentUserAction": {
+        "type": "none",
+        "target": ""
+    },
     "enums": {
         "test/folder1.folder2.folder3.module_1/function_module_1_3/param1": {
             "target": "test/folder1.folder2.folder3.module_1/function_module_1_3/param1",
@@ -127,6 +131,7 @@
             "target": "test/folder1.folder2.folder3.module_1/function_module_1_2/param3"
         }
     },
+    "showImportDialog": false,
     "unuseds": {
         "test/folder1.folder2.folder3.module_1/function_module_1_5": {
             "target": "test/folder1.folder2.folder3.module_1/function_module_1_5"
