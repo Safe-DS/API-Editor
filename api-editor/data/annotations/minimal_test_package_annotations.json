@@ -1,0 +1,138 @@
+{
+    "attributes": {
+        "test/folder1.folder2.folder3.module_1/Class_1_Module_1/__init__/param2": {
+            "target": "test/folder1.folder2.folder3.module_1/Class_1_Module_1/__init__/param2",
+            "defaultType": "string",
+            "defaultValue": "test"
+        },
+        "test/folder1.folder2.folder3.module_1/Class_1_Module_1/__init__/param3": {
+            "target": "test/folder1.folder2.folder3.module_1/Class_1_Module_1/__init__/param3",
+            "defaultType": "none",
+            "defaultValue": null
+        }
+    },
+    "boundaries": {
+        "test/folder1.folder2.folder3.module_1/function_module_1/param1": {
+            "target": "test/folder1.folder2.folder3.module_1/function_module_1/param1",
+            "interval": {
+                "isDiscrete": false,
+                "lowerIntervalLimit": 0,
+                "lowerLimitType": 0,
+                "upperIntervalLimit": 1,
+                "upperLimitType": 0
+            }
+        },
+        "test/folder1.folder2.folder3.module_1/function_module_1/param2": {
+            "target": "test/folder1.folder2.folder3.module_1/function_module_1/param2",
+            "interval": {
+                "isDiscrete": false,
+                "lowerIntervalLimit": 0,
+                "lowerLimitType": 1,
+                "upperIntervalLimit": 1,
+                "upperLimitType": 1
+            }
+        },
+        "test/folder1.folder2.folder3.module_1/function_module_1/param3": {
+            "target": "test/folder1.folder2.folder3.module_1/function_module_1/param3",
+            "interval": {
+                "isDiscrete": true,
+                "lowerIntervalLimit": 0,
+                "lowerLimitType": 0,
+                "upperIntervalLimit": 0,
+                "upperLimitType": 2
+            }
+        }
+    },
+    "calledAfters": {
+        "test/folder1.folder2.folder3.module_1/Class_1_Module_1/class_method_1": {
+            "__init__": {
+                "target": "test/folder1.folder2.folder3.module_1/Class_1_Module_1/class_method_1",
+                "calledAfterName": "__init__"
+            }
+        }
+    },
+    "constants": {
+        "test/folder1.folder2.folder3.module_1/function_module_1_2/param1": {
+            "target": "test/folder1.folder2.folder3.module_1/function_module_1_2/param1",
+            "defaultType": "boolean",
+            "defaultValue": true
+        }
+    },
+    "enums": {
+        "test/folder1.folder2.folder3.module_1/function_module_1_3/param1": {
+            "target": "test/folder1.folder2.folder3.module_1/function_module_1_3/param1",
+            "enumName": "Enum",
+            "pairs": [
+                {
+                    "stringValue": "value1",
+                    "instanceName": "Value1"
+                },
+                {
+                    "stringValue": "value2",
+                    "instanceName": "Value2"
+                }
+            ]
+        }
+    },
+    "groups": {
+        "test/folder1.folder2.folder3.module_1/Class_1_Module_1/__init__": {
+            "ConstructorParams": {
+                "target": "test/folder1.folder2.folder3.module_1/Class_1_Module_1/__init__",
+                "groupName": "ConstructorParams",
+                "parameters": [
+                    "param2",
+                    "param3"
+                ]
+            }
+        }
+    },
+    "moves": {
+        "test/folder1.folder2.folder3.module_1/function_module_1_2": {
+            "target": "test/folder1.folder2.folder3.module_1/function_module_1_2",
+            "destination": "folder1.folder2.folder3.module_2"
+        },
+        "test/folder1.folder2.folder3.module_1/Class_1_Module_1": {
+            "target": "test/folder1.folder2.folder3.module_1/Class_1_Module_1",
+            "destination": "folder1.folder2.folder3.module_11"
+        }
+    },
+    "optionals": {
+        "test/folder1.folder2.folder3.module_1/function_module_1_2/param2": {
+            "target": "test/folder1.folder2.folder3.module_1/function_module_1_2/param2",
+            "defaultType": "number",
+            "defaultValue": "1"
+        }
+    },
+    "pures": {
+        "test/folder1.folder2.folder3.module_1/function_module_1_3": {
+            "target": "test/folder1.folder2.folder3.module_1/function_module_1_3"
+        }
+    },
+    "renamings": {
+        "test/folder1.folder2.folder3.module_1/function_module_1_3/param2": {
+            "target": "test/folder1.folder2.folder3.module_1/function_module_1_3/param2",
+            "newName": "param22"
+        },
+        "test/folder1.folder2.folder3.module_1/function_module_1_4": {
+            "target": "test/folder1.folder2.folder3.module_1/function_module_1_4",
+            "newName": "function_module_1_44"
+        },
+        "test/folder1.folder2.folder3.module_1/Class_1_Module_1": {
+            "target": "test/folder1.folder2.folder3.module_1/Class_1_Module_1",
+            "newName": "Class_1_Module_11"
+        }
+    },
+    "requireds": {
+        "test/folder1.folder2.folder3.module_1/function_module_1_2/param3": {
+            "target": "test/folder1.folder2.folder3.module_1/function_module_1_2/param3"
+        }
+    },
+    "unuseds": {
+        "test/folder1.folder2.folder3.module_1/function_module_1_5": {
+            "target": "test/folder1.folder2.folder3.module_1/function_module_1_5"
+        },
+        "test/folder1.folder2.folder3.module_1/Class_1_Module_1": {
+            "target": "test/folder1.folder2.folder3.module_1/Class_1_Module_1"
+        }
+    }
+}
