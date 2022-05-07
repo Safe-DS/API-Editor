@@ -2,7 +2,7 @@ import json
 import re
 from io import TextIOWrapper
 from pathlib import Path
-from typing import Callable
+from typing import Callable, Union
 
 from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.get_api import API
@@ -411,7 +411,7 @@ def __get_boundary_annotations(
             min_value = refined_type["min"]
             max_value = refined_type["max"]
 
-            is_discrete = isinstance(min_value, int) and isinstance(max_value, int)
+            is_discrete = __is_discrete(min_value, max_value)
 
             min_limit_type = 0
             max_limit_type = 0
@@ -421,10 +421,9 @@ def __get_boundary_annotations(
                 max_limit_type = 1
             if min_value == "NegativeInfinity":
                 min_limit_type = 2
-                is_discrete = False
             if max_value == "Infinity":
                 max_limit_type = 2
-                is_discrete = False
+
 
             interval = Interval(
                 isDiscrete=is_discrete,
@@ -438,3 +437,19 @@ def __get_boundary_annotations(
                 interval=interval,
             )
             annotations.boundaries.append(boundary)
+
+
+def __is_discrete(min_value: Union[str, int, float], max_value: Union[str, int, float]) -> bool:
+    """
+    Checks whether an interval is discrete or not.
+    :param min_value: Union[str, int, float]
+    :param max_value: Union[str, int, float]
+    :return discretionValue
+    """
+
+    if min_value == "NegativeInfintiy":
+        min_value = 0
+    if max_value == "Infinity":
+        max_value = 0
+
+    return isinstance(min_value, int) and isinstance(max_value, int)
