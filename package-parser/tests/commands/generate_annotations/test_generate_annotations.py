@@ -45,9 +45,7 @@ UNUSED_EXPECTED: dict[str, dict[str, str]] = {
     "test/__init__": {"target": "test/__init__"},
     "test/__init__/max_df": {"target": "test/__init__/max_df"},
     "test/__init__/min_df": {"target": "test/__init__/min_df"},
-    "test/__init__": {"target": "test/__init__"},
-    "test/__init__/max_df": {"target": "test/__init__/max_df"},
-    "test/__init__/min_df": {"target": "test/__init__/min_df"},
+    "test/__init__/continuous_with_int_bounds": {"target": "test/__init__/continuous_with_int_bounds"},
     "test/__init__/avg_df": {"target": "test/__init__/avg_df"},
 }
 
@@ -125,9 +123,19 @@ BOUNDARIES_EXPECTED: dict[str, dict[str, typing.Any]] = {
         },
         "target": "test/__init__/min_df",
     },
+    "test/__init__/continuous_with_int_bounds": {
+        "interval": {
+            "isDiscrete": False,
+            "lowerIntervalLimit": 0,
+            "lowerLimitType": 1,
+            "upperIntervalLimit": 1,
+            "upperLimitType": 1,
+        },
+        "target": "test/__init__/continuous_with_int_bounds",
+    },
     "test/__init__/avg_df": {
         "interval": {
-            "isDiscrete": True,
+            "isDiscrete": False,
             "lowerIntervalLimit": 0,
             "lowerLimitType": 0,
             "upperIntervalLimit": 0,
