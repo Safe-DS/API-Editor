@@ -20,7 +20,7 @@ from package_parser.models.annotation_models import AnnotationStore
 UNUSED_EXPECTED: dict[str, dict[str, str]] = {
     "test/test/Unused_Class": {"target": "test/test/Unused_Class"},
     "test/test/unused_global_function": {"target": "test/test/unused_global_function"},
-    "test/config_context": {"target": "test/config_context"}
+    "test/config_context": {"target": "test/config_context"},
 }
 
 
