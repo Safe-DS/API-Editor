@@ -1,0 +1,46 @@
+{
+    "class_counts": {
+        "test.UsedClass": 5
+    },
+    "function_counts": {
+        "test.used_global_function": 5,
+        "test.UsedClass.used_method": 5
+    },
+    "parameter_counts": {
+        "test.used_global_function.constant_required_parameter": 5,
+        "test.used_global_function.variable_required_parameter": 5,
+        "test.used_global_function.constant_optional_parameter": 5,
+        "test.used_global_function.variable_optional_parameter": 5,
+        "test.UsedClass.used_method.constant_required_parameter": 5,
+        "test.UsedClass.used_method.variable_required_parameter": 5,
+        "test.UsedClass.used_method.constant_optional_parameter": 0,
+        "test.UsedClass.used_method.variable_optional_parameter": 3
+    },
+    "value_counts": {
+        "test.used_global_function.constant_required_parameter": {
+            "'test'": 5
+        },
+        "test.used_global_function.variable_required_parameter": {
+            "'test'": 2,
+            "'test2'": 3
+        },
+        "test.used_global_function.constant_optional_parameter": {
+            "'test2'": 5
+        },
+        "test.used_global_function.variable_optional_parameter": {
+            "'test'": 2,
+            "'test2'": 3
+        },
+        "test.UsedClass.used_method.constant_required_parameter": {
+            "'test'": 5
+        },
+        "test.UsedClass.used_method.variable_required_parameter": {
+            "'test'": 2,
+            "'test2'": 3
+        },
+        "test.UsedClass.used_method.constant_optional_parameter": {},
+        "test.UsedClass.used_method.variable_optional_parameter": {
+            "'test2'": 3
+        }
+    }
+}

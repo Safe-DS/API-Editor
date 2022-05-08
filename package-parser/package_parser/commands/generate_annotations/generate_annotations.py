@@ -4,8 +4,8 @@ from io import TextIOWrapper
 from pathlib import Path
 from typing import Callable
 
-from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.get_api import API
+from package_parser.models import UsageCountStore
 from package_parser.models.annotation_models import (
     AnnotationStore,
     BoundaryAnnotation,
@@ -32,8 +32,6 @@ def generate_annotations(
     :param usages_file: UsageStore file
     :param output_file: Output file
     """
-    if api_file is None or usages_file is None or output_file is None:
-        raise ValueError("Api_file, usages_file, and output_file must be specified.")
 
     with api_file:
         api_json = json.load(api_file)
@@ -41,7 +39,7 @@ def generate_annotations(
 
     with usages_file:
         usages_json = json.load(usages_file)
-        usages = UsageStore.from_json(usages_json)
+        usages = UsageCountStore.from_json(usages_json)
 
     annotations = AnnotationStore()
     annotation_functions = [
@@ -62,18 +60,18 @@ def generate_annotations(
 
 def __generate_annotation_dict(
     api: API,
-    usages: UsageStore,
+    usages: UsageCountStore,
     annotations: AnnotationStore,
     functions: list[Callable],
 ):
-    _preprocess_usages(usages, api)
+    preprocess_usages(usages, api)
 
     for generate_annotation in functions:
         generate_annotation(usages, api, annotations)
 
 
 def __get_constant_annotations(
-    usages: UsageStore, api: API, annotations: AnnotationStore
+    usages: UsageCountStore, api: API, annotations: AnnotationStore
 ) -> None:
     """
     Collect all parameters that are only ever assigned a single value.
@@ -82,7 +80,7 @@ def __get_constant_annotations(
     :param annotations: AnnotationStore object
     :return: None
     """
-    for qname in list(usages.parameter_usages.keys()):
+    for qname in list(usages.value_usages.keys()):
         parameter_info = __get_parameter_info(qname, usages)
 
         if parameter_info.type == ParameterType.Constant:
@@ -97,7 +95,7 @@ def __get_constant_annotations(
 
 
 def __get_unused_annotations(
-    usages: UsageStore, api: API, annotations: AnnotationStore
+    usages: UsageCountStore, api: API, annotations: AnnotationStore
 ) -> None:
     """
     Collect all parameters, functions and classes that are never used.
@@ -109,7 +107,7 @@ def __get_unused_annotations(
     for function_name in list(api.functions.keys()):
         if (
             function_name not in usages.function_usages
-            or len(usages.function_usages[function_name]) == 0
+            or usages.function_usages[function_name] == 0
         ):
             formatted_name = __qname_to_target_name(api, function_name)
             annotations.unused.append(UnusedAnnotation(formatted_name))
@@ -117,14 +115,14 @@ def __get_unused_annotations(
     for class_name in list(api.classes.keys()):
         if (
             class_name not in usages.class_usages
-            or len(usages.class_usages[class_name]) == 0
+            or usages.class_usages[class_name] == 0
         ):
             formatted_name = __qname_to_target_name(api, class_name)
             annotations.unused.append(UnusedAnnotation(formatted_name))
 
 
 def __get_enum_annotations(
-    usages: UsageStore, api: API, annotations: AnnotationStore
+    usages: UsageCountStore, api: API, annotations: AnnotationStore
 ) -> None:
     """
     Returns all parameters that are never used.
@@ -161,7 +159,7 @@ def __to_enum_name(parameter_name: str) -> str:
 
 
 def __get_required_annotations(
-    usages: UsageStore, api: API, annotations: AnnotationStore
+    usages: UsageCountStore, api: API, annotations: AnnotationStore
 ) -> None:
     """
     Collects all parameters that are currently optional but should be required to be assign a value
@@ -170,14 +168,14 @@ def __get_required_annotations(
     :param annotations: AnnotationStore, that holds all annotations
     """
     parameters = api.parameters()
-    optional_parameter = [
-        (it, parameters[it])
-        for it in parameters
-        if parameters[it].default_value is not None
-    ]
-    for qname, _ in optional_parameter:
-
-        if __get_parameter_info(qname, usages).type is ParameterType.Required:
+    optional_parameter_qnames = set(
+        it for it in parameters if parameters[it].default_value is not None
+    )
+    for qname in list(usages.value_usages.keys()):
+        if (
+            qname in optional_parameter_qnames
+            and __get_parameter_info(qname, usages).type is ParameterType.Required
+        ):
             formatted_name = __qname_to_target_name(api, qname)
             annotations.requireds.append(RequiredAnnotation(formatted_name))
 
@@ -190,8 +188,6 @@ def __qname_to_target_name(api: API, qname: str) -> str:
     :param qname: Name pre-formatting
     :return: Formatted name
     """
-    if qname is None or api is None:
-        raise ValueError("qname and api must be specified.")
 
     target_elements = qname.split(".")
 
@@ -223,13 +219,13 @@ def __get_default_type_from_value(default_value: str) -> str:
     return default_type
 
 
-def _preprocess_usages(usages: UsageStore, api: API) -> None:
+def preprocess_usages(usages: UsageCountStore, api: API) -> None:
     __remove_internal_usages(usages, api)
     __add_unused_api_elements(usages, api)
     __add_implicit_usages_of_default_value(usages, api)
 
 
-def __remove_internal_usages(usages: UsageStore, api: API) -> None:
+def __remove_internal_usages(usages: UsageCountStore, api: API) -> None:
     """
     Removes usages of internal parts of the API. It might incorrectly remove some calls to methods that are inherited
     from internal classes into a public class but these are just fit/predict/etc., i.e. something we want to keep
@@ -263,7 +259,7 @@ def __remove_internal_usages(usages: UsageStore, api: API) -> None:
             usages.remove_parameter(parameter_qname)
 
 
-def __add_unused_api_elements(usages: UsageStore, api: API) -> None:
+def __add_unused_api_elements(usages: UsageCountStore, api: API) -> None:
     """
     Adds unused API elements to the UsageStore. When a class, function or parameter is not used, it is not content of
     the UsageStore, so we need to add it.
@@ -275,21 +271,20 @@ def __add_unused_api_elements(usages: UsageStore, api: API) -> None:
     # Public classes
     for class_qname in api.classes:
         if api.is_public_class(class_qname):
-            usages.init_class(class_qname)
+            usages.add_class_usage(class_qname, 0)
 
     # Public functions
     for function in api.functions.values():
         if api.is_public_function(function.qname):
-            usages.init_function(function.qname)
+            usages.add_function_usages(function.qname, 0)
 
             # "Public" parameters
             for parameter in function.parameters:
-                parameter_qname = f"{function.qname}.{parameter.name}"
-                usages.init_parameter(parameter_qname)
-                usages.init_value(parameter_qname)
+                usages.add_parameter_usages(parameter.qname, 0)
+                usages.init_value(parameter.qname)
 
 
-def __add_implicit_usages_of_default_value(usages: UsageStore, api: API) -> None:
+def __add_implicit_usages_of_default_value(usages: UsageCountStore, api: API) -> None:
     """
     Adds the implicit usages of a parameters default value. When a function is called and a parameter is used with its
     default value, that usage of a value is not part of the UsageStore, so  we need to add it.
@@ -298,36 +293,46 @@ def __add_implicit_usages_of_default_value(usages: UsageStore, api: API) -> None
     :param api: Description of the API
     """
 
-    for parameter_qname, parameter_usage_list in list(usages.parameter_usages.items()):
+    for parameter_qname, parameter_usage_count in list(usages.parameter_usages.items()):
         default_value = api.get_default_value(parameter_qname)
         if default_value is None:
             continue
 
         function_qname = parent_qname(parameter_qname)
-        function_usage_list = usages.function_usages[function_qname]
+        function_usage_count = usages.n_function_usages(function_qname)
 
-        locations_of_implicit_usages_of_default_value = set(
-            [it.location for it in function_usage_list]
-        ) - set([it.location for it in parameter_usage_list])
-
-        for location in locations_of_implicit_usages_of_default_value:
-            usages.add_value_usage(parameter_qname, default_value, location)
+        n_locations_of_implicit_usages_of_default_value = (
+            function_usage_count - parameter_usage_count
+        )
+        usages.add_value_usages(
+            parameter_qname,
+            default_value,
+            n_locations_of_implicit_usages_of_default_value,
+        )
 
 
 def __get_optional_annotations(
-    usages: UsageStore, api: API, annotations: AnnotationStore
+    usages: UsageCountStore, api: API, annotations: AnnotationStore
 ) -> None:
     """
-    Collects all parameters that are currently required but should be optional to be assign a value
+    Collects all parameters that are currently required but should be optional to be assigned a value
     :param usages: Usage store
     :param api: Description of the API
     :param annotations: AnnotationStore, that holds all annotations
     """
-    parameters = api.parameters()
-    all_parameter = [(it, parameters[it]) for it in parameters]
 
-    for qname, _ in all_parameter:
+    parameters = api.parameters()
+
+    for qname in list(usages.value_usages.keys()):
         parameter_info = __get_parameter_info(qname, usages)
+
+        if qname in parameters:
+            old_default = parameters[qname].default_value
+            if old_default is not None and old_default[0] == "'":
+                old_default = old_default[1:-1]
+
+            if parameter_info.value == old_default:
+                continue
 
         if parameter_info.type == ParameterType.Optional:
             formatted_name = __qname_to_target_name(api, qname)
@@ -340,7 +345,7 @@ def __get_optional_annotations(
             )
 
 
-def __get_parameter_info(qname: str, usages: UsageStore) -> ParameterInfo:
+def __get_parameter_info(qname: str, usages: UsageCountStore) -> ParameterInfo:
     """
     Returns a ParameterInfo object, that contains the type of the parameter, the value that is associated with it,
     and the values type.
@@ -348,7 +353,7 @@ def __get_parameter_info(qname: str, usages: UsageStore) -> ParameterInfo:
     :param usages: UsageStore
     :return ParameterInfo
     """
-    values = [(it[0], len(it[1])) for it in usages.value_usages[qname].items()]
+    values = [(it[0], it[1]) for it in usages.value_usages[qname].items() if it[1] > 0]
 
     if len(values) == 0:
         return ParameterInfo(ParameterType.Unused)
@@ -363,11 +368,11 @@ def __get_parameter_info(qname: str, usages: UsageStore) -> ParameterInfo:
     if __is_required(values):
         return ParameterInfo(ParameterType.Required)
 
+    # If it's neither required nor constant, return optional
     value = max(values, key=lambda item: item[1])[0]
     if value[0] == "'":
         value = value[1:-1]
 
-    # If its neither required nor constant, return optional
     return ParameterInfo(
         ParameterType.Optional, value, __get_default_type_from_value(value)
     )
@@ -382,14 +387,14 @@ def __is_required(values: list[tuple[str, int]]) -> bool:
     n = len(values)
     m = sum([count for value, count in values])
 
-    seconds_most_used_value_tupel, most_used_value_tupel = sorted(
+    seconds_most_used_value_tuple, most_used_value_tuple = sorted(
         values, key=lambda tup: tup[1]
     )[-2:]
-    return most_used_value_tupel[1] - seconds_most_used_value_tupel[1] <= m / n
+    return most_used_value_tuple[1] - seconds_most_used_value_tuple[1] <= m / n
 
 
 def __get_boundary_annotations(
-    usages: UsageStore, api: API, annotations: AnnotationStore
+    usages: UsageCountStore, api: API, annotations: AnnotationStore
 ) -> None:
     """
     Annotates all parameters which are a boundary.

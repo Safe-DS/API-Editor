@@ -1,0 +1,5 @@
+{
+    "test/test/some_global_function/optional_parameter_that_should_be_required": {
+        "target": "test/test/some_global_function/optional_parameter_that_should_be_required"
+    }
+}

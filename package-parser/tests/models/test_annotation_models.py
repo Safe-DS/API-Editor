@@ -51,19 +51,17 @@ def test_optional_annotation_to_json():
 
 def test_boundary_annotation_to_json():
     annotation = BoundaryAnnotation(
-        target="test/test", interval=[Interval(False, 0, 0, 0, 0)]
+        target="test/test", interval=Interval(False, 0, 0, 0, 0)
     )
     assert annotation.to_json() == {
         "target": "test/test",
-        "interval": [
-            {
-                "isDiscrete": False,
-                "lowerIntervalLimit": 0,
-                "lowerLimitType": 0,
-                "upperIntervalLimit": 0,
-                "upperLimitType": 0,
-            }
-        ],
+        "interval": {
+            "isDiscrete": False,
+            "lowerIntervalLimit": 0,
+            "lowerLimitType": 0,
+            "upperIntervalLimit": 0,
+            "upperLimitType": 0,
+        },
     }
 
 
@@ -95,7 +93,7 @@ def test_annotation_store():
     annotations.boundaries.append(
         BoundaryAnnotation(
             target="test/boundary",
-            interval=[Interval(False, 0, 0, 0, 0)],
+            interval=Interval(False, 0, 0, 0, 0),
         )
     )
     annotations.enums.append(
@@ -106,19 +104,17 @@ def test_annotation_store():
     assert annotations.to_json() == {
         "boundaries": {
             "test/boundary": {
-                "interval": [
-                    {
-                        "isDiscrete": False,
-                        "lowerIntervalLimit": 0,
-                        "lowerLimitType": 0,
-                        "upperIntervalLimit": 0,
-                        "upperLimitType": 0,
-                    }
-                ],
+                "interval": {
+                    "isDiscrete": False,
+                    "lowerIntervalLimit": 0,
+                    "lowerLimitType": 0,
+                    "upperIntervalLimit": 0,
+                    "upperLimitType": 0,
+                },
                 "target": "test/boundary",
             }
         },
-        "constant": {
+        "constants": {
             "test/constant": {
                 "defaultType": "string",
                 "defaultValue": "test",
@@ -140,5 +136,5 @@ def test_annotation_store():
             }
         },
         "requireds": {"test/required": {"target": "test/required"}},
-        "unused": {"test/unused": {"target": "test/unused"}},
+        "unuseds": {"test/unused": {"target": "test/unused"}},
     }

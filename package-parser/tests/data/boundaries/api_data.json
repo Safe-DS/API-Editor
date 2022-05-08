@@ -1,0 +1,75 @@
+{
+    "distribution": "test",
+    "package": "test",
+    "version": "0.0.1",
+    "modules": [
+        {
+            "name": "test",
+            "imports": [],
+            "from_imports": [],
+            "classes": [],
+            "functions": ["test.some_global_function"]
+        }
+    ],
+    "classes": [],
+    "functions": [
+        {
+            "name": "some_global_function",
+            "unique_name": "some_global_function",
+            "qname": "test.some_global_function",
+            "unique_qname": "test.some_global_function",
+            "decorators": [],
+            "parameters": [
+                {
+                    "name": "parameter_without_bound",
+                    "qname": "test.some_global_function.parameter_without_boundary",
+                    "default_value": null,
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "int",
+                        "description": ""
+                    }
+                },
+                {
+                    "name": "parameter_with_lower_bound",
+                    "qname": "test.some_global_function.parameter_with_lower_bound",
+                    "default_value": null,
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "int in range (0, infinity)",
+                        "description": ""
+                    }
+                },
+                {
+                    "name": "parameter_with_upper_bound",
+                    "qname": "test.some_global_function.parameter_with_upper_bound",
+                    "default_value": null,
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "float in range (negative_infinity, 1)",
+                        "description": ""
+                    }
+                },
+                {
+                    "name": "parameter_with_interval",
+                    "qname": "test.some_global_function.parameter_with_interval",
+                    "default_value": null,
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "float in range [0, 1]",
+                        "description": ""
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "description": "",
+            "docstring": "",
+            "source_code": ""
+        }
+    ]
+}
