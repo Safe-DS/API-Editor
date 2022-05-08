@@ -559,6 +559,9 @@ const annotationsSlice = createSlice({
         toggleImportDialog(state) {
             state.showImportDialog = !state.showImportDialog;
         },
+        hideImportDialog(state) {
+            state.showImportDialog = false;
+        },
     },
     extraReducers(builder) {
         builder.addCase(
@@ -610,6 +613,7 @@ export const {
     hideAnnotationForms,
 
     toggleImportDialog: toggleAnnotationImportDialog,
+    hideImportDialog: hideAnnotationImportDialog,
 } = actions;
 export default reducer;
 

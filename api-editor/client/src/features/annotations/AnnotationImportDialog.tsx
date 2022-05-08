@@ -19,6 +19,7 @@ import StyledDropzone from '../../common/StyledDropzone';
 import { isValidJsonFile } from '../../common/util/validation';
 import {
     AnnotationsState,
+    hideAnnotationImportDialog,
     setAnnotations,
     toggleAnnotationImportDialog,
 } from './annotationSlice';
@@ -51,7 +52,7 @@ const AnnotationImportDialog: React.FC = function () {
         if (fileName) {
             dispatch(setAnnotations(newAnnotationStore));
         }
-        close();
+        dispatch(hideAnnotationImportDialog());
     };
     const close = () => dispatch(toggleAnnotationImportDialog());
 
