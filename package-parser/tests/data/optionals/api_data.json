@@ -79,7 +79,7 @@
                 },
                 {
                     "name": "optional_parameter_that_should_be_optional_with_same_default",
-                    "qname": "test.some_global_function.optional_parameter_that_should_be_optional",
+                    "qname": "test.some_global_function.optional_parameter_that_should_be_optional_with_same_default",
                     "default_value": "'test'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",

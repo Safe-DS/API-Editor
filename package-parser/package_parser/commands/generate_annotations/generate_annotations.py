@@ -312,8 +312,18 @@ def __get_optional_annotations(
     :param annotations: AnnotationStore, that holds all annotations
     """
 
+    parameters = api.parameters()
+
     for qname in list(usages.value_usages.keys()):
         parameter_info = __get_parameter_info(qname, usages)
+
+        if qname in parameters:
+            old_default = parameters[qname].default_value
+            if old_default is not None and old_default[0] == "'":
+                old_default = old_default[1:-1]
+
+            if parameter_info.value == old_default:
+                continue
 
         if parameter_info.type == ParameterType.Optional:
             formatted_name = __qname_to_target_name(api, qname)

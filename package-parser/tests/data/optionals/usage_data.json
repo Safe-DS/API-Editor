@@ -1,72 +1,38 @@
 {
-    "class_counts": {
-        "test.Commonly_Used_Class": 1,
-        "test.Rarely_Used_Class": 1
-    },
+    "class_counts": {},
     "function_counts": {
-        "test.unused_global_function": 0,
-        "test.commonly_used_global_function": 5,
-        "test.commonly_used_global_required_and_optional_function": 1
+        "test.some_global_function": 5
     },
     "parameter_counts": {
-        "test.unused_global_function.unused_required_parameter": 0,
-        "test.unused_global_function.unused_optional_parameter": 0,
-        "test.commonly_used_global_function.useless_required_parameter": 5,
-        "test.commonly_used_global_function.useful_required_parameter": 5,
-        "test.commonly_used_global_function.unused_optional_parameter": 0,
-        "test.commonly_used_global_function.useless_optional_parameter": 2,
-        "test.commonly_used_global_function.useful_optional_parameter": 2,
-        "test.commonly_used_global_required_and_optional_function.optional_that_should_be_required": 2,
-        "test.commonly_used_global_required_and_optional_function.required_that_should_be_required": 2,
-        "test.commonly_used_global_required_and_optional_function.required_that_should_be_optional": 5,
-        "test.commonly_used_global_required_and_optional_function.optional_that_should_be_optional": 5,
-        "test.commonly_used_global_required_and_optional_function.commonly_used_almost_required": 5,
-        "test.commonly_used_global_required_and_optional_function.commonly_used_barely_required": 4,
-        "test.commonly_used_global_required_and_optional_function.constant_parameter": 1
+        "test.some_global_function.required_parameter_that_should_be_constant": 5,
+        "test.some_global_function.required_parameter_that_should_be_required": 5,
+        "test.some_global_function.required_parameter_that_should_be_optional": 5,
+        "test.some_global_function.optional_parameter_that_should_be_constant": 0,
+        "test.some_global_function.optional_parameter_that_should_be_required": 2,
+        "test.some_global_function.optional_parameter_that_should_be_optional_with_same_default": 1,
+        "test.some_global_function.optional_parameter_that_should_be_optional_with_different_default": 4
     },
     "value_counts": {
-        "test.unused_global_function.unused_required_parameter": {},
-        "test.unused_global_function.unused_optional_parameter": {},
-        "test.commonly_used_global_function.useless_required_parameter": {
-            "'blup'": 5
+        "test.some_global_function.required_parameter_that_should_be_constant": {
+            "'test'": 5
         },
-        "test.commonly_used_global_function.useful_required_parameter": {
-            "'bla'": 2,
-            "'blup'": 3
+        "test.some_global_function.required_parameter_that_should_be_required": {
+            "'test'": 2,
+            "'test2'": 3
         },
-        "test.commonly_used_global_function.unused_optional_parameter": {},
-        "test.commonly_used_global_function.useless_optional_parameter": {
-            "'bla'": 2
+        "test.some_global_function.required_parameter_that_should_be_optional": {
+            "'test'": 1,
+            "'test2'": 4
         },
-        "test.commonly_used_global_function.useful_optional_parameter": {
-            "'blup'": 2
+        "test.some_global_function.optional_parameter_that_should_be_constant": {},
+        "test.some_global_function.optional_parameter_that_should_be_required": {
+            "'test2'": 2
         },
-        "test.commonly_used_global_required_and_optional_function.optional_that_should_be_required": {
-            "'brains'": 1,
-            "'irgendwas_anderes'": 1
+        "test.some_global_function.optional_parameter_that_should_be_optional_with_same_default": {
+            "'test2'": 1
         },
-        "test.commonly_used_global_required_and_optional_function.required_that_should_be_required": {
-            "'hallo'": 1,
-            "'irgendwas_anderes'": 1
-        },
-        "test.commonly_used_global_required_and_optional_function.required_that_should_be_optional": {
-            "'miau'": 4,
-            "'irgendwas_anderes'": 1
-        },
-        "test.commonly_used_global_required_and_optional_function.optional_that_should_be_optional": {
-            "'captain_morgan'": 4,
-            "'irgendwas_anderes'": 1
-        },
-        "test.commonly_used_global_required_and_optional_function.commonly_used_almost_required": {
-            "'marvel'": 4,
-            "'irgendwas_anderes'": 1
-        },
-        "test.commonly_used_global_required_and_optional_function.commonly_used_barely_required": {
-            "'otto'": 3,
-            "'irgendwas_anderes'": 1
-        },
-        "test.commonly_used_global_required_and_optional_function.constant_parameter": {
-            "'bockwurst'": 1
+        "test.some_global_function.optional_parameter_that_should_be_optional_with_different_default": {
+            "'test2'": 4
         }
     }
 }
