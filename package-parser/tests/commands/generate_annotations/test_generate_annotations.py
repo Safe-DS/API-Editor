@@ -1,10 +1,12 @@
 import json
 import os
+import typing
 from pathlib import Path
 
 import pytest
 from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.generate_annotations.generate_annotations import (
+    __get_boundary_annotations,
     __get_constant_annotations,
     __get_enum_annotations,
     __get_optional_annotations,
@@ -19,10 +21,35 @@ from package_parser.models.annotation_models import AnnotationStore
 
 UNUSED_EXPECTED: dict[str, dict[str, str]] = {
     "test/test/Unused_Class": {"target": "test/test/Unused_Class"},
+    "test/test/commonly_used_global_function/unused_optional_parameter": {
+        "target": "test/test/commonly_used_global_function/unused_optional_parameter"
+    },
     "test/test/unused_global_function": {"target": "test/test/unused_global_function"},
+    "test/test/unused_global_function/unused_optional_parameter": {
+        "target": "test/test/unused_global_function/unused_optional_parameter"
+    },
+    "test/test/unused_global_function/unused_required_parameter": {
+        "target": "test/test/unused_global_function/unused_required_parameter"
+    },
     "test/config_context": {"target": "test/config_context"},
+    "test/config_context/assume_finite": {
+        "target": "test/config_context/assume_finite"
+    },
+    "test/config_context/display": {"target": "test/config_context/display"},
+    "test/config_context/print_changed_only": {
+        "target": "test/config_context/print_changed_only"
+    },
+    "test/config_context/working_memory": {
+        "target": "test/config_context/working_memory"
+    },
+    "test/__init__": {"target": "test/__init__"},
+    "test/__init__/max_df": {"target": "test/__init__/max_df"},
+    "test/__init__/min_df": {"target": "test/__init__/min_df"},
+    "test/__init__/continuous_with_int_bounds": {
+        "target": "test/__init__/continuous_with_int_bounds"
+    },
+    "test/__init__/avg_df": {"target": "test/__init__/avg_df"},
 }
-
 
 CONSTANT_EXPECTED: dict[str, dict[str, str]] = {
     "test/test/commonly_used_global_function/unused_optional_parameter": {
@@ -77,7 +104,48 @@ OPTIONALS_EXPECTED: dict[str, dict[str, str]] = {
     },
 }
 
-BOUNDARIES_EXPECTED: dict[str, dict[str, str]] = {}
+BOUNDARIES_EXPECTED: dict[str, dict[str, typing.Any]] = {
+    "test/__init__/max_df": {
+        "interval": {
+            "isDiscrete": True,
+            "lowerIntervalLimit": 0,
+            "lowerLimitType": 1,
+            "upperIntervalLimit": 1,
+            "upperLimitType": 1,
+        },
+        "target": "test/__init__/max_df",
+    },
+    "test/__init__/min_df": {
+        "interval": {
+            "isDiscrete": False,
+            "lowerIntervalLimit": 0.5,
+            "lowerLimitType": 0,
+            "upperIntervalLimit": 0,
+            "upperLimitType": 2,
+        },
+        "target": "test/__init__/min_df",
+    },
+    "test/__init__/continuous_with_int_bounds": {
+        "interval": {
+            "isDiscrete": False,
+            "lowerIntervalLimit": 0,
+            "lowerLimitType": 1,
+            "upperIntervalLimit": 1,
+            "upperLimitType": 1,
+        },
+        "target": "test/__init__/continuous_with_int_bounds",
+    },
+    "test/__init__/avg_df": {
+        "interval": {
+            "isDiscrete": False,
+            "lowerIntervalLimit": 0,
+            "lowerLimitType": 0,
+            "upperIntervalLimit": 0,
+            "upperLimitType": 2,
+        },
+        "target": "test/__init__/avg_df",
+    },
+}
 
 ENUMS_EXPECTED = {
     "test/config_context/display": {
@@ -217,3 +285,13 @@ def test_generate():
 def test_generate_bad_path():
     with pytest.raises(ValueError):
         generate_annotations(None, None, None)
+
+
+def test_get_boundary():
+    usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
+    annotations = AnnotationStore()
+    _preprocess_usages(usages, api)
+    __get_boundary_annotations(usages, api, annotations)
+    assert {
+        annotation.target: annotation.to_json() for annotation in annotations.boundaries
+    } == BOUNDARIES_EXPECTED
