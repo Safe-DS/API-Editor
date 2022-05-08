@@ -176,7 +176,7 @@ def test_format_parameter():
 
 
 def test_get_unused():
-    usages, api, expected_annotations = read_test_data("unused")
+    usages, api, expected_annotations = read_test_data("unuseds")
 
     preprocess_usages(usages, api)
     annotations = AnnotationStore()
@@ -186,13 +186,13 @@ def test_get_unused():
 
 
 def test_get_constant():
-    usages, api, expected_annotations = read_test_data("constant")
-    annotations = AnnotationStore()
+    usages, api, expected_annotations = read_test_data("constants")
+
     preprocess_usages(usages, api)
+    annotations = AnnotationStore()
     __get_constant_annotations(usages, api, annotations)
-    assert {
-               annotation.target: annotation.to_json() for annotation in annotations.constant
-           } == CONSTANT_EXPECTED
+
+    assert annotations.to_json()["constants"] == expected_annotations
 
 
 def test_get_required():
