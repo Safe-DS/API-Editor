@@ -1,0 +1,53 @@
+{
+    "distribution": "test",
+    "package": "test",
+    "version": "0.0.1",
+    "modules": [
+        {
+            "name": "test",
+            "imports": [],
+            "from_imports": [],
+            "classes": [],
+            "functions": ["test.some_global_function"]
+        }
+    ],
+    "classes": [],
+    "functions": [
+        {
+            "name": "some_global_function",
+            "unique_name": "some_global_function",
+            "qname": "test.some_global_function",
+            "unique_qname": "test.some_global_function",
+            "decorators": [],
+            "parameters": [
+                {
+                    "name": "string_parameter",
+                    "qname": "test.some_global_function",
+                    "default_value": null,
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                },
+                {
+                    "name": "enum_parameter",
+                    "qname": "test.some_global_function.enum_parameter",
+                    "default_value": null,
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "{'auto', 'kd_tree', 'kd-means++'}, default=None",
+                        "description": ""
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "description": "",
+            "docstring": "",
+            "source_code": ""
+        }
+    ]
+}

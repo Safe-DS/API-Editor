@@ -1,0 +1,108 @@
+{
+    "distribution": "test",
+    "package": "test",
+    "version": "0.0.1",
+    "modules": [
+        {
+            "name": "test",
+            "imports": [],
+            "from_imports": [],
+            "classes": [],
+            "functions": ["test.some_global_function"]
+        }
+    ],
+    "classes": [],
+    "functions": [
+        {
+            "name": "some_global_function",
+            "unique_name": "some_global_function",
+            "qname": "test.some_global_function",
+            "unique_qname": "test.some_global_function",
+            "decorators": [],
+            "parameters": [
+                {
+                    "name": "required_parameter_that_should_be_constant",
+                    "qname": "test.some_global_function.required_parameter_that_should_be_constant",
+                    "default_value": null,
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                },
+                {
+                    "name": "required_parameter_that_should_be_required",
+                    "qname": "test.some_global_function.required_parameter_that_should_be_required",
+                    "default_value": null,
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                },
+                {
+                    "name": "required_parameter_that_should_be_optional",
+                    "qname": "test.some_global_function.required_parameter_that_should_be_optional",
+                    "default_value": null,
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                },
+                {
+                    "name": "optional_parameter_that_should_be_constant",
+                    "qname": "test.some_global_function.optional_parameter_that_should_be_constant",
+                    "default_value": "'test'",
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                },
+                {
+                    "name": "optional_parameter_that_should_be_required",
+                    "qname": "test.some_global_function.optional_parameter_that_should_be_required",
+                    "default_value": "'test'",
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                },
+                {
+                    "name": "optional_parameter_that_should_be_optional_with_same_default",
+                    "qname": "test.some_global_function.optional_parameter_that_should_be_optional_with_same_default",
+                    "default_value": "'test'",
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                },
+                {
+                    "name": "optional_parameter_that_should_be_optional_with_different_default",
+                    "qname": "test.some_global_function.optional_parameter_that_should_be_optional_with_different_default",
+                    "default_value": "'test'",
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "description": "",
+            "docstring": "",
+            "source_code": ""
+        }
+    ]
+}

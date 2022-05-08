@@ -1,0 +1,14 @@
+{
+    "test/test/UnusedClass": {
+        "target": "test/test/UnusedClass"
+    },
+    "test/test/unused_global_function": {
+        "target": "test/test/unused_global_function"
+    },
+    "test/test/UnusedClass/unused_method": {
+        "target": "test/test/UnusedClass/unused_method"
+    },
+    "test/test/UsedClass/unused_method": {
+        "target": "test/test/UsedClass/unused_method"
+    }
+}

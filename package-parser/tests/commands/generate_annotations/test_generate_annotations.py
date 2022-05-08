@@ -1,77 +1,46 @@
 import json
 import os
-from pathlib import Path
+from typing import Callable
 
 import pytest
-from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.generate_annotations.generate_annotations import (
+    __get_boundary_annotations,
     __get_constant_annotations,
+    __get_enum_annotations,
+    __get_optional_annotations,
+    __get_required_annotations,
     __get_unused_annotations,
     __qname_to_target_name,
-    _preprocess_usages,
-    generate_annotations,
+    preprocess_usages,
 )
-from package_parser.commands.get_api import API
-
-UNUSED_EXPECTED = {
-    "unused": {
-        "test/test/Unused_Class": {"target": "test/test/Unused_Class"},
-        "test/test/commonly_used_global_function/unused_optional_parameter": {
-            "target": "test/test/commonly_used_global_function/unused_optional_parameter"
-        },
-        "test/test/unused_global_function": {
-            "target": "test/test/unused_global_function"
-        },
-        "test/test/unused_global_function/unused_optional_parameter": {
-            "target": "test/test/unused_global_function/unused_optional_parameter"
-        },
-        "test/test/unused_global_function/unused_required_parameter": {
-            "target": "test/test/unused_global_function/unused_required_parameter"
-        },
-    }
-}
-
-CONSTANT_EXPECTED = {
-    "constant": {
-        "test/test/commonly_used_global_function/unused_optional_parameter": {
-            "defaultType": "string",
-            "defaultValue": "bla",
-            "target": "test/test/commonly_used_global_function/unused_optional_parameter",
-        },
-        "test/test/commonly_used_global_function/useless_optional_parameter": {
-            "defaultType": "string",
-            "defaultValue": "bla",
-            "target": "test/test/commonly_used_global_function/useless_optional_parameter",
-        },
-        "test/test/commonly_used_global_function/useless_required_parameter": {
-            "defaultType": "string",
-            "defaultValue": "blup",
-            "target": "test/test/commonly_used_global_function/useless_required_parameter",
-        },
-    }
-}
-
-# Reihenfolge ist wichtig, siehe Reihenfolge von annotation_functions in generate_annotations.py
-FULL_EXPECTED = {**UNUSED_EXPECTED, **CONSTANT_EXPECTED}
-
-
-def setup():
-    api_json_path = os.path.join(os.getcwd(), "tests", "data", "api_data.json")
-    usages_json_path = os.path.join(os.getcwd(), "tests", "data", "usage_data.json")
-
-    with open(api_json_path, "r") as api_file:
-        api_json = json.load(api_file)
-        api = API.from_json(api_json)
-
-    with open(usages_json_path, "r") as usages_file:
-        usages_json = json.load(usages_file)
-        usages = UsageStore.from_json(usages_json)
-
-    return usages, api, usages_file, api_file, usages_json_path, api_json_path
+from package_parser.commands.get_api import (
+    API,
+    Function,
+    Module,
+    Parameter,
+    ParameterAndResultDocstring,
+    ParameterAssignment,
+)
+from package_parser.models import UsageCountStore
+from package_parser.models.annotation_models import AnnotationStore
 
 
 def test_format_function():
-    usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
+    api = API("test", "test", "0.0.1")
+    api.add_module(Module(name="test", imports=[], from_imports=[]))
+    api.add_function(
+        Function(
+            qname="test.unused_global_function",
+            decorators=[],
+            parameters=[],
+            results=[],
+            is_public=True,
+            description="",
+            docstring="",
+            source_code="",
+        )
+    )
+
     assert (
         __qname_to_target_name(api, "test.unused_global_function")
         == "test/test/unused_global_function"
@@ -79,7 +48,30 @@ def test_format_function():
 
 
 def test_format_parameter():
-    usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
+    api = API("test", "test", "0.0.1")
+    api.add_module(Module(name="test", imports=[], from_imports=[]))
+    api.add_function(
+        Function(
+            qname="test.commonly_used_global_function",
+            decorators=[],
+            parameters=[
+                Parameter(
+                    name="useless_required_parameter",
+                    qname="test.commonly_used_global_function.useless_required_parameter",
+                    default_value=None,
+                    is_public=True,
+                    assigned_by=ParameterAssignment.POSITION_OR_NAME,
+                    docstring=ParameterAndResultDocstring(type="str", description=""),
+                )
+            ],
+            results=[],
+            is_public=True,
+            description="",
+            docstring="",
+            source_code="",
+        )
+    )
+
     assert (
         __qname_to_target_name(
             api, "test.commonly_used_global_function.useless_required_parameter"
@@ -88,47 +80,50 @@ def test_format_parameter():
     )
 
 
-def test_format_none():
-    usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
-    with pytest.raises(ValueError):
-        __qname_to_target_name(None, "test")
-    with pytest.raises(ValueError):
-        __qname_to_target_name(api, None)
+@pytest.mark.parametrize(
+    "subfolder, get_annotations",
+    [
+        ("unuseds", __get_unused_annotations),
+        ("constants", __get_constant_annotations),
+        ("requireds", __get_required_annotations),
+        ("optionals", __get_optional_annotations),
+        ("enums", __get_enum_annotations),
+        ("boundaries", __get_boundary_annotations),
+    ],
+)
+def test_get_annotations(
+    subfolder: str,
+    get_annotations: Callable[[UsageCountStore, API, AnnotationStore], None],
+):
+    usages, api, expected_annotations = read_test_data(subfolder)
+
+    preprocess_usages(usages, api)
+    annotations = AnnotationStore()
+    get_annotations(usages, api, annotations)
+
+    assert annotations.to_json()[subfolder] == expected_annotations
 
 
-def test_get_unused():
-    usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
-    _preprocess_usages(usages, api)
-    assert __get_unused_annotations(usages, api) == UNUSED_EXPECTED
-
-
-def test_get_constant():
-    usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
-    _preprocess_usages(usages, api)
-    assert __get_constant_annotations(usages, api) == CONSTANT_EXPECTED
-
-
-def test_generate():
-    usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
-    out_file_path = os.path.join(
-        os.getcwd(), "tests", "out", "test_generate_out_file.json"
+def read_test_data(subfolder: str):
+    api_json_path = os.path.join(
+        os.getcwd(), "tests", "data", subfolder, "api_data.json"
+    )
+    usages_json_path = os.path.join(
+        os.getcwd(), "tests", "data", subfolder, "usage_data.json"
+    )
+    annotations_json_path = os.path.join(
+        os.getcwd(), "tests", "data", subfolder, "annotation_data.json"
     )
 
-    if not os.path.exists(os.path.join(os.getcwd(), "tests", "out")):
-        os.makedirs(os.path.join(os.getcwd(), "tests", "out"))
+    with open(api_json_path, "r") as api_file:
+        api_json = json.load(api_file)
+        api = API.from_json(api_json)
 
-    if not os.path.exists(out_file_path) or not os.path.isfile(out_file_path):
-        with open(out_file_path, "x") as out_file:
-            out_file.write("")
+    with open(usages_json_path, "r") as usages_file:
+        usages_json = json.load(usages_file)
+        usages = UsageCountStore.from_json(usages_json)
 
-    generate_annotations(
-        open(api_json_path, "r"), open(usages_json_path, "r"), Path(out_file_path)
-    )
-    with open(out_file_path, "r") as out_file:
-        out_json = json.load(out_file)
-        assert out_json == FULL_EXPECTED
+    with open(annotations_json_path, "r") as annotations_file:
+        annotations_json = json.load(annotations_file)
 
-
-def test_generate_bad_path():
-    with pytest.raises(ValueError):
-        generate_annotations(None, None, None)
+    return usages, api, annotations_json

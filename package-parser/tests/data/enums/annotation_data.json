@@ -1,0 +1,20 @@
+{
+    "test/test/some_global_function/enum_parameter": {
+        "enumName": "EnumParameter",
+        "pairs": [
+            {
+                "instanceName": "Auto",
+                "stringValue": "auto"
+            },
+            {
+                "instanceName": "Kdmeans",
+                "stringValue": "kd-means++"
+            },
+            {
+                "instanceName": "KdTree",
+                "stringValue": "kd_tree"
+            }
+        ],
+        "target": "test/test/some_global_function/enum_parameter"
+    }
+}

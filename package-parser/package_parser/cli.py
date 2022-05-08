@@ -47,12 +47,21 @@ def cli() -> None:
 
         dist = distribution(args.package)
 
-        out_file = args.out.joinpath(
+        out_file_usage = args.out.joinpath(
             f"{dist}__{args.package}__{distribution_version(dist)}__usages.json"
         )
-        ensure_file_exists(out_file)
-        with out_file.open("w") as f:
+        ensure_file_exists(out_file_usage)
+        with out_file_usage.open("w") as f:
             json.dump(usages.to_json(), f, indent=2)
+
+        # Create a second file with counted usages
+        counted_usages = usages.to_count_json()
+        out_file_usage_count = args.out.joinpath(
+            f"{dist}__{args.package}__{distribution_version(dist)}__usages_counted.json"
+        )
+        ensure_file_exists(out_file_usage_count)
+        with out_file_usage_count.open("w") as f:
+            json.dump(counted_usages, f, indent=2)
 
     elif args.command == __IMPROVE_COMMAND:
         suggest_improvements(args.api, args.usages, args.out, args.min)
@@ -163,7 +172,7 @@ def __add_generate_subparser(subparsers):
     generate_parser.add_argument(
         "-u",
         "--usages",
-        help="File created by the 'usages' command.",
+        help="File created by the 'usages' command that contains usage counts.",
         type=argparse.FileType("r"),
         required=True,
     )

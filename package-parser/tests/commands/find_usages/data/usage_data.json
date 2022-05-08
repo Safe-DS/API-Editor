@@ -1,0 +1,88 @@
+{
+    "class_usages": {
+        "test.Commonly_Used_Class": [
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            },
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            }
+        ],
+        "test.Unused_Class": [
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            }
+        ]
+    },
+    "function_usages": {
+        "test.commonly_used_function": [
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            },
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            }
+        ],
+        "test.unused_function": [
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            }
+        ]
+    },
+    "parameter_usages": {
+        "test.commonly_used_global_function.often_used_parameter": [
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            },
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            }
+        ],
+        "test.uncommonly_used_global_function.never_used_parameter": [
+            {
+                "file": "test.py",
+                "line": 1,
+                "column": 1
+            }
+        ]
+    },
+    "value_usages": {
+        "test.commonly_used_global_function.often_used_parameter": {
+            "'bla'": [
+                {
+                    "file": "test.py",
+                    "line": 1,
+                    "column": 1
+                },
+                {
+                    "file": "test.py",
+                    "line": 1,
+                    "column": 1
+                }
+            ],
+            "'blup'": [
+                {
+                    "file": "test.py",
+                    "line": 1,
+                    "column": 1
+                }
+            ]
+        }
+    }
+}
