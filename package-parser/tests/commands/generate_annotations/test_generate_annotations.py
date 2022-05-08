@@ -45,7 +45,9 @@ UNUSED_EXPECTED: dict[str, dict[str, str]] = {
     "test/__init__": {"target": "test/__init__"},
     "test/__init__/max_df": {"target": "test/__init__/max_df"},
     "test/__init__/min_df": {"target": "test/__init__/min_df"},
-    "test/__init__/continuous_with_int_bounds": {"target": "test/__init__/continuous_with_int_bounds"},
+    "test/__init__/continuous_with_int_bounds": {
+        "target": "test/__init__/continuous_with_int_bounds"
+    },
     "test/__init__/avg_df": {"target": "test/__init__/avg_df"},
 }
 

@@ -170,9 +170,7 @@
             "unique_name": "config_context",
             "qname": "sklearn._config.config_context",
             "unique_qname": "sklearn._config.config_context",
-            "decorators": [
-                "contextmanager"
-            ],
+            "decorators": ["contextmanager"],
             "parameters": [
                 {
                     "name": "assume_finite",
@@ -222,10 +220,7 @@
                     },
                     "refined_type": {
                         "kind": "EnumType",
-                        "values": [
-                            "textlll",
-                            "kd-means++"
-                        ]
+                        "values": ["textlll", "kd-means++"]
                     }
                 }
             ],
