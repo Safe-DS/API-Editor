@@ -89,7 +89,7 @@ jobs:
         run: poetry run parse-package api -p sklearn -o out
 
       - name: Smoke test (generate)
-        run: poetry run parse-package generate -a tests/data/api_data.json -u tests/data/usage_data.json -o annotations.json
+        run: poetry run parse-package generate -a tests/data/api_data.json -u tests/data/usage_data.json -o out/annotations.json
 
       # Requires installation of pytest and pytest-cov
       - name: Test with pytest
