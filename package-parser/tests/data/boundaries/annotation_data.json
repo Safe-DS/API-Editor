@@ -1,22 +1,32 @@
 {
-    "test/test/used_global_function/constant_required_parameter": {
-        "defaultType": "string",
-        "defaultValue": "test",
-        "target": "test/test/used_global_function/constant_required_parameter"
+    "test/test/some_global_function/parameter_with_lower_bound": {
+        "interval": {
+            "isDiscrete": true,
+            "lowerIntervalLimit": 0,
+            "lowerLimitType": 1,
+            "upperIntervalLimit": 0,
+            "upperLimitType": 2
+        },
+        "target": "test/test/some_global_function/parameter_with_lower_bound"
     },
-    "test/test/used_global_function/constant_optional_parameter": {
-        "defaultType": "string",
-        "defaultValue": "test2",
-        "target": "test/test/used_global_function/constant_optional_parameter"
+    "test/test/some_global_function/parameter_with_upper_bound": {
+        "interval": {
+            "isDiscrete": false,
+            "lowerIntervalLimit": 0,
+            "lowerLimitType": 2,
+            "upperIntervalLimit": 1.0,
+            "upperLimitType": 1
+        },
+        "target": "test/test/some_global_function/parameter_with_upper_bound"
     },
-    "test/test/UsedClass/used_method/constant_required_parameter": {
-        "defaultType": "string",
-        "defaultValue": "test",
-        "target": "test/test/UsedClass/used_method/constant_required_parameter"
-    },
-    "test/test/UsedClass/used_method/constant_optional_parameter": {
-        "defaultType": "string",
-        "defaultValue": "test",
-        "target": "test/test/UsedClass/used_method/constant_optional_parameter"
+    "test/test/some_global_function/parameter_with_interval": {
+        "interval": {
+            "isDiscrete": false,
+            "lowerIntervalLimit": 0.0,
+            "lowerLimitType": 0,
+            "upperIntervalLimit": 1.0,
+            "upperLimitType": 0
+        },
+        "target": "test/test/some_global_function/parameter_with_interval"
     }
 }

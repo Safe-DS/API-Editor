@@ -58,7 +58,7 @@ class EnumType:
 
 @dataclass
 class BoundaryType:
-
+    NEGATIVE_INFINITY: ClassVar = "NegativeInfinity"
     INFINITY: ClassVar = "Infinity"
 
     base_type: str
@@ -80,7 +80,7 @@ class BoundaryType:
     def from_string(cls, string: str) -> Optional[BoundaryType]:
         pattern = r"""(?P<base_type>float|int)?[ ]  # optional base type of either float or int
                     (in|of)[ ](the[ ])?(range|interval)[ ](of[ ])?  # 'in' or 'of', optional 'the', 'range' or 'interval', optional 'of'
-                    `?(?P<min_bracket>\[|\()(?P<min>\d+.?\d*),[ ]  # left side of the range
+                    `?(?P<min_bracket>\[|\()(?P<min>\d+.?\d*|negative_infinity),[ ]  # left side of the range
                     (?P<max>\d+.?\d*|infinity)(?P<max_bracket>\]|\))`?"""  # right side of the range
         match = re.search(pattern, string, re.VERBOSE)
 
@@ -90,12 +90,18 @@ class BoundaryType:
                 base_type = "float"
             base_type = eval(base_type)
 
-            min_value = base_type(match.group("min"))
+            min_value = match.group("min")
+            if min_value != "negative_infinity":
+                min_value = base_type(min_value)
+            else:
+                min_value = BoundaryType.NEGATIVE_INFINITY
+
             max_value = match.group("max")
             if max_value != "infinity":
                 max_value = base_type(max_value)
             else:
                 max_value = BoundaryType.INFINITY
+
             min_bracket = match.group("min_bracket")
             max_bracket = match.group("max_bracket")
             min_inclusive = BoundaryType._is_inclusive(min_bracket)
