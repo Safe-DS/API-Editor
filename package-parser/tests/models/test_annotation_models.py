@@ -93,7 +93,7 @@ def test_annotation_store():
     annotations.boundaries.append(
         BoundaryAnnotation(
             target="test/boundary",
-            interval=[Interval(False, 0, 0, 0, 0)],
+            interval=Interval(False, 0, 0, 0, 0),
         )
     )
     annotations.enums.append(
@@ -104,19 +104,17 @@ def test_annotation_store():
     assert annotations.to_json() == {
         "boundaries": {
             "test/boundary": {
-                "interval": [
-                    {
-                        "isDiscrete": False,
-                        "lowerIntervalLimit": 0,
-                        "lowerLimitType": 0,
-                        "upperIntervalLimit": 0,
-                        "upperLimitType": 0,
-                    }
-                ],
+                "interval": {
+                    "isDiscrete": False,
+                    "lowerIntervalLimit": 0,
+                    "lowerLimitType": 0,
+                    "upperIntervalLimit": 0,
+                    "upperLimitType": 0,
+                },
                 "target": "test/boundary",
             }
         },
-        "constant": {
+        "constants": {
             "test/constant": {
                 "defaultType": "string",
                 "defaultValue": "test",
@@ -138,5 +136,5 @@ def test_annotation_store():
             }
         },
         "requireds": {"test/required": {"target": "test/required"}},
-        "unused": {"test/unused": {"target": "test/unused"}},
+        "unuseds": {"test/unused": {"target": "test/unused"}},
     }
