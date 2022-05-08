@@ -51,11 +51,10 @@ def test_optional_annotation_to_json():
 
 def test_boundary_annotation_to_json():
     annotation = BoundaryAnnotation(
-        target="test/test", defaultType="string", interval=[Interval(False, 0, 0, 0, 0)]
+        target="test/test", interval=[Interval(False, 0, 0, 0, 0)]
     )
     assert annotation.to_json() == {
         "target": "test/test",
-        "defaultType": "string",
         "interval": [
             {
                 "isDiscrete": False,
@@ -96,7 +95,6 @@ def test_annotation_store():
     annotations.boundaries.append(
         BoundaryAnnotation(
             target="test/boundary",
-            defaultType="string",
             interval=[Interval(False, 0, 0, 0, 0)],
         )
     )
@@ -108,7 +106,6 @@ def test_annotation_store():
     assert annotations.to_json() == {
         "boundaries": {
             "test/boundary": {
-                "defaultType": "string",
                 "interval": [
                     {
                         "isDiscrete": False,
