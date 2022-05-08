@@ -420,8 +420,10 @@ def __get_boundary_annotations(
             if not refined_type["max_inclusive"]:
                 max_limit_type = 1
             if min_value == "NegativeInfinity":
+                min_value = 0
                 min_limit_type = 2
             if max_value == "Infinity":
+                max_value = 0
                 max_limit_type = 2
 
             interval = Interval(
@@ -447,10 +449,5 @@ def __is_discrete(
     :param max_value: Union[str, int, float]
     :return discretionValue
     """
-
-    if min_value == "NegativeInfintiy":
-        min_value = 0
-    if max_value == "Infinity":
-        max_value = 0
 
     return isinstance(min_value, int) and isinstance(max_value, int)
