@@ -294,6 +294,49 @@ def test_add_value_usages_for_existing_parameter_and_value(usage_counts: UsageCo
     }
 
 
+def test_init_value_for_new_parameter(usage_counts: UsageCountStore):
+    usage_counts.init_value("TestClass.test_function.test_parameter_2")
+
+    assert usage_counts.to_json() == {
+        "class_counts": {
+            "TestClass": 2
+        },
+        "function_counts": {
+            "TestClass.test_function": 2
+        },
+        "parameter_counts": {
+            "TestClass.test_function.test_parameter": 2
+        },
+        "value_counts": {
+            "TestClass.test_function.test_parameter": {
+                "'test'": 2
+            },
+            "TestClass.test_function.test_parameter_2": {}
+        }
+    }
+
+
+def test_init_value_for_existing_parameter(usage_counts: UsageCountStore):
+    usage_counts.init_value("TestClass.test_function.test_parameter")
+
+    assert usage_counts.to_json() == {
+        "class_counts": {
+            "TestClass": 2
+        },
+        "function_counts": {
+            "TestClass.test_function": 2
+        },
+        "parameter_counts": {
+            "TestClass.test_function.test_parameter": 2
+        },
+        "value_counts": {
+            "TestClass.test_function.test_parameter": {
+                "'test'": 2
+            }
+        }
+    }
+
+
 def test_n_class_usages_for_missing_class(usage_counts: UsageCountStore):
     assert usage_counts.n_class_usages("TestClass2") == 0
 

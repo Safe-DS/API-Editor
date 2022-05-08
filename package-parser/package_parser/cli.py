@@ -172,7 +172,7 @@ def __add_generate_subparser(subparsers):
     generate_parser.add_argument(
         "-u",
         "--usages",
-        help="File created by the 'usages' command.",
+        help="File created by the 'usages' command that contains usage counts.",
         type=argparse.FileType("r"),
         required=True,
     )

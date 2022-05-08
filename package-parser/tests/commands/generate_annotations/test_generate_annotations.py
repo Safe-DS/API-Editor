@@ -4,7 +4,7 @@ import typing
 from pathlib import Path
 
 import pytest
-from package_parser.commands.find_usages import UsageStore
+
 from package_parser.commands.generate_annotations.generate_annotations import (
     __get_boundary_annotations,
     __get_constant_annotations,
@@ -17,6 +17,7 @@ from package_parser.commands.generate_annotations.generate_annotations import (
     generate_annotations,
 )
 from package_parser.commands.get_api import API
+from package_parser.models import UsageCountStore
 from package_parser.models.annotation_models import AnnotationStore
 
 UNUSED_EXPECTED: dict[str, dict[str, str]] = {
@@ -155,7 +156,7 @@ def setup():
 
     with open(usages_json_path, "r") as usages_file:
         usages_json = json.load(usages_file)
-        usages = UsageStore.from_json(usages_json)
+        usages = UsageCountStore.from_json(usages_json)
 
     return usages, api, usages_file, api_file, usages_json_path, api_json_path
 
