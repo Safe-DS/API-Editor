@@ -2,7 +2,7 @@ import json
 import re
 from io import TextIOWrapper
 from pathlib import Path
-from typing import Callable, Union
+from typing import Callable
 
 from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.get_api import API
@@ -411,7 +411,7 @@ def __get_boundary_annotations(
             min_value = refined_type["min"]
             max_value = refined_type["max"]
 
-            is_discrete = __is_discrete(min_value, max_value)
+            is_discrete = refined_type["base_type"] == "int"
 
             min_limit_type = 0
             max_limit_type = 0
@@ -438,16 +438,3 @@ def __get_boundary_annotations(
                 interval=interval,
             )
             annotations.boundaries.append(boundary)
-
-
-def __is_discrete(
-    min_value: Union[str, int, float], max_value: Union[str, int, float]
-) -> bool:
-    """
-    Checks whether an interval is discrete or not.
-    :param min_value: Union[str, int, float]
-    :param max_value: Union[str, int, float]
-    :return discretionValue
-    """
-
-    return isinstance(min_value, int) and isinstance(max_value, int)
