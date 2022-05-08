@@ -83,10 +83,10 @@ class AnnotationStore:
 
     def to_json(self) -> dict:
         return {
-            "constant": {
+            "constants": {
                 annotation.target: annotation.to_json() for annotation in self.constant
             },
-            "unused": {
+            "unuseds": {
                 annotation.target: annotation.to_json() for annotation in self.unused
             },
             "requireds": {

@@ -32,8 +32,6 @@ def generate_annotations(
     :param usages_file: UsageStore file
     :param output_file: Output file
     """
-    if api_file is None or usages_file is None or output_file is None:
-        raise ValueError("Api_file, usages_file, and output_file must be specified.")
 
     with api_file:
         api_json = json.load(api_file)
@@ -66,7 +64,7 @@ def __generate_annotation_dict(
     annotations: AnnotationStore,
     functions: list[Callable],
 ):
-    _preprocess_usages(usages, api)
+    preprocess_usages(usages, api)
 
     for generate_annotation in functions:
         generate_annotation(usages, api, annotations)
@@ -189,8 +187,6 @@ def __qname_to_target_name(api: API, qname: str) -> str:
     :param qname: Name pre-formatting
     :return: Formatted name
     """
-    if qname is None or api is None:
-        raise ValueError("qname and api must be specified.")
 
     target_elements = qname.split(".")
 
@@ -222,7 +218,7 @@ def __get_default_type_from_value(default_value: str) -> str:
     return default_type
 
 
-def _preprocess_usages(usages: UsageCountStore, api: API) -> None:
+def preprocess_usages(usages: UsageCountStore, api: API) -> None:
     __remove_internal_usages(usages, api)
     __add_unused_api_elements(usages, api)
     __add_implicit_usages_of_default_value(usages, api)
@@ -310,7 +306,7 @@ def __get_optional_annotations(
     usages: UsageCountStore, api: API, annotations: AnnotationStore
 ) -> None:
     """
-    Collects all parameters that are currently required but should be optional to be assign a value
+    Collects all parameters that are currently required but should be optional to be assigned a value
     :param usages: Usage store
     :param api: Description of the API
     :param annotations: AnnotationStore, that holds all annotations
@@ -338,7 +334,11 @@ def __get_parameter_info(qname: str, usages: UsageCountStore) -> ParameterInfo:
     :param usages: UsageStore
     :return ParameterInfo
     """
-    values = [(it[0], it[1]) for it in usages.value_usages[qname].items()]
+    values = [
+        (it[0], it[1])
+        for it in usages.value_usages[qname].items()
+        if it[1] > 0
+    ]
 
     if len(values) == 0:
         return ParameterInfo(ParameterType.Unused)
@@ -353,11 +353,11 @@ def __get_parameter_info(qname: str, usages: UsageCountStore) -> ParameterInfo:
     if __is_required(values):
         return ParameterInfo(ParameterType.Required)
 
+    # If it's neither required nor constant, return optional
     value = max(values, key=lambda item: item[1])[0]
     if value[0] == "'":
         value = value[1:-1]
 
-    # If its neither required nor constant, return optional
     return ParameterInfo(
         ParameterType.Optional, value, __get_default_type_from_value(value)
     )
