@@ -105,14 +105,6 @@ def __get_unused_annotations(
     :param annotations: AnnotationStore object
     :return: None
     """
-    for parameter_name in list(api.parameters().keys()):
-        if (
-            parameter_name not in usages.parameter_usages
-            or len(usages.parameter_usages[parameter_name]) == 0
-        ):
-            formatted_name = __qname_to_target_name(api, parameter_name)
-            annotations.unused.append(UnusedAnnotation(formatted_name))
-
     for function_name in list(api.functions.keys()):
         if (
             function_name not in usages.function_usages

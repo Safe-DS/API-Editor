@@ -21,34 +21,9 @@ from package_parser.models.annotation_models import AnnotationStore
 
 UNUSED_EXPECTED: dict[str, dict[str, str]] = {
     "test/test/Unused_Class": {"target": "test/test/Unused_Class"},
-    "test/test/commonly_used_global_function/unused_optional_parameter": {
-        "target": "test/test/commonly_used_global_function/unused_optional_parameter"
-    },
     "test/test/unused_global_function": {"target": "test/test/unused_global_function"},
-    "test/test/unused_global_function/unused_optional_parameter": {
-        "target": "test/test/unused_global_function/unused_optional_parameter"
-    },
-    "test/test/unused_global_function/unused_required_parameter": {
-        "target": "test/test/unused_global_function/unused_required_parameter"
-    },
     "test/config_context": {"target": "test/config_context"},
-    "test/config_context/assume_finite": {
-        "target": "test/config_context/assume_finite"
-    },
-    "test/config_context/display": {"target": "test/config_context/display"},
-    "test/config_context/print_changed_only": {
-        "target": "test/config_context/print_changed_only"
-    },
-    "test/config_context/working_memory": {
-        "target": "test/config_context/working_memory"
-    },
     "test/__init__": {"target": "test/__init__"},
-    "test/__init__/max_df": {"target": "test/__init__/max_df"},
-    "test/__init__/min_df": {"target": "test/__init__/min_df"},
-    "test/__init__/continuous_with_int_bounds": {
-        "target": "test/__init__/continuous_with_int_bounds"
-    },
-    "test/__init__/avg_df": {"target": "test/__init__/avg_df"},
 }
 
 CONSTANT_EXPECTED: dict[str, dict[str, str]] = {
