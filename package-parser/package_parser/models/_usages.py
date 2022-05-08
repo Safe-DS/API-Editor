@@ -47,6 +47,18 @@ class UsageCountStore:
         self.__parameter_usages: Counter[ParameterQName] = Counter()
         self.__value_usages: dict[ParameterQName, Counter[StringifiedValue]] = {}
 
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, UsageCountStore):
+            return self.__class_usages == other.__class_usages and \
+                   self.__function_usages == other.__function_usages and \
+                   self.__parameter_usages == other.__parameter_usages and \
+                   self.__value_usages == other.__value_usages
+
+        return False
+
+    def __hash__(self) -> int:
+        return hash(tuple(sorted(self.__dict__.items())))
+
     def add_class_usage(self, class_qname: ClassQName, count: int = 1) -> None:
         """Increases the usage count of the class with the given name by the given count."""
 
@@ -88,7 +100,8 @@ class UsageCountStore:
         if parameter_qname in self.__parameter_usages:
             del self.__parameter_usages[parameter_qname]
 
-        self.remove_value(parameter_qname)
+        if parameter_qname in self.__value_usages:
+            del self.__value_usages[parameter_qname]
 
     def add_value_usages(self, parameter_qname: ParameterQName, value: StringifiedValue, count: int = 1) -> None:
         """Increases the usage count of the given value for the parameter with the given name by the given count."""
@@ -97,12 +110,6 @@ class UsageCountStore:
             self.__value_usages[parameter_qname] = Counter()
 
         self.__value_usages[parameter_qname][value] += count
-
-    def remove_value(self, parameter_qname: ParameterQName) -> None:
-        """Removes all value usages of parameters with the given name."""
-
-        if parameter_qname in self.__value_usages:
-            del self.__value_usages[parameter_qname]
 
     def n_class_usages(self, class_qname: ClassQName) -> int:
         """Returns how often the class is used, i.e. how often any of its methods are called."""
