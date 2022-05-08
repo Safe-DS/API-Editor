@@ -61,7 +61,7 @@ def test_boundary_annotation_to_json():
             "lowerLimitType": 0,
             "upperIntervalLimit": 0,
             "upperLimitType": 0,
-        }
+        },
     }
 
 

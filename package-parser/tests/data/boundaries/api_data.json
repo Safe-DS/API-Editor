@@ -8,9 +8,7 @@
             "imports": [],
             "from_imports": [],
             "classes": [],
-            "functions": [
-                "test.some_global_function"
-            ]
+            "functions": ["test.some_global_function"]
         }
     ],
     "classes": [],

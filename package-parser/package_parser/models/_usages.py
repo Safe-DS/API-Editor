@@ -49,10 +49,12 @@ class UsageCountStore:
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, UsageCountStore):
-            return self.class_usages == other.class_usages and \
-                   self.function_usages == other.function_usages and \
-                   self.parameter_usages == other.parameter_usages and \
-                   self.value_usages == other.value_usages
+            return (
+                self.class_usages == other.class_usages
+                and self.function_usages == other.function_usages
+                and self.parameter_usages == other.parameter_usages
+                and self.value_usages == other.value_usages
+            )
 
         return False
 
@@ -74,7 +76,9 @@ class UsageCountStore:
             if function_qname.startswith(class_qname):
                 self.remove_function(function_qname)
 
-    def add_function_usages(self, function_qname: FunctionQName, count: int = 1) -> None:
+    def add_function_usages(
+        self, function_qname: FunctionQName, count: int = 1
+    ) -> None:
         """Increases the usage count of the function with the given name by the given count."""
 
         self.function_usages[function_qname] += count
@@ -89,7 +93,9 @@ class UsageCountStore:
             if parameter_qname.startswith(function_qname):
                 self.remove_parameter(parameter_qname)
 
-    def add_parameter_usages(self, parameter_qname: ParameterQName, count: int = 1) -> None:
+    def add_parameter_usages(
+        self, parameter_qname: ParameterQName, count: int = 1
+    ) -> None:
         """Increases the usage count of the parameter with the given name by the given count."""
 
         self.parameter_usages[parameter_qname] += count
@@ -103,7 +109,9 @@ class UsageCountStore:
         if parameter_qname in self.value_usages:
             del self.value_usages[parameter_qname]
 
-    def add_value_usages(self, parameter_qname: ParameterQName, value: StringifiedValue, count: int = 1) -> None:
+    def add_value_usages(
+        self, parameter_qname: ParameterQName, value: StringifiedValue, count: int = 1
+    ) -> None:
         """Increases the usage count of the given value for the parameter with the given name by the given count."""
 
         self.init_value(parameter_qname)
@@ -156,8 +164,7 @@ class UsageCountStore:
             },
             "value_counts": {
                 parameter_qname: {
-                    value: usage_count
-                    for value, usage_count in values.most_common()
+                    value: usage_count for value, usage_count in values.most_common()
                 }
                 for parameter_qname, values in self.value_usages.items()
             },

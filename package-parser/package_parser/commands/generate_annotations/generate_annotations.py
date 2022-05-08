@@ -169,12 +169,13 @@ def __get_required_annotations(
     """
     parameters = api.parameters()
     optional_parameter_qnames = set(
-        it
-        for it in parameters
-        if parameters[it].default_value is not None
+        it for it in parameters if parameters[it].default_value is not None
     )
     for qname in list(usages.value_usages.keys()):
-        if qname in optional_parameter_qnames and __get_parameter_info(qname, usages).type is ParameterType.Required:
+        if (
+            qname in optional_parameter_qnames
+            and __get_parameter_info(qname, usages).type is ParameterType.Required
+        ):
             formatted_name = __qname_to_target_name(api, qname)
             annotations.requireds.append(RequiredAnnotation(formatted_name))
 
@@ -251,7 +252,9 @@ def __remove_internal_usages(usages: UsageCountStore, api: API) -> None:
 
     for parameter_qname in list(usages.parameter_usages.keys()):
         function_qname = parent_qname(parameter_qname)
-        if parameter_qname not in parameter_qnames or not api.is_public_function(function_qname):
+        if parameter_qname not in parameter_qnames or not api.is_public_function(
+            function_qname
+        ):
             print(f"Removing usages of internal parameter {parameter_qname}")
             usages.remove_parameter(parameter_qname)
 
@@ -298,8 +301,14 @@ def __add_implicit_usages_of_default_value(usages: UsageCountStore, api: API) ->
         function_qname = parent_qname(parameter_qname)
         function_usage_count = usages.n_function_usages(function_qname)
 
-        n_locations_of_implicit_usages_of_default_value = function_usage_count - parameter_usage_count
-        usages.add_value_usages(parameter_qname, default_value, n_locations_of_implicit_usages_of_default_value)
+        n_locations_of_implicit_usages_of_default_value = (
+            function_usage_count - parameter_usage_count
+        )
+        usages.add_value_usages(
+            parameter_qname,
+            default_value,
+            n_locations_of_implicit_usages_of_default_value,
+        )
 
 
 def __get_optional_annotations(
@@ -344,11 +353,7 @@ def __get_parameter_info(qname: str, usages: UsageCountStore) -> ParameterInfo:
     :param usages: UsageStore
     :return ParameterInfo
     """
-    values = [
-        (it[0], it[1])
-        for it in usages.value_usages[qname].items()
-        if it[1] > 0
-    ]
+    values = [(it[0], it[1]) for it in usages.value_usages[qname].items() if it[1] > 0]
 
     if len(values) == 0:
         return ParameterInfo(ParameterType.Unused)
