@@ -23,7 +23,7 @@ UNUSED_EXPECTED: dict[str, dict[str, str]] = {
     "test/test/Unused_Class": {"target": "test/test/Unused_Class"},
     "test/test/unused_global_function": {"target": "test/test/unused_global_function"},
     "test/config_context": {"target": "test/config_context"},
-    "test/__init__": {"target": "test/__init__"}
+    "test/__init__": {"target": "test/__init__"},
 }
 
 CONSTANT_EXPECTED: dict[str, dict[str, str]] = {
