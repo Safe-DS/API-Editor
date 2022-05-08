@@ -1,22 +1,12 @@
 {
-    "test/test/used_global_function/constant_required_parameter": {
-        "defaultType": "string",
-        "defaultValue": "test",
-        "target": "test/test/used_global_function/constant_required_parameter"
-    },
-    "test/test/used_global_function/constant_optional_parameter": {
+    "test/test/some_global_function/required_parameter_that_should_be_optional": {
         "defaultType": "string",
         "defaultValue": "test2",
-        "target": "test/test/used_global_function/constant_optional_parameter"
+        "target": "test/test/some_global_function/required_parameter_that_should_be_optional"
     },
-    "test/test/UsedClass/used_method/constant_required_parameter": {
+    "test/test/some_global_function/optional_parameter_that_should_be_optional_with_different_default": {
         "defaultType": "string",
-        "defaultValue": "test",
-        "target": "test/test/UsedClass/used_method/constant_required_parameter"
-    },
-    "test/test/UsedClass/used_method/constant_optional_parameter": {
-        "defaultType": "string",
-        "defaultValue": "test",
-        "target": "test/test/UsedClass/used_method/constant_optional_parameter"
+        "defaultValue": "test2",
+        "target": "test/test/some_global_function/optional_parameter_that_should_be_optional_with_different_default"
     }
 }
