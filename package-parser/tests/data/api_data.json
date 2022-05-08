@@ -320,6 +320,96 @@
             "description": "Conöäöä manager for global scikit-learn configuration.",
             "docstring": "Conöäöä manager for global scikit-learn configuration.\n\n    Parameters\n    ----------\n    assume_finite : bool, default=None\n        If True, validation for finiteness will be skipped,\n        saving time, but leading to potential crashes. If\n        False, validation for finiteness will be performed,\n        avoiding error. If None, the existing value won't change.\n        The default value is False.\n\n    working_memory : int, default=None\n        If set, scikit-learn will attempt to limit the size of temporary arrays\n        to this number of MiB (per job when parallelised), often saving both\n        computation time and memory on expensive operations that can be\n        performed in chunks. If None, the existing value won't change.\n        The default value is 1024.\n\n    print_changed_only : bool, default=None\n        If True, only the parameters that were set to non-default\n        values will be printed when printing an estimator. For example,\n        ``print(SVC())`` while True will only print 'SVC()', but would print\n        'SVC(C=1.0, cache_size=200, ...)' with all the non-changed parameters\n        when False. If None, the existing value won't change.\n        The default value is True.\n\n        .. versionchanged:: 0.23\n           Default changed from False to True.\n\n    display : {'blubber_fasel', 'QWERT'}, default=None\n        If 'diagram', estimators will be displayed as a diagram in a Jupyter\n        lab or notebook conöäöä. If 'öäöä', estimators will be displayed as\n        öäöä. If None, the existing value won't change.\n        The default value is 'öäöä'.\n\n        .. versionadded:: 0.23\n\n    Yields\n    ------\n    None.\n\n    See Also\n    --------\n    set_config : Set global scikit-learn configuration.\n    get_config : Retrieve current values of the global configuration.\n\n    Notes\n    -----\n    All settings, not just those presently modified, will be returned to\n    their previous values when the conöäöä manager is exited.\n\n    Examples\n    --------\n    >>> import sklearn\n    >>> from sklearn.utils.validation import assert_all_finite\n    >>> with sklearn.config_conöäöä(assume_finite=True):\n    ...     assert_all_finite([float('nan')])\n    >>> with sklearn.config_conöäöä(assume_finite=True):\n    ...     with sklearn.config_conöäöä(assume_finite=False):\n    ...         assert_all_finite([float('nan')])\n    Traceback (most recent call last):\n    ...\n    ValueError: Input contains NaN...\n    ",
             "source_code": "\n@conöäöämanager\ndef config_conöäöä(*, assume_finite=None, working_memory=None, print_changed_only=None, display=None):\n    \"\"\"Conöäöä manager for global scikit-learn configuration.\n\n    Parameters\n    ----------\n    assume_finite : bool, default=None\n        If True, validation for finiteness will be skipped,\n        saving time, but leading to potential crashes. If\n        False, validation for finiteness will be performed,\n        avoiding error. If None, the existing value won't change.\n        The default value is False.\n\n    working_memory : int, default=None\n        If set, scikit-learn will attempt to limit the size of temporary arrays\n        to this number of MiB (per job when parallelised), often saving both\n        computation time and memory on expensive operations that can be\n        performed in chunks. If None, the existing value won't change.\n        The default value is 1024.\n\n    print_changed_only : bool, default=None\n        If True, only the parameters that were set to non-default\n        values will be printed when printing an estimator. For example,\n        ``print(SVC())`` while True will only print 'SVC()', but would print\n        'SVC(C=1.0, cache_size=200, ...)' with all the non-changed parameters\n        when False. If None, the existing value won't change.\n        The default value is True.\n\n        .. versionchanged:: 0.23\n           Default changed from False to True.\n\n    display : {'loölolö', 'diagram'}, default=None\n        If 'diagram', estimators will be displayed as a diagram in a Jupyter\n        lab or notebook conöäöä. If 'öäöä', estimators will be displayed as\n        öäöä. If None, the existing value won't change.\n        The default value is 'öäöä'.\n\n        .. versionadded:: 0.23\n\n    Yields\n    ------\n    None.\n\n    See Also\n    --------\n    set_config : Set global scikit-learn configuration.\n    get_config : Retrieve current values of the global configuration.\n\n    Notes\n    -----\n    All settings, not just those presently modified, will be returned to\n    their previous values when the conöäöä manager is exited.\n\n    Examples\n    --------\n    >>> import sklearn\n    >>> from sklearn.utils.validation import assert_all_finite\n    >>> with sklearn.config_conöäöä(assume_finite=True):\n    ...     assert_all_finite([float('nan')])\n    >>> with sklearn.config_conöäöä(assume_finite=True):\n    ...     with sklearn.config_conöäöä(assume_finite=False):\n    ...         assert_all_finite([float('nan')])\n    Traceback (most recent call last):\n    ...\n    ValueError: Input contains NaN...\n    \"\"\"\n    old_config = get_config()\n    set_config(assume_finite=assume_finite, working_memory=working_memory, print_changed_only=print_changed_only, display=display)\n    try:\n        yield\n    finally:\n        set_config(**old_config)"
+        },
+        {
+            "name": "__init__",
+            "unique_name": "__init__",
+            "qname": "sklearn.feature_extraction.text.CountVectorizer.__init__",
+            "unique_qname": "sklearn.feature_extraction.text.CountVectorizer.__init__",
+            "decorators": [],
+            "parameters": [
+                {
+                    "name": "min_df",
+                    "qname": "sklearn.feature_extraction.text.CountVectorizer.__init__.min_df",
+                    "default_value": "1",
+                    "is_public": true,
+                    "assigned_by": "NAME_ONLY",
+                    "docstring": {
+                        "type": "float in range [0.5, infinity) or int, default=1",
+                        "description": "When building the vocabulary ignore terms that have a document\nfrequency strictly lower than the given threshold. This value is also\ncalled cut-off in the literature.\nIf float, the parameter represents a proportion of documents, integer\nabsolute counts.\nThis parameter is ignored if vocabulary is not None."
+                    },
+                    "refined_type": {
+                        "kind": "BoundaryType",
+                        "base_type": "float",
+                        "min": 0.5,
+                        "max": "Infinity",
+                        "min_inclusive": true,
+                        "max_inclusive": false
+                    }
+                },
+                {
+                    "name": "max_df",
+                    "qname": "sklearn.feature_extraction.text.CountVectorizer.__init__.max_df",
+                    "default_value": "1",
+                    "is_public": true,
+                    "assigned_by": "NAME_ONLY",
+                    "docstring": {
+                        "type": "int in range (0, 1) or int, default=1",
+                        "description": "When building the vocabulary ignore terms that have a document\nfrequency strictly lower than the given threshold. This value is also\ncalled cut-off in the literature.\nIf float, the parameter represents a proportion of documents, integer\nabsolute counts.\nThis parameter is ignored if vocabulary is not None."
+                    },
+                    "refined_type": {
+                        "kind": "BoundaryType",
+                        "base_type": "int",
+                        "min": 0,
+                        "max": 1,
+                        "min_inclusive": false,
+                        "max_inclusive": false
+                    }
+                },
+                {
+                    "name": "continuous_with_int_bounds",
+                    "qname": "sklearn.feature_extraction.text.CountVectorizer.__init__.continuous_with_int_bounds",
+                    "default_value": "1",
+                    "is_public": true,
+                    "assigned_by": "NAME_ONLY",
+                    "docstring": {
+                        "type": "float in range (0, 1) or int, default=1",
+                        "description": "When building the vocabulary ignore terms that have a document\nfrequency strictly lower than the given threshold. This value is also\ncalled cut-off in the literature.\nIf float, the parameter represents a proportion of documents, integer\nabsolute counts.\nThis parameter is ignored if vocabulary is not None."
+                    },
+                    "refined_type": {
+                        "kind": "BoundaryType",
+                        "base_type": "float",
+                        "min": 0,
+                        "max": 1,
+                        "min_inclusive": false,
+                        "max_inclusive": false
+                    }
+                },
+                {
+                    "name": "avg_df",
+                    "qname": "sklearn.feature_extraction.text.CountVectorizer.__init__.avg_df",
+                    "default_value": "1",
+                    "is_public": true,
+                    "assigned_by": "NAME_ONLY",
+                    "docstring": {
+                        "type": "float in range [0, infinity) or int, default=1",
+                        "description": "When building the vocabulary ignore terms that have a document\nfrequency strictly lower than the given threshold. This value is also\ncalled cut-off in the literature.\nIf float, the parameter represents a proportion of documents, integer\nabsolute counts.\nThis parameter is ignored if vocabulary is not None."
+                    },
+                    "refined_type": {
+                        "kind": "BoundaryType",
+                        "base_type": "float",
+                        "min": 0,
+                        "max": "Infinity",
+                        "min_inclusive": true,
+                        "max_inclusive": false
+                    }
+                }
+            ],
+            "results": [],
+            "is_public": true,
+            "description": "",
+            "docstring": null,
+            "source_code": "\ndef __init__(self, *, input='content', encoding='utf-8', decode_error='strict', strip_accents=None, lowercase=True, preprocessor=None, tokenizer=None, stop_words=None, token_pattern='(?u)\\\\b\\\\w\\\\w+\\\\b', ngram_range=(1, 1), analyzer='word', max_df=1.0, min_df=1, max_features=None, vocabulary=None, binary=False, dtype=np.int64):\n    self.input = input\n    self.encoding = encoding\n    self.decode_error = decode_error\n    self.strip_accents = strip_accents\n    self.preprocessor = preprocessor\n    self.tokenizer = tokenizer\n    self.analyzer = analyzer\n    self.lowercase = lowercase\n    self.token_pattern = token_pattern\n    self.stop_words = stop_words\n    self.max_df = max_df\n    self.min_df = min_df\n    self.max_features = max_features\n    self.ngram_range = ngram_range\n    self.vocabulary = vocabulary\n    self.binary = binary\n    self.dtype = dtype"
         }
     ]
 }
