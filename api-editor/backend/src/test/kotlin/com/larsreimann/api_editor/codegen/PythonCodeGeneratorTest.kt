@@ -93,7 +93,7 @@ class PythonCodeGeneratorTest {
             testClass.toPythonCode() shouldBe """
                     |class TestClass:
                     |    pass
-                """.trimMargin()
+            """.trimMargin()
         }
 
         @Test
@@ -113,7 +113,7 @@ class PythonCodeGeneratorTest {
                     |
                     |    def testFunction2():
                     |        pass
-                """.trimMargin()
+            """.trimMargin()
         }
 
         @Test
@@ -127,7 +127,7 @@ class PythonCodeGeneratorTest {
                     |class TestClass:
                     |    def __init__():
                     |        pass
-                """.trimMargin()
+            """.trimMargin()
         }
 
         @Test
@@ -151,7 +151,7 @@ class PythonCodeGeneratorTest {
                     |
                     |    def testFunction2():
                     |        pass
-                """.trimMargin()
+            """.trimMargin()
         }
 
         @Test
@@ -177,7 +177,7 @@ class PythonCodeGeneratorTest {
                     |        self.testAttribute = 1
                     |
                     |        self.instance = testModule.TestClass()
-                """.trimMargin()
+            """.trimMargin()
         }
     }
 

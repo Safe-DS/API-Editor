@@ -132,7 +132,7 @@ class StubCodeGeneratorTest {
                 |    TestEnumInstance
                 |}
                 |
-                """.trimMargin()
+            """.trimMargin()
         }
     }
 
