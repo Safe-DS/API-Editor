@@ -6,9 +6,9 @@ dist-ssr/
 # Configuration
 .eslintrc.js
 
-# Client
-/client/vite.config.ts
-/client/src/theme/index.d.ts
+# GUI
+/gui/vite.config.ts
+/gui/src/theme/index.d.ts
 
-# Server
-/server/src/main/resources/static/
+# Backend
+/backend/src/main/resources/static/
