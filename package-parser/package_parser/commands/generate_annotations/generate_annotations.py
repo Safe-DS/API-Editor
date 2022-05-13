@@ -82,7 +82,10 @@ def __get_constant_annotations(
     for qname in list(usages.value_usages.keys()):
         parameter_info = __get_parameter_info(qname, usages)
 
-        target_name = api.parameters().get(qname).pname
+        param = api.parameters().get(qname)
+        if param is None:
+            continue
+        target_name = param.pname
 
         if parameter_info.type == ParameterType.Constant:
             annotations.constant.append(
