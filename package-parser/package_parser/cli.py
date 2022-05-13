@@ -45,7 +45,10 @@ def cli() -> None:
         package, src, out = args.package, args.src, args.out
         tmp = os.path.join(args.out, "tmp")
 
-        results = __run_in_parallel(__run_api_command(package, out), __run_usages_command(package, src, tmp, out))
+        results = __run_in_parallel(
+            __run_api_command(package, out),
+            __run_usages_command(package, src, tmp, out),
+        )
 
         generate_annotations(results[0], results[1], out)
 
@@ -218,7 +221,8 @@ def __add_annotations_subparser(subparsers):
 
 def __add_all_subparser(subparsers: _SubParsersAction) -> None:
     usages_parser = subparsers.add_parser(
-        __ALL_COMMAND, help="Run api and usages command in parallel and then run annotations command."
+        __ALL_COMMAND,
+        help="Run api and usages command in parallel and then run annotations command.",
     )
     usages_parser.add_argument(
         "-p",
