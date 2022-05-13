@@ -25,7 +25,7 @@ def generate_annotations(
 ) -> None:
     """
     Generates an annotation file from the given API and UsageStore files, and writes it to the given output file.
-    Annotations that are generated are: constant, unused,
+    Annotations that are generated are: unused, constant, required, optional, enum.
     :param api_file: API file
     :param usages_file: UsageStore file
     :param output_file: Output file
@@ -80,19 +80,14 @@ def __get_constant_annotations(
     for qname in list(usages.parameter_usages.keys()):
         parameter_info = __get_parameter_info(qname, usages)
 
-            default_type, default_value = __get_default_type_from_value(
-                str(usages.most_common_value(parameter_qname))
-            )
-
-            target_name = api.parameters().get(parameter_qname).pname
+        target_name = api.parameters().get(qname).pname
 
         if parameter_info.type == ParameterType.Constant:
-            formatted_name = __qname_to_target_name(api, qname)
             annotations.constant.append(
                 ConstantAnnotation(
                     target=target_name,
-                    defaultType=default_type,
-                    defaultValue=default_value,
+                    defaultType=parameter_info.value_type,
+                    defaultValue=parameter_info.value,
                 )
             )
 
@@ -180,12 +175,10 @@ def __get_required_annotations(
         for it in parameters
         if parameters[it].default_value is not None
     ]
-    for qname, _ in optional_parameter:
+    for qname, parameter in optional_parameter:
 
         if __get_parameter_info(qname, usages).type is ParameterType.Required:
-            formatted_name = __qname_to_target_name(api, qname)
-            annotations.requireds.append(RequiredAnnotation(formatted_name))
-
+            annotations.requireds.append(RequiredAnnotation(parameter.pname))
 
 
 def __get_default_type_from_value(default_value: str) -> str:
@@ -304,14 +297,13 @@ def __get_optional_annotations(
     parameters = api.parameters()
     all_parameter = [(it, parameters[it]) for it in parameters]
 
-    for qname, _ in all_parameter:
+    for qname, parameter in all_parameter:
         parameter_info = __get_parameter_info(qname, usages)
 
         if parameter_info.type == ParameterType.Optional:
-            formatted_name = __qname_to_target_name(api, qname)
             annotations.optionals.append(
                 OptionalAnnotation(
-                    target=formatted_name,
+                    target=parameter.pname,
                     defaultValue=parameter_info.value,
                     defaultType=parameter_info.value_type,
                 )

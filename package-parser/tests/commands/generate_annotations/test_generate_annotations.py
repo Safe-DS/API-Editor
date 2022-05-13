@@ -3,7 +3,6 @@ import os
 from pathlib import Path
 
 import pytest
-
 from package_parser.commands.find_usages import UsageStore
 from package_parser.commands.generate_annotations.generate_annotations import (
     __get_constant_annotations,
@@ -39,7 +38,6 @@ UNUSED_EXPECTED: dict[str, dict[str, str]] = {
     'test/test/unused_global_function/unused_required_parameter': {
         'target': 'test/test/unused_global_function/unused_required_parameter'}
 }
-
 
 CONSTANT_EXPECTED: dict[str, dict[str, str]] = {
     "test/test/commonly_used_global_function/unused_optional_parameter": {
@@ -97,18 +95,18 @@ OPTIONALS_EXPECTED: dict[str, dict[str, str]] = {
 BOUNDARIES_EXPECTED: dict[str, dict[str, str]] = {}
 
 ENUMS_EXPECTED = {
-    "test/config_context/display": {
+    "test/test._config/config_context/display": {
         "enumName": "Display",
         "pairs": [
             {"instanceName": "Auto", "stringValue": "auto"},
             {"instanceName": "Kdmeans", "stringValue": "kd-means++"},
             {"instanceName": "KdTree", "stringValue": "kd_tree"},
         ],
-        "target": "test/test.config_context/display",
+        "target": "test/test._config/config_context/display",
     }
 }
 
-# Reihenfolge ist wichtig, siehe Reihenfolge von annotation_functions in generate_annotations.py
+# order is important (?), see order of annotation_functions in generate_annotations.py
 FULL_EXPECTED = {
     "constant": {**CONSTANT_EXPECTED},
     "unused": {**UNUSED_EXPECTED},
@@ -160,8 +158,8 @@ def test_get_required():
     _preprocess_usages(usages, api)
     __get_required_annotations(usages, api, annotations)
     assert {
-        annotation.target: annotation.to_json() for annotation in annotations.requireds
-    } == REQUIREDS_EXPECTED
+               annotation.target: annotation.to_json() for annotation in annotations.requireds
+           } == REQUIREDS_EXPECTED
 
 
 def test_get_enum():
@@ -170,8 +168,8 @@ def test_get_enum():
     _preprocess_usages(usages, api)
     __get_enum_annotations(usages, api, annotations)
     assert {
-        annotation.target: annotation.to_json() for annotation in annotations.enums
-    } == ENUMS_EXPECTED
+               annotation.target: annotation.to_json() for annotation in annotations.enums
+           } == ENUMS_EXPECTED
 
 
 def test_get_optional():
@@ -180,8 +178,8 @@ def test_get_optional():
     _preprocess_usages(usages, api)
     __get_optional_annotations(usages, api, annotations)
     assert {
-        annotation.target: annotation.to_json() for annotation in annotations.optionals
-    } == OPTIONALS_EXPECTED
+               annotation.target: annotation.to_json() for annotation in annotations.optionals
+           } == OPTIONALS_EXPECTED
 
 
 def test_generate():
@@ -205,16 +203,6 @@ def test_generate():
         assert out_json == FULL_EXPECTED
 
 
-def test_generate_bad_path():
+def test_generate_none_path():
     with pytest.raises(ValueError):
         generate_annotations(None, None, None)
-
-
-def test_get_enum():
-    usages, api, usages_file, api_file, usages_json_path, api_json_path = setup()
-    annotations = AnnotationStore()
-    _preprocess_usages(usages, api)
-    __get_enum_annotations(usages, api, annotations)
-    assert {
-               annotation.target: annotation.to_json() for annotation in annotations.enums
-           } == ENUMS_EXPECTED

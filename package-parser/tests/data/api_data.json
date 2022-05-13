@@ -240,7 +240,10 @@
                     },
                     "refined_type": {
                         "kind": "EnumType",
-                        "values": ["textlll", "kd-means++"]
+                        "values": [
+                            "textlll",
+                            "kd-means++"
+                        ]
                     }
                 }
             ],
@@ -254,12 +257,14 @@
             "name": "commonly_used_global_required_and_optional_function",
             "unique_name": "commonly_used_global_required_and_optional_function",
             "qname": "test.commonly_used_global_required_and_optional_function",
+            "pname": "test/test/commonly_used_global_required_and_optional_function",
             "unique_qname": "test.commonly_used_global_required_and_optional_function",
             "decorators": [],
             "parameters": [
                 {
                     "name": "optional_that_should_be_required",
                     "qname": "test.commonly_used_global_required_and_optional_function.optional_that_should_be_required",
+                    "pname": "test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_required",
                     "default_value": "'brains'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -271,6 +276,7 @@
                 {
                     "name": "required_that_should_be_required",
                     "qname": "test.commonly_used_global_required_and_optional_function.required_that_should_be_required",
+                    "pname": "test/test/commonly_used_global_required_and_optional_function/required_that_should_be_required",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -282,6 +288,7 @@
                 {
                     "name": "required_that_should_be_optional",
                     "qname": "test.commonly_used_global_required_and_optional_function.required_that_should_be_optional",
+                    "pname": "test/test/commonly_used_global_required_and_optional_function/required_that_should_be_optional",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -293,6 +300,7 @@
                 {
                     "name": "optional_that_should_be_optional",
                     "qname": "test.commonly_used_global_required_and_optional_function.optional_that_should_be_optional",
+                    "pname": "test/test/commonly_used_global_required_and_optional_function/optional_that_should_be_optional",
                     "default_value": "'captain_morgan'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -304,6 +312,7 @@
                 {
                     "name": "commonly_used_almost_required",
                     "qname": "test.commonly_used_global_required_and_optional_function.commonly_used_almost_required",
+                    "pname": "test/test/commonly_used_global_required_and_optional_function/commonly_used_almost_required",
                     "default_value": "'marvel'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -315,6 +324,7 @@
                 {
                     "name": "commonly_used_barely_required",
                     "qname": "test.commonly_used_global_required_and_optional_function.commonly_used_barely_required",
+                    "pname": "test/test/commonly_used_global_required_and_optional_function/commonly_used_barely_required",
                     "default_value": "'otto'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -326,6 +336,7 @@
                 {
                     "name": "constant_parameter",
                     "qname": "test.commonly_used_global_required_and_optional_function.constant_parameter",
+                    "pname": "test/test/commonly_used_global_required_and_optional_function/constant_parameter",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
