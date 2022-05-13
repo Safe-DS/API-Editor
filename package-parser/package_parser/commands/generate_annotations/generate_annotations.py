@@ -98,19 +98,11 @@ def __get_unused_annotations(
     usages: UsageCountStore, api: API, annotations: AnnotationStore
 ) -> None:
     """
-    Collect all parameters, functions and classes that are never used.
+    Collect all functions and classes that are never used.
     :param usages: UsageStore object
     :param api: API object for usages
     :param annotations: AnnotationStore object
-    :return: None
     """
-    for parameter_name, parameter in api.parameters().items():
-        if (
-            parameter_name not in usages.parameter_usages
-            or len(usages.parameter_usages[parameter_name]) == 0
-        ):
-            annotations.unused.append(UnusedAnnotation(parameter.pname))
-
     for function_name, function in api.functions.items():
         if (
             function_name not in usages.function_usages
@@ -134,7 +126,6 @@ def __get_enum_annotations(
     :param usages: UsageStore object
     :param api: API object for usages
     :param annotations: AnnotationStore object
-    :return: None
     """
     for _, parameter in api.parameters().items():
         refined_type = parameter.refined_type.as_dict()
@@ -300,7 +291,7 @@ def __get_optional_annotations(
 
     parameters = api.parameters()
 
-    for qname, parameter in all_parameter:
+    for qname, parameter in parameters.items():
         parameter_info = __get_parameter_info(qname, usages)
 
         if qname in parameters:
@@ -381,7 +372,6 @@ def __get_boundary_annotations(
     for _, parameter in api.parameters().items():
         refined_type = parameter.refined_type.as_dict()
         if "kind" in refined_type and refined_type["kind"] == "BoundaryType":
-            target = __qname_to_target_name(api, parameter.qname)
             min_value = refined_type["min"]
             max_value = refined_type["max"]
 
@@ -408,7 +398,7 @@ def __get_boundary_annotations(
                 upperLimitType=max_limit_type,
             )
             boundary = BoundaryAnnotation(
-                target=target,
+                target=parameter.pname,
                 interval=interval,
             )
             annotations.boundaries.append(boundary)
