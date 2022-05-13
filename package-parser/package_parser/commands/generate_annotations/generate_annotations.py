@@ -27,7 +27,7 @@ def generate_annotations(
 ) -> None:
     """
     Generates an annotation file from the given API and UsageStore files, and writes it to the given output file.
-    Annotations that are generated are: unused, constant, required, optional, enum.
+    Annotations that are generated are: unused, constant, required, optional, enum and boundary.
     :param api_file: API file
     :param usages_file: UsageStore file
     :param output_file: Output file
