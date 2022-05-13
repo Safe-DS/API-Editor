@@ -8,9 +8,7 @@
             "pname": "test/test",
             "imports": [],
             "from_imports": [],
-            "classes": [
-                "test.UsedClass"
-            ],
+            "classes": ["test.UsedClass"],
             "functions": [
                 "test.unused_global_function",
                 "test.used_global_function"

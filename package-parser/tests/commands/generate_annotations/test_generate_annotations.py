@@ -12,9 +12,7 @@ from package_parser.commands.generate_annotations.generate_annotations import (
     __get_unused_annotations,
     preprocess_usages,
 )
-from package_parser.commands.get_api import (
-    API,
-)
+from package_parser.commands.get_api import API
 from package_parser.models import UsageCountStore
 from package_parser.models.annotation_models import AnnotationStore
 

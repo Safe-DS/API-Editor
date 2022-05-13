@@ -141,7 +141,11 @@ class Module:
         return result
 
     def __init__(
-        self, name: str, pname: str, imports: list[Import], from_imports: list[FromImport]
+        self,
+        name: str,
+        pname: str,
+        imports: list[Import],
+        from_imports: list[FromImport],
     ):
         self.name: str = name
         self.pname: str = pname

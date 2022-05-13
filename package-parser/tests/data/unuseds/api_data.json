@@ -8,10 +8,7 @@
             "pname": "test/test",
             "imports": [],
             "from_imports": [],
-            "classes": [
-                "test.UnusedClass",
-                "test.UsedClass"
-            ],
+            "classes": ["test.UnusedClass", "test.UsedClass"],
             "functions": [
                 "test.unused_global_function",
                 "test.used_global_function"
@@ -29,9 +26,7 @@
             "docstring": "",
             "superclasses": [],
             "source_code": "",
-            "methods": [
-                "test.UnusedClass.unused_method"
-            ]
+            "methods": ["test.UnusedClass.unused_method"]
         },
         {
             "name": "UsedClass",

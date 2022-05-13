@@ -26,7 +26,12 @@ class _AstVisitor:
         self.__declaration_stack: list[Union[Module, Class, Function]] = []
 
     def __get_pname(self, name: str) -> str:
-        return self.api.package + "/" + "/".join([it.name for it in self.__declaration_stack]) + name
+        return (
+            self.api.package
+            + "/"
+            + "/".join([it.name for it in self.__declaration_stack])
+            + name
+        )
 
     def enter_module(self, module_node: astroid.Module):
         imports: list[Import] = []
@@ -132,7 +137,9 @@ class _AstVisitor:
             qname,
             self.__get_pname(function_node.name),
             decorator_names,
-            self.__function_parameters(function_node, is_public, qname, self.__get_pname(function_node.name)),
+            self.__function_parameters(
+                function_node, is_public, qname, self.__get_pname(function_node.name)
+            ),
             [],  # TODO: results
             is_public,
             _AstVisitor.__description(numpydoc),
@@ -175,7 +182,10 @@ class _AstVisitor:
 
     @staticmethod
     def __function_parameters(
-        node: astroid.FunctionDef, function_is_public: bool, function_qname: str, function_pname: str
+        node: astroid.FunctionDef,
+        function_is_public: bool,
+        function_qname: str,
+        function_pname: str,
     ) -> list[Parameter]:
         parameters = node.args
         n_implicit_parameters = node.implicit_parameters()
