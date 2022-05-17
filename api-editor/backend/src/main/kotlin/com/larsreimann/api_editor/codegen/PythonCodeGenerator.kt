@@ -79,9 +79,12 @@ private fun PythonModule.importsToPythonCode() = buildString {
     }
 
     val importsString = imports.joinToString("\n") { "import $it" }
+
     var fromImportsString = "from __future__ import annotations"
     if (enums.isNotEmpty()) {
         fromImportsString += "\nfrom abc import ABC"
+    }
+    if (enums.any { it.instances.isNotEmpty() }) {
         fromImportsString += "\nfrom dataclasses import dataclass"
     }
 

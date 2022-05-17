@@ -653,7 +653,6 @@ class PythonCodeGeneratorTest {
             testModule.toPythonCode() shouldBe """
                 |from __future__ import annotations
                 |from abc import ABC
-                |from dataclasses import dataclass
                 |
                 |class TestEnum(ABC):
                 |    value: str
@@ -689,7 +688,6 @@ class PythonCodeGeneratorTest {
                 |
                 |from __future__ import annotations
                 |from abc import ABC
-                |from dataclasses import dataclass
                 |
                 |def testFunction():
                 |    pass
@@ -737,7 +735,6 @@ class PythonCodeGeneratorTest {
                 |
                 |from __future__ import annotations
                 |from abc import ABC
-                |from dataclasses import dataclass
                 |
                 |class TestClass:
                 |    def testMethod1():
@@ -801,7 +798,6 @@ class PythonCodeGeneratorTest {
                 |
                 |from __future__ import annotations
                 |from abc import ABC
-                |from dataclasses import dataclass
                 |
                 |class TestClass:
                 |    def testMethod1():
