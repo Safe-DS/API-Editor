@@ -392,8 +392,8 @@ class PythonCodeGeneratorTest {
             val testEnum = PythonEnum(name = "TestEnum")
 
             testEnum.toPythonCode() shouldBe """
-                |class TestEnum(Enum):
-                |    pass
+                |class TestEnum(ABC):
+                |    value: str
             """.trimMargin()
         }
 
@@ -414,9 +414,18 @@ class PythonCodeGeneratorTest {
             )
 
             testEnum.toPythonCode() shouldBe """
-                |class TestEnum(Enum):
-                |    TestEnumInstance1 = 'inst1',
-                |    TestEnumInstance2 = 'inst2'
+                |class TestEnum(ABC):
+                |    value: str
+                |
+                |@dataclass
+                |class _TestEnumInstance1(TestEnum):
+                |    value = 'inst1'
+                |TestEnum.TestEnumInstance1 = _TestEnumInstance1
+                |
+                |@dataclass
+                |class _TestEnumInstance2(TestEnum):
+                |    value = 'inst2'
+                |TestEnum.TestEnumInstance2 = _TestEnumInstance2
             """.trimMargin()
         }
     }
@@ -431,7 +440,12 @@ class PythonCodeGeneratorTest {
                 value = PythonString("inst1")
             )
 
-            testEnumInstance.toPythonCode() shouldBe "TestEnumInstance1 = 'inst1'"
+            testEnumInstance.toPythonCode("TestEnum") shouldBe """
+                |@dataclass
+                |class _TestEnumInstance1(TestEnum):
+                |    value = 'inst1'
+                |TestEnum.TestEnumInstance1 = _TestEnumInstance1
+            """.trimMargin()
         }
     }
 
@@ -638,10 +652,11 @@ class PythonCodeGeneratorTest {
 
             testModule.toPythonCode() shouldBe """
                 |from __future__ import annotations
-                |from enum import Enum
+                |from abc import ABC
+                |from dataclasses import dataclass
                 |
-                |class TestEnum(Enum):
-                |    pass
+                |class TestEnum(ABC):
+                |    value: str
                 |
             """.trimMargin()
         }
@@ -673,7 +688,8 @@ class PythonCodeGeneratorTest {
                 |import originalModule2
                 |
                 |from __future__ import annotations
-                |from enum import Enum
+                |from abc import ABC
+                |from dataclasses import dataclass
                 |
                 |def testFunction():
                 |    pass
@@ -681,8 +697,8 @@ class PythonCodeGeneratorTest {
                 |def testFunctionWithOriginalFunction():
                 |    return originalModule2.testFunction()
                 |
-                |class TestEnum(Enum):
-                |    pass
+                |class TestEnum(ABC):
+                |    value: str
                 |
             """.trimMargin()
         }
@@ -720,7 +736,8 @@ class PythonCodeGeneratorTest {
                 |import originalModule
                 |
                 |from __future__ import annotations
-                |from enum import Enum
+                |from abc import ABC
+                |from dataclasses import dataclass
                 |
                 |class TestClass:
                 |    def testMethod1():
@@ -734,8 +751,8 @@ class PythonCodeGeneratorTest {
                 |    def __init__():
                 |        self.instance = originalModule.TestClass()
                 |
-                |class TestEnum(Enum):
-                |    pass
+                |class TestEnum(ABC):
+                |    value: str
                 |
             """.trimMargin()
         }
@@ -783,7 +800,8 @@ class PythonCodeGeneratorTest {
                 |import originalModule2
                 |
                 |from __future__ import annotations
-                |from enum import Enum
+                |from abc import ABC
+                |from dataclasses import dataclass
                 |
                 |class TestClass:
                 |    def testMethod1():
@@ -803,8 +821,8 @@ class PythonCodeGeneratorTest {
                 |def testFunctionWithOriginalFunction():
                 |    return originalModule2.testFunction()
                 |
-                |class TestEnum(Enum):
-                |    pass
+                |class TestEnum(ABC):
+                |    value: str
                 |
             """.trimMargin()
         }

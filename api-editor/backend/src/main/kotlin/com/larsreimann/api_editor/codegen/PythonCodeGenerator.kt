@@ -169,10 +169,10 @@ fun PythonEnum.toPythonCode() = buildString {
     appendLine("class $name(Enum):")
     appendIndented {
         if (instances.isEmpty()) {
-            append("pass")
+            append("value: str")
         } else {
             instances.forEach {
-                append(it.toPythonCode())
+                append(it.toPythonCode(name))
                 if (it != instances.last()) {
                     appendLine(",")
                 }
@@ -181,8 +181,15 @@ fun PythonEnum.toPythonCode() = buildString {
     }
 }
 
-fun PythonEnumInstance.toPythonCode(): String {
-    return "$name = ${value!!.toPythonCode()}"
+fun PythonEnumInstance.toPythonCode(enumName: String): String {
+    return """
+        |@dataclass
+        |class _$name($enumName):
+        |    value = ${value!!.toPythonCode()}
+        |
+        |
+        |$enumName.$name = _$name
+    """.trimMargin()
 }
 
 fun PythonFunction.toPythonCode() = buildString {
