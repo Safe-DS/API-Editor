@@ -351,7 +351,8 @@ class ConstructorPythonCodeGeneratorTest {
             |import testModule
             |
             |from __future__ import annotations
-            |from enum import Enum
+            |from abc import ABC
+            |from dataclasses import dataclass
             |
             |class testClass:
             |    def __init__(self, testGroup: TestGroup, testParameter3):
@@ -365,9 +366,18 @@ class ConstructorPythonCodeGeneratorTest {
             |        self.testParameter1: TestEnum = testParameter1
             |        self.testParameter2 = testParameter2
             |
-            |class TestEnum(Enum):
-            |    testName1 = 'testValue1',
-            |    testName2 = 'testValue2'
+            |class TestEnum(ABC):
+            |    value: str
+            |
+            |@dataclass
+            |class _testName1(TestEnum):
+            |    value = 'testValue1'
+            |TestEnum.testName1 = _testName1
+            |
+            |@dataclass
+            |class _testName2(TestEnum):
+            |    value = 'testValue2'
+            |TestEnum.testName2 = _testName2
             |
             """.trimMargin()
 
@@ -405,7 +415,8 @@ class ConstructorPythonCodeGeneratorTest {
             |import testModule
             |
             |from __future__ import annotations
-            |from enum import Enum
+            |from abc import ABC
+            |from dataclasses import dataclass
             |
             |class testClass:
             |    def __init__(self, testGroup: TestGroup, testParameter3):
@@ -419,9 +430,18 @@ class ConstructorPythonCodeGeneratorTest {
             |        self.testParameter1: TestEnum = testParameter1
             |        self.testParameter2 = testParameter2
             |
-            |class TestEnum(Enum):
-            |    testName1 = 'testValue1',
-            |    testName2 = 'testValue2'
+            |class TestEnum(ABC):
+            |    value: str
+            |
+            |@dataclass
+            |class _testName1(TestEnum):
+            |    value = 'testValue1'
+            |TestEnum.testName1 = _testName1
+            |
+            |@dataclass
+            |class _testName2(TestEnum):
+            |    value = 'testValue2'
+            |TestEnum.testName2 = _testName2
             |
             """.trimMargin()
 
@@ -454,7 +474,8 @@ class ConstructorPythonCodeGeneratorTest {
             |import testModule
             |
             |from __future__ import annotations
-            |from enum import Enum
+            |from abc import ABC
+            |from dataclasses import dataclass
             |
             |class testClass:
             |    def __init__(self, testParameter1: TestEnum, testParameter2, testParameter3):
@@ -464,9 +485,18 @@ class ConstructorPythonCodeGeneratorTest {
             |
             |        self.instance = testModule.testClass(testParameter1.value, testParameter2, testParameter3)
             |
-            |class TestEnum(Enum):
-            |    testName1 = 'testValue1',
-            |    testName2 = 'testValue2'
+            |class TestEnum(ABC):
+            |    value: str
+            |
+            |@dataclass
+            |class _testName1(TestEnum):
+            |    value = 'testValue1'
+            |TestEnum.testName1 = _testName1
+            |
+            |@dataclass
+            |class _testName2(TestEnum):
+            |    value = 'testValue2'
+            |TestEnum.testName2 = _testName2
             |
             """.trimMargin()
 
@@ -693,7 +723,8 @@ class ConstructorPythonCodeGeneratorTest {
             |import testModule
             |
             |from __future__ import annotations
-            |from enum import Enum
+            |from abc import ABC
+            |from dataclasses import dataclass
             |
             |class renamedTestClass:
             |    def __init__(self, testGroup: TestGroup, testParameter3):
@@ -707,9 +738,18 @@ class ConstructorPythonCodeGeneratorTest {
             |        self.testParameter1: TestEnum = testParameter1
             |        self.testParameter2 = testParameter2
             |
-            |class TestEnum(Enum):
-            |    testName1 = 'testValue1',
-            |    testName2 = 'testValue2'
+            |class TestEnum(ABC):
+            |    value: str
+            |
+            |@dataclass
+            |class _testName1(TestEnum):
+            |    value = 'testValue1'
+            |TestEnum.testName1 = _testName1
+            |
+            |@dataclass
+            |class _testName2(TestEnum):
+            |    value = 'testValue2'
+            |TestEnum.testName2 = _testName2
             |
             """.trimMargin()
 
