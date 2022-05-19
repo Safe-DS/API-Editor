@@ -1,5 +1,5 @@
-import {createSlice} from '@reduxjs/toolkit';
-import {RootState} from '../../app/store';
+import { createSlice } from '@reduxjs/toolkit';
+import { RootState } from '../../app/store';
 
 export interface UsageState {
     showImportDialog: boolean;
@@ -24,11 +24,8 @@ const usageSlice = createSlice({
 });
 
 const { actions, reducer } = usageSlice;
-export const {
-    toggleImportDialog: toggleUsageImportDialog,
-} = actions;
+export const { toggleImportDialog: toggleUsageImportDialog } = actions;
 export default reducer;
 
 const selectUsage = (state: RootState) => state.usages;
-export const selectShowUsageImportDialog = (state: RootState): boolean =>
-    selectUsage(state).showImportDialog;
+export const selectShowUsageImportDialog = (state: RootState): boolean => selectUsage(state).showImportDialog;

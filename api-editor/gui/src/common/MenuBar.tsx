@@ -39,10 +39,7 @@ import { FaCheck, FaChevronDown } from 'react-icons/fa';
 import { useLocation } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import {
-    resetAnnotations,
-    toggleAnnotationImportDialog,
-} from '../features/annotations/annotationSlice';
+import { resetAnnotations, toggleAnnotationImportDialog } from '../features/annotations/annotationSlice';
 import AnnotatedPythonPackageBuilder from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
 import { PythonFilter } from '../features/packageData/model/PythonFilter';
 import PythonPackage from '../features/packageData/model/PythonPackage';
@@ -52,7 +49,7 @@ import {
     toggleShowPrivateDeclarations,
 } from '../features/packageData/packageDataSlice';
 import { Setter } from './util/types';
-import {toggleUsageImportDialog} from "../features/usages/usageSlice";
+import { toggleUsageImportDialog } from '../features/usages/usageSlice';
 
 interface MenuBarProps {
     pythonPackage: PythonPackage;
@@ -78,15 +75,9 @@ const DeleteAllAnnotations = function () {
 
     return (
         <>
-            <Button onClick={() => setIsOpen(true)}>
-                Delete all annotations
-            </Button>
+            <Button onClick={() => setIsOpen(true)}>Delete all annotations</Button>
 
-            <AlertDialog
-                isOpen={isOpen}
-                leastDestructiveRef={cancelRef}
-                onClose={handleCancel}
-            >
+            <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={handleCancel}>
                 <AlertDialogOverlay>
                     <AlertDialogContent>
                         <AlertDialogHeader>
@@ -95,14 +86,10 @@ const DeleteAllAnnotations = function () {
 
                         <AlertDialogBody>
                             <VStack alignItems="flexStart">
+                                <ChakraText>Are you sure? You can't undo this action afterwards.</ChakraText>
                                 <ChakraText>
-                                    Are you sure? You can't undo this action
-                                    afterwards.
-                                </ChakraText>
-                                <ChakraText>
-                                    Hint: Consider exporting your work first by
-                                    clicking on the "Export" button in the menu
-                                    bar.
+                                    Hint: Consider exporting your work first by clicking on the "Export" button in the
+                                    menu bar.
                                 </ChakraText>
                             </VStack>
                         </AlertDialogBody>
@@ -111,11 +98,7 @@ const DeleteAllAnnotations = function () {
                             <Button ref={cancelRef} onClick={handleCancel}>
                                 Cancel
                             </Button>
-                            <Button
-                                colorScheme="red"
-                                onClick={handleConfirm}
-                                ml={3}
-                            >
+                            <Button colorScheme="red" onClick={handleConfirm} ml={3}>
                                 Delete
                             </Button>
                         </AlertDialogFooter>
@@ -126,12 +109,7 @@ const DeleteAllAnnotations = function () {
     );
 };
 
-const MenuBar: React.FC<MenuBarProps> = function ({
-    pythonPackage,
-    filter,
-    setFilter,
-    displayInferErrors,
-}) {
+const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFilter, displayInferErrors }) {
     const { colorMode, toggleColorMode } = useColorMode();
     const initialFocusRef = useRef(null);
     const dispatch = useAppDispatch();
@@ -139,9 +117,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({
     const pathname = useLocation().pathname.split('/').slice(1);
 
     const annotationStore = useAppSelector((state) => state.annotations);
-    const enableNavigation = useAppSelector(
-        (state) => state.annotations.currentUserAction.type === 'none',
-    );
+    const enableNavigation = useAppSelector((state) => state.annotations.currentUserAction.type === 'none');
 
     const exportAnnotations = () => {
         const a = document.createElement('a');
@@ -154,12 +130,8 @@ const MenuBar: React.FC<MenuBarProps> = function ({
     };
 
     const infer = () => {
-        const annotatedPythonPackageBuilder = new AnnotatedPythonPackageBuilder(
-            pythonPackage,
-            annotationStore,
-        );
-        const annotatedPythonPackage =
-            annotatedPythonPackageBuilder.generateAnnotatedPythonPackage();
+        const annotatedPythonPackageBuilder = new AnnotatedPythonPackageBuilder(pythonPackage, annotationStore);
+        const annotatedPythonPackage = annotatedPythonPackageBuilder.generateAnnotatedPythonPackage();
 
         const requestOptions = {
             method: 'POST',
@@ -181,22 +153,12 @@ const MenuBar: React.FC<MenuBarProps> = function ({
     };
 
     return (
-        <Flex
-            as="nav"
-            borderBottom={1}
-            layerStyle="subtleBorder"
-            padding="0.5em 1em"
-        >
+        <Flex as="nav" borderBottom={1} layerStyle="subtleBorder" padding="0.5em 1em">
             <Center>
                 <HStack spacing={4}>
                     <Button padding={1}>
                         <Link to="/" as={NavLink} width="100%" height="100%">
-                            <Image
-                                src="favicon.svg"
-                                alt="logo"
-                                width="100%"
-                                height="100%"
-                            />
+                            <Image src="favicon.svg" alt="logo" width="100%" height="100%" />
                         </Link>
                     </Button>
 
@@ -205,18 +167,11 @@ const MenuBar: React.FC<MenuBarProps> = function ({
                             // eslint-disable-next-line react/no-array-index-key
                             <BreadcrumbItem key={index}>
                                 {enableNavigation && (
-                                    <BreadcrumbLink
-                                        as={NavLink}
-                                        to={`/${pathname
-                                            .slice(0, index + 1)
-                                            .join('/')}`}
-                                    >
+                                    <BreadcrumbLink as={NavLink} to={`/${pathname.slice(0, index + 1).join('/')}`}>
                                         {part}
                                     </BreadcrumbLink>
                                 )}
-                                {!enableNavigation && (
-                                    <ChakraText>{part}</ChakraText>
-                                )}
+                                {!enableNavigation && <ChakraText>{part}</ChakraText>}
                             </BreadcrumbItem>
                         ))}
                     </Breadcrumb>
@@ -230,78 +185,42 @@ const MenuBar: React.FC<MenuBarProps> = function ({
                 {/* Box gets rid of popper.js warning "CSS margin styles cannot be used" */}
                 <Box>
                     <Menu>
-                        <MenuButton
-                            as={Button}
-                            rightIcon={<Icon as={FaChevronDown} />}
-                        >
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
                             Import
                         </MenuButton>
                         <MenuList>
-                            <MenuItem
-                                onClick={() =>
-                                    dispatch(togglePackageDataImportDialog())
-                                }
-                            >
-                                API Data
-                            </MenuItem>
-                            <MenuItem
-                                onClick={() =>
-                                    dispatch(toggleUsageImportDialog())
-                                }
-                            >
-                                Usages
-                            </MenuItem>
-                            <MenuItem
-                                onClick={() =>
-                                    dispatch(toggleAnnotationImportDialog())
-                                }
-                            >
-                                Annotations
-                            </MenuItem>
+                            <MenuItem onClick={() => dispatch(togglePackageDataImportDialog())}>API Data</MenuItem>
+                            <MenuItem onClick={() => dispatch(toggleUsageImportDialog())}>Usages</MenuItem>
+                            <MenuItem onClick={() => dispatch(toggleAnnotationImportDialog())}>Annotations</MenuItem>
                         </MenuList>
                     </Menu>
                 </Box>
                 <Button onClick={exportAnnotations}>Export</Button>
                 <DeleteAllAnnotations />
-                <Button
-                    onClick={() => dispatch(toggleShowPrivateDeclarations())}
-                >
+                <Button onClick={() => dispatch(toggleShowPrivateDeclarations())}>
                     {useAppSelector(selectShowPrivateDeclarations)
                         ? 'Hide private declarations'
                         : 'Show private declarations'}
                 </Button>
-                <Button onClick={toggleColorMode}>
-                    Toggle {colorMode === 'light' ? 'dark' : 'light'}
-                </Button>
+                <Button onClick={toggleColorMode}>Toggle {colorMode === 'light' ? 'dark' : 'light'}</Button>
                 <Box>
-                    <Popover
-                        isOpen={!PythonFilter.fromFilterBoxInput(filter)}
-                        initialFocusRef={initialFocusRef}
-                    >
+                    <Popover isOpen={!PythonFilter.fromFilterBoxInput(filter)} initialFocusRef={initialFocusRef}>
                         <PopoverTrigger>
                             <InputGroup ref={initialFocusRef}>
                                 <Input
                                     type="text"
                                     placeholder="Filter..."
                                     value={filter}
-                                    onChange={(event) =>
-                                        setFilter(event.target.value)
-                                    }
-                                    isInvalid={
-                                        !PythonFilter.fromFilterBoxInput(filter)
-                                    }
+                                    onChange={(event) => setFilter(event.target.value)}
+                                    isInvalid={!PythonFilter.fromFilterBoxInput(filter)}
                                     borderColor={
-                                        PythonFilter.fromFilterBoxInput(
-                                            filter,
-                                        )?.isFilteringModules()
+                                        PythonFilter.fromFilterBoxInput(filter)?.isFilteringModules()
                                             ? 'green'
                                             : 'inherit'
                                     }
                                     spellCheck={false}
                                 />
-                                {PythonFilter.fromFilterBoxInput(
-                                    filter,
-                                )?.isFilteringModules() && (
+                                {PythonFilter.fromFilterBoxInput(filter)?.isFilteringModules() && (
                                     <InputRightElement>
                                         <Icon as={FaCheck} color="green.500" />
                                     </InputRightElement>
@@ -310,9 +229,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({
                         </PopoverTrigger>
                         <PopoverContent>
                             <PopoverArrow />
-                            <PopoverBody>
-                                Each scope must only be used once.
-                            </PopoverBody>
+                            <PopoverBody>Each scope must only be used once.</PopoverBody>
                         </PopoverContent>
                     </Popover>
                 </Box>

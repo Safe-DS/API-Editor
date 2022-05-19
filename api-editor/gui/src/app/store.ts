@@ -8,7 +8,7 @@ export const store = configureStore({
     reducer: {
         annotations: annotationReducer,
         packageData: packageDataReducer,
-        usages: usageReducer
+        usages: usageReducer,
     },
 });
 

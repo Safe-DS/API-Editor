@@ -1,18 +1,18 @@
 export interface UsageCountJson {
     class_counts: {
-        [target: string]: number
-    },
+        [target: string]: number;
+    };
     function_counts: {
-        [target: string]: number
-    },
+        [target: string]: number;
+    };
     parameter_counts: {
-        [target: string]: number
-    },
+        [target: string]: number;
+    };
     value_counts: {
         [target: string]: {
-            [stringifiedValue: string]: number
-        }
-    }
+            [stringifiedValue: string]: number;
+        };
+    };
 }
 
 export class UsageCountStore {
@@ -21,19 +21,16 @@ export class UsageCountStore {
             new Map(Object.entries(json.class_counts)),
             new Map(Object.entries(json.function_counts)),
             new Map(Object.entries(json.parameter_counts)),
-            new Map(Object.entries(json.value_counts).map((entry) =>
-                [entry[0], new Map(Object.entries(entry[1]))]
-            ))
-        )
+            new Map(Object.entries(json.value_counts).map((entry) => [entry[0], new Map(Object.entries(entry[1]))])),
+        );
     }
 
     constructor(
         readonly classUsages: Map<string, number> = new Map(),
         readonly functionUsages: Map<string, number> = new Map(),
         readonly parameterUsages: Map<string, number> = new Map(),
-        readonly valueUsages: Map<string, Map<string, number>> = new Map()
-    ) {
-    }
+        readonly valueUsages: Map<string, Map<string, number>> = new Map(),
+    ) {}
 
     toJson(): UsageCountJson {
         return {
@@ -41,10 +38,8 @@ export class UsageCountStore {
             function_counts: Object.fromEntries(this.functionUsages),
             parameter_counts: Object.fromEntries(this.parameterUsages),
             value_counts: Object.fromEntries(
-                [...this.valueUsages.entries()].map((entry) =>
-                    [entry[0], Object.fromEntries(entry[1])]
-                )
-            )
-        }
+                [...this.valueUsages.entries()].map((entry) => [entry[0], Object.fromEntries(entry[1])]),
+            ),
+        };
     }
 }
