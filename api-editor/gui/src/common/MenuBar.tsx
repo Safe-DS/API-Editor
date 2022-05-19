@@ -52,6 +52,7 @@ import {
     toggleShowPrivateDeclarations,
 } from '../features/packageData/packageDataSlice';
 import { Setter } from './util/types';
+import {toggleUsageImportDialog} from "../features/usages/usageSlice";
 
 interface MenuBarProps {
     pythonPackage: PythonPackage;
@@ -242,6 +243,13 @@ const MenuBar: React.FC<MenuBarProps> = function ({
                                 }
                             >
                                 API Data
+                            </MenuItem>
+                            <MenuItem
+                                onClick={() =>
+                                    dispatch(toggleUsageImportDialog())
+                                }
+                            >
+                                Usages
                             </MenuItem>
                             <MenuItem
                                 onClick={() =>

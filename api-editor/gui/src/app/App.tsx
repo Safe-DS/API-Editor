@@ -11,11 +11,12 @@ import {
     UnorderedList,
 } from '@chakra-ui/react';
 import * as idb from 'idb-keyval';
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router';
+import React, {useEffect, useState} from 'react';
+import {useLocation} from 'react-router';
 import MenuBar from '../common/MenuBar';
-import { Setter } from '../common/util/types';
-import AnnotationImportDialog from '../features/annotations/AnnotationImportDialog';
+import {Setter} from '../common/util/types';
+import AnnotationImportDialog
+    from '../features/annotations/AnnotationImportDialog';
 import {
     AnnotationsState,
     GroupUserAction,
@@ -32,38 +33,58 @@ import GroupForm from '../features/annotations/forms/GroupForm';
 import MoveForm from '../features/annotations/forms/MoveForm';
 import OptionalForm from '../features/annotations/forms/OptionalForm';
 import RenameForm from '../features/annotations/forms/RenameForm';
-import { PythonFilter } from '../features/packageData/model/PythonFilter';
+import {PythonFilter} from '../features/packageData/model/PythonFilter';
 import PythonPackage from '../features/packageData/model/PythonPackage';
 import {
     parsePythonPackageJson,
     PythonPackageJson,
 } from '../features/packageData/model/PythonPackageBuilder';
-import PackageDataImportDialog from '../features/packageData/PackageDataImportDialog';
+import PackageDataImportDialog
+    from '../features/packageData/PackageDataImportDialog';
 import {
     selectShowPackageDataImportDialog,
     toggleIsExpandedInTreeView,
 } from '../features/packageData/packageDataSlice';
 import SelectionView from '../features/packageData/selectionView/SelectionView';
 import TreeView from '../features/packageData/treeView/TreeView';
-import { useAppDispatch, useAppSelector } from './hooks';
+import {useAppDispatch, useAppSelector} from './hooks';
 import PythonFunction from '../features/packageData/model/PythonFunction';
 import AttributeForm from '../features/annotations/forms/AttributeForm';
+import {
+    UsageCountJson,
+    UsageCountStore
+} from "../features/usages/model/UsageCountStore";
+import {selectShowUsageImportDialog} from "../features/usages/usageSlice";
+import UsageImportDialog from '../features/usages/UsageImportDialog';
 
 const App: React.FC = function () {
+    const dispatch = useAppDispatch();
+    const currentUserAction = useAppSelector(selectCurrentUserAction);
+    const currentPathName = useLocation().pathname;
+
+    // Initialize package data
     const [pythonPackage, setPythonPackage] = useState<PythonPackage>(
         new PythonPackage('empty', 'empty', '0.0.1'),
     );
-    const currentUserAction = useAppSelector(selectCurrentUserAction);
-    const currentPathName = useLocation().pathname;
 
     useEffect(() => {
         // noinspection JSIgnoredPromiseFromCall
         getPythonPackageFromIndexedDB(setPythonPackage);
     }, []);
 
+    // Initialize usages
+    const [usages, setUsages] = useState<UsageCountStore>(
+        new UsageCountStore()
+    )
+
+    useEffect(() => {
+        // noinspection JSIgnoredPromiseFromCall
+        getUsagesFromIndexedDB(setUsages)
+    })
+
+    // Initialize annotations
     const annotationStore = useAppSelector(selectAnnotations);
 
-    const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(initializeAnnotations());
     }, [dispatch]);
@@ -96,6 +117,9 @@ const App: React.FC = function () {
     );
     const showPackageDataImportDialog = useAppSelector(
         selectShowPackageDataImportDialog,
+    );
+    const showUsagesImportDialog = useAppSelector(
+        selectShowUsageImportDialog,
     );
 
     const [showInferErrorDialog, setShowInferErrorDialog] = useState(false);
@@ -194,6 +218,11 @@ const App: React.FC = function () {
                         setFilter={setFilter}
                     />
                 )}
+                {showUsagesImportDialog && (
+                    <UsageImportDialog
+                        setUsages={setUsages}
+                    />
+                )}
             </Grid>
             <Modal
                 isOpen={showInferErrorDialog}
@@ -225,6 +254,15 @@ const getPythonPackageFromIndexedDB = async function (
     const storedPackage = (await idb.get('package')) as PythonPackageJson;
     if (storedPackage) {
         setPythonPackage(parsePythonPackageJson(storedPackage));
+    }
+};
+
+const getUsagesFromIndexedDB = async function (
+    setUsages: Setter<UsageCountStore>,
+) {
+    const storedUsages = (await idb.get('usages')) as UsageCountJson;
+    if (storedUsages) {
+        setUsages(UsageCountStore.fromJson(storedUsages));
     }
 };
 
