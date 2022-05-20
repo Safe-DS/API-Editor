@@ -6,24 +6,22 @@ import {
     AlertDialogHeader,
     AlertDialogOverlay,
     Box,
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
     Button,
-    Center,
     Flex,
     Heading,
     HStack,
     Icon,
-    Image,
     Input,
     InputGroup,
     InputRightElement,
-    Link,
     Menu,
     MenuButton,
+    MenuDivider,
+    MenuGroup,
     MenuItem,
+    MenuItemOption,
     MenuList,
+    MenuOptionGroup,
     Popover,
     PopoverArrow,
     PopoverBody,
@@ -36,8 +34,6 @@ import {
 } from '@chakra-ui/react';
 import React, { useRef, useState } from 'react';
 import { FaCheck, FaChevronDown } from 'react-icons/fa';
-import { useLocation } from 'react-router';
-import { NavLink } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { resetAnnotations, toggleAnnotationImportDialog } from '../features/annotations/annotationSlice';
 import AnnotatedPythonPackageBuilder from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
@@ -114,10 +110,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFi
     const initialFocusRef = useRef(null);
     const dispatch = useAppDispatch();
 
-    const pathname = useLocation().pathname.split('/').slice(1);
-
     const annotationStore = useAppSelector((state) => state.annotations);
-    const enableNavigation = useAppSelector((state) => state.annotations.currentUserAction.type === 'none');
 
     const exportAnnotations = () => {
         const a = document.createElement('a');
@@ -152,57 +145,68 @@ const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFi
         });
     };
 
+    const settings: string[] = [];
+    if (useAppSelector(selectShowPrivateDeclarations)) {
+        settings.push('showPrivateDeclarations');
+    }
+    if (colorMode == 'dark') {
+        settings.push('darkMode');
+    }
+
     return (
         <Flex as="nav" borderBottom={1} layerStyle="subtleBorder" padding="0.5em 1em">
-            <Center>
-                <HStack spacing={4}>
-                    <Button padding={1}>
-                        <Link to="/" as={NavLink} width="100%" height="100%">
-                            <Image src="favicon.svg" alt="logo" width="100%" height="100%" />
-                        </Link>
-                    </Button>
-
-                    <Breadcrumb>
-                        {pathname.map((part, index) => (
-                            // eslint-disable-next-line react/no-array-index-key
-                            <BreadcrumbItem key={index}>
-                                {enableNavigation && (
-                                    <BreadcrumbLink as={NavLink} to={`/${pathname.slice(0, index + 1).join('/')}`}>
-                                        {part}
-                                    </BreadcrumbLink>
-                                )}
-                                {!enableNavigation && <ChakraText>{part}</ChakraText>}
-                            </BreadcrumbItem>
-                        ))}
-                    </Breadcrumb>
-                </HStack>
-            </Center>
-
-            <Spacer />
-
             <HStack>
-                <Button onClick={infer}>Infer</Button>
                 {/* Box gets rid of popper.js warning "CSS margin styles cannot be used" */}
                 <Box>
                     <Menu>
                         <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
-                            Import
+                            File
                         </MenuButton>
                         <MenuList>
-                            <MenuItem onClick={() => dispatch(togglePackageDataImportDialog())}>API Data</MenuItem>
-                            <MenuItem onClick={() => dispatch(toggleUsageImportDialog())}>Usages</MenuItem>
-                            <MenuItem onClick={() => dispatch(toggleAnnotationImportDialog())}>Annotations</MenuItem>
+                            <MenuGroup title="Import">
+                                <MenuItem onClick={() => dispatch(togglePackageDataImportDialog())}>API Data</MenuItem>
+                                <MenuItem onClick={() => dispatch(toggleUsageImportDialog())}>Usages</MenuItem>
+                                <MenuItem onClick={() => dispatch(toggleAnnotationImportDialog())}>
+                                    Annotations
+                                </MenuItem>
+                            </MenuGroup>
+                            <MenuDivider />
+                            <MenuGroup title="Export">
+                                <MenuItem onClick={exportAnnotations}>Annotations</MenuItem>
+                            </MenuGroup>
                         </MenuList>
                     </Menu>
                 </Box>
-                <Button onClick={exportAnnotations}>Export</Button>
+
+                <Button onClick={infer}>Generate adapters</Button>
                 <DeleteAllAnnotations />
-                <Button onClick={() => dispatch(toggleShowPrivateDeclarations())}>
-                    {useAppSelector(selectShowPrivateDeclarations)
-                        ? 'Hide private declarations'
-                        : 'Show private declarations'}
-                </Button>
-                <Button onClick={toggleColorMode}>Toggle {colorMode === 'light' ? 'dark' : 'light'}</Button>
+
+                <Box>
+                    <Menu closeOnSelect={false}>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
+                            Settings
+                        </MenuButton>
+                        <MenuList>
+                            <MenuOptionGroup type="checkbox" value={settings}>
+                                <MenuItemOption
+                                    value="showPrivateDeclarations"
+                                    onClick={() => dispatch(toggleShowPrivateDeclarations())}
+                                >
+                                    Show private declarations
+                                </MenuItemOption>
+
+                                <MenuItemOption value={'darkMode'} onClick={toggleColorMode}>
+                                    Dark mode
+                                </MenuItemOption>
+                            </MenuOptionGroup>
+                        </MenuList>
+                    </Menu>
+                </Box>
+            </HStack>
+
+            <Spacer />
+
+            <HStack>
                 <Box>
                     <Popover isOpen={!PythonFilter.fromFilterBoxInput(filter)} initialFocusRef={initialFocusRef}>
                         <PopoverTrigger>
@@ -219,6 +223,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFi
                                             : 'inherit'
                                     }
                                     spellCheck={false}
+                                    minWidth="400px"
                                 />
                                 {PythonFilter.fromFilterBoxInput(filter)?.isFilteringModules() && (
                                     <InputRightElement>
