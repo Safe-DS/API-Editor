@@ -168,7 +168,8 @@ def __get_required_annotations(
     optional_parameters = [
         (it, parameters[it])
         for it in parameters
-        if parameters[it].default_value is not None and parameters[it].qname in usages.parameter_usages
+        if parameters[it].default_value is not None
+        and parameters[it].qname in usages.parameter_usages
     ]
     for qname, parameter in optional_parameters:
         if __get_parameter_info(qname, usages).type is ParameterType.Required:
