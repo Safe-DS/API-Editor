@@ -36,7 +36,7 @@ def cli() -> None:
         __run_api_command(args.package, args.out)
 
     elif args.command == __USAGES_COMMAND:
-        __run_usages_command(args.package, args.src, args.tmp, args.out)
+        __run_usages_command(args.package, args.client, args.tmp, args.out)
 
     elif args.command == __IMPROVE_COMMAND:
         suggest_improvements(args.api, args.usages, args.out, args.min)
@@ -45,13 +45,13 @@ def cli() -> None:
         generate_annotations(args.api, args.usages, args.out)
 
     elif args.command == __ALL_COMMAND:
-        package, src, out = args.package, Path(args.src), Path(args.out)
+        package, client, out = args.package, Path(args.client), Path(args.out)
         tmp = Path(args.out).joinpath("tmp")
         out_file_annotations = out.joinpath("annotations.json")
 
         results = __run_in_parallel(
             partial(__run_api_command, package, out),
-            partial(__run_usages_command, package, src, tmp, out),
+            partial(__run_usages_command, package, client, tmp, out),
         )
 
         generate_annotations(
@@ -74,8 +74,8 @@ def __run_in_parallel(*fns):
     return return_dict
 
 
-def __run_usages_command(package, src, tmp, out, d=None):
-    usages = find_usages(package, src, tmp)
+def __run_usages_command(package, client, tmp, out, result_dict=None):
+    usages = find_usages(package, client, tmp)
     dist = distribution(package)
     out_file_usage = out.joinpath(
         f"{dist}__{package}__{distribution_version(dist)}__usages.json"
@@ -92,11 +92,11 @@ def __run_usages_command(package, src, tmp, out, d=None):
     with out_file_usage_count.open("w") as f:
         json.dump(counted_usages, f, indent=2)
 
-    if d is not None:
-        d[USAGES_INDEX] = out_file_usage_count
+    if result_dict is not None:
+        result_dict[USAGES_INDEX] = out_file_usage_count
 
 
-def __run_api_command(package, out, d=None):
+def __run_api_command(package, out, result_dict=None):
     public_api = get_api(package)
     public_api_dependencies = get_dependencies(public_api)
     out_file_api = out.joinpath(
@@ -111,8 +111,8 @@ def __run_api_command(package, out, d=None):
     with out_file_api_dependencies.open("w") as f:
         json.dump(public_api_dependencies.to_json(), f, indent=2, cls=CustomEncoder)
 
-    if d is not None:
-        d[API_INDEX] = out_file_api
+    if result_dict is not None:
+        result_dict[API_INDEX] = out_file_api
 
 
 def __get_args() -> argparse.Namespace:
@@ -155,9 +155,9 @@ def __add_usages_subparser(subparsers: _SubParsersAction) -> None:
         required=True,
     )
     usages_parser.add_argument(
-        "-s",
-        "--src",
-        help="Directory containing Python code.",
+        "-c",
+        "--client",
+        help="Directory containing Python code that uses the package.",
         type=Path,
         required=True,
     )
@@ -240,9 +240,9 @@ def __add_all_subparser(subparsers: _SubParsersAction) -> None:
         required=True,
     )
     usages_parser.add_argument(
-        "-s",
-        "--src",
-        help="Directory containing Python code.",
+        "-c",
+        "--client",
+        help="Directory containing Python code that uses the package.",
         type=Path,
         required=True,
     )
