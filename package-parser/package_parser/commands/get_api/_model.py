@@ -343,12 +343,6 @@ class RefinedType:
         enum = EnumType.from_string(docstring_str)
         boundary = BoundaryType.from_string(docstring_str)
 
-        if enum is not None and boundary is not None:
-            union = UnionType()
-            union.types.add(enum)
-            union.types.add(boundary)
-            return RefinedType(union)
-
         if enum is not None:
             return RefinedType(enum)
 
@@ -359,7 +353,7 @@ class RefinedType:
 
     def __init__(
         self,
-        ref_type: Union[UnionType, BoundaryType, EnumType, NamedType, None] = None,
+        ref_type: Union[BoundaryType, EnumType, NamedType, None] = None,
     ) -> None:
         self.ref_type = ref_type
 
@@ -397,6 +391,7 @@ class Parameter:
         self.assigned_by: ParameterAssignment = assigned_by
         self.docstring = docstring
         self.refined_type: RefinedType = RefinedType.from_docstring(docstring)
+        self.union_type: UnionType = UnionType.from_string(docstring.type)
 
     def to_json(self) -> Any:
         return {
@@ -407,6 +402,7 @@ class Parameter:
             "assigned_by": self.assigned_by.name,
             "docstring": self.docstring.to_json(),
             "refined_type": self.refined_type.as_dict(),
+            "union_type": self.union_type.as_list(),
         }
 
 

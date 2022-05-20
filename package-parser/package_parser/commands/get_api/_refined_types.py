@@ -134,4 +134,59 @@ class BoundaryType:
 
 @dataclass
 class UnionType:
-    types: set[Union[NamedType, EnumType, BoundaryType]] = field(default_factory=set)
+    types: list[str]
+
+    @classmethod
+    def from_string(cls, type_str: str) -> Optional[UnionType]:
+        # Remove all non-necessary whitespaces
+        type_str = re.sub("[ ]+", " ", type_str)
+        # Find all Enums and remove them from doc_string
+        enum_array_matches = re.findall("\{.*?\}", type_str)
+        type_str = re.sub("\{.*?\}", " ", type_str)
+
+        # Remove default-Value from doc_string
+        type_str = re.sub("default=.*", " ", type_str)
+
+        # Create a list with all values and types
+        # elements_raw = re.split(" , or |, or | ,or | or | ,  |, | ,", type_str)
+        type_str = re.sub("\) or \(", "&%&", type_str)
+        type_str = re.sub(" or ", ", ", type_str)
+        type_str = re.sub(" ,[ ]*or ", ", ", type_str)
+        type_str = re.sub("&%&", ") or (", type_str)
+        elements = []
+        brackets = 0
+        build_string = ""
+        for c in type_str:
+            if c == '(':
+                brackets += 1
+            elif c == ')':
+                brackets -= 1
+
+            if brackets > 0:
+                build_string += c
+                continue
+
+            if brackets == 0 and not c == ',':
+                build_string += c
+            elif brackets == 0 and c == ",":
+                # remove leading and trailing whitespaces
+                build_string = re.sub("^[ \t]+|[ \t]+$", "", build_string)
+                if build_string != "":
+                    elements.append(build_string)
+                    build_string = ""
+                # re.sub("", "", build_string)
+        build_string = re.sub("^[ \t]+|[ \t]+$", "", build_string)
+        if build_string != "":
+            elements.append(build_string)
+        # elements_refined = [element for element in elements_raw if bool(re.search("[^, ]+", element))]
+        elements = enum_array_matches + elements
+
+        if len(elements) == 1:
+            return UnionType(list())
+
+        return UnionType(elements)
+
+    def as_list(self):
+        if self.types is not None:
+            return self.types
+        return []
