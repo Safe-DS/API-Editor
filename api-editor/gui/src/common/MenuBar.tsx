@@ -11,9 +11,11 @@ import {
     Heading,
     HStack,
     Icon,
+    IconButton,
     Input,
     InputGroup,
     InputRightElement,
+    ListItem,
     Menu,
     MenuButton,
     MenuDivider,
@@ -25,10 +27,13 @@ import {
     Popover,
     PopoverArrow,
     PopoverBody,
+    PopoverCloseButton,
     PopoverContent,
+    PopoverHeader,
     PopoverTrigger,
     Spacer,
     Text as ChakraText,
+    UnorderedList,
     useColorMode,
     VStack,
 } from '@chakra-ui/react';
@@ -53,6 +58,83 @@ interface MenuBarProps {
     setFilter: Setter<string>;
     displayInferErrors: (errors: string[]) => void;
 }
+
+const HelpButton = function () {
+    const dispatch = useAppDispatch();
+    const [isOpen, setIsOpen] = useState(false);
+    const cancelRef = useRef(null);
+
+    // Event handlers ----------------------------------------------------------
+
+    const handleConfirm = () => {
+        dispatch(resetAnnotations());
+        setIsOpen(false);
+    };
+    const handleCancel = () => setIsOpen(false);
+
+    // Render ------------------------------------------------------------------
+
+    return (
+        <Popover>
+            <PopoverTrigger>
+                <IconButton
+                    variant="ghost"
+                    icon={<Icon name="help" />}
+                    aria-label="help"
+                    onClick={() => setIsOpen(true)}
+                />
+            </PopoverTrigger>
+            <PopoverContent minWidth={462} fontSize="sm">
+                <PopoverArrow />
+                <PopoverCloseButton />
+                <PopoverHeader>Filter Options</PopoverHeader>
+                <PopoverBody>
+                    <UnorderedList spacing={2}>
+                        <ListItem>
+                            <ChakraText>
+                                <strong>is:xy</strong>
+                            </ChakraText>
+                            <ChakraText>
+                                Displays only elements that are of the given type xy. Possible types are: module, class,
+                                function, parameter.
+                            </ChakraText>
+                        </ListItem>
+                        <ListItem>
+                            <ChakraText>
+                                <strong>hasName:xy</strong>
+                            </ChakraText>
+                            <ChakraText>Displays only elements with names that contain the given string xy.</ChakraText>
+                        </ListItem>
+                        <ListItem>
+                            <ChakraText>
+                                <strong>is:annotated</strong>
+                            </ChakraText>
+                            <ChakraText>Displays only elements that have been annotated.</ChakraText>
+                        </ListItem>
+                        <ListItem>
+                            <ChakraText>
+                                <strong>hasAnnotation:xy</strong>
+                            </ChakraText>
+                            <ChakraText>
+                                Displays only elements that are annotated with the given type xy. Possible types:
+                                unused, constant, required, optional, enum and boundary.
+                            </ChakraText>
+                        </ListItem>
+                        <ListItem>
+                            <ChakraText>
+                                <strong>!filter</strong>
+                            </ChakraText>
+                            <ChakraText>
+                                Displays only elements that do not match the given filter. Possible filters are any in
+                                this list.
+                            </ChakraText>
+                        </ListItem>
+                    </UnorderedList>
+                </PopoverBody>
+            </PopoverContent>
+        </Popover>
+    );
+};
 
 const DeleteAllAnnotations = function () {
     const dispatch = useAppDispatch();
@@ -238,6 +320,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFi
                         </PopoverContent>
                     </Popover>
                 </Box>
+                <HelpButton />
             </HStack>
         </Flex>
     );
