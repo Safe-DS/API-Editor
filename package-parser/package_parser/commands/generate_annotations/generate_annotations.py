@@ -159,19 +159,18 @@ def __get_required_annotations(
     usages: UsageCountStore, api: API, annotations: AnnotationStore
 ) -> None:
     """
-    Collects all parameters that are currently optional but should be required to be assign a value
+    Collects all parameters that are currently optional but should be required to be assigned a value
     :param usages: Usage store
     :param api: Description of the API
     :param annotations: AnnotationStore, that holds all annotations
     """
     parameters = api.parameters()
-    optional_parameter = [
+    optional_parameters = [
         (it, parameters[it])
         for it in parameters
-        if parameters[it].default_value is not None
+        if parameters[it].default_value is not None and parameters[it].qname in usages.parameter_usages
     ]
-    for qname, parameter in optional_parameter:
-
+    for qname, parameter in optional_parameters:
         if __get_parameter_info(qname, usages).type is ParameterType.Required:
             annotations.requireds.append(RequiredAnnotation(parameter.pname))
 
@@ -250,8 +249,8 @@ def __add_unused_api_elements(usages: UsageCountStore, api: API) -> None:
 
             # "Public" parameters
             for parameter in function.parameters:
-                usages.add_parameter_usages(parameter.qname, 0)
                 usages.init_value(parameter.qname)
+                usages.add_parameter_usages(parameter.qname, 0)
 
 
 def __add_implicit_usages_of_default_value(usages: UsageCountStore, api: API) -> None:
@@ -294,6 +293,8 @@ def __get_optional_annotations(
     parameters = api.parameters()
 
     for qname, parameter in parameters.items():
+        if qname not in usages.parameter_usages.keys():
+            continue
         parameter_info = __get_parameter_info(qname, usages)
 
         if qname in parameters:
@@ -322,6 +323,7 @@ def __get_parameter_info(qname: str, usages: UsageCountStore) -> ParameterInfo:
     :param usages: UsageStore
     :return ParameterInfo
     """
+
     values = [(it[0], it[1]) for it in usages.value_usages[qname].items() if it[1] > 0]
 
     if len(values) == 0:

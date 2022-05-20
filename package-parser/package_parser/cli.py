@@ -13,8 +13,8 @@ from .commands.get_dependencies import get_dependencies
 from .commands.suggest_improvements import suggest_improvements
 from .utils import ensure_file_exists
 
-API_INDEX = 0
-USAGES_INDEX = 1
+API_INDEX = "api"
+USAGES_INDEX = "usages"
 
 __API_COMMAND = "api"
 __USAGES_COMMAND = "usages"
@@ -74,7 +74,7 @@ def __run_in_parallel(*fns):
     return return_dict
 
 
-def __run_usages_command(package, src, tmp, out, d=[]):
+def __run_usages_command(package, src, tmp, out, d=None):
     usages = find_usages(package, src, tmp)
     dist = distribution(package)
     out_file_usage = out.joinpath(
@@ -92,10 +92,11 @@ def __run_usages_command(package, src, tmp, out, d=[]):
     with out_file_usage_count.open("w") as f:
         json.dump(counted_usages, f, indent=2)
 
-    d[USAGES_INDEX] = out_file_usage_count
+    if d is not None:
+        d[USAGES_INDEX] = out_file_usage_count
 
 
-def __run_api_command(package, out, d=[]):
+def __run_api_command(package, out, d=None):
     public_api = get_api(package)
     public_api_dependencies = get_dependencies(public_api)
     out_file_api = out.joinpath(
@@ -110,7 +111,8 @@ def __run_api_command(package, out, d=[]):
     with out_file_api_dependencies.open("w") as f:
         json.dump(public_api_dependencies.to_json(), f, indent=2, cls=CustomEncoder)
 
-    d[API_INDEX] = out_file_api
+    if d is not None:
+        d[API_INDEX] = out_file_api
 
 
 def __get_args() -> argparse.Namespace:
