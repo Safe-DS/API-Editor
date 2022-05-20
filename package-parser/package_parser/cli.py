@@ -212,14 +212,14 @@ def __add_annotations_subparser(subparsers):
         "-a",
         "--api",
         help="File created by the 'api' command.",
-        type=argparse.FileType("r"),
+        type=Path,
         required=True,
     )
     generate_parser.add_argument(
         "-u",
         "--usages",
         help="File created by the 'usages' command that contains usage counts.",
-        type=argparse.FileType("r"),
+        type=Path,
         required=True,
     )
     generate_parser.add_argument(
