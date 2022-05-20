@@ -6,20 +6,14 @@ import {
     AlertDialogHeader,
     AlertDialogOverlay,
     Box,
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
     Button,
-    Center,
     Flex,
     Heading,
     HStack,
     Icon,
-    Image,
     Input,
     InputGroup,
     InputRightElement,
-    Link,
     Menu,
     MenuButton,
     MenuItem,
@@ -39,7 +33,6 @@ import {
 import React, {useRef, useState} from 'react';
 import {FaCheck, FaChevronDown} from 'react-icons/fa';
 import {useLocation} from 'react-router';
-import {NavLink} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../app/hooks';
 import {resetAnnotations, toggleAnnotationImportDialog} from '../features/annotations/annotationSlice';
 import AnnotatedPythonPackageBuilder from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
@@ -164,32 +157,6 @@ const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter, setFil
 
     return (
         <Flex as="nav" borderBottom={1} layerStyle="subtleBorder" padding="0.5em 1em">
-            <Center>
-                <HStack spacing={4}>
-                    <Button padding={1}>
-                        <Link to="/" as={NavLink} width="100%" height="100%">
-                            <Image src="favicon.svg" alt="logo" width="100%" height="100%"/>
-                        </Link>
-                    </Button>
-
-                    <Breadcrumb>
-                        {pathname.map((part, index) => (
-                            // eslint-disable-next-line react/no-array-index-key
-                            <BreadcrumbItem key={index}>
-                                {enableNavigation && (
-                                    <BreadcrumbLink as={NavLink} to={`/${pathname.slice(0, index + 1).join('/')}`}>
-                                        {part}
-                                    </BreadcrumbLink>
-                                )}
-                                {!enableNavigation && <ChakraText>{part}</ChakraText>}
-                            </BreadcrumbItem>
-                        ))}
-                    </Breadcrumb>
-                </HStack>
-            </Center>
-
-            <Spacer/>
-
             <HStack>
                 {/* Box gets rid of popper.js warning "CSS margin styles cannot be used" */}
                 <Box>
@@ -230,6 +197,11 @@ const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter, setFil
                         </MenuList>
                     </Menu>
                 </Box>
+            </HStack>
+
+            <Spacer/>
+
+            <HStack>
                 <Box>
                     <Popover isOpen={!PythonFilter.fromFilterBoxInput(filter)} initialFocusRef={initialFocusRef}>
                         <PopoverTrigger>
