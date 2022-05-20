@@ -25,6 +25,14 @@ class _AstVisitor:
         self.api: API = api
         self.__declaration_stack: list[Union[Module, Class, Function]] = []
 
+    def __get_pname(self, name: str) -> str:
+        return (
+            self.api.package
+            + "/"
+            + "/".join([it.name for it in self.__declaration_stack])
+            + name
+        )
+
     def enter_module(self, module_node: astroid.Module):
         imports: list[Import] = []
         from_imports: list[FromImport] = []
@@ -63,6 +71,7 @@ class _AstVisitor:
         # Remember module, so we can later add classes and global functions
         module = Module(
             module_node.qname(),
+            f"{self.api.package}/{module_node.qname()}",
             imports,
             from_imports,
         )
@@ -89,6 +98,7 @@ class _AstVisitor:
         # Remember class, so we can later add methods
         class_ = Class(
             qname,
+            self.__get_pname(class_node.name),
             decorator_names,
             class_node.basenames,
             self.is_public(class_node.name, qname),
@@ -125,8 +135,11 @@ class _AstVisitor:
 
         function = Function(
             qname,
+            self.__get_pname(function_node.name),
             decorator_names,
-            self.__function_parameters(function_node, is_public, qname),
+            self.__function_parameters(
+                function_node, is_public, qname, self.__get_pname(function_node.name)
+            ),
             [],  # TODO: results
             is_public,
             _AstVisitor.__description(numpydoc),
@@ -169,7 +182,10 @@ class _AstVisitor:
 
     @staticmethod
     def __function_parameters(
-        node: astroid.FunctionDef, function_is_public: bool, function_qname: str
+        node: astroid.FunctionDef,
+        function_is_public: bool,
+        function_qname: str,
+        function_pname: str,
     ) -> list[Parameter]:
         parameters = node.args
         n_implicit_parameters = node.implicit_parameters()
@@ -186,6 +202,7 @@ class _AstVisitor:
             Parameter(
                 it.name,
                 qname=function_qname + "." + it.name,
+                pname=function_pname + "/" + it.name,
                 default_value=None,
                 is_public=function_is_public,
                 assigned_by=ParameterAssignment.POSITION_ONLY,
@@ -199,6 +216,7 @@ class _AstVisitor:
             Parameter(
                 it.name,
                 function_qname + "." + it.name,
+                function_pname + "/" + it.name,
                 _AstVisitor.__parameter_default(
                     parameters.defaults,
                     index - len(parameters.args) + len(parameters.defaults),
@@ -215,6 +233,7 @@ class _AstVisitor:
             Parameter(
                 it.name,
                 function_qname + "." + it.name,
+                function_pname + "/" + it.name,
                 _AstVisitor.__parameter_default(
                     parameters.kw_defaults,
                     index - len(parameters.kwonlyargs) + len(parameters.kw_defaults),

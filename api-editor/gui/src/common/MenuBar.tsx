@@ -6,43 +6,41 @@ import {
     AlertDialogHeader,
     AlertDialogOverlay,
     Box,
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
     Button,
-    Center,
     Flex,
     Heading,
     HStack,
     Icon,
-    Image,
+    IconButton,
     Input,
     InputGroup,
     InputRightElement,
-    Link,
+    ListItem,
     Menu,
     MenuButton,
+    MenuDivider,
+    MenuGroup,
     MenuItem,
+    MenuItemOption,
     MenuList,
+    MenuOptionGroup,
     Popover,
     PopoverArrow,
     PopoverBody,
+    PopoverCloseButton,
     PopoverContent,
+    PopoverHeader,
     PopoverTrigger,
     Spacer,
     Text as ChakraText,
+    UnorderedList,
     useColorMode,
     VStack,
 } from '@chakra-ui/react';
 import React, { useRef, useState } from 'react';
 import { FaCheck, FaChevronDown } from 'react-icons/fa';
-import { useLocation } from 'react-router';
-import { NavLink } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import {
-    resetAnnotations,
-    toggleAnnotationImportDialog,
-} from '../features/annotations/annotationSlice';
+import { resetAnnotations, toggleAnnotationImportDialog } from '../features/annotations/annotationSlice';
 import AnnotatedPythonPackageBuilder from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
 import { PythonFilter } from '../features/packageData/model/PythonFilter';
 import PythonPackage from '../features/packageData/model/PythonPackage';
@@ -52,6 +50,7 @@ import {
     toggleShowPrivateDeclarations,
 } from '../features/packageData/packageDataSlice';
 import { Setter } from './util/types';
+import { toggleUsageImportDialog } from '../features/usages/usageSlice';
 
 interface MenuBarProps {
     pythonPackage: PythonPackage;
@@ -59,6 +58,83 @@ interface MenuBarProps {
     setFilter: Setter<string>;
     displayInferErrors: (errors: string[]) => void;
 }
+
+const HelpButton = function () {
+    const dispatch = useAppDispatch();
+    const [isOpen, setIsOpen] = useState(false);
+    const cancelRef = useRef(null);
+
+    // Event handlers ----------------------------------------------------------
+
+    const handleConfirm = () => {
+        dispatch(resetAnnotations());
+        setIsOpen(false);
+    };
+    const handleCancel = () => setIsOpen(false);
+
+    // Render ------------------------------------------------------------------
+
+    return (
+        <Popover>
+            <PopoverTrigger>
+                <IconButton
+                    variant="ghost"
+                    icon={<Icon name="help" />}
+                    aria-label="help"
+                    onClick={() => setIsOpen(true)}
+                />
+            </PopoverTrigger>
+            <PopoverContent minWidth={462} fontSize="sm">
+                <PopoverArrow />
+                <PopoverCloseButton />
+                <PopoverHeader>Filter Options</PopoverHeader>
+                <PopoverBody>
+                    <UnorderedList spacing={2}>
+                        <ListItem>
+                            <ChakraText>
+                                <strong>is:xy</strong>
+                            </ChakraText>
+                            <ChakraText>
+                                Displays only elements that are of the given type xy. Possible types are: module, class,
+                                function, parameter.
+                            </ChakraText>
+                        </ListItem>
+                        <ListItem>
+                            <ChakraText>
+                                <strong>hasName:xy</strong>
+                            </ChakraText>
+                            <ChakraText>Displays only elements with names that contain the given string xy.</ChakraText>
+                        </ListItem>
+                        <ListItem>
+                            <ChakraText>
+                                <strong>is:annotated</strong>
+                            </ChakraText>
+                            <ChakraText>Displays only elements that have been annotated.</ChakraText>
+                        </ListItem>
+                        <ListItem>
+                            <ChakraText>
+                                <strong>hasAnnotation:xy</strong>
+                            </ChakraText>
+                            <ChakraText>
+                                Displays only elements that are annotated with the given type xy. Possible types:
+                                unused, constant, required, optional, enum and boundary.
+                            </ChakraText>
+                        </ListItem>
+                        <ListItem>
+                            <ChakraText>
+                                <strong>!filter</strong>
+                            </ChakraText>
+                            <ChakraText>
+                                Displays only elements that do not match the given filter. Possible filters are any in
+                                this list.
+                            </ChakraText>
+                        </ListItem>
+                    </UnorderedList>
+                </PopoverBody>
+            </PopoverContent>
+        </Popover>
+    );
+};
 
 const DeleteAllAnnotations = function () {
     const dispatch = useAppDispatch();
@@ -77,15 +153,9 @@ const DeleteAllAnnotations = function () {
 
     return (
         <>
-            <Button onClick={() => setIsOpen(true)}>
-                Delete all annotations
-            </Button>
+            <Button onClick={() => setIsOpen(true)}>Delete all annotations</Button>
 
-            <AlertDialog
-                isOpen={isOpen}
-                leastDestructiveRef={cancelRef}
-                onClose={handleCancel}
-            >
+            <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={handleCancel}>
                 <AlertDialogOverlay>
                     <AlertDialogContent>
                         <AlertDialogHeader>
@@ -94,14 +164,10 @@ const DeleteAllAnnotations = function () {
 
                         <AlertDialogBody>
                             <VStack alignItems="flexStart">
+                                <ChakraText>Are you sure? You can't undo this action afterwards.</ChakraText>
                                 <ChakraText>
-                                    Are you sure? You can't undo this action
-                                    afterwards.
-                                </ChakraText>
-                                <ChakraText>
-                                    Hint: Consider exporting your work first by
-                                    clicking on the "Export" button in the menu
-                                    bar.
+                                    Hint: Consider exporting your work first by clicking on the "Export" button in the
+                                    menu bar.
                                 </ChakraText>
                             </VStack>
                         </AlertDialogBody>
@@ -110,11 +176,7 @@ const DeleteAllAnnotations = function () {
                             <Button ref={cancelRef} onClick={handleCancel}>
                                 Cancel
                             </Button>
-                            <Button
-                                colorScheme="red"
-                                onClick={handleConfirm}
-                                ml={3}
-                            >
+                            <Button colorScheme="red" onClick={handleConfirm} ml={3}>
                                 Delete
                             </Button>
                         </AlertDialogFooter>
@@ -125,22 +187,12 @@ const DeleteAllAnnotations = function () {
     );
 };
 
-const MenuBar: React.FC<MenuBarProps> = function ({
-    pythonPackage,
-    filter,
-    setFilter,
-    displayInferErrors,
-}) {
+const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFilter, displayInferErrors }) {
     const { colorMode, toggleColorMode } = useColorMode();
     const initialFocusRef = useRef(null);
     const dispatch = useAppDispatch();
 
-    const pathname = useLocation().pathname.split('/').slice(1);
-
     const annotationStore = useAppSelector((state) => state.annotations);
-    const enableNavigation = useAppSelector(
-        (state) => state.annotations.currentUserAction.type === 'none',
-    );
 
     const exportAnnotations = () => {
         const a = document.createElement('a');
@@ -153,12 +205,8 @@ const MenuBar: React.FC<MenuBarProps> = function ({
     };
 
     const infer = () => {
-        const annotatedPythonPackageBuilder = new AnnotatedPythonPackageBuilder(
-            pythonPackage,
-            annotationStore,
-        );
-        const annotatedPythonPackage =
-            annotatedPythonPackageBuilder.generateAnnotatedPythonPackage();
+        const annotatedPythonPackageBuilder = new AnnotatedPythonPackageBuilder(pythonPackage, annotationStore);
+        const annotatedPythonPackage = annotatedPythonPackageBuilder.generateAnnotatedPythonPackage();
 
         const requestOptions = {
             method: 'POST',
@@ -179,121 +227,87 @@ const MenuBar: React.FC<MenuBarProps> = function ({
         });
     };
 
-    return (
-        <Flex
-            as="nav"
-            borderBottom={1}
-            layerStyle="subtleBorder"
-            padding="0.5em 1em"
-        >
-            <Center>
-                <HStack spacing={4}>
-                    <Button padding={1}>
-                        <Link to="/" as={NavLink} width="100%" height="100%">
-                            <Image
-                                src="favicon.svg"
-                                alt="logo"
-                                width="100%"
-                                height="100%"
-                            />
-                        </Link>
-                    </Button>
+    const settings: string[] = [];
+    if (useAppSelector(selectShowPrivateDeclarations)) {
+        settings.push('showPrivateDeclarations');
+    }
+    if (colorMode == 'dark') {
+        settings.push('darkMode');
+    }
 
-                    <Breadcrumb>
-                        {pathname.map((part, index) => (
-                            // eslint-disable-next-line react/no-array-index-key
-                            <BreadcrumbItem key={index}>
-                                {enableNavigation && (
-                                    <BreadcrumbLink
-                                        as={NavLink}
-                                        to={`/${pathname
-                                            .slice(0, index + 1)
-                                            .join('/')}`}
-                                    >
-                                        {part}
-                                    </BreadcrumbLink>
-                                )}
-                                {!enableNavigation && (
-                                    <ChakraText>{part}</ChakraText>
-                                )}
-                            </BreadcrumbItem>
-                        ))}
-                    </Breadcrumb>
-                </HStack>
-            </Center>
+    return (
+        <Flex as="nav" borderBottom={1} layerStyle="subtleBorder" padding="0.5em 1em">
+            <HStack>
+                {/* Box gets rid of popper.js warning "CSS margin styles cannot be used" */}
+                <Box>
+                    <Menu>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
+                            File
+                        </MenuButton>
+                        <MenuList>
+                            <MenuGroup title="Import">
+                                <MenuItem onClick={() => dispatch(togglePackageDataImportDialog())}>API Data</MenuItem>
+                                <MenuItem onClick={() => dispatch(toggleUsageImportDialog())}>Usages</MenuItem>
+                                <MenuItem onClick={() => dispatch(toggleAnnotationImportDialog())}>
+                                    Annotations
+                                </MenuItem>
+                            </MenuGroup>
+                            <MenuDivider />
+                            <MenuGroup title="Export">
+                                <MenuItem onClick={exportAnnotations}>Annotations</MenuItem>
+                            </MenuGroup>
+                        </MenuList>
+                    </Menu>
+                </Box>
+
+                <Button onClick={infer}>Generate adapters</Button>
+                <DeleteAllAnnotations />
+
+                <Box>
+                    <Menu closeOnSelect={false}>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
+                            Settings
+                        </MenuButton>
+                        <MenuList>
+                            <MenuOptionGroup type="checkbox" value={settings}>
+                                <MenuItemOption
+                                    value="showPrivateDeclarations"
+                                    onClick={() => dispatch(toggleShowPrivateDeclarations())}
+                                >
+                                    Show private declarations
+                                </MenuItemOption>
+
+                                <MenuItemOption value={'darkMode'} onClick={toggleColorMode}>
+                                    Dark mode
+                                </MenuItemOption>
+                            </MenuOptionGroup>
+                        </MenuList>
+                    </Menu>
+                </Box>
+            </HStack>
 
             <Spacer />
 
             <HStack>
-                <Button onClick={infer}>Infer</Button>
-                {/* Box gets rid of popper.js warning "CSS margin styles cannot be used" */}
                 <Box>
-                    <Menu>
-                        <MenuButton
-                            as={Button}
-                            rightIcon={<Icon as={FaChevronDown} />}
-                        >
-                            Import
-                        </MenuButton>
-                        <MenuList>
-                            <MenuItem
-                                onClick={() =>
-                                    dispatch(togglePackageDataImportDialog())
-                                }
-                            >
-                                API Data
-                            </MenuItem>
-                            <MenuItem
-                                onClick={() =>
-                                    dispatch(toggleAnnotationImportDialog())
-                                }
-                            >
-                                Annotations
-                            </MenuItem>
-                        </MenuList>
-                    </Menu>
-                </Box>
-                <Button onClick={exportAnnotations}>Export</Button>
-                <DeleteAllAnnotations />
-                <Button
-                    onClick={() => dispatch(toggleShowPrivateDeclarations())}
-                >
-                    {useAppSelector(selectShowPrivateDeclarations)
-                        ? 'Hide private declarations'
-                        : 'Show private declarations'}
-                </Button>
-                <Button onClick={toggleColorMode}>
-                    Toggle {colorMode === 'light' ? 'dark' : 'light'}
-                </Button>
-                <Box>
-                    <Popover
-                        isOpen={!PythonFilter.fromFilterBoxInput(filter)}
-                        initialFocusRef={initialFocusRef}
-                    >
+                    <Popover isOpen={!PythonFilter.fromFilterBoxInput(filter)} initialFocusRef={initialFocusRef}>
                         <PopoverTrigger>
                             <InputGroup ref={initialFocusRef}>
                                 <Input
                                     type="text"
                                     placeholder="Filter..."
                                     value={filter}
-                                    onChange={(event) =>
-                                        setFilter(event.target.value)
-                                    }
-                                    isInvalid={
-                                        !PythonFilter.fromFilterBoxInput(filter)
-                                    }
+                                    onChange={(event) => setFilter(event.target.value)}
+                                    isInvalid={!PythonFilter.fromFilterBoxInput(filter)}
                                     borderColor={
-                                        PythonFilter.fromFilterBoxInput(
-                                            filter,
-                                        )?.isFilteringModules()
+                                        PythonFilter.fromFilterBoxInput(filter)?.isFilteringModules()
                                             ? 'green'
                                             : 'inherit'
                                     }
                                     spellCheck={false}
+                                    minWidth="400px"
                                 />
-                                {PythonFilter.fromFilterBoxInput(
-                                    filter,
-                                )?.isFilteringModules() && (
+                                {PythonFilter.fromFilterBoxInput(filter)?.isFilteringModules() && (
                                     <InputRightElement>
                                         <Icon as={FaCheck} color="green.500" />
                                     </InputRightElement>
@@ -302,12 +316,11 @@ const MenuBar: React.FC<MenuBarProps> = function ({
                         </PopoverTrigger>
                         <PopoverContent>
                             <PopoverArrow />
-                            <PopoverBody>
-                                Each scope must only be used once.
-                            </PopoverBody>
+                            <PopoverBody>Each scope must only be used once.</PopoverBody>
                         </PopoverContent>
                     </Popover>
                 </Box>
+                <HelpButton />
             </HStack>
         </Flex>
     );

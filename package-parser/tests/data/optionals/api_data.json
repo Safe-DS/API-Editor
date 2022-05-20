@@ -5,6 +5,7 @@
     "modules": [
         {
             "name": "test",
+            "pname": "test/test",
             "imports": [],
             "from_imports": [],
             "classes": [],
@@ -17,12 +18,14 @@
             "name": "some_global_function",
             "unique_name": "some_global_function",
             "qname": "test.some_global_function",
+            "pname": "test/test/some_global_function",
             "unique_qname": "test.some_global_function",
             "decorators": [],
             "parameters": [
                 {
                     "name": "required_parameter_that_should_be_constant",
                     "qname": "test.some_global_function.required_parameter_that_should_be_constant",
+                    "pname": "test/test/some_global_function/required_parameter_that_should_be_constant",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -34,6 +37,7 @@
                 {
                     "name": "required_parameter_that_should_be_required",
                     "qname": "test.some_global_function.required_parameter_that_should_be_required",
+                    "pname": "test/test/some_global_function/required_parameter_that_should_be_required",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -45,6 +49,7 @@
                 {
                     "name": "required_parameter_that_should_be_optional",
                     "qname": "test.some_global_function.required_parameter_that_should_be_optional",
+                    "pname": "test/test/some_global_function/required_parameter_that_should_be_optional",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -56,6 +61,7 @@
                 {
                     "name": "optional_parameter_that_should_be_constant",
                     "qname": "test.some_global_function.optional_parameter_that_should_be_constant",
+                    "pname": "test/test/some_global_function/optional_parameter_that_should_be_constant",
                     "default_value": "'test'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -67,6 +73,7 @@
                 {
                     "name": "optional_parameter_that_should_be_required",
                     "qname": "test.some_global_function.optional_parameter_that_should_be_required",
+                    "pname": "test/test/some_global_function/optional_parameter_that_should_be_required",
                     "default_value": "'test'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -78,6 +85,7 @@
                 {
                     "name": "optional_parameter_that_should_be_optional_with_same_default",
                     "qname": "test.some_global_function.optional_parameter_that_should_be_optional_with_same_default",
+                    "pname": "test/test/some_global_function/optional_parameter_that_should_be_optional_with_same_default",
                     "default_value": "'test'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -89,6 +97,7 @@
                 {
                     "name": "optional_parameter_that_should_be_optional_with_different_default",
                     "qname": "test.some_global_function.optional_parameter_that_should_be_optional_with_different_default",
+                    "pname": "test/test/some_global_function/optional_parameter_that_should_be_optional_with_different_default",
                     "default_value": "'test'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
