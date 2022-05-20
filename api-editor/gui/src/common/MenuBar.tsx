@@ -14,7 +14,6 @@ import {
     IconButton,
     Input,
     InputGroup,
-    InputRightElement,
     ListItem,
     Menu,
     MenuButton,
@@ -37,20 +36,19 @@ import {
     useColorMode,
     VStack,
 } from '@chakra-ui/react';
-import React, { useRef, useState } from 'react';
-import { FaCheck, FaChevronDown } from 'react-icons/fa';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { resetAnnotations, toggleAnnotationImportDialog } from '../features/annotations/annotationSlice';
+import React, {useRef, useState} from 'react';
+import {FaChevronDown} from 'react-icons/fa';
+import {useAppDispatch, useAppSelector} from '../app/hooks';
+import {resetAnnotations, toggleAnnotationImportDialog} from '../features/annotations/annotationSlice';
 import AnnotatedPythonPackageBuilder from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
-import { PythonFilter } from '../features/packageData/model/PythonFilter';
 import PythonPackage from '../features/packageData/model/PythonPackage';
 import {
     selectShowPrivateDeclarations,
     togglePackageDataImportDialog,
     toggleShowPrivateDeclarations,
 } from '../features/packageData/packageDataSlice';
-import { Setter } from './util/types';
-import { toggleUsageImportDialog } from '../features/usages/usageSlice';
+import {Setter} from './util/types';
+import {toggleUsageImportDialog} from '../features/usages/usageSlice';
 
 interface MenuBarProps {
     pythonPackage: PythonPackage;
@@ -60,20 +58,6 @@ interface MenuBarProps {
 }
 
 const HelpButton = function () {
-    const dispatch = useAppDispatch();
-    const [isOpen, setIsOpen] = useState(false);
-    const cancelRef = useRef(null);
-
-    // Event handlers ----------------------------------------------------------
-
-    const handleConfirm = () => {
-        dispatch(resetAnnotations());
-        setIsOpen(false);
-    };
-    const handleCancel = () => setIsOpen(false);
-
-    // Render ------------------------------------------------------------------
-
     return (
         <Popover>
             <PopoverTrigger>
@@ -81,10 +65,9 @@ const HelpButton = function () {
                     variant="ghost"
                     icon={<Icon name="help" />}
                     aria-label="help"
-                    onClick={() => setIsOpen(true)}
                 />
             </PopoverTrigger>
-            <PopoverContent minWidth={462} fontSize="sm">
+            <PopoverContent minWidth={462} fontSize="sm" marginRight={2}>
                 <PopoverArrow />
                 <PopoverCloseButton />
                 <PopoverHeader>Filter Options</PopoverHeader>
@@ -290,7 +273,10 @@ const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFi
 
             <HStack>
                 <Box>
-                    <Popover isOpen={!PythonFilter.fromFilterBoxInput(filter)} initialFocusRef={initialFocusRef}>
+                    <Popover isOpen={
+                        false
+                        // !PythonFilter.fromFilterBoxInput(filter)
+                    } initialFocusRef={initialFocusRef}>
                         <PopoverTrigger>
                             <InputGroup ref={initialFocusRef}>
                                 <Input
@@ -298,20 +284,20 @@ const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFi
                                     placeholder="Filter..."
                                     value={filter}
                                     onChange={(event) => setFilter(event.target.value)}
-                                    isInvalid={!PythonFilter.fromFilterBoxInput(filter)}
-                                    borderColor={
-                                        PythonFilter.fromFilterBoxInput(filter)?.isFilteringModules()
-                                            ? 'green'
-                                            : 'inherit'
-                                    }
+                                    // isInvalid={!PythonFilter.fromFilterBoxInput(filter)}
+                                    // borderColor={
+                                    //     PythonFilter.fromFilterBoxInput(filter)?.isFilteringModules()
+                                    //         ? 'green'
+                                    //         : 'inherit'
+                                    // }
                                     spellCheck={false}
                                     minWidth="400px"
                                 />
-                                {PythonFilter.fromFilterBoxInput(filter)?.isFilteringModules() && (
-                                    <InputRightElement>
-                                        <Icon as={FaCheck} color="green.500" />
-                                    </InputRightElement>
-                                )}
+                                {/*{PythonFilter.fromFilterBoxInput(filter)?.isFilteringModules() && (*/}
+                                {/*    <InputRightElement>*/}
+                                {/*        <Icon as={FaCheck} color="green.500" />*/}
+                                {/*    </InputRightElement>*/}
+                                {/*)}*/}
                             </InputGroup>
                         </PopoverTrigger>
                         <PopoverContent>
