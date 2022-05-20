@@ -34,10 +34,7 @@ import OptionalForm from '../features/annotations/forms/OptionalForm';
 import RenameForm from '../features/annotations/forms/RenameForm';
 import { PythonFilter } from '../features/packageData/model/PythonFilter';
 import PythonPackage from '../features/packageData/model/PythonPackage';
-import {
-    parsePythonPackageJson,
-    PythonPackageJson,
-} from '../features/packageData/model/PythonPackageBuilder';
+import { parsePythonPackageJson, PythonPackageJson } from '../features/packageData/model/PythonPackageBuilder';
 import PackageDataImportDialog from '../features/packageData/PackageDataImportDialog';
 import {
     selectShowPackageDataImportDialog,
@@ -48,22 +45,34 @@ import TreeView from '../features/packageData/treeView/TreeView';
 import { useAppDispatch, useAppSelector } from './hooks';
 import PythonFunction from '../features/packageData/model/PythonFunction';
 import AttributeForm from '../features/annotations/forms/AttributeForm';
+import { UsageCountJson, UsageCountStore } from '../features/usages/model/UsageCountStore';
+import { selectShowUsageImportDialog } from '../features/usages/usageSlice';
+import UsageImportDialog from '../features/usages/UsageImportDialog';
 
 const App: React.FC = function () {
-    const [pythonPackage, setPythonPackage] = useState<PythonPackage>(
-        new PythonPackage('empty', 'empty', '0.0.1'),
-    );
+    const dispatch = useAppDispatch();
     const currentUserAction = useAppSelector(selectCurrentUserAction);
     const currentPathName = useLocation().pathname;
+
+    // Initialize package data
+    const [pythonPackage, setPythonPackage] = useState<PythonPackage>(new PythonPackage('empty', 'empty', '0.0.1'));
 
     useEffect(() => {
         // noinspection JSIgnoredPromiseFromCall
         getPythonPackageFromIndexedDB(setPythonPackage);
     }, []);
 
+    // Initialize usages
+    const [usages, setUsages] = useState<UsageCountStore>(new UsageCountStore());
+
+    useEffect(() => {
+        // noinspection JSIgnoredPromiseFromCall
+        getUsagesFromIndexedDB(setUsages);
+    });
+
+    // Initialize annotations
     const annotationStore = useAppSelector(selectAnnotations);
 
-    const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(initializeAnnotations());
     }, [dispatch]);
@@ -87,16 +96,11 @@ const App: React.FC = function () {
     const pythonFilter = PythonFilter.fromFilterBoxInput(filter);
     const filteredPythonPackage = pythonPackage.filter(pythonFilter);
 
-    const userActionTarget = pythonPackage.getByRelativePathAsString(
-        currentUserAction.target,
-    );
+    const userActionTarget = pythonPackage.getByRelativePathAsString(currentUserAction.target);
 
-    const showAnnotationImportDialog = useAppSelector(
-        selectShowAnnotationImportDialog,
-    );
-    const showPackageDataImportDialog = useAppSelector(
-        selectShowPackageDataImportDialog,
-    );
+    const showAnnotationImportDialog = useAppSelector(selectShowAnnotationImportDialog);
+    const showPackageDataImportDialog = useAppSelector(selectShowPackageDataImportDialog);
+    const showUsagesImportDialog = useAppSelector(selectShowUsageImportDialog);
 
     const [showInferErrorDialog, setShowInferErrorDialog] = useState(false);
     const [inferErrors, setInferErrors] = useState<string[]>([]);
@@ -133,55 +137,34 @@ const App: React.FC = function () {
                     resize="horizontal"
                 >
                     {currentUserAction.type === 'attribute' && (
-                        <AttributeForm
-                            target={userActionTarget || pythonPackage}
-                        />
+                        <AttributeForm target={userActionTarget || pythonPackage} />
                     )}
                     {currentUserAction.type === 'boundary' && (
-                        <BoundaryForm
-                            target={userActionTarget || pythonPackage}
-                        />
+                        <BoundaryForm target={userActionTarget || pythonPackage} />
                     )}
-                    {currentUserAction.type === 'calledAfter' &&
-                        userActionTarget instanceof PythonFunction && (
-                            <CalledAfterForm target={userActionTarget} />
-                        )}
+                    {currentUserAction.type === 'calledAfter' && userActionTarget instanceof PythonFunction && (
+                        <CalledAfterForm target={userActionTarget} />
+                    )}
                     {currentUserAction.type === 'constant' && (
-                        <ConstantForm
-                            target={userActionTarget || pythonPackage}
-                        />
+                        <ConstantForm target={userActionTarget || pythonPackage} />
                     )}
-                    {currentUserAction.type === 'enum' && (
-                        <EnumForm target={userActionTarget || pythonPackage} />
-                    )}
+                    {currentUserAction.type === 'enum' && <EnumForm target={userActionTarget || pythonPackage} />}
                     {currentUserAction.type === 'group' && (
                         <GroupForm
                             target={userActionTarget || pythonPackage}
                             groupName={
-                                (currentUserAction as GroupUserAction)
-                                    ?.groupName
-                                    ? (currentUserAction as GroupUserAction)
-                                          ?.groupName
+                                (currentUserAction as GroupUserAction)?.groupName
+                                    ? (currentUserAction as GroupUserAction)?.groupName
                                     : ''
                             }
                         />
                     )}
-                    {currentUserAction.type === 'move' && (
-                        <MoveForm target={userActionTarget || pythonPackage} />
-                    )}
-                    {currentUserAction.type === 'none' && (
-                        <TreeView pythonPackage={filteredPythonPackage} />
-                    )}
+                    {currentUserAction.type === 'move' && <MoveForm target={userActionTarget || pythonPackage} />}
+                    {currentUserAction.type === 'none' && <TreeView pythonPackage={filteredPythonPackage} />}
                     {currentUserAction.type === 'optional' && (
-                        <OptionalForm
-                            target={userActionTarget || pythonPackage}
-                        />
+                        <OptionalForm target={userActionTarget || pythonPackage} />
                     )}
-                    {currentUserAction.type === 'rename' && (
-                        <RenameForm
-                            target={userActionTarget || pythonPackage}
-                        />
-                    )}
+                    {currentUserAction.type === 'rename' && <RenameForm target={userActionTarget || pythonPackage} />}
                 </GridItem>
                 <GridItem gridArea="rightPane" overflow="auto">
                     <SelectionView pythonPackage={pythonPackage} />
@@ -189,11 +172,9 @@ const App: React.FC = function () {
 
                 {showAnnotationImportDialog && <AnnotationImportDialog />}
                 {showPackageDataImportDialog && (
-                    <PackageDataImportDialog
-                        setPythonPackage={setPythonPackage}
-                        setFilter={setFilter}
-                    />
+                    <PackageDataImportDialog setPythonPackage={setPythonPackage} setFilter={setFilter} />
                 )}
+                {showUsagesImportDialog && <UsageImportDialog setUsages={setUsages} />}
             </Grid>
             <Modal
                 isOpen={showInferErrorDialog}
@@ -219,18 +200,21 @@ const App: React.FC = function () {
     );
 };
 
-const getPythonPackageFromIndexedDB = async function (
-    setPythonPackage: Setter<PythonPackage>,
-) {
+const getPythonPackageFromIndexedDB = async function (setPythonPackage: Setter<PythonPackage>) {
     const storedPackage = (await idb.get('package')) as PythonPackageJson;
     if (storedPackage) {
         setPythonPackage(parsePythonPackageJson(storedPackage));
     }
 };
 
-const setAnnotationsInIndexedDB = async function (
-    annotationStore: AnnotationsState,
-) {
+const getUsagesFromIndexedDB = async function (setUsages: Setter<UsageCountStore>) {
+    const storedUsages = (await idb.get('usages')) as UsageCountJson;
+    if (storedUsages) {
+        setUsages(UsageCountStore.fromJson(storedUsages));
+    }
+};
+
+const setAnnotationsInIndexedDB = async function (annotationStore: AnnotationsState) {
     await idb.set('annotations', annotationStore);
 };
 

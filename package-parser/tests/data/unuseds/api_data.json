@@ -5,6 +5,7 @@
     "modules": [
         {
             "name": "test",
+            "pname": "test/test",
             "imports": [],
             "from_imports": [],
             "classes": ["test.UnusedClass", "test.UsedClass"],
@@ -18,6 +19,7 @@
         {
             "name": "UnusedClass",
             "qname": "test.UnusedClass",
+            "pname": "test/test/UnusedClass",
             "decorators": [],
             "is_public": true,
             "description": "",
@@ -29,6 +31,7 @@
         {
             "name": "UsedClass",
             "qname": "test.UsedClass",
+            "pname": "test/test/UsedClass",
             "decorators": [],
             "is_public": true,
             "description": "",
@@ -46,12 +49,14 @@
             "name": "unused_global_function",
             "unique_name": "unused_global_function",
             "qname": "test.unused_global_function",
+            "pname": "test/test/unused_global_function",
             "unique_qname": "test.unused_global_function",
             "decorators": [],
             "parameters": [
                 {
                     "name": "unused_parameter",
                     "qname": "test.unused_global_function.unused_parameter",
+                    "pname": "test/test/unused_global_function/unused_parameter",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -63,6 +68,7 @@
                 {
                     "name": "used_parameter",
                     "qname": "test.unused_global_function.used_parameter",
+                    "pname": "test/test/unused_global_function/used_parameter",
                     "default_value": "'bla'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -82,12 +88,14 @@
             "name": "used_global_function",
             "unique_name": "used_global_function",
             "qname": "test.used_global_function",
+            "pname": "test/test/used_global_function",
             "unique_qname": "test.used_global_function",
             "decorators": [],
             "parameters": [
                 {
                     "name": "unused_parameter",
                     "qname": "test.used_global_function.unused_parameter",
+                    "pname": "test/test/used_global_function/unused_parameter",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -99,6 +107,7 @@
                 {
                     "name": "used_parameter",
                     "qname": "test.used_global_function.used_parameter",
+                    "pname": "test/test/used_global_function/used_parameter",
                     "default_value": "'bla'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -118,12 +127,14 @@
             "name": "unused_method",
             "unique_name": "unused_method",
             "qname": "test.UnusedClass.unused_method",
+            "pname": "test/test/UnusedClass/unused_method",
             "unique_qname": "test.UnusedClass.unused_method",
             "decorators": [],
             "parameters": [
                 {
                     "name": "unused_parameter",
                     "qname": "test.UnusedClass.unused_method.unused_parameter",
+                    "pname": "test/test/UnusedClass/unused_method/unused_parameter",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -135,6 +146,7 @@
                 {
                     "name": "used_parameter",
                     "qname": "test.UnusedClass.unused_method.used_parameter",
+                    "pname": "test/test/UnusedClass/unused_method/used_parameter",
                     "default_value": "'bla'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -154,12 +166,14 @@
             "name": "unused_method",
             "unique_name": "unused_method",
             "qname": "test.UsedClass.unused_method",
+            "pname": "test/test/UsedClass/unused_method",
             "unique_qname": "test.UsedClass.unused_method",
             "decorators": [],
             "parameters": [
                 {
                     "name": "unused_parameter",
                     "qname": "test.UsedClass.unused_method.unused_parameter",
+                    "pname": "test/test/UsedClass/unused_method/unused_parameter",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -171,6 +185,7 @@
                 {
                     "name": "used_parameter",
                     "qname": "test.UsedClass.unused_method.used_parameter",
+                    "pname": "test/test/UsedClass/unused_method/used_parameter",
                     "default_value": "'bla'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -190,12 +205,14 @@
             "name": "used_method",
             "unique_name": "used_method",
             "qname": "test.UsedClass.used_method",
+            "pname": "test/test/UsedClass/used_method",
             "unique_qname": "test.UsedClass.used_method",
             "decorators": [],
             "parameters": [
                 {
                     "name": "unused_parameter",
                     "qname": "test.UsedClass.used_method.unused_parameter",
+                    "pname": "test/test/UsedClass/used_method/unused_parameter",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -207,6 +224,7 @@
                 {
                     "name": "used_parameter",
                     "qname": "test.UsedClass.used_method.used_parameter",
+                    "pname": "test/test/UsedClass/used_method/used_parameter",
                     "default_value": "'bla'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",

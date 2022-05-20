@@ -5,6 +5,7 @@
     "modules": [
         {
             "name": "test",
+            "pname": "test/test",
             "imports": [],
             "from_imports": [],
             "classes": [],
@@ -17,12 +18,14 @@
             "name": "some_global_function",
             "unique_name": "some_global_function",
             "qname": "test.some_global_function",
+            "pname": "test/test/some_global_function",
             "unique_qname": "test.some_global_function",
             "decorators": [],
             "parameters": [
                 {
                     "name": "string_parameter",
-                    "qname": "test.some_global_function",
+                    "qname": "test.some_global_function/string_parameter",
+                    "pname": "test/test/some_global_function/string_parameter",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -34,6 +37,7 @@
                 {
                     "name": "enum_parameter",
                     "qname": "test.some_global_function.enum_parameter",
+                    "pname": "test/test/some_global_function/enum_parameter",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
