@@ -3,7 +3,7 @@ import { Optional } from '../../../common/util/types';
 import PythonDeclaration from './PythonDeclaration';
 import PythonFunction from './PythonFunction';
 import PythonModule from './PythonModule';
-import AbstractPythonFilter from "./AbstractPythonFilter";
+import AbstractPythonFilter from "./filters/AbstractPythonFilter";
 
 export default class PythonClass extends PythonDeclaration {
     containingModule: Optional<PythonModule>;
@@ -57,7 +57,7 @@ export default class PythonClass extends PythonDeclaration {
     }
 
     filter(pythonFilter: AbstractPythonFilter): PythonClass {
-        if (!pythonFilter.isFilteringFunctions() || pythonFilter.isFilteringClasses()) {
+        if (pythonFilter.canSkipClassUpdate() || pythonFilter.shouldKeepClass(this)) {
             return this;
         }
 
@@ -67,7 +67,7 @@ export default class PythonClass extends PythonDeclaration {
                 (it) =>
                     pythonFilter.shouldKeepFunction(it) ||
                     // Don't exclude functions without parameters when we don't filter parameters
-                    (!pythonFilter.isFilteringParameters() ||
+                    (pythonFilter.canSkipFunctionUpdate() ||
                         !isEmptyList(it.parameters)),
             );
 

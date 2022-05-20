@@ -6,7 +6,7 @@ import PythonFromImport from './PythonFromImport';
 import PythonFunction from './PythonFunction';
 import PythonImport from './PythonImport';
 import PythonPackage from './PythonPackage';
-import AbstractPythonFilter from "./AbstractPythonFilter";
+import AbstractPythonFilter from "./filters/AbstractPythonFilter";
 
 export default class PythonModule extends PythonDeclaration {
     containingPackage: Optional<PythonPackage>;
@@ -44,8 +44,7 @@ export default class PythonModule extends PythonDeclaration {
     }
 
     filter(pythonFilter: AbstractPythonFilter): PythonModule {
-        // isFilteringClasses is also true if we are filtering functions
-        if (pythonFilter.isFilteringModules()) {
+        if (pythonFilter.canSkipModuleUpdate() || pythonFilter.shouldKeepModule(this)) {
             return this;
         }
 
@@ -55,7 +54,7 @@ export default class PythonModule extends PythonDeclaration {
                 (it) =>
                     pythonFilter.shouldKeepClass(it) ||
                     // Don't exclude empty classes when we only filter modules or classes
-                    (!pythonFilter.isFilteringFunctions() ||
+                    (pythonFilter.canSkipClassUpdate() ||
                         !isEmptyList(it.methods)),
             );
 
@@ -65,7 +64,7 @@ export default class PythonModule extends PythonDeclaration {
             .filter(
                 (it) => pythonFilter.shouldKeepFunction(it) ||
                     // Don't exclude functions without parameters when we don't filter parameters
-                    (!pythonFilter.isFilteringParameters() ||
+                    (pythonFilter.canSkipFunctionUpdate() ||
                         !isEmptyList(it.parameters)),
             );
 

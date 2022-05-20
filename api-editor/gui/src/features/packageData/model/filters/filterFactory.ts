@@ -1,7 +1,7 @@
-import {CompoundFilter} from "./CompoundFilter";
-import PythonHasNameFilter from "./PythonHasName";
+import {ConjunctiveFilter} from "./ConjunctiveFilter";
+import HasNameFilter from "./HasNameFilter";
 import AbstractPythonFilter from "./AbstractPythonFilter";
-import PythonDeclerationTypeFilter, {DeclerationType} from "./PythonDeclerationType";
+import DeclarationTypeFilter, {DeclarationType} from "./DeclarationTypeFilter";
 
 export function createFilterFromString(filterBoxInput: string): AbstractPythonFilter {
     const filters = []
@@ -12,21 +12,21 @@ export function createFilterFromString(filterBoxInput: string): AbstractPythonFi
 
             switch (scope) {
                 case 'hasName':
-                    filters.push(new PythonHasNameFilter(filterString))
+                    filters.push(new HasNameFilter(filterString))
                     break;
                 case 'is':
                     switch (filterString) {
                         case 'module':
-                            filters.push(new PythonDeclerationTypeFilter(DeclerationType.module))
+                            filters.push(new DeclarationTypeFilter(DeclarationType.Module))
                             break
                         case 'class':
-                            filters.push(new PythonDeclerationTypeFilter(DeclerationType.class))
+                            filters.push(new DeclarationTypeFilter(DeclarationType.Class))
                             break
                         case 'function':
-                            filters.push(new PythonDeclerationTypeFilter(DeclerationType.function))
+                            filters.push(new DeclarationTypeFilter(DeclarationType.Function))
                             break
                         case 'parameter':
-                            filters.push(new PythonDeclerationTypeFilter(DeclerationType.parameter))
+                            filters.push(new DeclarationTypeFilter(DeclarationType.Parameter))
                             break
                         // no default
                     }
@@ -37,5 +37,5 @@ export function createFilterFromString(filterBoxInput: string): AbstractPythonFi
         }
     }
 
-    return new CompoundFilter(filters);
+    return new ConjunctiveFilter(filters);
 }

@@ -1,9 +1,12 @@
-import PythonClass from './PythonClass';
-import PythonFunction from './PythonFunction';
-import PythonModule from "./PythonModule";
-import PythonParameter from "./PythonParameter";
+import PythonClass from '../PythonClass';
+import PythonFunction from '../PythonFunction';
+import PythonModule from "../PythonModule";
+import PythonParameter from "../PythonParameter";
 import AbstractPythonFilter from "./AbstractPythonFilter";
 
+/**
+ * Keeps all declarations.
+ */
 export default class NullFilter extends AbstractPythonFilter {
     shouldKeepModule(pythonModule: PythonModule): boolean {
         return true;
@@ -21,19 +24,19 @@ export default class NullFilter extends AbstractPythonFilter {
         return true;
     }
 
-    isFilteringModules(): boolean {
+    canSkipPackageUpdate(): boolean {
         return false;
     }
 
-    isFilteringClasses(): boolean {
+    canSkipModuleUpdate(): boolean {
         return false;
     }
 
-    isFilteringFunctions(): boolean {
+    canSkipClassUpdate(): boolean {
         return false;
     }
 
-    isFilteringParameters(): boolean {
+    canSkipFunctionUpdate(): boolean {
         return false;
     }
 }

@@ -4,7 +4,7 @@ import PythonDeclaration from './PythonDeclaration';
 import PythonModule from './PythonModule';
 import PythonParameter from './PythonParameter';
 import PythonResult from './PythonResult';
-import AbstractPythonFilter from "./AbstractPythonFilter";
+import AbstractPythonFilter from "./filters/AbstractPythonFilter";
 
 export default class PythonFunction extends PythonDeclaration {
     containingModuleOrClass: Optional<PythonModule | PythonClass>;
@@ -97,7 +97,7 @@ export default class PythonFunction extends PythonDeclaration {
     }
 
     filter(pythonFilter: AbstractPythonFilter): PythonFunction {
-        if (!pythonFilter.isFilteringParameters() || pythonFilter.isFilteringFunctions()) {
+        if (pythonFilter.canSkipFunctionUpdate() || pythonFilter.shouldKeepFunction(this)) {
             return this;
         }
 
