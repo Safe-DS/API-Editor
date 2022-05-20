@@ -2,7 +2,7 @@ name: Pull Request
 
 on:
   pull_request:
-    branches: [main]
+    branches: [ main ]
 
 concurrency:
   group: ${{ github.head_ref }}-${{ github.workflow }}
@@ -17,8 +17,8 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
-        java-version: [17]
+        node-version: [ 16.x ]
+        java-version: [ 17 ]
 
     steps:
       - name: Checkout source
@@ -100,7 +100,7 @@ jobs:
       - name: Smoke test (api sklearn)
         run: poetry run parse-package api -p sklearn -o out
 
-      - name: Smoke test (generate)
+      - name: Smoke test (annotations)
         run: poetry run parse-package annotations -a tests/data/unuseds/api_data.json -u tests/data/unuseds/usage_data.json -o out/annotations.json
 
       # Requires installation of pytest and pytest-cov
