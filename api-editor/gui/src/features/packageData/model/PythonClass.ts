@@ -57,7 +57,7 @@ export default class PythonClass extends PythonDeclaration {
     }
 
     filter(pythonFilter: AbstractPythonFilter): PythonClass {
-        if (!pythonFilter.isFilteringFunctions()) {
+        if (!pythonFilter.isFilteringFunctions() || pythonFilter.isFilteringClasses()) {
             return this;
         }
 

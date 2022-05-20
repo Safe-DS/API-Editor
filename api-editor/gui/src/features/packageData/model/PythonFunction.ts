@@ -97,7 +97,7 @@ export default class PythonFunction extends PythonDeclaration {
     }
 
     filter(pythonFilter: AbstractPythonFilter): PythonFunction {
-        if (!pythonFilter.isFilteringParameters()) {
+        if (!pythonFilter.isFilteringParameters() || pythonFilter.isFilteringFunctions()) {
             return this;
         }
 

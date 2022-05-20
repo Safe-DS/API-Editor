@@ -45,7 +45,7 @@ export default class PythonModule extends PythonDeclaration {
 
     filter(pythonFilter: AbstractPythonFilter): PythonModule {
         // isFilteringClasses is also true if we are filtering functions
-        if (!pythonFilter.isFilteringClasses()) {
+        if (pythonFilter.isFilteringModules()) {
             return this;
         }
 
@@ -53,7 +53,7 @@ export default class PythonModule extends PythonDeclaration {
             .map((it) => it.filter(pythonFilter))
             .filter(
                 (it) =>
-                    pythonFilter.shouldKeepClass(it) &&
+                    pythonFilter.shouldKeepClass(it) ||
                     // Don't exclude empty classes when we only filter modules or classes
                     (!pythonFilter.isFilteringFunctions() ||
                         !isEmptyList(it.methods)),
