@@ -42,15 +42,16 @@ def cli() -> None:
         generate_annotations(args.api, args.usages, args.out)
 
     elif args.command == __ALL_COMMAND:
-        package, src, out = args.package, args.src, args.out
-        tmp = os.path.join(args.out, "tmp")
+        package, src, out = args.package, Path(args.src), Path(args.out)
+        tmp = Path(os.path.join(args.out, "tmp"))
+        out_file_annotations = out.joinpath("annotations.json")
 
         results = __run_in_parallel(
             __run_api_command(package, out),
             __run_usages_command(package, src, tmp, out),
         )
 
-        generate_annotations(results[0], results[1], out)
+        generate_annotations(results[0], results[1], out_file_annotations)
 
 
 def __run_in_parallel(*fns):
