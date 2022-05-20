@@ -1,13 +1,11 @@
 import PythonClass from '../PythonClass';
 import PythonFunction from '../PythonFunction';
-import PythonModule from "../PythonModule";
-import PythonParameter from "../PythonParameter";
-import AbstractPythonFilter from "./AbstractPythonFilter";
+import PythonModule from '../PythonModule';
+import PythonParameter from '../PythonParameter';
+import AbstractPythonFilter from './AbstractPythonFilter';
 
 export default class DeclarationTypeFilter extends AbstractPythonFilter {
-    constructor(
-        readonly type: DeclarationType,
-    ) {
+    constructor(readonly type: DeclarationType) {
         super();
     }
 
@@ -20,7 +18,7 @@ export default class DeclarationTypeFilter extends AbstractPythonFilter {
     }
 
     shouldKeepFunction(pythonFunction: PythonFunction): boolean {
-        return this.type == DeclarationType.Function
+        return this.type == DeclarationType.Function;
     }
 
     shouldKeepParameter(pythonParameter: PythonParameter): boolean {
@@ -36,14 +34,15 @@ export default class DeclarationTypeFilter extends AbstractPythonFilter {
     }
 
     canSkipClassUpdate(): boolean {
-        return this.type == DeclarationType.Module ||
-               this.type == DeclarationType.Class;
+        return this.type == DeclarationType.Module || this.type == DeclarationType.Class;
     }
 
     canSkipFunctionUpdate(): boolean {
-        return this.type == DeclarationType.Module ||
-               this.type == DeclarationType.Class ||
-               this.type == DeclarationType.Function;
+        return (
+            this.type == DeclarationType.Module ||
+            this.type == DeclarationType.Class ||
+            this.type == DeclarationType.Function
+        );
     }
 }
 
@@ -51,5 +50,5 @@ export enum DeclarationType {
     Module,
     Class,
     Function,
-    Parameter
+    Parameter,
 }

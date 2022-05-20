@@ -1,7 +1,7 @@
 import { isEmptyList } from '../../../common/util/listOperations';
 import PythonDeclaration from './PythonDeclaration';
 import PythonModule from './PythonModule';
-import AbstractPythonFilter from "./filters/AbstractPythonFilter";
+import AbstractPythonFilter from './filters/AbstractPythonFilter';
 
 export default class PythonPackage extends PythonDeclaration {
     constructor(
@@ -40,16 +40,11 @@ export default class PythonPackage extends PythonDeclaration {
                 (it) =>
                     pythonFilter.shouldKeepModule(it) ||
                     // Don't exclude empty modules when we only filter modules
-                    (pythonFilter.canSkipModuleUpdate() ||
-                        !isEmptyList(it.classes) ||
-                        !isEmptyList(it.functions)),
+                    pythonFilter.canSkipModuleUpdate() ||
+                    !isEmptyList(it.classes) ||
+                    !isEmptyList(it.functions),
             );
 
-        return new PythonPackage(
-            this.distribution,
-            this.name,
-            this.version,
-            modules,
-        );
+        return new PythonPackage(this.distribution, this.name, this.version, modules);
     }
 }

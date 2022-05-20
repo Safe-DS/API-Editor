@@ -1,8 +1,8 @@
 import PythonClass from '../PythonClass';
 import PythonFunction from '../PythonFunction';
-import PythonModule from "../PythonModule";
-import PythonParameter from "../PythonParameter";
-import AbstractPythonFilter from "./AbstractPythonFilter";
+import PythonModule from '../PythonModule';
+import PythonParameter from '../PythonParameter';
+import AbstractPythonFilter from './AbstractPythonFilter';
 
 /**
  * Keeps all declarations.

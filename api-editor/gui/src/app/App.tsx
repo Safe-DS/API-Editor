@@ -47,7 +47,7 @@ import AttributeForm from '../features/annotations/forms/AttributeForm';
 import { UsageCountJson, UsageCountStore } from '../features/usages/model/UsageCountStore';
 import { selectShowUsageImportDialog } from '../features/usages/usageSlice';
 import UsageImportDialog from '../features/usages/UsageImportDialog';
-import {createFilterFromString} from "../features/packageData/model/filters/filterFactory";
+import { createFilterFromString } from '../features/packageData/model/filters/filterFactory';
 
 const App: React.FC = function () {
     const dispatch = useAppDispatch();
