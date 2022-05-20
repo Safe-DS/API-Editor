@@ -137,7 +137,7 @@ class UnionType:
     types: list[str]
 
     @classmethod
-    def from_string(cls, type_str: str) -> Optional[UnionType]:
+    def from_string(cls, type_str: str) -> UnionType:
         # Remove all non-necessary whitespaces
         type_str = re.sub("[ ]+", " ", type_str)
         # Find all Enums and remove them from doc_string
