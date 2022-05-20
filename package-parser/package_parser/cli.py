@@ -1,8 +1,8 @@
 import argparse
 import json
 import multiprocessing
-import os.path
 from argparse import _SubParsersAction
+from functools import partial
 from pathlib import Path
 from typing import Any
 
@@ -12,6 +12,10 @@ from .commands.get_api import distribution, distribution_version, get_api
 from .commands.get_dependencies import get_dependencies
 from .commands.suggest_improvements import suggest_improvements
 from .utils import ensure_file_exists
+
+API_INDEX = 0
+
+OUT_INDEX = 1
 
 __API_COMMAND = "api"
 __USAGES_COMMAND = "usages"
@@ -43,25 +47,25 @@ def cli() -> None:
 
     elif args.command == __ALL_COMMAND:
         package, src, out = args.package, Path(args.src), Path(args.out)
-        tmp = Path(os.path.join(args.out, "tmp"))
+        tmp = Path(args.out).joinpath("tmp")
         out_file_annotations = out.joinpath("annotations.json")
 
         results = __run_in_parallel(
-            __run_api_command(package, out),
-            __run_usages_command(package, src, tmp, out),
+            partial(__run_api_command, package, out),
+            partial(__run_usages_command, package, src, tmp, out),
         )
 
-        generate_annotations(results[0], results[1], out_file_annotations)
+        generate_annotations(results[API_INDEX], results[OUT_INDEX], out_file_annotations)
 
 
 def __run_in_parallel(*fns):
     manager = multiprocessing.Manager()
     return_dict = manager.dict()
     proc = []
-    for fn, i in zip(fns, range(len(fns))):
-        p = multiprocessing.Process(target=fn, args=(i, return_dict))
-        p.start()
+    for fn in fns:
+        p = multiprocessing.Process(target=fn, args=(return_dict,))
         proc.append(p)
+        p.start()
 
     for p in proc:
         p.join()
@@ -69,7 +73,7 @@ def __run_in_parallel(*fns):
     return return_dict
 
 
-def __run_usages_command(package, src, tmp, out):
+def __run_usages_command(package, src, tmp, out, d=[]):
     usages = find_usages(package, src, tmp)
     dist = distribution(package)
     out_file_usage = out.joinpath(
@@ -87,10 +91,10 @@ def __run_usages_command(package, src, tmp, out):
     with out_file_usage_count.open("w") as f:
         json.dump(counted_usages, f, indent=2)
 
-    return out_file_usage
+    d[OUT_INDEX] = out_file_usage_count
 
 
-def __run_api_command(package, out):
+def __run_api_command(package, out, d=[]):
     public_api = get_api(package)
     public_api_dependencies = get_dependencies(public_api)
     out_file_api = out.joinpath(
@@ -105,7 +109,7 @@ def __run_api_command(package, out):
     with out_file_api_dependencies.open("w") as f:
         json.dump(public_api_dependencies.to_json(), f, indent=2, cls=CustomEncoder)
 
-    return out_file_api
+    d[API_INDEX] = out_file_api
 
 
 def __get_args() -> argparse.Namespace:

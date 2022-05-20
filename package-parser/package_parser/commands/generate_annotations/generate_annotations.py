@@ -1,6 +1,5 @@
 import json
 import re
-from io import TextIOWrapper
 from pathlib import Path
 from typing import Callable
 
@@ -23,21 +22,21 @@ from package_parser.utils import ensure_file_exists, parent_qname
 
 
 def generate_annotations(
-    api_file: TextIOWrapper, usages_file: TextIOWrapper, output_file: Path
+    api_file_path: Path, usages_file_path: Path, output_file_path: Path
 ) -> None:
     """
     Generates an annotation file from the given API and UsageStore files, and writes it to the given output file.
     Annotations that are generated are: constant, unused,
-    :param api_file: API file
-    :param usages_file: UsageStore file
-    :param output_file: Output file
+    :param api_file_path: API file
+    :param usages_file_path: UsageStore file
+    :param output_file_path: Output file
     """
 
-    with api_file:
+    with open(api_file_path) as api_file:
         api_json = json.load(api_file)
         api = API.from_json(api_json)
 
-    with usages_file:
+    with open(usages_file_path) as usages_file:
         usages_json = json.load(usages_file)
         usages = UsageCountStore.from_json(usages_json)
 
@@ -53,8 +52,8 @@ def generate_annotations(
 
     __generate_annotation_dict(api, usages, annotations, annotation_functions)
 
-    ensure_file_exists(output_file)
-    with output_file.open("w") as f:
+    ensure_file_exists(output_file_path)
+    with output_file_path.open("w") as f:
         json.dump(annotations.to_json(), f, indent=2)
 
 
