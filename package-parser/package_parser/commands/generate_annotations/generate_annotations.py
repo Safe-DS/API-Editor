@@ -1,6 +1,5 @@
 import json
 import re
-from io import TextIOWrapper
 from pathlib import Path
 from typing import Callable
 
@@ -23,21 +22,21 @@ from package_parser.utils import ensure_file_exists, parent_qname
 
 
 def generate_annotations(
-    api_file: TextIOWrapper, usages_file: TextIOWrapper, output_file: Path
+    api_file_path: Path, usages_file_path: Path, output_file_path: Path
 ) -> None:
     """
     Generates an annotation file from the given API and UsageStore files, and writes it to the given output file.
-    Annotations that are generated are: constant, unused,
-    :param api_file: API file
-    :param usages_file: UsageStore file
-    :param output_file: Output file
+    Annotations that are generated are: unused, constant, required, optional, enum and boundary.
+    :param api_file_path: API file Path
+    :param usages_file_path: UsageStore file Path
+    :param output_file_path: Output file Path
     """
 
-    with api_file:
+    with open(api_file_path) as api_file:
         api_json = json.load(api_file)
         api = API.from_json(api_json)
 
-    with usages_file:
+    with open(usages_file_path) as usages_file:
         usages_json = json.load(usages_file)
         usages = UsageCountStore.from_json(usages_json)
 
@@ -53,8 +52,8 @@ def generate_annotations(
 
     __generate_annotation_dict(api, usages, annotations, annotation_functions)
 
-    ensure_file_exists(output_file)
-    with output_file.open("w") as f:
+    ensure_file_exists(output_file_path)
+    with output_file_path.open("w") as f:
         json.dump(annotations.to_json(), f, indent=2)
 
 
@@ -78,18 +77,21 @@ def __get_constant_annotations(
     :param usages: UsageStore object
     :param api: API object for usages
     :param annotations: AnnotationStore object
-    :return: None
     """
     for qname in list(usages.value_usages.keys()):
         parameter_info = __get_parameter_info(qname, usages)
 
+        param = api.parameters().get(qname)
+        if param is None:
+            continue
+        target_name = param.pname
+
         if parameter_info.type == ParameterType.Constant:
-            formatted_name = __qname_to_target_name(api, qname)
             annotations.constant.append(
                 ConstantAnnotation(
-                    target=formatted_name,
-                    defaultValue=parameter_info.value,
+                    target=target_name,
                     defaultType=parameter_info.value_type,
+                    defaultValue=parameter_info.value,
                 )
             )
 
@@ -98,27 +100,24 @@ def __get_unused_annotations(
     usages: UsageCountStore, api: API, annotations: AnnotationStore
 ) -> None:
     """
-    Collect all parameters, functions and classes that are never used.
+    Collect all functions and classes that are never used.
     :param usages: UsageStore object
     :param api: API object for usages
     :param annotations: AnnotationStore object
-    :return: None
     """
-    for function_name in list(api.functions.keys()):
+    for function_name, function in api.functions.items():
         if (
             function_name not in usages.function_usages
             or usages.function_usages[function_name] == 0
         ):
-            formatted_name = __qname_to_target_name(api, function_name)
-            annotations.unused.append(UnusedAnnotation(formatted_name))
+            annotations.unused.append(UnusedAnnotation(function.pname))
 
-    for class_name in list(api.classes.keys()):
+    for class_name, class_ in api.classes.items():
         if (
             class_name not in usages.class_usages
             or usages.class_usages[class_name] == 0
         ):
-            formatted_name = __qname_to_target_name(api, class_name)
-            annotations.unused.append(UnusedAnnotation(formatted_name))
+            annotations.unused.append(UnusedAnnotation(class_.pname))
 
 
 def __get_enum_annotations(
@@ -129,12 +128,10 @@ def __get_enum_annotations(
     :param usages: UsageStore object
     :param api: API object for usages
     :param annotations: AnnotationStore object
-    :return: None
     """
     for _, parameter in api.parameters().items():
         refined_type = parameter.refined_type.as_dict()
         if "kind" in refined_type and refined_type["kind"] == "EnumType":
-            target = __qname_to_target_name(api, parameter.qname)
             enum_name = __to_enum_name(parameter.name)
             values = sorted(list(refined_type["values"]))
             pairs = []
@@ -145,7 +142,7 @@ def __get_enum_annotations(
                 )
 
             annotations.enums.append(
-                EnumAnnotation(target=target, enumName=enum_name, pairs=pairs)
+                EnumAnnotation(target=parameter.pname, enumName=enum_name, pairs=pairs)
             )
 
 
@@ -162,48 +159,21 @@ def __get_required_annotations(
     usages: UsageCountStore, api: API, annotations: AnnotationStore
 ) -> None:
     """
-    Collects all parameters that are currently optional but should be required to be assign a value
+    Collects all parameters that are currently optional but should be required to be assigned a value
     :param usages: Usage store
     :param api: Description of the API
     :param annotations: AnnotationStore, that holds all annotations
     """
     parameters = api.parameters()
-    optional_parameter_qnames = set(
-        it for it in parameters if parameters[it].default_value is not None
-    )
-    for qname in list(usages.value_usages.keys()):
-        if (
-            qname in optional_parameter_qnames
-            and __get_parameter_info(qname, usages).type is ParameterType.Required
-        ):
-            formatted_name = __qname_to_target_name(api, qname)
-            annotations.requireds.append(RequiredAnnotation(formatted_name))
-
-
-def __qname_to_target_name(api: API, qname: str) -> str:
-    """
-    Formats the given name to the output format. This method is to be removed as soon as the UsageStore is updated to
-    use the new format.
-    :param api: API object
-    :param qname: Name pre-formatting
-    :return: Formatted name
-    """
-
-    target_elements = qname.split(".")
-
-    package_name = api.package
-    module_name = class_name = function_name = parameter_name = ""
-
-    if ".".join(target_elements) in api.parameters().keys():
-        parameter_name = "/" + target_elements.pop()
-    if ".".join(target_elements) in api.functions.keys():
-        function_name = f"/{target_elements.pop()}"
-    if ".".join(target_elements) in api.classes.keys():
-        class_name = f"/{target_elements.pop()}"
-    if ".".join(target_elements) in api.modules.keys():
-        module_name = "/" + ".".join(target_elements)
-
-    return package_name + module_name + class_name + function_name + parameter_name
+    optional_parameters = [
+        (it, parameters[it])
+        for it in parameters
+        if parameters[it].default_value is not None
+        and parameters[it].qname in usages.parameter_usages
+    ]
+    for qname, parameter in optional_parameters:
+        if __get_parameter_info(qname, usages).type is ParameterType.Required:
+            annotations.requireds.append(RequiredAnnotation(parameter.pname))
 
 
 def __get_default_type_from_value(default_value: str) -> str:
@@ -280,8 +250,8 @@ def __add_unused_api_elements(usages: UsageCountStore, api: API) -> None:
 
             # "Public" parameters
             for parameter in function.parameters:
-                usages.add_parameter_usages(parameter.qname, 0)
                 usages.init_value(parameter.qname)
+                usages.add_parameter_usages(parameter.qname, 0)
 
 
 def __add_implicit_usages_of_default_value(usages: UsageCountStore, api: API) -> None:
@@ -323,7 +293,9 @@ def __get_optional_annotations(
 
     parameters = api.parameters()
 
-    for qname in list(usages.value_usages.keys()):
+    for qname, parameter in parameters.items():
+        if qname not in usages.parameter_usages.keys():
+            continue
         parameter_info = __get_parameter_info(qname, usages)
 
         if qname in parameters:
@@ -335,10 +307,9 @@ def __get_optional_annotations(
                 continue
 
         if parameter_info.type == ParameterType.Optional:
-            formatted_name = __qname_to_target_name(api, qname)
             annotations.optionals.append(
                 OptionalAnnotation(
-                    target=formatted_name,
+                    target=parameter.pname,
                     defaultValue=parameter_info.value,
                     defaultType=parameter_info.value_type,
                 )
@@ -353,6 +324,7 @@ def __get_parameter_info(qname: str, usages: UsageCountStore) -> ParameterInfo:
     :param usages: UsageStore
     :return ParameterInfo
     """
+
     values = [(it[0], it[1]) for it in usages.value_usages[qname].items() if it[1] > 0]
 
     if len(values) == 0:
@@ -405,7 +377,6 @@ def __get_boundary_annotations(
     for _, parameter in api.parameters().items():
         refined_type = parameter.refined_type.as_dict()
         if "kind" in refined_type and refined_type["kind"] == "BoundaryType":
-            target = __qname_to_target_name(api, parameter.qname)
             min_value = refined_type["min"]
             max_value = refined_type["max"]
 
@@ -432,7 +403,7 @@ def __get_boundary_annotations(
                 upperLimitType=max_limit_type,
             )
             boundary = BoundaryAnnotation(
-                target=target,
+                target=parameter.pname,
                 interval=interval,
             )
             annotations.boundaries.append(boundary)
