@@ -15,7 +15,8 @@ import {
     InputGroup,
     InputRightElement,
     Menu,
-    MenuButton,
+    MenuButton, MenuDivider,
+    MenuGroup,
     MenuItem,
     MenuItemOption,
     MenuList,
@@ -32,7 +33,6 @@ import {
 } from '@chakra-ui/react';
 import React, {useRef, useState} from 'react';
 import {FaCheck, FaChevronDown} from 'react-icons/fa';
-import {useLocation} from 'react-router';
 import {useAppDispatch, useAppSelector} from '../app/hooks';
 import {resetAnnotations, toggleAnnotationImportDialog} from '../features/annotations/annotationSlice';
 import AnnotatedPythonPackageBuilder from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
@@ -109,10 +109,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter, setFil
     const initialFocusRef = useRef(null);
     const dispatch = useAppDispatch();
 
-    const pathname = useLocation().pathname.split('/').slice(1);
-
     const annotationStore = useAppSelector((state) => state.annotations);
-    const enableNavigation = useAppSelector((state) => state.annotations.currentUserAction.type === 'none');
 
     const exportAnnotations = () => {
         const a = document.createElement('a');
@@ -162,16 +159,22 @@ const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter, setFil
                 <Box>
                     <Menu>
                         <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown}/>}>
-                            Import
+                            File
                         </MenuButton>
                         <MenuList>
-                            <MenuItem onClick={() => dispatch(togglePackageDataImportDialog())}>API Data</MenuItem>
-                            <MenuItem onClick={() => dispatch(toggleUsageImportDialog())}>Usages</MenuItem>
-                            <MenuItem onClick={() => dispatch(toggleAnnotationImportDialog())}>Annotations</MenuItem>
+                            <MenuGroup title='Import'>
+                                <MenuItem onClick={() => dispatch(togglePackageDataImportDialog())}>API Data</MenuItem>
+                                <MenuItem onClick={() => dispatch(toggleUsageImportDialog())}>Usages</MenuItem>
+                                <MenuItem onClick={() => dispatch(toggleAnnotationImportDialog())}>Annotations</MenuItem>
+                            </MenuGroup>
+                            <MenuDivider/>
+                            <MenuGroup title='Export'>
+                                <MenuItem onClick={exportAnnotations}>Annotations</MenuItem>
+                            </MenuGroup>
                         </MenuList>
                     </Menu>
                 </Box>
-                <Button onClick={exportAnnotations}>Export</Button>
+
                 <Button onClick={infer}>Generate adapters</Button>
                 <DeleteAllAnnotations/>
 
@@ -218,6 +221,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter, setFil
                                             : 'inherit'
                                     }
                                     spellCheck={false}
+                                    minWidth='400px'
                                 />
                                 {PythonFilter.fromFilterBoxInput(filter)?.isFilteringModules() && (
                                     <InputRightElement>
