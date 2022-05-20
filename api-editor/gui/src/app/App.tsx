@@ -96,8 +96,6 @@ const App: React.FC = function () {
     const pythonFilter = PythonFilter.fromFilterBoxInput(filter);
     const filteredPythonPackage = pythonPackage.filter(pythonFilter);
 
-    //const helpButton;
-
     const userActionTarget = pythonPackage.getByRelativePathAsString(currentUserAction.target);
 
     const showAnnotationImportDialog = useAppSelector(selectShowAnnotationImportDialog);
