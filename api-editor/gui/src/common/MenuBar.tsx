@@ -15,7 +15,8 @@ import {
     InputGroup,
     InputRightElement,
     Menu,
-    MenuButton, MenuDivider,
+    MenuButton,
+    MenuDivider,
     MenuGroup,
     MenuItem,
     MenuItemOption,
@@ -31,20 +32,20 @@ import {
     useColorMode,
     VStack,
 } from '@chakra-ui/react';
-import React, {useRef, useState} from 'react';
-import {FaCheck, FaChevronDown} from 'react-icons/fa';
-import {useAppDispatch, useAppSelector} from '../app/hooks';
-import {resetAnnotations, toggleAnnotationImportDialog} from '../features/annotations/annotationSlice';
+import React, { useRef, useState } from 'react';
+import { FaCheck, FaChevronDown } from 'react-icons/fa';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { resetAnnotations, toggleAnnotationImportDialog } from '../features/annotations/annotationSlice';
 import AnnotatedPythonPackageBuilder from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
-import {PythonFilter} from '../features/packageData/model/PythonFilter';
+import { PythonFilter } from '../features/packageData/model/PythonFilter';
 import PythonPackage from '../features/packageData/model/PythonPackage';
 import {
     selectShowPrivateDeclarations,
     togglePackageDataImportDialog,
     toggleShowPrivateDeclarations,
 } from '../features/packageData/packageDataSlice';
-import {Setter} from './util/types';
-import {toggleUsageImportDialog} from '../features/usages/usageSlice';
+import { Setter } from './util/types';
+import { toggleUsageImportDialog } from '../features/usages/usageSlice';
 
 interface MenuBarProps {
     pythonPackage: PythonPackage;
@@ -104,8 +105,8 @@ const DeleteAllAnnotations = function () {
     );
 };
 
-const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter, setFilter, displayInferErrors}) {
-    const {colorMode, toggleColorMode} = useColorMode();
+const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFilter, displayInferErrors }) {
+    const { colorMode, toggleColorMode } = useColorMode();
     const initialFocusRef = useRef(null);
     const dispatch = useAppDispatch();
 
@@ -127,7 +128,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter, setFil
 
         const requestOptions = {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(annotatedPythonPackage),
         };
         fetch('/api-editor/infer', requestOptions).then(async (response) => {
@@ -144,12 +145,12 @@ const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter, setFil
         });
     };
 
-    const settings: string[] = []
+    const settings: string[] = [];
     if (useAppSelector(selectShowPrivateDeclarations)) {
-        settings.push('showPrivateDeclarations')
+        settings.push('showPrivateDeclarations');
     }
     if (colorMode == 'dark') {
-        settings.push('darkMode')
+        settings.push('darkMode');
     }
 
     return (
@@ -158,17 +159,19 @@ const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter, setFil
                 {/* Box gets rid of popper.js warning "CSS margin styles cannot be used" */}
                 <Box>
                     <Menu>
-                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown}/>}>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
                             File
                         </MenuButton>
                         <MenuList>
-                            <MenuGroup title='Import'>
+                            <MenuGroup title="Import">
                                 <MenuItem onClick={() => dispatch(togglePackageDataImportDialog())}>API Data</MenuItem>
                                 <MenuItem onClick={() => dispatch(toggleUsageImportDialog())}>Usages</MenuItem>
-                                <MenuItem onClick={() => dispatch(toggleAnnotationImportDialog())}>Annotations</MenuItem>
+                                <MenuItem onClick={() => dispatch(toggleAnnotationImportDialog())}>
+                                    Annotations
+                                </MenuItem>
                             </MenuGroup>
-                            <MenuDivider/>
-                            <MenuGroup title='Export'>
+                            <MenuDivider />
+                            <MenuGroup title="Export">
                                 <MenuItem onClick={exportAnnotations}>Annotations</MenuItem>
                             </MenuGroup>
                         </MenuList>
@@ -176,24 +179,23 @@ const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter, setFil
                 </Box>
 
                 <Button onClick={infer}>Generate adapters</Button>
-                <DeleteAllAnnotations/>
+                <DeleteAllAnnotations />
 
                 <Box>
                     <Menu closeOnSelect={false}>
-                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown}/>}>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
                             Settings
                         </MenuButton>
                         <MenuList>
-                            <MenuOptionGroup type='checkbox' value={settings}>
+                            <MenuOptionGroup type="checkbox" value={settings}>
                                 <MenuItemOption
-                                    value='showPrivateDeclarations'
-                                    onClick={() => dispatch(toggleShowPrivateDeclarations())}>
+                                    value="showPrivateDeclarations"
+                                    onClick={() => dispatch(toggleShowPrivateDeclarations())}
+                                >
                                     Show private declarations
                                 </MenuItemOption>
 
-                                <MenuItemOption
-                                    value={'darkMode'}
-                                    onClick={toggleColorMode}>
+                                <MenuItemOption value={'darkMode'} onClick={toggleColorMode}>
                                     Dark mode
                                 </MenuItemOption>
                             </MenuOptionGroup>
@@ -202,7 +204,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter, setFil
                 </Box>
             </HStack>
 
-            <Spacer/>
+            <Spacer />
 
             <HStack>
                 <Box>
@@ -221,17 +223,17 @@ const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter, setFil
                                             : 'inherit'
                                     }
                                     spellCheck={false}
-                                    minWidth='400px'
+                                    minWidth="400px"
                                 />
                                 {PythonFilter.fromFilterBoxInput(filter)?.isFilteringModules() && (
                                     <InputRightElement>
-                                        <Icon as={FaCheck} color="green.500"/>
+                                        <Icon as={FaCheck} color="green.500" />
                                     </InputRightElement>
                                 )}
                             </InputGroup>
                         </PopoverTrigger>
                         <PopoverContent>
-                            <PopoverArrow/>
+                            <PopoverArrow />
                             <PopoverBody>Each scope must only be used once.</PopoverBody>
                         </PopoverContent>
                     </Popover>
