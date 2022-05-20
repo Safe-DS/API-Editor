@@ -53,7 +53,7 @@ export default class PythonModule extends PythonDeclaration {
             .map((it) => it.filter(pythonFilter))
             .filter(
                 (it) =>
-                    pythonFilter.filterClasses(it) &&
+                    pythonFilter.shouldKeepClass(it) &&
                     // Don't exclude empty classes when we only filter modules or classes
                     (!pythonFilter.isFilteringFunctions() ||
                         !isEmptyList(it.methods)),
@@ -63,7 +63,7 @@ export default class PythonModule extends PythonDeclaration {
         const functions = this.functions
             .map((it) => it.filter(pythonFilter))
             .filter(
-                (it) => pythonFilter.filterFunctions(it) ||
+                (it) => pythonFilter.shouldKeepFunction(it) ||
                     // Don't exclude functions without parameters when we don't filter parameters
                     (!pythonFilter.isFilteringParameters() ||
                         !isEmptyList(it.parameters)),

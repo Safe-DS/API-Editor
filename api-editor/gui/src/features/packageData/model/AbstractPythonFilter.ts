@@ -4,13 +4,13 @@ import PythonModule from "./PythonModule";
 import PythonParameter from "./PythonParameter";
 
 export default abstract class AbstractPythonFilter {
-    abstract filterModules(pythonModule: PythonModule): boolean
+    abstract shouldKeepModule(pythonModule: PythonModule): boolean
 
-    abstract filterClasses(pythonClass: PythonClass): boolean
+    abstract shouldKeepClass(pythonClass: PythonClass): boolean
 
-    abstract filterFunctions(pythonFunction: PythonFunction): boolean
+    abstract shouldKeepFunction(pythonFunction: PythonFunction): boolean
 
-    abstract filterParameters(pythonParameter: PythonParameter): boolean
+    abstract shouldKeepParameter(pythonParameter: PythonParameter): boolean
 
     isFilteringModules(): boolean {
         return true;

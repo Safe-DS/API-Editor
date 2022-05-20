@@ -18,7 +18,6 @@ import {
     Image,
     Input,
     InputGroup,
-    InputRightElement,
     Link,
     Menu,
     MenuButton,
@@ -34,12 +33,12 @@ import {
     useColorMode,
     VStack,
 } from '@chakra-ui/react';
-import React, { useRef, useState } from 'react';
-import { FaCheck, FaChevronDown } from 'react-icons/fa';
-import { useLocation } from 'react-router';
-import { NavLink } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { resetAnnotations, toggleAnnotationImportDialog } from '../features/annotations/annotationSlice';
+import React, {useRef, useState} from 'react';
+import {FaChevronDown} from 'react-icons/fa';
+import {useLocation} from 'react-router';
+import {NavLink} from 'react-router-dom';
+import {useAppDispatch, useAppSelector} from '../app/hooks';
+import {resetAnnotations, toggleAnnotationImportDialog} from '../features/annotations/annotationSlice';
 import AnnotatedPythonPackageBuilder from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
 import PythonPackage from '../features/packageData/model/PythonPackage';
 import {
@@ -47,8 +46,8 @@ import {
     togglePackageDataImportDialog,
     toggleShowPrivateDeclarations,
 } from '../features/packageData/packageDataSlice';
-import { Setter } from './util/types';
-import { toggleUsageImportDialog } from '../features/usages/usageSlice';
+import {Setter} from './util/types';
+import {toggleUsageImportDialog} from '../features/usages/usageSlice';
 
 interface MenuBarProps {
     pythonPackage: PythonPackage;

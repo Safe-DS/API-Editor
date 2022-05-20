@@ -38,7 +38,7 @@ export default class PythonPackage extends PythonDeclaration {
             .map((it) => it.filter(pythonFilter))
             .filter(
                 (it) =>
-                    pythonFilter.filterModules(it) ||
+                    pythonFilter.shouldKeepModule(it) ||
                     // Don't exclude empty modules when we only filter modules
                     (!pythonFilter.isFilteringClasses() ||
                         !isEmptyList(it.classes) ||

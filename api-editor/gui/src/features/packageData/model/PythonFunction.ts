@@ -104,7 +104,7 @@ export default class PythonFunction extends PythonDeclaration {
 
         const parameters = this.parameters
             .map((it) => it.clone())
-            .filter((it) => pythonFilter.filterParameters(it)
+            .filter((it) => pythonFilter.shouldKeepParameter(it)
             );
 
         const results = this.results.map((it) => it.clone());

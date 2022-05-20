@@ -66,7 +66,7 @@ export default class PythonClass extends PythonDeclaration {
             .map((it) => it.filter(pythonFilter))
             .filter(
                 (it) =>
-                    pythonFilter.filterFunctions(it) ||
+                    pythonFilter.shouldKeepFunction(it) ||
                     // Don't exclude functions without parameters when we don't filter parameters
                     (!pythonFilter.isFilteringParameters() ||
                         !isEmptyList(it.parameters)),

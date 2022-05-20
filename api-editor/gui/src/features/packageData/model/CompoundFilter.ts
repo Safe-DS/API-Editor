@@ -13,27 +13,27 @@ export class CompoundFilter extends AbstractPythonFilter {
         super();
     }
 
-    filterClasses(pythonClass: PythonClass): boolean {
+    shouldKeepClass(pythonClass: PythonClass): boolean {
         return this.filters.every(
-            (it) => it.filterClasses(pythonClass)
+            (it) => it.shouldKeepClass(pythonClass)
         );
     }
 
-    filterFunctions(pythonFunction: PythonFunction): boolean {
+    shouldKeepFunction(pythonFunction: PythonFunction): boolean {
         return this.filters.every(
-            (it) => it.filterFunctions(pythonFunction)
+            (it) => it.shouldKeepFunction(pythonFunction)
         );
     }
 
-    filterModules(pythonModule: PythonModule): boolean {
+    shouldKeepModule(pythonModule: PythonModule): boolean {
         return this.filters.every(
-            (it) => it.filterModules(pythonModule)
+            (it) => it.shouldKeepModule(pythonModule)
         );
     }
 
-    filterParameters(pythonParameter: PythonParameter): boolean {
+    shouldKeepParameter(pythonParameter: PythonParameter): boolean {
         return this.filters.every(
-            (it) => it.filterParameters(pythonParameter)
+            (it) => it.shouldKeepParameter(pythonParameter)
         );
     }
 

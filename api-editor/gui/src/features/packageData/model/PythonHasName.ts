@@ -15,19 +15,19 @@ export default class PythonHasNameFilter extends AbstractPythonFilter {
         super();
     }
 
-    filterModules(pythonModule: PythonModule): boolean {
+    shouldKeepModule(pythonModule: PythonModule): boolean {
         return this.filter(pythonModule.name)
     }
 
-    filterClasses(pythonClass: PythonClass): boolean {
+    shouldKeepClass(pythonClass: PythonClass): boolean {
         return this.filter(pythonClass.name)
     }
 
-    filterFunctions(pythonFunction: PythonFunction): boolean {
+    shouldKeepFunction(pythonFunction: PythonFunction): boolean {
         return this.filter(pythonFunction.name)
     }
 
-    filterParameters(pythonParameter: PythonParameter): boolean {
+    shouldKeepParameter(pythonParameter: PythonParameter): boolean {
         return this.filter(pythonParameter.name)
     }
 
