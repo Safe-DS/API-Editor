@@ -1,6 +1,5 @@
 import json
 import re
-from io import TextIOWrapper
 from pathlib import Path
 from typing import Callable
 
@@ -23,21 +22,21 @@ from package_parser.utils import ensure_file_exists, parent_qname
 
 
 def generate_annotations(
-    api_file: TextIOWrapper, usages_file: TextIOWrapper, output_file: Path
+    api_file_path: Path, usages_file_path: Path, output_file_path: Path
 ) -> None:
     """
     Generates an annotation file from the given API and UsageStore files, and writes it to the given output file.
     Annotations that are generated are: unused, constant, required, optional, enum and boundary.
-    :param api_file: API file
-    :param usages_file: UsageStore file
-    :param output_file: Output file
+    :param api_file_path: API file Path
+    :param usages_file_path: UsageStore file Path
+    :param output_file_path: Output file Path
     """
 
-    with api_file:
+    with open(api_file_path) as api_file:
         api_json = json.load(api_file)
         api = API.from_json(api_json)
 
-    with usages_file:
+    with open(usages_file_path) as usages_file:
         usages_json = json.load(usages_file)
         usages = UsageCountStore.from_json(usages_json)
 
@@ -53,8 +52,8 @@ def generate_annotations(
 
     __generate_annotation_dict(api, usages, annotations, annotation_functions)
 
-    ensure_file_exists(output_file)
-    with output_file.open("w") as f:
+    ensure_file_exists(output_file_path)
+    with output_file_path.open("w") as f:
         json.dump(annotations.to_json(), f, indent=2)
 
 
@@ -160,19 +159,19 @@ def __get_required_annotations(
     usages: UsageCountStore, api: API, annotations: AnnotationStore
 ) -> None:
     """
-    Collects all parameters that are currently optional but should be required to be assign a value
+    Collects all parameters that are currently optional but should be required to be assigned a value
     :param usages: Usage store
     :param api: Description of the API
     :param annotations: AnnotationStore, that holds all annotations
     """
     parameters = api.parameters()
-    optional_parameter = [
+    optional_parameters = [
         (it, parameters[it])
         for it in parameters
         if parameters[it].default_value is not None
+        and parameters[it].qname in usages.parameter_usages
     ]
-    for qname, parameter in optional_parameter:
-
+    for qname, parameter in optional_parameters:
         if __get_parameter_info(qname, usages).type is ParameterType.Required:
             annotations.requireds.append(RequiredAnnotation(parameter.pname))
 
@@ -251,8 +250,8 @@ def __add_unused_api_elements(usages: UsageCountStore, api: API) -> None:
 
             # "Public" parameters
             for parameter in function.parameters:
-                usages.add_parameter_usages(parameter.qname, 0)
                 usages.init_value(parameter.qname)
+                usages.add_parameter_usages(parameter.qname, 0)
 
 
 def __add_implicit_usages_of_default_value(usages: UsageCountStore, api: API) -> None:
@@ -295,6 +294,8 @@ def __get_optional_annotations(
     parameters = api.parameters()
 
     for qname, parameter in parameters.items():
+        if qname not in usages.parameter_usages.keys():
+            continue
         parameter_info = __get_parameter_info(qname, usages)
 
         if qname in parameters:
@@ -323,6 +324,7 @@ def __get_parameter_info(qname: str, usages: UsageCountStore) -> ParameterInfo:
     :param usages: UsageStore
     :return ParameterInfo
     """
+
     values = [(it[0], it[1]) for it in usages.value_usages[qname].items() if it[1] > 0]
 
     if len(values) == 0:
