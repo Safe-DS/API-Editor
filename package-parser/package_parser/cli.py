@@ -14,8 +14,7 @@ from .commands.suggest_improvements import suggest_improvements
 from .utils import ensure_file_exists
 
 API_INDEX = 0
-
-OUT_INDEX = 1
+USAGES_INDEX = 1
 
 __API_COMMAND = "api"
 __USAGES_COMMAND = "usages"
@@ -55,7 +54,7 @@ def cli() -> None:
             partial(__run_usages_command, package, src, tmp, out),
         )
 
-        generate_annotations(results[API_INDEX], results[OUT_INDEX], out_file_annotations)
+        generate_annotations(results[API_INDEX], results[USAGES_INDEX], out_file_annotations)
 
 
 def __run_in_parallel(*fns):
@@ -91,7 +90,7 @@ def __run_usages_command(package, src, tmp, out, d=[]):
     with out_file_usage_count.open("w") as f:
         json.dump(counted_usages, f, indent=2)
 
-    d[OUT_INDEX] = out_file_usage_count
+    d[USAGES_INDEX] = out_file_usage_count
 
 
 def __run_api_command(package, out, d=[]):

@@ -27,9 +27,9 @@ def generate_annotations(
     """
     Generates an annotation file from the given API and UsageStore files, and writes it to the given output file.
     Annotations that are generated are: constant, unused,
-    :param api_file_path: API file
-    :param usages_file_path: UsageStore file
-    :param output_file_path: Output file
+    :param api_file_path: API file Path
+    :param usages_file_path: UsageStore file Path
+    :param output_file_path: Output file Path
     """
 
     with open(api_file_path) as api_file:
