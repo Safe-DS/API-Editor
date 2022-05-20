@@ -157,16 +157,16 @@ class UnionType:
         brackets = 0
         build_string = ""
         for c in type_str:
-            if c == '(':
+            if c == "(":
                 brackets += 1
-            elif c == ')':
+            elif c == ")":
                 brackets -= 1
 
             if brackets > 0:
                 build_string += c
                 continue
 
-            if brackets == 0 and not c == ',':
+            if brackets == 0 and not c == ",":
                 build_string += c
             elif brackets == 0 and c == ",":
                 # remove leading and trailing whitespaces
