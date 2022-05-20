@@ -54,7 +54,9 @@ def cli() -> None:
             partial(__run_usages_command, package, src, tmp, out),
         )
 
-        generate_annotations(results[API_INDEX], results[USAGES_INDEX], out_file_annotations)
+        generate_annotations(
+            results[API_INDEX], results[USAGES_INDEX], out_file_annotations
+        )
 
 
 def __run_in_parallel(*fns):
