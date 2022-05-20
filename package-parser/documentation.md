@@ -160,28 +160,28 @@ The ParameterInfo class is used to encapsulate the collected information for a g
 
 ```mermaid
 classDiagram
-	class UsageStoreCount{
-	Counter[ClassQName] class_usages
-	Counter[FunctionQName] function_usages
-	Counter[ParameterQName] parameter_usages
-	dict[ParameterQName, Counter[StringifiedValue]] value_usages
-	__init__()
-	__eq__()
-	__hash__()
-	from_json(json) UsageStoreCount
-	add_class_usage(ClassQname, Integer)
-	add_function_usage(FunctionQName, Integer)
-	add_parameter_usages(ParameterQName)
-	add_value_usage(ParameterQName, StringifiedValue, Integer)
-	init_value(ParameterQName)
-	remove_class(ClassQName)
-	remove_function_usages(FunctionQname)
-	n_class_usages(ClassQName)
-	n_function_usages(FunctionQName)
-	n_parameter_usages(ParameterQName)
-	n_value_usages(ParameterQName, StringifiedValue)
-	to_json()
-	}
+ class UsageStoreCount{
+ Counter[ClassQName] class_usages
+ Counter[FunctionQName] function_usages
+ Counter[ParameterQName] parameter_usages
+ dict[ParameterQName, Counter[StringifiedValue]] value_usages
+ __init__()
+ __eq__()
+ __hash__()
+ from_json(json) UsageStoreCount
+ add_class_usage(ClassQname, Integer)
+ add_function_usage(FunctionQName, Integer)
+ add_parameter_usages(ParameterQName)
+ add_value_usage(ParameterQName, StringifiedValue, Integer)
+ init_value(ParameterQName)
+ remove_class(ClassQName)
+ remove_function_usages(FunctionQname)
+ n_class_usages(ClassQName)
+ n_function_usages(FunctionQName)
+ n_parameter_usages(ParameterQName)
+ n_value_usages(ParameterQName, StringifiedValue)
+ to_json()
+ }
 ```
 
 Can be found [here](package_parser/models/_usages.py).
@@ -212,7 +212,7 @@ The methods `to_json()` and `from_json()` are used to store the content of the U
 
 This function acts as the central interface for other parts of the program.
 
-### Input:
+### Input
 
 The function receives two filehandlers and a string that specifies a path.
 
@@ -227,7 +227,7 @@ This function needs to be executed before the data can be analyzed and performs 
 
 - `remove_internal_usages()`
 
-  Since we are only concerned with the use of outward-facing package elements, all elements that are used exclusively internally are excluded from consideration. 
+  Since we are only concerned with the use of outward-facing package elements, all elements that are used exclusively internally are excluded from consideration.
   
 - `add_unused_api_elements()`
 
@@ -248,8 +248,8 @@ direction LR
 check_arguments --> collect_annotation_getter
 collect_annotation_getter --> preprocess_usages
 state generate_annotation_dict{
-	direction LR
-	preprocess_usages --> call_annotation_getter
+ direction LR
+ preprocess_usages --> call_annotation_getter
 }
 call_annotation_getter --> dump_annotation_store
 ```
