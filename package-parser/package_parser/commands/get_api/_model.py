@@ -124,6 +124,7 @@ class Module:
     def from_json(json: Any) -> Module:
         result = Module(
             json["name"],
+            json["pname"],
             [Import.from_json(import_json) for import_json in json["imports"]],
             [
                 FromImport.from_json(from_import_json)
@@ -140,9 +141,14 @@ class Module:
         return result
 
     def __init__(
-        self, name: str, imports: list[Import], from_imports: list[FromImport]
+        self,
+        name: str,
+        pname: str,
+        imports: list[Import],
+        from_imports: list[FromImport],
     ):
         self.name: str = name
+        self.pname: str = pname
         self.imports: list[Import] = imports
         self.from_imports: list[FromImport] = from_imports
         self.classes: list[str] = []
@@ -157,6 +163,7 @@ class Module:
     def to_json(self) -> Any:
         return {
             "name": self.name,
+            "pname": self.pname,
             "imports": [import_.to_json() for import_ in self.imports],
             "from_imports": [
                 from_import.to_json() for from_import in self.from_imports
@@ -202,6 +209,7 @@ class Class:
     def from_json(json: Any) -> Class:
         result = Class(
             json["qname"],
+            json["pname"],
             json["decorators"],
             json["superclasses"],
             json["is_public"],
@@ -218,6 +226,7 @@ class Class:
     def __init__(
         self,
         qname: str,
+        pname: str,
         decorators: list[str],
         superclasses: list[str],
         is_public: bool,
@@ -226,6 +235,7 @@ class Class:
         source_code: str,
     ) -> None:
         self.qname: str = qname
+        self.pname: str = pname
         self.decorators: list[str] = decorators
         self.superclasses: list[str] = superclasses
         self.methods: list[str] = []
@@ -245,6 +255,7 @@ class Class:
         return {
             "name": self.name,
             "qname": self.qname,
+            "pname": self.pname,
             "decorators": self.decorators,
             "superclasses": self.superclasses,
             "methods": self.methods,
@@ -258,6 +269,7 @@ class Class:
 @dataclass
 class Function:
     qname: str
+    pname: str
     decorators: list[str]
     parameters: list[Parameter]
     results: list[Result]
@@ -270,6 +282,7 @@ class Function:
     def from_json(json: Any) -> Function:
         return Function(
             json["qname"],
+            json["pname"],
             json["decorators"],
             [
                 Parameter.from_json(parameter_json)
@@ -325,6 +338,7 @@ class Function:
             "name": self.name,
             "unique_name": self.unique_name,
             "qname": self.qname,
+            "pname": self.pname,
             "unique_qname": self.unique_qname,
             "decorators": self.decorators,
             "parameters": [parameter.to_json() for parameter in self.parameters],
@@ -375,6 +389,7 @@ class Parameter:
         return cls(
             json["name"],
             json["qname"],
+            json["pname"],
             json["default_value"],
             json["is_public"],
             ParameterAssignment[json["assigned_by"]],
@@ -385,6 +400,7 @@ class Parameter:
         self,
         name: str,
         qname: str,
+        pname: str,
         default_value: Optional[str],
         is_public: bool,
         assigned_by: ParameterAssignment,
@@ -392,6 +408,7 @@ class Parameter:
     ) -> None:
         self.name: str = name
         self.qname: str = qname
+        self.pname: str = pname
         self.default_value: Optional[str] = default_value
         self.is_public: bool = is_public
         self.assigned_by: ParameterAssignment = assigned_by
@@ -402,6 +419,7 @@ class Parameter:
         return {
             "name": self.name,
             "qname": self.qname,
+            "pname": self.pname,
             "default_value": self.default_value,
             "is_public": self.is_public,
             "assigned_by": self.assigned_by.name,

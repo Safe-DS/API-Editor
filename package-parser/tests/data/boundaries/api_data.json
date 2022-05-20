@@ -5,6 +5,7 @@
     "modules": [
         {
             "name": "test",
+            "pname": "test/test",
             "imports": [],
             "from_imports": [],
             "classes": [],
@@ -17,12 +18,14 @@
             "name": "some_global_function",
             "unique_name": "some_global_function",
             "qname": "test.some_global_function",
+            "pname": "test/test/some_global_function",
             "unique_qname": "test.some_global_function",
             "decorators": [],
             "parameters": [
                 {
                     "name": "parameter_without_bound",
                     "qname": "test.some_global_function.parameter_without_boundary",
+                    "pname": "test/test/some_global_function/parameter_without_boundary",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -34,6 +37,7 @@
                 {
                     "name": "parameter_with_lower_bound",
                     "qname": "test.some_global_function.parameter_with_lower_bound",
+                    "pname": "test/test/some_global_function/parameter_with_lower_bound",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -45,6 +49,7 @@
                 {
                     "name": "parameter_with_upper_bound",
                     "qname": "test.some_global_function.parameter_with_upper_bound",
+                    "pname": "test/test/some_global_function/parameter_with_upper_bound",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -56,6 +61,7 @@
                 {
                     "name": "parameter_with_interval",
                     "qname": "test.some_global_function.parameter_with_interval",
+                    "pname": "test/test/some_global_function/parameter_with_interval",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
