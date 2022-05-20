@@ -1,7 +1,6 @@
 import { isEmptyList } from '../../../common/util/listOperations';
 import { Optional } from '../../../common/util/types';
 import PythonDeclaration from './PythonDeclaration';
-import { PythonFilter } from './PythonFilter';
 import PythonFunction from './PythonFunction';
 import PythonModule from './PythonModule';
 import AbstractPythonFilter from "./AbstractPythonFilter";

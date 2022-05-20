@@ -1,14 +1,10 @@
-import { Optional } from '../../../common/util/types';
 import PythonClass from './PythonClass';
 import PythonFunction from './PythonFunction';
-import PythonPackage from './PythonPackage';
 import PythonModule from "./PythonModule";
 import PythonParameter from "./PythonParameter";
 import AbstractPythonFilter from "./AbstractPythonFilter";
 
 export default class PythonHasNameFilter extends AbstractPythonFilter {
-    containingPackage: Optional<PythonPackage>;
-
     constructor(
         readonly name: string,
     ) {

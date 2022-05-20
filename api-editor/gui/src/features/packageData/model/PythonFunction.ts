@@ -1,7 +1,6 @@
 import { Optional } from '../../../common/util/types';
 import PythonClass from './PythonClass';
 import PythonDeclaration from './PythonDeclaration';
-import { PythonFilter } from './PythonFilter';
 import PythonModule from './PythonModule';
 import PythonParameter from './PythonParameter';
 import PythonResult from './PythonResult';
