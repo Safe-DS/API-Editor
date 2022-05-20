@@ -5,6 +5,7 @@ import { PythonFilter } from './PythonFilter';
 import PythonModule from './PythonModule';
 import PythonParameter from './PythonParameter';
 import PythonResult from './PythonResult';
+import AbstractPythonFilter from "./AbstractPythonFilter";
 
 export default class PythonFunction extends PythonDeclaration {
     containingModuleOrClass: Optional<PythonModule | PythonClass>;
@@ -96,19 +97,14 @@ export default class PythonFunction extends PythonDeclaration {
         return result;
     }
 
-    filter(pythonFilter: PythonFilter | void): PythonFunction {
-        if (!pythonFilter || !pythonFilter.isFilteringParameters()) {
+    filter(pythonFilter: AbstractPythonFilter): PythonFunction {
+        if (!pythonFilter.isFilteringParameters()) {
             return this;
         }
 
         const parameters = this.parameters
             .map((it) => it.clone())
-            .filter((it) =>
-                it.name
-                    .toLowerCase()
-                    .includes(
-                        (pythonFilter.pythonParameter || '').toLowerCase(),
-                    ),
+            .filter((it) => pythonFilter.filterParameters(it)
             );
 
         const results = this.results.map((it) => it.clone());

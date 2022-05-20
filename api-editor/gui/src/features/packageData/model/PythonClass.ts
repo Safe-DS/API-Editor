@@ -4,6 +4,7 @@ import PythonDeclaration from './PythonDeclaration';
 import { PythonFilter } from './PythonFilter';
 import PythonFunction from './PythonFunction';
 import PythonModule from './PythonModule';
+import AbstractPythonFilter from "./AbstractPythonFilter";
 
 export default class PythonClass extends PythonDeclaration {
     containingModule: Optional<PythonModule>;
@@ -56,8 +57,8 @@ export default class PythonClass extends PythonDeclaration {
         return result;
     }
 
-    filter(pythonFilter: PythonFilter | void): PythonClass {
-        if (!pythonFilter || !pythonFilter.isFilteringFunctions()) {
+    filter(pythonFilter: AbstractPythonFilter): PythonClass {
+        if (!pythonFilter.isFilteringFunctions()) {
             return this;
         }
 
@@ -65,11 +66,7 @@ export default class PythonClass extends PythonDeclaration {
             .map((it) => it.filter(pythonFilter))
             .filter(
                 (it) =>
-                    it.name
-                        .toLowerCase()
-                        .includes(
-                            (pythonFilter.pythonFunction || '').toLowerCase(),
-                        ) &&
+                    pythonFilter.filterFunctions(it) ||
                     // Don't exclude functions without parameters when we don't filter parameters
                     (!pythonFilter.isFilteringParameters() ||
                         !isEmptyList(it.parameters)),

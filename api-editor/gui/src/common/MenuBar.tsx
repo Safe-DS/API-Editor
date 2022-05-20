@@ -41,7 +41,6 @@ import { NavLink } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { resetAnnotations, toggleAnnotationImportDialog } from '../features/annotations/annotationSlice';
 import AnnotatedPythonPackageBuilder from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
-import { PythonFilter } from '../features/packageData/model/PythonFilter';
 import PythonPackage from '../features/packageData/model/PythonPackage';
 import {
     selectShowPrivateDeclarations,
@@ -204,7 +203,9 @@ const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFi
                 </Button>
                 <Button onClick={toggleColorMode}>Toggle {colorMode === 'light' ? 'dark' : 'light'}</Button>
                 <Box>
-                    <Popover isOpen={!PythonFilter.fromFilterBoxInput(filter)} initialFocusRef={initialFocusRef}>
+                    <Popover isOpen={
+                        false //!PythonFilter.fromFilterBoxInput(filter)
+                    } initialFocusRef={initialFocusRef}>
                         <PopoverTrigger>
                             <InputGroup ref={initialFocusRef}>
                                 <Input
@@ -212,19 +213,19 @@ const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFi
                                     placeholder="Filter..."
                                     value={filter}
                                     onChange={(event) => setFilter(event.target.value)}
-                                    isInvalid={!PythonFilter.fromFilterBoxInput(filter)}
-                                    borderColor={
-                                        PythonFilter.fromFilterBoxInput(filter)?.isFilteringModules()
-                                            ? 'green'
-                                            : 'inherit'
-                                    }
+                                    // isInvalid={!PythonFilter.fromFilterBoxInput(filter)}
+                                    // borderColor={
+                                    //     PythonFilter.fromFilterBoxInput(filter)?.isFilteringModules()
+                                    //         ? 'green'
+                                    //         : 'inherit'
+                                    // }
                                     spellCheck={false}
                                 />
-                                {PythonFilter.fromFilterBoxInput(filter)?.isFilteringModules() && (
-                                    <InputRightElement>
-                                        <Icon as={FaCheck} color="green.500" />
-                                    </InputRightElement>
-                                )}
+                                {/*{PythonFilter.fromFilterBoxInput(filter)?.isFilteringModules() && (*/}
+                                {/*    <InputRightElement>*/}
+                                {/*        <Icon as={FaCheck} color="green.500" />*/}
+                                {/*    </InputRightElement>*/}
+                                {/*)}*/}
                             </InputGroup>
                         </PopoverTrigger>
                         <PopoverContent>

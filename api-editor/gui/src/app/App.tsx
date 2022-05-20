@@ -32,7 +32,6 @@ import GroupForm from '../features/annotations/forms/GroupForm';
 import MoveForm from '../features/annotations/forms/MoveForm';
 import OptionalForm from '../features/annotations/forms/OptionalForm';
 import RenameForm from '../features/annotations/forms/RenameForm';
-import { PythonFilter } from '../features/packageData/model/PythonFilter';
 import PythonPackage from '../features/packageData/model/PythonPackage';
 import { parsePythonPackageJson, PythonPackageJson } from '../features/packageData/model/PythonPackageBuilder';
 import PackageDataImportDialog from '../features/packageData/PackageDataImportDialog';
@@ -48,6 +47,7 @@ import AttributeForm from '../features/annotations/forms/AttributeForm';
 import { UsageCountJson, UsageCountStore } from '../features/usages/model/UsageCountStore';
 import { selectShowUsageImportDialog } from '../features/usages/usageSlice';
 import UsageImportDialog from '../features/usages/UsageImportDialog';
+import {createFilterFromString} from "../features/packageData/model/filterFactory";
 
 const App: React.FC = function () {
     const dispatch = useAppDispatch();
@@ -93,7 +93,7 @@ const App: React.FC = function () {
     }, []);
 
     const [filter, setFilter] = useState('');
-    const pythonFilter = PythonFilter.fromFilterBoxInput(filter);
+    const pythonFilter = createFilterFromString(filter);
     const filteredPythonPackage = pythonPackage.filter(pythonFilter);
 
     const userActionTarget = pythonPackage.getByRelativePathAsString(currentUserAction.target);
