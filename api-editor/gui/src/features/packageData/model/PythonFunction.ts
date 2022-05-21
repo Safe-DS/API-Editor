@@ -1,4 +1,4 @@
-import {Optional} from '../../../common/util/types';
+import { Optional } from '../../../common/util/types';
 import PythonClass from './PythonClass';
 import PythonDeclaration from './PythonDeclaration';
 import PythonModule from './PythonModule';
@@ -73,10 +73,7 @@ export default class PythonFunction extends PythonDeclaration {
         return (
             (this.parent()
                 ?.children()
-                .filter(
-                    (it) =>
-                        it instanceof PythonFunction && it.name !== this.name,
-                ) as PythonFunction[]) ?? []
+                .filter((it) => it instanceof PythonFunction && it.name !== this.name) as PythonFunction[]) ?? []
         );
     }
 
@@ -88,9 +85,7 @@ export default class PythonFunction extends PythonDeclaration {
             result += ' ';
         }
 
-        result += `def ${this.name}(${this.parameters
-            .map((it) => it.name)
-            .join(', ')})`;
+        result += `def ${this.name}(${this.parameters.map((it) => it.name).join(', ')})`;
 
         return result;
     }
