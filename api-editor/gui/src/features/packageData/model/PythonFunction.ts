@@ -1,10 +1,9 @@
-import { Optional } from '../../../common/util/types';
+import {Optional} from '../../../common/util/types';
 import PythonClass from './PythonClass';
 import PythonDeclaration from './PythonDeclaration';
 import PythonModule from './PythonModule';
 import PythonParameter from './PythonParameter';
 import PythonResult from './PythonResult';
-import AbstractPythonFilter from './filters/AbstractPythonFilter';
 
 export default class PythonFunction extends PythonDeclaration {
     containingModuleOrClass: Optional<PythonModule | PythonClass>;
@@ -74,7 +73,10 @@ export default class PythonFunction extends PythonDeclaration {
         return (
             (this.parent()
                 ?.children()
-                .filter((it) => it instanceof PythonFunction && it.name !== this.name) as PythonFunction[]) ?? []
+                .filter(
+                    (it) =>
+                        it instanceof PythonFunction && it.name !== this.name,
+                ) as PythonFunction[]) ?? []
         );
     }
 
@@ -86,31 +88,10 @@ export default class PythonFunction extends PythonDeclaration {
             result += ' ';
         }
 
-        result += `def ${this.name}(${this.parameters.map((it) => it.name).join(', ')})`;
+        result += `def ${this.name}(${this.parameters
+            .map((it) => it.name)
+            .join(', ')})`;
 
         return result;
-    }
-
-    filter(pythonFilter: AbstractPythonFilter): PythonFunction {
-        if (pythonFilter.canSkipFunctionUpdate() || pythonFilter.shouldKeepFunction(this)) {
-            return this;
-        }
-
-        const parameters = this.parameters.map((it) => it.clone()).filter((it) => pythonFilter.shouldKeepParameter(it));
-
-        const results = this.results.map((it) => it.clone());
-
-        return new PythonFunction(
-            this.name,
-            this.uniqueName,
-            this.qualifiedName,
-            this.uniqueQualifiedName,
-            this.decorators,
-            parameters,
-            results,
-            this.isPublic,
-            this.description,
-            this.fullDocstring,
-        );
     }
 }

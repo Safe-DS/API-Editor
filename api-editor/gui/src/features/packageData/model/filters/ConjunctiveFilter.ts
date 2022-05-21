@@ -1,46 +1,64 @@
-import AbstractPythonFilter from './AbstractPythonFilter';
-import PythonClass from '../PythonClass';
-import PythonFunction from '../PythonFunction';
-import PythonParameter from '../PythonParameter';
-import PythonModule from '../PythonModule';
+import AbstractPythonFilter from "./AbstractPythonFilter";
+import PythonClass from "../PythonClass";
+import PythonFunction from "../PythonFunction";
+import PythonParameter from "../PythonParameter";
+import PythonModule from "../PythonModule";
 
 /**
  * Keeps declarations iff all contained filters want to keep it.
  */
 export class ConjunctiveFilter extends AbstractPythonFilter {
-    constructor(readonly filters: AbstractPythonFilter[]) {
+    constructor(
+        readonly filters: AbstractPythonFilter[]
+    ) {
         super();
     }
 
+    shouldKeepModule(pythonModule: PythonModule): boolean {
+        return this.filters.every(
+            (it) => it.shouldKeepModule(pythonModule)
+        );
+    }
+
     shouldKeepClass(pythonClass: PythonClass): boolean {
-        return this.filters.every((it) => it.shouldKeepClass(pythonClass));
+        return this.filters.every(
+            (it) => it.shouldKeepClass(pythonClass)
+        );
     }
 
     shouldKeepFunction(pythonFunction: PythonFunction): boolean {
-        return this.filters.every((it) => it.shouldKeepFunction(pythonFunction));
-    }
-
-    shouldKeepModule(pythonModule: PythonModule): boolean {
-        return this.filters.every((it) => it.shouldKeepModule(pythonModule));
+        return this.filters.every(
+            (it) => it.shouldKeepFunction(pythonFunction)
+        );
     }
 
     shouldKeepParameter(pythonParameter: PythonParameter): boolean {
-        return this.filters.every((it) => it.shouldKeepParameter(pythonParameter));
+        return this.filters.every(
+            (it) => it.shouldKeepParameter(pythonParameter)
+        );
     }
 
     canSkipPackageUpdate(): boolean {
-        return this.filters.every((it) => it.canSkipPackageUpdate());
+        return this.filters.every(
+            (it) => it.canSkipPackageUpdate()
+        );
     }
 
     canSkipModuleUpdate(): boolean {
-        return this.filters.every((it) => it.canSkipModuleUpdate());
+        return this.filters.every(
+            (it) => it.canSkipModuleUpdate()
+        );
     }
 
     canSkipClassUpdate(): boolean {
-        return this.filters.every((it) => it.canSkipClassUpdate());
+        return this.filters.every(
+            (it) => it.canSkipClassUpdate()
+        );
     }
 
     canSkipFunctionUpdate(): boolean {
-        return this.filters.every((it) => it.canSkipFunctionUpdate());
+        return this.filters.every(
+            (it) => it.canSkipFunctionUpdate()
+        );
     }
 }
