@@ -23,20 +23,4 @@ export default class NullFilter extends AbstractPythonFilter {
     shouldKeepParameter(pythonParameter: PythonParameter): boolean {
         return true;
     }
-
-    canSkipPackageUpdate(): boolean {
-        return false;
-    }
-
-    canSkipModuleUpdate(): boolean {
-        return false;
-    }
-
-    canSkipClassUpdate(): boolean {
-        return false;
-    }
-
-    canSkipFunctionUpdate(): boolean {
-        return false;
-    }
 }

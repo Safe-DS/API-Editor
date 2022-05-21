@@ -3,11 +3,11 @@ import PythonFunction from '../PythonFunction';
 import PythonModule from '../PythonModule';
 import PythonParameter from '../PythonParameter';
 import PythonPackage from '../PythonPackage';
-import { isEmptyList } from '../../../../common/util/listOperations';
+import {isEmptyList} from '../../../../common/util/listOperations';
 
 /**
  * An abstract base class for filters of Python declarations. To create a new filter create a new subclass and override
- * the shouldKeepXXX methods. To speed up the filter, you can also override the canSkipXXXUpdate methods.
+ * the shouldKeepXXX methods.
  */
 export default abstract class AbstractPythonFilter {
     /**
@@ -31,45 +31,9 @@ export default abstract class AbstractPythonFilter {
     abstract shouldKeepParameter(pythonParameter: PythonParameter): boolean;
 
     /**
-     * Returns whether the package can be returned unchanged after filtering. Use this to improve the performance of
-     * the filter but ensure correctness.
-     */
-    canSkipPackageUpdate(): boolean {
-        return false;
-    }
-
-    /**
-     * Returns whether the module can be returned unchanged after filtering. Use this to improve the performance of
-     * the filter but ensure correctness.
-     */
-    canSkipModuleUpdate(): boolean {
-        return false;
-    }
-
-    /**
-     * Returns whether the class can be returned unchanged after filtering. Use this to improve the performance of
-     * the filter but ensure correctness.
-     */
-    canSkipClassUpdate(): boolean {
-        return false;
-    }
-
-    /**
-     * Returns whether the function can be returned unchanged after filtering. Use this to improve the performance of
-     * the filter but ensure correctness.
-     */
-    canSkipFunctionUpdate(): boolean {
-        return false;
-    }
-
-    /**
      * Applies this filter to the given package and creates a package with filtered modules.
      */
     applyToPackage(pythonPackage: PythonPackage): PythonPackage {
-        // If the package is kept, keep the entire subtree
-        if (this.canSkipPackageUpdate()) {
-            return pythonPackage;
-        }
 
         // Filter modules
         const modules = pythonPackage.modules.map((it) => this.applyToModule(it)).filter((it) => it !== null);
@@ -89,7 +53,7 @@ export default abstract class AbstractPythonFilter {
      */
     private applyToModule(pythonModule: PythonModule): PythonModule | null {
         // If the module is kept, keep the entire subtree
-        if (this.canSkipModuleUpdate() || this.shouldKeepModule(pythonModule)) {
+        if (this.shouldKeepModule(pythonModule)) {
             return pythonModule;
         }
 
@@ -119,8 +83,9 @@ export default abstract class AbstractPythonFilter {
      * should be removed.
      */
     private applyToClass(pythonClass: PythonClass): PythonClass | null {
+
         // If the class is kept, keep the entire subtree
-        if (this.canSkipClassUpdate() || this.shouldKeepClass(pythonClass)) {
+        if (this.shouldKeepClass(pythonClass)) {
             return pythonClass;
         }
 
@@ -151,7 +116,7 @@ export default abstract class AbstractPythonFilter {
      */
     private applyToFunction(pythonFunction: PythonFunction): PythonFunction | null {
         // If the function is kept, keep the entire subtree
-        if (this.canSkipFunctionUpdate() || this.shouldKeepFunction(pythonFunction)) {
+        if (this.shouldKeepFunction(pythonFunction)) {
             return pythonFunction;
         }
 

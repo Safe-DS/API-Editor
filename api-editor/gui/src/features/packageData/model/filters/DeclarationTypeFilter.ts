@@ -24,26 +24,6 @@ export default class DeclarationTypeFilter extends AbstractPythonFilter {
     shouldKeepParameter(pythonParameter: PythonParameter): boolean {
         return this.type == DeclarationType.Parameter;
     }
-
-    canSkipPackageUpdate(): boolean {
-        return this.type == DeclarationType.Module;
-    }
-
-    canSkipModuleUpdate(): boolean {
-        return this.type == DeclarationType.Module;
-    }
-
-    canSkipClassUpdate(): boolean {
-        return this.type == DeclarationType.Module || this.type == DeclarationType.Class;
-    }
-
-    canSkipFunctionUpdate(): boolean {
-        return (
-            this.type == DeclarationType.Module ||
-            this.type == DeclarationType.Class ||
-            this.type == DeclarationType.Function
-        );
-    }
 }
 
 export enum DeclarationType {

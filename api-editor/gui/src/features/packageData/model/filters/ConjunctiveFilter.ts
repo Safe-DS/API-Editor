@@ -27,20 +27,4 @@ export class ConjunctiveFilter extends AbstractPythonFilter {
     shouldKeepParameter(pythonParameter: PythonParameter): boolean {
         return this.filters.every((it) => it.shouldKeepParameter(pythonParameter));
     }
-
-    canSkipPackageUpdate(): boolean {
-        return this.filters.every((it) => it.canSkipPackageUpdate());
-    }
-
-    canSkipModuleUpdate(): boolean {
-        return this.filters.every((it) => it.canSkipModuleUpdate());
-    }
-
-    canSkipClassUpdate(): boolean {
-        return this.filters.every((it) => it.canSkipClassUpdate());
-    }
-
-    canSkipFunctionUpdate(): boolean {
-        return this.filters.every((it) => it.canSkipFunctionUpdate());
-    }
 }
