@@ -3,7 +3,7 @@ import PythonFunction from '../PythonFunction';
 import PythonModule from '../PythonModule';
 import PythonParameter from '../PythonParameter';
 import PythonPackage from '../PythonPackage';
-import {isEmptyList} from '../../../../common/util/listOperations';
+import { isEmptyList } from '../../../../common/util/listOperations';
 
 /**
  * An abstract base class for filters of Python declarations. To create a new filter create a new subclass and override
@@ -34,7 +34,6 @@ export default abstract class AbstractPythonFilter {
      * Applies this filter to the given package and creates a package with filtered modules.
      */
     applyToPackage(pythonPackage: PythonPackage): PythonPackage {
-
         // Filter modules
         const modules = pythonPackage.modules.map((it) => this.applyToModule(it)).filter((it) => it !== null);
 
@@ -83,7 +82,6 @@ export default abstract class AbstractPythonFilter {
      * should be removed.
      */
     private applyToClass(pythonClass: PythonClass): PythonClass | null {
-
         // If the class is kept, keep the entire subtree
         if (this.shouldKeepClass(pythonClass)) {
             return pythonClass;
