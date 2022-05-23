@@ -3,7 +3,7 @@ import PythonFunction from '../PythonFunction';
 import PythonModule from '../PythonModule';
 import PythonParameter from '../PythonParameter';
 import AbstractPythonFilter from './AbstractPythonFilter';
-import {AnnotationsState} from "../../../annotations/annotationSlice";
+import { AnnotationsState } from '../../../annotations/annotationSlice';
 
 export default class DeclarationTypeFilter extends AbstractPythonFilter {
     constructor(readonly type: DeclarationType) {

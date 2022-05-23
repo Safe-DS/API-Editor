@@ -3,9 +3,9 @@ import PythonFunction from '../PythonFunction';
 import PythonModule from '../PythonModule';
 import PythonParameter from '../PythonParameter';
 import PythonPackage from '../PythonPackage';
-import {isEmptyList} from '../../../../common/util/listOperations';
-import PythonDeclaration from "../PythonDeclaration";
-import {AnnotationsState} from "../../../annotations/annotationSlice";
+import { isEmptyList } from '../../../../common/util/listOperations';
+import PythonDeclaration from '../PythonDeclaration';
+import { AnnotationsState } from '../../../annotations/annotationSlice';
 
 /**
  * An abstract base class for filters of Python declarations. To create a new filter create a new subclass and override
@@ -38,15 +38,15 @@ export default abstract class AbstractPythonFilter {
      */
     shouldKeepDeclaration(pythonDeclaration: PythonDeclaration, annotations: AnnotationsState): boolean {
         if (pythonDeclaration instanceof PythonModule) {
-            return this.shouldKeepModule(pythonDeclaration, annotations)
+            return this.shouldKeepModule(pythonDeclaration, annotations);
         } else if (pythonDeclaration instanceof PythonClass) {
-            return this.shouldKeepClass(pythonDeclaration, annotations)
+            return this.shouldKeepClass(pythonDeclaration, annotations);
         } else if (pythonDeclaration instanceof PythonFunction) {
-            return this.shouldKeepFunction(pythonDeclaration, annotations)
+            return this.shouldKeepFunction(pythonDeclaration, annotations);
         } else if (pythonDeclaration instanceof PythonParameter) {
-            return this.shouldKeepParameter(pythonDeclaration, annotations)
+            return this.shouldKeepParameter(pythonDeclaration, annotations);
         } else {
-            return true
+            return true;
         }
     }
 
@@ -56,7 +56,9 @@ export default abstract class AbstractPythonFilter {
      */
     applyToPackage(pythonPackage: PythonPackage, annotations: AnnotationsState): PythonPackage {
         // Filter modules
-        const modules = pythonPackage.modules.map((it) => this.applyToModule(it, annotations)).filter((it) => it !== null);
+        const modules = pythonPackage.modules
+            .map((it) => this.applyToModule(it, annotations))
+            .filter((it) => it !== null);
 
         // Create filtered package
         return new PythonPackage(
@@ -78,10 +80,14 @@ export default abstract class AbstractPythonFilter {
         }
 
         // Filter classes
-        const classes = pythonModule.classes.map((it) => this.applyToClass(it, annotations)).filter((it) => it !== null);
+        const classes = pythonModule.classes
+            .map((it) => this.applyToClass(it, annotations))
+            .filter((it) => it !== null);
 
         // Filter functions
-        const functions = pythonModule.functions.map((it) => this.applyToFunction(it, annotations)).filter((it) => it !== null);
+        const functions = pythonModule.functions
+            .map((it) => this.applyToFunction(it, annotations))
+            .filter((it) => it !== null);
 
         // Return null if all classes and functions are removed
         if (isEmptyList(classes) && isEmptyList(functions)) {
@@ -109,7 +115,9 @@ export default abstract class AbstractPythonFilter {
         }
 
         // Filter methods
-        const methods = pythonClass.methods.map((it) => this.applyToFunction(it, annotations)).filter((it) => it !== null);
+        const methods = pythonClass.methods
+            .map((it) => this.applyToFunction(it, annotations))
+            .filter((it) => it !== null);
 
         // Return null if all methods are removed
         if (isEmptyList(methods)) {
@@ -140,8 +148,7 @@ export default abstract class AbstractPythonFilter {
         }
 
         // Filter parameters
-        const parameters = pythonFunction.parameters
-            .filter((it) => this.shouldKeepParameter(it, annotations));
+        const parameters = pythonFunction.parameters.filter((it) => this.shouldKeepParameter(it, annotations));
 
         // Return null if all parameters are removed
         if (isEmptyList(parameters)) {

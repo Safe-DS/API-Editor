@@ -4,7 +4,7 @@ import PythonModule from '../PythonModule';
 import PythonParameter from '../PythonParameter';
 import AbstractPythonFilter from './AbstractPythonFilter';
 import PythonDeclaration from '../PythonDeclaration';
-import {AnnotationsState} from "../../../annotations/annotationSlice";
+import { AnnotationsState } from '../../../annotations/annotationSlice';
 
 export default class AnnotationFilter extends AbstractPythonFilter {
     constructor(readonly type: AnnotationType) {
@@ -28,11 +28,12 @@ export default class AnnotationFilter extends AbstractPythonFilter {
     }
 
     shouldKeepDeclaration(declaration: PythonDeclaration, annotations: AnnotationsState): boolean {
-        const id = declaration.pathAsString()
+        const id = declaration.pathAsString();
 
         switch (this.type) {
             case AnnotationType.Any:
-                return id in annotations['attributes'] ||
+                return (
+                    id in annotations['attributes'] ||
                     id in annotations['boundaries'] ||
                     id in annotations['calledAfters'] ||
                     id in annotations['constants'] ||
@@ -43,11 +44,12 @@ export default class AnnotationFilter extends AbstractPythonFilter {
                     id in annotations['pures'] ||
                     id in annotations['renamings'] ||
                     id in annotations['requireds'] ||
-                    id in annotations['unuseds'];
+                    id in annotations['unuseds']
+                );
 
             // TODO: check for specific annotations
             default:
-                return true
+                return true;
         }
     }
 }

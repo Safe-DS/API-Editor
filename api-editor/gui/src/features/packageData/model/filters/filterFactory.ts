@@ -1,11 +1,11 @@
-import {ConjunctiveFilter} from './ConjunctiveFilter';
+import { ConjunctiveFilter } from './ConjunctiveFilter';
 import NameFilter from './NameFilter';
 import AbstractPythonFilter from './AbstractPythonFilter';
-import DeclarationTypeFilter, {DeclarationType} from './DeclarationTypeFilter';
-import VisibilityFilter, {Visibility} from './VisibilityFilter';
-import {NegatedFilter} from './NegatedFilter';
-import {Optional} from '../../../../common/util/types';
-import AnnotationFilter, {AnnotationType} from "./AnnotationFilter";
+import DeclarationTypeFilter, { DeclarationType } from './DeclarationTypeFilter';
+import VisibilityFilter, { Visibility } from './VisibilityFilter';
+import { NegatedFilter } from './NegatedFilter';
+import { Optional } from '../../../../common/util/types';
+import AnnotationFilter, { AnnotationType } from './AnnotationFilter';
 
 export function createFilterFromString(text: string): AbstractPythonFilter {
     const filters: AbstractPythonFilter[] = [];

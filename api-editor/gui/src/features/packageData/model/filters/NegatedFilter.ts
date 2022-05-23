@@ -3,7 +3,7 @@ import PythonClass from '../PythonClass';
 import PythonFunction from '../PythonFunction';
 import PythonParameter from '../PythonParameter';
 import PythonModule from '../PythonModule';
-import {AnnotationsState} from "../../../annotations/annotationSlice";
+import { AnnotationsState } from '../../../annotations/annotationSlice';
 
 /**
  * Keeps declarations iff the contained filter wants to remove it.

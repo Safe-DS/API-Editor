@@ -4,7 +4,7 @@ import PythonModule from '../PythonModule';
 import PythonParameter from '../PythonParameter';
 import AbstractPythonFilter from './AbstractPythonFilter';
 import PythonDeclaration from '../PythonDeclaration';
-import {AnnotationsState} from "../../../annotations/annotationSlice";
+import { AnnotationsState } from '../../../annotations/annotationSlice';
 
 export default class VisibilityFilter extends AbstractPythonFilter {
     constructor(readonly visibility: Visibility) {
