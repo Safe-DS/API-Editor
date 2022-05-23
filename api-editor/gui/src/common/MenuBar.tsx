@@ -68,12 +68,20 @@ const HelpButton = function () {
                         <UnorderedList spacing={2}>
                             <ListItem>
                                 <ChakraText>
-                                    <strong>is:xy</strong>
+                                    <strong>is:[type]</strong>
                                 </ChakraText>
                                 <ChakraText>
-                                    Displays only elements that are of the given type xy. Possible types are: module,
-                                    class,
-                                    function, parameter.
+                                    Displays only elements that are of the given type. Replace [type] with one of
+                                    module, class, function, parameter.
+                                </ChakraText>
+                            </ListItem>
+                            <ListItem>
+                                <ChakraText>
+                                    <strong>is:[visibility]</strong>
+                                </ChakraText>
+                                <ChakraText>
+                                    Displays only elements that have the given visibility. Replace [visibility] with one
+                                    of public, internal.
                                 </ChakraText>
                             </ListItem>
                             <ListItem>
