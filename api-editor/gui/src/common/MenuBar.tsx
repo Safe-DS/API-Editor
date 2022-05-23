@@ -36,15 +36,15 @@ import {
     useColorMode,
     VStack,
 } from '@chakra-ui/react';
-import React, {useRef, useState} from 'react';
-import {FaChevronDown} from 'react-icons/fa';
-import {useAppDispatch, useAppSelector} from '../app/hooks';
-import {resetAnnotations, toggleAnnotationImportDialog} from '../features/annotations/annotationSlice';
+import React, { useRef, useState } from 'react';
+import { FaChevronDown } from 'react-icons/fa';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { resetAnnotations, toggleAnnotationImportDialog } from '../features/annotations/annotationSlice';
 import AnnotatedPythonPackageBuilder from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
 import PythonPackage from '../features/packageData/model/PythonPackage';
-import {togglePackageDataImportDialog} from '../features/packageData/packageDataSlice';
-import {Setter} from './util/types';
-import {toggleUsageImportDialog} from '../features/usages/usageSlice';
+import { togglePackageDataImportDialog } from '../features/packageData/packageDataSlice';
+import { Setter } from './util/types';
+import { toggleUsageImportDialog } from '../features/usages/usageSlice';
 
 interface MenuBarProps {
     pythonPackage: PythonPackage;
@@ -58,11 +58,11 @@ const HelpButton = function () {
         <Box>
             <Popover>
                 <PopoverTrigger>
-                    <IconButton variant="ghost" icon={<Icon name="help"/>} aria-label="help"/>
+                    <IconButton variant="ghost" icon={<Icon name="help" />} aria-label="help" />
                 </PopoverTrigger>
                 <PopoverContent minWidth={462} fontSize="sm" marginRight={2}>
-                    <PopoverArrow/>
-                    <PopoverCloseButton/>
+                    <PopoverArrow />
+                    <PopoverCloseButton />
                     <PopoverHeader>Filter Options</PopoverHeader>
                     <PopoverBody>
                         <UnorderedList spacing={2}>
@@ -88,8 +88,9 @@ const HelpButton = function () {
                                 <ChakraText>
                                     <strong>name:xy</strong>
                                 </ChakraText>
-                                <ChakraText>Displays only elements with names that contain the given string
-                                    xy.</ChakraText>
+                                <ChakraText>
+                                    Displays only elements with names that contain the given string xy.
+                                </ChakraText>
                             </ListItem>
                             <ListItem>
                                 <ChakraText>
@@ -112,8 +113,7 @@ const HelpButton = function () {
                                 </ChakraText>
                                 <ChakraText>
                                     Displays only elements that do not match the given filter. Possible filters are any
-                                    in
-                                    this list.
+                                    in this list.
                                 </ChakraText>
                             </ListItem>
                         </UnorderedList>
@@ -175,8 +175,8 @@ const DeleteAllAnnotations = function () {
     );
 };
 
-const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter, setFilter, displayInferErrors}) {
-    const {colorMode, toggleColorMode} = useColorMode();
+const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFilter, displayInferErrors }) {
+    const { colorMode, toggleColorMode } = useColorMode();
     const initialFocusRef = useRef(null);
     const dispatch = useAppDispatch();
 
@@ -198,7 +198,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter, setFil
 
         const requestOptions = {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(annotatedPythonPackage),
         };
         fetch('/api-editor/infer', requestOptions).then(async (response) => {
@@ -226,7 +226,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter, setFil
                 {/* Box gets rid of popper.js warning "CSS margin styles cannot be used" */}
                 <Box>
                     <Menu>
-                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown}/>}>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
                             File
                         </MenuButton>
                         <MenuList>
@@ -237,7 +237,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter, setFil
                                     Annotations
                                 </MenuItem>
                             </MenuGroup>
-                            <MenuDivider/>
+                            <MenuDivider />
                             <MenuGroup title="Export">
                                 <MenuItem onClick={exportAnnotations}>Annotations</MenuItem>
                             </MenuGroup>
@@ -246,11 +246,11 @@ const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter, setFil
                 </Box>
 
                 <Button onClick={infer}>Generate adapters</Button>
-                <DeleteAllAnnotations/>
+                <DeleteAllAnnotations />
 
                 <Box>
                     <Menu closeOnSelect={false}>
-                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown}/>}>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
                             Settings
                         </MenuButton>
                         <MenuList>
@@ -264,7 +264,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter, setFil
                 </Box>
             </HStack>
 
-            <Spacer/>
+            <Spacer />
 
             <HStack>
                 <Box>
@@ -299,12 +299,12 @@ const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter, setFil
                             </InputGroup>
                         </PopoverTrigger>
                         <PopoverContent>
-                            <PopoverArrow/>
+                            <PopoverArrow />
                             <PopoverBody>Each scope must only be used once.</PopoverBody>
                         </PopoverContent>
                     </Popover>
                 </Box>
-                <HelpButton/>
+                <HelpButton />
             </HStack>
         </Flex>
     );

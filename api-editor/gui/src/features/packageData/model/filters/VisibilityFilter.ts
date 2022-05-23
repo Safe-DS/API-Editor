@@ -27,11 +27,11 @@ export default class VisibilityFilter extends AbstractPythonFilter {
     }
 
     shouldKeepDeclaration(declaration: PythonDeclaration): boolean {
-        return declaration.isPublicDeclaration() == (this.visibility == Visibility.Public)
+        return declaration.isPublicDeclaration() == (this.visibility == Visibility.Public);
     }
 }
 
 export enum Visibility {
     Public,
-    Internal
+    Internal,
 }

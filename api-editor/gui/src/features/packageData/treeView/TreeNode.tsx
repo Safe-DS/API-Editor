@@ -5,12 +5,9 @@ import { useLocation } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import PythonDeclaration from '../model/PythonDeclaration';
-import {
-    selectIsExpandedInTreeView,
-    toggleIsExpandedInTreeView,
-} from '../packageDataSlice';
+import { selectIsExpandedInTreeView, toggleIsExpandedInTreeView } from '../packageDataSlice';
 import VisibilityIndicator from './VisibilityIndicator';
-import AbstractPythonFilter from "../model/filters/AbstractPythonFilter";
+import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
 
 interface TreeNodeProps {
     declaration: PythonDeclaration;
@@ -19,31 +16,18 @@ interface TreeNodeProps {
     filter: AbstractPythonFilter;
 }
 
-const TreeNode: React.FC<TreeNodeProps> = function ({
-    declaration,
-    icon,
-    isExpandable,
-    filter
-}) {
+const TreeNode: React.FC<TreeNodeProps> = function ({ declaration, icon, isExpandable, filter }) {
     const currentPathname = useLocation().pathname;
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const showChildren = useAppSelector(
-        selectIsExpandedInTreeView(declaration.pathAsString()),
-    );
+    const showChildren = useAppSelector(selectIsExpandedInTreeView(declaration.pathAsString()));
 
     const level = levelOf(declaration);
     const paddingLeft = level === 0 ? '1rem' : `${1 + 0.75 * level}rem`;
-    const backgroundColor = isSelected(declaration, currentPathname)
-        ? 'cornflowerblue'
-        : undefined;
-    const color = isSelected(declaration, currentPathname)
-        ? 'white'
-        : undefined;
-    const fontWeight = filter.shouldKeepDeclaration(declaration)
-        ? 'bold'
-        : undefined;
+    const backgroundColor = isSelected(declaration, currentPathname) ? 'cornflowerblue' : undefined;
+    const color = isSelected(declaration, currentPathname) ? 'white' : undefined;
+    const fontWeight = filter.shouldKeepDeclaration(declaration) ? 'bold' : undefined;
 
     const handleClick = () => {
         dispatch(toggleIsExpandedInTreeView(declaration.pathAsString()));
@@ -74,10 +58,7 @@ const levelOf = function (declaration: PythonDeclaration): number {
     return declaration.path().length - 2;
 };
 
-const isSelected = function (
-    declaration: PythonDeclaration,
-    currentPathname: string,
-): boolean {
+const isSelected = function (declaration: PythonDeclaration, currentPathname: string): boolean {
     return `/${declaration.pathAsString()}` === currentPathname;
 };
 

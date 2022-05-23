@@ -1,20 +1,20 @@
-import {Box} from '@chakra-ui/react';
-import React, {memo, useCallback, useEffect, useRef} from 'react';
+import { Box } from '@chakra-ui/react';
+import React, { memo, useCallback, useEffect, useRef } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import {FixedSizeList, ListChildComponentProps} from 'react-window';
-import {useAppDispatch, useAppSelector} from '../../../app/hooks';
+import { FixedSizeList, ListChildComponentProps } from 'react-window';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import PythonClass from '../model/PythonClass';
 import PythonDeclaration from '../model/PythonDeclaration';
 import PythonFunction from '../model/PythonFunction';
 import PythonModule from '../model/PythonModule';
 import PythonPackage from '../model/PythonPackage';
 import PythonParameter from '../model/PythonParameter';
-import {selectAllExpandedInTreeView, selectTreeViewScrollOffset, setTreeViewScrollOffset,} from '../packageDataSlice';
+import { selectAllExpandedInTreeView, selectTreeViewScrollOffset, setTreeViewScrollOffset } from '../packageDataSlice';
 import ClassNode from './ClassNode';
 import FunctionNode from './FunctionNode';
 import ModuleNode from './ModuleNode';
 import ParameterNode from './ParameterNode';
-import AbstractPythonFilter from "../model/filters/AbstractPythonFilter";
+import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
 
 interface ScrollOffset {
     scrollOffset: number;
@@ -25,7 +25,7 @@ interface TreeViewProps {
     filter: AbstractPythonFilter;
 }
 
-const TreeView: React.FC<TreeViewProps> = memo(({pythonPackage, filter}) => {
+const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage, filter }) => {
     const dispatch = useAppDispatch();
     const allExpanded = useAppSelector(selectAllExpandedInTreeView);
 
@@ -46,8 +46,7 @@ const TreeView: React.FC<TreeViewProps> = memo(({pythonPackage, filter}) => {
             const current = listRef.current;
             if (current) {
                 try {
-                    const newScrollOffset = (current.state as ScrollOffset)
-                        .scrollOffset;
+                    const newScrollOffset = (current.state as ScrollOffset).scrollOffset;
                     dispatch(setTreeViewScrollOffset(newScrollOffset));
                 } catch {
                     dispatch(setTreeViewScrollOffset(0));
@@ -61,11 +60,11 @@ const TreeView: React.FC<TreeViewProps> = memo(({pythonPackage, filter}) => {
 
     return (
         <AutoSizer disableWidth>
-            {({height}) => (
+            {({ height }) => (
                 <FixedSizeList
                     itemSize={24}
                     itemCount={children.length}
-                    itemData={{children, filter}}
+                    itemData={{ children, filter }}
                     itemKey={(index, data) => data.children[index]?.pathAsString()}
                     width="100%"
                     height={height}
@@ -89,38 +88,25 @@ const walkChildrenInPreorder = function (
 ): PythonDeclaration[] {
     return declaration.children().flatMap((it) => {
         if (allExpandedItemsInTreeView[it.pathAsString()]) {
-            return [
-                it,
-                ...walkChildrenInPreorder(allExpandedItemsInTreeView, it),
-            ];
+            return [it, ...walkChildrenInPreorder(allExpandedItemsInTreeView, it)];
         } else {
             return [it];
         }
     });
 };
 
-const TreeNodeGenerator: React.FC<ListChildComponentProps> = memo(
-    ({data, index, style}) => {
-        const declaration = data.children[index];
-        const filter = data.filter;
+const TreeNodeGenerator: React.FC<ListChildComponentProps> = memo(({ data, index, style }) => {
+    const declaration = data.children[index];
+    const filter = data.filter;
 
-        return (
-            <Box style={style}>
-                {declaration instanceof PythonModule && (
-                    <ModuleNode pythonModule={declaration} filter={filter}/>
-                )}
-                {declaration instanceof PythonClass && (
-                    <ClassNode pythonClass={declaration} filter={filter}/>
-                )}
-                {declaration instanceof PythonFunction && (
-                    <FunctionNode pythonFunction={declaration} filter={filter}/>
-                )}
-                {declaration instanceof PythonParameter && (
-                    <ParameterNode pythonParameter={declaration} filter={filter}/>
-                )}
-            </Box>
-        );
-    },
-);
+    return (
+        <Box style={style}>
+            {declaration instanceof PythonModule && <ModuleNode pythonModule={declaration} filter={filter} />}
+            {declaration instanceof PythonClass && <ClassNode pythonClass={declaration} filter={filter} />}
+            {declaration instanceof PythonFunction && <FunctionNode pythonFunction={declaration} filter={filter} />}
+            {declaration instanceof PythonParameter && <ParameterNode pythonParameter={declaration} filter={filter} />}
+        </Box>
+    );
+});
 
 export default TreeView;

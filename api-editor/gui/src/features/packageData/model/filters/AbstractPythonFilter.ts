@@ -4,7 +4,7 @@ import PythonModule from '../PythonModule';
 import PythonParameter from '../PythonParameter';
 import PythonPackage from '../PythonPackage';
 import { isEmptyList } from '../../../../common/util/listOperations';
-import PythonDeclaration from "../PythonDeclaration";
+import PythonDeclaration from '../PythonDeclaration';
 
 /**
  * An abstract base class for filters of Python declarations. To create a new filter create a new subclass and override
@@ -37,15 +37,15 @@ export default abstract class AbstractPythonFilter {
      */
     shouldKeepDeclaration(pythonDeclaration: PythonDeclaration): boolean {
         if (pythonDeclaration instanceof PythonModule) {
-            return this.shouldKeepModule(pythonDeclaration)
+            return this.shouldKeepModule(pythonDeclaration);
         } else if (pythonDeclaration instanceof PythonClass) {
-            return this.shouldKeepClass(pythonDeclaration)
+            return this.shouldKeepClass(pythonDeclaration);
         } else if (pythonDeclaration instanceof PythonFunction) {
-            return this.shouldKeepFunction(pythonDeclaration)
+            return this.shouldKeepFunction(pythonDeclaration);
         } else if (pythonDeclaration instanceof PythonParameter) {
-            return this.shouldKeepParameter(pythonDeclaration)
+            return this.shouldKeepParameter(pythonDeclaration);
         } else {
-            return true
+            return true;
         }
     }
 

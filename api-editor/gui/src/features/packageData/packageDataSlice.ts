@@ -52,10 +52,8 @@ export const selectIsExpandedInTreeView =
     (target: string) =>
     (state: RootState): boolean =>
         Boolean(selectPackageData(state).expandedInTreeView[target]);
-export const selectAllExpandedInTreeView = (
-    state: RootState,
-): { [target: string]: true } => selectPackageData(state).expandedInTreeView;
-export const selectTreeViewScrollOffset = (state: RootState): number =>
-    selectPackageData(state).treeViewScrollOffset;
+export const selectAllExpandedInTreeView = (state: RootState): { [target: string]: true } =>
+    selectPackageData(state).expandedInTreeView;
+export const selectTreeViewScrollOffset = (state: RootState): number => selectPackageData(state).treeViewScrollOffset;
 export const selectShowPackageDataImportDialog = (state: RootState): boolean =>
     selectPackageData(state).showImportDialog;
