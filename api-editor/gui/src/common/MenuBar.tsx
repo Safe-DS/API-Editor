@@ -78,7 +78,7 @@ const HelpButton = function () {
                             </ListItem>
                             <ListItem>
                                 <ChakraText>
-                                    <strong>hasName:xy</strong>
+                                    <strong>name:xy</strong>
                                 </ChakraText>
                                 <ChakraText>Displays only elements with names that contain the given string
                                     xy.</ChakraText>
