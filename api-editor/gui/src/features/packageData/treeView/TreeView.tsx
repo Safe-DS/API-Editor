@@ -19,6 +19,7 @@ import ClassNode from './ClassNode';
 import FunctionNode from './FunctionNode';
 import ModuleNode from './ModuleNode';
 import ParameterNode from './ParameterNode';
+import AbstractPythonFilter from "../model/filters/AbstractPythonFilter";
 
 interface ScrollOffset {
     scrollOffset: number;
@@ -26,9 +27,10 @@ interface ScrollOffset {
 
 interface TreeViewProps {
     pythonPackage: PythonPackage;
+    filter: AbstractPythonFilter;
 }
 
-const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage }) => {
+const TreeView: React.FC<TreeViewProps> = ({ pythonPackage, filter }) => {
     const dispatch = useAppDispatch();
     const allExpanded = useAppSelector(selectAllExpandedInTreeView);
 
@@ -87,7 +89,7 @@ const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage }) => {
             )}
         </AutoSizer>
     );
-});
+};
 
 const walkChildrenInPreorder = function (
     allExpandedItemsInTreeView: { [target: string]: true },
