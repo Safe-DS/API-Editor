@@ -94,17 +94,18 @@ const HelpButton = function () {
                             </ListItem>
                             <ListItem>
                                 <ChakraText>
-                                    <strong>is:annotated</strong>
+                                    <strong>annotation:any</strong>
                                 </ChakraText>
                                 <ChakraText>Displays only elements that have been annotated.</ChakraText>
                             </ListItem>
                             <ListItem>
                                 <ChakraText>
-                                    <strong>hasAnnotation:xy</strong>
+                                    <strong>annotation:[type]</strong>
                                 </ChakraText>
                                 <ChakraText>
-                                    Displays only elements that are annotated with the given type xy. Possible types:
-                                    unused, constant, required, optional, enum and boundary.
+                                    Displays only elements that are annotated with the given type xy. Replace [type]
+                                    with one of @attribute, @boundary, @calledAfter, @constant, @enum, @group, @move,
+                                    @optional, @pure, @renaming, @required, @unused.
                                 </ChakraText>
                             </ListItem>
                             <ListItem>
