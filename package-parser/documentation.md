@@ -4,7 +4,7 @@ This part of the package parser deals with the automatic generation of annotatio
 
 
 
-## Hauptfunktionen
+## Main Functions
 
 
 
@@ -46,7 +46,7 @@ Where UsageCountStore and API represent the set of data extracted from the analy
 
 
 
-## Klassenübersicht
+## Classes
 
 We decided to use these following dataclasses in general as a collection gathering the related information to improve the readability of the code and to define the interactions between functions in a clearer and more consistent way. The use of tuples, lists and dictionaries led to ambiguities in the exchange of information between functions.
 
