@@ -7,7 +7,6 @@ export interface PackageDataState {
     };
     treeViewScrollOffset: number;
     showImportDialog: boolean;
-    showPrivateDeclarations: boolean;
 }
 
 // Initial state -------------------------------------------------------------------------------------------------------
@@ -16,7 +15,6 @@ const initialState: PackageDataState = {
     expandedInTreeView: {},
     treeViewScrollOffset: 0,
     showImportDialog: false,
-    showPrivateDeclarations: false,
 };
 
 // Slice ---------------------------------------------------------------------------------------------------------------
@@ -38,9 +36,6 @@ const packageDataSlice = createSlice({
         toggleImportDialog(state) {
             state.showImportDialog = !state.showImportDialog;
         },
-        toggleShowPrivateDeclarations(state) {
-            state.showPrivateDeclarations = !state.showPrivateDeclarations;
-        },
     },
 });
 
@@ -49,7 +44,6 @@ export const {
     toggleIsExpanded: toggleIsExpandedInTreeView,
     setScrollOffset: setTreeViewScrollOffset,
     toggleImportDialog: togglePackageDataImportDialog,
-    toggleShowPrivateDeclarations,
 } = actions;
 export default reducer;
 
@@ -65,5 +59,3 @@ export const selectTreeViewScrollOffset = (state: RootState): number =>
     selectPackageData(state).treeViewScrollOffset;
 export const selectShowPackageDataImportDialog = (state: RootState): boolean =>
     selectPackageData(state).showImportDialog;
-export const selectShowPrivateDeclarations = (state: RootState): boolean =>
-    selectPackageData(state).showPrivateDeclarations;

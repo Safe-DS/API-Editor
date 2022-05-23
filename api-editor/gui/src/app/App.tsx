@@ -89,7 +89,7 @@ const App: React.FC = function () {
         // eslint-disable-next-line
     }, []);
 
-    const [filter, setFilter] = useState('');
+    const [filter, setFilter] = useState('is:public');
     const pythonFilter = createFilterFromString(filter);
     const filteredPythonPackage = pythonFilter.applyToPackage(pythonPackage);
 

@@ -1,20 +1,15 @@
-import { Box } from '@chakra-ui/react';
-import React, { memo, useCallback, useEffect, useRef } from 'react';
+import {Box} from '@chakra-ui/react';
+import React, {memo, useCallback, useEffect, useRef} from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { FixedSizeList, ListChildComponentProps } from 'react-window';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import {FixedSizeList, ListChildComponentProps} from 'react-window';
+import {useAppDispatch, useAppSelector} from '../../../app/hooks';
 import PythonClass from '../model/PythonClass';
 import PythonDeclaration from '../model/PythonDeclaration';
 import PythonFunction from '../model/PythonFunction';
 import PythonModule from '../model/PythonModule';
 import PythonPackage from '../model/PythonPackage';
 import PythonParameter from '../model/PythonParameter';
-import {
-    selectAllExpandedInTreeView,
-    selectShowPrivateDeclarations,
-    selectTreeViewScrollOffset,
-    setTreeViewScrollOffset,
-} from '../packageDataSlice';
+import {selectAllExpandedInTreeView, selectTreeViewScrollOffset, setTreeViewScrollOffset,} from '../packageDataSlice';
 import ClassNode from './ClassNode';
 import FunctionNode from './FunctionNode';
 import ModuleNode from './ModuleNode';
@@ -35,9 +30,6 @@ const TreeView: React.FC<TreeViewProps> = ({ pythonPackage, filter }) => {
     const allExpanded = useAppSelector(selectAllExpandedInTreeView);
 
     let children = walkChildrenInPreorder(allExpanded, pythonPackage);
-    if (!useAppSelector(selectShowPrivateDeclarations)) {
-        children = children.filter((it) => it.isPublicDeclaration());
-    }
     const previousScrollOffset = useAppSelector(selectTreeViewScrollOffset);
 
     // Keep a reference to the last FixedSizeList before everything is dismounted
