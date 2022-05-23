@@ -65,8 +65,8 @@ const TreeView: React.FC<TreeViewProps> = ({ pythonPackage, filter }) => {
                 <FixedSizeList
                     itemSize={24}
                     itemCount={children.length}
-                    itemData={children}
-                    itemKey={(index, data) => data[index]?.pathAsString()}
+                    itemData={{children, filter}}
+                    itemKey={(index, data) => data.children[index]?.pathAsString()}
                     width="100%"
                     height={height}
                     style={{
@@ -101,21 +101,22 @@ const walkChildrenInPreorder = function (
 
 const TreeNodeGenerator: React.FC<ListChildComponentProps> = memo(
     ({ data, index, style }) => {
-        const declaration = data[index];
+        const declaration = data.children[index];
+        const filter = data.filter;
 
         return (
             <Box style={style}>
                 {declaration instanceof PythonModule && (
-                    <ModuleNode pythonModule={declaration} />
+                    <ModuleNode pythonModule={declaration} filter={filter} />
                 )}
                 {declaration instanceof PythonClass && (
-                    <ClassNode pythonClass={declaration} />
+                    <ClassNode pythonClass={declaration} filter={filter} />
                 )}
                 {declaration instanceof PythonFunction && (
-                    <FunctionNode pythonFunction={declaration} />
+                    <FunctionNode pythonFunction={declaration} filter={filter} />
                 )}
                 {declaration instanceof PythonParameter && (
-                    <ParameterNode pythonParameter={declaration} />
+                    <ParameterNode pythonParameter={declaration} filter={filter} />
                 )}
             </Box>
         );

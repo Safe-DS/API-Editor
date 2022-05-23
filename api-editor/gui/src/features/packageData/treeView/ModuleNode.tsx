@@ -3,12 +3,14 @@ import {FaArchive} from 'react-icons/fa';
 import {isEmptyList} from '../../../common/util/listOperations';
 import PythonModule from '../model/PythonModule';
 import TreeNode from './TreeNode';
+import AbstractPythonFilter from "../model/filters/AbstractPythonFilter";
 
 interface ModuleNodeProps {
     pythonModule: PythonModule;
+    filter: AbstractPythonFilter;
 }
 
-const ModuleNode: React.FC<ModuleNodeProps> = function ({ pythonModule }) {
+const ModuleNode: React.FC<ModuleNodeProps> = function ({ pythonModule, filter }) {
     const hasClasses = !isEmptyList(pythonModule.classes);
     const hasFunctions = !isEmptyList(pythonModule.functions);
     const hasChildren = hasClasses || hasFunctions;
@@ -18,6 +20,7 @@ const ModuleNode: React.FC<ModuleNodeProps> = function ({ pythonModule }) {
             declaration={pythonModule}
             icon={FaArchive}
             isExpandable={hasChildren}
+            filter={filter}
         />
     );
 };

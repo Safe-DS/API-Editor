@@ -10,17 +10,20 @@ import {
     toggleIsExpandedInTreeView,
 } from '../packageDataSlice';
 import VisibilityIndicator from './VisibilityIndicator';
+import AbstractPythonFilter from "../model/filters/AbstractPythonFilter";
 
 interface TreeNodeProps {
     declaration: PythonDeclaration;
     icon: IconType;
     isExpandable: boolean;
+    filter: AbstractPythonFilter;
 }
 
 const TreeNode: React.FC<TreeNodeProps> = function ({
     declaration,
     icon,
     isExpandable,
+    filter
 }) {
     const currentPathname = useLocation().pathname;
     const navigate = useNavigate();
@@ -37,6 +40,9 @@ const TreeNode: React.FC<TreeNodeProps> = function ({
         : undefined;
     const color = isSelected(declaration, currentPathname)
         ? 'white'
+        : undefined;
+    const fontWeight = filter.shouldKeepDeclaration(declaration)
+        ? 'bold'
         : undefined;
 
     const handleClick = () => {
@@ -59,7 +65,7 @@ const TreeNode: React.FC<TreeNodeProps> = function ({
                 isSelected={isSelected(declaration, currentPathname)}
             />
             <Icon as={icon} />
-            <ChakraText>{declaration.getUniqueName()}</ChakraText>
+            <ChakraText fontWeight={fontWeight}>{declaration.getUniqueName()}</ChakraText>
         </HStack>
     );
 };
