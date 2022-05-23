@@ -30,8 +30,6 @@ export default class AnnotationFilter extends AbstractPythonFilter {
     shouldKeepDeclaration(declaration: PythonDeclaration, annotations: AnnotationsState): boolean {
         const id = declaration.pathAsString()
 
-        console.log(id);
-
         switch (this.type) {
             case AnnotationType.Any:
                 return id in annotations['attributes'] ||
