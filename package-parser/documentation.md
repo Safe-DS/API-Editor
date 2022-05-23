@@ -1,6 +1,6 @@
 # Generate Annotations
 
-This part of the package parser deals with the automatic generation of annotations that should help the user to quickly and efficiently correct various problems in an API. For this purpose, data from previously analyzed code is used and the generated annotations are stored in a json file.
+This part of the package parser deals with the automatic generation of annotations that should help the user to quickly and efficiently correct various problems in an API. For this purpose, data from previously analyzed code is used and the generated annotations are stored in a JSON file.
 
 
 
@@ -36,19 +36,18 @@ Used to clean up the transferred analysis results and prepare them for further u
 
 Generates the various annotations by consecutively calling the passed functions and collects the partial results.
 
-### `get_type _Annotation()`
+### `get_[type]_annotation()`
 
-This name serves only as a placeholder. Type must be replaced by one of the following keywords: {constant, unused, required, optional, boundary, enum}.
+This name serves only as a placeholder. `[type]` must be replaced by one of the following keywords: {constant, unused, required, optional, boundary, enum}.
 
-Generates the annotations of the corresponding type. All functions of this type have the following signature:
-def `get_type_annotations(UsageCountStore, API, AnnotationsStore)`.
-Where UsageCountStore and API represent the set of data extracted from the analyzed code. The functionality and task of the AnnotationStore will be explained later.
+Generates the annotations of the corresponding type. All functions of this type have the following signature: `get_type_annotations(UsageCountStore, API, AnnotationsStore)`.
+`UsageCountStore` and `API` represent the set of data extracted from the analyzed code. The functionality and task of the `AnnotationStore` will be explained later.
 
 
 
 ## Classes
 
-We decided to use these following dataclasses in general as a collection gathering the related information to improve the readability of the code and to define the interactions between functions in a clearer and more consistent way. The use of tuples, lists and dictionaries led to ambiguities in the exchange of information between functions.
+We use the following dataclasses to store the related information. Compared to tuples, lists, and dictionaries, dataclasses offer better readability of the code and allow to define the interactions between functions in a clear and consistent way.
 
 ### AnnotationStore
 
@@ -125,7 +124,7 @@ AnnotationStore "0..1" o-- "*" BaseAnnotation
 ```
 Can be found [here](package_parser/models/annotation_models.py).
 
-The AnnotationStore class is used for the collection of the individual annotations. An instance of this class is passed to the individual `get_type_Annotation()` functions. These then place their results in the list assigned to them.
+The AnnotationStore class is used for the collection of the individual annotations. An instance of this class is passed to the individual `get_[type]_annotation()` functions. These then place their results in the list assigned to them.
 
 
 
@@ -200,7 +199,7 @@ All methods that start with add, remove or init are used to manipulate the count
 
 #### Getter
 
-All methods that correspond to the form `n_type_usages()` are used to read out the number of usages of an element. The Qname is used in the same way here.
+All methods that correspond to the form `n_[type]_usages()` are used to read out the number of usages of an element. The Qname is used in the same way here.
 
 #### In-/Ouput
 
@@ -216,7 +215,7 @@ This function acts as the central interface for other parts of the program.
 
 The function receives two filehandlers and a string that specifies a path.
 
-The file handlers each point to a json file. This is the information collected during the code analysis.
+The file handlers each point to a JSON file. This is the information collected during the code analysis.
 The path specifies where the results are to be stored.
 
 
@@ -231,15 +230,15 @@ This function needs to be executed before the data can be analyzed and performs 
   
 - `add_unused_api_elements()`
 
-  Some Api elements are not used and therefore do not appear in the listing of all used elements. However, it is necessary that they do for the following process of the prorgam.
+  Some API elements are not used at all and, therefore, do not appear in the listing of all used elements. However, it is necessary that they do for the following process of the program.
 
 - `add_implicit_usages_of_default_value()`
 
-  If a parameter is called with the default value in a function call, this implicit use of a value does not appear in the usage data. However, it is necessary that they do so for later analysis.
+  If no value is supplied for an optional parameter when a function is called, the default value of the parameter is used implicitly. This implicit use of a value does not appear in the usage data. However, it is necessary that they do so for later analysis.
 
-All functions of the form `get_type_Annotation()` are passed in a list to the generate_annotation_dict() function. This function then calls them one after the other.
+All functions of the form `get_[type]_annotation()` are passed in a list to the `generate_annotation_dict()` function. This function then calls them one after the other.
 
-Finally, the data that resides in the AnnotationStore instance is stored in the Ouput Json file.
+Finally, the data that resides in the `AnnotationStore` instance is stored in the output JSON file.
 
 ```mermaid
 stateDiagram
@@ -262,16 +261,16 @@ call_annotation_getter --> dump_annotation_store
 
 Can be found [here](tests/models/test_annotation_models.py).
 
-For the AnnotationStore and all associated classes there are automatic tests that ensure that the to_json() methods work properly. For this purpose, a test configuration of the individual classes is created, and their output is then compared against the expected value.
+For the `AnnotationStore` and all associated classes there are automatic tests that ensure that the `to_json()` methods work properly. For this purpose, a test configuration of the individual classes is created, and their output is then compared against the expected value.
 
 ### `UsageCountStore`
 
 Can be found [here](tests/models/test_usages.py).
 
-For this class there are automatic checks for the In-/ and Output methods, that compare the result against the expected value. There are also various tests for every Setter and Getter in which the state of the object is checked after.
+For this class, there are automatic checks for the input and output methods, that compare the actual result against the expected value. There are also various tests for every setter and getter in which the state of the object is checked after.
 
 ### `generate_annotations()`
 
-The tests can be found [here](tests/commands/generate_annotations/test_generate_annotations.py) and the testdata [here](tests/data).
+The tests can be found [here](tests/commands/generate_annotations/test_generate_annotations.py) and the test data [here](tests/data).
 
-For this function all subfunctions are tested automatically. For this purpose, there is test data for each individual getter, for which the output is then compared against the expected value. We decided to split the test data and test the sub-functions as standalone, because the implementation of tests for new features would otherwise lead to a process of rechecking all the previous test results.
+For this function, all called functions are tested automatically. For this purpose, there is test data for each individual getter, for which the output is then compared against the expected value. We decided to split the test data and test the called functions as standalone, because the implementation of tests for new features would otherwise lead to a process of rechecking and updating all the previous tests and their data.
