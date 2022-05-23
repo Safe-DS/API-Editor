@@ -141,7 +141,6 @@ export default abstract class AbstractPythonFilter {
 
         // Filter parameters
         const parameters = pythonFunction.parameters
-            .map((it) => it.clone())
             .filter((it) => this.shouldKeepParameter(it, annotations));
 
         // Return null if all parameters are removed
