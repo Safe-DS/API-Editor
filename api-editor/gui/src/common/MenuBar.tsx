@@ -59,59 +59,61 @@ interface MenuBarProps {
 
 const HelpButton = function () {
     return (
-        <Popover>
-            <PopoverTrigger>
-                <IconButton variant="ghost" icon={<Icon name="help" />} aria-label="help" />
-            </PopoverTrigger>
-            <PopoverContent minWidth={462} fontSize="sm" marginRight={2}>
-                <PopoverArrow />
-                <PopoverCloseButton />
-                <PopoverHeader>Filter Options</PopoverHeader>
-                <PopoverBody>
-                    <UnorderedList spacing={2}>
-                        <ListItem>
-                            <ChakraText>
-                                <strong>is:xy</strong>
-                            </ChakraText>
-                            <ChakraText>
-                                Displays only elements that are of the given type xy. Possible types are: module, class,
-                                function, parameter.
-                            </ChakraText>
-                        </ListItem>
-                        <ListItem>
-                            <ChakraText>
-                                <strong>hasName:xy</strong>
-                            </ChakraText>
-                            <ChakraText>Displays only elements with names that contain the given string xy.</ChakraText>
-                        </ListItem>
-                        <ListItem>
-                            <ChakraText>
-                                <strong>is:annotated</strong>
-                            </ChakraText>
-                            <ChakraText>Displays only elements that have been annotated.</ChakraText>
-                        </ListItem>
-                        <ListItem>
-                            <ChakraText>
-                                <strong>hasAnnotation:xy</strong>
-                            </ChakraText>
-                            <ChakraText>
-                                Displays only elements that are annotated with the given type xy. Possible types:
-                                unused, constant, required, optional, enum and boundary.
-                            </ChakraText>
-                        </ListItem>
-                        <ListItem>
-                            <ChakraText>
-                                <strong>!filter</strong>
-                            </ChakraText>
-                            <ChakraText>
-                                Displays only elements that do not match the given filter. Possible filters are any in
-                                this list.
-                            </ChakraText>
-                        </ListItem>
-                    </UnorderedList>
-                </PopoverBody>
-            </PopoverContent>
-        </Popover>
+        <Box>
+            <Popover>
+                <PopoverTrigger>
+                    <IconButton variant="ghost" icon={<Icon name="help" />} aria-label="help" />
+                </PopoverTrigger>
+                <PopoverContent minWidth={462} fontSize="sm" marginRight={2}>
+                    <PopoverArrow />
+                    <PopoverCloseButton />
+                    <PopoverHeader>Filter Options</PopoverHeader>
+                    <PopoverBody>
+                        <UnorderedList spacing={2}>
+                            <ListItem>
+                                <ChakraText>
+                                    <strong>is:xy</strong>
+                                </ChakraText>
+                                <ChakraText>
+                                    Displays only elements that are of the given type xy. Possible types are: module, class,
+                                    function, parameter.
+                                </ChakraText>
+                            </ListItem>
+                            <ListItem>
+                                <ChakraText>
+                                    <strong>hasName:xy</strong>
+                                </ChakraText>
+                                <ChakraText>Displays only elements with names that contain the given string xy.</ChakraText>
+                            </ListItem>
+                            <ListItem>
+                                <ChakraText>
+                                    <strong>is:annotated</strong>
+                                </ChakraText>
+                                <ChakraText>Displays only elements that have been annotated.</ChakraText>
+                            </ListItem>
+                            <ListItem>
+                                <ChakraText>
+                                    <strong>hasAnnotation:xy</strong>
+                                </ChakraText>
+                                <ChakraText>
+                                    Displays only elements that are annotated with the given type xy. Possible types:
+                                    unused, constant, required, optional, enum and boundary.
+                                </ChakraText>
+                            </ListItem>
+                            <ListItem>
+                                <ChakraText>
+                                    <strong>!filter</strong>
+                                </ChakraText>
+                                <ChakraText>
+                                    Displays only elements that do not match the given filter. Possible filters are any in
+                                    this list.
+                                </ChakraText>
+                            </ListItem>
+                        </UnorderedList>
+                    </PopoverBody>
+                </PopoverContent>
+            </Popover>
+        </Box>
     );
 };
 
