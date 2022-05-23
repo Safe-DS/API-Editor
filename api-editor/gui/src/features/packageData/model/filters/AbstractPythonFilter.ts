@@ -32,7 +32,8 @@ export default abstract class AbstractPythonFilter {
     abstract shouldKeepParameter(pythonParameter: PythonParameter): boolean;
 
     /**
-     * Whether the given declaration should be kept after filtering. This function should not be overridden.
+     * Whether the given declaration should be kept after filtering. This function generally does not need to be
+     * overridden.
      */
     shouldKeepDeclaration(pythonDeclaration: PythonDeclaration): boolean {
         if (pythonDeclaration instanceof PythonModule) {

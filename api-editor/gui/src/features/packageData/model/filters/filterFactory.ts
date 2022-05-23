@@ -34,7 +34,7 @@ function parsePotentiallyNegatedToken(token: string): Optional<AbstractPythonFil
 function parsePositiveToken(token: string): Optional<AbstractPythonFilter> {
 
     // Filters with fixed text
-    switch (token) {
+    switch (token.toLowerCase()) {
 
         // Declaration type
         case 'is:module':

@@ -26,7 +26,7 @@ export default class NameFilter extends AbstractPythonFilter {
         return this.shouldKeepDeclaration(pythonParameter);
     }
 
-    private shouldKeepDeclaration(declaration: PythonDeclaration): boolean {
+    shouldKeepDeclaration(declaration: PythonDeclaration): boolean {
         return declaration.name.toLowerCase().includes(this.name.toLowerCase());
     }
 }

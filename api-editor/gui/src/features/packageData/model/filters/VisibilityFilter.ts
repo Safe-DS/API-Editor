@@ -26,7 +26,7 @@ export default class VisibilityFilter extends AbstractPythonFilter {
         return this.shouldKeepDeclaration(pythonParameter);
     }
 
-    private shouldKeepDeclaration(declaration: PythonDeclaration): boolean {
+    shouldKeepDeclaration(declaration: PythonDeclaration): boolean {
         return declaration.isPublicDeclaration() == (this.visibility == Visibility.Public)
     }
 }
