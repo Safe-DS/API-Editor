@@ -25,7 +25,7 @@ interface TreeViewProps {
     filter: AbstractPythonFilter;
 }
 
-const TreeView: React.FC<TreeViewProps> = ({ pythonPackage, filter }) => {
+const TreeView: React.FC<TreeViewProps> = memo(({pythonPackage, filter}) => {
     const dispatch = useAppDispatch();
     const allExpanded = useAppSelector(selectAllExpandedInTreeView);
 
@@ -61,7 +61,7 @@ const TreeView: React.FC<TreeViewProps> = ({ pythonPackage, filter }) => {
 
     return (
         <AutoSizer disableWidth>
-            {({ height }) => (
+            {({height}) => (
                 <FixedSizeList
                     itemSize={24}
                     itemCount={children.length}
@@ -81,7 +81,7 @@ const TreeView: React.FC<TreeViewProps> = ({ pythonPackage, filter }) => {
             )}
         </AutoSizer>
     );
-};
+});
 
 const walkChildrenInPreorder = function (
     allExpandedItemsInTreeView: { [target: string]: true },
@@ -100,23 +100,23 @@ const walkChildrenInPreorder = function (
 };
 
 const TreeNodeGenerator: React.FC<ListChildComponentProps> = memo(
-    ({ data, index, style }) => {
+    ({data, index, style}) => {
         const declaration = data.children[index];
         const filter = data.filter;
 
         return (
             <Box style={style}>
                 {declaration instanceof PythonModule && (
-                    <ModuleNode pythonModule={declaration} filter={filter} />
+                    <ModuleNode pythonModule={declaration} filter={filter}/>
                 )}
                 {declaration instanceof PythonClass && (
-                    <ClassNode pythonClass={declaration} filter={filter} />
+                    <ClassNode pythonClass={declaration} filter={filter}/>
                 )}
                 {declaration instanceof PythonFunction && (
-                    <FunctionNode pythonFunction={declaration} filter={filter} />
+                    <FunctionNode pythonFunction={declaration} filter={filter}/>
                 )}
                 {declaration instanceof PythonParameter && (
-                    <ParameterNode pythonParameter={declaration} filter={filter} />
+                    <ParameterNode pythonParameter={declaration} filter={filter}/>
                 )}
             </Box>
         );
