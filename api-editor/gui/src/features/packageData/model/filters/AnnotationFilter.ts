@@ -6,8 +6,8 @@ import AbstractPythonFilter from './AbstractPythonFilter';
 import PythonDeclaration from '../PythonDeclaration';
 import {AnnotationsState} from "../../../annotations/annotationSlice";
 
-export default class NameFilter extends AbstractPythonFilter {
-    constructor(readonly name: string) {
+export default class AnnotationFilter extends AbstractPythonFilter {
+    constructor(readonly type: AnnotationType) {
         super();
     }
 
@@ -28,6 +28,42 @@ export default class NameFilter extends AbstractPythonFilter {
     }
 
     shouldKeepDeclaration(declaration: PythonDeclaration, annotations: AnnotationsState): boolean {
-        return declaration.name.toLowerCase().includes(this.name.toLowerCase());
+        const id = declaration.pathAsString()
+
+        switch (this.type) {
+            case AnnotationType.Any:
+                return id in annotations['attributes'] ||
+                    id in annotations['boundaries'] ||
+                    id in annotations['calledAfters'] ||
+                    id in annotations['constants'] ||
+                    id in annotations['enums'] ||
+                    id in annotations['groups'] ||
+                    id in annotations['moves'] ||
+                    id in annotations['optionals'] ||
+                    id in annotations['pures'] ||
+                    id in annotations['renamings'] ||
+                    id in annotations['requireds'] ||
+                    id in annotations['unuseds'];
+
+            // TODO: check for specific annotations
+            default:
+                return true
+        }
     }
+}
+
+export enum AnnotationType {
+    Any,
+    Attributes,
+    Boundaries,
+    CalledAfters,
+    Constants,
+    Enums,
+    Groups,
+    Moves,
+    Optionals,
+    Pures,
+    Renamings,
+    Requireds,
+    Unuseds,
 }

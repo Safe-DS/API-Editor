@@ -3,6 +3,7 @@ import PythonClass from '../PythonClass';
 import PythonFunction from '../PythonFunction';
 import PythonParameter from '../PythonParameter';
 import PythonModule from '../PythonModule';
+import {AnnotationsState} from "../../../annotations/annotationSlice";
 
 /**
  * Keeps declarations iff all contained filters want to keep it.
@@ -12,19 +13,19 @@ export class ConjunctiveFilter extends AbstractPythonFilter {
         super();
     }
 
-    shouldKeepModule(pythonModule: PythonModule): boolean {
-        return this.filters.every((it) => it.shouldKeepModule(pythonModule));
+    shouldKeepModule(pythonModule: PythonModule, annotations: AnnotationsState): boolean {
+        return this.filters.every((it) => it.shouldKeepModule(pythonModule, annotations));
     }
 
-    shouldKeepClass(pythonClass: PythonClass): boolean {
-        return this.filters.every((it) => it.shouldKeepClass(pythonClass));
+    shouldKeepClass(pythonClass: PythonClass, annotations: AnnotationsState): boolean {
+        return this.filters.every((it) => it.shouldKeepClass(pythonClass, annotations));
     }
 
-    shouldKeepFunction(pythonFunction: PythonFunction): boolean {
-        return this.filters.every((it) => it.shouldKeepFunction(pythonFunction));
+    shouldKeepFunction(pythonFunction: PythonFunction, annotations: AnnotationsState): boolean {
+        return this.filters.every((it) => it.shouldKeepFunction(pythonFunction, annotations));
     }
 
-    shouldKeepParameter(pythonParameter: PythonParameter): boolean {
-        return this.filters.every((it) => it.shouldKeepParameter(pythonParameter));
+    shouldKeepParameter(pythonParameter: PythonParameter, annotations: AnnotationsState): boolean {
+        return this.filters.every((it) => it.shouldKeepParameter(pythonParameter, annotations));
     }
 }

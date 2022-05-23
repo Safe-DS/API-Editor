@@ -94,7 +94,7 @@ const App: React.FC = function () {
 
     const [filter, setFilter] = useState('is:public');
     const pythonFilter = createFilterFromString(filter);
-    const filteredPythonPackage = pythonFilter.applyToPackage(pythonPackage);
+    const filteredPythonPackage = pythonFilter.applyToPackage(pythonPackage, useAppSelector(selectAnnotations));
 
     const userActionTarget = pythonPackage.getByRelativePathAsString(currentUserAction.target);
 

@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import * as idb from 'idb-keyval';
-import { RootState } from '../../app/store';
+import {RootState} from '../../app/store';
 
 export interface AnnotationsState {
     attributes: {
@@ -384,12 +384,12 @@ const annotationsSlice = createSlice({
             }
             state.calledAfters[action.payload.target][
                 action.payload.calledAfterName
-            ] = action.payload;
+                ] = action.payload;
         },
         removeCalledAfter(state, action: PayloadAction<CalledAfterTarget>) {
             delete state.calledAfters[action.payload.target][
                 action.payload.calledAfterName
-            ];
+                ];
             if (
                 Object.keys(state.calledAfters[action.payload.target])
                     .length === 0
@@ -453,7 +453,7 @@ const annotationsSlice = createSlice({
         removeGroup(state, action: PayloadAction<GroupTarget>) {
             delete state.groups[action.payload.target][
                 action.payload.groupName
-            ];
+                ];
             if (Object.keys(state.groups[action.payload.target]).length === 0) {
                 delete state.groups[action.payload.target];
             }
@@ -571,7 +571,7 @@ const annotationsSlice = createSlice({
     },
 });
 
-const { actions, reducer } = annotationsSlice;
+const {actions, reducer} = annotationsSlice;
 export const {
     set: setAnnotations,
     reset: resetAnnotations,
@@ -620,53 +620,53 @@ export default reducer;
 export const selectAnnotations = (state: RootState) => state.annotations;
 export const selectAttribute =
     (target: string) =>
-    (state: RootState): AttributeAnnotation | undefined =>
-        selectAnnotations(state).attributes[target];
+        (state: RootState): AttributeAnnotation | undefined =>
+            selectAnnotations(state).attributes[target];
 export const selectBoundary =
     (target: string) =>
-    (state: RootState): BoundaryAnnotation | undefined =>
-        selectAnnotations(state).boundaries[target];
+        (state: RootState): BoundaryAnnotation | undefined =>
+            selectAnnotations(state).boundaries[target];
 export const selectCalledAfters =
     (target: string) =>
-    (state: RootState): { [calledAfter: string]: CalledAfterAnnotation } =>
-        selectAnnotations(state).calledAfters[target] ?? {};
+        (state: RootState): { [calledAfter: string]: CalledAfterAnnotation } =>
+            selectAnnotations(state).calledAfters[target] ?? {};
 export const selectConstant =
     (target: string) =>
-    (state: RootState): ConstantAnnotation | undefined =>
-        selectAnnotations(state).constants[target];
+        (state: RootState): ConstantAnnotation | undefined =>
+            selectAnnotations(state).constants[target];
 export const selectCurrentUserAction = (state: RootState): UserAction =>
     selectAnnotations(state).currentUserAction;
 export const selectEnum =
     (target: string) =>
-    (state: RootState): EnumAnnotation | undefined =>
-        selectAnnotations(state).enums[target];
+        (state: RootState): EnumAnnotation | undefined =>
+            selectAnnotations(state).enums[target];
 export const selectGroups =
     (target: string) =>
-    (state: RootState): { [groupName: string]: GroupAnnotation } =>
-        selectAnnotations(state).groups[target] ?? {};
+        (state: RootState): { [groupName: string]: GroupAnnotation } =>
+            selectAnnotations(state).groups[target] ?? {};
 export const selectMove =
     (target: string) =>
-    (state: RootState): MoveAnnotation | undefined =>
-        selectAnnotations(state).moves[target];
+        (state: RootState): MoveAnnotation | undefined =>
+            selectAnnotations(state).moves[target];
 export const selectOptional =
     (target: string) =>
-    (state: RootState): OptionalAnnotation | undefined =>
-        selectAnnotations(state).optionals[target];
+        (state: RootState): OptionalAnnotation | undefined =>
+            selectAnnotations(state).optionals[target];
 export const selectPure =
     (target: string) =>
-    (state: RootState): PureAnnotation | undefined =>
-        selectAnnotations(state).pures[target];
+        (state: RootState): PureAnnotation | undefined =>
+            selectAnnotations(state).pures[target];
 export const selectRenaming =
     (target: string) =>
-    (state: RootState): RenameAnnotation | undefined =>
-        selectAnnotations(state).renamings[target];
+        (state: RootState): RenameAnnotation | undefined =>
+            selectAnnotations(state).renamings[target];
 export const selectRequired =
     (target: string) =>
-    (state: RootState): RequiredAnnotation | undefined =>
-        selectAnnotations(state).requireds[target];
+        (state: RootState): RequiredAnnotation | undefined =>
+            selectAnnotations(state).requireds[target];
 export const selectShowAnnotationImportDialog = (state: RootState): boolean =>
     selectAnnotations(state).showImportDialog;
 export const selectUnused =
     (target: string) =>
-    (state: RootState): UnusedAnnotation | undefined =>
-        selectAnnotations(state).unuseds[target];
+        (state: RootState): UnusedAnnotation | undefined =>
+            selectAnnotations(state).unuseds[target];

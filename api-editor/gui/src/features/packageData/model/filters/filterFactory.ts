@@ -1,10 +1,11 @@
-import { ConjunctiveFilter } from './ConjunctiveFilter';
+import {ConjunctiveFilter} from './ConjunctiveFilter';
 import NameFilter from './NameFilter';
 import AbstractPythonFilter from './AbstractPythonFilter';
-import DeclarationTypeFilter, { DeclarationType } from './DeclarationTypeFilter';
-import VisibilityFilter, { Visibility } from './VisibilityFilter';
-import { NegatedFilter } from './NegatedFilter';
-import { Optional } from '../../../../common/util/types';
+import DeclarationTypeFilter, {DeclarationType} from './DeclarationTypeFilter';
+import VisibilityFilter, {Visibility} from './VisibilityFilter';
+import {NegatedFilter} from './NegatedFilter';
+import {Optional} from '../../../../common/util/types';
+import AnnotationFilter, {AnnotationType} from "./AnnotationFilter";
 
 export function createFilterFromString(text: string): AbstractPythonFilter {
     const filters: AbstractPythonFilter[] = [];
@@ -49,6 +50,11 @@ function parsePositiveToken(token: string): Optional<AbstractPythonFilter> {
             return new VisibilityFilter(Visibility.Public);
         case 'is:internal':
             return new VisibilityFilter(Visibility.Internal);
+
+        // Annotations
+        case 'annotation:any':
+            return new AnnotationFilter(AnnotationType.Any);
+        // TODO other cases like 'annotation:@boundary'
     }
 
     // Name
