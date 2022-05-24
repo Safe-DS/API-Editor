@@ -9,7 +9,6 @@ import { AnnotationsState } from '../../../annotations/annotationSlice';
  * Keeps only declarations of a specified type (module/class/function/parameter).
  */
 export default class DeclarationTypeFilter extends AbstractPythonFilter {
-
     /**
      * @param type Which declarations to keep.
      */

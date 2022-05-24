@@ -10,7 +10,6 @@ import { AnnotationsState } from '../../../annotations/annotationSlice';
  * Keeps only declarations with a specified visibility (public/internal)
  */
 export default class VisibilityFilter extends AbstractPythonFilter {
-
     /**
      * @param visibility The visibility of the declaration to keep.
      */

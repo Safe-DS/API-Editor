@@ -9,7 +9,6 @@ import { AnnotationsState } from '../../../annotations/annotationSlice';
  * Keeps declarations iff all contained filters keep it.
  */
 export class ConjunctiveFilter extends AbstractPythonFilter {
-
     /**
      * @param filters The filters that should all be applied.
      */

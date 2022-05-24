@@ -10,7 +10,6 @@ import { AnnotationsState } from '../../../annotations/annotationSlice';
  * Keeps only declarations that have a given string in their name.
  */
 export default class NameFilter extends AbstractPythonFilter {
-
     /**
      * @param substring The string that must be part of the name of the declaration.
      */

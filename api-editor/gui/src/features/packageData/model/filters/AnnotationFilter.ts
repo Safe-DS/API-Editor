@@ -10,7 +10,6 @@ import { AnnotationsState } from '../../../annotations/annotationSlice';
  * Keeps only declarations with either an arbitrary or a specific annotation.
  */
 export default class AnnotationFilter extends AbstractPythonFilter {
-
     /**
      * @param type The annotations to look for. If this is set to `AnnotationType.Any` all annotated declarations are
      * kept. For other values only declarations with the specified annotation are kept.

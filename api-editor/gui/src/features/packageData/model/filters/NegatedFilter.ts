@@ -9,7 +9,6 @@ import { AnnotationsState } from '../../../annotations/annotationSlice';
  * Keeps declarations iff the contained filter discards it.
  */
 export class NegatedFilter extends AbstractPythonFilter {
-
     /**
      * @param filter The filter to negate.
      */
