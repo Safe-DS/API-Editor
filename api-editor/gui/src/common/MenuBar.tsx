@@ -217,7 +217,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFi
     };
 
     const settings: string[] = [];
-    if (colorMode == 'dark') {
+    if (colorMode === 'dark') {
         settings.push('darkMode');
     }
 

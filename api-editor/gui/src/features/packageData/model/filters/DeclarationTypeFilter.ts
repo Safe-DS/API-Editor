@@ -11,19 +11,19 @@ export default class DeclarationTypeFilter extends AbstractPythonFilter {
     }
 
     shouldKeepModule(pythonModule: PythonModule, annotations: AnnotationsState): boolean {
-        return this.type == DeclarationType.Module;
+        return this.type === DeclarationType.Module;
     }
 
     shouldKeepClass(pythonClass: PythonClass, annotations: AnnotationsState): boolean {
-        return this.type == DeclarationType.Class;
+        return this.type === DeclarationType.Class;
     }
 
     shouldKeepFunction(pythonFunction: PythonFunction, annotations: AnnotationsState): boolean {
-        return this.type == DeclarationType.Function;
+        return this.type === DeclarationType.Function;
     }
 
     shouldKeepParameter(pythonParameter: PythonParameter, annotations: AnnotationsState): boolean {
-        return this.type == DeclarationType.Parameter;
+        return this.type === DeclarationType.Parameter;
     }
 }
 
