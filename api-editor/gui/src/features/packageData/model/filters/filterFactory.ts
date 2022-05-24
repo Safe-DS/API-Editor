@@ -87,8 +87,8 @@ function parsePositiveToken(token: string): Optional<AbstractPythonFilter> {
             return new AnnotationFilter(AnnotationType.Optional);
         case 'annotation:@pure':
             return new AnnotationFilter(AnnotationType.Pure);
-        case 'annotation:@renaming':
-            return new AnnotationFilter(AnnotationType.Renaming);
+        case 'annotation:@rename':
+            return new AnnotationFilter(AnnotationType.Rename);
         case 'annotation:@required':
             return new AnnotationFilter(AnnotationType.Required);
         case 'annotation:@unused':

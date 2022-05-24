@@ -72,7 +72,7 @@ export default class AnnotationFilter extends AbstractPythonFilter {
                 return id in annotations.optionals;
             case AnnotationType.Pure:
                 return id in annotations.pures;
-            case AnnotationType.Renaming:
+            case AnnotationType.Rename:
                 return id in annotations.renamings;
             case AnnotationType.Required:
                 return id in annotations.requireds;
@@ -96,7 +96,7 @@ export enum AnnotationType {
     Move,
     Optional,
     Pure,
-    Renaming,
+    Rename,
     Required,
     Unused,
 }
