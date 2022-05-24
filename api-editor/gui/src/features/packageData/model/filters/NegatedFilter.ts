@@ -6,9 +6,13 @@ import PythonModule from '../PythonModule';
 import { AnnotationsState } from '../../../annotations/annotationSlice';
 
 /**
- * Keeps declarations iff the contained filter wants to remove it.
+ * Keeps declarations iff the contained filter discards it.
  */
 export class NegatedFilter extends AbstractPythonFilter {
+
+    /**
+     * @param filter The filter to negate.
+     */
     constructor(readonly filter: AbstractPythonFilter) {
         super();
     }

@@ -9,7 +9,7 @@ import { AnnotationsState } from '../../../annotations/annotationSlice';
 
 /**
  * An abstract base class for filters of Python declarations. To create a new filter create a new subclass and override
- * the shouldKeepXXX methods.
+ * the abstract shouldKeepXXX methods.
  */
 export default abstract class AbstractPythonFilter {
     /**

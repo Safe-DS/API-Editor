@@ -7,6 +7,11 @@ import { NegatedFilter } from './NegatedFilter';
 import { Optional } from '../../../../common/util/types';
 import AnnotationFilter, { AnnotationType } from './AnnotationFilter';
 
+/**
+ * Creates a filter from the given string. This method handles conjunctions, negations, and non-negated tokens.
+ *
+ * @param text The text that describes the filter.
+ */
 export function createFilterFromString(text: string): AbstractPythonFilter {
     const filters: AbstractPythonFilter[] = [];
 
@@ -20,6 +25,11 @@ export function createFilterFromString(text: string): AbstractPythonFilter {
     return new ConjunctiveFilter(filters);
 }
 
+/**
+ * Handles a single token that could be negated.
+ *
+ * @param token The text that describes the filter.
+ */
 function parsePotentiallyNegatedToken(token: string): Optional<AbstractPythonFilter> {
     const isNegated = token.startsWith('!');
     const positiveToken = isNegated ? token.substring(1) : token;
@@ -32,6 +42,11 @@ function parsePotentiallyNegatedToken(token: string): Optional<AbstractPythonFil
     }
 }
 
+/**
+ * Handles a singe non-negated token.
+ *
+ * @param token The text that describes the filter.
+ */
 function parsePositiveToken(token: string): Optional<AbstractPythonFilter> {
     // Filters with fixed text
     switch (token.toLowerCase()) {

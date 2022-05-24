@@ -6,8 +6,15 @@ import AbstractPythonFilter from './AbstractPythonFilter';
 import PythonDeclaration from '../PythonDeclaration';
 import { AnnotationsState } from '../../../annotations/annotationSlice';
 
+/**
+ * Keeps only declarations that have a given string in their name.
+ */
 export default class NameFilter extends AbstractPythonFilter {
-    constructor(readonly name: string) {
+
+    /**
+     * @param substring The string that must be part of the name of the declaration.
+     */
+    constructor(readonly substring: string) {
         super();
     }
 
@@ -28,6 +35,6 @@ export default class NameFilter extends AbstractPythonFilter {
     }
 
     shouldKeepDeclaration(declaration: PythonDeclaration, annotations: AnnotationsState): boolean {
-        return declaration.name.toLowerCase().includes(this.name.toLowerCase());
+        return declaration.name.toLowerCase().includes(this.substring.toLowerCase());
     }
 }
