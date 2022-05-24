@@ -148,7 +148,9 @@ class UnionType:
         type_str = re.sub("default=.*", " ", type_str)
 
         # Create a list with all values and types
-        # elements_raw = re.split(" , or |, or | ,or | or | ,  |, | ,", type_str)
+        # ") or (" must be replaced by a very unlikely string ("&%&") so that it is not removed when filtering out.
+        # The string will be replaced by ") or (" again after filtering out.
+
         type_str = re.sub("\) or \(", "&%&", type_str)
         type_str = re.sub(" or ", ", ", type_str)
         type_str = re.sub(" ,[ ]*or ", ", ", type_str)
@@ -174,11 +176,11 @@ class UnionType:
                 if build_string != "":
                     elements.append(build_string)
                     build_string = ""
-                # re.sub("", "", build_string)
+
         build_string = re.sub("^[ \t]+|[ \t]+$", "", build_string)
         if build_string != "":
             elements.append(build_string)
-        # elements_refined = [element for element in elements_raw if bool(re.search("[^, ]+", element))]
+
         elements = enum_array_matches + elements
 
         if len(elements) == 1:

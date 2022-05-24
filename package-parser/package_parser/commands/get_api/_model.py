@@ -367,7 +367,7 @@ class RefinedType:
 
     def __init__(
         self,
-        ref_type: Union[BoundaryType, EnumType, NamedType, None] = None,
+        ref_type: Union[UnionType, BoundaryType, EnumType, NamedType, None] = None,
     ) -> None:
         self.ref_type = ref_type
 
