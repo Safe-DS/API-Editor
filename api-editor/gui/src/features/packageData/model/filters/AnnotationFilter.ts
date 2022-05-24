@@ -4,7 +4,7 @@ import PythonModule from '../PythonModule';
 import PythonParameter from '../PythonParameter';
 import AbstractPythonFilter from './AbstractPythonFilter';
 import PythonDeclaration from '../PythonDeclaration';
-import { AnnotationsState } from '../../../annotations/annotationSlice';
+import {AnnotationsState} from '../../../annotations/annotationSlice';
 
 export default class AnnotationFilter extends AbstractPythonFilter {
     constructor(readonly type: AnnotationType) {
@@ -33,21 +33,44 @@ export default class AnnotationFilter extends AbstractPythonFilter {
         switch (this.type) {
             case AnnotationType.Any:
                 return (
-                    id in annotations['attributes'] ||
-                    id in annotations['boundaries'] ||
-                    id in annotations['calledAfters'] ||
-                    id in annotations['constants'] ||
-                    id in annotations['enums'] ||
-                    id in annotations['groups'] ||
-                    id in annotations['moves'] ||
-                    id in annotations['optionals'] ||
-                    id in annotations['pures'] ||
-                    id in annotations['renamings'] ||
-                    id in annotations['requireds'] ||
-                    id in annotations['unuseds']
+                    id in annotations.attributes ||
+                    id in annotations.boundaries ||
+                    id in annotations.calledAfters ||
+                    id in annotations.constants ||
+                    id in annotations.enums ||
+                    id in annotations.groups ||
+                    id in annotations.moves ||
+                    id in annotations.optionals ||
+                    id in annotations.pures ||
+                    id in annotations.renamings ||
+                    id in annotations.requireds ||
+                    id in annotations.unuseds
                 );
+            case AnnotationType.Attribute:
+                return id in annotations.attributes;
+            case AnnotationType.Boundary:
+                return id in annotations.boundaries;
+            case AnnotationType.CalledAfter:
+                return id in annotations.calledAfters;
+            case AnnotationType.Constant:
+                return id in annotations.constants;
+            case AnnotationType.Enum:
+                return id in annotations.enums;
+            case AnnotationType.Group:
+                return id in annotations.groups;
+            case AnnotationType.Move:
+                return id in annotations.moves;
+            case AnnotationType.Optional:
+                return id in annotations.optionals;
+            case AnnotationType.Pure:
+                return id in annotations.pures;
+            case AnnotationType.Renaming:
+                return id in annotations.renamings;
+            case AnnotationType.Required:
+                return id in annotations.requireds;
+            case AnnotationType.Unused:
+                return id in annotations.unuseds;
 
-            // TODO: check for specific annotations
             default:
                 return true;
         }
@@ -56,16 +79,16 @@ export default class AnnotationFilter extends AbstractPythonFilter {
 
 export enum AnnotationType {
     Any,
-    Attributes,
-    Boundaries,
-    CalledAfters,
-    Constants,
-    Enums,
-    Groups,
-    Moves,
-    Optionals,
-    Pures,
-    Renamings,
-    Requireds,
-    Unuseds,
+    Attribute,
+    Boundary,
+    CalledAfter,
+    Constant,
+    Enum,
+    Group,
+    Move,
+    Optional,
+    Pure,
+    Renaming,
+    Required,
+    Unused,
 }

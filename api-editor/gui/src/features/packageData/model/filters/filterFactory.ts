@@ -54,7 +54,30 @@ function parsePositiveToken(token: string): Optional<AbstractPythonFilter> {
         // Annotations
         case 'annotation:any':
             return new AnnotationFilter(AnnotationType.Any);
-        // TODO other cases like 'annotation:@boundary'
+        case 'annotation:@attribute':
+            return new AnnotationFilter(AnnotationType.Attribute);
+        case 'annotation:@boundary':
+            return new AnnotationFilter(AnnotationType.Boundary);
+        case 'annotation:@calledAfter':
+            return new AnnotationFilter(AnnotationType.CalledAfter);
+        case 'annotation:@constant':
+            return new AnnotationFilter(AnnotationType.Constant);
+        case 'annotation:@enum':
+            return new AnnotationFilter(AnnotationType.Enum);
+        case 'annotation:@group':
+            return new AnnotationFilter(AnnotationType.Group);
+        case 'annotation:@move':
+            return new AnnotationFilter(AnnotationType.Move);
+        case 'annotation:@optional':
+            return new AnnotationFilter(AnnotationType.Optional);
+        case 'annotation:@pure':
+            return new AnnotationFilter(AnnotationType.Pure);
+        case 'annotation:@renaming':
+            return new AnnotationFilter(AnnotationType.Renaming);
+        case 'annotation:@required':
+            return new AnnotationFilter(AnnotationType.Required);
+        case 'annotation:@unused':
+            return new AnnotationFilter(AnnotationType.Unused);
     }
 
     // Name
