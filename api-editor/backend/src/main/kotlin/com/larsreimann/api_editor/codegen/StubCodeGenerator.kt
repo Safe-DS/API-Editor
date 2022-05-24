@@ -15,7 +15,7 @@ import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
 import com.larsreimann.api_editor.mutable_model.PythonStringifiedType
 import com.larsreimann.api_editor.mutable_model.PythonType
 import de.unibonn.simpleml.constant.SmlFileExtension
-import de.unibonn.simpleml.emf.createSmlAnnotationUse
+import de.unibonn.simpleml.emf.createSmlAnnotationCall
 import de.unibonn.simpleml.emf.createSmlArgument
 import de.unibonn.simpleml.emf.createSmlAttribute
 import de.unibonn.simpleml.emf.createSmlBoolean
@@ -32,12 +32,11 @@ import de.unibonn.simpleml.emf.createSmlNull
 import de.unibonn.simpleml.emf.createSmlParameter
 import de.unibonn.simpleml.emf.createSmlResult
 import de.unibonn.simpleml.emf.createSmlString
-import de.unibonn.simpleml.emf.smlPackage
 import de.unibonn.simpleml.serializer.SerializationResult
 import de.unibonn.simpleml.serializer.serializeToFormattedString
 import de.unibonn.simpleml.simpleML.SmlAbstractExpression
 import de.unibonn.simpleml.simpleML.SmlAbstractType
-import de.unibonn.simpleml.simpleML.SmlAnnotationUse
+import de.unibonn.simpleml.simpleML.SmlAnnotationCall
 import de.unibonn.simpleml.simpleML.SmlAttribute
 import de.unibonn.simpleml.simpleML.SmlClass
 import de.unibonn.simpleml.simpleML.SmlCompilationUnit
@@ -74,12 +73,10 @@ fun PythonModule.toSmlCompilationUnit(): SmlCompilationUnit {
     val functions = functions.map { it.toSmlFunction() }
     val enums = enums.map { it.toSmlEnum() }
 
-    return createSmlCompilationUnit {
-        smlPackage(
-            name = name,
-            members = classes + functions + enums
-        )
-    }
+    return createSmlCompilationUnit(
+        packageName = name,
+        members = classes + functions + enums
+    )
 }
 
 /**
@@ -93,7 +90,7 @@ fun PythonClass.toSmlClass(): SmlClass {
 
     return createSmlClass(
         name = stubName,
-        annotations = buildList {
+        annotationCalls = buildList {
             if (name != stubName) {
                 add(createSmlPythonNameAnnotationUse(name))
             }
@@ -121,7 +118,7 @@ fun PythonAttribute.toSmlAttribute(): SmlAttribute {
 
     return createSmlAttribute(
         name = stubName,
-        annotations = buildList {
+        annotationCalls = buildList {
             if (name != stubName) {
                 add(createSmlPythonNameAnnotationUse(name))
             }
@@ -139,9 +136,9 @@ fun PythonFunction.toSmlFunction(): SmlFunction {
     return createSmlFunction(
         name = stubName,
         isStatic = isStaticMethod(),
-        annotations = buildList {
+        annotationCalls = buildList {
             if (isPure) {
-                add(createSmlAnnotationUse("Pure"))
+                add(createSmlAnnotationCall("Pure"))
             }
             if (name != stubName) {
                 add(createSmlPythonNameAnnotationUse(name))
@@ -155,15 +152,15 @@ fun PythonFunction.toSmlFunction(): SmlFunction {
     )
 }
 
-private fun createSmlDescriptionAnnotationUse(description: String): SmlAnnotationUse {
-    return createSmlAnnotationUse(
+private fun createSmlDescriptionAnnotationUse(description: String): SmlAnnotationCall {
+    return createSmlAnnotationCall(
         "Description",
         listOf(createSmlArgument(createSmlString(description)))
     )
 }
 
-private fun createSmlPythonNameAnnotationUse(name: String): SmlAnnotationUse {
-    return createSmlAnnotationUse(
+private fun createSmlPythonNameAnnotationUse(name: String): SmlAnnotationCall {
+    return createSmlAnnotationCall(
         "PythonName",
         listOf(createSmlArgument(createSmlString(name)))
     )
@@ -178,7 +175,7 @@ fun PythonParameter.toSmlParameterOrNull(): SmlParameter? {
 
     return createSmlParameter(
         name = stubName,
-        annotations = buildList {
+        annotationCalls = buildList {
             if (name != stubName) {
                 add(createSmlPythonNameAnnotationUse(name))
             }
@@ -196,7 +193,7 @@ fun PythonResult.toSmlResult(): SmlResult {
 
     return createSmlResult(
         name = stubName,
-        annotations = buildList {
+        annotationCalls = buildList {
             if (name != stubName) {
                 add(createSmlPythonNameAnnotationUse(name))
             }
@@ -216,7 +213,7 @@ fun PythonEnum.toSmlEnum(): SmlEnum {
 
     return createSmlEnum(
         name = stubName,
-        annotations = buildList {
+        annotationCalls = buildList {
             if (name != stubName) {
                 add(createSmlPythonNameAnnotationUse(name))
             }
@@ -236,7 +233,7 @@ fun PythonEnumInstance.toSmlEnumVariant(): SmlEnumVariant {
 
     return createSmlEnumVariant(
         name = stubName,
-        annotations = buildList {
+        annotationCalls = buildList {
             if (name != stubName) {
                 add(createSmlPythonNameAnnotationUse(name))
             }
