@@ -1,5 +1,4 @@
 import pytest
-
 from package_parser.commands.get_api import UnionType
 
 
