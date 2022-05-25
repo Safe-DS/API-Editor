@@ -53,7 +53,7 @@ export default class PythonParameter extends PythonDeclaration {
         }
 
         // This is parameter of a method but not the first
-        return this.index > 0
+        return this.index > 0;
     }
 
     toString(): string {

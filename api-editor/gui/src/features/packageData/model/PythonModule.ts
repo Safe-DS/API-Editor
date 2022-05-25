@@ -30,7 +30,7 @@ export default class PythonModule extends PythonDeclaration {
     }
 
     isPublicDeclaration(): boolean {
-        return !this.name.split(".").some((it) => it.startsWith("_"))
+        return !this.name.split('.').some((it) => it.startsWith('_'));
     }
 
     parent(): Optional<PythonPackage> {
