@@ -1,7 +1,6 @@
-from typing import Optional
-
 import pytest
-from package_parser.commands.get_api._refined_types import UnionType
+
+from package_parser.commands.get_api import UnionType
 
 
 @pytest.mark.parametrize(

@@ -138,24 +138,24 @@ class UnionType:
 
     @classmethod
     def from_string(cls, type_str: str) -> UnionType:
-        # Remove all non-necessary whitespaces
-        type_str = re.sub("\s+", " ", type_str)
-        # Find all Enums and remove them from doc_string
-        enum_array_matches = re.findall("{.*?}", type_str)
-        type_str = re.sub("{.*?}", " ", type_str)
+        # Collapse whitespaces
+        type_str = re.sub(r"\s+", " ", type_str)
 
-        # Remove default-Value from doc_string
+        # Find all enums and remove them from doc_string
+        enum_array_matches = re.findall(r"\{.*?}", type_str)
+        type_str = re.sub(r"\{.*?}", " ", type_str)
+
+        # Remove default value from doc_string
         type_str = re.sub("default=.*", " ", type_str)
 
         # Create a list with all values and types
         # ") or (" must be replaced by a very unlikely string ("&%&") so that it is not removed when filtering out.
         # The string will be replaced by ") or (" again after filtering out.
-
-        type_str = re.sub("\\) or \\(", "&%&", type_str)
-        type_str = re.sub("[ ]*,[ ]*or ", ", ", type_str)
-        print(type_str)
-        type_str = re.sub(" or ", ", ", type_str)
+        type_str = re.sub(r"\) or \(", "&%&", type_str)
+        type_str = re.sub(r" ?, ?or ", ", ", type_str)
+        type_str = re.sub(r" or ", ", ", type_str)
         type_str = re.sub("&%&", ") or (", type_str)
+
         elements = []
         brackets = 0
         build_string = ""
