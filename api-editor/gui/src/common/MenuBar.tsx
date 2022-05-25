@@ -13,7 +13,6 @@ import {
     Icon,
     IconButton,
     Input,
-    InputGroup,
     ListItem,
     Menu,
     MenuButton,
@@ -36,15 +35,15 @@ import {
     useColorMode,
     VStack,
 } from '@chakra-ui/react';
-import React, { useRef, useState } from 'react';
-import { FaChevronDown } from 'react-icons/fa';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { resetAnnotations, toggleAnnotationImportDialog } from '../features/annotations/annotationSlice';
+import React, {useRef, useState} from 'react';
+import {FaChevronDown} from 'react-icons/fa';
+import {useAppDispatch, useAppSelector} from '../app/hooks';
+import {resetAnnotations, toggleAnnotationImportDialog} from '../features/annotations/annotationSlice';
 import AnnotatedPythonPackageBuilder from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
 import PythonPackage from '../features/packageData/model/PythonPackage';
-import { togglePackageDataImportDialog } from '../features/packageData/packageDataSlice';
-import { Setter } from './util/types';
-import { toggleUsageImportDialog } from '../features/usages/usageSlice';
+import {togglePackageDataImportDialog} from '../features/packageData/packageDataSlice';
+import {Setter} from './util/types';
+import {toggleUsageImportDialog} from '../features/usages/usageSlice';
 
 interface MenuBarProps {
     pythonPackage: PythonPackage;
@@ -58,11 +57,11 @@ const HelpButton = function () {
         <Box>
             <Popover>
                 <PopoverTrigger>
-                    <IconButton variant="ghost" icon={<Icon name="help" />} aria-label="help" />
+                    <IconButton variant="ghost" icon={<Icon name="help"/>} aria-label="help"/>
                 </PopoverTrigger>
                 <PopoverContent minWidth={462} fontSize="sm" marginRight={2}>
-                    <PopoverArrow />
-                    <PopoverCloseButton />
+                    <PopoverArrow/>
+                    <PopoverCloseButton/>
                     <PopoverHeader>Filter Options</PopoverHeader>
                     <PopoverBody>
                         <UnorderedList spacing={2}>
@@ -176,9 +175,8 @@ const DeleteAllAnnotations = function () {
     );
 };
 
-const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFilter, displayInferErrors }) {
-    const { colorMode, toggleColorMode } = useColorMode();
-    const initialFocusRef = useRef(null);
+const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter, setFilter, displayInferErrors}) {
+    const {colorMode, toggleColorMode} = useColorMode();
     const dispatch = useAppDispatch();
 
     const annotationStore = useAppSelector((state) => state.annotations);
@@ -199,7 +197,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFi
 
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(annotatedPythonPackage),
         };
         fetch('/api-editor/infer', requestOptions).then(async (response) => {
@@ -227,37 +225,33 @@ const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFi
                 {/* Box gets rid of popper.js warning "CSS margin styles cannot be used" */}
                 <Box>
                     <Menu>
-                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown}/>}>
                             File
                         </MenuButton>
                         <MenuList>
                             <MenuGroup title="Import">
-                                <MenuItem paddingLeft={8} onClick={() => dispatch(togglePackageDataImportDialog())}>
-                                    API Data
-                                </MenuItem>
-                                <MenuItem paddingLeft={8} onClick={() => dispatch(toggleUsageImportDialog())}>
-                                    Usages
-                                </MenuItem>
+                                <MenuItem paddingLeft={8} onClick={() => dispatch(togglePackageDataImportDialog())}>API
+                                    Data</MenuItem>
+                                <MenuItem paddingLeft={8}
+                                          onClick={() => dispatch(toggleUsageImportDialog())}>Usages</MenuItem>
                                 <MenuItem paddingLeft={8} onClick={() => dispatch(toggleAnnotationImportDialog())}>
                                     Annotations
                                 </MenuItem>
                             </MenuGroup>
-                            <MenuDivider />
+                            <MenuDivider/>
                             <MenuGroup title="Export">
-                                <MenuItem paddingLeft={8} onClick={exportAnnotations}>
-                                    Annotations
-                                </MenuItem>
+                                <MenuItem paddingLeft={8} onClick={exportAnnotations}>Annotations</MenuItem>
                             </MenuGroup>
                         </MenuList>
                     </Menu>
                 </Box>
 
                 <Button onClick={infer}>Generate adapters</Button>
-                <DeleteAllAnnotations />
+                <DeleteAllAnnotations/>
 
                 <Box>
                     <Menu closeOnSelect={false}>
-                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown}/>}>
                             Settings
                         </MenuButton>
                         <MenuList>
@@ -271,47 +265,18 @@ const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFi
                 </Box>
             </HStack>
 
-            <Spacer />
+            <Spacer/>
 
             <HStack>
-                <Box>
-                    <Popover
-                        isOpen={
-                            false
-                            // !PythonFilter.fromFilterBoxInput(filter)
-                        }
-                        initialFocusRef={initialFocusRef}
-                    >
-                        <PopoverTrigger>
-                            <InputGroup ref={initialFocusRef}>
-                                <Input
-                                    type="text"
-                                    placeholder="Filter..."
-                                    value={filter}
-                                    onChange={(event) => setFilter(event.target.value)}
-                                    // isInvalid={!PythonFilter.fromFilterBoxInput(filter)}
-                                    // borderColor={
-                                    //     PythonFilter.fromFilterBoxInput(filter)?.isFilteringModules()
-                                    //         ? 'green'
-                                    //         : 'inherit'
-                                    // }
-                                    spellCheck={false}
-                                    minWidth="400px"
-                                />
-                                {/*{PythonFilter.fromFilterBoxInput(filter)?.isFilteringModules() && (*/}
-                                {/*    <InputRightElement>*/}
-                                {/*        <Icon as={FaCheck} color="green.500" />*/}
-                                {/*    </InputRightElement>*/}
-                                {/*)}*/}
-                            </InputGroup>
-                        </PopoverTrigger>
-                        <PopoverContent>
-                            <PopoverArrow />
-                            <PopoverBody>Each scope must only be used once.</PopoverBody>
-                        </PopoverContent>
-                    </Popover>
-                </Box>
-                <HelpButton />
+                <Input
+                    type="text"
+                    placeholder="Filter..."
+                    value={filter}
+                    onChange={(event) => setFilter(event.target.value)}
+                    spellCheck={false}
+                    minWidth="400px"
+                />
+                <HelpButton/>
             </HStack>
         </Flex>
     );
