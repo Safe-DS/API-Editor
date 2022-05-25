@@ -70,8 +70,7 @@ const HelpButton = function () {
                                     <strong>is:[type]</strong>
                                 </ChakraText>
                                 <ChakraText>
-                                    Displays only elements that are of the given type. Replace [type] with one of
-                                    module, class, function, parameter.
+                                    Displays only elements that are of the given type. Replace [type] with one of <em>module, class, function, parameter</em>.
                                 </ChakraText>
                             </ListItem>
                             <ListItem>
@@ -80,7 +79,7 @@ const HelpButton = function () {
                                 </ChakraText>
                                 <ChakraText>
                                     Displays only elements that have the given visibility. Replace [visibility] with one
-                                    of public, internal.
+                                    of <em>public, internal</em>.
                                 </ChakraText>
                             </ListItem>
                             <ListItem>
@@ -103,8 +102,8 @@ const HelpButton = function () {
                                 </ChakraText>
                                 <ChakraText>
                                     Displays only elements that are annotated with the given type xy. Replace [type]
-                                    with one of @attribute, @boundary, @calledAfter, @constant, @enum, @group, @move,
-                                    @optional, @pure, @renaming, @required, @unused.
+                                    with one of <em>@attribute, @boundary, @calledAfter, @constant, @enum, @group, @move,
+                                    @optional, @pure, @renaming, @required, @unused</em>.
                                 </ChakraText>
                             </ListItem>
                             <ListItem>
