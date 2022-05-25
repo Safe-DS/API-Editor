@@ -25,3 +25,4 @@ from ._package_metadata import (
     package_files,
     package_root,
 )
+from ._refined_types import UnionType
