@@ -199,7 +199,7 @@ interface PythonParameterJson {
 }
 
 const parsePythonParameterJson = function (
-    parameterJson: PythonParameterJson,
+    parameterJson: PythonParameterJson, index: number
 ): PythonParameter {
     return new PythonParameter(
         parameterJson.name,
@@ -208,6 +208,7 @@ const parsePythonParameterJson = function (
         parameterJson.is_public,
         parameterJson.docstring.type ?? '',
         parameterJson.docstring.description ?? '',
+        index
     );
 };
 

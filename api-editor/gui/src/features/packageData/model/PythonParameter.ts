@@ -22,6 +22,7 @@ export default class PythonParameter extends PythonDeclaration {
         readonly isPublic: boolean = false,
         readonly typeInDocs: string = '',
         readonly description: string = '',
+        readonly index: number = 0,
     ) {
         super();
 
@@ -52,7 +53,7 @@ export default class PythonParameter extends PythonDeclaration {
         }
 
         // This is parameter of a method but not the first
-        return containingFunction.children()[0] !== this;
+        return this.index > 0
     }
 
     toString(): string {
