@@ -15,11 +15,11 @@ import com.larsreimann.api_editor.mutable_model.PythonString
 import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
 import com.larsreimann.api_editor.mutable_model.PythonStringifiedType
 import de.unibonn.simpleml.SimpleMLStandaloneSetup
-import de.unibonn.simpleml.emf.annotationUsesOrEmpty
+import de.unibonn.simpleml.emf.annotationCallsOrEmpty
 import de.unibonn.simpleml.emf.argumentsOrEmpty
+import de.unibonn.simpleml.emf.classMembersOrEmpty
+import de.unibonn.simpleml.emf.compilationUnitMembersOrEmpty
 import de.unibonn.simpleml.emf.constraintsOrEmpty
-import de.unibonn.simpleml.emf.memberDeclarationsOrEmpty
-import de.unibonn.simpleml.emf.membersOrEmpty
 import de.unibonn.simpleml.emf.parametersOrEmpty
 import de.unibonn.simpleml.emf.parentTypesOrEmpty
 import de.unibonn.simpleml.emf.resultsOrEmpty
@@ -34,9 +34,8 @@ import de.unibonn.simpleml.simpleML.SmlFunction
 import de.unibonn.simpleml.simpleML.SmlInt
 import de.unibonn.simpleml.simpleML.SmlNamedType
 import de.unibonn.simpleml.simpleML.SmlNull
-import de.unibonn.simpleml.simpleML.SmlPackage
 import de.unibonn.simpleml.simpleML.SmlString
-import de.unibonn.simpleml.stdlib.uniqueAnnotationUseOrNull
+import de.unibonn.simpleml.stdlibAccess.uniqueAnnotationCallOrNull
 import io.kotest.assertions.asClue
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
@@ -126,7 +125,7 @@ class StubCodeGeneratorTest {
                 |    fun testMethod()
                 |}
                 |
-                |fun testFunction(testParameter: Any?, testParameter: Int or 10) -> testParameter: String
+                |fun testFunction(testParameter: Any?, testParameter: Int = 10) -> testParameter: String
                 |
                 |enum TestEnum {
                 |    TestEnumInstance
@@ -144,14 +143,11 @@ class StubCodeGeneratorTest {
             val pythonModule = PythonModule(name = "testModule")
 
             val smlCompilationUnit = pythonModule.toSmlCompilationUnit()
-            smlCompilationUnit.members.shouldHaveSize(1)
-
-            smlCompilationUnit.members[0].asClue {
-                it.shouldBeInstanceOf<SmlPackage>()
+            smlCompilationUnit.asClue {
+                it.annotationCallsOrEmpty().shouldBeEmpty()
                 it.name shouldBe "testModule"
-                it.annotationUsesOrEmpty().shouldBeEmpty()
                 it.imports.shouldBeEmpty()
-                it.memberDeclarationsOrEmpty().shouldBeEmpty()
+                it.compilationUnitMembersOrEmpty().shouldBeEmpty()
             }
         }
 
@@ -168,11 +164,9 @@ class StubCodeGeneratorTest {
             smlCompilationUnit.members.shouldHaveSize(1)
 
             smlCompilationUnit.members[0]
-                .shouldBeInstanceOf<SmlPackage>()
-                .memberDeclarationsOrEmpty()
-                .filterIsInstance<SmlClass>()
-                .map { it.name }
-                .shouldContainExactly("TestClass")
+                .shouldBeInstanceOf<SmlClass>()
+                .name
+                .shouldBe("TestClass")
         }
 
         @Test
@@ -188,11 +182,9 @@ class StubCodeGeneratorTest {
             smlCompilationUnit.members.shouldHaveSize(1)
 
             smlCompilationUnit.members[0]
-                .shouldBeInstanceOf<SmlPackage>()
-                .memberDeclarationsOrEmpty()
-                .filterIsInstance<SmlFunction>()
-                .map { it.name }
-                .shouldContainExactly("testFunction")
+                .shouldBeInstanceOf<SmlFunction>()
+                .name
+                .shouldBe("testFunction")
         }
 
         @Test
@@ -208,11 +200,9 @@ class StubCodeGeneratorTest {
             smlCompilationUnit.members.shouldHaveSize(1)
 
             smlCompilationUnit.members[0]
-                .shouldBeInstanceOf<SmlPackage>()
-                .memberDeclarationsOrEmpty()
-                .filterIsInstance<SmlEnum>()
-                .map { it.name }
-                .shouldContainExactly("TestEnum")
+                .shouldBeInstanceOf<SmlEnum>()
+                .name
+                .shouldBe("TestEnum")
         }
     }
 
@@ -225,12 +215,12 @@ class StubCodeGeneratorTest {
 
             pythonClass.toSmlClass().asClue {
                 it.name shouldBe "TestClass"
-                it.annotationUsesOrEmpty().shouldBeEmpty()
+                it.annotationCallsOrEmpty().shouldBeEmpty()
                 it.typeParametersOrEmpty().shouldBeEmpty()
                 it.parametersOrEmpty().shouldBeEmpty()
                 it.parentTypesOrEmpty().shouldBeEmpty()
                 it.constraintsOrEmpty().shouldBeEmpty()
-                it.membersOrEmpty().shouldBeEmpty()
+                it.classMembersOrEmpty().shouldBeEmpty()
             }
         }
 
@@ -249,7 +239,7 @@ class StubCodeGeneratorTest {
 
             val smlClass = pythonClass.toSmlClass()
 
-            val pythonNameAnnotationUseOrNull = smlClass.uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
+            val pythonNameAnnotationUseOrNull = smlClass.uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
             pythonNameAnnotationUseOrNull.shouldNotBeNull()
 
             val arguments = pythonNameAnnotationUseOrNull.argumentsOrEmpty()
@@ -266,7 +256,7 @@ class StubCodeGeneratorTest {
 
             val smlClass = pythonClass.toSmlClass()
 
-            val pythonNameAnnotationUseOrNull = smlClass.uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
+            val pythonNameAnnotationUseOrNull = smlClass.uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
             pythonNameAnnotationUseOrNull.shouldBeNull()
         }
 
@@ -279,7 +269,7 @@ class StubCodeGeneratorTest {
 
             val smlClass = pythonClass.toSmlClass()
 
-            val descriptionAnnotationUseOrNull = smlClass.uniqueAnnotationUseOrNull(QualifiedName.create("Description"))
+            val descriptionAnnotationUseOrNull = smlClass.uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
             descriptionAnnotationUseOrNull.shouldNotBeNull()
 
             val arguments = descriptionAnnotationUseOrNull.argumentsOrEmpty()
@@ -299,7 +289,7 @@ class StubCodeGeneratorTest {
 
             val smlClass = pythonClass.toSmlClass()
 
-            val descriptionOrNull = smlClass.uniqueAnnotationUseOrNull(QualifiedName.create("Description"))
+            val descriptionOrNull = smlClass.uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
             descriptionOrNull.shouldBeNull()
         }
 
@@ -349,7 +339,7 @@ class StubCodeGeneratorTest {
             )
 
             val smlClass = pythonClass.toSmlClass()
-            smlClass.membersOrEmpty()
+            smlClass.classMembersOrEmpty()
                 .filterIsInstance<SmlAttribute>()
                 .map { it.name }
                 .shouldContainExactly("testAttribute")
@@ -365,7 +355,7 @@ class StubCodeGeneratorTest {
             )
 
             val smlClass = pythonClass.toSmlClass()
-            smlClass.membersOrEmpty()
+            smlClass.classMembersOrEmpty()
                 .filterIsInstance<SmlFunction>()
                 .map { it.name }
                 .shouldContainExactly("testMethod")
@@ -380,7 +370,7 @@ class StubCodeGeneratorTest {
             val pythonAttribute = PythonAttribute(name = "testAttribute")
             pythonAttribute.toSmlAttribute().asClue {
                 it.name shouldBe "testAttribute"
-                it.annotationUsesOrEmpty().shouldBeEmpty()
+                it.annotationCallsOrEmpty().shouldBeEmpty()
 
                 val type = it.type
                 type.shouldBeInstanceOf<SmlNamedType>()
@@ -403,7 +393,7 @@ class StubCodeGeneratorTest {
 
             val arguments = pythonAttribute
                 .toSmlAttribute()
-                .uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
+                .uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
                 .shouldNotBeNull()
                 .argumentsOrEmpty()
             arguments.shouldHaveSize(1)
@@ -417,7 +407,7 @@ class StubCodeGeneratorTest {
         fun `should not store python name if it is identical to stub name`() {
             val pythonAttribute = PythonAttribute(name = "testAttribute")
             pythonAttribute.toSmlAttribute()
-                .uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
+                .uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
                 .shouldBeNull()
         }
 
@@ -430,7 +420,7 @@ class StubCodeGeneratorTest {
 
             val arguments = pythonAttribute
                 .toSmlAttribute()
-                .uniqueAnnotationUseOrNull(QualifiedName.create("Description"))
+                .uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
                 .shouldNotBeNull()
                 .argumentsOrEmpty()
             arguments.shouldHaveSize(1)
@@ -449,7 +439,7 @@ class StubCodeGeneratorTest {
 
             pythonAttribute
                 .toSmlAttribute()
-                .uniqueAnnotationUseOrNull(QualifiedName.create("Description"))
+                .uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
                 .shouldBeNull()
         }
 
@@ -481,7 +471,7 @@ class StubCodeGeneratorTest {
             pythonFunction.toSmlFunction().asClue {
                 it.name shouldBe "testFunction"
                 it.isStatic.shouldBeFalse()
-                it.annotationUsesOrEmpty().shouldBeEmpty()
+                it.annotationCallsOrEmpty().shouldBeEmpty()
                 it.typeParametersOrEmpty().shouldBeEmpty()
                 it.parametersOrEmpty().shouldBeEmpty()
                 it.resultsOrEmpty().shouldBeEmpty()
@@ -514,7 +504,7 @@ class StubCodeGeneratorTest {
 
             pythonFunction
                 .toSmlFunction()
-                .uniqueAnnotationUseOrNull(QualifiedName.create("Pure"))
+                .uniqueAnnotationCallOrNull(QualifiedName.create("Pure"))
                 .shouldNotBeNull()
         }
 
@@ -533,7 +523,7 @@ class StubCodeGeneratorTest {
             val smlFunction = pythonFunction.toSmlFunction()
 
             val pythonNameAnnotationUseOrNull =
-                smlFunction.uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
+                smlFunction.uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
             pythonNameAnnotationUseOrNull.shouldNotBeNull()
 
             val arguments = pythonNameAnnotationUseOrNull.argumentsOrEmpty()
@@ -551,7 +541,7 @@ class StubCodeGeneratorTest {
             val smlFunction = pythonFunction.toSmlFunction()
 
             val pythonNameAnnotationUseOrNull =
-                smlFunction.uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
+                smlFunction.uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
             pythonNameAnnotationUseOrNull.shouldBeNull()
         }
 
@@ -565,7 +555,7 @@ class StubCodeGeneratorTest {
             val smlFunction = pythonFunction.toSmlFunction()
 
             val descriptionAnnotationUseOrNull =
-                smlFunction.uniqueAnnotationUseOrNull(QualifiedName.create("Description"))
+                smlFunction.uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
             descriptionAnnotationUseOrNull.shouldNotBeNull()
 
             val arguments = descriptionAnnotationUseOrNull.argumentsOrEmpty()
@@ -585,7 +575,7 @@ class StubCodeGeneratorTest {
 
             val smlFunction = pythonFunction.toSmlFunction()
 
-            val descriptionOrNull = smlFunction.uniqueAnnotationUseOrNull(QualifiedName.create("Description"))
+            val descriptionOrNull = smlFunction.uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
             descriptionOrNull.shouldBeNull()
         }
 
@@ -659,7 +649,7 @@ class StubCodeGeneratorTest {
                 .shouldNotBeNull()
                 .asClue {
                     it.name shouldBe "testParameter"
-                    it.annotationUsesOrEmpty().shouldBeEmpty()
+                    it.annotationCallsOrEmpty().shouldBeEmpty()
 
                     val type = it.type
                     type.shouldBeInstanceOf<SmlNamedType>()
@@ -687,7 +677,7 @@ class StubCodeGeneratorTest {
             val arguments = pythonParameter
                 .toSmlParameterOrNull()
                 .shouldNotBeNull()
-                .uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
+                .uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
                 .shouldNotBeNull()
                 .argumentsOrEmpty()
             arguments.shouldHaveSize(1)
@@ -703,7 +693,7 @@ class StubCodeGeneratorTest {
 
             pythonParameter.toSmlParameterOrNull()
                 .shouldNotBeNull()
-                .uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
+                .uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
                 .shouldBeNull()
         }
 
@@ -717,7 +707,7 @@ class StubCodeGeneratorTest {
             val arguments = pythonParameter
                 .toSmlParameterOrNull()
                 .shouldNotBeNull()
-                .uniqueAnnotationUseOrNull(QualifiedName.create("Description"))
+                .uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
                 .shouldNotBeNull()
                 .argumentsOrEmpty()
             arguments.shouldHaveSize(1)
@@ -737,7 +727,7 @@ class StubCodeGeneratorTest {
             pythonParameter
                 .toSmlParameterOrNull()
                 .shouldNotBeNull()
-                .uniqueAnnotationUseOrNull(QualifiedName.create("Description"))
+                .uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
                 .shouldBeNull()
         }
 
@@ -783,7 +773,7 @@ class StubCodeGeneratorTest {
 
             pythonResult.toSmlResult().asClue {
                 it.name shouldBe "testResult"
-                it.annotationUsesOrEmpty().shouldBeEmpty()
+                it.annotationCallsOrEmpty().shouldBeEmpty()
 
                 val type = it.type
                 type.shouldBeInstanceOf<SmlNamedType>()
@@ -807,7 +797,7 @@ class StubCodeGeneratorTest {
             val smlFunction = pythonResult.toSmlResult()
 
             val pythonNameAnnotationUseOrNull = smlFunction
-                .uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
+                .uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
                 .shouldNotBeNull()
 
             val arguments = pythonNameAnnotationUseOrNull.argumentsOrEmpty()
@@ -823,7 +813,7 @@ class StubCodeGeneratorTest {
             val pythonResult = PythonResult(name = "testResult")
 
             pythonResult.toSmlResult()
-                .uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
+                .uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
                 .shouldBeNull()
         }
 
@@ -837,7 +827,7 @@ class StubCodeGeneratorTest {
             val smlResult = pythonResult.toSmlResult()
 
             val arguments = smlResult
-                .uniqueAnnotationUseOrNull(QualifiedName.create("Description"))
+                .uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
                 .shouldNotBeNull()
                 .argumentsOrEmpty()
             arguments.shouldHaveSize(1)
@@ -856,7 +846,7 @@ class StubCodeGeneratorTest {
 
             val smlFunction = pythonResult.toSmlResult()
 
-            val descriptionOrNull = smlFunction.uniqueAnnotationUseOrNull(QualifiedName.create("Description"))
+            val descriptionOrNull = smlFunction.uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
             descriptionOrNull.shouldBeNull()
         }
 
@@ -882,7 +872,7 @@ class StubCodeGeneratorTest {
 
             pythonEnum.toSmlEnum().asClue {
                 it.name shouldBe "TestEnum"
-                it.annotationUsesOrEmpty().shouldBeEmpty()
+                it.annotationCallsOrEmpty().shouldBeEmpty()
                 it.variantsOrEmpty().shouldBeEmpty()
             }
         }
@@ -901,7 +891,7 @@ class StubCodeGeneratorTest {
 
             val smlEnum = pythonEnum.toSmlEnum()
 
-            val pythonNameAnnotationUseOrNull = smlEnum.uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
+            val pythonNameAnnotationUseOrNull = smlEnum.uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
             pythonNameAnnotationUseOrNull.shouldNotBeNull()
 
             val arguments = pythonNameAnnotationUseOrNull.argumentsOrEmpty()
@@ -918,7 +908,7 @@ class StubCodeGeneratorTest {
 
             val smlEnum = pythonEnum.toSmlEnum()
 
-            val pythonNameAnnotationUseOrNull = smlEnum.uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
+            val pythonNameAnnotationUseOrNull = smlEnum.uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
             pythonNameAnnotationUseOrNull.shouldBeNull()
         }
 
@@ -930,7 +920,7 @@ class StubCodeGeneratorTest {
             )
 
             val arguments = pythonEnum.toSmlEnum()
-                .uniqueAnnotationUseOrNull(QualifiedName.create("Description"))
+                .uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
                 .shouldNotBeNull().argumentsOrEmpty()
             arguments.shouldHaveSize(1)
 
@@ -948,7 +938,7 @@ class StubCodeGeneratorTest {
 
             pythonEnum
                 .toSmlEnum()
-                .uniqueAnnotationUseOrNull(QualifiedName.create("Description"))
+                .uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
                 .shouldBeNull()
         }
 
@@ -977,7 +967,7 @@ class StubCodeGeneratorTest {
 
             pythonEnumInstance.toSmlEnumVariant().asClue {
                 it.name shouldBe "TestEnumInstance"
-                it.annotationUsesOrEmpty().shouldBeEmpty()
+                it.annotationCallsOrEmpty().shouldBeEmpty()
                 it.typeParametersOrEmpty().shouldBeEmpty()
                 it.parametersOrEmpty().shouldBeEmpty()
                 it.constraintsOrEmpty().shouldBeEmpty()
@@ -997,7 +987,7 @@ class StubCodeGeneratorTest {
             val pythonEnumInstance = PythonEnumInstance(name = "test_enum_instance")
 
             val arguments = pythonEnumInstance.toSmlEnumVariant()
-                .uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
+                .uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
                 .shouldNotBeNull()
                 .argumentsOrEmpty()
             arguments.shouldHaveSize(1)
@@ -1012,7 +1002,7 @@ class StubCodeGeneratorTest {
             val pythonEnumInstance = PythonEnumInstance(name = "TestEnumInstance")
 
             pythonEnumInstance.toSmlEnumVariant()
-                .uniqueAnnotationUseOrNull(QualifiedName.create("PythonName"))
+                .uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
                 .shouldBeNull()
         }
 
@@ -1024,7 +1014,7 @@ class StubCodeGeneratorTest {
             )
 
             val arguments = pythonEnumInstance.toSmlEnumVariant()
-                .uniqueAnnotationUseOrNull(QualifiedName.create("Description"))
+                .uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
                 .shouldNotBeNull()
                 .argumentsOrEmpty()
             arguments.shouldHaveSize(1)
@@ -1042,7 +1032,7 @@ class StubCodeGeneratorTest {
             )
 
             pythonEnumInstance.toSmlEnumVariant()
-                .uniqueAnnotationUseOrNull(QualifiedName.create("Description"))
+                .uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
                 .shouldBeNull()
         }
     }
