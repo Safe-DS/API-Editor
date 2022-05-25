@@ -318,7 +318,7 @@ interface RenameUserAction {
 
 // Initial state -------------------------------------------------------------------------------------------------------
 
-const initialState: AnnotationsState = {
+export const initialState: AnnotationsState = {
     attributes: {},
     boundaries: {},
     calledAfters: {},
