@@ -34,5 +34,4 @@ from package_parser.commands.get_api._refined_types import UnionType
 )
 def test_union_from_string(docstring_type: str, expected: list[str]):
     result = UnionType.from_string(docstring_type)
-    if result is not None:
-        assert result.as_list() == expected
+    assert result.as_list() == expected

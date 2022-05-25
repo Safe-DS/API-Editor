@@ -139,10 +139,10 @@ class UnionType:
     @classmethod
     def from_string(cls, type_str: str) -> UnionType:
         # Remove all non-necessary whitespaces
-        type_str = re.sub("[ ]+", " ", type_str)
+        type_str = re.sub("\s+", " ", type_str)
         # Find all Enums and remove them from doc_string
-        enum_array_matches = re.findall("\{.*?\}", type_str)
-        type_str = re.sub("\{.*?\}", " ", type_str)
+        enum_array_matches = re.findall("{.*?}", type_str)
+        type_str = re.sub("{.*?}", " ", type_str)
 
         # Remove default-Value from doc_string
         type_str = re.sub("default=.*", " ", type_str)
@@ -151,9 +151,10 @@ class UnionType:
         # ") or (" must be replaced by a very unlikely string ("&%&") so that it is not removed when filtering out.
         # The string will be replaced by ") or (" again after filtering out.
 
-        type_str = re.sub("\) or \(", "&%&", type_str)
+        type_str = re.sub("\\) or \\(", "&%&", type_str)
+        type_str = re.sub("[ ]*,[ ]*or ", ", ", type_str)
+        print(type_str)
         type_str = re.sub(" or ", ", ", type_str)
-        type_str = re.sub(" ,[ ]*or ", ", ", type_str)
         type_str = re.sub("&%&", ") or (", type_str)
         elements = []
         brackets = 0
@@ -172,12 +173,12 @@ class UnionType:
                 build_string += c
             elif brackets == 0 and c == ",":
                 # remove leading and trailing whitespaces
-                build_string = re.sub("^[ \t]+|[ \t]+$", "", build_string)
+                build_string = build_string.strip()
                 if build_string != "":
                     elements.append(build_string)
                     build_string = ""
 
-        build_string = re.sub("^[ \t]+|[ \t]+$", "", build_string)
+        build_string = build_string.strip()
         if build_string != "":
             elements.append(build_string)
 
@@ -188,7 +189,7 @@ class UnionType:
 
         return UnionType(elements)
 
-    def as_list(self):
-        if self.types is not None:
-            return self.types
-        return []
+    def as_list(self) -> list[str]:
+        return self.types
+
+
