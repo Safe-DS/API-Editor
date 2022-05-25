@@ -191,5 +191,3 @@ class UnionType:
 
     def as_list(self) -> list[str]:
         return self.types
-
-
