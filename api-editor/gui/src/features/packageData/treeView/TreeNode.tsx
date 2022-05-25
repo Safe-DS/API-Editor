@@ -29,6 +29,7 @@ const TreeNode: React.FC<TreeNodeProps> = function ({ declaration, icon, isExpan
     const paddingLeft = level === 0 ? '1rem' : `${1 + 0.75 * level}rem`;
     const backgroundColor = isSelected(declaration, currentPathname) ? 'cornflowerblue' : undefined;
     const color = isSelected(declaration, currentPathname) ? 'white' : undefined;
+
     const fontWeight = filter.shouldKeepDeclaration(declaration, annotations) ? 'bold' : undefined;
 
     const handleClick = () => {

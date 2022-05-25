@@ -71,7 +71,8 @@ const UsageImportDialog: React.FC<ImportPythonPackageDialogProps> = function ({ 
                 </ModalHeader>
                 <ModalBody>
                     <FormControl>
-                        <FormLabel>Select a usage file to import.</FormLabel>
+                        <FormLabel>Select a usage file to import. This data will be stored until another
+                            usage file is imported.</FormLabel>
                         <StyledDropzone onDrop={slurpAndParse}>
                             <ChakraText>Drag and drop a usage file here or click to select the file.</ChakraText>
                             <ChakraText>(Only *.json will be accepted.)</ChakraText>

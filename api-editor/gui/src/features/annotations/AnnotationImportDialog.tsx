@@ -86,7 +86,8 @@ const AnnotationImportDialog: React.FC = function () {
                 <ModalBody>
                     <FormControl>
                         <FormLabel>
-                            Select an annotation file to import.
+                            Select an annotation file to import. This data will be stored until another
+                            annotation file is imported.
                         </FormLabel>
                         <StyledDropzone onDrop={onDrop}>
                             <ChakraText>

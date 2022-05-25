@@ -83,7 +83,8 @@ const PackageDataImportDialog: React.FC<ImportPythonPackageDialogProps> =
                     <ModalBody>
                         <FormControl>
                             <FormLabel>
-                                Select an API data file to import.
+                                Select an API data file to import. This data will be stored until another
+                                API data file is imported.
                             </FormLabel>
                             <StyledDropzone onDrop={slurpAndParse}>
                                 <ChakraText>

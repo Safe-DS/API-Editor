@@ -232,15 +232,15 @@ const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFi
                         </MenuButton>
                         <MenuList>
                             <MenuGroup title="Import">
-                                <MenuItem onClick={() => dispatch(togglePackageDataImportDialog())}>API Data</MenuItem>
-                                <MenuItem onClick={() => dispatch(toggleUsageImportDialog())}>Usages</MenuItem>
-                                <MenuItem onClick={() => dispatch(toggleAnnotationImportDialog())}>
+                                <MenuItem paddingLeft={8} onClick={() => dispatch(togglePackageDataImportDialog())}>API Data</MenuItem>
+                                <MenuItem paddingLeft={8} onClick={() => dispatch(toggleUsageImportDialog())}>Usages</MenuItem>
+                                <MenuItem paddingLeft={8} onClick={() => dispatch(toggleAnnotationImportDialog())}>
                                     Annotations
                                 </MenuItem>
                             </MenuGroup>
                             <MenuDivider />
                             <MenuGroup title="Export">
-                                <MenuItem onClick={exportAnnotations}>Annotations</MenuItem>
+                                <MenuItem paddingLeft={8} onClick={exportAnnotations}>Annotations</MenuItem>
                             </MenuGroup>
                         </MenuList>
                     </Menu>
