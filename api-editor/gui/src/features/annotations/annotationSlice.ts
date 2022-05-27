@@ -318,7 +318,7 @@ interface RenameUserAction {
 
 // Initial state -------------------------------------------------------------------------------------------------------
 
-const initialState: AnnotationsState = {
+export const initialState: AnnotationsState = {
     attributes: {},
     boundaries: {},
     calledAfters: {},
@@ -337,22 +337,17 @@ const initialState: AnnotationsState = {
 
 // Thunks --------------------------------------------------------------------------------------------------------------
 
-export const initializeAnnotations = createAsyncThunk(
-    'annotations/initialize',
-    async () => {
-        try {
-            const storedAnnotations = (await idb.get(
-                'annotations',
-            )) as AnnotationsState;
-            return {
-                ...initialState,
-                ...storedAnnotations,
-            };
-        } catch {
-            return initialState;
-        }
-    },
-);
+export const initializeAnnotations = createAsyncThunk('annotations/initialize', async () => {
+    try {
+        const storedAnnotations = (await idb.get('annotations')) as AnnotationsState;
+        return {
+            ...initialState,
+            ...storedAnnotations,
+        };
+    } catch {
+        return initialState;
+    }
+});
 
 // Slice ---------------------------------------------------------------------------------------------------------------
 
@@ -382,18 +377,11 @@ const annotationsSlice = createSlice({
             if (!state.calledAfters[action.payload.target]) {
                 state.calledAfters[action.payload.target] = {};
             }
-            state.calledAfters[action.payload.target][
-                action.payload.calledAfterName
-            ] = action.payload;
+            state.calledAfters[action.payload.target][action.payload.calledAfterName] = action.payload;
         },
         removeCalledAfter(state, action: PayloadAction<CalledAfterTarget>) {
-            delete state.calledAfters[action.payload.target][
-                action.payload.calledAfterName
-            ];
-            if (
-                Object.keys(state.calledAfters[action.payload.target])
-                    .length === 0
-            ) {
+            delete state.calledAfters[action.payload.target][action.payload.calledAfterName];
+            if (Object.keys(state.calledAfters[action.payload.target]).length === 0) {
                 delete state.calledAfters[action.payload.target];
             }
         },
@@ -415,16 +403,13 @@ const annotationsSlice = createSlice({
             } else {
                 const targetGroups = state.groups[action.payload.target];
                 const otherGroupNames = Object.values(targetGroups)
-                    .filter(
-                        (group) => group.groupName !== action.payload.groupName,
-                    )
+                    .filter((group) => group.groupName !== action.payload.groupName)
                     .map((group) => group.groupName);
 
                 for (const nameOfGroup of otherGroupNames) {
                     let needsChange = false;
                     const group = targetGroups[nameOfGroup];
-                    const currentAnnotationParameter =
-                        action.payload.parameters;
+                    const currentAnnotationParameter = action.payload.parameters;
                     const currentGroupParameter = [...group.parameters];
                     for (const parameter of currentAnnotationParameter) {
                         const index = currentGroupParameter.indexOf(parameter);
@@ -447,13 +432,10 @@ const annotationsSlice = createSlice({
                     }
                 }
             }
-            state.groups[action.payload.target][action.payload.groupName] =
-                action.payload;
+            state.groups[action.payload.target][action.payload.groupName] = action.payload;
         },
         removeGroup(state, action: PayloadAction<GroupTarget>) {
-            delete state.groups[action.payload.target][
-                action.payload.groupName
-            ];
+            delete state.groups[action.payload.target][action.payload.groupName];
             if (Object.keys(state.groups[action.payload.target]).length === 0) {
                 delete state.groups[action.payload.target];
             }
@@ -506,10 +488,7 @@ const annotationsSlice = createSlice({
                 target: action.payload,
             };
         },
-        showCalledAfterAnnotationForm(
-            state,
-            action: PayloadAction<CalledAfterTarget>,
-        ) {
+        showCalledAfterAnnotationForm(state, action: PayloadAction<CalledAfterTarget>) {
             state.currentUserAction = {
                 type: 'calledAfter',
                 target: action.payload.target,
@@ -564,10 +543,7 @@ const annotationsSlice = createSlice({
         },
     },
     extraReducers(builder) {
-        builder.addCase(
-            initializeAnnotations.fulfilled,
-            (state, action) => action.payload,
-        );
+        builder.addCase(initializeAnnotations.fulfilled, (state, action) => action.payload);
     },
 });
 
@@ -634,8 +610,7 @@ export const selectConstant =
     (target: string) =>
     (state: RootState): ConstantAnnotation | undefined =>
         selectAnnotations(state).constants[target];
-export const selectCurrentUserAction = (state: RootState): UserAction =>
-    selectAnnotations(state).currentUserAction;
+export const selectCurrentUserAction = (state: RootState): UserAction => selectAnnotations(state).currentUserAction;
 export const selectEnum =
     (target: string) =>
     (state: RootState): EnumAnnotation | undefined =>

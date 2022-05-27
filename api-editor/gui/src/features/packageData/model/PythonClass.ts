@@ -1,7 +1,5 @@
-import { isEmptyList } from '../../../common/util/listOperations';
 import { Optional } from '../../../common/util/types';
 import PythonDeclaration from './PythonDeclaration';
-import { PythonFilter } from './PythonFilter';
 import PythonFunction from './PythonFunction';
 import PythonModule from './PythonModule';
 
@@ -54,36 +52,5 @@ export default class PythonClass extends PythonDeclaration {
         }
 
         return result;
-    }
-
-    filter(pythonFilter: PythonFilter | void): PythonClass {
-        if (!pythonFilter || !pythonFilter.isFilteringFunctions()) {
-            return this;
-        }
-
-        const methods = this.methods
-            .map((it) => it.filter(pythonFilter))
-            .filter(
-                (it) =>
-                    it.name
-                        .toLowerCase()
-                        .includes(
-                            (pythonFilter.pythonFunction || '').toLowerCase(),
-                        ) &&
-                    // Don't exclude functions without parameters when we don't filter parameters
-                    (!pythonFilter.isFilteringParameters() ||
-                        !isEmptyList(it.parameters)),
-            );
-
-        return new PythonClass(
-            this.name,
-            this.qualifiedName,
-            this.decorators,
-            this.superclasses,
-            methods,
-            this.isPublic,
-            this.description,
-            this.fullDocstring,
-        );
     }
 }

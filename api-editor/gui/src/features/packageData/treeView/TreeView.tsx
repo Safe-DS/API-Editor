@@ -9,16 +9,12 @@ import PythonFunction from '../model/PythonFunction';
 import PythonModule from '../model/PythonModule';
 import PythonPackage from '../model/PythonPackage';
 import PythonParameter from '../model/PythonParameter';
-import {
-    selectAllExpandedInTreeView,
-    selectShowPrivateDeclarations,
-    selectTreeViewScrollOffset,
-    setTreeViewScrollOffset,
-} from '../packageDataSlice';
+import { selectAllExpandedInTreeView, selectTreeViewScrollOffset, setTreeViewScrollOffset } from '../packageDataSlice';
 import ClassNode from './ClassNode';
 import FunctionNode from './FunctionNode';
 import ModuleNode from './ModuleNode';
 import ParameterNode from './ParameterNode';
+import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
 
 interface ScrollOffset {
     scrollOffset: number;
@@ -26,16 +22,14 @@ interface ScrollOffset {
 
 interface TreeViewProps {
     pythonPackage: PythonPackage;
+    filter: AbstractPythonFilter;
 }
 
-const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage }) => {
+const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage, filter }) => {
     const dispatch = useAppDispatch();
     const allExpanded = useAppSelector(selectAllExpandedInTreeView);
 
     let children = walkChildrenInPreorder(allExpanded, pythonPackage);
-    if (!useAppSelector(selectShowPrivateDeclarations)) {
-        children = children.filter((it) => it.isPublicDeclaration());
-    }
     const previousScrollOffset = useAppSelector(selectTreeViewScrollOffset);
 
     // Keep a reference to the last FixedSizeList before everything is dismounted
@@ -52,8 +46,7 @@ const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage }) => {
             const current = listRef.current;
             if (current) {
                 try {
-                    const newScrollOffset = (current.state as ScrollOffset)
-                        .scrollOffset;
+                    const newScrollOffset = (current.state as ScrollOffset).scrollOffset;
                     dispatch(setTreeViewScrollOffset(newScrollOffset));
                 } catch {
                     dispatch(setTreeViewScrollOffset(0));
@@ -71,8 +64,8 @@ const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage }) => {
                 <FixedSizeList
                     itemSize={24}
                     itemCount={children.length}
-                    itemData={children}
-                    itemKey={(index, data) => data[index]?.pathAsString()}
+                    itemData={{ children, filter }}
+                    itemKey={(index, data) => data.children[index]?.pathAsString()}
                     width="100%"
                     height={height}
                     style={{
@@ -95,37 +88,25 @@ const walkChildrenInPreorder = function (
 ): PythonDeclaration[] {
     return declaration.children().flatMap((it) => {
         if (allExpandedItemsInTreeView[it.pathAsString()]) {
-            return [
-                it,
-                ...walkChildrenInPreorder(allExpandedItemsInTreeView, it),
-            ];
+            return [it, ...walkChildrenInPreorder(allExpandedItemsInTreeView, it)];
         } else {
             return [it];
         }
     });
 };
 
-const TreeNodeGenerator: React.FC<ListChildComponentProps> = memo(
-    ({ data, index, style }) => {
-        const declaration = data[index];
+const TreeNodeGenerator: React.FC<ListChildComponentProps> = memo(({ data, index, style }) => {
+    const declaration = data.children[index];
+    const filter = data.filter;
 
-        return (
-            <Box style={style}>
-                {declaration instanceof PythonModule && (
-                    <ModuleNode pythonModule={declaration} />
-                )}
-                {declaration instanceof PythonClass && (
-                    <ClassNode pythonClass={declaration} />
-                )}
-                {declaration instanceof PythonFunction && (
-                    <FunctionNode pythonFunction={declaration} />
-                )}
-                {declaration instanceof PythonParameter && (
-                    <ParameterNode pythonParameter={declaration} />
-                )}
-            </Box>
-        );
-    },
-);
+    return (
+        <Box style={style}>
+            {declaration instanceof PythonModule && <ModuleNode pythonModule={declaration} filter={filter} />}
+            {declaration instanceof PythonClass && <ClassNode pythonClass={declaration} filter={filter} />}
+            {declaration instanceof PythonFunction && <FunctionNode pythonFunction={declaration} filter={filter} />}
+            {declaration instanceof PythonParameter && <ParameterNode pythonParameter={declaration} filter={filter} />}
+        </Box>
+    );
+});
 
 export default TreeView;
