@@ -26,4 +26,5 @@ export default class PythonPackage extends PythonDeclaration {
     toString(): string {
         return `Package "${this.distribution}/${this.name} v${this.version}"`;
     }
+
 }

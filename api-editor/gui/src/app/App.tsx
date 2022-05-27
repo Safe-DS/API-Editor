@@ -1,4 +1,6 @@
 import {
+    Box,
+    Button,
     Grid,
     GridItem,
     ListItem,
@@ -8,13 +10,15 @@ import {
     ModalContent,
     ModalHeader,
     ModalOverlay,
+    Spacer,
     UnorderedList,
+    VStack
 } from '@chakra-ui/react';
 import * as idb from 'idb-keyval';
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router';
+import React, {useEffect, useState} from 'react';
+import {useLocation} from 'react-router';
 import MenuBar from '../common/MenuBar';
-import { Setter } from '../common/util/types';
+import {Setter} from '../common/util/types';
 import AnnotationImportDialog from '../features/annotations/AnnotationImportDialog';
 import {
     AnnotationsState,
@@ -33,24 +37,23 @@ import MoveForm from '../features/annotations/forms/MoveForm';
 import OptionalForm from '../features/annotations/forms/OptionalForm';
 import RenameForm from '../features/annotations/forms/RenameForm';
 import PythonPackage from '../features/packageData/model/PythonPackage';
-import { parsePythonPackageJson, PythonPackageJson } from '../features/packageData/model/PythonPackageBuilder';
+import {parsePythonPackageJson, PythonPackageJson} from '../features/packageData/model/PythonPackageBuilder';
 import PackageDataImportDialog from '../features/packageData/PackageDataImportDialog';
-import {
-    selectShowPackageDataImportDialog,
-    toggleIsExpandedInTreeView,
-} from '../features/packageData/packageDataSlice';
+import {selectShowPackageDataImportDialog, toggleIsExpandedInTreeView,} from '../features/packageData/packageDataSlice';
 import SelectionView from '../features/packageData/selectionView/SelectionView';
 import TreeView from '../features/packageData/treeView/TreeView';
-import { useAppDispatch, useAppSelector } from './hooks';
+import {useAppDispatch, useAppSelector} from './hooks';
 import PythonFunction from '../features/packageData/model/PythonFunction';
 import AttributeForm from '../features/annotations/forms/AttributeForm';
-import { UsageCountJson, UsageCountStore } from '../features/usages/model/UsageCountStore';
-import { selectShowUsageImportDialog } from '../features/usages/usageSlice';
+import {UsageCountJson, UsageCountStore} from '../features/usages/model/UsageCountStore';
+import {selectShowUsageImportDialog} from '../features/usages/usageSlice';
 import UsageImportDialog from '../features/usages/UsageImportDialog';
-import { createFilterFromString } from '../features/packageData/model/filters/filterFactory';
+import {createFilterFromString} from '../features/packageData/model/filters/filterFactory';
+import {useNavigate} from "react-router-dom";
 
 const App: React.FC = function () {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const currentUserAction = useAppSelector(selectCurrentUserAction);
     const currentPathName = useLocation().pathname;
 
@@ -101,6 +104,7 @@ const App: React.FC = function () {
     const showAnnotationImportDialog = useAppSelector(selectShowAnnotationImportDialog);
     const showPackageDataImportDialog = useAppSelector(selectShowPackageDataImportDialog);
     const showUsagesImportDialog = useAppSelector(selectShowUsageImportDialog);
+    const annotations = useAppSelector(selectAnnotations);
 
     const [showInferErrorDialog, setShowInferErrorDialog] = useState(false);
     const [inferErrors, setInferErrors] = useState<string[]>([]);
@@ -108,6 +112,26 @@ const App: React.FC = function () {
         setInferErrors(errors);
         setShowInferErrorDialog(true);
     };
+
+    const allElementsList: string[] = [];
+    filteredPythonPackage.modules.filter(it => pythonFilter.shouldKeepDeclaration(it, annotations)).forEach(m => {
+        allElementsList.push(m.pathAsString());
+        m.classes.filter(it => pythonFilter.shouldKeepDeclaration(it, annotations)).forEach(c => {
+            allElementsList.push(c.pathAsString());
+            c.methods.filter(it => pythonFilter.shouldKeepDeclaration(it, annotations)).forEach(f => {
+                allElementsList.push(f.pathAsString());
+                f.parameters.filter(it => pythonFilter.shouldKeepDeclaration(it, annotations)).forEach(p => {
+                    allElementsList.push(p.pathAsString());
+                });
+            });
+        });
+        m.functions.filter(it => pythonFilter.shouldKeepDeclaration(it, annotations)).forEach(f => {
+            allElementsList.push(f.pathAsString());
+            f.parameters.filter(it => pythonFilter.shouldKeepDeclaration(it, annotations)).forEach(p => {
+                allElementsList.push(p.pathAsString());
+            });
+        });
+    });
 
     return (
         <>
@@ -137,18 +161,18 @@ const App: React.FC = function () {
                     resize="horizontal"
                 >
                     {currentUserAction.type === 'attribute' && (
-                        <AttributeForm target={userActionTarget || pythonPackage} />
+                        <AttributeForm target={userActionTarget || pythonPackage}/>
                     )}
                     {currentUserAction.type === 'boundary' && (
-                        <BoundaryForm target={userActionTarget || pythonPackage} />
+                        <BoundaryForm target={userActionTarget || pythonPackage}/>
                     )}
                     {currentUserAction.type === 'calledAfter' && userActionTarget instanceof PythonFunction && (
-                        <CalledAfterForm target={userActionTarget} />
+                        <CalledAfterForm target={userActionTarget}/>
                     )}
                     {currentUserAction.type === 'constant' && (
-                        <ConstantForm target={userActionTarget || pythonPackage} />
+                        <ConstantForm target={userActionTarget || pythonPackage}/>
                     )}
-                    {currentUserAction.type === 'enum' && <EnumForm target={userActionTarget || pythonPackage} />}
+                    {currentUserAction.type === 'enum' && <EnumForm target={userActionTarget || pythonPackage}/>}
                     {currentUserAction.type === 'group' && (
                         <GroupForm
                             target={userActionTarget || pythonPackage}
@@ -159,24 +183,51 @@ const App: React.FC = function () {
                             }
                         />
                     )}
-                    {currentUserAction.type === 'move' && <MoveForm target={userActionTarget || pythonPackage} />}
+                    {currentUserAction.type === 'move' && <MoveForm target={userActionTarget || pythonPackage}/>}
                     {currentUserAction.type === 'none' && (
-                        <TreeView pythonPackage={filteredPythonPackage} filter={pythonFilter} />
+                        <TreeView pythonPackage={filteredPythonPackage} filter={pythonFilter}/>
                     )}
                     {currentUserAction.type === 'optional' && (
-                        <OptionalForm target={userActionTarget || pythonPackage} />
+                        <OptionalForm target={userActionTarget || pythonPackage}/>
                     )}
-                    {currentUserAction.type === 'rename' && <RenameForm target={userActionTarget || pythonPackage} />}
+                    {currentUserAction.type === 'rename' && <RenameForm target={userActionTarget || pythonPackage}/>}
                 </GridItem>
                 <GridItem gridArea="rightPane" overflow="auto">
-                    <SelectionView pythonPackage={pythonPackage} />
+                    <VStack>
+                        <SelectionView pythonPackage={pythonPackage}/>
+                    </VStack>
+                    <Spacer/>
+                    <VStack>
+                        <Box backgroundColor="red">
+                            <Button
+                                onClick={() => {
+                                    let navStr = getPreviousElement(allElementsList, window.location.href.split("#")[1].substring(1));
+                                    if (navStr != null) {
+                                        //update tree selection
+                                        navigate(navStr);
+                                    }
+                                }}>
+                                Previous
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    let navStr = getNextElement(allElementsList, window.location.href.split("#")[1].substring(1));
+                                    if (navStr != null) {
+                                        //update tree selection
+                                        navigate(navStr);
+                                    }
+                                }}>
+                                Next
+                            </Button>
+                        </Box>
+                    </VStack>
                 </GridItem>
 
-                {showAnnotationImportDialog && <AnnotationImportDialog />}
+                {showAnnotationImportDialog && <AnnotationImportDialog/>}
                 {showPackageDataImportDialog && (
-                    <PackageDataImportDialog setPythonPackage={setPythonPackage} setFilter={setFilter} />
+                    <PackageDataImportDialog setPythonPackage={setPythonPackage} setFilter={setFilter}/>
                 )}
-                {showUsagesImportDialog && <UsageImportDialog setUsages={setUsages} />}
+                {showUsagesImportDialog && <UsageImportDialog setUsages={setUsages}/>}
             </Grid>
             <Modal
                 isOpen={showInferErrorDialog}
@@ -185,10 +236,10 @@ const App: React.FC = function () {
                 size="xl"
                 isCentered
             >
-                <ModalOverlay />
+                <ModalOverlay/>
                 <ModalContent>
                     <ModalHeader>Infer errors</ModalHeader>
-                    <ModalCloseButton />
+                    <ModalCloseButton/>
                     <ModalBody paddingLeft={10} paddingBottom={6}>
                         <UnorderedList spacing={5}>
                             {inferErrors.map((error, index) => (
@@ -218,6 +269,24 @@ const getUsagesFromIndexedDB = async function (setUsages: Setter<UsageCountStore
 
 const setAnnotationsInIndexedDB = async function (annotationStore: AnnotationsState) {
     await idb.set('annotations', annotationStore);
+};
+
+const getNextElement = function (allElementsList: string[], current: string) {
+    const currentIndex = allElementsList.findIndex(element => element === current);
+    const nextIndex = currentIndex + 1;
+    if (nextIndex < allElementsList.length) {
+        return `/${allElementsList[nextIndex]}`;
+    }
+    return null;
+};
+
+const getPreviousElement = function (allElementsList: string[], current: string) {
+    const currentIndex = allElementsList.findIndex(element => element === current);
+    const previousIndex = currentIndex - 1;
+    if (previousIndex >= 0) {
+        return `/${allElementsList[previousIndex]}`;
+    }
+    return null;
 };
 
 export default App;
