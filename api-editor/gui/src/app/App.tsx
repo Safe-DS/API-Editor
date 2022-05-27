@@ -204,9 +204,8 @@ const App: React.FC = function () {
 
                         <Spacer/>
 
-                        <Box borderTop="1px solid" w="100%" alignSelf="flex-end">
+                        <Box borderTop={1} layerStyle="subtleBorder" padding="0.5em 1em" w="100%" alignSelf="flex-end">
                             <Button
-                                margin="0 0 8px 8px"
                                 padding="0 16px"
                                 onClick={() => {
                                     let navStr = getPreviousElement(allElementsList, window.location.href.split("#")[1].substring(1));
@@ -221,7 +220,7 @@ const App: React.FC = function () {
                                 Previous
                             </Button>
                             <Button
-                                margin="0 0 8px 8px"
+                                marginLeft="8px"
                                 padding="0 16px"
                                 onClick={() => {
                                     let navStr = getNextElement(allElementsList, window.location.href.split("#")[1].substring(1));
