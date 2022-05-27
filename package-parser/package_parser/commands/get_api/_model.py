@@ -361,7 +361,7 @@ class Type:
     @classmethod
     def create_type(cls, docstring: ParameterAndResultDocstring) -> Union[NamedType, EnumType, BoundaryType, UnionType, None]:
         type_string = docstring.type
-        types: list[Union[NamedType, EnumType, BoundaryType, UnionType, None]] = list()
+        types: list[Union[NamedType, EnumType, BoundaryType]] = list()
 
         # Collapse whitespaces
         type_string = re.sub(r"\s+", " ", type_string)
@@ -375,7 +375,9 @@ class Type:
         enum_array_matches = re.findall(r"\{.*?}", type_string)
         type_string = re.sub(r"\{.*?}", " ", type_string)
         for enum in enum_array_matches:
-            types.append(EnumType.from_string(enum))
+            enum_type = EnumType.from_string(enum)
+            if enum_type is not None:
+                types.append(enum_type)
 
         # Remove default value from doc_string
         type_string = re.sub("default=.*", " ", type_string)

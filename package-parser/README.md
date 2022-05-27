@@ -1,4 +1,4 @@
-p# package-parser
+# package-parser
 
 A tool to analyze client and API code written in Python.
 
