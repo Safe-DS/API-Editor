@@ -356,7 +356,7 @@ class Type:
         self,
         typestring: ParameterAndResultDocstring,
     ) -> None:
-        self.type: Union[NamedType, EnumType, BoundaryType, UnionType] = Type.create_type(typestring)
+        self.type: Union[NamedType, EnumType, BoundaryType, UnionType, None] = Type.create_type(typestring)
 
     @classmethod
     def create_type(cls, docstring: ParameterAndResultDocstring) -> Union[NamedType, EnumType, BoundaryType, UnionType, None]:
