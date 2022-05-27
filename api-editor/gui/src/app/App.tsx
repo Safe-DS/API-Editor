@@ -197,13 +197,17 @@ const App: React.FC = function () {
                     {currentUserAction.type === 'rename' && <RenameForm target={userActionTarget || pythonPackage}/>}
                 </GridItem>
                 <GridItem gridArea="rightPane" overflow="auto">
-                    <VStack>
-                        <SelectionView pythonPackage={pythonPackage}/>
-                    </VStack>
-                    <Spacer/>
-                    <VStack>
-                        <Box backgroundColor="red">
+                    <VStack h="100%">
+                        <Box w="100%" flexGrow={1} overflowY="scroll">
+                            <SelectionView pythonPackage={pythonPackage}/>
+                        </Box>
+
+                        <Spacer/>
+
+                        <Box borderTop="1px solid" w="100%" alignSelf="flex-end">
                             <Button
+                                margin="0 0 8px 8px"
+                                padding="0 16px"
                                 onClick={() => {
                                     let navStr = getPreviousElement(allElementsList, window.location.href.split("#")[1].substring(1));
                                     if (navStr != null) {
@@ -217,6 +221,8 @@ const App: React.FC = function () {
                                 Previous
                             </Button>
                             <Button
+                                margin="0 0 8px 8px"
+                                padding="0 16px"
                                 onClick={() => {
                                     let navStr = getNextElement(allElementsList, window.location.href.split("#")[1].substring(1));
                                     if (navStr != null) {
