@@ -1,4 +1,4 @@
-import {Box, Button, Spacer, VStack} from '@chakra-ui/react';
+import {Box, Button, HStack, Spacer, VStack} from '@chakra-ui/react';
 import React from 'react';
 import {useLocation, useNavigate} from 'react-router';
 import PythonClass from '../model/PythonClass';
@@ -58,9 +58,8 @@ const SelectionView: React.FC<SelectionViewProps> = function ({
 
             <Spacer/>
 
-            <Box borderTop={1} layerStyle="subtleBorder" padding="0.5em 1em" w="100%">
+            <HStack borderTop={1} layerStyle="subtleBorder" padding="0.5em 1em" w="100%">
                 <Button
-                    padding="0 16px"
                     onClick={() => {
                         let navStr = getPreviousElementPath(declaration, pythonFilter, annotations);
                         if (navStr != null) {
@@ -75,8 +74,6 @@ const SelectionView: React.FC<SelectionViewProps> = function ({
                     Previous
                 </Button>
                 <Button
-                    marginLeft="8px"
-                    padding="0 16px"
                     onClick={() => {
                         let navStr = getNextElementPath(declaration, pythonFilter, annotations);
                         if (navStr != null) {
@@ -90,7 +87,7 @@ const SelectionView: React.FC<SelectionViewProps> = function ({
                     }}>
                     Next
                 </Button>
-            </Box>
+            </HStack>
         </VStack>
     );
 };
