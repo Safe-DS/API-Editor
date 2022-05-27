@@ -325,7 +325,7 @@ const getParents = function (navStr: string, filteredPythonPackage: PythonPackag
 const getPreviousButtonText = function (allElementsList: string[], current: string) {
     const currentIndex = allElementsList.findIndex(element => element === current);
     const previousIndex = currentIndex - 1;
-    if (previousIndex < 0 && allElementsList.length > 0) {
+    if (previousIndex == -1 && allElementsList.length > 0) {
         return "Go to last Element";
     }
     return "Previous"
