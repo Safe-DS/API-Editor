@@ -25,12 +25,21 @@ export class UsageCountStore {
         );
     }
 
+    readonly classMax: number;
+    readonly functionMax: number;
+    readonly parameterMax: number;
+
+
     constructor(
         readonly classUsages: Map<string, number> = new Map(),
         readonly functionUsages: Map<string, number> = new Map(),
         readonly parameterUsages: Map<string, number> = new Map(),
         readonly valueUsages: Map<string, Map<string, number>> = new Map(),
-    ) {}
+    ) {
+        this.classMax = Math.max(...classUsages.values());
+        this.functionMax = Math.max(...functionUsages.values());
+        this.parameterMax = Math.max(...parameterUsages.values());
+    }
 
     toJson(): UsageCountJson {
         return {

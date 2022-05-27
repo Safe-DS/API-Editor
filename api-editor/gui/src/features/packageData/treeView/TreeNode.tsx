@@ -1,23 +1,33 @@
-import { HStack, Icon, Text as ChakraText } from '@chakra-ui/react';
+import {Box, HStack, Icon, Text as ChakraText} from '@chakra-ui/react';
 import React from 'react';
-import { IconType } from 'react-icons/lib';
-import { useLocation } from 'react-router';
-import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import {IconType} from 'react-icons/lib';
+import {useLocation} from 'react-router';
+import {useNavigate} from 'react-router-dom';
+import {useAppDispatch, useAppSelector} from '../../../app/hooks';
 import PythonDeclaration from '../model/PythonDeclaration';
-import { selectIsExpandedInTreeView, toggleIsExpandedInTreeView } from '../packageDataSlice';
+import {selectIsExpandedInTreeView, toggleIsExpandedInTreeView} from '../packageDataSlice';
 import VisibilityIndicator from './VisibilityIndicator';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
-import { selectAnnotations } from '../../annotations/annotationSlice';
+import {selectAnnotations} from '../../annotations/annotationSlice';
+import {UsageCountJson, UsageCountStore} from "../../usages/model/UsageCountStore";
 
 interface TreeNodeProps {
     declaration: PythonDeclaration;
     icon: IconType;
     isExpandable: boolean;
     filter: AbstractPythonFilter;
+    maxValue?: number;
+    specificValue?: number;
 }
 
-const TreeNode: React.FC<TreeNodeProps> = function ({ declaration, icon, isExpandable, filter }) {
+const TreeNode: React.FC<TreeNodeProps> = function ({
+                                                        declaration,
+                                                        icon,
+                                                        isExpandable,
+                                                        filter,
+                                                        maxValue,
+                                                        specificValue,
+                                                    }) {
     const currentPathname = useLocation().pathname;
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -37,6 +47,9 @@ const TreeNode: React.FC<TreeNodeProps> = function ({ declaration, icon, isExpan
         navigate(`/${declaration.pathAsString()}`);
     };
 
+    const specificValueString = (specificValue !== undefined) ? `- ${specificValue}` : undefined;
+    let icon_color = (specificValue !== undefined) ? getColorFromValue(maxValue, specificValue) : undefined;
+
     return (
         <HStack
             userSelect="none"
@@ -51,8 +64,8 @@ const TreeNode: React.FC<TreeNodeProps> = function ({ declaration, icon, isExpan
                 showChildren={showChildren}
                 isSelected={isSelected(declaration, currentPathname)}
             />
-            <Icon as={icon} />
-            <ChakraText fontWeight={fontWeight}>{declaration.getUniqueName()}</ChakraText>
+            <Icon as={icon} bg="white" color={icon_color}/>
+            <ChakraText fontWeight={fontWeight}>{declaration.getUniqueName()} {specificValueString}</ChakraText>
         </HStack>
     );
 };
@@ -64,5 +77,10 @@ const levelOf = function (declaration: PythonDeclaration): number {
 const isSelected = function (declaration: PythonDeclaration, currentPathname: string): boolean {
     return `/${declaration.pathAsString()}` === currentPathname;
 };
+
+const getColorFromValue = function (maxValue: number, specificValue: number): string {
+    const percentage = specificValue / maxValue * 255;
+    return `rgb(${percentage}%, 0%, ${255 - percentage}%)`
+}
 
 export default TreeNode;
