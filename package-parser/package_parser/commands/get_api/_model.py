@@ -350,47 +350,21 @@ class Function:
         }
 
 
-# class RefinedType:
-#     @classmethod
-#     def from_docstring(cls, docstring: ParameterAndResultDocstring) -> RefinedType:
-#         docstring_str = " ".join([docstring.type, docstring.description])
-#         enum = EnumType.from_string(docstring_str)
-#         boundary = BoundaryType.from_string(docstring_str)
-#
-#         if enum is not None:
-#             return RefinedType(enum)
-#
-#         if boundary is not None:
-#             return RefinedType(boundary)
-#
-#         return RefinedType()
-#
-#     def __init__(
-#         self,
-#         ref_type: Union[UnionType, BoundaryType, EnumType, NamedType, None] = None,
-#     ) -> None:
-#         self.ref_type = ref_type
-#
-#     def as_dict(self):
-#         if self.ref_type is not None:
-#             return {"kind": self.ref_type.__class__.__name__, **asdict(self.ref_type)}
-#         return {}
-
 class Type:
 
     def __init__(
         self,
         typestring: ParameterAndResultDocstring,
     ) -> None:
-        self.type: Union[NamedType, EnumType, BoundaryType, UnionType] = Type.createType(typestring)
+        self.type: Union[NamedType, EnumType, BoundaryType, UnionType] = Type.create_type(typestring)
 
     @classmethod
-    def createType(cls, docstring: ParameterAndResultDocstring) -> Optional[Union[NamedType, EnumType, BoundaryType, UnionType]]:
-        typestring = docstring.type
-        types = list()
+    def create_type(cls, docstring: ParameterAndResultDocstring) -> Union[NamedType, EnumType, BoundaryType, UnionType, None]:
+        type_string = docstring.type
+        types: list[Union[NamedType, EnumType, BoundaryType, UnionType, None]] = list()
 
         # Collapse whitespaces
-        typestring = re.sub(r"\s+", " ", typestring)
+        type_string = re.sub(r"\s+", " ", type_string)
 
         # Get boundary from description
         boundary = BoundaryType.from_string(docstring.description)
@@ -398,25 +372,25 @@ class Type:
             types.append(boundary)
 
         # Find all enums and remove them from doc_string
-        enum_array_matches = re.findall(r"\{.*?}", typestring)
-        typestring = re.sub(r"\{.*?}", " ", typestring)
+        enum_array_matches = re.findall(r"\{.*?}", type_string)
+        type_string = re.sub(r"\{.*?}", " ", type_string)
         for enum in enum_array_matches:
             types.append(EnumType.from_string(enum))
 
         # Remove default value from doc_string
-        typestring = re.sub("default=.*", " ", typestring)
+        type_string = re.sub("default=.*", " ", type_string)
 
         # Create a list with all values and types
         # ") or (" must be replaced by a very unlikely string ("&%&") so that it is not removed when filtering out.
         # The string will be replaced by ") or (" again after filtering out.
-        typestring = re.sub(r"\) or \(", "&%&", typestring)
-        typestring = re.sub(r" ?, ?or ", ", ", typestring)
-        typestring = re.sub(r" or ", ", ", typestring)
-        typestring = re.sub("&%&", ") or (", typestring)
+        type_string = re.sub(r"\) or \(", "&%&", type_string)
+        type_string = re.sub(r" ?, ?or ", ", ", type_string)
+        type_string = re.sub(r" or ", ", ", type_string)
+        type_string = re.sub("&%&", ") or (", type_string)
 
         brackets = 0
         build_string = ""
-        for c in typestring:
+        for c in type_string:
             if c == "(":
                 brackets += 1
             elif c == ")":

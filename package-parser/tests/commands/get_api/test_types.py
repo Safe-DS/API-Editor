@@ -1,8 +1,7 @@
 from typing import Any
 
 import pytest
-from package_parser.commands.get_api import NamedType, EnumType, BoundaryType, UnionType, Type, \
-    ParameterAndResultDocstring
+from package_parser.commands.get_api import Type, ParameterAndResultDocstring
 
 
 @pytest.mark.parametrize(
