@@ -41,7 +41,11 @@ import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { resetAnnotations, toggleAnnotationImportDialog } from '../features/annotations/annotationSlice';
 import AnnotatedPythonPackageBuilder from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
 import PythonPackage from '../features/packageData/model/PythonPackage';
-import { togglePackageDataImportDialog } from '../features/packageData/packageDataSlice';
+import {
+    selectHeatMapMode,
+    toggleHeatMapMode,
+    togglePackageDataImportDialog
+} from '../features/packageData/packageDataSlice';
 import { Setter } from './util/types';
 import { toggleUsageImportDialog } from '../features/usages/usageSlice';
 
@@ -222,6 +226,9 @@ const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFi
     if (colorMode === 'dark') {
         settings.push('darkMode');
     }
+    if (useAppSelector(selectHeatMapMode)) {
+        settings.push('heatMapMode');
+    }
 
     return (
         <Flex as="nav" borderBottom={1} layerStyle="subtleBorder" padding="0.5em 1em">
@@ -266,6 +273,9 @@ const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFi
                             <MenuOptionGroup type="checkbox" value={settings}>
                                 <MenuItemOption value={'darkMode'} onClick={toggleColorMode}>
                                     Dark mode
+                                </MenuItemOption>
+                                <MenuItemOption value={'heatMapMode'} onClick={()=>dispatch(toggleHeatMapMode())}>
+                                    Heat Map
                                 </MenuItemOption>
                             </MenuOptionGroup>
                         </MenuList>

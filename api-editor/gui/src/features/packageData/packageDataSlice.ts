@@ -7,6 +7,7 @@ export interface PackageDataState {
     };
     treeViewScrollOffset: number;
     showImportDialog: boolean;
+    heatMapMode: boolean;
 }
 
 // Initial state -------------------------------------------------------------------------------------------------------
@@ -15,6 +16,7 @@ const initialState: PackageDataState = {
     expandedInTreeView: {},
     treeViewScrollOffset: 0,
     showImportDialog: false,
+    heatMapMode: false,
 };
 
 // Slice ---------------------------------------------------------------------------------------------------------------
@@ -36,6 +38,9 @@ const packageDataSlice = createSlice({
         toggleImportDialog(state) {
             state.showImportDialog = !state.showImportDialog;
         },
+        toggleHeatMapMode(state) {
+            state.heatMapMode = !state.heatMapMode;
+        },
     },
 });
 
@@ -44,6 +49,7 @@ export const {
     toggleIsExpanded: toggleIsExpandedInTreeView,
     setScrollOffset: setTreeViewScrollOffset,
     toggleImportDialog: togglePackageDataImportDialog,
+    toggleHeatMapMode: toggleHeatMapMode,
 } = actions;
 export default reducer;
 
@@ -57,3 +63,5 @@ export const selectAllExpandedInTreeView = (state: RootState): { [target: string
 export const selectTreeViewScrollOffset = (state: RootState): number => selectPackageData(state).treeViewScrollOffset;
 export const selectShowPackageDataImportDialog = (state: RootState): boolean =>
     selectPackageData(state).showImportDialog;
+export const selectHeatMapMode = (state: RootState): boolean =>
+    selectPackageData(state).heatMapMode;
