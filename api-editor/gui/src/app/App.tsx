@@ -217,7 +217,7 @@ const App: React.FC = function () {
                                         dispatch(expandParentsInTreeView(parents));
                                     }
                                 }}>
-                                Previous
+                                {getPreviousButtonText(allElementsList, window.location.href.split("#")[1].substring(1))}
                             </Button>
                             <Button
                                 marginLeft="8px"
@@ -232,7 +232,7 @@ const App: React.FC = function () {
                                         dispatch(expandParentsInTreeView(parents));
                                     }
                                 }}>
-                                Next
+                                {getNextButtonText(allElementsList, window.location.href.split("#")[1].substring(1))}
                             </Button>
                         </Box>
                     </VStack>
@@ -291,6 +291,8 @@ const getNextElement = function (allElementsList: string[], current: string) {
     const nextIndex = currentIndex + 1;
     if (nextIndex < allElementsList.length) {
         return allElementsList[nextIndex];
+    } else if (allElementsList.length > 0) {
+        return allElementsList[0];
     }
     return null;
 };
@@ -300,6 +302,8 @@ const getPreviousElement = function (allElementsList: string[], current: string)
     const previousIndex = currentIndex - 1;
     if (previousIndex >= 0) {
         return allElementsList[previousIndex];
+    } else if (allElementsList.length > 0) {
+        return allElementsList[allElementsList.length - 1];
     }
     return null;
 };
@@ -315,6 +319,24 @@ const getParents = function (navStr: string, filteredPythonPackage: PythonPackag
         }
     }
     return parents;
+};
+
+const getPreviousButtonText = function (allElementsList: string[], current: string) {
+    const currentIndex = allElementsList.findIndex(element => element === current);
+    const previousIndex = currentIndex - 1;
+    if (previousIndex == -1 && allElementsList.length > 0) {
+        return "Go to last Element";
+    }
+    return "Previous"
+};
+
+const getNextButtonText = function (allElementsList: string[], current: string) {
+    const currentIndex = allElementsList.findIndex(element => element === current);
+    const nextIndex = currentIndex + 1;
+    if (nextIndex >= allElementsList.length && allElementsList.length > 0) {
+        return "Go to first Element";
+    }
+    return "Next"
 };
 
 export default App;
