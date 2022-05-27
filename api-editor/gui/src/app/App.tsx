@@ -39,7 +39,11 @@ import RenameForm from '../features/annotations/forms/RenameForm';
 import PythonPackage from '../features/packageData/model/PythonPackage';
 import {parsePythonPackageJson, PythonPackageJson} from '../features/packageData/model/PythonPackageBuilder';
 import PackageDataImportDialog from '../features/packageData/PackageDataImportDialog';
-import {selectShowPackageDataImportDialog, toggleIsExpandedInTreeView,} from '../features/packageData/packageDataSlice';
+import {
+    expandParentsInTreeView,
+    selectShowPackageDataImportDialog,
+    toggleIsExpandedInTreeView,
+} from '../features/packageData/packageDataSlice';
 import SelectionView from '../features/packageData/selectionView/SelectionView';
 import TreeView from '../features/packageData/treeView/TreeView';
 import {useAppDispatch, useAppSelector} from './hooks';
@@ -203,8 +207,11 @@ const App: React.FC = function () {
                                 onClick={() => {
                                     let navStr = getPreviousElement(allElementsList, window.location.href.split("#")[1].substring(1));
                                     if (navStr != null) {
+                                        //navigate to element
+                                        navigate("/" + navStr);
                                         //update tree selection
-                                        navigate(navStr);
+                                        const parents = getParents(navStr, filteredPythonPackage);
+                                        dispatch(expandParentsInTreeView(parents));
                                     }
                                 }}>
                                 Previous
@@ -213,8 +220,11 @@ const App: React.FC = function () {
                                 onClick={() => {
                                     let navStr = getNextElement(allElementsList, window.location.href.split("#")[1].substring(1));
                                     if (navStr != null) {
+                                        //navigate to element
+                                        navigate("/" + navStr);
                                         //update tree selection
-                                        navigate(navStr);
+                                        const parents = getParents(navStr, filteredPythonPackage);
+                                        dispatch(expandParentsInTreeView(parents));
                                     }
                                 }}>
                                 Next
@@ -275,7 +285,7 @@ const getNextElement = function (allElementsList: string[], current: string) {
     const currentIndex = allElementsList.findIndex(element => element === current);
     const nextIndex = currentIndex + 1;
     if (nextIndex < allElementsList.length) {
-        return `/${allElementsList[nextIndex]}`;
+        return allElementsList[nextIndex];
     }
     return null;
 };
@@ -284,9 +294,22 @@ const getPreviousElement = function (allElementsList: string[], current: string)
     const currentIndex = allElementsList.findIndex(element => element === current);
     const previousIndex = currentIndex - 1;
     if (previousIndex >= 0) {
-        return `/${allElementsList[previousIndex]}`;
+        return allElementsList[previousIndex];
     }
     return null;
+};
+
+const getParents = function (navStr: string, filteredPythonPackage: PythonPackage) {
+    const parents: string[] = [];
+    let currentElement = filteredPythonPackage.getByRelativePathAsString(navStr);
+    if (currentElement != null) {
+        currentElement = currentElement.parent();
+        while (currentElement != null) {
+            parents.push(currentElement.pathAsString());
+            currentElement = currentElement.parent();
+        }
+    }
+    return parents;
 };
 
 export default App;
