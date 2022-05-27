@@ -351,15 +351,18 @@ class Function:
 
 
 class Type:
-
     def __init__(
         self,
         typestring: ParameterAndResultDocstring,
     ) -> None:
-        self.type: Union[NamedType, EnumType, BoundaryType, UnionType, None] = Type.create_type(typestring)
+        self.type: Union[
+            NamedType, EnumType, BoundaryType, UnionType, None
+        ] = Type.create_type(typestring)
 
     @classmethod
-    def create_type(cls, docstring: ParameterAndResultDocstring) -> Union[NamedType, EnumType, BoundaryType, UnionType, None]:
+    def create_type(
+        cls, docstring: ParameterAndResultDocstring
+    ) -> Union[NamedType, EnumType, BoundaryType, UnionType, None]:
         type_string = docstring.type
         types: list[Union[NamedType, EnumType, BoundaryType]] = list()
 
@@ -474,7 +477,7 @@ class Parameter:
             "is_public": self.is_public,
             "assigned_by": self.assigned_by.name,
             "docstring": self.docstring.to_json(),
-            "type": self.type.to_json()
+            "type": self.type.to_json(),
         }
 
 

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
-from typing import ClassVar, Optional, Union, Any
+from typing import Any, ClassVar, Optional, Union
 
 
 @dataclass
@@ -14,11 +14,7 @@ class NamedType:
         return NamedType(string)
 
     def to_json(self) -> dict[str, str]:
-        return {
-            "kind": self.__class__.__name__,
-            "name": self.name
-        }
-
+        return {"kind": self.__class__.__name__, "name": self.name}
 
 
 @dataclass
@@ -64,10 +60,7 @@ class EnumType:
         self.values.update(enum.values)
 
     def to_json(self) -> dict[str, Any]:
-        return {
-            "kind": self.__class__.__name__,
-            "values": self.values
-        }
+        return {"kind": self.__class__.__name__, "values": self.values}
 
 
 @dataclass
@@ -149,10 +142,10 @@ class BoundaryType:
         return {
             "kind": self.__class__.__name__,
             "base_type": self.base_type,
-            "min" : self.min,
-            "max" : self.max,
+            "min": self.min,
+            "max": self.max,
             "min_inclusive": self.min_inclusive,
-            "max_inclusive": self.max_inclusive
+            "max_inclusive": self.max_inclusive,
         }
 
 
@@ -166,4 +159,3 @@ class UnionType:
             type_list.append(t.to_json())
 
         return {"kind": self.__class__.__name__, "types": type_list}
-

@@ -26,4 +26,4 @@ from ._package_metadata import (
     package_files,
     package_root,
 )
-from ._refined_types import NamedType, BoundaryType, EnumType, UnionType
+from ._refined_types import BoundaryType, EnumType, NamedType, UnionType
