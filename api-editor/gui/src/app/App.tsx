@@ -54,6 +54,8 @@ import {selectShowUsageImportDialog} from '../features/usages/usageSlice';
 import UsageImportDialog from '../features/usages/UsageImportDialog';
 import {createFilterFromString} from '../features/packageData/model/filters/filterFactory';
 import {useNavigate} from "react-router-dom";
+import AbstractPythonFilter from "../features/packageData/model/filters/AbstractPythonFilter";
+import PythonDeclaration from "../features/packageData/model/PythonDeclaration";
 
 const App: React.FC = function () {
     const dispatch = useAppDispatch();
@@ -116,26 +118,6 @@ const App: React.FC = function () {
         setInferErrors(errors);
         setShowInferErrorDialog(true);
     };
-
-    const allElementsList: string[] = [];
-    filteredPythonPackage.modules.filter(it => pythonFilter.shouldKeepDeclaration(it, annotations)).forEach(m => {
-        allElementsList.push(m.pathAsString());
-        m.classes.filter(it => pythonFilter.shouldKeepDeclaration(it, annotations)).forEach(c => {
-            allElementsList.push(c.pathAsString());
-            c.methods.filter(it => pythonFilter.shouldKeepDeclaration(it, annotations)).forEach(f => {
-                allElementsList.push(f.pathAsString());
-                f.parameters.filter(it => pythonFilter.shouldKeepDeclaration(it, annotations)).forEach(p => {
-                    allElementsList.push(p.pathAsString());
-                });
-            });
-        });
-        m.functions.filter(it => pythonFilter.shouldKeepDeclaration(it, annotations)).forEach(f => {
-            allElementsList.push(f.pathAsString());
-            f.parameters.filter(it => pythonFilter.shouldKeepDeclaration(it, annotations)).forEach(p => {
-                allElementsList.push(p.pathAsString());
-            });
-        });
-    });
 
     return (
         <>
@@ -208,31 +190,37 @@ const App: React.FC = function () {
                             <Button
                                 padding="0 16px"
                                 onClick={() => {
-                                    let navStr = getPreviousElement(allElementsList, window.location.href.split("#")[1].substring(1));
-                                    if (navStr != null) {
-                                        //navigate to element
-                                        navigate("/" + navStr);
-                                        //update tree selection
-                                        const parents = getParents(navStr, filteredPythonPackage);
-                                        dispatch(expandParentsInTreeView(parents));
+                                    let current = filteredPythonPackage.getByRelativePathAsString(window.location.href.split("#")[1].substring(1));
+                                    if (current != null) {
+                                        let navStr = getPreviousElementPath(current, pythonFilter, annotations);
+                                        if (navStr != null) {
+                                            //navigate to element
+                                            navigate("/" + navStr);
+                                            //update tree selection
+                                            const parents = getParents(navStr, filteredPythonPackage);
+                                            dispatch(expandParentsInTreeView(parents));
+                                        }
                                     }
                                 }}>
-                                {getPreviousButtonText(allElementsList, window.location.href.split("#")[1].substring(1))}
+                                Previous
                             </Button>
                             <Button
                                 marginLeft="8px"
                                 padding="0 16px"
                                 onClick={() => {
-                                    let navStr = getNextElement(allElementsList, window.location.href.split("#")[1].substring(1));
-                                    if (navStr != null) {
-                                        //navigate to element
-                                        navigate("/" + navStr);
-                                        //update tree selection
-                                        const parents = getParents(navStr, filteredPythonPackage);
-                                        dispatch(expandParentsInTreeView(parents));
+                                    let current = filteredPythonPackage.getByRelativePathAsString(window.location.href.split("#")[1].substring(1));
+                                    if (current != null) {
+                                        let navStr = getNextElementPath(current, pythonFilter, annotations);
+                                        if (navStr != null) {
+                                            //navigate to element
+                                            navigate("/" + navStr);
+                                            //update tree selection
+                                            const parents = getParents(navStr, filteredPythonPackage);
+                                            dispatch(expandParentsInTreeView(parents));
+                                        }
                                     }
                                 }}>
-                                {getNextButtonText(allElementsList, window.location.href.split("#")[1].substring(1))}
+                                Next
                             </Button>
                         </Box>
                     </VStack>
@@ -286,29 +274,7 @@ const setAnnotationsInIndexedDB = async function (annotationStore: AnnotationsSt
     await idb.set('annotations', annotationStore);
 };
 
-const getNextElement = function (allElementsList: string[], current: string) {
-    const currentIndex = allElementsList.findIndex(element => element === current);
-    const nextIndex = currentIndex + 1;
-    if (nextIndex < allElementsList.length) {
-        return allElementsList[nextIndex];
-    } else if (allElementsList.length > 0) {
-        return allElementsList[0];
-    }
-    return null;
-};
-
-const getPreviousElement = function (allElementsList: string[], current: string) {
-    const currentIndex = allElementsList.findIndex(element => element === current);
-    const previousIndex = currentIndex - 1;
-    if (previousIndex >= 0) {
-        return allElementsList[previousIndex];
-    } else if (allElementsList.length > 0) {
-        return allElementsList[allElementsList.length - 1];
-    }
-    return null;
-};
-
-const getParents = function (navStr: string, filteredPythonPackage: PythonPackage) {
+const getParents = function (navStr: string, filteredPythonPackage: PythonPackage): string[] {
     const parents: string[] = [];
     let currentElement = filteredPythonPackage.getByRelativePathAsString(navStr);
     if (currentElement != null) {
@@ -321,22 +287,72 @@ const getParents = function (navStr: string, filteredPythonPackage: PythonPackag
     return parents;
 };
 
-const getPreviousButtonText = function (allElementsList: string[], current: string) {
-    const currentIndex = allElementsList.findIndex(element => element === current);
-    const previousIndex = currentIndex - 1;
-    if (previousIndex == -1 && allElementsList.length > 0) {
-        return "Go to last Element";
+const getNextElementInTree = function (current: PythonDeclaration): PythonDeclaration | null {
+    if (current.children().length > 0) {
+        return current.children()[0];
+    } else if (current.parent() != null) {
+        return getNextFromParentInTree(current);
     }
-    return "Previous"
-};
+    return null;
+}
 
-const getNextButtonText = function (allElementsList: string[], current: string) {
-    const currentIndex = allElementsList.findIndex(element => element === current);
-    const nextIndex = currentIndex + 1;
-    if (nextIndex >= allElementsList.length && allElementsList.length > 0) {
-        return "Go to first Element";
+const getNextFromParentInTree = function (current: PythonDeclaration): PythonDeclaration | null {
+    if (current instanceof PythonPackage && current.children().length > 0) {
+        return current.children()[0];
     }
-    return "Next"
-};
+    const parent = current.parent();
+    if (parent != null) {
+        const index = parent.children().indexOf(current);
+        if (parent.children().length > index + 1) {
+            return parent.children()[index + 1];
+        }
+        return getNextFromParentInTree(parent);
+    }
+    return null;
+}
+
+const getLastElementInTree = function (current: PythonDeclaration): PythonDeclaration {
+    if (current.children().length > 0) {
+        return getLastElementInTree(current.children()[current.children().length - 1]);
+    }
+    return current;
+}
+
+const getPreviousElementInTree = function (current: PythonDeclaration): PythonDeclaration | null {
+    const parent = current.parent();
+    if (parent != null) {
+        const index = parent.children().indexOf(current);
+        if (index > 0) {
+            return getLastElementInTree(parent.children()[index - 1]);
+        }
+        if (parent instanceof PythonPackage) {
+            return getLastElementInTree(parent);
+        }
+        return parent;
+    }
+    return null;
+}
+
+const getNextElementPath = function (current: PythonDeclaration, filter: AbstractPythonFilter, annotations: AnnotationsState): string | null {
+    const nextElement = getNextElementInTree(current);
+    if (nextElement != null) {
+        if (filter.shouldKeepDeclaration(nextElement, annotations)) {
+            return nextElement.pathAsString();
+        }
+        return getNextElementPath(nextElement, filter, annotations);
+    }
+    return null;
+}
+
+const getPreviousElementPath = function (current: PythonDeclaration, filter: AbstractPythonFilter, annotations: AnnotationsState): string | null {
+    const previousElement = getPreviousElementInTree(current);
+    if (previousElement != null) {
+        if (filter.shouldKeepDeclaration(previousElement, annotations)) {
+            return previousElement.pathAsString();
+        }
+        return getPreviousElementPath(previousElement, filter, annotations);
+    }
+    return null;
+}
 
 export default App;
