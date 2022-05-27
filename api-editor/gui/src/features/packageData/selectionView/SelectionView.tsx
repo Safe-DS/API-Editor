@@ -1,6 +1,6 @@
-import {Box, Button, HStack, Spacer, VStack} from '@chakra-ui/react';
+import { Box, Button, HStack, Spacer, VStack } from '@chakra-ui/react';
 import React from 'react';
-import {useLocation, useNavigate} from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import PythonClass from '../model/PythonClass';
 import PythonFunction from '../model/PythonFunction';
 import PythonModule from '../model/PythonModule';
@@ -10,53 +10,40 @@ import ClassView from './ClassView';
 import FunctionView from './FunctionView';
 import ModuleView from './ModuleView';
 import ParameterView from './ParameterView';
-import {expandParentsInTreeView} from "../packageDataSlice";
-import {useAppDispatch, useAppSelector} from "../../../app/hooks";
-import PythonDeclaration from "../model/PythonDeclaration";
-import AbstractPythonFilter from "../model/filters/AbstractPythonFilter";
-import {AnnotationsState, selectAnnotations} from "../../annotations/annotationSlice";
+import { expandParentsInTreeView } from '../packageDataSlice';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import PythonDeclaration from '../model/PythonDeclaration';
+import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
+import { AnnotationsState, selectAnnotations } from '../../annotations/annotationSlice';
 
 interface SelectionViewProps {
     pythonPackage: PythonPackage;
     pythonFilter: AbstractPythonFilter;
 }
 
-const SelectionView: React.FC<SelectionViewProps> = function ({
-                                                                  pythonPackage,
-                                                                  pythonFilter
-                                                              }) {
+const SelectionView: React.FC<SelectionViewProps> = function ({ pythonPackage, pythonFilter }) {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const declaration = pythonPackage.getByRelativePath(
-        useLocation().pathname.split('/').splice(2),
-    );
-    const annotations = useAppSelector(selectAnnotations)
+    const declaration = pythonPackage.getByRelativePath(useLocation().pathname.split('/').splice(2));
+    const annotations = useAppSelector(selectAnnotations);
 
     if (!declaration) {
-        return <></>
+        return <></>;
     }
 
     return (
         <VStack h="100%">
             <Box w="100%" flexGrow={1} overflowY="scroll">
                 <Box padding={4}>
-                    {declaration instanceof PythonFunction && (
-                        <FunctionView pythonFunction={declaration}/>
-                    )}
-                    {declaration instanceof PythonClass && (
-                        <ClassView pythonClass={declaration}/>
-                    )}
-                    {declaration instanceof PythonModule && (
-                        <ModuleView pythonModule={declaration}/>
-                    )}
-                    {declaration instanceof PythonParameter && (
-                        <ParameterView pythonParameter={declaration}/>
-                    )}
+                    {declaration instanceof PythonFunction && <FunctionView pythonFunction={declaration} />}
+                    {declaration instanceof PythonClass && <ClassView pythonClass={declaration} />}
+                    {declaration instanceof PythonModule && <ModuleView pythonModule={declaration} />}
+                    {declaration instanceof PythonParameter && <ParameterView pythonParameter={declaration} />}
                 </Box>
             </Box>
 
-            <Spacer/>
+            <Spacer />
 
             <HStack borderTop={1} layerStyle="subtleBorder" padding="0.5em 1em" w="100%">
                 <Button
@@ -70,7 +57,8 @@ const SelectionView: React.FC<SelectionViewProps> = function ({
                             const parents = getParents(navStr, pythonPackage);
                             dispatch(expandParentsInTreeView(parents));
                         }
-                    }}>
+                    }}
+                >
                     Previous
                 </Button>
                 <Button
@@ -84,7 +72,8 @@ const SelectionView: React.FC<SelectionViewProps> = function ({
                             const parents = getParents(navStr, pythonPackage);
                             dispatch(expandParentsInTreeView(parents));
                         }
-                    }}>
+                    }}
+                >
                     Next
                 </Button>
             </HStack>
@@ -92,7 +81,11 @@ const SelectionView: React.FC<SelectionViewProps> = function ({
     );
 };
 
-const getNextElementPath = function (current: PythonDeclaration, filter: AbstractPythonFilter, annotations: AnnotationsState): string | null {
+const getNextElementPath = function (
+    current: PythonDeclaration,
+    filter: AbstractPythonFilter,
+    annotations: AnnotationsState,
+): string | null {
     const nextElement = getNextElementInTree(current);
     if (nextElement != null) {
         if (filter.shouldKeepDeclaration(nextElement, annotations)) {
@@ -101,7 +94,7 @@ const getNextElementPath = function (current: PythonDeclaration, filter: Abstrac
         return getNextElementPath(nextElement, filter, annotations);
     }
     return null;
-}
+};
 
 const getNextElementInTree = function (current: PythonDeclaration): PythonDeclaration | null {
     if (current.children().length > 0) {
@@ -110,7 +103,7 @@ const getNextElementInTree = function (current: PythonDeclaration): PythonDeclar
         return getNextFromParentInTree(current);
     }
     return null;
-}
+};
 
 const getNextFromParentInTree = function (current: PythonDeclaration): PythonDeclaration | null {
     if (current instanceof PythonPackage && current.children().length > 0) {
@@ -125,9 +118,13 @@ const getNextFromParentInTree = function (current: PythonDeclaration): PythonDec
         return getNextFromParentInTree(parent);
     }
     return null;
-}
+};
 
-const getPreviousElementPath = function (current: PythonDeclaration, filter: AbstractPythonFilter, annotations: AnnotationsState): string | null {
+const getPreviousElementPath = function (
+    current: PythonDeclaration,
+    filter: AbstractPythonFilter,
+    annotations: AnnotationsState,
+): string | null {
     const previousElement = getPreviousElementInTree(current);
     if (previousElement != null) {
         if (filter.shouldKeepDeclaration(previousElement, annotations)) {
@@ -136,7 +133,7 @@ const getPreviousElementPath = function (current: PythonDeclaration, filter: Abs
         return getPreviousElementPath(previousElement, filter, annotations);
     }
     return null;
-}
+};
 
 const getPreviousElementInTree = function (current: PythonDeclaration): PythonDeclaration | null {
     const parent = current.parent();
@@ -151,14 +148,14 @@ const getPreviousElementInTree = function (current: PythonDeclaration): PythonDe
         return parent;
     }
     return null;
-}
+};
 
 const getLastElementInTree = function (current: PythonDeclaration): PythonDeclaration {
     if (current.children().length > 0) {
         return getLastElementInTree(current.children()[current.children().length - 1]);
     }
     return current;
-}
+};
 
 const getParents = function (navStr: string, filteredPythonPackage: PythonPackage): string[] {
     const parents: string[] = [];
