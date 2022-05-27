@@ -1,5 +1,5 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {RootState} from '../../app/store';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../../app/store';
 
 export interface PackageDataState {
     expandedInTreeView: {
@@ -45,7 +45,7 @@ const packageDataSlice = createSlice({
     },
 });
 
-const {actions, reducer} = packageDataSlice;
+const { actions, reducer } = packageDataSlice;
 export const {
     toggleIsExpanded: toggleIsExpandedInTreeView,
     expandParents: expandParentsInTreeView,
@@ -57,8 +57,8 @@ export default reducer;
 const selectPackageData = (state: RootState) => state.packageData;
 export const selectIsExpandedInTreeView =
     (target: string) =>
-        (state: RootState): boolean =>
-            Boolean(selectPackageData(state).expandedInTreeView[target]);
+    (state: RootState): boolean =>
+        Boolean(selectPackageData(state).expandedInTreeView[target]);
 export const selectAllExpandedInTreeView = (state: RootState): { [target: string]: true } =>
     selectPackageData(state).expandedInTreeView;
 export const selectTreeViewScrollOffset = (state: RootState): number => selectPackageData(state).treeViewScrollOffset;

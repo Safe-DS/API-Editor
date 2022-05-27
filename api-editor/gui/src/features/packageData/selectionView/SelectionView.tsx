@@ -1,6 +1,6 @@
-import {Box} from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
-import {useLocation} from 'react-router';
+import { useLocation } from 'react-router';
 import PythonClass from '../model/PythonClass';
 import PythonFunction from '../model/PythonFunction';
 import PythonModule from '../model/PythonModule';
@@ -15,27 +15,15 @@ interface SelectionViewProps {
     pythonPackage: PythonPackage;
 }
 
-const SelectionView: React.FC<SelectionViewProps> = function ({
-                                                                  pythonPackage,
-                                                              }) {
-    const declaration = pythonPackage.getByRelativePath(
-        useLocation().pathname.split('/').splice(2),
-    );
+const SelectionView: React.FC<SelectionViewProps> = function ({ pythonPackage }) {
+    const declaration = pythonPackage.getByRelativePath(useLocation().pathname.split('/').splice(2));
 
     return (
         <Box padding={4}>
-            {declaration instanceof PythonFunction && (
-                <FunctionView pythonFunction={declaration}/>
-            )}
-            {declaration instanceof PythonClass && (
-                <ClassView pythonClass={declaration}/>
-            )}
-            {declaration instanceof PythonModule && (
-                <ModuleView pythonModule={declaration}/>
-            )}
-            {declaration instanceof PythonParameter && (
-                <ParameterView pythonParameter={declaration}/>
-            )}
+            {declaration instanceof PythonFunction && <FunctionView pythonFunction={declaration} />}
+            {declaration instanceof PythonClass && <ClassView pythonClass={declaration} />}
+            {declaration instanceof PythonModule && <ModuleView pythonModule={declaration} />}
+            {declaration instanceof PythonParameter && <ParameterView pythonParameter={declaration} />}
         </Box>
     );
 };
