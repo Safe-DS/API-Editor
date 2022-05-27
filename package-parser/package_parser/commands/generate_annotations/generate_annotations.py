@@ -130,10 +130,10 @@ def __get_enum_annotations(
     :param annotations: AnnotationStore object
     """
     for _, parameter in api.parameters().items():
-        refined_type = parameter.refined_type.as_dict()
-        if "kind" in refined_type and refined_type["kind"] == "EnumType":
+        enum_type = parameter.type.to_json()
+        if "kind" in enum_type and enum_type["kind"] == "EnumType":
             enum_name = __to_enum_name(parameter.name)
-            values = sorted(list(refined_type["values"]))
+            values = sorted(list(enum_type["values"]))
             pairs = []
             for string_value in values:
                 instance_name = __to_enum_name(string_value)
@@ -375,18 +375,18 @@ def __get_boundary_annotations(
     :param annotations: AnnotationStore, that holds all annotations
     """
     for _, parameter in api.parameters().items():
-        refined_type = parameter.refined_type.as_dict()
-        if "kind" in refined_type and refined_type["kind"] == "BoundaryType":
-            min_value = refined_type["min"]
-            max_value = refined_type["max"]
+        boundary_type = parameter.type.to_json()
+        if "kind" in boundary_type and boundary_type["kind"] == "BoundaryType":
+            min_value = boundary_type["min"]
+            max_value = boundary_type["max"]
 
-            is_discrete = refined_type["base_type"] == "int"
+            is_discrete = boundary_type["base_type"] == "int"
 
             min_limit_type = 0
             max_limit_type = 0
-            if not refined_type["min_inclusive"]:
+            if not boundary_type["min_inclusive"]:
                 min_limit_type = 1
-            if not refined_type["max_inclusive"]:
+            if not boundary_type["max_inclusive"]:
                 max_limit_type = 1
             if min_value == "NegativeInfinity":
                 min_value = 0

@@ -2,15 +2,23 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
-from typing import ClassVar, Optional, Union
+from typing import ClassVar, Optional, Union, Any
 
 
 @dataclass
 class NamedType:
     name: str
 
-    def from_string(self, string: str) -> set[NamedType]:
-        pass
+    @classmethod
+    def from_string(cls, string: str) -> NamedType:
+        return NamedType(string)
+
+    def to_json(self) -> dict[str, str]:
+        return {
+            "kind": self.__class__.__name__,
+            "name": self.name
+        }
+
 
 
 @dataclass
@@ -54,6 +62,12 @@ class EnumType:
 
     def update(self, enum: EnumType):
         self.values.update(enum.values)
+
+    def to_json(self) -> dict[str, Any]:
+        return {
+            "kind": self.__class__.__name__,
+            "values": self.values
+        }
 
 
 @dataclass
@@ -131,63 +145,25 @@ class BoundaryType:
         else:
             return False
 
+    def to_json(self) -> dict[str, Any]:
+        return {
+            "kind": self.__class__.__name__,
+            "base_type": self.base_type,
+            "min" : self.min,
+            "max" : self.max,
+            "min_inclusive": self.min_inclusive,
+            "max_inclusive": self.max_inclusive
+        }
+
 
 @dataclass
 class UnionType:
-    types: list[str]
+    types: list[Union[NamedType, EnumType, BoundaryType]]
 
-    @classmethod
-    def from_string(cls, type_str: str) -> UnionType:
-        # Collapse whitespaces
-        type_str = re.sub(r"\s+", " ", type_str)
+    def to_json(self) -> dict[str, Any]:
+        type_list = []
+        for t in self.types:
+            type_list.append(t.to_json())
 
-        # Find all enums and remove them from doc_string
-        enum_array_matches = re.findall(r"\{.*?}", type_str)
-        type_str = re.sub(r"\{.*?}", " ", type_str)
+        return {"kind": self.__class__.__name__, "types": type_list}
 
-        # Remove default value from doc_string
-        type_str = re.sub("default=.*", " ", type_str)
-
-        # Create a list with all values and types
-        # ") or (" must be replaced by a very unlikely string ("&%&") so that it is not removed when filtering out.
-        # The string will be replaced by ") or (" again after filtering out.
-        type_str = re.sub(r"\) or \(", "&%&", type_str)
-        type_str = re.sub(r" ?, ?or ", ", ", type_str)
-        type_str = re.sub(r" or ", ", ", type_str)
-        type_str = re.sub("&%&", ") or (", type_str)
-
-        elements = []
-        brackets = 0
-        build_string = ""
-        for c in type_str:
-            if c == "(":
-                brackets += 1
-            elif c == ")":
-                brackets -= 1
-
-            if brackets > 0:
-                build_string += c
-                continue
-
-            if brackets == 0 and not c == ",":
-                build_string += c
-            elif brackets == 0 and c == ",":
-                # remove leading and trailing whitespaces
-                build_string = build_string.strip()
-                if build_string != "":
-                    elements.append(build_string)
-                    build_string = ""
-
-        build_string = build_string.strip()
-        if build_string != "":
-            elements.append(build_string)
-
-        elements = enum_array_matches + elements
-
-        if len(elements) == 1:
-            return UnionType(list())
-
-        return UnionType(elements)
-
-    def as_list(self) -> list[str]:
-        return self.types

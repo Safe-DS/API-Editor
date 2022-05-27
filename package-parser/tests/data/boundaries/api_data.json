@@ -42,8 +42,8 @@
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
                     "docstring": {
-                        "type": "int in range (0, infinity)",
-                        "description": ""
+                        "type": "",
+                        "description": "int in range (0, infinity)"
                     }
                 },
                 {
@@ -54,8 +54,8 @@
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
                     "docstring": {
-                        "type": "float in range (negative_infinity, 1)",
-                        "description": ""
+                        "type": "",
+                        "description": "float in range (negative_infinity, 1)"
                     }
                 },
                 {
@@ -66,8 +66,8 @@
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
                     "docstring": {
-                        "type": "float in range [0, 1]",
-                        "description": ""
+                        "type": "",
+                        "description": "float in range [0, 1]"
                     }
                 }
             ],

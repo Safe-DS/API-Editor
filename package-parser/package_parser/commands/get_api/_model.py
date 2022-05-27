@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import re
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from enum import Enum, auto
 from typing import Any, Dict, Optional, Union
 
@@ -350,31 +350,111 @@ class Function:
         }
 
 
-class RefinedType:
-    @classmethod
-    def from_docstring(cls, docstring: ParameterAndResultDocstring) -> RefinedType:
-        docstring_str = " ".join([docstring.type, docstring.description])
-        enum = EnumType.from_string(docstring_str)
-        boundary = BoundaryType.from_string(docstring_str)
+# class RefinedType:
+#     @classmethod
+#     def from_docstring(cls, docstring: ParameterAndResultDocstring) -> RefinedType:
+#         docstring_str = " ".join([docstring.type, docstring.description])
+#         enum = EnumType.from_string(docstring_str)
+#         boundary = BoundaryType.from_string(docstring_str)
+#
+#         if enum is not None:
+#             return RefinedType(enum)
+#
+#         if boundary is not None:
+#             return RefinedType(boundary)
+#
+#         return RefinedType()
+#
+#     def __init__(
+#         self,
+#         ref_type: Union[UnionType, BoundaryType, EnumType, NamedType, None] = None,
+#     ) -> None:
+#         self.ref_type = ref_type
+#
+#     def as_dict(self):
+#         if self.ref_type is not None:
+#             return {"kind": self.ref_type.__class__.__name__, **asdict(self.ref_type)}
+#         return {}
 
-        if enum is not None:
-            return RefinedType(enum)
-
-        if boundary is not None:
-            return RefinedType(boundary)
-
-        return RefinedType()
+class Type:
 
     def __init__(
         self,
-        ref_type: Union[UnionType, BoundaryType, EnumType, NamedType, None] = None,
+        typestring: ParameterAndResultDocstring,
     ) -> None:
-        self.ref_type = ref_type
+        self.type: Union[NamedType, EnumType, BoundaryType, UnionType] = Type.createType(typestring)
 
-    def as_dict(self):
-        if self.ref_type is not None:
-            return {"kind": self.ref_type.__class__.__name__, **asdict(self.ref_type)}
-        return {}
+    @classmethod
+    def createType(cls, docstring: ParameterAndResultDocstring) -> Optional[Union[NamedType, EnumType, BoundaryType, UnionType]]:
+        typestring = docstring.type
+        types = list()
+
+        # Collapse whitespaces
+        typestring = re.sub(r"\s+", " ", typestring)
+
+        # Get boundary from description
+        boundary = BoundaryType.from_string(docstring.description)
+        if boundary is not None:
+            types.append(boundary)
+
+        # Find all enums and remove them from doc_string
+        enum_array_matches = re.findall(r"\{.*?}", typestring)
+        typestring = re.sub(r"\{.*?}", " ", typestring)
+        for enum in enum_array_matches:
+            types.append(EnumType.from_string(enum))
+
+        # Remove default value from doc_string
+        typestring = re.sub("default=.*", " ", typestring)
+
+        # Create a list with all values and types
+        # ") or (" must be replaced by a very unlikely string ("&%&") so that it is not removed when filtering out.
+        # The string will be replaced by ") or (" again after filtering out.
+        typestring = re.sub(r"\) or \(", "&%&", typestring)
+        typestring = re.sub(r" ?, ?or ", ", ", typestring)
+        typestring = re.sub(r" or ", ", ", typestring)
+        typestring = re.sub("&%&", ") or (", typestring)
+
+        brackets = 0
+        build_string = ""
+        for c in typestring:
+            if c == "(":
+                brackets += 1
+            elif c == ")":
+                brackets -= 1
+
+            if brackets > 0:
+                build_string += c
+                continue
+
+            if brackets == 0 and not c == ",":
+                build_string += c
+            elif brackets == 0 and c == ",":
+                # remove leading and trailing whitespaces
+                build_string = build_string.strip()
+                if build_string != "":
+                    named = NamedType.from_string(build_string)
+                    types.append(named)
+                    build_string = ""
+
+        build_string = build_string.strip()
+
+        # Append the last remaining entry
+        if build_string != "":
+            named = NamedType.from_string(build_string)
+            types.append(named)
+
+        if len(types) == 1:
+            return types[0]
+        elif len(types) == 0:
+            return None
+        else:
+            return UnionType(types)
+
+    def to_json(self) -> dict[str, Any]:
+        if self.type is None:
+            return {}
+        else:
+            return self.type.to_json()
 
 
 class Parameter:
@@ -407,8 +487,7 @@ class Parameter:
         self.is_public: bool = is_public
         self.assigned_by: ParameterAssignment = assigned_by
         self.docstring = docstring
-        self.refined_type: RefinedType = RefinedType.from_docstring(docstring)
-        self.union_type: UnionType = UnionType.from_string(docstring.type)
+        self.type: Type = Type(docstring)
 
     def to_json(self) -> Any:
         return {
@@ -419,8 +498,7 @@ class Parameter:
             "is_public": self.is_public,
             "assigned_by": self.assigned_by.name,
             "docstring": self.docstring.to_json(),
-            "refined_type": self.refined_type.as_dict(),
-            "union_type": self.union_type.as_list(),
+            "type": self.type.to_json()
         }
 
 
