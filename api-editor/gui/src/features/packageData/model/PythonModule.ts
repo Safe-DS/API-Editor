@@ -1,8 +1,6 @@
-import { isEmptyList } from '../../../common/util/listOperations';
 import { Optional } from '../../../common/util/types';
 import PythonClass from './PythonClass';
 import PythonDeclaration from './PythonDeclaration';
-import { PythonFilter } from './PythonFilter';
 import PythonFromImport from './PythonFromImport';
 import PythonFunction from './PythonFunction';
 import PythonImport from './PythonImport';
@@ -31,6 +29,10 @@ export default class PythonModule extends PythonDeclaration {
         });
     }
 
+    isPublicDeclaration(): boolean {
+        return !this.name.split('.').some((it) => it.startsWith('_'));
+    }
+
     parent(): Optional<PythonPackage> {
         return this.containingPackage;
     }
@@ -41,49 +43,5 @@ export default class PythonModule extends PythonDeclaration {
 
     toString(): string {
         return `Module "${this.name}"`;
-    }
-
-    filter(pythonFilter: PythonFilter | void): PythonModule {
-        // isFilteringClasses is also true if we are filtering functions
-        if (!pythonFilter || !pythonFilter.isFilteringClasses()) {
-            return this;
-        }
-
-        const classes = this.classes
-            .map((it) => it.filter(pythonFilter))
-            .filter(
-                (it) =>
-                    it.name
-                        .toLowerCase()
-                        .includes(
-                            (pythonFilter.pythonClass || '').toLowerCase(),
-                        ) &&
-                    // Don't exclude empty classes when we only filter modules or classes
-                    (!pythonFilter.isFilteringFunctions() ||
-                        !isEmptyList(it.methods)),
-            );
-
-        const functions = this.functions
-            .map((it) => it.filter(pythonFilter))
-            .filter(
-                (it) =>
-                    !pythonFilter.pythonClass && // if the class filter is active we hide all top-level functions
-                    it.name
-                        .toLowerCase()
-                        .includes(
-                            (pythonFilter.pythonFunction || '').toLowerCase(),
-                        ) &&
-                    // Don't exclude functions without parameters when we don't filter parameters
-                    (!pythonFilter.isFilteringParameters() ||
-                        !isEmptyList(it.parameters)),
-            );
-
-        return new PythonModule(
-            this.name,
-            this.imports,
-            this.fromImports,
-            classes,
-            functions,
-        );
     }
 }

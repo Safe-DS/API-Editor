@@ -3,29 +3,17 @@ import { FaCogs } from 'react-icons/fa';
 import { isEmptyList } from '../../../common/util/listOperations';
 import PythonFunction from '../model/PythonFunction';
 import TreeNode from './TreeNode';
-import { useAppSelector } from '../../../app/hooks';
-import { selectShowPrivateDeclarations } from '../packageDataSlice';
+import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
 
 interface FunctionNodeProps {
     pythonFunction: PythonFunction;
+    filter: AbstractPythonFilter;
 }
 
-const FunctionNode: React.FC<FunctionNodeProps> = function ({
-    pythonFunction,
-}) {
-    let parameters = pythonFunction.parameters;
-    if (!useAppSelector(selectShowPrivateDeclarations)) {
-        parameters = parameters.filter((it) => it.isPublic);
-    }
-    const hasParameters = !isEmptyList(parameters);
+const FunctionNode: React.FC<FunctionNodeProps> = function ({ pythonFunction, filter }) {
+    const hasParameters = !isEmptyList(pythonFunction.parameters);
 
-    return (
-        <TreeNode
-            declaration={pythonFunction}
-            icon={FaCogs}
-            isExpandable={hasParameters}
-        />
-    );
+    return <TreeNode declaration={pythonFunction} icon={FaCogs} isExpandable={hasParameters} filter={filter} />;
 };
 
 export default FunctionNode;
