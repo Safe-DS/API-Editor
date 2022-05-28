@@ -204,7 +204,7 @@ class PythonCodeGeneratorTest {
                         description = "Test attribute 1"
                     ),
                     PythonAttribute(
-                        name = "testAttribute1",
+                        name = "testAttribute2",
                         type = PythonStringifiedType("int"),
                         value = PythonInt(2),
                         description = "Test attribute 2"
@@ -215,27 +215,27 @@ class PythonCodeGeneratorTest {
 
             testClass.toPythonCode() shouldBe """
                     |class TestClass:
-                    |    \"\"\"
+                    |    ${"\"\"\""}
                     |    Lorem ipsum
                     |
                     |    Parameters
                     |    ----------
-                    |    testParameter1 : str
+                    |    testParameter1
                     |        Test parameter 1
                     |    testParameter2 : int
                     |        Test parameter 2
                     |
                     |    Attributes
                     |    ----------
-                    |    testAttribute1 : str
+                    |    testAttribute1
                     |        Test attribute 1
                     |    testAttribute2 : int
                     |        Test attribute 2
-                    |    \"\"\"
+                    |    ${"\"\"\""}
                     |
-                    |    def __init__():
-                    |        self.testAttribute = 1
-                    |        self.testAttribute = 2
+                    |    def __init__(testParameter1, testParameter2: int):
+                    |        self.testAttribute1 = 1
+                    |        self.testAttribute2: int = 2
             """.trimMargin()
         }
     }
@@ -673,16 +673,16 @@ class PythonCodeGeneratorTest {
 
             testFunction.toPythonCode() shouldBe """
                     |def testFunction(testParameter1, testParameter2: int):
-                    |    \"\"\"
+                    |    ${"\"\"\""}
                     |    Lorem ipsum
                     |
                     |    Parameters
                     |    ----------
-                    |    testParameter1 : str
+                    |    testParameter1
                     |        Test parameter 1
                     |    testParameter2 : int
                     |        Test parameter 2
-                    |    \"\"\"
+                    |    ${"\"\"\""}
                     |
                     |    pass
             """.trimMargin()
