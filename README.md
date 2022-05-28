@@ -19,7 +19,7 @@
     ```
 2. Run the development server (keep the backend server running):
     ```shell
-    cd backend
+    cd gui
     npm run dev
     ```
 3. Open [localhost:3000](http://localhost:3000) in your browser.

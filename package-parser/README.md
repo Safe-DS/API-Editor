@@ -34,15 +34,17 @@ optional arguments:
 ### usages command
 
 ```text
-usage: parse-package usages [-h] -p PACKAGE -s SRC -t TMP -o OUT
+usage: parse-package usages [-h] -p PACKAGE -c CLIENT -t TMP -o OUT
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   -p PACKAGE, --package PACKAGE
                         The name of the package. It must be installed in the current interpreter.
-  -s SRC, --src SRC     Directory containing Python code.
+  -c CLIENT, --client CLIENT
+                        Directory containing Python code that uses the package.
   -t TMP, --tmp TMP     Directory where temporary files can be stored (to save progress in case the program crashes).
   -o OUT, --out OUT     Output directory.
+
 ```
 
 ### improve command
@@ -59,17 +61,33 @@ optional arguments:
   -m MIN, --min MIN     Minimum number of usages required to keep an API element.
 ```
 
-### generate command
+### annotations command
 
 ```text
-usage: parse-package generate [-h] -a API -u USAGES -o OUT
+usage: parse-package annotations [-h] -a API -u USAGES -o OUT
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   -a API, --api API     File created by the 'api' command.
   -u USAGES, --usages USAGES
-                        File created by the 'usages' command.
+                        File created by the 'usages' command that contains usage counts.
   -o OUT, --out OUT     Output directory.
+
+```
+
+### all command
+
+```text
+usage: parse-package all [-h] -p PACKAGE -c CLIENT -o OUT
+
+options:
+  -h, --help            show this help message and exit
+  -p PACKAGE, --package PACKAGE
+                        The name of the package. It must be installed in the current interpreter.
+  -c CLIENT, --client CLIENT
+                        Directory containing Python code that uses the package.
+  -o OUT, --out OUT     Output directory.
+
 ```
 
 ### Example usage

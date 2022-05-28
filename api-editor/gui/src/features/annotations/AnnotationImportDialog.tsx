@@ -26,26 +26,25 @@ import {
 
 const AnnotationImportDialog: React.FC = function () {
     const [fileName, setFileName] = useState('');
-    const [newAnnotationStore, setNewAnnotationStore] =
-        useState<AnnotationsState>({
-            attributes: {},
-            boundaries: {},
-            constants: {},
-            calledAfters: {},
-            currentUserAction: {
-                target: '',
-                type: 'none',
-            },
-            enums: {},
-            groups: {},
-            moves: {},
-            optionals: {},
-            pures: {},
-            renamings: {},
-            requireds: {},
-            showImportDialog: false,
-            unuseds: {},
-        });
+    const [newAnnotationStore, setNewAnnotationStore] = useState<AnnotationsState>({
+        attributes: {},
+        boundaries: {},
+        constants: {},
+        calledAfters: {},
+        currentUserAction: {
+            target: '',
+            type: 'none',
+        },
+        enums: {},
+        groups: {},
+        moves: {},
+        optionals: {},
+        pures: {},
+        renamings: {},
+        requireds: {},
+        showImportDialog: false,
+        unuseds: {},
+    });
     const dispatch = useAppDispatch();
 
     const submit = () => {
@@ -66,9 +65,7 @@ const AnnotationImportDialog: React.FC = function () {
             const reader = new FileReader();
             reader.onload = () => {
                 if (typeof reader.result === 'string') {
-                    const readAnnotationJson = JSON.parse(
-                        reader.result,
-                    ) as AnnotationsState;
+                    const readAnnotationJson = JSON.parse(reader.result) as AnnotationsState;
                     setNewAnnotationStore(readAnnotationJson);
                 }
             };
@@ -86,16 +83,12 @@ const AnnotationImportDialog: React.FC = function () {
                 <ModalBody>
                     <FormControl>
                         <FormLabel>
-                            Select an annotation file to import.
+                            Select an annotation file to import. This data will be stored until another annotation file
+                            is imported.
                         </FormLabel>
                         <StyledDropzone onDrop={onDrop}>
-                            <ChakraText>
-                                Drag and drop an annotation file here or click
-                                to select the file.
-                            </ChakraText>
-                            <ChakraText>
-                                (only *.json will be accepted)
-                            </ChakraText>
+                            <ChakraText>Drag and drop an annotation file here or click to select the file.</ChakraText>
+                            <ChakraText>(only *.json will be accepted)</ChakraText>
                         </StyledDropzone>
 
                         {fileName && (

@@ -134,4 +134,60 @@ class BoundaryType:
 
 @dataclass
 class UnionType:
-    types: set[Union[NamedType, EnumType, BoundaryType]] = field(default_factory=set)
+    types: list[str]
+
+    @classmethod
+    def from_string(cls, type_str: str) -> UnionType:
+        # Collapse whitespaces
+        type_str = re.sub(r"\s+", " ", type_str)
+
+        # Find all enums and remove them from doc_string
+        enum_array_matches = re.findall(r"\{.*?}", type_str)
+        type_str = re.sub(r"\{.*?}", " ", type_str)
+
+        # Remove default value from doc_string
+        type_str = re.sub("default=.*", " ", type_str)
+
+        # Create a list with all values and types
+        # ") or (" must be replaced by a very unlikely string ("&%&") so that it is not removed when filtering out.
+        # The string will be replaced by ") or (" again after filtering out.
+        type_str = re.sub(r"\) or \(", "&%&", type_str)
+        type_str = re.sub(r" ?, ?or ", ", ", type_str)
+        type_str = re.sub(r" or ", ", ", type_str)
+        type_str = re.sub("&%&", ") or (", type_str)
+
+        elements = []
+        brackets = 0
+        build_string = ""
+        for c in type_str:
+            if c == "(":
+                brackets += 1
+            elif c == ")":
+                brackets -= 1
+
+            if brackets > 0:
+                build_string += c
+                continue
+
+            if brackets == 0 and not c == ",":
+                build_string += c
+            elif brackets == 0 and c == ",":
+                # remove leading and trailing whitespaces
+                build_string = build_string.strip()
+                if build_string != "":
+                    elements.append(build_string)
+                    build_string = ""
+
+        build_string = build_string.strip()
+        if build_string != "":
+            elements.append(build_string)
+
+        elements = enum_array_matches + elements
+
+        if len(elements) == 1:
+            return UnionType(list())
+
+        return UnionType(elements)
+
+    def as_list(self) -> list[str]:
+        return self.types

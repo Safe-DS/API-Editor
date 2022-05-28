@@ -15,39 +15,34 @@ import {
 } from '@chakra-ui/react';
 import * as idb from 'idb-keyval';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../app/hooks';
 import StyledDropzone from '../../common/StyledDropzone';
 import { Setter } from '../../common/util/types';
 import { isValidJsonFile } from '../../common/util/validation';
 import { resetAnnotations } from '../annotations/annotationSlice';
-import PythonPackage from './model/PythonPackage';
-import { parsePythonPackageJson, PythonPackageJson } from './model/PythonPackageBuilder';
-import { togglePackageDataImportDialog } from './packageDataSlice';
+import { UsageCountJson, UsageCountStore } from './model/UsageCountStore';
+
+import { toggleUsageImportDialog } from './usageSlice';
 
 interface ImportPythonPackageDialogProps {
-    setPythonPackage: Setter<PythonPackage>;
-    setFilter: Setter<string>;
+    setUsages: Setter<UsageCountStore>;
 }
 
-const PackageDataImportDialog: React.FC<ImportPythonPackageDialogProps> = function ({ setFilter, setPythonPackage }) {
+const UsageImportDialog: React.FC<ImportPythonPackageDialogProps> = function ({ setUsages }) {
     const [fileName, setFileName] = useState('');
-    const [newPythonPackage, setNewPythonPackage] = useState<string>();
-    const navigate = useNavigate();
+    const [newUsages, setNewUsages] = useState<string>();
     const dispatch = useAppDispatch();
 
     const submit = async () => {
-        if (newPythonPackage) {
-            const parsedPythonPackage = JSON.parse(newPythonPackage) as PythonPackageJson;
-            setPythonPackage(parsePythonPackageJson(parsedPythonPackage));
-            setFilter('');
-            navigate('/');
+        if (newUsages) {
+            const parsedUsages = JSON.parse(newUsages) as UsageCountJson;
+            setUsages(UsageCountStore.fromJson(parsedUsages));
 
-            await idb.set('package', parsedPythonPackage);
+            await idb.set('usages', parsedUsages);
         }
         close();
     };
-    const close = () => dispatch(togglePackageDataImportDialog());
+    const close = () => dispatch(toggleUsageImportDialog());
 
     const slurpAndParse = (acceptedFiles: File[]) => {
         if (isValidJsonFile(acceptedFiles[acceptedFiles.length - 1].name)) {
@@ -59,7 +54,7 @@ const PackageDataImportDialog: React.FC<ImportPythonPackageDialogProps> = functi
             const reader = new FileReader();
             reader.onload = () => {
                 if (typeof reader.result === 'string') {
-                    setNewPythonPackage(reader.result);
+                    setNewUsages(reader.result);
                     dispatch(resetAnnotations());
                 }
             };
@@ -72,16 +67,16 @@ const PackageDataImportDialog: React.FC<ImportPythonPackageDialogProps> = functi
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>
-                    <Heading>Import API data</Heading>
+                    <Heading>Import usages</Heading>
                 </ModalHeader>
                 <ModalBody>
                     <FormControl>
                         <FormLabel>
-                            Select an API data file to import. This data will be stored until another API data file is
+                            Select a usage file to import. This data will be stored until another usage file is
                             imported.
                         </FormLabel>
                         <StyledDropzone onDrop={slurpAndParse}>
-                            <ChakraText>Drag and drop an API data file here or click to select the file.</ChakraText>
+                            <ChakraText>Drag and drop a usage file here or click to select the file.</ChakraText>
                             <ChakraText>(Only *.json will be accepted.)</ChakraText>
                         </StyledDropzone>
 
@@ -108,4 +103,4 @@ const PackageDataImportDialog: React.FC<ImportPythonPackageDialogProps> = functi
     );
 };
 
-export default PackageDataImportDialog;
+export default UsageImportDialog;
