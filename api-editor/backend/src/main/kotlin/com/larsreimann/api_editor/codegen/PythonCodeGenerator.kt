@@ -125,6 +125,7 @@ fun PythonClass.toPythonCode() = buildString {
     if (docstring.isNotBlank()) {
         appendIndented("\"\"\"\n")
         appendIndented(docstring)
+        appendLine()
         appendIndented("\"\"\"\n\n")
     }
     if (constructorString.isNotBlank()) {
@@ -217,6 +218,7 @@ fun PythonFunction.toPythonCode() = buildString {
     if (docstring.isNotBlank()) {
         appendIndented("\"\"\"\n")
         appendIndented(docstring)
+        appendLine()
         appendIndented("\"\"\"\n\n")
     }
     if (boundariesString.isNotBlank()) {

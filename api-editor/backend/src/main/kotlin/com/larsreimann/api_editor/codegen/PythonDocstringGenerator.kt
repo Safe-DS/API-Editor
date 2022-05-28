@@ -42,21 +42,21 @@ fun PythonClass.docstring() = buildString {
         if (description.isNotBlank() || parameterSection.isNotBlank()) {
             append("\n\n")
         }
-        appendLine(attributesSection)
+        append(attributesSection)
     }
 }
 
 fun PythonFunction.docstring() = buildString {
     if (description.isNotBlank()) {
-        appendLine(description)
+        append(description)
     }
 
     val parameterSection = parametersDocstring(parameters)
     if (parameterSection.isNotBlank()) {
         if (description.isNotBlank()) {
-            appendLine()
+            append("\n\n")
         }
-        appendLine(parameterSection)
+        append(parameterSection)
     }
 }
 
