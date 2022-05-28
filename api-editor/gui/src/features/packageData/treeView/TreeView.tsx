@@ -9,7 +9,11 @@ import PythonFunction from '../model/PythonFunction';
 import PythonModule from '../model/PythonModule';
 import PythonPackage from '../model/PythonPackage';
 import PythonParameter from '../model/PythonParameter';
-import { selectAllExpandedInTreeView, selectTreeViewScrollOffset, setTreeViewScrollOffset } from '../packageDataSlice';
+import {
+    selectAllExpandedInTreeView,
+    selectTreeViewScrollOffset,
+    setTreeViewScrollOffset,
+} from '../packageDataSlice';
 import ClassNode from './ClassNode';
 import FunctionNode from './FunctionNode';
 import ModuleNode from './ModuleNode';
@@ -27,7 +31,7 @@ interface TreeViewProps {
     usages: UsageCountStore;
 }
 
-const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage, filter, usages }) => {
+const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage }) => {
     const dispatch = useAppDispatch();
     const allExpanded = useAppSelector(selectAllExpandedInTreeView);
 

@@ -32,6 +32,12 @@ const packageDataSlice = createSlice({
                 state.expandedInTreeView[action.payload] = true;
             }
         },
+        expandParents(state, action: PayloadAction<string[]>) {
+            const parents = action.payload;
+            for (const parent of parents) {
+                state.expandedInTreeView[parent] = true;
+            }
+        },
         setScrollOffset(state, action: PayloadAction<number>) {
             state.treeViewScrollOffset = action.payload;
         },
@@ -47,6 +53,7 @@ const packageDataSlice = createSlice({
 const { actions, reducer } = packageDataSlice;
 export const {
     toggleIsExpanded: toggleIsExpandedInTreeView,
+    expandParents: expandParentsInTreeView,
     setScrollOffset: setTreeViewScrollOffset,
     toggleImportDialog: togglePackageDataImportDialog,
     toggleHeatMapMode: toggleHeatMapMode,
@@ -58,9 +65,11 @@ export const selectIsExpandedInTreeView =
     (target: string) =>
     (state: RootState): boolean =>
         Boolean(selectPackageData(state).expandedInTreeView[target]);
-export const selectAllExpandedInTreeView = (state: RootState): { [target: string]: true } =>
-    selectPackageData(state).expandedInTreeView;
-export const selectTreeViewScrollOffset = (state: RootState): number => selectPackageData(state).treeViewScrollOffset;
+export const selectAllExpandedInTreeView = (
+    state: RootState,
+): { [target: string]: true } => selectPackageData(state).expandedInTreeView;
+export const selectTreeViewScrollOffset = (state: RootState): number =>
+    selectPackageData(state).treeViewScrollOffset;
 export const selectShowPackageDataImportDialog = (state: RootState): boolean =>
     selectPackageData(state).showImportDialog;
 export const selectHeatMapMode = (state: RootState): boolean =>
