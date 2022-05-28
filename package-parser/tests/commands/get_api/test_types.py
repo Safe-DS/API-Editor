@@ -106,18 +106,17 @@ def test_boundary_from_string(docstring_type: str, expected: dict[str, Any]):
     assert Type(ParameterAndResultDocstring("", docstring_type)).to_json() == expected
 
 
-# base_type should be int, BoundaryType.fromString() has a bug
 @pytest.mark.parametrize(
     "docstring_type,docstring_description,expected",
     [
         (
             "int or 'Auto', or {'today', 'yesterday'}",
-            "base_type: int Scale factor between inner and outer circle in the range `[0, 10]`",
+            "int in the range `[0, 10]`",
             {
                 "kind": "UnionType",
                 "types": [
                     {
-                        "base_type": "float",
+                        "base_type": "int",
                         "kind": "BoundaryType",
                         "max": 10.0,
                         "max_inclusive": True,
