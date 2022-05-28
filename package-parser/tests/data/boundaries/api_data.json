@@ -47,14 +47,14 @@
                     }
                 },
                 {
-                    "name": "parameter_with_upper_bound",
+                    "name": "parameter_with_upper_bound_and_boundary",
                     "qname": "test.some_global_function.parameter_with_upper_bound",
                     "pname": "test/test/some_global_function/parameter_with_upper_bound",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
                     "docstring": {
-                        "type": "",
+                        "type": "{'auto', 'person'} or float",
                         "description": "float in range (negative_infinity, 1)"
                     }
                 },

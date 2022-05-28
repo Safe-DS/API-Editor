@@ -131,16 +131,24 @@ def __get_enum_annotations(
     """
     for _, parameter in api.parameters().items():
         enum_type = parameter.type.to_json()
-        if "kind" in enum_type and enum_type["kind"] == "EnumType":
-            enum_name = __to_enum_name(parameter.name)
+        pairs = []
+        if "kind" in enum_type and enum_type["kind"] == "UnionType":
+            for type_in_union in enum_type["types"]:
+                if type_in_union["kind"] == "EnumType":
+                    values = sorted(list(type_in_union["values"]))
+                    for string_value in values:
+                        instance_name = __to_enum_name(string_value)
+                        pairs.append(EnumPair(stringValue=string_value, instanceName=instance_name))
+        elif "kind" in enum_type and enum_type["kind"] == "EnumType":
             values = sorted(list(enum_type["values"]))
-            pairs = []
             for string_value in values:
                 instance_name = __to_enum_name(string_value)
                 pairs.append(
                     EnumPair(stringValue=string_value, instanceName=instance_name)
                 )
 
+        if len(pairs) > 0:
+            enum_name = __to_enum_name(parameter.name)
             annotations.enums.append(
                 EnumAnnotation(target=parameter.pname, enumName=enum_name, pairs=pairs)
             )
@@ -376,6 +384,11 @@ def __get_boundary_annotations(
     """
     for _, parameter in api.parameters().items():
         boundary_type = parameter.type.to_json()
+        if "kind" in boundary_type and boundary_type["kind"] == "UnionType":
+            union_type = boundary_type
+            for type_in_union in union_type["types"]:
+                if type_in_union["kind"] == "BoundaryType":
+                    boundary_type = type_in_union
         if "kind" in boundary_type and boundary_type["kind"] == "BoundaryType":
             min_value = boundary_type["min"]
             max_value = boundary_type["max"]

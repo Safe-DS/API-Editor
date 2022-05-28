@@ -16,5 +16,23 @@
             }
         ],
         "target": "test/test/some_global_function/enum_parameter"
+    },
+    "test/test/some_global_function/enum_parameter_with_union": {
+        "enumName": "EnumParameterWithUnion",
+        "pairs": [
+            {
+                "instanceName": "Auto",
+                "stringValue": "auto"
+            },
+            {
+                "instanceName": "Kdmeans",
+                "stringValue": "kd-means++"
+            },
+            {
+                "instanceName": "KdTree",
+                "stringValue": "kd_tree"
+            }
+        ],
+        "target": "test/test/some_global_function/enum_parameter_with_union"
     }
 }
