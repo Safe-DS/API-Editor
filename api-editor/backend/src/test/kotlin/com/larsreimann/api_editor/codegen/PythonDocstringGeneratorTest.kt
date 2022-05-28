@@ -1,24 +1,18 @@
 package com.larsreimann.api_editor.codegen
 
-import com.larsreimann.api_editor.model.Boundary
-import com.larsreimann.api_editor.model.ComparisonOperator.LESS_THAN
-import com.larsreimann.api_editor.model.ComparisonOperator.LESS_THAN_OR_EQUALS
-import com.larsreimann.api_editor.model.ComparisonOperator.UNRESTRICTED
 import com.larsreimann.api_editor.mutable_model.PythonAttribute
-import com.larsreimann.api_editor.mutable_model.PythonCall
 import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonConstructor
 import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonInt
 import com.larsreimann.api_editor.mutable_model.PythonParameter
-import com.larsreimann.api_editor.mutable_model.PythonReference
 import com.larsreimann.api_editor.mutable_model.PythonStringifiedType
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
-class PDocstringGeneratorTest {
+class PythonDocstringGeneratorTest {
 
     @Nested
     inner class ClassDocstring {
@@ -80,7 +74,7 @@ class PDocstringGeneratorTest {
             testClass.constructor = null
             testClass.attributes.clear()
 
-            testClass.toPythonCode() shouldBe ""
+            testClass.docstring() shouldBe ""
         }
 
         @Test
@@ -88,94 +82,57 @@ class PDocstringGeneratorTest {
             testClass.description = ""
             testClass.constructor = null
 
-            testClass.toPythonCode() shouldBe """
-                    |class TestClass:
-                    |    ${"\"\"\""}
-                    |    Attributes
-                    |    ----------
-                    |    testAttribute1
-                    |        Test attribute 1
-                    |    testAttribute2 : int
-                    |        Test attribute 2
-                    |    testAttribute3
-                    |    testAttribute4 : str
-                    |    ${"\"\"\""}
-                    |
-                    |    def __init__():
-                    |        self.testAttribute1 = 1
-                    |        self.testAttribute2: int = 2
-                    |        self.testAttribute3 = 3
-                    |        self.testAttribute4: str = 4
+            testClass.docstring() shouldBe """
+                    |Attributes
+                    |----------
+                    |testAttribute1
+                    |    Test attribute 1
+                    |testAttribute2 : int
+                    |    Test attribute 2
+                    |testAttribute3
+                    |testAttribute4 : str
             """.trimMargin()
         }
 
         @Test
         fun `should create docstring (no description, parameters, no attributes)`() {
+            testClass.description = ""
+            testClass.attributes.clear()
 
-            testClass.toPythonCode() shouldBe """
-                    |class TestClass:
-                    |    ${"\"\"\""}
-                    |    Lorem ipsum
-                    |
-                    |    Parameters
-                    |    ----------
-                    |    testParameter1
-                    |        Test parameter 1
-                    |    testParameter2 : int
-                    |        Test parameter 2
-                    |    testParameter3
-                    |    testParameter4 : str
-                    |
-                    |    Attributes
-                    |    ----------
-                    |    testAttribute1
-                    |        Test attribute 1
-                    |    testAttribute2 : int
-                    |        Test attribute 2
-                    |    testAttribute3
-                    |    testAttribute4 : str
-                    |    ${"\"\"\""}
-                    |
-                    |    def __init__(testParameter1, testParameter2: int, testParameter3, testParameter4: str):
-                    |        self.testAttribute1 = 1
-                    |        self.testAttribute2: int = 2
-                    |        self.testAttribute3 = 3
-                    |        self.testAttribute4: str = 4
+            testClass.docstring() shouldBe """
+                    |Parameters
+                    |----------
+                    |testParameter1
+                    |    Test parameter 1
+                    |testParameter2 : int
+                    |    Test parameter 2
+                    |testParameter3
+                    |testParameter4 : str
             """.trimMargin()
         }
 
         @Test
         fun `should create docstring (no description, parameters, attributes)`() {
+            testClass.description = ""
 
-            testClass.toPythonCode() shouldBe """
-                    |class TestClass:
-                    |    ${"\"\"\""}
-                    |    Lorem ipsum
+            testClass.docstring() shouldBe """
+                    |Parameters
+                    |----------
+                    |testParameter1
+                    |    Test parameter 1
+                    |testParameter2 : int
+                    |    Test parameter 2
+                    |testParameter3
+                    |testParameter4 : str
                     |
-                    |    Parameters
-                    |    ----------
-                    |    testParameter1
-                    |        Test parameter 1
-                    |    testParameter2 : int
-                    |        Test parameter 2
-                    |    testParameter3
-                    |    testParameter4 : str
-                    |
-                    |    Attributes
-                    |    ----------
-                    |    testAttribute1
-                    |        Test attribute 1
-                    |    testAttribute2 : int
-                    |        Test attribute 2
-                    |    testAttribute3
-                    |    testAttribute4 : str
-                    |    ${"\"\"\""}
-                    |
-                    |    def __init__(testParameter1, testParameter2: int, testParameter3, testParameter4: str):
-                    |        self.testAttribute1 = 1
-                    |        self.testAttribute2: int = 2
-                    |        self.testAttribute3 = 3
-                    |        self.testAttribute4: str = 4
+                    |Attributes
+                    |----------
+                    |testAttribute1
+                    |    Test attribute 1
+                    |testAttribute2 : int
+                    |    Test attribute 2
+                    |testAttribute3
+                    |testAttribute4 : str
             """.trimMargin()
         }
 
@@ -184,118 +141,70 @@ class PDocstringGeneratorTest {
             testClass.constructor = null
             testClass.attributes.clear()
 
-            testClass.toPythonCode() shouldBe """
-                    |class TestClass:
-                    |    ${"\"\"\""}
-                    |    Lorem ipsum
-                    |    ${"\"\"\""}
-                    |
-                    |    pass
+            testClass.docstring() shouldBe """
+                    |Lorem ipsum
             """.trimMargin()
         }
 
         @Test
         fun `should create docstring (description, no parameters, attributes)`() {
+            testClass.constructor = null
 
-            testClass.toPythonCode() shouldBe """
-                    |class TestClass:
-                    |    ${"\"\"\""}
-                    |    Lorem ipsum
+            testClass.docstring() shouldBe """
+                    |Lorem ipsum
                     |
-                    |    Parameters
-                    |    ----------
-                    |    testParameter1
-                    |        Test parameter 1
-                    |    testParameter2 : int
-                    |        Test parameter 2
-                    |    testParameter3
-                    |    testParameter4 : str
-                    |
-                    |    Attributes
-                    |    ----------
-                    |    testAttribute1
-                    |        Test attribute 1
-                    |    testAttribute2 : int
-                    |        Test attribute 2
-                    |    testAttribute3
-                    |    testAttribute4 : str
-                    |    ${"\"\"\""}
-                    |
-                    |    def __init__(testParameter1, testParameter2: int, testParameter3, testParameter4: str):
-                    |        self.testAttribute1 = 1
-                    |        self.testAttribute2: int = 2
-                    |        self.testAttribute3 = 3
-                    |        self.testAttribute4: str = 4
+                    |Attributes
+                    |----------
+                    |testAttribute1
+                    |    Test attribute 1
+                    |testAttribute2 : int
+                    |    Test attribute 2
+                    |testAttribute3
+                    |testAttribute4 : str
             """.trimMargin()
         }
 
         @Test
         fun `should create docstring (description, parameters, no attributes)`() {
+            testClass.attributes.clear()
 
-            testClass.toPythonCode() shouldBe """
-                    |class TestClass:
-                    |    ${"\"\"\""}
-                    |    Lorem ipsum
+            testClass.docstring() shouldBe """
+                    |Lorem ipsum
                     |
-                    |    Parameters
-                    |    ----------
-                    |    testParameter1
-                    |        Test parameter 1
-                    |    testParameter2 : int
-                    |        Test parameter 2
-                    |    testParameter3
-                    |    testParameter4 : str
-                    |
-                    |    Attributes
-                    |    ----------
-                    |    testAttribute1
-                    |        Test attribute 1
-                    |    testAttribute2 : int
-                    |        Test attribute 2
-                    |    testAttribute3
-                    |    testAttribute4 : str
-                    |    ${"\"\"\""}
-                    |
-                    |    def __init__(testParameter1, testParameter2: int, testParameter3, testParameter4: str):
-                    |        self.testAttribute1 = 1
-                    |        self.testAttribute2: int = 2
-                    |        self.testAttribute3 = 3
-                    |        self.testAttribute4: str = 4
+                    |Parameters
+                    |----------
+                    |testParameter1
+                    |    Test parameter 1
+                    |testParameter2 : int
+                    |    Test parameter 2
+                    |testParameter3
+                    |testParameter4 : str
             """.trimMargin()
         }
 
 
         @Test
         fun `should create docstring (description, parameters, attributes)`() {
-            testClass.toPythonCode() shouldBe """
-                    |class TestClass:
-                    |    ${"\"\"\""}
-                    |    Lorem ipsum
+            testClass.docstring() shouldBe """
+                    |Lorem ipsum
                     |
-                    |    Parameters
-                    |    ----------
-                    |    testParameter1
-                    |        Test parameter 1
-                    |    testParameter2 : int
-                    |        Test parameter 2
-                    |    testParameter3
-                    |    testParameter4 : str
+                    |Parameters
+                    |----------
+                    |testParameter1
+                    |    Test parameter 1
+                    |testParameter2 : int
+                    |    Test parameter 2
+                    |testParameter3
+                    |testParameter4 : str
                     |
-                    |    Attributes
-                    |    ----------
-                    |    testAttribute1
-                    |        Test attribute 1
-                    |    testAttribute2 : int
-                    |        Test attribute 2
-                    |    testAttribute3
-                    |    testAttribute4 : str
-                    |    ${"\"\"\""}
-                    |
-                    |    def __init__(testParameter1, testParameter2: int, testParameter3, testParameter4: str):
-                    |        self.testAttribute1 = 1
-                    |        self.testAttribute2: int = 2
-                    |        self.testAttribute3 = 3
-                    |        self.testAttribute4: str = 4
+                    |Attributes
+                    |----------
+                    |testAttribute1
+                    |    Test attribute 1
+                    |testAttribute2 : int
+                    |    Test attribute 2
+                    |testAttribute3
+                    |testAttribute4 : str
             """.trimMargin()
         }
     }
@@ -303,43 +212,11 @@ class PDocstringGeneratorTest {
     @Nested
     inner class FunctionToPythonCode {
 
-        private lateinit var callToOriginalAPI: PythonCall
-        private lateinit var parametersWithBoundaries: List<PythonParameter>
+        private lateinit var testFunction: PythonFunction
 
         @BeforeEach
         fun reset() {
-            callToOriginalAPI = PythonCall(
-                PythonReference(
-                    PythonFunction(name = "testModule.testFunction")
-                )
-            )
-            parametersWithBoundaries = listOf(
-                PythonParameter(
-                    name = "testParameter1",
-                    boundary = Boundary(
-                        isDiscrete = false,
-                        lowerIntervalLimit = 0.0,
-                        lowerLimitType = LESS_THAN_OR_EQUALS,
-                        upperIntervalLimit = 1.0,
-                        upperLimitType = LESS_THAN_OR_EQUALS
-                    )
-                ),
-                PythonParameter(
-                    name = "testParameter2",
-                    boundary = Boundary(
-                        isDiscrete = false,
-                        lowerIntervalLimit = 0.0,
-                        lowerLimitType = LESS_THAN,
-                        upperIntervalLimit = 1.0,
-                        upperLimitType = UNRESTRICTED
-                    )
-                )
-            )
-        }
-
-        @Test
-        fun `should create docstring if it is not blank`() {
-            val testFunction = PythonFunction(
+            testFunction = PythonFunction(
                 name = "testFunction",
                 parameters = listOf(
                     PythonParameter(
@@ -361,23 +238,54 @@ class PDocstringGeneratorTest {
                 ),
                 description = "Lorem ipsum"
             )
+        }
 
-            testFunction.toPythonCode() shouldBe """
-                    |def testFunction(testParameter1, testParameter2: int, testParameter3, testParameter4: str):
-                    |    ${"\"\"\""}
-                    |    Lorem ipsum
+        @Test
+        fun `should create docstring (no description, no parameters)`() {
+            testFunction.description = ""
+            testFunction.parameters.clear()
+
+            testFunction.docstring() shouldBe ""
+        }
+
+        @Test
+        fun `should create docstring (no description, parameters)`() {
+            testFunction.description = ""
+
+            testFunction.docstring() shouldBe """
+                    |Parameters
+                    |----------
+                    |testParameter1
+                    |    Test parameter 1
+                    |testParameter2 : int
+                    |    Test parameter 2
+                    |testParameter3
+                    |testParameter4 : str
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should create docstring (description, no parameters)`() {
+            testFunction.parameters.clear()
+
+            testFunction.docstring() shouldBe """
+                    |Lorem ipsum
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should create docstring (description, parameters)`() {
+            testFunction.docstring() shouldBe """
+                    |Lorem ipsum
                     |
-                    |    Parameters
-                    |    ----------
-                    |    testParameter1
-                    |        Test parameter 1
-                    |    testParameter2 : int
-                    |        Test parameter 2
-                    |    testParameter3
-                    |    testParameter4 : str
-                    |    ${"\"\"\""}
-                    |
-                    |    pass
+                    |Parameters
+                    |----------
+                    |testParameter1
+                    |    Test parameter 1
+                    |testParameter2 : int
+                    |    Test parameter 2
+                    |testParameter3
+                    |testParameter4 : str
             """.trimMargin()
         }
     }
