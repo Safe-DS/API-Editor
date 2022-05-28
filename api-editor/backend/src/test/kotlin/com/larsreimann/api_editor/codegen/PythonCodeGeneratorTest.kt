@@ -179,6 +179,65 @@ class PythonCodeGeneratorTest {
                     |        self.instance = testModule.TestClass()
             """.trimMargin()
         }
+
+        @Test
+        fun `should store description if it is not blank`() {
+            val testClass = PythonClass(
+                name = "TestClass",
+                constructor = PythonConstructor(
+                    parameters = listOf(
+                        PythonParameter(
+                            name = "testParameter1",
+                            description = "Test parameter 1"
+                        ),
+                        PythonParameter(
+                            name = "testParameter2",
+                            type = PythonStringifiedType("int"),
+                            description = "Test parameter 2"
+                        )
+                    )
+                ),
+                attributes = listOf(
+                    PythonAttribute(
+                        name = "testAttribute1",
+                        value = PythonInt(1),
+                        description = "Test attribute 1"
+                    ),
+                    PythonAttribute(
+                        name = "testAttribute1",
+                        type = PythonStringifiedType("int"),
+                        value = PythonInt(2),
+                        description = "Test attribute 2"
+                    ),
+                ),
+                description = "Lorem ipsum"
+            )
+
+            testClass.toPythonCode() shouldBe """
+                    |class TestClass:
+                    |    \"\"\"
+                    |    Lorem ipsum
+                    |
+                    |    Parameters
+                    |    ----------
+                    |    testParameter1 : str
+                    |        Test parameter 1
+                    |    testParameter2 : int
+                    |        Test parameter 2
+                    |
+                    |    Attributes
+                    |    ----------
+                    |    testAttribute1 : str
+                    |        Test attribute 1
+                    |    testAttribute2 : int
+                    |        Test attribute 2
+                    |    \"\"\"
+                    |
+                    |    def __init__():
+                    |        self.testAttribute = 1
+                    |        self.testAttribute = 2
+            """.trimMargin()
+        }
     }
 
     @Nested
@@ -591,6 +650,41 @@ class PythonCodeGeneratorTest {
                 |        raise ValueError(f'Valid values of testParameter2 must be greater than 0.0, but {testParameter2} was assigned.')
                 |
                 |    return testModule.testFunction()
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should store description if it is not blank`() {
+            val testFunction = PythonFunction(
+                name = "testFunction",
+                parameters = listOf(
+                    PythonParameter(
+                        name = "testParameter1",
+                        description = "Test parameter 1"
+                    ),
+                    PythonParameter(
+                        name = "testParameter2",
+                        type = PythonStringifiedType("int"),
+                        description = "Test parameter 2"
+                    )
+                ),
+                description = "Lorem ipsum"
+            )
+
+            testFunction.toPythonCode() shouldBe """
+                    |def testFunction(testParameter1, testParameter2: int):
+                    |    \"\"\"
+                    |    Lorem ipsum
+                    |
+                    |    Parameters
+                    |    ----------
+                    |    testParameter1 : str
+                    |        Test parameter 1
+                    |    testParameter2 : int
+                    |        Test parameter 2
+                    |    \"\"\"
+                    |
+                    |    pass
             """.trimMargin()
         }
     }
