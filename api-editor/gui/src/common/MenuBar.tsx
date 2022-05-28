@@ -44,7 +44,7 @@ import PythonPackage from '../features/packageData/model/PythonPackage';
 import {
     selectHeatMapMode,
     toggleHeatMapMode,
-    togglePackageDataImportDialog
+    togglePackageDataImportDialog,
 } from '../features/packageData/packageDataSlice';
 import { Setter } from './util/types';
 import { toggleUsageImportDialog } from '../features/usages/usageSlice';
@@ -274,7 +274,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFi
                                 <MenuItemOption value={'darkMode'} onClick={toggleColorMode}>
                                     Dark mode
                                 </MenuItemOption>
-                                <MenuItemOption value={'heatMapMode'} onClick={()=>dispatch(toggleHeatMapMode())}>
+                                <MenuItemOption value={'heatMapMode'} onClick={() => dispatch(toggleHeatMapMode())}>
                                     Heat Map
                                 </MenuItemOption>
                             </MenuOptionGroup>

@@ -9,17 +9,13 @@ import PythonFunction from '../model/PythonFunction';
 import PythonModule from '../model/PythonModule';
 import PythonPackage from '../model/PythonPackage';
 import PythonParameter from '../model/PythonParameter';
-import {
-    selectAllExpandedInTreeView,
-    selectTreeViewScrollOffset,
-    setTreeViewScrollOffset,
-} from '../packageDataSlice';
+import { selectAllExpandedInTreeView, selectTreeViewScrollOffset, setTreeViewScrollOffset } from '../packageDataSlice';
 import ClassNode from './ClassNode';
 import FunctionNode from './FunctionNode';
 import ModuleNode from './ModuleNode';
 import ParameterNode from './ParameterNode';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
-import {UsageCountStore} from "../../usages/model/UsageCountStore";
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
 
 interface ScrollOffset {
     scrollOffset: number;
@@ -109,9 +105,15 @@ const TreeNodeGenerator: React.FC<ListChildComponentProps> = memo(({ data, index
     return (
         <Box style={style}>
             {declaration instanceof PythonModule && <ModuleNode pythonModule={declaration} filter={filter} />}
-            {declaration instanceof PythonClass && <ClassNode pythonClass={declaration} filter={filter} usages={usages} />}
-            {declaration instanceof PythonFunction && <FunctionNode pythonFunction={declaration} filter={filter} usages={usages} />}
-            {declaration instanceof PythonParameter && <ParameterNode pythonParameter={declaration} filter={filter} usages={usages} />}
+            {declaration instanceof PythonClass && (
+                <ClassNode pythonClass={declaration} filter={filter} usages={usages} />
+            )}
+            {declaration instanceof PythonFunction && (
+                <FunctionNode pythonFunction={declaration} filter={filter} usages={usages} />
+            )}
+            {declaration instanceof PythonParameter && (
+                <ParameterNode pythonParameter={declaration} filter={filter} usages={usages} />
+            )}
         </Box>
     );
 });

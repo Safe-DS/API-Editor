@@ -1,15 +1,15 @@
-import {Box, Circle, HStack, Icon, Text as ChakraText} from '@chakra-ui/react';
+import { Box, Circle, HStack, Icon, Text as ChakraText } from '@chakra-ui/react';
 import React from 'react';
-import {IconType} from 'react-icons/lib';
-import {useLocation} from 'react-router';
-import {useNavigate} from 'react-router-dom';
-import {useAppDispatch, useAppSelector} from '../../../app/hooks';
+import { IconType } from 'react-icons/lib';
+import { useLocation } from 'react-router';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import PythonDeclaration from '../model/PythonDeclaration';
-import {selectHeatMapMode, selectIsExpandedInTreeView, toggleIsExpandedInTreeView} from '../packageDataSlice';
+import { selectHeatMapMode, selectIsExpandedInTreeView, toggleIsExpandedInTreeView } from '../packageDataSlice';
 import VisibilityIndicator from './VisibilityIndicator';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
-import {selectAnnotations} from '../../annotations/annotationSlice';
-import {UsageCountJson, UsageCountStore} from "../../usages/model/UsageCountStore";
+import { selectAnnotations } from '../../annotations/annotationSlice';
+import { UsageCountJson, UsageCountStore } from '../../usages/model/UsageCountStore';
 
 interface TreeNodeProps {
     declaration: PythonDeclaration;
@@ -21,13 +21,13 @@ interface TreeNodeProps {
 }
 
 const TreeNode: React.FC<TreeNodeProps> = function ({
-                                                        declaration,
-                                                        icon,
-                                                        isExpandable,
-                                                        filter,
-                                                        maxValue,
-                                                        specificValue,
-                                                    }) {
+    declaration,
+    icon,
+    isExpandable,
+    filter,
+    maxValue,
+    specificValue,
+}) {
     const currentPathname = useLocation().pathname;
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -48,8 +48,11 @@ const TreeNode: React.FC<TreeNodeProps> = function ({
     };
 
     const display_heat_map = useAppSelector(selectHeatMapMode);
-    const heat_color = ((specificValue !== undefined) && (specificValue !== 0)) ? getColorFromValue(maxValue as number, specificValue) : undefined;
-    const box_width = (maxValue !== undefined) ? (maxValue.toString().length+1) * 7.3 : undefined;
+    const heat_color =
+        specificValue !== undefined && specificValue !== 0
+            ? getColorFromValue(maxValue as number, specificValue)
+            : undefined;
+    const box_width = maxValue !== undefined ? (maxValue.toString().length + 1) * 7.3 : undefined;
     //const text_border_color = (specificValue === 0) ? "black" : undefined;
     //Todo : change to tag
     return (
@@ -66,9 +69,22 @@ const TreeNode: React.FC<TreeNodeProps> = function ({
                 showChildren={showChildren}
                 isSelected={isSelected(declaration, currentPathname)}
             />
-            {display_heat_map && <Box bg={heat_color} color="white" width={box_width} borderRadius="full" height="18px" fontWeight="bold"
-                                      fontSize="small" textAlign="center" px="2px">{specificValue}</Box>}
-            <Icon as={icon}/>
+            {display_heat_map && (
+                <Box
+                    bg={heat_color}
+                    color="white"
+                    width={box_width}
+                    borderRadius="full"
+                    height="18px"
+                    fontWeight="bold"
+                    fontSize="small"
+                    textAlign="center"
+                    px="2px"
+                >
+                    {specificValue}
+                </Box>
+            )}
+            <Icon as={icon} />
             <ChakraText fontWeight={fontWeight}>{declaration.getUniqueName()}</ChakraText>
         </HStack>
     );
@@ -86,7 +102,7 @@ const getColorFromValue = function (maxValue: number, specificValue: number): st
     const percentage = Math.log(specificValue) / Math.log(maxValue);
     const value = percentage * 255;
 
-    return `rgb(${value}%, 0%, ${255 - value}%)`
-}
+    return `rgb(${value}%, 0%, ${255 - value}%)`;
+};
 
 export default TreeNode;
