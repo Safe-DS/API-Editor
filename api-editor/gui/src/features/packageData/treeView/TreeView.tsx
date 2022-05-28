@@ -31,7 +31,7 @@ interface TreeViewProps {
     usages: UsageCountStore;
 }
 
-const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage }) => {
+const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage, filter, usages }) => {
     const dispatch = useAppDispatch();
     const allExpanded = useAppSelector(selectAllExpandedInTreeView);
 
