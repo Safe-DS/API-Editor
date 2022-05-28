@@ -1,5 +1,6 @@
 package com.larsreimann.api_editor.codegen
 
+import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.mutable_model.PythonAttribute
 import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonFunction
@@ -61,13 +62,15 @@ fun PythonFunction.docstring() = buildString {
 }
 
 private fun parametersDocstring(parameters: List<PythonParameter>) = buildString {
-    if (parameters.all { it.description.isBlank() }) {
+    val explicitParameters = parameters.filter { it.assignedBy != PythonParameterAssignment.IMPLICIT }
+
+    if (explicitParameters.all { it.description.isBlank() }) {
         return@buildString
     }
 
     appendLine("Parameters")
     appendLine("----------")
-    append(parameters.joinToString("\n") { it.docstring() })
+    append(explicitParameters.joinToString("\n") { it.docstring() })
 }
 
 private fun PythonParameter.docstring() = buildString {

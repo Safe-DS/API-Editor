@@ -1,5 +1,6 @@
 package com.larsreimann.api_editor.codegen
 
+import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.mutable_model.PythonAttribute
 import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonConstructor
@@ -182,7 +183,6 @@ class PythonDocstringGeneratorTest {
             """.trimMargin()
         }
 
-
         @Test
         fun `should create docstring (description, parameters, attributes)`() {
             testClass.docstring() shouldBe """
@@ -205,6 +205,26 @@ class PythonDocstringGeneratorTest {
                     |    Test attribute 2
                     |testAttribute3
                     |testAttribute4 : str
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should skip implicit parameters`() {
+            val testClass = PythonClass(
+                name = "TestClass",
+                constructor = PythonConstructor(
+                    parameters = listOf(
+                        PythonParameter(name = "self", assignedBy = PythonParameterAssignment.IMPLICIT),
+                        PythonParameter(name = "testParameter1", description = "Test parameter 1"),
+                    )
+                )
+            )
+
+            testClass.docstring() shouldBe """
+                    |Parameters
+                    |----------
+                    |testParameter1
+                    |    Test parameter 1
             """.trimMargin()
         }
     }
@@ -286,6 +306,24 @@ class PythonDocstringGeneratorTest {
                     |    Test parameter 2
                     |testParameter3
                     |testParameter4 : str
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should skip implicit parameters`() {
+            val testFunction = PythonFunction(
+                name = "testFunction",
+                parameters = listOf(
+                    PythonParameter(name = "self", assignedBy = PythonParameterAssignment.IMPLICIT),
+                    PythonParameter(name = "testParameter1", description = "Test parameter 1"),
+                )
+            )
+
+            testFunction.docstring() shouldBe """
+                    |Parameters
+                    |----------
+                    |testParameter1
+                    |    Test parameter 1
             """.trimMargin()
         }
     }
