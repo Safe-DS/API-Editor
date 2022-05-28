@@ -138,7 +138,11 @@ def __get_enum_annotations(
                     values = sorted(list(type_in_union["values"]))
                     for string_value in values:
                         instance_name = __to_enum_name(string_value)
-                        pairs.append(EnumPair(stringValue=string_value, instanceName=instance_name))
+                        pairs.append(
+                            EnumPair(
+                                stringValue=string_value, instanceName=instance_name
+                            )
+                        )
         elif "kind" in enum_type and enum_type["kind"] == "EnumType":
             values = sorted(list(enum_type["values"]))
             for string_value in values:
