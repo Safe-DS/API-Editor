@@ -61,7 +61,7 @@ def cli() -> None:
 
 def __run_in_parallel(*fns) -> dict:
     manager = multiprocessing.Manager()
-    return_dict = manager.dict()
+    return_dict: dict[Any, Any] = manager.dict()
     proc = []
     for fn in fns:
         p = multiprocessing.Process(target=fn, args=(return_dict,))
