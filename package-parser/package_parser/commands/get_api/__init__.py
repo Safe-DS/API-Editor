@@ -18,6 +18,7 @@ from ._model import (
     ParameterIsIllegal,
     ParameterIsNone,
     Result,
+    Type,
 )
 from ._package_metadata import (
     distribution,
@@ -25,4 +26,4 @@ from ._package_metadata import (
     package_files,
     package_root,
 )
-from ._refined_types import UnionType
+from ._refined_types import BoundaryType, EnumType, NamedType, UnionType
