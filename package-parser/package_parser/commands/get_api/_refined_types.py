@@ -94,8 +94,8 @@ class BoundaryType(AbstractType):
     def from_string(cls, string: str) -> Optional[BoundaryType]:
         pattern = r"""(?P<base_type>float|int)?[ ]  # optional base type of either float or int
                     (in|of)[ ](the[ ])?(range|interval)[ ](of[ ])?  # 'in' or 'of', optional 'the', 'range' or 'interval', optional 'of'
-                    `?(?P<min_bracket>\[|\()(?P<min>\d+.?\d*|negative_infinity),[ ]  # left side of the range
-                    (?P<max>\d+.?\d*|infinity)(?P<max_bracket>\]|\))`?"""  # right side of the range
+                    `?(?P<min_bracket>[\[(])(?P<min>[-+]?\d+(.\d*)?|negative_infinity),[ ]  # left side of the range
+                    (?P<max>[-+]?\d+(.\d*)?|infinity)(?P<max_bracket>[\])])`?"""  # right side of the range
         match = re.search(pattern, string, re.VERBOSE)
 
         if match is not None:
