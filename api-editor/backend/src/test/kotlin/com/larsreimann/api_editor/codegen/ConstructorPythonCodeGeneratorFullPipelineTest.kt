@@ -1,6 +1,5 @@
-package com.larsreimann.api_editor.codegen.python_code_gen
+package com.larsreimann.api_editor.codegen
 
-import com.larsreimann.api_editor.codegen.toPythonCode
 import com.larsreimann.api_editor.model.BoundaryAnnotation
 import com.larsreimann.api_editor.model.ComparisonOperator
 import com.larsreimann.api_editor.model.DefaultBoolean
@@ -24,7 +23,7 @@ import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class ConstructorPythonCodeGeneratorTest {
+class ConstructorPythonCodeGeneratorFullPipelineTest {
     private lateinit var testParameter1: PythonParameter
     private lateinit var testParameter2: PythonParameter
     private lateinit var testParameter3: PythonParameter

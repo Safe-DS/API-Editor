@@ -49,9 +49,9 @@ export default class AnnotationFilter extends AbstractPythonFilter {
                     id in annotations.moves ||
                     id in annotations.optionals ||
                     id in annotations.pures ||
+                    id in annotations.removes ||
                     id in annotations.renamings ||
-                    id in annotations.requireds ||
-                    id in annotations.unuseds
+                    id in annotations.requireds
                 );
             case AnnotationType.Attribute:
                 return id in annotations.attributes;
@@ -71,13 +71,12 @@ export default class AnnotationFilter extends AbstractPythonFilter {
                 return id in annotations.optionals;
             case AnnotationType.Pure:
                 return id in annotations.pures;
+            case AnnotationType.Remove:
+                return id in annotations.removes;
             case AnnotationType.Rename:
                 return id in annotations.renamings;
             case AnnotationType.Required:
                 return id in annotations.requireds;
-            case AnnotationType.Unused:
-                return id in annotations.unuseds;
-
             default:
                 return true;
         }
@@ -95,7 +94,7 @@ export enum AnnotationType {
     Move,
     Optional,
     Pure,
+    Remove,
     Rename,
     Required,
-    Unused,
 }

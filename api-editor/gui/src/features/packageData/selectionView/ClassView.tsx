@@ -1,10 +1,4 @@
-import {
-    Box,
-    Heading,
-    HStack,
-    Stack,
-    Text as ChakraText,
-} from '@chakra-ui/react';
+import { Box, Heading, HStack, Stack, Text as ChakraText } from '@chakra-ui/react';
 import React from 'react';
 import AnnotationDropdown from '../../annotations/AnnotationDropdown';
 import AnnotationView from '../../annotations/AnnotationView';
@@ -24,41 +18,23 @@ const ClassView: React.FC<ClassViewProps> = function ({ pythonClass }) {
             <Stack spacing={4}>
                 <HStack>
                     <Heading as="h3" size="lg">
-                        {pythonClass.name}{' '}
-                        {!pythonClass.isPublic && '(private)'}
+                        {pythonClass.name} {!pythonClass.isPublic && '(private)'}
                     </Heading>
-                    {pythonClass.isPublic && (
-                        <AnnotationDropdown
-                            target={id}
-                            showMove
-                            showRename
-                            showUnused
-                        />
-                    )}
+                    {pythonClass.isPublic && <AnnotationDropdown target={id} showMove showRemove showRename />}
                 </HStack>
 
                 <AnnotationView target={id} />
 
                 <Box paddingLeft={4}>
                     {pythonClass.description ? (
-                        <DocumentationText
-                            inputText={pythonClass.description}
-                        />
+                        <DocumentationText inputText={pythonClass.description} />
                     ) : (
-                        <ChakraText color="gray.500">
-                            There is no documentation for this class.
-                        </ChakraText>
+                        <ChakraText color="gray.500">There is no documentation for this class.</ChakraText>
                     )}
                 </Box>
             </Stack>
-            <SectionListViewItem
-                title="Superclasses"
-                inputElements={pythonClass.superclasses}
-            />
-            <SectionListViewItem
-                title="Decorators"
-                inputElements={pythonClass.decorators}
-            />
+            <SectionListViewItem title="Superclasses" inputElements={pythonClass.superclasses} />
+            <SectionListViewItem title="Decorators" inputElements={pythonClass.decorators} />
         </Stack>
     );
 };

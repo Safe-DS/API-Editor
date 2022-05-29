@@ -27,7 +27,7 @@ private fun PythonPackage.preprocess() {
  * Processes all annotations.
  */
 private fun PythonPackage.processAnnotations() {
-    processUnusedAnnotations()
+    processRemoveAnnotations()
     processRenameAnnotations()
     processMoveAnnotations()
     processBoundaryAnnotations()
