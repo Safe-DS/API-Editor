@@ -32,17 +32,16 @@ from package_parser.commands.get_api._refined_types import BoundaryType
         ),
         (
             "Tolerance for singular values computed by svd_solver == 'arpack'.\nMust be of range [-2, -1].\n\n.. versionadded:: 0.18.0",
-            BoundaryType("float", -2, -1, True, True)
+            BoundaryType("float", -2, -1, True, True),
         ),
         (
             "Damping factor in the range (-1, -0.5)",
-            BoundaryType("float", -1, -0.5, False, False)
+            BoundaryType("float", -1, -0.5, False, False),
         ),
         (
             "'max_samples' should be in the interval (-1.0, -0.5]",
-            BoundaryType("float", -1.0, -0.5, False, True)
+            BoundaryType("float", -1.0, -0.5, False, True),
         ),
-
     ],
 )
 def test_boundaries_from_string(string: str, expected: BoundaryType):
