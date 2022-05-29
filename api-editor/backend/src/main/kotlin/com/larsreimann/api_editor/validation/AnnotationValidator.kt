@@ -165,7 +165,7 @@ class AnnotationValidator(private val annotatedPythonPackage: SerializablePython
     ) {
         val firstAnnotationName = firstAnnotation.type
         val secondAnnotationName = secondAnnotation.type
-        if (secondAnnotationName !in possibleCombinations[firstAnnotationName]!!) {
+        if (firstAnnotationName !in possibleCombinations || secondAnnotationName !in possibleCombinations[firstAnnotationName]!!) {
             validationErrors.add(AnnotationCombinationError(qualifiedName, firstAnnotationName, secondAnnotationName))
         }
     }
@@ -183,12 +183,24 @@ class AnnotationValidator(private val annotatedPythonPackage: SerializablePython
         private var possibleCombinations = buildMap<String, Set<String>> {
             this["Attribute"] = mutableSetOf("Rename")
             this["Boundary"] = mutableSetOf("Group", "Optional", "Rename", "Required")
-            this["CalledAfter"] = mutableSetOf("CalledAfter", "Group", "Move", "Rename")
+            this["CalledAfter"] = mutableSetOf("CalledAfter", "Group", "Move", "Pure", "Rename")
             this["Constant"] = mutableSetOf()
             this["Enum"] = mutableSetOf("Group", "Rename", "Required")
-            this["Group"] = mutableSetOf("Boundary", "CalledAfter", "Enum", "Group", "Move", "Optional", "Rename", "Required")
-            this["Move"] = mutableSetOf("CalledAfter", "Group", "Rename")
+            this["Group"] =
+                mutableSetOf(
+                    "Boundary",
+                    "CalledAfter",
+                    "Enum",
+                    "Group",
+                    "Move",
+                    "Optional",
+                    "Pure",
+                    "Rename",
+                    "Required"
+                )
+            this["Move"] = mutableSetOf("CalledAfter", "Group", "Pure", "Rename")
             this["Optional"] = mutableSetOf("Boundary", "Group", "Rename")
+            this["Pure"] = mutableSetOf("CalledAfter", "Group", "Move", "Rename")
             this["Remove"] = mutableSetOf()
             this["Rename"] = mutableSetOf(
                 "Attribute",
@@ -198,6 +210,7 @@ class AnnotationValidator(private val annotatedPythonPackage: SerializablePython
                 "Group",
                 "Move",
                 "Optional",
+                "Pure",
                 "Required"
             )
             this["Required"] = mutableSetOf("Boundary", "Enum", "Group", "Rename")
