@@ -189,6 +189,7 @@ class AnnotationValidator(private val annotatedPythonPackage: SerializablePython
             this["Group"] = mutableSetOf("Boundary", "CalledAfter", "Enum", "Group", "Move", "Optional", "Rename", "Required")
             this["Move"] = mutableSetOf("CalledAfter", "Group", "Rename")
             this["Optional"] = mutableSetOf("Boundary", "Group", "Rename")
+            this["Remove"] = mutableSetOf()
             this["Rename"] = mutableSetOf(
                 "Attribute",
                 "Boundary",
@@ -200,7 +201,6 @@ class AnnotationValidator(private val annotatedPythonPackage: SerializablePython
                 "Required"
             )
             this["Required"] = mutableSetOf("Boundary", "Enum", "Group", "Rename")
-            this["Unused"] = mutableSetOf()
         }
     }
 }

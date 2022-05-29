@@ -22,19 +22,16 @@ import {
     InferableMoveAnnotation,
     InferableOptionalAnnotation,
     InferablePureAnnotation,
+    InferableRemoveAnnotation,
     InferableRenameAnnotation,
     InferableRequiredAnnotation,
-    InferableUnusedAnnotation,
 } from './InferableAnnotation';
 
 export default class AnnotatedPythonPackageBuilder {
     readonly pythonPackage: PythonPackage;
     readonly annotationStore: AnnotationsState;
 
-    constructor(
-        pythonPackage: PythonPackage,
-        annotationStore: AnnotationsState,
-    ) {
+    constructor(pythonPackage: PythonPackage, annotationStore: AnnotationsState) {
         this.pythonPackage = pythonPackage;
         this.annotationStore = annotationStore;
     }
@@ -49,9 +46,7 @@ export default class AnnotatedPythonPackageBuilder {
         );
     }
 
-    #buildAnnotatedPythonModules(
-        pythonModules: PythonModule[],
-    ): AnnotatedPythonModule[] {
+    #buildAnnotatedPythonModules(pythonModules: PythonModule[]): AnnotatedPythonModule[] {
         return pythonModules.map(
             (pythonModule: PythonModule) =>
                 new AnnotatedPythonModule(
@@ -65,9 +60,7 @@ export default class AnnotatedPythonPackageBuilder {
         );
     }
 
-    #buildAnnotatedPythonClasses(
-        pythonModule: PythonModule,
-    ): AnnotatedPythonClass[] {
+    #buildAnnotatedPythonClasses(pythonModule: PythonModule): AnnotatedPythonClass[] {
         return pythonModule.classes.map(
             (pythonClass: PythonClass) =>
                 new AnnotatedPythonClass(
@@ -84,33 +77,24 @@ export default class AnnotatedPythonPackageBuilder {
         );
     }
 
-    #buildAnnotatedPythonFunctions(
-        pythonDeclaration: PythonModule | PythonClass,
-    ): AnnotatedPythonFunction[] {
+    #buildAnnotatedPythonFunctions(pythonDeclaration: PythonModule | PythonClass): AnnotatedPythonFunction[] {
         if (pythonDeclaration instanceof PythonModule) {
-            return pythonDeclaration.functions.map(
-                (pythonFunction: PythonFunction) =>
-                    this.#buildAnnotatedPythonFunction(pythonFunction),
+            return pythonDeclaration.functions.map((pythonFunction: PythonFunction) =>
+                this.#buildAnnotatedPythonFunction(pythonFunction),
             );
         } else {
-            return pythonDeclaration.methods.map(
-                (pythonFunction: PythonFunction) =>
-                    this.#buildAnnotatedPythonFunction(pythonFunction),
+            return pythonDeclaration.methods.map((pythonFunction: PythonFunction) =>
+                this.#buildAnnotatedPythonFunction(pythonFunction),
             );
         }
     }
 
-    #buildAnnotatedPythonFunction(
-        pythonFunction: PythonFunction,
-    ): AnnotatedPythonFunction {
+    #buildAnnotatedPythonFunction(pythonFunction: PythonFunction): AnnotatedPythonFunction {
         return new AnnotatedPythonFunction(
             pythonFunction.name,
             pythonFunction.qualifiedName,
             pythonFunction.decorators,
-            this.#buildAnnotatedPythonParameters(
-                pythonFunction.parameters,
-                pythonFunction,
-            ),
+            this.#buildAnnotatedPythonParameters(pythonFunction.parameters, pythonFunction),
             this.#buildAnnotatedPythonResults(pythonFunction.results),
             pythonFunction.isPublic,
             pythonFunction.description,
@@ -133,16 +117,12 @@ export default class AnnotatedPythonPackageBuilder {
                     pythonParameter.isPublic,
                     pythonParameter.typeInDocs,
                     pythonParameter.description,
-                    this.#getExistingAnnotations(
-                        pythonParameter.pathAsString(),
-                    ),
+                    this.#getExistingAnnotations(pythonParameter.pathAsString()),
                 ),
         );
     }
 
-    #buildAnnotatedPythonResults(
-        pythonResults: PythonResult[],
-    ): AnnotatedPythonResult[] {
+    #buildAnnotatedPythonResults(pythonResults: PythonResult[]): AnnotatedPythonResult[] {
         return pythonResults.map(
             (pythonResult: PythonResult) =>
                 new AnnotatedPythonResult(
@@ -165,21 +145,17 @@ export default class AnnotatedPythonPackageBuilder {
         'Move',
         'Optional',
         'Pure',
+        'Remove',
         'Rename',
         'Required',
-        'Unused',
     ];
 
     #getExistingAnnotations(target: string): InferableAnnotation[] {
         let targetAnnotations: InferableAnnotation[] = [];
         this.#possibleAnnotations.forEach((annotation) => {
-            const returnedAnnotations = this.#returnFormattedAnnotation(
-                target,
-                annotation,
-            );
+            const returnedAnnotations = this.#returnFormattedAnnotation(target, annotation);
             if (returnedAnnotations) {
-                targetAnnotations =
-                    targetAnnotations.concat(returnedAnnotations);
+                targetAnnotations = targetAnnotations.concat(returnedAnnotations);
             }
         });
         return targetAnnotations;
@@ -191,36 +167,27 @@ export default class AnnotatedPythonPackageBuilder {
     ): InferableAnnotation[] | InferableAnnotation | undefined {
         switch (annotationType) {
             case 'Attribute':
-                const attributeAnnotation =
-                    this.annotationStore.attributes[target];
+                const attributeAnnotation = this.annotationStore.attributes[target];
                 if (attributeAnnotation) {
-                    return new InferableAttributeAnnotation(
-                        attributeAnnotation,
-                    );
+                    return new InferableAttributeAnnotation(attributeAnnotation);
                 }
                 break;
             case 'Boundary':
-                const boundaryAnnotation =
-                    this.annotationStore.boundaries[target];
+                const boundaryAnnotation = this.annotationStore.boundaries[target];
                 if (boundaryAnnotation) {
                     return new InferableBoundaryAnnotation(boundaryAnnotation);
                 }
                 break;
             case 'CalledAfters':
-                const calledAfterAnnotations =
-                    this.annotationStore.calledAfters[target];
+                const calledAfterAnnotations = this.annotationStore.calledAfters[target];
                 if (!calledAfterAnnotations) {
                     break;
                 }
                 return Object.values(calledAfterAnnotations).map(
-                    (calledAfterAnnotation) =>
-                        new InferableCalledAfterAnnotation(
-                            calledAfterAnnotation,
-                        ),
+                    (calledAfterAnnotation) => new InferableCalledAfterAnnotation(calledAfterAnnotation),
                 );
             case 'Constant':
-                const constantAnnotation =
-                    this.annotationStore.constants[target];
+                const constantAnnotation = this.annotationStore.constants[target];
                 if (constantAnnotation) {
                     return new InferableConstantAnnotation(constantAnnotation);
                 }
@@ -231,8 +198,7 @@ export default class AnnotatedPythonPackageBuilder {
                     break;
                 }
                 return Object.values(groupAnnotations).map(
-                    (groupAnnotation) =>
-                        new InferableGroupAnnotation(groupAnnotation),
+                    (groupAnnotation) => new InferableGroupAnnotation(groupAnnotation),
                 );
             case 'Enum':
                 const enumAnnotation = this.annotationStore.enums[target];
@@ -247,8 +213,7 @@ export default class AnnotatedPythonPackageBuilder {
                 }
                 break;
             case 'Optional':
-                const optionalAnnotation =
-                    this.annotationStore.optionals[target];
+                const optionalAnnotation = this.annotationStore.optionals[target];
                 if (optionalAnnotation) {
                     return new InferableOptionalAnnotation(optionalAnnotation);
                 }
@@ -259,6 +224,12 @@ export default class AnnotatedPythonPackageBuilder {
                     return new InferablePureAnnotation();
                 }
                 break;
+            case 'Remove':
+                const removeAnnotation = this.annotationStore.removes[target];
+                if (removeAnnotation) {
+                    return new InferableRemoveAnnotation();
+                }
+                break;
             case 'Rename':
                 const renameAnnotation = this.annotationStore.renamings[target];
                 if (renameAnnotation) {
@@ -266,16 +237,9 @@ export default class AnnotatedPythonPackageBuilder {
                 }
                 break;
             case 'Required':
-                const requiredAnnotation =
-                    this.annotationStore.requireds[target];
+                const requiredAnnotation = this.annotationStore.requireds[target];
                 if (requiredAnnotation) {
                     return new InferableRequiredAnnotation();
-                }
-                break;
-            case 'Unused':
-                const unusedAnnotation = this.annotationStore.unuseds[target];
-                if (unusedAnnotation) {
-                    return new InferableUnusedAnnotation();
                 }
                 break;
         }

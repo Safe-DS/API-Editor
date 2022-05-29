@@ -38,7 +38,7 @@ Generates the various annotations by consecutively calling the passed functions 
 
 ### `get_[type]_annotation()`
 
-This name serves only as a placeholder. `[type]` must be replaced by one of the following keywords: {constant, unused, required, optional, boundary, enum}.
+This name serves only as a placeholder. `[type]` must be replaced by one of the following keywords: {boundary, constant, enum, optional, remove, required}.
 
 Generates the annotations of the corresponding type. All functions of this type have the following signature: `get_type_annotations(UsageCountStore, API, AnnotationsStore)`.
 `UsageCountStore` and `API` represent the set of data extracted from the analyzed code. The functionality and task of the `AnnotationStore` will be explained later.
@@ -54,7 +54,7 @@ We use the following dataclasses to store the related information. Compared to t
 ```mermaid
 classDiagram
 BaseAnnotation <|-- ConstantAnnotation
-BaseAnnotation <|-- UnusedAnnotation
+BaseAnnotation <|-- RemoveAnnotation
 BaseAnnotation <|-- OptionalAnnotation
 BaseAnnotation <|-- RequiredAnnotation
 BaseAnnotation <|-- BoundaryAnnotation
@@ -73,7 +73,7 @@ AnnotationStore "0..1" o-- "*" BaseAnnotation
       String defaultType
       String defaultValue
       }
-      class UnusedAnnotation{
+      class RemoveAnnotation{
       <<dataclass>>
       }
       class OptionalAnnotation{
@@ -112,7 +112,7 @@ AnnotationStore "0..1" o-- "*" BaseAnnotation
       class AnnotationStore{
       <<dataclass>>
       List[ConstantAnnotation] constant
-      List[UnusedAnnotation] unused
+      List[RemoveAnnotation] remove
       List[OptionalAnnotation] optional
       List[RequiredAnnotation] required
       List[BoundaryAnnotation] boundary
@@ -227,7 +227,7 @@ This function needs to be executed before the data can be analyzed and performs 
 - `remove_internal_usages()`
 
   Since we are only concerned with the use of outward-facing package elements, all elements that are used exclusively internally are excluded from consideration.
-  
+
 - `add_unused_api_elements()`
 
   Some API elements are not used at all and, therefore, do not appear in the listing of all used elements. However, it is necessary that they do for the following process of the program.

@@ -37,8 +37,8 @@ export interface AnnotationsState {
     requireds: {
         [target: string]: RequiredAnnotation;
     };
-    unuseds: {
-        [target: string]: UnusedAnnotation;
+    removes: {
+        [target: string]: RemoveAnnotation;
     };
     showImportDialog: boolean;
 }
@@ -251,7 +251,7 @@ export interface RequiredAnnotation {
     readonly target: string;
 }
 
-export interface UnusedAnnotation {
+export interface RemoveAnnotation {
     /**
      * ID of the annotated Python declaration.
      */
@@ -332,7 +332,7 @@ export const initialState: AnnotationsState = {
     renamings: {},
     requireds: {},
     showImportDialog: false,
-    unuseds: {},
+    removes: {},
 };
 
 // Thunks --------------------------------------------------------------------------------------------------------------
@@ -470,11 +470,11 @@ const annotationsSlice = createSlice({
         removeRequired(state, action: PayloadAction<string>) {
             delete state.requireds[action.payload];
         },
-        addUnused(state, action: PayloadAction<UnusedAnnotation>) {
-            state.unuseds[action.payload.target] = action.payload;
+        addRemove(state, action: PayloadAction<RemoveAnnotation>) {
+            state.removes[action.payload.target] = action.payload;
         },
-        removeUnused(state, action: PayloadAction<string>) {
-            delete state.unuseds[action.payload];
+        removeRemove(state, action: PayloadAction<string>) {
+            delete state.removes[action.payload];
         },
         showAttributeAnnotationForm(state, action: PayloadAction<string>) {
             state.currentUserAction = {
@@ -574,8 +574,8 @@ export const {
     removeRenaming,
     addRequired,
     removeRequired,
-    addUnused,
-    removeUnused,
+    addRemove,
+    removeRemove,
 
     showAttributeAnnotationForm,
     showBoundaryAnnotationForm,
@@ -641,7 +641,7 @@ export const selectRequired =
         selectAnnotations(state).requireds[target];
 export const selectShowAnnotationImportDialog = (state: RootState): boolean =>
     selectAnnotations(state).showImportDialog;
-export const selectUnused =
+export const selectRemove =
     (target: string) =>
-    (state: RootState): UnusedAnnotation | undefined =>
-        selectAnnotations(state).unuseds[target];
+    (state: RootState): RemoveAnnotation | undefined =>
+        selectAnnotations(state).removes[target];

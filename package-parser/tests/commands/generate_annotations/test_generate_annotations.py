@@ -8,8 +8,8 @@ from package_parser.commands.generate_annotations.generate_annotations import (
     __get_constant_annotations,
     __get_enum_annotations,
     __get_optional_annotations,
+    __get_remove_annotations,
     __get_required_annotations,
-    __get_unused_annotations,
     preprocess_usages,
 )
 from package_parser.commands.get_api import API
@@ -20,7 +20,7 @@ from package_parser.models.annotation_models import AnnotationStore
 @pytest.mark.parametrize(
     "subfolder, get_annotations",
     [
-        ("unuseds", __get_unused_annotations),
+        ("removes", __get_remove_annotations),
         ("constants", __get_constant_annotations),
         ("requireds", __get_required_annotations),
         ("optionals", __get_optional_annotations),

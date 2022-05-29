@@ -15,8 +15,8 @@ from package_parser.models.annotation_models import (
     OptionalAnnotation,
     ParameterInfo,
     ParameterType,
+    RemoveAnnotation,
     RequiredAnnotation,
-    UnusedAnnotation,
 )
 from package_parser.utils import ensure_file_exists, parent_qname
 
@@ -26,7 +26,7 @@ def generate_annotations(
 ) -> None:
     """
     Generates an annotation file from the given API and UsageStore files, and writes it to the given output file.
-    Annotations that are generated are: unused, constant, required, optional, enum and boundary.
+    Annotations that are generated are: remove, constant, required, optional, enum and boundary.
     :param api_file_path: API file Path
     :param usages_file_path: UsageStore file Path
     :param output_file_path: Output file Path
@@ -42,7 +42,7 @@ def generate_annotations(
 
     annotations = AnnotationStore()
     annotation_functions = [
-        __get_unused_annotations,
+        __get_remove_annotations,
         __get_constant_annotations,
         __get_required_annotations,
         __get_optional_annotations,
@@ -87,7 +87,7 @@ def __get_constant_annotations(
         target_name = param.pname
 
         if parameter_info.type == ParameterType.Constant:
-            annotations.constant.append(
+            annotations.constants.append(
                 ConstantAnnotation(
                     target=target_name,
                     defaultType=parameter_info.value_type,
@@ -96,7 +96,7 @@ def __get_constant_annotations(
             )
 
 
-def __get_unused_annotations(
+def __get_remove_annotations(
     usages: UsageCountStore, api: API, annotations: AnnotationStore
 ) -> None:
     """
@@ -110,14 +110,14 @@ def __get_unused_annotations(
             function_name not in usages.function_usages
             or usages.function_usages[function_name] == 0
         ):
-            annotations.unused.append(UnusedAnnotation(function.pname))
+            annotations.removes.append(RemoveAnnotation(function.pname))
 
     for class_name, class_ in api.classes.items():
         if (
             class_name not in usages.class_usages
             or usages.class_usages[class_name] == 0
         ):
-            annotations.unused.append(UnusedAnnotation(class_.pname))
+            annotations.removes.append(RemoveAnnotation(class_.pname))
 
 
 def __get_enum_annotations(

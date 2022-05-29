@@ -7,8 +7,8 @@ from package_parser.models.annotation_models import (
     EnumPair,
     Interval,
     OptionalAnnotation,
+    RemoveAnnotation,
     RequiredAnnotation,
-    UnusedAnnotation,
 )
 
 
@@ -28,8 +28,8 @@ def test_constant_annotation_to_json():
     }
 
 
-def test_unused_annotation_to_json():
-    annotation = UnusedAnnotation(target="test/test")
+def test_remove_annotation_to_json():
+    annotation = RemoveAnnotation(target="test/test")
     assert annotation.to_json() == {"target": "test/test"}
 
 
@@ -78,14 +78,14 @@ def test_enum_annotation_to_json():
 
 def test_annotation_store():
     annotations = AnnotationStore()
-    annotations.unused.append(UnusedAnnotation(target="test/unused"))
+    annotations.removes.append(RemoveAnnotation(target="test/remove"))
     annotations.requireds.append(RequiredAnnotation(target="test/required"))
     annotations.optionals.append(
         OptionalAnnotation(
             target="test/optional", defaultType="string", defaultValue="test"
         )
     )
-    annotations.constant.append(
+    annotations.constants.append(
         ConstantAnnotation(
             target="test/constant", defaultType="string", defaultValue="test"
         )
@@ -136,5 +136,5 @@ def test_annotation_store():
             }
         },
         "requireds": {"test/required": {"target": "test/required"}},
-        "unuseds": {"test/unused": {"target": "test/unused"}},
+        "removes": {"test/remove": {"target": "test/remove"}},
     }
