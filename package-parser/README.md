@@ -5,15 +5,17 @@ A tool to analyze client and API code written in Python.
 ## Usage
 
 ```text
-usage: parse-package [-h] {api,usages,improve} ...
+usage: parse-package [-h] {api,usages,improve,annotations,all} ...
 
 Analyze Python code.
 
 positional arguments:
-  {api,usages,improve}
+  {api,usages,improve,annotations,all}
     api                 List the API of a package.
     usages              Find usages of API elements.
     improve             Suggest how to improve an existing API.
+    annotations         Generate Annotations automatically.
+    all                 Run api and usages command in parallel and then run annotations command.
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -22,12 +24,13 @@ optional arguments:
 ### api command
 
 ```text
-usage: parse-package api [-h] -p PACKAGE -o OUT
+usage: parse-package api [-h] -p PACKAGE [-s SRC] -o OUT
 
 optional arguments:
   -h, --help            show this help message and exit
   -p PACKAGE, --package PACKAGE
-                        The name of the package. It must be installed in the current interpreter.
+                        The name of the package.
+  -s SRC, --src SRC     Directory containing the Python code of the package. If this is omitted, we try to locate the package with the given name in the current Python interpreter.
   -o OUT, --out OUT     Output directory.
 ```
 
@@ -36,7 +39,7 @@ optional arguments:
 ```text
 usage: parse-package usages [-h] -p PACKAGE -c CLIENT -t TMP -o OUT
 
-options:
+optional arguments:
   -h, --help            show this help message and exit
   -p PACKAGE, --package PACKAGE
                         The name of the package. It must be installed in the current interpreter.
@@ -44,7 +47,6 @@ options:
                         Directory containing Python code that uses the package.
   -t TMP, --tmp TMP     Directory where temporary files can be stored (to save progress in case the program crashes).
   -o OUT, --out OUT     Output directory.
-
 ```
 
 ### improve command
@@ -66,28 +68,27 @@ optional arguments:
 ```text
 usage: parse-package annotations [-h] -a API -u USAGES -o OUT
 
-options:
+optional arguments:
   -h, --help            show this help message and exit
   -a API, --api API     File created by the 'api' command.
   -u USAGES, --usages USAGES
                         File created by the 'usages' command that contains usage counts.
   -o OUT, --out OUT     Output directory.
-
 ```
 
 ### all command
 
 ```text
-usage: parse-package all [-h] -p PACKAGE -c CLIENT -o OUT
+usage: parse-package all [-h] -p PACKAGE [-s SRC] -c CLIENT -o OUT
 
-options:
+optional arguments:
   -h, --help            show this help message and exit
   -p PACKAGE, --package PACKAGE
-                        The name of the package. It must be installed in the current interpreter.
+                        The name of the package.
+  -s SRC, --src SRC     Directory containing the Python code of the package. If this is omitted, we try to locate the package with the given name in the current Python interpreter.
   -c CLIENT, --client CLIENT
                         Directory containing Python code that uses the package.
   -o OUT, --out OUT     Output directory.
-
 ```
 
 ### Example usage
