@@ -22,9 +22,9 @@ import {
     InferableMoveAnnotation,
     InferableOptionalAnnotation,
     InferablePureAnnotation,
+    InferableRemoveAnnotation,
     InferableRenameAnnotation,
     InferableRequiredAnnotation,
-    InferableUnusedAnnotation,
 } from './InferableAnnotation';
 
 export default class AnnotatedPythonPackageBuilder {
@@ -165,9 +165,9 @@ export default class AnnotatedPythonPackageBuilder {
         'Move',
         'Optional',
         'Pure',
+        'Remove',
         'Rename',
         'Required',
-        'Unused',
     ];
 
     #getExistingAnnotations(target: string): InferableAnnotation[] {
@@ -259,6 +259,12 @@ export default class AnnotatedPythonPackageBuilder {
                     return new InferablePureAnnotation();
                 }
                 break;
+            case 'Remove':
+                const removeAnnotation = this.annotationStore.removes[target];
+                if (removeAnnotation) {
+                    return new InferableRemoveAnnotation();
+                }
+                break;
             case 'Rename':
                 const renameAnnotation = this.annotationStore.renamings[target];
                 if (renameAnnotation) {
@@ -270,12 +276,6 @@ export default class AnnotatedPythonPackageBuilder {
                     this.annotationStore.requireds[target];
                 if (requiredAnnotation) {
                     return new InferableRequiredAnnotation();
-                }
-                break;
-            case 'Unused':
-                const unusedAnnotation = this.annotationStore.unuseds[target];
-                if (unusedAnnotation) {
-                    return new InferableUnusedAnnotation();
                 }
                 break;
         }

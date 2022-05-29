@@ -99,21 +99,7 @@ object PureAnnotation : EditorAnnotation() {
 }
 
 @Serializable
-data class RenameAnnotation(val newName: String) : EditorAnnotation() {
-
-    @Transient
-    override val validTargets = CLASSES.union(FUNCTIONS).union(PARAMETERS)
-}
-
-@Serializable
-object RequiredAnnotation : EditorAnnotation() {
-
-    @Transient
-    override val validTargets = PARAMETERS
-}
-
-@Serializable
-object UnusedAnnotation : EditorAnnotation() {
+object RemoveAnnotation : EditorAnnotation() {
 
     @Transient
     override val validTargets = setOf(
@@ -121,6 +107,20 @@ object UnusedAnnotation : EditorAnnotation() {
         GLOBAL_FUNCTION,
         METHOD
     )
+}
+
+
+@Serializable
+data class RenameAnnotation(val newName: String) : EditorAnnotation() {
+    @Transient
+    override val validTargets = CLASSES.union(FUNCTIONS).union(PARAMETERS)
+}
+
+
+@Serializable
+object RequiredAnnotation : EditorAnnotation() {
+    @Transient
+    override val validTargets = PARAMETERS
 }
 
 @Serializable

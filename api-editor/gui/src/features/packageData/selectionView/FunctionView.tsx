@@ -53,8 +53,8 @@ const FunctionView: React.FC<FunctionViewProps> = function ({
                                 PythonModule
                             }
                             showPure
+                            showRemove
                             showRename
-                            showUnused
                         />
                     )}
                 </HStack>

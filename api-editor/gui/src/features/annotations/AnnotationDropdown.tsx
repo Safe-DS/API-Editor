@@ -13,7 +13,7 @@ import { useAppDispatch } from '../../app/hooks';
 import {
     addPure,
     addRequired,
-    addUnused,
+    addRemove,
     showAttributeAnnotationForm,
     showBoundaryAnnotationForm,
     showCalledAfterAnnotationForm,
@@ -37,7 +37,7 @@ interface AnnotationDropdownProps {
     showPure?: boolean;
     showRename?: boolean;
     showRequired?: boolean;
-    showUnused?: boolean;
+    showRemove?: boolean;
     target: string;
 }
 
@@ -53,7 +53,7 @@ const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
     showOptional = false,
     showRename = false,
     showRequired = false,
-    showUnused = false,
+    showRemove = false,
     target,
 }) {
     const dispatch = useAppDispatch();
@@ -158,6 +158,13 @@ const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                             @pure
                         </MenuItem>
                     )}
+                    {showRemove && (
+                        <MenuItem
+                            onClick={() => dispatch(addRemove({ target }))}
+                        >
+                            @remove
+                        </MenuItem>
+                    )}
                     {showRename && (
                         <MenuItem
                             onClick={() =>
@@ -172,13 +179,6 @@ const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                             onClick={() => dispatch(addRequired({ target }))}
                         >
                             @required
-                        </MenuItem>
-                    )}
-                    {showUnused && (
-                        <MenuItem
-                            onClick={() => dispatch(addUnused({ target }))}
-                        >
-                            @unused
                         </MenuItem>
                     )}
                 </MenuList>

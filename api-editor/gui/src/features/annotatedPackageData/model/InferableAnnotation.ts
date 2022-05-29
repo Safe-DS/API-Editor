@@ -166,8 +166,8 @@ export class InferableRequiredAnnotation extends InferableAnnotation {
     }
 }
 
-export class InferableUnusedAnnotation extends InferableAnnotation {
+export class InferableRemoveAnnotation extends InferableAnnotation {
     constructor() {
-        super(dataPathPrefix + 'UnusedAnnotation');
+        super(dataPathPrefix + 'RemoveAnnotation');
     }
 }

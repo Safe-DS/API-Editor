@@ -25,7 +25,7 @@ import com.larsreimann.api_editor.model.SerializablePythonModule
 import com.larsreimann.api_editor.model.SerializablePythonPackage
 import com.larsreimann.api_editor.model.SerializablePythonParameter
 import com.larsreimann.api_editor.model.SerializablePythonResult
-import com.larsreimann.api_editor.model.UnusedAnnotation
+import com.larsreimann.api_editor.model.RemoveAnnotation
 import io.ktor.client.call.body
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -143,7 +143,7 @@ class ApplicationTest {
                     PureAnnotation,
                     RenameAnnotation("test-new-name"),
                     RequiredAnnotation,
-                    UnusedAnnotation
+                    RemoveAnnotation
                 )
             )
 

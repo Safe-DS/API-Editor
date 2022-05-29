@@ -24,7 +24,7 @@ import {
     removePure,
     removeRenaming,
     removeRequired,
-    removeUnused,
+    removeRemove,
     selectAttribute,
     selectBoundary,
     selectCalledAfters,
@@ -36,7 +36,7 @@ import {
     selectPure,
     selectRenaming,
     selectRequired,
-    selectUnused,
+    selectRemove,
     showAttributeAnnotationForm,
     showBoundaryAnnotationForm,
     showConstantAnnotationForm,
@@ -63,9 +63,9 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
     const moveAnnotation = useAppSelector(selectMove(target));
     const optionalAnnotation = useAppSelector(selectOptional(target));
     const pureAnnotation = useAppSelector(selectPure(target));
+    const removeAnnotation = useAppSelector(selectRemove(target));
     const renameAnnotation = useAppSelector(selectRenaming(target));
     const requiredAnnotation = useAppSelector(selectRequired(target));
-    const unusedAnnotation = useAppSelector(selectUnused(target));
 
     if (
         !attributeAnnotation &&
@@ -77,9 +77,9 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
         !moveAnnotation &&
         !optionalAnnotation &&
         !pureAnnotation &&
+        !removeAnnotation &&
         !renameAnnotation &&
-        !requiredAnnotation &&
-        !unusedAnnotation
+        !requiredAnnotation
     ) {
         // eslint-disable-next-line react/jsx-no-useless-fragment
         return <></>;
@@ -173,6 +173,12 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
                     onDelete={() => dispatch(removePure(target))}
                 />
             )}
+            {removeAnnotation && (
+                <Annotation
+                    type="remove"
+                    onDelete={() => dispatch(removeRemove(target))}
+                />
+            )}
             {renameAnnotation && (
                 <Annotation
                     type="rename"
@@ -185,12 +191,6 @@ const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
                 <Annotation
                     type="required"
                     onDelete={() => dispatch(removeRequired(target))}
-                />
-            )}
-            {unusedAnnotation && (
-                <Annotation
-                    type="unused"
-                    onDelete={() => dispatch(removeUnused(target))}
                 />
             )}
         </Stack>

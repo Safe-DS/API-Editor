@@ -31,8 +31,8 @@ const ClassView: React.FC<ClassViewProps> = function ({ pythonClass }) {
                         <AnnotationDropdown
                             target={id}
                             showMove
+                            showRemove
                             showRename
-                            showUnused
                         />
                     )}
                 </HStack>
