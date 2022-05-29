@@ -14,7 +14,7 @@ from package_parser.commands.get_api._refined_types import BoundaryType
         (
             """If bootstrap is True, the number of samples to draw from X\nto train each base estimator.\n\n
             - If None (default), then draw `X.shape[0]` samples.\n- If int, then draw `max_samples` samples.\n
-            - If float, then draw `max_samples * X.shape[0]` samples. Thus,\n  `max_samples` should be in the interval `(0.0, 1.0]`.\n\n.. 
+            - If float, then draw `max_samples * X.shape[0]` samples. Thus,\n  `max_samples` should be in the interval `(0.0, 1.0]`.\n\n..
             versionadded:: 0.22""",
             BoundaryType("float", 0, 1, False, True),
         ),
@@ -30,6 +30,19 @@ from package_parser.commands.get_api._refined_types import BoundaryType
             absolute counts.\nThis parameter is ignored if vocabulary is not None.""",
             BoundaryType("float", 0, 1, True, True),
         ),
+        (
+            "Tolerance for singular values computed by svd_solver == 'arpack'.\nMust be of range [-2, -1].\n\n.. versionadded:: 0.18.0",
+            BoundaryType("float", -2, -1, True, True)
+        ),
+        (
+            "Damping factor in the range (-1, -0.5)",
+            BoundaryType("float", -1, -0.5, False, False)
+        ),
+        (
+            "'max_samples' should be in the interval (-1.0, -0.5]",
+            BoundaryType("float", -1.0, -0.5, False, True)
+        ),
+
     ],
 )
 def test_boundaries_from_string(string: str, expected: BoundaryType):
