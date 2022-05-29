@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Optional
 
 import astroid
 from package_parser.utils import ASTWalker
@@ -14,11 +15,12 @@ from ._package_metadata import (
 )
 
 
-def get_api(package_name: str) -> API:
-    root = package_root(package_name)
+def get_api(package_name: str, root: Optional[Path] = None) -> API:
+    if root is None:
+        root = package_root(package_name)
     dist = distribution(package_name) or ""
     dist_version = distribution_version(dist) or ""
-    files = package_files(package_name)
+    files = package_files(root)
 
     api = API(dist, package_name, dist_version)
     callable_visitor = _AstVisitor(api)

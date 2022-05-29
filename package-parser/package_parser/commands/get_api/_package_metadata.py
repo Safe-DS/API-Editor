@@ -9,8 +9,7 @@ from package_parser.utils import list_files
 from ._file_filters import _is_init_file
 
 
-def package_files(package_name: str) -> list[str]:
-    root = package_root(package_name)
+def package_files(root: Path) -> list[str]:
     files = list_files(root, ".py")
     return __move_init_files_to_front(files)
 
