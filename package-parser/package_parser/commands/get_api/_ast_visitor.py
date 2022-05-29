@@ -26,12 +26,11 @@ class _AstVisitor:
         self.__declaration_stack: list[Union[Module, Class, Function]] = []
 
     def __get_pname(self, name: str) -> str:
-        return (
-            self.api.package
-            + "/"
-            + "/".join([it.name for it in self.__declaration_stack])
-            + name
-        )
+        segments = [self.api.package]
+        segments += [it.name for it in self.__declaration_stack]
+        segments += [name]
+
+        return "/".join(segments)
 
     def enter_module(self, module_node: astroid.Module):
         imports: list[Import] = []
