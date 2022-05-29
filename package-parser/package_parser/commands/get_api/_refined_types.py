@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from abc import ABCMeta, abstractmethod
 import re
+from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass, field
 from typing import Any, ClassVar, Optional, Union
 
