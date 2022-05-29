@@ -74,7 +74,9 @@ def __run_in_parallel(*fns) -> dict:
     return return_dict
 
 
-def __run_usages_command(package: str, client: Path, tmp: Path, out: Path, result_dict: Optional[dict] = None) -> None:
+def __run_usages_command(
+    package: str, client: Path, tmp: Path, out: Path, result_dict: Optional[dict] = None
+) -> None:
     usages = find_usages(package, client, tmp)
     dist = distribution(package)
     out_file_usage = out.joinpath(
@@ -96,7 +98,9 @@ def __run_usages_command(package: str, client: Path, tmp: Path, out: Path, resul
         result_dict[USAGES_INDEX] = out_file_usage_count
 
 
-def __run_api_command(package: str, src: Path, out: Path, result_dict: Optional[dict] = None) -> None:
+def __run_api_command(
+    package: str, src: Path, out: Path, result_dict: Optional[dict] = None
+) -> None:
     public_api = get_api(package, src)
     public_api_dependencies = get_dependencies(public_api)
     out_file_api = out.joinpath(
@@ -142,7 +146,7 @@ def __add_api_subparser(subparsers: _SubParsersAction) -> None:
         "-s",
         "--src",
         help="Directory containing the Python code of the package. If this is omitted, we try to locate the package "
-             "with the given name in the current Python interpreter.",
+        "with the given name in the current Python interpreter.",
         type=Path,
         required=False,
         default=None,
@@ -252,7 +256,7 @@ def __add_all_subparser(subparsers: _SubParsersAction) -> None:
         "-s",
         "--src",
         help="Directory containing the Python code of the package. If this is omitted, we try to locate the package "
-             "with the given name in the current Python interpreter.",
+        "with the given name in the current Python interpreter.",
         type=Path,
         required=False,
         default=None,
