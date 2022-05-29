@@ -1,12 +1,19 @@
 from __future__ import annotations
 
+from abc import ABCMeta, abstractmethod
 import re
 from dataclasses import dataclass, field
 from typing import Any, ClassVar, Optional, Union
 
 
+class AbstractType(metaclass=ABCMeta):
+    @abstractmethod
+    def to_json(self):
+        pass
+
+
 @dataclass
-class NamedType:
+class NamedType(AbstractType):
     name: str
 
     @classmethod
@@ -18,7 +25,7 @@ class NamedType:
 
 
 @dataclass
-class EnumType:
+class EnumType(AbstractType):
     values: set[str] = field(default_factory=set)
 
     @classmethod
@@ -64,7 +71,7 @@ class EnumType:
 
 
 @dataclass
-class BoundaryType:
+class BoundaryType(AbstractType):
     NEGATIVE_INFINITY: ClassVar = "NegativeInfinity"
     INFINITY: ClassVar = "Infinity"
 
@@ -150,8 +157,8 @@ class BoundaryType:
 
 
 @dataclass
-class UnionType:
-    types: list[Union[NamedType, EnumType, BoundaryType]]
+class UnionType(AbstractType):
+    types: list[AbstractType]
 
     def to_json(self) -> dict[str, Any]:
         type_list = []

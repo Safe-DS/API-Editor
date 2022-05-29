@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 import re
-from dataclasses import asdict, dataclass, field
+from dataclasses import dataclass
 from enum import Enum, auto
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, Optional
 
 from package_parser.commands.get_api._refined_types import (
+    AbstractType,
     BoundaryType,
     EnumType,
     NamedType,
@@ -355,16 +356,14 @@ class Type:
         self,
         typestring: ParameterAndResultDocstring,
     ) -> None:
-        self.type: Union[
-            NamedType, EnumType, BoundaryType, UnionType, None
-        ] = Type.create_type(typestring)
+        self.type: Optional[AbstractType] = Type.create_type(typestring)
 
     @classmethod
     def create_type(
         cls, docstring: ParameterAndResultDocstring
-    ) -> Union[NamedType, EnumType, BoundaryType, UnionType, None]:
+    ) -> Optional[AbstractType]:
         type_string = docstring.type
-        types: list[Union[NamedType, EnumType, BoundaryType]] = list()
+        types: list[AbstractType] = list()
 
         # Collapse whitespaces
         type_string = re.sub(r"\s+", " ", type_string)
@@ -405,7 +404,7 @@ class Type:
                 build_string += c
                 continue
 
-            if brackets == 0 and not c == ",":
+            if brackets == 0 and c != ",":
                 build_string += c
             elif brackets == 0 and c == ",":
                 # remove leading and trailing whitespaces
