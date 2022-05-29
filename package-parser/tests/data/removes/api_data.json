@@ -9,10 +9,7 @@
             "imports": [],
             "from_imports": [],
             "classes": ["test.UnusedClass", "test.UsedClass"],
-            "functions": [
-                "test.unused_global_function",
-                "test.used_global_function"
-            ]
+            "functions": ["test.unused_global_function", "test.used_global_function"]
         }
     ],
     "classes": [
@@ -38,10 +35,7 @@
             "docstring": "",
             "superclasses": [],
             "source_code": "",
-            "methods": [
-                "test.UsedClass.unused_method",
-                "test.UsedClass.used_method"
-            ]
+            "methods": ["test.UsedClass.unused_method", "test.UsedClass.used_method"]
         }
     ],
     "functions": [

@@ -17,7 +17,7 @@ class ConstantAnnotation(BaseAnnotation):
 
 
 @dataclasses.dataclass
-class UnusedAnnotation(BaseAnnotation):
+class RemoveAnnotation(BaseAnnotation):
     pass
 
 
@@ -66,16 +66,16 @@ class EnumAnnotation(BaseAnnotation):
 
 @dataclasses.dataclass
 class AnnotationStore:
-    constant: list[ConstantAnnotation]
-    unused: list[UnusedAnnotation]
+    constants: list[ConstantAnnotation]
+    removes: list[RemoveAnnotation]
     requireds: list[RequiredAnnotation]
     optionals: list[OptionalAnnotation]
     boundaries: list[BoundaryAnnotation]
     enums: list[EnumAnnotation]
 
     def __init__(self):
-        self.constant = []
-        self.unused = []
+        self.constants = []
+        self.removes = []
         self.requireds = []
         self.optionals = []
         self.boundaries = []
@@ -84,10 +84,10 @@ class AnnotationStore:
     def to_json(self) -> dict:
         return {
             "constants": {
-                annotation.target: annotation.to_json() for annotation in self.constant
+                annotation.target: annotation.to_json() for annotation in self.constants
             },
-            "unuseds": {
-                annotation.target: annotation.to_json() for annotation in self.unused
+            "removes": {
+                annotation.target: annotation.to_json() for annotation in self.removes
             },
             "requireds": {
                 annotation.target: annotation.to_json() for annotation in self.requireds

@@ -1,6 +1,6 @@
 package com.larsreimann.api_editor.transformation
 
-import com.larsreimann.api_editor.model.UnusedAnnotation
+import com.larsreimann.api_editor.model.RemoveAnnotation
 import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonModule
@@ -10,7 +10,7 @@ import io.kotest.matchers.collections.shouldHaveSize
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class UnusedAnnotationProcessorTest {
+class RemoveAnnotationProcessorTest {
     private lateinit var testMethod: PythonFunction
     private lateinit var testGlobalFunction: PythonFunction
     private lateinit var testClass: PythonClass
@@ -39,10 +39,10 @@ class UnusedAnnotationProcessorTest {
     }
 
     @Test
-    fun `should process UnusedAnnotations of classes`() {
-        testClass.annotations += UnusedAnnotation
+    fun `should process RemoveAnnotations of classes`() {
+        testClass.annotations += RemoveAnnotation
 
-        testPackage.processUnusedAnnotations()
+        testPackage.processRemoveAnnotations()
 
         val modules = testPackage.modules
         modules.shouldHaveSize(1)
@@ -51,10 +51,10 @@ class UnusedAnnotationProcessorTest {
     }
 
     @Test
-    fun `should process UnusedAnnotations of global functions`() {
-        testGlobalFunction.annotations += UnusedAnnotation
+    fun `should process RemoveAnnotations of global functions`() {
+        testGlobalFunction.annotations += RemoveAnnotation
 
-        testPackage.processUnusedAnnotations()
+        testPackage.processRemoveAnnotations()
 
         val modules = testPackage.modules
         modules.shouldHaveSize(1)
@@ -63,10 +63,10 @@ class UnusedAnnotationProcessorTest {
     }
 
     @Test
-    fun `should process UnusedAnnotations of methods`() {
-        testMethod.annotations += UnusedAnnotation
+    fun `should process RemoveAnnotations of methods`() {
+        testMethod.annotations += RemoveAnnotation
 
-        testPackage.processUnusedAnnotations()
+        testPackage.processRemoveAnnotations()
 
         val modules = testPackage.modules
         modules.shouldHaveSize(1)

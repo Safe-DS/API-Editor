@@ -87,12 +87,12 @@ function parsePositiveToken(token: string): Optional<AbstractPythonFilter> {
             return new AnnotationFilter(AnnotationType.Optional);
         case 'annotation:@pure':
             return new AnnotationFilter(AnnotationType.Pure);
+        case 'annotation:@remove':
+            return new AnnotationFilter(AnnotationType.Remove);
         case 'annotation:@rename':
             return new AnnotationFilter(AnnotationType.Rename);
         case 'annotation:@required':
             return new AnnotationFilter(AnnotationType.Required);
-        case 'annotation:@unused':
-            return new AnnotationFilter(AnnotationType.Unused);
     }
 
     // Name

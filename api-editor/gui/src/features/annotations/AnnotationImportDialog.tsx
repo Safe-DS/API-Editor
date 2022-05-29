@@ -43,7 +43,7 @@ const AnnotationImportDialog: React.FC = function () {
         renamings: {},
         requireds: {},
         showImportDialog: false,
-        unuseds: {},
+        removes: {},
     });
     const dispatch = useAppDispatch();
 
