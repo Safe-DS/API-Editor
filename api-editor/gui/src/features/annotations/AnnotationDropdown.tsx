@@ -1,12 +1,4 @@
-import {
-    Box,
-    Button,
-    Icon,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuList,
-} from '@chakra-ui/react';
+import { Box, Button, Icon, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
 import React from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import { useAppDispatch } from '../../app/hooks';
@@ -62,32 +54,15 @@ const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
         // Box gets rid of popper.js warning "CSS margin styles cannot be used"
         <Box>
             <Menu>
-                <MenuButton
-                    as={Button}
-                    size="sm"
-                    variant="outline"
-                    rightIcon={<Icon as={FaChevronDown} />}
-                >
+                <MenuButton as={Button} size="sm" variant="outline" rightIcon={<Icon as={FaChevronDown} />}>
                     Annotations
                 </MenuButton>
                 <MenuList>
                     {showAttribute && (
-                        <MenuItem
-                            onClick={() =>
-                                dispatch(showAttributeAnnotationForm(target))
-                            }
-                        >
-                            @attribute
-                        </MenuItem>
+                        <MenuItem onClick={() => dispatch(showAttributeAnnotationForm(target))}>@attribute</MenuItem>
                     )}
                     {showBoundary && (
-                        <MenuItem
-                            onClick={() =>
-                                dispatch(showBoundaryAnnotationForm(target))
-                            }
-                        >
-                            @boundary
-                        </MenuItem>
+                        <MenuItem onClick={() => dispatch(showBoundaryAnnotationForm(target))}>@boundary</MenuItem>
                     )}
                     {showCalledAfter && (
                         <MenuItem
@@ -104,23 +79,9 @@ const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                         </MenuItem>
                     )}
                     {showConstant && (
-                        <MenuItem
-                            onClick={() =>
-                                dispatch(showConstantAnnotationForm(target))
-                            }
-                        >
-                            @constant
-                        </MenuItem>
+                        <MenuItem onClick={() => dispatch(showConstantAnnotationForm(target))}>@constant</MenuItem>
                     )}
-                    {showEnum && (
-                        <MenuItem
-                            onClick={() =>
-                                dispatch(showEnumAnnotationForm(target))
-                            }
-                        >
-                            @enum
-                        </MenuItem>
-                    )}
+                    {showEnum && <MenuItem onClick={() => dispatch(showEnumAnnotationForm(target))}>@enum</MenuItem>}
                     {showGroup && (
                         <MenuItem
                             onClick={() =>
@@ -135,52 +96,16 @@ const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                             @group
                         </MenuItem>
                     )}
-                    {showMove && (
-                        <MenuItem
-                            onClick={() =>
-                                dispatch(showMoveAnnotationForm(target))
-                            }
-                        >
-                            @move
-                        </MenuItem>
-                    )}
+                    {showMove && <MenuItem onClick={() => dispatch(showMoveAnnotationForm(target))}>@move</MenuItem>}
                     {showOptional && (
-                        <MenuItem
-                            onClick={() =>
-                                dispatch(showOptionalAnnotationForm(target))
-                            }
-                        >
-                            @optional
-                        </MenuItem>
+                        <MenuItem onClick={() => dispatch(showOptionalAnnotationForm(target))}>@optional</MenuItem>
                     )}
-                    {showPure && (
-                        <MenuItem onClick={() => dispatch(addPure({ target }))}>
-                            @pure
-                        </MenuItem>
-                    )}
-                    {showRemove && (
-                        <MenuItem
-                            onClick={() => dispatch(addRemove({ target }))}
-                        >
-                            @remove
-                        </MenuItem>
-                    )}
+                    {showPure && <MenuItem onClick={() => dispatch(addPure({ target }))}>@pure</MenuItem>}
+                    {showRemove && <MenuItem onClick={() => dispatch(addRemove({ target }))}>@remove</MenuItem>}
                     {showRename && (
-                        <MenuItem
-                            onClick={() =>
-                                dispatch(showRenameAnnotationForm(target))
-                            }
-                        >
-                            @rename
-                        </MenuItem>
+                        <MenuItem onClick={() => dispatch(showRenameAnnotationForm(target))}>@rename</MenuItem>
                     )}
-                    {showRequired && (
-                        <MenuItem
-                            onClick={() => dispatch(addRequired({ target }))}
-                        >
-                            @required
-                        </MenuItem>
-                    )}
+                    {showRequired && <MenuItem onClick={() => dispatch(addRequired({ target }))}>@required</MenuItem>}
                 </MenuList>
             </Menu>
         </Box>

@@ -109,13 +109,11 @@ object RemoveAnnotation : EditorAnnotation() {
     )
 }
 
-
 @Serializable
 data class RenameAnnotation(val newName: String) : EditorAnnotation() {
     @Transient
     override val validTargets = CLASSES.union(FUNCTIONS).union(PARAMETERS)
 }
-
 
 @Serializable
 object RequiredAnnotation : EditorAnnotation() {

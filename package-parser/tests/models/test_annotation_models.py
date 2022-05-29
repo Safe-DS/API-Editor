@@ -7,8 +7,8 @@ from package_parser.models.annotation_models import (
     EnumPair,
     Interval,
     OptionalAnnotation,
-    RequiredAnnotation,
     RemoveAnnotation,
+    RequiredAnnotation,
 )
 
 

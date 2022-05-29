@@ -8,8 +8,8 @@ from package_parser.commands.generate_annotations.generate_annotations import (
     __get_constant_annotations,
     __get_enum_annotations,
     __get_optional_annotations,
-    __get_required_annotations,
     __get_remove_annotations,
+    __get_required_annotations,
     preprocess_usages,
 )
 from package_parser.commands.get_api import API

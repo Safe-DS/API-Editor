@@ -15,8 +15,8 @@ from package_parser.models.annotation_models import (
     OptionalAnnotation,
     ParameterInfo,
     ParameterType,
-    RequiredAnnotation,
     RemoveAnnotation,
+    RequiredAnnotation,
 )
 from package_parser.utils import ensure_file_exists, parent_qname
 
