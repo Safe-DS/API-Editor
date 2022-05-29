@@ -1,19 +1,18 @@
 import React from 'react';
-import { FaCogs } from 'react-icons/fa';
-import { isEmptyList } from '../../../common/util/listOperations';
+import {FaCogs} from 'react-icons/fa';
+import {isEmptyList} from '../../../common/util/listOperations';
 import PythonFunction from '../model/PythonFunction';
 import TreeNode from './TreeNode';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
-import { UsageCountStore } from '../../usages/model/UsageCountStore';
-import PythonClass from '../model/PythonClass';
-import { useAppSelector } from '../../../app/hooks';
+import {UsageCountStore} from '../../usages/model/UsageCountStore';
+import {useAppSelector} from '../../../app/hooks';
 import {
     selectCalledAfters,
     selectGroups,
     selectMove,
     selectPure,
+    selectRemove,
     selectRenaming,
-    selectUnused,
 } from '../../annotations/annotationSlice';
 
 interface FunctionNodeProps {
@@ -54,7 +53,7 @@ const getMapWithAnnotation = function (pythonFunction: PythonFunction): [number,
     specificValue += Object.entries(useAppSelector(selectCalledAfters(qname))).length !== 0 ? 1 : 0;
     specificValue += useAppSelector(selectPure(qname)) !== undefined ? 1 : 0;
     specificValue += useAppSelector(selectRenaming(qname)) !== undefined ? 1 : 0;
-    specificValue += useAppSelector(selectUnused(qname)) !== undefined ? 1 : 0;
+    specificValue += useAppSelector(selectRemove(qname)) !== undefined ? 1 : 0;
     specificValue += Object.entries(useAppSelector(selectGroups(qname))).length !== 0 ? 1 : 0;
     specificValue += useAppSelector(selectMove(qname)) !== undefined ? 1 : 0;
     return [maxValue, specificValue];

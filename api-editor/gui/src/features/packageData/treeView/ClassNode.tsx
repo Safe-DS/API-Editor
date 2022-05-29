@@ -6,7 +6,7 @@ import TreeNode from './TreeNode';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { useAppSelector } from '../../../app/hooks';
-import { selectEnum, selectMove, selectRenaming, selectUnused } from '../../annotations/annotationSlice';
+import { selectEnum, selectMove, selectRenaming, selectRemove } from '../../annotations/annotationSlice';
 
 interface ClassNodeProps {
     pythonClass: PythonClass;
@@ -43,7 +43,7 @@ const getMapWithAnnotation = function (pythonClass: PythonClass): [number, numbe
     let specificValue = 0;
     specificValue += useAppSelector(selectMove(qname)) !== undefined ? 1 : 0;
     specificValue += useAppSelector(selectRenaming(qname)) !== undefined ? 1 : 0;
-    specificValue += useAppSelector(selectUnused(qname)) !== undefined ? 1 : 0;
+    specificValue += useAppSelector(selectRemove(qname)) !== undefined ? 1 : 0;
 
     return [maxValue, specificValue];
 };
