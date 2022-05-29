@@ -47,9 +47,9 @@
                     }
                 },
                 {
-                    "name": "parameter_with_upper_bound_and_boundary",
-                    "qname": "test.some_global_function.parameter_with_upper_bound",
-                    "pname": "test/test/some_global_function/parameter_with_upper_bound",
+                    "name": "parameter_with_upper_bound_and_union",
+                    "qname": "test.some_global_function.parameter_with_upper_bound_and_union",
+                    "pname": "test/test/some_global_function/parameter_with_upper_bound_and_union",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
