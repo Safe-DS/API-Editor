@@ -1,10 +1,10 @@
 import React from 'react';
-import {FaKeyboard} from 'react-icons/fa';
+import { FaKeyboard } from 'react-icons/fa';
 import PythonParameter from '../model/PythonParameter';
 import TreeNode from './TreeNode';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
-import {UsageCountStore} from '../../usages/model/UsageCountStore';
-import {useAppSelector} from '../../../app/hooks';
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
+import { useAppSelector } from '../../../app/hooks';
 import {
     selectBoundary,
     selectConstant,
