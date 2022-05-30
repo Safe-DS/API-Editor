@@ -47,7 +47,11 @@ fun FrameWindowScope.MenuBar(settings: Settings) {
                 )
             }
             Separator()
-            CheckboxItem(labels.getString("MenuBar.View.DarkMode"), checked = false, onCheckedChange = {})
+            CheckboxItem(
+                labels.getString("MenuBar.View.DarkMode"),
+                checked = settings.darkMode,
+                onCheckedChange = { settings.darkMode = !settings.darkMode }
+            )
         }
     }
 }

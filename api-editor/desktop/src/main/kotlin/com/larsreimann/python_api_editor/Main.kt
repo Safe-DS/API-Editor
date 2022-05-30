@@ -20,6 +20,6 @@ fun main() = application {
         icon = painterResource("img/icon.svg")
     ) {
         MenuBar(settings)
-        App()
+        Content(settings)
     }
 }

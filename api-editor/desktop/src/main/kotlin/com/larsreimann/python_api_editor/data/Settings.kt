@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 
 class Settings {
     var heatmapMode by mutableStateOf(HeatmapMode.None)
+    var darkMode by mutableStateOf(false)
 }
 
 enum class HeatmapMode {
