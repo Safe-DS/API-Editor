@@ -33,15 +33,18 @@ fun FrameWindowScope.MenuBar(settings: Settings) {
                 RadioButtonItem(
                     labels.getString("MenuBar.View.Heatmap.None"),
                     selected = settings.heatmapMode == HeatmapMode.None,
-                    onClick = { settings.heatmapMode = HeatmapMode.None })
+                    onClick = { settings.heatmapMode = HeatmapMode.None }
+                )
                 RadioButtonItem(
                     labels.getString("MenuBar.View.Heatmap.Usages"),
                     selected = settings.heatmapMode == HeatmapMode.Usages,
-                    onClick = { settings.heatmapMode = HeatmapMode.Usages })
+                    onClick = { settings.heatmapMode = HeatmapMode.Usages }
+                )
                 RadioButtonItem(
                     labels.getString("MenuBar.View.Heatmap.Annotations"),
                     selected = settings.heatmapMode == HeatmapMode.Annotations,
-                    onClick = { settings.heatmapMode = HeatmapMode.Annotations })
+                    onClick = { settings.heatmapMode = HeatmapMode.Annotations }
+                )
             }
             Separator()
             CheckboxItem(labels.getString("MenuBar.View.DarkMode"), checked = false, onCheckedChange = {})
