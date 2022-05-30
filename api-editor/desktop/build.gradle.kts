@@ -35,8 +35,12 @@ compose.desktop {
 // Dependencies --------------------------------------------------------------------------------------------------------
 
 dependencies {
-    testImplementation(kotlin("test"))
     implementation(compose.desktop.currentOs)
+
+    testImplementation(kotlin("test"))
+    testImplementation("io.kotest:kotest-assertions-core-jvm:5.3.0")
+    testImplementation("io.mockk:mockk:1.12.4")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
 }
 
 // Tasks ---------------------------------------------------------------------------------------------------------------
