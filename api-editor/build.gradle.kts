@@ -5,14 +5,17 @@ plugins {
     idea
 
     // Pin versions for subprojects
-    kotlin("jvm") version "1.6.20" apply false
-    kotlin("plugin.serialization") version "1.6.20" apply false
+    kotlin("jvm") version "1.6.21" apply false
+    kotlin("plugin.serialization") version "1.6.21" apply false
     id("com.github.johnrengelman.shadow") version "7.1.2" apply false
     id("com.github.node-gradle.node") version "3.1.1" apply false
+    id("org.jetbrains.compose") version "1.2.0-alpha01-dev686" apply false
 }
 
 repositories {
     mavenCentral()
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    google()
 }
 
 idea {
@@ -34,5 +37,7 @@ subprojects {
 
     repositories {
         mavenCentral()
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        google()
     }
 }
