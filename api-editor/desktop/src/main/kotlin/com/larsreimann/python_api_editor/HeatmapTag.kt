@@ -1,4 +1,4 @@
-package com.larsreimann.api_editor
+package com.larsreimann.python_api_editor
 
 import androidx.compose.material.Badge
 import androidx.compose.material.Text
@@ -6,8 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.em
-import com.larsreimann.api_editor.util.contentColorForBackgroundColor
-import com.larsreimann.api_editor.util.interpolateColor
+import com.larsreimann.python_api_editor.utils.contentColorForBackgroundColor
+import com.larsreimann.python_api_editor.utils.interpolateColor
 import kotlin.math.log
 
 @Composable
@@ -17,7 +17,7 @@ fun HeatmapTag(
     modifier: Modifier = Modifier,
     minColor: Color = Color.Blue,
     maxColor: Color = Color.Red,
-    interpolation: HeatmapInterpolation = HeatmapInterpolation.Logarithmic,
+    interpolation: HeatmapInterpolation = HeatmapInterpolation.Linear,
 ) {
     val ratio = computeRatio(actualValue, maxValue, interpolation)
     val backgroundColor = interpolateColor(minColor, maxColor, ratio)

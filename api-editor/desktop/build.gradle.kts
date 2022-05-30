@@ -23,10 +23,10 @@ tasks.withType<KotlinCompile> {
 
 compose.desktop {
     application {
-        mainClass = "com.larsreimann.api_editor.MainKt"
+        mainClass = "com.larsreimann.python_api_editor.MainKt"
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "api-editor"
+            packageName = "python-api-editor"
             packageVersion = "1.0.0"
         }
     }
@@ -36,6 +36,7 @@ compose.desktop {
 
 dependencies {
     implementation(compose.desktop.currentOs)
+    implementation("org.jetbrains.compose.components:components-splitpane:1.1.1")
 
     testImplementation(kotlin("test"))
     testImplementation("io.kotest:kotest-assertions-core-jvm:5.3.0")
@@ -44,6 +45,10 @@ dependencies {
 }
 
 // Tasks ---------------------------------------------------------------------------------------------------------------
+
+tasks.withType<KotlinCompile>().configureEach {
+    kotlinOptions.freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
+}
 
 tasks.test {
     useJUnitPlatform()

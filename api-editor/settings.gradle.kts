@@ -1,4 +1,4 @@
-rootProject.name = "com.larsreimann.api_editor"
+rootProject.name = "com.larsreimann.python_api_editor"
 
 pluginManagement {
     repositories {

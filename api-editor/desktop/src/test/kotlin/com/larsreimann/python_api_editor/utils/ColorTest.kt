@@ -1,4 +1,4 @@
-package com.larsreimann.api_editor.util
+package com.larsreimann.python_api_editor.utils
 
 import androidx.compose.ui.graphics.Color
 import io.kotest.matchers.booleans.shouldBeFalse
