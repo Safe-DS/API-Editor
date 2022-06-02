@@ -3,7 +3,7 @@ import os
 from typing import Callable
 
 import pytest
-from package_parser.commands.generate_annotations.generate_annotations import (
+from package_parser.commands.annotations._generate_annotations import (
     __get_boundary_annotations,
     __get_constant_annotations,
     __get_enum_annotations,

@@ -1,6 +1,4 @@
-import json
 import re
-from pathlib import Path
 from typing import Callable
 
 from package_parser.model.annotations import (
@@ -18,28 +16,12 @@ from package_parser.model.annotations import (
 )
 from package_parser.model.api import API
 from package_parser.model.usages import UsageCountStore
-from package_parser.utils import ensure_file_exists, parent_qname
+from package_parser.utils import parent_qname
 
 
 def generate_annotations(
-    api_file_path: Path, usages_file_path: Path, output_file_path: Path
-) -> None:
-    """
-    Generates an annotation file from the given API and UsageStore files, and writes it to the given output file.
-    Annotations that are generated are: remove, constant, required, optional, enum and boundary.
-    :param api_file_path: API file Path
-    :param usages_file_path: UsageStore file Path
-    :param output_file_path: Output file Path
-    """
-
-    with open(api_file_path) as api_file:
-        api_json = json.load(api_file)
-        api = API.from_json(api_json)
-
-    with open(usages_file_path) as usages_file:
-        usages_json = json.load(usages_file)
-        usages = UsageCountStore.from_json(usages_json)
-
+    api: API, usages: UsageCountStore
+) -> AnnotationStore:
     annotations = AnnotationStore()
     annotation_functions = [
         __get_remove_annotations,
@@ -52,9 +34,7 @@ def generate_annotations(
 
     __generate_annotation_dict(api, usages, annotations, annotation_functions)
 
-    ensure_file_exists(output_file_path)
-    with output_file_path.open("w") as f:
-        json.dump(annotations.to_json(), f, indent=2)
+    return annotations
 
 
 def __generate_annotation_dict(
@@ -181,7 +161,7 @@ def __get_required_annotations(
         (it, parameters[it])
         for it in parameters
         if parameters[it].default_value is not None
-        and parameters[it].qname in usages.parameter_usages
+           and parameters[it].qname in usages.parameter_usages
     ]
     for qname, parameter in optional_parameters:
         if __get_parameter_info(qname, usages).type is ParameterType.Required:

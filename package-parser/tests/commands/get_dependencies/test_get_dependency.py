@@ -1,5 +1,5 @@
 import spacy
-from package_parser.commands.get_dependencies import (
+from package_parser.commands.dependencies import (
     DependencyExtractor,
     extract_action,
     extract_condition,
