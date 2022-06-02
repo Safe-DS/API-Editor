@@ -10,7 +10,6 @@ from .commands.find_usages import find_usages
 from .commands.generate_annotations.generate_annotations import generate_annotations
 from .commands.get_api import distribution, distribution_version, get_api
 from .commands.get_dependencies import get_dependencies
-from .commands.suggest_improvements import suggest_improvements
 from .utils import ensure_file_exists
 
 API_INDEX = "api"
@@ -37,9 +36,6 @@ def cli() -> None:
 
     elif args.command == __USAGES_COMMAND:
         __run_usages_command(args.package, args.client, args.tmp, args.out)
-
-    elif args.command == __IMPROVE_COMMAND:
-        suggest_improvements(args.api, args.usages, args.out, args.min)
 
     elif args.command == __ANNOTATIONS_COMMAND:
         generate_annotations(args.api, args.usages, args.out)
@@ -140,7 +136,7 @@ def __add_api_subparser(subparsers: _SubParsersAction) -> None:
         "-s",
         "--src",
         help="Directory containing the Python code of the package. If this is omitted, we try to locate the package "
-        "with the given name in the current Python interpreter.",
+             "with the given name in the current Python interpreter.",
         type=Path,
         required=False,
         default=None,
@@ -177,37 +173,6 @@ def __add_usages_subparser(subparsers: _SubParsersAction) -> None:
     )
     usages_parser.add_argument(
         "-o", "--out", help="Output directory.", type=Path, required=True
-    )
-
-
-def __add_improve_subparser(subparsers: _SubParsersAction) -> None:
-    improve_parser = subparsers.add_parser(
-        __IMPROVE_COMMAND, help="Suggest how to improve an existing API."
-    )
-    improve_parser.add_argument(
-        "-a",
-        "--api",
-        help="File created by the 'api' command.",
-        type=argparse.FileType("r"),
-        required=True,
-    )
-    improve_parser.add_argument(
-        "-u",
-        "--usages",
-        help="File created by the 'usages' command.",
-        type=argparse.FileType("r"),
-        required=True,
-    )
-    improve_parser.add_argument(
-        "-o", "--out", help="Output directory.", type=Path, required=True
-    )
-    improve_parser.add_argument(
-        "-m",
-        "--min",
-        help="Minimum number of usages required to keep an API element.",
-        type=int,
-        required=False,
-        default=1,
     )
 
 
@@ -250,7 +215,7 @@ def __add_all_subparser(subparsers: _SubParsersAction) -> None:
         "-s",
         "--src",
         help="Directory containing the Python code of the package. If this is omitted, we try to locate the package "
-        "with the given name in the current Python interpreter.",
+             "with the given name in the current Python interpreter.",
         type=Path,
         required=False,
         default=None,

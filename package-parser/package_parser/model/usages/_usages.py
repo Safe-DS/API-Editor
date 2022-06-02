@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import Any, Optional
+from collections import Counter
+from typing import Any
 
 ClassQName = str
 FunctionQName = str
@@ -8,57 +9,66 @@ ParameterQName = str
 StringifiedValue = str
 
 
-class UsageStore:
+class UsageCountStore:
+    """Counts how often classes, functions, parameters, and parameter values are used."""
+
     @staticmethod
-    def from_json(json: Any) -> UsageStore:
-        result = UsageStore()
+    def from_json(json: Any) -> UsageCountStore:
+        """Creates an instance of this class from a dictionary."""
 
-        # Revive class usages
-        class_usages = json["class_usages"]
-        for qname, locations in class_usages.items():
-            for location in locations:
-                result.add_class_usage(qname, Location.from_json(location))
+        result = UsageCountStore()
 
-        # Revive function usages
-        function_usages = json["function_usages"]
-        for qname, locations in function_usages.items():
-            for location in locations:
-                result.add_function_usage(qname, Location.from_json(location))
+        # Revive class counts
+        class_counts = json["class_counts"]
+        for class_qname, count in class_counts.items():
+            result.add_class_usages(class_qname, count)
 
-        # Revive parameter usages
-        parameter_usages = json["parameter_usages"]
-        for qname, locations in parameter_usages.items():
-            for location in locations:
-                result.add_parameter_usage(qname, Location.from_json(location))
+        # Revive function counts
+        function_counts = json["function_counts"]
+        for function_qname, count in function_counts.items():
+            result.add_function_usages(function_qname, count)
 
-        # Revive value usages
-        value_usages = json["value_usages"]
-        for parameter_qname, values in value_usages.items():
-            for value, locations in values.items():
-                for location in locations:
-                    result.add_value_usage(
-                        parameter_qname, value, Location.from_json(location)
-                    )
+        # Revive parameter counts
+        parameter_counts = json["parameter_counts"]
+        for parameter_qname, count in parameter_counts.items():
+            result.add_parameter_usages(parameter_qname, count)
+
+        # Revive value counts
+        value_counts = json["value_counts"]
+        for parameter_qname, values in value_counts.items():
+            for value, count in values.items():
+                result.add_value_usages(parameter_qname, value, count)
 
         return result
 
     def __init__(self) -> None:
-        self.class_usages: dict[ClassQName, list[ClassUsage]] = {}
-        self.function_usages: dict[FunctionQName, list[FunctionUsage]] = {}
-        self.parameter_usages: dict[ParameterQName, list[ParameterUsage]] = {}
-        self.value_usages: dict[
-            ParameterQName, dict[StringifiedValue, list[ValueUsage]]
-        ] = {}
+        self.class_usages: Counter[ClassQName] = Counter()
+        self.function_usages: Counter[FunctionQName] = Counter()
+        self.parameter_usages: Counter[ParameterQName] = Counter()
+        self.value_usages: dict[ParameterQName, Counter[StringifiedValue]] = {}
 
-    def add_class_usage(self, qname: ClassQName, location: Location) -> None:
-        self.init_class(qname)
-        self.class_usages[qname].append(ClassUsage(qname, location))
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, UsageCountStore):
+            return (
+                self.class_usages == other.class_usages
+                and self.function_usages == other.function_usages
+                and self.parameter_usages == other.parameter_usages
+                and self.value_usages == other.value_usages
+            )
 
-    def init_class(self, qname: ClassQName) -> None:
-        if qname not in self.class_usages:
-            self.class_usages[qname] = []
+        return False
+
+    def __hash__(self) -> int:
+        return hash(tuple(sorted(self.__dict__.items())))
+
+    def add_class_usages(self, class_qname: ClassQName, count: int = 1) -> None:
+        """Increases the usage count of the class with the given name by the given count."""
+
+        self.class_usages[class_qname] += count
 
     def remove_class(self, class_qname: ClassQName) -> None:
+        """Removes all usages of classes with the given name and usages of their methods."""
+
         if class_qname in self.class_usages:
             del self.class_usages[class_qname]
 
@@ -66,15 +76,16 @@ class UsageStore:
             if function_qname.startswith(class_qname):
                 self.remove_function(function_qname)
 
-    def add_function_usage(self, qname: FunctionQName, location: Location) -> None:
-        self.init_function(qname)
-        self.function_usages[qname].append(FunctionUsage(qname, location))
+    def add_function_usages(
+        self, function_qname: FunctionQName, count: int = 1
+    ) -> None:
+        """Increases the usage count of the function with the given name by the given count."""
 
-    def init_function(self, qname: FunctionQName) -> None:
-        if qname not in self.function_usages:
-            self.function_usages[qname] = []
+        self.function_usages[function_qname] += count
 
     def remove_function(self, function_qname: FunctionQName) -> None:
+        """Removes all usages of functions with the given name and usages of their parameters."""
+
         if function_qname in self.function_usages:
             del self.function_usages[function_qname]
 
@@ -82,82 +93,60 @@ class UsageStore:
             if parameter_qname.startswith(function_qname):
                 self.remove_parameter(parameter_qname)
 
-    def add_parameter_usage(self, qname: ParameterQName, location: Location) -> None:
-        self.init_parameter(qname)
-        self.parameter_usages[qname].append(ParameterUsage(qname, location))
-
-    def init_parameter(self, qname: ParameterQName) -> None:
-        if qname not in self.parameter_usages:
-            self.parameter_usages[qname] = []
-
-    def remove_parameter(self, qname: ParameterQName) -> None:
-        if qname in self.parameter_usages:
-            del self.parameter_usages[qname]
-
-        self.remove_value(qname)
-
-    def add_value_usage(
-        self,
-        parameter_qname: ParameterQName,
-        value: StringifiedValue,
-        location: Location,
+    def add_parameter_usages(
+        self, parameter_qname: ParameterQName, count: int = 1
     ) -> None:
+        """Increases the usage count of the parameter with the given name by the given count."""
+
+        self.parameter_usages[parameter_qname] += count
+
+    def remove_parameter(self, parameter_qname: ParameterQName) -> None:
+        """Removes all parameter and value usages of parameters with the given name."""
+
+        if parameter_qname in self.parameter_usages:
+            del self.parameter_usages[parameter_qname]
+
+        if parameter_qname in self.value_usages:
+            del self.value_usages[parameter_qname]
+
+    def add_value_usages(
+        self, parameter_qname: ParameterQName, value: StringifiedValue, count: int = 1
+    ) -> None:
+        """Increases the usage count of the given value for the parameter with the given name by the given count."""
+
         self.init_value(parameter_qname)
-
-        if value not in self.value_usages[parameter_qname]:
-            self.value_usages[parameter_qname][value] = []
-
-        self.value_usages[parameter_qname][value].append(
-            ValueUsage(parameter_qname, value, location)
-        )
+        self.value_usages[parameter_qname][value] += count
 
     def init_value(self, parameter_qname: ParameterQName) -> None:
+        """Ensures the dictionary for the value counts has the given parameter name as a key."""
+
         if parameter_qname not in self.value_usages:
-            self.value_usages[parameter_qname] = {}
+            self.value_usages[parameter_qname] = Counter()
 
-    def remove_value(self, qname: ParameterQName) -> None:
-        if qname in self.value_usages:
-            del self.value_usages[qname]
+    def n_class_usages(self, class_qname: ClassQName) -> int:
+        """Returns how often the class is used, i.e. how often any of its methods are called."""
 
-    def n_class_usages(self, qname: ClassQName) -> int:
-        if qname in self.class_usages:
-            return len(self.class_usages[qname])
+        return self.class_usages[class_qname]
 
-        return 0
+    def n_function_usages(self, function_qname: FunctionQName) -> int:
+        """Returns how often the function is called."""
 
-    def n_function_usages(self, qname: FunctionQName) -> int:
-        if qname in self.function_usages:
-            return len(self.function_usages[qname])
+        return self.function_usages[function_qname]
 
-        return 0
+    def n_parameter_usages(self, parameter_qname: ParameterQName) -> int:
+        """Returns how often the parameter is set."""
 
-    def n_parameter_usages(self, qname: ParameterQName) -> int:
-        if qname in self.parameter_usages:
-            return len(self.parameter_usages[qname])
+        return self.parameter_usages[parameter_qname]
 
-        return 0
+    def n_value_usages(self, parameter_qname: ParameterQName, value: str) -> int:
+        """Returns how often the parameter with the given name is set to the given value."""
 
-    def n_value_usages(self, qname: ParameterQName, value: str) -> int:
-        if qname in self.value_usages and value in self.value_usages[qname]:
-            return len(self.value_usages[qname][value])
+        if parameter_qname in self.value_usages:
+            return self.value_usages[parameter_qname][value]
 
         return 0
 
-    def most_common_value(self, qname: ParameterQName) -> Optional[str]:
-        if qname not in self.value_usages:
-            return None
-
-        result = None
-        count = 0
-
-        for value, usages in self.value_usages[qname].items():
-            if len(usages) > count:
-                result = value
-                count = len(usages)
-
-        return result
-
-    def merge_other_into_self(self, other_usage_store: UsageStore) -> UsageStore:
+    def merge_other_into_self(self, other_usage_store: UsageCountStore) -> UsageCountStore:
         """
         Merges the other usage store into this one **in-place** and returns this store.
 
@@ -166,176 +155,41 @@ class UsageStore:
         """
 
         # Merge class usages
-        for class_usages in other_usage_store.class_usages.values():
-            for class_usage in class_usages:
-                self.add_class_usage(class_usage.qname, class_usage.location)
+        self.class_usages += other_usage_store.class_usages
 
         # Merge function usages
-        for function_usages in other_usage_store.function_usages.values():
-            for function_usage in function_usages:
-                self.add_function_usage(function_usage.qname, function_usage.location)
+        self.function_usages += other_usage_store.function_usages
 
         # Merge parameter usages
-        for parameter_usages in other_usage_store.parameter_usages.values():
-            for parameter_usage in parameter_usages:
-                self.add_parameter_usage(
-                    parameter_usage.qname, parameter_usage.location
-                )
+        self.parameter_usages += other_usage_store.parameter_usages
 
         # Merge value usages
-        for value_usages in other_usage_store.value_usages.values():
-            for value_usages_of_parameter in value_usages.values():
-                for value_usage_of_parameter in value_usages_of_parameter:
-                    self.add_value_usage(
-                        value_usage_of_parameter.parameter_qname,
-                        value_usage_of_parameter.value,
-                        value_usage_of_parameter.location,
-                    )
+        for parameter_qname, value_usages in other_usage_store.value_usages.items():
+            self.init_value(parameter_qname)
+            self.value_usages[parameter_qname] += value_usages
 
         return self
 
     def to_json(self) -> Any:
-        return {
-            "class_usages": {
-                qname: [usage.location.to_json() for usage in usages]
-                for qname, usages in self.class_usages.items()
-            },
-            "function_usages": {
-                qname: [usage.location.to_json() for usage in usages]
-                for qname, usages in self.function_usages.items()
-            },
-            "parameter_usages": {
-                qname: [usage.location.to_json() for usage in usages]
-                for qname, usages in self.parameter_usages.items()
-            },
-            "value_usages": {
-                parameter_qname: {
-                    value: [usage.location.to_json() for usage in usages]
-                    for value, usages in values.items()
-                }
-                for parameter_qname, values in self.value_usages.items()
-            },
-        }
+        """Converts this class to a dictionary, which can later be serialized as JSON."""
 
-    def to_count_json(self) -> Any:
         return {
             "class_counts": {
-                qname: len(usages)
-                for qname, usages in sorted(
-                    self.class_usages.items(),
-                    key=lambda item: len(item[1]),
-                    reverse=True,
-                )
+                class_qname: usage_count
+                for class_qname, usage_count in self.class_usages.most_common()
             },
             "function_counts": {
-                qname: len(usages)
-                for qname, usages in sorted(
-                    self.function_usages.items(),
-                    key=lambda item: len(item[1]),
-                    reverse=True,
-                )
+                function_qname: usage_count
+                for function_qname, usage_count in self.function_usages.most_common()
             },
             "parameter_counts": {
-                qname: len(usages)
-                for qname, usages in sorted(
-                    self.parameter_usages.items(),
-                    key=lambda item: len(item[1]),
-                    reverse=True,
-                )
+                parameter_qname: usage_count
+                for parameter_qname, usage_count in self.parameter_usages.most_common()
             },
             "value_counts": {
                 parameter_qname: {
-                    value: len(usages)
-                    for value, usages in sorted(
-                        values.items(), key=lambda item: len(item[1]), reverse=True
-                    )
+                    value: usage_count for value, usage_count in values.most_common()
                 }
                 for parameter_qname, values in self.value_usages.items()
             },
         }
-
-
-class Usage:
-    pass
-
-
-class ClassUsage(Usage):
-    def __init__(self, qname: ClassQName, location: Location) -> None:
-        self.qname: ClassQName = qname
-        self.location: Location = location
-
-    def to_json(self) -> Any:
-        return {"qname": self.qname, "location": self.location.to_json()}
-
-
-class FunctionUsage(Usage):
-    def __init__(self, qname: FunctionQName, location: Location) -> None:
-        self.qname: FunctionQName = qname
-        self.location: Location = location
-
-    def to_json(self) -> Any:
-        return {"qname": self.qname, "location": self.location.to_json()}
-
-
-class ParameterUsage(Usage):
-    def __init__(self, qname: ParameterQName, location: Location) -> None:
-        self.qname: ParameterQName = qname
-        self.location: Location = location
-
-    def to_json(self) -> Any:
-        return {"qname": self.qname, "location": self.location.to_json()}
-
-
-class ValueUsage(Usage):
-    def __init__(
-        self,
-        parameter_qname: ParameterQName,
-        value: StringifiedValue,
-        location: Location,
-    ) -> None:
-        self.parameter_qname: ParameterQName = parameter_qname
-        self.value: StringifiedValue = value
-        self.location: Location = location
-
-    def to_json(self) -> Any:
-        return {
-            "parameter_qname": self.parameter_qname,
-            "value": self.value,
-            "location": self.location.to_json(),
-        }
-
-
-FileName = str
-LineNumber = int
-ColumnNumber = int
-
-
-class Location:
-    @staticmethod
-    def from_json(json: Any) -> Location:
-        return Location(json["file"], json["line"], json["column"])
-
-    def __init__(
-        self, file: FileName, line: Optional[LineNumber], column: Optional[ColumnNumber]
-    ) -> None:
-        self.file: FileName = file
-        self.line: Optional[LineNumber] = line
-        self.column: Optional[ColumnNumber] = column
-
-    def __repr__(self) -> str:
-        return f"{self.file}@{self.line}:{self.column}"
-
-    def __eq__(self, other: object) -> bool:
-        if not isinstance(other, type(self)):
-            return NotImplemented
-        return (
-            self.file == other.file
-            and self.line == other.line
-            and self.column == other.column
-        )
-
-    def __hash__(self) -> int:
-        return hash((self.file, self.line, self.column))
-
-    def to_json(self) -> Any:
-        return {"file": self.file, "line": self.line, "column": self.column}

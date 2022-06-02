@@ -49,20 +49,6 @@ optional arguments:
   -o OUT, --out OUT     Output directory.
 ```
 
-### improve command
-
-```text
-usage: parse-package improve [-h] -a API -u USAGES -o OUT [-m MIN]
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -a API, --api API     File created by the 'api' command.
-  -u USAGES, --usages USAGES
-                        File created by the 'usages' command.
-  -o OUT, --out OUT     Output directory.
-  -m MIN, --min MIN     Minimum number of usages required to keep an API element.
-```
-
 ### annotations command
 
 ```text
@@ -112,5 +98,5 @@ optional arguments:
     parse-package usages -p sklearn -s "Kaggle Kernels" -t tmp -o out
 
     # Step 3:
-    parse-package improve -a "out/scikit-learn__sklearn__1.0__api.json" -u "out/scikit-learn__sklearn__1.0__usages.json" -o out
+    parse-package annotations -a "out/scikit-learn__sklearn__1.0__api.json" -u "out/scikit-learn__sklearn__1.0__usages.json" -o out/annotations.json
     ```
