@@ -259,7 +259,7 @@ call_annotation_getter --> dump_annotation_store
 
 ### `AnnotationStore`
 
-Can be found [here](tests/model/test_annotation_models.py).
+Can be found [here](tests/model/test_annotations.py).
 
 For the `AnnotationStore` and all associated classes there are automatic tests that ensure that the `to_json()` methods work properly. For this purpose, a test configuration of the individual classes is created, and their output is then compared against the expected value.
 

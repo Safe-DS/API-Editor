@@ -79,14 +79,8 @@ def __run_usages_command(
 ) -> None:
     usages = find_usages(package, client, tmp)
     dist = distribution(package)
-    out_file_usage = out.joinpath(
-        f"{dist}__{package}__{distribution_version(dist)}__usages.json"
-    )
-    ensure_file_exists(out_file_usage)
-    with out_file_usage.open("w") as f:
-        json.dump(usages.to_json(), f, indent=2)
-    # Create a second file with counted usages
-    counted_usages = usages.to_count_json()
+
+    counted_usages = usages.to_json()
     out_file_usage_count = out.joinpath(
         f"{dist}__{package}__{distribution_version(dist)}__usages_counted.json"
     )
