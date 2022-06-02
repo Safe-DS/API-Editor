@@ -20,7 +20,7 @@ end
 
 ```
 
-Can be found [here](package_parser/commands/generate_annotations/generate_annotations.py).
+Can be found [here](package_parser/processing/annotations/_generate_annotations.py).
 
 
 

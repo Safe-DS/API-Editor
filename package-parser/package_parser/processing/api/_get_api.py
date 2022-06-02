@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 from typing import Optional
 
@@ -28,10 +29,10 @@ def get_api(package_name: str, root: Optional[Path] = None) -> API:
 
     for file in files:
         posix_path = Path(file).as_posix()
-        print(f"Working on file {posix_path}")
+        logging.info(f"Working on file {posix_path}")
 
         if _is_test_file(posix_path):
-            print("Skipping test file")
+            logging.info("Skipping test file")
             continue
 
         with open(file, "r", encoding="utf-8") as f:

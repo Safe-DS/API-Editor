@@ -1,6 +1,4 @@
-import json
 import re
-from pathlib import Path
 from typing import Callable
 
 from package_parser.model.annotations import (
@@ -18,28 +16,12 @@ from package_parser.model.annotations import (
 )
 from package_parser.model.api import API
 from package_parser.model.usages import UsageCountStore
-from package_parser.utils import ensure_file_exists, parent_qname
+from package_parser.processing.annotations._usages_preprocessor import (
+    _preprocess_usages,
+)
 
 
-def generate_annotations(
-    api_file_path: Path, usages_file_path: Path, output_file_path: Path
-) -> None:
-    """
-    Generates an annotation file from the given API and UsageStore files, and writes it to the given output file.
-    Annotations that are generated are: remove, constant, required, optional, enum and boundary.
-    :param api_file_path: API file Path
-    :param usages_file_path: UsageStore file Path
-    :param output_file_path: Output file Path
-    """
-
-    with open(api_file_path) as api_file:
-        api_json = json.load(api_file)
-        api = API.from_json(api_json)
-
-    with open(usages_file_path) as usages_file:
-        usages_json = json.load(usages_file)
-        usages = UsageCountStore.from_json(usages_json)
-
+def generate_annotations(api: API, usages: UsageCountStore) -> AnnotationStore:
     annotations = AnnotationStore()
     annotation_functions = [
         __get_remove_annotations,
@@ -52,9 +34,7 @@ def generate_annotations(
 
     __generate_annotation_dict(api, usages, annotations, annotation_functions)
 
-    ensure_file_exists(output_file_path)
-    with output_file_path.open("w") as f:
-        json.dump(annotations.to_json(), f, indent=2)
+    return annotations
 
 
 def __generate_annotation_dict(
@@ -63,7 +43,7 @@ def __generate_annotation_dict(
     annotations: AnnotationStore,
     functions: list[Callable],
 ):
-    preprocess_usages(usages, api)
+    _preprocess_usages(usages, api)
 
     for generate_annotation in functions:
         generate_annotation(usages, api, annotations)
@@ -199,98 +179,6 @@ def __get_default_type_from_value(default_value: str) -> str:
         default_type = "string"
 
     return default_type
-
-
-def preprocess_usages(usages: UsageCountStore, api: API) -> None:
-    __remove_internal_usages(usages, api)
-    __add_unused_api_elements(usages, api)
-    __add_implicit_usages_of_default_value(usages, api)
-
-
-def __remove_internal_usages(usages: UsageCountStore, api: API) -> None:
-    """
-    Removes usages of internal parts of the API. It might incorrectly remove some calls to methods that are inherited
-    from internal classes into a public class but these are just fit/predict/etc., i.e. something we want to keep
-    unchanged anyway.
-
-    :param usages: Usage store
-    :param api: Description of the API
-    """
-
-    # Internal classes
-    for class_qname in list(usages.class_usages.keys()):
-        if not api.is_public_class(class_qname):
-            print(f"Removing usages of internal class {class_qname}")
-            usages.remove_class(class_qname)
-
-    # Internal functions
-    for function_qname in list(usages.function_usages.keys()):
-        if not api.is_public_function(function_qname):
-            print(f"Removing usages of internal function {function_qname}")
-            usages.remove_function(function_qname)
-
-    # Internal parameters
-    parameter_qnames = set(api.parameters().keys())
-
-    for parameter_qname in list(usages.parameter_usages.keys()):
-        function_qname = parent_qname(parameter_qname)
-        if parameter_qname not in parameter_qnames or not api.is_public_function(
-            function_qname
-        ):
-            print(f"Removing usages of internal parameter {parameter_qname}")
-            usages.remove_parameter(parameter_qname)
-
-
-def __add_unused_api_elements(usages: UsageCountStore, api: API) -> None:
-    """
-    Adds unused API elements to the UsageStore. When a class, function or parameter is not used, it is not content of
-    the UsageStore, so we need to add it.
-
-    :param usages: Usage store
-    :param api: Description of the API
-    """
-
-    # Public classes
-    for class_qname in api.classes:
-        if api.is_public_class(class_qname):
-            usages.add_class_usages(class_qname, 0)
-
-    # Public functions
-    for function in api.functions.values():
-        if api.is_public_function(function.qname):
-            usages.add_function_usages(function.qname, 0)
-
-            # "Public" parameters
-            for parameter in function.parameters:
-                usages.init_value(parameter.qname)
-                usages.add_parameter_usages(parameter.qname, 0)
-
-
-def __add_implicit_usages_of_default_value(usages: UsageCountStore, api: API) -> None:
-    """
-    Adds the implicit usages of a parameters default value. When a function is called and a parameter is used with its
-    default value, that usage of a value is not part of the UsageStore, so  we need to add it.
-
-    :param usages: Usage store
-    :param api: Description of the API
-    """
-
-    for parameter_qname, parameter_usage_count in list(usages.parameter_usages.items()):
-        default_value = api.get_default_value(parameter_qname)
-        if default_value is None:
-            continue
-
-        function_qname = parent_qname(parameter_qname)
-        function_usage_count = usages.n_function_usages(function_qname)
-
-        n_locations_of_implicit_usages_of_default_value = (
-            function_usage_count - parameter_usage_count
-        )
-        usages.add_value_usages(
-            parameter_qname,
-            default_value,
-            n_locations_of_implicit_usages_of_default_value,
-        )
 
 
 def __get_optional_annotations(

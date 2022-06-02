@@ -3,7 +3,7 @@ from typing import Optional, Union
 
 import astroid
 from numpydoc.docscrape import NumpyDocString
-from package_parser.model.api._api import (
+from package_parser.model.api import (
     API,
     Class,
     FromImport,

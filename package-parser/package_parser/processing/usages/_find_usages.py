@@ -1,4 +1,5 @@
 import json
+import logging
 import multiprocessing
 from multiprocessing import synchronize
 from pathlib import Path
@@ -54,7 +55,7 @@ def __find_usages_in_single_file(
     exclude_file: Path,
     tmp_dir: Path,
 ):
-    print(f"Working on {python_file}")
+    logging.info(f"Working on {python_file}")
 
     try:
         with open(python_file, "r") as f:
@@ -72,14 +73,14 @@ def __find_usages_in_single_file(
             with tmp_file.open("w") as f:
                 json.dump(usage_finder.usages.to_json(), f, indent=2)
         else:
-            print(f"Skipping {python_file} (irrelevant file)")
+            logging.info(f"Skipping {python_file} (irrelevant file)")
 
     except UnicodeError:
-        print(f"Skipping {python_file} (broken encoding)")
+        logging.warning(f"Skipping {python_file} (broken encoding)")
     except astroid.exceptions.AstroidSyntaxError:
-        print(f"Skipping {python_file} (invalid syntax)")
+        logging.warning(f"Skipping {python_file} (invalid syntax)")
     except RecursionError:
-        print(f"Skipping {python_file} (infinite recursion)")
+        logging.warning(f"Skipping {python_file} (infinite recursion)")
 
     with _lock:
         with exclude_file.open("a") as f:
@@ -93,9 +94,9 @@ def __is_relevant_python_file(package_name: str, source_code: str) -> bool:
 def _merge_results(tmp_dir: Path) -> UsageCountStore:
     result = UsageCountStore()
 
-    files = list_files(tmp_dir, ".json")
+    files = list_files(tmp_dir, extension=".json")
     for index, file in enumerate(files):
-        print(f"Merging {file} ({index + 1}/{len(files)})")
+        logging.info(f"Merging {file} ({index + 1}/{len(files)})")
 
         with open(file, "r") as f:
             other_usage_store = UsageCountStore.from_json(json.load(f))

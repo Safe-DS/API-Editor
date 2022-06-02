@@ -1,6 +1,6 @@
 import time
 
-from .cli import cli
+from package_parser.cli import cli
 
 
 def main() -> None:
@@ -8,7 +8,5 @@ def main() -> None:
 
     cli()
 
-    print(
-        "\n================================================================================"
-    )
+    print("\n============================================================")
     print(f"Program ran in {time.time() - start_time}s")
