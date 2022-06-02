@@ -8,7 +8,7 @@ from package_parser.cli._shared_constants import _API_KEY, _USAGES_KEY
 from package_parser.cli._run_annotations import _run_annotations
 
 
-def run_all_command(args):
+def _run_all_command(args):
     out = args.out
     tmp = args.out.joinpath("tmp")
     out_file_annotations = args.out.joinpath("annotations.json")

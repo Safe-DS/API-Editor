@@ -1,16 +1,11 @@
 import argparse
-import json
 from argparse import _SubParsersAction
 from pathlib import Path
-from typing import Any, Optional
 
-from package_parser.cli._run_annotations import run_all_command, _run_annotations
+from package_parser.cli._run_all import _run_all_command
+from package_parser.cli._run_annotations import _run_annotations
 from package_parser.cli._run_api import _run_api_command
 from package_parser.cli._run_usages import _run_usages_command
-from package_parser.processing.usages import find_usages
-from package_parser.processing.api import distribution, distribution_version, get_api
-from package_parser.processing.dependencies import get_dependencies
-from package_parser.utils import ensure_file_exists
 
 _API_COMMAND = "api"
 _USAGES_COMMAND = "usages"
@@ -27,7 +22,7 @@ def cli() -> None:
     elif args.command == _ANNOTATIONS_COMMAND:
         _run_annotations(args.api, args.usages, args.out)
     elif args.command == _ALL_COMMAND:
-        run_all_command(args)
+        _run_all_command(args)
 
 
 def _get_args() -> argparse.Namespace:
