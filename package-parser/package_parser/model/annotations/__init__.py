@@ -1,14 +1,14 @@
 from ._annotations import (
-    AnnotationStore,
     AbstractAnnotation,
-    ConstantAnnotation,
-    RemoveAnnotation,
-    RequiredAnnotation,
-    OptionalAnnotation,
+    AnnotationStore,
     BoundaryAnnotation,
+    ConstantAnnotation,
+    EnumAnnotation,
     EnumPair,
     Interval,
-    EnumAnnotation,
+    OptionalAnnotation,
+    ParameterInfo,
     ParameterType,
-    ParameterInfo
+    RemoveAnnotation,
+    RequiredAnnotation,
 )

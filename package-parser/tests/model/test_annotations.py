@@ -1,6 +1,6 @@
 from package_parser.model.annotations import (
-    AnnotationStore,
     AbstractAnnotation,
+    AnnotationStore,
     BoundaryAnnotation,
     ConstantAnnotation,
     EnumAnnotation,

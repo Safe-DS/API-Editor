@@ -3,9 +3,6 @@ from typing import Optional, Union
 
 import astroid
 from numpydoc.docscrape import NumpyDocString
-from package_parser.utils import parent_qname
-
-from ._file_filters import _is_init_file
 from package_parser.model.api._api import (
     API,
     Class,
@@ -17,6 +14,9 @@ from package_parser.model.api._api import (
     ParameterAndResultDocstring,
     ParameterAssignment,
 )
+from package_parser.utils import parent_qname
+
+from ._file_filters import _is_init_file
 
 
 class _AstVisitor:

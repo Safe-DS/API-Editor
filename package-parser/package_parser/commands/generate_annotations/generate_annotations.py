@@ -3,8 +3,6 @@ import re
 from pathlib import Path
 from typing import Callable
 
-from package_parser.model.api import API
-from package_parser.model.usages import UsageCountStore
 from package_parser.model.annotations import (
     AnnotationStore,
     BoundaryAnnotation,
@@ -18,6 +16,8 @@ from package_parser.model.annotations import (
     RemoveAnnotation,
     RequiredAnnotation,
 )
+from package_parser.model.api import API
+from package_parser.model.usages import UsageCountStore
 from package_parser.utils import ensure_file_exists, parent_qname
 
 
@@ -181,7 +181,7 @@ def __get_required_annotations(
         (it, parameters[it])
         for it in parameters
         if parameters[it].default_value is not None
-           and parameters[it].qname in usages.parameter_usages
+        and parameters[it].qname in usages.parameter_usages
     ]
     for qname, parameter in optional_parameters:
         if __get_parameter_info(qname, usages).type is ParameterType.Required:

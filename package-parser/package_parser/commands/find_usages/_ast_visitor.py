@@ -3,7 +3,6 @@ from typing import Optional
 import astroid
 from astroid.arguments import CallSite
 from astroid.helpers import safe_infer
-
 from package_parser.model.usages import UsageCountStore
 
 
@@ -31,9 +30,7 @@ class _UsageFinder:
             or isinstance(called, astroid.FunctionDef)
             and called.is_method()
         ):
-            self.usages.add_class_usages(
-                ".".join(function_qname.split(".")[:-1])
-            )
+            self.usages.add_class_usages(".".join(function_qname.split(".")[:-1]))
 
         # Add function usage
         self.usages.add_function_usages(function_qname)

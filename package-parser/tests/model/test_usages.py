@@ -279,28 +279,26 @@ def test_n_value_usages_for_existing_parameter_and_value(usage_counts: UsageCoun
 
 
 def test_merge_other_into_self(usage_counts: UsageCountStore):
-    other = UsageCountStore.from_json({
-        "class_counts": {
-            "TestClass": 2,
-            "TestClass2": 1,
-        },
-        "function_counts": {
-            "TestClass.test_function": 2,
-            "TestClass2.test_function_2": 1,
-        },
-        "parameter_counts": {
-            "TestClass.test_function.test_parameter": 2,
-            "TestClass2.test_function_2.test_parameter_2": 1,
-        },
-        "value_counts": {
-            "TestClass.test_function.test_parameter": {
-                "'test'": 2
+    other = UsageCountStore.from_json(
+        {
+            "class_counts": {
+                "TestClass": 2,
+                "TestClass2": 1,
             },
-            "TestClass2.test_function_2.test_parameter_2": {
-                "'test2'": 1
-            }
-        },
-    })
+            "function_counts": {
+                "TestClass.test_function": 2,
+                "TestClass2.test_function_2": 1,
+            },
+            "parameter_counts": {
+                "TestClass.test_function.test_parameter": 2,
+                "TestClass2.test_function_2.test_parameter_2": 1,
+            },
+            "value_counts": {
+                "TestClass.test_function.test_parameter": {"'test'": 2},
+                "TestClass2.test_function_2.test_parameter_2": {"'test2'": 1},
+            },
+        }
+    )
 
     usage_counts.merge_other_into_self(other)
 
@@ -318,11 +316,7 @@ def test_merge_other_into_self(usage_counts: UsageCountStore):
             "TestClass2.test_function_2.test_parameter_2": 1,
         },
         "value_counts": {
-            "TestClass.test_function.test_parameter": {
-                "'test'": 4
-            },
-            "TestClass2.test_function_2.test_parameter_2": {
-                "'test2'": 1
-            }
+            "TestClass.test_function.test_parameter": {"'test'": 4},
+            "TestClass2.test_function_2.test_parameter_2": {"'test2'": 1},
         },
     }

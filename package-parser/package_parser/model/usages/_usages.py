@@ -146,7 +146,9 @@ class UsageCountStore:
 
         return 0
 
-    def merge_other_into_self(self, other_usage_store: UsageCountStore) -> UsageCountStore:
+    def merge_other_into_self(
+        self, other_usage_store: UsageCountStore
+    ) -> UsageCountStore:
         """
         Merges the other usage store into this one **in-place** and returns this store.
 

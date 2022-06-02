@@ -6,8 +6,8 @@ from pathlib import Path
 import astroid
 from package_parser.utils import ASTWalker, initialize_and_read_exclude_file, list_files
 
-from ._ast_visitor import _UsageFinder
 from ...model.usages import UsageCountStore
+from ._ast_visitor import _UsageFinder
 
 __N_PROCESSES = 12
 

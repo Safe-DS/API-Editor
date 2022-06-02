@@ -135,7 +135,7 @@ def __add_api_subparser(subparsers: _SubParsersAction) -> None:
         "-s",
         "--src",
         help="Directory containing the Python code of the package. If this is omitted, we try to locate the package "
-             "with the given name in the current Python interpreter.",
+        "with the given name in the current Python interpreter.",
         type=Path,
         required=False,
         default=None,
@@ -214,7 +214,7 @@ def __add_all_subparser(subparsers: _SubParsersAction) -> None:
         "-s",
         "--src",
         help="Directory containing the Python code of the package. If this is omitted, we try to locate the package "
-             "with the given name in the current Python interpreter.",
+        "with the given name in the current Python interpreter.",
         type=Path,
         required=False,
         default=None,

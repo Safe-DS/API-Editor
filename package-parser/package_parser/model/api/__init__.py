@@ -1,32 +1,26 @@
 from ._api import (
     API,
     Class,
-    Module,
-    Function,
     FromImport,
+    Function,
     Import,
+    Module,
     Parameter,
-    Result,
     ParameterAndResultDocstring,
     ParameterAssignment,
-    Type
+    Result,
+    Type,
 )
 from ._parameter_dependencies import (
     Action,
+    APIDependencies,
     Condition,
     Dependency,
     ParameterHasValue,
+    ParameterIsIgnored,
+    ParameterIsIllegal,
     ParameterIsNone,
     RuntimeCondition,
     StaticCondition,
-    APIDependencies,
-    ParameterIsIgnored,
-    ParameterIsIllegal
 )
-from ._types import (
-    AbstractType,
-    BoundaryType,
-    EnumType,
-    NamedType,
-    UnionType
-)
+from ._types import AbstractType, BoundaryType, EnumType, NamedType, UnionType
