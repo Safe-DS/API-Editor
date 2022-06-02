@@ -116,7 +116,6 @@ def __get_args() -> argparse.Namespace:
     subparsers = parser.add_subparsers(dest="command")
     __add_api_subparser(subparsers)
     __add_usages_subparser(subparsers)
-    __add_improve_subparser(subparsers)
     __add_annotations_subparser(subparsers)
     __add_all_subparser(subparsers)
 
