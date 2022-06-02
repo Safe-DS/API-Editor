@@ -122,7 +122,7 @@ AnnotationStore "0..1" o-- "*" BaseAnnotation
       }
 
 ```
-Can be found [here](package_parser/models/annotation_models.py).
+Can be found [here](package_parser/model/annotations/_annotations.py).
 
 The AnnotationStore class is used for the collection of the individual annotations. An instance of this class is passed to the individual `get_[type]_annotation()` functions. These then place their results in the list assigned to them.
 
@@ -149,7 +149,7 @@ ParameterType <.. ParameterInfo
       }
 ```
 
-Can be found [here](package_parser/models/annotation_models.py).
+Can be found [here](package_parser/model/annotations/_annotations.py).
 
 The ParameterInfo class is used to encapsulate the collected information for a given parameter which is generated in the `get_parameter_info()` function.
 
@@ -183,11 +183,11 @@ classDiagram
  }
 ```
 
-Can be found [here](package_parser/models/_usages.py).
+Can be found [here](package_parser/model/usages/_usages.py).
 
 
 
-This class is a slimmed down version of the [UsageStore](package_parser/commands/find_usages/_model.py) class.
+This class is a slimmed down version of the [UsageStore](package_parser/model/usages/_usages.py) class.
 
 For the automatic generation of annotations, it is in most cases sufficient to know how often a certain element (class, function, parameter, value) is used. In the original class, there are more details stored for each usage, which leads to a more complex and harder to use structure.
 
@@ -259,13 +259,13 @@ call_annotation_getter --> dump_annotation_store
 
 ### `AnnotationStore`
 
-Can be found [here](tests/models/test_annotation_models.py).
+Can be found [here](tests/model/test_annotations.py).
 
 For the `AnnotationStore` and all associated classes there are automatic tests that ensure that the `to_json()` methods work properly. For this purpose, a test configuration of the individual classes is created, and their output is then compared against the expected value.
 
 ### `UsageCountStore`
 
-Can be found [here](tests/models/test_usages.py).
+Can be found [here](tests/model/test_usages.py).
 
 For this class, there are automatic checks for the input and output methods, that compare the actual result against the expected value. There are also various tests for every setter and getter in which the state of the object is checked after.
 

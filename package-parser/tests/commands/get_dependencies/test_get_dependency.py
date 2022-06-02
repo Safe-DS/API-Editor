@@ -1,5 +1,11 @@
 import spacy
-from package_parser.commands.get_api._model import (
+from package_parser.commands.get_dependencies import (
+    DependencyExtractor,
+    extract_action,
+    extract_condition,
+    extract_lefts_and_rights,
+)
+from package_parser.model.api import (
     Action,
     Condition,
     Dependency,
@@ -10,12 +16,6 @@ from package_parser.commands.get_api._model import (
     ParameterIsIgnored,
     ParameterIsIllegal,
     ParameterIsNone,
-)
-from package_parser.commands.get_dependencies._get_dependency import (
-    DependencyExtractor,
-    extract_action,
-    extract_condition,
-    extract_lefts_and_rights,
 )
 
 nlp = spacy.load("en_core_web_sm")

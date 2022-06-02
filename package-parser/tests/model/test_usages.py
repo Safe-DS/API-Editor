@@ -1,7 +1,7 @@
 from typing import Any
 
 import pytest
-from package_parser.models import UsageCountStore
+from package_parser.model.usages import UsageCountStore
 
 
 @pytest.fixture
@@ -28,7 +28,7 @@ def test_from_json_is_inverse_of_to_json(usage_counts: UsageCountStore):
 
 
 def test_add_class_usage_for_new_class(usage_counts: UsageCountStore):
-    usage_counts.add_class_usage("TestClass2")
+    usage_counts.add_class_usages("TestClass2")
 
     assert usage_counts.to_json() == {
         "class_counts": {
@@ -42,7 +42,7 @@ def test_add_class_usage_for_new_class(usage_counts: UsageCountStore):
 
 
 def test_add_class_usage_for_existing_class(usage_counts: UsageCountStore):
-    usage_counts.add_class_usage("TestClass", 2)
+    usage_counts.add_class_usages("TestClass", 2)
 
     assert usage_counts.to_json() == {
         "class_counts": {"TestClass": 4},
@@ -276,3 +276,47 @@ def test_n_value_usages_for_existing_parameter_and_value(usage_counts: UsageCoun
         usage_counts.n_value_usages("TestClass.test_function.test_parameter", "'test'")
         == 2
     )
+
+
+def test_merge_other_into_self(usage_counts: UsageCountStore):
+    other = UsageCountStore.from_json(
+        {
+            "class_counts": {
+                "TestClass": 2,
+                "TestClass2": 1,
+            },
+            "function_counts": {
+                "TestClass.test_function": 2,
+                "TestClass2.test_function_2": 1,
+            },
+            "parameter_counts": {
+                "TestClass.test_function.test_parameter": 2,
+                "TestClass2.test_function_2.test_parameter_2": 1,
+            },
+            "value_counts": {
+                "TestClass.test_function.test_parameter": {"'test'": 2},
+                "TestClass2.test_function_2.test_parameter_2": {"'test2'": 1},
+            },
+        }
+    )
+
+    usage_counts.merge_other_into_self(other)
+
+    assert usage_counts.to_json() == {
+        "class_counts": {
+            "TestClass": 4,
+            "TestClass2": 1,
+        },
+        "function_counts": {
+            "TestClass.test_function": 4,
+            "TestClass2.test_function_2": 1,
+        },
+        "parameter_counts": {
+            "TestClass.test_function.test_parameter": 4,
+            "TestClass2.test_function_2.test_parameter_2": 1,
+        },
+        "value_counts": {
+            "TestClass.test_function.test_parameter": {"'test'": 4},
+            "TestClass2.test_function_2.test_parameter_2": {"'test2'": 1},
+        },
+    }

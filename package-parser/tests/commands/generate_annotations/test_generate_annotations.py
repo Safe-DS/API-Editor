@@ -12,9 +12,9 @@ from package_parser.commands.generate_annotations.generate_annotations import (
     __get_required_annotations,
     preprocess_usages,
 )
-from package_parser.commands.get_api import API
-from package_parser.models import UsageCountStore
-from package_parser.models.annotation_models import AnnotationStore
+from package_parser.model.annotations import AnnotationStore
+from package_parser.model.api import API
+from package_parser.model.usages import UsageCountStore
 
 
 @pytest.mark.parametrize(

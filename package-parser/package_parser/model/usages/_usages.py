@@ -21,7 +21,7 @@ class UsageCountStore:
         # Revive class counts
         class_counts = json["class_counts"]
         for class_qname, count in class_counts.items():
-            result.add_class_usage(class_qname, count)
+            result.add_class_usages(class_qname, count)
 
         # Revive function counts
         function_counts = json["function_counts"]
@@ -61,7 +61,7 @@ class UsageCountStore:
     def __hash__(self) -> int:
         return hash(tuple(sorted(self.__dict__.items())))
 
-    def add_class_usage(self, class_qname: ClassQName, count: int = 1) -> None:
+    def add_class_usages(self, class_qname: ClassQName, count: int = 1) -> None:
         """Increases the usage count of the class with the given name by the given count."""
 
         self.class_usages[class_qname] += count
@@ -145,6 +145,32 @@ class UsageCountStore:
             return self.value_usages[parameter_qname][value]
 
         return 0
+
+    def merge_other_into_self(
+        self, other_usage_store: UsageCountStore
+    ) -> UsageCountStore:
+        """
+        Merges the other usage store into this one **in-place** and returns this store.
+
+        :param other_usage_store: The usage store to merge into this one.
+        :return: This usage store.
+        """
+
+        # Merge class usages
+        self.class_usages += other_usage_store.class_usages
+
+        # Merge function usages
+        self.function_usages += other_usage_store.function_usages
+
+        # Merge parameter usages
+        self.parameter_usages += other_usage_store.parameter_usages
+
+        # Merge value usages
+        for parameter_qname, value_usages in other_usage_store.value_usages.items():
+            self.init_value(parameter_qname)
+            self.value_usages[parameter_qname] += value_usages
+
+        return self
 
     def to_json(self) -> Any:
         """Converts this class to a dictionary, which can later be serialized as JSON."""

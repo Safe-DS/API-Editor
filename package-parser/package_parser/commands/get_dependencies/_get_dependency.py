@@ -1,12 +1,7 @@
 from typing import Dict, List, Tuple, Union
 
 import spacy
-from spacy.matcher import DependencyMatcher
-from spacy.tokens import Token
-from spacy.tokens.doc import Doc
-from spacy.tokens.span import Span
-
-from ..get_api import (
+from package_parser.model.api import (
     API,
     Action,
     APIDependencies,
@@ -18,6 +13,11 @@ from ..get_api import (
     ParameterIsIllegal,
     ParameterIsNone,
 )
+from spacy.matcher import DependencyMatcher
+from spacy.tokens import Token
+from spacy.tokens.doc import Doc
+from spacy.tokens.span import Span
+
 from ._dependency_patterns import dependency_matcher_patterns
 from ._preprocess_docstring import preprocess_docstring
 

@@ -3,9 +3,7 @@ import re
 from pathlib import Path
 from typing import Callable
 
-from package_parser.commands.get_api import API
-from package_parser.models import UsageCountStore
-from package_parser.models.annotation_models import (
+from package_parser.model.annotations import (
     AnnotationStore,
     BoundaryAnnotation,
     ConstantAnnotation,
@@ -18,6 +16,8 @@ from package_parser.models.annotation_models import (
     RemoveAnnotation,
     RequiredAnnotation,
 )
+from package_parser.model.api import API
+from package_parser.model.usages import UsageCountStore
 from package_parser.utils import ensure_file_exists, parent_qname
 
 
@@ -74,7 +74,7 @@ def __get_constant_annotations(
 ) -> None:
     """
     Collect all parameters that are only ever assigned a single value.
-    :param usages: UsageStore object
+    :param usages: UsageCountStore object
     :param api: API object for usages
     :param annotations: AnnotationStore object
     """
@@ -121,11 +121,11 @@ def __get_remove_annotations(
 
 
 def __get_enum_annotations(
-    usages: UsageCountStore, api: API, annotations: AnnotationStore
+    _usages: UsageCountStore, api: API, annotations: AnnotationStore
 ) -> None:
     """
     Returns all parameters that are never used.
-    :param usages: UsageStore object
+    :param _usages: UsageStore object
     :param api: API object for usages
     :param annotations: AnnotationStore object
     """
@@ -253,7 +253,7 @@ def __add_unused_api_elements(usages: UsageCountStore, api: API) -> None:
     # Public classes
     for class_qname in api.classes:
         if api.is_public_class(class_qname):
-            usages.add_class_usage(class_qname, 0)
+            usages.add_class_usages(class_qname, 0)
 
     # Public functions
     for function in api.functions.values():

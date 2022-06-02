@@ -3,15 +3,14 @@ from typing import Optional
 import astroid
 from astroid.arguments import CallSite
 from astroid.helpers import safe_infer
-
-from ._model import Location, UsageStore
+from package_parser.model.usages import UsageCountStore
 
 
 class _UsageFinder:
     def __init__(self, package_name: str, python_file: str) -> None:
         self.package_name: str = package_name
         self.python_file: str = python_file
-        self.usages: UsageStore = UsageStore()
+        self.usages: UsageCountStore = UsageCountStore()
 
     def enter_call(self, node: astroid.Call):
         called_tuple = _analyze_declaration_called_by(node, self.package_name)
@@ -25,28 +24,24 @@ class _UsageFinder:
         if bound_parameters is None:
             return
 
-        location = Location(self.python_file, node.lineno, node.col_offset)
-
         # Add class usage
         if (
             isinstance(called, (astroid.BoundMethod, astroid.UnboundMethod))
             or isinstance(called, astroid.FunctionDef)
             and called.is_method()
         ):
-            self.usages.add_class_usage(
-                ".".join(function_qname.split(".")[:-1]), location
-            )
+            self.usages.add_class_usages(".".join(function_qname.split(".")[:-1]))
 
         # Add function usage
-        self.usages.add_function_usage(function_qname, location)
+        self.usages.add_function_usages(function_qname)
 
         # Add parameter & value usage
         for parameter_name, value in bound_parameters.items():
             parameter_qname = f"{function_qname}.{parameter_name}"
-            self.usages.add_parameter_usage(parameter_qname, location)
+            self.usages.add_parameter_usages(parameter_qname)
 
             value = _stringify_value(value)
-            self.usages.add_value_usage(parameter_qname, value, location)
+            self.usages.add_value_usages(parameter_qname, value)
 
 
 def _analyze_declaration_called_by(

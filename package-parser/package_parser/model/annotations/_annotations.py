@@ -1,38 +1,38 @@
-import dataclasses
+from dataclasses import asdict, dataclass
 from enum import Enum
 
 
-@dataclasses.dataclass
-class BaseAnnotation:
+@dataclass
+class AbstractAnnotation:
     target: str
 
     def to_json(self) -> dict:
-        return dataclasses.asdict(self)
+        return asdict(self)
 
 
-@dataclasses.dataclass
-class ConstantAnnotation(BaseAnnotation):
+@dataclass
+class ConstantAnnotation(AbstractAnnotation):
     defaultType: str
     defaultValue: str
 
 
-@dataclasses.dataclass
-class RemoveAnnotation(BaseAnnotation):
+@dataclass
+class RemoveAnnotation(AbstractAnnotation):
     pass
 
 
-@dataclasses.dataclass
-class RequiredAnnotation(BaseAnnotation):
+@dataclass
+class RequiredAnnotation(AbstractAnnotation):
     pass
 
 
-@dataclasses.dataclass
-class OptionalAnnotation(BaseAnnotation):
+@dataclass
+class OptionalAnnotation(AbstractAnnotation):
     defaultType: str
     defaultValue: str
 
 
-@dataclasses.dataclass
+@dataclass
 class Interval:
     isDiscrete: bool
     lowerIntervalLimit: int
@@ -41,30 +41,30 @@ class Interval:
     upperLimitType: int
 
     def to_json(self) -> dict:
-        return dataclasses.asdict(self)
+        return asdict(self)
 
 
-@dataclasses.dataclass
-class BoundaryAnnotation(BaseAnnotation):
+@dataclass
+class BoundaryAnnotation(AbstractAnnotation):
     interval: Interval
 
 
-@dataclasses.dataclass
+@dataclass
 class EnumPair:
     stringValue: str
     instanceName: str
 
     def to_json(self) -> dict:
-        return dataclasses.asdict(self)
+        return asdict(self)
 
 
-@dataclasses.dataclass
-class EnumAnnotation(BaseAnnotation):
+@dataclass
+class EnumAnnotation(AbstractAnnotation):
     enumName: str
     pairs: list[EnumPair]
 
 
-@dataclasses.dataclass
+@dataclass
 class AnnotationStore:
     constants: list[ConstantAnnotation]
     removes: list[RemoveAnnotation]

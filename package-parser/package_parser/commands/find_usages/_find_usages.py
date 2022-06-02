@@ -2,13 +2,12 @@ import json
 import multiprocessing
 from multiprocessing import synchronize
 from pathlib import Path
-from typing import Optional
 
 import astroid
 from package_parser.utils import ASTWalker, initialize_and_read_exclude_file, list_files
 
+from ...model.usages import UsageCountStore
 from ._ast_visitor import _UsageFinder
-from ._model import UsageStore
 
 __N_PROCESSES = 12
 
@@ -91,15 +90,15 @@ def __is_relevant_python_file(package_name: str, source_code: str) -> bool:
     return package_name in source_code
 
 
-def _merge_results(tmp_dir: Path) -> UsageStore:
-    result = UsageStore()
+def _merge_results(tmp_dir: Path) -> UsageCountStore:
+    result = UsageCountStore()
 
     files = list_files(tmp_dir, ".json")
     for index, file in enumerate(files):
         print(f"Merging {file} ({index + 1}/{len(files)})")
 
         with open(file, "r") as f:
-            other_usage_store = UsageStore.from_json(json.load(f))
+            other_usage_store = UsageCountStore.from_json(json.load(f))
             result.merge_other_into_self(other_usage_store)
 
     return result

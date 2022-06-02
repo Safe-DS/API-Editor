@@ -10,7 +10,6 @@ from .commands.find_usages import find_usages
 from .commands.generate_annotations.generate_annotations import generate_annotations
 from .commands.get_api import distribution, distribution_version, get_api
 from .commands.get_dependencies import get_dependencies
-from .commands.suggest_improvements import suggest_improvements
 from .utils import ensure_file_exists
 
 API_INDEX = "api"
@@ -37,9 +36,6 @@ def cli() -> None:
 
     elif args.command == __USAGES_COMMAND:
         __run_usages_command(args.package, args.client, args.tmp, args.out)
-
-    elif args.command == __IMPROVE_COMMAND:
-        suggest_improvements(args.api, args.usages, args.out, args.min)
 
     elif args.command == __ANNOTATIONS_COMMAND:
         generate_annotations(args.api, args.usages, args.out)
@@ -79,14 +75,8 @@ def __run_usages_command(
 ) -> None:
     usages = find_usages(package, client, tmp)
     dist = distribution(package)
-    out_file_usage = out.joinpath(
-        f"{dist}__{package}__{distribution_version(dist)}__usages.json"
-    )
-    ensure_file_exists(out_file_usage)
-    with out_file_usage.open("w") as f:
-        json.dump(usages.to_json(), f, indent=2)
-    # Create a second file with counted usages
-    counted_usages = usages.to_count_json()
+
+    counted_usages = usages.to_json()
     out_file_usage_count = out.joinpath(
         f"{dist}__{package}__{distribution_version(dist)}__usages_counted.json"
     )
@@ -126,7 +116,6 @@ def __get_args() -> argparse.Namespace:
     subparsers = parser.add_subparsers(dest="command")
     __add_api_subparser(subparsers)
     __add_usages_subparser(subparsers)
-    __add_improve_subparser(subparsers)
     __add_annotations_subparser(subparsers)
     __add_all_subparser(subparsers)
 
@@ -183,37 +172,6 @@ def __add_usages_subparser(subparsers: _SubParsersAction) -> None:
     )
     usages_parser.add_argument(
         "-o", "--out", help="Output directory.", type=Path, required=True
-    )
-
-
-def __add_improve_subparser(subparsers: _SubParsersAction) -> None:
-    improve_parser = subparsers.add_parser(
-        __IMPROVE_COMMAND, help="Suggest how to improve an existing API."
-    )
-    improve_parser.add_argument(
-        "-a",
-        "--api",
-        help="File created by the 'api' command.",
-        type=argparse.FileType("r"),
-        required=True,
-    )
-    improve_parser.add_argument(
-        "-u",
-        "--usages",
-        help="File created by the 'usages' command.",
-        type=argparse.FileType("r"),
-        required=True,
-    )
-    improve_parser.add_argument(
-        "-o", "--out", help="Output directory.", type=Path, required=True
-    )
-    improve_parser.add_argument(
-        "-m",
-        "--min",
-        help="Minimum number of usages required to keep an API element.",
-        type=int,
-        required=False,
-        default=1,
     )
 
 

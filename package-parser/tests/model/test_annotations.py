@@ -1,6 +1,6 @@
-from package_parser.models.annotation_models import (
+from package_parser.model.annotations import (
+    AbstractAnnotation,
     AnnotationStore,
-    BaseAnnotation,
     BoundaryAnnotation,
     ConstantAnnotation,
     EnumAnnotation,
@@ -13,7 +13,7 @@ from package_parser.models.annotation_models import (
 
 
 def test_base_annotation_to_json():
-    annotation = BaseAnnotation(target="test/test")
+    annotation = AbstractAnnotation(target="test/test")
     assert annotation.to_json() == {"target": "test/test"}
 
 
