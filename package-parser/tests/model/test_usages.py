@@ -1,7 +1,7 @@
 from typing import Any
 
 import pytest
-from package_parser.models import UsageCountStore
+from package_parser.model.usages import UsageCountStore
 
 
 @pytest.fixture

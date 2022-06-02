@@ -3,13 +3,13 @@ from io import TextIOWrapper
 from pathlib import Path
 from typing import Any, Union
 
-from package_parser.commands.find_usages import (
+from package_parser.model.usages import (
     ClassUsage,
     FunctionUsage,
     UsageStore,
     ValueUsage,
 )
-from package_parser.commands.get_api import API
+from package_parser.model.api import API
 from package_parser.utils import ensure_file_exists, parent_qname
 
 
@@ -121,12 +121,12 @@ def __create_parameter_usage_distribution(usages: UsageStore) -> dict[int, int]:
                 it
                 for it in parameter_usages.keys()
                 if usages.n_function_usages(parent_qname(it)) >= i
-                and (
-                    parent_qname(parent_qname(it)) not in usages.class_usages
-                    or usages.n_class_usages(parent_qname(parent_qname(it))) >= i
-                )
-                and __n_not_set_to_most_common_value(it, function_usages, value_usages)
-                >= i
+                   and (
+                       parent_qname(parent_qname(it)) not in usages.class_usages
+                       or usages.n_class_usages(parent_qname(parent_qname(it))) >= i
+                   )
+                   and __n_not_set_to_most_common_value(it, function_usages, value_usages)
+                   >= i
             ]
         )
 

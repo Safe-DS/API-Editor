@@ -1,7 +1,7 @@
 import json
 import os
 
-from package_parser.commands.find_usages import UsageStore
+from package_parser.model.usages import UsageStore
 
 
 def setup():

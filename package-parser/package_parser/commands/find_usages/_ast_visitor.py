@@ -4,7 +4,7 @@ import astroid
 from astroid.arguments import CallSite
 from astroid.helpers import safe_infer
 
-from ._model import Location, UsageStore
+from package_parser.model.usages import UsageStore
 
 
 class _UsageFinder:

@@ -6,18 +6,8 @@ from spacy.tokens import Token
 from spacy.tokens.doc import Doc
 from spacy.tokens.span import Span
 
-from ..get_api import (
-    API,
-    Action,
-    APIDependencies,
-    Condition,
-    Dependency,
-    Parameter,
-    ParameterHasValue,
-    ParameterIsIgnored,
-    ParameterIsIllegal,
-    ParameterIsNone,
-)
+from package_parser.model.api import (Action, Parameter, API, ParameterIsIgnored, ParameterIsIllegal, Condition,
+                                      ParameterIsNone, ParameterHasValue, Dependency, APIDependencies)
 from ._dependency_patterns import dependency_matcher_patterns
 from ._preprocess_docstring import preprocess_docstring
 

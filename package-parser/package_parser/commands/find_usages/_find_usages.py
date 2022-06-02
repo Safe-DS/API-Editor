@@ -2,13 +2,12 @@ import json
 import multiprocessing
 from multiprocessing import synchronize
 from pathlib import Path
-from typing import Optional
 
 import astroid
 from package_parser.utils import ASTWalker, initialize_and_read_exclude_file, list_files
 
 from ._ast_visitor import _UsageFinder
-from ._model import UsageStore
+from ...model.usages import UsageStore
 
 __N_PROCESSES = 12
 

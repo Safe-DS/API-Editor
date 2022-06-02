@@ -6,7 +6,7 @@ from package_parser.utils import ASTWalker
 
 from ._ast_visitor import _AstVisitor
 from ._file_filters import _is_test_file
-from ._model import API
+from package_parser.model.api import API
 from ._package_metadata import (
     distribution,
     distribution_version,
