@@ -7,14 +7,13 @@ from typing import Any, Optional
 from package_parser.cli._run_annotations import run_all_command, _run_annotations
 from package_parser.cli._run_api import _run_api_command
 from package_parser.cli._run_usages import _run_usages_command
-from package_parser.commands.usages import find_usages
-from package_parser.commands.api import distribution, distribution_version, get_api
-from package_parser.commands.dependencies import get_dependencies
+from package_parser.processing.usages import find_usages
+from package_parser.processing.api import distribution, distribution_version, get_api
+from package_parser.processing.dependencies import get_dependencies
 from package_parser.utils import ensure_file_exists
 
 _API_COMMAND = "api"
 _USAGES_COMMAND = "usages"
-_IMPROVE_COMMAND = "improve"
 _ANNOTATIONS_COMMAND = "annotations"
 _ALL_COMMAND = "all"
 
@@ -23,13 +22,10 @@ def cli() -> None:
     args = _get_args()
     if args.command == _API_COMMAND:
         _run_api_command(args.package, args.src, args.out)
-
     elif args.command == _USAGES_COMMAND:
         _run_usages_command(args.package, args.client, args.tmp, args.out)
-
     elif args.command == _ANNOTATIONS_COMMAND:
         _run_annotations(args.api, args.usages, args.out)
-
     elif args.command == _ALL_COMMAND:
         run_all_command(args)
 

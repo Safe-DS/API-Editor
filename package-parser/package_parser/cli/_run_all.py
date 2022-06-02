@@ -23,7 +23,7 @@ def run_all_command(args):
 
 def _run_in_parallel(*fns) -> dict:
     manager = multiprocessing.Manager()
-    return_dict: dict[Any, Any] = manager.dict()
+    return_dict: dict[str, str] = manager.dict()
     proc = []
     for fn in fns:
         p = multiprocessing.Process(target=fn, args=(return_dict,))
