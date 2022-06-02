@@ -1,7 +1,6 @@
 import re
 from typing import Callable
 
-from package_parser.processing.annotations._usages_preprocessor import _preprocess_usages
 from package_parser.model.annotations import (
     AnnotationStore,
     BoundaryAnnotation,
@@ -17,11 +16,12 @@ from package_parser.model.annotations import (
 )
 from package_parser.model.api import API
 from package_parser.model.usages import UsageCountStore
+from package_parser.processing.annotations._usages_preprocessor import (
+    _preprocess_usages,
+)
 
 
-def generate_annotations(
-    api: API, usages: UsageCountStore
-) -> AnnotationStore:
+def generate_annotations(api: API, usages: UsageCountStore) -> AnnotationStore:
     annotations = AnnotationStore()
     annotation_functions = [
         __get_remove_annotations,
@@ -161,7 +161,7 @@ def __get_required_annotations(
         (it, parameters[it])
         for it in parameters
         if parameters[it].default_value is not None
-           and parameters[it].qname in usages.parameter_usages
+        and parameters[it].qname in usages.parameter_usages
     ]
     for qname, parameter in optional_parameters:
         if __get_parameter_info(qname, usages).type is ParameterType.Required:

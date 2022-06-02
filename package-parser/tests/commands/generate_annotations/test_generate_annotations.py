@@ -3,6 +3,9 @@ import os
 from typing import Callable
 
 import pytest
+from package_parser.model.annotations import AnnotationStore
+from package_parser.model.api import API
+from package_parser.model.usages import UsageCountStore
 from package_parser.processing.annotations._generate_annotations import (
     __get_boundary_annotations,
     __get_constant_annotations,
@@ -11,10 +14,9 @@ from package_parser.processing.annotations._generate_annotations import (
     __get_remove_annotations,
     __get_required_annotations,
 )
-from package_parser.processing.annotations._usages_preprocessor import _preprocess_usages
-from package_parser.model.annotations import AnnotationStore
-from package_parser.model.api import API
-from package_parser.model.usages import UsageCountStore
+from package_parser.processing.annotations._usages_preprocessor import (
+    _preprocess_usages,
+)
 
 
 @pytest.mark.parametrize(

@@ -1,17 +1,15 @@
 import json
 from pathlib import Path
 
-from package_parser.processing.annotations import generate_annotations
 from package_parser.model.annotations import AnnotationStore
 from package_parser.model.api import API
 from package_parser.model.usages import UsageCountStore
+from package_parser.processing.annotations import generate_annotations
 from package_parser.utils import ensure_file_exists
 
 
 def _run_annotations(
-    api_file_path: Path,
-    usages_file_path: Path,
-    annotations_file_path: Path
+    api_file_path: Path, usages_file_path: Path, annotations_file_path: Path
 ) -> None:
     """
     Generates an annotation file from the given API and UsageStore files, and writes it to the given output file.
@@ -41,7 +39,9 @@ def _read_usages_file(usages_file_path: Path) -> UsageCountStore:
     return UsageCountStore.from_json(usages_json)
 
 
-def _write_annotations_file(annotations: AnnotationStore, annotations_file_path: Path) -> None:
+def _write_annotations_file(
+    annotations: AnnotationStore, annotations_file_path: Path
+) -> None:
     ensure_file_exists(annotations_file_path)
     with annotations_file_path.open("w") as f:
         json.dump(annotations.to_json(), f, indent=2)
