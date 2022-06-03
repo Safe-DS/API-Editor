@@ -61,6 +61,13 @@ data class ConstantAnnotation(val defaultValue: DefaultValue) : EditorAnnotation
 }
 
 @Serializable
+data class DescriptionAnnotation(val newDescription: String): EditorAnnotation() {
+
+    @Transient
+    override val validTargets = ANY_DECLARATION
+}
+
+@Serializable
 data class EnumAnnotation(val enumName: String, val pairs: List<EnumPair>) : EditorAnnotation() {
 
     @Transient
@@ -112,7 +119,7 @@ object RemoveAnnotation : EditorAnnotation() {
 @Serializable
 data class RenameAnnotation(val newName: String) : EditorAnnotation() {
     @Transient
-    override val validTargets = CLASSES.union(FUNCTIONS).union(PARAMETERS)
+    override val validTargets = ANY_DECLARATION
 }
 
 @Serializable
@@ -164,6 +171,13 @@ enum class AnnotationTarget(private val target: String) {
     }
 }
 
+val ANY_DECLARATION = setOf(
+    CLASS,
+    GLOBAL_FUNCTION,
+    METHOD,
+    CONSTRUCTOR_PARAMETER,
+    FUNCTION_PARAMETER
+)
 val GLOBAL_DECLARATIONS = setOf(CLASS, GLOBAL_FUNCTION)
 val CLASSES = setOf(CLASS)
 val FUNCTIONS = setOf(GLOBAL_FUNCTION, METHOD)
