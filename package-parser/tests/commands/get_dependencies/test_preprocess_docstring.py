@@ -1,4 +1,4 @@
-from package_parser.commands.get_dependencies._preprocess_docstring import (
+from package_parser.processing.dependencies._preprocess_docstring import (
     preprocess_docstring,
 )
 

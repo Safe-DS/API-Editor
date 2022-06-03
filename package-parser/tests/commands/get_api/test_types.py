@@ -1,7 +1,7 @@
 from typing import Any
 
 import pytest
-from package_parser.commands.get_api import ParameterAndResultDocstring, Type
+from package_parser.model.api import ParameterAndResultDocstring, Type
 
 
 @pytest.mark.parametrize(

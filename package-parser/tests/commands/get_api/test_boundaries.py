@@ -1,7 +1,5 @@
-from typing import Optional
-
 import pytest
-from package_parser.commands.get_api._refined_types import BoundaryType
+from package_parser.model.api._types import BoundaryType
 
 
 @pytest.mark.parametrize(
