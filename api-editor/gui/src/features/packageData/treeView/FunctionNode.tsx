@@ -2,15 +2,12 @@ import React from 'react';
 import { FaCogs } from 'react-icons/fa';
 import { isEmptyList } from '../../../common/util/listOperations';
 import PythonFunction from '../model/PythonFunction';
-import TreeNode, {ValuePair} from './TreeNode';
+import TreeNode, { ValuePair } from './TreeNode';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
-import {UsageCountStore} from "../../usages/model/UsageCountStore";
-import {useAppSelector} from "../../../app/hooks";
-import {
-    AnnotationsState,
-    selectAnnotations,
-} from "../../annotations/annotationSlice";
-import {HeatMapData, selectHeatMapData} from "../packageDataSlice";
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
+import { useAppSelector } from '../../../app/hooks';
+import { AnnotationsState, selectAnnotations } from '../../annotations/annotationSlice';
+import { HeatMapData, selectHeatMapData } from '../packageDataSlice';
 
 interface FunctionNodeProps {
     pythonFunction: PythonFunction;
@@ -25,7 +22,7 @@ const FunctionNode: React.FC<FunctionNodeProps> = function ({ pythonFunction, fi
 
     if (useAppSelector(selectHeatMapData) === HeatMapData.Usages) {
         valuePair = getMapWithUsages(usages, pythonFunction);
-    } else if ((useAppSelector(selectHeatMapData) === HeatMapData.Usages)) {
+    } else if (useAppSelector(selectHeatMapData) === HeatMapData.Usages) {
         valuePair = getMapWithAnnotation(pythonFunction, annotations);
     }
 
@@ -46,7 +43,7 @@ const getMapWithUsages = function (usages: UsageCountStore, pythonFunction: Pyth
     const specificValue = usages.functionUsages.get(pythonFunction.qualifiedName) ?? 0;
 
     return new ValuePair(specificValue, maxValue);
-}
+};
 
 const getMapWithAnnotation = function (pythonFunction: PythonFunction, annotations: AnnotationsState): ValuePair {
     const maxValue = 6;
@@ -61,6 +58,6 @@ const getMapWithAnnotation = function (pythonFunction: PythonFunction, annotatio
     specificValue += annotations.moves[qname] !== undefined ? 1 : 0;
 
     return new ValuePair(specificValue, maxValue);
-}
+};
 
 export default FunctionNode;

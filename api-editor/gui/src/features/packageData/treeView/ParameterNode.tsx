@@ -1,15 +1,12 @@
 import React from 'react';
 import { FaKeyboard } from 'react-icons/fa';
 import PythonParameter from '../model/PythonParameter';
-import TreeNode, {ValuePair} from './TreeNode';
+import TreeNode, { ValuePair } from './TreeNode';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
-import {UsageCountStore} from "../../usages/model/UsageCountStore";
-import {useAppSelector} from "../../../app/hooks";
-import {
-    AnnotationsState,
-    selectAnnotations,
-} from "../../annotations/annotationSlice";
-import {HeatMapData, selectHeatMapData} from "../packageDataSlice";
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
+import { useAppSelector } from '../../../app/hooks';
+import { AnnotationsState, selectAnnotations } from '../../annotations/annotationSlice';
+import { HeatMapData, selectHeatMapData } from '../packageDataSlice';
 
 interface ParameterNodeProps {
     pythonParameter: PythonParameter;
@@ -17,13 +14,13 @@ interface ParameterNodeProps {
     usages: UsageCountStore;
 }
 
-const ParameterNode: React.FC<ParameterNodeProps> = function ({pythonParameter, filter, usages}) {
+const ParameterNode: React.FC<ParameterNodeProps> = function ({ pythonParameter, filter, usages }) {
     let valuePair: ValuePair = new ValuePair(undefined, undefined);
     const annotations = useAppSelector(selectAnnotations);
 
     if (useAppSelector(selectHeatMapData) === HeatMapData.Usages) {
         valuePair = getMapWithUsages(usages, pythonParameter);
-    } else if ((useAppSelector(selectHeatMapData) === HeatMapData.Usages)) {
+    } else if (useAppSelector(selectHeatMapData) === HeatMapData.Usages) {
         valuePair = getMapWithAnnotation(pythonParameter, annotations);
     }
 
@@ -43,7 +40,7 @@ const getMapWithUsages = function (usages: UsageCountStore, pythonParameter: Pyt
     const maxValue = usages.parameterMax;
     const specificValue = usages.parameterUsages.get(pythonParameter.qualifiedName()) ?? 0;
     return new ValuePair(specificValue, maxValue);
-}
+};
 
 const getMapWithAnnotation = function (pythonParameter: PythonParameter, annotations: AnnotationsState): ValuePair {
     const maxValue = 6;
@@ -58,6 +55,6 @@ const getMapWithAnnotation = function (pythonParameter: PythonParameter, annotat
     specificValue += annotations.renamings[qname] !== undefined ? 1 : 0;
 
     return new ValuePair(specificValue, maxValue);
-}
+};
 
 export default ParameterNode;

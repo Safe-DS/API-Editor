@@ -2,11 +2,11 @@ import React from 'react';
 import { FaChalkboard } from 'react-icons/fa';
 import { isEmptyList } from '../../../common/util/listOperations';
 import PythonClass from '../model/PythonClass';
-import TreeNode, {ValuePair} from './TreeNode';
+import TreeNode, { ValuePair } from './TreeNode';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
-import {UsageCountStore} from "../../usages/model/UsageCountStore";
-import {useAppSelector} from "../../../app/hooks";
-import {selectEnum, selectMove, selectRenaming, selectUnused} from "../../annotations/annotationSlice";
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
+import { useAppSelector } from '../../../app/hooks';
+import { selectEnum, selectMove, selectRenaming, selectUnused } from '../../annotations/annotationSlice';
 
 interface ClassNodeProps {
     pythonClass: PythonClass;
@@ -21,7 +21,7 @@ const ClassNode: React.FC<ClassNodeProps> = function ({ pythonClass, filter, usa
 
     if (useAppSelector(selectHeatMapData) === HeatMapData.Annotations) {
         valuePair = getMapWithAnnotation(pythonClass, annotations);
-    } else if ((useAppSelector(selectHeatMapData) === HeatMapData.Usages)) {
+    } else if (useAppSelector(selectHeatMapData) === HeatMapData.Usages) {
         valuePair = getMapWithUsages(usages, pythonClass);
     }
 
@@ -41,7 +41,7 @@ const getMapWithUsages = function (usages: UsageCountStore, pythonClass: PythonC
     const maxValue = usages.classMax;
     const specificValue = usages.classUsages.get(pythonClass.qualifiedName) ?? 0;
     return new ValuePair(specificValue, maxValue);
-}
+};
 
 const getMapWithAnnotation = function (pythonClass: PythonClass, annotations: AnnotationsState): ValuePair {
     const maxValue = 3;
@@ -53,7 +53,6 @@ const getMapWithAnnotation = function (pythonClass: PythonClass, annotations: An
     specificValue += annotations.unuseds[qname] !== undefined ? 1 : 0;
 
     return new ValuePair(specificValue, maxValue);
-}
-
+};
 
 export default ClassNode;
