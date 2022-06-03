@@ -4,9 +4,13 @@ import { isEmptyList } from '../../../common/util/listOperations';
 import PythonClass from '../model/PythonClass';
 import TreeNode, { ValuePair } from './TreeNode';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
-import { UsageCountStore } from '../../usages/model/UsageCountStore';
-import { useAppSelector } from '../../../app/hooks';
-import { selectEnum, selectMove, selectRenaming, selectUnused } from '../../annotations/annotationSlice';
+import {UsageCountStore} from "../../usages/model/UsageCountStore";
+import {useAppSelector} from "../../../app/hooks";
+import {
+    AnnotationsState,
+    selectAnnotations,
+} from "../../annotations/annotationSlice";
+import {HeatMapData, selectHeatMapData} from "../packageDataSlice";
 
 interface ClassNodeProps {
     pythonClass: PythonClass;
@@ -50,7 +54,7 @@ const getMapWithAnnotation = function (pythonClass: PythonClass, annotations: An
 
     specificValue += annotations.moves[qname] !== undefined ? 1 : 0;
     specificValue += annotations.renamings[qname] !== undefined ? 1 : 0;
-    specificValue += annotations.unuseds[qname] !== undefined ? 1 : 0;
+    specificValue += annotations.removes[qname] !== undefined ? 1 : 0;
 
     return new ValuePair(specificValue, maxValue);
 };
