@@ -62,6 +62,10 @@ def __get_constant_annotations(
         parameter_info = __get_parameter_info(qname, usages)
 
         param = api.parameters().get(qname)
+
+        if parameter_info.value_type is None:
+            continue
+
         if param is None:
             continue
         target_name = param.pname
@@ -161,7 +165,7 @@ def __get_required_annotations(
         (it, parameters[it])
         for it in parameters
         if parameters[it].default_value is not None
-        and parameters[it].qname in usages.parameter_usages
+           and parameters[it].qname in usages.parameter_usages
     ]
     for qname, parameter in optional_parameters:
         if __get_parameter_info(qname, usages).type is ParameterType.Required:
@@ -198,6 +202,9 @@ def __get_optional_annotations(
             continue
         parameter_info = __get_parameter_info(qname, usages)
 
+        if parameter_info.value_type is None:
+            continue
+
         if qname in parameters:
             old_default = parameters[qname].default_value
             if old_default is not None and old_default[0] == "'":
@@ -224,8 +231,14 @@ def __get_parameter_info(qname: str, usages: UsageCountStore) -> ParameterInfo:
     :param usages: UsageStore
     :return ParameterInfo
     """
-
-    values = [(it[0], it[1]) for it in usages.value_usages[qname].items() if it[1] > 0]
+    # Creates a list of tuples with values value_name and value_total_usages
+    values = []
+    for it in usages.value_usages[qname].items():
+        is_string = __get_default_type_from_value(it[0]) == "string"
+        # Check if value is used more than 0 times AND if the value is correctly formatted as a string (with single
+        #  quotes). If it isn't a string, just accept it.
+        if it[1] > 0 and ((is_string and it[0][0] == "'" and  it[0][-1] == "'") or not is_string):
+            values.append((it[0], it[1]))
 
     if len(values) == 0:
         return ParameterInfo(ParameterType.Unused)

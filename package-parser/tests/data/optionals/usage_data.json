@@ -10,7 +10,8 @@
         "test.some_global_function.optional_parameter_that_should_be_constant": 0,
         "test.some_global_function.optional_parameter_that_should_be_required": 2,
         "test.some_global_function.optional_parameter_that_should_be_optional_with_same_default": 1,
-        "test.some_global_function.optional_parameter_that_should_be_optional_with_different_default": 4
+        "test.some_global_function.optional_parameter_that_should_be_optional_with_different_default": 4,
+        "test.some_global_function.required_parameter_that_should_be_optional_while_ignoring_the_non_string": 15
     },
     "value_counts": {
         "test.some_global_function.required_parameter_that_should_be_constant": {
@@ -23,6 +24,11 @@
         "test.some_global_function.required_parameter_that_should_be_optional": {
             "'test'": 1,
             "'test2'": 4
+        },
+        "test.some_global_function.required_parameter_that_should_be_optional_while_ignoring_the_non_string": {
+            "'test'": 1,
+            "'test2'": 4,
+            "non_string": 10
         },
         "test.some_global_function.optional_parameter_that_should_be_constant": {},
         "test.some_global_function.optional_parameter_that_should_be_required": {
