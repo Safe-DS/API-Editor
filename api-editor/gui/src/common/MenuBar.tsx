@@ -11,9 +11,7 @@ import {
     Heading,
     HStack,
     Icon,
-    IconButton,
     Input,
-    ListItem,
     Menu,
     MenuButton,
     MenuDivider,
@@ -22,28 +20,21 @@ import {
     MenuItemOption,
     MenuList,
     MenuOptionGroup,
-    Popover,
-    PopoverArrow,
-    PopoverBody,
-    PopoverCloseButton,
-    PopoverContent,
-    PopoverHeader,
-    PopoverTrigger,
     Spacer,
     Text as ChakraText,
-    UnorderedList,
     useColorMode,
     VStack,
 } from '@chakra-ui/react';
-import React, { useRef, useState } from 'react';
-import { FaChevronDown } from 'react-icons/fa';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { resetAnnotations, toggleAnnotationImportDialog } from '../features/annotations/annotationSlice';
+import React, {useRef, useState} from 'react';
+import {FaChevronDown} from 'react-icons/fa';
+import {useAppDispatch, useAppSelector} from '../app/hooks';
+import {resetAnnotations, toggleAnnotationImportDialog} from '../features/annotations/annotationSlice';
 import AnnotatedPythonPackageBuilder from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
 import PythonPackage from '../features/packageData/model/PythonPackage';
-import { togglePackageDataImportDialog } from '../features/packageData/packageDataSlice';
-import { Setter } from './util/types';
-import { toggleUsageImportDialog } from '../features/usages/usageSlice';
+import {togglePackageDataImportDialog} from '../features/packageData/packageDataSlice';
+import {Setter} from './util/types';
+import {toggleUsageImportDialog} from '../features/usages/usageSlice';
+import {FilterHelpButton} from "./FilterHelpButton";
 
 interface MenuBarProps {
     pythonPackage: PythonPackage;
@@ -51,82 +42,6 @@ interface MenuBarProps {
     setFilter: Setter<string>;
     displayInferErrors: (errors: string[]) => void;
 }
-
-const HelpButton = function () {
-    return (
-        <Box>
-            <Popover>
-                <PopoverTrigger>
-                    <IconButton variant="ghost" icon={<Icon name="help" />} aria-label="help" />
-                </PopoverTrigger>
-                <PopoverContent minWidth={462} fontSize="sm" marginRight={2}>
-                    <PopoverArrow />
-                    <PopoverCloseButton />
-                    <PopoverHeader>Filter Options</PopoverHeader>
-                    <PopoverBody>
-                        <UnorderedList spacing={2}>
-                            <ListItem>
-                                <ChakraText>
-                                    <strong>is:[type]</strong>
-                                </ChakraText>
-                                <ChakraText>
-                                    Displays only elements that are of the given type. Replace [type] with one of{' '}
-                                    <em>module, class, function, parameter</em>.
-                                </ChakraText>
-                            </ListItem>
-                            <ListItem>
-                                <ChakraText>
-                                    <strong>is:[visibility]</strong>
-                                </ChakraText>
-                                <ChakraText>
-                                    Displays only elements that have the given visibility. Replace [visibility] with one
-                                    of <em>public, internal</em>.
-                                </ChakraText>
-                            </ListItem>
-                            <ListItem>
-                                <ChakraText>
-                                    <strong>name:xy</strong>
-                                </ChakraText>
-                                <ChakraText>
-                                    Displays only elements with names that contain the given string xy.
-                                </ChakraText>
-                            </ListItem>
-                            <ListItem>
-                                <ChakraText>
-                                    <strong>annotation:any</strong>
-                                </ChakraText>
-                                <ChakraText>Displays only elements that have been annotated.</ChakraText>
-                            </ListItem>
-                            <ListItem>
-                                <ChakraText>
-                                    <strong>annotation:[type]</strong>
-                                </ChakraText>
-                                <ChakraText>
-                                    Displays only elements that are annotated with the given type xy. Replace [type]
-                                    with one of{' '}
-                                    <em>
-                                        @attribute, @boundary, @calledAfter, @constant, @enum, @group, @move, @optional,
-                                        @pure, @remove, @renaming, @required
-                                    </em>
-                                    .
-                                </ChakraText>
-                            </ListItem>
-                            <ListItem>
-                                <ChakraText>
-                                    <strong>!filter</strong>
-                                </ChakraText>
-                                <ChakraText>
-                                    Displays only elements that do not match the given filter. Possible filters are any
-                                    in this list.
-                                </ChakraText>
-                            </ListItem>
-                        </UnorderedList>
-                    </PopoverBody>
-                </PopoverContent>
-            </Popover>
-        </Box>
-    );
-};
 
 const DeleteAllAnnotations = function () {
     const dispatch = useAppDispatch();
@@ -284,7 +199,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFi
                     spellCheck={false}
                     minWidth="400px"
                 />
-                <HelpButton />
+                <FilterHelpButton />
             </HStack>
         </Flex>
     );
