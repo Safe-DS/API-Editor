@@ -28,18 +28,24 @@ export default class UsageFilter extends AbstractPythonFilter {
 
     shouldKeepClass(pythonClass: PythonClass, annotations: AnnotationsState, usages: UsageCountStore): boolean {
         const classUsages = usages.classUsages.get(pythonClass.qualifiedName)
-        if (classUsages === undefined) {
-            return false;
-        }
-
-        return this.comparison(classUsages, this.expectedUsage);
+        return this.shouldKeepWithUsages(classUsages);
     }
 
     shouldKeepFunction(pythonFunction: PythonFunction, annotations: AnnotationsState, usages: UsageCountStore): boolean {
-        return false; // TODO
+        const functionUsages = usages.functionUsages.get(pythonFunction.qualifiedName)
+        return this.shouldKeepWithUsages(functionUsages);
     }
 
     shouldKeepParameter(pythonParameter: PythonParameter, annotations: AnnotationsState, usages: UsageCountStore): boolean {
-        return false; // TODO
+        const parameterUsages = usages.parameterUsages.get(pythonParameter.qualifiedName())
+        return this.shouldKeepWithUsages(parameterUsages);
+    }
+
+    private shouldKeepWithUsages(actualUsages: number | undefined) {
+        if (actualUsages === undefined) {
+            return false;
+        }
+
+        return this.comparison(actualUsages, this.expectedUsage);
     }
 }
