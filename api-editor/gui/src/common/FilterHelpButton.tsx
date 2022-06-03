@@ -51,8 +51,8 @@ export const FilterHelpButton = function () {
                                     <strong>is:[assignedBy]</strong>
                                 </ChakraText>
                                 <ChakraText>
-                                    Displays only parameters that are assigned in the given manner. Replace [assignedBy] with one
-                                    of <em>implicit, positionOnly, positionOrName, nameOnly</em>.
+                                    Displays only parameters that are assigned in the given manner. Replace [assignedBy]
+                                    with one of <em>implicit, positionOnly, positionOrName, nameOnly</em>.
                                 </ChakraText>
                             </ListItem>
                             <ListItem>
