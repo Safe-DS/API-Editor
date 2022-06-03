@@ -4,13 +4,10 @@ import { isEmptyList } from '../../../common/util/listOperations';
 import PythonClass from '../model/PythonClass';
 import TreeNode, { ValuePair } from './TreeNode';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
-import {UsageCountStore} from "../../usages/model/UsageCountStore";
-import {useAppSelector} from "../../../app/hooks";
-import {
-    AnnotationsState,
-    selectAnnotations,
-} from "../../annotations/annotationSlice";
-import {HeatMapData, selectHeatMapData} from "../packageDataSlice";
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
+import { useAppSelector } from '../../../app/hooks';
+import { AnnotationsState, selectAnnotations } from '../../annotations/annotationSlice';
+import { HeatMapData, selectHeatMapData } from '../packageDataSlice';
 
 interface ClassNodeProps {
     pythonClass: PythonClass;
