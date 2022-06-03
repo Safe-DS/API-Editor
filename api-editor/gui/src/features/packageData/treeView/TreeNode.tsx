@@ -1,15 +1,19 @@
-import {Box, Circle, HStack, Icon, Text as ChakraText} from '@chakra-ui/react';
+import {HStack, Icon, Tag, Text as ChakraText} from '@chakra-ui/react';
 import React from 'react';
 import {IconType} from 'react-icons/lib';
 import {useLocation} from 'react-router';
 import {useNavigate} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../../app/hooks';
 import PythonDeclaration from '../model/PythonDeclaration';
-import {selectHeatMapMode, selectIsExpandedInTreeView, toggleIsExpandedInTreeView} from '../packageDataSlice';
+import {
+    HeatMapData,
+    selectHeatMapData,
+    selectIsExpandedInTreeView,
+    toggleIsExpandedInTreeView
+} from '../packageDataSlice';
 import VisibilityIndicator from './VisibilityIndicator';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
 import {selectAnnotations} from '../../annotations/annotationSlice';
-import {UsageCountJson, UsageCountStore} from "../../usages/model/UsageCountStore";
 
 interface TreeNodeProps {
     declaration: PythonDeclaration;
@@ -18,6 +22,16 @@ interface TreeNodeProps {
     filter: AbstractPythonFilter;
     maxValue?: number;
     specificValue?: number;
+}
+
+export class ValuePair {
+    specificValue: number | undefined;
+    maxValue: number | undefined;
+
+    constructor(specificValue: number | undefined, maxValue: number | undefined) {
+        this.specificValue = specificValue;
+        this.maxValue = maxValue;
+    }
 }
 
 const TreeNode: React.FC<TreeNodeProps> = function ({
@@ -47,11 +61,13 @@ const TreeNode: React.FC<TreeNodeProps> = function ({
         navigate(`/${declaration.pathAsString()}`);
     };
 
-    const display_heat_map = useAppSelector(selectHeatMapMode);
-    const heat_color = ((specificValue !== undefined) && (specificValue !== 0)) ? getColorFromValue(maxValue as number, specificValue) : undefined;
-    const box_width = (maxValue !== undefined) ? (maxValue.toString().length+1) * 7.3 : undefined;
-    //const text_border_color = (specificValue === 0) ? "black" : undefined;
-    //Todo : change to tag
+    const linear = useAppSelector(selectHeatMapData) === HeatMapData.Annotations;
+    const display_heat_map = useAppSelector(selectHeatMapData) !== HeatMapData.None;
+    const opacity = (maxValue !== undefined) ? 1 : 0;
+    const box_width = (maxValue !== undefined) ? (maxValue.toString().length) * 6.7 : 0;
+    specificValue = (specificValue === undefined) ? 0 : specificValue;
+    const heat_color = getColorFromValue(maxValue as number, specificValue, linear);
+    console.log(test(1, 2));
     return (
         <HStack
             userSelect="none"
@@ -66,8 +82,9 @@ const TreeNode: React.FC<TreeNodeProps> = function ({
                 showChildren={showChildren}
                 isSelected={isSelected(declaration, currentPathname)}
             />
-            {display_heat_map && <Box bg={heat_color} color="white" width={box_width} borderRadius="full" height="18px" fontWeight="bold"
-                                      fontSize="small" textAlign="center" px="2px">{specificValue}</Box>}
+            {display_heat_map &&
+                <Tag width={box_width} display="flex" justifyContent="center" bg={heat_color} variant="solid" fontWeight="900" size="sm" opacity={opacity}>{specificValue}</Tag>
+            }
             <Icon as={icon}/>
             <ChakraText fontWeight={fontWeight}>{declaration.getUniqueName()}</ChakraText>
         </HStack>
@@ -82,11 +99,23 @@ const isSelected = function (declaration: PythonDeclaration, currentPathname: st
     return `/${declaration.pathAsString()}` === currentPathname;
 };
 
-const getColorFromValue = function (maxValue: number, specificValue: number): string {
-    const percentage = Math.log(specificValue) / Math.log(maxValue);
+const getColorFromValue = function (maxValue: number, specificValue: number, linear: boolean): string {
+    maxValue++;
+    specificValue++;
+
+    if (specificValue <= 0 || maxValue <= 0)
+        return 'rgb(0%, 0%, 255%)';
+    if (specificValue > maxValue)
+        return 'rgb(255%, 0%, 0%)';
+
+    let percentage = (linear) ? (specificValue / maxValue) : Math.log(specificValue + 1) / Math.log(maxValue + 1);
     const value = percentage * 255;
 
     return `rgb(${value}%, 0%, ${255 - value}%)`
+}
+
+const test = function (a: number, b : number) {
+    return Math.log(b) / Math.log(a);
 }
 
 export default TreeNode;

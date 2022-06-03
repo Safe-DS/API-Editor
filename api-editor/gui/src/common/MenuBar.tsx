@@ -35,19 +35,19 @@ import {
     useColorMode,
     VStack,
 } from '@chakra-ui/react';
-import React, { useRef, useState } from 'react';
-import { FaChevronDown } from 'react-icons/fa';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { resetAnnotations, toggleAnnotationImportDialog } from '../features/annotations/annotationSlice';
+import React, {useRef, useState} from 'react';
+import {FaChevronDown} from 'react-icons/fa';
+import {useAppDispatch, useAppSelector} from '../app/hooks';
+import {resetAnnotations, toggleAnnotationImportDialog} from '../features/annotations/annotationSlice';
 import AnnotatedPythonPackageBuilder from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
 import PythonPackage from '../features/packageData/model/PythonPackage';
 import {
-    selectHeatMapMode,
-    toggleHeatMapMode,
-    togglePackageDataImportDialog
+    HeatMapData,
+    toggleHeatMapData,
+    togglePackageDataImportDialog,
 } from '../features/packageData/packageDataSlice';
-import { Setter } from './util/types';
-import { toggleUsageImportDialog } from '../features/usages/usageSlice';
+import {Setter} from './util/types';
+import {toggleUsageImportDialog} from '../features/usages/usageSlice';
 
 interface MenuBarProps {
     pythonPackage: PythonPackage;
@@ -61,11 +61,11 @@ const HelpButton = function () {
         <Box>
             <Popover>
                 <PopoverTrigger>
-                    <IconButton variant="ghost" icon={<Icon name="help" />} aria-label="help" />
+                    <IconButton variant="ghost" icon={<Icon name="help"/>} aria-label="help"/>
                 </PopoverTrigger>
                 <PopoverContent minWidth={462} fontSize="sm" marginRight={2}>
-                    <PopoverArrow />
-                    <PopoverCloseButton />
+                    <PopoverArrow/>
+                    <PopoverCloseButton/>
                     <PopoverHeader>Filter Options</PopoverHeader>
                     <PopoverBody>
                         <UnorderedList spacing={2}>
@@ -183,8 +183,8 @@ const DeleteAllAnnotations = function () {
     );
 };
 
-const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFilter, displayInferErrors }) {
-    const { colorMode, toggleColorMode } = useColorMode();
+const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter, setFilter, displayInferErrors}) {
+    const {colorMode, toggleColorMode} = useColorMode();
     const dispatch = useAppDispatch();
 
     const annotationStore = useAppSelector((state) => state.annotations);
@@ -205,7 +205,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFi
 
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(annotatedPythonPackage),
         };
         fetch('/api-editor/infer', requestOptions).then(async (response) => {
@@ -226,9 +226,6 @@ const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFi
     if (colorMode === 'dark') {
         settings.push('darkMode');
     }
-    if (useAppSelector(selectHeatMapMode)) {
-        settings.push('heatMapMode');
-    }
 
     return (
         <Flex as="nav" borderBottom={1} layerStyle="subtleBorder" padding="0.5em 1em">
@@ -236,7 +233,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFi
                 {/* Box gets rid of popper.js warning "CSS margin styles cannot be used" */}
                 <Box>
                     <Menu>
-                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown}/>}>
                             File
                         </MenuButton>
                         <MenuList>
@@ -251,7 +248,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFi
                                     Annotations
                                 </MenuItem>
                             </MenuGroup>
-                            <MenuDivider />
+                            <MenuDivider/>
                             <MenuGroup title="Export">
                                 <MenuItem paddingLeft={8} onClick={exportAnnotations}>
                                     Annotations
@@ -262,11 +259,11 @@ const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFi
                 </Box>
 
                 <Button onClick={infer}>Generate adapters</Button>
-                <DeleteAllAnnotations />
+                <DeleteAllAnnotations/>
 
                 <Box>
                     <Menu closeOnSelect={false}>
-                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown}/>}>
                             Settings
                         </MenuButton>
                         <MenuList>
@@ -274,16 +271,27 @@ const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFi
                                 <MenuItemOption value={'darkMode'} onClick={toggleColorMode}>
                                     Dark mode
                                 </MenuItemOption>
-                                <MenuItemOption value={'heatMapMode'} onClick={()=>dispatch(toggleHeatMapMode())}>
-                                    Heat Map
-                                </MenuItemOption>
                             </MenuOptionGroup>
+                            <MenuDivider/>
+                            <MenuGroup title="Heat Map Radio">
+                                <MenuOptionGroup type="radio" defaultValue="none" onChange={console.log}>
+                                    <MenuItemOption paddingLeft={8} value={'none'} onClick={() => dispatch(toggleHeatMapData(HeatMapData.None))}>
+                                        None
+                                    </MenuItemOption>
+                                    <MenuItemOption paddingLeft={8} value={'usages'} onClick={() => dispatch(toggleHeatMapData(HeatMapData.Usages))}>
+                                        Usages
+                                    </MenuItemOption>
+                                    <MenuItemOption paddingLeft={8} value={'annotations'} onClick={() => dispatch(toggleHeatMapData(HeatMapData.Annotations))}>
+                                        Annotations
+                                    </MenuItemOption>
+                                </MenuOptionGroup>
+                            </MenuGroup>
                         </MenuList>
                     </Menu>
                 </Box>
             </HStack>
 
-            <Spacer />
+            <Spacer/>
 
             <HStack>
                 <Input
@@ -294,7 +302,7 @@ const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFi
                     spellCheck={false}
                     minWidth="400px"
                 />
-                <HelpButton />
+                <HelpButton/>
             </HStack>
         </Flex>
     );

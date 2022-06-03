@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../../app/store';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {RootState} from '../../app/store';
 
 export interface PackageDataState {
     expandedInTreeView: {
@@ -7,7 +7,13 @@ export interface PackageDataState {
     };
     treeViewScrollOffset: number;
     showImportDialog: boolean;
-    heatMapMode: boolean;
+    heatMapData: HeatMapData;
+}
+
+export enum HeatMapData {
+    None,
+    Usages,
+    Annotations
 }
 
 // Initial state -------------------------------------------------------------------------------------------------------
@@ -16,7 +22,7 @@ const initialState: PackageDataState = {
     expandedInTreeView: {},
     treeViewScrollOffset: 0,
     showImportDialog: false,
-    heatMapMode: false,
+    heatMapData: HeatMapData.None,
 };
 
 // Slice ---------------------------------------------------------------------------------------------------------------
@@ -38,30 +44,30 @@ const packageDataSlice = createSlice({
         toggleImportDialog(state) {
             state.showImportDialog = !state.showImportDialog;
         },
-        toggleHeatMapMode(state) {
-            state.heatMapMode = !state.heatMapMode;
+        toggleHeatMapData(state, action: PayloadAction<HeatMapData>) {
+            state.heatMapData = action.payload;
         },
     },
 });
 
-const { actions, reducer } = packageDataSlice;
+const {actions, reducer} = packageDataSlice;
 export const {
     toggleIsExpanded: toggleIsExpandedInTreeView,
     setScrollOffset: setTreeViewScrollOffset,
     toggleImportDialog: togglePackageDataImportDialog,
-    toggleHeatMapMode: toggleHeatMapMode,
+    toggleHeatMapData: toggleHeatMapData,
 } = actions;
 export default reducer;
 
 const selectPackageData = (state: RootState) => state.packageData;
 export const selectIsExpandedInTreeView =
     (target: string) =>
-    (state: RootState): boolean =>
-        Boolean(selectPackageData(state).expandedInTreeView[target]);
+        (state: RootState): boolean =>
+            Boolean(selectPackageData(state).expandedInTreeView[target]);
 export const selectAllExpandedInTreeView = (state: RootState): { [target: string]: true } =>
     selectPackageData(state).expandedInTreeView;
 export const selectTreeViewScrollOffset = (state: RootState): number => selectPackageData(state).treeViewScrollOffset;
 export const selectShowPackageDataImportDialog = (state: RootState): boolean =>
     selectPackageData(state).showImportDialog;
-export const selectHeatMapMode = (state: RootState): boolean =>
-    selectPackageData(state).heatMapMode;
+export const selectHeatMapData = (state: RootState): HeatMapData =>
+    selectPackageData(state).heatMapData;
