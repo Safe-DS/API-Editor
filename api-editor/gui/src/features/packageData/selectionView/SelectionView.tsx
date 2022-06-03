@@ -99,7 +99,7 @@ const SelectionView: React.FC<SelectionViewProps> = function ({pythonPackage, py
                 >
                     Next
                 </Button>
-                <Button accessKey="n"
+                <Button accessKey="a"
                     onClick={() => {
                         dispatch(expandAllParents(getAllParents(pythonPackage)));
                     }
@@ -107,7 +107,7 @@ const SelectionView: React.FC<SelectionViewProps> = function ({pythonPackage, py
                 >
                     Expand All
                 </Button>
-                <Button accessKey="a"
+                <Button accessKey="s"
                     onClick={() => {
                         dispatch(collapseAllParents(getAllParents(pythonPackage)));
                     }
@@ -115,7 +115,15 @@ const SelectionView: React.FC<SelectionViewProps> = function ({pythonPackage, py
                 >
                     Collapse All
                 </Button>
-                <Button accessKey="b"
+                <Button accessKey="y"
+                        onClick={() => {
+                            dispatch(expandAllParents(getChildrenOfElementInTree(declaration)));
+                        }
+                        }
+                >
+                    Expand Selected
+                </Button>
+                <Button accessKey="x"
                     onClick={() => {
                         dispatch(collapseAllParents(getChildrenOfElementInTree(declaration)));
                     }
@@ -123,14 +131,7 @@ const SelectionView: React.FC<SelectionViewProps> = function ({pythonPackage, py
                 >
                     Collapse Selected
                 </Button>
-                <Button accessKey="m"
-                    onClick={() => {
-                        dispatch(expandAllParents(getChildrenOfElementInTree(declaration)));
-                    }
-                    }
-                >
-                    Expand Selected
-                </Button>
+
             </HStack>
         </VStack>
     );
