@@ -6,8 +6,9 @@ import PythonModule from '../PythonModule';
 import PythonClass from '../PythonClass';
 import PythonFunction from '../PythonFunction';
 import NameFilter from './NameFilter';
-import { initialState } from '../../../annotations/annotationSlice';
+import { initialState as annotations } from '../../../annotations/annotationSlice';
 import PythonDeclaration from '../PythonDeclaration';
+import {UsageCountStore} from "../../../usages/model/UsageCountStore";
 
 let pythonPackage: PythonPackage;
 
@@ -66,7 +67,7 @@ beforeEach(() => {
 describe('AbstractPythonFilter::applyToPackage', () => {
     test('keeps modules for which the filter returns true, their ancestors, and their descendants', () => {
         const filter = new NameFilter('test_module_1');
-        const filteredPackage = filter.applyToPackage(pythonPackage, initialState);
+        const filteredPackage = filter.applyToPackage(pythonPackage, annotations, new UsageCountStore());
 
         const modules = filteredPackage.modules;
         expect(names(modules)).toEqual(['test_module_1']);
@@ -89,7 +90,7 @@ describe('AbstractPythonFilter::applyToPackage', () => {
 
     test('keeps classes for which the filter returns true, their ancestors, and their descendants', () => {
         const filter = new NameFilter('test_class_1');
-        const filteredPackage = filter.applyToPackage(pythonPackage, initialState);
+        const filteredPackage = filter.applyToPackage(pythonPackage, annotations, new UsageCountStore());
 
         const modules = filteredPackage.modules;
         expect(names(modules)).toEqual(['test_module_1']);
@@ -109,7 +110,7 @@ describe('AbstractPythonFilter::applyToPackage', () => {
 
     test('keeps methods for which the filter returns true, their ancestors, and their descendants', () => {
         const filter = new NameFilter('test_method_1');
-        const filteredPackage = filter.applyToPackage(pythonPackage, initialState);
+        const filteredPackage = filter.applyToPackage(pythonPackage, annotations, new UsageCountStore());
 
         const modules = filteredPackage.modules;
         expect(names(modules)).toEqual(['test_module_1']);
@@ -129,7 +130,7 @@ describe('AbstractPythonFilter::applyToPackage', () => {
 
     test('keeps global functions for which the filter returns true, their ancestors, and their descendants', () => {
         const filter = new NameFilter('test_global_function_1');
-        const filteredPackage = filter.applyToPackage(pythonPackage, initialState);
+        const filteredPackage = filter.applyToPackage(pythonPackage, annotations, new UsageCountStore());
 
         const modules = filteredPackage.modules;
         expect(names(modules)).toEqual(['test_module_1']);
@@ -146,7 +147,7 @@ describe('AbstractPythonFilter::applyToPackage', () => {
 
     test('keeps parameters for which the filter returns true, their ancestors, and their descendants', () => {
         const filter = new NameFilter('test_parameter_1');
-        const filteredPackage = filter.applyToPackage(pythonPackage, initialState);
+        const filteredPackage = filter.applyToPackage(pythonPackage, annotations, new UsageCountStore());
 
         const modules = filteredPackage.modules;
         expect(names(modules)).toEqual(['test_module_1']);

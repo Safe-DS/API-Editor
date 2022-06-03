@@ -88,7 +88,7 @@ const getNextElementPath = function (
 ): string | null {
     const nextElement = getNextElementInTree(current);
     if (nextElement != null) {
-        if (filter.shouldKeepDeclaration(nextElement, annotations)) {
+        if (filter.shouldKeepDeclaration(nextElement, annotations, null)) {
             return nextElement.pathAsString();
         }
         return getNextElementPath(nextElement, filter, annotations);
@@ -127,7 +127,7 @@ const getPreviousElementPath = function (
 ): string | null {
     const previousElement = getPreviousElementInTree(current);
     if (previousElement != null) {
-        if (filter.shouldKeepDeclaration(previousElement, annotations)) {
+        if (filter.shouldKeepDeclaration(previousElement, annotations, null)) {
             return previousElement.pathAsString();
         }
         return getPreviousElementPath(previousElement, filter, annotations);

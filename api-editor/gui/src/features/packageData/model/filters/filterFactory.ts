@@ -1,11 +1,14 @@
-import { ConjunctiveFilter } from './ConjunctiveFilter';
+import {ConjunctiveFilter} from './ConjunctiveFilter';
 import NameFilter from './NameFilter';
 import AbstractPythonFilter from './AbstractPythonFilter';
-import DeclarationTypeFilter, { DeclarationType } from './DeclarationTypeFilter';
-import VisibilityFilter, { Visibility } from './VisibilityFilter';
-import { NegatedFilter } from './NegatedFilter';
-import { Optional } from '../../../../common/util/types';
-import AnnotationFilter, { AnnotationType } from './AnnotationFilter';
+import DeclarationTypeFilter, {DeclarationType} from './DeclarationTypeFilter';
+import VisibilityFilter, {Visibility} from './VisibilityFilter';
+import {NegatedFilter} from './NegatedFilter';
+import {Optional} from '../../../../common/util/types';
+import AnnotationFilter, {AnnotationType} from './AnnotationFilter';
+import UsageFilter from "./UsageFilter";
+import UsefulnessFilter from "./UsefulnessFilter";
+import {equals, greaterThan, greaterThanOrEqual, lessThan, lessThanOrEqual} from "./comparisons";
 
 /**
  * Creates a filter from the given string. This method handles conjunctions, negations, and non-negated tokens.
@@ -99,5 +102,50 @@ function parsePositiveToken(token: string): Optional<AbstractPythonFilter> {
     const nameMatch = /^name:(?<name>\w+)$/.exec(token);
     if (nameMatch) {
         return new NameFilter(nameMatch?.groups?.name as string);
+    }
+
+    // Usages
+    const usageMatch = /^usages(?<comparison>:(<|<=|>=|>)?)(?<expected>\d+)$/.exec(token);
+    if (usageMatch) {
+        const comparisonOperator = usageMatch?.groups?.comparison as string;
+        const comparison = comparisonFunction(comparisonOperator);
+        if (!comparison) {
+            return;
+        }
+
+        const expected = Number.parseInt(usageMatch?.groups?.expected as string, 10);
+
+        return new UsageFilter(comparison, expected)
+    }
+
+    // Usefulness
+    const usefulnessMatch = /^usefulness(?<comparison>:(<|<=|>=|>)?)(?<expected>\d+)$/.exec(token);
+    if (usefulnessMatch) {
+        const comparisonOperator = usefulnessMatch?.groups?.comparison as string;
+        const comparison = comparisonFunction(comparisonOperator);
+        if (!comparison) {
+            return;
+        }
+
+        const expected = Number.parseInt(usefulnessMatch?.groups?.expected as string, 10);
+
+        return new UsefulnessFilter(comparison, expected)
+    }
+}
+
+const comparisonFunction = function (comparisonOperator: string): ((a: number, b: number) => boolean) | null {
+    switch (comparisonOperator) {
+        case ':<':
+            return lessThan;
+        case ':<=':
+            return lessThanOrEqual;
+        case ':':
+            return equals;
+        case ':>=':
+            return greaterThanOrEqual;
+        case ':>':
+            return greaterThan;
+        default:
+            return null
     }
 }

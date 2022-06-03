@@ -7,36 +7,34 @@ import {AnnotationsState} from '../../../annotations/annotationSlice';
 import {UsageCountStore} from "../../../usages/model/UsageCountStore";
 
 /**
- * Keeps only declarations of a specified type (module/class/function/parameter).
+ * Keeps only declarations have a certain usefulness.
  */
-export default class DeclarationTypeFilter extends AbstractPythonFilter {
+export default class UsefulnessFilter extends AbstractPythonFilter {
+
     /**
-     * @param type Which declarations to keep.
+     * @param comparison How actual and expected usefulness should be compared.
+     * @param expectedUsage The expected usefulness.
      */
-    constructor(readonly type: DeclarationType) {
+    constructor(
+        readonly comparison: (actualUsage: number, expectedUsage: number) => boolean,
+        readonly expectedUsage: number
+    ) {
         super();
     }
 
     shouldKeepModule(pythonModule: PythonModule, annotations: AnnotationsState, usages: UsageCountStore): boolean {
-        return this.type === DeclarationType.Module;
+        return false;
     }
 
     shouldKeepClass(pythonClass: PythonClass, annotations: AnnotationsState, usages: UsageCountStore): boolean {
-        return this.type === DeclarationType.Class;
+        return false; // TODO
     }
 
     shouldKeepFunction(pythonFunction: PythonFunction, annotations: AnnotationsState, usages: UsageCountStore): boolean {
-        return this.type === DeclarationType.Function;
+        return false; // TODO
     }
 
     shouldKeepParameter(pythonParameter: PythonParameter, annotations: AnnotationsState, usages: UsageCountStore): boolean {
-        return this.type === DeclarationType.Parameter;
+        return false; // TODO
     }
-}
-
-export enum DeclarationType {
-    Module,
-    Class,
-    Function,
-    Parameter,
 }
