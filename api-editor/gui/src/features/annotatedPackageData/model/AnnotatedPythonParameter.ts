@@ -1,6 +1,6 @@
-import {PythonParameterAssignment} from '../../packageData/model/PythonParameter';
-import {InferableAnnotation} from './InferableAnnotation';
-import {Optional} from '../../../common/util/types';
+import { PythonParameterAssignment } from '../../packageData/model/PythonParameter';
+import { InferableAnnotation } from './InferableAnnotation';
+import { Optional } from '../../../common/util/types';
 
 export default class AnnotatedPythonParameter {
     readonly name: string;
