@@ -9,15 +9,17 @@ import { selectIsExpandedInTreeView, toggleIsExpandedInTreeView } from '../packa
 import VisibilityIndicator from './VisibilityIndicator';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
 import { selectAnnotations } from '../../annotations/annotationSlice';
+import {UsageCountStore} from "../../usages/model/UsageCountStore";
 
 interface TreeNodeProps {
     declaration: PythonDeclaration;
     icon: IconType;
     isExpandable: boolean;
     filter: AbstractPythonFilter;
+    usages: UsageCountStore;
 }
 
-const TreeNode: React.FC<TreeNodeProps> = function ({ declaration, icon, isExpandable, filter }) {
+const TreeNode: React.FC<TreeNodeProps> = function ({ declaration, icon, isExpandable, filter, usages }) {
     const currentPathname = useLocation().pathname;
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -30,7 +32,7 @@ const TreeNode: React.FC<TreeNodeProps> = function ({ declaration, icon, isExpan
     const backgroundColor = isSelected(declaration, currentPathname) ? 'cornflowerblue' : undefined;
     const color = isSelected(declaration, currentPathname) ? 'white' : undefined;
 
-    const fontWeight = filter.shouldKeepDeclaration(declaration, annotations) ? 'bold' : undefined;
+    const fontWeight = filter.shouldKeepDeclaration(declaration, annotations, usages) ? 'bold' : undefined;
 
     const handleClick = () => {
         dispatch(toggleIsExpandedInTreeView(declaration.pathAsString()));

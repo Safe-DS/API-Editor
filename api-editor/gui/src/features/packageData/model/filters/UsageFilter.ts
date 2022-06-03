@@ -27,7 +27,12 @@ export default class UsageFilter extends AbstractPythonFilter {
     }
 
     shouldKeepClass(pythonClass: PythonClass, annotations: AnnotationsState, usages: UsageCountStore): boolean {
-        return false; // TODO
+        const classUsages = usages.classUsages.get(pythonClass.qualifiedName)
+        if (classUsages === undefined) {
+            return false;
+        }
+
+        return this.comparison(classUsages, this.expectedUsage);
     }
 
     shouldKeepFunction(pythonFunction: PythonFunction, annotations: AnnotationsState, usages: UsageCountStore): boolean {

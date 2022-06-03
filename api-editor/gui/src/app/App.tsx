@@ -11,10 +11,10 @@ import {
     UnorderedList,
 } from '@chakra-ui/react';
 import * as idb from 'idb-keyval';
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router';
+import React, {useEffect, useState} from 'react';
+import {useLocation} from 'react-router';
 import MenuBar from '../common/MenuBar';
-import { Setter } from '../common/util/types';
+import {Setter} from '../common/util/types';
 import AnnotationImportDialog from '../features/annotations/AnnotationImportDialog';
 import {
     AnnotationsState,
@@ -33,7 +33,7 @@ import MoveForm from '../features/annotations/forms/MoveForm';
 import OptionalForm from '../features/annotations/forms/OptionalForm';
 import RenameForm from '../features/annotations/forms/RenameForm';
 import PythonPackage from '../features/packageData/model/PythonPackage';
-import { parsePythonPackageJson, PythonPackageJson } from '../features/packageData/model/PythonPackageBuilder';
+import {parsePythonPackageJson, PythonPackageJson} from '../features/packageData/model/PythonPackageBuilder';
 import PackageDataImportDialog from '../features/packageData/PackageDataImportDialog';
 import {
     selectShowPackageDataImportDialog,
@@ -41,13 +41,13 @@ import {
 } from '../features/packageData/packageDataSlice';
 import SelectionView from '../features/packageData/selectionView/SelectionView';
 import TreeView from '../features/packageData/treeView/TreeView';
-import { useAppDispatch, useAppSelector } from './hooks';
+import {useAppDispatch, useAppSelector} from './hooks';
 import PythonFunction from '../features/packageData/model/PythonFunction';
 import AttributeForm from '../features/annotations/forms/AttributeForm';
-import { UsageCountJson, UsageCountStore } from '../features/usages/model/UsageCountStore';
-import { selectShowUsageImportDialog } from '../features/usages/usageSlice';
+import {UsageCountJson, UsageCountStore} from '../features/usages/model/UsageCountStore';
+import {selectShowUsageImportDialog} from '../features/usages/usageSlice';
 import UsageImportDialog from '../features/usages/UsageImportDialog';
-import { createFilterFromString } from '../features/packageData/model/filters/filterFactory';
+import {createFilterFromString} from '../features/packageData/model/filters/filterFactory';
 
 const App: React.FC = function () {
     const dispatch = useAppDispatch();
@@ -94,7 +94,11 @@ const App: React.FC = function () {
 
     const [filter, setFilter] = useState('is:public');
     const pythonFilter = createFilterFromString(filter);
-    const filteredPythonPackage = pythonFilter.applyToPackage(pythonPackage, useAppSelector(selectAnnotations));
+    const filteredPythonPackage = pythonFilter.applyToPackage(
+        pythonPackage,
+        useAppSelector(selectAnnotations),
+        usages
+    );
 
     const userActionTarget = pythonPackage.getByRelativePathAsString(currentUserAction.target);
 
@@ -137,18 +141,18 @@ const App: React.FC = function () {
                     resize="horizontal"
                 >
                     {currentUserAction.type === 'attribute' && (
-                        <AttributeForm target={userActionTarget || pythonPackage} />
+                        <AttributeForm target={userActionTarget || pythonPackage}/>
                     )}
                     {currentUserAction.type === 'boundary' && (
-                        <BoundaryForm target={userActionTarget || pythonPackage} />
+                        <BoundaryForm target={userActionTarget || pythonPackage}/>
                     )}
                     {currentUserAction.type === 'calledAfter' && userActionTarget instanceof PythonFunction && (
-                        <CalledAfterForm target={userActionTarget} />
+                        <CalledAfterForm target={userActionTarget}/>
                     )}
                     {currentUserAction.type === 'constant' && (
-                        <ConstantForm target={userActionTarget || pythonPackage} />
+                        <ConstantForm target={userActionTarget || pythonPackage}/>
                     )}
-                    {currentUserAction.type === 'enum' && <EnumForm target={userActionTarget || pythonPackage} />}
+                    {currentUserAction.type === 'enum' && <EnumForm target={userActionTarget || pythonPackage}/>}
                     {currentUserAction.type === 'group' && (
                         <GroupForm
                             target={userActionTarget || pythonPackage}
@@ -159,24 +163,24 @@ const App: React.FC = function () {
                             }
                         />
                     )}
-                    {currentUserAction.type === 'move' && <MoveForm target={userActionTarget || pythonPackage} />}
+                    {currentUserAction.type === 'move' && <MoveForm target={userActionTarget || pythonPackage}/>}
                     {currentUserAction.type === 'none' && (
-                        <TreeView pythonPackage={filteredPythonPackage} filter={pythonFilter} />
+                        <TreeView pythonPackage={filteredPythonPackage} filter={pythonFilter} usages={usages}/>
                     )}
                     {currentUserAction.type === 'optional' && (
-                        <OptionalForm target={userActionTarget || pythonPackage} />
+                        <OptionalForm target={userActionTarget || pythonPackage}/>
                     )}
-                    {currentUserAction.type === 'rename' && <RenameForm target={userActionTarget || pythonPackage} />}
+                    {currentUserAction.type === 'rename' && <RenameForm target={userActionTarget || pythonPackage}/>}
                 </GridItem>
                 <GridItem gridArea="rightPane" overflow="auto">
-                    <SelectionView pythonPackage={pythonPackage} pythonFilter={pythonFilter} />
+                    <SelectionView pythonPackage={pythonPackage} pythonFilter={pythonFilter} usages={usages}/>
                 </GridItem>
 
-                {showAnnotationImportDialog && <AnnotationImportDialog />}
+                {showAnnotationImportDialog && <AnnotationImportDialog/>}
                 {showPackageDataImportDialog && (
-                    <PackageDataImportDialog setPythonPackage={setPythonPackage} setFilter={setFilter} />
+                    <PackageDataImportDialog setPythonPackage={setPythonPackage} setFilter={setFilter}/>
                 )}
-                {showUsagesImportDialog && <UsageImportDialog setUsages={setUsages} />}
+                {showUsagesImportDialog && <UsageImportDialog setUsages={setUsages}/>}
             </Grid>
             <Modal
                 isOpen={showInferErrorDialog}
@@ -185,10 +189,10 @@ const App: React.FC = function () {
                 size="xl"
                 isCentered
             >
-                <ModalOverlay />
+                <ModalOverlay/>
                 <ModalContent>
                     <ModalHeader>Infer errors</ModalHeader>
-                    <ModalCloseButton />
+                    <ModalCloseButton/>
                     <ModalBody paddingLeft={10} paddingBottom={6}>
                         <UnorderedList spacing={5}>
                             {inferErrors.map((error, index) => (
