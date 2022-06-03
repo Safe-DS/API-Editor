@@ -1,7 +1,7 @@
-import {Box, Button, HStack, Spacer, VStack} from '@chakra-ui/react';
+import { Box, Button, HStack, Spacer, VStack } from '@chakra-ui/react';
 import React from 'react';
-import {useCallback, useEffect} from 'react';
-import {useLocation, useNavigate} from 'react-router';
+import { useCallback, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router';
 import PythonClass from '../model/PythonClass';
 import PythonFunction from '../model/PythonFunction';
 import PythonModule from '../model/PythonModule';
@@ -11,18 +11,18 @@ import ClassView from './ClassView';
 import FunctionView from './FunctionView';
 import ModuleView from './ModuleView';
 import ParameterView from './ParameterView';
-import {expandParentsInTreeView, collapseAllParents, expandAllParents} from '../packageDataSlice';
-import {useAppDispatch, useAppSelector} from '../../../app/hooks';
+import { expandParentsInTreeView, collapseAllParents, expandAllParents } from '../packageDataSlice';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import PythonDeclaration from '../model/PythonDeclaration';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
-import {AnnotationsState, selectAnnotations} from '../../annotations/annotationSlice';
+import { AnnotationsState, selectAnnotations } from '../../annotations/annotationSlice';
 
 interface SelectionViewProps {
     pythonPackage: PythonPackage;
     pythonFilter: AbstractPythonFilter;
 }
 
-const SelectionView: React.FC<SelectionViewProps> = function ({pythonPackage, pythonFilter}) {
+const SelectionView: React.FC<SelectionViewProps> = function ({ pythonPackage, pythonFilter }) {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
@@ -33,20 +33,18 @@ const SelectionView: React.FC<SelectionViewProps> = function ({pythonPackage, py
         return <></>;
     }
 
-
-
     return (
         <VStack h="100%">
             <Box w="100%" flexGrow={1} overflowY="scroll">
                 <Box padding={4}>
-                    {declaration instanceof PythonFunction && <FunctionView pythonFunction={declaration}/>}
-                    {declaration instanceof PythonClass && <ClassView pythonClass={declaration}/>}
-                    {declaration instanceof PythonModule && <ModuleView pythonModule={declaration}/>}
-                    {declaration instanceof PythonParameter && <ParameterView pythonParameter={declaration}/>}
+                    {declaration instanceof PythonFunction && <FunctionView pythonFunction={declaration} />}
+                    {declaration instanceof PythonClass && <ClassView pythonClass={declaration} />}
+                    {declaration instanceof PythonModule && <ModuleView pythonModule={declaration} />}
+                    {declaration instanceof PythonParameter && <ParameterView pythonParameter={declaration} />}
                 </Box>
             </Box>
 
-            <Spacer/>
+            <Spacer />
 
             <HStack borderTop={1} layerStyle="subtleBorder" padding="0.5em 1em" w="100%">
                 <Button
@@ -79,39 +77,38 @@ const SelectionView: React.FC<SelectionViewProps> = function ({pythonPackage, py
                 >
                     Next
                 </Button>
-                <Button accessKey="a"
+                <Button
+                    accessKey="a"
                     onClick={() => {
                         dispatch(expandAllParents(getAllParents(pythonPackage)));
-                    }
-                    }
+                    }}
                 >
                     Expand All
                 </Button>
-                <Button accessKey="s"
+                <Button
+                    accessKey="s"
                     onClick={() => {
                         dispatch(collapseAllParents(getAllParents(pythonPackage)));
-                    }
-                    }
+                    }}
                 >
                     Collapse All
                 </Button>
-                <Button accessKey="y"
-                        onClick={() => {
-                            dispatch(expandAllParents(getChildrenOfElementInTree(declaration)));
-                        }
-                        }
+                <Button
+                    accessKey="y"
+                    onClick={() => {
+                        dispatch(expandAllParents(getChildrenOfElementInTree(declaration)));
+                    }}
                 >
                     Expand Selected
                 </Button>
-                <Button accessKey="x"
+                <Button
+                    accessKey="x"
                     onClick={() => {
                         dispatch(collapseAllParents(getChildrenOfElementInTree(declaration)));
-                    }
-                    }
+                    }}
                 >
                     Collapse Selected
                 </Button>
-
             </HStack>
         </VStack>
     );
@@ -214,7 +211,7 @@ const getAllParents = function (filteredPythonPackage: PythonPackage): string[] 
         for (const object of element.children()) {
             if (object instanceof PythonClass) {
                 parents.push(object.pathAsString());
-                for (const method of object.methods){
+                for (const method of object.methods) {
                     parents.push(method.pathAsString());
                 }
             } else if (object instanceof PythonFunction) {
@@ -228,7 +225,7 @@ const getAllParents = function (filteredPythonPackage: PythonPackage): string[] 
 const getChildrenOfElementInTree = function (current: PythonDeclaration): string[] {
     let childrenList: string[] = [current.pathAsString()];
     let children = current.children();
-    for (const child of children){
+    for (const child of children) {
         const list = getChildrenOfElementInTree(child);
         childrenList = [...childrenList, ...list];
     }
