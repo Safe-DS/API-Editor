@@ -61,7 +61,7 @@ data class ConstantAnnotation(val defaultValue: DefaultValue) : EditorAnnotation
 }
 
 @Serializable
-data class DescriptionAnnotation(val newDescription: String): EditorAnnotation() {
+data class DescriptionAnnotation(val newDescription: String) : EditorAnnotation() {
 
     @Transient
     override val validTargets = ANY_DECLARATION
