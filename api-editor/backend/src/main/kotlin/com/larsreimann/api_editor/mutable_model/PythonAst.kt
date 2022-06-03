@@ -82,7 +82,8 @@ class PythonClass(
 
 class PythonConstructor(
     parameters: List<PythonParameter> = emptyList(),
-    val callToOriginalAPI: PythonCall? = null
+    val callToOriginalAPI: PythonCall? = null,
+    var todo: String = ""
 ) : PythonAstNode() {
 
     val parameters = MutableContainmentList(parameters)
@@ -187,7 +188,6 @@ class PythonParameter(
     defaultValue: PythonExpression? = null,
     var assignedBy: PythonParameterAssignment = PythonParameterAssignment.POSITION_OR_NAME,
     var description: String = "",
-    var todo: String = "",
     var boundary: Boundary? = null,
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
 ) : PythonDeclaration() {

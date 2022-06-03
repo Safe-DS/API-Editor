@@ -5,7 +5,6 @@ import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonDeclaration
 import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonPackage
-import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.modeling.descendants
 
 /**
@@ -22,9 +21,8 @@ private fun PythonDeclaration.processTodoAnnotations() {
         .filterIsInstance<TodoAnnotation>()
         .forEach {
             when (this) {
-                is PythonClass -> this.todo = it.todo
-                is PythonFunction -> this.todo = it.todo
-                is PythonParameter -> this.todo = it.todo
+                is PythonClass -> this.todo = it.message
+                is PythonFunction -> this.todo = it.message
                 else -> {
                     // Do nothing
                 }
