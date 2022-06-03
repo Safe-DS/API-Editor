@@ -28,6 +28,7 @@ private fun PythonPackage.preprocess() {
  */
 private fun PythonPackage.processAnnotations() {
     processRemoveAnnotations()
+    processTodoAnnotations()
     processRenameAnnotations()
     processMoveAnnotations()
     processBoundaryAnnotations()

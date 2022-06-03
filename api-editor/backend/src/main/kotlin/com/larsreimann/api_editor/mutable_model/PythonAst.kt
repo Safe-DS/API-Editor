@@ -62,6 +62,7 @@ class PythonClass(
     methods: List<PythonFunction> = emptyList(),
     var isPublic: Boolean = true,
     var description: String = "",
+    var todo: String = "",
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
     var originalClass: OriginalPythonClass? = null
 ) : PythonDeclaration() {
@@ -126,6 +127,7 @@ class PythonFunction(
     results: List<PythonResult> = emptyList(),
     var isPublic: Boolean = true,
     var description: String = "",
+    var todo: String = "",
     var isPure: Boolean = false,
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
     var callToOriginalAPI: PythonCall? = null
@@ -185,6 +187,7 @@ class PythonParameter(
     defaultValue: PythonExpression? = null,
     var assignedBy: PythonParameterAssignment = PythonParameterAssignment.POSITION_OR_NAME,
     var description: String = "",
+    var todo: String = "",
     var boundary: Boundary? = null,
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
 ) : PythonDeclaration() {

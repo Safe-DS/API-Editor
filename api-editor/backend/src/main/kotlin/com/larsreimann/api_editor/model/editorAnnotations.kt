@@ -112,13 +112,19 @@ object RemoveAnnotation : EditorAnnotation() {
 @Serializable
 data class RenameAnnotation(val newName: String) : EditorAnnotation() {
     @Transient
-    override val validTargets = CLASSES.union(FUNCTIONS).union(PARAMETERS)
+    override val validTargets = ANY_DECLARATION
 }
 
 @Serializable
 object RequiredAnnotation : EditorAnnotation() {
     @Transient
     override val validTargets = PARAMETERS
+}
+
+@Serializable
+data class TodoAnnotation(val todo: String): EditorAnnotation() {
+    @Transient
+    override val validTargets = ANY_DECLARATION
 }
 
 @Serializable
@@ -164,6 +170,13 @@ enum class AnnotationTarget(private val target: String) {
     }
 }
 
+val ANY_DECLARATION = setOf(
+    CLASS,
+    GLOBAL_FUNCTION,
+    METHOD,
+    CONSTRUCTOR_PARAMETER,
+    FUNCTION_PARAMETER
+)
 val GLOBAL_DECLARATIONS = setOf(CLASS, GLOBAL_FUNCTION)
 val CLASSES = setOf(CLASS)
 val FUNCTIONS = setOf(GLOBAL_FUNCTION, METHOD)
