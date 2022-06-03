@@ -122,7 +122,7 @@ object RequiredAnnotation : EditorAnnotation() {
 }
 
 @Serializable
-data class TodoAnnotation(val message: String): EditorAnnotation() {
+data class TodoAnnotation(val message: String) : EditorAnnotation() {
     @Transient
     override val validTargets = ANY_DECLARATION
 }
