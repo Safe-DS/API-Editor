@@ -1,14 +1,16 @@
-import { ConjunctiveFilter } from './ConjunctiveFilter';
+import {ConjunctiveFilter} from './ConjunctiveFilter';
 import NameFilter from './NameFilter';
 import AbstractPythonFilter from './AbstractPythonFilter';
-import DeclarationTypeFilter, { DeclarationType } from './DeclarationTypeFilter';
-import VisibilityFilter, { Visibility } from './VisibilityFilter';
-import { NegatedFilter } from './NegatedFilter';
-import { Optional } from '../../../../common/util/types';
-import AnnotationFilter, { AnnotationType } from './AnnotationFilter';
+import DeclarationTypeFilter, {DeclarationType} from './DeclarationTypeFilter';
+import VisibilityFilter, {Visibility} from './VisibilityFilter';
+import {NegatedFilter} from './NegatedFilter';
+import {Optional} from '../../../../common/util/types';
+import AnnotationFilter, {AnnotationType} from './AnnotationFilter';
 import UsageFilter from './UsageFilter';
 import UsefulnessFilter from './UsefulnessFilter';
-import { equals, greaterThan, greaterThanOrEqual, lessThan, lessThanOrEqual } from './comparisons';
+import {equals, greaterThan, greaterThanOrEqual, lessThan, lessThanOrEqual} from './comparisons';
+import ParameterAssignmentFilter from "./ParameterAssignmentFilter";
+import {PythonParameterAssignment} from "../PythonParameter";
 
 /**
  * Creates a filter from the given string. This method handles conjunctions, negations, and non-negated tokens.
@@ -68,6 +70,16 @@ function parsePositiveToken(token: string): Optional<AbstractPythonFilter> {
             return new VisibilityFilter(Visibility.Public);
         case 'is:internal':
             return new VisibilityFilter(Visibility.Internal);
+
+        // Parameter assignment
+        case 'is:implicit':
+            return new ParameterAssignmentFilter(PythonParameterAssignment.IMPLICIT);
+        case 'is:positiononly':
+            return new ParameterAssignmentFilter(PythonParameterAssignment.POSITION_ONLY);
+        case 'is:positionorname':
+            return new ParameterAssignmentFilter(PythonParameterAssignment.POSITION_OR_NAME);
+        case 'is:nameonly':
+            return new ParameterAssignmentFilter(PythonParameterAssignment.NAME_ONLY);
 
         // Annotations
         case 'annotation:any':
