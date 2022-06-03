@@ -1,6 +1,6 @@
-import { PythonParameterAssignment } from '../../packageData/model/PythonParameter';
-import { InferableAnnotation } from './InferableAnnotation';
-import { Optional } from '../../../common/util/types';
+import {PythonParameterAssignment} from '../../packageData/model/PythonParameter';
+import {InferableAnnotation} from './InferableAnnotation';
+import {Optional} from '../../../common/util/types';
 
 export default class AnnotatedPythonParameter {
     readonly name: string;
@@ -26,6 +26,9 @@ export default class AnnotatedPythonParameter {
         this.qualifiedName = qualifiedName;
         this.defaultValue = defaultValue;
         switch (assignedBy) {
+            case PythonParameterAssignment.IMPLICIT:
+                this.assignedBy = 'IMPLICIT';
+                break;
             case PythonParameterAssignment.NAME_ONLY:
                 this.assignedBy = 'NAME_ONLY';
                 break;
