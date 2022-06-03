@@ -165,7 +165,7 @@ def __get_required_annotations(
         (it, parameters[it])
         for it in parameters
         if parameters[it].default_value is not None
-           and parameters[it].qname in usages.parameter_usages
+        and parameters[it].qname in usages.parameter_usages
     ]
     for qname, parameter in optional_parameters:
         if __get_parameter_info(qname, usages).type is ParameterType.Required:
@@ -237,7 +237,9 @@ def __get_parameter_info(qname: str, usages: UsageCountStore) -> ParameterInfo:
         is_string = __get_default_type_from_value(it[0]) == "string"
         # Check if value is used more than 0 times AND if the value is correctly formatted as a string (with single
         #  quotes). If it isn't a string, just accept it.
-        if it[1] > 0 and ((is_string and it[0][0] == "'" and  it[0][-1] == "'") or not is_string):
+        if it[1] > 0 and (
+            (is_string and it[0][0] == "'" and it[0][-1] == "'") or not is_string
+        ):
             values.append((it[0], it[1]))
 
     if len(values) == 0:
