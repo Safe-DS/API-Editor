@@ -85,6 +85,6 @@ describe('createFilterFromString', () => {
         const positiveFilter = (completeFilter as ConjunctiveFilter).filters[0];
         expect(positiveFilter).toBeInstanceOf(UsefulnessFilter);
         expect((positiveFilter as UsefulnessFilter).comparison).toEqual(greaterThan);
-        expect((positiveFilter as UsefulnessFilter).expectedUsage).toEqual(2);
+        expect((positiveFilter as UsefulnessFilter).expectedUsefulness).toEqual(2);
     })
 });

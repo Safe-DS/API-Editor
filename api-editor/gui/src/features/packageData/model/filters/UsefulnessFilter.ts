@@ -13,11 +13,11 @@ export default class UsefulnessFilter extends AbstractPythonFilter {
 
     /**
      * @param comparison How actual and expected usefulness should be compared.
-     * @param expectedUsage The expected usefulness.
+     * @param expectedUsefulness The expected usefulness.
      */
     constructor(
-        readonly comparison: (actualUsage: number, expectedUsage: number) => boolean,
-        readonly expectedUsage: number
+        readonly comparison: (actualUsefulness: number, expectedUsefulness: number) => boolean,
+        readonly expectedUsefulness: number
     ) {
         super();
     }
@@ -27,14 +27,33 @@ export default class UsefulnessFilter extends AbstractPythonFilter {
     }
 
     shouldKeepClass(pythonClass: PythonClass, annotations: AnnotationsState, usages: UsageCountStore): boolean {
-        return false; // TODO
+        const classUsefulness = usages.classUsages.get(pythonClass.qualifiedName)
+        return this.shouldKeepWithUsefulness(classUsefulness);
     }
 
     shouldKeepFunction(pythonFunction: PythonFunction, annotations: AnnotationsState, usages: UsageCountStore): boolean {
-        return false; // TODO
+        const functionUsefulness = usages.functionUsages.get(pythonFunction.qualifiedName)
+        return this.shouldKeepWithUsefulness(functionUsefulness);
     }
 
     shouldKeepParameter(pythonParameter: PythonParameter, annotations: AnnotationsState, usages: UsageCountStore): boolean {
-        return false; // TODO
+        const valueUsages = usages.valueUsages.get(pythonParameter.qualifiedName())
+        if (valueUsages === undefined) {
+            return false;
+        }
+
+        const maxValueUsage = Math.max(...valueUsages.values());
+        const totalValueUsages = [...valueUsages.values()].reduce((a, b) => a + b, 0);
+        const parameterUsefulness = totalValueUsages - maxValueUsage
+
+        return this.shouldKeepWithUsefulness(parameterUsefulness);
+    }
+
+    private shouldKeepWithUsefulness(actualUsefulness: number | undefined) {
+        if (actualUsefulness === undefined) {
+            return false;
+        }
+
+        return this.comparison(actualUsefulness, this.expectedUsefulness);
     }
 }
