@@ -32,27 +32,7 @@ const SelectionView: React.FC<SelectionViewProps> = function ({pythonPackage, py
     if (!declaration) {
         return <></>;
     }
-    // const handleKeyPress = useCallback((event) => {
-    //     if (event.ctrlKey) {
-    //         console.log("Gustav");
-    //         if (event.key == 'ö') {
-    //             console.log('lög');
-    //             dispatch(expandAllParents(getAllParents(pythonPackage)));
-    //         }
-    //     }
-    // }, []);
-    // useEffect(() => {
-    //     // attach the event listener
-    //     document.addEventListener('keydown', handleKeyPress);
-    //
-    //     // remove the event listener
-    //     return () => {
-    //         document.removeEventListener('keydown', handleKeyPress);
-    //     };
-    // }, [handleKeyPress]);
-    //     // dispatch(expandParentsInTreeView(parents));
-    //     // dispatch(expandAllParents(getAllParents(pythonPackage)));
-    //     // dispatch(collapseAllParents(getAllParents(pythonPackage)));
+
 
 
     return (
