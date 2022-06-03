@@ -4,7 +4,7 @@ import PythonFunction from '../PythonFunction';
 import PythonParameter from '../PythonParameter';
 import PythonModule from '../PythonModule';
 import { AnnotationsState } from '../../../annotations/annotationSlice';
-import {UsageCountStore} from "../../../usages/model/UsageCountStore";
+import { UsageCountStore } from '../../../usages/model/UsageCountStore';
 
 /**
  * Keeps declarations iff the contained filter discards it.
@@ -25,11 +25,19 @@ export class NegatedFilter extends AbstractPythonFilter {
         return !this.filter.shouldKeepClass(pythonClass, annotations, usages);
     }
 
-    shouldKeepFunction(pythonFunction: PythonFunction, annotations: AnnotationsState, usages: UsageCountStore): boolean {
+    shouldKeepFunction(
+        pythonFunction: PythonFunction,
+        annotations: AnnotationsState,
+        usages: UsageCountStore,
+    ): boolean {
         return !this.filter.shouldKeepFunction(pythonFunction, annotations, usages);
     }
 
-    shouldKeepParameter(pythonParameter: PythonParameter, annotations: AnnotationsState, usages: UsageCountStore): boolean {
+    shouldKeepParameter(
+        pythonParameter: PythonParameter,
+        annotations: AnnotationsState,
+        usages: UsageCountStore,
+    ): boolean {
         return !this.filter.shouldKeepParameter(pythonParameter, annotations, usages);
     }
 }

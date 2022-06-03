@@ -1,14 +1,14 @@
-import {ConjunctiveFilter} from './ConjunctiveFilter';
+import { ConjunctiveFilter } from './ConjunctiveFilter';
 import NameFilter from './NameFilter';
 import AbstractPythonFilter from './AbstractPythonFilter';
-import DeclarationTypeFilter, {DeclarationType} from './DeclarationTypeFilter';
-import VisibilityFilter, {Visibility} from './VisibilityFilter';
-import {NegatedFilter} from './NegatedFilter';
-import {Optional} from '../../../../common/util/types';
-import AnnotationFilter, {AnnotationType} from './AnnotationFilter';
-import UsageFilter from "./UsageFilter";
-import UsefulnessFilter from "./UsefulnessFilter";
-import {equals, greaterThan, greaterThanOrEqual, lessThan, lessThanOrEqual} from "./comparisons";
+import DeclarationTypeFilter, { DeclarationType } from './DeclarationTypeFilter';
+import VisibilityFilter, { Visibility } from './VisibilityFilter';
+import { NegatedFilter } from './NegatedFilter';
+import { Optional } from '../../../../common/util/types';
+import AnnotationFilter, { AnnotationType } from './AnnotationFilter';
+import UsageFilter from './UsageFilter';
+import UsefulnessFilter from './UsefulnessFilter';
+import { equals, greaterThan, greaterThanOrEqual, lessThan, lessThanOrEqual } from './comparisons';
 
 /**
  * Creates a filter from the given string. This method handles conjunctions, negations, and non-negated tokens.
@@ -115,7 +115,7 @@ function parsePositiveToken(token: string): Optional<AbstractPythonFilter> {
 
         const expected = Number.parseInt(usageMatch?.groups?.expected as string, 10);
 
-        return new UsageFilter(comparison, expected)
+        return new UsageFilter(comparison, expected);
     }
 
     // Usefulness
@@ -129,7 +129,7 @@ function parsePositiveToken(token: string): Optional<AbstractPythonFilter> {
 
         const expected = Number.parseInt(usefulnessMatch?.groups?.expected as string, 10);
 
-        return new UsefulnessFilter(comparison, expected)
+        return new UsefulnessFilter(comparison, expected);
     }
 }
 
@@ -146,6 +146,6 @@ const comparisonFunction = function (comparisonOperator: string): ((a: number, b
         case ':>':
             return greaterThan;
         default:
-            return null
+            return null;
     }
-}
+};

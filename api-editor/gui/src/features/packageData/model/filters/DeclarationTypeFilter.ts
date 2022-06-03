@@ -3,8 +3,8 @@ import PythonFunction from '../PythonFunction';
 import PythonModule from '../PythonModule';
 import PythonParameter from '../PythonParameter';
 import AbstractPythonFilter from './AbstractPythonFilter';
-import {AnnotationsState} from '../../../annotations/annotationSlice';
-import {UsageCountStore} from "../../../usages/model/UsageCountStore";
+import { AnnotationsState } from '../../../annotations/annotationSlice';
+import { UsageCountStore } from '../../../usages/model/UsageCountStore';
 
 /**
  * Keeps only declarations of a specified type (module/class/function/parameter).
@@ -25,11 +25,19 @@ export default class DeclarationTypeFilter extends AbstractPythonFilter {
         return this.type === DeclarationType.Class;
     }
 
-    shouldKeepFunction(pythonFunction: PythonFunction, annotations: AnnotationsState, usages: UsageCountStore): boolean {
+    shouldKeepFunction(
+        pythonFunction: PythonFunction,
+        annotations: AnnotationsState,
+        usages: UsageCountStore,
+    ): boolean {
         return this.type === DeclarationType.Function;
     }
 
-    shouldKeepParameter(pythonParameter: PythonParameter, annotations: AnnotationsState, usages: UsageCountStore): boolean {
+    shouldKeepParameter(
+        pythonParameter: PythonParameter,
+        annotations: AnnotationsState,
+        usages: UsageCountStore,
+    ): boolean {
         return this.type === DeclarationType.Parameter;
     }
 }

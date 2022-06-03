@@ -20,11 +20,11 @@ export const FilterHelpButton = function () {
         <Box>
             <Popover>
                 <PopoverTrigger>
-                    <IconButton variant="ghost" icon={<Icon name="help"/>} aria-label="help"/>
+                    <IconButton variant="ghost" icon={<Icon name="help" />} aria-label="help" />
                 </PopoverTrigger>
                 <PopoverContent minWidth={462} fontSize="sm" marginRight={2}>
-                    <PopoverArrow/>
-                    <PopoverCloseButton/>
+                    <PopoverArrow />
+                    <PopoverCloseButton />
                     <PopoverHeader>Filter Options</PopoverHeader>
                     <PopoverBody>
                         <UnorderedList spacing={2}>
@@ -80,12 +80,8 @@ export const FilterHelpButton = function () {
                                 </ChakraText>
                                 <ChakraText>
                                     Displays only elements that are used a certain number of times. Replace [operator]
-                                    with one of{' '}
-                                    <em>
-                                        &lt;, &lt;=, &gt;=, &gt;
-                                    </em>
-                                    {' '}or omit it to match by equality. Replace [expected] with the expected number of
-                                    usages.
+                                    with one of <em>&lt;, &lt;=, &gt;=, &gt;</em> or omit it to match by equality.
+                                    Replace [expected] with the expected number of usages.
                                 </ChakraText>
                             </ListItem>
                             <ListItem>
@@ -93,12 +89,9 @@ export const FilterHelpButton = function () {
                                     <strong>usefulness:[operator][expected]</strong>
                                 </ChakraText>
                                 <ChakraText>
-                                    Displays only elements that have a certain usefulness. Replace [operator]
-                                    with one of{' '}
-                                    <em>
-                                        &lt;, &lt;=, &gt;=, &gt;
-                                    </em>
-                                    {' '}or omit it to match by equality. Replace [expected] with the expected usefulness.
+                                    Displays only elements that have a certain usefulness. Replace [operator] with one
+                                    of <em>&lt;, &lt;=, &gt;=, &gt;</em> or omit it to match by equality. Replace
+                                    [expected] with the expected usefulness.
                                 </ChakraText>
                             </ListItem>
                             <ListItem>

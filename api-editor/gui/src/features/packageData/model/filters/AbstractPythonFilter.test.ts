@@ -8,7 +8,7 @@ import PythonFunction from '../PythonFunction';
 import NameFilter from './NameFilter';
 import { initialState as annotations } from '../../../annotations/annotationSlice';
 import PythonDeclaration from '../PythonDeclaration';
-import {UsageCountStore} from "../../../usages/model/UsageCountStore";
+import { UsageCountStore } from '../../../usages/model/UsageCountStore';
 
 let pythonPackage: PythonPackage;
 

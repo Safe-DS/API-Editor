@@ -4,8 +4,8 @@ import PythonModule from '../PythonModule';
 import PythonParameter from '../PythonParameter';
 import AbstractPythonFilter from './AbstractPythonFilter';
 import PythonDeclaration from '../PythonDeclaration';
-import {AnnotationsState} from '../../../annotations/annotationSlice';
-import {UsageCountStore} from "../../../usages/model/UsageCountStore";
+import { AnnotationsState } from '../../../annotations/annotationSlice';
+import { UsageCountStore } from '../../../usages/model/UsageCountStore';
 
 /**
  * Keeps only declarations with a specified visibility (public/internal)
@@ -26,15 +26,27 @@ export default class VisibilityFilter extends AbstractPythonFilter {
         return this.shouldKeepDeclaration(pythonClass, annotations, usages);
     }
 
-    shouldKeepFunction(pythonFunction: PythonFunction, annotations: AnnotationsState, usages: UsageCountStore): boolean {
+    shouldKeepFunction(
+        pythonFunction: PythonFunction,
+        annotations: AnnotationsState,
+        usages: UsageCountStore,
+    ): boolean {
         return this.shouldKeepDeclaration(pythonFunction, annotations, usages);
     }
 
-    shouldKeepParameter(pythonParameter: PythonParameter, annotations: AnnotationsState, usages: UsageCountStore): boolean {
+    shouldKeepParameter(
+        pythonParameter: PythonParameter,
+        annotations: AnnotationsState,
+        usages: UsageCountStore,
+    ): boolean {
         return this.shouldKeepDeclaration(pythonParameter, annotations, usages);
     }
 
-    shouldKeepDeclaration(pythonDeclaration: PythonDeclaration, annotations: AnnotationsState, usages: UsageCountStore): boolean {
+    shouldKeepDeclaration(
+        pythonDeclaration: PythonDeclaration,
+        annotations: AnnotationsState,
+        usages: UsageCountStore,
+    ): boolean {
         return pythonDeclaration.isPublicDeclaration() === (this.visibility === Visibility.Public);
     }
 }

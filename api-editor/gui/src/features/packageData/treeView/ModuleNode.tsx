@@ -4,7 +4,7 @@ import { isEmptyList } from '../../../common/util/listOperations';
 import PythonModule from '../model/PythonModule';
 import TreeNode from './TreeNode';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
-import {UsageCountStore} from "../../usages/model/UsageCountStore";
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
 
 interface ModuleNodeProps {
     pythonModule: PythonModule;
@@ -17,7 +17,15 @@ const ModuleNode: React.FC<ModuleNodeProps> = function ({ pythonModule, filter, 
     const hasFunctions = !isEmptyList(pythonModule.functions);
     const hasChildren = hasClasses || hasFunctions;
 
-    return <TreeNode declaration={pythonModule} icon={FaArchive} isExpandable={hasChildren} filter={filter} usages={usages} />;
+    return (
+        <TreeNode
+            declaration={pythonModule}
+            icon={FaArchive}
+            isExpandable={hasChildren}
+            filter={filter}
+            usages={usages}
+        />
+    );
 };
 
 export default ModuleNode;

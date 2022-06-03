@@ -15,7 +15,7 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import PythonDeclaration from '../model/PythonDeclaration';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
 import { AnnotationsState, selectAnnotations } from '../../annotations/annotationSlice';
-import {UsageCountStore} from "../../usages/model/UsageCountStore";
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
 
 interface SelectionViewProps {
     pythonPackage: PythonPackage;
@@ -87,7 +87,7 @@ const getNextElementPath = function (
     current: PythonDeclaration,
     filter: AbstractPythonFilter,
     annotations: AnnotationsState,
-    usages: UsageCountStore
+    usages: UsageCountStore,
 ): string | null {
     const nextElement = getNextElementInTree(current);
     if (nextElement != null) {
@@ -127,7 +127,7 @@ const getPreviousElementPath = function (
     current: PythonDeclaration,
     filter: AbstractPythonFilter,
     annotations: AnnotationsState,
-    usages: UsageCountStore
+    usages: UsageCountStore,
 ): string | null {
     const previousElement = getPreviousElementInTree(current);
     if (previousElement != null) {

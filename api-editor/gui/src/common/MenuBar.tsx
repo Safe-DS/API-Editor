@@ -25,16 +25,16 @@ import {
     useColorMode,
     VStack,
 } from '@chakra-ui/react';
-import React, {useRef, useState} from 'react';
-import {FaChevronDown} from 'react-icons/fa';
-import {useAppDispatch, useAppSelector} from '../app/hooks';
-import {resetAnnotations, toggleAnnotationImportDialog} from '../features/annotations/annotationSlice';
+import React, { useRef, useState } from 'react';
+import { FaChevronDown } from 'react-icons/fa';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { resetAnnotations, toggleAnnotationImportDialog } from '../features/annotations/annotationSlice';
 import AnnotatedPythonPackageBuilder from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
 import PythonPackage from '../features/packageData/model/PythonPackage';
-import {togglePackageDataImportDialog} from '../features/packageData/packageDataSlice';
-import {Setter} from './util/types';
-import {toggleUsageImportDialog} from '../features/usages/usageSlice';
-import {FilterHelpButton} from "./FilterHelpButton";
+import { togglePackageDataImportDialog } from '../features/packageData/packageDataSlice';
+import { Setter } from './util/types';
+import { toggleUsageImportDialog } from '../features/usages/usageSlice';
+import { FilterHelpButton } from './FilterHelpButton';
 
 interface MenuBarProps {
     pythonPackage: PythonPackage;

@@ -15,7 +15,7 @@ import FunctionNode from './FunctionNode';
 import ModuleNode from './ModuleNode';
 import ParameterNode from './ParameterNode';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
-import {UsageCountStore} from "../../usages/model/UsageCountStore";
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
 
 interface ScrollOffset {
     scrollOffset: number;
@@ -104,10 +104,18 @@ const TreeNodeGenerator: React.FC<ListChildComponentProps> = memo(({ data, index
 
     return (
         <Box style={style}>
-            {declaration instanceof PythonModule && <ModuleNode pythonModule={declaration} filter={filter} usages={usages} />}
-            {declaration instanceof PythonClass && <ClassNode pythonClass={declaration} filter={filter} usages={usages} />}
-            {declaration instanceof PythonFunction && <FunctionNode pythonFunction={declaration} filter={filter} usages={usages} />}
-            {declaration instanceof PythonParameter && <ParameterNode pythonParameter={declaration} filter={filter} usages={usages} />}
+            {declaration instanceof PythonModule && (
+                <ModuleNode pythonModule={declaration} filter={filter} usages={usages} />
+            )}
+            {declaration instanceof PythonClass && (
+                <ClassNode pythonClass={declaration} filter={filter} usages={usages} />
+            )}
+            {declaration instanceof PythonFunction && (
+                <FunctionNode pythonFunction={declaration} filter={filter} usages={usages} />
+            )}
+            {declaration instanceof PythonParameter && (
+                <ParameterNode pythonParameter={declaration} filter={filter} usages={usages} />
+            )}
         </Box>
     );
 });
