@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../../app/store';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {RootState} from '../../app/store';
 
 export interface PackageDataState {
     expandedInTreeView: {
@@ -30,6 +30,18 @@ const packageDataSlice = createSlice({
                 state.expandedInTreeView[action.payload] = true;
             }
         },
+        setAllExpanded(state, action: PayloadAction<string[]>) {
+            const all = action.payload;
+            for (const item of all) {
+                state.expandedInTreeView[item] = true;
+            }
+        },
+        setAllCollapsed(state, action: PayloadAction<string[]>) {
+            const all = action.payload;
+            for (const item of all) {
+                delete state.expandedInTreeView[item];
+            }
+        },
         expandParents(state, action: PayloadAction<string[]>) {
             const parents = action.payload;
             for (const parent of parents) {
@@ -45,10 +57,12 @@ const packageDataSlice = createSlice({
     },
 });
 
-const { actions, reducer } = packageDataSlice;
+const {actions, reducer} = packageDataSlice;
 export const {
     toggleIsExpanded: toggleIsExpandedInTreeView,
     expandParents: expandParentsInTreeView,
+    setAllExpanded: expandAllParents,
+    setAllCollapsed: collapseAllParents,
     setScrollOffset: setTreeViewScrollOffset,
     toggleImportDialog: togglePackageDataImportDialog,
 } = actions;
@@ -57,8 +71,8 @@ export default reducer;
 const selectPackageData = (state: RootState) => state.packageData;
 export const selectIsExpandedInTreeView =
     (target: string) =>
-    (state: RootState): boolean =>
-        Boolean(selectPackageData(state).expandedInTreeView[target]);
+        (state: RootState): boolean =>
+            Boolean(selectPackageData(state).expandedInTreeView[target]);
 export const selectAllExpandedInTreeView = (state: RootState): { [target: string]: true } =>
     selectPackageData(state).expandedInTreeView;
 export const selectTreeViewScrollOffset = (state: RootState): number => selectPackageData(state).treeViewScrollOffset;

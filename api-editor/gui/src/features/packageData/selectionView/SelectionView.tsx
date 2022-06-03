@@ -1,6 +1,7 @@
-import { Box, Button, HStack, Spacer, VStack } from '@chakra-ui/react';
+import {Box, Button, HStack, Spacer, VStack} from '@chakra-ui/react';
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import {useCallback, useEffect} from 'react';
+import {useLocation, useNavigate} from 'react-router';
 import PythonClass from '../model/PythonClass';
 import PythonFunction from '../model/PythonFunction';
 import PythonModule from '../model/PythonModule';
@@ -10,18 +11,18 @@ import ClassView from './ClassView';
 import FunctionView from './FunctionView';
 import ModuleView from './ModuleView';
 import ParameterView from './ParameterView';
-import { expandParentsInTreeView } from '../packageDataSlice';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import {expandParentsInTreeView, collapseAllParents, expandAllParents} from '../packageDataSlice';
+import {useAppDispatch, useAppSelector} from '../../../app/hooks';
 import PythonDeclaration from '../model/PythonDeclaration';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
-import { AnnotationsState, selectAnnotations } from '../../annotations/annotationSlice';
+import {AnnotationsState, selectAnnotations} from '../../annotations/annotationSlice';
 
 interface SelectionViewProps {
     pythonPackage: PythonPackage;
     pythonFilter: AbstractPythonFilter;
 }
 
-const SelectionView: React.FC<SelectionViewProps> = function ({ pythonPackage, pythonFilter }) {
+const SelectionView: React.FC<SelectionViewProps> = function ({pythonPackage, pythonFilter}) {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
@@ -31,19 +32,41 @@ const SelectionView: React.FC<SelectionViewProps> = function ({ pythonPackage, p
     if (!declaration) {
         return <></>;
     }
+    // const handleKeyPress = useCallback((event) => {
+    //     if (event.ctrlKey) {
+    //         console.log("Gustav");
+    //         if (event.key == 'ö') {
+    //             console.log('lög');
+    //             dispatch(expandAllParents(getAllParents(pythonPackage)));
+    //         }
+    //     }
+    // }, []);
+    // useEffect(() => {
+    //     // attach the event listener
+    //     document.addEventListener('keydown', handleKeyPress);
+    //
+    //     // remove the event listener
+    //     return () => {
+    //         document.removeEventListener('keydown', handleKeyPress);
+    //     };
+    // }, [handleKeyPress]);
+    //     // dispatch(expandParentsInTreeView(parents));
+    //     // dispatch(expandAllParents(getAllParents(pythonPackage)));
+    //     // dispatch(collapseAllParents(getAllParents(pythonPackage)));
+
 
     return (
         <VStack h="100%">
             <Box w="100%" flexGrow={1} overflowY="scroll">
                 <Box padding={4}>
-                    {declaration instanceof PythonFunction && <FunctionView pythonFunction={declaration} />}
-                    {declaration instanceof PythonClass && <ClassView pythonClass={declaration} />}
-                    {declaration instanceof PythonModule && <ModuleView pythonModule={declaration} />}
-                    {declaration instanceof PythonParameter && <ParameterView pythonParameter={declaration} />}
+                    {declaration instanceof PythonFunction && <FunctionView pythonFunction={declaration}/>}
+                    {declaration instanceof PythonClass && <ClassView pythonClass={declaration}/>}
+                    {declaration instanceof PythonModule && <ModuleView pythonModule={declaration}/>}
+                    {declaration instanceof PythonParameter && <ParameterView pythonParameter={declaration}/>}
                 </Box>
             </Box>
 
-            <Spacer />
+            <Spacer/>
 
             <HStack borderTop={1} layerStyle="subtleBorder" padding="0.5em 1em" w="100%">
                 <Button
@@ -75,6 +98,38 @@ const SelectionView: React.FC<SelectionViewProps> = function ({ pythonPackage, p
                     }}
                 >
                     Next
+                </Button>
+                <Button accessKey="n"
+                    onClick={() => {
+                        dispatch(expandAllParents(getAllParents(pythonPackage)));
+                    }
+                    }
+                >
+                    Expand All
+                </Button>
+                <Button accessKey="a"
+                    onClick={() => {
+                        dispatch(collapseAllParents(getAllParents(pythonPackage)));
+                    }
+                    }
+                >
+                    Collapse All
+                </Button>
+                <Button accessKey="b"
+                    onClick={() => {
+                        dispatch(collapseAllParents(getChildrenOfElementInTree(declaration)));
+                    }
+                    }
+                >
+                    Collapse Selected
+                </Button>
+                <Button accessKey="m"
+                    onClick={() => {
+                        dispatch(expandAllParents(getChildrenOfElementInTree(declaration)));
+                    }
+                    }
+                >
+                    Expand Selected
                 </Button>
             </HStack>
         </VStack>
@@ -168,6 +223,35 @@ const getParents = function (navStr: string, filteredPythonPackage: PythonPackag
         }
     }
     return parents;
+};
+
+const getAllParents = function (filteredPythonPackage: PythonPackage): string[] {
+    const parents: string[] = [];
+    let allElements = filteredPythonPackage.children();
+    for (const element of allElements) {
+        parents.push(element.pathAsString());
+        for (const object of element.children()) {
+            if (object instanceof PythonClass) {
+                parents.push(object.pathAsString());
+                for (const method of object.methods){
+                    parents.push(method.pathAsString());
+                }
+            } else if (object instanceof PythonFunction) {
+                parents.push(object.pathAsString());
+            }
+        }
+    }
+    return parents;
+};
+
+const getChildrenOfElementInTree = function (current: PythonDeclaration): string[] {
+    let childrenList: string[] = [current.pathAsString()];
+    let children = current.children();
+    for (const child of children){
+        const list = getChildrenOfElementInTree(child);
+        childrenList = [...childrenList, ...list];
+    }
+    return childrenList;
 };
 
 export default SelectionView;
