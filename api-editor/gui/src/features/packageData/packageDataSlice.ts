@@ -38,6 +38,12 @@ const packageDataSlice = createSlice({
                 state.expandedInTreeView[action.payload] = true;
             }
         },
+        expandParents(state, action: PayloadAction<string[]>) {
+            const parents = action.payload;
+            for (const parent of parents) {
+                state.expandedInTreeView[parent] = true;
+            }
+        },
         setScrollOffset(state, action: PayloadAction<number>) {
             state.treeViewScrollOffset = action.payload;
         },
@@ -53,6 +59,7 @@ const packageDataSlice = createSlice({
 const {actions, reducer} = packageDataSlice;
 export const {
     toggleIsExpanded: toggleIsExpandedInTreeView,
+    expandParents: expandParentsInTreeView,
     setScrollOffset: setTreeViewScrollOffset,
     toggleImportDialog: togglePackageDataImportDialog,
     toggleHeatMapData: toggleHeatMapData,

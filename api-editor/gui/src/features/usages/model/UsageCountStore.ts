@@ -29,7 +29,6 @@ export class UsageCountStore {
     readonly functionMax: number;
     readonly parameterMax: number;
 
-
     constructor(
         readonly classUsages: Map<string, number> = new Map(),
         readonly functionUsages: Map<string, number> = new Map(),

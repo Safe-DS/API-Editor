@@ -20,7 +20,7 @@ end
 
 ```
 
-Can be found [here](package_parser/commands/generate_annotations/generate_annotations.py).
+Can be found [here](package_parser/processing/annotations/_generate_annotations.py).
 
 
 
@@ -38,7 +38,7 @@ Generates the various annotations by consecutively calling the passed functions 
 
 ### `get_[type]_annotation()`
 
-This name serves only as a placeholder. `[type]` must be replaced by one of the following keywords: {constant, unused, required, optional, boundary, enum}.
+This name serves only as a placeholder. `[type]` must be replaced by one of the following keywords: {boundary, constant, enum, optional, remove, required}.
 
 Generates the annotations of the corresponding type. All functions of this type have the following signature: `get_type_annotations(UsageCountStore, API, AnnotationsStore)`.
 `UsageCountStore` and `API` represent the set of data extracted from the analyzed code. The functionality and task of the `AnnotationStore` will be explained later.
@@ -54,7 +54,7 @@ We use the following dataclasses to store the related information. Compared to t
 ```mermaid
 classDiagram
 BaseAnnotation <|-- ConstantAnnotation
-BaseAnnotation <|-- UnusedAnnotation
+BaseAnnotation <|-- RemoveAnnotation
 BaseAnnotation <|-- OptionalAnnotation
 BaseAnnotation <|-- RequiredAnnotation
 BaseAnnotation <|-- BoundaryAnnotation
@@ -73,7 +73,7 @@ AnnotationStore "0..1" o-- "*" BaseAnnotation
       String defaultType
       String defaultValue
       }
-      class UnusedAnnotation{
+      class RemoveAnnotation{
       <<dataclass>>
       }
       class OptionalAnnotation{
@@ -112,7 +112,7 @@ AnnotationStore "0..1" o-- "*" BaseAnnotation
       class AnnotationStore{
       <<dataclass>>
       List[ConstantAnnotation] constant
-      List[UnusedAnnotation] unused
+      List[RemoveAnnotation] remove
       List[OptionalAnnotation] optional
       List[RequiredAnnotation] required
       List[BoundaryAnnotation] boundary
@@ -122,7 +122,7 @@ AnnotationStore "0..1" o-- "*" BaseAnnotation
       }
 
 ```
-Can be found [here](package_parser/models/annotation_models.py).
+Can be found [here](package_parser/model/annotations/_annotations.py).
 
 The AnnotationStore class is used for the collection of the individual annotations. An instance of this class is passed to the individual `get_[type]_annotation()` functions. These then place their results in the list assigned to them.
 
@@ -149,7 +149,7 @@ ParameterType <.. ParameterInfo
       }
 ```
 
-Can be found [here](package_parser/models/annotation_models.py).
+Can be found [here](package_parser/model/annotations/_annotations.py).
 
 The ParameterInfo class is used to encapsulate the collected information for a given parameter which is generated in the `get_parameter_info()` function.
 
@@ -183,11 +183,11 @@ classDiagram
  }
 ```
 
-Can be found [here](package_parser/models/_usages.py).
+Can be found [here](package_parser/model/usages/_usages.py).
 
 
 
-This class is a slimmed down version of the [UsageStore](package_parser/commands/find_usages/_model.py) class.
+This class is a slimmed down version of the [UsageStore](package_parser/model/usages/_usages.py) class.
 
 For the automatic generation of annotations, it is in most cases sufficient to know how often a certain element (class, function, parameter, value) is used. In the original class, there are more details stored for each usage, which leads to a more complex and harder to use structure.
 
@@ -227,7 +227,7 @@ This function needs to be executed before the data can be analyzed and performs 
 - `remove_internal_usages()`
 
   Since we are only concerned with the use of outward-facing package elements, all elements that are used exclusively internally are excluded from consideration.
-  
+
 - `add_unused_api_elements()`
 
   Some API elements are not used at all and, therefore, do not appear in the listing of all used elements. However, it is necessary that they do for the following process of the program.
@@ -259,13 +259,13 @@ call_annotation_getter --> dump_annotation_store
 
 ### `AnnotationStore`
 
-Can be found [here](tests/models/test_annotation_models.py).
+Can be found [here](tests/model/test_annotations.py).
 
 For the `AnnotationStore` and all associated classes there are automatic tests that ensure that the `to_json()` methods work properly. For this purpose, a test configuration of the individual classes is created, and their output is then compared against the expected value.
 
 ### `UsageCountStore`
 
-Can be found [here](tests/models/test_usages.py).
+Can be found [here](tests/model/test_usages.py).
 
 For this class, there are automatic checks for the input and output methods, that compare the actual result against the expected value. There are also various tests for every setter and getter in which the state of the object is checked after.
 

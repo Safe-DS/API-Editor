@@ -61,7 +61,7 @@ export default class PythonParameter extends PythonDeclaration {
     }
 
     qualifiedName(): string {
-        return this.path().slice(1).join(".")
+        return this.path().slice(1).join('.');
     }
 
     clone(): PythonParameter {

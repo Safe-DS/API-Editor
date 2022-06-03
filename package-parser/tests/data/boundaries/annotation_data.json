@@ -9,7 +9,7 @@
         },
         "target": "test/test/some_global_function/parameter_with_lower_bound"
     },
-    "test/test/some_global_function/parameter_with_upper_bound": {
+    "test/test/some_global_function/parameter_with_upper_bound_and_union": {
         "interval": {
             "isDiscrete": false,
             "lowerIntervalLimit": 0,
@@ -17,7 +17,7 @@
             "upperIntervalLimit": 1.0,
             "upperLimitType": 1
         },
-        "target": "test/test/some_global_function/parameter_with_upper_bound"
+        "target": "test/test/some_global_function/parameter_with_upper_bound_and_union"
     },
     "test/test/some_global_function/parameter_with_interval": {
         "interval": {

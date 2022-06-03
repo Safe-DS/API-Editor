@@ -3,24 +3,26 @@ import os
 from typing import Callable
 
 import pytest
-from package_parser.commands.generate_annotations.generate_annotations import (
+from package_parser.model.annotations import AnnotationStore
+from package_parser.model.api import API
+from package_parser.model.usages import UsageCountStore
+from package_parser.processing.annotations._generate_annotations import (
     __get_boundary_annotations,
     __get_constant_annotations,
     __get_enum_annotations,
     __get_optional_annotations,
+    __get_remove_annotations,
     __get_required_annotations,
-    __get_unused_annotations,
-    preprocess_usages,
 )
-from package_parser.commands.get_api import API
-from package_parser.models import UsageCountStore
-from package_parser.models.annotation_models import AnnotationStore
+from package_parser.processing.annotations._usages_preprocessor import (
+    _preprocess_usages,
+)
 
 
 @pytest.mark.parametrize(
     "subfolder, get_annotations",
     [
-        ("unuseds", __get_unused_annotations),
+        ("removes", __get_remove_annotations),
         ("constants", __get_constant_annotations),
         ("requireds", __get_required_annotations),
         ("optionals", __get_optional_annotations),
@@ -34,7 +36,7 @@ def test_get_annotations(
 ):
     usages, api, expected_annotations = read_test_data(subfolder)
 
-    preprocess_usages(usages, api)
+    _preprocess_usages(usages, api)
     annotations = AnnotationStore()
     get_annotations(usages, api, annotations)
 

@@ -117,10 +117,17 @@ fun PythonAttribute.toPythonCode() = buildString {
 }
 
 fun PythonClass.toPythonCode() = buildString {
+    val docstring = docstring()
     val constructorString = constructor?.toPythonCode() ?: ""
     val methodsString = methods.joinToString("\n\n") { it.toPythonCode() }
 
     appendLine("class $name:")
+    if (docstring.isNotBlank()) {
+        appendIndented("\"\"\"\n")
+        appendIndented(docstring)
+        appendLine()
+        appendIndented("\"\"\"\n\n")
+    }
     if (constructorString.isNotBlank()) {
         appendIndented(constructorString)
         if (methodsString.isNotBlank()) {
@@ -196,6 +203,7 @@ fun PythonEnumInstance.toPythonCode(enumName: String): String {
 
 fun PythonFunction.toPythonCode() = buildString {
     val parametersString = parameters.toPythonCode()
+    val docstring = docstring()
     val boundariesString = parameters
         .mapNotNull { it.boundary?.toPythonCode(it.name) }
         .joinToString("\n")
@@ -207,6 +215,12 @@ fun PythonFunction.toPythonCode() = buildString {
         appendLine("@staticmethod")
     }
     appendLine("def $name($parametersString):")
+    if (docstring.isNotBlank()) {
+        appendIndented("\"\"\"\n")
+        appendIndented(docstring)
+        appendLine()
+        appendIndented("\"\"\"\n\n")
+    }
     if (boundariesString.isNotBlank()) {
         appendIndented(boundariesString)
         if (callString.isNotBlank()) {
@@ -342,30 +356,4 @@ fun Boundary.toPythonCode(parameterName: String) = buildString {
         appendLine("if not $parameterName <= $upperIntervalLimit:")
         appendIndented("raise ValueError(f'Valid values of $parameterName must be less than or equal to $upperIntervalLimit, but {$parameterName} was assigned.')")
     }
-}
-
-/* ********************************************************************************************************************
- * Util
- * ********************************************************************************************************************/
-
-private fun String.prependIndentUnlessBlank(indent: String = "    "): String {
-    return lineSequence()
-        .map {
-            when {
-                it.isBlank() -> it.trim()
-                else -> it.prependIndent(indent)
-            }
-        }
-        .joinToString("\n")
-}
-
-private fun StringBuilder.appendIndented(init: StringBuilder.() -> Unit): StringBuilder {
-    val stringToIndent = StringBuilder().apply(init).toString()
-    append(stringToIndent.prependIndentUnlessBlank())
-    return this
-}
-
-private fun StringBuilder.appendIndented(value: String): StringBuilder {
-    append(value.prependIndentUnlessBlank())
-    return this
 }

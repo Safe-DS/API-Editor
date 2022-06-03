@@ -110,7 +110,7 @@ const HelpButton = function () {
                                     with one of{' '}
                                     <em>
                                         @attribute, @boundary, @calledAfter, @constant, @enum, @group, @move, @optional,
-                                        @pure, @renaming, @required, @unused
+                                        @pure, @remove, @renaming, @required
                                     </em>
                                     .
                                 </ChakraText>

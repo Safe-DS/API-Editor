@@ -40,7 +40,7 @@ const PackageDataImportDialog: React.FC<ImportPythonPackageDialogProps> = functi
         if (newPythonPackage) {
             const parsedPythonPackage = JSON.parse(newPythonPackage) as PythonPackageJson;
             setPythonPackage(parsePythonPackageJson(parsedPythonPackage));
-            setFilter('');
+            setFilter('is:public');
             navigate('/');
 
             await idb.set('package', parsedPythonPackage);

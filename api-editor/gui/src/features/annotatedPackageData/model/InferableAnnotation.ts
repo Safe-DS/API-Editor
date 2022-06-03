@@ -53,10 +53,7 @@ export class InferableAttributeAnnotation extends InferableAnnotation {
 
     constructor(attributeAnnotation: AttributeAnnotation) {
         super(dataPathPrefix + 'AttributeAnnotation');
-        this.defaultValue = convertDefaultValue(
-            attributeAnnotation.defaultType,
-            attributeAnnotation.defaultValue,
-        );
+        this.defaultValue = convertDefaultValue(attributeAnnotation.defaultType, attributeAnnotation.defaultValue);
     }
 }
 
@@ -70,14 +67,10 @@ export class InferableBoundaryAnnotation extends InferableAnnotation {
     constructor(boundaryAnnotation: BoundaryAnnotation) {
         super(dataPathPrefix + 'BoundaryAnnotation');
         this.isDiscrete = boundaryAnnotation.interval.isDiscrete;
-        this.lowerIntervalLimit =
-            boundaryAnnotation.interval.lowerIntervalLimit;
-        this.lowerLimitType =
-            ComparisonOperator[boundaryAnnotation.interval.lowerLimitType];
-        this.upperIntervalLimit =
-            boundaryAnnotation.interval.upperIntervalLimit;
-        this.upperLimitType =
-            ComparisonOperator[boundaryAnnotation.interval.upperLimitType];
+        this.lowerIntervalLimit = boundaryAnnotation.interval.lowerIntervalLimit;
+        this.lowerLimitType = ComparisonOperator[boundaryAnnotation.interval.lowerLimitType];
+        this.upperIntervalLimit = boundaryAnnotation.interval.upperIntervalLimit;
+        this.upperLimitType = ComparisonOperator[boundaryAnnotation.interval.upperLimitType];
     }
 }
 
@@ -95,10 +88,7 @@ export class InferableConstantAnnotation extends InferableAnnotation {
 
     constructor(constantAnnotation: ConstantAnnotation) {
         super(dataPathPrefix + 'ConstantAnnotation');
-        this.defaultValue = convertDefaultValue(
-            constantAnnotation.defaultType,
-            constantAnnotation.defaultValue,
-        );
+        this.defaultValue = convertDefaultValue(constantAnnotation.defaultType, constantAnnotation.defaultValue);
     }
 }
 
@@ -138,10 +128,7 @@ export class InferableOptionalAnnotation extends InferableAnnotation {
 
     constructor(optionalAnnotation: OptionalAnnotation) {
         super(dataPathPrefix + 'OptionalAnnotation');
-        this.defaultValue = convertDefaultValue(
-            optionalAnnotation.defaultType,
-            optionalAnnotation.defaultValue,
-        );
+        this.defaultValue = convertDefaultValue(optionalAnnotation.defaultType, optionalAnnotation.defaultValue);
     }
 }
 
@@ -166,8 +153,8 @@ export class InferableRequiredAnnotation extends InferableAnnotation {
     }
 }
 
-export class InferableUnusedAnnotation extends InferableAnnotation {
+export class InferableRemoveAnnotation extends InferableAnnotation {
     constructor() {
-        super(dataPathPrefix + 'UnusedAnnotation');
+        super(dataPathPrefix + 'RemoveAnnotation');
     }
 }

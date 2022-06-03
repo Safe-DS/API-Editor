@@ -42,20 +42,20 @@
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
                     "docstring": {
-                        "type": "int in range (0, infinity)",
-                        "description": ""
+                        "type": "",
+                        "description": "int in range (0, infinity)"
                     }
                 },
                 {
-                    "name": "parameter_with_upper_bound",
-                    "qname": "test.some_global_function.parameter_with_upper_bound",
-                    "pname": "test/test/some_global_function/parameter_with_upper_bound",
+                    "name": "parameter_with_upper_bound_and_union",
+                    "qname": "test.some_global_function.parameter_with_upper_bound_and_union",
+                    "pname": "test/test/some_global_function/parameter_with_upper_bound_and_union",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
                     "docstring": {
-                        "type": "float in range (negative_infinity, 1)",
-                        "description": ""
+                        "type": "{'auto', 'person'} or float",
+                        "description": "float in range (negative_infinity, 1)"
                     }
                 },
                 {
@@ -66,8 +66,8 @@
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
                     "docstring": {
-                        "type": "float in range [0, 1]",
-                        "description": ""
+                        "type": "",
+                        "description": "float in range [0, 1]"
                     }
                 }
             ],

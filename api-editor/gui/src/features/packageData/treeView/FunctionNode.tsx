@@ -1,6 +1,6 @@
 import React from 'react';
-import {FaCogs} from 'react-icons/fa';
-import {isEmptyList} from '../../../common/util/listOperations';
+import { FaCogs } from 'react-icons/fa';
+import { isEmptyList } from '../../../common/util/listOperations';
 import PythonFunction from '../model/PythonFunction';
 import TreeNode, {ValuePair} from './TreeNode';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
@@ -18,7 +18,7 @@ interface FunctionNodeProps {
     usages: UsageCountStore;
 }
 
-const FunctionNode: React.FC<FunctionNodeProps> = function ({pythonFunction, filter, usages}) {
+const FunctionNode: React.FC<FunctionNodeProps> = function ({ pythonFunction, filter, usages }) {
     const hasParameters = !isEmptyList(pythonFunction.parameters);
     const annotations = useAppSelector(selectAnnotations);
     let valuePair: ValuePair = new ValuePair(undefined, undefined);
@@ -29,8 +29,16 @@ const FunctionNode: React.FC<FunctionNodeProps> = function ({pythonFunction, fil
         valuePair = getMapWithAnnotation(pythonFunction, annotations);
     }
 
-    return <TreeNode declaration={pythonFunction} icon={FaCogs} isExpandable={hasParameters} filter={filter}
-                     maxValue={valuePair.maxValue} specificValue={valuePair.specificValue}/>;
+    return (
+        <TreeNode
+            declaration={pythonFunction}
+            icon={FaCogs}
+            isExpandable={hasParameters}
+            filter={filter}
+            maxValue={valuePair.maxValue}
+            specificValue={valuePair.specificValue}
+        />
+    );
 };
 
 const getMapWithUsages = function (usages: UsageCountStore, pythonFunction: PythonFunction): ValuePair {

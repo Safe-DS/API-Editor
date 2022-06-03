@@ -1,9 +1,9 @@
 import {HStack, Icon, Tag, Text as ChakraText} from '@chakra-ui/react';
 import React from 'react';
-import {IconType} from 'react-icons/lib';
-import {useLocation} from 'react-router';
-import {useNavigate} from 'react-router-dom';
-import {useAppDispatch, useAppSelector} from '../../../app/hooks';
+import { IconType } from 'react-icons/lib';
+import { useLocation } from 'react-router';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import PythonDeclaration from '../model/PythonDeclaration';
 import {
     HeatMapData,
@@ -35,13 +35,13 @@ export class ValuePair {
 }
 
 const TreeNode: React.FC<TreeNodeProps> = function ({
-                                                        declaration,
-                                                        icon,
-                                                        isExpandable,
-                                                        filter,
-                                                        maxValue,
-                                                        specificValue,
-                                                    }) {
+    declaration,
+    icon,
+    isExpandable,
+    filter,
+    maxValue,
+    specificValue,
+}) {
     const currentPathname = useLocation().pathname;
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -82,9 +82,20 @@ const TreeNode: React.FC<TreeNodeProps> = function ({
                 showChildren={showChildren}
                 isSelected={isSelected(declaration, currentPathname)}
             />
-            {display_heat_map &&
-                <Tag width={box_width} display="flex" justifyContent="center" bg={heat_color} variant="solid" fontWeight="900" size="sm" opacity={opacity}>{specificValue}</Tag>
-            }
+            {display_heat_map && (
+                    <Tag
+                        width={box_width}
+                        display="flex"
+                        justifyContent="center"
+                        bg={heat_color}
+                        variant="solid"
+                        fontWeight="900"
+                        size="sm"
+                        opacity={opacity}
+                    >
+                        {specificValue}
+                    </Tag>
+            )}
             <Icon as={icon}/>
             <ChakraText fontWeight={fontWeight}>{declaration.getUniqueName()}</ChakraText>
         </HStack>
@@ -111,8 +122,8 @@ const getColorFromValue = function (maxValue: number, specificValue: number, lin
     let percentage = (linear) ? (specificValue / maxValue) : Math.log(specificValue + 1) / Math.log(maxValue + 1);
     const value = percentage * 255;
 
-    return `rgb(${value}%, 0%, ${255 - value}%)`
-}
+    return `rgb(${value}%, 0%, ${255 - value}%)`;
+};
 
 const test = function (a: number, b : number) {
     return Math.log(b) / Math.log(a);

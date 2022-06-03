@@ -1,5 +1,5 @@
 import React from 'react';
-import {FaKeyboard} from 'react-icons/fa';
+import { FaKeyboard } from 'react-icons/fa';
 import PythonParameter from '../model/PythonParameter';
 import TreeNode, {ValuePair} from './TreeNode';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
@@ -27,8 +27,16 @@ const ParameterNode: React.FC<ParameterNodeProps> = function ({pythonParameter, 
         valuePair = getMapWithAnnotation(pythonParameter, annotations);
     }
 
-    return <TreeNode declaration={pythonParameter} icon={FaKeyboard} isExpandable={false} filter={filter}
-                     maxValue={valuePair.maxValue} specificValue={valuePair.specificValue}/>;
+    return (
+        <TreeNode
+            declaration={pythonParameter}
+            icon={FaKeyboard}
+            isExpandable={false}
+            filter={filter}
+            maxValue={valuePair.maxValue}
+            specificValue={valuePair.specificValue}
+        />
+    );
 };
 
 const getMapWithUsages = function (usages: UsageCountStore, pythonParameter: PythonParameter): ValuePair {
