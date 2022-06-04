@@ -1,24 +1,24 @@
-import { ConjunctiveFilter } from './ConjunctiveFilter';
+import {ConjunctiveFilter} from './ConjunctiveFilter';
 import NameFilter from './NameFilter';
 import AbstractPythonFilter from './AbstractPythonFilter';
-import DeclarationTypeFilter, { DeclarationType } from './DeclarationTypeFilter';
-import VisibilityFilter, { Visibility } from './VisibilityFilter';
-import { NegatedFilter } from './NegatedFilter';
-import { Optional } from '../../../../common/util/types';
-import AnnotationFilter, { AnnotationType } from './AnnotationFilter';
+import DeclarationTypeFilter, {DeclarationType} from './DeclarationTypeFilter';
+import VisibilityFilter, {Visibility} from './VisibilityFilter';
+import {NegatedFilter} from './NegatedFilter';
+import {Optional} from '../../../../common/util/types';
+import AnnotationFilter, {AnnotationType} from './AnnotationFilter';
 import UsageFilter from './UsageFilter';
 import UsefulnessFilter from './UsefulnessFilter';
-import { equals, greaterThan, greaterThanOrEqual, lessThan, lessThanOrEqual } from './comparisons';
+import {equals, greaterThan, greaterThanOrEqual, lessThan, lessThanOrEqual} from './comparisons';
 
 /**
  * Creates a filter from the given string. This method handles conjunctions, negations, and non-negated tokens.
  *
  * @param text The text that describes the filter.
  */
-export function createFilterFromString(text: string): AbstractPythonFilter {
+export const createFilterFromString = function (text: string): AbstractPythonFilter {
     const filters: AbstractPythonFilter[] = [];
 
-    for (const token of text.split(/\s+/)) {
+    for (const token of text.split(/\s+/u)) {
         const newFilter = parsePotentiallyNegatedToken(token);
         if (newFilter) {
             filters.push(newFilter);
@@ -33,7 +33,7 @@ export function createFilterFromString(text: string): AbstractPythonFilter {
  *
  * @param token The text that describes the filter.
  */
-function parsePotentiallyNegatedToken(token: string): Optional<AbstractPythonFilter> {
+const parsePotentiallyNegatedToken = function (token: string): Optional<AbstractPythonFilter> {
     const isNegated = token.startsWith('!');
     const positiveToken = isNegated ? token.substring(1) : token;
 
@@ -50,7 +50,7 @@ function parsePotentiallyNegatedToken(token: string): Optional<AbstractPythonFil
  *
  * @param token The text that describes the filter.
  */
-function parsePositiveToken(token: string): Optional<AbstractPythonFilter> {
+const parsePositiveToken = function (token: string): Optional<AbstractPythonFilter> {
     // Filters with fixed text
     switch (token.toLowerCase()) {
         // Declaration type
@@ -99,13 +99,13 @@ function parsePositiveToken(token: string): Optional<AbstractPythonFilter> {
     }
 
     // Name
-    const nameMatch = /^name:(?<name>\w+)$/.exec(token);
+    const nameMatch = /^name:(?<name>\w+)$/u.exec(token);
     if (nameMatch) {
         return new NameFilter(nameMatch?.groups?.name as string);
     }
 
     // Usages
-    const usageMatch = /^usages(?<comparison>:(<|<=|>=|>)?)(?<expected>\d+)$/.exec(token);
+    const usageMatch = /^usages(?<comparison>:(<|<=|>=|>)?)(?<expected>\d+)$/u.exec(token);
     if (usageMatch) {
         const comparisonOperator = usageMatch?.groups?.comparison as string;
         const comparison = comparisonFunction(comparisonOperator);
@@ -119,7 +119,7 @@ function parsePositiveToken(token: string): Optional<AbstractPythonFilter> {
     }
 
     // Usefulness
-    const usefulnessMatch = /^usefulness(?<comparison>:(<|<=|>=|>)?)(?<expected>\d+)$/.exec(token);
+    const usefulnessMatch = /^usefulness(?<comparison>:(<|<=|>=|>)?)(?<expected>\d+)$/u.exec(token);
     if (usefulnessMatch) {
         const comparisonOperator = usefulnessMatch?.groups?.comparison as string;
         const comparison = comparisonFunction(comparisonOperator);

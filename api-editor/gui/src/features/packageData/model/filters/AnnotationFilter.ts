@@ -46,7 +46,7 @@ export default class AnnotationFilter extends AbstractPythonFilter {
     shouldKeepDeclaration(
         pythonDeclaration: PythonDeclaration,
         annotations: AnnotationsState,
-        usages: UsageCountStore,
+        _usages: UsageCountStore,
     ): boolean {
         const id = pythonDeclaration.pathAsString();
 

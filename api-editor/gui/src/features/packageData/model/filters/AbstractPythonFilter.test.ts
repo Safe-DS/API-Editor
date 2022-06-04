@@ -6,9 +6,9 @@ import PythonModule from '../PythonModule';
 import PythonClass from '../PythonClass';
 import PythonFunction from '../PythonFunction';
 import NameFilter from './NameFilter';
-import { initialState as annotations } from '../../../annotations/annotationSlice';
+import {initialState as annotations} from '../../../annotations/annotationSlice';
 import PythonDeclaration from '../PythonDeclaration';
-import { UsageCountStore } from '../../../usages/model/UsageCountStore';
+import {UsageCountStore} from '../../../usages/model/UsageCountStore';
 
 let pythonPackage: PythonPackage;
 
@@ -169,6 +169,6 @@ describe('AbstractPythonFilter::applyToPackage', () => {
     });
 });
 
-function names(declarations: PythonDeclaration[]): string[] {
+const names = function (declarations: PythonDeclaration[]): string[] {
     return declarations.map((it) => it.name);
 }

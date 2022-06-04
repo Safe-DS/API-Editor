@@ -44,8 +44,8 @@ export default class NameFilter extends AbstractPythonFilter {
 
     shouldKeepDeclaration(
         pythonDeclaration: PythonDeclaration,
-        annotations: AnnotationsState,
-        usages: UsageCountStore,
+        _annotations: AnnotationsState,
+        _usages: UsageCountStore,
     ): boolean {
         return pythonDeclaration.name.toLowerCase().includes(this.substring.toLowerCase());
     }
