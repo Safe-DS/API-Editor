@@ -1,12 +1,12 @@
-import {Button, HStack} from '@chakra-ui/react';
+import { Button, HStack } from '@chakra-ui/react';
 import React from 'react';
 import PythonPackage from '../model/PythonPackage';
-import {collapseAllParents, expandAllParents, expandParentsInTreeView} from '../packageDataSlice';
+import { collapseAllParents, expandAllParents, expandParentsInTreeView } from '../packageDataSlice';
 import PythonDeclaration from '../model/PythonDeclaration';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
-import {AnnotationsState, selectAnnotations} from '../../annotations/annotationSlice';
-import {useNavigate} from 'react-router';
-import {useAppDispatch, useAppSelector} from "../../../app/hooks";
+import { AnnotationsState, selectAnnotations } from '../../annotations/annotationSlice';
+import { useNavigate } from 'react-router';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 
 interface ActionBarProps {
     declaration: PythonDeclaration;
@@ -14,77 +14,79 @@ interface ActionBarProps {
     pythonFilter: AbstractPythonFilter;
 }
 
-export const ActionBar: React.FC<ActionBarProps> = function ({declaration, pythonPackage, pythonFilter}) {
+export const ActionBar: React.FC<ActionBarProps> = function ({ declaration, pythonPackage, pythonFilter }) {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const annotations = useAppSelector(selectAnnotations)
+    const annotations = useAppSelector(selectAnnotations);
 
-    return (<HStack borderTop={1} layerStyle="subtleBorder" padding="0.5em 1em" w="100%">
-        <Button
-            onClick={() => {
-                let navStr = getPreviousElementPath(declaration, pythonFilter, annotations);
-                if (navStr !== null) {
-                    //navigate to element
-                    navigate(`/${navStr}`);
+    return (
+        <HStack borderTop={1} layerStyle="subtleBorder" padding="0.5em 1em" w="100%">
+            <Button
+                onClick={() => {
+                    let navStr = getPreviousElementPath(declaration, pythonFilter, annotations);
+                    if (navStr !== null) {
+                        //navigate to element
+                        navigate(`/${navStr}`);
 
-                    //update tree selection
-                    const parents = getParents(navStr, pythonPackage);
-                    dispatch(expandParentsInTreeView(parents));
-                }
-            }}
-        >
-            Previous
-        </Button>
-        <Button
-            onClick={() => {
-                let navStr = getNextElementPath(declaration, pythonFilter, annotations);
-                if (navStr !== null) {
-                    //navigate to element
-                    navigate(`/${navStr}`);
+                        //update tree selection
+                        const parents = getParents(navStr, pythonPackage);
+                        dispatch(expandParentsInTreeView(parents));
+                    }
+                }}
+            >
+                Previous
+            </Button>
+            <Button
+                onClick={() => {
+                    let navStr = getNextElementPath(declaration, pythonFilter, annotations);
+                    if (navStr !== null) {
+                        //navigate to element
+                        navigate(`/${navStr}`);
 
-                    //update tree selection
-                    const parents = getParents(navStr, pythonPackage);
-                    dispatch(expandParentsInTreeView(parents));
-                }
-            }}
-        >
-            Next
-        </Button>
-        <Button
-            accessKey="a"
-            onClick={() => {
-                dispatch(expandAllParents(getDescendants(pythonPackage)));
-            }}
-        >
-            Expand All
-        </Button>
-        <Button
-            accessKey="s"
-            onClick={() => {
-                dispatch(collapseAllParents(getDescendants(pythonPackage)));
-            }}
-        >
-            Collapse All
-        </Button>
-        <Button
-            accessKey="y"
-            onClick={() => {
-                dispatch(expandAllParents(getDescendants(declaration)));
-            }}
-        >
-            Expand Selected
-        </Button>
-        <Button
-            accessKey="x"
-            onClick={() => {
-                dispatch(collapseAllParents(getDescendants(declaration)));
-            }}
-        >
-            Collapse Selected
-        </Button>
-    </HStack>)
-}
+                        //update tree selection
+                        const parents = getParents(navStr, pythonPackage);
+                        dispatch(expandParentsInTreeView(parents));
+                    }
+                }}
+            >
+                Next
+            </Button>
+            <Button
+                accessKey="a"
+                onClick={() => {
+                    dispatch(expandAllParents(getDescendants(pythonPackage)));
+                }}
+            >
+                Expand All
+            </Button>
+            <Button
+                accessKey="s"
+                onClick={() => {
+                    dispatch(collapseAllParents(getDescendants(pythonPackage)));
+                }}
+            >
+                Collapse All
+            </Button>
+            <Button
+                accessKey="y"
+                onClick={() => {
+                    dispatch(expandAllParents(getDescendants(declaration)));
+                }}
+            >
+                Expand Selected
+            </Button>
+            <Button
+                accessKey="x"
+                onClick={() => {
+                    dispatch(collapseAllParents(getDescendants(declaration)));
+                }}
+            >
+                Collapse Selected
+            </Button>
+        </HStack>
+    );
+};
 
 const getNextElementPath = function (
     current: PythonDeclaration,

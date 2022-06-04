@@ -1,6 +1,6 @@
-import {Box, Spacer, VStack} from '@chakra-ui/react';
+import { Box, Spacer, VStack } from '@chakra-ui/react';
 import React from 'react';
-import {useLocation} from 'react-router';
+import { useLocation } from 'react-router';
 import PythonClass from '../model/PythonClass';
 import PythonFunction from '../model/PythonFunction';
 import PythonModule from '../model/PythonModule';
@@ -11,7 +11,7 @@ import FunctionView from './FunctionView';
 import ModuleView from './ModuleView';
 import ParameterView from './ParameterView';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
-import {ActionBar} from "./ActionBar";
+import { ActionBar } from './ActionBar';
 
 interface SelectionViewProps {
     pythonPackage: PythonPackage;
