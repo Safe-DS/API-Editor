@@ -104,7 +104,7 @@ const getNextElementPath = function (
 const getNextElementInTree = function (current: PythonDeclaration): PythonDeclaration | null {
     if (current.children().length > 0) {
         return current.children()[0];
-    } else if (current.parent() != null) {
+    } else if (current.parent()) {
         return getNextFromParentInTree(current);
     }
     return null;
@@ -142,7 +142,7 @@ const getPreviousElementPath = function (
 
 const getPreviousElementInTree = function (current: PythonDeclaration): PythonDeclaration | null {
     const parent = current.parent();
-    if (parent != null) {
+    if (parent) {
         const index = parent.children().indexOf(current);
         if (index > 0) {
             return getLastElementInTree(parent.children()[index - 1]);

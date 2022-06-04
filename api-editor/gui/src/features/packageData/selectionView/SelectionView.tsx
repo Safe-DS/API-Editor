@@ -22,7 +22,7 @@ export const SelectionView: React.FC<SelectionViewProps> = function ({ pythonPac
     const declaration = pythonPackage.getByRelativePath(useLocation().pathname.split('/').splice(2));
 
     if (!declaration) {
-        return <></>;
+        return null;
     }
 
     return (
