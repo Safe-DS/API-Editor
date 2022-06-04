@@ -8,7 +8,7 @@ interface OptionalFormProps {
     target: PythonDeclaration;
 }
 
-const OptionalForm: React.FC<OptionalFormProps> = function ({ target }) {
+export const OptionalForm: React.FC<OptionalFormProps> = function ({ target }) {
     const targetPath = target.pathAsString();
 
     // Hooks -----------------------------------------------------------------------------------------------------------
@@ -40,5 +40,3 @@ const OptionalForm: React.FC<OptionalFormProps> = function ({ target }) {
         />
     );
 };
-
-export default OptionalForm;

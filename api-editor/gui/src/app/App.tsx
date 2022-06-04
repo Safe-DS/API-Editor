@@ -30,7 +30,7 @@ import ConstantForm from '../features/annotations/forms/ConstantForm';
 import {EnumForm} from '../features/annotations/forms/EnumForm';
 import {GroupForm} from '../features/annotations/forms/GroupForm';
 import {MoveForm} from '../features/annotations/forms/MoveForm';
-import OptionalForm from '../features/annotations/forms/OptionalForm';
+import {OptionalForm} from '../features/annotations/forms/OptionalForm';
 import {RenameForm} from '../features/annotations/forms/RenameForm';
 import PythonPackage from '../features/packageData/model/PythonPackage';
 import {parsePythonPackageJson, PythonPackageJson} from '../features/packageData/model/PythonPackageBuilder';
