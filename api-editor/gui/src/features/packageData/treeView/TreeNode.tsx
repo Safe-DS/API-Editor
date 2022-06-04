@@ -111,13 +111,13 @@ const isSelected = function (declaration: PythonDeclaration, currentPathname: st
 };
 
 const getColorFromValue = function (maxValue: number, specificValue: number, linear: boolean): string {
-    if (specificValue <= 0 || maxValue <= 0) return 'rgb(0%, 0%, 255%)';
-    if (specificValue > maxValue) return 'rgb(255%, 0%, 0%)';
+    if (specificValue <= 0 || maxValue <= 0) return 'rgb(0, 0, 255)';
+    if (specificValue > maxValue) return 'rgb(255, 0, 0)';
 
     let percentage = linear ? specificValue / maxValue : Math.log(specificValue + 1) / Math.log(maxValue + 1);
     const value = percentage * 255;
 
-    return `rgb(${value}%, 0%, ${255 - value}%)`;
+    return `rgb(${value}, 0, ${255 - value})`;
 };
 
 export default TreeNode;
