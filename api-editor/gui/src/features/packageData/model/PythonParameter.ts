@@ -4,6 +4,7 @@ import PythonFunction from './PythonFunction';
 import PythonModule from './PythonModule';
 
 export enum PythonParameterAssignment {
+    IMPLICIT,
     POSITION_ONLY,
     POSITION_OR_NAME,
     NAME_ONLY,
