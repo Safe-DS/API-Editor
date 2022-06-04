@@ -5,19 +5,44 @@ import { useLocation } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import PythonDeclaration from '../model/PythonDeclaration';
-import { selectIsExpandedInTreeView, toggleIsExpandedInTreeView } from '../packageDataSlice';
+import {
+    HeatMapMode,
+    selectHeatMapMode,
+    selectIsExpandedInTreeView,
+    toggleIsExpandedInTreeView,
+} from '../packageDataSlice';
 import VisibilityIndicator from './VisibilityIndicator';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
 import { selectAnnotations } from '../../annotations/annotationSlice';
+import { HeatMapInterpolation, HeatMapTag } from './HeatMapTag';
 
 interface TreeNodeProps {
     declaration: PythonDeclaration;
     icon: IconType;
     isExpandable: boolean;
     filter: AbstractPythonFilter;
+    maxValue?: number;
+    specificValue?: number;
 }
 
-const TreeNode: React.FC<TreeNodeProps> = function ({ declaration, icon, isExpandable, filter }) {
+export class ValuePair {
+    specificValue: number | undefined;
+    maxValue: number | undefined;
+
+    constructor(specificValue: number | undefined, maxValue: number | undefined) {
+        this.specificValue = specificValue;
+        this.maxValue = maxValue;
+    }
+}
+
+export const TreeNode: React.FC<TreeNodeProps> = function ({
+    declaration,
+    icon,
+    isExpandable,
+    filter,
+    maxValue,
+    specificValue = 0,
+}) {
     const currentPathname = useLocation().pathname;
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -37,6 +62,12 @@ const TreeNode: React.FC<TreeNodeProps> = function ({ declaration, icon, isExpan
         navigate(`/${declaration.pathAsString()}`);
     };
 
+    const interpolation =
+        useAppSelector(selectHeatMapMode) === HeatMapMode.Annotations
+            ? HeatMapInterpolation.LINEAR
+            : HeatMapInterpolation.LOGARITHMIC;
+    const displayHeatMap = useAppSelector(selectHeatMapMode) !== HeatMapMode.None && maxValue !== undefined;
+
     return (
         <HStack
             userSelect="none"
@@ -52,6 +83,9 @@ const TreeNode: React.FC<TreeNodeProps> = function ({ declaration, icon, isExpan
                 isSelected={isSelected(declaration, currentPathname)}
             />
             <Icon as={icon} />
+            {displayHeatMap && (
+                <HeatMapTag actualValue={specificValue} maxValue={maxValue} interpolation={interpolation} />
+            )}
             <ChakraText fontWeight={fontWeight}>{declaration.getUniqueName()}</ChakraText>
         </HStack>
     );
@@ -64,5 +98,3 @@ const levelOf = function (declaration: PythonDeclaration): number {
 const isSelected = function (declaration: PythonDeclaration, currentPathname: string): boolean {
     return `/${declaration.pathAsString()}` === currentPathname;
 };
-
-export default TreeNode;
