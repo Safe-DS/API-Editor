@@ -6,7 +6,7 @@ import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { useAppSelector } from '../../../app/hooks';
 import { AnnotationsState, selectAnnotations } from '../../annotations/annotationSlice';
-import { HeatMapData, selectHeatMapData } from '../packageDataSlice';
+import { HeatMapMode, selectHeatMapMode } from '../packageDataSlice';
 
 interface ParameterNodeProps {
     pythonParameter: PythonParameter;
@@ -18,9 +18,9 @@ const ParameterNode: React.FC<ParameterNodeProps> = function ({ pythonParameter,
     let valuePair: ValuePair = new ValuePair(undefined, undefined);
     const annotations = useAppSelector(selectAnnotations);
 
-    if (useAppSelector(selectHeatMapData) === HeatMapData.Usages) {
+    if (useAppSelector(selectHeatMapMode) === HeatMapMode.Usages) {
         valuePair = getMapWithUsages(usages, pythonParameter);
-    } else if (useAppSelector(selectHeatMapData) === HeatMapData.Usages) {
+    } else if (useAppSelector(selectHeatMapMode) === HeatMapMode.Usages) {
         valuePair = getMapWithAnnotation(pythonParameter, annotations);
     }
 

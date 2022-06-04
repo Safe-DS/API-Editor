@@ -7,7 +7,7 @@ import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { useAppSelector } from '../../../app/hooks';
 import { AnnotationsState, selectAnnotations } from '../../annotations/annotationSlice';
-import { HeatMapData, selectHeatMapData } from '../packageDataSlice';
+import { HeatMapMode, selectHeatMapMode } from '../packageDataSlice';
 
 interface ClassNodeProps {
     pythonClass: PythonClass;
@@ -20,9 +20,9 @@ const ClassNode: React.FC<ClassNodeProps> = function ({ pythonClass, filter, usa
     const annotations = useAppSelector(selectAnnotations);
     let valuePair: ValuePair = new ValuePair(undefined, undefined);
 
-    if (useAppSelector(selectHeatMapData) === HeatMapData.Annotations) {
+    if (useAppSelector(selectHeatMapMode) === HeatMapMode.Annotations) {
         valuePair = getMapWithAnnotation(pythonClass, annotations);
-    } else if (useAppSelector(selectHeatMapData) === HeatMapData.Usages) {
+    } else if (useAppSelector(selectHeatMapMode) === HeatMapMode.Usages) {
         valuePair = getMapWithUsages(usages, pythonClass);
     }
 

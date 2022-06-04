@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import PythonDeclaration from '../model/PythonDeclaration';
 import {
-    HeatMapData,
-    selectHeatMapData,
+    HeatMapMode,
+    selectHeatMapMode,
     selectIsExpandedInTreeView,
     toggleIsExpandedInTreeView,
 } from '../packageDataSlice';
@@ -61,13 +61,13 @@ const TreeNode: React.FC<TreeNodeProps> = function ({
         navigate(`/${declaration.pathAsString()}`);
     };
 
-    const linear = useAppSelector(selectHeatMapData) === HeatMapData.Annotations;
-    const display_heat_map = useAppSelector(selectHeatMapData) !== HeatMapData.None;
+    const linear = useAppSelector(selectHeatMapMode) === HeatMapMode.Annotations;
+    const display_heat_map = useAppSelector(selectHeatMapMode) !== HeatMapMode.None;
     const opacity = maxValue !== undefined ? 1 : 0;
     const box_width = maxValue !== undefined ? maxValue.toString().length * 6.7 : 0;
     specificValue = specificValue === undefined ? 0 : specificValue;
     const heat_color = getColorFromValue(maxValue as number, specificValue, linear);
-    console.log(test(1, 2));
+
     return (
         <HStack
             userSelect="none"
@@ -85,7 +85,6 @@ const TreeNode: React.FC<TreeNodeProps> = function ({
             {display_heat_map && (
                 <Tag
                     width={box_width}
-                    display="flex"
                     justifyContent="center"
                     bg={heat_color}
                     variant="solid"
@@ -121,10 +120,6 @@ const getColorFromValue = function (maxValue: number, specificValue: number, lin
     const value = percentage * 255;
 
     return `rgb(${value}%, 0%, ${255 - value}%)`;
-};
-
-const test = function (a: number, b: number) {
-    return Math.log(b) / Math.log(a);
 };
 
 export default TreeNode;
