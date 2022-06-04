@@ -44,10 +44,11 @@ const getMapWithUsages = function (usages: UsageCountStore, pythonParameter: Pyt
 };
 
 const getMapWithAnnotation = function (pythonParameter: PythonParameter, annotations: AnnotationsState): ValuePair {
-    const maxValue = 6;
+    const maxValue = 7;
     const qname = pythonParameter.pathAsString();
     let specificValue = 0;
 
+    specificValue += annotations.attributes[qname] !== undefined ? 1 : 0;
     specificValue += annotations.boundaries[qname] !== undefined ? 1 : 0;
     specificValue += annotations.enums[qname] !== undefined ? 1 : 0;
     specificValue += annotations.constants[qname] !== undefined ? 1 : 0;
