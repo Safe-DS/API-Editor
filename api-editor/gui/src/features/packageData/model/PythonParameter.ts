@@ -69,6 +69,10 @@ export default class PythonParameter extends PythonDeclaration {
         return `Parameter "${this.name}"`;
     }
 
+    qualifiedName(): string {
+        return this.path().slice(1).join('.');
+    }
+
     clone(): PythonParameter {
         return new PythonParameter(
             this.name,

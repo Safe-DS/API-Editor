@@ -31,7 +31,7 @@ import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { resetAnnotations, toggleAnnotationImportDialog } from '../features/annotations/annotationSlice';
 import AnnotatedPythonPackageBuilder from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
 import PythonPackage from '../features/packageData/model/PythonPackage';
-import { togglePackageDataImportDialog } from '../features/packageData/packageDataSlice';
+import { HeatMapMode, setHeatMapMode, togglePackageDataImportDialog } from '../features/packageData/packageDataSlice';
 import { Setter } from './util/types';
 import { toggleUsageImportDialog } from '../features/usages/usageSlice';
 import { FilterHelpButton } from './FilterHelpButton';
@@ -183,6 +183,32 @@ const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFi
                                     Dark mode
                                 </MenuItemOption>
                             </MenuOptionGroup>
+                            <MenuDivider />
+                            <MenuGroup title="Heat Map Mode">
+                                <MenuOptionGroup type="radio" defaultValue="none">
+                                    <MenuItemOption
+                                        paddingLeft={8}
+                                        value={'none'}
+                                        onClick={() => dispatch(setHeatMapMode(HeatMapMode.None))}
+                                    >
+                                        None
+                                    </MenuItemOption>
+                                    <MenuItemOption
+                                        paddingLeft={8}
+                                        value={'usages'}
+                                        onClick={() => dispatch(setHeatMapMode(HeatMapMode.Usages))}
+                                    >
+                                        Usages
+                                    </MenuItemOption>
+                                    <MenuItemOption
+                                        paddingLeft={8}
+                                        value={'annotations'}
+                                        onClick={() => dispatch(setHeatMapMode(HeatMapMode.Annotations))}
+                                    >
+                                        Annotations
+                                    </MenuItemOption>
+                                </MenuOptionGroup>
+                            </MenuGroup>
                         </MenuList>
                     </Menu>
                 </Box>
