@@ -7,7 +7,7 @@ import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
 import { AnnotationsState, selectAnnotations } from '../../annotations/annotationSlice';
 import { useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import {UsageCountStore} from "../../usages/model/UsageCountStore";
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
 
 interface ActionBarProps {
     declaration: PythonDeclaration;
@@ -94,7 +94,7 @@ const getNextElementPath = function (
     current: PythonDeclaration,
     filter: AbstractPythonFilter,
     annotations: AnnotationsState,
-    usages: UsageCountStore
+    usages: UsageCountStore,
 ): string | null {
     const nextElement = getNextElementInTree(current);
     if (nextElement) {
@@ -134,7 +134,7 @@ const getPreviousElementPath = function (
     current: PythonDeclaration,
     filter: AbstractPythonFilter,
     annotations: AnnotationsState,
-    usages: UsageCountStore
+    usages: UsageCountStore,
 ): string | null {
     const previousElement = getPreviousElementInTree(current);
     if (previousElement) {

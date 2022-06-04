@@ -1,14 +1,14 @@
-import {ConjunctiveFilter} from './ConjunctiveFilter';
+import { ConjunctiveFilter } from './ConjunctiveFilter';
 import NameFilter from './NameFilter';
 import AbstractPythonFilter from './AbstractPythonFilter';
-import DeclarationTypeFilter, {DeclarationType} from './DeclarationTypeFilter';
-import VisibilityFilter, {Visibility} from './VisibilityFilter';
-import {NegatedFilter} from './NegatedFilter';
-import {Optional} from '../../../../common/util/types';
-import AnnotationFilter, {AnnotationType} from './AnnotationFilter';
+import DeclarationTypeFilter, { DeclarationType } from './DeclarationTypeFilter';
+import VisibilityFilter, { Visibility } from './VisibilityFilter';
+import { NegatedFilter } from './NegatedFilter';
+import { Optional } from '../../../../common/util/types';
+import AnnotationFilter, { AnnotationType } from './AnnotationFilter';
 import UsageFilter from './UsageFilter';
 import UsefulnessFilter from './UsefulnessFilter';
-import {equals, greaterThan, greaterThanOrEqual, lessThan, lessThanOrEqual} from './comparisons';
+import { equals, greaterThan, greaterThanOrEqual, lessThan, lessThanOrEqual } from './comparisons';
 
 /**
  * Creates a filter from the given string. This method handles conjunctions, negations, and non-negated tokens.
@@ -26,7 +26,7 @@ export const createFilterFromString = function (text: string): AbstractPythonFil
     }
 
     return new ConjunctiveFilter(filters);
-}
+};
 
 /**
  * Handles a single token that could be negated.
@@ -43,7 +43,7 @@ const parsePotentiallyNegatedToken = function (token: string): Optional<Abstract
     } else {
         return new NegatedFilter(newPositiveFilter);
     }
-}
+};
 
 /**
  * Handles a singe non-negated token.
@@ -131,7 +131,7 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
 
         return new UsefulnessFilter(comparison, expected);
     }
-}
+};
 
 const comparisonFunction = function (comparisonOperator: string): ((a: number, b: number) => boolean) | null {
     switch (comparisonOperator) {

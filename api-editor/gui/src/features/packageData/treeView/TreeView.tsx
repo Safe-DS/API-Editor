@@ -104,7 +104,9 @@ const TreeNodeGenerator: React.FC<ListChildComponentProps> = memo(({ data, index
 
     return (
         <Box style={style}>
-            {declaration instanceof PythonModule && <ModuleNode pythonModule={declaration} filter={filter} usages={usages} />}
+            {declaration instanceof PythonModule && (
+                <ModuleNode pythonModule={declaration} filter={filter} usages={usages} />
+            )}
             {declaration instanceof PythonClass && (
                 <ClassNode pythonClass={declaration} filter={filter} usages={usages} />
             )}
