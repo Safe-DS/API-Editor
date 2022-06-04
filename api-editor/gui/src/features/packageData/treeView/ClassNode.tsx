@@ -33,6 +33,7 @@ const ClassNode: React.FC<ClassNodeProps> = function ({ pythonClass, filter, usa
             icon={FaChalkboard}
             isExpandable={hasMethods}
             filter={filter}
+            usages={usages}
             maxValue={valuePair.maxValue}
             specificValue={valuePair.specificValue}
         />

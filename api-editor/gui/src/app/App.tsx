@@ -94,7 +94,7 @@ const App: React.FC = function () {
 
     const [filter, setFilter] = useState('is:public');
     const pythonFilter = createFilterFromString(filter);
-    const filteredPythonPackage = pythonFilter.applyToPackage(pythonPackage, useAppSelector(selectAnnotations));
+    const filteredPythonPackage = pythonFilter.applyToPackage(pythonPackage, useAppSelector(selectAnnotations), usages);
 
     const userActionTarget = pythonPackage.getByRelativePathAsString(currentUserAction.target);
 
@@ -169,7 +169,7 @@ const App: React.FC = function () {
                     {currentUserAction.type === 'rename' && <RenameForm target={userActionTarget || pythonPackage} />}
                 </GridItem>
                 <GridItem gridArea="rightPane" overflow="auto">
-                    <SelectionView pythonPackage={pythonPackage} pythonFilter={pythonFilter} />
+                    <SelectionView pythonPackage={pythonPackage} pythonFilter={pythonFilter} usages={usages} />
                 </GridItem>
 
                 {showAnnotationImportDialog && <AnnotationImportDialog />}

@@ -33,6 +33,7 @@ const FunctionNode: React.FC<FunctionNodeProps> = function ({ pythonFunction, fi
             icon={FaCogs}
             isExpandable={hasParameters}
             filter={filter}
+            usages={usages}
             maxValue={valuePair.maxValue}
             specificValue={valuePair.specificValue}
         />
