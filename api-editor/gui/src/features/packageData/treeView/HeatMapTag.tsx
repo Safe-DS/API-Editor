@@ -33,16 +33,16 @@ export const HeatMapTag: React.FC<HeatMapTagProps> = function ({ actualValue, ma
 };
 
 const backgroundColor = function (actualValue: number, maxValue: number, interpolation: HeatMapInterpolation): string {
-    if (actualValue <= 0 || maxValue <= 0) return 'rgb(0, 0, 255)';
-    if (actualValue > maxValue) return 'rgb(255, 0, 0)';
-
     const red = redRatio(actualValue, maxValue, interpolation) * 255;
     const blue = 255 - red;
 
     return `rgb(${red}, 0, ${blue})`;
 };
 
-const redRatio = function (actualValue: number, maxValue: number, interpolation: HeatMapInterpolation): number {
+export const redRatio = function (actualValue: number, maxValue: number, interpolation: HeatMapInterpolation): number {
+    if (actualValue <= 0 || maxValue <= 0) return 0;
+    if (actualValue > maxValue) return 1;
+
     switch (interpolation) {
         case HeatMapInterpolation.LINEAR:
             return actualValue / maxValue;
