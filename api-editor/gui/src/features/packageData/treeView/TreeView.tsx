@@ -15,6 +15,7 @@ import FunctionNode from './FunctionNode';
 import ModuleNode from './ModuleNode';
 import ParameterNode from './ParameterNode';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
 
 interface ScrollOffset {
     scrollOffset: number;
@@ -23,9 +24,10 @@ interface ScrollOffset {
 interface TreeViewProps {
     pythonPackage: PythonPackage;
     filter: AbstractPythonFilter;
+    usages: UsageCountStore;
 }
 
-const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage, filter }) => {
+const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage, filter, usages }) => {
     const dispatch = useAppDispatch();
     const allExpanded = useAppSelector(selectAllExpandedInTreeView);
 
@@ -64,7 +66,7 @@ const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage, filter }) => {
                 <FixedSizeList
                     itemSize={24}
                     itemCount={children.length}
-                    itemData={{ children, filter }}
+                    itemData={{ children, filter, usages }}
                     itemKey={(index, data) => data.children[index]?.pathAsString()}
                     width="100%"
                     height={height}
@@ -98,13 +100,20 @@ const walkChildrenInPreorder = function (
 const TreeNodeGenerator: React.FC<ListChildComponentProps> = memo(({ data, index, style }) => {
     const declaration = data.children[index];
     const filter = data.filter;
+    const usages = data.usages;
 
     return (
         <Box style={style}>
             {declaration instanceof PythonModule && <ModuleNode pythonModule={declaration} filter={filter} />}
-            {declaration instanceof PythonClass && <ClassNode pythonClass={declaration} filter={filter} />}
-            {declaration instanceof PythonFunction && <FunctionNode pythonFunction={declaration} filter={filter} />}
-            {declaration instanceof PythonParameter && <ParameterNode pythonParameter={declaration} filter={filter} />}
+            {declaration instanceof PythonClass && (
+                <ClassNode pythonClass={declaration} filter={filter} usages={usages} />
+            )}
+            {declaration instanceof PythonFunction && (
+                <FunctionNode pythonFunction={declaration} filter={filter} usages={usages} />
+            )}
+            {declaration instanceof PythonParameter && (
+                <ParameterNode pythonParameter={declaration} filter={filter} usages={usages} />
+            )}
         </Box>
     );
 });

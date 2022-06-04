@@ -68,7 +68,7 @@ const App: React.FC = function () {
     useEffect(() => {
         // noinspection JSIgnoredPromiseFromCall
         getUsagesFromIndexedDB(setUsages);
-    });
+    }, []);
 
     // Initialize annotations
     const annotationStore = useAppSelector(selectAnnotations);
@@ -161,7 +161,7 @@ const App: React.FC = function () {
                     )}
                     {currentUserAction.type === 'move' && <MoveForm target={userActionTarget || pythonPackage} />}
                     {currentUserAction.type === 'none' && (
-                        <TreeView pythonPackage={filteredPythonPackage} filter={pythonFilter} />
+                        <TreeView pythonPackage={filteredPythonPackage} filter={pythonFilter} usages={usages} />
                     )}
                     {currentUserAction.type === 'optional' && (
                         <OptionalForm target={userActionTarget || pythonPackage} />
