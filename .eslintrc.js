@@ -1,9 +1,7 @@
-const path = require('path')
-
 module.exports = {
     root: true,
     parserOptions: {
-        tsconfigRootDir: path.join(__dirname, 'api-editor', 'gui'),
+        tsconfigRootDir: __dirname,
         project: 'tsconfig.eslint.json',
     },
     settings: {
