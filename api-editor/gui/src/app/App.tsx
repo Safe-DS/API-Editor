@@ -26,7 +26,7 @@ import {
 } from '../features/annotations/annotationSlice';
 import {BoundaryForm} from '../features/annotations/forms/BoundaryForm';
 import {CalledAfterForm} from '../features/annotations/forms/CalledAfterForm';
-import ConstantForm from '../features/annotations/forms/ConstantForm';
+import {ConstantForm} from '../features/annotations/forms/ConstantForm';
 import {EnumForm} from '../features/annotations/forms/EnumForm';
 import {GroupForm} from '../features/annotations/forms/GroupForm';
 import {MoveForm} from '../features/annotations/forms/MoveForm';
@@ -40,7 +40,7 @@ import {SelectionView} from '../features/packageData/selectionView/SelectionView
 import {TreeView} from '../features/packageData/treeView/TreeView';
 import {useAppDispatch, useAppSelector} from './hooks';
 import PythonFunction from '../features/packageData/model/PythonFunction';
-import AttributeForm from '../features/annotations/forms/AttributeForm';
+import {AttributeForm} from '../features/annotations/forms/AttributeForm';
 import {UsageCountJson, UsageCountStore} from '../features/usages/model/UsageCountStore';
 import {selectShowUsageImportDialog} from '../features/usages/usageSlice';
 import {UsageImportDialog} from '../features/usages/UsageImportDialog';

@@ -8,7 +8,7 @@ interface AttributeFormProps {
     target: PythonDeclaration;
 }
 
-const AttributeForm: React.FC<AttributeFormProps> = function ({ target }) {
+export const AttributeForm: React.FC<AttributeFormProps> = function ({ target }) {
     const targetPath = target.pathAsString();
 
     // Hooks -----------------------------------------------------------------------------------------------------------
@@ -40,5 +40,3 @@ const AttributeForm: React.FC<AttributeFormProps> = function ({ target }) {
         />
     );
 };
-
-export default AttributeForm;
