@@ -1,0 +1,8 @@
+{
+    "extends": "./api-editor/gui/tsconfig.json",
+    "compilerOptions": {
+        "noEmit": true
+    },
+    "include": ["./api-editor/gui/src", "./api-editor/gui/vite.config.ts"],
+    "exclude": []
+}

@@ -1,0 +1,14 @@
+# Compilation/build outputs
+build/
+dist/
+dist-ssr/
+
+# Configuration
+.eslintrc.js
+
+# GUI
+/api-editor/gui/vite.config.ts
+/api-editor/gui/src/theme/index.d.ts
+
+# Backend
+/api-editor/backend/src/main/resources/static/
