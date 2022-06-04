@@ -38,6 +38,18 @@ const packageDataSlice = createSlice({
                 state.expandedInTreeView[action.payload] = true;
             }
         },
+        setAllExpanded(state, action: PayloadAction<string[]>) {
+            const all = action.payload;
+            for (const item of all) {
+                state.expandedInTreeView[item] = true;
+            }
+        },
+        setAllCollapsed(state, action: PayloadAction<string[]>) {
+            const all = action.payload;
+            for (const item of all) {
+                delete state.expandedInTreeView[item];
+            }
+        },
         expandParents(state, action: PayloadAction<string[]>) {
             const parents = action.payload;
             for (const parent of parents) {
@@ -60,6 +72,8 @@ const { actions, reducer } = packageDataSlice;
 export const {
     toggleIsExpanded: toggleIsExpandedInTreeView,
     expandParents: expandParentsInTreeView,
+    setAllExpanded: expandAllParents,
+    setAllCollapsed: collapseAllParents,
     setScrollOffset: setTreeViewScrollOffset,
     toggleImportDialog: togglePackageDataImportDialog,
     setHeatMapMode,
