@@ -24,7 +24,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({declaration, pytho
         <Button
             onClick={() => {
                 let navStr = getPreviousElementPath(declaration, pythonFilter, annotations);
-                if (navStr != null) {
+                if (navStr !== null) {
                     //navigate to element
                     navigate(`/${navStr}`);
 
@@ -39,7 +39,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({declaration, pytho
         <Button
             onClick={() => {
                 let navStr = getNextElementPath(declaration, pythonFilter, annotations);
-                if (navStr != null) {
+                if (navStr !== null) {
                     //navigate to element
                     navigate(`/${navStr}`);
 
@@ -92,7 +92,7 @@ const getNextElementPath = function (
     annotations: AnnotationsState,
 ): string | null {
     const nextElement = getNextElementInTree(current);
-    if (nextElement != null) {
+    if (nextElement) {
         if (filter.shouldKeepDeclaration(nextElement, annotations)) {
             return nextElement.pathAsString();
         }
@@ -115,7 +115,7 @@ const getNextFromParentInTree = function (current: PythonDeclaration): PythonDec
         return current.children()[0];
     }
     const parent = current.parent();
-    if (parent != null) {
+    if (parent) {
         const index = parent.children().indexOf(current);
         if (parent.children().length > index + 1) {
             return parent.children()[index + 1];
@@ -131,7 +131,7 @@ const getPreviousElementPath = function (
     annotations: AnnotationsState,
 ): string | null {
     const previousElement = getPreviousElementInTree(current);
-    if (previousElement != null) {
+    if (previousElement) {
         if (filter.shouldKeepDeclaration(previousElement, annotations)) {
             return previousElement.pathAsString();
         }
@@ -165,9 +165,9 @@ const getLastElementInTree = function (current: PythonDeclaration): PythonDeclar
 const getParents = function (navStr: string, filteredPythonPackage: PythonPackage): string[] {
     const parents: string[] = [];
     let currentElement = filteredPythonPackage.getByRelativePathAsString(navStr);
-    if (currentElement != null) {
+    if (currentElement) {
         currentElement = currentElement.parent();
-        while (currentElement != null) {
+        while (currentElement) {
             parents.push(currentElement.pathAsString());
             currentElement = currentElement.parent();
         }
