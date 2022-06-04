@@ -3,10 +3,6 @@
     "compilerOptions": {
         "noEmit": true
     },
-    "include": [
-        "./.eslintrc.js",
-        "./api-editor/gui/src/**/*",
-        "./api-editor/gui/vite.config.ts"
-    ],
+    "include": ["./.eslintrc.js", "./api-editor/gui/src/**/*", "./api-editor/gui/vite.config.ts"],
     "exclude": []
 }
