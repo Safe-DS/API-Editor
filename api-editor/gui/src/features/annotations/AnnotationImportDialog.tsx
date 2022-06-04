@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useAppDispatch } from '../../app/hooks';
-import {StyledDropzone} from '../../common/StyledDropzone';
+import { StyledDropzone } from '../../common/StyledDropzone';
 import { isValidJsonFile } from '../../common/util/validation';
 import {
     AnnotationsState,

@@ -11,11 +11,11 @@ import {
     UnorderedList,
 } from '@chakra-ui/react';
 import * as idb from 'idb-keyval';
-import React, {useEffect, useState} from 'react';
-import {useLocation} from 'react-router';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
 import MenuBar from '../common/MenuBar';
-import {Setter} from '../common/util/types';
-import {AnnotationImportDialog} from '../features/annotations/AnnotationImportDialog';
+import { Setter } from '../common/util/types';
+import { AnnotationImportDialog } from '../features/annotations/AnnotationImportDialog';
 import {
     AnnotationsState,
     GroupUserAction,
@@ -24,27 +24,30 @@ import {
     selectCurrentUserAction,
     selectShowAnnotationImportDialog,
 } from '../features/annotations/annotationSlice';
-import {BoundaryForm} from '../features/annotations/forms/BoundaryForm';
-import {CalledAfterForm} from '../features/annotations/forms/CalledAfterForm';
-import {ConstantForm} from '../features/annotations/forms/ConstantForm';
-import {EnumForm} from '../features/annotations/forms/EnumForm';
-import {GroupForm} from '../features/annotations/forms/GroupForm';
-import {MoveForm} from '../features/annotations/forms/MoveForm';
-import {OptionalForm} from '../features/annotations/forms/OptionalForm';
-import {RenameForm} from '../features/annotations/forms/RenameForm';
+import { BoundaryForm } from '../features/annotations/forms/BoundaryForm';
+import { CalledAfterForm } from '../features/annotations/forms/CalledAfterForm';
+import { ConstantForm } from '../features/annotations/forms/ConstantForm';
+import { EnumForm } from '../features/annotations/forms/EnumForm';
+import { GroupForm } from '../features/annotations/forms/GroupForm';
+import { MoveForm } from '../features/annotations/forms/MoveForm';
+import { OptionalForm } from '../features/annotations/forms/OptionalForm';
+import { RenameForm } from '../features/annotations/forms/RenameForm';
 import PythonPackage from '../features/packageData/model/PythonPackage';
-import {parsePythonPackageJson, PythonPackageJson} from '../features/packageData/model/PythonPackageBuilder';
-import {PackageDataImportDialog} from '../features/packageData/PackageDataImportDialog';
-import {selectShowPackageDataImportDialog, toggleIsExpandedInTreeView,} from '../features/packageData/packageDataSlice';
-import {SelectionView} from '../features/packageData/selectionView/SelectionView';
-import {TreeView} from '../features/packageData/treeView/TreeView';
-import {useAppDispatch, useAppSelector} from './hooks';
+import { parsePythonPackageJson, PythonPackageJson } from '../features/packageData/model/PythonPackageBuilder';
+import { PackageDataImportDialog } from '../features/packageData/PackageDataImportDialog';
+import {
+    selectShowPackageDataImportDialog,
+    toggleIsExpandedInTreeView,
+} from '../features/packageData/packageDataSlice';
+import { SelectionView } from '../features/packageData/selectionView/SelectionView';
+import { TreeView } from '../features/packageData/treeView/TreeView';
+import { useAppDispatch, useAppSelector } from './hooks';
 import PythonFunction from '../features/packageData/model/PythonFunction';
-import {AttributeForm} from '../features/annotations/forms/AttributeForm';
-import {UsageCountJson, UsageCountStore} from '../features/usages/model/UsageCountStore';
-import {selectShowUsageImportDialog} from '../features/usages/usageSlice';
-import {UsageImportDialog} from '../features/usages/UsageImportDialog';
-import {createFilterFromString} from '../features/packageData/model/filters/filterFactory';
+import { AttributeForm } from '../features/annotations/forms/AttributeForm';
+import { UsageCountJson, UsageCountStore } from '../features/usages/model/UsageCountStore';
+import { selectShowUsageImportDialog } from '../features/usages/usageSlice';
+import { UsageImportDialog } from '../features/usages/UsageImportDialog';
+import { createFilterFromString } from '../features/packageData/model/filters/filterFactory';
 
 export const App: React.FC = function () {
     const dispatch = useAppDispatch();

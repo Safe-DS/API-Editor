@@ -1,21 +1,11 @@
-import {
-    FormControl,
-    FormErrorIcon,
-    FormErrorMessage,
-    FormLabel,
-    Input,
-} from '@chakra-ui/react';
+import { FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { moduleNamePattern } from '../../../common/validation';
 import PythonDeclaration from '../../packageData/model/PythonDeclaration';
-import {
-    hideAnnotationForms,
-    selectMove,
-    upsertMove,
-} from '../annotationSlice';
-import {AnnotationForm} from './AnnotationForm';
+import { hideAnnotationForms, selectMove, upsertMove } from '../annotationSlice';
+import { AnnotationForm } from './AnnotationForm';
 
 interface MoveFormProps {
     readonly target: PythonDeclaration;
@@ -80,9 +70,7 @@ export const MoveForm: React.FC<MoveFormProps> = function ({ target }) {
             onCancel={onCancel}
         >
             <FormControl isInvalid={Boolean(errors.destination)}>
-                <FormLabel>
-                    Destination module name for &quot;{target.name}&quot;:
-                </FormLabel>
+                <FormLabel>Destination module name for &quot;{target.name}&quot;:</FormLabel>
                 <Input
                     {...register('destination', {
                         required: 'This is required.',

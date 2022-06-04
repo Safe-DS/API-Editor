@@ -16,7 +16,7 @@ import {
 import * as idb from 'idb-keyval';
 import React, { useState } from 'react';
 import { useAppDispatch } from '../../app/hooks';
-import {StyledDropzone} from '../../common/StyledDropzone';
+import { StyledDropzone } from '../../common/StyledDropzone';
 import { Setter } from '../../common/util/types';
 import { isValidJsonFile } from '../../common/util/validation';
 import { resetAnnotations } from '../annotations/annotationSlice';

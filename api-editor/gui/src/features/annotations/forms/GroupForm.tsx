@@ -1,12 +1,4 @@
-import {
-    Checkbox,
-    FormControl,
-    FormErrorIcon,
-    FormErrorMessage,
-    FormLabel,
-    Input,
-    VStack,
-} from '@chakra-ui/react';
+import { Checkbox, FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Input, VStack } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
@@ -14,13 +6,8 @@ import { pythonIdentifierPattern } from '../../../common/validation';
 import PythonDeclaration from '../../packageData/model/PythonDeclaration';
 import PythonFunction from '../../packageData/model/PythonFunction';
 import PythonParameter from '../../packageData/model/PythonParameter';
-import {
-    GroupAnnotation,
-    hideAnnotationForms,
-    selectGroups,
-    upsertGroup,
-} from '../annotationSlice';
-import {AnnotationForm} from './AnnotationForm';
+import { GroupAnnotation, hideAnnotationForms, selectGroups, upsertGroup } from '../annotationSlice';
+import { AnnotationForm } from './AnnotationForm';
 
 interface GroupFormProps {
     readonly target: PythonDeclaration;
@@ -43,9 +30,7 @@ export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName
     let otherGroupNames: string[] = [];
     if (currentGroups) {
         otherGroupNames = Object.values(currentGroups)
-            .filter(
-                (group) => group.groupName !== prevGroupAnnotation?.groupName,
-            )
+            .filter((group) => group.groupName !== prevGroupAnnotation?.groupName)
             .map((group) => group.groupName);
     }
 
@@ -59,18 +44,12 @@ export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName
         if (!currentGroups) {
             return null;
         }
-        return currentGroups[key]?.parameters?.some(
-            (parameter) => parameter === name,
-        );
+        return currentGroups[key]?.parameters?.some((parameter) => parameter === name);
     };
 
     const getParameterLabel = (parameterName: string) => {
         for (const groupKey of otherGroupNames) {
-            if (
-                currentGroups &&
-                groupContainsParameter(groupKey, parameterName) &&
-                !isCurrentGroup(groupKey)
-            ) {
+            if (currentGroups && groupContainsParameter(groupKey, parameterName) && !isCurrentGroup(groupKey)) {
                 return `${parameterName} (already used in ${currentGroups[groupKey].groupName})`;
             }
         }
@@ -78,9 +57,7 @@ export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName
     };
 
     const isCurrentGroup = (key: string) =>
-        prevGroupAnnotation &&
-        (!currentGroups ||
-            currentGroups[key]?.groupName === prevGroupAnnotation.groupName);
+        prevGroupAnnotation && (!currentGroups || currentGroups[key]?.groupName === prevGroupAnnotation.groupName);
 
     const getSelectedParameters = (): string[] =>
         Object.entries(getValues('parameters'))
@@ -143,9 +120,7 @@ export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName
 
     return (
         <AnnotationForm
-            heading={`${
-                prevGroupAnnotation ? 'Edit' : 'Add'
-            } @group annotation`}
+            heading={`${prevGroupAnnotation ? 'Edit' : 'Add'} @group annotation`}
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
         >
@@ -165,10 +140,7 @@ export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName
             <FormControl isInvalid={Boolean(errors?.parameters)}>
                 <VStack alignItems="left">
                     {allParameters.map((parameter) => (
-                        <Checkbox
-                            key={parameter.name}
-                            {...register(`parameters.${parameter.name}`)}
-                        >
+                        <Checkbox key={parameter.name} {...register(`parameters.${parameter.name}`)}>
                             {getParameterLabel(parameter.name)}
                         </Checkbox>
                     ))}
@@ -185,8 +157,7 @@ export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName
                 />
                 <FormErrorMessage>
                     <FormErrorIcon />
-                    {errors.dummy &&
-                        'At least one parameter needs to be selected.'}
+                    {errors.dummy && 'At least one parameter needs to be selected.'}
                 </FormErrorMessage>
             </FormControl>
         </AnnotationForm>

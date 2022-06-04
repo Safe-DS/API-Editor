@@ -7,10 +7,7 @@ interface StyledDropzoneProps {
     children: React.ReactNode;
 }
 
-export const StyledDropzone: React.FC<StyledDropzoneProps> = function ({
-    onDrop,
-    children,
-}) {
+export const StyledDropzone: React.FC<StyledDropzoneProps> = function ({ onDrop, children }) {
     const borderColor = useColorModeValue('gray.200', 'gray.500');
     const backgroundColor = useColorModeValue('gray.50', 'gray.600');
 
