@@ -1,10 +1,10 @@
-import React from "react";
-import {Tag} from '@chakra-ui/react';
+import React from 'react';
+import { Tag } from '@chakra-ui/react';
 
 interface HeatMapTagProps {
     actualValue: number;
     maxValue: number | undefined;
-    interpolation: HeatMapInterpolation
+    interpolation: HeatMapInterpolation;
 }
 
 export enum HeatMapInterpolation {
@@ -12,23 +12,25 @@ export enum HeatMapInterpolation {
     LOGARITHMIC,
 }
 
-export const HeatMapTag: React.FC<HeatMapTagProps> = function ({actualValue, maxValue, interpolation}) {
+export const HeatMapTag: React.FC<HeatMapTagProps> = function ({ actualValue, maxValue, interpolation }) {
     const bg = backgroundColor(actualValue, maxValue ?? 0, interpolation);
     const opacity = maxValue === undefined ? 0 : 1;
     const boxWidth = maxValue === undefined ? 0 : maxValue.toString().length * 6.7;
 
-    return <Tag
-        bg={bg}
-        fontWeight="900"
-        justifyContent="center"
-        opacity={opacity}
-        size="sm"
-        variant="solid"
-        width={boxWidth}
-    >
-        {actualValue}
-    </Tag>;
-}
+    return (
+        <Tag
+            bg={bg}
+            fontWeight="900"
+            justifyContent="center"
+            opacity={opacity}
+            size="sm"
+            variant="solid"
+            width={boxWidth}
+        >
+            {actualValue}
+        </Tag>
+    );
+};
 
 const backgroundColor = function (actualValue: number, maxValue: number, interpolation: HeatMapInterpolation): string {
     if (actualValue <= 0 || maxValue <= 0) return 'rgb(0, 0, 255)';
@@ -47,4 +49,4 @@ const redRatio = function (actualValue: number, maxValue: number, interpolation:
         case HeatMapInterpolation.LOGARITHMIC:
             return Math.log(actualValue + 1) / Math.log(maxValue + 1);
     }
-}
+};
