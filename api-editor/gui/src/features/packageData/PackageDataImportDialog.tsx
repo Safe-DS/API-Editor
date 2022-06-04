@@ -17,7 +17,7 @@ import * as idb from 'idb-keyval';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../app/hooks';
-import StyledDropzone from '../../common/StyledDropzone';
+import { StyledDropzone } from '../../common/StyledDropzone';
 import { Setter } from '../../common/util/types';
 import { isValidJsonFile } from '../../common/util/validation';
 import { resetAnnotations } from '../annotations/annotationSlice';
@@ -30,7 +30,10 @@ interface ImportPythonPackageDialogProps {
     setFilter: Setter<string>;
 }
 
-const PackageDataImportDialog: React.FC<ImportPythonPackageDialogProps> = function ({ setFilter, setPythonPackage }) {
+export const PackageDataImportDialog: React.FC<ImportPythonPackageDialogProps> = function ({
+    setFilter,
+    setPythonPackage,
+}) {
     const [fileName, setFileName] = useState('');
     const [newPythonPackage, setNewPythonPackage] = useState<string>();
     const navigate = useNavigate();
@@ -107,5 +110,3 @@ const PackageDataImportDialog: React.FC<ImportPythonPackageDialogProps> = functi
         </Modal>
     );
 };
-
-export default PackageDataImportDialog;

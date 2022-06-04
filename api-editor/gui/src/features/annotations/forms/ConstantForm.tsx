@@ -2,13 +2,13 @@ import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import PythonDeclaration from '../../packageData/model/PythonDeclaration';
 import { selectConstant, upsertConstant } from '../annotationSlice';
-import TypeValueForm, { TypeValueFormState } from './TypeValueForm';
+import { TypeValueForm, TypeValueFormState } from './TypeValueForm';
 
 interface ConstantFormProps {
     target: PythonDeclaration;
 }
 
-const ConstantForm: React.FC<ConstantFormProps> = function ({ target }) {
+export const ConstantForm: React.FC<ConstantFormProps> = function ({ target }) {
     const targetPath = target.pathAsString();
 
     // Hooks -----------------------------------------------------------------------------------------------------------
@@ -40,5 +40,3 @@ const ConstantForm: React.FC<ConstantFormProps> = function ({ target }) {
         />
     );
 };
-
-export default ConstantForm;

@@ -20,12 +20,8 @@ import { useAppDispatch } from '../../../app/hooks';
 import { Optional } from '../../../common/util/types';
 import { booleanPattern, numberPattern } from '../../../common/validation';
 import PythonDeclaration from '../../packageData/model/PythonDeclaration';
-import {
-    DefaultType,
-    DefaultValue,
-    hideAnnotationForms,
-} from '../annotationSlice';
-import AnnotationForm from './AnnotationForm';
+import { DefaultType, DefaultValue, hideAnnotationForms } from '../annotationSlice';
+import { AnnotationForm } from './AnnotationForm';
 
 interface TypeValueFormProps {
     target: PythonDeclaration;
@@ -40,7 +36,7 @@ export interface TypeValueFormState {
     defaultValue: DefaultValue;
 }
 
-const TypeValueForm: React.FC<TypeValueFormProps> = function ({
+export const TypeValueForm: React.FC<TypeValueFormProps> = function ({
     target,
     annotationType,
     previousDefaultType,
@@ -101,19 +97,12 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
 
     return (
         <AnnotationForm
-            heading={`${
-                previousDefaultType ? 'Edit' : 'Add'
-            } @${annotationType} annotation`}
+            heading={`${previousDefaultType ? 'Edit' : 'Add'} @${annotationType} annotation`}
             onSave={handleSubmit(handleSave)}
             onCancel={handleCancel}
         >
-            <FormLabel>
-                Type of default value of &quot;{target.name}&quot;:
-            </FormLabel>
-            <RadioGroup
-                defaultValue={previousDefaultType || 'string'}
-                onChange={handleTypeChange}
-            >
+            <FormLabel>Type of default value of &quot;{target.name}&quot;:</FormLabel>
+            <RadioGroup defaultValue={previousDefaultType || 'string'} onChange={handleTypeChange}>
                 <Stack direction="column">
                     <Radio value="string">String</Radio>
                     <Radio value="number">Number</Radio>
@@ -124,9 +113,7 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
 
             {watchDefaultType !== 'none' && (
                 <FormControl isInvalid={Boolean(errors?.defaultValue)}>
-                    <FormLabel>
-                        Default value for &quot;{target.name}&quot;:
-                    </FormLabel>
+                    <FormLabel>Default value for &quot;{target.name}&quot;:</FormLabel>
                     {watchDefaultType === 'string' && (
                         <Input
                             {...register('defaultValue', {
@@ -167,5 +154,3 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
         </AnnotationForm>
     );
 };
-
-export default TypeValueForm;

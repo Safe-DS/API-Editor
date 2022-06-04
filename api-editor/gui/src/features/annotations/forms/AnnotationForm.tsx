@@ -5,14 +5,10 @@ interface AnnotationFormProps {
     heading: string;
     onSave: React.MouseEventHandler<HTMLButtonElement>;
     onCancel: React.MouseEventHandler<HTMLButtonElement>;
+    children: React.ReactNode;
 }
 
-const AnnotationForm: React.FC<AnnotationFormProps> = function ({
-    heading,
-    onCancel,
-    onSave,
-    children,
-}) {
+export const AnnotationForm: React.FC<AnnotationFormProps> = function ({ heading, onCancel, onSave, children }) {
     return (
         <Stack spacing={8} p={4}>
             <Heading as="h3" size="lg">
@@ -32,5 +28,3 @@ const AnnotationForm: React.FC<AnnotationFormProps> = function ({
         </Stack>
     );
 };
-
-export default AnnotationForm;
