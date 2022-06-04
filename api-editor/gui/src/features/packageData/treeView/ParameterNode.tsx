@@ -16,11 +16,12 @@ interface ParameterNodeProps {
 
 const ParameterNode: React.FC<ParameterNodeProps> = function ({ pythonParameter, filter, usages }) {
     let valuePair: ValuePair = new ValuePair(undefined, undefined);
+    const heatMapMode = useAppSelector(selectHeatMapMode);
     const annotations = useAppSelector(selectAnnotations);
 
-    if (useAppSelector(selectHeatMapMode) === HeatMapMode.Usages) {
+    if (heatMapMode === HeatMapMode.Usages) {
         valuePair = getMapWithUsages(usages, pythonParameter);
-    } else if (useAppSelector(selectHeatMapMode) === HeatMapMode.Usages) {
+    } else if (heatMapMode === HeatMapMode.Annotations) {
         valuePair = getMapWithAnnotation(pythonParameter, annotations);
     }
 

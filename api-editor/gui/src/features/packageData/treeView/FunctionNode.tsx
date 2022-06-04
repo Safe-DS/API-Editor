@@ -18,11 +18,13 @@ interface FunctionNodeProps {
 const FunctionNode: React.FC<FunctionNodeProps> = function ({ pythonFunction, filter, usages }) {
     const hasParameters = !isEmptyList(pythonFunction.parameters);
     const annotations = useAppSelector(selectAnnotations);
+    const heatMapMode = useAppSelector(selectHeatMapMode);
     let valuePair: ValuePair = new ValuePair(undefined, undefined);
 
-    if (useAppSelector(selectHeatMapMode) === HeatMapMode.Usages) {
+
+    if (heatMapMode === HeatMapMode.Usages) {
         valuePair = getMapWithUsages(usages, pythonFunction);
-    } else if (useAppSelector(selectHeatMapMode) === HeatMapMode.Usages) {
+    } else if (heatMapMode === HeatMapMode.Annotations) {
         valuePair = getMapWithAnnotation(pythonFunction, annotations);
     }
 

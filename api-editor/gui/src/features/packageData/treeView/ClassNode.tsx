@@ -18,11 +18,12 @@ interface ClassNodeProps {
 const ClassNode: React.FC<ClassNodeProps> = function ({ pythonClass, filter, usages }) {
     const hasMethods = !isEmptyList(pythonClass.methods);
     const annotations = useAppSelector(selectAnnotations);
+    const heatMapMode = useAppSelector(selectHeatMapMode);
     let valuePair: ValuePair = new ValuePair(undefined, undefined);
 
-    if (useAppSelector(selectHeatMapMode) === HeatMapMode.Annotations) {
+    if (heatMapMode === HeatMapMode.Annotations) {
         valuePair = getMapWithAnnotation(pythonClass, annotations);
-    } else if (useAppSelector(selectHeatMapMode) === HeatMapMode.Usages) {
+    } else if (heatMapMode === HeatMapMode.Usages) {
         valuePair = getMapWithUsages(usages, pythonClass);
     }
 
