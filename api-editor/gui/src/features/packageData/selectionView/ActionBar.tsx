@@ -1,7 +1,5 @@
 import {Button, HStack} from '@chakra-ui/react';
 import React from 'react';
-import PythonClass from '../model/PythonClass';
-import PythonFunction from '../model/PythonFunction';
 import PythonPackage from '../model/PythonPackage';
 import {collapseAllParents, expandAllParents, expandParentsInTreeView} from '../packageDataSlice';
 import PythonDeclaration from '../model/PythonDeclaration';
@@ -56,7 +54,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({declaration, pytho
         <Button
             accessKey="a"
             onClick={() => {
-                dispatch(expandAllParents(getAllParents(pythonPackage)));
+                dispatch(expandAllParents(getDescendants(pythonPackage)));
             }}
         >
             Expand All
@@ -64,7 +62,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({declaration, pytho
         <Button
             accessKey="s"
             onClick={() => {
-                dispatch(collapseAllParents(getAllParents(pythonPackage)));
+                dispatch(collapseAllParents(getDescendants(pythonPackage)));
             }}
         >
             Collapse All
@@ -72,7 +70,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({declaration, pytho
         <Button
             accessKey="y"
             onClick={() => {
-                dispatch(expandAllParents(getChildrenOfElementInTree(declaration)));
+                dispatch(expandAllParents(getDescendants(declaration)));
             }}
         >
             Expand Selected
@@ -80,7 +78,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({declaration, pytho
         <Button
             accessKey="x"
             onClick={() => {
-                dispatch(collapseAllParents(getChildrenOfElementInTree(declaration)));
+                dispatch(collapseAllParents(getDescendants(declaration)));
             }}
         >
             Collapse Selected
@@ -177,30 +175,11 @@ const getParents = function (navStr: string, filteredPythonPackage: PythonPackag
     return parents;
 };
 
-const getAllParents = function (filteredPythonPackage: PythonPackage): string[] {
-    const parents: string[] = [];
-    let allElements = filteredPythonPackage.children();
-    for (const element of allElements) {
-        parents.push(element.pathAsString());
-        for (const object of element.children()) {
-            if (object instanceof PythonClass) {
-                parents.push(object.pathAsString());
-                for (const method of object.methods) {
-                    parents.push(method.pathAsString());
-                }
-            } else if (object instanceof PythonFunction) {
-                parents.push(object.pathAsString());
-            }
-        }
-    }
-    return parents;
-};
-
-const getChildrenOfElementInTree = function (current: PythonDeclaration): string[] {
+const getDescendants = function (current: PythonDeclaration): string[] {
     let childrenList: string[] = [current.pathAsString()];
     let children = current.children();
     for (const child of children) {
-        const list = getChildrenOfElementInTree(child);
+        const list = getDescendants(child);
         childrenList = [...childrenList, ...list];
     }
     return childrenList;
