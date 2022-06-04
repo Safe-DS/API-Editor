@@ -21,7 +21,6 @@ const FunctionNode: React.FC<FunctionNodeProps> = function ({ pythonFunction, fi
     const heatMapMode = useAppSelector(selectHeatMapMode);
     let valuePair: ValuePair = new ValuePair(undefined, undefined);
 
-
     if (heatMapMode === HeatMapMode.Usages) {
         valuePair = getMapWithUsages(usages, pythonFunction);
     } else if (heatMapMode === HeatMapMode.Annotations) {
