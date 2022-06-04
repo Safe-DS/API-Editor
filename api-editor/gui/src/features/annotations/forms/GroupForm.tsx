@@ -20,7 +20,7 @@ import {
     selectGroups,
     upsertGroup,
 } from '../annotationSlice';
-import AnnotationForm from './AnnotationForm';
+import {AnnotationForm} from './AnnotationForm';
 
 interface GroupFormProps {
     readonly target: PythonDeclaration;
@@ -33,7 +33,7 @@ interface GroupFormState {
     dummy: string;
 }
 
-const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName }) {
+export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName }) {
     const targetPath = target.pathAsString();
     const currentGroups = useAppSelector(selectGroups(targetPath));
     let prevGroupAnnotation: GroupAnnotation | undefined;
@@ -192,5 +192,3 @@ const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName }) {
         </AnnotationForm>
     );
 };
-
-export default GroupForm;

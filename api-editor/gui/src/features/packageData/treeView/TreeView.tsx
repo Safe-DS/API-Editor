@@ -27,7 +27,7 @@ interface TreeViewProps {
     usages: UsageCountStore;
 }
 
-const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage, filter, usages }) => {
+export const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage, filter, usages }) => {
     const dispatch = useAppDispatch();
     const allExpanded = useAppSelector(selectAllExpandedInTreeView);
 
@@ -36,7 +36,7 @@ const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage, filter, usages 
 
     // Keep a reference to the last FixedSizeList before everything is dismounted
     const listRef = useRef<FixedSizeList>();
-    const listRefWrapper = useCallback((node) => {
+    const listRefWrapper = useCallback((node: any) => {
         if (node) {
             listRef.current = node;
         }
@@ -119,5 +119,3 @@ const TreeNodeGenerator: React.FC<ListChildComponentProps> = memo(({ data, index
         </Box>
     );
 });
-
-export default TreeView;

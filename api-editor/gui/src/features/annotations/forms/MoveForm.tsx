@@ -15,7 +15,7 @@ import {
     selectMove,
     upsertMove,
 } from '../annotationSlice';
-import AnnotationForm from './AnnotationForm';
+import {AnnotationForm} from './AnnotationForm';
 
 interface MoveFormProps {
     readonly target: PythonDeclaration;
@@ -25,7 +25,7 @@ interface MoveFormState {
     destination: string;
 }
 
-const MoveForm: React.FC<MoveFormProps> = function ({ target }) {
+export const MoveForm: React.FC<MoveFormProps> = function ({ target }) {
     const targetPath = target.pathAsString();
     const prevDestination = useAppSelector(selectMove(targetPath))?.destination;
     const oldModulePath = target?.parent()?.name;
@@ -96,5 +96,3 @@ const MoveForm: React.FC<MoveFormProps> = function ({ target }) {
         </AnnotationForm>
     );
 };
-
-export default MoveForm;

@@ -13,7 +13,7 @@ import {
     selectCalledAfters,
     upsertCalledAfter,
 } from '../annotationSlice';
-import AnnotationForm from './AnnotationForm';
+import {AnnotationForm} from './AnnotationForm';
 import PythonFunction from '../../packageData/model/PythonFunction';
 
 interface CalledAfterFormProps {
@@ -24,7 +24,7 @@ interface CalledAfterFormState {
     calledAfterName: string;
 }
 
-const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ target }) {
+export const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ target }) {
     const targetPath = target.pathAsString();
     const currentCalledAfters = Object.keys(
         useAppSelector(selectCalledAfters(targetPath)),
@@ -104,5 +104,3 @@ const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ target }) {
         </AnnotationForm>
     );
 };
-
-export default CalledAfterForm;

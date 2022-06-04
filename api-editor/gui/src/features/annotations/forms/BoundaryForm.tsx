@@ -27,7 +27,7 @@ import {
     selectBoundary,
     upsertBoundary,
 } from '../annotationSlice';
-import AnnotationForm from './AnnotationForm';
+import {AnnotationForm} from './AnnotationForm';
 import { Optional } from '../../../common/util/types';
 
 interface BoundaryFormProps {
@@ -62,7 +62,7 @@ const initialFormState = function (
     };
 };
 
-const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
+export const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
     const targetPath = target.pathAsString();
     const prevInterval = useAppSelector(selectBoundary(targetPath))?.interval;
 
@@ -322,5 +322,3 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
         </AnnotationForm>
     );
 };
-
-export default BoundaryForm;

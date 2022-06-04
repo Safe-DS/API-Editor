@@ -15,7 +15,7 @@ import {
     selectRenaming,
     upsertRenaming,
 } from '../annotationSlice';
-import AnnotationForm from './AnnotationForm';
+import {AnnotationForm} from './AnnotationForm';
 
 interface RenameFormProps {
     readonly target: PythonDeclaration;
@@ -25,7 +25,7 @@ interface RenameFormState {
     newName: string;
 }
 
-const RenameForm: React.FC<RenameFormProps> = function ({ target }) {
+export const RenameForm: React.FC<RenameFormProps> = function ({ target }) {
     const targetPath = target.pathAsString();
     const prevNewName = useAppSelector(selectRenaming(targetPath))?.newName;
     const oldName = target.name;
@@ -94,5 +94,3 @@ const RenameForm: React.FC<RenameFormProps> = function ({ target }) {
         </AnnotationForm>
     );
 };
-
-export default RenameForm;

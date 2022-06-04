@@ -19,7 +19,7 @@ import {
     selectEnum,
     upsertEnum,
 } from '../annotationSlice';
-import AnnotationForm from './AnnotationForm';
+import {AnnotationForm} from './AnnotationForm';
 
 interface EnumFormProps {
     target: PythonDeclaration;
@@ -33,7 +33,7 @@ interface EnumFormState {
     }[];
 }
 
-const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
+export const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
     const targetPath = target.pathAsString();
 
     // Hooks -----------------------------------------------------------------------------------------------------------
@@ -191,5 +191,3 @@ const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
         </AnnotationForm>
     );
 };
-
-export default EnumForm;

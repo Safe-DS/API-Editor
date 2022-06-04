@@ -25,7 +25,7 @@ import {
     DefaultValue,
     hideAnnotationForms,
 } from '../annotationSlice';
-import AnnotationForm from './AnnotationForm';
+import {AnnotationForm} from './AnnotationForm';
 
 interface TypeValueFormProps {
     target: PythonDeclaration;
@@ -40,7 +40,7 @@ export interface TypeValueFormState {
     defaultValue: DefaultValue;
 }
 
-const TypeValueForm: React.FC<TypeValueFormProps> = function ({
+export const TypeValueForm: React.FC<TypeValueFormProps> = function ({
     target,
     annotationType,
     previousDefaultType,
@@ -167,5 +167,3 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
         </AnnotationForm>
     );
 };
-
-export default TypeValueForm;

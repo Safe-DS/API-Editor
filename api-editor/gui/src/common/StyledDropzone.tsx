@@ -4,9 +4,10 @@ import Dropzone from 'react-dropzone';
 
 interface StyledDropzoneProps {
     onDrop: (acceptedFiles: File[]) => void;
+    children: React.ReactNode;
 }
 
-const StyledDropzone: React.FC<StyledDropzoneProps> = function ({
+export const StyledDropzone: React.FC<StyledDropzoneProps> = function ({
     onDrop,
     children,
 }) {
@@ -32,5 +33,3 @@ const StyledDropzone: React.FC<StyledDropzoneProps> = function ({
         </Box>
     );
 };
-
-export default StyledDropzone;
