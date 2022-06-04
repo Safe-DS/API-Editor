@@ -28,7 +28,7 @@ tasks.withType<KotlinCompile> {
 
 // Dependencies --------------------------------------------------------------------------------------------------------
 
-val ktorVersion = "2.0.1"
+val ktorVersion = "2.0.2"
 
 dependencies {
     implementation("ch.qos.logback:logback-classic:1.2.11")
