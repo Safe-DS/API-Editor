@@ -1,8 +1,0 @@
-{
-    "extends": "./client/tsconfig.json",
-    "compilerOptions": {
-        "noEmit": true
-    },
-    "include": ["./gui/src", "./gui/vite.config.ts"],
-    "exclude": []
-}

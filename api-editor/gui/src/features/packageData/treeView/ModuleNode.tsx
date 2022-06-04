@@ -2,8 +2,8 @@ import React from 'react';
 import { FaArchive } from 'react-icons/fa';
 import { isEmptyList } from '../../../common/util/listOperations';
 import PythonModule from '../model/PythonModule';
-import TreeNode from './TreeNode';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
+import { TreeNode } from './TreeNode';
 
 interface ModuleNodeProps {
     pythonModule: PythonModule;
