@@ -11,26 +11,26 @@ export default class ParameterAssignmentFilter extends AbstractPythonFilter {
         super();
     }
 
-    shouldKeepModule(pythonModule: PythonModule, annotations: AnnotationsState, usages: UsageCountStore): boolean {
+    shouldKeepModule(_pythonModule: PythonModule, _annotations: AnnotationsState, _usages: UsageCountStore): boolean {
         return false;
     }
 
-    shouldKeepClass(pythonClass: PythonClass, annotations: AnnotationsState, usages: UsageCountStore): boolean {
+    shouldKeepClass(_pythonClass: PythonClass, _annotations: AnnotationsState, _usages: UsageCountStore): boolean {
         return false;
     }
 
     shouldKeepFunction(
-        pythonFunction: PythonFunction,
-        annotations: AnnotationsState,
-        usages: UsageCountStore,
+        _pythonFunction: PythonFunction,
+        _annotations: AnnotationsState,
+        _usages: UsageCountStore,
     ): boolean {
         return false;
     }
 
     shouldKeepParameter(
         pythonParameter: PythonParameter,
-        annotations: AnnotationsState,
-        usages: UsageCountStore,
+        _annotations: AnnotationsState,
+        _usages: UsageCountStore,
     ): boolean {
         if (this.assignedBy === PythonParameterAssignment.IMPLICIT) {
             return !pythonParameter.isExplicitParameter();
