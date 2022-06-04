@@ -68,7 +68,7 @@ const App: React.FC = function () {
     useEffect(() => {
         // noinspection JSIgnoredPromiseFromCall
         getUsagesFromIndexedDB(setUsages);
-    });
+    }, []);
 
     // Initialize annotations
     const annotationStore = useAppSelector(selectAnnotations);

@@ -34,13 +34,27 @@ export class ValuePair {
     }
 }
 
+function HeatMapTag(boxWidth: number, heatColor: string, opacity: number, specificValue: number) {
+    return <Tag
+        width={boxWidth}
+        justifyContent="center"
+        bg={heatColor}
+        variant="solid"
+        fontWeight="900"
+        size="sm"
+        opacity={opacity}
+    >
+        {specificValue}
+    </Tag>;
+}
+
 const TreeNode: React.FC<TreeNodeProps> = function ({
     declaration,
     icon,
     isExpandable,
     filter,
     maxValue,
-    specificValue,
+    specificValue = 0,
 }) {
     const currentPathname = useLocation().pathname;
     const navigate = useNavigate();
@@ -62,11 +76,10 @@ const TreeNode: React.FC<TreeNodeProps> = function ({
     };
 
     const linear = useAppSelector(selectHeatMapMode) === HeatMapMode.Annotations;
-    const display_heat_map = useAppSelector(selectHeatMapMode) !== HeatMapMode.None;
+    const displayHeatMap = useAppSelector(selectHeatMapMode) !== HeatMapMode.None;
     const opacity = maxValue !== undefined ? 1 : 0;
-    const box_width = maxValue !== undefined ? maxValue.toString().length * 6.7 : 0;
-    specificValue = specificValue === undefined ? 0 : specificValue;
-    const heat_color = getColorFromValue(maxValue as number, specificValue, linear);
+    const boxWidth = maxValue !== undefined ? maxValue.toString().length * 6.7 : 0;
+    const heatColor = getColorFromValue(maxValue as number, specificValue, linear);
 
     return (
         <HStack
@@ -82,19 +95,7 @@ const TreeNode: React.FC<TreeNodeProps> = function ({
                 showChildren={showChildren}
                 isSelected={isSelected(declaration, currentPathname)}
             />
-            {display_heat_map && (
-                <Tag
-                    width={box_width}
-                    justifyContent="center"
-                    bg={heat_color}
-                    variant="solid"
-                    fontWeight="900"
-                    size="sm"
-                    opacity={opacity}
-                >
-                    {specificValue}
-                </Tag>
-            )}
+            {displayHeatMap && HeatMapTag(boxWidth, heatColor, opacity, specificValue)}
             <Icon as={icon} />
             <ChakraText fontWeight={fontWeight}>{declaration.getUniqueName()}</ChakraText>
         </HStack>
@@ -110,9 +111,6 @@ const isSelected = function (declaration: PythonDeclaration, currentPathname: st
 };
 
 const getColorFromValue = function (maxValue: number, specificValue: number, linear: boolean): string {
-    maxValue++;
-    specificValue++;
-
     if (specificValue <= 0 || maxValue <= 0) return 'rgb(0%, 0%, 255%)';
     if (specificValue > maxValue) return 'rgb(255%, 0%, 0%)';
 
