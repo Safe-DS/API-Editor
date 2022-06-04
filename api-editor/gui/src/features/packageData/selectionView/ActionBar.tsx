@@ -7,14 +7,16 @@ import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
 import { AnnotationsState, selectAnnotations } from '../../annotations/annotationSlice';
 import { useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import {UsageCountStore} from "../../usages/model/UsageCountStore";
 
 interface ActionBarProps {
     declaration: PythonDeclaration;
     pythonPackage: PythonPackage;
     pythonFilter: AbstractPythonFilter;
+    usages: UsageCountStore;
 }
 
-export const ActionBar: React.FC<ActionBarProps> = function ({ declaration, pythonPackage, pythonFilter }) {
+export const ActionBar: React.FC<ActionBarProps> = function ({ declaration, pythonPackage, pythonFilter, usages }) {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
@@ -24,7 +26,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration, pyth
         <HStack borderTop={1} layerStyle="subtleBorder" padding="0.5em 1em" w="100%">
             <Button
                 onClick={() => {
-                    let navStr = getPreviousElementPath(declaration, pythonFilter, annotations);
+                    let navStr = getPreviousElementPath(declaration, pythonFilter, annotations, usages);
                     if (navStr !== null) {
                         //navigate to element
                         navigate(`/${navStr}`);
@@ -39,7 +41,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration, pyth
             </Button>
             <Button
                 onClick={() => {
-                    let navStr = getNextElementPath(declaration, pythonFilter, annotations);
+                    let navStr = getNextElementPath(declaration, pythonFilter, annotations, usages);
                     if (navStr !== null) {
                         //navigate to element
                         navigate(`/${navStr}`);
@@ -92,13 +94,14 @@ const getNextElementPath = function (
     current: PythonDeclaration,
     filter: AbstractPythonFilter,
     annotations: AnnotationsState,
+    usages: UsageCountStore
 ): string | null {
     const nextElement = getNextElementInTree(current);
     if (nextElement) {
-        if (filter.shouldKeepDeclaration(nextElement, annotations)) {
+        if (filter.shouldKeepDeclaration(nextElement, annotations, usages)) {
             return nextElement.pathAsString();
         }
-        return getNextElementPath(nextElement, filter, annotations);
+        return getNextElementPath(nextElement, filter, annotations, usages);
     }
     return null;
 };
@@ -131,13 +134,14 @@ const getPreviousElementPath = function (
     current: PythonDeclaration,
     filter: AbstractPythonFilter,
     annotations: AnnotationsState,
+    usages: UsageCountStore
 ): string | null {
     const previousElement = getPreviousElementInTree(current);
     if (previousElement) {
-        if (filter.shouldKeepDeclaration(previousElement, annotations)) {
+        if (filter.shouldKeepDeclaration(previousElement, annotations, usages)) {
             return previousElement.pathAsString();
         }
-        return getPreviousElementPath(previousElement, filter, annotations);
+        return getPreviousElementPath(previousElement, filter, annotations, usages);
     }
     return null;
 };
