@@ -17,26 +17,26 @@ export default class DeclarationTypeFilter extends AbstractPythonFilter {
         super();
     }
 
-    shouldKeepModule(pythonModule: PythonModule, annotations: AnnotationsState, usages: UsageCountStore): boolean {
+    shouldKeepModule(_pythonModule: PythonModule, _annotations: AnnotationsState, _usages: UsageCountStore): boolean {
         return this.type === DeclarationType.Module;
     }
 
-    shouldKeepClass(pythonClass: PythonClass, annotations: AnnotationsState, usages: UsageCountStore): boolean {
+    shouldKeepClass(_pythonClass: PythonClass, _annotations: AnnotationsState, _usages: UsageCountStore): boolean {
         return this.type === DeclarationType.Class;
     }
 
     shouldKeepFunction(
-        pythonFunction: PythonFunction,
-        annotations: AnnotationsState,
-        usages: UsageCountStore,
+        _pythonFunction: PythonFunction,
+        _annotations: AnnotationsState,
+        _usages: UsageCountStore,
     ): boolean {
         return this.type === DeclarationType.Function;
     }
 
     shouldKeepParameter(
-        pythonParameter: PythonParameter,
-        annotations: AnnotationsState,
-        usages: UsageCountStore,
+        _pythonParameter: PythonParameter,
+        _annotations: AnnotationsState,
+        _usages: UsageCountStore,
     ): boolean {
         return this.type === DeclarationType.Parameter;
     }

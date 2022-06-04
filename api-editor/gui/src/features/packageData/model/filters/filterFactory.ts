@@ -17,10 +17,10 @@ import { PythonParameterAssignment } from '../PythonParameter';
  *
  * @param text The text that describes the filter.
  */
-export function createFilterFromString(text: string): AbstractPythonFilter {
+export const createFilterFromString = function (text: string): AbstractPythonFilter {
     const filters: AbstractPythonFilter[] = [];
 
-    for (const token of text.split(/\s+/)) {
+    for (const token of text.split(/\s+/u)) {
         const newFilter = parsePotentiallyNegatedToken(token);
         if (newFilter) {
             filters.push(newFilter);
@@ -28,14 +28,14 @@ export function createFilterFromString(text: string): AbstractPythonFilter {
     }
 
     return new ConjunctiveFilter(filters);
-}
+};
 
 /**
  * Handles a single token that could be negated.
  *
  * @param token The text that describes the filter.
  */
-function parsePotentiallyNegatedToken(token: string): Optional<AbstractPythonFilter> {
+const parsePotentiallyNegatedToken = function (token: string): Optional<AbstractPythonFilter> {
     const isNegated = token.startsWith('!');
     const positiveToken = isNegated ? token.substring(1) : token;
 
@@ -45,14 +45,14 @@ function parsePotentiallyNegatedToken(token: string): Optional<AbstractPythonFil
     } else {
         return new NegatedFilter(newPositiveFilter);
     }
-}
+};
 
 /**
  * Handles a singe non-negated token.
  *
  * @param token The text that describes the filter.
  */
-function parsePositiveToken(token: string): Optional<AbstractPythonFilter> {
+const parsePositiveToken = function (token: string): Optional<AbstractPythonFilter> {
     // Filters with fixed text
     switch (token.toLowerCase()) {
         // Declaration type
@@ -111,13 +111,13 @@ function parsePositiveToken(token: string): Optional<AbstractPythonFilter> {
     }
 
     // Name
-    const nameMatch = /^name:(?<name>\w+)$/.exec(token);
+    const nameMatch = /^name:(?<name>\w+)$/u.exec(token);
     if (nameMatch) {
         return new NameFilter(nameMatch?.groups?.name as string);
     }
 
     // Usages
-    const usageMatch = /^usages(?<comparison>:(<|<=|>=|>)?)(?<expected>\d+)$/.exec(token);
+    const usageMatch = /^usages(?<comparison>:(<|<=|>=|>)?)(?<expected>\d+)$/u.exec(token);
     if (usageMatch) {
         const comparisonOperator = usageMatch?.groups?.comparison as string;
         const comparison = comparisonFunction(comparisonOperator);
@@ -131,7 +131,7 @@ function parsePositiveToken(token: string): Optional<AbstractPythonFilter> {
     }
 
     // Usefulness
-    const usefulnessMatch = /^usefulness(?<comparison>:(<|<=|>=|>)?)(?<expected>\d+)$/.exec(token);
+    const usefulnessMatch = /^usefulness(?<comparison>:(<|<=|>=|>)?)(?<expected>\d+)$/u.exec(token);
     if (usefulnessMatch) {
         const comparisonOperator = usefulnessMatch?.groups?.comparison as string;
         const comparison = comparisonFunction(comparisonOperator);
@@ -143,7 +143,7 @@ function parsePositiveToken(token: string): Optional<AbstractPythonFilter> {
 
         return new UsefulnessFilter(comparison, expected);
     }
-}
+};
 
 const comparisonFunction = function (comparisonOperator: string): ((a: number, b: number) => boolean) | null {
     switch (comparisonOperator) {

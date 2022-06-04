@@ -63,7 +63,7 @@ describe('createFilterFromString', () => {
 
         const positiveFilter = (completeFilter as ConjunctiveFilter).filters[0];
         expect(positiveFilter).toBeInstanceOf(NameFilter);
-        expect((positiveFilter as NameFilter).substring).toEqual('foo');
+        expect((positiveFilter as NameFilter).substring).toBe('foo');
     });
 
     test('handles usages filter', () => {
@@ -74,7 +74,7 @@ describe('createFilterFromString', () => {
         const positiveFilter = (completeFilter as ConjunctiveFilter).filters[0];
         expect(positiveFilter).toBeInstanceOf(UsageFilter);
         expect((positiveFilter as UsageFilter).comparison).toEqual(greaterThan);
-        expect((positiveFilter as UsageFilter).expectedUsage).toEqual(2);
+        expect((positiveFilter as UsageFilter).expectedUsage).toBe(2);
     });
 
     test('handles usefulness filter', () => {
@@ -85,6 +85,6 @@ describe('createFilterFromString', () => {
         const positiveFilter = (completeFilter as ConjunctiveFilter).filters[0];
         expect(positiveFilter).toBeInstanceOf(UsefulnessFilter);
         expect((positiveFilter as UsefulnessFilter).comparison).toEqual(greaterThan);
-        expect((positiveFilter as UsefulnessFilter).expectedUsefulness).toEqual(2);
+        expect((positiveFilter as UsefulnessFilter).expectedUsefulness).toBe(2);
     });
 });

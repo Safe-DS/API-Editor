@@ -44,8 +44,8 @@ export default class VisibilityFilter extends AbstractPythonFilter {
 
     shouldKeepDeclaration(
         pythonDeclaration: PythonDeclaration,
-        annotations: AnnotationsState,
-        usages: UsageCountStore,
+        _annotations: AnnotationsState,
+        _usages: UsageCountStore,
     ): boolean {
         return pythonDeclaration.isPublicDeclaration() === (this.visibility === Visibility.Public);
     }

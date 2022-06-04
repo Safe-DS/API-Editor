@@ -169,6 +169,6 @@ describe('AbstractPythonFilter::applyToPackage', () => {
     });
 });
 
-function names(declarations: PythonDeclaration[]): string[] {
+const names = function (declarations: PythonDeclaration[]): string[] {
     return declarations.map((it) => it.name);
-}
+};
