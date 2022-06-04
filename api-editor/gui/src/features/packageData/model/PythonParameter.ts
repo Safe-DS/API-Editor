@@ -42,15 +42,6 @@ export default class PythonParameter extends PythonDeclaration {
         return this.isPublic;
     }
 
-    qualifiedName(): string {
-        const containingFunction = this.parent();
-        if (!containingFunction) {
-            return this.name;
-        }
-
-        return `${containingFunction.qualifiedName}.${this.name}`;
-    }
-
     isExplicitParameter(): boolean {
         const containingFunction = this.parent();
         if (!containingFunction) {
