@@ -41,11 +41,7 @@ import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { resetAnnotations, toggleAnnotationImportDialog } from '../features/annotations/annotationSlice';
 import AnnotatedPythonPackageBuilder from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
 import PythonPackage from '../features/packageData/model/PythonPackage';
-import {
-    HeatMapMode,
-    setHeatMapMode,
-    togglePackageDataImportDialog,
-} from '../features/packageData/packageDataSlice';
+import { HeatMapMode, setHeatMapMode, togglePackageDataImportDialog } from '../features/packageData/packageDataSlice';
 import { Setter } from './util/types';
 import { toggleUsageImportDialog } from '../features/usages/usageSlice';
 
