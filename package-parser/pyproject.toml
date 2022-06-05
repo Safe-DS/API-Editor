@@ -9,7 +9,7 @@ license = "MIT"
 parse-package = "package_parser.main:main"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.10"
 astroid = "^2.9.3"
 importlib-metadata = "^4.10.1"
 numpydoc = "^1.2"
