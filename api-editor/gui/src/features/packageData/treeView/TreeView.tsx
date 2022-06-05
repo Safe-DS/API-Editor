@@ -1,6 +1,5 @@
 import { Box } from '@chakra-ui/react';
 import React, { memo, useCallback, useEffect, useRef } from 'react';
-import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import PythonClass from '../model/PythonClass';
@@ -16,6 +15,7 @@ import ModuleNode from './ModuleNode';
 import ParameterNode from './ParameterNode';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
+import { AutoSizer } from '../../../common/AutoSizer';
 
 interface ScrollOffset {
     scrollOffset: number;
@@ -27,7 +27,11 @@ interface TreeViewProps {
     usages: UsageCountStore;
 }
 
-const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage, filter, usages }) => {
+interface AutoSizerProps {
+    height: number;
+}
+
+export const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage, filter, usages }) => {
     const dispatch = useAppDispatch();
     const allExpanded = useAppSelector(selectAllExpandedInTreeView);
 
@@ -36,7 +40,7 @@ const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage, filter, usages 
 
     // Keep a reference to the last FixedSizeList before everything is dismounted
     const listRef = useRef<FixedSizeList>();
-    const listRefWrapper = useCallback((node) => {
+    const listRefWrapper = useCallback((node: any) => {
         if (node) {
             listRef.current = node;
         }
@@ -62,7 +66,7 @@ const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage, filter, usages 
 
     return (
         <AutoSizer disableWidth>
-            {({ height }) => (
+            {({ height }: AutoSizerProps) => (
                 <FixedSizeList
                     itemSize={24}
                     itemCount={children.length}
@@ -104,7 +108,9 @@ const TreeNodeGenerator: React.FC<ListChildComponentProps> = memo(({ data, index
 
     return (
         <Box style={style}>
-            {declaration instanceof PythonModule && <ModuleNode pythonModule={declaration} filter={filter} />}
+            {declaration instanceof PythonModule && (
+                <ModuleNode pythonModule={declaration} filter={filter} usages={usages} />
+            )}
             {declaration instanceof PythonClass && (
                 <ClassNode pythonClass={declaration} filter={filter} usages={usages} />
             )}
@@ -117,5 +123,3 @@ const TreeNodeGenerator: React.FC<ListChildComponentProps> = memo(({ data, index
         </Box>
     );
 });
-
-export default TreeView;

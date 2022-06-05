@@ -31,6 +31,7 @@ const ParameterNode: React.FC<ParameterNodeProps> = function ({ pythonParameter,
             icon={FaKeyboard}
             isExpandable={false}
             filter={filter}
+            usages={usages}
             maxValue={valuePair.maxValue}
             specificValue={valuePair.specificValue}
         />

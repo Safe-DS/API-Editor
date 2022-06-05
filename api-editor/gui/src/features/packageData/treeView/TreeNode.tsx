@@ -15,12 +15,14 @@ import VisibilityIndicator from './VisibilityIndicator';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
 import { selectAnnotations } from '../../annotations/annotationSlice';
 import { HeatMapInterpolation, HeatMapTag } from './HeatMapTag';
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
 
 interface TreeNodeProps {
     declaration: PythonDeclaration;
     icon: IconType;
     isExpandable: boolean;
     filter: AbstractPythonFilter;
+    usages: UsageCountStore;
     maxValue?: number;
     specificValue?: number;
 }
@@ -40,6 +42,7 @@ export const TreeNode: React.FC<TreeNodeProps> = function ({
     icon,
     isExpandable,
     filter,
+    usages,
     maxValue,
     specificValue = 0,
 }) {
@@ -55,7 +58,7 @@ export const TreeNode: React.FC<TreeNodeProps> = function ({
     const backgroundColor = isSelected(declaration, currentPathname) ? 'cornflowerblue' : undefined;
     const color = isSelected(declaration, currentPathname) ? 'white' : undefined;
 
-    const fontWeight = filter.shouldKeepDeclaration(declaration, annotations) ? 'bold' : undefined;
+    const fontWeight = filter.shouldKeepDeclaration(declaration, annotations, usages) ? 'bold' : undefined;
 
     const handleClick = () => {
         dispatch(toggleIsExpandedInTreeView(declaration.pathAsString()));

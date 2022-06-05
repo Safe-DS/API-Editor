@@ -1,28 +1,22 @@
+import AbstractPythonFilter from './AbstractPythonFilter';
+import PythonModule from '../PythonModule';
 import PythonClass from '../PythonClass';
 import PythonFunction from '../PythonFunction';
-import PythonModule from '../PythonModule';
-import PythonParameter from '../PythonParameter';
-import AbstractPythonFilter from './AbstractPythonFilter';
 import { AnnotationsState } from '../../../annotations/annotationSlice';
 import { UsageCountStore } from '../../../usages/model/UsageCountStore';
+import PythonParameter, { PythonParameterAssignment } from '../PythonParameter';
 
-/**
- * Keeps only declarations of a specified type (module/class/function/parameter).
- */
-export default class DeclarationTypeFilter extends AbstractPythonFilter {
-    /**
-     * @param type Which declarations to keep.
-     */
-    constructor(readonly type: DeclarationType) {
+export default class ParameterAssignmentFilter extends AbstractPythonFilter {
+    constructor(readonly assignedBy: PythonParameterAssignment) {
         super();
     }
 
     shouldKeepModule(_pythonModule: PythonModule, _annotations: AnnotationsState, _usages: UsageCountStore): boolean {
-        return this.type === DeclarationType.Module;
+        return false;
     }
 
     shouldKeepClass(_pythonClass: PythonClass, _annotations: AnnotationsState, _usages: UsageCountStore): boolean {
-        return this.type === DeclarationType.Class;
+        return false;
     }
 
     shouldKeepFunction(
@@ -30,21 +24,20 @@ export default class DeclarationTypeFilter extends AbstractPythonFilter {
         _annotations: AnnotationsState,
         _usages: UsageCountStore,
     ): boolean {
-        return this.type === DeclarationType.Function;
+        return false;
     }
 
     shouldKeepParameter(
-        _pythonParameter: PythonParameter,
+        pythonParameter: PythonParameter,
         _annotations: AnnotationsState,
         _usages: UsageCountStore,
     ): boolean {
-        return this.type === DeclarationType.Parameter;
+        if (this.assignedBy === PythonParameterAssignment.IMPLICIT) {
+            return !pythonParameter.isExplicitParameter();
+        } else if (!pythonParameter.isExplicitParameter()) {
+            return false;
+        } else {
+            return pythonParameter.assignedBy === this.assignedBy;
+        }
     }
-}
-
-export enum DeclarationType {
-    Module,
-    Class,
-    Function,
-    Parameter,
 }

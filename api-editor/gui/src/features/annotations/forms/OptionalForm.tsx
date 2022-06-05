@@ -2,13 +2,13 @@ import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import PythonDeclaration from '../../packageData/model/PythonDeclaration';
 import { selectOptional, upsertOptional } from '../annotationSlice';
-import TypeValueForm, { TypeValueFormState } from './TypeValueForm';
+import { TypeValueForm, TypeValueFormState } from './TypeValueForm';
 
 interface OptionalFormProps {
     target: PythonDeclaration;
 }
 
-const OptionalForm: React.FC<OptionalFormProps> = function ({ target }) {
+export const OptionalForm: React.FC<OptionalFormProps> = function ({ target }) {
     const targetPath = target.pathAsString();
 
     // Hooks -----------------------------------------------------------------------------------------------------------
@@ -40,5 +40,3 @@ const OptionalForm: React.FC<OptionalFormProps> = function ({ target }) {
         />
     );
 };
-
-export default OptionalForm;

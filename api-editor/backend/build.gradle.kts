@@ -28,7 +28,7 @@ tasks.withType<KotlinCompile> {
 
 // Dependencies --------------------------------------------------------------------------------------------------------
 
-val ktorVersion = "2.0.1"
+val ktorVersion = "2.0.2"
 
 dependencies {
     implementation("ch.qos.logback:logback-classic:1.2.11")
@@ -42,10 +42,10 @@ dependencies {
     implementation("org.eclipse.xtext:org.eclipse.xtext:2.27.0")
 
     testImplementation(kotlin("test"))
-    testImplementation("io.kotest:kotest-assertions-core-jvm:5.2.3")
+    testImplementation("io.kotest:kotest-assertions-core-jvm:5.3.0")
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
-    testImplementation("io.mockk:mockk:1.12.3")
+    testImplementation("io.mockk:mockk:1.12.4")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
 }
 
