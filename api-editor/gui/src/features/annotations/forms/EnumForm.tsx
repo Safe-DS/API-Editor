@@ -14,12 +14,8 @@ import { FaPlus, FaTrash } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { pythonIdentifierPattern } from '../../../common/validation';
 import PythonDeclaration from '../../packageData/model/PythonDeclaration';
-import {
-    hideAnnotationForms,
-    selectEnum,
-    upsertEnum,
-} from '../annotationSlice';
-import AnnotationForm from './AnnotationForm';
+import { hideAnnotationForms, selectEnum, upsertEnum } from '../annotationSlice';
+import { AnnotationForm } from './AnnotationForm';
 
 interface EnumFormProps {
     target: PythonDeclaration;
@@ -33,7 +29,7 @@ interface EnumFormState {
     }[];
 }
 
-const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
+export const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
     const targetPath = target.pathAsString();
 
     // Hooks -----------------------------------------------------------------------------------------------------------
@@ -138,35 +134,23 @@ const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
                 <Text fontSize="md" fontWeight="medium" w="100%">
                     Instance name:
                 </Text>
-                <IconButton
-                    icon={<FaPlus />}
-                    aria-label="Add enum pair"
-                    colorScheme="green"
-                    onClick={onAppend}
-                />
+                <IconButton icon={<FaPlus />} aria-label="Add enum pair" colorScheme="green" onClick={onAppend} />
             </HStack>
 
             {fields.map((field, index) => (
                 <HStack key={field.id} alignItems="flex-start">
-                    <FormControl
-                        isInvalid={Boolean(errors?.pairs?.[index]?.stringValue)}
-                    >
+                    <FormControl isInvalid={Boolean(errors?.pairs?.[index]?.stringValue)}>
                         <Input
                             {...register(`pairs.${index}.stringValue`, {
                                 required: 'This is required.',
                             })}
                         />
                         <FormErrorMessage>
-                            <FormErrorIcon />{' '}
-                            {errors?.pairs?.[index]?.stringValue?.message}
+                            <FormErrorIcon /> {errors?.pairs?.[index]?.stringValue?.message}
                         </FormErrorMessage>
                     </FormControl>
 
-                    <FormControl
-                        isInvalid={Boolean(
-                            errors?.pairs?.[index]?.instanceName,
-                        )}
-                    >
+                    <FormControl isInvalid={Boolean(errors?.pairs?.[index]?.instanceName)}>
                         <Input
                             {...register(`pairs.${index}.instanceName`, {
                                 required: 'This is required.',
@@ -174,8 +158,7 @@ const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
                             })}
                         />
                         <FormErrorMessage>
-                            <FormErrorIcon />{' '}
-                            {errors?.pairs?.[index]?.instanceName?.message}
+                            <FormErrorIcon /> {errors?.pairs?.[index]?.instanceName?.message}
                         </FormErrorMessage>
                     </FormControl>
 
@@ -191,5 +174,3 @@ const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
         </AnnotationForm>
     );
 };
-
-export default EnumForm;

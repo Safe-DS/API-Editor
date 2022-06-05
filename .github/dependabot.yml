@@ -22,6 +22,6 @@ updates:
     schedule:
       interval: 'monthly'
   - package-ecosystem: 'pip'
-    directory: '/package_parser'
+    directory: '/package-parser'
     schedule:
       interval: 'monthly'

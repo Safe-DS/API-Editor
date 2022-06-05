@@ -5,6 +5,7 @@ import PythonParameter from '../PythonParameter';
 import AbstractPythonFilter from './AbstractPythonFilter';
 import PythonDeclaration from '../PythonDeclaration';
 import { AnnotationsState } from '../../../annotations/annotationSlice';
+import { UsageCountStore } from '../../../usages/model/UsageCountStore';
 
 /**
  * Keeps only declarations with either an arbitrary or a specific annotation.
@@ -18,24 +19,36 @@ export default class AnnotationFilter extends AbstractPythonFilter {
         super();
     }
 
-    shouldKeepModule(pythonModule: PythonModule, annotations: AnnotationsState): boolean {
-        return this.shouldKeepDeclaration(pythonModule, annotations);
+    shouldKeepModule(pythonModule: PythonModule, annotations: AnnotationsState, usages: UsageCountStore): boolean {
+        return this.shouldKeepDeclaration(pythonModule, annotations, usages);
     }
 
-    shouldKeepClass(pythonClass: PythonClass, annotations: AnnotationsState): boolean {
-        return this.shouldKeepDeclaration(pythonClass, annotations);
+    shouldKeepClass(pythonClass: PythonClass, annotations: AnnotationsState, usages: UsageCountStore): boolean {
+        return this.shouldKeepDeclaration(pythonClass, annotations, usages);
     }
 
-    shouldKeepFunction(pythonFunction: PythonFunction, annotations: AnnotationsState): boolean {
-        return this.shouldKeepDeclaration(pythonFunction, annotations);
+    shouldKeepFunction(
+        pythonFunction: PythonFunction,
+        annotations: AnnotationsState,
+        usages: UsageCountStore,
+    ): boolean {
+        return this.shouldKeepDeclaration(pythonFunction, annotations, usages);
     }
 
-    shouldKeepParameter(pythonParameter: PythonParameter, annotations: AnnotationsState): boolean {
-        return this.shouldKeepDeclaration(pythonParameter, annotations);
+    shouldKeepParameter(
+        pythonParameter: PythonParameter,
+        annotations: AnnotationsState,
+        usages: UsageCountStore,
+    ): boolean {
+        return this.shouldKeepDeclaration(pythonParameter, annotations, usages);
     }
 
-    shouldKeepDeclaration(declaration: PythonDeclaration, annotations: AnnotationsState): boolean {
-        const id = declaration.pathAsString();
+    shouldKeepDeclaration(
+        pythonDeclaration: PythonDeclaration,
+        annotations: AnnotationsState,
+        _usages: UsageCountStore,
+    ): boolean {
+        const id = pythonDeclaration.pathAsString();
 
         switch (this.type) {
             case AnnotationType.Any:

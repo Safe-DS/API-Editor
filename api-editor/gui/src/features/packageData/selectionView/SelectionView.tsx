@@ -8,17 +8,19 @@ import PythonPackage from '../model/PythonPackage';
 import PythonParameter from '../model/PythonParameter';
 import ClassView from './ClassView';
 import FunctionView from './FunctionView';
-import ModuleView from './ModuleView';
+import { ModuleView } from './ModuleView';
 import ParameterView from './ParameterView';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
 import { ActionBar } from './ActionBar';
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
 
 interface SelectionViewProps {
     pythonPackage: PythonPackage;
     pythonFilter: AbstractPythonFilter;
+    usages: UsageCountStore;
 }
 
-export const SelectionView: React.FC<SelectionViewProps> = function ({ pythonPackage, pythonFilter }) {
+export const SelectionView: React.FC<SelectionViewProps> = function ({ pythonPackage, pythonFilter, usages }) {
     const declaration = pythonPackage.getByRelativePath(useLocation().pathname.split('/').splice(2));
 
     if (!declaration) {
@@ -38,7 +40,12 @@ export const SelectionView: React.FC<SelectionViewProps> = function ({ pythonPac
 
             <Spacer />
 
-            <ActionBar declaration={declaration} pythonPackage={pythonPackage} pythonFilter={pythonFilter} />
+            <ActionBar
+                declaration={declaration}
+                pythonPackage={pythonPackage}
+                pythonFilter={pythonFilter}
+                usages={usages}
+            />
         </VStack>
     );
 };
