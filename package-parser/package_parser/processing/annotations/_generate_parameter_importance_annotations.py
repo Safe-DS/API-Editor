@@ -70,8 +70,8 @@ def _generate_required_or_optional_annotation(
         if parameter.is_optional():
             annotations.requireds.append(RequiredAnnotation(parameter.pname))
     else:
-        if parameter.is_required() or parameter.default_value != most_common_values[0]:
-            default_type, default_value = _get_default_type_and_value_for_stringified_value(most_common_values[0])
+        if parameter.is_required() or parameter.default_value != literal_values[0]:
+            default_type, default_value = _get_default_type_and_value_for_stringified_value(literal_values[0])
             annotations.optionals.append(OptionalAnnotation(parameter.pname, default_type, default_value))
 
 
