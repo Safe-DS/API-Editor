@@ -20,9 +20,8 @@ import PythonModule from '../model/PythonModule';
 import { CodeComponent } from 'react-markdown/lib/ast-to-react';
 
 // See https://github.com/remarkjs/react-markdown#use-custom-components-syntax-highlight
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const CustomCode: CodeComponent = function ({
-    node,
+    node, // eslint-disable-line @typescript-eslint/no-unused-vars
     inline,
     className,
     children,
@@ -32,8 +31,8 @@ const CustomCode: CodeComponent = function ({
 
     const match = /language-(\w+)/u.exec(className || '');
     return !inline && match ? (
-        // @ts-ignore
         <SyntaxHighlighter
+            // @ts-ignore
             style={style}
             language={match[1]}
             PreTag="div"
@@ -56,7 +55,7 @@ interface ModuleViewProps {
     pythonModule: PythonModule;
 }
 
-const ModuleView: React.FC<ModuleViewProps> = function ({ pythonModule }) {
+export const ModuleView: React.FC<ModuleViewProps> = function ({ pythonModule }) {
     useEffect(() => {
         SyntaxHighlighter.registerLanguage('python', python);
     }, []);
@@ -125,5 +124,3 @@ const ModuleView: React.FC<ModuleViewProps> = function ({ pythonModule }) {
         </Stack>
     );
 };
-
-export default ModuleView;
