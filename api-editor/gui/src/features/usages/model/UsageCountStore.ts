@@ -29,8 +29,8 @@ export class UsageCountStore {
     readonly functionMaxUsages: number;
     readonly parameterMaxUsages: number;
 
-    readonly parameterUsefulness: Map<string, number>
-    readonly parameterMaxUsefulness: number
+    readonly parameterUsefulness: Map<string, number>;
+    readonly parameterMaxUsefulness: number;
 
     constructor(
         readonly classUsages: Map<string, number> = new Map(),
@@ -43,9 +43,7 @@ export class UsageCountStore {
         this.parameterMaxUsages = Math.max(...parameterUsages.values());
 
         this.parameterUsefulness = new Map(
-            [...parameterUsages.keys()].map(
-                (it) => [it, this.computeParameterUsefulness(it)]
-            ),
+            [...parameterUsages.keys()].map((it) => [it, this.computeParameterUsefulness(it)]),
         );
         this.parameterMaxUsefulness = Math.max(...this.parameterUsefulness.values());
     }
