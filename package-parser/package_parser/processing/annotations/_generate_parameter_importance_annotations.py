@@ -50,6 +50,11 @@ def _generate_required_or_optional_annotation(
 
     # Compute metrics
     most_common_value_count = usages.n_value_usages(parameter.qname, most_common_values[0])
+
+    # We deliberately don't ensure this is a literal. Otherwise, we might make a parameter optional even though there is
+    # a tie between the most common value and the second most common value if the latter is not a literal. This would
+    # also mean different annotations would be generated depending on the order the values were inserted into the
+    # UsageCountStore since the counts are identical.
     second_most_common_value_count = usages.n_value_usages(parameter.qname, most_common_values[1])
 
     literal_values = [
