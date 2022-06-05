@@ -52,14 +52,13 @@ def _generate_required_or_optional_annotation(
     most_common_value_count = usages.n_value_usages(parameter.qname, most_common_values[0])
     second_most_common_value_count = usages.n_value_usages(parameter.qname, most_common_values[1])
 
-    total_count = sum([usages.n_value_usages(parameter.qname, value) for value in most_common_values])
-    n_different_literal_values = len(
-        [
-            stringified_value
-            for stringified_value in most_common_values
-            if _is_stringified_literal(stringified_value)
-        ]
-    )
+    literal_values = [
+        stringified_value
+        for stringified_value in most_common_values
+        if _is_stringified_literal(stringified_value)
+    ]
+    total_count = sum([usages.n_value_usages(parameter.qname, value) for value in literal_values])
+    n_different_literal_values = len(literal_values)
 
     # Add appropriate annotation
     if _should_be_required(
