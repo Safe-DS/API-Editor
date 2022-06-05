@@ -56,6 +56,19 @@ def _generate_required_or_optional_annotation(
     # a tie between the most common value and the second most common value if the latter is not a literal. This would
     # also mean different annotations would be generated depending on the order the values were inserted into the
     # UsageCountStore since the counts are identical.
+    #
+    # Example:
+    #   Values: "1" used 5 times, "call()" used 5 times
+    #
+    #   If we now treat "1" as the most common value, we would make the parameter optional:
+    #     - most_common_value_count = 5
+    #     - second_most_common_value_count = 0 ("call()" is not a literal, so we would skip it and default to 0)
+    #     - total_literal_value_count = 5
+    #     - n_different_literal_values = 1
+    #     - (5 - 0) >= (5 / 1)
+    #
+    #   However, if we treat "call()" as the most common value, we would make the parameter required since it is not a
+    #   literal.
     second_most_common_value_count = usages.n_value_usages(parameter.qname, most_common_values[1])
 
     literal_values = [
