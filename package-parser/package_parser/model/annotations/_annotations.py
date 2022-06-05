@@ -13,7 +13,7 @@ class AbstractAnnotation:
 @dataclass
 class ConstantAnnotation(AbstractAnnotation):
     defaultType: str
-    defaultValue: str
+    defaultValue: any
 
 
 @dataclass

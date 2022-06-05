@@ -278,6 +278,22 @@ def test_n_value_usages_for_existing_parameter_and_value(usage_counts: UsageCoun
     )
 
 
+def test_parameter_values_for_missing_parameter(usage_counts: UsageCountStore):
+    assert (
+        usage_counts.parameter_values("TestClass.test_function.test_parameter_2")
+        == []
+    )
+
+
+def test_parameter_values_for_existing_parameter(usage_counts: UsageCountStore):
+    usage_counts.add_value_usages("TestClass.test_function.test_parameter", "'test2'", 0)
+
+    assert (
+        usage_counts.parameter_values("TestClass.test_function.test_parameter")
+        == ["'test'"]
+    )
+
+
 def test_merge_other_into_self(usage_counts: UsageCountStore):
     other = UsageCountStore.from_json(
         {

@@ -23,7 +23,7 @@ def generate_annotations(api: API, usages: UsageCountStore) -> AnnotationStore:
 
     annotations = AnnotationStore()
     _generate_remove_annotations(api, usages, annotations)
-    _generate_parameter_importance_annotations(annotations, api, usages)
+    _generate_parameter_importance_annotations(api, usages, annotations)
     _generate_enum_annotations(api, annotations)
     _generate_boundary_annotations(api, annotations)
     return annotations
