@@ -146,6 +146,20 @@ class UsageCountStore:
 
         return 0
 
+    def most_common_parameter_values(
+        self, parameter_qname: ParameterQName
+    ) -> list[str]:
+        """Returns all values that have been set for the parameter with the given name sorted by their count in descending order."""
+
+        if parameter_qname in self.value_usages:
+            return [
+                value
+                for value, count in self.value_usages[parameter_qname].most_common()
+                if count > 0
+            ]
+
+        return []
+
     def merge_other_into_self(
         self, other_usage_store: UsageCountStore
     ) -> UsageCountStore:

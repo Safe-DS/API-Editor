@@ -9,10 +9,7 @@
             "imports": [],
             "from_imports": [],
             "classes": ["test.UsedClass"],
-            "functions": [
-                "test.unused_global_function",
-                "test.used_global_function"
-            ]
+            "functions": ["test.unused_global_function", "test.used_global_function"]
         }
     ],
     "classes": [
@@ -26,10 +23,7 @@
             "docstring": "",
             "superclasses": [],
             "source_code": "",
-            "methods": [
-                "test.UsedClass.unused_method",
-                "test.UsedClass.used_method"
-            ]
+            "methods": ["test.UsedClass.unused_method", "test.UsedClass.used_method"]
         }
     ],
     "functions": [
@@ -198,6 +192,78 @@
                     "name": "variable_optional_parameter",
                     "qname": "test.UsedClass.used_method.variable_optional_parameter",
                     "pname": "test/test/UsedClass/used_method/variable_optional_parameter",
+                    "default_value": "'test'",
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                },
+                {
+                    "name": "should_not_be_constant_one",
+                    "qname": "test.UsedClass.used_method.should_not_be_constant_one",
+                    "pname": "test/test/UsedClass/used_method/should_not_be_constant_one",
+                    "default_value": "'test'",
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                },
+                {
+                    "name": "should_not_be_constant_two",
+                    "qname": "test.UsedClass.used_method.should_not_be_constant_two",
+                    "pname": "test/test/UsedClass/used_method/should_not_be_constant_two",
+                    "default_value": "'test'",
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                },
+                {
+                    "name": "should_not_be_constant_three",
+                    "qname": "test.UsedClass.used_method.should_not_be_constant_three",
+                    "pname": "test/test/UsedClass/used_method/should_not_be_constant_three",
+                    "default_value": "'test'",
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                },
+                {
+                    "name": "should_not_be_constant_four",
+                    "qname": "test.UsedClass.used_method.should_not_be_constant_four",
+                    "pname": "test/test/UsedClass/used_method/should_not_be_constant_four",
+                    "default_value": "'test'",
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                },
+                {
+                    "name": "should_not_be_constant_five",
+                    "qname": "test.UsedClass.used_method.should_not_be_constant_five",
+                    "pname": "test/test/UsedClass/used_method/should_not_be_constant_five",
+                    "default_value": "'test'",
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                },
+                {
+                    "name": "should_not_be_constant_six",
+                    "qname": "test.UsedClass.used_method.should_not_be_constant_six",
+                    "pname": "test/test/UsedClass/used_method/should_not_be_constant_six",
                     "default_value": "'test'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",

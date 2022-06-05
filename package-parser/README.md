@@ -79,7 +79,7 @@ optional arguments:
 
 ### Example usage
 
-1. Install Python 3.9.
+1. Install Python 3.10.
 1. Install [poetry](https://python-poetry.org/docs/master/#installation).
 1. **Only the first time**, install dependencies:
     ```shell
