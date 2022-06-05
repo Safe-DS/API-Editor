@@ -17,7 +17,7 @@
         "test.UsedClass.used_method.variable_optional_parameter": 3,
         "test.UsedClass.used_method.should_not_be_constant_one": 5,
         "test.UsedClass.used_method.should_not_be_constant_two": 5,
-        "test.UsedClass.used_method.should_not_be_constant_three":5,
+        "test.UsedClass.used_method.should_not_be_constant_three": 5,
         "test.UsedClass.used_method.should_not_be_constant_four": 5,
         "test.UsedClass.used_method.should_not_be_constant_five": 5,
         "test.UsedClass.used_method.should_not_be_constant_six": 5

@@ -1,4 +1,8 @@
-from package_parser.model.annotations import AnnotationStore, Interval, BoundaryAnnotation
+from package_parser.model.annotations import (
+    AnnotationStore,
+    BoundaryAnnotation,
+    Interval,
+)
 from package_parser.model.api import API
 
 

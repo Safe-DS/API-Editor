@@ -1,10 +1,18 @@
-from package_parser.model.annotations import AnnotationStore, ParameterType, ConstantAnnotation, RequiredAnnotation, \
-    OptionalAnnotation, ParameterInfo
+from package_parser.model.annotations import (
+    AnnotationStore,
+    ConstantAnnotation,
+    OptionalAnnotation,
+    ParameterInfo,
+    ParameterType,
+    RequiredAnnotation,
+)
 from package_parser.model.api import API
 from package_parser.model.usages import UsageCountStore
 
 
-def _generate_constant_annotations(api: API, usages: UsageCountStore, annotations: AnnotationStore) -> None:
+def _generate_constant_annotations(
+    api: API, usages: UsageCountStore, annotations: AnnotationStore
+) -> None:
     """
     Collect all parameters that are only ever assigned a single value.
     :param usages: UsageCountStore object
@@ -33,7 +41,9 @@ def _generate_constant_annotations(api: API, usages: UsageCountStore, annotation
             )
 
 
-def _generate_required_annotations(api: API, usages: UsageCountStore, annotations: AnnotationStore) -> None:
+def _generate_required_annotations(
+    api: API, usages: UsageCountStore, annotations: AnnotationStore
+) -> None:
     """
     Collects all parameters that are currently optional but should be required to be assigned a value
     :param usages: Usage store
@@ -45,7 +55,7 @@ def _generate_required_annotations(api: API, usages: UsageCountStore, annotation
         (it, parameters[it])
         for it in parameters
         if parameters[it].default_value is not None
-           and parameters[it].qname in usages.parameter_usages
+        and parameters[it].qname in usages.parameter_usages
     ]
     for qname, parameter in optional_parameters:
         if __get_parameter_info(qname, usages).type is ParameterType.Required:
@@ -65,7 +75,9 @@ def __get_default_type_from_value(default_value: str) -> str:
     return default_type
 
 
-def _generate_optional_annotations(api: API, usages: UsageCountStore, annotations: AnnotationStore) -> None:
+def _generate_optional_annotations(
+    api: API, usages: UsageCountStore, annotations: AnnotationStore
+) -> None:
     """
     Collects all parameters that are currently required but should be optional to be assigned a value
     :param usages: Usage store
@@ -128,7 +140,8 @@ def __get_parameter_info(qname: str, usages: UsageCountStore) -> ParameterInfo:
         # Check if value is used more than 0 times AND if the value is correctly formatted as a string (with single
         #  quotes). If it isn't a string, just accept it.
         if count > 0 and (
-            (is_string and stringified_value[0] == "'" and stringified_value[-1] == "'") or not is_string
+            (is_string and stringified_value[0] == "'" and stringified_value[-1] == "'")
+            or not is_string
         ):
             values.append((stringified_value, count))
 

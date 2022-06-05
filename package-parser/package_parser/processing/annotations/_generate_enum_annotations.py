@@ -1,6 +1,6 @@
 import re
 
-from package_parser.model.annotations import AnnotationStore, EnumPair, EnumAnnotation
+from package_parser.model.annotations import AnnotationStore, EnumAnnotation, EnumPair
 from package_parser.model.api import API
 
 
