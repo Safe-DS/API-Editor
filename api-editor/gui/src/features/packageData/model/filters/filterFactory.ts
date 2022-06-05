@@ -1,17 +1,17 @@
-import {ConjunctiveFilter} from './ConjunctiveFilter';
+import { ConjunctiveFilter } from './ConjunctiveFilter';
 import NameFilter from './NameFilter';
 import AbstractPythonFilter from './AbstractPythonFilter';
-import DeclarationTypeFilter, {DeclarationType} from './DeclarationTypeFilter';
-import VisibilityFilter, {Visibility} from './VisibilityFilter';
-import {NegatedFilter} from './NegatedFilter';
-import {Optional} from '../../../../common/util/types';
-import AnnotationFilter, {AnnotationType} from './AnnotationFilter';
+import DeclarationTypeFilter, { DeclarationType } from './DeclarationTypeFilter';
+import VisibilityFilter, { Visibility } from './VisibilityFilter';
+import { NegatedFilter } from './NegatedFilter';
+import { Optional } from '../../../../common/util/types';
+import AnnotationFilter, { AnnotationType } from './AnnotationFilter';
 import UsageFilter from './UsageFilter';
 import { UsefulnessFilter } from './UsefulnessFilter';
 import { equals, greaterThan, greaterThanOrEqual, lessThan, lessThanOrEqual } from './comparisons';
 import ParameterAssignmentFilter from './ParameterAssignmentFilter';
-import {PythonParameterAssignment} from '../PythonParameter';
-import {RequiredOrOptional, RequiredOrOptionalFilter} from "./RequiredOrOptionalFilter";
+import { PythonParameterAssignment } from '../PythonParameter';
+import { RequiredOrOptional, RequiredOrOptionalFilter } from './RequiredOrOptionalFilter';
 
 /**
  * Creates a filter from the given string. This method handles conjunctions, negations, and non-negated tokens.
