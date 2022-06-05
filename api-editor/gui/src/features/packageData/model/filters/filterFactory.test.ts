@@ -4,7 +4,7 @@ import VisibilityFilter, { Visibility } from './VisibilityFilter';
 import { NegatedFilter } from './NegatedFilter';
 import NameFilter from './NameFilter';
 import UsageFilter from './UsageFilter';
-import UsefulnessFilter from './UsefulnessFilter';
+import {UsefulnessFilter} from './UsefulnessFilter';
 import { greaterThan } from './comparisons';
 
 describe('createFilterFromString', () => {
