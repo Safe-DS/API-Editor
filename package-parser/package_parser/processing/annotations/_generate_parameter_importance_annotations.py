@@ -28,9 +28,8 @@ def _generate_constant_annotation(
     :param annotations: AnnotationStore object
     """
 
-    if _is_stringified_literal(sole_stringified_value):
-        default_type, default_value = _get_default_type_and_value_for_stringified_value(sole_stringified_value)
-        default_type: str
+    default_type, default_value = _get_default_type_and_value_for_stringified_value(sole_stringified_value)
+    if default_type is not None:
         annotations.constants.append(ConstantAnnotation(parameter.pname, default_type, default_value))
 
 
@@ -91,8 +90,8 @@ def _generate_required_or_optional_annotation(
     else:
         if parameter.is_required() or parameter.default_value != literal_values[0]:
             default_type, default_value = _get_default_type_and_value_for_stringified_value(literal_values[0])
-            default_type: str
-            annotations.optionals.append(OptionalAnnotation(parameter.pname, default_type, default_value))
+            if default_type is not None:  # Just for mypy, always true
+                annotations.optionals.append(OptionalAnnotation(parameter.pname, default_type, default_value))
 
 
 def _should_be_required(
