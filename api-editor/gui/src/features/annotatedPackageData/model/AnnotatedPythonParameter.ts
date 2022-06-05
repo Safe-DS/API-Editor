@@ -26,6 +26,9 @@ export default class AnnotatedPythonParameter {
         this.qualifiedName = qualifiedName;
         this.defaultValue = defaultValue;
         switch (assignedBy) {
+            case PythonParameterAssignment.IMPLICIT:
+                this.assignedBy = 'IMPLICIT';
+                break;
             case PythonParameterAssignment.NAME_ONLY:
                 this.assignedBy = 'NAME_ONLY';
                 break;

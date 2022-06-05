@@ -4,12 +4,10 @@ import Dropzone from 'react-dropzone';
 
 interface StyledDropzoneProps {
     onDrop: (acceptedFiles: File[]) => void;
+    children: React.ReactNode;
 }
 
-const StyledDropzone: React.FC<StyledDropzoneProps> = function ({
-    onDrop,
-    children,
-}) {
+export const StyledDropzone: React.FC<StyledDropzoneProps> = function ({ onDrop, children }) {
     const borderColor = useColorModeValue('gray.200', 'gray.500');
     const backgroundColor = useColorModeValue('gray.50', 'gray.600');
 
@@ -32,5 +30,3 @@ const StyledDropzone: React.FC<StyledDropzoneProps> = function ({
         </Box>
     );
 };
-
-export default StyledDropzone;
