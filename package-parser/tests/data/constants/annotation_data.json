@@ -6,7 +6,7 @@
     },
     "test/test/used_global_function/constant_optional_parameter": {
         "defaultType": "string",
-        "defaultValue": "test2",
+        "defaultValue": "test2()",
         "target": "test/test/used_global_function/constant_optional_parameter"
     },
     "test/test/UsedClass/used_method/constant_required_parameter": {

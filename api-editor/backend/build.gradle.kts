@@ -28,7 +28,7 @@ tasks.withType<KotlinCompile> {
 
 // Dependencies --------------------------------------------------------------------------------------------------------
 
-val ktorVersion = "2.0.1"
+val ktorVersion = "2.0.2"
 
 dependencies {
     implementation("ch.qos.logback:logback-classic:1.2.11")
@@ -39,10 +39,11 @@ dependencies {
 
     // We can later pull this from Maven Central (or some other repo) once published
     implementation(files("lib/de.unibonn.simpleml-1.0.0-SNAPSHOT.jar"))
-    implementation("org.eclipse.xtext:org.eclipse.xtext:2.26.0")
+    implementation("org.eclipse.xtext:org.eclipse.xtext:2.27.0")
 
     testImplementation(kotlin("test"))
     testImplementation("io.kotest:kotest-assertions-core-jvm:5.3.0")
+    testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
     testImplementation("io.mockk:mockk:1.12.4")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")

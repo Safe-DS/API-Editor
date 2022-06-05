@@ -1,5 +1,5 @@
 import spacy
-from package_parser.commands.get_api._model import (
+from package_parser.model.api import (
     Action,
     Condition,
     Dependency,
@@ -11,7 +11,7 @@ from package_parser.commands.get_api._model import (
     ParameterIsIllegal,
     ParameterIsNone,
 )
-from package_parser.commands.get_dependencies._get_dependency import (
+from package_parser.processing.dependencies import (
     DependencyExtractor,
     extract_action,
     extract_condition,

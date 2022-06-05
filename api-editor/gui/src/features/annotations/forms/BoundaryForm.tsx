@@ -20,14 +20,8 @@ import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { numberPattern } from '../../../common/validation';
 import PythonDeclaration from '../../packageData/model/PythonDeclaration';
-import {
-    ComparisonOperator,
-    hideAnnotationForms,
-    Interval,
-    selectBoundary,
-    upsertBoundary,
-} from '../annotationSlice';
-import AnnotationForm from './AnnotationForm';
+import { ComparisonOperator, hideAnnotationForms, Interval, selectBoundary, upsertBoundary } from '../annotationSlice';
+import { AnnotationForm } from './AnnotationForm';
 import { Optional } from '../../../common/util/types';
 
 interface BoundaryFormProps {
@@ -44,25 +38,19 @@ interface BoundaryFormState {
     };
 }
 
-const initialFormState = function (
-    previousInterval: Optional<Interval>,
-): BoundaryFormState {
+const initialFormState = function (previousInterval: Optional<Interval>): BoundaryFormState {
     return {
         interval: {
             isDiscrete: previousInterval?.isDiscrete ?? false,
             lowerIntervalLimit: previousInterval?.lowerIntervalLimit ?? 0,
-            lowerLimitType:
-                previousInterval?.lowerLimitType ??
-                ComparisonOperator.LESS_THAN_OR_EQUALS,
+            lowerLimitType: previousInterval?.lowerLimitType ?? ComparisonOperator.LESS_THAN_OR_EQUALS,
             upperIntervalLimit: previousInterval?.upperIntervalLimit ?? 1,
-            upperLimitType:
-                previousInterval?.upperLimitType ??
-                ComparisonOperator.LESS_THAN_OR_EQUALS,
+            upperLimitType: previousInterval?.upperLimitType ?? ComparisonOperator.LESS_THAN_OR_EQUALS,
         },
     };
 };
 
-const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
+export const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
     const targetPath = target.pathAsString();
     const prevInterval = useAppSelector(selectBoundary(targetPath))?.interval;
 
@@ -119,8 +107,7 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
         const upperLimitType = getValues('interval.upperLimitType');
 
         return !(
-            lowerLimitType === ComparisonOperator.UNRESTRICTED &&
-            upperLimitType === ComparisonOperator.UNRESTRICTED
+            lowerLimitType === ComparisonOperator.UNRESTRICTED && upperLimitType === ComparisonOperator.UNRESTRICTED
         );
     };
 
@@ -138,17 +125,11 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
             return true;
         }
 
-        if (
-            lowerLimitType === ComparisonOperator.UNRESTRICTED ||
-            upperLimitType === ComparisonOperator.UNRESTRICTED
-        ) {
+        if (lowerLimitType === ComparisonOperator.UNRESTRICTED || upperLimitType === ComparisonOperator.UNRESTRICTED) {
             return true;
         }
 
-        if (
-            lowerLimitType === ComparisonOperator.LESS_THAN ||
-            upperLimitType === ComparisonOperator.LESS_THAN
-        ) {
+        if (lowerLimitType === ComparisonOperator.LESS_THAN || upperLimitType === ComparisonOperator.LESS_THAN) {
             return lowerLimit < upperLimit;
         }
 
@@ -163,13 +144,8 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
         >
-            <FormLabel>
-                Type of boundary of &quot;{target.name}&quot;:
-            </FormLabel>
-            <RadioGroup
-                defaultValue={prevInterval?.isDiscrete.toString() || 'false'}
-                onChange={handleIsDiscreteChange}
-            >
+            <FormLabel>Type of boundary of &quot;{target.name}&quot;:</FormLabel>
+            <RadioGroup defaultValue={prevInterval?.isDiscrete.toString() || 'false'} onChange={handleIsDiscreteChange}>
                 <Stack direction="column">
                     <Radio value="false">Continuous</Radio>
                     <Radio value="true">Discrete</Radio>
@@ -177,29 +153,20 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
             </RadioGroup>
 
             <HStack spacing="10px" alignItems="flexStart">
-                <FormControl
-                    isInvalid={Boolean(errors?.interval?.lowerIntervalLimit)}
-                >
+                <FormControl isInvalid={Boolean(errors?.interval?.lowerIntervalLimit)}>
                     <NumberInput
                         {...register('interval.lowerIntervalLimit', {
                             required: 'This is required.',
                             pattern: numberPattern,
                             valueAsNumber: true,
-                            disabled:
-                                watch('interval.lowerLimitType') ===
-                                ComparisonOperator.UNRESTRICTED,
+                            disabled: watch('interval.lowerLimitType') === ComparisonOperator.UNRESTRICTED,
                             validate: {
                                 nonEmptyInterval,
                             },
                         })}
                         min={undefined}
                         max={undefined}
-                        onChange={(_, valueAsNumber) =>
-                            setValue(
-                                'interval.lowerIntervalLimit',
-                                valueAsNumber,
-                            )
-                        }
+                        onChange={(_, valueAsNumber) => setValue('interval.lowerIntervalLimit', valueAsNumber)}
                     >
                         <NumberInputField />
                         <NumberInputStepper>
@@ -210,14 +177,10 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
                     <FormErrorMessage>
                         <FormErrorIcon />
                         {errors?.interval?.lowerIntervalLimit?.message ||
-                            (errors?.interval?.lowerIntervalLimit?.type ===
-                                'nonEmptyInterval' &&
-                                'Interval is empty.')}
+                            (errors?.interval?.lowerIntervalLimit?.type === 'nonEmptyInterval' && 'Interval is empty.')}
                     </FormErrorMessage>
                 </FormControl>
-                <FormControl
-                    isInvalid={Boolean(errors?.interval?.lowerLimitType)}
-                >
+                <FormControl isInvalid={Boolean(errors?.interval?.lowerLimitType)}>
                     <Select
                         {...register('interval.lowerLimitType', {
                             required: 'This is required.',
@@ -227,21 +190,14 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
                             },
                         })}
                     >
-                        <option value={ComparisonOperator.LESS_THAN_OR_EQUALS}>
-                            ≤
-                        </option>
-                        <option value={ComparisonOperator.LESS_THAN}>
-                            {'<'}
-                        </option>
-                        <option value={ComparisonOperator.UNRESTRICTED}>
-                            no lower limit
-                        </option>
+                        <option value={ComparisonOperator.LESS_THAN_OR_EQUALS}>≤</option>
+                        <option value={ComparisonOperator.LESS_THAN}>{'<'}</option>
+                        <option value={ComparisonOperator.UNRESTRICTED}>no lower limit</option>
                     </Select>
                     <FormErrorMessage>
                         <FormErrorIcon />
                         {errors?.interval?.lowerLimitType?.message ||
-                            (errors?.interval?.lowerLimitType?.type ===
-                                'unrestrictedInterval' &&
+                            (errors?.interval?.lowerLimitType?.type === 'unrestrictedInterval' &&
                                 'Interval is unrestricted.')}
                     </FormErrorMessage>
                 </FormControl>
@@ -250,9 +206,7 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
                     {target.name}
                 </ChakraText>
 
-                <FormControl
-                    isInvalid={Boolean(errors?.interval?.upperLimitType)}
-                >
+                <FormControl isInvalid={Boolean(errors?.interval?.upperLimitType)}>
                     <Select
                         {...register('interval.upperLimitType', {
                             required: 'This is required.',
@@ -262,47 +216,31 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
                             },
                         })}
                     >
-                        <option value={ComparisonOperator.LESS_THAN_OR_EQUALS}>
-                            ≤
-                        </option>
-                        <option value={ComparisonOperator.LESS_THAN}>
-                            {'<'}
-                        </option>
-                        <option value={ComparisonOperator.UNRESTRICTED}>
-                            no upper limit
-                        </option>
+                        <option value={ComparisonOperator.LESS_THAN_OR_EQUALS}>≤</option>
+                        <option value={ComparisonOperator.LESS_THAN}>{'<'}</option>
+                        <option value={ComparisonOperator.UNRESTRICTED}>no upper limit</option>
                     </Select>
                     <FormErrorMessage>
                         <FormErrorIcon />
                         {errors?.interval?.upperLimitType?.message ||
-                            (errors?.interval?.upperLimitType?.type ===
-                                'unrestrictedInterval' &&
+                            (errors?.interval?.upperLimitType?.type === 'unrestrictedInterval' &&
                                 'Interval is unrestricted.')}
                     </FormErrorMessage>
                 </FormControl>
-                <FormControl
-                    isInvalid={Boolean(errors?.interval?.upperIntervalLimit)}
-                >
+                <FormControl isInvalid={Boolean(errors?.interval?.upperIntervalLimit)}>
                     <NumberInput
                         {...register('interval.upperIntervalLimit', {
                             required: 'This is required.',
                             pattern: numberPattern,
                             valueAsNumber: true,
-                            disabled:
-                                watch('interval.upperLimitType') ===
-                                ComparisonOperator.UNRESTRICTED,
+                            disabled: watch('interval.upperLimitType') === ComparisonOperator.UNRESTRICTED,
                             validate: {
                                 nonEmptyInterval,
                             },
                         })}
                         min={undefined}
                         max={undefined}
-                        onChange={(_, valueAsNumber) =>
-                            setValue(
-                                'interval.upperIntervalLimit',
-                                valueAsNumber,
-                            )
-                        }
+                        onChange={(_, valueAsNumber) => setValue('interval.upperIntervalLimit', valueAsNumber)}
                     >
                         <NumberInputField />
                         <NumberInputStepper>
@@ -313,14 +251,10 @@ const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
                     <FormErrorMessage>
                         <FormErrorIcon />
                         {errors?.interval?.upperIntervalLimit?.message ||
-                            (errors?.interval?.upperIntervalLimit?.type ===
-                                'nonEmptyInterval' &&
-                                'Interval is empty.')}
+                            (errors?.interval?.upperIntervalLimit?.type === 'nonEmptyInterval' && 'Interval is empty.')}
                     </FormErrorMessage>
                 </FormControl>
             </HStack>
         </AnnotationForm>
     );
 };
-
-export default BoundaryForm;

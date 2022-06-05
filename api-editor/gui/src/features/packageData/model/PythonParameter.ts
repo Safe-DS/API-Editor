@@ -4,6 +4,7 @@ import PythonFunction from './PythonFunction';
 import PythonModule from './PythonModule';
 
 export enum PythonParameterAssignment {
+    IMPLICIT,
     POSITION_ONLY,
     POSITION_OR_NAME,
     NAME_ONLY,
@@ -58,6 +59,10 @@ export default class PythonParameter extends PythonDeclaration {
 
     toString(): string {
         return `Parameter "${this.name}"`;
+    }
+
+    qualifiedName(): string {
+        return this.path().slice(1).join('.');
     }
 
     clone(): PythonParameter {
