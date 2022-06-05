@@ -1,19 +1,9 @@
-import {
-    Box,
-    Code,
-    Heading,
-    Stack,
-    Text,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { Box, Code, Heading, Stack, Text, useColorModeValue } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
 import python from 'react-syntax-highlighter/dist/esm/languages/hljs/python';
-import {
-    atomOneDark as dark,
-    atomOneLight as light,
-} from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { atomOneDark as dark, atomOneLight as light } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import remarkGfm from 'remark-gfm';
 import { groupBy, isEmptyList } from '../../../common/util/listOperations';
 import PythonModule from '../model/PythonModule';
@@ -60,28 +50,16 @@ export const ModuleView: React.FC<ModuleViewProps> = function ({ pythonModule })
         SyntaxHighlighter.registerLanguage('python', python);
     }, []);
 
-    const importString = pythonModule.imports
-        .map((it) => it.toString())
-        .join('\n');
+    const importString = pythonModule.imports.map((it) => it.toString()).join('\n');
 
-    const longestModuleNameLength = Math.max(
-        ...pythonModule.fromImports.map((it) => it.module.length),
-    );
+    const longestModuleNameLength = Math.max(...pythonModule.fromImports.map((it) => it.module.length));
 
-    const fromImportString = [
-        ...groupBy(pythonModule.fromImports, (it) => it.module),
-    ]
+    const fromImportString = [...groupBy(pythonModule.fromImports, (it) => it.module)]
         .map(([module, fromImports]) => {
             const base = `from ${module} import`;
-            const rest = fromImports
-                .map((fromImport) =>
-                    fromImport.toString().replace(`${base} `, ''),
-                )
-                .join(', ');
+            const rest = fromImports.map((fromImport) => fromImport.toString().replace(`${base} `, '')).join(', ');
 
-            return `from ${module.padEnd(
-                longestModuleNameLength,
-            )} import ${rest}`;
+            return `from ${module.padEnd(longestModuleNameLength)} import ${rest}`;
         })
         .join('\n');
 
@@ -96,30 +74,23 @@ export const ModuleView: React.FC<ModuleViewProps> = function ({ pythonModule })
                 </Heading>
                 {!isEmptyList(pythonModule.imports) && (
                     <Box paddingLeft={4}>
-                        <ReactMarkdown
-                            components={components}
-                            remarkPlugins={[remarkGfm]}
-                        >
+                        <ReactMarkdown components={components} remarkPlugins={[remarkGfm]}>
                             {`~~~python\n${importString}\n~~~`}
                         </ReactMarkdown>
                     </Box>
                 )}
                 {!isEmptyList(pythonModule.fromImports) && (
                     <Box paddingLeft={4}>
-                        <ReactMarkdown
-                            components={components}
-                            remarkPlugins={[remarkGfm]}
-                        >
+                        <ReactMarkdown components={components} remarkPlugins={[remarkGfm]}>
                             {`~~~python\n${fromImportString}\n~~~`}
                         </ReactMarkdown>
                     </Box>
                 )}
-                {isEmptyList(pythonModule.imports) &&
-                    isEmptyList(pythonModule.fromImports) && (
-                        <Text color="gray.500" paddingLeft={4}>
-                            There are no imports.
-                        </Text>
-                    )}
+                {isEmptyList(pythonModule.imports) && isEmptyList(pythonModule.fromImports) && (
+                    <Text color="gray.500" paddingLeft={4}>
+                        There are no imports.
+                    </Text>
+                )}
             </Stack>
         </Stack>
     );
