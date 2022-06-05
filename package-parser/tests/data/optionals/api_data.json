@@ -9,7 +9,9 @@
             "imports": [],
             "from_imports": [],
             "classes": [],
-            "functions": ["test.some_global_function"]
+            "functions": [
+                "test.some_global_function"
+            ]
         }
     ],
     "classes": [],
@@ -59,6 +61,18 @@
                     }
                 },
                 {
+                    "name": "required_parameter_that_should_be_optional_while_ignoring_the_non_string",
+                    "qname": "test.some_global_function.required_parameter_that_should_be_optional_while_ignoring_the_non_string",
+                    "pname": "test/test/some_global_function/required_parameter_that_should_be_optional_while_ignoring_the_non_string",
+                    "default_value": null,
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                },
+                {
                     "name": "optional_parameter_that_should_be_constant",
                     "qname": "test.some_global_function.optional_parameter_that_should_be_constant",
                     "pname": "test/test/some_global_function/optional_parameter_that_should_be_constant",
@@ -99,18 +113,6 @@
                     "qname": "test.some_global_function.optional_parameter_that_should_be_optional_with_different_default",
                     "pname": "test/test/some_global_function/optional_parameter_that_should_be_optional_with_different_default",
                     "default_value": "'test'",
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
-                },
-                {
-                    "name": "required_parameter_that_should_be_optional_while_ignoring_the_non_string",
-                    "qname": "test.some_global_function.required_parameter_that_should_be_optional_while_ignoring_the_non_string",
-                    "pname": "test/test/some_global_function/required_parameter_that_should_be_optional_while_ignoring_the_non_string",
-                    "default_value": "'test1'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
                     "docstring": {
