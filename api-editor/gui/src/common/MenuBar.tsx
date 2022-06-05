@@ -94,7 +94,7 @@ const DeleteAllAnnotations = function () {
     );
 };
 
-const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFilter, displayInferErrors }) {
+export const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFilter, displayInferErrors }) {
     const { colorMode, toggleColorMode } = useColorMode();
     const dispatch = useAppDispatch();
 
@@ -202,6 +202,13 @@ const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFi
                                     </MenuItemOption>
                                     <MenuItemOption
                                         paddingLeft={8}
+                                        value={'usefulness'}
+                                        onClick={() => dispatch(setHeatMapMode(HeatMapMode.Usefulness))}
+                                    >
+                                        Usefulness
+                                    </MenuItemOption>
+                                    <MenuItemOption
+                                        paddingLeft={8}
                                         value={'annotations'}
                                         onClick={() => dispatch(setHeatMapMode(HeatMapMode.Annotations))}
                                     >
@@ -230,5 +237,3 @@ const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFi
         </Flex>
     );
 };
-
-export default MenuBar;
