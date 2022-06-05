@@ -45,7 +45,7 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core-jvm:5.3.0")
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
-    testImplementation("io.mockk:mockk:1.12.3")
+    testImplementation("io.mockk:mockk:1.12.4")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
 }
 
