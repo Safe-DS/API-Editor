@@ -14,15 +14,17 @@ interface ParameterNodeProps {
     usages: UsageCountStore;
 }
 
-const ParameterNode: React.FC<ParameterNodeProps> = function ({ pythonParameter, filter, usages }) {
+export const ParameterNode: React.FC<ParameterNodeProps> = function ({ pythonParameter, filter, usages }) {
     let valuePair: ValuePair = new ValuePair(undefined, undefined);
     const heatMapMode = useAppSelector(selectHeatMapMode);
     const annotations = useAppSelector(selectAnnotations);
 
-    if (heatMapMode === HeatMapMode.Usages) {
-        valuePair = getMapWithUsages(usages, pythonParameter);
-    } else if (heatMapMode === HeatMapMode.Annotations) {
+    if (heatMapMode === HeatMapMode.Annotations) {
         valuePair = getMapWithAnnotation(pythonParameter, annotations);
+    } else if (heatMapMode === HeatMapMode.Usages) {
+        valuePair = getMapWithUsages(usages, pythonParameter);
+    } else if (heatMapMode === HeatMapMode.Usefulness) {
+        valuePair = getMapWithUsefulness(usages, pythonParameter);
     }
 
     return (
@@ -39,8 +41,14 @@ const ParameterNode: React.FC<ParameterNodeProps> = function ({ pythonParameter,
 };
 
 const getMapWithUsages = function (usages: UsageCountStore, pythonParameter: PythonParameter): ValuePair {
-    const maxValue = usages.parameterMax;
+    const maxValue = usages.parameterMaxUsages;
     const specificValue = usages.parameterUsages.get(pythonParameter.qualifiedName()) ?? 0;
+    return new ValuePair(specificValue, maxValue);
+};
+
+const getMapWithUsefulness = function (usages: UsageCountStore, pythonParameter: PythonParameter): ValuePair {
+    const maxValue = usages.parameterMaxUsefulness;
+    const specificValue = usages.parameterUsefulness.get(pythonParameter.qualifiedName()) ?? 0;
     return new ValuePair(specificValue, maxValue);
 };
 
@@ -59,5 +67,3 @@ const getMapWithAnnotation = function (pythonParameter: PythonParameter, annotat
 
     return new ValuePair(specificValue, maxValue);
 };
-
-export default ParameterNode;

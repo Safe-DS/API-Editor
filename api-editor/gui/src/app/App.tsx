@@ -13,7 +13,7 @@ import {
 import * as idb from 'idb-keyval';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
-import MenuBar from '../common/MenuBar';
+import {MenuBar} from '../common/MenuBar';
 import { Setter } from '../common/util/types';
 import { AnnotationImportDialog } from '../features/annotations/AnnotationImportDialog';
 import {

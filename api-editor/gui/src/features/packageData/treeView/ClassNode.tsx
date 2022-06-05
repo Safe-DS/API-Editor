@@ -15,7 +15,7 @@ interface ClassNodeProps {
     usages: UsageCountStore;
 }
 
-const ClassNode: React.FC<ClassNodeProps> = function ({ pythonClass, filter, usages }) {
+export const ClassNode: React.FC<ClassNodeProps> = function ({ pythonClass, filter, usages }) {
     const hasMethods = !isEmptyList(pythonClass.methods);
     const annotations = useAppSelector(selectAnnotations);
     const heatMapMode = useAppSelector(selectHeatMapMode);
@@ -23,7 +23,7 @@ const ClassNode: React.FC<ClassNodeProps> = function ({ pythonClass, filter, usa
 
     if (heatMapMode === HeatMapMode.Annotations) {
         valuePair = getMapWithAnnotation(pythonClass, annotations);
-    } else if (heatMapMode === HeatMapMode.Usages) {
+    } else if (heatMapMode === HeatMapMode.Usages || heatMapMode === HeatMapMode.Usefulness) {
         valuePair = getMapWithUsages(usages, pythonClass);
     }
 
@@ -41,7 +41,7 @@ const ClassNode: React.FC<ClassNodeProps> = function ({ pythonClass, filter, usa
 };
 
 const getMapWithUsages = function (usages: UsageCountStore, pythonClass: PythonClass): ValuePair {
-    const maxValue = usages.classMax;
+    const maxValue = usages.classMaxUsages;
     const specificValue = usages.classUsages.get(pythonClass.qualifiedName) ?? 0;
     return new ValuePair(specificValue, maxValue);
 };
@@ -57,5 +57,3 @@ const getMapWithAnnotation = function (pythonClass: PythonClass, annotations: An
 
     return new ValuePair(specificValue, maxValue);
 };
-
-export default ClassNode;
