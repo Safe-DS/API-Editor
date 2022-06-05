@@ -1,4 +1,4 @@
-from package_parser.commands.get_api._file_filters import _is_init_file, _is_test_file
+from package_parser.processing.api._file_filters import _is_init_file, _is_test_file
 
 
 def test_is_init_file_positive():

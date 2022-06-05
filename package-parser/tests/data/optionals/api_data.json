@@ -47,9 +47,33 @@
                     }
                 },
                 {
+                    "name": "required_parameter_that_should_be_required_with_non_string",
+                    "qname": "test.some_global_function.required_parameter_that_should_be_required_with_non_string",
+                    "pname": "test/test/some_global_function/required_parameter_that_should_be_required_with_non_string",
+                    "default_value": null,
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                },
+                {
                     "name": "required_parameter_that_should_be_optional",
                     "qname": "test.some_global_function.required_parameter_that_should_be_optional",
                     "pname": "test/test/some_global_function/required_parameter_that_should_be_optional",
+                    "default_value": null,
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                },
+                {
+                    "name": "required_parameter_that_should_be_optional_with_non_string",
+                    "qname": "test.some_global_function.required_parameter_that_should_be_optional_with_non_string",
+                    "pname": "test/test/some_global_function/required_parameter_that_should_be_optional_with_non_string",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
@@ -83,6 +107,18 @@
                     }
                 },
                 {
+                    "name": "optional_parameter_that_should_be_required_with_non_string",
+                    "qname": "test.some_global_function.optional_parameter_that_should_be_required_with_non_string",
+                    "pname": "test/test/some_global_function/optional_parameter_that_should_be_required_with_non_string",
+                    "default_value": "'test'",
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                },
+                {
                     "name": "optional_parameter_that_should_be_optional_with_same_default",
                     "qname": "test.some_global_function.optional_parameter_that_should_be_optional_with_same_default",
                     "pname": "test/test/some_global_function/optional_parameter_that_should_be_optional_with_same_default",
@@ -98,6 +134,18 @@
                     "name": "optional_parameter_that_should_be_optional_with_different_default",
                     "qname": "test.some_global_function.optional_parameter_that_should_be_optional_with_different_default",
                     "pname": "test/test/some_global_function/optional_parameter_that_should_be_optional_with_different_default",
+                    "default_value": "'test'",
+                    "is_public": true,
+                    "assigned_by": "POSITION_OR_NAME",
+                    "docstring": {
+                        "type": "str",
+                        "description": ""
+                    }
+                },
+                {
+                    "name": "optional_parameter_that_should_be_optional_with_non_string",
+                    "qname": "test.some_global_function.optional_parameter_that_should_be_optional_with_non_string",
+                    "pname": "test/test/some_global_function/optional_parameter_that_should_be_optional_with_non_string",
                     "default_value": "'test'",
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",

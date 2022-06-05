@@ -5,6 +5,7 @@ import PythonParameter from '../PythonParameter';
 import AbstractPythonFilter from './AbstractPythonFilter';
 import PythonDeclaration from '../PythonDeclaration';
 import { AnnotationsState } from '../../../annotations/annotationSlice';
+import { UsageCountStore } from '../../../usages/model/UsageCountStore';
 
 /**
  * Keeps only declarations with a specified visibility (public/internal)
@@ -17,24 +18,36 @@ export default class VisibilityFilter extends AbstractPythonFilter {
         super();
     }
 
-    shouldKeepModule(pythonModule: PythonModule, annotations: AnnotationsState): boolean {
-        return this.shouldKeepDeclaration(pythonModule, annotations);
+    shouldKeepModule(pythonModule: PythonModule, annotations: AnnotationsState, usages: UsageCountStore): boolean {
+        return this.shouldKeepDeclaration(pythonModule, annotations, usages);
     }
 
-    shouldKeepClass(pythonClass: PythonClass, annotations: AnnotationsState): boolean {
-        return this.shouldKeepDeclaration(pythonClass, annotations);
+    shouldKeepClass(pythonClass: PythonClass, annotations: AnnotationsState, usages: UsageCountStore): boolean {
+        return this.shouldKeepDeclaration(pythonClass, annotations, usages);
     }
 
-    shouldKeepFunction(pythonFunction: PythonFunction, annotations: AnnotationsState): boolean {
-        return this.shouldKeepDeclaration(pythonFunction, annotations);
+    shouldKeepFunction(
+        pythonFunction: PythonFunction,
+        annotations: AnnotationsState,
+        usages: UsageCountStore,
+    ): boolean {
+        return this.shouldKeepDeclaration(pythonFunction, annotations, usages);
     }
 
-    shouldKeepParameter(pythonParameter: PythonParameter, annotations: AnnotationsState): boolean {
-        return this.shouldKeepDeclaration(pythonParameter, annotations);
+    shouldKeepParameter(
+        pythonParameter: PythonParameter,
+        annotations: AnnotationsState,
+        usages: UsageCountStore,
+    ): boolean {
+        return this.shouldKeepDeclaration(pythonParameter, annotations, usages);
     }
 
-    shouldKeepDeclaration(declaration: PythonDeclaration, annotations: AnnotationsState): boolean {
-        return declaration.isPublicDeclaration() === (this.visibility === Visibility.Public);
+    shouldKeepDeclaration(
+        pythonDeclaration: PythonDeclaration,
+        _annotations: AnnotationsState,
+        _usages: UsageCountStore,
+    ): boolean {
+        return pythonDeclaration.isPublicDeclaration() === (this.visibility === Visibility.Public);
     }
 }
 

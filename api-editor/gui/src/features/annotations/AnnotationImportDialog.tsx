@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useAppDispatch } from '../../app/hooks';
-import StyledDropzone from '../../common/StyledDropzone';
+import { StyledDropzone } from '../../common/StyledDropzone';
 import { isValidJsonFile } from '../../common/util/validation';
 import {
     AnnotationsState,
@@ -24,7 +24,7 @@ import {
     toggleAnnotationImportDialog,
 } from './annotationSlice';
 
-const AnnotationImportDialog: React.FC = function () {
+export const AnnotationImportDialog: React.FC = function () {
     const [fileName, setFileName] = useState('');
     const [newAnnotationStore, setNewAnnotationStore] = useState<AnnotationsState>({
         attributes: {},
@@ -43,7 +43,7 @@ const AnnotationImportDialog: React.FC = function () {
         renamings: {},
         requireds: {},
         showImportDialog: false,
-        unuseds: {},
+        removes: {},
     });
     const dispatch = useAppDispatch();
 
@@ -113,5 +113,3 @@ const AnnotationImportDialog: React.FC = function () {
         </Modal>
     );
 };
-
-export default AnnotationImportDialog;
