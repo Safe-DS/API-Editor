@@ -15,7 +15,7 @@
 
 1. Run the backend server:
     ```shell
-    ./gradlew run
+    ./gradlew :backend:run
     ```
 2. Run the development server (keep the backend server running):
     ```shell
