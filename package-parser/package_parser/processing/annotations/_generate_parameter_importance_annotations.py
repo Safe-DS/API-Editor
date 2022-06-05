@@ -57,14 +57,14 @@ def _generate_required_or_optional_annotation(
         for stringified_value in most_common_values
         if _is_stringified_literal(stringified_value)
     ]
-    total_count = sum([usages.n_value_usages(parameter.qname, value) for value in literal_values])
+    total_literal_value_count = sum([usages.n_value_usages(parameter.qname, value) for value in literal_values])
     n_different_literal_values = len(literal_values)
 
     # Add appropriate annotation
     if _should_be_required(
         most_common_value_count,
         second_most_common_value_count,
-        total_count,
+        total_literal_value_count,
         n_different_literal_values
     ):
         if parameter.is_optional():
@@ -78,19 +78,19 @@ def _generate_required_or_optional_annotation(
 def _should_be_required(
     most_common_value_count: int,
     second_most_common_value_count: int,
-    total_count: int,
+    total_literal_value_count: int,
     n_different_literal_values: int
 ) -> bool:
     """
     This function determines how to differentiate between an optional and a required parameter
     :param most_common_value_count: The number of times the most common value is used
     :param second_most_common_value_count: The number of times the second most common value is used
-    :param total_count: The total number of times the parameter is used
+    :param total_literal_value_count: The total number of times the parameter is set to a literal value
     :param n_different_literal_values: The number of different literal values that are used
     :return: True means the parameter should be required, False means it should be optional
     """
 
-    return most_common_value_count - second_most_common_value_count < total_count / n_different_literal_values
+    return most_common_value_count - second_most_common_value_count < total_literal_value_count / n_different_literal_values
 
 
 def _is_stringified_literal(stringified_value: str) -> bool:
