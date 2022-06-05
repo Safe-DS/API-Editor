@@ -62,15 +62,11 @@ if (cancelAnimationFrameFn == null || requestAnimationFrameFn == null) {
         cancelAnimationFrameFn(animationFrameID);
         clearTimeoutFn(timeoutID);
     };
-    requestFrame = function requestAnimationFrameWithSetTimeoutFallback(
-        callback
-    ) {
-        const animationFrameID = requestAnimationFrameFn(
-            function animationFrameCallback() {
-                clearTimeoutFn(timeoutID);
-                callback();
-            }
-        );
+    requestFrame = function requestAnimationFrameWithSetTimeoutFallback(callback) {
+        const animationFrameID = requestAnimationFrameFn(function animationFrameCallback() {
+            clearTimeoutFn(timeoutID);
+            callback();
+        });
 
         const timeoutID = setTimeoutFn(function timeoutCallback() {
             cancelAnimationFrameFn(animationFrameID);
@@ -92,7 +88,7 @@ export function createDetectElementResize(nonce) {
 
     const attachEvent = typeof document !== 'undefined' && document.attachEvent;
     if (!attachEvent) {
-        resetTriggers = function(element) {
+        resetTriggers = function (element) {
             const triggers = element.__resizeTriggers__,
                 expand = triggers.firstElementChild,
                 contract = triggers.lastElementChild,
@@ -105,14 +101,14 @@ export function createDetectElementResize(nonce) {
             expand.scrollTop = expand.scrollHeight;
         };
 
-        checkTriggers = function(element) {
+        checkTriggers = function (element) {
             return (
                 element.offsetWidth !== element.__resizeLast__.width ||
                 element.offsetHeight !== element.__resizeLast__.height
             );
         };
 
-        scrollListener = function(e) {
+        scrollListener = function (e) {
             // Don't measure (which forces) reflow for scrolls that happen inside of children!
             if (
                 e.target.className &&
@@ -132,9 +128,7 @@ export function createDetectElementResize(nonce) {
                 if (checkTriggers(element)) {
                     element.__resizeLast__.width = element.offsetWidth;
                     element.__resizeLast__.height = element.offsetHeight;
-                    element.__resizeListeners__.forEach(function forEachResizeListener(
-                        fn
-                    ) {
+                    element.__resizeListeners__.forEach(function forEachResizeListener(fn) {
                         fn.call(element, e);
                     });
                 }
@@ -146,9 +140,7 @@ export function createDetectElementResize(nonce) {
         let keyframeprefix = '';
         animationStartEvent = 'animationstart';
         const domPrefixes = 'Webkit Moz O ms'.split(' ');
-        let startEvents = 'webkitAnimationStart animationstart oAnimationStart MSAnimationStart'.split(
-            ' '
-        );
+        let startEvents = 'webkitAnimationStart animationstart oAnimationStart MSAnimationStart'.split(' ');
         let pfx = '';
         {
             const elm = document.createElement('fakeelement');
@@ -171,15 +163,11 @@ export function createDetectElementResize(nonce) {
 
         animationName = 'resizeanim';
         animationKeyframes =
-            '@' +
-            keyframeprefix +
-            'keyframes ' +
-            animationName +
-            ' { from { opacity: 0; } to { opacity: 0; } } ';
+            '@' + keyframeprefix + 'keyframes ' + animationName + ' { from { opacity: 0; } to { opacity: 0; } } ';
         animationStyle = keyframeprefix + 'animation: 1ms ' + animationName + '; ';
     }
 
-    const createStyles = function(doc) {
+    const createStyles = function (doc) {
         if (!doc.getElementById('detectElementResize')) {
             //opacity:0 works around a chrome bug https://code.google.com/p/chromium/issues/detail?id=286360
             const css =
@@ -208,7 +196,7 @@ export function createDetectElementResize(nonce) {
         }
     };
 
-    const addResizeListener = function(element, fn) {
+    const addResizeListener = function (element, fn) {
         if (attachEvent) {
             element.attachEvent('onresize', fn);
         } else {
@@ -221,8 +209,7 @@ export function createDetectElementResize(nonce) {
                 createStyles(doc);
                 element.__resizeLast__ = {};
                 element.__resizeListeners__ = [];
-                (element.__resizeTriggers__ = doc.createElement('div')).className =
-                    'resize-triggers';
+                (element.__resizeTriggers__ = doc.createElement('div')).className = 'resize-triggers';
                 const expandTrigger = doc.createElement('div');
                 expandTrigger.className = 'expand-trigger';
                 expandTrigger.appendChild(doc.createElement('div'));
@@ -236,16 +223,14 @@ export function createDetectElementResize(nonce) {
 
                 /* Listen for a css animation to detect element display/re-attach */
                 if (animationStartEvent) {
-                    element.__resizeTriggers__.__animationListener__ = function animationListener(
-                        e
-                    ) {
+                    element.__resizeTriggers__.__animationListener__ = function animationListener(e) {
                         if (e.animationName === animationName) {
                             resetTriggers(element);
                         }
                     };
                     element.__resizeTriggers__.addEventListener(
                         animationStartEvent,
-                        element.__resizeTriggers__.__animationListener__
+                        element.__resizeTriggers__.__animationListener__,
                     );
                 }
             }
@@ -253,27 +238,22 @@ export function createDetectElementResize(nonce) {
         }
     };
 
-    const removeResizeListener = function(element, fn) {
+    const removeResizeListener = function (element, fn) {
         if (attachEvent) {
             element.detachEvent('onresize', fn);
         } else {
-            element.__resizeListeners__.splice(
-                element.__resizeListeners__.indexOf(fn),
-                1
-            );
+            element.__resizeListeners__.splice(element.__resizeListeners__.indexOf(fn), 1);
             if (!element.__resizeListeners__.length) {
                 element.removeEventListener('scroll', scrollListener, true);
                 if (element.__resizeTriggers__.__animationListener__) {
                     element.__resizeTriggers__.removeEventListener(
                         animationStartEvent,
-                        element.__resizeTriggers__.__animationListener__
+                        element.__resizeTriggers__.__animationListener__,
                     );
                     element.__resizeTriggers__.__animationListener__ = null;
                 }
                 try {
-                    element.__resizeTriggers__ = !element.removeChild(
-                        element.__resizeTriggers__
-                    );
+                    element.__resizeTriggers__ = !element.removeChild(element.__resizeTriggers__);
                 } catch (e) {
                     // Preact compat; see developit/preact-compat/issues/228
                 }

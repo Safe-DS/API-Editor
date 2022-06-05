@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import {createDetectElementResize} from "./util/detectElementResize";
+import { createDetectElementResize } from './util/detectElementResize';
 
 export class AutoSizer extends React.PureComponent {
     static defaultProps = {
@@ -31,8 +31,7 @@ export class AutoSizer extends React.PureComponent {
             this._autoSizer.parentNode &&
             this._autoSizer.parentNode.ownerDocument &&
             this._autoSizer.parentNode.ownerDocument.defaultView &&
-            this._autoSizer.parentNode instanceof
-            this._autoSizer.parentNode.ownerDocument.defaultView.HTMLElement
+            this._autoSizer.parentNode instanceof this._autoSizer.parentNode.ownerDocument.defaultView.HTMLElement
         ) {
             // Delay access of parentNode until mount.
             // This handles edge-cases where the component has already been unmounted before its ref has been set,
@@ -42,10 +41,7 @@ export class AutoSizer extends React.PureComponent {
             // Defer requiring resize handler in order to support server-side rendering.
             // See issue #41
             this._detectElementResize = createDetectElementResize(nonce);
-            this._detectElementResize.addResizeListener(
-                this._parentNode,
-                this._onResize
-            );
+            this._detectElementResize.addResizeListener(this._parentNode, this._onResize);
 
             this._onResize();
         }
@@ -53,21 +49,12 @@ export class AutoSizer extends React.PureComponent {
 
     componentWillUnmount() {
         if (this._detectElementResize && this._parentNode) {
-            this._detectElementResize.removeResizeListener(
-                this._parentNode,
-                this._onResize
-            );
+            this._detectElementResize.removeResizeListener(this._parentNode, this._onResize);
         }
     }
 
     render() {
-        const {
-            children,
-            className,
-            disableHeight,
-            disableWidth,
-            style,
-        } = this.props;
+        const { children, className, disableHeight, disableWidth, style } = this.props;
         const { height, width } = this.state;
 
         // Outer div should not force width/height since that may prevent containers from shrinking.

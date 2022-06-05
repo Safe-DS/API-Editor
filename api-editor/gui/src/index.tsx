@@ -7,8 +7,8 @@ import { App } from './app/App';
 import { store } from './app/store';
 import apiEditorTheme from './theme';
 
-const container = document.getElementById('root')
-const root = createRoot(container!)
+const container = document.getElementById('root');
+const root = createRoot(container!);
 root.render(
     <React.StrictMode>
         <Provider store={store}>
@@ -19,5 +19,5 @@ root.render(
                 </HashRouter>
             </ChakraProvider>
         </Provider>
-    </React.StrictMode>
+    </React.StrictMode>,
 );

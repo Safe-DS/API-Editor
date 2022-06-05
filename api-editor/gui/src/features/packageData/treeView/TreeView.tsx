@@ -15,7 +15,7 @@ import ModuleNode from './ModuleNode';
 import ParameterNode from './ParameterNode';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
-import {AutoSizer} from "../../../common/AutoSizer";
+import { AutoSizer } from '../../../common/AutoSizer';
 
 interface ScrollOffset {
     scrollOffset: number;
