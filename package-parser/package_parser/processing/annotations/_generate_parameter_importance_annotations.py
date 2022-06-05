@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Any
 
 from package_parser.model.annotations import AnnotationStore, ConstantAnnotation, RequiredAnnotation, \
     OptionalAnnotation
@@ -30,6 +30,7 @@ def _generate_constant_annotation(
 
     if _is_stringified_literal(sole_stringified_value):
         default_type, default_value = _get_default_type_and_value_for_stringified_value(sole_stringified_value)
+        default_type: str
         annotations.constants.append(ConstantAnnotation(parameter.pname, default_type, default_value))
 
 
@@ -77,6 +78,7 @@ def _generate_required_or_optional_annotation(
     else:
         if parameter.is_required() or parameter.default_value != literal_values[0]:
             default_type, default_value = _get_default_type_and_value_for_stringified_value(literal_values[0])
+            default_type: str
             annotations.optionals.append(OptionalAnnotation(parameter.pname, default_type, default_value))
 
 
@@ -103,7 +105,7 @@ def _is_stringified_literal(stringified_value: str) -> bool:
     return default_type is not None
 
 
-def _get_default_type_and_value_for_stringified_value(stringified_value: str) -> tuple[Optional[str], any]:
+def _get_default_type_and_value_for_stringified_value(stringified_value: str) -> tuple[Optional[str], Any]:
     if stringified_value == "None":
         return "none", None
     elif stringified_value == "True" or stringified_value == "False":
