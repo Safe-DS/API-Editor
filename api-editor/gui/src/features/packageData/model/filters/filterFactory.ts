@@ -11,6 +11,7 @@ import { UsefulnessFilter } from './UsefulnessFilter';
 import { equals, greaterThan, greaterThanOrEqual, lessThan, lessThanOrEqual } from './comparisons';
 import ParameterAssignmentFilter from './ParameterAssignmentFilter';
 import { PythonParameterAssignment } from '../PythonParameter';
+import { RequiredOrOptional, RequiredOrOptionalFilter } from './RequiredOrOptionalFilter';
 
 /**
  * Creates a filter from the given string. This method handles conjunctions, negations, and non-negated tokens.
@@ -70,6 +71,12 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
             return new VisibilityFilter(Visibility.Public);
         case 'is:internal':
             return new VisibilityFilter(Visibility.Internal);
+
+        // Parameter required or optional
+        case 'is:required':
+            return new RequiredOrOptionalFilter(RequiredOrOptional.Required);
+        case 'is:optional':
+            return new RequiredOrOptionalFilter(RequiredOrOptional.Optional);
 
         // Parameter assignment
         case 'is:implicit':
