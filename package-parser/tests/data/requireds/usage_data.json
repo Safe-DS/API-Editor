@@ -28,8 +28,8 @@
         },
         "test.some_global_function.required_parameter_that_should_be_optional_while_ignoring_the_non_string": {
             "'test'": 1,
-            "'test2'": 3,
-            "non_string": 6
+            "'test2'": 4,
+            "non_string": 5
         },
         "test.some_global_function.optional_parameter_that_should_be_constant": {},
         "test.some_global_function.optional_parameter_that_should_be_required": {
@@ -42,8 +42,8 @@
             "'test2'": 8
         },
         "test.some_global_function.optional_parameter_that_should_be_optional_while_ignoring_the_non_string": {
-            "'test2'": 3,
-            "non_string": 6
+            "'test2'": 4,
+            "non_string": 5
         }
     }
 }

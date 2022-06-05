@@ -233,14 +233,14 @@ def __get_parameter_info(qname: str, usages: UsageCountStore) -> ParameterInfo:
     """
     # Creates a list of tuples with values value_name and value_total_usages
     values = []
-    for it in usages.value_usages[qname].items():
-        is_string = __get_default_type_from_value(it[0]) == "string"
+    for stringifiedValue, count in usages.value_usages[qname].items():
+        is_string = __get_default_type_from_value(stringifiedValue) == "string"
         # Check if value is used more than 0 times AND if the value is correctly formatted as a string (with single
         #  quotes). If it isn't a string, just accept it.
-        if it[1] > 0 and (
-            (is_string and it[0][0] == "'" and it[0][-1] == "'") or not is_string
+        if count > 0 and (
+            (is_string and stringifiedValue[0] == "'" and stringifiedValue[-1] == "'") or not is_string
         ):
-            values.append((it[0], it[1]))
+            values.append((stringifiedValue, count))
 
     if len(values) == 0:
         return ParameterInfo(ParameterType.Unused)
