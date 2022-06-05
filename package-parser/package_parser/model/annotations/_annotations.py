@@ -1,5 +1,6 @@
 from dataclasses import asdict, dataclass
 from enum import Enum
+from typing import Any
 
 
 @dataclass
@@ -13,7 +14,7 @@ class AbstractAnnotation:
 @dataclass
 class ConstantAnnotation(AbstractAnnotation):
     defaultType: str
-    defaultValue: str
+    defaultValue: Any
 
 
 @dataclass
@@ -29,7 +30,7 @@ class RequiredAnnotation(AbstractAnnotation):
 @dataclass
 class OptionalAnnotation(AbstractAnnotation):
     defaultType: str
-    defaultValue: str
+    defaultValue: Any
 
 
 @dataclass

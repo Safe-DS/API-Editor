@@ -4,9 +4,19 @@
         "defaultValue": "test2",
         "target": "test/test/some_global_function/required_parameter_that_should_be_optional"
     },
+    "test/test/some_global_function/required_parameter_that_should_be_optional_with_non_string": {
+        "defaultType": "string",
+        "defaultValue": "test2",
+        "target": "test/test/some_global_function/required_parameter_that_should_be_optional_with_non_string"
+    },
     "test/test/some_global_function/optional_parameter_that_should_be_optional_with_different_default": {
         "defaultType": "string",
         "defaultValue": "test2",
         "target": "test/test/some_global_function/optional_parameter_that_should_be_optional_with_different_default"
+    },
+    "test/test/some_global_function/optional_parameter_that_should_be_optional_with_non_string": {
+        "defaultType": "string",
+        "defaultValue": "test2",
+        "target": "test/test/some_global_function/optional_parameter_that_should_be_optional_with_non_string"
     }
 }
