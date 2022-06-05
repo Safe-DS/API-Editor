@@ -33,7 +33,7 @@
         },
         "test.some_global_function.optional_parameter_that_should_be_constant": {},
         "test.some_global_function.optional_parameter_that_should_be_required": {
-            "'test2'": 2
+            "'test2'": 4
         },
         "test.some_global_function.optional_parameter_that_should_be_optional_with_same_default": {
             "'test2'": 2
