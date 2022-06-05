@@ -1,6 +1,5 @@
 import { Box } from '@chakra-ui/react';
 import React, { memo, useCallback, useEffect, useRef } from 'react';
-import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import PythonClass from '../model/PythonClass';
@@ -16,6 +15,7 @@ import ModuleNode from './ModuleNode';
 import ParameterNode from './ParameterNode';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
+import { AutoSizer } from '../../../common/AutoSizer';
 
 interface ScrollOffset {
     scrollOffset: number;
@@ -25,6 +25,10 @@ interface TreeViewProps {
     pythonPackage: PythonPackage;
     filter: AbstractPythonFilter;
     usages: UsageCountStore;
+}
+
+interface AutoSizerProps {
+    height: number;
 }
 
 export const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage, filter, usages }) => {
@@ -62,7 +66,7 @@ export const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage, filter, 
 
     return (
         <AutoSizer disableWidth>
-            {({ height }) => (
+            {({ height }: AutoSizerProps) => (
                 <FixedSizeList
                     itemSize={24}
                     itemCount={children.length}
