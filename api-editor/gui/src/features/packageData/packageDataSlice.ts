@@ -13,6 +13,7 @@ export interface PackageDataState {
 export enum HeatMapMode {
     None,
     Usages,
+    Usefulness,
     Annotations,
 }
 
@@ -78,6 +79,7 @@ export const {
     toggleImportDialog: togglePackageDataImportDialog,
     setHeatMapMode,
 } = actions;
+// eslint-disable-next-line import/no-default-export
 export default reducer;
 
 const selectPackageData = (state: RootState) => state.packageData;

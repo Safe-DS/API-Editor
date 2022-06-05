@@ -9,7 +9,7 @@ import { UsageCountStore } from '../../../usages/model/UsageCountStore';
 /**
  * Keeps only declarations have a certain usefulness.
  */
-export default class UsefulnessFilter extends AbstractPythonFilter {
+export class UsefulnessFilter extends AbstractPythonFilter {
     /**
      * @param comparison How actual and expected usefulness should be compared.
      * @param expectedUsefulness The expected usefulness.
@@ -44,15 +44,7 @@ export default class UsefulnessFilter extends AbstractPythonFilter {
         annotations: AnnotationsState,
         usages: UsageCountStore,
     ): boolean {
-        const valueUsages = usages.valueUsages.get(pythonParameter.qualifiedName());
-        if (valueUsages === undefined) {
-            return false;
-        }
-
-        const maxValueUsage = Math.max(...valueUsages.values());
-        const totalValueUsages = [...valueUsages.values()].reduce((a, b) => a + b, 0);
-        const parameterUsefulness = totalValueUsages - maxValueUsage;
-
+        const parameterUsefulness = usages.parameterUsefulness.get(pythonParameter.qualifiedName());
         return this.shouldKeepWithUsefulness(parameterUsefulness);
     }
 

@@ -25,9 +25,12 @@ export class UsageCountStore {
         );
     }
 
-    readonly classMax: number;
-    readonly functionMax: number;
-    readonly parameterMax: number;
+    readonly classMaxUsages: number;
+    readonly functionMaxUsages: number;
+    readonly parameterMaxUsages: number;
+
+    readonly parameterUsefulness: Map<string, number>;
+    readonly parameterMaxUsefulness: number;
 
     constructor(
         readonly classUsages: Map<string, number> = new Map(),
@@ -35,9 +38,14 @@ export class UsageCountStore {
         readonly parameterUsages: Map<string, number> = new Map(),
         readonly valueUsages: Map<string, Map<string, number>> = new Map(),
     ) {
-        this.classMax = Math.max(...classUsages.values());
-        this.functionMax = Math.max(...functionUsages.values());
-        this.parameterMax = Math.max(...parameterUsages.values());
+        this.classMaxUsages = Math.max(...classUsages.values());
+        this.functionMaxUsages = Math.max(...functionUsages.values());
+        this.parameterMaxUsages = Math.max(...parameterUsages.values());
+
+        this.parameterUsefulness = new Map(
+            [...parameterUsages.keys()].map((it) => [it, this.computeParameterUsefulness(it)]),
+        );
+        this.parameterMaxUsefulness = Math.max(...this.parameterUsefulness.values());
     }
 
     toJson(): UsageCountJson {
@@ -49,5 +57,17 @@ export class UsageCountStore {
                 [...this.valueUsages.entries()].map((entry) => [entry[0], Object.fromEntries(entry[1])]),
             ),
         };
+    }
+
+    private computeParameterUsefulness(pythonParameterQualifiedName: string): number {
+        const valueUsages = this.valueUsages.get(pythonParameterQualifiedName);
+        if (valueUsages === undefined || valueUsages.size === 0) {
+            return 0;
+        }
+
+        const maxValueUsage = Math.max(...valueUsages.values());
+        const totalValueUsages = [...valueUsages.values()].reduce((a, b) => a + b, 0);
+
+        return totalValueUsages - maxValueUsage;
     }
 }

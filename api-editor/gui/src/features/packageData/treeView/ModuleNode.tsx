@@ -12,7 +12,7 @@ interface ModuleNodeProps {
     usages: UsageCountStore;
 }
 
-const ModuleNode: React.FC<ModuleNodeProps> = function ({ pythonModule, filter, usages }) {
+export const ModuleNode: React.FC<ModuleNodeProps> = function ({ pythonModule, filter, usages }) {
     const hasClasses = !isEmptyList(pythonModule.classes);
     const hasFunctions = !isEmptyList(pythonModule.functions);
     const hasChildren = hasClasses || hasFunctions;
@@ -27,5 +27,3 @@ const ModuleNode: React.FC<ModuleNodeProps> = function ({ pythonModule, filter, 
         />
     );
 };
-
-export default ModuleNode;

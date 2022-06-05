@@ -7,7 +7,7 @@ import { NegatedFilter } from './NegatedFilter';
 import { Optional } from '../../../../common/util/types';
 import AnnotationFilter, { AnnotationType } from './AnnotationFilter';
 import UsageFilter from './UsageFilter';
-import UsefulnessFilter from './UsefulnessFilter';
+import { UsefulnessFilter } from './UsefulnessFilter';
 import { equals, greaterThan, greaterThanOrEqual, lessThan, lessThanOrEqual } from './comparisons';
 import ParameterAssignmentFilter from './ParameterAssignmentFilter';
 import { PythonParameterAssignment } from '../PythonParameter';
