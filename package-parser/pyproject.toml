@@ -19,7 +19,7 @@ spacy = "^3.2.1"
 url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.2.0/en_core_web_sm-3.2.0-py3-none-any.whl"
 
 [tool.poetry.dev-dependencies]
-pytest = "^6.2.5"
+pytest = "^7.1.2"
 pytest-cov = "^3.0.0"
 mypy = "^0.931"
 
