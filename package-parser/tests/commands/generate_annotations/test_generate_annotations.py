@@ -1,44 +1,28 @@
 import json
 import os
-from typing import Callable
 
 import pytest
-from package_parser.model.annotations import AnnotationStore
 from package_parser.model.api import API
 from package_parser.model.usages import UsageCountStore
-from package_parser.processing.annotations._generate_annotations import (
-    __get_boundary_annotations,
-    __get_constant_annotations,
-    __get_enum_annotations,
-    __get_optional_annotations,
-    __get_remove_annotations,
-    __get_required_annotations,
-)
-from package_parser.processing.annotations._usages_preprocessor import (
-    _preprocess_usages,
-)
+from package_parser.processing.annotations import generate_annotations
 
 
 @pytest.mark.parametrize(
-    "subfolder, get_annotations",
+    "subfolder",
     [
-        ("removes", __get_remove_annotations),
-        ("constants", __get_constant_annotations),
-        ("requireds", __get_required_annotations),
-        ("optionals", __get_optional_annotations),
-        ("enums", __get_enum_annotations),
-        ("boundaries", __get_boundary_annotations),
+        "removes",
+        "constants",
+        "requireds",
+        "optionals",
+        "enums",
+        "boundaries",
     ],
 )
-def test_get_annotations(
+def test_generate_annotations(
     subfolder: str,
-    get_annotations: Callable[[UsageCountStore, API, AnnotationStore], None],
 ):
     usages, api, expected_annotations = read_test_data(subfolder)
-
-    _preprocess_usages(usages, api)
-    annotations = AnnotationStore()
-    get_annotations(usages, api, annotations)
+    annotations = generate_annotations(api, usages)
 
     assert annotations.to_json()[subfolder] == expected_annotations
 

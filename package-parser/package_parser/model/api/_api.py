@@ -467,6 +467,12 @@ class Parameter:
         self.docstring = docstring
         self.type: Type = Type(docstring)
 
+    def is_optional(self) -> bool:
+        return self.default_value is not None
+
+    def is_required(self) -> bool:
+        return self.default_value is None
+
     def to_json(self) -> Any:
         return {
             "name": self.name,
@@ -481,6 +487,7 @@ class Parameter:
 
 
 class ParameterAssignment(Enum):
+    IMPLICIT = (auto(),)
     POSITION_ONLY = (auto(),)
     POSITION_OR_NAME = (auto(),)
     NAME_ONLY = (auto(),)
