@@ -208,33 +208,16 @@ class FromImport:
 class Class:
     @staticmethod
     def from_json(json: Any) -> Class:
-        result = Class(
-            json["qname"],
-            json["pname"],
-            json["decorators"],
-            json["superclasses"],
-            json["is_public"],
-            json["description"],
-            json["docstring"],
-            json["source_code"],
-        )
+        result = Class(json["qname"], json["pname"], json["decorators"], json["superclasses"], json["is_public"],
+                       json["description"], json["docstring"])
 
         for method_unique_qname in json["methods"]:
             result.add_method(method_unique_qname)
 
         return result
 
-    def __init__(
-        self,
-        qname: str,
-        pname: str,
-        decorators: list[str],
-        superclasses: list[str],
-        is_public: bool,
-        description: str,
-        docstring: str,
-        source_code: str,
-    ) -> None:
+    def __init__(self, qname: str, pname: str, decorators: list[str], superclasses: list[str], is_public: bool,
+                 description: str, docstring: str) -> None:
         self.qname: str = qname
         self.pname: str = pname
         self.decorators: list[str] = decorators
@@ -243,7 +226,6 @@ class Class:
         self.is_public: bool = is_public
         self.description: str = description
         self.docstring: str = docstring
-        self.source_code: str = source_code
 
     @property
     def name(self) -> str:
@@ -263,7 +245,6 @@ class Class:
             "is_public": self.is_public,
             "description": self.description,
             "docstring": self.docstring,
-            "source_code": self.source_code,
         }
 
 
@@ -277,7 +258,6 @@ class Function:
     is_public: bool
     description: str
     docstring: str
-    source_code: str
 
     @staticmethod
     def from_json(json: Any) -> Function:
@@ -293,7 +273,6 @@ class Function:
             json["is_public"],
             json["description"],
             json["docstring"],
-            json["source_code"],
         )
 
     @property
@@ -347,7 +326,6 @@ class Function:
             "is_public": self.is_public,
             "description": self.description,
             "docstring": self.docstring,
-            "source_code": self.source_code,
         }
 
 

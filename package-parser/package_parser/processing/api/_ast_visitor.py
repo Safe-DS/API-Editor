@@ -95,16 +95,8 @@ class _AstVisitor:
         numpydoc = NumpyDocString(inspect.cleandoc(class_node.doc or ""))
 
         # Remember class, so we can later add methods
-        class_ = Class(
-            qname,
-            self.__get_pname(class_node.name),
-            decorator_names,
-            class_node.basenames,
-            self.is_public(class_node.name, qname),
-            _AstVisitor.__description(numpydoc),
-            class_node.doc,
-            class_node.as_string(),
-        )
+        class_ = Class(qname, self.__get_pname(class_node.name), decorator_names, class_node.basenames,
+                       self.is_public(class_node.name, qname), _AstVisitor.__description(numpydoc), class_node.doc)
         self.__declaration_stack.append(class_)
 
     def leave_classdef(self, _: astroid.ClassDef) -> None:
@@ -143,7 +135,6 @@ class _AstVisitor:
             is_public,
             _AstVisitor.__description(numpydoc),
             function_node.doc,
-            function_node.as_string(),
         )
         self.__declaration_stack.append(function)
 
