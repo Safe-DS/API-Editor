@@ -1,4 +1,4 @@
-import { Heading, Button} from '@chakra-ui/react';
+import {Heading, Button, VBox} from '@chakra-ui/react';
 import React from 'react';
 import PythonDeclaration from '../model/PythonDeclaration';
 import {useAppSelector} from "../../../app/hooks";
@@ -17,6 +17,7 @@ const StatisticsView: React.FC<StatisticsViewProps> = function ({
                 dict[property.toString()] = property.length;
                 console.log("property: " + property.toString() + " "+Object.getOwnPropertyNames(property))
             }
+            console.log("property: " + property.toString() + " "+Object.getOwnPropertyNames(property))
             //TODO CalledAfterAnnotation and GroupAnnotation
         }
     }
