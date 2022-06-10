@@ -183,43 +183,32 @@ export const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter,
                             Batch
                         </MenuButton>
                         <MenuList>
-                            <MenuOptionGroup type="radio" defaultValue="none">
-                                <MenuItemOption paddingLeft={8}
-                                                value={'none'}
-                                                onClick={() => dispatch(setBatchmode(BatchMode.None))}>
-                                    None
-                                </MenuItemOption>
-                                <MenuItemOption paddingLeft={8}
-                                                value={'rename'}
-                                                onClick={() => dispatch(setBatchmode(BatchMode.Rename))}>
+                            <MenuGroup title={"Annotate"}>
+                                <MenuItem paddingLeft={8}
+                                          onClick={() => dispatch(setBatchmode(BatchMode.Rename))}>
                                     Rename
-                                </MenuItemOption>
-                                <MenuItemOption paddingLeft={8}
-                                                value={'move'}
-                                                onClick={() => dispatch(setBatchmode(BatchMode.Move))}>
+                                </MenuItem>
+                                <MenuItem paddingLeft={8}
+                                          onClick={() => dispatch(setBatchmode(BatchMode.Move))}>
                                     Move
-                                </MenuItemOption>
-                                <MenuItemOption paddingLeft={8}
-                                                value={'remove'}
-                                                onClick={() => dispatch(setBatchmode(BatchMode.Remove))}>
+                                </MenuItem>
+                                <MenuItem paddingLeft={8}
+                                          onClick={() => dispatch(setBatchmode(BatchMode.Remove))}>
                                     Remove
-                                </MenuItemOption>
-                                <MenuItemOption paddingLeft={8}
-                                                value={'constant'}
-                                                onClick={() => dispatch(setBatchmode(BatchMode.Constant))}>
+                                </MenuItem>
+                                <MenuItem paddingLeft={8}
+                                          onClick={() => dispatch(setBatchmode(BatchMode.Constant))}>
                                     Constant
-                                </MenuItemOption>
-                                <MenuItemOption paddingLeft={8}
-                                                value={'optional'}
-                                                onClick={() => dispatch(setBatchmode(BatchMode.Optional))}>
+                                </MenuItem>
+                                <MenuItem paddingLeft={8}
+                                          onClick={() => dispatch(setBatchmode(BatchMode.Optional))}>
                                     Optional
-                                </MenuItemOption>
-                                <MenuItemOption paddingLeft={8}
-                                                value={'required'}
-                                                onClick={() => dispatch(setBatchmode(BatchMode.Required))}>
+                                </MenuItem>
+                                <MenuItem paddingLeft={8}
+                                          onClick={() => dispatch(setBatchmode(BatchMode.Required))}>
                                     Required
-                                </MenuItemOption>
-                            </MenuOptionGroup>
+                                </MenuItem>
+                            </MenuGroup>
                         </MenuList>
                     </Menu>
                 </Box>

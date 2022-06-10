@@ -65,7 +65,7 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
 
     const watchDefaultType = watch('defaultType');
 
-    let [confirmVisible, setConfirmVisible] = useState(false);
+    let [confirmWindowVisible, setConfirmWindowVisible] = useState(false);
     let [data, setData] = useState<TypeValueBatchFormState>({defaultType: 'string', defaultValue: ''});
 
     // Event handlers ----------------------------------------------------------
@@ -78,21 +78,22 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
         });
     };
 
-    const handleSave = (data: TypeValueBatchFormState) => {
-        let toUpsert = {...data};
-        if (data.defaultType === 'boolean') {
-            toUpsert = {...data, defaultValue: data.defaultValue === 'true'};
-        } else if (data.defaultType === 'none') {
-            toUpsert = {...data, defaultValue: null};
+    const handleSave = (annotationData: TypeValueBatchFormState) => {
+        let toUpsert = {...annotationData};
+        if (annotationData.defaultType === 'boolean') {
+            toUpsert = {...annotationData, defaultValue: annotationData.defaultValue === 'true'};
+        } else if (annotationData.defaultType === 'none') {
+            toUpsert = {...annotationData, defaultValue: null};
         }
         onUpsertAnnotation(toUpsert);
-        setConfirmVisible(false);
-        hideAnnotationForms();
+
+        setConfirmWindowVisible(false);
+        dispatch(hideAnnotationForms());
     };
 
     const handleConfirm = (newData: TypeValueBatchFormState) => {
         setData(newData);
-        setConfirmVisible(true);
+        setConfirmWindowVisible(true);
     };
 
     const handleCancel = () => {
@@ -158,9 +159,9 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
                     </FormControl>
                 )}
             </AnnotationBatchForm>
-            {confirmVisible && (
+            {confirmWindowVisible && (
                 <ConfirmAnnotations count={target.length} handleSave={() => handleSave(data)}
-                                    setConfirmVisible={setConfirmVisible}/>)}
+                                    setConfirmVisible={setConfirmWindowVisible}/>)}
         </>
     );
 };
@@ -188,7 +189,7 @@ const ConfirmAnnotations: React.FC<ConfirmAnnotationsProps> = function ({count, 
                     </AlertDialogHeader>
 
                     <AlertDialogBody>
-                        <Text>This will annotate ${count} items, are you sure?</Text>
+                        <Text>This will annotate {count} items, are you sure?</Text>
                     </AlertDialogBody>
 
                     <AlertDialogFooter>
