@@ -1,4 +1,4 @@
-import {Heading, Button, VBox} from '@chakra-ui/react';
+import {Heading, Button, Box} from '@chakra-ui/react';
 import React from 'react';
 import PythonDeclaration from '../model/PythonDeclaration';
 import {useAppSelector} from "../../../app/hooks";
@@ -13,10 +13,6 @@ const StatisticsView: React.FC<StatisticsViewProps> = function ({
     let dict = {};
     for (const property in annotations){
         if (Array.isArray(property) && property.length >0){
-            if(property[0] instanceof Annotation){
-                dict[property.toString()] = property.length;
-                console.log("property: " + property.toString() + " "+Object.getOwnPropertyNames(property))
-            }
             console.log("property: " + property.toString() + " "+Object.getOwnPropertyNames(property))
             //TODO CalledAfterAnnotation and GroupAnnotation
         }
@@ -42,10 +38,11 @@ removes
      */
 
     return (
-        <VBox>
+        <Box>
             <Heading as="h4" size="md">Statistics</Heading>
-            <Button onClick={() => console.log("test")}>Test</Button>
-        </VBox>
+            <Button onClick={() => console.log("test")}>Test: {movesSize}</Button>
+
+        </Box>
     );
 };
 

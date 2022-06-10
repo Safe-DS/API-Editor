@@ -48,6 +48,7 @@ import { UsageCountJson, UsageCountStore } from '../features/usages/model/UsageC
 import { selectShowUsageImportDialog } from '../features/usages/usageSlice';
 import { UsageImportDialog } from '../features/usages/UsageImportDialog';
 import { createFilterFromString } from '../features/packageData/model/filters/filterFactory';
+import StatisticsView from "../features/packageData/selectionView/StatisticsView";
 
 export const App: React.FC = function () {
     const dispatch = useAppDispatch();
@@ -170,7 +171,7 @@ export const App: React.FC = function () {
                     {currentUserAction.type === 'rename' && <RenameForm target={userActionTarget || pythonPackage} />}
                 </GridItem>
                 <GridItem gridArea="rightPane" overflow="auto">
-                    <p>test</p>
+                    <StatisticsView />
                     <SelectionView pythonPackage={pythonPackage} pythonFilter={pythonFilter} usages={usages} />
                 </GridItem>
 
