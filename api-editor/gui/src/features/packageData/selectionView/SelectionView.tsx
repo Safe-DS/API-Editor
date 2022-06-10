@@ -14,12 +14,13 @@ import ParameterView from './ParameterView';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
 import { ActionBar } from './ActionBar';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
+import {AnnotationsState} from "../../annotations/annotationSlice";
 
 interface SelectionViewProps {
     pythonPackage: PythonPackage;
     pythonFilter: AbstractPythonFilter;
     usages: UsageCountStore;
-    annotations: Ann
+    annotations: AnnotationsState;
 }
 
 export const SelectionView: React.FC<SelectionViewProps> = function ({ pythonPackage, pythonFilter, usages }) {

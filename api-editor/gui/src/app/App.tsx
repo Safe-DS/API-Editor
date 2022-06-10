@@ -172,7 +172,7 @@ export const App: React.FC = function () {
                 </GridItem>
                 <GridItem gridArea="rightPane" overflow="auto">
                     {currentUserAction.type === 'none' && (<SelectionView pythonPackage={pythonPackage} pythonFilter={pythonFilter} usages={usages} />)}
-                    {currentUserAction.type === 'boundary' && (<StatisticsView/>)}
+                    {currentUserAction.type === 'boundary' && (<StatisticsView pythonPackage={null} pythonFilter={null} usages={null} annotations={useAppSelector(selectAnnotations)}/>)}
                 </GridItem>
 
                 {showAnnotationImportDialog && <AnnotationImportDialog />}
