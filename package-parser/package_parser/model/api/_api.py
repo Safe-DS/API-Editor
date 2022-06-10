@@ -216,7 +216,6 @@ class Class:
             json["is_public"],
             json["description"],
             json["docstring"],
-            json["source_code"],
         )
 
         for method_unique_qname in json["methods"]:
@@ -233,7 +232,6 @@ class Class:
         is_public: bool,
         description: str,
         docstring: str,
-        source_code: str,
     ) -> None:
         self.qname: str = qname
         self.pname: str = pname
@@ -243,7 +241,6 @@ class Class:
         self.is_public: bool = is_public
         self.description: str = description
         self.docstring: str = docstring
-        self.source_code: str = source_code
 
     @property
     def name(self) -> str:
@@ -263,7 +260,6 @@ class Class:
             "is_public": self.is_public,
             "description": self.description,
             "docstring": self.docstring,
-            "source_code": self.source_code,
         }
 
 
@@ -277,7 +273,6 @@ class Function:
     is_public: bool
     description: str
     docstring: str
-    source_code: str
 
     @staticmethod
     def from_json(json: Any) -> Function:
@@ -293,7 +288,6 @@ class Function:
             json["is_public"],
             json["description"],
             json["docstring"],
-            json["source_code"],
         )
 
     @property
@@ -347,7 +341,6 @@ class Function:
             "is_public": self.is_public,
             "description": self.description,
             "docstring": self.docstring,
-            "source_code": self.source_code,
         }
 
 

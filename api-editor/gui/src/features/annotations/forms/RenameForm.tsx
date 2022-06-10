@@ -36,7 +36,11 @@ export const RenameForm: React.FC<RenameFormProps> = function ({ target }) {
     });
 
     useEffect(() => {
-        setFocus('newName');
+        try {
+            setFocus('newName');
+        } catch (e) {
+            // ignore
+        }
     }, [setFocus]);
 
     useEffect(() => {

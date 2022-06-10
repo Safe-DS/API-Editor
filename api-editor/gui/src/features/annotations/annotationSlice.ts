@@ -302,7 +302,10 @@ const annotationsSlice = createSlice({
     initialState,
     reducers: {
         set(_state, action: PayloadAction<AnnotationsState>) {
-            return action.payload;
+            return {
+                ...initialState,
+                ...action.payload,
+            };
         },
         reset() {
             return initialState;
@@ -537,7 +540,7 @@ export const {
     toggleImportDialog: toggleAnnotationImportDialog,
     hideImportDialog: hideAnnotationImportDialog,
 } = actions;
-export default reducer;
+export const annotationsReducer = reducer;
 
 export const selectAnnotations = (state: RootState) => state.annotations;
 export const selectAttribute =

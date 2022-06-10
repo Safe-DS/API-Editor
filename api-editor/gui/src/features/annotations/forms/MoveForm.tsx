@@ -36,7 +36,11 @@ export const MoveForm: React.FC<MoveFormProps> = function ({ target }) {
     });
 
     useEffect(() => {
-        setFocus('destination');
+        try {
+            setFocus('destination');
+        } catch (e) {
+            // ignore
+        }
     }, [setFocus]);
 
     useEffect(() => {

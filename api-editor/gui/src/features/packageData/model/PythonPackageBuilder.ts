@@ -156,7 +156,7 @@ interface PythonParameterJson {
     name: string;
     default_value: Optional<string>;
     is_public: boolean;
-    assigned_by: 'POSITION_ONLY' | 'POSITION_OR_NAME' | 'NAME_ONLY';
+    assigned_by: 'IMPLICIT' | 'POSITION_ONLY' | 'POSITION_OR_NAME' | 'NAME_ONLY';
     docstring: {
         type: Optional<string>;
         description: Optional<string>;
@@ -176,9 +176,11 @@ const parsePythonParameterJson = function (parameterJson: PythonParameterJson, i
 };
 
 const parsePythonParameterAssignment = function (
-    assignedBy: 'POSITION_ONLY' | 'POSITION_OR_NAME' | 'NAME_ONLY',
+    assignedBy: 'IMPLICIT' | 'POSITION_ONLY' | 'POSITION_OR_NAME' | 'NAME_ONLY',
 ): PythonParameterAssignment {
     switch (assignedBy) {
+        case 'IMPLICIT':
+            return PythonParameterAssignment.IMPLICIT;
         case 'POSITION_ONLY':
             return PythonParameterAssignment.POSITION_ONLY;
         case 'POSITION_OR_NAME':
