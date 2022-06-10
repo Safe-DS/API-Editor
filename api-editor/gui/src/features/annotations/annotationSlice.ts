@@ -63,14 +63,12 @@ export interface AttributeAnnotation {
 export type DefaultType = 'string' | 'number' | 'boolean' | 'none';
 export type DefaultValue = string | number | boolean | null;
 
-export interface Annotation {
+export interface BoundaryAnnotation {
     /**
      * ID of the annotated Python declaration
      */
     readonly target: string;
-}
 
-export interface BoundaryAnnotation extends Annotation {
     /**
      * The interval specifying possible numeric values
      */
@@ -110,21 +108,36 @@ export enum ComparisonOperator {
     UNRESTRICTED,
 }
 
-export interface CalledAfterAnnotation extends Annotation{
+export interface CalledAfterAnnotation {
+    /**
+     * ID of the annotated Python declaration
+     */
+    readonly target: string;
+
     /**
      * Name of the callable to be called first
      */
     readonly calledAfterName: string;
 }
 
-export interface CalledAfterTarget extends Annotation{
+export interface CalledAfterTarget {
+    /**
+     * ID of the annotated Python declaration
+     */
+    readonly target: string;
+
     /**
      * Name of the callable to be called first
      */
     readonly calledAfterName: string;
 }
 
-export interface ConstantAnnotation extends Annotation{
+export interface ConstantAnnotation {
+    /**
+     * ID of the annotated Python declaration
+     */
+    readonly target: string;
+
     /**
      * Type of default value
      */
@@ -136,7 +149,12 @@ export interface ConstantAnnotation extends Annotation{
     readonly defaultValue: DefaultValue;
 }
 
-export interface EnumAnnotation extends Annotation{
+export interface EnumAnnotation {
+    /**
+     * ID of the annotated Python declaration.
+     */
+    target: string;
+
     /**
      * Name of the enum class that should be created.
      */
@@ -149,7 +167,12 @@ export interface EnumPair {
     readonly instanceName: string;
 }
 
-export interface GroupAnnotation extends Annotation{
+export interface GroupAnnotation {
+    /**
+     * ID of the annotated Python declaration
+     */
+    readonly target: string;
+
     /**
      * Name of the grouped object
      */
@@ -161,14 +184,23 @@ export interface GroupAnnotation extends Annotation{
     readonly parameters: string[];
 }
 
-export interface GroupTarget extends Annotation{
+export interface GroupTarget {
+    /**
+     * ID of the annotated Python declaration
+     */
+    readonly target: string;
+
     /**
      * Name of the grouped object
      */
     readonly groupName: string;
 }
 
-export interface MoveAnnotation extends Annotation{
+export interface MoveAnnotation {
+    /**
+     * ID of the annotated Python declaration.
+     */
+    readonly target: string;
 
     /**
      * Qualified path to the destination
@@ -176,7 +208,12 @@ export interface MoveAnnotation extends Annotation{
     readonly destination: string;
 }
 
-export interface OptionalAnnotation extends Annotation{
+export interface OptionalAnnotation {
+    /**
+     * ID of the annotated Python declaration
+     */
+    readonly target: string;
+
     /**
      * Type of default value
      */
@@ -188,20 +225,37 @@ export interface OptionalAnnotation extends Annotation{
     readonly defaultValue: DefaultValue;
 }
 
-export interface PureAnnotation extends Annotation{
+export interface PureAnnotation {
+    /**
+     * ID of the annotated Python declaration.
+     */
+    readonly target: string;
 }
 
-export interface RenameAnnotation extends Annotation{
+export interface RenameAnnotation {
+    /**
+     * ID of the annotated Python declaration.
+     */
+    readonly target: string;
+
     /**
      * New name for the declaration.
      */
     readonly newName: string;
 }
 
-export interface RequiredAnnotation extends Annotation{
+export interface RequiredAnnotation {
+    /**
+     * ID of the annotated Python declaration.
+     */
+    readonly target: string;
 }
 
-export interface RemoveAnnotation extends Annotation{
+export interface RemoveAnnotation {
+    /**
+     * ID of the annotated Python declaration.
+     */
+    readonly target: string;
 }
 
 type UserAction =

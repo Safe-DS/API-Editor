@@ -15,15 +15,18 @@ import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
 import { ActionBar } from './ActionBar';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import {AnnotationsState} from "../../annotations/annotationSlice";
+import {Setter} from "../../../common/util/types";
 
 interface SelectionViewProps {
     pythonPackage: PythonPackage;
     pythonFilter: AbstractPythonFilter;
     usages: UsageCountStore;
     annotations: AnnotationsState;
+    filter: string;
+    setFilter: Setter<string>;
 }
 
-export const SelectionView: React.FC<SelectionViewProps> = function ({ pythonPackage, pythonFilter, usages, annotations }) {
+export const SelectionView: React.FC<SelectionViewProps> = function ({ pythonPackage, pythonFilter, usages, annotations, filter, setFilter }) {
     const declaration = pythonPackage.getByRelativePath(useLocation().pathname.split('/').splice(2));
 
     if (!declaration) {
@@ -38,7 +41,8 @@ export const SelectionView: React.FC<SelectionViewProps> = function ({ pythonPac
                     {declaration instanceof PythonClass && <ClassView pythonClass={declaration} />}
                     {declaration instanceof PythonModule && <ModuleView pythonModule={declaration} />}
                     {declaration instanceof PythonParameter && <ParameterView pythonParameter={declaration} />}
-                    {declaration == null && <StatisticsView annotations={annotations}/>}
+                    <StatisticsView annotations={annotations} filter={filter} setFilter={setFilter}/>
+
                 </Box>
             </Box>
 

@@ -137,7 +137,6 @@ export const App: React.FC = function () {
                     layerStyle="subtleBorder"
                     resize="horizontal"
                 >
-                    <p>test2</p>
                     {currentUserAction.type === 'attribute' && (
                         <AttributeForm target={userActionTarget || pythonPackage} />
                     )}
@@ -171,8 +170,7 @@ export const App: React.FC = function () {
                     {currentUserAction.type === 'rename' && <RenameForm target={userActionTarget || pythonPackage} />}
                 </GridItem>
                 <GridItem gridArea="rightPane" overflow="auto">
-                    {currentUserAction.type === 'none' && (<SelectionView pythonPackage={pythonPackage} pythonFilter={pythonFilter} usages={usages} annotations={useAppSelector(selectAnnotations)}/>)}
-                    {currentUserAction.type === 'boundary' && (<StatisticsView pythonPackage={null} pythonFilter={null} usages={null} annotations={useAppSelector(selectAnnotations)}/>)}
+                    <SelectionView pythonPackage={pythonPackage} pythonFilter={pythonFilter} usages={usages} annotations={useAppSelector(selectAnnotations)} filter={filter} setFilter={setFilter}/>
                 </GridItem>
 
                 {showAnnotationImportDialog && <AnnotationImportDialog />}
