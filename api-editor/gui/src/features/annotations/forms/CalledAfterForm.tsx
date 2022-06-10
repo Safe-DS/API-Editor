@@ -39,7 +39,11 @@ export const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ targe
     });
 
     useEffect(() => {
-        setFocus('calledAfterName');
+        try {
+            setFocus('calledAfterName');
+        } catch (e) {
+            // ignore
+        }
     }, [setFocus]);
 
     useEffect(() => {

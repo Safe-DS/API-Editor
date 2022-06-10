@@ -84,7 +84,11 @@ export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName
     });
 
     useEffect(() => {
-        setFocus('groupName');
+        try {
+            setFocus('groupName');
+        } catch (e) {
+            // ignore
+        }
     }, [setFocus]);
 
     useEffect(() => {
