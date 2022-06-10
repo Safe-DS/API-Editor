@@ -358,7 +358,7 @@ const annotationsSlice = createSlice({
         set(_state, action: PayloadAction<AnnotationsState>) {
             return {
                 ...initialState,
-                ...action.payload
+                ...action.payload,
             };
         },
         reset() {
