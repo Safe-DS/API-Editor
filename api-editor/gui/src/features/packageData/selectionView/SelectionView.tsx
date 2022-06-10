@@ -19,6 +19,7 @@ interface SelectionViewProps {
     pythonPackage: PythonPackage;
     pythonFilter: AbstractPythonFilter;
     usages: UsageCountStore;
+    annotations: Ann
 }
 
 export const SelectionView: React.FC<SelectionViewProps> = function ({ pythonPackage, pythonFilter, usages }) {
@@ -36,7 +37,7 @@ export const SelectionView: React.FC<SelectionViewProps> = function ({ pythonPac
                     {declaration instanceof PythonClass && <ClassView pythonClass={declaration} />}
                     {declaration instanceof PythonModule && <ModuleView pythonModule={declaration} />}
                     {declaration instanceof PythonParameter && <ParameterView pythonParameter={declaration} />}
-                    {declaration != null && <StatisticsView />}
+                    {declaration == null && <StatisticsView annotations={annotations}/>}
                 </Box>
             </Box>
 
