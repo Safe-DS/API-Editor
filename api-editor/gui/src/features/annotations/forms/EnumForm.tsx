@@ -60,7 +60,11 @@ export const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
     });
 
     useEffect(() => {
-        setFocus('enumName');
+        try {
+            setFocus('enumName');
+        } catch (e) {
+            // ignore
+        }
     }, [setFocus]);
 
     useEffect(() => {
