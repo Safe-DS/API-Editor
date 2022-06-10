@@ -8,6 +8,7 @@ import PythonPackage from '../model/PythonPackage';
 import PythonParameter from '../model/PythonParameter';
 import ClassView from './ClassView';
 import FunctionView from './FunctionView';
+import StatisticsView from './StatisticsView';
 import { ModuleView } from './ModuleView';
 import ParameterView from './ParameterView';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
@@ -28,13 +29,15 @@ export const SelectionView: React.FC<SelectionViewProps> = function ({ pythonPac
     }
 
     return (
-        <VStack h="100%">
+        <StatisticsView pythonDeklaration={declaration}/>
+        /*<VStack h="100%">
             <Box w="100%" flexGrow={1} overflowY="scroll">
                 <Box padding={4}>
                     {declaration instanceof PythonFunction && <FunctionView pythonFunction={declaration} />}
                     {declaration instanceof PythonClass && <ClassView pythonClass={declaration} />}
                     {declaration instanceof PythonModule && <ModuleView pythonModule={declaration} />}
                     {declaration instanceof PythonParameter && <ParameterView pythonParameter={declaration} />}
+                    {declaration != null && <StatisticsView />}
                 </Box>
             </Box>
 
@@ -46,6 +49,6 @@ export const SelectionView: React.FC<SelectionViewProps> = function ({ pythonPac
                 pythonFilter={pythonFilter}
                 usages={usages}
             />
-        </VStack>
+        </VStack>*/
     );
 };

@@ -136,6 +136,7 @@ export const App: React.FC = function () {
                     layerStyle="subtleBorder"
                     resize="horizontal"
                 >
+                    <p>test2</p>
                     {currentUserAction.type === 'attribute' && (
                         <AttributeForm target={userActionTarget || pythonPackage} />
                     )}
@@ -169,6 +170,7 @@ export const App: React.FC = function () {
                     {currentUserAction.type === 'rename' && <RenameForm target={userActionTarget || pythonPackage} />}
                 </GridItem>
                 <GridItem gridArea="rightPane" overflow="auto">
+                    <p>test</p>
                     <SelectionView pythonPackage={pythonPackage} pythonFilter={pythonFilter} usages={usages} />
                 </GridItem>
 
