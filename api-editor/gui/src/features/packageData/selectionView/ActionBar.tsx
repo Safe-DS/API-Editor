@@ -1,13 +1,13 @@
-import { Button, HStack } from '@chakra-ui/react';
+import {Button, HStack} from '@chakra-ui/react';
 import React from 'react';
 import PythonPackage from '../model/PythonPackage';
-import { collapseAllParents, expandAllParents, expandParentsInTreeView } from '../packageDataSlice';
+import {collapseAllParents, expandAllParents, expandParentsInTreeView} from '../packageDataSlice';
 import PythonDeclaration from '../model/PythonDeclaration';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
-import { AnnotationsState, selectAnnotations } from '../../annotations/annotationSlice';
-import { useNavigate } from 'react-router';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { UsageCountStore } from '../../usages/model/UsageCountStore';
+import {AnnotationsState, selectAnnotations} from '../../annotations/annotationSlice';
+import {useNavigate} from 'react-router';
+import {useAppDispatch, useAppSelector} from '../../../app/hooks';
+import {UsageCountStore} from '../../usages/model/UsageCountStore';
 
 interface ActionBarProps {
     declaration: PythonDeclaration;
@@ -16,7 +16,7 @@ interface ActionBarProps {
     usages: UsageCountStore;
 }
 
-export const ActionBar: React.FC<ActionBarProps> = function ({ declaration, pythonPackage, pythonFilter, usages }) {
+export const ActionBar: React.FC<ActionBarProps> = function ({declaration, pythonPackage, pythonFilter, usages}) {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
@@ -89,6 +89,28 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration, pyth
         </HStack>
     );
 };
+
+export const getAllSelectedElements = function (current: PythonDeclaration, filter: AbstractPythonFilter, annotations: AnnotationsState, usages: UsageCountStore): PythonDeclaration[] {
+    let topmostElement = current;
+    while (topmostElement.parent()) {
+        const parent = topmostElement.parent();
+        if (parent) {
+            topmostElement = parent;
+        }
+    }
+    return getAllSelectedChildren(topmostElement, filter, annotations, usages);
+}
+
+const getAllSelectedChildren = function (current: PythonDeclaration, filter: AbstractPythonFilter, annotations: AnnotationsState, usages: UsageCountStore): PythonDeclaration[] {
+    const selectedElements: PythonDeclaration[] = [];
+    if (filter.shouldKeepDeclaration(current, annotations, usages)) {
+        selectedElements.push(current);
+    }
+    for (const child of current.children()) {
+        selectedElements.push(...getAllSelectedChildren(child, filter, annotations, usages));
+    }
+    return selectedElements;
+}
 
 const getNextElementPath = function (
     current: PythonDeclaration,
