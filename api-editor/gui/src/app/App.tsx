@@ -171,8 +171,8 @@ export const App: React.FC = function () {
                     {currentUserAction.type === 'rename' && <RenameForm target={userActionTarget || pythonPackage} />}
                 </GridItem>
                 <GridItem gridArea="rightPane" overflow="auto">
-                    <StatisticsView />
-                    <SelectionView pythonPackage={pythonPackage} pythonFilter={pythonFilter} usages={usages} />
+                    {currentUserAction.type === 'none' && (<SelectionView pythonPackage={pythonPackage} pythonFilter={pythonFilter} usages={usages} />)}
+                    {currentUserAction.type === 'boundary' && (<StatisticsView/>)}
                 </GridItem>
 
                 {showAnnotationImportDialog && <AnnotationImportDialog />}
