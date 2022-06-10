@@ -23,7 +23,7 @@ interface SelectionViewProps {
     annotations: AnnotationsState;
 }
 
-export const SelectionView: React.FC<SelectionViewProps> = function ({ pythonPackage, pythonFilter, usages }) {
+export const SelectionView: React.FC<SelectionViewProps> = function ({ pythonPackage, pythonFilter, usages, annotations }) {
     const declaration = pythonPackage.getByRelativePath(useLocation().pathname.split('/').splice(2));
 
     if (!declaration) {
