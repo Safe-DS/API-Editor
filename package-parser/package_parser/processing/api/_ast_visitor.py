@@ -244,7 +244,11 @@ class _AstVisitor:
             for index, it in enumerate(parameters.kwonlyargs)
         ]
 
-        return result[n_implicit_parameters:]
+        implicit_parameters = result[:n_implicit_parameters]
+        for implicit_parameter in implicit_parameters:
+            implicit_parameter.assigned_by = ParameterAssignment.IMPLICIT
+
+        return result
 
     @staticmethod
     def __parameter_default(
