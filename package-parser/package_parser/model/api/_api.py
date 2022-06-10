@@ -208,16 +208,31 @@ class FromImport:
 class Class:
     @staticmethod
     def from_json(json: Any) -> Class:
-        result = Class(json["qname"], json["pname"], json["decorators"], json["superclasses"], json["is_public"],
-                       json["description"], json["docstring"])
+        result = Class(
+            json["qname"],
+            json["pname"],
+            json["decorators"],
+            json["superclasses"],
+            json["is_public"],
+            json["description"],
+            json["docstring"],
+        )
 
         for method_unique_qname in json["methods"]:
             result.add_method(method_unique_qname)
 
         return result
 
-    def __init__(self, qname: str, pname: str, decorators: list[str], superclasses: list[str], is_public: bool,
-                 description: str, docstring: str) -> None:
+    def __init__(
+        self,
+        qname: str,
+        pname: str,
+        decorators: list[str],
+        superclasses: list[str],
+        is_public: bool,
+        description: str,
+        docstring: str,
+    ) -> None:
         self.qname: str = qname
         self.pname: str = pname
         self.decorators: list[str] = decorators
