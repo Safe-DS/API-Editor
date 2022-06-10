@@ -1,13 +1,9 @@
 import {Heading, Button, Stack} from '@chakra-ui/react';
 import React from 'react';
-import PythonDeclaration from '../model/PythonDeclaration';
 import {useAppSelector} from "../../../app/hooks";
 import {selectAnnotations, selectAttribute, Annotation} from "../../annotations/annotationSlice";
 
-interface StatisticsViewProps {
-    pythonDeclaration: PythonDeclaration;
-}
-const StatisticsView: React.FC<StatisticsViewProps> = function ({
+const StatisticsView: React.FC = function ({
 }) {
     const annotations = useAppSelector(selectAnnotations);
     let dict = {};
@@ -40,7 +36,7 @@ removes
     return (
         <Stack>
             <Heading as="h4" size="md">Statistics</Heading>
-            <Button onClick={() => console.log("test")}>Test: {movesSize}</Button>
+            <Button onClick={() => console.log("test")} children ={"Test: " + movesSize}></Button>
 
         </Stack>
     );
