@@ -171,7 +171,7 @@ export const App: React.FC = function () {
                     {currentUserAction.type === 'rename' && <RenameForm target={userActionTarget || pythonPackage} />}
                 </GridItem>
                 <GridItem gridArea="rightPane" overflow="auto">
-                    {currentUserAction.type === 'none' && (<SelectionView pythonPackage={pythonPackage} pythonFilter={pythonFilter} usages={usages} />)}
+                    {currentUserAction.type === 'none' && (<SelectionView pythonPackage={pythonPackage} pythonFilter={pythonFilter} usages={usages} annotations={useAppSelector(selectAnnotations)}/>)}
                     {currentUserAction.type === 'boundary' && (<StatisticsView pythonPackage={null} pythonFilter={null} usages={null} annotations={useAppSelector(selectAnnotations)}/>)}
                 </GridItem>
 
