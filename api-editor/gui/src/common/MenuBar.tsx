@@ -138,9 +138,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter
         settings.push('darkMode');
     }
 
-    const showStatistics = () => {
-
-    };
+    const showStatistics = () => {};
     return (
         <Flex as="nav" borderBottom={1} layerStyle="subtleBorder" padding="0.5em 1em">
             <HStack>
@@ -187,8 +185,8 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter
                                 </MenuItemOption>
                             </MenuOptionGroup>
                             <MenuItemOption value={'statistics'} onClick={showStatistics}>
-                                    Statistics
-                                </MenuItemOption>
+                                Statistics
+                            </MenuItemOption>
                             <MenuDivider />
                             <MenuGroup title="Heat Map Mode">
                                 <MenuOptionGroup type="radio" defaultValue="none">

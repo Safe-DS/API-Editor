@@ -8,14 +8,14 @@ import PythonPackage from '../model/PythonPackage';
 import PythonParameter from '../model/PythonParameter';
 import ClassView from './ClassView';
 import FunctionView from './FunctionView';
-import {StatisticsView} from './StatisticsView';
+import { StatisticsView } from './StatisticsView';
 import { ModuleView } from './ModuleView';
 import ParameterView from './ParameterView';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
 import { ActionBar } from './ActionBar';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
-import {AnnotationsState} from "../../annotations/annotationSlice";
-import {Setter} from "../../../common/util/types";
+import { AnnotationsState } from '../../annotations/annotationSlice';
+import { Setter } from '../../../common/util/types';
 
 interface SelectionViewProps {
     pythonPackage: PythonPackage;
@@ -26,7 +26,14 @@ interface SelectionViewProps {
     setFilter: Setter<string>;
 }
 
-export const SelectionView: React.FC<SelectionViewProps> = function ({ pythonPackage, pythonFilter, usages, annotations, filter, setFilter }) {
+export const SelectionView: React.FC<SelectionViewProps> = function ({
+    pythonPackage,
+    pythonFilter,
+    usages,
+    annotations,
+    filter,
+    setFilter,
+}) {
     const declaration = pythonPackage.getByRelativePath(useLocation().pathname.split('/').splice(2));
 
     if (!declaration) {
@@ -41,8 +48,7 @@ export const SelectionView: React.FC<SelectionViewProps> = function ({ pythonPac
                     {declaration instanceof PythonClass && <ClassView pythonClass={declaration} />}
                     {declaration instanceof PythonModule && <ModuleView pythonModule={declaration} />}
                     {declaration instanceof PythonParameter && <ParameterView pythonParameter={declaration} />}
-                    <StatisticsView annotations={annotations} filter={filter} setFilter={setFilter}/>
-
+                    <StatisticsView annotations={annotations} filter={filter} setFilter={setFilter} />
                 </Box>
             </Box>
 
