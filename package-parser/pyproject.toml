@@ -12,7 +12,7 @@ parse-package = "package_parser.main:main"
 python = "^3.10"
 astroid = "^2.9.3"
 importlib-metadata = "^4.10.1"
-numpydoc = "^1.2"
+numpydoc = "^1.4"
 spacy = "^3.2.1"
 
 [tool.poetry.dependencies.en_core_web_sm]
