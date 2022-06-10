@@ -1,16 +1,50 @@
-import { Heading, Stack, Text as ChakraText } from '@chakra-ui/react';
+import { Heading, Button} from '@chakra-ui/react';
 import React from 'react';
 import PythonDeclaration from '../model/PythonDeclaration';
-import ParameterNode from './ParameterNode';
+import {useAppSelector} from "../../../app/hooks";
+import {selectAnnotations, selectAttribute, Annotation} from "../../annotations/annotationSlice";
 
 interface StatisticsViewProps {
     pythonDeclaration: PythonDeclaration;
 }
-
 const StatisticsView: React.FC<StatisticsViewProps> = function ({
 }) {
+    const annotations = useAppSelector(selectAnnotations);
+    let dict = {};
+    for (const property in annotations){
+        if (Array.isArray(property) && property.length >0){
+            if(property[0] instanceof Annotation){
+                dict[property.toString()] = property.length;
+                console.log("property: " + property.toString() + " "+Object.getOwnPropertyNames(property))
+            }
+            //TODO CalledAfterAnnotation and GroupAnnotation
+        }
+    }
+    const boundariesSize = annotations.boundaries.length;
+    const constantsSize = annotations.constants.length;
+    const enumsSize = annotations.enums.length;
+    const optionalsSize = annotations.optionals.length;
+    const movesSize = annotations.moves.length;
+    const groupsSize = annotations.groups.length;
+    const calledAftersSize = annotations.calledAfters.length;
+    const attributesSize = annotations.attributes.length;
+    const puresSize = annotations.pures.length;
+    const renamingsSize = annotations.renamings.length;
+    const requiredsSize = annotations.requireds.length;
+    const removesSize = annotations.removes.length;
+    /*
+
+pures
+renamings
+requireds
+removes
+     */
+
     return (
-        <h4>Statistics</h4>
+        <VBox>
+            <Heading as="h4" size="md">Statistics</Heading>
+            <Button onClick={() => console.log("test")}>Test</Button>
+        </VBox>
     );
 };
 

@@ -63,12 +63,14 @@ export interface AttributeAnnotation {
 export type DefaultType = 'string' | 'number' | 'boolean' | 'none';
 export type DefaultValue = string | number | boolean | null;
 
-export interface BoundaryAnnotation {
+export interface Annotation {
     /**
      * ID of the annotated Python declaration
      */
     readonly target: string;
+}
 
+export interface BoundaryAnnotation extends Annotation {
     /**
      * The interval specifying possible numeric values
      */
@@ -108,36 +110,21 @@ export enum ComparisonOperator {
     UNRESTRICTED,
 }
 
-export interface CalledAfterAnnotation {
-    /**
-     * ID of the annotated Python declaration
-     */
-    readonly target: string;
-
+export interface CalledAfterAnnotation extends Annotation{
     /**
      * Name of the callable to be called first
      */
     readonly calledAfterName: string;
 }
 
-export interface CalledAfterTarget {
-    /**
-     * ID of the annotated Python declaration
-     */
-    readonly target: string;
-
+export interface CalledAfterTarget extends Annotation{
     /**
      * Name of the callable to be called first
      */
     readonly calledAfterName: string;
 }
 
-export interface ConstantAnnotation {
-    /**
-     * ID of the annotated Python declaration
-     */
-    readonly target: string;
-
+export interface ConstantAnnotation extends Annotation{
     /**
      * Type of default value
      */
@@ -149,12 +136,7 @@ export interface ConstantAnnotation {
     readonly defaultValue: DefaultValue;
 }
 
-export interface EnumAnnotation {
-    /**
-     * ID of the annotated Python declaration.
-     */
-    target: string;
-
+export interface EnumAnnotation extends Annotation{
     /**
      * Name of the enum class that should be created.
      */
@@ -167,12 +149,7 @@ export interface EnumPair {
     readonly instanceName: string;
 }
 
-export interface GroupAnnotation {
-    /**
-     * ID of the annotated Python declaration
-     */
-    readonly target: string;
-
+export interface GroupAnnotation extends Annotation{
     /**
      * Name of the grouped object
      */
@@ -184,23 +161,14 @@ export interface GroupAnnotation {
     readonly parameters: string[];
 }
 
-export interface GroupTarget {
-    /**
-     * ID of the annotated Python declaration
-     */
-    readonly target: string;
-
+export interface GroupTarget extends Annotation{
     /**
      * Name of the grouped object
      */
     readonly groupName: string;
 }
 
-export interface MoveAnnotation {
-    /**
-     * ID of the annotated Python declaration.
-     */
-    readonly target: string;
+export interface MoveAnnotation extends Annotation{
 
     /**
      * Qualified path to the destination
@@ -208,12 +176,7 @@ export interface MoveAnnotation {
     readonly destination: string;
 }
 
-export interface OptionalAnnotation {
-    /**
-     * ID of the annotated Python declaration
-     */
-    readonly target: string;
-
+export interface OptionalAnnotation extends Annotation{
     /**
      * Type of default value
      */
@@ -225,37 +188,20 @@ export interface OptionalAnnotation {
     readonly defaultValue: DefaultValue;
 }
 
-export interface PureAnnotation {
-    /**
-     * ID of the annotated Python declaration.
-     */
-    readonly target: string;
+export interface PureAnnotation extends Annotation{
 }
 
-export interface RenameAnnotation {
-    /**
-     * ID of the annotated Python declaration.
-     */
-    readonly target: string;
-
+export interface RenameAnnotation extends Annotation{
     /**
      * New name for the declaration.
      */
     readonly newName: string;
 }
 
-export interface RequiredAnnotation {
-    /**
-     * ID of the annotated Python declaration.
-     */
-    readonly target: string;
+export interface RequiredAnnotation extends Annotation{
 }
 
-export interface RemoveAnnotation {
-    /**
-     * ID of the annotated Python declaration.
-     */
-    readonly target: string;
+export interface RemoveAnnotation extends Annotation{
 }
 
 type UserAction =
