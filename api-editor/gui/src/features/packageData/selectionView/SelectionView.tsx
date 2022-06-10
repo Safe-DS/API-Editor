@@ -8,7 +8,7 @@ import PythonPackage from '../model/PythonPackage';
 import PythonParameter from '../model/PythonParameter';
 import ClassView from './ClassView';
 import FunctionView from './FunctionView';
-import StatisticsView from './StatisticsView';
+import {StatisticsView} from './StatisticsView';
 import { ModuleView } from './ModuleView';
 import ParameterView from './ParameterView';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';

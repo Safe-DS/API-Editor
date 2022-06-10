@@ -48,7 +48,6 @@ import { UsageCountJson, UsageCountStore } from '../features/usages/model/UsageC
 import { selectShowUsageImportDialog } from '../features/usages/usageSlice';
 import { UsageImportDialog } from '../features/usages/UsageImportDialog';
 import { createFilterFromString } from '../features/packageData/model/filters/filterFactory';
-import StatisticsView from "../features/packageData/selectionView/StatisticsView";
 
 export const App: React.FC = function () {
     const dispatch = useAppDispatch();
