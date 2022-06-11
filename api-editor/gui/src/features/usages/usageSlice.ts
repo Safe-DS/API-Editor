@@ -34,10 +34,7 @@ const usageSlice = createSlice({
     reducers: {
         set(state, action: PayloadAction<UsageCountStore>) {
             state.usages = action.payload
-        },
-        reset() {
-            return initialState;
-        },
+        }
     },
     extraReducers(builder) {
         builder.addCase(initializeUsages.fulfilled, (state, action) => action.payload);
@@ -46,8 +43,7 @@ const usageSlice = createSlice({
 
 const {actions, reducer} = usageSlice;
 export const {
-    set: setUsages,
-    reset: resetUsages,
+    set: setUsages
 } = actions;
 export const usageReducer = reducer;
 
