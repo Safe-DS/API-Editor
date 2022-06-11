@@ -1,5 +1,6 @@
 import argparse
 import logging
+
 # noinspection PyUnresolvedReferences,PyProtectedMember
 from argparse import _SubParsersAction
 from pathlib import Path
@@ -32,7 +33,9 @@ def cli() -> None:
 
 def _get_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Analyze Python code.")
-    parser.add_argument("-v", "--verbose", help="show info messages", action="store_true")
+    parser.add_argument(
+        "-v", "--verbose", help="show info messages", action="store_true"
+    )
 
     # Commands
     subparsers = parser.add_subparsers(dest="command")
@@ -57,7 +60,7 @@ def _add_api_subparser(subparsers: _SubParsersAction) -> None:
         "-s",
         "--src",
         help="Directory containing the Python code of the package. If this is omitted, we try to locate the package "
-             "with the given name in the current Python interpreter.",
+        "with the given name in the current Python interpreter.",
         type=Path,
         required=False,
         default=None,
@@ -136,7 +139,7 @@ def _add_all_subparser(subparsers: _SubParsersAction) -> None:
         "-s",
         "--src",
         help="Directory containing the Python code of the package. If this is omitted, we try to locate the package "
-             "with the given name in the current Python interpreter.",
+        "with the given name in the current Python interpreter.",
         type=Path,
         required=False,
         default=None,
