@@ -39,7 +39,6 @@ import {
     selectShowAPIImportDialog,
     selectShowUsageImportDialog,
     selectUI,
-    setFilterString,
 } from '../features/ui/uiSlice';
 import { initializeUsages, persistUsages, selectUsages } from '../features/usages/usageSlice';
 import { initializePythonPackage, selectPythonPackage } from '../features/packageData/apiSlice';
@@ -120,18 +119,11 @@ export const App: React.FC = function () {
                     {currentUserAction.type === 'rename' && <RenameForm target={userActionTarget || pythonPackage} />}
                 </GridItem>
                 <GridItem gridArea="rightPane" overflow="auto">
-                    <SelectionView
-                        pythonPackage={pythonPackage}
-                        pythonFilter={pythonFilter}
-                        usages={usages}
-                        annotations={useAppSelector(selectAnnotations)}
-                        filter={filter}
-                        setFilter={setFilter}
-                    />
+                    <SelectionView />
                 </GridItem>
 
                 {showAnnotationImportDialog && <AnnotationImportDialog />}
-                {showAPIImportDialog && <PackageDataImportDialog setFilter={setFilterString} />}
+                {showAPIImportDialog && <PackageDataImportDialog />}
                 {showUsagesImportDialog && <UsageImportDialog />}
             </Grid>
             <Modal

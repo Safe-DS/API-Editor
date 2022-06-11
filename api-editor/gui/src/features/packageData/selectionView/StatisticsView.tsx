@@ -1,15 +1,14 @@
-import { Heading, Button, VStack, Wrap, WrapItem } from '@chakra-ui/react';
+import { Button, Heading, VStack, Wrap, WrapItem } from '@chakra-ui/react';
 import React from 'react';
-import { AnnotationsState } from '../../annotations/annotationSlice';
-import { Setter } from '../../../common/util/types';
+import { selectAnnotations } from '../../annotations/annotationSlice';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { selectFilterString, setFilterString } from '../../ui/uiSlice';
 
-interface StatisticsViewProps {
-    annotations: AnnotationsState;
-    filter: string;
-    setFilter: Setter<string>;
-}
+export const StatisticsView: React.FC = function () {
+    const annotations = useAppSelector(selectAnnotations);
+    const filterString = useAppSelector(selectFilterString);
+    const dispatch = useAppDispatch();
 
-export const StatisticsView: React.FC<StatisticsViewProps> = function ({ annotations, filter, setFilter }) {
     const boundariesSize = Object.keys(annotations.boundaries).length;
     const constantsSize = Object.keys(annotations.constants).length;
     const enumsSize = Object.keys(annotations.enums).length;
@@ -24,21 +23,21 @@ export const StatisticsView: React.FC<StatisticsViewProps> = function ({ annotat
     const removesSize = Object.keys(annotations.removes).length;
 
     const filterAction = (annotation: string) => {
-        const annotationFilter = 'annotation:@';
-        const filterString = annotationFilter + annotation;
+        const annotationFilterPrefix = 'annotation:@';
+        const annotationFilterString = annotationFilterPrefix + annotation;
 
         //Remove existing annotation filter
-        const filterList = filter.split(' ');
+        const filterList = filterString.split(' ');
         let newFilter = '';
         for (const element of filterList) {
-            if (!element.startsWith(annotationFilter)) {
+            if (!element.startsWith(annotationFilterPrefix)) {
                 newFilter += element;
                 newFilter += ' ';
             }
         }
 
-        newFilter += filterString;
-        setFilter(newFilter);
+        newFilter += annotationFilterString;
+        dispatch(setFilterString(newFilter));
     };
 
     return (
