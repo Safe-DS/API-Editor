@@ -80,8 +80,8 @@ class API:
 
         for function in self.functions.values():
             for parameter in function.parameters:
-                parameter_qname = f"{function.qname}.{parameter.name}"
-                result[parameter_qname] = parameter
+                parameter_id = f"{function.id}/{parameter.name}"
+                result[parameter_id] = parameter
 
         return result
 
