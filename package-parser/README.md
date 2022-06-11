@@ -95,7 +95,7 @@ optional arguments:
     parse-package api -p sklearn -o out
 
     # Step 2:
-    parse-package usages -p sklearn -s "Kaggle Kernels" -t tmp -o out
+    parse-package usages -p sklearn -c "Kaggle Kernels" -t out/tmp -o out
 
     # Step 3:
     parse-package annotations -a "out/scikit-learn__sklearn__1.0__api.json" -u "out/scikit-learn__sklearn__1.0__usages.json" -o out/annotations.json
