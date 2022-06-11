@@ -42,12 +42,29 @@ import {UsageCountJson, UsageCountStore} from '../features/usages/model/UsageCou
 import {selectShowUsageImportDialog} from '../features/usages/usageSlice';
 import {UsageImportDialog} from '../features/usages/UsageImportDialog';
 import {createFilterFromString} from '../features/packageData/model/filters/filterFactory';
-import {GroupUserAction, selectCurrentUserAction, selectShowAnnotationImportDialog} from "../features/ui/uiSlice";
+import {
+    GroupUserAction, initializeUI,
+    selectCurrentUserAction,
+    selectShowAnnotationImportDialog,
+    selectUI, UIState
+} from "../features/ui/uiSlice";
 
 export const App: React.FC = function () {
     const dispatch = useAppDispatch();
     const currentUserAction = useAppSelector(selectCurrentUserAction);
     const currentPathName = useLocation().pathname;
+
+    // Initialize UI
+    const uiState = useAppSelector(selectUI);
+
+    useEffect(() => {
+        dispatch(initializeUI());
+    }, [dispatch]);
+
+    useEffect(() => {
+        // noinspection JSIgnoredPromiseFromCall
+        setUIInIndexedDB(uiState);
+    }, [uiState]);
 
     // Initialize package data
     const [pythonPackage, setPythonPackage] = useState<PythonPackage>(new PythonPackage('empty', 'empty', '0.0.1'));
@@ -213,4 +230,8 @@ const getUsagesFromIndexedDB = async function (setUsages: Setter<UsageCountStore
 
 const setAnnotationsInIndexedDB = async function (annotationStore: AnnotationsState) {
     await idb.set('annotations', annotationStore);
+};
+
+const setUIInIndexedDB = async function (uiState: UIState) {
+    await idb.set('ui', uiState);
 };
