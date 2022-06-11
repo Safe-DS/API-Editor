@@ -99,8 +99,8 @@ const DeleteAllAnnotations = function () {
     );
 };
 
-export const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, displayInferErrors}) {
-    const {colorMode, toggleColorMode} = useColorMode();
+export const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, displayInferErrors }) {
+    const { colorMode, toggleColorMode } = useColorMode();
     const dispatch = useAppDispatch();
 
     const annotationStore = useAppSelector(selectAnnotations);
@@ -122,7 +122,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, display
 
         const requestOptions = {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(annotatedPythonPackage),
         };
         fetch('/api-editor/infer', requestOptions).then(async (response) => {
@@ -144,7 +144,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, display
         colorModeArray.push('darkMode');
     }
 
-    let heatMapModeString: string = "";
+    let heatMapModeString: string = '';
     if (heatMapMode === HeatMapMode.None) {
         heatMapModeString = 'none';
     } else if (heatMapMode === HeatMapMode.Usages) {
@@ -161,7 +161,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, display
                 {/* Box gets rid of popper.js warning "CSS margin styles cannot be used" */}
                 <Box>
                     <Menu>
-                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown}/>}>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
                             File
                         </MenuButton>
                         <MenuList>
@@ -176,7 +176,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, display
                                     Annotations
                                 </MenuItem>
                             </MenuGroup>
-                            <MenuDivider/>
+                            <MenuDivider />
                             <MenuGroup title="Export">
                                 <MenuItem paddingLeft={8} onClick={exportAnnotations}>
                                     Annotations
@@ -187,11 +187,11 @@ export const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, display
                 </Box>
 
                 <Button onClick={infer}>Generate adapters</Button>
-                <DeleteAllAnnotations/>
+                <DeleteAllAnnotations />
 
                 <Box>
                     <Menu closeOnSelect={false}>
-                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown}/>}>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
                             Settings
                         </MenuButton>
                         <MenuList>
@@ -200,7 +200,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, display
                                     Dark mode
                                 </MenuItemOption>
                             </MenuOptionGroup>
-                            <MenuDivider/>
+                            <MenuDivider />
                             <MenuGroup title="Heat Map Mode">
                                 <MenuOptionGroup type="radio" defaultValue="none" value={heatMapModeString}>
                                     <MenuItemOption
@@ -238,7 +238,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, display
                 </Box>
             </HStack>
 
-            <Spacer/>
+            <Spacer />
 
             <HStack>
                 <Input
@@ -249,7 +249,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, display
                     spellCheck={false}
                     minWidth="400px"
                 />
-                <FilterHelpButton/>
+                <FilterHelpButton />
             </HStack>
         </Flex>
     );
