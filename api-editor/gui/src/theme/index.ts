@@ -29,7 +29,7 @@ const styles: Styles = {
     },
 };
 
-export const apiEditorTheme = extendTheme({
+const apiEditorTheme = extendTheme({
     config,
     styles,
     layerStyles: {
@@ -42,3 +42,5 @@ export const apiEditorTheme = extendTheme({
         },
     },
 });
+// eslint-disable-next-line import/no-default-export
+export default apiEditorTheme;
