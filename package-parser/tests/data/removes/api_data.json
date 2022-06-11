@@ -8,15 +8,15 @@
             "name": "test",
             "imports": [],
             "from_imports": [],
-            "classes": ["test.UnusedClass", "test.UsedClass"],
+            "classes": ["test/test/UnusedClass", "test/test/UsedClass"],
             "functions": ["test.unused_global_function", "test.used_global_function"]
         }
     ],
     "classes": [
         {
+            "id": "test/test/UnusedClass",
             "name": "UnusedClass",
             "qname": "test.UnusedClass",
-            "pname": "test/test/UnusedClass",
             "decorators": [],
             "is_public": true,
             "description": "",
@@ -26,9 +26,9 @@
             "methods": ["test.UnusedClass.unused_method"]
         },
         {
+            "id": "test/test/UsedClass",
             "name": "UsedClass",
             "qname": "test.UsedClass",
-            "pname": "test/test/UsedClass",
             "decorators": [],
             "is_public": true,
             "description": "",

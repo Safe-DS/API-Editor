@@ -8,15 +8,15 @@
             "name": "test",
             "imports": [],
             "from_imports": [],
-            "classes": ["test.UsedClass"],
+            "classes": ["test/test/UsedClass"],
             "functions": ["test.unused_global_function", "test.used_global_function"]
         }
     ],
     "classes": [
         {
+            "id": "test/test/UsedClass",
             "name": "UsedClass",
             "qname": "test.UsedClass",
-            "pname": "test/test/UsedClass",
             "decorators": [],
             "is_public": true,
             "description": "",

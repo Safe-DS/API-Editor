@@ -22,10 +22,10 @@ def _remove_internal_usages(usages: UsageCountStore, api: API) -> None:
     """
 
     # Internal classes
-    for class_qname in list(usages.class_usages.keys()):
-        if not api.is_public_class(class_qname):
-            logging.info(f"Removing usages of internal class {class_qname}")
-            usages.remove_class(class_qname)
+    for class_id in list(usages.class_usages.keys()):
+        if not api.is_public_class(class_id):
+            logging.info(f"Removing usages of internal class {class_id}")
+            usages.remove_class(class_id)
 
     # Internal functions
     for function_qname in list(usages.function_usages.keys()):
@@ -55,9 +55,9 @@ def _add_unused_api_elements(usages: UsageCountStore, api: API) -> None:
     """
 
     # Public classes
-    for class_qname in api.classes:
-        if api.is_public_class(class_qname):
-            usages.add_class_usages(class_qname, 0)
+    for class_id in api.classes:
+        if api.is_public_class(class_id):
+            usages.add_class_usages(class_id, 0)
 
     # Public functions
     for function in api.functions.values():

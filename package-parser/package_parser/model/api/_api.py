@@ -40,16 +40,16 @@ class API:
         self.functions: dict[str, Function] = dict()
 
     def add_module(self, module: Module) -> None:
-        self.modules[module.name] = module
+        self.modules[module.id] = module
 
     def add_class(self, class_: Class) -> None:
-        self.classes[class_.qname] = class_
+        self.classes[class_.id] = class_
 
     def add_function(self, function: Function) -> None:
         self.functions[function.unique_qname] = function
 
-    def is_public_class(self, class_qname: str) -> bool:
-        return class_qname in self.classes and self.classes[class_qname].is_public
+    def is_public_class(self, class_id: str) -> bool:
+        return class_id in self.classes and self.classes[class_id].is_public
 
     def is_public_function(self, function_unique_qname: str) -> bool:
         return (
@@ -105,11 +105,11 @@ class API:
             "version": self.version,
             "modules": [
                 module.to_json()
-                for module in sorted(self.modules.values(), key=lambda it: it.name)
+                for module in sorted(self.modules.values(), key=lambda it: it.id)
             ],
             "classes": [
-                clazz.to_json()
-                for clazz in sorted(self.classes.values(), key=lambda it: it.qname)
+                class_.to_json()
+                for class_ in sorted(self.classes.values(), key=lambda it: it.id)
             ],
             "functions": [
                 function.to_json()
@@ -135,8 +135,8 @@ class Module:
             ]
         )
 
-        for class_qname in json["classes"]:
-            result.add_class(class_qname)
+        for class_id in json["classes"]:
+            result.add_class(class_id)
 
         for function_unique_qname in json["functions"]:
             result.add_function(function_unique_qname)
@@ -144,22 +144,22 @@ class Module:
         return result
 
     def __init__(self, id_: str, name: str, imports: list[Import], from_imports: list[FromImport]):
+        self.id: str = id_
         self.name: str = name
-        self.id_: str = id_
         self.imports: list[Import] = imports
         self.from_imports: list[FromImport] = from_imports
         self.classes: list[str] = []
         self.functions: list[str] = []
 
-    def add_class(self, class_qname: str) -> None:
-        self.classes.append(class_qname)
+    def add_class(self, class_id: str) -> None:
+        self.classes.append(class_id)
 
     def add_function(self, function_unique_qname: str) -> None:
         self.functions.append(function_unique_qname)
 
     def to_json(self) -> Any:
         return {
-            "id": self.id_,
+            "id": self.id,
             "name": self.name,
             "imports": [import_.to_json() for import_ in self.imports],
             "from_imports": [
@@ -205,13 +205,13 @@ class Class:
     @staticmethod
     def from_json(json: Any) -> Class:
         result = Class(
+            json["id"],
             json["qname"],
-            json["pname"],
             json["decorators"],
             json["superclasses"],
             json["is_public"],
             json["description"],
-            json["docstring"],
+            json["docstring"]
         )
 
         for method_unique_qname in json["methods"]:
@@ -219,18 +219,10 @@ class Class:
 
         return result
 
-    def __init__(
-        self,
-        qname: str,
-        pname: str,
-        decorators: list[str],
-        superclasses: list[str],
-        is_public: bool,
-        description: str,
-        docstring: str,
-    ) -> None:
+    def __init__(self, id_: str, qname: str, decorators: list[str], superclasses: list[str], is_public: bool,
+                 description: str, docstring: str) -> None:
+        self.id: str = id_
         self.qname: str = qname
-        self.pname: str = pname
         self.decorators: list[str] = decorators
         self.superclasses: list[str] = superclasses
         self.methods: list[str] = []
@@ -247,9 +239,9 @@ class Class:
 
     def to_json(self) -> Any:
         return {
+            "id": self.id,
             "name": self.name,
             "qname": self.qname,
-            "pname": self.pname,
             "decorators": self.decorators,
             "superclasses": self.superclasses,
             "methods": self.methods,
