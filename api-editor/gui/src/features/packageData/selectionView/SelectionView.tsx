@@ -13,6 +13,7 @@ import ParameterView from './ParameterView';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
 import { ActionBar } from './ActionBar';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
+import StatisticsView from "./StatisticsView";
 
 interface SelectionViewProps {
     pythonPackage: PythonPackage;
@@ -21,8 +22,21 @@ interface SelectionViewProps {
 }
 
 export const SelectionView: React.FC<SelectionViewProps> = function ({ pythonPackage, pythonFilter, usages }) {
-    const declaration = pythonPackage.getByRelativePath(useLocation().pathname.split('/').splice(2));
+    const location = useLocation().pathname;
 
+    if (location === "/statisticsView") {
+        return (
+            <VStack h="100%">
+                <Box w="100%" flexGrow={1} overflowY="scroll">
+                    <Box padding={4}>
+                        <StatisticsView pythonPackage={pythonPackage} usages={usages} />
+                    </Box>
+                </Box>
+            </VStack>
+        );
+    }
+
+    const declaration = pythonPackage.getByRelativePath(location.split('/').splice(2));
     if (!declaration) {
         return null;
     }

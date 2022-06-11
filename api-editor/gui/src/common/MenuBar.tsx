@@ -35,6 +35,7 @@ import { HeatMapMode, setHeatMapMode, togglePackageDataImportDialog } from '../f
 import { Setter } from './util/types';
 import { toggleUsageImportDialog } from '../features/usages/usageSlice';
 import { FilterHelpButton } from './FilterHelpButton';
+import {useNavigate} from "react-router-dom";
 
 interface MenuBarProps {
     pythonPackage: PythonPackage;
@@ -97,6 +98,7 @@ const DeleteAllAnnotations = function () {
 export const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFilter, displayInferErrors }) {
     const { colorMode, toggleColorMode } = useColorMode();
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const annotationStore = useAppSelector((state) => state.annotations);
 
@@ -109,6 +111,11 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter
         a.download = 'annotations.json';
         a.click();
     };
+
+    const setStatisticsViewPath = () => {
+        const tmp = "statisticsView"
+        navigate((`/${tmp}`));
+    }
 
     const infer = () => {
         const annotatedPythonPackageBuilder = new AnnotatedPythonPackageBuilder(pythonPackage, annotationStore);
@@ -219,6 +226,9 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter
                         </MenuList>
                     </Menu>
                 </Box>
+
+                <Button onClick={setStatisticsViewPath}>Statistics View</Button>
+
             </HStack>
 
             <Spacer />
