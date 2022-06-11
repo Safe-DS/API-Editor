@@ -13,7 +13,6 @@ import {
     ModalOverlay,
     Text as ChakraText,
 } from '@chakra-ui/react';
-import * as idb from 'idb-keyval';
 import React, {useState} from 'react';
 import {useAppDispatch} from '../../app/hooks';
 import {StyledDropzone} from '../../common/StyledDropzone';
@@ -37,8 +36,6 @@ export const UsageImportDialog: React.FC<ImportPythonPackageDialogProps> = funct
         if (newUsages) {
             const parsedUsages = JSON.parse(newUsages) as UsageCountJson;
             setUsages(UsageCountStore.fromJson(parsedUsages));
-
-            await idb.set('usages', parsedUsages);
         }
         close();
     };

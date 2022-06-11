@@ -2,15 +2,15 @@ import PythonClass from '../PythonClass';
 import PythonFunction from '../PythonFunction';
 import PythonModule from '../PythonModule';
 import PythonParameter from '../PythonParameter';
-import AbstractPythonFilter from './AbstractPythonFilter';
+import {AbstractPythonFilter} from './AbstractPythonFilter';
 import PythonDeclaration from '../PythonDeclaration';
-import { AnnotationsState } from '../../../annotations/annotationSlice';
+import { AnnotationStore } from '../../../annotations/annotationSlice';
 import { UsageCountStore } from '../../../usages/model/UsageCountStore';
 
 /**
  * Keeps only declarations with either an arbitrary or a specific annotation.
  */
-export default class AnnotationFilter extends AbstractPythonFilter {
+export class AnnotationFilter extends AbstractPythonFilter {
     /**
      * @param type The annotations to look for. If this is set to `AnnotationType.Any` all annotated declarations are
      * kept. For other values only declarations with the specified annotation are kept.
@@ -19,17 +19,17 @@ export default class AnnotationFilter extends AbstractPythonFilter {
         super();
     }
 
-    shouldKeepModule(pythonModule: PythonModule, annotations: AnnotationsState, usages: UsageCountStore): boolean {
+    shouldKeepModule(pythonModule: PythonModule, annotations: AnnotationStore, usages: UsageCountStore): boolean {
         return this.shouldKeepDeclaration(pythonModule, annotations, usages);
     }
 
-    shouldKeepClass(pythonClass: PythonClass, annotations: AnnotationsState, usages: UsageCountStore): boolean {
+    shouldKeepClass(pythonClass: PythonClass, annotations: AnnotationStore, usages: UsageCountStore): boolean {
         return this.shouldKeepDeclaration(pythonClass, annotations, usages);
     }
 
     shouldKeepFunction(
         pythonFunction: PythonFunction,
-        annotations: AnnotationsState,
+        annotations: AnnotationStore,
         usages: UsageCountStore,
     ): boolean {
         return this.shouldKeepDeclaration(pythonFunction, annotations, usages);
@@ -37,7 +37,7 @@ export default class AnnotationFilter extends AbstractPythonFilter {
 
     shouldKeepParameter(
         pythonParameter: PythonParameter,
-        annotations: AnnotationsState,
+        annotations: AnnotationStore,
         usages: UsageCountStore,
     ): boolean {
         return this.shouldKeepDeclaration(pythonParameter, annotations, usages);
@@ -45,7 +45,7 @@ export default class AnnotationFilter extends AbstractPythonFilter {
 
     shouldKeepDeclaration(
         pythonDeclaration: PythonDeclaration,
-        annotations: AnnotationsState,
+        annotations: AnnotationStore,
         _usages: UsageCountStore,
     ): boolean {
         const id = pythonDeclaration.pathAsString();

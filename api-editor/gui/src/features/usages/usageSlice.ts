@@ -1,7 +1,7 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../../app/store';
-import {UsageCountStore} from "./model/UsageCountStore";
-import {UIState} from "../ui/uiSlice";
+import {UsageCountJson, UsageCountStore} from "./model/UsageCountStore";
+import * as idb from 'idb-keyval';
 
 export interface UsageState {
     usages: UsageCountStore;
@@ -13,26 +13,42 @@ const initialState: UsageState = {
     usages: new UsageCountStore()
 };
 
+// Thunks --------------------------------------------------------------------------------------------------------------
+
+export const initializeUsages = createAsyncThunk('usages/initialize', async () => {
+    try {
+        const storedUsageCountStoreJson = (await idb.get('usages')) as UsageCountJson;
+        return {
+            usages: UsageCountStore.fromJson(storedUsageCountStoreJson)
+        };
+    } catch {
+        return initialState;
+    }
+});
+
 // Slice ---------------------------------------------------------------------------------------------------------------
 
 const usageSlice = createSlice({
     name: 'usages',
     initialState,
     reducers: {
-        set(_state, action: PayloadAction<UIState>) {
-            return {
-                ...initialState,
-                ...action.payload,
-            };
+        set(state, action: PayloadAction<UsageCountStore>) {
+            state.usages = action.payload
         },
         reset() {
             return initialState;
         },
     },
+    extraReducers(builder) {
+        builder.addCase(initializeUsages.fulfilled, (state, action) => action.payload);
+    },
 });
 
 const {actions, reducer} = usageSlice;
-export const {} = actions;
+export const {
+    set: setUsages,
+    reset: resetUsages,
+} = actions;
 export const usageReducer = reducer;
 
 const selectUsage = (state: RootState) => state.usages;

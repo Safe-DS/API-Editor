@@ -29,7 +29,7 @@ import React, { useRef, useState } from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { resetAnnotations } from '../features/annotations/annotationSlice';
-import AnnotatedPythonPackageBuilder from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
+import {AnnotatedPythonPackageBuilder} from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
 import PythonPackage from '../features/packageData/model/PythonPackage';
 import { Setter } from './util/types';
 import { FilterHelpButton } from './FilterHelpButton';

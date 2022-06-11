@@ -2,8 +2,8 @@ import { Button, HStack } from '@chakra-ui/react';
 import React from 'react';
 import PythonPackage from '../model/PythonPackage';
 import PythonDeclaration from '../model/PythonDeclaration';
-import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
-import { AnnotationsState, selectAnnotations } from '../../annotations/annotationSlice';
+import {AbstractPythonFilter} from '../model/filters/AbstractPythonFilter';
+import { AnnotationStore, selectAnnotations } from '../../annotations/annotationSlice';
 import { useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
@@ -93,7 +93,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration, pyth
 const getNextElementPath = function (
     current: PythonDeclaration,
     filter: AbstractPythonFilter,
-    annotations: AnnotationsState,
+    annotations: AnnotationStore,
     usages: UsageCountStore,
 ): string | null {
     const nextElement = getNextElementInTree(current);
@@ -133,7 +133,7 @@ const getNextFromParentInTree = function (current: PythonDeclaration): PythonDec
 const getPreviousElementPath = function (
     current: PythonDeclaration,
     filter: AbstractPythonFilter,
-    annotations: AnnotationsState,
+    annotations: AnnotationStore,
     usages: UsageCountStore,
 ): string | null {
     const previousElement = getPreviousElementInTree(current);

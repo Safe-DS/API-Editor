@@ -2,8 +2,8 @@ import PythonClass from '../PythonClass';
 import PythonFunction from '../PythonFunction';
 import PythonModule from '../PythonModule';
 import PythonParameter from '../PythonParameter';
-import AbstractPythonFilter from './AbstractPythonFilter';
-import { AnnotationsState } from '../../../annotations/annotationSlice';
+import {AbstractPythonFilter} from './AbstractPythonFilter';
+import { AnnotationStore } from '../../../annotations/annotationSlice';
 import { UsageCountStore } from '../../../usages/model/UsageCountStore';
 
 /**
@@ -21,18 +21,18 @@ export class UsefulnessFilter extends AbstractPythonFilter {
         super();
     }
 
-    shouldKeepModule(_pythonModule: PythonModule, _annotations: AnnotationsState, _usages: UsageCountStore): boolean {
+    shouldKeepModule(_pythonModule: PythonModule, _annotations: AnnotationStore, _usages: UsageCountStore): boolean {
         return false;
     }
 
-    shouldKeepClass(pythonClass: PythonClass, annotations: AnnotationsState, usages: UsageCountStore): boolean {
+    shouldKeepClass(pythonClass: PythonClass, annotations: AnnotationStore, usages: UsageCountStore): boolean {
         const classUsefulness = usages.classUsages.get(pythonClass.qualifiedName);
         return this.shouldKeepWithUsefulness(classUsefulness);
     }
 
     shouldKeepFunction(
         pythonFunction: PythonFunction,
-        annotations: AnnotationsState,
+        annotations: AnnotationStore,
         usages: UsageCountStore,
     ): boolean {
         const functionUsefulness = usages.functionUsages.get(pythonFunction.qualifiedName);
@@ -41,7 +41,7 @@ export class UsefulnessFilter extends AbstractPythonFilter {
 
     shouldKeepParameter(
         pythonParameter: PythonParameter,
-        annotations: AnnotationsState,
+        annotations: AnnotationStore,
         usages: UsageCountStore,
     ): boolean {
         const parameterUsefulness = usages.parameterUsefulness.get(pythonParameter.qualifiedName());

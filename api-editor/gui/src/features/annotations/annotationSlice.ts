@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import * as idb from 'idb-keyval';
 import { RootState } from '../../app/store';
 
-export interface AnnotationsState {
+export interface AnnotationStore {
     attributes: {
         [target: string]: AttributeAnnotation;
     };
@@ -258,7 +258,7 @@ export interface RemoveAnnotation {
 
 // Initial state -------------------------------------------------------------------------------------------------------
 
-export const initialState: AnnotationsState = {
+export const initialState: AnnotationStore = {
     attributes: {},
     boundaries: {},
     calledAfters: {},
@@ -277,7 +277,7 @@ export const initialState: AnnotationsState = {
 
 export const initializeAnnotations = createAsyncThunk('annotations/initialize', async () => {
     try {
-        const storedAnnotations = (await idb.get('annotations')) as AnnotationsState;
+        const storedAnnotations = (await idb.get('annotations')) as AnnotationStore;
         return {
             ...initialState,
             ...storedAnnotations,
@@ -293,7 +293,7 @@ const annotationsSlice = createSlice({
     name: 'annotations',
     initialState,
     reducers: {
-        set(_state, action: PayloadAction<AnnotationsState>) {
+        set(_state, action: PayloadAction<AnnotationStore>) {
             return {
                 ...initialState,
                 ...action.payload,

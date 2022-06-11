@@ -3,10 +3,10 @@ import { FaChalkboard } from 'react-icons/fa';
 import { isEmptyList } from '../../../common/util/listOperations';
 import PythonClass from '../model/PythonClass';
 import { TreeNode, ValuePair } from './TreeNode';
-import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
+import {AbstractPythonFilter} from '../model/filters/AbstractPythonFilter';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { useAppSelector } from '../../../app/hooks';
-import { AnnotationsState, selectAnnotations } from '../../annotations/annotationSlice';
+import { AnnotationStore, selectAnnotations } from '../../annotations/annotationSlice';
 import {HeatMapMode, selectHeatMapMode} from "../../ui/uiSlice";
 
 interface ClassNodeProps {
@@ -46,7 +46,7 @@ const getMapWithUsages = function (usages: UsageCountStore, pythonClass: PythonC
     return new ValuePair(specificValue, maxValue);
 };
 
-const getMapWithAnnotation = function (pythonClass: PythonClass, annotations: AnnotationsState): ValuePair {
+const getMapWithAnnotation = function (pythonClass: PythonClass, annotations: AnnotationStore): ValuePair {
     const maxValue = 3;
     const qname = pythonClass.pathAsString();
     let specificValue = 0;

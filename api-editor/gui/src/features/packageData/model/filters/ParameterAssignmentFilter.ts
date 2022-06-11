@@ -1,27 +1,27 @@
-import AbstractPythonFilter from './AbstractPythonFilter';
+import {AbstractPythonFilter} from './AbstractPythonFilter';
 import PythonModule from '../PythonModule';
 import PythonClass from '../PythonClass';
 import PythonFunction from '../PythonFunction';
-import { AnnotationsState } from '../../../annotations/annotationSlice';
+import { AnnotationStore } from '../../../annotations/annotationSlice';
 import { UsageCountStore } from '../../../usages/model/UsageCountStore';
 import PythonParameter, { PythonParameterAssignment } from '../PythonParameter';
 
-export default class ParameterAssignmentFilter extends AbstractPythonFilter {
+export class ParameterAssignmentFilter extends AbstractPythonFilter {
     constructor(readonly assignedBy: PythonParameterAssignment) {
         super();
     }
 
-    shouldKeepModule(_pythonModule: PythonModule, _annotations: AnnotationsState, _usages: UsageCountStore): boolean {
+    shouldKeepModule(_pythonModule: PythonModule, _annotations: AnnotationStore, _usages: UsageCountStore): boolean {
         return false;
     }
 
-    shouldKeepClass(_pythonClass: PythonClass, _annotations: AnnotationsState, _usages: UsageCountStore): boolean {
+    shouldKeepClass(_pythonClass: PythonClass, _annotations: AnnotationStore, _usages: UsageCountStore): boolean {
         return false;
     }
 
     shouldKeepFunction(
         _pythonFunction: PythonFunction,
-        _annotations: AnnotationsState,
+        _annotations: AnnotationStore,
         _usages: UsageCountStore,
     ): boolean {
         return false;
@@ -29,7 +29,7 @@ export default class ParameterAssignmentFilter extends AbstractPythonFilter {
 
     shouldKeepParameter(
         pythonParameter: PythonParameter,
-        _annotations: AnnotationsState,
+        _annotations: AnnotationStore,
         _usages: UsageCountStore,
     ): boolean {
         if (this.assignedBy === PythonParameterAssignment.IMPLICIT) {
