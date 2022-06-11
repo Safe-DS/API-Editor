@@ -287,19 +287,27 @@ export const initializeAnnotations = createAsyncThunk('annotations/initialize', 
     }
 });
 
+export const persistAnnotations = createAsyncThunk('annotations/persist', async (state: AnnotationStore) => {
+    try {
+        await idb.set('annotations', state);
+    } catch {
+        // ignore
+    }
+});
+
 // Slice ---------------------------------------------------------------------------------------------------------------
 
 const annotationsSlice = createSlice({
     name: 'annotations',
     initialState,
     reducers: {
-        set(_state, action: PayloadAction<AnnotationStore>) {
+        setAnnotations(_state, action: PayloadAction<AnnotationStore>) {
             return {
                 ...initialState,
                 ...action.payload,
             };
         },
-        reset() {
+        resetAnnotations() {
             return initialState;
         },
         upsertAttribute(state, action: PayloadAction<AttributeAnnotation>) {
@@ -425,8 +433,8 @@ const annotationsSlice = createSlice({
 
 const { actions, reducer } = annotationsSlice;
 export const {
-    set: setAnnotations,
-    reset: resetAnnotations,
+    setAnnotations,
+    resetAnnotations,
 
     upsertAttribute,
     removeAttribute,

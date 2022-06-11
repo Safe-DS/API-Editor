@@ -25,6 +25,11 @@ export const store = configureStore({
                 ignoredPaths: ['usages.usages'],
             },
         }),
+    devTools: {
+        serialize: {
+            options: true
+        }
+    }
 });
 
 setupListeners(store.dispatch);

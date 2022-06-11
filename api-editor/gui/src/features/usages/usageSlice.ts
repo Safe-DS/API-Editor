@@ -26,14 +26,25 @@ export const initializeUsages = createAsyncThunk('usages/initialize', async () =
     }
 });
 
+export const persistUsages = createAsyncThunk('usages/persist', async (state: UsageCountStore) => {
+    try {
+        await idb.set('usages', state.toJson());
+    } catch {
+        // ignore
+    }
+});
+
 // Slice ---------------------------------------------------------------------------------------------------------------
 
 const usageSlice = createSlice({
     name: 'usages',
     initialState,
     reducers: {
-        set(state, action: PayloadAction<UsageCountStore>) {
+        setUsages(state, action: PayloadAction<UsageCountStore>) {
             state.usages = action.payload
+        },
+        resetUsages() {
+            return initialState
         }
     },
     extraReducers(builder) {
@@ -43,7 +54,8 @@ const usageSlice = createSlice({
 
 const {actions, reducer} = usageSlice;
 export const {
-    set: setUsages
+    setUsages,
+    resetUsages
 } = actions;
 export const usageReducer = reducer;
 

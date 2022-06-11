@@ -108,19 +108,27 @@ export const initializeUI = createAsyncThunk('ui/initialize', async () => {
     }
 });
 
+export const persistUI = createAsyncThunk('ui/persist', async (state: UIState) => {
+    try {
+        await idb.set('ui', state);
+    } catch {
+        // ignore
+    }
+});
+
 // Slice ---------------------------------------------------------------------------------------------------------------
 
 const uiSlice = createSlice({
     name: 'ui',
     initialState,
     reducers: {
-        set(_state, action: PayloadAction<UIState>) {
+        setUI(_state, action: PayloadAction<UIState>) {
             return {
                 ...initialState,
                 ...action.payload,
             };
         },
-        reset() {
+        resetUI() {
             return initialState;
         },
 
@@ -230,8 +238,8 @@ const uiSlice = createSlice({
 
 const {actions, reducer} = uiSlice;
 export const {
-    set: setUI,
-    reset: resetUI,
+    setUI,
+    resetUI,
 
     toggleAnnotationImportDialog,
     hideAnnotationImportDialog,

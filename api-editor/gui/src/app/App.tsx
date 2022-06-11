@@ -15,7 +15,7 @@ import React, {useEffect, useState} from 'react';
 import {MenuBar} from '../common/MenuBar';
 import {Setter} from '../common/util/types';
 import {AnnotationImportDialog} from '../features/annotations/AnnotationImportDialog';
-import {AnnotationStore, initializeAnnotations, selectAnnotations,} from '../features/annotations/annotationSlice';
+import {initializeAnnotations, persistAnnotations, selectAnnotations,} from '../features/annotations/annotationSlice';
 import {BoundaryForm} from '../features/annotations/forms/BoundaryForm';
 import {CalledAfterForm} from '../features/annotations/forms/CalledAfterForm';
 import {ConstantForm} from '../features/annotations/forms/ConstantForm';
@@ -32,20 +32,19 @@ import {TreeView} from '../features/packageData/treeView/TreeView';
 import {useAppDispatch, useAppSelector} from './hooks';
 import PythonFunction from '../features/packageData/model/PythonFunction';
 import {AttributeForm} from '../features/annotations/forms/AttributeForm';
-import {UsageCountStore} from '../features/usages/model/UsageCountStore';
 import {UsageImportDialog} from '../features/usages/UsageImportDialog';
 import {createFilterFromString} from '../features/packageData/model/filters/filterFactory';
 import {
     GroupUserAction,
     initializeUI,
+    persistUI,
     selectCurrentUserAction,
     selectShowAnnotationImportDialog,
     selectShowAPIImportDialog,
     selectShowUsageImportDialog,
-    selectUI,
-    UIState
+    selectUI
 } from "../features/ui/uiSlice";
-import {initializeUsages, selectUsages, setUsages as reduxSetUsages} from "../features/usages/usageSlice";
+import {initializeUsages, persistUsages, selectUsages} from "../features/usages/usageSlice";
 
 export const App: React.FC = function () {
     useIndexedDB();
@@ -59,9 +58,7 @@ export const App: React.FC = function () {
     }, []);
 
     // Initialize usages
-    const dispatch = useAppDispatch()
     const usages = useAppSelector(selectUsages);
-    const setUsages = (newUsages: UsageCountStore) => dispatch(reduxSetUsages(newUsages));
 
     const [filter, setFilter] = useState('is:public');
     const pythonFilter = createFilterFromString(filter);
@@ -147,7 +144,7 @@ export const App: React.FC = function () {
                 {showAPIImportDialog && (
                     <PackageDataImportDialog setPythonPackage={setPythonPackage} setFilter={setFilter}/>
                 )}
-                {showUsagesImportDialog && <UsageImportDialog setUsages={setUsages}/>}
+                {showUsagesImportDialog && <UsageImportDialog/>}
             </Grid>
             <Modal
                 isOpen={showInferErrorDialog}
@@ -183,20 +180,21 @@ const useIndexedDB = function () {
 const usePersistentAnnotations = function () {
     const dispatch = useAppDispatch()
     const annotationStore = useAppSelector(selectAnnotations);
+    const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {
-        dispatch(initializeAnnotations());
-    }, [dispatch]);
+        if (!isInitialized) {
+            dispatch(initializeAnnotations());
+            setIsInitialized(true);
+        }
+    }, [dispatch, isInitialized]);
 
     useEffect(() => {
-        // noinspection JSIgnoredPromiseFromCall
-        setAnnotationsInIndexedDB(annotationStore);
-    }, [annotationStore]);
+        if (isInitialized) {
+            dispatch(persistAnnotations(annotationStore));
+        }
+    }, [dispatch, annotationStore, isInitialized]);
 }
-
-const setAnnotationsInIndexedDB = async function (annotationStore: AnnotationStore) {
-    await idb.set('annotations', annotationStore);
-};
 
 const usePersistentAPIState = function () {
     // const dispatch = useAppDispatch()
@@ -226,35 +224,37 @@ const getAPIFromIndexedDB = async function (setPythonPackage: Setter<PythonPacka
 const usePersistentUIState = function () {
     const dispatch = useAppDispatch()
     const uiState = useAppSelector(selectUI);
+    const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {
-        dispatch(initializeUI());
-    }, [dispatch]);
+        if (!isInitialized) {
+            dispatch(initializeUI());
+            setIsInitialized(true);
+        }
+    }, [dispatch, isInitialized]);
 
     useEffect(() => {
-        // noinspection JSIgnoredPromiseFromCall
-        setUIInIndexedDB(uiState);
-    }, [uiState]);
+        if (isInitialized) {
+            dispatch(persistUI(uiState));
+        }
+    }, [dispatch, uiState, isInitialized]);
 }
-
-const setUIInIndexedDB = async function (uiState: UIState) {
-    await idb.set('ui', uiState);
-};
 
 const usePersistentUsages = function () {
     const dispatch = useAppDispatch()
     const usages = useAppSelector(selectUsages);
+    const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {
-        dispatch(initializeUsages());
-    }, [dispatch]);
+        if (!isInitialized) {
+            dispatch(initializeUsages());
+            setIsInitialized(true);
+        }
+    }, [dispatch, isInitialized]);
 
     useEffect(() => {
-        // noinspection JSIgnoredPromiseFromCall
-        setUsagesInIndexedDB(usages);
-    }, [usages]);
+        if (isInitialized) {
+            dispatch(persistUsages(usages));
+        }
+    }, [dispatch, usages, isInitialized]);
 }
-
-const setUsagesInIndexedDB = async function (usages: UsageCountStore) {
-    await idb.set('usages', usages.toJson());
-};
