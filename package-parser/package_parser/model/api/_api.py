@@ -12,7 +12,7 @@ from package_parser.model.api._types import (
     NamedType,
     UnionType,
 )
-from package_parser.utils import declaration_qname_to_name, parent_qname
+from package_parser.utils import parent_id
 
 
 class API:
@@ -85,15 +85,14 @@ class API:
 
         return result
 
-    def get_default_value(self, parameter_unique_qname: str) -> Optional[str]:
-        function_unique_qname = parent_qname(parameter_unique_qname)
-        parameter_name = declaration_qname_to_name(parameter_unique_qname)
+    def get_default_value(self, parameter_id: str) -> Optional[str]:
+        function_id = parent_id(parameter_id)
 
-        if function_unique_qname not in self.functions:
+        if function_id not in self.functions:
             return None
 
-        for parameter in self.functions[function_unique_qname].parameters:
-            if parameter.name == parameter_name:
+        for parameter in self.functions[function_id].parameters:
+            if parameter.id == parameter_id:
                 return parameter.default_value
 
         return None
@@ -114,7 +113,7 @@ class API:
             "functions": [
                 function.to_json()
                 for function in sorted(
-                    self.functions.values(), key=lambda it: it.unique_qname
+                    self.functions.values(), key=lambda it: it.id
                 )
             ],
         }
@@ -382,34 +381,26 @@ class Type:
 
 
 class Parameter:
-    @classmethod
-    def from_json(cls, json: Any):
-        return cls(
+    @staticmethod
+    def from_json(json: Any):
+        return Parameter(
+            json["id"],
             json["name"],
             json["qname"],
-            json["pname"],
-            json["default_value"],
-            json["is_public"],
-            ParameterAssignment[json["assigned_by"]],
-            ParameterAndResultDocstring.from_json(json["docstring"]),
+            json.get("default_value", None),
+            ParameterAssignment[json.get("assigned_by", "POSITION_OR_NAME")],
+            json.get("is_public", True),
+            ParameterAndResultDocstring.from_json(json.get("docstring", {})),
         )
 
-    def __init__(
-        self,
-        name: str,
-        qname: str,
-        pname: str,
-        default_value: Optional[str],
-        is_public: bool,
-        assigned_by: ParameterAssignment,
-        docstring: ParameterAndResultDocstring,
-    ) -> None:
+    def __init__(self, id_: str, name: str, qname: str, default_value: Optional[str], assigned_by: ParameterAssignment,
+                 is_public: bool, docstring: ParameterAndResultDocstring) -> None:
+        self.id: str = id_
         self.name: str = name
         self.qname: str = qname
-        self.pname: str = pname
         self.default_value: Optional[str] = default_value
-        self.is_public: bool = is_public
         self.assigned_by: ParameterAssignment = assigned_by
+        self.is_public: bool = is_public
         self.docstring = docstring
         self.type: Type = Type(docstring)
 
@@ -421,12 +412,12 @@ class Parameter:
 
     def to_json(self) -> Any:
         return {
+            "id": self.id,
             "name": self.name,
             "qname": self.qname,
-            "pname": self.pname,
             "default_value": self.default_value,
-            "is_public": self.is_public,
             "assigned_by": self.assigned_by.name,
+            "is_public": self.is_public,
             "docstring": self.docstring.to_json(),
             "type": self.type.to_json(),
         }
@@ -447,7 +438,8 @@ class Result:
     @staticmethod
     def from_json(json: Any) -> Result:
         return Result(
-            json["name"], ParameterAndResultDocstring.from_json(json["docstring"])
+            json["name"],
+            ParameterAndResultDocstring.from_json(json.get("docstring", {}))
         )
 
     def to_json(self) -> Any:
@@ -459,9 +451,12 @@ class ParameterAndResultDocstring:
     type: str
     description: str
 
-    @classmethod
-    def from_json(cls, json: Any):
-        return cls(json["type"], json["description"])
+    @staticmethod
+    def from_json(json: Any):
+        return ParameterAndResultDocstring(
+            json.get("type", ""),
+            json.get("description", ""),
+        )
 
     def to_json(self) -> Any:
         return {"type": self.type, "description": self.description}

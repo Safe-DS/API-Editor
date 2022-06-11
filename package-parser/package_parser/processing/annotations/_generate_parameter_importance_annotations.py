@@ -37,7 +37,7 @@ def _generate_constant_annotation(
     )
     if default_type is not None:
         annotations.constants.append(
-            ConstantAnnotation(parameter.pname, default_type, default_value)
+            ConstantAnnotation(parameter.id, default_type, default_value)
         )
 
 
@@ -51,7 +51,7 @@ def _generate_required_or_optional_annotation(
     # If the most common value is not a stringified literal, make parameter required
     if not _is_stringified_literal(most_common_values[0]):
         if parameter.is_optional():
-            annotations.requireds.append(RequiredAnnotation(parameter.pname))
+            annotations.requireds.append(RequiredAnnotation(parameter.id))
         return
 
     # Compute metrics
@@ -98,7 +98,7 @@ def _generate_required_or_optional_annotation(
         n_different_literal_values,
     ):
         if parameter.is_optional():
-            annotations.requireds.append(RequiredAnnotation(parameter.pname))
+            annotations.requireds.append(RequiredAnnotation(parameter.id))
     else:
         if parameter.is_required() or parameter.default_value != literal_values[0]:
             (
@@ -107,7 +107,7 @@ def _generate_required_or_optional_annotation(
             ) = _get_default_type_and_value_for_stringified_value(literal_values[0])
             if default_type is not None:  # Just for mypy, always true
                 annotations.optionals.append(
-                    OptionalAnnotation(parameter.pname, default_type, default_value)
+                    OptionalAnnotation(parameter.id, default_type, default_value)
                 )
 
 

@@ -31,28 +31,16 @@
             "qname": "test.unused_global_function",
             "parameters": [
                 {
+                    "id": "test/test/unused_global_function/unused_parameter",
                     "name": "unused_parameter",
                     "qname": "test.unused_global_function.unused_parameter",
-                    "pname": "test/test/unused_global_function/unused_parameter",
-                    "default_value": null,
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": null
                 },
                 {
+                    "id": "test/test/unused_global_function/used_parameter",
                     "name": "used_parameter",
                     "qname": "test.unused_global_function.used_parameter",
-                    "pname": "test/test/unused_global_function/used_parameter",
-                    "default_value": "'bla'",
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": "'bla'"
                 }
             ]
         },
@@ -62,28 +50,16 @@
             "qname": "test.used_global_function",
             "parameters": [
                 {
+                    "id": "test/test/used_global_function/unused_parameter",
                     "name": "unused_parameter",
                     "qname": "test.used_global_function.unused_parameter",
-                    "pname": "test/test/used_global_function/unused_parameter",
-                    "default_value": null,
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": null
                 },
                 {
+                    "id": "test/test/used_global_function/used_parameter",
                     "name": "used_parameter",
                     "qname": "test.used_global_function.used_parameter",
-                    "pname": "test/test/used_global_function/used_parameter",
-                    "default_value": "'bla'",
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": "'bla'"
                 }
             ]
         },
@@ -93,28 +69,16 @@
             "qname": "test.UnusedClass.unused_method",
             "parameters": [
                 {
+                    "id": "test/test/UnusedClass/unused_method/unused_parameter",
                     "name": "unused_parameter",
                     "qname": "test.UnusedClass.unused_method.unused_parameter",
-                    "pname": "test/test/UnusedClass/unused_method/unused_parameter",
-                    "default_value": null,
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": null
                 },
                 {
+                    "id": "test/test/UnusedClass/unused_method/used_parameter",
                     "name": "used_parameter",
                     "qname": "test.UnusedClass.unused_method.used_parameter",
-                    "pname": "test/test/UnusedClass/unused_method/used_parameter",
-                    "default_value": "'bla'",
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": "'bla'"
                 }
             ]
         },
@@ -124,28 +88,16 @@
             "qname": "test.UsedClass.unused_method",
             "parameters": [
                 {
+                    "id": "test/test/UsedClass/unused_method/unused_parameter",
                     "name": "unused_parameter",
                     "qname": "test.UsedClass.unused_method.unused_parameter",
-                    "pname": "test/test/UsedClass/unused_method/unused_parameter",
-                    "default_value": null,
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": null
                 },
                 {
+                    "id": "test/test/UsedClass/unused_method/used_parameter",
                     "name": "used_parameter",
                     "qname": "test.UsedClass.unused_method.used_parameter",
-                    "pname": "test/test/UsedClass/unused_method/used_parameter",
-                    "default_value": "'bla'",
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": "'bla'"
                 }
             ]
         },
@@ -155,28 +107,16 @@
             "qname": "test.UsedClass.used_method",
             "parameters": [
                 {
+                    "id": "test/test/UsedClass/used_method/unused_parameter",
                     "name": "unused_parameter",
                     "qname": "test.UsedClass.used_method.unused_parameter",
-                    "pname": "test/test/UsedClass/used_method/unused_parameter",
-                    "default_value": null,
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": null
                 },
                 {
+                    "id": "test/test/UsedClass/used_method/used_parameter",
                     "name": "used_parameter",
                     "qname": "test.UsedClass.used_method.used_parameter",
-                    "pname": "test/test/UsedClass/used_method/used_parameter",
-                    "default_value": "'bla'",
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": "'bla'"
                 }
             ]
         }

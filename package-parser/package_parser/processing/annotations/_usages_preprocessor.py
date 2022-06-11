@@ -2,7 +2,7 @@ import logging
 
 from package_parser.model.api import API
 from package_parser.model.usages import UsageCountStore
-from package_parser.utils import parent_qname
+from package_parser.utils import parent_id
 
 
 def _preprocess_usages(usages: UsageCountStore, api: API) -> None:
@@ -37,7 +37,7 @@ def _remove_internal_usages(usages: UsageCountStore, api: API) -> None:
     parameter_qnames = set(api.parameters().keys())
 
     for parameter_qname in list(usages.parameter_usages.keys()):
-        function_qname = parent_qname(parameter_qname)
+        function_qname = parent_id(parameter_qname)
         if parameter_qname not in parameter_qnames or not api.is_public_function(
             function_qname
         ):
@@ -84,7 +84,7 @@ def _add_implicit_usages_of_default_value(usages: UsageCountStore, api: API) -> 
         if default_value is None:
             continue
 
-        function_qname = parent_qname(parameter_qname)
+        function_qname = parent_id(parameter_qname)
         function_usage_count = usages.n_function_usages(function_qname)
 
         n_locations_of_implicit_usages_of_default_value = (

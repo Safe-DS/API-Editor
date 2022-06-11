@@ -15,11 +15,6 @@
             "id": "test/test/UsedClass",
             "name": "UsedClass",
             "qname": "test.UsedClass",
-            "decorators": [],
-            "is_public": true,
-            "description": "",
-            "docstring": "",
-            "superclasses": [],
             "methods": ["test/test/UsedClass/unused_method", "test/test/UsedClass/used_method"]
         }
     ],
@@ -30,9 +25,9 @@
             "qname": "test.unused_global_function",
             "parameters": [
                 {
+                    "id": "test/test/unused_global_function/unused_parameter",
                     "name": "unused_parameter",
                     "qname": "test.unused_global_function.unused_parameter",
-                    "pname": "test/test/unused_global_function/unused_parameter",
                     "default_value": null,
                     "is_public": true,
                     "assigned_by": "POSITION_OR_NAME",
