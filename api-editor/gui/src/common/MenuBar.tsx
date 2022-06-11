@@ -25,16 +25,17 @@ import {
     useColorMode,
     VStack,
 } from '@chakra-ui/react';
-import React, { useRef, useState } from 'react';
-import { FaChevronDown } from 'react-icons/fa';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { resetAnnotations } from '../features/annotations/annotationSlice';
+import React, {useRef, useState} from 'react';
+import {FaChevronDown} from 'react-icons/fa';
+import {useAppDispatch, useAppSelector} from '../app/hooks';
+import {resetAnnotations, selectAnnotations} from '../features/annotations/annotationSlice';
 import {AnnotatedPythonPackageBuilder} from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
 import PythonPackage from '../features/packageData/model/PythonPackage';
-import { Setter } from './util/types';
-import { FilterHelpButton } from './FilterHelpButton';
+import {FilterHelpButton} from './FilterHelpButton';
 import {
     HeatMapMode,
+    selectFilterString,
+    setFilterString,
     setHeatMapMode,
     toggleAnnotationImportDialog,
     toggleAPIImportDialog,
@@ -43,8 +44,6 @@ import {
 
 interface MenuBarProps {
     pythonPackage: PythonPackage;
-    filter: string;
-    setFilter: Setter<string>;
     displayInferErrors: (errors: string[]) => void;
 }
 
@@ -99,15 +98,15 @@ const DeleteAllAnnotations = function () {
     );
 };
 
-export const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter, setFilter, displayInferErrors }) {
+export const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, displayInferErrors }) {
     const { colorMode, toggleColorMode } = useColorMode();
     const dispatch = useAppDispatch();
 
-    const annotationStore = useAppSelector((state) => state.annotations);
+    const annotationStore = useAppSelector(selectAnnotations);
 
     const exportAnnotations = () => {
         const a = document.createElement('a');
-        const file = new Blob([JSON.stringify(annotationStore)], {
+        const file = new Blob([JSON.stringify(annotationStore, null, 4)], {
             type: 'application/json',
         });
         a.href = URL.createObjectURL(file);
@@ -232,8 +231,8 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter
                 <Input
                     type="text"
                     placeholder="Filter..."
-                    value={filter}
-                    onChange={(event) => setFilter(event.target.value)}
+                    value={useAppSelector(selectFilterString)}
+                    onChange={(event) => dispatch(setFilterString(event.target.value))}
                     spellCheck={false}
                     minWidth="400px"
                 />

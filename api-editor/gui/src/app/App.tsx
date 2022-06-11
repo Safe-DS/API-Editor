@@ -10,10 +10,8 @@ import {
     ModalOverlay,
     UnorderedList,
 } from '@chakra-ui/react';
-import * as idb from 'idb-keyval';
 import React, {useEffect, useState} from 'react';
 import {MenuBar} from '../common/MenuBar';
-import {Setter} from '../common/util/types';
 import {AnnotationImportDialog} from '../features/annotations/AnnotationImportDialog';
 import {initializeAnnotations, persistAnnotations, selectAnnotations,} from '../features/annotations/annotationSlice';
 import {BoundaryForm} from '../features/annotations/forms/BoundaryForm';
@@ -24,8 +22,6 @@ import {GroupForm} from '../features/annotations/forms/GroupForm';
 import {MoveForm} from '../features/annotations/forms/MoveForm';
 import {OptionalForm} from '../features/annotations/forms/OptionalForm';
 import {RenameForm} from '../features/annotations/forms/RenameForm';
-import PythonPackage from '../features/packageData/model/PythonPackage';
-import {parsePythonPackageJson, PythonPackageJson} from '../features/packageData/model/PythonPackageBuilder';
 import {PackageDataImportDialog} from '../features/packageData/PackageDataImportDialog';
 import {SelectionView} from '../features/packageData/selectionView/SelectionView';
 import {TreeView} from '../features/packageData/treeView/TreeView';
@@ -33,43 +29,35 @@ import {useAppDispatch, useAppSelector} from './hooks';
 import PythonFunction from '../features/packageData/model/PythonFunction';
 import {AttributeForm} from '../features/annotations/forms/AttributeForm';
 import {UsageImportDialog} from '../features/usages/UsageImportDialog';
-import {createFilterFromString} from '../features/packageData/model/filters/filterFactory';
 import {
     GroupUserAction,
     initializeUI,
     persistUI,
     selectCurrentUserAction,
+    selectFilter,
     selectShowAnnotationImportDialog,
     selectShowAPIImportDialog,
     selectShowUsageImportDialog,
-    selectUI
+    selectUI,
+    setFilterString
 } from "../features/ui/uiSlice";
 import {initializeUsages, persistUsages, selectUsages} from "../features/usages/usageSlice";
+import {initializePythonPackage, selectPythonPackage} from "../features/packageData/apiSlice";
 
 export const App: React.FC = function () {
     useIndexedDB();
 
-    // TODO
-    const [pythonPackage, setPythonPackage] = useState<PythonPackage>(new PythonPackage('empty', 'empty', '0.0.1'));
-
-    useEffect(() => {
-        // noinspection JSIgnoredPromiseFromCall
-        getAPIFromIndexedDB(setPythonPackage);
-    }, []);
-
-    // Initialize usages
+    const pythonPackage = useAppSelector(selectPythonPackage);
     const usages = useAppSelector(selectUsages);
-
-    const [filter, setFilter] = useState('is:public');
-    const pythonFilter = createFilterFromString(filter);
+    const pythonFilter = useAppSelector(selectFilter);
     const filteredPythonPackage = pythonFilter.applyToPackage(pythonPackage, useAppSelector(selectAnnotations), usages);
+
     const [showInferErrorDialog, setShowInferErrorDialog] = useState(false);
     const [inferErrors, setInferErrors] = useState<string[]>([]);
     const displayInferErrors = (errors: string[]) => {
         setInferErrors(errors);
         setShowInferErrorDialog(true);
     };
-    // End
 
     const currentUserAction = useAppSelector(selectCurrentUserAction);
     const userActionTarget = pythonPackage.getByRelativePathAsString(currentUserAction.target);
@@ -89,8 +77,6 @@ export const App: React.FC = function () {
                 <GridItem gridArea="menu" colSpan={2}>
                     <MenuBar
                         pythonPackage={pythonPackage}
-                        filter={filter}
-                        setFilter={setFilter}
                         displayInferErrors={displayInferErrors}
                     />
                 </GridItem>
@@ -141,9 +127,7 @@ export const App: React.FC = function () {
                 </GridItem>
 
                 {showAnnotationImportDialog && <AnnotationImportDialog/>}
-                {showAPIImportDialog && (
-                    <PackageDataImportDialog setPythonPackage={setPythonPackage} setFilter={setFilter}/>
-                )}
+                {showAPIImportDialog && <PackageDataImportDialog setFilter={setFilterString}/>}
                 {showUsagesImportDialog && <UsageImportDialog/>}
             </Grid>
             <Modal
@@ -197,29 +181,19 @@ const usePersistentAnnotations = function () {
 }
 
 const usePersistentAPIState = function () {
-    // const dispatch = useAppDispatch()
-    // const api = useAppSelector(selectAPI);
+    const dispatch = useAppDispatch()
+    const [isInitialized, setIsInitialized] = useState(false);
 
-    // useEffect(() => {
-    //     dispatch(initializeAPI());
-    // }, [dispatch]);
-    //
-    // useEffect(() => {
-    //     // noinspection JSIgnoredPromiseFromCall
-    //     setAPIInIndexedDB(api: PythonPackage);
-    // }, [annotationStore]);
+    useEffect(() => {
+        if (!isInitialized) {
+            dispatch(initializePythonPackage());
+            setIsInitialized(true);
+        }
+    }, [dispatch, isInitialized]);
+
+    // Since there is currently no conversion of a PythonPackage to JSON, we persist the API state when we import it in
+    // the corresponding dialog. We must not mutate the PythonPackage afterwards.
 }
-
-const getAPIFromIndexedDB = async function (setPythonPackage: Setter<PythonPackage>) {
-    const storedPackage = (await idb.get('package')) as PythonPackageJson;
-    if (storedPackage) {
-        setPythonPackage(parsePythonPackageJson(storedPackage));
-    }
-};
-
-// const setAPIInIndexedDB = async function (api: PythonPackage) {
-//     await idb.set('api', api.toJson());
-// };
 
 const usePersistentUIState = function () {
     const dispatch = useAppDispatch()

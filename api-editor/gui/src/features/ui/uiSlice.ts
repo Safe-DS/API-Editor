@@ -1,7 +1,9 @@
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import * as idb from 'idb-keyval';
 import {RootState} from '../../app/store';
 import {CalledAfterTarget, GroupTarget} from "../annotations/annotationSlice";
+import {AbstractPythonFilter} from '../packageData/model/filters/AbstractPythonFilter';
+import {createFilterFromString} from "../packageData/model/filters/filterFactory";
 
 export interface UIState {
     showAnnotationImportDialog: boolean;
@@ -14,6 +16,7 @@ export interface UIState {
     };
     treeViewScrollOffset: number;
     heatMapMode: HeatMapMode;
+    filterString: string;
 }
 
 type UserAction =
@@ -92,6 +95,7 @@ export const initialState: UIState = {
     expandedInTreeView: {},
     treeViewScrollOffset: 0,
     heatMapMode: HeatMapMode.None,
+    filterString: 'is:public',
 };
 
 // Thunks --------------------------------------------------------------------------------------------------------------
@@ -230,6 +234,9 @@ const uiSlice = createSlice({
         setHeatMapMode(state, action: PayloadAction<HeatMapMode>) {
             state.heatMapMode = action.payload;
         },
+        setFilterString(state, action: PayloadAction<string>) {
+            state.filterString = action.payload;
+        }
     },
     extraReducers(builder) {
         builder.addCase(initializeUI.fulfilled, (state, action) => action.payload);
@@ -262,6 +269,8 @@ export const {
     setAllCollapsedInTreeView,
     setTreeViewScrollOffset,
     setHeatMapMode,
+
+    setFilterString,
 } = actions;
 export const uiReducer = reducer;
 
@@ -280,3 +289,7 @@ export const selectAllExpandedInTreeView = (state: RootState): { [target: string
     selectUI(state).expandedInTreeView;
 export const selectTreeViewScrollOffset = (state: RootState): number => selectUI(state).treeViewScrollOffset;
 export const selectHeatMapMode = (state: RootState): HeatMapMode => selectUI(state).heatMapMode;
+export const selectFilterString = (state: RootState): string => selectUI(state).filterString;
+export const selectFilter = createSelector([selectFilterString], (filterString: string): AbstractPythonFilter => {
+    return createFilterFromString(filterString);
+})

@@ -17,19 +17,20 @@ export const store = configureStore({
             serializableCheck: {
                 // Ignore these action types
                 ignoredActions: [
+                    'api/initialize',
+                    'api/initialize/fulfilled',
+                    'api/set',
                     'usages/initialize',
                     'usages/initialize/fulfilled',
                     'usages/set'
                 ],
                 // Ignore these paths in the state
-                ignoredPaths: ['usages.usages'],
+                ignoredPaths: [
+                    'api.pythonPackage',
+                    'usages.usages'
+                ],
             },
         }),
-    devTools: {
-        serialize: {
-            options: true
-        }
-    }
 });
 
 setupListeners(store.dispatch);
