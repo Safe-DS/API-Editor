@@ -33,7 +33,6 @@ import {useAppDispatch, useAppSelector} from './hooks';
 import PythonFunction from '../features/packageData/model/PythonFunction';
 import {AttributeForm} from '../features/annotations/forms/AttributeForm';
 import {UsageCountJson, UsageCountStore} from '../features/usages/model/UsageCountStore';
-import {selectShowUsageImportDialog} from '../features/usages/usageSlice';
 import {UsageImportDialog} from '../features/usages/UsageImportDialog';
 import {createFilterFromString} from '../features/packageData/model/filters/filterFactory';
 import {
@@ -41,7 +40,7 @@ import {
     initializeUI,
     selectCurrentUserAction,
     selectShowAnnotationImportDialog,
-    selectShowAPIImportDialog,
+    selectShowAPIImportDialog, selectShowUsageImportDialog,
     selectUI,
     UIState
 } from "../features/ui/uiSlice";

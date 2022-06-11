@@ -4,13 +4,15 @@ import {RootState} from '../../app/store';
 import {CalledAfterTarget, GroupTarget} from "../annotations/annotationSlice";
 
 export interface UIState {
-    currentUserAction: UserAction;
     showAnnotationImportDialog: boolean;
+    showAPIImportDialog: boolean;
+    showUsageImportDialog: boolean;
+
+    currentUserAction: UserAction;
     expandedInTreeView: {
         [target: string]: true;
     };
     treeViewScrollOffset: number;
-    showAPIImportDialog: boolean;
     heatMapMode: HeatMapMode;
 }
 
@@ -82,11 +84,13 @@ export enum HeatMapMode {
 // Initial state -------------------------------------------------------------------------------------------------------
 
 export const initialState: UIState = {
-    currentUserAction: NoUserAction,
     showAnnotationImportDialog: false,
+    showAPIImportDialog: false,
+    showUsageImportDialog: false,
+
+    currentUserAction: NoUserAction,
     expandedInTreeView: {},
     treeViewScrollOffset: 0,
-    showAPIImportDialog: false,
     heatMapMode: HeatMapMode.None,
 };
 
@@ -118,6 +122,19 @@ const uiSlice = createSlice({
         },
         reset() {
             return initialState;
+        },
+
+        toggleAnnotationImportDialog(state) {
+            state.showAnnotationImportDialog = !state.showAnnotationImportDialog;
+        },
+        hideAnnotationImportDialog(state) {
+            state.showAnnotationImportDialog = false;
+        },
+        toggleAPIImportDialog(state) {
+            state.showAPIImportDialog = !state.showAPIImportDialog;
+        },
+        toggleUsageImportDialog(state) {
+            state.showUsageImportDialog = !state.showUsageImportDialog;
         },
 
         showAttributeAnnotationForm(state, action: PayloadAction<string>) {
@@ -179,12 +196,6 @@ const uiSlice = createSlice({
         hideAnnotationForm(state) {
             state.currentUserAction = NoUserAction;
         },
-        toggleAnnotationImportDialog(state) {
-            state.showAnnotationImportDialog = !state.showAnnotationImportDialog;
-        },
-        hideAnnotationImportDialog(state) {
-            state.showAnnotationImportDialog = false;
-        },
 
         toggleIsExpandedInTreeView(state, action: PayloadAction<string>) {
             if (state.expandedInTreeView[action.payload]) {
@@ -208,9 +219,6 @@ const uiSlice = createSlice({
         setTreeViewScrollOffset(state, action: PayloadAction<number>) {
             state.treeViewScrollOffset = action.payload;
         },
-        toggleAPIImportDialog(state) {
-            state.showAPIImportDialog = !state.showAPIImportDialog;
-        },
         setHeatMapMode(state, action: PayloadAction<HeatMapMode>) {
             state.heatMapMode = action.payload;
         },
@@ -225,6 +233,11 @@ export const {
     set: setUI,
     reset: resetUI,
 
+    toggleAnnotationImportDialog,
+    hideAnnotationImportDialog,
+    toggleAPIImportDialog,
+    toggleUsageImportDialog,
+
     showAttributeAnnotationForm,
     showBoundaryAnnotationForm,
     showCalledAfterAnnotationForm,
@@ -236,22 +249,21 @@ export const {
     showRenameAnnotationForm,
     hideAnnotationForm,
 
-    toggleAnnotationImportDialog,
-    hideAnnotationImportDialog,
-
     toggleIsExpandedInTreeView,
     setAllExpandedInTreeView,
     setAllCollapsedInTreeView,
     setTreeViewScrollOffset,
-    toggleAPIImportDialog,
     setHeatMapMode,
 } = actions;
 export const uiReducer = reducer;
 
 export const selectUI = (state: RootState) => state.ui;
-export const selectCurrentUserAction = (state: RootState): UserAction => selectUI(state).currentUserAction;
 export const selectShowAnnotationImportDialog = (state: RootState): boolean =>
     selectUI(state).showAnnotationImportDialog;
+export const selectShowAPIImportDialog = (state: RootState): boolean =>
+    selectUI(state).showAPIImportDialog;
+export const selectShowUsageImportDialog = (state: RootState): boolean => selectUI(state).showUsageImportDialog;
+export const selectCurrentUserAction = (state: RootState): UserAction => selectUI(state).currentUserAction;
 export const selectIsExpandedInTreeView =
     (target: string) =>
         (state: RootState): boolean =>
@@ -259,6 +271,4 @@ export const selectIsExpandedInTreeView =
 export const selectAllExpandedInTreeView = (state: RootState): { [target: string]: true } =>
     selectUI(state).expandedInTreeView;
 export const selectTreeViewScrollOffset = (state: RootState): number => selectUI(state).treeViewScrollOffset;
-export const selectShowAPIImportDialog = (state: RootState): boolean =>
-    selectUI(state).showAPIImportDialog;
 export const selectHeatMapMode = (state: RootState): HeatMapMode => selectUI(state).heatMapMode;

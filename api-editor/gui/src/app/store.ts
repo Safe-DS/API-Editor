@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { annotationsReducer } from '../features/annotations/annotationSlice';
 import {apiReducer} from '../features/packageData/apiSlice';
-import usageReducer from '../features/usages/usageSlice';
+import {usageReducer} from '../features/usages/usageSlice';
 import {uiReducer} from "../features/ui/uiSlice";
 
 export const store = configureStore({

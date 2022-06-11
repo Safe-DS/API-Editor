@@ -32,9 +32,14 @@ import { resetAnnotations } from '../features/annotations/annotationSlice';
 import AnnotatedPythonPackageBuilder from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
 import PythonPackage from '../features/packageData/model/PythonPackage';
 import { Setter } from './util/types';
-import { toggleUsageImportDialog } from '../features/usages/usageSlice';
 import { FilterHelpButton } from './FilterHelpButton';
-import {HeatMapMode, setHeatMapMode, toggleAnnotationImportDialog, toggleAPIImportDialog} from "../features/ui/uiSlice";
+import {
+    HeatMapMode,
+    setHeatMapMode,
+    toggleAnnotationImportDialog,
+    toggleAPIImportDialog,
+    toggleUsageImportDialog
+} from "../features/ui/uiSlice";
 
 interface MenuBarProps {
     pythonPackage: PythonPackage;
