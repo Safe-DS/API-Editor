@@ -6,8 +6,9 @@ import { pythonIdentifierPattern } from '../../../common/validation';
 import PythonDeclaration from '../../packageData/model/PythonDeclaration';
 import PythonFunction from '../../packageData/model/PythonFunction';
 import PythonParameter from '../../packageData/model/PythonParameter';
-import { GroupAnnotation, hideAnnotationForms, selectGroups, upsertGroup } from '../annotationSlice';
+import { GroupAnnotation, selectGroups, upsertGroup } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
+import { hideAnnotationForm } from '../../ui/uiSlice';
 
 interface GroupFormProps {
     readonly target: PythonDeclaration;
@@ -84,7 +85,11 @@ export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName
     });
 
     useEffect(() => {
-        setFocus('groupName');
+        try {
+            setFocus('groupName');
+        } catch (e) {
+            // ignore
+        }
     }, [setFocus]);
 
     useEffect(() => {
@@ -109,11 +114,11 @@ export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName
                 parameters: getSelectedParameters(),
             }),
         );
-        dispatch(hideAnnotationForms());
+        dispatch(hideAnnotationForm());
     };
 
     const onCancel = () => {
-        dispatch(hideAnnotationForms());
+        dispatch(hideAnnotationForm());
     };
 
     // Rendering -------------------------------------------------------------------------------------------------------

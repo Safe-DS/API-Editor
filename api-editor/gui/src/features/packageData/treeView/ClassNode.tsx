@@ -3,11 +3,11 @@ import { FaChalkboard } from 'react-icons/fa';
 import { isEmptyList } from '../../../common/util/listOperations';
 import PythonClass from '../model/PythonClass';
 import { TreeNode, ValuePair } from './TreeNode';
-import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
+import { AbstractPythonFilter } from '../model/filters/AbstractPythonFilter';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { useAppSelector } from '../../../app/hooks';
-import { AnnotationsState, selectAnnotations } from '../../annotations/annotationSlice';
-import { HeatMapMode, selectHeatMapMode } from '../packageDataSlice';
+import { AnnotationStore, selectAnnotations } from '../../annotations/annotationSlice';
+import { HeatMapMode, selectHeatMapMode } from '../../ui/uiSlice';
 
 interface ClassNodeProps {
     pythonClass: PythonClass;
@@ -15,7 +15,7 @@ interface ClassNodeProps {
     usages: UsageCountStore;
 }
 
-const ClassNode: React.FC<ClassNodeProps> = function ({ pythonClass, filter, usages }) {
+export const ClassNode: React.FC<ClassNodeProps> = function ({ pythonClass, filter, usages }) {
     const hasMethods = !isEmptyList(pythonClass.methods);
     const annotations = useAppSelector(selectAnnotations);
     const heatMapMode = useAppSelector(selectHeatMapMode);
@@ -23,7 +23,7 @@ const ClassNode: React.FC<ClassNodeProps> = function ({ pythonClass, filter, usa
 
     if (heatMapMode === HeatMapMode.Annotations) {
         valuePair = getMapWithAnnotation(pythonClass, annotations);
-    } else if (heatMapMode === HeatMapMode.Usages) {
+    } else if (heatMapMode === HeatMapMode.Usages || heatMapMode === HeatMapMode.Usefulness) {
         valuePair = getMapWithUsages(usages, pythonClass);
     }
 
@@ -41,12 +41,12 @@ const ClassNode: React.FC<ClassNodeProps> = function ({ pythonClass, filter, usa
 };
 
 const getMapWithUsages = function (usages: UsageCountStore, pythonClass: PythonClass): ValuePair {
-    const maxValue = usages.classMax;
+    const maxValue = usages.classMaxUsages;
     const specificValue = usages.classUsages.get(pythonClass.qualifiedName) ?? 0;
     return new ValuePair(specificValue, maxValue);
 };
 
-const getMapWithAnnotation = function (pythonClass: PythonClass, annotations: AnnotationsState): ValuePair {
+const getMapWithAnnotation = function (pythonClass: PythonClass, annotations: AnnotationStore): ValuePair {
     const maxValue = 3;
     const qname = pythonClass.pathAsString();
     let specificValue = 0;
@@ -57,5 +57,3 @@ const getMapWithAnnotation = function (pythonClass: PythonClass, annotations: An
 
     return new ValuePair(specificValue, maxValue);
 };
-
-export default ClassNode;

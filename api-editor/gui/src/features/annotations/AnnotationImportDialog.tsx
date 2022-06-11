@@ -17,24 +17,16 @@ import React, { useState } from 'react';
 import { useAppDispatch } from '../../app/hooks';
 import { StyledDropzone } from '../../common/StyledDropzone';
 import { isValidJsonFile } from '../../common/util/validation';
-import {
-    AnnotationsState,
-    hideAnnotationImportDialog,
-    setAnnotations,
-    toggleAnnotationImportDialog,
-} from './annotationSlice';
+import { AnnotationStore, setAnnotations } from './annotationSlice';
+import { hideAnnotationImportDialog, toggleAnnotationImportDialog } from '../ui/uiSlice';
 
 export const AnnotationImportDialog: React.FC = function () {
     const [fileName, setFileName] = useState('');
-    const [newAnnotationStore, setNewAnnotationStore] = useState<AnnotationsState>({
+    const [newAnnotationStore, setNewAnnotationStore] = useState<AnnotationStore>({
         attributes: {},
         boundaries: {},
         constants: {},
         calledAfters: {},
-        currentUserAction: {
-            target: '',
-            type: 'none',
-        },
         enums: {},
         groups: {},
         moves: {},
@@ -42,7 +34,6 @@ export const AnnotationImportDialog: React.FC = function () {
         pures: {},
         renamings: {},
         requireds: {},
-        showImportDialog: false,
         removes: {},
     });
     const dispatch = useAppDispatch();
@@ -65,7 +56,7 @@ export const AnnotationImportDialog: React.FC = function () {
             const reader = new FileReader();
             reader.onload = () => {
                 if (typeof reader.result === 'string') {
-                    const readAnnotationJson = JSON.parse(reader.result) as AnnotationsState;
+                    const readAnnotationJson = JSON.parse(reader.result) as AnnotationStore;
                     setNewAnnotationStore(readAnnotationJson);
                 }
             };

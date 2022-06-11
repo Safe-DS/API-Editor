@@ -3,11 +3,11 @@ import { FaCogs } from 'react-icons/fa';
 import { isEmptyList } from '../../../common/util/listOperations';
 import PythonFunction from '../model/PythonFunction';
 import { TreeNode, ValuePair } from './TreeNode';
-import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
+import { AbstractPythonFilter } from '../model/filters/AbstractPythonFilter';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { useAppSelector } from '../../../app/hooks';
-import { AnnotationsState, selectAnnotations } from '../../annotations/annotationSlice';
-import { HeatMapMode, selectHeatMapMode } from '../packageDataSlice';
+import { AnnotationStore, selectAnnotations } from '../../annotations/annotationSlice';
+import { HeatMapMode, selectHeatMapMode } from '../../ui/uiSlice';
 
 interface FunctionNodeProps {
     pythonFunction: PythonFunction;
@@ -15,16 +15,16 @@ interface FunctionNodeProps {
     usages: UsageCountStore;
 }
 
-const FunctionNode: React.FC<FunctionNodeProps> = function ({ pythonFunction, filter, usages }) {
+export const FunctionNode: React.FC<FunctionNodeProps> = function ({ pythonFunction, filter, usages }) {
     const hasParameters = !isEmptyList(pythonFunction.parameters);
     const annotations = useAppSelector(selectAnnotations);
     const heatMapMode = useAppSelector(selectHeatMapMode);
     let valuePair: ValuePair = new ValuePair(undefined, undefined);
 
-    if (heatMapMode === HeatMapMode.Usages) {
-        valuePair = getMapWithUsages(usages, pythonFunction);
-    } else if (heatMapMode === HeatMapMode.Annotations) {
+    if (heatMapMode === HeatMapMode.Annotations) {
         valuePair = getMapWithAnnotation(pythonFunction, annotations);
+    } else if (heatMapMode === HeatMapMode.Usages || heatMapMode === HeatMapMode.Usefulness) {
+        valuePair = getMapWithUsages(usages, pythonFunction);
     }
 
     return (
@@ -41,13 +41,13 @@ const FunctionNode: React.FC<FunctionNodeProps> = function ({ pythonFunction, fi
 };
 
 const getMapWithUsages = function (usages: UsageCountStore, pythonFunction: PythonFunction): ValuePair {
-    const maxValue = usages.functionMax;
+    const maxValue = usages.functionMaxUsages;
     const specificValue = usages.functionUsages.get(pythonFunction.qualifiedName) ?? 0;
 
     return new ValuePair(specificValue, maxValue);
 };
 
-const getMapWithAnnotation = function (pythonFunction: PythonFunction, annotations: AnnotationsState): ValuePair {
+const getMapWithAnnotation = function (pythonFunction: PythonFunction, annotations: AnnotationStore): ValuePair {
     const maxValue = 6;
     const qname = pythonFunction.pathAsString();
     let specificValue = 0;
@@ -61,5 +61,3 @@ const getMapWithAnnotation = function (pythonFunction: PythonFunction, annotatio
 
     return new ValuePair(specificValue, maxValue);
 };
-
-export default FunctionNode;

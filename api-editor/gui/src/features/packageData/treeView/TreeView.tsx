@@ -8,12 +8,12 @@ import PythonFunction from '../model/PythonFunction';
 import PythonModule from '../model/PythonModule';
 import PythonPackage from '../model/PythonPackage';
 import PythonParameter from '../model/PythonParameter';
-import { selectAllExpandedInTreeView, selectTreeViewScrollOffset, setTreeViewScrollOffset } from '../packageDataSlice';
-import ClassNode from './ClassNode';
-import FunctionNode from './FunctionNode';
-import ModuleNode from './ModuleNode';
-import ParameterNode from './ParameterNode';
-import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
+import { selectAllExpandedInTreeView, selectTreeViewScrollOffset, setTreeViewScrollOffset } from '../../ui/uiSlice';
+import { ClassNode } from './ClassNode';
+import { FunctionNode } from './FunctionNode';
+import { ModuleNode } from './ModuleNode';
+import { ParameterNode } from './ParameterNode';
+import { AbstractPythonFilter } from '../model/filters/AbstractPythonFilter';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { AutoSizer } from '../../../common/AutoSizer';
 

@@ -1,4 +1,4 @@
-import { AnnotationsState } from '../../annotations/annotationSlice';
+import { AnnotationStore } from '../../annotations/annotationSlice';
 import PythonClass from '../../packageData/model/PythonClass';
 import PythonFunction from '../../packageData/model/PythonFunction';
 import PythonModule from '../../packageData/model/PythonModule';
@@ -27,11 +27,11 @@ import {
     InferableRequiredAnnotation,
 } from './InferableAnnotation';
 
-export default class AnnotatedPythonPackageBuilder {
+export class AnnotatedPythonPackageBuilder {
     readonly pythonPackage: PythonPackage;
-    readonly annotationStore: AnnotationsState;
+    readonly annotationStore: AnnotationStore;
 
-    constructor(pythonPackage: PythonPackage, annotationStore: AnnotationsState) {
+    constructor(pythonPackage: PythonPackage, annotationStore: AnnotationStore) {
         this.pythonPackage = pythonPackage;
         this.annotationStore = annotationStore;
     }

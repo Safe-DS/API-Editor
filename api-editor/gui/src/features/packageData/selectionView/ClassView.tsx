@@ -1,7 +1,7 @@
 import { Box, Heading, HStack, Stack, Text as ChakraText } from '@chakra-ui/react';
 import React from 'react';
-import AnnotationDropdown from '../../annotations/AnnotationDropdown';
-import AnnotationView from '../../annotations/AnnotationView';
+import { AnnotationDropdown } from '../../annotations/AnnotationDropdown';
+import { AnnotationView } from '../../annotations/AnnotationView';
 import PythonClass from '../model/PythonClass';
 import DocumentationText from './DocumentationText';
 import SectionListViewItem from './SectionListViewItem';
@@ -10,7 +10,7 @@ interface ClassViewProps {
     pythonClass: PythonClass;
 }
 
-const ClassView: React.FC<ClassViewProps> = function ({ pythonClass }) {
+export const ClassView: React.FC<ClassViewProps> = function ({ pythonClass }) {
     const id = pythonClass.pathAsString();
 
     return (
@@ -38,5 +38,3 @@ const ClassView: React.FC<ClassViewProps> = function ({ pythonClass }) {
         </Stack>
     );
 };
-
-export default ClassView;
