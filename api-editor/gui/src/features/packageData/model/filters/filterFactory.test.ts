@@ -1,9 +1,9 @@
 import { createFilterFromString } from './filterFactory';
 import { ConjunctiveFilter } from './ConjunctiveFilter';
-import VisibilityFilter, { Visibility } from './VisibilityFilter';
+import { VisibilityFilter, Visibility } from './VisibilityFilter';
 import { NegatedFilter } from './NegatedFilter';
-import NameFilter from './NameFilter';
-import UsageFilter from './UsageFilter';
+import { NameFilter } from './NameFilter';
+import { UsageFilter } from './UsageFilter';
 import { UsefulnessFilter } from './UsefulnessFilter';
 import { greaterThan } from './comparisons';
 

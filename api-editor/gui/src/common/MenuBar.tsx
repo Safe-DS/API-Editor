@@ -25,26 +25,26 @@ import {
     useColorMode,
     VStack,
 } from '@chakra-ui/react';
-import React, {useRef, useState} from 'react';
-import {FaChevronDown} from 'react-icons/fa';
-import {useAppDispatch, useAppSelector} from '../app/hooks';
-import {
-    BatchMode,
-    resetAnnotations,
-    setBatchmode,
-    toggleAnnotationImportDialog
-} from '../features/annotations/annotationSlice';
-import AnnotatedPythonPackageBuilder from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
+import React, { useRef, useState } from 'react';
+import { FaChevronDown } from 'react-icons/fa';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { resetAnnotations, selectAnnotations } from '../features/annotations/annotationSlice';
+import { AnnotatedPythonPackageBuilder } from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
 import PythonPackage from '../features/packageData/model/PythonPackage';
-import {HeatMapMode, setHeatMapMode, togglePackageDataImportDialog} from '../features/packageData/packageDataSlice';
-import {Setter} from './util/types';
-import {toggleUsageImportDialog} from '../features/usages/usageSlice';
-import {FilterHelpButton} from './FilterHelpButton';
+import { FilterHelpButton } from './FilterHelpButton';
+import {
+    HeatMapMode,
+    selectFilterString,
+    selectHeatMapMode,
+    setFilterString,
+    setHeatMapMode,
+    toggleAnnotationImportDialog,
+    toggleAPIImportDialog,
+    toggleUsageImportDialog,
+} from '../features/ui/uiSlice';
 
 interface MenuBarProps {
     pythonPackage: PythonPackage;
-    filter: string;
-    setFilter: Setter<string>;
     displayInferErrors: (errors: string[]) => void;
 }
 
@@ -99,15 +99,16 @@ const DeleteAllAnnotations = function () {
     );
 };
 
-export const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter, setFilter, displayInferErrors}) {
-    const {colorMode, toggleColorMode} = useColorMode();
+export const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, displayInferErrors }) {
+    const { colorMode, toggleColorMode } = useColorMode();
     const dispatch = useAppDispatch();
 
-    const annotationStore = useAppSelector((state) => state.annotations);
+    const annotationStore = useAppSelector(selectAnnotations);
+    const heatMapMode = useAppSelector(selectHeatMapMode);
 
     const exportAnnotations = () => {
         const a = document.createElement('a');
-        const file = new Blob([JSON.stringify(annotationStore)], {
+        const file = new Blob([JSON.stringify(annotationStore, null, 4)], {
             type: 'application/json',
         });
         a.href = URL.createObjectURL(file);
@@ -121,7 +122,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter,
 
         const requestOptions = {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(annotatedPythonPackage),
         };
         fetch('/api-editor/infer', requestOptions).then(async (response) => {
@@ -138,9 +139,20 @@ export const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter,
         });
     };
 
-    const settings: string[] = [];
+    const colorModeArray: string[] = [];
     if (colorMode === 'dark') {
-        settings.push('darkMode');
+        colorModeArray.push('darkMode');
+    }
+
+    let heatMapModeString: string = '';
+    if (heatMapMode === HeatMapMode.None) {
+        heatMapModeString = 'none';
+    } else if (heatMapMode === HeatMapMode.Usages) {
+        heatMapModeString = 'usages';
+    } else if (heatMapMode === HeatMapMode.Usefulness) {
+        heatMapModeString = 'usefulness';
+    } else if (heatMapMode === HeatMapMode.Annotations) {
+        heatMapModeString = 'annotations';
     }
 
     return (
@@ -149,12 +161,12 @@ export const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter,
                 {/* Box gets rid of popper.js warning "CSS margin styles cannot be used" */}
                 <Box>
                     <Menu>
-                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown}/>}>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
                             File
                         </MenuButton>
                         <MenuList>
                             <MenuGroup title="Import">
-                                <MenuItem paddingLeft={8} onClick={() => dispatch(togglePackageDataImportDialog())}>
+                                <MenuItem paddingLeft={8} onClick={() => dispatch(toggleAPIImportDialog())}>
                                     API Data
                                 </MenuItem>
                                 <MenuItem paddingLeft={8} onClick={() => dispatch(toggleUsageImportDialog())}>
@@ -164,7 +176,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter,
                                     Annotations
                                 </MenuItem>
                             </MenuGroup>
-                            <MenuDivider/>
+                            <MenuDivider />
                             <MenuGroup title="Export">
                                 <MenuItem paddingLeft={8} onClick={exportAnnotations}>
                                     Annotations
@@ -175,7 +187,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter,
                 </Box>
 
                 <Button onClick={infer}>Generate adapters</Button>
-                <DeleteAllAnnotations/>
+                <DeleteAllAnnotations />
 
                 <Box>
                     <Menu closeOnSelect={false}>
@@ -215,18 +227,18 @@ export const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter,
 
                 <Box>
                     <Menu closeOnSelect={false}>
-                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown}/>}>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
                             Settings
                         </MenuButton>
                         <MenuList>
-                            <MenuOptionGroup type="checkbox" value={settings}>
+                            <MenuOptionGroup type="checkbox" value={colorModeArray}>
                                 <MenuItemOption value={'darkMode'} onClick={toggleColorMode}>
                                     Dark mode
                                 </MenuItemOption>
                             </MenuOptionGroup>
-                            <MenuDivider/>
+                            <MenuDivider />
                             <MenuGroup title="Heat Map Mode">
-                                <MenuOptionGroup type="radio" defaultValue="none">
+                                <MenuOptionGroup type="radio" defaultValue="none" value={heatMapModeString}>
                                     <MenuItemOption
                                         paddingLeft={8}
                                         value={'none'}
@@ -262,18 +274,18 @@ export const MenuBar: React.FC<MenuBarProps> = function ({pythonPackage, filter,
                 </Box>
             </HStack>
 
-            <Spacer/>
+            <Spacer />
 
             <HStack>
                 <Input
                     type="text"
                     placeholder="Filter..."
-                    value={filter}
-                    onChange={(event) => setFilter(event.target.value)}
+                    value={useAppSelector(selectFilterString)}
+                    onChange={(event) => dispatch(setFilterString(event.target.value))}
                     spellCheck={false}
                     minWidth="400px"
                 />
-                <FilterHelpButton/>
+                <FilterHelpButton />
             </HStack>
         </Flex>
     );

@@ -38,14 +38,15 @@ export class UsageCountStore {
         readonly parameterUsages: Map<string, number> = new Map(),
         readonly valueUsages: Map<string, Map<string, number>> = new Map(),
     ) {
-        this.classMaxUsages = Math.max(...classUsages.values());
-        this.functionMaxUsages = Math.max(...functionUsages.values());
-        this.parameterMaxUsages = Math.max(...parameterUsages.values());
+        this.classMaxUsages = classUsages.size === 0 ? 0 : Math.max(...classUsages.values());
+        this.functionMaxUsages = functionUsages.size === 0 ? 0 : Math.max(...functionUsages.values());
+        this.parameterMaxUsages = parameterUsages.size === 0 ? 0 : Math.max(...parameterUsages.values());
 
         this.parameterUsefulness = new Map(
             [...parameterUsages.keys()].map((it) => [it, this.computeParameterUsefulness(it)]),
         );
-        this.parameterMaxUsefulness = Math.max(...this.parameterUsefulness.values());
+        this.parameterMaxUsefulness =
+            this.parameterUsefulness.size === 0 ? 0 : Math.max(...this.parameterUsefulness.values());
     }
 
     toJson(): UsageCountJson {

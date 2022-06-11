@@ -1,9 +1,9 @@
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import * as idb from 'idb-keyval';
-import {RootState} from '../../app/store';
+import { RootState } from '../../app/store';
 import PythonDeclaration from "../packageData/model/PythonDeclaration";
 
-export interface AnnotationsState {
+export interface AnnotationStore {
     attributes: {
         [target: string]: AttributeAnnotation;
     };
@@ -17,7 +17,6 @@ export interface AnnotationsState {
         [target: string]: ConstantAnnotation;
     };
     batchmode: BatchMode;
-    currentUserAction: UserAction;
     enums: {
         [target: string]: EnumAnnotation;
     };
@@ -42,7 +41,6 @@ export interface AnnotationsState {
     removes: {
         [target: string]: RemoveAnnotation;
     };
-    showImportDialog: boolean;
 }
 
 export interface AttributeAnnotation {
@@ -270,72 +268,13 @@ export interface RemoveAnnotation {
     readonly target: string;
 }
 
-type UserAction =
-    | typeof NoUserAction
-    | AttributeUserAction
-    | BoundaryUserAction
-    | CalledAfterUserAction
-    | ConstantUserAction
-    | GroupUserAction
-    | EnumUserAction
-    | RenameUserAction
-    | OptionalUserAction;
-
-const NoUserAction = {
-    type: 'none',
-    target: '',
-};
-
-interface AttributeUserAction {
-    readonly type: 'attribute';
-    readonly target: string;
-}
-
-interface BoundaryUserAction {
-    readonly type: 'boundary';
-    readonly target: string;
-}
-
-interface CalledAfterUserAction {
-    readonly type: 'calledAfter';
-    readonly target: string;
-    readonly calledAfterName: string;
-}
-
-interface ConstantUserAction {
-    readonly type: 'constant';
-    readonly target: string;
-}
-
-interface EnumUserAction {
-    readonly type: 'enum';
-    readonly target: string;
-}
-
-export interface GroupUserAction {
-    readonly type: 'group';
-    readonly target: string;
-    readonly groupName: string;
-}
-
-interface OptionalUserAction {
-    readonly type: 'optional';
-    readonly target: string;
-}
-
-interface RenameUserAction {
-    readonly type: 'rename';
-    readonly target: string;
-}
-
 // Initial state -------------------------------------------------------------------------------------------------------
 
-export const initialState: AnnotationsState = {
+export const initialState: AnnotationStore = {
     attributes: {},
     boundaries: {},
     calledAfters: {},
     constants: {},
-    currentUserAction: NoUserAction,
     enums: {},
     groups: {},
     moves: {},
@@ -343,7 +282,6 @@ export const initialState: AnnotationsState = {
     pures: {},
     renamings: {},
     requireds: {},
-    showImportDialog: false,
     removes: {},
     batchmode: BatchMode.None,
 };
@@ -352,7 +290,7 @@ export const initialState: AnnotationsState = {
 
 export const initializeAnnotations = createAsyncThunk('annotations/initialize', async () => {
     try {
-        const storedAnnotations = (await idb.get('annotations')) as AnnotationsState;
+        const storedAnnotations = (await idb.get('annotations')) as AnnotationStore;
         return {
             ...initialState,
             ...storedAnnotations,
@@ -362,19 +300,27 @@ export const initializeAnnotations = createAsyncThunk('annotations/initialize', 
     }
 });
 
+export const persistAnnotations = createAsyncThunk('annotations/persist', async (state: AnnotationStore) => {
+    try {
+        await idb.set('annotations', state);
+    } catch {
+        // ignore
+    }
+});
+
 // Slice ---------------------------------------------------------------------------------------------------------------
 
 const annotationsSlice = createSlice({
     name: 'annotations',
     initialState,
     reducers: {
-        set(_state, action: PayloadAction<AnnotationsState>) {
+        setAnnotations(_state, action: PayloadAction<AnnotationStore>) {
             return {
                 ...initialState,
                 ...action.payload,
             };
         },
-        reset() {
+        resetAnnotations() {
             return initialState;
         },
         upsertAttribute(state, action: PayloadAction<AttributeAnnotation>) {
@@ -522,101 +468,35 @@ const annotationsSlice = createSlice({
         removeRemove(state, action: PayloadAction<string>) {
             delete state.removes[action.payload];
         },
-        showAttributeAnnotationForm(state, action: PayloadAction<string>) {
-            state.currentUserAction = {
-                type: 'attribute',
-                target: action.payload,
-            };
-        },
-        showBoundaryAnnotationForm(state, action: PayloadAction<string>) {
-            state.currentUserAction = {
-                type: 'boundary',
-                target: action.payload,
-            };
-        },
-        showCalledAfterAnnotationForm(state, action: PayloadAction<CalledAfterTarget>) {
-            state.currentUserAction = {
-                type: 'calledAfter',
-                target: action.payload.target,
-                calledAfterName: action.payload.calledAfterName,
-            };
-        },
-        showConstantAnnotationForm(state, action: PayloadAction<string>) {
-            state.currentUserAction = {
-                type: 'constant',
-                target: action.payload,
-            };
-        },
-        showGroupAnnotationForm(state, action: PayloadAction<GroupTarget>) {
-            state.currentUserAction = {
-                type: 'group',
-                target: action.payload.target,
-                groupName: action.payload.groupName,
-            };
-        },
-        showEnumAnnotationForm(state, action: PayloadAction<string>) {
-            state.currentUserAction = {
-                type: 'enum',
-                target: action.payload,
-            };
-        },
-        showMoveAnnotationForm(state, action: PayloadAction<string>) {
-            state.currentUserAction = {
-                type: 'move',
-                target: action.payload,
-            };
-        },
-        showOptionalAnnotationForm(state, action: PayloadAction<string>) {
-            state.currentUserAction = {
-                type: 'optional',
-                target: action.payload,
-            };
-        },
-        showRenameAnnotationForm(state, action: PayloadAction<string>) {
-            state.currentUserAction = {
-                type: 'rename',
-                target: action.payload,
-            };
-        },
-        hideAnnotationForms(state) {
-            state.currentUserAction = NoUserAction;
-            state.batchmode = BatchMode.None;
-        },
-        toggleImportDialog(state) {
-            state.showImportDialog = !state.showImportDialog;
-        },
-        hideImportDialog(state) {
-            state.showImportDialog = false;
-        },
-        setBatchmode(state, action: PayloadAction<BatchMode>) {
-            state.batchmode = action.payload;
-        },
-        batchAnnotateRename(state, action: PayloadAction<PythonDeclaration[]>) {
-            // WritableDraft<{[p: string]: RenameAnnotation}>
-            //(String: target, String: newName, PythonDeclaration[])
-            //-> {[p: string]: RenameAnnotation}
-            const newRenamings: { [p: string]: RenameAnnotation } = {};
-            for (const declaration of action.payload) {
-                newRenamings[declaration.name] = {
-                    target: "",//TODO übergeben und fixen
-                    newName: "",//TODO
-                };
-            }
-            state.renamings = {
-                ...state.renamings,
-                ...newRenamings,
-            };
-        }
     },
     extraReducers(builder) {
         builder.addCase(initializeAnnotations.fulfilled, (state, action) => action.payload);
     },
+    setBatchmode(state, action: PayloadAction<BatchMode>) {
+        state.batchmode = action.payload;
+    },
+    batchAnnotateRename(state, action: PayloadAction<PythonDeclaration[]>) {
+        // WritableDraft<{[p: string]: RenameAnnotation}>
+        //(String: target, String: newName, PythonDeclaration[])
+        //-> {[p: string]: RenameAnnotation}
+        const newRenamings: { [p: string]: RenameAnnotation } = {};
+        for (const declaration of action.payload) {
+            newRenamings[declaration.name] = {
+                target: "",//TODO übergeben und fixen
+                newName: "",//TODO
+            };
+        }
+        state.renamings = {
+            ...state.renamings,
+            ...newRenamings,
+        };
+    }
 });
 
-const {actions, reducer} = annotationsSlice;
+const { actions, reducer } = annotationsSlice;
 export const {
-    set: setAnnotations,
-    reset: resetAnnotations,
+    setAnnotations,
+    resetAnnotations,
 
     upsertAttribute,
     removeAttribute,
@@ -642,74 +522,56 @@ export const {
     removeRequired,
     addRemove,
     removeRemove,
-
-    showAttributeAnnotationForm,
-    showBoundaryAnnotationForm,
-    showCalledAfterAnnotationForm,
-    showConstantAnnotationForm,
-    showEnumAnnotationForm,
-    showGroupAnnotationForm,
-    showMoveAnnotationForm,
-    showOptionalAnnotationForm,
-    showRenameAnnotationForm,
-    hideAnnotationForms,
     setBatchmode,
-
-    toggleImportDialog: toggleAnnotationImportDialog,
-    hideImportDialog: hideAnnotationImportDialog,
 } = actions;
 export const annotationsReducer = reducer;
 
 export const selectAnnotations = (state: RootState) => state.annotations;
 export const selectAttribute =
     (target: string) =>
-        (state: RootState): AttributeAnnotation | undefined =>
-            selectAnnotations(state).attributes[target];
+    (state: RootState): AttributeAnnotation | undefined =>
+        selectAnnotations(state).attributes[target];
 export const selectBoundary =
     (target: string) =>
-        (state: RootState): BoundaryAnnotation | undefined =>
-            selectAnnotations(state).boundaries[target];
+    (state: RootState): BoundaryAnnotation | undefined =>
+        selectAnnotations(state).boundaries[target];
 export const selectCalledAfters =
     (target: string) =>
-        (state: RootState): { [calledAfter: string]: CalledAfterAnnotation } =>
-            selectAnnotations(state).calledAfters[target] ?? {};
+    (state: RootState): { [calledAfter: string]: CalledAfterAnnotation } =>
+        selectAnnotations(state).calledAfters[target] ?? {};
 export const selectConstant =
     (target: string) =>
-        (state: RootState): ConstantAnnotation | undefined =>
-            selectAnnotations(state).constants[target];
-export const selectCurrentUserAction = (state: RootState): UserAction => selectAnnotations(state).currentUserAction;
+    (state: RootState): ConstantAnnotation | undefined =>
+        selectAnnotations(state).constants[target];
 export const selectEnum =
     (target: string) =>
-        (state: RootState): EnumAnnotation | undefined =>
-            selectAnnotations(state).enums[target];
+    (state: RootState): EnumAnnotation | undefined =>
+        selectAnnotations(state).enums[target];
 export const selectGroups =
     (target: string) =>
-        (state: RootState): { [groupName: string]: GroupAnnotation } =>
-            selectAnnotations(state).groups[target] ?? {};
+    (state: RootState): { [groupName: string]: GroupAnnotation } =>
+        selectAnnotations(state).groups[target] ?? {};
 export const selectMove =
     (target: string) =>
-        (state: RootState): MoveAnnotation | undefined =>
-            selectAnnotations(state).moves[target];
+    (state: RootState): MoveAnnotation | undefined =>
+        selectAnnotations(state).moves[target];
 export const selectOptional =
     (target: string) =>
-        (state: RootState): OptionalAnnotation | undefined =>
-            selectAnnotations(state).optionals[target];
+    (state: RootState): OptionalAnnotation | undefined =>
+        selectAnnotations(state).optionals[target];
 export const selectPure =
     (target: string) =>
-        (state: RootState): PureAnnotation | undefined =>
-            selectAnnotations(state).pures[target];
+    (state: RootState): PureAnnotation | undefined =>
+        selectAnnotations(state).pures[target];
 export const selectRenaming =
     (target: string) =>
-        (state: RootState): RenameAnnotation | undefined =>
-            selectAnnotations(state).renamings[target];
+    (state: RootState): RenameAnnotation | undefined =>
+        selectAnnotations(state).renamings[target];
 export const selectRequired =
     (target: string) =>
-        (state: RootState): RequiredAnnotation | undefined =>
-            selectAnnotations(state).requireds[target];
-export const selectShowAnnotationImportDialog = (state: RootState): boolean =>
-    selectAnnotations(state).showImportDialog;
+    (state: RootState): RequiredAnnotation | undefined =>
+        selectAnnotations(state).requireds[target];
 export const selectRemove =
     (target: string) =>
-        (state: RootState): RemoveAnnotation | undefined =>
-            selectAnnotations(state).removes[target];
-export const selectBatchmode = (state: RootState): BatchMode => selectAnnotations(state).batchmode;
+    (state: RootState): RemoveAnnotation | undefined =>
+        selectAnnotations(state).removes[target];

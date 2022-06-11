@@ -1,13 +1,13 @@
-import {Button, HStack} from '@chakra-ui/react';
+import { Button, HStack } from '@chakra-ui/react';
 import React from 'react';
 import PythonPackage from '../model/PythonPackage';
-import {collapseAllParents, expandAllParents, expandParentsInTreeView} from '../packageDataSlice';
 import PythonDeclaration from '../model/PythonDeclaration';
-import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
-import {AnnotationsState, selectAnnotations} from '../../annotations/annotationSlice';
-import {useNavigate} from 'react-router';
-import {useAppDispatch, useAppSelector} from '../../../app/hooks';
-import {UsageCountStore} from '../../usages/model/UsageCountStore';
+import { AbstractPythonFilter } from '../model/filters/AbstractPythonFilter';
+import { AnnotationStore, selectAnnotations } from '../../annotations/annotationSlice';
+import { useNavigate } from 'react-router';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
+import { setAllCollapsedInTreeView, setAllExpandedInTreeView } from '../../ui/uiSlice';
 
 interface ActionBarProps {
     declaration: PythonDeclaration;
@@ -33,7 +33,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({declaration, pytho
 
                         //update tree selection
                         const parents = getParents(navStr, pythonPackage);
-                        dispatch(expandParentsInTreeView(parents));
+                        dispatch(setAllExpandedInTreeView(parents));
                     }
                 }}
             >
@@ -48,7 +48,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({declaration, pytho
 
                         //update tree selection
                         const parents = getParents(navStr, pythonPackage);
-                        dispatch(expandParentsInTreeView(parents));
+                        dispatch(setAllExpandedInTreeView(parents));
                     }
                 }}
             >
@@ -57,7 +57,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({declaration, pytho
             <Button
                 accessKey="a"
                 onClick={() => {
-                    dispatch(expandAllParents(getDescendants(pythonPackage)));
+                    dispatch(setAllExpandedInTreeView(getDescendants(pythonPackage)));
                 }}
             >
                 Expand All
@@ -65,7 +65,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({declaration, pytho
             <Button
                 accessKey="s"
                 onClick={() => {
-                    dispatch(collapseAllParents(getDescendants(pythonPackage)));
+                    dispatch(setAllCollapsedInTreeView(getDescendants(pythonPackage)));
                 }}
             >
                 Collapse All
@@ -73,7 +73,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({declaration, pytho
             <Button
                 accessKey="y"
                 onClick={() => {
-                    dispatch(expandAllParents(getDescendants(declaration)));
+                    dispatch(setAllExpandedInTreeView(getDescendants(declaration)));
                 }}
             >
                 Expand Selected
@@ -81,7 +81,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({declaration, pytho
             <Button
                 accessKey="x"
                 onClick={() => {
-                    dispatch(collapseAllParents(getDescendants(declaration)));
+                    dispatch(setAllCollapsedInTreeView(getDescendants(declaration)));
                 }}
             >
                 Collapse Selected
@@ -90,7 +90,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({declaration, pytho
     );
 };
 
-export const getAllSelectedElements = function (current: PythonDeclaration, filter: AbstractPythonFilter, annotations: AnnotationsState, usages: UsageCountStore): PythonDeclaration[] {
+export const getAllSelectedElements = function (current: PythonDeclaration, filter: AbstractPythonFilter, annotations: AnnotationStore, usages: UsageCountStore): PythonDeclaration[] {
     let topmostElement = current;
     while (topmostElement.parent()) {
         const parent = topmostElement.parent();
@@ -101,7 +101,7 @@ export const getAllSelectedElements = function (current: PythonDeclaration, filt
     return getAllSelectedChildren(topmostElement, filter, annotations, usages);
 }
 
-const getAllSelectedChildren = function (current: PythonDeclaration, filter: AbstractPythonFilter, annotations: AnnotationsState, usages: UsageCountStore): PythonDeclaration[] {
+const getAllSelectedChildren = function (current: PythonDeclaration, filter: AbstractPythonFilter, annotations: AnnotationStore, usages: UsageCountStore): PythonDeclaration[] {
     const selectedElements: PythonDeclaration[] = [];
     if (filter.shouldKeepDeclaration(current, annotations, usages)) {
         selectedElements.push(current);
@@ -115,7 +115,7 @@ const getAllSelectedChildren = function (current: PythonDeclaration, filter: Abs
 const getNextElementPath = function (
     current: PythonDeclaration,
     filter: AbstractPythonFilter,
-    annotations: AnnotationsState,
+    annotations: AnnotationStore,
     usages: UsageCountStore,
 ): string | null {
     const nextElement = getNextElementInTree(current);
@@ -155,7 +155,7 @@ const getNextFromParentInTree = function (current: PythonDeclaration): PythonDec
 const getPreviousElementPath = function (
     current: PythonDeclaration,
     filter: AbstractPythonFilter,
-    annotations: AnnotationsState,
+    annotations: AnnotationStore,
     usages: UsageCountStore,
 ): string | null {
     const previousElement = getPreviousElementInTree(current);

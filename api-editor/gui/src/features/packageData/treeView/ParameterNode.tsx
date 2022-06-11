@@ -2,11 +2,11 @@ import React from 'react';
 import { FaKeyboard } from 'react-icons/fa';
 import PythonParameter from '../model/PythonParameter';
 import { TreeNode, ValuePair } from './TreeNode';
-import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
+import { AbstractPythonFilter } from '../model/filters/AbstractPythonFilter';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { useAppSelector } from '../../../app/hooks';
-import { AnnotationsState, selectAnnotations } from '../../annotations/annotationSlice';
-import { HeatMapMode, selectHeatMapMode } from '../packageDataSlice';
+import { AnnotationStore, selectAnnotations } from '../../annotations/annotationSlice';
+import { HeatMapMode, selectHeatMapMode } from '../../ui/uiSlice';
 
 interface ParameterNodeProps {
     pythonParameter: PythonParameter;
@@ -52,7 +52,7 @@ const getMapWithUsefulness = function (usages: UsageCountStore, pythonParameter:
     return new ValuePair(specificValue, maxValue);
 };
 
-const getMapWithAnnotation = function (pythonParameter: PythonParameter, annotations: AnnotationsState): ValuePair {
+const getMapWithAnnotation = function (pythonParameter: PythonParameter, annotations: AnnotationStore): ValuePair {
     const maxValue = 7;
     const qname = pythonParameter.pathAsString();
     let specificValue = 0;

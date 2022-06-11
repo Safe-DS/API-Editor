@@ -2,9 +2,10 @@ import { FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Select } from 
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { hideAnnotationForms, selectCalledAfters, upsertCalledAfter } from '../annotationSlice';
+import { selectCalledAfters, upsertCalledAfter } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
 import PythonFunction from '../../packageData/model/PythonFunction';
+import { hideAnnotationForm } from '../../ui/uiSlice';
 
 interface CalledAfterFormProps {
     readonly target: PythonFunction;
@@ -61,11 +62,11 @@ export const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ targe
                 ...data,
             }),
         );
-        dispatch(hideAnnotationForms());
+        dispatch(hideAnnotationForm());
     };
 
     const onCancel = () => {
-        dispatch(hideAnnotationForms());
+        dispatch(hideAnnotationForm());
     };
 
     // Rendering -------------------------------------------------------------------------------------------------------

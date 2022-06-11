@@ -13,7 +13,6 @@ import {
     ModalOverlay,
     Text as ChakraText,
 } from '@chakra-ui/react';
-import * as idb from 'idb-keyval';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../app/hooks';
@@ -21,19 +20,16 @@ import { StyledDropzone } from '../../common/StyledDropzone';
 import { Setter } from '../../common/util/types';
 import { isValidJsonFile } from '../../common/util/validation';
 import { resetAnnotations } from '../annotations/annotationSlice';
-import PythonPackage from './model/PythonPackage';
 import { parsePythonPackageJson, PythonPackageJson } from './model/PythonPackageBuilder';
-import { togglePackageDataImportDialog } from './packageDataSlice';
+import { resetUI, toggleAPIImportDialog } from '../ui/uiSlice';
+import { persistPythonPackage, setPythonPackage } from './apiSlice';
+import { resetUsages } from '../usages/usageSlice';
 
 interface ImportPythonPackageDialogProps {
-    setPythonPackage: Setter<PythonPackage>;
     setFilter: Setter<string>;
 }
 
-export const PackageDataImportDialog: React.FC<ImportPythonPackageDialogProps> = function ({
-    setFilter,
-    setPythonPackage,
-}) {
+export const PackageDataImportDialog: React.FC<ImportPythonPackageDialogProps> = function ({ setFilter }) {
     const [fileName, setFileName] = useState('');
     const [newPythonPackage, setNewPythonPackage] = useState<string>();
     const navigate = useNavigate();
@@ -42,15 +38,19 @@ export const PackageDataImportDialog: React.FC<ImportPythonPackageDialogProps> =
     const submit = async () => {
         if (newPythonPackage) {
             const parsedPythonPackage = JSON.parse(newPythonPackage) as PythonPackageJson;
-            setPythonPackage(parsePythonPackageJson(parsedPythonPackage));
+
+            dispatch(setPythonPackage(parsePythonPackageJson(parsedPythonPackage)));
+            dispatch(persistPythonPackage(parsedPythonPackage));
+
+            // Reset other slices
+            dispatch(resetAnnotations());
+            dispatch(resetUI());
+            dispatch(resetUsages());
             setFilter('is:public');
             navigate('/');
-
-            await idb.set('package', parsedPythonPackage);
         }
-        close();
     };
-    const close = () => dispatch(togglePackageDataImportDialog());
+    const close = () => dispatch(toggleAPIImportDialog());
 
     const slurpAndParse = (acceptedFiles: File[]) => {
         if (isValidJsonFile(acceptedFiles[acceptedFiles.length - 1].name)) {
