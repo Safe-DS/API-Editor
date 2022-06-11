@@ -17,6 +17,7 @@ export interface UIState {
     treeViewScrollOffset: number;
     heatMapMode: HeatMapMode;
     filterString: string;
+    batchMode: BatchMode;
 }
 
 type UserAction =
@@ -84,6 +85,16 @@ export enum HeatMapMode {
     Annotations,
 }
 
+export enum BatchMode {
+    None,
+    Rename,
+    Move,
+    Remove,
+    Constant,
+    Optional,
+    Required,
+}
+
 // Initial state -------------------------------------------------------------------------------------------------------
 
 export const initialState: UIState = {
@@ -96,6 +107,7 @@ export const initialState: UIState = {
     treeViewScrollOffset: 0,
     heatMapMode: HeatMapMode.None,
     filterString: 'is:public',
+    batchMode: BatchMode.None,
 };
 
 // Thunks --------------------------------------------------------------------------------------------------------------
@@ -237,6 +249,9 @@ const uiSlice = createSlice({
         setFilterString(state, action: PayloadAction<string>) {
             state.filterString = action.payload;
         },
+        setBatchMode(state, action: PayloadAction<BatchMode>) {
+            state.batchMode = action.payload;
+        },
     },
     extraReducers(builder) {
         builder.addCase(initializeUI.fulfilled, (state, action) => action.payload);
@@ -269,8 +284,8 @@ export const {
     setAllCollapsedInTreeView,
     setTreeViewScrollOffset,
     setHeatMapMode,
-
     setFilterString,
+    setBatchMode,
 } = actions;
 export const uiReducer = reducer;
 
@@ -292,3 +307,4 @@ export const selectFilterString = (state: RootState): string => selectUI(state).
 export const selectFilter = createSelector([selectFilterString], (filterString: string): AbstractPythonFilter => {
     return createFilterFromString(filterString);
 });
+export const selectBatchMode = (state: RootState): BatchMode => selectUI(state).batchMode;

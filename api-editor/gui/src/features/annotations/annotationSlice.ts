@@ -16,7 +16,6 @@ export interface AnnotationStore {
     constants: {
         [target: string]: ConstantAnnotation;
     };
-    batchmode: BatchMode;
     enums: {
         [target: string]: EnumAnnotation;
     };
@@ -106,16 +105,6 @@ export enum ComparisonOperator {
     LESS_THAN_OR_EQUALS,
     LESS_THAN,
     UNRESTRICTED,
-}
-
-export enum BatchMode {
-    None,
-    Rename,
-    Move,
-    Remove,
-    Constant,
-    Optional,
-    Required,
 }
 
 export interface CalledAfterAnnotation {
@@ -283,7 +272,6 @@ export const initialState: AnnotationStore = {
     renamings: {},
     requireds: {},
     removes: {},
-    batchmode: BatchMode.None,
 };
 
 // Thunks --------------------------------------------------------------------------------------------------------------
@@ -446,6 +434,19 @@ const annotationsSlice = createSlice({
         removeRenaming(state, action: PayloadAction<string>) {
             delete state.renamings[action.payload];
         },
+        batchAnnotateRename(state, action: PayloadAction<PythonDeclaration[]>) {
+            const newRenamings: { [p: string]: RenameAnnotation } = {};
+            for (const declaration of action.payload) {
+                newRenamings[declaration.name] = {
+                    target: "",//TODO übergeben und fixen
+                    newName: "",//TODO
+                };
+            }
+            state.renamings = {
+                ...state.renamings,
+                ...newRenamings,
+            };
+        },
         addRequired(state, action: PayloadAction<RequiredAnnotation>) {
             state.requireds[action.payload.target] = action.payload;
         },
@@ -472,25 +473,6 @@ const annotationsSlice = createSlice({
     extraReducers(builder) {
         builder.addCase(initializeAnnotations.fulfilled, (state, action) => action.payload);
     },
-    setBatchmode(state, action: PayloadAction<BatchMode>) {
-        state.batchmode = action.payload;
-    },
-    batchAnnotateRename(state, action: PayloadAction<PythonDeclaration[]>) {
-        // WritableDraft<{[p: string]: RenameAnnotation}>
-        //(String: target, String: newName, PythonDeclaration[])
-        //-> {[p: string]: RenameAnnotation}
-        const newRenamings: { [p: string]: RenameAnnotation } = {};
-        for (const declaration of action.payload) {
-            newRenamings[declaration.name] = {
-                target: "",//TODO übergeben und fixen
-                newName: "",//TODO
-            };
-        }
-        state.renamings = {
-            ...state.renamings,
-            ...newRenamings,
-        };
-    }
 });
 
 const { actions, reducer } = annotationsSlice;
@@ -522,7 +504,6 @@ export const {
     removeRequired,
     addRemove,
     removeRemove,
-    setBatchmode,
 } = actions;
 export const annotationsReducer = reducer;
 

@@ -33,9 +33,10 @@ import { AnnotatedPythonPackageBuilder } from '../features/annotatedPackageData/
 import PythonPackage from '../features/packageData/model/PythonPackage';
 import { FilterHelpButton } from './FilterHelpButton';
 import {
+    BatchMode,
     HeatMapMode,
     selectFilterString,
-    selectHeatMapMode,
+    selectHeatMapMode, setBatchMode,
     setFilterString,
     setHeatMapMode,
     toggleAnnotationImportDialog,
@@ -197,27 +198,27 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, displa
                         <MenuList>
                             <MenuGroup title={"Annotate"}>
                                 <MenuItem paddingLeft={8}
-                                          onClick={() => dispatch(setBatchmode(BatchMode.Rename))}>
+                                          onClick={() => dispatch(setBatchMode(BatchMode.Rename))}>
                                     Rename
                                 </MenuItem>
                                 <MenuItem paddingLeft={8}
-                                          onClick={() => dispatch(setBatchmode(BatchMode.Move))}>
+                                          onClick={() => dispatch(setBatchMode(BatchMode.Move))}>
                                     Move
                                 </MenuItem>
                                 <MenuItem paddingLeft={8}
-                                          onClick={() => dispatch(setBatchmode(BatchMode.Remove))}>
+                                          onClick={() => dispatch(setBatchMode(BatchMode.Remove))}>
                                     Remove
                                 </MenuItem>
                                 <MenuItem paddingLeft={8}
-                                          onClick={() => dispatch(setBatchmode(BatchMode.Constant))}>
+                                          onClick={() => dispatch(setBatchMode(BatchMode.Constant))}>
                                     Constant
                                 </MenuItem>
                                 <MenuItem paddingLeft={8}
-                                          onClick={() => dispatch(setBatchmode(BatchMode.Optional))}>
+                                          onClick={() => dispatch(setBatchMode(BatchMode.Optional))}>
                                     Optional
                                 </MenuItem>
                                 <MenuItem paddingLeft={8}
-                                          onClick={() => dispatch(setBatchmode(BatchMode.Required))}>
+                                          onClick={() => dispatch(setBatchMode(BatchMode.Required))}>
                                     Required
                                 </MenuItem>
                             </MenuGroup>

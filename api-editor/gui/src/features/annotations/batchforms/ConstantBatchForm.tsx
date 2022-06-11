@@ -1,9 +1,9 @@
 import React from 'react';
-import {useAppDispatch} from '../../../app/hooks';
+import { useAppDispatch } from '../../../app/hooks';
 import PythonDeclaration from '../../packageData/model/PythonDeclaration';
-import {ConstantAnnotation, upsertConstant} from '../annotationSlice';
-import {TypeValueBatchForm, TypeValueBatchFormState} from "./TypeValueBatchForm";
-import PythonParameter from "../../packageData/model/PythonParameter";
+import { upsertConstant } from '../annotationSlice';
+import { TypeValueBatchForm, TypeValueBatchFormState } from './TypeValueBatchForm';
+import PythonParameter from '../../packageData/model/PythonParameter';
 
 interface ConstantBatchFormProps {
     target: PythonDeclaration[];
@@ -20,13 +20,13 @@ export const ConstantBatchForm: React.FC<ConstantBatchFormProps> = function ({ta
     // Event handlers --------------------------------------------------------------------------------------------------
 
     const handleUpsertAnnotation = (data: TypeValueBatchFormState) => {
-        const all = targetPaths.map(path => {
-            ConstantAnnotation.create({
-                path,
-                defaultType: data.defaultType,
-                defaultValue: data.defaultValue,
-            });
-        });
+        // const all = targetPaths.map(path => {
+        //     ConstantAnnotation.create({
+        //         path,
+        //         defaultType: data.defaultType,
+        //         defaultValue: data.defaultValue,
+        //     });
+        // });
         targetPaths.forEach(targetPath => {
             dispatch(
                 upsertConstant({

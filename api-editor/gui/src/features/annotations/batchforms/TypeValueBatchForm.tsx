@@ -23,13 +23,14 @@ import {
     Stack,
     Text,
 } from '@chakra-ui/react';
-import React, {useRef, useState} from 'react';
-import {useForm} from 'react-hook-form';
-import {useAppDispatch} from '../../../app/hooks';
-import {booleanPattern, numberPattern} from '../../../common/validation';
+import React, { useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useAppDispatch } from '../../../app/hooks';
+import { booleanPattern, numberPattern } from '../../../common/validation';
 import PythonDeclaration from '../../packageData/model/PythonDeclaration';
-import {DefaultType, DefaultValue, hideAnnotationForms} from '../annotationSlice';
-import {AnnotationBatchForm} from './AnnotationBatchForm';
+import { DefaultType, DefaultValue } from '../annotationSlice';
+import { AnnotationBatchForm } from './AnnotationBatchForm';
+import {hideAnnotationForm} from "../../ui/uiSlice";
 
 interface TypeValueBatchFormProps {
     target: PythonDeclaration[];
@@ -43,10 +44,10 @@ export interface TypeValueBatchFormState {
 }
 
 export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
-                                                                                   target,
-                                                                                   annotationType,
-                                                                                   onUpsertAnnotation,
-                                                                               }) {
+    target,
+    annotationType,
+    onUpsertAnnotation,
+}) {
     const dispatch = useAppDispatch();
 
     const {
@@ -55,7 +56,7 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
         reset,
         setValue,
         watch,
-        formState: {errors},
+        formState: { errors },
     } = useForm<TypeValueBatchFormState>({
         defaultValues: {
             defaultType: 'string',
@@ -66,7 +67,7 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
     const watchDefaultType = watch('defaultType');
 
     let [confirmWindowVisible, setConfirmWindowVisible] = useState(false);
-    let [data, setData] = useState<TypeValueBatchFormState>({defaultType: 'string', defaultValue: ''});
+    let [data, setData] = useState<TypeValueBatchFormState>({ defaultType: 'string', defaultValue: '' });
 
     // Event handlers ----------------------------------------------------------
 
@@ -79,16 +80,16 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
     };
 
     const handleSave = (annotationData: TypeValueBatchFormState) => {
-        let toUpsert = {...annotationData};
+        let toUpsert = { ...annotationData };
         if (annotationData.defaultType === 'boolean') {
-            toUpsert = {...annotationData, defaultValue: annotationData.defaultValue === 'true'};
+            toUpsert = { ...annotationData, defaultValue: annotationData.defaultValue === 'true' };
         } else if (annotationData.defaultType === 'none') {
-            toUpsert = {...annotationData, defaultValue: null};
+            toUpsert = { ...annotationData, defaultValue: null };
         }
         onUpsertAnnotation(toUpsert);
 
         setConfirmWindowVisible(false);
-        dispatch(hideAnnotationForms());
+        dispatch(hideAnnotationForm());
     };
 
     const handleConfirm = (newData: TypeValueBatchFormState) => {
@@ -97,7 +98,7 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
     };
 
     const handleCancel = () => {
-        dispatch(hideAnnotationForms());
+        dispatch(hideAnnotationForm());
     };
     // Rendering -------------------------------------------------------------------------------------------------------
 
@@ -137,8 +138,8 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
                                     })}
                                 />
                                 <NumberInputStepper>
-                                    <NumberIncrementStepper/>
-                                    <NumberDecrementStepper/>
+                                    <NumberIncrementStepper />
+                                    <NumberDecrementStepper />
                                 </NumberInputStepper>
                             </NumberInput>
                         )}
@@ -154,14 +155,18 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
                             </Select>
                         )}
                         <FormErrorMessage>
-                            <FormErrorIcon/> {errors.defaultValue?.message}
+                            <FormErrorIcon /> {errors.defaultValue?.message}
                         </FormErrorMessage>
                     </FormControl>
                 )}
             </AnnotationBatchForm>
             {confirmWindowVisible && (
-                <ConfirmAnnotations count={target.length} handleSave={() => handleSave(data)}
-                                    setConfirmVisible={setConfirmWindowVisible}/>)}
+                <ConfirmAnnotations
+                    count={target.length}
+                    handleSave={() => handleSave(data)}
+                    setConfirmVisible={setConfirmWindowVisible}
+                />
+            )}
         </>
     );
 };
@@ -172,10 +177,10 @@ interface ConfirmAnnotationsProps {
     setConfirmVisible: (visible: boolean) => void;
 }
 
-const ConfirmAnnotations: React.FC<ConfirmAnnotationsProps> = function ({count, handleSave, setConfirmVisible}) {
+const ConfirmAnnotations: React.FC<ConfirmAnnotationsProps> = function ({ count, handleSave, setConfirmVisible }) {
     const handleCancel = () => {
         setConfirmVisible(false);
-        hideAnnotationForms();
+        hideAnnotationForm();
     };
 
     const useCancelRef = useRef(null);
@@ -204,4 +209,4 @@ const ConfirmAnnotations: React.FC<ConfirmAnnotationsProps> = function ({count, 
             </AlertDialogOverlay>
         </AlertDialog>
     );
-}
+};
