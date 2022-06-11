@@ -20,8 +20,9 @@ import { useAppDispatch } from '../../../app/hooks';
 import { Optional } from '../../../common/util/types';
 import { booleanPattern, numberPattern } from '../../../common/validation';
 import PythonDeclaration from '../../packageData/model/PythonDeclaration';
-import { DefaultType, DefaultValue, hideAnnotationForms } from '../annotationSlice';
+import { DefaultType, DefaultValue } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
+import { hideAnnotationForm } from '../../ui/uiSlice';
 
 interface TypeValueFormProps {
     target: PythonDeclaration;
@@ -86,11 +87,11 @@ export const TypeValueForm: React.FC<TypeValueFormProps> = function ({
             toUpsert = { ...data, defaultValue: null };
         }
         onUpsertAnnotation(toUpsert);
-        dispatch(hideAnnotationForms());
+        dispatch(hideAnnotationForm());
     };
 
     const handleCancel = () => {
-        dispatch(hideAnnotationForms());
+        dispatch(hideAnnotationForm());
     };
 
     // Rendering -------------------------------------------------------------------------------------------------------
