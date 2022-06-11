@@ -33,7 +33,7 @@ class _AstVisitor:
 
         return "/".join(segments)
 
-    def __get_function_id(self, name, decorators) -> str:
+    def __get_function_id(self, name: str, decorators: list[str]) -> str:
         def is_getter() -> bool:
             return "property" in decorators
 
@@ -150,7 +150,7 @@ class _AstVisitor:
         is_public = self.is_public(function_node.name, qname)
 
         function = Function(
-            self.__get_function_id(function_node.name, function_node.decorators),
+            self.__get_function_id(function_node.name, decorator_names),
             qname,
             decorator_names,
             self.__function_parameters(
