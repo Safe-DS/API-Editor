@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import PythonPackage from './model/PythonPackage';
+import { PythonPackage } from './model/PythonPackage';
 import { parsePythonPackageJson, PythonPackageJson } from './model/PythonPackageBuilder';
 import * as idb from 'idb-keyval';
 

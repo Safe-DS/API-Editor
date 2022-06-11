@@ -1,11 +1,11 @@
 import { Box, Spacer, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { useLocation } from 'react-router';
-import PythonClass from '../model/PythonClass';
-import PythonFunction from '../model/PythonFunction';
-import PythonModule from '../model/PythonModule';
-import PythonPackage from '../model/PythonPackage';
-import PythonParameter from '../model/PythonParameter';
+import { PythonClass } from '../model/PythonClass';
+import { PythonFunction } from '../model/PythonFunction';
+import { PythonModule } from '../model/PythonModule';
+import { PythonPackage } from '../model/PythonPackage';
+import { PythonParameter } from '../model/PythonParameter';
 import { ClassView } from './ClassView';
 import { FunctionView } from './FunctionView';
 import { ModuleView } from './ModuleView';

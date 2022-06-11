@@ -1,12 +1,13 @@
 import { Optional } from '../../../common/util/types';
-import PythonDeclaration from './PythonDeclaration';
-import PythonFunction from './PythonFunction';
-import PythonModule from './PythonModule';
+import { PythonDeclaration } from './PythonDeclaration';
+import { PythonFunction } from './PythonFunction';
+import {PythonModule} from './PythonModule';
 
-export default class PythonClass extends PythonDeclaration {
+export class PythonClass extends PythonDeclaration {
     containingModule: Optional<PythonModule>;
 
     constructor(
+        readonly id: string,
         readonly name: string,
         readonly qualifiedName: string,
         readonly decorators: string[] = [],

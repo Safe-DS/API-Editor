@@ -1,6 +1,6 @@
 import { Optional } from '../../../common/util/types';
 
-export default class PythonImport {
+export class PythonImport {
     constructor(
         readonly module: string,
         readonly alias: Optional<string> = null,

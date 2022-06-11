@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { HashRouter } from 'react-router-dom';
 import { App } from './app/App';
 import { store } from './app/store';
-import apiEditorTheme from './theme';
+import { apiEditorTheme } from './theme';
 
 const container = document.getElementById('root');
 const root = createRoot(container!);

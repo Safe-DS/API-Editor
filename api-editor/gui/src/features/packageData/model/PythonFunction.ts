@@ -1,18 +1,17 @@
 import { Optional } from '../../../common/util/types';
-import PythonClass from './PythonClass';
-import PythonDeclaration from './PythonDeclaration';
-import PythonModule from './PythonModule';
-import PythonParameter from './PythonParameter';
-import PythonResult from './PythonResult';
+import { PythonClass } from './PythonClass';
+import { PythonDeclaration } from './PythonDeclaration';
+import { PythonModule } from './PythonModule';
+import { PythonParameter } from './PythonParameter';
+import { PythonResult } from './PythonResult';
 
-export default class PythonFunction extends PythonDeclaration {
+export class PythonFunction extends PythonDeclaration {
     containingModuleOrClass: Optional<PythonModule | PythonClass>;
 
     constructor(
+        readonly id: string,
         readonly name: string,
-        readonly uniqueName: string,
         readonly qualifiedName: string,
-        readonly uniqueQualifiedName: string,
         readonly decorators: string[] = [],
         readonly parameters: PythonParameter[] = [],
         readonly results: PythonResult[] = [],
@@ -46,7 +45,7 @@ export default class PythonFunction extends PythonDeclaration {
     }
 
     getUniqueName(): string {
-        return this.uniqueName;
+        return this.id;
     }
 
     isGetter(): boolean {

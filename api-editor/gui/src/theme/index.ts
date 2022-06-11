@@ -29,7 +29,7 @@ const styles: Styles = {
     },
 };
 
-const apiEditorTheme = extendTheme({
+export const apiEditorTheme = extendTheme({
     config,
     styles,
     layerStyles: {
@@ -42,4 +42,3 @@ const apiEditorTheme = extendTheme({
         },
     },
 });
-export default apiEditorTheme;

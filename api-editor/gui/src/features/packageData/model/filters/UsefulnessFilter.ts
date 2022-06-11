@@ -1,7 +1,7 @@
-import PythonClass from '../PythonClass';
-import PythonFunction from '../PythonFunction';
-import PythonModule from '../PythonModule';
-import PythonParameter from '../PythonParameter';
+import { PythonClass } from '../PythonClass';
+import { PythonFunction } from '../PythonFunction';
+import { PythonModule } from '../PythonModule';
+import { PythonParameter } from '../PythonParameter';
 import { AbstractPythonFilter } from './AbstractPythonFilter';
 import { AnnotationStore } from '../../../annotations/annotationSlice';
 import { UsageCountStore } from '../../../usages/model/UsageCountStore';
@@ -40,7 +40,7 @@ export class UsefulnessFilter extends AbstractPythonFilter {
         annotations: AnnotationStore,
         usages: UsageCountStore,
     ): boolean {
-        const parameterUsefulness = usages.parameterUsefulness.get(pythonParameter.qualifiedName());
+        const parameterUsefulness = usages.parameterUsefulness.get(pythonParameter.qualifiedName);
         return this.shouldKeepWithUsefulness(parameterUsefulness);
     }
 

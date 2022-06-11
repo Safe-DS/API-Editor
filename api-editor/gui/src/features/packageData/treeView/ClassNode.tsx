@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaChalkboard } from 'react-icons/fa';
 import { isEmptyList } from '../../../common/util/listOperations';
-import PythonClass from '../model/PythonClass';
+import { PythonClass } from '../model/PythonClass';
 import { TreeNode, ValuePair } from './TreeNode';
 import { AbstractPythonFilter } from '../model/filters/AbstractPythonFilter';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';

@@ -19,7 +19,7 @@ import { useForm } from 'react-hook-form';
 import { useAppDispatch } from '../../../app/hooks';
 import { Optional } from '../../../common/util/types';
 import { booleanPattern, numberPattern } from '../../../common/validation';
-import PythonDeclaration from '../../packageData/model/PythonDeclaration';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
 import { DefaultType, DefaultValue } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
 import { hideAnnotationForm } from '../../ui/uiSlice';

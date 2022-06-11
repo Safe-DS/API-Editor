@@ -39,7 +39,7 @@ const components = {
     code: CustomCode,
 };
 
-const DocumentationText: React.FC<DocumentationTextProps> = function ({
+export const DocumentationText: React.FC<DocumentationTextProps> = function ({
     inputText = '',
 }) {
     const preprocessedText = inputText
@@ -96,5 +96,3 @@ const DocumentationText: React.FC<DocumentationTextProps> = function ({
         </Flex>
     );
 };
-
-export default DocumentationText;

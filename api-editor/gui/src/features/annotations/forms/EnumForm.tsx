@@ -13,7 +13,7 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import { FaPlus, FaTrash } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { pythonIdentifierPattern } from '../../../common/validation';
-import PythonDeclaration from '../../packageData/model/PythonDeclaration';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
 import { selectEnum, upsertEnum } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
 import { hideAnnotationForm } from '../../ui/uiSlice';

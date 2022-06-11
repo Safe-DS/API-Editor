@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectCalledAfters, upsertCalledAfter } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
-import PythonFunction from '../../packageData/model/PythonFunction';
+import { PythonFunction } from '../../packageData/model/PythonFunction';
 import { hideAnnotationForm } from '../../ui/uiSlice';
 
 interface CalledAfterFormProps {

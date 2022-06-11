@@ -1,16 +1,16 @@
 import { AnnotationStore } from '../../annotations/annotationSlice';
-import PythonClass from '../../packageData/model/PythonClass';
-import PythonFunction from '../../packageData/model/PythonFunction';
-import PythonModule from '../../packageData/model/PythonModule';
-import PythonPackage from '../../packageData/model/PythonPackage';
-import PythonParameter from '../../packageData/model/PythonParameter';
-import PythonResult from '../../packageData/model/PythonResult';
-import AnnotatedPythonClass from './AnnotatedPythonClass';
-import AnnotatedPythonFunction from './AnnotatedPythonFunction';
-import AnnotatedPythonModule from './AnnotatedPythonModule';
-import AnnotatedPythonPackage from './AnnotatedPythonPackage';
-import AnnotatedPythonParameter from './AnnotatedPythonParameter';
-import AnnotatedPythonResult from './AnnotatedPythonResult';
+import { PythonClass } from '../../packageData/model/PythonClass';
+import { PythonFunction } from '../../packageData/model/PythonFunction';
+import { PythonModule } from '../../packageData/model/PythonModule';
+import { PythonPackage } from '../../packageData/model/PythonPackage';
+import { PythonParameter } from '../../packageData/model/PythonParameter';
+import { PythonResult } from '../../packageData/model/PythonResult';
+import { AnnotatedPythonClass } from './AnnotatedPythonClass';
+import { AnnotatedPythonFunction } from './AnnotatedPythonFunction';
+import { AnnotatedPythonModule } from './AnnotatedPythonModule';
+import { AnnotatedPythonPackage } from './AnnotatedPythonPackage';
+import { AnnotatedPythonParameter } from './AnnotatedPythonParameter';
+import { AnnotatedPythonResult } from './AnnotatedPythonResult';
 import {
     InferableAnnotation,
     InferableAttributeAnnotation,
@@ -127,7 +127,7 @@ export class AnnotatedPythonPackageBuilder {
             (pythonResult: PythonResult) =>
                 new AnnotatedPythonResult(
                     pythonResult.name,
-                    pythonResult.type,
+                    pythonResult.typeInDocs,
                     pythonResult.typeInDocs,
                     pythonResult.description,
                     this.#getExistingAnnotations(pythonResult.pathAsString()),

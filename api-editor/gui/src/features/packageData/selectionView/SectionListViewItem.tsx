@@ -13,7 +13,7 @@ interface ClassViewItemProps {
     inputElements: string[] | string;
 }
 
-const SectionListViewItem: React.FC<ClassViewItemProps> = function ({
+export const SectionListViewItem: React.FC<ClassViewItemProps> = function ({
     title,
     inputElements,
 }) {
@@ -42,5 +42,3 @@ const SectionListViewItem: React.FC<ClassViewItemProps> = function ({
         </Stack>
     );
 };
-
-export default SectionListViewItem;

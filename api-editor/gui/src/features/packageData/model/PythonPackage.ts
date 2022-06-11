@@ -1,7 +1,7 @@
-import PythonDeclaration from './PythonDeclaration';
-import PythonModule from './PythonModule';
+import { PythonDeclaration } from './PythonDeclaration';
+import {PythonModule} from './PythonModule';
 
-export default class PythonPackage extends PythonDeclaration {
+export class PythonPackage extends PythonDeclaration {
     constructor(
         readonly distribution: string,
         readonly name: string,
