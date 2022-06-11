@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
-from enum import Enum, auto
+from enum import Enum
 from typing import Any, Optional
 
 from package_parser.model.api._types import (
@@ -433,10 +433,10 @@ class Parameter:
 
 
 class ParameterAssignment(Enum):
-    IMPLICIT = (auto(),)
-    POSITION_ONLY = (auto(),)
-    POSITION_OR_NAME = (auto(),)
-    NAME_ONLY = (auto(),)
+    IMPLICIT = "IMPLICIT"
+    POSITION_ONLY = "POSITION_ONLY"
+    POSITION_OR_NAME = "POSITION_OR_NAME"
+    NAME_ONLY = "NAME_ONLY"
 
 
 @dataclass
