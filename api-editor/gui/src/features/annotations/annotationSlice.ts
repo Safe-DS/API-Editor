@@ -424,7 +424,7 @@ const annotationsSlice = createSlice({
         },
         removeRemove(state, action: PayloadAction<string>) {
             delete state.removes[action.payload];
-        }
+        },
     },
     extraReducers(builder) {
         builder.addCase(initializeAnnotations.fulfilled, (state, action) => action.payload);

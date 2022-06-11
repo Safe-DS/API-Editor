@@ -1,4 +1,4 @@
-import {AbstractPythonFilter} from './AbstractPythonFilter';
+import { AbstractPythonFilter } from './AbstractPythonFilter';
 import PythonClass from '../PythonClass';
 import { AnnotationStore } from '../../../annotations/annotationSlice';
 import { UsageCountStore } from '../../../usages/model/UsageCountStore';

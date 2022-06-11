@@ -2,11 +2,11 @@ import React from 'react';
 import { FaKeyboard } from 'react-icons/fa';
 import PythonParameter from '../model/PythonParameter';
 import { TreeNode, ValuePair } from './TreeNode';
-import {AbstractPythonFilter} from '../model/filters/AbstractPythonFilter';
+import { AbstractPythonFilter } from '../model/filters/AbstractPythonFilter';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { useAppSelector } from '../../../app/hooks';
 import { AnnotationStore, selectAnnotations } from '../../annotations/annotationSlice';
-import {HeatMapMode, selectHeatMapMode} from "../../ui/uiSlice";
+import { HeatMapMode, selectHeatMapMode } from '../../ui/uiSlice';
 
 interface ParameterNodeProps {
     pythonParameter: PythonParameter;

@@ -8,7 +8,7 @@ import PythonFunction from '../../packageData/model/PythonFunction';
 import PythonParameter from '../../packageData/model/PythonParameter';
 import { GroupAnnotation, selectGroups, upsertGroup } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
-import {hideAnnotationForm} from "../../ui/uiSlice";
+import { hideAnnotationForm } from '../../ui/uiSlice';
 
 interface GroupFormProps {
     readonly target: PythonDeclaration;

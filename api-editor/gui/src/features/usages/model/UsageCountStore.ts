@@ -45,7 +45,8 @@ export class UsageCountStore {
         this.parameterUsefulness = new Map(
             [...parameterUsages.keys()].map((it) => [it, this.computeParameterUsefulness(it)]),
         );
-        this.parameterMaxUsefulness = this.parameterUsefulness.size === 0 ? 0 : Math.max(...this.parameterUsefulness.values());
+        this.parameterMaxUsefulness =
+            this.parameterUsefulness.size === 0 ? 0 : Math.max(...this.parameterUsefulness.values());
     }
 
     toJson(): UsageCountJson {

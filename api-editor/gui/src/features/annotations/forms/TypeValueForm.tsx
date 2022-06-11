@@ -22,7 +22,7 @@ import { booleanPattern, numberPattern } from '../../../common/validation';
 import PythonDeclaration from '../../packageData/model/PythonDeclaration';
 import { DefaultType, DefaultValue } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
-import {hideAnnotationForm} from "../../ui/uiSlice";
+import { hideAnnotationForm } from '../../ui/uiSlice';
 
 interface TypeValueFormProps {
     target: PythonDeclaration;

@@ -6,7 +6,7 @@ import { moduleNamePattern } from '../../../common/validation';
 import PythonDeclaration from '../../packageData/model/PythonDeclaration';
 import { selectMove, upsertMove } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
-import {hideAnnotationForm} from "../../ui/uiSlice";
+import { hideAnnotationForm } from '../../ui/uiSlice';
 
 interface MoveFormProps {
     readonly target: PythonDeclaration;

@@ -1,9 +1,9 @@
-import {createAsyncThunk, createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import * as idb from 'idb-keyval';
-import {RootState} from '../../app/store';
-import {CalledAfterTarget, GroupTarget} from "../annotations/annotationSlice";
-import {AbstractPythonFilter} from '../packageData/model/filters/AbstractPythonFilter';
-import {createFilterFromString} from "../packageData/model/filters/filterFactory";
+import { RootState } from '../../app/store';
+import { CalledAfterTarget, GroupTarget } from '../annotations/annotationSlice';
+import { AbstractPythonFilter } from '../packageData/model/filters/AbstractPythonFilter';
+import { createFilterFromString } from '../packageData/model/filters/filterFactory';
 
 export interface UIState {
     showAnnotationImportDialog: boolean;
@@ -236,14 +236,14 @@ const uiSlice = createSlice({
         },
         setFilterString(state, action: PayloadAction<string>) {
             state.filterString = action.payload;
-        }
+        },
     },
     extraReducers(builder) {
         builder.addCase(initializeUI.fulfilled, (state, action) => action.payload);
     },
 });
 
-const {actions, reducer} = uiSlice;
+const { actions, reducer } = uiSlice;
 export const {
     setUI,
     resetUI,
@@ -277,14 +277,13 @@ export const uiReducer = reducer;
 export const selectUI = (state: RootState) => state.ui;
 export const selectShowAnnotationImportDialog = (state: RootState): boolean =>
     selectUI(state).showAnnotationImportDialog;
-export const selectShowAPIImportDialog = (state: RootState): boolean =>
-    selectUI(state).showAPIImportDialog;
+export const selectShowAPIImportDialog = (state: RootState): boolean => selectUI(state).showAPIImportDialog;
 export const selectShowUsageImportDialog = (state: RootState): boolean => selectUI(state).showUsageImportDialog;
 export const selectCurrentUserAction = (state: RootState): UserAction => selectUI(state).currentUserAction;
 export const selectIsExpandedInTreeView =
     (target: string) =>
-        (state: RootState): boolean =>
-            Boolean(selectUI(state).expandedInTreeView[target]);
+    (state: RootState): boolean =>
+        Boolean(selectUI(state).expandedInTreeView[target]);
 export const selectAllExpandedInTreeView = (state: RootState): { [target: string]: true } =>
     selectUI(state).expandedInTreeView;
 export const selectTreeViewScrollOffset = (state: RootState): number => selectUI(state).treeViewScrollOffset;
@@ -292,4 +291,4 @@ export const selectHeatMapMode = (state: RootState): HeatMapMode => selectUI(sta
 export const selectFilterString = (state: RootState): string => selectUI(state).filterString;
 export const selectFilter = createSelector([selectFilterString], (filterString: string): AbstractPythonFilter => {
     return createFilterFromString(filterString);
-})
+});

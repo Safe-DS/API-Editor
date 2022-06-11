@@ -1,4 +1,4 @@
-import {AbstractPythonFilter} from './AbstractPythonFilter';
+import { AbstractPythonFilter } from './AbstractPythonFilter';
 import PythonClass from '../PythonClass';
 import PythonFunction from '../PythonFunction';
 import PythonParameter from '../PythonParameter';
@@ -25,11 +25,7 @@ export class ConjunctiveFilter extends AbstractPythonFilter {
         return this.filters.every((it) => it.shouldKeepClass(pythonClass, annotations, usages));
     }
 
-    shouldKeepFunction(
-        pythonFunction: PythonFunction,
-        annotations: AnnotationStore,
-        usages: UsageCountStore,
-    ): boolean {
+    shouldKeepFunction(pythonFunction: PythonFunction, annotations: AnnotationStore, usages: UsageCountStore): boolean {
         return this.filters.every((it) => it.shouldKeepFunction(pythonFunction, annotations, usages));
     }
 

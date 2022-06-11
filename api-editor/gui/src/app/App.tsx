@@ -10,25 +10,25 @@ import {
     ModalOverlay,
     UnorderedList,
 } from '@chakra-ui/react';
-import React, {useEffect, useState} from 'react';
-import {MenuBar} from '../common/MenuBar';
-import {AnnotationImportDialog} from '../features/annotations/AnnotationImportDialog';
-import {initializeAnnotations, persistAnnotations, selectAnnotations,} from '../features/annotations/annotationSlice';
-import {BoundaryForm} from '../features/annotations/forms/BoundaryForm';
-import {CalledAfterForm} from '../features/annotations/forms/CalledAfterForm';
-import {ConstantForm} from '../features/annotations/forms/ConstantForm';
-import {EnumForm} from '../features/annotations/forms/EnumForm';
-import {GroupForm} from '../features/annotations/forms/GroupForm';
-import {MoveForm} from '../features/annotations/forms/MoveForm';
-import {OptionalForm} from '../features/annotations/forms/OptionalForm';
-import {RenameForm} from '../features/annotations/forms/RenameForm';
-import {PackageDataImportDialog} from '../features/packageData/PackageDataImportDialog';
-import {SelectionView} from '../features/packageData/selectionView/SelectionView';
-import {TreeView} from '../features/packageData/treeView/TreeView';
-import {useAppDispatch, useAppSelector} from './hooks';
+import React, { useEffect, useState } from 'react';
+import { MenuBar } from '../common/MenuBar';
+import { AnnotationImportDialog } from '../features/annotations/AnnotationImportDialog';
+import { initializeAnnotations, persistAnnotations, selectAnnotations } from '../features/annotations/annotationSlice';
+import { BoundaryForm } from '../features/annotations/forms/BoundaryForm';
+import { CalledAfterForm } from '../features/annotations/forms/CalledAfterForm';
+import { ConstantForm } from '../features/annotations/forms/ConstantForm';
+import { EnumForm } from '../features/annotations/forms/EnumForm';
+import { GroupForm } from '../features/annotations/forms/GroupForm';
+import { MoveForm } from '../features/annotations/forms/MoveForm';
+import { OptionalForm } from '../features/annotations/forms/OptionalForm';
+import { RenameForm } from '../features/annotations/forms/RenameForm';
+import { PackageDataImportDialog } from '../features/packageData/PackageDataImportDialog';
+import { SelectionView } from '../features/packageData/selectionView/SelectionView';
+import { TreeView } from '../features/packageData/treeView/TreeView';
+import { useAppDispatch, useAppSelector } from './hooks';
 import PythonFunction from '../features/packageData/model/PythonFunction';
-import {AttributeForm} from '../features/annotations/forms/AttributeForm';
-import {UsageImportDialog} from '../features/usages/UsageImportDialog';
+import { AttributeForm } from '../features/annotations/forms/AttributeForm';
+import { UsageImportDialog } from '../features/usages/UsageImportDialog';
 import {
     GroupUserAction,
     initializeUI,
@@ -39,10 +39,10 @@ import {
     selectShowAPIImportDialog,
     selectShowUsageImportDialog,
     selectUI,
-    setFilterString
-} from "../features/ui/uiSlice";
-import {initializeUsages, persistUsages, selectUsages} from "../features/usages/usageSlice";
-import {initializePythonPackage, selectPythonPackage} from "../features/packageData/apiSlice";
+    setFilterString,
+} from '../features/ui/uiSlice';
+import { initializeUsages, persistUsages, selectUsages } from '../features/usages/usageSlice';
+import { initializePythonPackage, selectPythonPackage } from '../features/packageData/apiSlice';
 
 export const App: React.FC = function () {
     useIndexedDB();
@@ -75,10 +75,7 @@ export const App: React.FC = function () {
                 h="100vh"
             >
                 <GridItem gridArea="menu" colSpan={2}>
-                    <MenuBar
-                        pythonPackage={pythonPackage}
-                        displayInferErrors={displayInferErrors}
-                    />
+                    <MenuBar pythonPackage={pythonPackage} displayInferErrors={displayInferErrors} />
                 </GridItem>
                 <GridItem
                     gridArea="leftPane"
@@ -91,18 +88,18 @@ export const App: React.FC = function () {
                     resize="horizontal"
                 >
                     {currentUserAction.type === 'attribute' && (
-                        <AttributeForm target={userActionTarget || pythonPackage}/>
+                        <AttributeForm target={userActionTarget || pythonPackage} />
                     )}
                     {currentUserAction.type === 'boundary' && (
-                        <BoundaryForm target={userActionTarget || pythonPackage}/>
+                        <BoundaryForm target={userActionTarget || pythonPackage} />
                     )}
                     {currentUserAction.type === 'calledAfter' && userActionTarget instanceof PythonFunction && (
-                        <CalledAfterForm target={userActionTarget}/>
+                        <CalledAfterForm target={userActionTarget} />
                     )}
                     {currentUserAction.type === 'constant' && (
-                        <ConstantForm target={userActionTarget || pythonPackage}/>
+                        <ConstantForm target={userActionTarget || pythonPackage} />
                     )}
-                    {currentUserAction.type === 'enum' && <EnumForm target={userActionTarget || pythonPackage}/>}
+                    {currentUserAction.type === 'enum' && <EnumForm target={userActionTarget || pythonPackage} />}
                     {currentUserAction.type === 'group' && (
                         <GroupForm
                             target={userActionTarget || pythonPackage}
@@ -113,22 +110,22 @@ export const App: React.FC = function () {
                             }
                         />
                     )}
-                    {currentUserAction.type === 'move' && <MoveForm target={userActionTarget || pythonPackage}/>}
+                    {currentUserAction.type === 'move' && <MoveForm target={userActionTarget || pythonPackage} />}
                     {currentUserAction.type === 'none' && (
-                        <TreeView pythonPackage={filteredPythonPackage} filter={pythonFilter} usages={usages}/>
+                        <TreeView pythonPackage={filteredPythonPackage} filter={pythonFilter} usages={usages} />
                     )}
                     {currentUserAction.type === 'optional' && (
-                        <OptionalForm target={userActionTarget || pythonPackage}/>
+                        <OptionalForm target={userActionTarget || pythonPackage} />
                     )}
-                    {currentUserAction.type === 'rename' && <RenameForm target={userActionTarget || pythonPackage}/>}
+                    {currentUserAction.type === 'rename' && <RenameForm target={userActionTarget || pythonPackage} />}
                 </GridItem>
                 <GridItem gridArea="rightPane" overflow="auto">
-                    <SelectionView pythonPackage={pythonPackage} pythonFilter={pythonFilter} usages={usages}/>
+                    <SelectionView pythonPackage={pythonPackage} pythonFilter={pythonFilter} usages={usages} />
                 </GridItem>
 
-                {showAnnotationImportDialog && <AnnotationImportDialog/>}
-                {showAPIImportDialog && <PackageDataImportDialog setFilter={setFilterString}/>}
-                {showUsagesImportDialog && <UsageImportDialog/>}
+                {showAnnotationImportDialog && <AnnotationImportDialog />}
+                {showAPIImportDialog && <PackageDataImportDialog setFilter={setFilterString} />}
+                {showUsagesImportDialog && <UsageImportDialog />}
             </Grid>
             <Modal
                 isOpen={showInferErrorDialog}
@@ -137,10 +134,10 @@ export const App: React.FC = function () {
                 size="xl"
                 isCentered
             >
-                <ModalOverlay/>
+                <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>Infer errors</ModalHeader>
-                    <ModalCloseButton/>
+                    <ModalCloseButton />
                     <ModalBody paddingLeft={10} paddingBottom={6}>
                         <UnorderedList spacing={5}>
                             {inferErrors.map((error, index) => (
@@ -159,10 +156,10 @@ const useIndexedDB = function () {
     usePersistentAnnotations();
     usePersistentUsages();
     usePersistentUIState();
-}
+};
 
 const usePersistentAnnotations = function () {
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
     const annotationStore = useAppSelector(selectAnnotations);
     const [isInitialized, setIsInitialized] = useState(false);
 
@@ -178,10 +175,10 @@ const usePersistentAnnotations = function () {
             dispatch(persistAnnotations(annotationStore));
         }
     }, [dispatch, annotationStore, isInitialized]);
-}
+};
 
 const usePersistentAPIState = function () {
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
     const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {
@@ -193,10 +190,10 @@ const usePersistentAPIState = function () {
 
     // Since there is currently no conversion of a PythonPackage to JSON, we persist the API state when we import it in
     // the corresponding dialog. We must not mutate the PythonPackage afterwards.
-}
+};
 
 const usePersistentUIState = function () {
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
     const uiState = useAppSelector(selectUI);
     const [isInitialized, setIsInitialized] = useState(false);
 
@@ -212,10 +209,10 @@ const usePersistentUIState = function () {
             dispatch(persistUI(uiState));
         }
     }, [dispatch, uiState, isInitialized]);
-}
+};
 
 const usePersistentUsages = function () {
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
     const usages = useAppSelector(selectUsages);
     const [isInitialized, setIsInitialized] = useState(false);
 
@@ -231,4 +228,4 @@ const usePersistentUsages = function () {
             dispatch(persistUsages(usages));
         }
     }, [dispatch, usages, isInitialized]);
-}
+};

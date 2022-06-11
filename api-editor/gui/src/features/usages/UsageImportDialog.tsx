@@ -13,14 +13,14 @@ import {
     ModalOverlay,
     Text as ChakraText,
 } from '@chakra-ui/react';
-import React, {useState} from 'react';
-import {useAppDispatch} from '../../app/hooks';
-import {StyledDropzone} from '../../common/StyledDropzone';
-import {isValidJsonFile} from '../../common/util/validation';
-import {resetAnnotations} from '../annotations/annotationSlice';
-import {UsageCountJson, UsageCountStore} from './model/UsageCountStore';
-import {toggleUsageImportDialog} from "../ui/uiSlice";
-import {setUsages} from "./usageSlice";
+import React, { useState } from 'react';
+import { useAppDispatch } from '../../app/hooks';
+import { StyledDropzone } from '../../common/StyledDropzone';
+import { isValidJsonFile } from '../../common/util/validation';
+import { resetAnnotations } from '../annotations/annotationSlice';
+import { UsageCountJson, UsageCountStore } from './model/UsageCountStore';
+import { toggleUsageImportDialog } from '../ui/uiSlice';
+import { setUsages } from './usageSlice';
 
 export const UsageImportDialog: React.FC = function () {
     const [fileName, setFileName] = useState('');
@@ -56,7 +56,7 @@ export const UsageImportDialog: React.FC = function () {
 
     return (
         <Modal onClose={close} isOpen size="xl">
-            <ModalOverlay/>
+            <ModalOverlay />
             <ModalContent>
                 <ModalHeader>
                     <Heading>Import usages</Heading>

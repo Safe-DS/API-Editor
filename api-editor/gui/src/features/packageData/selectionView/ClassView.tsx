@@ -1,7 +1,7 @@
 import { Box, Heading, HStack, Stack, Text as ChakraText } from '@chakra-ui/react';
 import React from 'react';
-import {AnnotationDropdown} from '../../annotations/AnnotationDropdown';
-import {AnnotationView} from '../../annotations/AnnotationView';
+import { AnnotationDropdown } from '../../annotations/AnnotationDropdown';
+import { AnnotationView } from '../../annotations/AnnotationView';
 import PythonClass from '../model/PythonClass';
 import DocumentationText from './DocumentationText';
 import SectionListViewItem from './SectionListViewItem';

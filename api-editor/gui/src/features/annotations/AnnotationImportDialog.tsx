@@ -13,15 +13,12 @@ import {
     ModalOverlay,
     Text as ChakraText,
 } from '@chakra-ui/react';
-import React, {useState} from 'react';
-import {useAppDispatch} from '../../app/hooks';
-import {StyledDropzone} from '../../common/StyledDropzone';
-import {isValidJsonFile} from '../../common/util/validation';
-import {
-    AnnotationStore,
-    setAnnotations,
-} from './annotationSlice';
-import {hideAnnotationImportDialog, toggleAnnotationImportDialog} from "../ui/uiSlice";
+import React, { useState } from 'react';
+import { useAppDispatch } from '../../app/hooks';
+import { StyledDropzone } from '../../common/StyledDropzone';
+import { isValidJsonFile } from '../../common/util/validation';
+import { AnnotationStore, setAnnotations } from './annotationSlice';
+import { hideAnnotationImportDialog, toggleAnnotationImportDialog } from '../ui/uiSlice';
 
 export const AnnotationImportDialog: React.FC = function () {
     const [fileName, setFileName] = useState('');

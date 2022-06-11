@@ -71,11 +71,7 @@ export abstract class AbstractPythonFilter {
      * Applies this filter to the given package and creates a package with filtered modules. This function should not be
      * overridden.
      */
-    applyToPackage(
-        pythonPackage: PythonPackage,
-        annotations: AnnotationStore,
-        usages: UsageCountStore,
-    ): PythonPackage {
+    applyToPackage(pythonPackage: PythonPackage, annotations: AnnotationStore, usages: UsageCountStore): PythonPackage {
         // Filter modules
         const modules = pythonPackage.modules
             .map((it) => this.applyToModule(it, annotations, usages))

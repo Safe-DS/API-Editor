@@ -1,17 +1,17 @@
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {RootState} from '../../app/store';
-import PythonPackage from "./model/PythonPackage";
-import {parsePythonPackageJson, PythonPackageJson} from "./model/PythonPackageBuilder";
-import * as idb from "idb-keyval";
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../../app/store';
+import PythonPackage from './model/PythonPackage';
+import { parsePythonPackageJson, PythonPackageJson } from './model/PythonPackageBuilder';
+import * as idb from 'idb-keyval';
 
 export interface APIState {
-    pythonPackage: PythonPackage
+    pythonPackage: PythonPackage;
 }
 
 // Initial state -------------------------------------------------------------------------------------------------------
 
 const initialState: APIState = {
-    pythonPackage: new PythonPackage('empty', 'empty', '0.0.1')
+    pythonPackage: new PythonPackage('empty', 'empty', '0.0.1'),
 };
 
 // Thunks --------------------------------------------------------------------------------------------------------------
@@ -20,7 +20,7 @@ export const initializePythonPackage = createAsyncThunk('api/initialize', async 
     try {
         const storedPythonPackageJson = (await idb.get('api')) as PythonPackageJson;
         return {
-            pythonPackage: parsePythonPackageJson(storedPythonPackageJson)
+            pythonPackage: parsePythonPackageJson(storedPythonPackageJson),
         };
     } catch {
         return initialState;
@@ -42,22 +42,19 @@ const apiSlice = createSlice({
     initialState,
     reducers: {
         setPythonPackage(state, action: PayloadAction<PythonPackage>) {
-            state.pythonPackage = action.payload
+            state.pythonPackage = action.payload;
         },
         resetPythonPackage() {
-            return initialState
-        }
+            return initialState;
+        },
     },
     extraReducers(builder) {
         builder.addCase(initializePythonPackage.fulfilled, (state, action) => action.payload);
     },
 });
 
-const {actions, reducer} = apiSlice;
-export const {
-    setPythonPackage,
-    resetPythonPackage
-} = actions;
+const { actions, reducer } = apiSlice;
+export const { setPythonPackage, resetPythonPackage } = actions;
 export const apiReducer = reducer;
 
 const selectAPI = (state: RootState) => state.api;

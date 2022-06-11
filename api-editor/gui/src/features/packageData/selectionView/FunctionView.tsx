@@ -1,12 +1,12 @@
 import { Box, Heading, HStack, Stack, Text as ChakraText } from '@chakra-ui/react';
 import React from 'react';
 import { isEmptyList } from '../../../common/util/listOperations';
-import {AnnotationDropdown} from '../../annotations/AnnotationDropdown';
-import {AnnotationView} from '../../annotations/AnnotationView';
+import { AnnotationDropdown } from '../../annotations/AnnotationDropdown';
+import { AnnotationView } from '../../annotations/AnnotationView';
 import PythonFunction from '../model/PythonFunction';
 import PythonModule from '../model/PythonModule';
 import DocumentationText from './DocumentationText';
-import {ParameterNode} from './ParameterNode';
+import { ParameterNode } from './ParameterNode';
 import { useAppSelector } from '../../../app/hooks';
 import { selectCalledAfters } from '../../annotations/annotationSlice';
 

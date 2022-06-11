@@ -6,11 +6,11 @@ import PythonFunction from '../model/PythonFunction';
 import PythonModule from '../model/PythonModule';
 import PythonPackage from '../model/PythonPackage';
 import PythonParameter from '../model/PythonParameter';
-import {ClassView} from './ClassView';
-import {FunctionView} from './FunctionView';
+import { ClassView } from './ClassView';
+import { FunctionView } from './FunctionView';
 import { ModuleView } from './ModuleView';
-import {ParameterView} from './ParameterView';
-import {AbstractPythonFilter} from '../model/filters/AbstractPythonFilter';
+import { ParameterView } from './ParameterView';
+import { AbstractPythonFilter } from '../model/filters/AbstractPythonFilter';
 import { ActionBar } from './ActionBar';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 

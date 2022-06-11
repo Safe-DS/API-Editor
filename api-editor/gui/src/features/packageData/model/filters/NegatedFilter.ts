@@ -1,4 +1,4 @@
-import {AbstractPythonFilter} from './AbstractPythonFilter';
+import { AbstractPythonFilter } from './AbstractPythonFilter';
 import PythonClass from '../PythonClass';
 import PythonFunction from '../PythonFunction';
 import PythonParameter from '../PythonParameter';
@@ -25,11 +25,7 @@ export class NegatedFilter extends AbstractPythonFilter {
         return !this.filter.shouldKeepClass(pythonClass, annotations, usages);
     }
 
-    shouldKeepFunction(
-        pythonFunction: PythonFunction,
-        annotations: AnnotationStore,
-        usages: UsageCountStore,
-    ): boolean {
+    shouldKeepFunction(pythonFunction: PythonFunction, annotations: AnnotationStore, usages: UsageCountStore): boolean {
         return !this.filter.shouldKeepFunction(pythonFunction, annotations, usages);
     }
 

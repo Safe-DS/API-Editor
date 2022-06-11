@@ -1,4 +1,4 @@
-import {AbstractPythonFilter} from './AbstractPythonFilter';
+import { AbstractPythonFilter } from './AbstractPythonFilter';
 import PythonModule from '../PythonModule';
 import PythonClass from '../PythonClass';
 import PythonFunction from '../PythonFunction';

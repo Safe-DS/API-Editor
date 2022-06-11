@@ -34,10 +34,14 @@ import {
 } from './annotationSlice';
 import {
     showAttributeAnnotationForm,
-    showBoundaryAnnotationForm, showConstantAnnotationForm, showEnumAnnotationForm,
-    showGroupAnnotationForm, showMoveAnnotationForm, showOptionalAnnotationForm,
-    showRenameAnnotationForm
-} from "../ui/uiSlice";
+    showBoundaryAnnotationForm,
+    showConstantAnnotationForm,
+    showEnumAnnotationForm,
+    showGroupAnnotationForm,
+    showMoveAnnotationForm,
+    showOptionalAnnotationForm,
+    showRenameAnnotationForm,
+} from '../ui/uiSlice';
 
 interface AnnotationViewProps {
     target: string;

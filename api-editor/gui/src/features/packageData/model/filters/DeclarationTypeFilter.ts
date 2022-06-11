@@ -2,7 +2,7 @@ import PythonClass from '../PythonClass';
 import PythonFunction from '../PythonFunction';
 import PythonModule from '../PythonModule';
 import PythonParameter from '../PythonParameter';
-import {AbstractPythonFilter} from './AbstractPythonFilter';
+import { AbstractPythonFilter } from './AbstractPythonFilter';
 import { AnnotationStore } from '../../../annotations/annotationSlice';
 import { UsageCountStore } from '../../../usages/model/UsageCountStore';
 

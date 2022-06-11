@@ -6,7 +6,7 @@ import { pythonIdentifierPattern } from '../../../common/validation';
 import PythonDeclaration from '../../packageData/model/PythonDeclaration';
 import { selectRenaming, upsertRenaming } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
-import {hideAnnotationForm} from "../../ui/uiSlice";
+import { hideAnnotationForm } from '../../ui/uiSlice';
 
 interface RenameFormProps {
     readonly target: PythonDeclaration;

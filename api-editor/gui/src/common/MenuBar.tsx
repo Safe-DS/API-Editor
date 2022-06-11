@@ -25,13 +25,13 @@ import {
     useColorMode,
     VStack,
 } from '@chakra-ui/react';
-import React, {useRef, useState} from 'react';
-import {FaChevronDown} from 'react-icons/fa';
-import {useAppDispatch, useAppSelector} from '../app/hooks';
-import {resetAnnotations, selectAnnotations} from '../features/annotations/annotationSlice';
-import {AnnotatedPythonPackageBuilder} from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
+import React, { useRef, useState } from 'react';
+import { FaChevronDown } from 'react-icons/fa';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { resetAnnotations, selectAnnotations } from '../features/annotations/annotationSlice';
+import { AnnotatedPythonPackageBuilder } from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
 import PythonPackage from '../features/packageData/model/PythonPackage';
-import {FilterHelpButton} from './FilterHelpButton';
+import { FilterHelpButton } from './FilterHelpButton';
 import {
     HeatMapMode,
     selectFilterString,
@@ -39,8 +39,8 @@ import {
     setHeatMapMode,
     toggleAnnotationImportDialog,
     toggleAPIImportDialog,
-    toggleUsageImportDialog
-} from "../features/ui/uiSlice";
+    toggleUsageImportDialog,
+} from '../features/ui/uiSlice';
 
 interface MenuBarProps {
     pythonPackage: PythonPackage;

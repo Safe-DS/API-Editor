@@ -1,9 +1,9 @@
-import {configureStore} from '@reduxjs/toolkit';
-import {setupListeners} from '@reduxjs/toolkit/query';
-import {annotationsReducer} from '../features/annotations/annotationSlice';
-import {apiReducer} from '../features/packageData/apiSlice';
-import {usageReducer} from '../features/usages/usageSlice';
-import {uiReducer} from "../features/ui/uiSlice";
+import { configureStore } from '@reduxjs/toolkit';
+import { setupListeners } from '@reduxjs/toolkit/query';
+import { annotationsReducer } from '../features/annotations/annotationSlice';
+import { apiReducer } from '../features/packageData/apiSlice';
+import { usageReducer } from '../features/usages/usageSlice';
+import { uiReducer } from '../features/ui/uiSlice';
 
 export const store = configureStore({
     reducer: {
@@ -22,13 +22,10 @@ export const store = configureStore({
                     'api/set',
                     'usages/initialize',
                     'usages/initialize/fulfilled',
-                    'usages/set'
+                    'usages/set',
                 ],
                 // Ignore these paths in the state
-                ignoredPaths: [
-                    'api.pythonPackage',
-                    'usages.usages'
-                ],
+                ignoredPaths: ['api.pythonPackage', 'usages.usages'],
             },
         }),
 });

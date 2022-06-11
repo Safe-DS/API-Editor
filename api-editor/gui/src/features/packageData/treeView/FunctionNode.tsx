@@ -1,13 +1,13 @@
 import React from 'react';
-import {FaCogs} from 'react-icons/fa';
-import {isEmptyList} from '../../../common/util/listOperations';
+import { FaCogs } from 'react-icons/fa';
+import { isEmptyList } from '../../../common/util/listOperations';
 import PythonFunction from '../model/PythonFunction';
-import {TreeNode, ValuePair} from './TreeNode';
-import {AbstractPythonFilter} from '../model/filters/AbstractPythonFilter';
-import {UsageCountStore} from '../../usages/model/UsageCountStore';
-import {useAppSelector} from '../../../app/hooks';
-import {AnnotationStore, selectAnnotations} from '../../annotations/annotationSlice';
-import {HeatMapMode, selectHeatMapMode} from "../../ui/uiSlice";
+import { TreeNode, ValuePair } from './TreeNode';
+import { AbstractPythonFilter } from '../model/filters/AbstractPythonFilter';
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
+import { useAppSelector } from '../../../app/hooks';
+import { AnnotationStore, selectAnnotations } from '../../annotations/annotationSlice';
+import { HeatMapMode, selectHeatMapMode } from '../../ui/uiSlice';
 
 interface FunctionNodeProps {
     pythonFunction: PythonFunction;
@@ -15,7 +15,7 @@ interface FunctionNodeProps {
     usages: UsageCountStore;
 }
 
-export const FunctionNode: React.FC<FunctionNodeProps> = function ({pythonFunction, filter, usages}) {
+export const FunctionNode: React.FC<FunctionNodeProps> = function ({ pythonFunction, filter, usages }) {
     const hasParameters = !isEmptyList(pythonFunction.parameters);
     const annotations = useAppSelector(selectAnnotations);
     const heatMapMode = useAppSelector(selectHeatMapMode);

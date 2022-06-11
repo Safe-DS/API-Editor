@@ -1,8 +1,8 @@
-import {Box, Button, Icon, Menu, MenuButton, MenuItem, MenuList} from '@chakra-ui/react';
+import { Box, Button, Icon, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
 import React from 'react';
-import {FaChevronDown} from 'react-icons/fa';
-import {useAppDispatch} from '../../app/hooks';
-import {addPure, addRemove, addRequired,} from './annotationSlice';
+import { FaChevronDown } from 'react-icons/fa';
+import { useAppDispatch } from '../../app/hooks';
+import { addPure, addRemove, addRequired } from './annotationSlice';
 import {
     showAttributeAnnotationForm,
     showBoundaryAnnotationForm,
@@ -11,8 +11,9 @@ import {
     showEnumAnnotationForm,
     showGroupAnnotationForm,
     showMoveAnnotationForm,
-    showOptionalAnnotationForm, showRenameAnnotationForm
-} from "../ui/uiSlice";
+    showOptionalAnnotationForm,
+    showRenameAnnotationForm,
+} from '../ui/uiSlice';
 
 interface AnnotationDropdownProps {
     showAttribute?: boolean;
