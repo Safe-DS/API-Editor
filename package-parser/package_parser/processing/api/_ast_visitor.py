@@ -1,4 +1,5 @@
 import inspect
+import re
 from typing import Optional, Union
 
 import astroid
@@ -25,12 +26,41 @@ class _AstVisitor:
         self.api: API = api
         self.__declaration_stack: list[Union[Module, Class, Function]] = []
 
-    def __get_pname(self, name: str) -> str:
+    def __get_id(self, name: str) -> str:
         segments = [self.api.package]
         segments += [it.name for it in self.__declaration_stack]
         segments += [name]
 
         return "/".join(segments)
+
+    def __get_function_id(self, name, decorators) -> str:
+        def is_getter() -> bool:
+            return "property" in decorators
+
+        def is_setter() -> bool:
+            for decorator in decorators:
+                if re.search(r"^[^.]*.setter$", decorator):
+                    return True
+
+            return False
+
+        def is_deleter() -> bool:
+            for decorator in decorators:
+                if re.search(r"^[^.]*.deleter$", decorator):
+                    return True
+
+            return False
+
+        result = self.__get_id(name)
+
+        if is_getter():
+            result += "@getter"
+        elif is_setter():
+            result += "@setter"
+        elif is_deleter():
+            result += "@deleter"
+
+        return result
 
     def enter_module(self, module_node: astroid.Module):
         imports: list[Import] = []
@@ -90,7 +120,7 @@ class _AstVisitor:
         numpydoc = NumpyDocString(inspect.cleandoc(class_node.doc or ""))
 
         # Remember class, so we can later add methods
-        class_ = Class(self.__get_pname(class_node.name), qname, decorator_names, class_node.basenames,
+        class_ = Class(self.__get_id(class_node.name), qname, decorator_names, class_node.basenames,
                        self.is_public(class_node.name, qname), _AstVisitor.__description(numpydoc), class_node.doc)
         self.__declaration_stack.append(class_)
 
@@ -120,11 +150,11 @@ class _AstVisitor:
         is_public = self.is_public(function_node.name, qname)
 
         function = Function(
+            self.__get_function_id(function_node.name, function_node.decorators),
             qname,
-            self.__get_pname(function_node.name),
             decorator_names,
             self.__function_parameters(
-                function_node, is_public, qname, self.__get_pname(function_node.name)
+                function_node, is_public, qname, self.__get_id(function_node.name)
             ),
             [],  # TODO: results
             is_public,
@@ -144,10 +174,10 @@ class _AstVisitor:
             # Ignore nested functions for now
             if isinstance(parent, Module):
                 self.api.add_function(function)
-                parent.add_function(function.unique_qname)
+                parent.add_function(function.id)
             elif isinstance(parent, Class):
                 self.api.add_function(function)
-                parent.add_method(function.unique_qname)
+                parent.add_method(function.id)
 
     @staticmethod
     def __description(numpydoc: NumpyDocString) -> str:

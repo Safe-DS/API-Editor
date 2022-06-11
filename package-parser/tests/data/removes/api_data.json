@@ -9,7 +9,7 @@
             "imports": [],
             "from_imports": [],
             "classes": ["test/test/UnusedClass", "test/test/UsedClass"],
-            "functions": ["test.unused_global_function", "test.used_global_function"]
+            "functions": ["test/test/unused_global_function", "test/test/used_global_function"]
         }
     ],
     "classes": [
@@ -23,7 +23,7 @@
             "docstring": "",
             "superclasses": [],
             "source_code": "",
-            "methods": ["test.UnusedClass.unused_method"]
+            "methods": ["test/test/UnusedClass/unused_method"]
         },
         {
             "id": "test/test/UsedClass",
@@ -35,16 +35,14 @@
             "docstring": "",
             "superclasses": [],
             "source_code": "",
-            "methods": ["test.UsedClass.unused_method", "test.UsedClass.used_method"]
+            "methods": ["test/test/UsedClass/unused_method", "test/test/UsedClass/used_method"]
         }
     ],
     "functions": [
         {
+            "id": "test/test/unused_global_function",
             "name": "unused_global_function",
-            "unique_name": "unused_global_function",
             "qname": "test.unused_global_function",
-            "pname": "test/test/unused_global_function",
-            "unique_qname": "test.unused_global_function",
             "decorators": [],
             "parameters": [
                 {
@@ -75,15 +73,12 @@
             "results": [],
             "is_public": true,
             "description": "",
-            "docstring": "",
-            "source_code": ""
+            "docstring": ""
         },
         {
+            "id": "test/test/used_global_function",
             "name": "used_global_function",
-            "unique_name": "used_global_function",
             "qname": "test.used_global_function",
-            "pname": "test/test/used_global_function",
-            "unique_qname": "test.used_global_function",
             "decorators": [],
             "parameters": [
                 {
@@ -114,15 +109,12 @@
             "results": [],
             "is_public": true,
             "description": "",
-            "docstring": "",
-            "source_code": ""
+            "docstring": ""
         },
         {
+            "id": "test/test/UnusedClass/unused_method",
             "name": "unused_method",
-            "unique_name": "unused_method",
             "qname": "test.UnusedClass.unused_method",
-            "pname": "test/test/UnusedClass/unused_method",
-            "unique_qname": "test.UnusedClass.unused_method",
             "decorators": [],
             "parameters": [
                 {
@@ -153,15 +145,12 @@
             "results": [],
             "is_public": true,
             "description": "",
-            "docstring": "",
-            "source_code": ""
+            "docstring": ""
         },
         {
+            "id": "test/test/UsedClass/unused_method",
             "name": "unused_method",
-            "unique_name": "unused_method",
             "qname": "test.UsedClass.unused_method",
-            "pname": "test/test/UsedClass/unused_method",
-            "unique_qname": "test.UsedClass.unused_method",
             "decorators": [],
             "parameters": [
                 {
@@ -192,15 +181,12 @@
             "results": [],
             "is_public": true,
             "description": "",
-            "docstring": "",
-            "source_code": ""
+            "docstring": ""
         },
         {
+            "id": "test/test/UsedClass/used_method",
             "name": "used_method",
-            "unique_name": "used_method",
             "qname": "test.UsedClass.used_method",
-            "pname": "test/test/UsedClass/used_method",
-            "unique_qname": "test.UsedClass.used_method",
             "decorators": [],
             "parameters": [
                 {
@@ -231,8 +217,7 @@
             "results": [],
             "is_public": true,
             "description": "",
-            "docstring": "",
-            "source_code": ""
+            "docstring": ""
         }
     ]
 }

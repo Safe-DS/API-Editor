@@ -9,17 +9,15 @@
             "imports": [],
             "from_imports": [],
             "classes": [],
-            "functions": ["test.some_global_function"]
+            "functions": ["test/test/some_global_function"]
         }
     ],
     "classes": [],
     "functions": [
         {
+            "id": "test/test/some_global_function",
             "name": "some_global_function",
-            "unique_name": "some_global_function",
             "qname": "test.some_global_function",
-            "pname": "test/test/some_global_function",
-            "unique_qname": "test.some_global_function",
             "decorators": [],
             "parameters": [
                 {

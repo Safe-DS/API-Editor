@@ -46,15 +46,15 @@ class API:
         self.classes[class_.id] = class_
 
     def add_function(self, function: Function) -> None:
-        self.functions[function.unique_qname] = function
+        self.functions[function.id] = function
 
     def is_public_class(self, class_id: str) -> bool:
         return class_id in self.classes and self.classes[class_id].is_public
 
-    def is_public_function(self, function_unique_qname: str) -> bool:
+    def is_public_function(self, function_id: str) -> bool:
         return (
-            function_unique_qname in self.functions
-            and self.functions[function_unique_qname].is_public
+            function_id in self.functions
+            and self.functions[function_id].is_public
         )
 
     def class_count(self) -> int:
@@ -138,8 +138,8 @@ class Module:
         for class_id in json["classes"]:
             result.add_class(class_id)
 
-        for function_unique_qname in json["functions"]:
-            result.add_function(function_unique_qname)
+        for function_id in json["functions"]:
+            result.add_function(function_id)
 
         return result
 
@@ -154,8 +154,8 @@ class Module:
     def add_class(self, class_id: str) -> None:
         self.classes.append(class_id)
 
-    def add_function(self, function_unique_qname: str) -> None:
-        self.functions.append(function_unique_qname)
+    def add_function(self, function_id: str) -> None:
+        self.functions.append(function_id)
 
     def to_json(self) -> Any:
         return {
@@ -214,8 +214,8 @@ class Class:
             json["docstring"]
         )
 
-        for method_unique_qname in json["methods"]:
-            result.add_method(method_unique_qname)
+        for method_id in json["methods"]:
+            result.add_method(method_id)
 
         return result
 
@@ -234,8 +234,8 @@ class Class:
     def name(self) -> str:
         return self.qname.split(".")[-1]
 
-    def add_method(self, method_unique_qname: str) -> None:
-        self.methods.append(method_unique_qname)
+    def add_method(self, method_id: str) -> None:
+        self.methods.append(method_id)
 
     def to_json(self) -> Any:
         return {
@@ -253,8 +253,8 @@ class Class:
 
 @dataclass
 class Function:
+    id: str
     qname: str
-    pname: str
     decorators: list[str]
     parameters: list[Parameter]
     results: list[Result]
@@ -265,8 +265,8 @@ class Function:
     @staticmethod
     def from_json(json: Any) -> Function:
         return Function(
+            json["id"],
             json["qname"],
-            json["pname"],
             json["decorators"],
             [
                 Parameter.from_json(parameter_json)
@@ -282,47 +282,11 @@ class Function:
     def name(self) -> str:
         return self.qname.split(".")[-1]
 
-    @property
-    def unique_name(self) -> str:
-        return self.unique_qname.split(".")[-1]
-
-    @property
-    def unique_qname(self) -> str:
-        result = self.qname
-
-        if self.is_getter():
-            result += "@getter"
-        elif self.is_setter():
-            result += "@setter"
-        elif self.is_deleter():
-            result += "@deleter"
-
-        return result
-
-    def is_getter(self) -> bool:
-        return "property" in self.decorators
-
-    def is_setter(self) -> bool:
-        for decorator in self.decorators:
-            if re.search(r"^[^.]*.setter$", decorator):
-                return True
-
-        return False
-
-    def is_deleter(self) -> bool:
-        for decorator in self.decorators:
-            if re.search(r"^[^.]*.deleter$", decorator):
-                return True
-
-        return False
-
     def to_json(self) -> Any:
         return {
+            "id": self.id,
             "name": self.name,
-            "unique_name": self.unique_name,
             "qname": self.qname,
-            "pname": self.pname,
-            "unique_qname": self.unique_qname,
             "decorators": self.decorators,
             "parameters": [parameter.to_json() for parameter in self.parameters],
             "results": [result.to_json() for result in self.results],
