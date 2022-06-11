@@ -6,8 +6,6 @@
         {
             "id": "test/test",
             "name": "test",
-            "imports": [],
-            "from_imports": [],
             "classes": ["test/test/UnusedClass", "test/test/UsedClass"],
             "functions": ["test/test/unused_global_function", "test/test/used_global_function"]
         }
@@ -17,24 +15,12 @@
             "id": "test/test/UnusedClass",
             "name": "UnusedClass",
             "qname": "test.UnusedClass",
-            "decorators": [],
-            "is_public": true,
-            "description": "",
-            "docstring": "",
-            "superclasses": [],
-            "source_code": "",
             "methods": ["test/test/UnusedClass/unused_method"]
         },
         {
             "id": "test/test/UsedClass",
             "name": "UsedClass",
             "qname": "test.UsedClass",
-            "decorators": [],
-            "is_public": true,
-            "description": "",
-            "docstring": "",
-            "superclasses": [],
-            "source_code": "",
             "methods": ["test/test/UsedClass/unused_method", "test/test/UsedClass/used_method"]
         }
     ],
@@ -43,7 +29,6 @@
             "id": "test/test/unused_global_function",
             "name": "unused_global_function",
             "qname": "test.unused_global_function",
-            "decorators": [],
             "parameters": [
                 {
                     "name": "unused_parameter",
@@ -69,17 +54,12 @@
                         "description": ""
                     }
                 }
-            ],
-            "results": [],
-            "is_public": true,
-            "description": "",
-            "docstring": ""
+            ]
         },
         {
             "id": "test/test/used_global_function",
             "name": "used_global_function",
             "qname": "test.used_global_function",
-            "decorators": [],
             "parameters": [
                 {
                     "name": "unused_parameter",
@@ -105,17 +85,12 @@
                         "description": ""
                     }
                 }
-            ],
-            "results": [],
-            "is_public": true,
-            "description": "",
-            "docstring": ""
+            ]
         },
         {
             "id": "test/test/UnusedClass/unused_method",
             "name": "unused_method",
             "qname": "test.UnusedClass.unused_method",
-            "decorators": [],
             "parameters": [
                 {
                     "name": "unused_parameter",
@@ -141,17 +116,12 @@
                         "description": ""
                     }
                 }
-            ],
-            "results": [],
-            "is_public": true,
-            "description": "",
-            "docstring": ""
+            ]
         },
         {
             "id": "test/test/UsedClass/unused_method",
             "name": "unused_method",
             "qname": "test.UsedClass.unused_method",
-            "decorators": [],
             "parameters": [
                 {
                     "name": "unused_parameter",
@@ -177,17 +147,12 @@
                         "description": ""
                     }
                 }
-            ],
-            "results": [],
-            "is_public": true,
-            "description": "",
-            "docstring": ""
+            ]
         },
         {
             "id": "test/test/UsedClass/used_method",
             "name": "used_method",
             "qname": "test.UsedClass.used_method",
-            "decorators": [],
             "parameters": [
                 {
                     "name": "unused_parameter",
@@ -213,11 +178,7 @@
                         "description": ""
                     }
                 }
-            ],
-            "results": [],
-            "is_public": true,
-            "description": "",
-            "docstring": ""
+            ]
         }
     ]
 }

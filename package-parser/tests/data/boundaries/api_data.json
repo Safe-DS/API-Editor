@@ -6,19 +6,14 @@
         {
             "id": "test/test",
             "name": "test",
-            "imports": [],
-            "from_imports": [],
-            "classes": [],
             "functions": ["test/test/some_global_function"]
         }
     ],
-    "classes": [],
     "functions": [
         {
             "id": "test/test/some_global_function",
             "name": "some_global_function",
             "qname": "test.some_global_function",
-            "decorators": [],
             "parameters": [
                 {
                     "name": "parameter_without_bound",
@@ -68,11 +63,7 @@
                         "description": "float in range [0, 1]"
                     }
                 }
-            ],
-            "results": [],
-            "is_public": true,
-            "description": "",
-            "docstring": ""
+            ]
         }
     ]
 }

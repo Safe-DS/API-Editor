@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Optional
 
@@ -20,13 +20,13 @@ class API:
     def from_json(json: Any) -> API:
         result = API(json["distribution"], json["package"], json["version"])
 
-        for module_json in json.get("modules", default=[]):
+        for module_json in json.get("modules", []):
             result.add_module(Module.from_json(module_json))
 
-        for class_json in json.get("classes", default=[]):
+        for class_json in json.get("classes", []):
             result.add_class(Class.from_json(class_json))
 
-        for function_json in json.get("functions", default=[]):
+        for function_json in json.get("functions", []):
             result.add_function(Function.from_json(function_json))
 
         return result
@@ -128,18 +128,18 @@ class Module:
             json["name"],
             [
                 Import.from_json(import_json)
-                for import_json in json.get("imports", default=[])
+                for import_json in json.get("imports", [])
             ],
             [
                 FromImport.from_json(from_import_json)
-                for from_import_json in json.get("from_imports", default=[])
+                for from_import_json in json.get("from_imports", [])
             ]
         )
 
-        for class_id in json["classes"]:
+        for class_id in json.get("classes", []):
             result.add_class(class_id)
 
-        for function_id in json["functions"]:
+        for function_id in json.get("functions", []):
             result.add_function(function_id)
 
         return result
@@ -208,11 +208,11 @@ class Class:
         result = Class(
             json["id"],
             json["qname"],
-            json.get("decorators", default=[]),
-            json.get("superclasses", default=[]),
-            json.get("is_public", default=True),
-            json.get("description", default=""),
-            json.get("docstring", default="")
+            json.get("decorators", []),
+            json.get("superclasses", []),
+            json.get("is_public", True),
+            json.get("description", ""),
+            json.get("docstring", "")
         )
 
         for method_id in json["methods"]:
@@ -256,27 +256,27 @@ class Class:
 class Function:
     id: str
     qname: str
-    decorators: list[str] = field(default_factory=list)
-    parameters: list[Parameter] = field(default_factory=list)
-    results: list[Result] = field(default_factory=list)
-    is_public: bool = True
-    description: str = ""
-    docstring: str = ""
+    decorators: list[str]
+    parameters: list[Parameter]
+    results: list[Result]
+    is_public: bool
+    description: str
+    docstring: str
 
     @staticmethod
     def from_json(json: Any) -> Function:
         return Function(
             json["id"],
             json["qname"],
-            json["decorators"],
+            json.get("decorators", []),
             [
                 Parameter.from_json(parameter_json)
-                for parameter_json in json["parameters"]
+                for parameter_json in json.get("parameters", [])
             ],
-            [Result.from_json(result_json) for result_json in json["results"]],
-            json["is_public"],
-            json["description"],
-            json["docstring"],
+            [Result.from_json(result_json) for result_json in json.get("results", [])],
+            json.get("is_public", True),
+            json.get("description", ""),
+            json.get("docstring", "")
         )
 
     @property

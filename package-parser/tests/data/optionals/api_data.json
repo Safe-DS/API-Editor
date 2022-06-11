@@ -6,19 +6,14 @@
         {
             "id": "test/test",
             "name": "test",
-            "imports": [],
-            "from_imports": [],
-            "classes": [],
             "functions": ["test/test/some_global_function"]
         }
     ],
-    "classes": [],
     "functions": [
         {
             "id": "test/test/some_global_function",
             "name": "some_global_function",
             "qname": "test.some_global_function",
-            "decorators": [],
             "parameters": [
                 {
                     "name": "required_parameter_that_should_be_constant",
@@ -152,11 +147,7 @@
                         "description": ""
                     }
                 }
-            ],
-            "results": [],
-            "is_public": true,
-            "description": "",
-            "docstring": ""
+            ]
         }
     ]
 }
