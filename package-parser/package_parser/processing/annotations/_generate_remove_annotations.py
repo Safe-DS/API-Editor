@@ -17,5 +17,5 @@ def _generate_remove_annotations(
             annotations.removes.append(RemoveAnnotation(class_.id))
 
     for function in api.functions.values():
-        if usages.n_function_usages(function.qname) == 0:
+        if usages.n_function_usages(function.id) == 0:
             annotations.removes.append(RemoveAnnotation(function.id))

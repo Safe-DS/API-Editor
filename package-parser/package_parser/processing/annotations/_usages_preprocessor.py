@@ -28,21 +28,21 @@ def _remove_internal_usages(usages: UsageCountStore, api: API) -> None:
             usages.remove_class(class_id)
 
     # Internal functions
-    for function_qname in list(usages.function_usages.keys()):
-        if not api.is_public_function(function_qname):
-            logging.info(f"Removing usages of internal function {function_qname}")
-            usages.remove_function(function_qname)
+    for function_id in list(usages.function_usages.keys()):
+        if not api.is_public_function(function_id):
+            logging.info(f"Removing usages of internal function {function_id}")
+            usages.remove_function(function_id)
 
     # Internal parameters
-    parameter_qnames = set(api.parameters().keys())
+    parameter_ids_in_api = set(api.parameters().keys())
 
-    for parameter_qname in list(usages.parameter_usages.keys()):
-        function_qname = parent_id(parameter_qname)
-        if parameter_qname not in parameter_qnames or not api.is_public_function(
-            function_qname
+    for parameter_id in list(usages.parameter_usages.keys()):
+        function_id = parent_id(parameter_id)
+        if parameter_id not in parameter_ids_in_api or not api.is_public_function(
+            function_id
         ):
-            logging.info(f"Removing usages of internal parameter {parameter_qname}")
-            usages.remove_parameter(parameter_qname)
+            logging.info(f"Removing usages of internal parameter {parameter_id}")
+            usages.remove_parameter(parameter_id)
 
 
 def _add_unused_api_elements(usages: UsageCountStore, api: API) -> None:
@@ -61,13 +61,13 @@ def _add_unused_api_elements(usages: UsageCountStore, api: API) -> None:
 
     # Public functions
     for function in api.functions.values():
-        if api.is_public_function(function.qname):
-            usages.add_function_usages(function.qname, 0)
+        if api.is_public_function(function.id):
+            usages.add_function_usages(function.id, 0)
 
             # "Public" parameters
             for parameter in function.parameters:
-                usages.init_value(parameter.qname)
-                usages.add_parameter_usages(parameter.qname, 0)
+                usages.init_value(parameter.id)
+                usages.add_parameter_usages(parameter.id, 0)
 
 
 def _add_implicit_usages_of_default_value(usages: UsageCountStore, api: API) -> None:
@@ -79,19 +79,19 @@ def _add_implicit_usages_of_default_value(usages: UsageCountStore, api: API) -> 
     :param api: Description of the API
     """
 
-    for parameter_qname, parameter_usage_count in list(usages.parameter_usages.items()):
-        default_value = api.get_default_value(parameter_qname)
+    for parameter_id, parameter_usage_count in list(usages.parameter_usages.items()):
+        default_value = api.get_default_value(parameter_id)
         if default_value is None:
             continue
 
-        function_qname = parent_id(parameter_qname)
-        function_usage_count = usages.n_function_usages(function_qname)
+        function_id = parent_id(parameter_id)
+        function_usage_count = usages.n_function_usages(function_id)
 
         n_locations_of_implicit_usages_of_default_value = (
             function_usage_count - parameter_usage_count
         )
         usages.add_value_usages(
-            parameter_qname,
+            parameter_id,
             default_value,
             n_locations_of_implicit_usages_of_default_value,
         )

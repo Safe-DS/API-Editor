@@ -66,7 +66,7 @@ def _analyze_declaration_called_by(
     if isinstance(
         called, (astroid.BoundMethod, astroid.UnboundMethod, astroid.FunctionDef)
     ):
-        return called, called.qname(), called.args, n_implicit_parameters
+        return called, called.qname(), called.args, n_implicit_parameters # TODO compute id
     else:
         return None
 
