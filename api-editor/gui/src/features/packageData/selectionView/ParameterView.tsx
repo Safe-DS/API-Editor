@@ -1,13 +1,13 @@
 import { Heading, Stack, Text as ChakraText } from '@chakra-ui/react';
 import React from 'react';
 import PythonParameter from '../model/PythonParameter';
-import ParameterNode from './ParameterNode';
+import {ParameterNode} from './ParameterNode';
 
 interface ParameterViewProps {
     pythonParameter: PythonParameter;
 }
 
-const ParameterView: React.FC<ParameterViewProps> = function ({
+export const ParameterView: React.FC<ParameterViewProps> = function ({
     pythonParameter,
 }) {
     return (
@@ -38,5 +38,3 @@ const ParameterView: React.FC<ParameterViewProps> = function ({
         </Stack>
     );
 };
-
-export default ParameterView;

@@ -1,11 +1,9 @@
-import { Box, Button, Icon, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
+import {Box, Button, Icon, Menu, MenuButton, MenuItem, MenuList} from '@chakra-ui/react';
 import React from 'react';
-import { FaChevronDown } from 'react-icons/fa';
-import { useAppDispatch } from '../../app/hooks';
+import {FaChevronDown} from 'react-icons/fa';
+import {useAppDispatch} from '../../app/hooks';
+import {addPure, addRemove, addRequired,} from './annotationSlice';
 import {
-    addPure,
-    addRequired,
-    addRemove,
     showAttributeAnnotationForm,
     showBoundaryAnnotationForm,
     showCalledAfterAnnotationForm,
@@ -13,9 +11,8 @@ import {
     showEnumAnnotationForm,
     showGroupAnnotationForm,
     showMoveAnnotationForm,
-    showOptionalAnnotationForm,
-    showRenameAnnotationForm,
-} from './annotationSlice';
+    showOptionalAnnotationForm, showRenameAnnotationForm
+} from "../ui/uiSlice";
 
 interface AnnotationDropdownProps {
     showAttribute?: boolean;
@@ -33,7 +30,7 @@ interface AnnotationDropdownProps {
     target: string;
 }
 
-const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
+export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
     showAttribute = false,
     showBoundary = false,
     showCalledAfter = false,
@@ -111,5 +108,3 @@ const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
         </Box>
     );
 };
-
-export default AnnotationDropdown;

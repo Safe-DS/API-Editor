@@ -31,21 +31,19 @@ import {
     selectRenaming,
     selectRequired,
     selectRemove,
-    showAttributeAnnotationForm,
-    showBoundaryAnnotationForm,
-    showConstantAnnotationForm,
-    showEnumAnnotationForm,
-    showGroupAnnotationForm,
-    showMoveAnnotationForm,
-    showOptionalAnnotationForm,
-    showRenameAnnotationForm,
 } from './annotationSlice';
+import {
+    showAttributeAnnotationForm,
+    showBoundaryAnnotationForm, showConstantAnnotationForm, showEnumAnnotationForm,
+    showGroupAnnotationForm, showMoveAnnotationForm, showOptionalAnnotationForm,
+    showRenameAnnotationForm
+} from "../ui/uiSlice";
 
 interface AnnotationViewProps {
     target: string;
 }
 
-const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
+export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
     const dispatch = useAppDispatch();
 
     const attributeAnnotation = useAppSelector(selectAttribute(target));
@@ -227,5 +225,3 @@ const Annotation: React.FC<AnnotationProps> = function ({ name, onDelete, onEdit
         </ButtonGroup>
     );
 };
-
-export default AnnotationView;

@@ -6,8 +6,8 @@ import {
     Text as ChakraText,
 } from '@chakra-ui/react';
 import React from 'react';
-import AnnotationDropdown from '../../annotations/AnnotationDropdown';
-import AnnotationView from '../../annotations/AnnotationView';
+import {AnnotationDropdown} from '../../annotations/AnnotationDropdown';
+import {AnnotationView} from '../../annotations/AnnotationView';
 import PythonParameter from '../model/PythonParameter';
 import DocumentationText from './DocumentationText';
 
@@ -16,7 +16,7 @@ interface ParameterNodeProps {
     isTitle: boolean;
 }
 
-const ParameterNode: React.FC<ParameterNodeProps> = function ({
+export const ParameterNode: React.FC<ParameterNodeProps> = function ({
     isTitle,
     pythonParameter,
 }) {
@@ -70,5 +70,3 @@ const ParameterNode: React.FC<ParameterNodeProps> = function ({
         </Stack>
     );
 };
-
-export default ParameterNode;
