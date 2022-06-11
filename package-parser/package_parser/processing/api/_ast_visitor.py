@@ -68,12 +68,7 @@ class _AstVisitor:
                             self.reexported.add(reexported_name)
 
         # Remember module, so we can later add classes and global functions
-        module = Module(
-            module_node.qname(),
-            f"{self.api.package}/{module_node.qname()}",
-            imports,
-            from_imports,
-        )
+        module = Module(f"{self.api.package}/{module_node.qname()}", module_node.qname(), imports, from_imports)
         self.__declaration_stack.append(module)
 
     def leave_module(self, _: astroid.Module) -> None:

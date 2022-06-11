@@ -4,8 +4,8 @@
     "version": "0.0.1",
     "modules": [
         {
+            "id": "test/test",
             "name": "test",
-            "pname": "test/test",
             "imports": [],
             "from_imports": [],
             "classes": [],

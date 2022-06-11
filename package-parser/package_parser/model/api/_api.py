@@ -124,13 +124,15 @@ class Module:
     @staticmethod
     def from_json(json: Any) -> Module:
         result = Module(
+            json["id"],
             json["name"],
-            json["pname"],
-            [Import.from_json(import_json) for import_json in json["imports"]],
+            [
+                Import.from_json(import_json)
+                for import_json in json["imports"]],
             [
                 FromImport.from_json(from_import_json)
                 for from_import_json in json["from_imports"]
-            ],
+            ]
         )
 
         for class_qname in json["classes"]:
@@ -141,15 +143,9 @@ class Module:
 
         return result
 
-    def __init__(
-        self,
-        name: str,
-        pname: str,
-        imports: list[Import],
-        from_imports: list[FromImport],
-    ):
+    def __init__(self, id_: str, name: str, imports: list[Import], from_imports: list[FromImport]):
         self.name: str = name
-        self.pname: str = pname
+        self.id_: str = id_
         self.imports: list[Import] = imports
         self.from_imports: list[FromImport] = from_imports
         self.classes: list[str] = []
@@ -163,8 +159,8 @@ class Module:
 
     def to_json(self) -> Any:
         return {
+            "id": self.id_,
             "name": self.name,
-            "pname": self.pname,
             "imports": [import_.to_json() for import_ in self.imports],
             "from_imports": [
                 from_import.to_json() for from_import in self.from_imports
