@@ -31,11 +31,10 @@ import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { resetAnnotations } from '../features/annotations/annotationSlice';
 import AnnotatedPythonPackageBuilder from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
 import PythonPackage from '../features/packageData/model/PythonPackage';
-import { HeatMapMode, setHeatMapMode, togglePackageDataImportDialog } from '../features/packageData/packageDataSlice';
 import { Setter } from './util/types';
 import { toggleUsageImportDialog } from '../features/usages/usageSlice';
 import { FilterHelpButton } from './FilterHelpButton';
-import {toggleAnnotationImportDialog} from "../features/ui/uiSlice";
+import {HeatMapMode, setHeatMapMode, toggleAnnotationImportDialog, toggleAPIImportDialog} from "../features/ui/uiSlice";
 
 interface MenuBarProps {
     pythonPackage: PythonPackage;
@@ -150,7 +149,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, filter
                         </MenuButton>
                         <MenuList>
                             <MenuGroup title="Import">
-                                <MenuItem paddingLeft={8} onClick={() => dispatch(togglePackageDataImportDialog())}>
+                                <MenuItem paddingLeft={8} onClick={() => dispatch(toggleAPIImportDialog())}>
                                     API Data
                                 </MenuItem>
                                 <MenuItem paddingLeft={8} onClick={() => dispatch(toggleUsageImportDialog())}>

@@ -6,7 +6,7 @@ import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { useAppSelector } from '../../../app/hooks';
 import { AnnotationsState, selectAnnotations } from '../../annotations/annotationSlice';
-import { HeatMapMode, selectHeatMapMode } from '../packageDataSlice';
+import {HeatMapMode, selectHeatMapMode} from "../../ui/uiSlice";
 
 interface ParameterNodeProps {
     pythonParameter: PythonParameter;

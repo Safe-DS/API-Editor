@@ -6,6 +6,12 @@ import {CalledAfterTarget, GroupTarget} from "../annotations/annotationSlice";
 export interface UIState {
     currentUserAction: UserAction;
     showAnnotationImportDialog: boolean;
+    expandedInTreeView: {
+        [target: string]: true;
+    };
+    treeViewScrollOffset: number;
+    showAPIImportDialog: boolean;
+    heatMapMode: HeatMapMode;
 }
 
 type UserAction =
@@ -66,11 +72,22 @@ interface RenameUserAction {
     readonly target: string;
 }
 
+export enum HeatMapMode {
+    None,
+    Usages,
+    Usefulness,
+    Annotations,
+}
+
 // Initial state -------------------------------------------------------------------------------------------------------
 
 export const initialState: UIState = {
     currentUserAction: NoUserAction,
     showAnnotationImportDialog: false,
+    expandedInTreeView: {},
+    treeViewScrollOffset: 0,
+    showAPIImportDialog: false,
+    heatMapMode: HeatMapMode.None,
 };
 
 // Thunks --------------------------------------------------------------------------------------------------------------
@@ -168,6 +185,35 @@ const uiSlice = createSlice({
         hideAnnotationImportDialog(state) {
             state.showAnnotationImportDialog = false;
         },
+
+        toggleIsExpandedInTreeView(state, action: PayloadAction<string>) {
+            if (state.expandedInTreeView[action.payload]) {
+                delete state.expandedInTreeView[action.payload];
+            } else {
+                state.expandedInTreeView[action.payload] = true;
+            }
+        },
+        setAllExpandedInTreeView(state, action: PayloadAction<string[]>) {
+            const all = action.payload;
+            for (const item of all) {
+                state.expandedInTreeView[item] = true;
+            }
+        },
+        setAllCollapsedInTreeView(state, action: PayloadAction<string[]>) {
+            const all = action.payload;
+            for (const item of all) {
+                delete state.expandedInTreeView[item];
+            }
+        },
+        setTreeViewScrollOffset(state, action: PayloadAction<number>) {
+            state.treeViewScrollOffset = action.payload;
+        },
+        toggleAPIImportDialog(state) {
+            state.showAPIImportDialog = !state.showAPIImportDialog;
+        },
+        setHeatMapMode(state, action: PayloadAction<HeatMapMode>) {
+            state.heatMapMode = action.payload;
+        },
     },
     extraReducers(builder) {
         builder.addCase(initializeUI.fulfilled, (state, action) => action.payload);
@@ -192,6 +238,13 @@ export const {
 
     toggleAnnotationImportDialog,
     hideAnnotationImportDialog,
+
+    toggleIsExpandedInTreeView,
+    setAllExpandedInTreeView,
+    setAllCollapsedInTreeView,
+    setTreeViewScrollOffset,
+    toggleAPIImportDialog,
+    setHeatMapMode,
 } = actions;
 export const uiReducer = reducer;
 
@@ -199,3 +252,13 @@ export const selectUI = (state: RootState) => state.ui;
 export const selectCurrentUserAction = (state: RootState): UserAction => selectUI(state).currentUserAction;
 export const selectShowAnnotationImportDialog = (state: RootState): boolean =>
     selectUI(state).showAnnotationImportDialog;
+export const selectIsExpandedInTreeView =
+    (target: string) =>
+        (state: RootState): boolean =>
+            Boolean(selectUI(state).expandedInTreeView[target]);
+export const selectAllExpandedInTreeView = (state: RootState): { [target: string]: true } =>
+    selectUI(state).expandedInTreeView;
+export const selectTreeViewScrollOffset = (state: RootState): number => selectUI(state).treeViewScrollOffset;
+export const selectShowAPIImportDialog = (state: RootState): boolean =>
+    selectUI(state).showAPIImportDialog;
+export const selectHeatMapMode = (state: RootState): HeatMapMode => selectUI(state).heatMapMode;

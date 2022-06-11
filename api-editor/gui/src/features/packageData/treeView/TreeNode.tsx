@@ -10,7 +10,7 @@ import {
     selectHeatMapMode,
     selectIsExpandedInTreeView,
     toggleIsExpandedInTreeView,
-} from '../packageDataSlice';
+} from '../../ui/uiSlice';
 import VisibilityIndicator from './VisibilityIndicator';
 import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
 import { selectAnnotations } from '../../annotations/annotationSlice';

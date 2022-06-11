@@ -12,15 +12,10 @@ import {
 } from '@chakra-ui/react';
 import * as idb from 'idb-keyval';
 import React, {useEffect, useState} from 'react';
-import {useLocation} from 'react-router';
 import {MenuBar} from '../common/MenuBar';
 import {Setter} from '../common/util/types';
 import {AnnotationImportDialog} from '../features/annotations/AnnotationImportDialog';
-import {
-    AnnotationsState,
-    initializeAnnotations,
-    selectAnnotations,
-} from '../features/annotations/annotationSlice';
+import {AnnotationsState, initializeAnnotations, selectAnnotations,} from '../features/annotations/annotationSlice';
 import {BoundaryForm} from '../features/annotations/forms/BoundaryForm';
 import {CalledAfterForm} from '../features/annotations/forms/CalledAfterForm';
 import {ConstantForm} from '../features/annotations/forms/ConstantForm';
@@ -32,7 +27,6 @@ import {RenameForm} from '../features/annotations/forms/RenameForm';
 import PythonPackage from '../features/packageData/model/PythonPackage';
 import {parsePythonPackageJson, PythonPackageJson} from '../features/packageData/model/PythonPackageBuilder';
 import {PackageDataImportDialog} from '../features/packageData/PackageDataImportDialog';
-import {selectShowPackageDataImportDialog, toggleIsExpandedInTreeView,} from '../features/packageData/packageDataSlice';
 import {SelectionView} from '../features/packageData/selectionView/SelectionView';
 import {TreeView} from '../features/packageData/treeView/TreeView';
 import {useAppDispatch, useAppSelector} from './hooks';
@@ -43,16 +37,18 @@ import {selectShowUsageImportDialog} from '../features/usages/usageSlice';
 import {UsageImportDialog} from '../features/usages/UsageImportDialog';
 import {createFilterFromString} from '../features/packageData/model/filters/filterFactory';
 import {
-    GroupUserAction, initializeUI,
+    GroupUserAction,
+    initializeUI,
     selectCurrentUserAction,
     selectShowAnnotationImportDialog,
-    selectUI, UIState
+    selectShowAPIImportDialog,
+    selectUI,
+    UIState
 } from "../features/ui/uiSlice";
 
 export const App: React.FC = function () {
     const dispatch = useAppDispatch();
     const currentUserAction = useAppSelector(selectCurrentUserAction);
-    const currentPathName = useLocation().pathname;
 
     // Initialize UI
     const uiState = useAppSelector(selectUI);
@@ -94,16 +90,6 @@ export const App: React.FC = function () {
         setAnnotationsInIndexedDB(annotationStore);
     }, [annotationStore]);
 
-    useEffect(() => {
-        const parts = currentPathName.split('/').slice(1);
-
-        for (let i = 2; i < parts.length; i++) {
-            dispatch(toggleIsExpandedInTreeView(parts.slice(0, i).join('/')));
-        }
-
-        // eslint-disable-next-line
-    }, []);
-
     const [filter, setFilter] = useState('is:public');
     const pythonFilter = createFilterFromString(filter);
     const filteredPythonPackage = pythonFilter.applyToPackage(pythonPackage, useAppSelector(selectAnnotations), usages);
@@ -111,7 +97,7 @@ export const App: React.FC = function () {
     const userActionTarget = pythonPackage.getByRelativePathAsString(currentUserAction.target);
 
     const showAnnotationImportDialog = useAppSelector(selectShowAnnotationImportDialog);
-    const showPackageDataImportDialog = useAppSelector(selectShowPackageDataImportDialog);
+    const showAPIImportDialog = useAppSelector(selectShowAPIImportDialog);
     const showUsagesImportDialog = useAppSelector(selectShowUsageImportDialog);
 
     const [showInferErrorDialog, setShowInferErrorDialog] = useState(false);
@@ -185,7 +171,7 @@ export const App: React.FC = function () {
                 </GridItem>
 
                 {showAnnotationImportDialog && <AnnotationImportDialog />}
-                {showPackageDataImportDialog && (
+                {showAPIImportDialog && (
                     <PackageDataImportDialog setPythonPackage={setPythonPackage} setFilter={setFilter} />
                 )}
                 {showUsagesImportDialog && <UsageImportDialog setUsages={setUsages} />}

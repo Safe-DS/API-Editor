@@ -23,7 +23,7 @@ import { isValidJsonFile } from '../../common/util/validation';
 import { resetAnnotations } from '../annotations/annotationSlice';
 import PythonPackage from './model/PythonPackage';
 import { parsePythonPackageJson, PythonPackageJson } from './model/PythonPackageBuilder';
-import { togglePackageDataImportDialog } from './packageDataSlice';
+import {toggleAPIImportDialog} from "../ui/uiSlice";
 
 interface ImportPythonPackageDialogProps {
     setPythonPackage: Setter<PythonPackage>;
@@ -50,7 +50,7 @@ export const PackageDataImportDialog: React.FC<ImportPythonPackageDialogProps> =
         }
         close();
     };
-    const close = () => dispatch(togglePackageDataImportDialog());
+    const close = () => dispatch(toggleAPIImportDialog());
 
     const slurpAndParse = (acceptedFiles: File[]) => {
         if (isValidJsonFile(acceptedFiles[acceptedFiles.length - 1].name)) {

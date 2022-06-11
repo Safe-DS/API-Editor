@@ -8,7 +8,7 @@ import PythonFunction from '../model/PythonFunction';
 import PythonModule from '../model/PythonModule';
 import PythonPackage from '../model/PythonPackage';
 import PythonParameter from '../model/PythonParameter';
-import { selectAllExpandedInTreeView, selectTreeViewScrollOffset, setTreeViewScrollOffset } from '../packageDataSlice';
+import { selectAllExpandedInTreeView, selectTreeViewScrollOffset, setTreeViewScrollOffset } from '../../ui/uiSlice';
 import { ClassNode } from './ClassNode';
 import { FunctionNode } from './FunctionNode';
 import { ModuleNode } from './ModuleNode';
