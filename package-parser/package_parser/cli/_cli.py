@@ -1,4 +1,6 @@
 import argparse
+import logging
+
 # noinspection PyUnresolvedReferences,PyProtectedMember
 from argparse import _SubParsersAction
 from pathlib import Path
@@ -16,6 +18,9 @@ _ALL_COMMAND = "all"
 
 def cli() -> None:
     args = _get_args()
+    if args.verbose:
+        logging.basicConfig(level=logging.INFO)
+
     if args.command == _API_COMMAND:
         _run_api_command(args.package, args.src, args.out)
     elif args.command == _USAGES_COMMAND:
@@ -28,6 +33,9 @@ def cli() -> None:
 
 def _get_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Analyze Python code.")
+    parser.add_argument(
+        "-v", "--verbose", help="show info messages", action="store_true"
+    )
 
     # Commands
     subparsers = parser.add_subparsers(dest="command")
