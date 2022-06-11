@@ -3,7 +3,7 @@ import { FaArchive } from 'react-icons/fa';
 import { isEmptyList } from '../../../common/util/listOperations';
 import PythonModule from '../model/PythonModule';
 import { TreeNode } from './TreeNode';
-import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
+import { AbstractPythonFilter } from '../model/filters/AbstractPythonFilter';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 
 interface ModuleNodeProps {
@@ -12,7 +12,7 @@ interface ModuleNodeProps {
     usages: UsageCountStore;
 }
 
-const ModuleNode: React.FC<ModuleNodeProps> = function ({ pythonModule, filter, usages }) {
+export const ModuleNode: React.FC<ModuleNodeProps> = function ({ pythonModule, filter, usages }) {
     const hasClasses = !isEmptyList(pythonModule.classes);
     const hasFunctions = !isEmptyList(pythonModule.functions);
     const hasChildren = hasClasses || hasFunctions;
@@ -27,5 +27,3 @@ const ModuleNode: React.FC<ModuleNodeProps> = function ({ pythonModule, filter, 
         />
     );
 };
-
-export default ModuleNode;

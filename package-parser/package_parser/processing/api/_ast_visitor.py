@@ -103,7 +103,6 @@ class _AstVisitor:
             self.is_public(class_node.name, qname),
             _AstVisitor.__description(numpydoc),
             class_node.doc,
-            class_node.as_string(),
         )
         self.__declaration_stack.append(class_)
 
@@ -143,7 +142,6 @@ class _AstVisitor:
             is_public,
             _AstVisitor.__description(numpydoc),
             function_node.doc,
-            function_node.as_string(),
         )
         self.__declaration_stack.append(function)
 
@@ -244,7 +242,11 @@ class _AstVisitor:
             for index, it in enumerate(parameters.kwonlyargs)
         ]
 
-        return result[n_implicit_parameters:]
+        implicit_parameters = result[:n_implicit_parameters]
+        for implicit_parameter in implicit_parameters:
+            implicit_parameter.assigned_by = ParameterAssignment.IMPLICIT
+
+        return result
 
     @staticmethod
     def __parameter_default(

@@ -48,6 +48,15 @@ export const FilterHelpButton = function () {
                             </ListItem>
                             <ListItem>
                                 <ChakraText>
+                                    <strong>is:[requiredOrOptional]</strong>
+                                </ChakraText>
+                                <ChakraText>
+                                    Displays only parameters that either required or optional. Replace
+                                    [requiredOrOptional] with one of <em>required, optional</em>.
+                                </ChakraText>
+                            </ListItem>
+                            <ListItem>
+                                <ChakraText>
                                     <strong>is:[assignedBy]</strong>
                                 </ChakraText>
                                 <ChakraText>
