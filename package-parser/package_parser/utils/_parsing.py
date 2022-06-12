@@ -19,10 +19,16 @@ def parse_without_caching(code: str, module_name: str = "", path=None, apply_tra
     builder = AstroidBuilder(
         manager=AstroidManager(), apply_transforms=apply_transforms
     )
-    return builder.string_build(code, modname=module_name, path=path)
+    return builder.string_build(code, modname=module_name, path=path)  # causes memory leak
 
 
 class MyAstroidBuild(AstroidBuilder):
+    def string_build(self, data: str, modname: str = "", path: str = None):
+        """Build astroid from source code string."""
+        module, builder = self._data_build(data, modname, path)
+        module.file_bytes = data.encode("utf-8")
+        return self._post_build(module, builder, "utf-8")
+
     def _post_build(
         self, module: nodes.Module, builder: rebuilder.TreeRebuilder, encoding: str
     ) -> nodes.Module:

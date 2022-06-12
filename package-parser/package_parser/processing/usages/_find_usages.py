@@ -1,4 +1,6 @@
 import logging
+import signal
+import sys
 from multiprocessing import Pool
 from pathlib import Path
 from typing import TypeVar
@@ -8,22 +10,23 @@ import astroid
 from package_parser.utils import ASTWalker, list_files
 from ._ast_visitor import _UsageFinder
 from ...model.usages import UsageCountStore
+from ...utils._parsing import parse_without_caching
 
 
 def find_usages(package_name: str, src_dir: Path, n_processes: int) -> UsageCountStore:
     python_files = list_files(src_dir, ".py")
-    python_file_batches = _split_into_batches(python_files, 10)
+    python_file_batches = _split_into_batches(python_files, 100)
 
     aggregated_counts = UsageCountStore()
 
-    with Pool(processes=n_processes) as pool:
-        for counts_in_file in pool.starmap(
+    with Pool(processes=n_processes, initializer=_initializer) as pool:
+        batch_counts = pool.starmap(
             _find_usages_in_batch,
             [[package_name, it] for it in python_file_batches]
-        ):
-            aggregated_counts.merge_other_into_self(counts_in_file)
-    pool.join()
-    pool.close()
+        )
+
+        for batch_count in batch_counts:
+            aggregated_counts.merge_other_into_self(batch_count)
 
     return aggregated_counts
 
@@ -54,6 +57,14 @@ def _split_into_batches(
     return batches
 
 
+def _initializer() -> None:
+    """
+    Ignore CTRL+C in the worker process.
+    """
+
+    signal.signal(signal.SIGINT, signal.SIG_IGN)
+
+
 def _find_usages_in_batch(
     package_name: str,
     python_files: list[str]
@@ -64,7 +75,7 @@ def _find_usages_in_batch(
     for python_file in python_files:
         _find_usages_in_single_file(package_name, python_file, ast_walker)
 
-    astroid.MANAGER.clear_cache()
+    # astroid.MANAGER.clear_cache()
     return usage_finder.usages
 
 
@@ -81,7 +92,8 @@ def _find_usages_in_single_file(
             source = f.read()
 
         if __is_relevant_python_file(package_name, source):
-            ast_walker.walk(astroid.parse(source))
+            parse_without_caching(source)
+            # ast_walker.walk(parse_without_caching(source))
         else:
             logging.info(f"Skipping {python_file} (irrelevant file)")
 
