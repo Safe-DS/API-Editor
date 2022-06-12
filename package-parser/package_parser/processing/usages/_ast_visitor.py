@@ -1,9 +1,11 @@
-from typing import Optional
+import re
+from typing import Optional, Union
 
 import astroid
 from astroid.arguments import CallSite
 from astroid.helpers import safe_infer
 from package_parser.model.usages import UsageCountStore
+from package_parser.utils import parent_id
 
 
 class _UsageFinder:
@@ -15,7 +17,7 @@ class _UsageFinder:
         called_tuple = _analyze_declaration_called_by(node, self.package_name)
         if called_tuple is None:
             return
-        called, function_qname, parameters, n_implicit_parameters = called_tuple
+        called, function_id, parameters, n_implicit_parameters = called_tuple
 
         bound_parameters = _bound_parameters(
             parameters, CallSite.from_call(node), n_implicit_parameters
@@ -29,18 +31,18 @@ class _UsageFinder:
             or isinstance(called, astroid.FunctionDef)
             and called.is_method()
         ):
-            self.usages.add_class_usages(".".join(function_qname.split(".")[:-1]))
+            self.usages.add_class_usages(parent_id(function_id))
 
         # Add function usage
-        self.usages.add_function_usages(function_qname)
+        self.usages.add_function_usages(function_id)
 
         # Add parameter & value usage
         for parameter_name, value in bound_parameters.items():
-            parameter_qname = f"{function_qname}.{parameter_name}"
-            self.usages.add_parameter_usages(parameter_qname)
+            parameter_id = f"{function_id}/{parameter_name}"
+            self.usages.add_parameter_usages(parameter_id)
 
             value = _stringify_value(value)
-            self.usages.add_value_usages(parameter_qname, value)
+            self.usages.add_value_usages(parameter_id, value)
 
 
 def _analyze_declaration_called_by(
@@ -65,9 +67,61 @@ def _analyze_declaration_called_by(
     if isinstance(
         called, (astroid.BoundMethod, astroid.UnboundMethod, astroid.FunctionDef)
     ):
-        return called, called.qname(), called.args, n_implicit_parameters
+        return called, _id(package_name, called), called.args, n_implicit_parameters
     else:
         return None
+
+
+def _id(
+    package_name: str, called: Union[astroid.UnboundMethod, astroid.FunctionDef]
+) -> str:
+    path = _path(package_name, called)
+
+    decorators: Optional[astroid.Decorators] = called.decorators
+    if decorators is not None:
+        decorator_names = [decorator.as_string() for decorator in decorators.nodes]
+    else:
+        decorator_names = []
+
+    def is_getter() -> bool:
+        return "property" in decorator_names
+
+    def is_setter() -> bool:
+        for decorator in decorator_names:
+            if re.search(r"^[^.]*.setter$", decorator):
+                return True
+
+        return False
+
+    def is_deleter() -> bool:
+        for decorator in decorator_names:
+            if re.search(r"^[^.]*.deleter$", decorator):
+                return True
+
+        return False
+
+    result = "/".join(path)
+
+    if is_getter():
+        result += "@getter"
+    elif is_setter():
+        result += "@setter"
+    elif is_deleter():
+        result += "@deleter"
+
+    return result
+
+
+def _path(package_name: str, current: astroid.NodeNG) -> list[str]:
+    if current is None:
+        return []
+
+    if isinstance(current, astroid.Module):
+        return [package_name, current.name]
+    elif hasattr(current, "name"):
+        return _path(package_name, current.parent) + [current.name]
+    else:
+        return _path(package_name, current.parent)
 
 
 def __is_relevant_qualified_name(package_name: str, qualified_name: str) -> bool:

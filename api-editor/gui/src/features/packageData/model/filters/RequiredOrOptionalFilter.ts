@@ -1,10 +1,10 @@
 import { AbstractPythonFilter } from './AbstractPythonFilter';
-import PythonClass from '../PythonClass';
+import { PythonClass } from '../PythonClass';
 import { AnnotationStore } from '../../../annotations/annotationSlice';
 import { UsageCountStore } from '../../../usages/model/UsageCountStore';
-import PythonFunction from '../PythonFunction';
-import PythonModule from '../PythonModule';
-import PythonParameter from '../PythonParameter';
+import { PythonFunction } from '../PythonFunction';
+import { PythonModule } from '../PythonModule';
+import { PythonParameter } from '../PythonParameter';
 
 export class RequiredOrOptionalFilter extends AbstractPythonFilter {
     constructor(readonly keepOnly: RequiredOrOptional) {

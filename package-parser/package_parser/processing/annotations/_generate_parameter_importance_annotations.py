@@ -14,7 +14,7 @@ def _generate_parameter_importance_annotations(
     api: API, usages: UsageCountStore, annotations: AnnotationStore
 ) -> None:
     for parameter in api.parameters().values():
-        parameter_values = usages.most_common_parameter_values(parameter.qname)
+        parameter_values = usages.most_common_parameter_values(parameter.id)
 
         if len(parameter_values) == 1:
             _generate_constant_annotation(parameter, parameter_values[0], annotations)
@@ -37,27 +37,25 @@ def _generate_constant_annotation(
     )
     if default_type is not None:
         annotations.constants.append(
-            ConstantAnnotation(parameter.pname, default_type, default_value)
+            ConstantAnnotation(parameter.id, default_type, default_value)
         )
 
 
 def _generate_required_or_optional_annotation(
     parameter: Parameter, usages: UsageCountStore, annotations: AnnotationStore
 ) -> None:
-    most_common_values = usages.most_common_parameter_values(parameter.qname)
+    most_common_values = usages.most_common_parameter_values(parameter.id)
     if len(most_common_values) < 2:
         return
 
     # If the most common value is not a stringified literal, make parameter required
     if not _is_stringified_literal(most_common_values[0]):
         if parameter.is_optional():
-            annotations.requireds.append(RequiredAnnotation(parameter.pname))
+            annotations.requireds.append(RequiredAnnotation(parameter.id))
         return
 
     # Compute metrics
-    most_common_value_count = usages.n_value_usages(
-        parameter.qname, most_common_values[0]
-    )
+    most_common_value_count = usages.n_value_usages(parameter.id, most_common_values[0])
 
     # We deliberately don't ensure this is a literal. Otherwise, we might make a parameter optional even though there is
     # a tie between the most common value and the second most common value if the latter is not a literal. This would
@@ -77,7 +75,7 @@ def _generate_required_or_optional_annotation(
     #   However, if we treat "call()" as the most common value, we would make the parameter required since it is not a
     #   literal.
     second_most_common_value_count = usages.n_value_usages(
-        parameter.qname, most_common_values[1]
+        parameter.id, most_common_values[1]
     )
 
     literal_values = [
@@ -86,7 +84,7 @@ def _generate_required_or_optional_annotation(
         if _is_stringified_literal(stringified_value)
     ]
     total_literal_value_count = sum(
-        [usages.n_value_usages(parameter.qname, value) for value in literal_values]
+        [usages.n_value_usages(parameter.id, value) for value in literal_values]
     )
     n_different_literal_values = len(literal_values)
 
@@ -98,7 +96,7 @@ def _generate_required_or_optional_annotation(
         n_different_literal_values,
     ):
         if parameter.is_optional():
-            annotations.requireds.append(RequiredAnnotation(parameter.pname))
+            annotations.requireds.append(RequiredAnnotation(parameter.id))
     else:
         if parameter.is_required() or parameter.default_value != literal_values[0]:
             (
@@ -107,7 +105,7 @@ def _generate_required_or_optional_annotation(
             ) = _get_default_type_and_value_for_stringified_value(literal_values[0])
             if default_type is not None:  # Just for mypy, always true
                 annotations.optionals.append(
-                    OptionalAnnotation(parameter.pname, default_type, default_value)
+                    OptionalAnnotation(parameter.id, default_type, default_value)
                 )
 
 

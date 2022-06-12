@@ -19,10 +19,10 @@ export const store = configureStore({
                 ignoredActions: [
                     'api/initialize',
                     'api/initialize/fulfilled',
-                    'api/set',
+                    'api/setPythonPackage',
                     'usages/initialize',
                     'usages/initialize/fulfilled',
-                    'usages/set',
+                    'usages/setUsages',
                 ],
                 // Ignore these paths in the state
                 ignoredPaths: ['api.pythonPackage', 'usages.usages'],

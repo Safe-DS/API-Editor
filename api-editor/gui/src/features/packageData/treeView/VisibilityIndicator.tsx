@@ -8,7 +8,7 @@ interface VisibilityIndicatorProps {
     isSelected?: boolean;
 }
 
-const VisibilityIndicator: React.FC<VisibilityIndicatorProps> = function ({
+export const VisibilityIndicator: React.FC<VisibilityIndicatorProps> = function ({
     hasChildren,
     showChildren,
     isSelected = false,
@@ -24,5 +24,3 @@ const VisibilityIndicator: React.FC<VisibilityIndicatorProps> = function ({
         />
     );
 };
-
-export default VisibilityIndicator;

@@ -1,7 +1,7 @@
-import PythonClass from '../PythonClass';
-import PythonFunction from '../PythonFunction';
-import PythonModule from '../PythonModule';
-import PythonParameter from '../PythonParameter';
+import { PythonClass } from '../PythonClass';
+import { PythonFunction } from '../PythonFunction';
+import { PythonModule } from '../PythonModule';
+import { PythonParameter } from '../PythonParameter';
 import { AbstractPythonFilter } from './AbstractPythonFilter';
 import { AnnotationStore } from '../../../annotations/annotationSlice';
 import { UsageCountStore } from '../../../usages/model/UsageCountStore';
@@ -26,12 +26,12 @@ export class UsageFilter extends AbstractPythonFilter {
     }
 
     shouldKeepClass(pythonClass: PythonClass, annotations: AnnotationStore, usages: UsageCountStore): boolean {
-        const classUsages = usages.classUsages.get(pythonClass.qualifiedName);
+        const classUsages = usages.classUsages.get(pythonClass.id);
         return this.shouldKeepWithUsages(classUsages);
     }
 
     shouldKeepFunction(pythonFunction: PythonFunction, annotations: AnnotationStore, usages: UsageCountStore): boolean {
-        const functionUsages = usages.functionUsages.get(pythonFunction.qualifiedName);
+        const functionUsages = usages.functionUsages.get(pythonFunction.id);
         return this.shouldKeepWithUsages(functionUsages);
     }
 
@@ -40,7 +40,7 @@ export class UsageFilter extends AbstractPythonFilter {
         annotations: AnnotationStore,
         usages: UsageCountStore,
     ): boolean {
-        const parameterUsages = usages.parameterUsages.get(pythonParameter.qualifiedName());
+        const parameterUsages = usages.parameterUsages.get(pythonParameter.id);
         return this.shouldKeepWithUsages(parameterUsages);
     }
 

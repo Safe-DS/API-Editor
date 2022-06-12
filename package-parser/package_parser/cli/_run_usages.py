@@ -17,7 +17,7 @@ def _run_usages_command(
 ) -> None:
     usages = find_usages(package, client_dir_path, n_processes, batch_size)
 
-    out_file_usage_count = out_dir_path.joinpath(f"{package}__usages_counted.json")
+    out_file_usage_count = out_dir_path.joinpath(f"{package}__usage_counts.json")
     ensure_file_exists(out_file_usage_count)
     with out_file_usage_count.open("w") as f:
         json.dump(usages.to_json(), f, indent=2)

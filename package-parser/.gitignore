@@ -27,6 +27,7 @@ htmlcov/
 
 # Output of this tool
 out/
+tmp/
 
 # VSCode Settings
 .vscode/
