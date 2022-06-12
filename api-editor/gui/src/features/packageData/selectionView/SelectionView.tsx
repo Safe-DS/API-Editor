@@ -29,7 +29,7 @@ export const SelectionView: React.FC<SelectionViewProps> = function ({ pythonPac
 
     return (
         <VStack h="100%">
-            <Box w="100%" flexGrow={1} overflowY="scroll">
+            <Box w="100%" flexGrow={1} overflowY="auto">
                 <Box padding={4}>
                     {declaration instanceof PythonFunction && <FunctionView pythonFunction={declaration} />}
                     {declaration instanceof PythonClass && <ClassView pythonClass={declaration} />}
