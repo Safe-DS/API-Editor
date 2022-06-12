@@ -204,7 +204,7 @@ class ParameterAnnotationProcessorTest {
 
         val testParameter2 = PythonParameter(name = "testParameter2")
         testMethod.parameters += testParameter2
-       callToOriginalAPI.arguments += PythonArgument(
+        callToOriginalAPI.arguments += PythonArgument(
             value = PythonReference(testParameter2)
         )
 
@@ -213,8 +213,8 @@ class ParameterAnnotationProcessorTest {
 
         testPackage.processParameterAnnotations()
 
-       callToOriginalAPI.arguments.shouldHaveSize(2)
-       callToOriginalAPI.arguments[0].value.shouldBeInstanceOf<PythonNone>()
-       callToOriginalAPI.arguments[1].value.shouldBeInstanceOf<PythonNone>()
+        callToOriginalAPI.arguments.shouldHaveSize(2)
+        callToOriginalAPI.arguments[0].value.shouldBeInstanceOf<PythonNone>()
+        callToOriginalAPI.arguments[1].value.shouldBeInstanceOf<PythonNone>()
     }
 }
