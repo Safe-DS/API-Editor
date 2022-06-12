@@ -26,7 +26,7 @@ import { PackageDataImportDialog } from '../features/packageData/PackageDataImpo
 import { SelectionView } from '../features/packageData/selectionView/SelectionView';
 import { TreeView } from '../features/packageData/treeView/TreeView';
 import { useAppDispatch, useAppSelector } from './hooks';
-import PythonFunction from '../features/packageData/model/PythonFunction';
+import { PythonFunction } from '../features/packageData/model/PythonFunction';
 import { AttributeForm } from '../features/annotations/forms/AttributeForm';
 import { UsageImportDialog } from '../features/usages/UsageImportDialog';
 import {

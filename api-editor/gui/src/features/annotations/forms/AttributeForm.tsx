@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import PythonDeclaration from '../../packageData/model/PythonDeclaration';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
 import { selectAttribute, upsertAttribute } from '../annotationSlice';
 import { TypeValueForm, TypeValueFormState } from './TypeValueForm';
 

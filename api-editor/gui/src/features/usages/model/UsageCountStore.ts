@@ -60,8 +60,8 @@ export class UsageCountStore {
         };
     }
 
-    private computeParameterUsefulness(pythonParameterQualifiedName: string): number {
-        const valueUsages = this.valueUsages.get(pythonParameterQualifiedName);
+    private computeParameterUsefulness(pythonParameterId: string): number {
+        const valueUsages = this.valueUsages.get(pythonParameterId);
         if (valueUsages === undefined || valueUsages.size === 0) {
             return 0;
         }

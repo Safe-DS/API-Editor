@@ -4,280 +4,144 @@
     "version": "0.0.1",
     "modules": [
         {
+            "id": "test/test",
             "name": "test",
-            "pname": "test/test",
-            "imports": [],
-            "from_imports": [],
-            "classes": ["test.UsedClass"],
-            "functions": ["test.unused_global_function", "test.used_global_function"]
+            "classes": ["test/test/UsedClass"],
+            "functions": ["test/test/unused_global_function", "test/test/used_global_function"]
         }
     ],
     "classes": [
         {
+            "id": "test/test/UsedClass",
             "name": "UsedClass",
             "qname": "test.UsedClass",
-            "pname": "test/test/UsedClass",
-            "decorators": [],
-            "is_public": true,
-            "description": "",
-            "docstring": "",
-            "superclasses": [],
-            "source_code": "",
-            "methods": ["test.UsedClass.unused_method", "test.UsedClass.used_method"]
+            "methods": ["test/test/UsedClass/unused_method", "test/test/UsedClass/used_method"]
         }
     ],
     "functions": [
         {
+            "id": "test/test/unused_global_function",
             "name": "unused_global_function",
-            "unique_name": "unused_global_function",
             "qname": "test.unused_global_function",
-            "pname": "test/test/unused_global_function",
-            "unique_qname": "test.unused_global_function",
-            "decorators": [],
             "parameters": [
                 {
+                    "id": "test/test/unused_global_function/unused_parameter",
                     "name": "unused_parameter",
                     "qname": "test.unused_global_function.unused_parameter",
-                    "pname": "test/test/unused_global_function/unused_parameter",
-                    "default_value": null,
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": null
                 }
-            ],
-            "results": [],
-            "is_public": true,
-            "description": "",
-            "docstring": "",
-            "source_code": ""
+            ]
         },
         {
+            "id": "test/test/used_global_function",
             "name": "used_global_function",
-            "unique_name": "used_global_function",
             "qname": "test.used_global_function",
-            "pname": "test/test/used_global_function",
-            "unique_qname": "test.used_global_function",
-            "decorators": [],
             "parameters": [
                 {
+                    "id": "test/test/used_global_function/constant_required_parameter",
                     "name": "constant_required_parameter",
                     "qname": "test.used_global_function.constant_required_parameter",
-                    "pname": "test/test/used_global_function/constant_required_parameter",
-                    "default_value": null,
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": null
                 },
                 {
+                    "id": "test/test/used_global_function/variable_required_parameter",
                     "name": "variable_required_parameter",
                     "qname": "test.used_global_function.variable_required_parameter",
-                    "pname": "test/test/used_global_function/variable_required_parameter",
-                    "default_value": null,
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": null
                 },
                 {
+                    "id": "test/test/used_global_function/constant_optional_parameter",
                     "name": "constant_optional_parameter",
                     "qname": "test.used_global_function.constant_optional_parameter",
-                    "pname": "test/test/used_global_function/constant_optional_parameter",
-                    "default_value": "'test'",
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": "'test'"
                 },
                 {
+                    "id": "test/test/used_global_function/variable_optional_parameter",
                     "name": "variable_optional_parameter",
                     "qname": "test.used_global_function.variable_optional_parameter",
-                    "pname": "test/test/used_global_function/variable_optional_parameter",
-                    "default_value": "'test'",
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": "'test'"
                 }
-            ],
-            "results": [],
-            "is_public": true,
-            "description": "",
-            "docstring": "",
-            "source_code": ""
+            ]
         },
         {
+            "id": "test/test/UsedClass/unused_method",
             "name": "unused_method",
-            "unique_name": "unused_method",
             "qname": "test.UsedClass.unused_method",
-            "pname": "test/test/UsedClass/unused_method",
-            "unique_qname": "test.UsedClass.unused_method",
-            "decorators": [],
             "parameters": [
                 {
+                    "id": "test/test/UsedClass/unused_method/unused_parameter",
                     "name": "unused_parameter",
                     "qname": "test.UsedClass.unused_method.unused_parameter",
-                    "pname": "test/test/UsedClass/unused_method/unused_parameter",
-                    "default_value": null,
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": null
                 }
-            ],
-            "results": [],
-            "is_public": true,
-            "description": "",
-            "docstring": "",
-            "source_code": ""
+            ]
         },
         {
+            "id": "test/test/UsedClass/used_method",
             "name": "used_method",
-            "unique_name": "used_method",
             "qname": "test.UsedClass.used_method",
-            "pname": "test/test/UsedClass/used_method",
-            "unique_qname": "test.UsedClass.used_method",
-            "decorators": [],
             "parameters": [
                 {
+                    "id": "test/test/UsedClass/used_method/constant_required_parameter",
                     "name": "constant_required_parameter",
                     "qname": "test.UsedClass.used_method.constant_required_parameter",
-                    "pname": "test/test/UsedClass/used_method/constant_required_parameter",
-                    "default_value": null,
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": null
                 },
                 {
+                    "id": "test/test/UsedClass/used_method/variable_required_parameter",
                     "name": "variable_required_parameter",
                     "qname": "test.UsedClass.used_method.variable_required_parameter",
-                    "pname": "test/test/UsedClass/used_method/variable_required_parameter",
-                    "default_value": null,
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": null
                 },
                 {
+                    "id": "test/test/UsedClass/used_method/constant_optional_parameter",
                     "name": "constant_optional_parameter",
                     "qname": "test.UsedClass.used_method.constant_optional_parameter",
-                    "pname": "test/test/UsedClass/used_method/constant_optional_parameter",
-                    "default_value": "'test'",
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": "'test'"
                 },
                 {
+                    "id": "test/test/UsedClass/used_method/variable_optional_parameter",
                     "name": "variable_optional_parameter",
                     "qname": "test.UsedClass.used_method.variable_optional_parameter",
-                    "pname": "test/test/UsedClass/used_method/variable_optional_parameter",
-                    "default_value": "'test'",
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": "'test'"
                 },
                 {
+                    "id": "test/test/UsedClass/used_method/should_not_be_constant_one",
                     "name": "should_not_be_constant_one",
                     "qname": "test.UsedClass.used_method.should_not_be_constant_one",
-                    "pname": "test/test/UsedClass/used_method/should_not_be_constant_one",
-                    "default_value": "'test'",
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": "'test'"
                 },
                 {
+                    "id": "test/test/UsedClass/used_method/should_not_be_constant_two",
                     "name": "should_not_be_constant_two",
                     "qname": "test.UsedClass.used_method.should_not_be_constant_two",
-                    "pname": "test/test/UsedClass/used_method/should_not_be_constant_two",
-                    "default_value": "'test'",
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": "'test'"
                 },
                 {
+                    "id": "test/test/UsedClass/used_method/should_not_be_constant_three",
                     "name": "should_not_be_constant_three",
                     "qname": "test.UsedClass.used_method.should_not_be_constant_three",
-                    "pname": "test/test/UsedClass/used_method/should_not_be_constant_three",
-                    "default_value": "'test'",
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": "'test'"
                 },
                 {
+                    "id": "test/test/UsedClass/used_method/should_not_be_constant_four",
                     "name": "should_not_be_constant_four",
                     "qname": "test.UsedClass.used_method.should_not_be_constant_four",
-                    "pname": "test/test/UsedClass/used_method/should_not_be_constant_four",
-                    "default_value": "'test'",
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": "'test'"
                 },
                 {
+                    "id": "test/test/UsedClass/used_method/should_not_be_constant_five",
                     "name": "should_not_be_constant_five",
                     "qname": "test.UsedClass.used_method.should_not_be_constant_five",
-                    "pname": "test/test/UsedClass/used_method/should_not_be_constant_five",
-                    "default_value": "'test'",
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": "'test'"
                 },
                 {
+                    "id": "test/test/UsedClass/used_method/should_not_be_constant_six",
                     "name": "should_not_be_constant_six",
                     "qname": "test.UsedClass.used_method.should_not_be_constant_six",
-                    "pname": "test/test/UsedClass/used_method/should_not_be_constant_six",
-                    "default_value": "'test'",
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": "'test'"
                 }
-            ],
-            "results": [],
-            "is_public": true,
-            "description": "",
-            "docstring": "",
-            "source_code": ""
+            ]
         }
     ]
 }

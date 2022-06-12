@@ -89,7 +89,7 @@ jobs:
         run: poetry run parse-package api -p package_parser -s package_parser -o out
 
       - name: Smoke test (usages)
-        run: poetry run parse-package usages -p package_parser -c package_parser -t out/tmp -o out
+        run: poetry run parse-package usages -p package_parser -c package_parser -o out
 
       - name: Smoke test (annotations)
         run: poetry run parse-package annotations -a tests/data/removes/api_data.json -u tests/data/removes/usage_data.json -o out/annotations.json

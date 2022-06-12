@@ -1,10 +1,10 @@
-import PythonClass from '../PythonClass';
-import PythonFunction from '../PythonFunction';
-import PythonModule from '../PythonModule';
-import PythonParameter from '../PythonParameter';
-import PythonPackage from '../PythonPackage';
+import { PythonClass } from '../PythonClass';
+import { PythonFunction } from '../PythonFunction';
+import { PythonModule } from '../PythonModule';
+import { PythonParameter } from '../PythonParameter';
+import { PythonPackage } from '../PythonPackage';
 import { isEmptyList } from '../../../../common/util/listOperations';
-import PythonDeclaration from '../PythonDeclaration';
+import { PythonDeclaration } from '../PythonDeclaration';
 import { AnnotationStore } from '../../../annotations/annotationSlice';
 import { UsageCountStore } from '../../../usages/model/UsageCountStore';
 
@@ -117,6 +117,7 @@ export abstract class AbstractPythonFilter {
 
         // Otherwise, create filtered module
         return new PythonModule(
+            pythonModule.id,
             pythonModule.name,
             pythonModule.imports,
             pythonModule.fromImports,
@@ -151,6 +152,7 @@ export abstract class AbstractPythonFilter {
 
         // Otherwise, create filtered class
         return new PythonClass(
+            pythonClass.id,
             pythonClass.name,
             pythonClass.qualifiedName,
             pythonClass.decorators,
@@ -186,10 +188,9 @@ export abstract class AbstractPythonFilter {
 
         // Otherwise, create filtered function
         return new PythonFunction(
+            pythonFunction.id,
             pythonFunction.name,
-            pythonFunction.uniqueName,
             pythonFunction.qualifiedName,
-            pythonFunction.uniqueQualifiedName,
             pythonFunction.decorators,
             parameters,
             pythonFunction.results,
