@@ -1,7 +1,7 @@
 import { isEmptyList } from '../../../common/util/listOperations';
 import { Optional } from '../../../common/util/types';
 
-export default abstract class PythonDeclaration {
+export abstract class PythonDeclaration {
     abstract readonly name: string;
 
     abstract parent(): Optional<PythonDeclaration>;
@@ -45,9 +45,7 @@ export default abstract class PythonDeclaration {
         );
     }
 
-    getByRelativePathAsString(
-        relativePath: string,
-    ): Optional<PythonDeclaration> {
+    getByRelativePathAsString(relativePath: string): Optional<PythonDeclaration> {
         return this.getByRelativePath(relativePath.split('/').slice(1));
     }
 }

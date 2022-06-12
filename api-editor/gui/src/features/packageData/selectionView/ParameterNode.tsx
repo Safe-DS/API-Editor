@@ -2,8 +2,8 @@ import { Box, Heading, HStack, Stack, Text as ChakraText } from '@chakra-ui/reac
 import React from 'react';
 import { AnnotationDropdown } from '../../annotations/AnnotationDropdown';
 import { AnnotationView } from '../../annotations/AnnotationView';
-import PythonParameter from '../model/PythonParameter';
-import DocumentationText from './DocumentationText';
+import { PythonParameter } from '../model/PythonParameter';
+import { DocumentationText } from './DocumentationText';
 
 interface ParameterNodeProps {
     pythonParameter: PythonParameter;

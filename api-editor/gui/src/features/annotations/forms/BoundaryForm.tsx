@@ -19,7 +19,7 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { numberPattern } from '../../../common/validation';
-import PythonDeclaration from '../../packageData/model/PythonDeclaration';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
 import { ComparisonOperator, Interval, selectBoundary, upsertBoundary } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
 import { Optional } from '../../../common/util/types';

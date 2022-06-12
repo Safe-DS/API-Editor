@@ -1,8 +1,8 @@
 import { InferableAnnotation } from './InferableAnnotation';
-import AnnotatedPythonParameter from './AnnotatedPythonParameter';
-import AnnotatedPythonResult from './AnnotatedPythonResult';
+import { AnnotatedPythonParameter } from './AnnotatedPythonParameter';
+import { AnnotatedPythonResult } from './AnnotatedPythonResult';
 
-export default class AnnotatedPythonFunction {
+export class AnnotatedPythonFunction {
     constructor(
         readonly name: string,
         readonly qualifiedName: string,

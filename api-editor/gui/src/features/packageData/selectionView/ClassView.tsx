@@ -2,9 +2,9 @@ import { Box, Heading, HStack, Stack, Text as ChakraText } from '@chakra-ui/reac
 import React from 'react';
 import { AnnotationDropdown } from '../../annotations/AnnotationDropdown';
 import { AnnotationView } from '../../annotations/AnnotationView';
-import PythonClass from '../model/PythonClass';
-import DocumentationText from './DocumentationText';
-import SectionListViewItem from './SectionListViewItem';
+import { PythonClass } from '../model/PythonClass';
+import { DocumentationText } from './DocumentationText';
+import { SectionListViewItem } from './SectionListViewItem';
 
 interface ClassViewProps {
     pythonClass: PythonClass;

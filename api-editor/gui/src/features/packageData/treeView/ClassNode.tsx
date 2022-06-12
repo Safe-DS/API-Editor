@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaChalkboard } from 'react-icons/fa';
 import { isEmptyList } from '../../../common/util/listOperations';
-import PythonClass from '../model/PythonClass';
+import { PythonClass } from '../model/PythonClass';
 import { TreeNode, ValuePair } from './TreeNode';
 import { AbstractPythonFilter } from '../model/filters/AbstractPythonFilter';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
@@ -42,7 +42,7 @@ export const ClassNode: React.FC<ClassNodeProps> = function ({ pythonClass, filt
 
 const getMapWithUsages = function (usages: UsageCountStore, pythonClass: PythonClass): ValuePair {
     const maxValue = usages.classMaxUsages;
-    const specificValue = usages.classUsages.get(pythonClass.qualifiedName) ?? 0;
+    const specificValue = usages.classUsages.get(pythonClass.id) ?? 0;
     return new ValuePair(specificValue, maxValue);
 };
 

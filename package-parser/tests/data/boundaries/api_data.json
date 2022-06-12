@@ -4,78 +4,54 @@
     "version": "0.0.1",
     "modules": [
         {
+            "id": "test/test",
             "name": "test",
-            "pname": "test/test",
-            "imports": [],
-            "from_imports": [],
-            "classes": [],
-            "functions": ["test.some_global_function"]
+            "functions": ["test/test/some_global_function"]
         }
     ],
-    "classes": [],
     "functions": [
         {
+            "id": "test/test/some_global_function",
             "name": "some_global_function",
-            "unique_name": "some_global_function",
             "qname": "test.some_global_function",
-            "pname": "test/test/some_global_function",
-            "unique_qname": "test.some_global_function",
-            "decorators": [],
             "parameters": [
                 {
+                    "id": "test/test/some_global_function/parameter_without_boundary",
                     "name": "parameter_without_bound",
                     "qname": "test.some_global_function.parameter_without_boundary",
-                    "pname": "test/test/some_global_function/parameter_without_boundary",
-                    "default_value": null,
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
                     "docstring": {
                         "type": "int",
                         "description": ""
                     }
                 },
                 {
+                    "id": "test/test/some_global_function/parameter_with_lower_bound",
                     "name": "parameter_with_lower_bound",
                     "qname": "test.some_global_function.parameter_with_lower_bound",
-                    "pname": "test/test/some_global_function/parameter_with_lower_bound",
-                    "default_value": null,
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
                     "docstring": {
                         "type": "",
                         "description": "int in range (0, infinity)"
                     }
                 },
                 {
+                    "id": "test/test/some_global_function/parameter_with_upper_bound_and_union",
                     "name": "parameter_with_upper_bound_and_union",
                     "qname": "test.some_global_function.parameter_with_upper_bound_and_union",
-                    "pname": "test/test/some_global_function/parameter_with_upper_bound_and_union",
-                    "default_value": null,
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
                     "docstring": {
                         "type": "{'auto', 'person'} or float",
                         "description": "float in range (negative_infinity, 1)"
                     }
                 },
                 {
+                    "id": "test/test/some_global_function/parameter_with_interval",
                     "name": "parameter_with_interval",
                     "qname": "test.some_global_function.parameter_with_interval",
-                    "pname": "test/test/some_global_function/parameter_with_interval",
-                    "default_value": null,
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
                     "docstring": {
                         "type": "",
                         "description": "float in range [0, 1]"
                     }
                 }
-            ],
-            "results": [],
-            "is_public": true,
-            "description": "",
-            "docstring": "",
-            "source_code": ""
+            ]
         }
     ]
 }

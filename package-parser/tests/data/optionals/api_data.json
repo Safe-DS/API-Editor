@@ -4,162 +4,84 @@
     "version": "0.0.1",
     "modules": [
         {
+            "id": "test/test",
             "name": "test",
-            "pname": "test/test",
-            "imports": [],
-            "from_imports": [],
-            "classes": [],
-            "functions": ["test.some_global_function"]
+            "functions": ["test/test/some_global_function"]
         }
     ],
-    "classes": [],
     "functions": [
         {
+            "id": "test/test/some_global_function",
             "name": "some_global_function",
-            "unique_name": "some_global_function",
             "qname": "test.some_global_function",
-            "pname": "test/test/some_global_function",
-            "unique_qname": "test.some_global_function",
-            "decorators": [],
             "parameters": [
                 {
+                    "id": "test/test/some_global_function/required_parameter_that_should_be_constant",
                     "name": "required_parameter_that_should_be_constant",
                     "qname": "test.some_global_function.required_parameter_that_should_be_constant",
-                    "pname": "test/test/some_global_function/required_parameter_that_should_be_constant",
-                    "default_value": null,
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": null
                 },
                 {
+                    "id": "test/test/some_global_function/required_parameter_that_should_be_required",
                     "name": "required_parameter_that_should_be_required",
                     "qname": "test.some_global_function.required_parameter_that_should_be_required",
-                    "pname": "test/test/some_global_function/required_parameter_that_should_be_required",
-                    "default_value": null,
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": null
                 },
                 {
+                    "id": "test/test/some_global_function/required_parameter_that_should_be_required_with_non_string",
                     "name": "required_parameter_that_should_be_required_with_non_string",
                     "qname": "test.some_global_function.required_parameter_that_should_be_required_with_non_string",
-                    "pname": "test/test/some_global_function/required_parameter_that_should_be_required_with_non_string",
-                    "default_value": null,
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": null
                 },
                 {
+                    "id": "test/test/some_global_function/required_parameter_that_should_be_optional",
                     "name": "required_parameter_that_should_be_optional",
                     "qname": "test.some_global_function.required_parameter_that_should_be_optional",
-                    "pname": "test/test/some_global_function/required_parameter_that_should_be_optional",
-                    "default_value": null,
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": null
                 },
                 {
+                    "id": "test/test/some_global_function/required_parameter_that_should_be_optional_with_non_string",
                     "name": "required_parameter_that_should_be_optional_with_non_string",
                     "qname": "test.some_global_function.required_parameter_that_should_be_optional_with_non_string",
-                    "pname": "test/test/some_global_function/required_parameter_that_should_be_optional_with_non_string",
-                    "default_value": null,
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": null
                 },
                 {
+                    "id": "test/test/some_global_function/optional_parameter_that_should_be_constant",
                     "name": "optional_parameter_that_should_be_constant",
                     "qname": "test.some_global_function.optional_parameter_that_should_be_constant",
-                    "pname": "test/test/some_global_function/optional_parameter_that_should_be_constant",
-                    "default_value": "'test'",
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": "'test'"
                 },
                 {
+                    "id": "test/test/some_global_function/optional_parameter_that_should_be_required",
                     "name": "optional_parameter_that_should_be_required",
                     "qname": "test.some_global_function.optional_parameter_that_should_be_required",
-                    "pname": "test/test/some_global_function/optional_parameter_that_should_be_required",
-                    "default_value": "'test'",
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": "'test'"
                 },
                 {
+                    "id": "test/test/some_global_function/optional_parameter_that_should_be_required_with_non_string",
                     "name": "optional_parameter_that_should_be_required_with_non_string",
                     "qname": "test.some_global_function.optional_parameter_that_should_be_required_with_non_string",
-                    "pname": "test/test/some_global_function/optional_parameter_that_should_be_required_with_non_string",
-                    "default_value": "'test'",
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": "'test'"
                 },
                 {
+                    "id": "test/test/some_global_function/optional_parameter_that_should_be_optional_with_same_default",
                     "name": "optional_parameter_that_should_be_optional_with_same_default",
                     "qname": "test.some_global_function.optional_parameter_that_should_be_optional_with_same_default",
-                    "pname": "test/test/some_global_function/optional_parameter_that_should_be_optional_with_same_default",
-                    "default_value": "'test'",
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": "'test'"
                 },
                 {
+                    "id": "test/test/some_global_function/optional_parameter_that_should_be_optional_with_different_default",
                     "name": "optional_parameter_that_should_be_optional_with_different_default",
                     "qname": "test.some_global_function.optional_parameter_that_should_be_optional_with_different_default",
-                    "pname": "test/test/some_global_function/optional_parameter_that_should_be_optional_with_different_default",
-                    "default_value": "'test'",
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": "'test'"
                 },
                 {
+                    "id": "test/test/some_global_function/optional_parameter_that_should_be_optional_with_non_string",
                     "name": "optional_parameter_that_should_be_optional_with_non_string",
                     "qname": "test.some_global_function.optional_parameter_that_should_be_optional_with_non_string",
-                    "pname": "test/test/some_global_function/optional_parameter_that_should_be_optional_with_non_string",
-                    "default_value": "'test'",
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": "'test'"
                 }
-            ],
-            "results": [],
-            "is_public": true,
-            "description": "",
-            "docstring": "",
-            "source_code": ""
+            ]
         }
     ]
 }

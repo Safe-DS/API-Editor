@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaCogs } from 'react-icons/fa';
 import { isEmptyList } from '../../../common/util/listOperations';
-import PythonFunction from '../model/PythonFunction';
+import { PythonFunction } from '../model/PythonFunction';
 import { TreeNode, ValuePair } from './TreeNode';
 import { AbstractPythonFilter } from '../model/filters/AbstractPythonFilter';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
@@ -42,7 +42,7 @@ export const FunctionNode: React.FC<FunctionNodeProps> = function ({ pythonFunct
 
 const getMapWithUsages = function (usages: UsageCountStore, pythonFunction: PythonFunction): ValuePair {
     const maxValue = usages.functionMaxUsages;
-    const specificValue = usages.functionUsages.get(pythonFunction.qualifiedName) ?? 0;
+    const specificValue = usages.functionUsages.get(pythonFunction.id) ?? 0;
 
     return new ValuePair(specificValue, maxValue);
 };

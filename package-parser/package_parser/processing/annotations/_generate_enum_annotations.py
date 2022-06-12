@@ -7,7 +7,6 @@ from package_parser.model.api import API
 def _generate_enum_annotations(api: API, annotations: AnnotationStore) -> None:
     """
     Returns all parameters that are never used.
-    :param _usages: UsageStore object
     :param api: API object for usages
     :param annotations: AnnotationStore object
     """
@@ -36,7 +35,7 @@ def _generate_enum_annotations(api: API, annotations: AnnotationStore) -> None:
         if len(pairs) > 0:
             enum_name = __to_enum_name(parameter.name)
             annotations.enums.append(
-                EnumAnnotation(target=parameter.pname, enumName=enum_name, pairs=pairs)
+                EnumAnnotation(target=parameter.id, enumName=enum_name, pairs=pairs)
             )
 
 

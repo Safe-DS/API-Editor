@@ -21,6 +21,8 @@ report/
 build/
 dist/
 dist-ssr/
+out/
+tmp/
 
 api-editor/backend/src/main/resources/static/
 

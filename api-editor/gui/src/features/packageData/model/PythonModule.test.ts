@@ -1,15 +1,15 @@
-import PythonFunction from './PythonFunction';
-import PythonModule from './PythonModule';
-import PythonPackage from './PythonPackage';
-import PythonParameter from './PythonParameter';
+import { PythonFunction } from './PythonFunction';
+import { PythonModule } from './PythonModule';
+import { PythonPackage } from './PythonPackage';
+import { PythonParameter } from './PythonParameter';
 
 test('path without parent', () => {
-    const pythonModule = new PythonModule('module');
+    const pythonModule = new PythonModule('module', 'module');
     expect(pythonModule.path()).toEqual(['module']);
 });
 
 test('path with parent', () => {
-    const pythonModule = new PythonModule('module');
+    const pythonModule = new PythonModule('module', 'module');
 
     // eslint-disable-next-line no-new
     new PythonPackage('distribution', 'package', '0.0.1', [pythonModule]);
@@ -18,35 +18,25 @@ test('path with parent', () => {
 });
 
 test('getByRelativePath with correct path', () => {
-    const pythonParameter = new PythonParameter('param');
+    const pythonParameter = new PythonParameter('param', 'param', 'param');
     const pythonModule = new PythonModule(
+        'module',
         'module',
         [],
         [],
         [],
-        [
-            new PythonFunction(
-                'function',
-                'function',
-                'function',
-                'function',
-                [],
-                [pythonParameter],
-            ),
-        ],
+        [new PythonFunction('function', 'function', 'function', [], [pythonParameter])],
     );
-    expect(pythonModule.getByRelativePath(['function', 'param'])).toBe(
-        pythonParameter,
-    );
+    expect(pythonModule.getByRelativePath(['function', 'param'])).toBe(pythonParameter);
 });
 
 test('getByRelativePath with misleading path', () => {
-    const pythonModule = new PythonModule('module');
+    const pythonModule = new PythonModule('module', 'module');
     // eslint-disable-next-line testing-library/prefer-presence-queries
     expect(pythonModule.getByRelativePath(['child'])).toBeNull();
 });
 
 test('toString', () => {
-    const pythonModule = new PythonModule('module');
+    const pythonModule = new PythonModule('module', 'module');
     expect(pythonModule.toString()).toBe(`Module "module"`);
 });

@@ -1,8 +1,8 @@
-import PythonClass from './PythonClass';
-import PythonFunction from './PythonFunction';
-import PythonModule from './PythonModule';
-import PythonPackage from './PythonPackage';
-import PythonResult from './PythonResult';
+import { PythonClass } from './PythonClass';
+import { PythonFunction } from './PythonFunction';
+import { PythonModule } from './PythonModule';
+import { PythonPackage } from './PythonPackage';
+import { PythonResult } from './PythonResult';
 
 test('path without parent', () => {
     const pythonResult = new PythonResult('result');
@@ -16,37 +16,23 @@ test('path with ancestors', () => {
     new PythonPackage('distribution', 'package', '0.0.1', [
         new PythonModule(
             'module',
+            'module',
             [],
             [],
             [
                 new PythonClass(
                     'Class',
                     'Class',
+                    'Class',
                     [],
                     [],
-                    [
-                        new PythonFunction(
-                            'function',
-                            'function',
-                            'function',
-                            'function',
-                            [],
-                            [],
-                            [pythonResult],
-                        ),
-                    ],
+                    [new PythonFunction('function', 'function', 'function', [], [], [pythonResult])],
                 ),
             ],
         ),
     ]);
 
-    expect(pythonResult.path()).toEqual([
-        'package',
-        'module',
-        'Class',
-        'function',
-        'result',
-    ]);
+    expect(pythonResult.path()).toEqual(['package', 'module', 'Class', 'function', 'result']);
 });
 
 test('getByRelativePath', () => {

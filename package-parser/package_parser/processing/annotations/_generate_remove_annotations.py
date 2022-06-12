@@ -12,10 +12,10 @@ def _generate_remove_annotations(
     :param api: API object for usages
     :param annotations: AnnotationStore object
     """
-    for function in api.functions.values():
-        if usages.n_function_usages(function.qname) == 0:
-            annotations.removes.append(RemoveAnnotation(function.pname))
-
     for class_ in api.classes.values():
-        if usages.n_class_usages(class_.qname) == 0:
-            annotations.removes.append(RemoveAnnotation(class_.pname))
+        if usages.n_class_usages(class_.id) == 0:
+            annotations.removes.append(RemoveAnnotation(class_.id))
+
+    for function in api.functions.values():
+        if usages.n_function_usages(function.id) == 0:
+            annotations.removes.append(RemoveAnnotation(function.id))
