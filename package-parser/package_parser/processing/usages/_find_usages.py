@@ -75,6 +75,8 @@ def _find_usages_in_batch(
     for python_file in python_files:
         _find_usages_in_single_file(package_name, python_file, ast_builder, ast_walker)
 
+    astroid.MANAGER.clear_cache()
+
     return usage_finder.usages
 
 

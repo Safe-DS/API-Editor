@@ -24,11 +24,11 @@ def cli() -> None:
     if args.command == _API_COMMAND:
         _run_api_command(args.package, args.src, args.out)
     elif args.command == _USAGES_COMMAND:
-        _run_usages_command(args.package, args.client, args.out, args.processes, args.batch_size)
+        _run_usages_command(args.package, args.client, args.out, args.processes, args.batchsize)
     elif args.command == _ANNOTATIONS_COMMAND:
         _run_annotations(args.api, args.usages, args.out)
     elif args.command == _ALL_COMMAND:
-        _run_all_command(args.package, args.src, args.client, args.out, args.processes, args.batch_size)
+        _run_all_command(args.package, args.src, args.client, args.out, args.processes, args.batchsize)
 
 
 def _get_args() -> argparse.Namespace:
@@ -96,7 +96,7 @@ def _add_usages_subparser(subparsers: _SubParsersAction) -> None:
         default=4
     ),
     usages_parser.add_argument(
-        "--batch_size",
+        "--batchsize",
         help="How many files to process in one go. Higher values lead to higher memory usage but better performance.",
         type=int,
         required=False,
@@ -169,7 +169,7 @@ def _add_all_subparser(subparsers: _SubParsersAction) -> None:
         default=4
     )
     all_parser.add_argument(
-        "--batch_size",
+        "--batchsize",
         help="How many files to process in one go. Higher values lead to higher memory usage but better performance.",
         type=int,
         required=False,
