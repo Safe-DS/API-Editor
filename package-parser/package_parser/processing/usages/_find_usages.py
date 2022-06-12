@@ -18,14 +18,17 @@ def find_usages(package_name: str, src_dir: Path, n_processes: int, batch_size: 
 
     aggregated_counts = UsageCountStore()
 
-    with Pool(processes=n_processes, initializer=_initializer) as pool:
-        batch_counts = pool.starmap(
-            _find_usages_in_batch,
-            [[package_name, it] for it in python_file_batches]
-        )
+    for batch_index in range(0, len(python_file_batches), n_processes):
+        python_file_batches_slice = python_file_batches[batch_index:batch_index + n_processes]
 
-        for batch_count in batch_counts:
-            aggregated_counts.merge_other_into_self(batch_count)
+        with Pool(processes=n_processes, initializer=_initializer) as pool:
+            batch_counts = pool.starmap(
+                _find_usages_in_batch,
+                [[package_name, it] for it in python_file_batches_slice]
+            )
+
+            for batch_count in batch_counts:
+                aggregated_counts.merge_other_into_self(batch_count)
 
     return aggregated_counts
 
@@ -74,8 +77,6 @@ def _find_usages_in_batch(
 
     for python_file in python_files:
         _find_usages_in_single_file(package_name, python_file, ast_builder, ast_walker)
-
-    astroid.MANAGER.clear_cache()
 
     return usage_finder.usages
 
