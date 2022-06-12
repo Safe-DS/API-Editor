@@ -7,9 +7,8 @@ from package_parser.model.usages import UsageCountStore
 
 
 class _UsageFinder:
-    def __init__(self, package_name: str, python_file: str) -> None:
+    def __init__(self, package_name: str) -> None:
         self.package_name: str = package_name
-        self.python_file: str = python_file
         self.usages: UsageCountStore = UsageCountStore()
 
     def enter_call(self, node: astroid.Call):
