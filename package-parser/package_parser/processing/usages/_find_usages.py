@@ -1,4 +1,5 @@
 import logging
+from multiprocessing import Pool
 from pathlib import Path
 from typing import Optional
 
@@ -9,14 +10,19 @@ from ._ast_visitor import _UsageFinder
 from ...model.usages import UsageCountStore
 
 
-def find_usages(package_name: str, src_dir: Path) -> UsageCountStore:
+def find_usages(package_name: str, src_dir: Path, n_processes: int) -> UsageCountStore:
     python_files = list_files(src_dir, ".py")
-
     aggregated_counts = UsageCountStore()
-    for python_file in python_files:
-        counts_in_file = __find_usages_in_single_file(package_name, python_file)
-        if counts_in_file is not None:
-            aggregated_counts.merge_other_into_self(counts_in_file)
+
+    with Pool(processes=n_processes) as pool:
+        for counts_in_file in pool.starmap(
+            __find_usages_in_single_file,
+            [[package_name, it] for it in python_files],
+        ):
+            if counts_in_file is not None:
+                aggregated_counts.merge_other_into_self(counts_in_file)
+    pool.join()
+    pool.close()
 
     return aggregated_counts
 
@@ -27,6 +33,7 @@ def __find_usages_in_single_file(
 ) -> Optional[UsageCountStore]:
     logging.info(f"Working on {python_file}")
 
+    # noinspection PyBroadException
     try:
         with open(python_file, "r") as f:
             source = f.read()
@@ -45,6 +52,8 @@ def __find_usages_in_single_file(
         logging.warning(f"Skipping {python_file} (invalid syntax)")
     except RecursionError:
         logging.warning(f"Skipping {python_file} (infinite recursion)")
+    except Exception:
+        logging.error(f"Skipping {python_file} (unknown error)")
 
     return None
 

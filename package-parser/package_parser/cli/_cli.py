@@ -24,11 +24,11 @@ def cli() -> None:
     if args.command == _API_COMMAND:
         _run_api_command(args.package, args.src, args.out)
     elif args.command == _USAGES_COMMAND:
-        _run_usages_command(args.package, args.client, args.out)
+        _run_usages_command(args.package, args.client, args.out, args.processes)
     elif args.command == _ANNOTATIONS_COMMAND:
         _run_annotations(args.api, args.usages, args.out)
     elif args.command == _ALL_COMMAND:
-        _run_all_command(args)
+        _run_all_command(args.package, args.src, args.client, args.out, args.processes)
 
 
 def _get_args() -> argparse.Namespace:
@@ -89,6 +89,13 @@ def _add_usages_subparser(subparsers: _SubParsersAction) -> None:
         required=True,
     )
     usages_parser.add_argument(
+        "--processes",
+        help="How many processes should be spawned during processing.",
+        type=int,
+        required=False,
+        default=4
+    )
+    usages_parser.add_argument(
         "-o", "--out", help="Output directory.", type=Path, required=True
     )
 
@@ -146,4 +153,11 @@ def _add_all_subparser(subparsers: _SubParsersAction) -> None:
     )
     all_parser.add_argument(
         "-o", "--out", help="Output directory.", type=Path, required=True
+    )
+    all_parser.add_argument(
+        "--processes",
+        help="How many processes should be spawned during processing.",
+        type=int,
+        required=False,
+        default=4
     )
