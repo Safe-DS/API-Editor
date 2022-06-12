@@ -98,7 +98,12 @@ class _AstVisitor:
                             self.reexported.add(reexported_name)
 
         # Remember module, so we can later add classes and global functions
-        module = Module(f"{self.api.package}/{module_node.qname()}", module_node.qname(), imports, from_imports)
+        module = Module(
+            f"{self.api.package}/{module_node.qname()}",
+            module_node.qname(),
+            imports,
+            from_imports,
+        )
         self.__declaration_stack.append(module)
 
     def leave_module(self, _: astroid.Module) -> None:
@@ -120,8 +125,15 @@ class _AstVisitor:
         numpydoc = NumpyDocString(inspect.cleandoc(class_node.doc or ""))
 
         # Remember class, so we can later add methods
-        class_ = Class(self.__get_id(class_node.name), qname, decorator_names, class_node.basenames,
-                       self.is_public(class_node.name, qname), _AstVisitor.__description(numpydoc), class_node.doc)
+        class_ = Class(
+            self.__get_id(class_node.name),
+            qname,
+            decorator_names,
+            class_node.basenames,
+            self.is_public(class_node.name, qname),
+            _AstVisitor.__description(numpydoc),
+            class_node.doc,
+        )
         self.__declaration_stack.append(class_)
 
     def leave_classdef(self, _: astroid.ClassDef) -> None:
@@ -214,31 +226,49 @@ class _AstVisitor:
 
         # Arguments that can be specified positionally only ( f(1) works but not f(x=1) )
         result = [
-            Parameter(id_=function_id + "/" + it.name, name=it.name, qname=function_qname + "." + it.name,
-                      default_value=None, assigned_by=ParameterAssignment.POSITION_ONLY, is_public=function_is_public,
-                      docstring=_AstVisitor.__parameter_docstring(function_numpydoc, it.name))
+            Parameter(
+                id_=function_id + "/" + it.name,
+                name=it.name,
+                qname=function_qname + "." + it.name,
+                default_value=None,
+                assigned_by=ParameterAssignment.POSITION_ONLY,
+                is_public=function_is_public,
+                docstring=_AstVisitor.__parameter_docstring(function_numpydoc, it.name),
+            )
             for it in parameters.posonlyargs
         ]
 
         # Arguments that can be specified positionally or by name ( f(1) and f(x=1) both work )
         result += [
-            Parameter(function_id + "/" + it.name, it.name, function_qname + "." + it.name,
-                      _AstVisitor.__parameter_default(
-                          parameters.defaults,
-                          index - len(parameters.args) + len(parameters.defaults),
-                      ), ParameterAssignment.POSITION_OR_NAME, function_is_public,
-                      _AstVisitor.__parameter_docstring(function_numpydoc, it.name))
+            Parameter(
+                function_id + "/" + it.name,
+                it.name,
+                function_qname + "." + it.name,
+                _AstVisitor.__parameter_default(
+                    parameters.defaults,
+                    index - len(parameters.args) + len(parameters.defaults),
+                ),
+                ParameterAssignment.POSITION_OR_NAME,
+                function_is_public,
+                _AstVisitor.__parameter_docstring(function_numpydoc, it.name),
+            )
             for index, it in enumerate(parameters.args)
         ]
 
         # Arguments that can be specified by name only ( f(x=1) works but not f(1) )
         result += [
-            Parameter(function_id + "/" + it.name, it.name, function_qname + "." + it.name,
-                      _AstVisitor.__parameter_default(
-                          parameters.kw_defaults,
-                          index - len(parameters.kwonlyargs) + len(parameters.kw_defaults),
-                      ), ParameterAssignment.NAME_ONLY, function_is_public,
-                      _AstVisitor.__parameter_docstring(function_numpydoc, it.name))
+            Parameter(
+                function_id + "/" + it.name,
+                it.name,
+                function_qname + "." + it.name,
+                _AstVisitor.__parameter_default(
+                    parameters.kw_defaults,
+                    index - len(parameters.kwonlyargs) + len(parameters.kw_defaults),
+                ),
+                ParameterAssignment.NAME_ONLY,
+                function_is_public,
+                _AstVisitor.__parameter_docstring(function_numpydoc, it.name),
+            )
             for index, it in enumerate(parameters.kwonlyargs)
         ]
 

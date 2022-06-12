@@ -1,7 +1,7 @@
 import { Optional } from '../../../common/util/types';
 import { PythonDeclaration } from './PythonDeclaration';
 import { PythonFunction } from './PythonFunction';
-import {PythonModule} from './PythonModule';
+import { PythonModule } from './PythonModule';
 
 export class PythonClass extends PythonDeclaration {
     containingModule: Optional<PythonModule>;

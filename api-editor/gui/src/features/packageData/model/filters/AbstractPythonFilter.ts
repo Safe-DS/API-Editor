@@ -1,8 +1,8 @@
 import { PythonClass } from '../PythonClass';
 import { PythonFunction } from '../PythonFunction';
-import {PythonModule} from '../PythonModule';
-import {PythonParameter} from '../PythonParameter';
-import {PythonPackage} from '../PythonPackage';
+import { PythonModule } from '../PythonModule';
+import { PythonParameter } from '../PythonParameter';
+import { PythonPackage } from '../PythonPackage';
 import { isEmptyList } from '../../../../common/util/listOperations';
 import { PythonDeclaration } from '../PythonDeclaration';
 import { AnnotationStore } from '../../../annotations/annotationSlice';

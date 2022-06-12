@@ -76,9 +76,7 @@ class UsageCountStore:
             if function_id.startswith(class_id):
                 self.remove_function(function_id)
 
-    def add_function_usages(
-        self, function_id: FunctionId, count: int = 1
-    ) -> None:
+    def add_function_usages(self, function_id: FunctionId, count: int = 1) -> None:
         """Increases the usage count of the function with the given name by the given count."""
 
         self.function_usages[function_id] += count
@@ -93,9 +91,7 @@ class UsageCountStore:
             if parameter_id.startswith(function_id):
                 self.remove_parameter(parameter_id)
 
-    def add_parameter_usages(
-        self, parameter_id: ParameterId, count: int = 1
-    ) -> None:
+    def add_parameter_usages(self, parameter_id: ParameterId, count: int = 1) -> None:
         """Increases the usage count of the parameter with the given name by the given count."""
 
         self.parameter_usages[parameter_id] += count
@@ -146,9 +142,7 @@ class UsageCountStore:
 
         return 0
 
-    def most_common_parameter_values(
-        self, parameter_id: ParameterId
-    ) -> list[str]:
+    def most_common_parameter_values(self, parameter_id: ParameterId) -> list[str]:
         """Returns all values that have been set for the parameter with the given name sorted by their count in descending order."""
 
         if parameter_id in self.value_usages:

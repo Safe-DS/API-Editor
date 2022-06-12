@@ -1,17 +1,9 @@
 import { Code, Flex, HStack, IconButton, Stack, Text } from '@chakra-ui/react';
 import 'katex/dist/katex.min.css';
-import React, {
-    ClassAttributes,
-    FunctionComponent,
-    HTMLAttributes,
-    useState,
-} from 'react';
+import React, { ClassAttributes, FunctionComponent, HTMLAttributes, useState } from 'react';
 import { FaChevronDown, FaChevronRight } from 'react-icons/fa';
 import ReactMarkdown from 'react-markdown';
-import {
-    CodeComponent,
-    ReactMarkdownProps,
-} from 'react-markdown/lib/ast-to-react';
+import { CodeComponent, ReactMarkdownProps } from 'react-markdown/lib/ast-to-react';
 import rehypeKatex from 'rehype-katex';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
@@ -21,9 +13,7 @@ interface DocumentationTextProps {
 }
 
 type ParagraphComponent = FunctionComponent<
-    ClassAttributes<HTMLParagraphElement> &
-        HTMLAttributes<HTMLParagraphElement> &
-        ReactMarkdownProps
+    ClassAttributes<HTMLParagraphElement> & HTMLAttributes<HTMLParagraphElement> & ReactMarkdownProps
 >;
 
 const CustomText: ParagraphComponent = function ({ className, children }) {
@@ -39,9 +29,7 @@ const components = {
     code: CustomCode,
 };
 
-export const DocumentationText: React.FC<DocumentationTextProps> = function ({
-    inputText = '',
-}) {
+export const DocumentationText: React.FC<DocumentationTextProps> = function ({ inputText = '' }) {
     const preprocessedText = inputText
         // replace single new-lines by spaces
         .replaceAll(/(?<!\n)\n(?!\n)/gu, ' ')
@@ -87,9 +75,7 @@ export const DocumentationText: React.FC<DocumentationTextProps> = function ({
                         rehypePlugins={[rehypeKatex]}
                         remarkPlugins={[remarkGfm, remarkMath]}
                     >
-                        {readMore || !hasMultipleLines
-                            ? preprocessedText
-                            : `${shortenedText} **[Read More...]**`}
+                        {readMore || !hasMultipleLines ? preprocessedText : `${shortenedText} **[Read More...]**`}
                     </ReactMarkdown>
                 </Stack>
             </HStack>

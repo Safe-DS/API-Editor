@@ -52,10 +52,7 @@ class API:
         return class_id in self.classes and self.classes[class_id].is_public
 
     def is_public_function(self, function_id: str) -> bool:
-        return (
-            function_id in self.functions
-            and self.functions[function_id].is_public
-        )
+        return function_id in self.functions and self.functions[function_id].is_public
 
     def class_count(self) -> int:
         return len(self.classes)
@@ -112,9 +109,7 @@ class API:
             ],
             "functions": [
                 function.to_json()
-                for function in sorted(
-                    self.functions.values(), key=lambda it: it.id
-                )
+                for function in sorted(self.functions.values(), key=lambda it: it.id)
             ],
         }
 
@@ -125,14 +120,11 @@ class Module:
         result = Module(
             json["id"],
             json["name"],
-            [
-                Import.from_json(import_json)
-                for import_json in json.get("imports", [])
-            ],
+            [Import.from_json(import_json) for import_json in json.get("imports", [])],
             [
                 FromImport.from_json(from_import_json)
                 for from_import_json in json.get("from_imports", [])
-            ]
+            ],
         )
 
         for class_id in json.get("classes", []):
@@ -143,7 +135,9 @@ class Module:
 
         return result
 
-    def __init__(self, id_: str, name: str, imports: list[Import], from_imports: list[FromImport]):
+    def __init__(
+        self, id_: str, name: str, imports: list[Import], from_imports: list[FromImport]
+    ):
         self.id: str = id_
         self.name: str = name
         self.imports: list[Import] = imports
@@ -211,7 +205,7 @@ class Class:
             json.get("superclasses", []),
             json.get("is_public", True),
             json.get("description", ""),
-            json.get("docstring", "")
+            json.get("docstring", ""),
         )
 
         for method_id in json["methods"]:
@@ -219,8 +213,16 @@ class Class:
 
         return result
 
-    def __init__(self, id_: str, qname: str, decorators: list[str], superclasses: list[str], is_public: bool,
-                 description: str, docstring: str) -> None:
+    def __init__(
+        self,
+        id_: str,
+        qname: str,
+        decorators: list[str],
+        superclasses: list[str],
+        is_public: bool,
+        description: str,
+        docstring: str,
+    ) -> None:
         self.id: str = id_
         self.qname: str = qname
         self.decorators: list[str] = decorators
@@ -275,7 +277,7 @@ class Function:
             [Result.from_json(result_json) for result_json in json.get("results", [])],
             json.get("is_public", True),
             json.get("description", ""),
-            json.get("docstring", "")
+            json.get("docstring", ""),
         )
 
     @property
@@ -393,8 +395,16 @@ class Parameter:
             ParameterAndResultDocstring.from_json(json.get("docstring", {})),
         )
 
-    def __init__(self, id_: str, name: str, qname: str, default_value: Optional[str], assigned_by: ParameterAssignment,
-                 is_public: bool, docstring: ParameterAndResultDocstring) -> None:
+    def __init__(
+        self,
+        id_: str,
+        name: str,
+        qname: str,
+        default_value: Optional[str],
+        assigned_by: ParameterAssignment,
+        is_public: bool,
+        docstring: ParameterAndResultDocstring,
+    ) -> None:
         self.id: str = id_
         self.name: str = name
         self.qname: str = qname
@@ -439,7 +449,7 @@ class Result:
     def from_json(json: Any) -> Result:
         return Result(
             json["name"],
-            ParameterAndResultDocstring.from_json(json.get("docstring", {}))
+            ParameterAndResultDocstring.from_json(json.get("docstring", {})),
         )
 
     def to_json(self) -> Any:

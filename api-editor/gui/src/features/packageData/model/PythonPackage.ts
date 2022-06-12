@@ -1,5 +1,5 @@
 import { PythonDeclaration } from './PythonDeclaration';
-import {PythonModule} from './PythonModule';
+import { PythonModule } from './PythonModule';
 
 export class PythonPackage extends PythonDeclaration {
     constructor(

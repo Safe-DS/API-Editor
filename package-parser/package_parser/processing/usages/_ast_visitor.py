@@ -72,7 +72,9 @@ def _analyze_declaration_called_by(
         return None
 
 
-def _id(package_name: str, called: Union[astroid.UnboundMethod, astroid.FunctionDef]) -> str:
+def _id(
+    package_name: str, called: Union[astroid.UnboundMethod, astroid.FunctionDef]
+) -> str:
     path = _path(package_name, called)
 
     decorators: Optional[astroid.Decorators] = called.decorators
@@ -161,8 +163,8 @@ def _bound_parameters(
     result: dict[str, astroid.NodeNG] = arguments.keyword_arguments.copy()
 
     positional_parameter_names = [
-                                     it.name for it in (parameters.posonlyargs + parameters.args)
-                                 ][n_implicit_parameters:]
+        it.name for it in (parameters.posonlyargs + parameters.args)
+    ][n_implicit_parameters:]
 
     for index, arg in enumerate(arguments.positional_arguments):
         if index >= len(positional_parameter_names):

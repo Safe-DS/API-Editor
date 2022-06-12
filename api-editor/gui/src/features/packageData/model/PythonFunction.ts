@@ -45,8 +45,8 @@ export class PythonFunction extends PythonDeclaration {
     }
 
     getUniqueName(): string {
-        const segments = this.id.split("/")
-        return segments[segments.length - 1]
+        const segments = this.id.split('/');
+        return segments[segments.length - 1];
     }
 
     isGetter(): boolean {

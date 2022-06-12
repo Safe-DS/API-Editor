@@ -55,9 +55,7 @@ def _generate_required_or_optional_annotation(
         return
 
     # Compute metrics
-    most_common_value_count = usages.n_value_usages(
-        parameter.id, most_common_values[0]
-    )
+    most_common_value_count = usages.n_value_usages(parameter.id, most_common_values[0])
 
     # We deliberately don't ensure this is a literal. Otherwise, we might make a parameter optional even though there is
     # a tie between the most common value and the second most common value if the latter is not a literal. This would
