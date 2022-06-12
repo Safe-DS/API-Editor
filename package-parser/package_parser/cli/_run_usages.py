@@ -8,9 +8,9 @@ from package_parser.utils import ensure_file_exists
 
 
 def _run_usages_command(
-    package: str, client: Path, tmp: Path, out: Path, result_dict: Optional[dict] = None
+    package: str, client: Path, out: Path, result_dict: Optional[dict] = None
 ) -> None:
-    usages = find_usages(package, client, tmp)
+    usages = find_usages(package, client)
 
     out_file_usage_count = out.joinpath(f"{package}__usages_counted.json")
     ensure_file_exists(out_file_usage_count)

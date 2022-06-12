@@ -24,7 +24,7 @@ def cli() -> None:
     if args.command == _API_COMMAND:
         _run_api_command(args.package, args.src, args.out)
     elif args.command == _USAGES_COMMAND:
-        _run_usages_command(args.package, args.client, args.tmp, args.out)
+        _run_usages_command(args.package, args.client, args.out)
     elif args.command == _ANNOTATIONS_COMMAND:
         _run_annotations(args.api, args.usages, args.out)
     elif args.command == _ALL_COMMAND:
@@ -89,18 +89,11 @@ def _add_usages_subparser(subparsers: _SubParsersAction) -> None:
         required=True,
     )
     usages_parser.add_argument(
-        "-t",
-        "--tmp",
-        help="Directory where temporary files can be stored (to save progress in case the program crashes).",
-        type=Path,
-        required=True,
-    )
-    usages_parser.add_argument(
         "-o", "--out", help="Output directory.", type=Path, required=True
     )
 
 
-def _add_annotations_subparser(subparsers):
+def _add_annotations_subparser(subparsers) -> None:
     generate_parser = subparsers.add_parser(
         _ANNOTATIONS_COMMAND, help="Generate Annotations automatically."
     )
