@@ -119,13 +119,14 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, displa
     const infer = () => {
         const annotatedPythonPackageBuilder = new AnnotatedPythonPackageBuilder(pythonPackage, annotationStore);
         const annotatedPythonPackage = annotatedPythonPackageBuilder.generateAnnotatedPythonPackage();
+        const packageName = "safeds"
 
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(annotatedPythonPackage),
         };
-        fetch('/api-editor/infer/simpleml', requestOptions).then(async (response) => {
+        fetch(`/api-editor/infer/${packageName}`, requestOptions).then(async (response) => {
             if (!response.ok) {
                 const jsonResponse = await response.json();
                 displayInferErrors(jsonResponse);
@@ -133,7 +134,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, displa
                 const jsonBlob = await response.blob();
                 const a = document.createElement('a');
                 a.href = URL.createObjectURL(jsonBlob);
-                a.download = 'simpleml.zip';
+                a.download = `${packageName}.zip`;
                 a.click();
             }
         });
