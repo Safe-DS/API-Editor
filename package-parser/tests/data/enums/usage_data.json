@@ -8,7 +8,7 @@
     },
     "value_counts": {
         "test/test/some_global_function/enum_parameter_but_constant": {
-            "auto": 1
+            "'auto'": 1
         }
     }
 }

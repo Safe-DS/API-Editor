@@ -8,7 +8,7 @@
     },
     "value_counts": {
         "test/test/some_global_function/parameter_with_bound_but_constant": {
-            "0.5": 1
+            "1": 1
         }
     }
 }
