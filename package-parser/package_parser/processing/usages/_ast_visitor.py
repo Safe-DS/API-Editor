@@ -5,6 +5,7 @@ import astroid
 from astroid.arguments import CallSite
 from astroid.helpers import safe_infer
 from package_parser.model.usages import UsageCountStore
+from package_parser.utils import parent_id
 
 
 class _UsageFinder:
@@ -30,7 +31,7 @@ class _UsageFinder:
             or isinstance(called, astroid.FunctionDef)
             and called.is_method()
         ):
-            self.usages.add_class_usages(".".join(function_id.split(".")[:-1]))
+            self.usages.add_class_usages(parent_id(function_id))
 
         # Add function usage
         self.usages.add_function_usages(function_id)
