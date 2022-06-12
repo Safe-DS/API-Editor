@@ -8,7 +8,12 @@ from package_parser.utils import ensure_file_exists
 
 
 def _run_usages_command(
-    package: str, client_dir_path: Path, out_dir_path: Path, n_processes: int, batch_size: int, result_dict: Optional[dict] = None
+    package: str,
+    client_dir_path: Path,
+    out_dir_path: Path,
+    n_processes: int,
+    batch_size: int,
+    result_dict: Optional[dict] = None,
 ) -> None:
     usages = find_usages(package, client_dir_path, n_processes, batch_size)
 

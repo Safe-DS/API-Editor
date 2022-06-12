@@ -6,26 +6,34 @@ from typing import TypeVar
 
 import astroid
 from astroid.builder import AstroidBuilder
-
 from package_parser.utils import ASTWalker, list_files, parse_python_code
-from ._ast_visitor import _UsageFinder
+
 from ...model.usages import UsageCountStore
+from ._ast_visitor import _UsageFinder
 
 
-def find_usages(package_name: str, src_dir: Path, n_processes: int, batch_size: int) -> UsageCountStore:
+def find_usages(
+    package_name: str, src_dir: Path, n_processes: int, batch_size: int
+) -> UsageCountStore:
     python_files = list_files(src_dir, ".py")
     python_file_batches = _split_into_batches(python_files, batch_size)
 
     aggregated_counts = UsageCountStore()
 
     for batch_index in range(0, len(python_file_batches), n_processes):
-        python_file_batches_slice = python_file_batches[batch_index:batch_index + n_processes]
+        python_file_batches_slice = python_file_batches[
+            batch_index : batch_index + n_processes
+        ]
         n_process_to_spawn = min(n_processes, len(python_file_batches_slice))
 
-        with Pool(processes=n_process_to_spawn, initializer=_initializer, initargs=[logging.root.level]) as pool:
+        with Pool(
+            processes=n_process_to_spawn,
+            initializer=_initializer,
+            initargs=[logging.root.level],
+        ) as pool:
             batch_counts = pool.starmap(
                 _find_usages_in_batch,
-                [[package_name, it] for it in python_file_batches_slice]
+                [[package_name, it] for it in python_file_batches_slice],
             )
 
             for batch_count in batch_counts:
@@ -34,13 +42,10 @@ def find_usages(package_name: str, src_dir: Path, n_processes: int, batch_size: 
     return aggregated_counts
 
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
-def _split_into_batches(
-    list_: list[T],
-    batch_size: int
-) -> list[list[T]]:
+def _split_into_batches(list_: list[T], batch_size: int) -> list[list[T]]:
     """
     Splits a list into batches of size batch_size.
     """
@@ -70,8 +75,7 @@ def _initializer(log_level: int) -> None:
 
 
 def _find_usages_in_batch(
-    package_name: str,
-    python_files: list[str]
+    package_name: str, python_files: list[str]
 ) -> UsageCountStore:
     ast_builder = AstroidBuilder()
     usage_finder = _UsageFinder(package_name)

@@ -14,12 +14,19 @@ def _run_all_command(
     client_dir_path: Path,
     out_dir_path: Path,
     n_processes: int,
-    batch_size: int
+    batch_size: int,
 ) -> None:
     out_file_annotations = out_dir_path.joinpath("annotations.json")
     results = _run_in_parallel(
         partial(_run_api_command, package, src_dir_path, out_dir_path),
-        partial(_run_usages_command, package, client_dir_path, out_dir_path, n_processes, batch_size),
+        partial(
+            _run_usages_command,
+            package,
+            client_dir_path,
+            out_dir_path,
+            n_processes,
+            batch_size,
+        ),
     )
     _run_annotations(results[_API_KEY], results[_USAGES_KEY], out_file_annotations)
 
