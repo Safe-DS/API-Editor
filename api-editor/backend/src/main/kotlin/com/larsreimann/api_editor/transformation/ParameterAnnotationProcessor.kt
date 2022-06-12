@@ -120,6 +120,6 @@ private fun DefaultValue.toPythonLiteral(): PythonLiteral {
             }
         }
         is DefaultString -> PythonString(this.value)
-        is DefaultNone -> PythonNone
+        is DefaultNone -> PythonNone()
     }
 }
