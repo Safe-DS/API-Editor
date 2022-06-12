@@ -108,9 +108,6 @@ def test_extract_dependencies_from_docstring_pattern_adverbial_clause():
                                docstring=ParameterAndResultDocstring(
                                    type="param possible types", description="param probability docstring"
                                ))
-    pattern_parameter_subordinating_conjunction = nlp(
-        "ignored when probability is False"
-    )
     func_params = [dependent_param, dependee_param]
     match = (314159265, [0, 3, 2])
 
