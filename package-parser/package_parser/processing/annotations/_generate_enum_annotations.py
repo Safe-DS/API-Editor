@@ -13,7 +13,9 @@ def _generate_enum_annotations(api: API, annotations: AnnotationStore) -> None:
     for _, parameter in api.parameters().items():
 
         # Don't add enum annotation to constant parameters
-        if parameter.id in set(annotation.target for annotation in annotations.constants):
+        if parameter.id in set(
+            annotation.target for annotation in annotations.constants
+        ):
             continue
 
         enum_type = parameter.type.to_json()
