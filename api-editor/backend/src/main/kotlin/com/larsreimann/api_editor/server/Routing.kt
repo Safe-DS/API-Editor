@@ -58,7 +58,7 @@ fun Route.echo() {
 }
 
 fun Route.infer() {
-    post("/infer/{newPackageName}") {
+    post("/generate-adapters/{newPackageName}") {
         val pythonPackage = call.receive<SerializablePythonPackage>()
         when (val doInferResult = doInfer(pythonPackage, call.parameters.getOrFail("newPackageName"))) {
             is DoInferResult.ValidationFailure -> {

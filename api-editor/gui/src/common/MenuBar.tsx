@@ -126,7 +126,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, displa
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(annotatedPythonPackage),
         };
-        fetch(`/api-editor/infer/${packageName}`, requestOptions).then(async (response) => {
+        fetch(`/api-editor/generate-adapters/${packageName}`, requestOptions).then(async (response) => {
             if (!response.ok) {
                 const jsonResponse = await response.json();
                 displayInferErrors(jsonResponse);
