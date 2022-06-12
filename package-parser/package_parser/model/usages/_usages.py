@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 from collections import Counter
-from typing import Any, TypeAlias
+from typing import Any
 
-ClassId: TypeAlias = str
-FunctionId: TypeAlias = str
-ParameterId: TypeAlias = str
-StringifiedValue: TypeAlias = str
+ClassId = str
+FunctionId = str
+ParameterId = str
+StringifiedValue = str
 
 
 class UsageCountStore:
