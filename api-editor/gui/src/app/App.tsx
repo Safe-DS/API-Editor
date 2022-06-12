@@ -75,7 +75,7 @@ export const App: React.FC = function () {
                 h="100vh"
             >
                 <GridItem gridArea="menu" colSpan={2}>
-                    <MenuBar pythonPackage={pythonPackage} displayInferErrors={displayInferErrors} />
+                    <MenuBar displayInferErrors={displayInferErrors} />
                 </GridItem>
                 <GridItem
                     gridArea="leftPane"
