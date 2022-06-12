@@ -116,7 +116,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, displa
         a.click();
     };
 
-    const infer = () => {
+    const generateAdapters = () => {
         const annotatedPythonPackageBuilder = new AnnotatedPythonPackageBuilder(pythonPackage, annotationStore);
         const annotatedPythonPackage = annotatedPythonPackageBuilder.generateAnnotatedPythonPackage();
         const packageName = "safeds"
@@ -187,7 +187,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, displa
                     </Menu>
                 </Box>
 
-                <Button onClick={infer}>Generate adapters</Button>
+                <Button onClick={generateAdapters}>Generate adapters</Button>
                 <DeleteAllAnnotations />
 
                 <Box>
