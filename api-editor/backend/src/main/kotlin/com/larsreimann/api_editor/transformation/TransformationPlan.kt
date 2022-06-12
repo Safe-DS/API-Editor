@@ -5,7 +5,7 @@ import com.larsreimann.api_editor.mutable_model.PythonPackage
 /**
  * Processes all annotations and updates the AST to create adapters.
  */
-fun PythonPackage.transform(newPackageName: String) {
+fun PythonPackage.transform(newPackageName: String = "new_package") {
     preprocess(newPackageName)
     processAnnotations()
     postprocess()
