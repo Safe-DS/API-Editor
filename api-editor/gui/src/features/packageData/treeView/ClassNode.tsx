@@ -42,7 +42,7 @@ export const ClassNode: React.FC<ClassNodeProps> = function ({ pythonClass, filt
 
 const getMapWithUsages = function (usages: UsageCountStore, pythonClass: PythonClass): ValuePair {
     const maxValue = usages.classMaxUsages;
-    const specificValue = usages.classUsages.get(pythonClass.qualifiedName) ?? 0;
+    const specificValue = usages.classUsages.get(pythonClass.id) ?? 0;
     return new ValuePair(specificValue, maxValue);
 };
 

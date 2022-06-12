@@ -26,12 +26,12 @@ export class UsefulnessFilter extends AbstractPythonFilter {
     }
 
     shouldKeepClass(pythonClass: PythonClass, annotations: AnnotationStore, usages: UsageCountStore): boolean {
-        const classUsefulness = usages.classUsages.get(pythonClass.qualifiedName);
+        const classUsefulness = usages.classUsages.get(pythonClass.id);
         return this.shouldKeepWithUsefulness(classUsefulness);
     }
 
     shouldKeepFunction(pythonFunction: PythonFunction, annotations: AnnotationStore, usages: UsageCountStore): boolean {
-        const functionUsefulness = usages.functionUsages.get(pythonFunction.qualifiedName);
+        const functionUsefulness = usages.functionUsages.get(pythonFunction.id);
         return this.shouldKeepWithUsefulness(functionUsefulness);
     }
 
@@ -40,7 +40,7 @@ export class UsefulnessFilter extends AbstractPythonFilter {
         annotations: AnnotationStore,
         usages: UsageCountStore,
     ): boolean {
-        const parameterUsefulness = usages.parameterUsefulness.get(pythonParameter.qualifiedName);
+        const parameterUsefulness = usages.parameterUsefulness.get(pythonParameter.id);
         return this.shouldKeepWithUsefulness(parameterUsefulness);
     }
 

@@ -42,7 +42,7 @@ export const FunctionNode: React.FC<FunctionNodeProps> = function ({ pythonFunct
 
 const getMapWithUsages = function (usages: UsageCountStore, pythonFunction: PythonFunction): ValuePair {
     const maxValue = usages.functionMaxUsages;
-    const specificValue = usages.functionUsages.get(pythonFunction.qualifiedName) ?? 0;
+    const specificValue = usages.functionUsages.get(pythonFunction.id) ?? 0;
 
     return new ValuePair(specificValue, maxValue);
 };

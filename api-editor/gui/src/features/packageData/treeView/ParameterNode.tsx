@@ -42,13 +42,13 @@ export const ParameterNode: React.FC<ParameterNodeProps> = function ({ pythonPar
 
 const getMapWithUsages = function (usages: UsageCountStore, pythonParameter: PythonParameter): ValuePair {
     const maxValue = usages.parameterMaxUsages;
-    const specificValue = usages.parameterUsages.get(pythonParameter.qualifiedName) ?? 0;
+    const specificValue = usages.parameterUsages.get(pythonParameter.id) ?? 0;
     return new ValuePair(specificValue, maxValue);
 };
 
 const getMapWithUsefulness = function (usages: UsageCountStore, pythonParameter: PythonParameter): ValuePair {
     const maxValue = usages.parameterMaxUsefulness;
-    const specificValue = usages.parameterUsefulness.get(pythonParameter.qualifiedName) ?? 0;
+    const specificValue = usages.parameterUsefulness.get(pythonParameter.id) ?? 0;
     return new ValuePair(specificValue, maxValue);
 };
 
