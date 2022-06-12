@@ -26,6 +26,7 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
+import io.ktor.server.util.getOrFail
 import java.io.File
 
 fun Application.configureRouting() {
@@ -57,9 +58,9 @@ fun Route.echo() {
 }
 
 fun Route.infer() {
-    post("/infer") {
+    post("/infer/{newPackageName}") {
         val pythonPackage = call.receive<SerializablePythonPackage>()
-        when (val doInferResult = doInfer(pythonPackage)) {
+        when (val doInferResult = doInfer(pythonPackage, call.parameters.getOrFail("newPackageName"))) {
             is DoInferResult.ValidationFailure -> {
                 call.respond(HttpStatusCode.Conflict, doInferResult.messages)
             }
@@ -86,7 +87,7 @@ fun Route.infer() {
     }
 }
 
-fun doInfer(originalPythonPackage: SerializablePythonPackage): DoInferResult {
+fun doInfer(originalPythonPackage: SerializablePythonPackage, newPackageNew: String): DoInferResult {
     // Validate
     val errors = AnnotationValidator(originalPythonPackage).validate()
     if (errors.isNotEmpty()) {
@@ -97,7 +98,7 @@ fun doInfer(originalPythonPackage: SerializablePythonPackage): DoInferResult {
     val mutablePackage = convertPackage(originalPythonPackage)
 
     try {
-        mutablePackage.transform()
+        mutablePackage.transform(newPackageNew)
     } catch (e: ConflictingEnumException) {
         return DoInferResult.ValidationFailure(listOf(e.message!!))
     } catch (e: ConflictingGroupException) {
