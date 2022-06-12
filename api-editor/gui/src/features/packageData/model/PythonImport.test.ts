@@ -1,4 +1,4 @@
-import PythonImport from './PythonImport';
+import { PythonImport } from './PythonImport';
 
 test('toString without alias', () => {
     const pythonImport = new PythonImport('module');

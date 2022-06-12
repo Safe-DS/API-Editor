@@ -6,7 +6,7 @@ import python from 'react-syntax-highlighter/dist/esm/languages/hljs/python';
 import { atomOneDark as dark, atomOneLight as light } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import remarkGfm from 'remark-gfm';
 import { groupBy, isEmptyList } from '../../../common/util/listOperations';
-import PythonModule from '../model/PythonModule';
+import { PythonModule } from '../model/PythonModule';
 import { CodeComponent } from 'react-markdown/lib/ast-to-react';
 
 // See https://github.com/remarkjs/react-markdown#use-custom-components-syntax-highlight

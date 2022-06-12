@@ -30,7 +30,7 @@ import { FaChevronDown } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { resetAnnotations, selectAnnotations } from '../features/annotations/annotationSlice';
 import { AnnotatedPythonPackageBuilder } from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
-import PythonPackage from '../features/packageData/model/PythonPackage';
+import { PythonPackage } from '../features/packageData/model/PythonPackage';
 import { FilterHelpButton } from './FilterHelpButton';
 import {
     HeatMapMode,

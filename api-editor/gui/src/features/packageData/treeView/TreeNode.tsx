@@ -4,14 +4,14 @@ import { IconType } from 'react-icons/lib';
 import { useLocation } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import PythonDeclaration from '../model/PythonDeclaration';
+import { PythonDeclaration } from '../model/PythonDeclaration';
 import {
     HeatMapMode,
     selectHeatMapMode,
     selectIsExpandedInTreeView,
     toggleIsExpandedInTreeView,
 } from '../../ui/uiSlice';
-import VisibilityIndicator from './VisibilityIndicator';
+import { VisibilityIndicator } from './VisibilityIndicator';
 import { AbstractPythonFilter } from '../model/filters/AbstractPythonFilter';
 import { selectAnnotations } from '../../annotations/annotationSlice';
 import { HeatMapInterpolation, HeatMapTag } from './HeatMapTag';

@@ -1,7 +1,7 @@
 import { Button, HStack } from '@chakra-ui/react';
 import React from 'react';
-import PythonPackage from '../model/PythonPackage';
-import PythonDeclaration from '../model/PythonDeclaration';
+import { PythonPackage } from '../model/PythonPackage';
+import { PythonDeclaration } from '../model/PythonDeclaration';
 import { AbstractPythonFilter } from '../model/filters/AbstractPythonFilter';
 import { AnnotationStore, selectAnnotations } from '../../annotations/annotationSlice';
 import { useNavigate } from 'react-router';

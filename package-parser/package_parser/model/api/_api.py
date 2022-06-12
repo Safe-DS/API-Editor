@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from enum import Enum, auto
+from enum import Enum
 from typing import Any, Optional
 
 from package_parser.model.api._types import (
@@ -12,7 +12,7 @@ from package_parser.model.api._types import (
     NamedType,
     UnionType,
 )
-from package_parser.utils import declaration_qname_to_name, parent_qname
+from package_parser.utils import parent_id
 
 
 class API:
@@ -20,13 +20,13 @@ class API:
     def from_json(json: Any) -> API:
         result = API(json["distribution"], json["package"], json["version"])
 
-        for module_json in json["modules"]:
+        for module_json in json.get("modules", []):
             result.add_module(Module.from_json(module_json))
 
-        for class_json in json["classes"]:
+        for class_json in json.get("classes", []):
             result.add_class(Class.from_json(class_json))
 
-        for function_json in json["functions"]:
+        for function_json in json.get("functions", []):
             result.add_function(Function.from_json(function_json))
 
         return result
@@ -40,22 +40,19 @@ class API:
         self.functions: dict[str, Function] = dict()
 
     def add_module(self, module: Module) -> None:
-        self.modules[module.name] = module
+        self.modules[module.id] = module
 
     def add_class(self, class_: Class) -> None:
-        self.classes[class_.qname] = class_
+        self.classes[class_.id] = class_
 
     def add_function(self, function: Function) -> None:
-        self.functions[function.unique_qname] = function
+        self.functions[function.id] = function
 
-    def is_public_class(self, class_qname: str) -> bool:
-        return class_qname in self.classes and self.classes[class_qname].is_public
+    def is_public_class(self, class_id: str) -> bool:
+        return class_id in self.classes and self.classes[class_id].is_public
 
-    def is_public_function(self, function_unique_qname: str) -> bool:
-        return (
-            function_unique_qname in self.functions
-            and self.functions[function_unique_qname].is_public
-        )
+    def is_public_function(self, function_id: str) -> bool:
+        return function_id in self.functions and self.functions[function_id].is_public
 
     def class_count(self) -> int:
         return len(self.classes)
@@ -80,20 +77,19 @@ class API:
 
         for function in self.functions.values():
             for parameter in function.parameters:
-                parameter_qname = f"{function.qname}.{parameter.name}"
-                result[parameter_qname] = parameter
+                parameter_id = f"{function.id}/{parameter.name}"
+                result[parameter_id] = parameter
 
         return result
 
-    def get_default_value(self, parameter_unique_qname: str) -> Optional[str]:
-        function_unique_qname = parent_qname(parameter_unique_qname)
-        parameter_name = declaration_qname_to_name(parameter_unique_qname)
+    def get_default_value(self, parameter_id: str) -> Optional[str]:
+        function_id = parent_id(parameter_id)
 
-        if function_unique_qname not in self.functions:
+        if function_id not in self.functions:
             return None
 
-        for parameter in self.functions[function_unique_qname].parameters:
-            if parameter.name == parameter_name:
+        for parameter in self.functions[function_id].parameters:
+            if parameter.id == parameter_id:
                 return parameter.default_value
 
         return None
@@ -105,17 +101,15 @@ class API:
             "version": self.version,
             "modules": [
                 module.to_json()
-                for module in sorted(self.modules.values(), key=lambda it: it.name)
+                for module in sorted(self.modules.values(), key=lambda it: it.id)
             ],
             "classes": [
-                clazz.to_json()
-                for clazz in sorted(self.classes.values(), key=lambda it: it.qname)
+                class_.to_json()
+                for class_ in sorted(self.classes.values(), key=lambda it: it.id)
             ],
             "functions": [
                 function.to_json()
-                for function in sorted(
-                    self.functions.values(), key=lambda it: it.unique_qname
-                )
+                for function in sorted(self.functions.values(), key=lambda it: it.id)
             ],
         }
 
@@ -124,47 +118,43 @@ class Module:
     @staticmethod
     def from_json(json: Any) -> Module:
         result = Module(
+            json["id"],
             json["name"],
-            json["pname"],
-            [Import.from_json(import_json) for import_json in json["imports"]],
+            [Import.from_json(import_json) for import_json in json.get("imports", [])],
             [
                 FromImport.from_json(from_import_json)
-                for from_import_json in json["from_imports"]
+                for from_import_json in json.get("from_imports", [])
             ],
         )
 
-        for class_qname in json["classes"]:
-            result.add_class(class_qname)
+        for class_id in json.get("classes", []):
+            result.add_class(class_id)
 
-        for function_unique_qname in json["functions"]:
-            result.add_function(function_unique_qname)
+        for function_id in json.get("functions", []):
+            result.add_function(function_id)
 
         return result
 
     def __init__(
-        self,
-        name: str,
-        pname: str,
-        imports: list[Import],
-        from_imports: list[FromImport],
+        self, id_: str, name: str, imports: list[Import], from_imports: list[FromImport]
     ):
+        self.id: str = id_
         self.name: str = name
-        self.pname: str = pname
         self.imports: list[Import] = imports
         self.from_imports: list[FromImport] = from_imports
         self.classes: list[str] = []
         self.functions: list[str] = []
 
-    def add_class(self, class_qname: str) -> None:
-        self.classes.append(class_qname)
+    def add_class(self, class_id: str) -> None:
+        self.classes.append(class_id)
 
-    def add_function(self, function_unique_qname: str) -> None:
-        self.functions.append(function_unique_qname)
+    def add_function(self, function_id: str) -> None:
+        self.functions.append(function_id)
 
     def to_json(self) -> Any:
         return {
+            "id": self.id,
             "name": self.name,
-            "pname": self.pname,
             "imports": [import_.to_json() for import_ in self.imports],
             "from_imports": [
                 from_import.to_json() for from_import in self.from_imports
@@ -209,32 +199,32 @@ class Class:
     @staticmethod
     def from_json(json: Any) -> Class:
         result = Class(
+            json["id"],
             json["qname"],
-            json["pname"],
-            json["decorators"],
-            json["superclasses"],
-            json["is_public"],
-            json["description"],
-            json["docstring"],
+            json.get("decorators", []),
+            json.get("superclasses", []),
+            json.get("is_public", True),
+            json.get("description", ""),
+            json.get("docstring", ""),
         )
 
-        for method_unique_qname in json["methods"]:
-            result.add_method(method_unique_qname)
+        for method_id in json["methods"]:
+            result.add_method(method_id)
 
         return result
 
     def __init__(
         self,
+        id_: str,
         qname: str,
-        pname: str,
         decorators: list[str],
         superclasses: list[str],
         is_public: bool,
         description: str,
         docstring: str,
     ) -> None:
+        self.id: str = id_
         self.qname: str = qname
-        self.pname: str = pname
         self.decorators: list[str] = decorators
         self.superclasses: list[str] = superclasses
         self.methods: list[str] = []
@@ -246,14 +236,14 @@ class Class:
     def name(self) -> str:
         return self.qname.split(".")[-1]
 
-    def add_method(self, method_unique_qname: str) -> None:
-        self.methods.append(method_unique_qname)
+    def add_method(self, method_id: str) -> None:
+        self.methods.append(method_id)
 
     def to_json(self) -> Any:
         return {
+            "id": self.id,
             "name": self.name,
             "qname": self.qname,
-            "pname": self.pname,
             "decorators": self.decorators,
             "superclasses": self.superclasses,
             "methods": self.methods,
@@ -265,8 +255,8 @@ class Class:
 
 @dataclass
 class Function:
+    id: str
     qname: str
-    pname: str
     decorators: list[str]
     parameters: list[Parameter]
     results: list[Result]
@@ -277,64 +267,28 @@ class Function:
     @staticmethod
     def from_json(json: Any) -> Function:
         return Function(
+            json["id"],
             json["qname"],
-            json["pname"],
-            json["decorators"],
+            json.get("decorators", []),
             [
                 Parameter.from_json(parameter_json)
-                for parameter_json in json["parameters"]
+                for parameter_json in json.get("parameters", [])
             ],
-            [Result.from_json(result_json) for result_json in json["results"]],
-            json["is_public"],
-            json["description"],
-            json["docstring"],
+            [Result.from_json(result_json) for result_json in json.get("results", [])],
+            json.get("is_public", True),
+            json.get("description", ""),
+            json.get("docstring", ""),
         )
 
     @property
     def name(self) -> str:
         return self.qname.split(".")[-1]
 
-    @property
-    def unique_name(self) -> str:
-        return self.unique_qname.split(".")[-1]
-
-    @property
-    def unique_qname(self) -> str:
-        result = self.qname
-
-        if self.is_getter():
-            result += "@getter"
-        elif self.is_setter():
-            result += "@setter"
-        elif self.is_deleter():
-            result += "@deleter"
-
-        return result
-
-    def is_getter(self) -> bool:
-        return "property" in self.decorators
-
-    def is_setter(self) -> bool:
-        for decorator in self.decorators:
-            if re.search(r"^[^.]*.setter$", decorator):
-                return True
-
-        return False
-
-    def is_deleter(self) -> bool:
-        for decorator in self.decorators:
-            if re.search(r"^[^.]*.deleter$", decorator):
-                return True
-
-        return False
-
     def to_json(self) -> Any:
         return {
+            "id": self.id,
             "name": self.name,
-            "unique_name": self.unique_name,
             "qname": self.qname,
-            "pname": self.pname,
-            "unique_qname": self.unique_qname,
             "decorators": self.decorators,
             "parameters": [parameter.to_json() for parameter in self.parameters],
             "results": [result.to_json() for result in self.results],
@@ -429,34 +383,34 @@ class Type:
 
 
 class Parameter:
-    @classmethod
-    def from_json(cls, json: Any):
-        return cls(
+    @staticmethod
+    def from_json(json: Any):
+        return Parameter(
+            json["id"],
             json["name"],
             json["qname"],
-            json["pname"],
-            json["default_value"],
-            json["is_public"],
-            ParameterAssignment[json["assigned_by"]],
-            ParameterAndResultDocstring.from_json(json["docstring"]),
+            json.get("default_value", None),
+            ParameterAssignment[json.get("assigned_by", "POSITION_OR_NAME")],
+            json.get("is_public", True),
+            ParameterAndResultDocstring.from_json(json.get("docstring", {})),
         )
 
     def __init__(
         self,
+        id_: str,
         name: str,
         qname: str,
-        pname: str,
         default_value: Optional[str],
-        is_public: bool,
         assigned_by: ParameterAssignment,
+        is_public: bool,
         docstring: ParameterAndResultDocstring,
     ) -> None:
+        self.id: str = id_
         self.name: str = name
         self.qname: str = qname
-        self.pname: str = pname
         self.default_value: Optional[str] = default_value
-        self.is_public: bool = is_public
         self.assigned_by: ParameterAssignment = assigned_by
+        self.is_public: bool = is_public
         self.docstring = docstring
         self.type: Type = Type(docstring)
 
@@ -468,22 +422,22 @@ class Parameter:
 
     def to_json(self) -> Any:
         return {
+            "id": self.id,
             "name": self.name,
             "qname": self.qname,
-            "pname": self.pname,
             "default_value": self.default_value,
-            "is_public": self.is_public,
             "assigned_by": self.assigned_by.name,
+            "is_public": self.is_public,
             "docstring": self.docstring.to_json(),
             "type": self.type.to_json(),
         }
 
 
 class ParameterAssignment(Enum):
-    IMPLICIT = (auto(),)
-    POSITION_ONLY = (auto(),)
-    POSITION_OR_NAME = (auto(),)
-    NAME_ONLY = (auto(),)
+    IMPLICIT = "IMPLICIT"
+    POSITION_ONLY = "POSITION_ONLY"
+    POSITION_OR_NAME = "POSITION_OR_NAME"
+    NAME_ONLY = "NAME_ONLY"
 
 
 @dataclass
@@ -494,7 +448,8 @@ class Result:
     @staticmethod
     def from_json(json: Any) -> Result:
         return Result(
-            json["name"], ParameterAndResultDocstring.from_json(json["docstring"])
+            json["name"],
+            ParameterAndResultDocstring.from_json(json.get("docstring", {})),
         )
 
     def to_json(self) -> Any:
@@ -506,9 +461,12 @@ class ParameterAndResultDocstring:
     type: str
     description: str
 
-    @classmethod
-    def from_json(cls, json: Any):
-        return cls(json["type"], json["description"])
+    @staticmethod
+    def from_json(json: Any):
+        return ParameterAndResultDocstring(
+            json.get("type", ""),
+            json.get("description", ""),
+        )
 
     def to_json(self) -> Any:
         return {"type": self.type, "description": self.description}

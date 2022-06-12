@@ -1,16 +1,11 @@
 import { Optional } from '../../../common/util/types';
-import PythonDeclaration from './PythonDeclaration';
-import PythonFunction from './PythonFunction';
+import { PythonDeclaration } from './PythonDeclaration';
+import { PythonFunction } from './PythonFunction';
 
-export default class PythonResult extends PythonDeclaration {
+export class PythonResult extends PythonDeclaration {
     containingFunction: Optional<PythonFunction>;
 
-    constructor(
-        readonly name: string,
-        readonly type: string = 'Any',
-        readonly typeInDocs: string = '',
-        readonly description: string = '',
-    ) {
+    constructor(readonly name: string, readonly typeInDocs: string = '', readonly description: string = '') {
         super();
 
         this.containingFunction = null;
@@ -29,11 +24,6 @@ export default class PythonResult extends PythonDeclaration {
     }
 
     clone(): PythonResult {
-        return new PythonResult(
-            this.name,
-            this.type,
-            this.typeInDocs,
-            this.description,
-        );
+        return new PythonResult(this.name, this.typeInDocs, this.description);
     }
 }

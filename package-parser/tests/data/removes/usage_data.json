@@ -1,20 +1,20 @@
 {
     "class_counts": {
-        "test.UsedClass": 1
+        "test/test/UsedClass": 1
     },
     "function_counts": {
-        "test.used_global_function": 1,
-        "test.UsedClass.used_method": 1
+        "test/test/used_global_function": 1,
+        "test/test/UsedClass/used_method": 1
     },
     "parameter_counts": {
-        "test.used_global_function.used_parameter": 1,
-        "test.UsedClass.used_method.used_parameter": 1
+        "test/test/used_global_function/used_parameter": 1,
+        "test/test/UsedClass/used_method/used_parameter": 1
     },
     "value_counts": {
-        "test.used_global_function.used_parameter": {
+        "test/test/used_global_function/used_parameter": {
             "'test'": 1
         },
-        "test.UsedClass.used_method.used_parameter": {
+        "test/test/UsedClass/used_method/used_parameter": {
             "'test'": 1
         }
     }

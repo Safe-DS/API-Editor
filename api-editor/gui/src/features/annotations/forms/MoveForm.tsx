@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { moduleNamePattern } from '../../../common/validation';
-import PythonDeclaration from '../../packageData/model/PythonDeclaration';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
 import { selectMove, upsertMove } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
 import { hideAnnotationForm } from '../../ui/uiSlice';

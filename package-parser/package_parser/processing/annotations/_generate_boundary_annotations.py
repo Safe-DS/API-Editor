@@ -9,7 +9,6 @@ from package_parser.model.api import API
 def _generate_boundary_annotations(api: API, annotations: AnnotationStore) -> None:
     """
     Annotates all parameters which are a boundary.
-    :param _usages: Usage store
     :param api: Description of the API
     :param annotations: AnnotationStore, that holds all annotations
     """
@@ -47,7 +46,7 @@ def _generate_boundary_annotations(api: API, annotations: AnnotationStore) -> No
                 upperLimitType=max_limit_type,
             )
             boundary = BoundaryAnnotation(
-                target=parameter.pname,
+                target=parameter.id,
                 interval=interval,
             )
             annotations.boundaries.append(boundary)
