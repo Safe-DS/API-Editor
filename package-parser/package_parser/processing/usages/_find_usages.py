@@ -20,8 +20,9 @@ def find_usages(package_name: str, src_dir: Path, n_processes: int, batch_size: 
 
     for batch_index in range(0, len(python_file_batches), n_processes):
         python_file_batches_slice = python_file_batches[batch_index:batch_index + n_processes]
+        n_process_to_spawn = min(n_processes, len(python_file_batches_slice))
 
-        with Pool(processes=n_processes, initializer=_initializer) as pool:
+        with Pool(processes=n_process_to_spawn, initializer=_initializer, initargs=[logging.root.level]) as pool:
             batch_counts = pool.starmap(
                 _find_usages_in_batch,
                 [[package_name, it] for it in python_file_batches_slice]
@@ -59,11 +60,12 @@ def _split_into_batches(
     return batches
 
 
-def _initializer() -> None:
+def _initializer(log_level: int) -> None:
     """
     Ignore CTRL+C in the worker process.
     """
 
+    logging.basicConfig(level=log_level)
     signal.signal(signal.SIGINT, signal.SIG_IGN)
 
 
