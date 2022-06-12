@@ -12,9 +12,9 @@ from ._ast_visitor import _UsageFinder
 from ...model.usages import UsageCountStore
 
 
-def find_usages(package_name: str, src_dir: Path, n_processes: int) -> UsageCountStore:
+def find_usages(package_name: str, src_dir: Path, n_processes: int, batch_size: int) -> UsageCountStore:
     python_files = list_files(src_dir, ".py")
-    python_file_batches = _split_into_batches(python_files, 100)
+    python_file_batches = _split_into_batches(python_files, batch_size)
 
     aggregated_counts = UsageCountStore()
 
