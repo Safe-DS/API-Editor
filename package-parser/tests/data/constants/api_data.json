@@ -97,7 +97,7 @@
                     "id": "test/test/UsedClass/used_method/constant_optional_parameter",
                     "name": "constant_optional_parameter",
                     "qname": "test.UsedClass.used_method.constant_optional_parameter",
-                    "default_value": "'test'"
+                    "default_value": "0.5"
                 },
                 {
                     "id": "test/test/UsedClass/used_method/variable_optional_parameter",

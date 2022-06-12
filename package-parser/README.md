@@ -28,5 +28,5 @@ A tool to analyze client and API code written in Python.
     ```
 3. Generate annotations for the API:
    ```shell
-   parse-package annotations -a out/scikit-learn__sklearn__1.0__api.json -u out/scikit-learn__sklearn__1.0__usages.json -o out/annotations.json
+   parse-package annotations -a data/api/sklearn__api.json -u data/usages/sklearn__usage_counts.json -o out/annotations.json
    ```
