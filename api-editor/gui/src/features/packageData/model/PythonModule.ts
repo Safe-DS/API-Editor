@@ -10,6 +10,7 @@ export class PythonModule extends PythonDeclaration {
     containingPackage: Optional<PythonPackage>;
 
     constructor(
+        readonly id: string,
         readonly name: string,
         readonly imports: PythonImport[] = [],
         readonly fromImports: PythonFromImport[] = [],

@@ -117,6 +117,7 @@ export abstract class AbstractPythonFilter {
 
         // Otherwise, create filtered module
         return new PythonModule(
+            pythonModule.id,
             pythonModule.name,
             pythonModule.imports,
             pythonModule.fromImports,

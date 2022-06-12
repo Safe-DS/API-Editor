@@ -4,7 +4,7 @@ import { PythonFromImport } from './PythonFromImport';
 import { PythonFunction } from './PythonFunction';
 import { PythonImport } from './PythonImport';
 import { PythonModule } from './PythonModule';
-import {PythonPackage} from './PythonPackage';
+import { PythonPackage } from './PythonPackage';
 import { PythonParameter, PythonParameterAssignment } from './PythonParameter';
 import { PythonResult } from './PythonResult';
 
@@ -19,9 +19,7 @@ export interface PythonPackageJson {
 
 export const parsePythonPackageJson = function (packageJson: PythonPackageJson): PythonPackage {
     // Functions
-    const functions = new Map(
-        packageJson.functions.map(parsePythonFunctionJson).map((it) => [it.id, it]),
-    );
+    const functions = new Map(packageJson.functions.map(parsePythonFunctionJson).map((it) => [it.id, it]));
 
     // Classes
     const classes = new Map(
@@ -53,6 +51,7 @@ const parsePythonModuleJson = function (
     functions: Map<string, PythonFunction>,
 ): PythonModule {
     return new PythonModule(
+        moduleJson.id,
         moduleJson.name,
         moduleJson.imports.map(parsePythonImportJson).sort((a, b) => a.module.localeCompare(b.module)),
         moduleJson.from_imports.map(parsePythonFromImportJson).sort((a, b) => {
@@ -203,9 +202,5 @@ interface PythonResultJson {
 }
 
 const parsePythonResultJson = function (resultJson: PythonResultJson): PythonResult {
-    return new PythonResult(
-        resultJson.name,
-        resultJson.docstring.type ?? '',
-        resultJson.docstring.description ?? '',
-    );
+    return new PythonResult(resultJson.name, resultJson.docstring.type ?? '', resultJson.docstring.description ?? '');
 };
