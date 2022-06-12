@@ -1,16 +1,15 @@
 import logging
 import signal
-import sys
 from multiprocessing import Pool
 from pathlib import Path
 from typing import TypeVar
 
 import astroid
+from astroid.builder import AstroidBuilder
 
-from package_parser.utils import ASTWalker, list_files
+from package_parser.utils import ASTWalker, list_files, NonCachingAstBuilder, parse_python_code
 from ._ast_visitor import _UsageFinder
 from ...model.usages import UsageCountStore
-from ...utils._parsing import parse_without_caching
 
 
 def find_usages(package_name: str, src_dir: Path, n_processes: int) -> UsageCountStore:
@@ -69,19 +68,20 @@ def _find_usages_in_batch(
     package_name: str,
     python_files: list[str]
 ) -> UsageCountStore:
+    ast_builder = NonCachingAstBuilder()
     usage_finder = _UsageFinder(package_name)
     ast_walker = ASTWalker(usage_finder)
 
     for python_file in python_files:
-        _find_usages_in_single_file(package_name, python_file, ast_walker)
+        _find_usages_in_single_file(package_name, python_file, ast_builder, ast_walker)
 
-    # astroid.MANAGER.clear_cache()
     return usage_finder.usages
 
 
 def _find_usages_in_single_file(
     package_name: str,
     python_file: str,
+    ast_builder: AstroidBuilder,
     ast_walker: ASTWalker,
 ) -> None:
     logging.info(f"Working on {python_file}")
@@ -92,8 +92,8 @@ def _find_usages_in_single_file(
             source = f.read()
 
         if __is_relevant_python_file(package_name, source):
-            parse_without_caching(source)
-            # ast_walker.walk(parse_without_caching(source))
+            module = parse_python_code(source, ast_builder=ast_builder)
+            ast_walker.walk(module)
         else:
             logging.info(f"Skipping {python_file} (irrelevant file)")
 
