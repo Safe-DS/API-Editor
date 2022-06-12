@@ -1204,7 +1204,7 @@ class PythonCodeGeneratorTest {
 
         @Test
         fun `should handle None`() {
-            val expression = PythonNone
+            val expression = PythonNone()
             expression.toPythonCode() shouldBe "None"
         }
 

@@ -13,6 +13,13 @@ def _generate_boundary_annotations(api: API, annotations: AnnotationStore) -> No
     :param annotations: AnnotationStore, that holds all annotations
     """
     for _, parameter in api.parameters().items():
+
+        # Don't add boundary annotation to constant parameters
+        if parameter.id in set(
+            annotation.target for annotation in annotations.constants
+        ):
+            continue
+
         boundary_type = parameter.type.to_json()
         if "kind" in boundary_type and boundary_type["kind"] == "UnionType":
             union_type = boundary_type

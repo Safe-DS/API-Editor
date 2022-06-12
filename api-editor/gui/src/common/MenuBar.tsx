@@ -1,14 +1,7 @@
 import {
-    AlertDialog,
-    AlertDialogBody,
-    AlertDialogContent,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogOverlay,
     Box,
     Button,
     Flex,
-    Heading,
     HStack,
     Icon,
     Input,
@@ -21,16 +14,12 @@ import {
     MenuList,
     MenuOptionGroup,
     Spacer,
-    Text as ChakraText,
     useColorMode,
-    VStack,
 } from '@chakra-ui/react';
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { resetAnnotations, selectAnnotations } from '../features/annotations/annotationSlice';
-import { AnnotatedPythonPackageBuilder } from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
-import { PythonPackage } from '../features/packageData/model/PythonPackage';
+import { selectAnnotations } from '../features/annotations/annotationSlice';
 import { FilterHelpButton } from './FilterHelpButton';
 import {
     HeatMapMode,
@@ -42,64 +31,14 @@ import {
     toggleAPIImportDialog,
     toggleUsageImportDialog,
 } from '../features/ui/uiSlice';
+import { DeleteAllAnnotations } from './DeleteAllAnnotations';
+import { GenerateAdapters } from './GenerateAdapters';
 
 interface MenuBarProps {
-    pythonPackage: PythonPackage;
     displayInferErrors: (errors: string[]) => void;
 }
 
-const DeleteAllAnnotations = function () {
-    const dispatch = useAppDispatch();
-    const [isOpen, setIsOpen] = useState(false);
-    const cancelRef = useRef(null);
-
-    // Event handlers ----------------------------------------------------------
-
-    const handleConfirm = () => {
-        dispatch(resetAnnotations());
-        setIsOpen(false);
-    };
-    const handleCancel = () => setIsOpen(false);
-
-    // Render ------------------------------------------------------------------
-
-    return (
-        <>
-            <Button onClick={() => setIsOpen(true)}>Delete all annotations</Button>
-
-            <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={handleCancel}>
-                <AlertDialogOverlay>
-                    <AlertDialogContent>
-                        <AlertDialogHeader>
-                            <Heading>Delete all annotations</Heading>
-                        </AlertDialogHeader>
-
-                        <AlertDialogBody>
-                            <VStack alignItems="flexStart">
-                                <ChakraText>Are you sure? You can't undo this action afterwards.</ChakraText>
-                                <ChakraText>
-                                    Hint: Consider exporting your work first by clicking on the "Export" button in the
-                                    menu bar.
-                                </ChakraText>
-                            </VStack>
-                        </AlertDialogBody>
-
-                        <AlertDialogFooter>
-                            <Button ref={cancelRef} onClick={handleCancel}>
-                                Cancel
-                            </Button>
-                            <Button colorScheme="red" onClick={handleConfirm} ml={3}>
-                                Delete
-                            </Button>
-                        </AlertDialogFooter>
-                    </AlertDialogContent>
-                </AlertDialogOverlay>
-            </AlertDialog>
-        </>
-    );
-};
-
-export const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, displayInferErrors }) {
+export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors }) {
     const { colorMode, toggleColorMode } = useColorMode();
     const dispatch = useAppDispatch();
 
@@ -114,29 +53,6 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, displa
         a.href = URL.createObjectURL(file);
         a.download = 'annotations.json';
         a.click();
-    };
-
-    const infer = () => {
-        const annotatedPythonPackageBuilder = new AnnotatedPythonPackageBuilder(pythonPackage, annotationStore);
-        const annotatedPythonPackage = annotatedPythonPackageBuilder.generateAnnotatedPythonPackage();
-
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(annotatedPythonPackage),
-        };
-        fetch('/api-editor/infer', requestOptions).then(async (response) => {
-            if (!response.ok) {
-                const jsonResponse = await response.json();
-                displayInferErrors(jsonResponse);
-            } else {
-                const jsonBlob = await response.blob();
-                const a = document.createElement('a');
-                a.href = URL.createObjectURL(jsonBlob);
-                a.download = 'simpleml.zip';
-                a.click();
-            }
-        });
     };
 
     const colorModeArray: string[] = [];
@@ -186,7 +102,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ pythonPackage, displa
                     </Menu>
                 </Box>
 
-                <Button onClick={infer}>Generate adapters</Button>
+                <GenerateAdapters displayInferErrors={displayInferErrors} />
                 <DeleteAllAnnotations />
 
                 <Box>

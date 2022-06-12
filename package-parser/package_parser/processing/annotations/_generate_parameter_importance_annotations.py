@@ -144,9 +144,17 @@ def _get_default_type_and_value_for_stringified_value(
         return "none", None
     elif stringified_value == "True" or stringified_value == "False":
         return "boolean", stringified_value == "True"
-    elif stringified_value.isnumeric():
+    elif _is_float(stringified_value):
         return "number", float(stringified_value)
     elif stringified_value[0] == "'" and stringified_value[-1] == "'":
         return "string", stringified_value[1:-1]
     else:
         return None, None
+
+
+def _is_float(stringified_value: str) -> bool:
+    try:
+        float(stringified_value)
+        return True
+    except ValueError:
+        return False
