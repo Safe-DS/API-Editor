@@ -50,6 +50,15 @@
                         "type": "",
                         "description": "float in range [0, 1]"
                     }
+                },
+                {
+                    "id": "test/test/some_global_function/parameter_with_bound_but_constant",
+                    "name": "parameter_with_bound_but_constant",
+                    "qname": "test.some_global_function.parameter_with_bound_but_constant",
+                    "docstring": {
+                        "type": "",
+                        "description": "int in range (0, infinity)"
+                    }
                 }
             ]
         }
