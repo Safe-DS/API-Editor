@@ -7,7 +7,7 @@ from typing import TypeVar
 import astroid
 from astroid.builder import AstroidBuilder
 
-from package_parser.utils import ASTWalker, list_files, NonCachingAstBuilder, parse_python_code
+from package_parser.utils import ASTWalker, list_files, parse_python_code
 from ._ast_visitor import _UsageFinder
 from ...model.usages import UsageCountStore
 
@@ -68,7 +68,7 @@ def _find_usages_in_batch(
     package_name: str,
     python_files: list[str]
 ) -> UsageCountStore:
-    ast_builder = NonCachingAstBuilder()
+    ast_builder = AstroidBuilder()
     usage_finder = _UsageFinder(package_name)
     ast_walker = ASTWalker(usage_finder)
 
