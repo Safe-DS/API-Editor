@@ -24,11 +24,20 @@ def cli() -> None:
     if args.command == _API_COMMAND:
         _run_api_command(args.package, args.src, args.out)
     elif args.command == _USAGES_COMMAND:
-        _run_usages_command(args.package, args.client, args.tmp, args.out)
+        _run_usages_command(
+            args.package, args.client, args.out, args.processes, args.batchsize
+        )
     elif args.command == _ANNOTATIONS_COMMAND:
         _run_annotations(args.api, args.usages, args.out)
     elif args.command == _ALL_COMMAND:
-        _run_all_command(args)
+        _run_all_command(
+            args.package,
+            args.src,
+            args.client,
+            args.out,
+            args.processes,
+            args.batchsize,
+        )
 
 
 def _get_args() -> argparse.Namespace:
@@ -89,18 +98,25 @@ def _add_usages_subparser(subparsers: _SubParsersAction) -> None:
         required=True,
     )
     usages_parser.add_argument(
-        "-t",
-        "--tmp",
-        help="Directory where temporary files can be stored (to save progress in case the program crashes).",
-        type=Path,
-        required=True,
+        "--processes",
+        help="How many processes should be spawned during processing.",
+        type=int,
+        required=False,
+        default=4,
+    ),
+    usages_parser.add_argument(
+        "--batchsize",
+        help="How many files to process in one go. Higher values lead to higher memory usage but better performance.",
+        type=int,
+        required=False,
+        default=100,
     )
     usages_parser.add_argument(
         "-o", "--out", help="Output directory.", type=Path, required=True
     )
 
 
-def _add_annotations_subparser(subparsers):
+def _add_annotations_subparser(subparsers) -> None:
     generate_parser = subparsers.add_parser(
         _ANNOTATIONS_COMMAND, help="Generate Annotations automatically."
     )
@@ -153,4 +169,18 @@ def _add_all_subparser(subparsers: _SubParsersAction) -> None:
     )
     all_parser.add_argument(
         "-o", "--out", help="Output directory.", type=Path, required=True
+    )
+    all_parser.add_argument(
+        "--processes",
+        help="How many processes should be spawned during processing.",
+        type=int,
+        required=False,
+        default=4,
+    )
+    all_parser.add_argument(
+        "--batchsize",
+        help="How many files to process in one go. Higher values lead to higher memory usage but better performance.",
+        type=int,
+        required=False,
+        default=100,
     )

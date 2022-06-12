@@ -24,7 +24,7 @@ A tool to analyze client and API code written in Python.
     ```
 2. Analyze client code of this API:
     ```shell
-    parse-package usages -p sklearn -s "Kaggle Kernels" -t tmp -o out
+    parse-package usages -p sklearn -s "Kaggle Kernels" -o out
     ```
 3. Generate annotations for the API:
    ```shell
