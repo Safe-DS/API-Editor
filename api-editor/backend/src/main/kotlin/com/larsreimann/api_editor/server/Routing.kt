@@ -3,6 +3,8 @@ package com.larsreimann.api_editor.backend
 import com.larsreimann.api_editor.codegen.generateCode
 import com.larsreimann.api_editor.model.SerializablePythonPackage
 import com.larsreimann.api_editor.mutable_model.convertPackage
+import com.larsreimann.api_editor.transformation.processing_exceptions.ConflictingEnumException
+import com.larsreimann.api_editor.transformation.processing_exceptions.ConflictingGroupException
 import com.larsreimann.api_editor.transformation.transform
 import com.larsreimann.api_editor.validation.AnnotationValidator
 import io.ktor.http.ContentDisposition
@@ -93,7 +95,14 @@ fun doInfer(originalPythonPackage: SerializablePythonPackage): DoInferResult {
 
     // Process package
     val mutablePackage = convertPackage(originalPythonPackage)
-    mutablePackage.transform()
+
+    try {
+        mutablePackage.transform()
+    } catch (e: ConflictingEnumException) {
+        return DoInferResult.ValidationFailure(listOf(e.message!!))
+    } catch (e: ConflictingGroupException) {
+        return DoInferResult.ValidationFailure(listOf(e.message!!))
+    }
 
     // Build files
     val path = mutablePackage.generateCode()
