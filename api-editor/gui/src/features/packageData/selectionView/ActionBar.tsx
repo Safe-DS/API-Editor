@@ -16,7 +16,7 @@ interface ActionBarProps {
     usages: UsageCountStore;
 }
 
-export const ActionBar: React.FC<ActionBarProps> = function ({declaration, pythonPackage, pythonFilter, usages}) {
+export const ActionBar: React.FC<ActionBarProps> = function ({ declaration, pythonPackage, pythonFilter, usages }) {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
@@ -217,14 +217,14 @@ const doGetMatchedNodesAndParents = function (
     current: PythonDeclaration,
     isMatched: (declaration: PythonDeclaration) => boolean,
 ): DoGetMatchedNodesAndParentsResult {
-    const nodesToExpand: string[] = []
+    const nodesToExpand: string[] = [];
     let shouldExpandThisNode = false;
 
     for (const child of current.children()) {
-        const {
-            nodesToExpand: childrenNodesToExpand,
-            subtreeShouldBeExpanded
-        } = doGetMatchedNodesAndParents(child, isMatched);
+        const { nodesToExpand: childrenNodesToExpand, subtreeShouldBeExpanded } = doGetMatchedNodesAndParents(
+            child,
+            isMatched,
+        );
 
         nodesToExpand.push(...childrenNodesToExpand);
         shouldExpandThisNode ||= subtreeShouldBeExpanded;
@@ -236,6 +236,6 @@ const doGetMatchedNodesAndParents = function (
 
     return {
         nodesToExpand,
-        subtreeShouldBeExpanded: isMatched(current) || shouldExpandThisNode
+        subtreeShouldBeExpanded: isMatched(current) || shouldExpandThisNode,
     };
 };
