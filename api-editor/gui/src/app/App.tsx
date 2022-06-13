@@ -41,7 +41,11 @@ import {
     selectUI,
 } from '../features/ui/uiSlice';
 import { initializeUsages, persistUsages, selectUsages } from '../features/usages/usageSlice';
-import { initializePythonPackage, selectPythonPackage } from '../features/packageData/apiSlice';
+import {
+    initializePythonPackage,
+    selectFilteredPythonPackage,
+    selectPythonPackage,
+} from '../features/packageData/apiSlice';
 
 export const App: React.FC = function () {
     useIndexedDB();
@@ -49,7 +53,7 @@ export const App: React.FC = function () {
     const pythonPackage = useAppSelector(selectPythonPackage);
     const usages = useAppSelector(selectUsages);
     const pythonFilter = useAppSelector(selectFilter);
-    const filteredPythonPackage = pythonFilter.applyToPackage(pythonPackage, useAppSelector(selectAnnotations), usages);
+    const filteredPythonPackage = useAppSelector(selectFilteredPythonPackage);
 
     const [showInferErrorDialog, setShowInferErrorDialog] = useState(false);
     const [inferErrors, setInferErrors] = useState<string[]>([]);

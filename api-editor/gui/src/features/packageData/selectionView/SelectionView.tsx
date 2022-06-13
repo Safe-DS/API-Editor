@@ -1,4 +1,4 @@
-import { Box, Spacer, VStack } from '@chakra-ui/react';
+import { Box, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { useLocation } from 'react-router';
 import { PythonClass } from '../model/PythonClass';
@@ -27,8 +27,8 @@ export const SelectionView: React.FC = function () {
     }
 
     return (
-        <VStack h="100%">
-            <Box w="100%" flexGrow={1} overflowY="auto">
+        <VStack h="100%" spacing={0}>
+            <Box flexGrow={1} overflowY="auto">
                 <Box padding={4}>
                     {declaration instanceof PythonFunction && <FunctionView pythonFunction={declaration} />}
                     {declaration instanceof PythonClass && <ClassView pythonClass={declaration} />}
@@ -37,8 +37,6 @@ export const SelectionView: React.FC = function () {
                     <StatisticsView />
                 </Box>
             </Box>
-
-            <Spacer />
 
             <ActionBar
                 declaration={declaration}

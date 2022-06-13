@@ -168,3 +168,13 @@ const comparisonFunction = function (comparisonOperator: string): ((a: number, b
             return null;
     }
 };
+
+/**
+ * Returns whether the given token describes a valid filter. Note that the entire filter string contains multiple
+ * tokens, which are separated by commas.
+ *
+ * @param token The token to check.
+ */
+export const isValidFilterToken = function (token: string): boolean {
+    return Boolean(parsePotentiallyNegatedToken(token));
+};

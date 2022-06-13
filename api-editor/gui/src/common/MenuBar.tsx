@@ -4,7 +4,6 @@ import {
     Flex,
     HStack,
     Icon,
-    Input,
     Menu,
     MenuButton,
     MenuDivider,
@@ -23,9 +22,7 @@ import { selectAnnotations } from '../features/annotations/annotationSlice';
 import { FilterHelpButton } from './FilterHelpButton';
 import {
     HeatMapMode,
-    selectFilterString,
     selectHeatMapMode,
-    setFilterString,
     setHeatMapMode,
     toggleAnnotationImportDialog,
     toggleAPIImportDialog,
@@ -33,6 +30,7 @@ import {
 } from '../features/ui/uiSlice';
 import { DeleteAllAnnotations } from './DeleteAllAnnotations';
 import { GenerateAdapters } from './GenerateAdapters';
+import { FilterInput } from './FilterInput';
 
 interface MenuBarProps {
     displayInferErrors: (errors: string[]) => void;
@@ -161,14 +159,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
             <Spacer />
 
             <HStack>
-                <Input
-                    type="text"
-                    placeholder="Filter..."
-                    value={useAppSelector(selectFilterString)}
-                    onChange={(event) => dispatch(setFilterString(event.target.value))}
-                    spellCheck={false}
-                    minWidth="400px"
-                />
+                <FilterInput />
                 <FilterHelpButton />
             </HStack>
         </Flex>
