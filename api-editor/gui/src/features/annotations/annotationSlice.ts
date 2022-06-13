@@ -538,5 +538,5 @@ export const selectRemove =
         selectAnnotations(state).removes[target];
 export const selectDescription =
     (target: string) =>
-        (state: RootState): DescriptionAnnotation | undefined =>
-            selectAnnotations(state).descriptions[target];
+    (state: RootState): DescriptionAnnotation | undefined =>
+        selectAnnotations(state).descriptions[target];

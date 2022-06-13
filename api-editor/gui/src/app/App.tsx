@@ -104,7 +104,9 @@ export const App: React.FC = function () {
                     {currentUserAction.type === 'constant' && (
                         <ConstantForm target={userActionTarget || pythonPackage} />
                     )}
-                    {currentUserAction.type === 'description' && <DescriptionForm target={userActionTarget || pythonPackage} />}
+                    {currentUserAction.type === 'description' && (
+                        <DescriptionForm target={userActionTarget || pythonPackage} />
+                    )}
                     {currentUserAction.type === 'enum' && <EnumForm target={userActionTarget || pythonPackage} />}
                     {currentUserAction.type === 'group' && (
                         <GroupForm

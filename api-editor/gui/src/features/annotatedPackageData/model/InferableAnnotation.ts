@@ -168,4 +168,3 @@ export class InferableRemoveAnnotation extends InferableAnnotation {
         super(dataPathPrefix + 'RemoveAnnotation');
     }
 }
-

@@ -1,4 +1,4 @@
-import {FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Textarea} from '@chakra-ui/react';
+import { FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Textarea } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
@@ -75,9 +75,7 @@ export const DescriptionForm: React.FC<DescriptionFormProps> = function ({ targe
         >
             <FormControl isInvalid={Boolean(errors.newDescription)}>
                 <FormLabel>Update description:</FormLabel>
-                <Textarea
-                    {...register('newDescription')}
-                />
+                <Textarea {...register('newDescription')} />
                 <FormErrorMessage>
                     <FormErrorIcon /> {errors.newDescription?.message}
                 </FormErrorMessage>
