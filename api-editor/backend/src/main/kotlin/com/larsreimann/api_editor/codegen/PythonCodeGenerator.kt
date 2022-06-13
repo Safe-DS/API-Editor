@@ -375,12 +375,16 @@ fun todoComment(message: String) = buildString {
         return ""
     }
 
-    val lines = message.lines()
+    val lines = message.trim().lines()
     val firstLine = lines.first()
     val remainingLines = lines.drop(1)
 
-    appendLine("# TODO: $firstLine")
-    remainingLines.forEach {
-        appendIndented(it, indent = " ".repeat(8))
+    appendLine("# TODO: ${firstLine.trim()}")
+    remainingLines.forEachIndexed { index, line ->
+        val indentedLine = "#       $line"
+        append(indentedLine.trim())
+        if (index < remainingLines.size - 1) {
+            appendLine()
+        }
     }
 }
