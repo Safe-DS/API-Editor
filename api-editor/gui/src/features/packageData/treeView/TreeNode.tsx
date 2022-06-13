@@ -1,5 +1,5 @@
 import { HStack, Icon, Text as ChakraText } from '@chakra-ui/react';
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import { IconType } from 'react-icons/lib';
 import { useLocation } from 'react-router';
 import { useNavigate } from 'react-router-dom';
@@ -60,8 +60,11 @@ export const TreeNode: React.FC<TreeNodeProps> = function ({
 
     const fontWeight = filter.shouldKeepDeclaration(declaration, annotations, usages) ? 'bold' : undefined;
 
-    const handleClick = () => {
-        dispatch(toggleIsExpandedInTreeView(declaration.pathAsString()));
+    const handleClick = (event: MouseEvent) => {
+        if (!event.shiftKey) {
+            dispatch(toggleIsExpandedInTreeView(declaration.pathAsString()));
+        }
+
         navigate(`/${declaration.pathAsString()}`);
     };
 
