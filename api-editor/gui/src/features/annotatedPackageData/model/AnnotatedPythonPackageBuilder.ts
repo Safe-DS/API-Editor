@@ -26,6 +26,7 @@ import {
     InferableRenameAnnotation,
     InferableRequiredAnnotation,
     InferableDescriptionAnnotation,
+    InferableTodoAnnotation,
 } from './InferableAnnotation';
 
 export class AnnotatedPythonPackageBuilder {
@@ -247,6 +248,12 @@ export class AnnotatedPythonPackageBuilder {
                 const descriptionAnnotation = this.annotationStore.descriptions[target];
                 if (descriptionAnnotation) {
                     return new InferableDescriptionAnnotation(descriptionAnnotation);
+                }
+                break;
+            case 'Todo':
+                const todoAnnotation = this.annotationStore.todos[target];
+                if (todoAnnotation) {
+                    return new InferableTodoAnnotation(todoAnnotation);
                 }
                 break;
         }

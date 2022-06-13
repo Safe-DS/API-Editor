@@ -4,6 +4,7 @@ import { Optional } from '../../../common/util/types';
 export abstract class PythonDeclaration {
     abstract readonly name: string;
     abstract readonly description: string;
+    abstract readonly todo: string;
 
     abstract parent(): Optional<PythonDeclaration>;
 

@@ -42,6 +42,9 @@ export interface AnnotationStore {
     descriptions: {
         [target: string]: DescriptionAnnotation;
     };
+    todos: {
+        [target: string]: TodoAnnotation;
+    };
 }
 
 export interface AttributeAnnotation {
@@ -271,6 +274,18 @@ export interface DescriptionAnnotation {
     readonly newDescription: string;
 }
 
+export interface TodoAnnotation {
+    /**
+     * ID of the annotated Python declaration.
+     */
+    readonly target: string;
+
+    /**
+     * A Todo for the declaration.
+     */
+    readonly newTodo: string;
+}
+
 // Initial state -------------------------------------------------------------------------------------------------------
 
 export const initialState: AnnotationStore = {
@@ -287,6 +302,7 @@ export const initialState: AnnotationStore = {
     requireds: {},
     removes: {},
     descriptions: {},
+    todos: {},
 };
 
 // Thunks --------------------------------------------------------------------------------------------------------------
@@ -447,6 +463,12 @@ const annotationsSlice = createSlice({
         removeDescription(state, action: PayloadAction<string>) {
             delete state.descriptions[action.payload];
         },
+        upsertTodo(state, action: PayloadAction<TodoAnnotation>) {
+            state.todos[action.payload.target] = action.payload;
+        },
+        removeTodo(state, action: PayloadAction<string>) {
+            delete state.todos[action.payload];
+        },
     },
     extraReducers(builder) {
         builder.addCase(initializeAnnotations.fulfilled, (state, action) => action.payload);
@@ -482,6 +504,8 @@ export const {
     removeRequired,
     upsertDescription,
     removeDescription,
+    upsertTodo,
+    removeTodo,
     addRemove,
     removeRemove,
 } = actions;
@@ -540,3 +564,7 @@ export const selectDescription =
     (target: string) =>
         (state: RootState): DescriptionAnnotation | undefined =>
             selectAnnotations(state).descriptions[target];
+export const selectTodo =
+    (target: string) =>
+        (state: RootState): TodoAnnotation | undefined =>
+            selectAnnotations(state).todos[target];

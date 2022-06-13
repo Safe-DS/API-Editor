@@ -14,6 +14,7 @@ import {
     showOptionalAnnotationForm,
     showRenameAnnotationForm,
     showDescriptionAnnotationForm,
+    showTodoAnnotationForm,
 } from '../ui/uiSlice';
 
 interface AnnotationDropdownProps {
@@ -30,6 +31,7 @@ interface AnnotationDropdownProps {
     showRename?: boolean;
     showRequired?: boolean;
     showRemove?: boolean;
+    showTodo?: boolean;
     target: string;
 }
 
@@ -47,6 +49,7 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
     showRename = false,
     showRequired = false,
     showRemove = false,
+    showTodo = false,
     target,
 }) {
     const dispatch = useAppDispatch();
@@ -110,6 +113,9 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                         <MenuItem onClick={() => dispatch(showRenameAnnotationForm(target))}>@rename</MenuItem>
                     )}
                     {showRequired && <MenuItem onClick={() => dispatch(addRequired({ target }))}>@required</MenuItem>}
+                    {showTodo && (
+                        <MenuItem onClick={() => dispatch(showTodoAnnotationForm(target))}>@todo</MenuItem>
+                    )}
                 </MenuList>
             </Menu>
         </Box>

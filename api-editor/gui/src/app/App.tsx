@@ -23,6 +23,7 @@ import { GroupForm } from '../features/annotations/forms/GroupForm';
 import { MoveForm } from '../features/annotations/forms/MoveForm';
 import { OptionalForm } from '../features/annotations/forms/OptionalForm';
 import { RenameForm } from '../features/annotations/forms/RenameForm';
+import { TodoForm } from '../features/annotations/forms/TodoForm';
 import { PackageDataImportDialog } from '../features/packageData/PackageDataImportDialog';
 import { SelectionView } from '../features/packageData/selectionView/SelectionView';
 import { TreeView } from '../features/packageData/treeView/TreeView';
@@ -124,6 +125,8 @@ export const App: React.FC = function () {
                         <OptionalForm target={userActionTarget || pythonPackage} />
                     )}
                     {currentUserAction.type === 'rename' && <RenameForm target={userActionTarget || pythonPackage} />}
+                    {currentUserAction.type === 'todo' && <TodoForm target={userActionTarget || pythonPackage} />}
+
                 </GridItem>
                 <GridItem gridArea="rightPane" overflow="auto">
                     <SelectionView pythonPackage={pythonPackage} pythonFilter={pythonFilter} usages={usages} />

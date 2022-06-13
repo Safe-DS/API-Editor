@@ -61,7 +61,8 @@ export class AnnotationFilter extends AbstractPythonFilter {
                     id in annotations.pures ||
                     id in annotations.removes ||
                     id in annotations.renamings ||
-                    id in annotations.requireds
+                    id in annotations.requireds ||
+                    id in annotations.todos
                 );
             case AnnotationType.Attribute:
                 return id in annotations.attributes;
@@ -89,6 +90,8 @@ export class AnnotationFilter extends AbstractPythonFilter {
                 return id in annotations.renamings;
             case AnnotationType.Required:
                 return id in annotations.requireds;
+            case AnnotationType.Todo:
+                return id in annotations.todos;
             default:
                 return true;
         }
@@ -110,4 +113,5 @@ export enum AnnotationType {
     Remove,
     Rename,
     Required,
+    Todo,
 }

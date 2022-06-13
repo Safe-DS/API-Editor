@@ -20,7 +20,7 @@ export const ClassView: React.FC<ClassViewProps> = function ({ pythonClass }) {
                     <Heading as="h3" size="lg">
                         {pythonClass.name} {!pythonClass.isPublic && '(private)'}
                     </Heading>
-                    {pythonClass.isPublic && <AnnotationDropdown target={id} showMove showRemove showRename showDescription />}
+                    {pythonClass.isPublic && <AnnotationDropdown target={id} showMove showRemove showRename showDescription showTodo />}
                 </HStack>
 
                 <AnnotationView target={id} />

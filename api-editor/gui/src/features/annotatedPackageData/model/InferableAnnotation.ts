@@ -13,6 +13,7 @@ import {
     MoveAnnotation,
     OptionalAnnotation,
     RenameAnnotation,
+    TodoAnnotation,
 } from '../../annotations/annotationSlice';
 
 const dataPathPrefix = 'com.larsreimann.api_editor.model.';
@@ -99,6 +100,15 @@ export class InferableDescriptionAnnotation extends InferableAnnotation {
     constructor(descriptionAnnotation: DescriptionAnnotation) {
         super(dataPathPrefix + 'DescriptionAnnotation');
         this.newDescription = descriptionAnnotation.newDescription;
+    }
+}
+
+export class InferableTodoAnnotation extends InferableAnnotation {
+    readonly newTodo: string;
+
+    constructor(todoAnnotation: TodoAnnotation) {
+        super(dataPathPrefix + 'TodoAnnotation');
+        this.newTodo = todoAnnotation.newTodo;
     }
 }
 
