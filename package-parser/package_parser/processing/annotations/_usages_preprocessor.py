@@ -17,20 +17,15 @@ def _add_unused_api_elements(usages: UsageCountStore, api: API) -> None:
     :param api: Description of the API
     """
 
-    # Public classes
     for class_id in api.classes:
-        if api.is_public_class(class_id):
-            usages.add_class_usages(class_id, 0)
+        usages.add_class_usages(class_id, 0)
 
-    # Public functions
     for function in api.functions.values():
-        if api.is_public_function(function.id):
-            usages.add_function_usages(function.id, 0)
+        usages.add_function_usages(function.id, 0)
 
-            # "Public" parameters
-            for parameter in function.parameters:
-                usages.init_value(parameter.id)
-                usages.add_parameter_usages(parameter.id, 0)
+        for parameter in function.parameters:
+            usages.add_parameter_usages(parameter.id, 0)
+            usages.init_value(parameter.id)
 
 
 def _add_implicit_usages_of_default_value(usages: UsageCountStore, api: API) -> None:
