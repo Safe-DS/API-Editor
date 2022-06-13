@@ -48,6 +48,8 @@ import {
     selectFilteredPythonPackage,
     selectPythonPackage,
 } from '../features/packageData/apiSlice';
+import { PythonClass } from '../features/packageData/model/PythonClass';
+import { PythonParameter } from '../features/packageData/model/PythonParameter';
 
 export const App: React.FC = function () {
     useIndexedDB();
@@ -104,9 +106,12 @@ export const App: React.FC = function () {
                     {currentUserAction.type === 'constant' && (
                         <ConstantForm target={userActionTarget || pythonPackage} />
                     )}
-                    {currentUserAction.type === 'description' && (
-                        <DescriptionForm target={userActionTarget || pythonPackage} />
-                    )}
+                    {currentUserAction.type === 'description' &&
+                        (userActionTarget instanceof PythonClass ||
+                            userActionTarget instanceof PythonFunction ||
+                            userActionTarget instanceof PythonParameter) && (
+                            <DescriptionForm target={userActionTarget} />
+                        )}
                     {currentUserAction.type === 'enum' && <EnumForm target={userActionTarget || pythonPackage} />}
                     {currentUserAction.type === 'group' && (
                         <GroupForm

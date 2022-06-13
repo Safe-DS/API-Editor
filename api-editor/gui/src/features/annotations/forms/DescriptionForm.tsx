@@ -6,9 +6,12 @@ import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
 import { selectDescription, upsertDescription } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
 import { hideAnnotationForm } from '../../ui/uiSlice';
+import {PythonClass} from "../../packageData/model/PythonClass";
+import {PythonFunction} from "../../packageData/model/PythonFunction";
+import {PythonParameter} from "../../packageData/model/PythonParameter";
 
 interface DescriptionFormProps {
-    readonly target: PythonDeclaration;
+    readonly target: PythonClass | PythonFunction | PythonParameter;
 }
 
 interface DescriptionFormState {
