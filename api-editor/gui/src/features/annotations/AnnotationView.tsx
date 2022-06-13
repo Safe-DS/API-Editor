@@ -123,7 +123,6 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
             {descriptionAnnotation && (
                 <Annotation
                     type="description"
-                    name={descriptionAnnotation.newDescription}
                     onEdit={() => dispatch(showDescriptionAnnotationForm(target))}
                     onDelete={() => dispatch(removeDescription(target))}
                 />
