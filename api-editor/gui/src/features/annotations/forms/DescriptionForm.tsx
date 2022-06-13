@@ -1,8 +1,7 @@
-import { FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react';
+import {FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Textarea} from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { pythonIdentifierPattern } from '../../../common/validation';
 import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
 import { selectDescription, upsertDescription } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
@@ -46,7 +45,7 @@ export const DescriptionForm: React.FC<DescriptionFormProps> = function ({ targe
 
     useEffect(() => {
         reset({
-            newDescription: prevNewDescription || oldDescription,
+            newDescription: prevNewDescription ?? oldDescription,
         });
     }, [reset, prevNewDescription, oldDescription]);
 
@@ -75,12 +74,9 @@ export const DescriptionForm: React.FC<DescriptionFormProps> = function ({ targe
             onCancel={onCancel}
         >
             <FormControl isInvalid={Boolean(errors.newDescription)}>
-                <FormLabel>New description for &quot;{oldDescription}&quot;:</FormLabel>
-                <Input
-                    {...register('newDescription', {
-                        required: 'This is required.',
-                        pattern: pythonIdentifierPattern,
-                    })}
+                <FormLabel>Update description:</FormLabel>
+                <Textarea
+                    {...register('newDescription')}
                 />
                 <FormErrorMessage>
                     <FormErrorIcon /> {errors.newDescription?.message}

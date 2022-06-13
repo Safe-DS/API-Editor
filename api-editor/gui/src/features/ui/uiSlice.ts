@@ -28,7 +28,8 @@ type UserAction =
     | GroupUserAction
     | EnumUserAction
     | RenameUserAction
-    | OptionalUserAction;
+    | OptionalUserAction
+    | DescriptionUserAction;
 
 const NoUserAction = {
     type: 'none',
@@ -74,6 +75,11 @@ interface OptionalUserAction {
 
 interface RenameUserAction {
     readonly type: 'rename';
+    readonly target: string;
+}
+
+interface DescriptionUserAction {
+    readonly type: 'description';
     readonly target: string;
 }
 

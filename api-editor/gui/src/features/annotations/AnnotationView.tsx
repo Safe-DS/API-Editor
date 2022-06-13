@@ -11,6 +11,7 @@ import {
     removeBoundary,
     removeCalledAfter,
     removeConstant,
+    removeDescription,
     removeEnum,
     removeGroup,
     removeMove,
@@ -19,11 +20,11 @@ import {
     removeRenaming,
     removeRequired,
     removeRemove,
-    removeDescription,
     selectAttribute,
     selectBoundary,
     selectCalledAfters,
     selectConstant,
+    selectDescription,
     selectEnum,
     selectGroups,
     selectMove,
@@ -32,18 +33,17 @@ import {
     selectRenaming,
     selectRequired,
     selectRemove,
-    selectDescription,
 } from './annotationSlice';
 import {
     showAttributeAnnotationForm,
     showBoundaryAnnotationForm,
     showConstantAnnotationForm,
+    showDescriptionAnnotationForm,
     showEnumAnnotationForm,
     showGroupAnnotationForm,
     showMoveAnnotationForm,
     showOptionalAnnotationForm,
     showRenameAnnotationForm,
-    showDescriptionAnnotationForm,
 } from '../ui/uiSlice';
 
 interface AnnotationViewProps {
@@ -57,6 +57,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
     const boundaryAnnotation = useAppSelector(selectBoundary(target));
     const calledAfterAnnotation = useAppSelector(selectCalledAfters(target));
     const constantAnnotation = useAppSelector(selectConstant(target));
+    const descriptionAnnotation = useAppSelector(selectDescription(target));
     const enumAnnotation = useAppSelector(selectEnum(target));
     const groupAnnotations = useAppSelector(selectGroups(target));
     const moveAnnotation = useAppSelector(selectMove(target));
@@ -65,13 +66,13 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
     const removeAnnotation = useAppSelector(selectRemove(target));
     const renameAnnotation = useAppSelector(selectRenaming(target));
     const requiredAnnotation = useAppSelector(selectRequired(target));
-    const descriptionAnnotation = useAppSelector(selectDescription(target));
 
     if (
         !attributeAnnotation &&
         !boundaryAnnotation &&
         !calledAfterAnnotation &&
         !constantAnnotation &&
+        !descriptionAnnotation &&
         !enumAnnotation &&
         !groupAnnotations &&
         !moveAnnotation &&
@@ -79,7 +80,6 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
         !pureAnnotation &&
         !removeAnnotation &&
         !renameAnnotation &&
-        !descriptionAnnotation &&
         !requiredAnnotation
     ) {
         // eslint-disable-next-line react/jsx-no-useless-fragment
@@ -118,6 +118,14 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     name={valueToString(constantAnnotation.defaultValue, constantAnnotation.defaultType)}
                     onEdit={() => dispatch(showConstantAnnotationForm(target))}
                     onDelete={() => dispatch(removeConstant(target))}
+                />
+            )}
+            {descriptionAnnotation && (
+                <Annotation
+                    type="description"
+                    name={descriptionAnnotation.newDescription}
+                    onEdit={() => dispatch(showDescriptionAnnotationForm(target))}
+                    onDelete={() => dispatch(removeDescription(target))}
                 />
             )}
             {enumAnnotation && (
@@ -164,14 +172,6 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                 />
             )}
             {requiredAnnotation && <Annotation type="required" onDelete={() => dispatch(removeRequired(target))} />}
-            {descriptionAnnotation && (
-                <Annotation
-                    type="description"
-                    name={descriptionAnnotation.newDescription}
-                    onEdit={() => dispatch(showDescriptionAnnotationForm(target))}
-                    onDelete={() => dispatch(removeDescription(target))}
-                />
-            )}
         </Stack>
     );
 };

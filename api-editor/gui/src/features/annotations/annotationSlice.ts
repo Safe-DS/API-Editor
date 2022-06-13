@@ -266,7 +266,7 @@ export interface DescriptionAnnotation {
     readonly target: string;
 
     /**
-     * New name for the declaration.
+     * Description for the declaration.
      */
     readonly newDescription: string;
 }

@@ -56,6 +56,11 @@ fun AnnotationDropdown(
                     Text(labels.getString("AnnotationDropdown.Option.Constant"))
                 }
             }
+            if (showDescription) {
+                DropdownMenuItem(onClick = {}) {
+                    Text(labels.getString("AnnotationDropdown.Option.Description"))
+                }
+            }
             if (showEnum) {
                 DropdownMenuItem(onClick = {}) {
                     Text(labels.getString("AnnotationDropdown.Option.Enum"))

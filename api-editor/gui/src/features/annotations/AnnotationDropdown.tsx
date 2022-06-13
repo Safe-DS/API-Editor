@@ -21,6 +21,7 @@ interface AnnotationDropdownProps {
     showBoundary?: boolean;
     showCalledAfter?: boolean;
     showConstant?: boolean;
+    showDescription?: boolean;
     showEnum?: boolean;
     showGroup?: boolean;
     showMove?: boolean;
@@ -29,7 +30,6 @@ interface AnnotationDropdownProps {
     showRename?: boolean;
     showRequired?: boolean;
     showRemove?: boolean;
-    showDescription?: boolean;
     target: string;
 }
 
@@ -38,6 +38,7 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
     showBoundary = false,
     showCalledAfter = false,
     showConstant = false,
+    showDescription = false,
     showGroup = false,
     showEnum = false,
     showMove = false,
@@ -46,7 +47,6 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
     showRename = false,
     showRequired = false,
     showRemove = false,
-    showDescription = false,
     target,
 }) {
     const dispatch = useAppDispatch();
@@ -82,6 +82,9 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                     {showConstant && (
                         <MenuItem onClick={() => dispatch(showConstantAnnotationForm(target))}>@constant</MenuItem>
                     )}
+                    {showDescription && (
+                        <MenuItem onClick={() => dispatch(showDescriptionAnnotationForm(target))}>@description</MenuItem>
+                    )}
                     {showEnum && <MenuItem onClick={() => dispatch(showEnumAnnotationForm(target))}>@enum</MenuItem>}
                     {showGroup && (
                         <MenuItem
@@ -107,9 +110,6 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                         <MenuItem onClick={() => dispatch(showRenameAnnotationForm(target))}>@rename</MenuItem>
                     )}
                     {showRequired && <MenuItem onClick={() => dispatch(addRequired({ target }))}>@required</MenuItem>}
-                    {showRename && (
-                        <MenuItem onClick={() => dispatch(showDescriptionAnnotationForm(target))}>@description</MenuItem>
-                    )}
                 </MenuList>
             </Menu>
         </Box>
