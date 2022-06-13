@@ -23,7 +23,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration, pyth
     const annotations = useAppSelector(selectAnnotations);
 
     return (
-        <HStack borderTop={1} layerStyle="subtleBorder" padding="0.5em 1em" w="100%">
+        <HStack borderTop={1} layerStyle="subtleBorder" padding="0.5em 1em" marginTop={0} w="100%">
             <Button
                 onClick={() => {
                     let navStr = getPreviousElementPath(declaration, pythonFilter, annotations, usages);
