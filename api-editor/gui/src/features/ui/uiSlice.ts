@@ -3,7 +3,7 @@ import * as idb from 'idb-keyval';
 import { RootState } from '../../app/store';
 import { CalledAfterTarget, GroupTarget } from '../annotations/annotationSlice';
 import { AbstractPythonFilter } from '../packageData/model/filters/AbstractPythonFilter';
-import {createFilterFromString, isValidFilterToken} from '../packageData/model/filters/filterFactory';
+import { createFilterFromString, isValidFilterToken } from '../packageData/model/filters/filterFactory';
 
 export interface UIState {
     showAnnotationImportDialog: boolean;
@@ -293,12 +293,12 @@ export const selectFilterString = (state: RootState): string => selectUI(state).
 /**
  * Keep only the valid parts of the filter string to improve caching of selectFilter.
  */
-const selectLongestValidFilterString = createSelector(
-    [selectFilterString],
-    (filterString: string): string => {
-        return filterString.split(" ").filter(isValidFilterToken).join(" ");
+const selectLongestValidFilterString = createSelector([selectFilterString], (filterString: string): string => {
+    return filterString.split(' ').filter(isValidFilterToken).join(' ');
+});
+export const selectFilter = createSelector(
+    [selectLongestValidFilterString],
+    (filterString: string): AbstractPythonFilter => {
+        return createFilterFromString(filterString);
     },
 );
-export const selectFilter = createSelector([selectLongestValidFilterString], (filterString: string): AbstractPythonFilter => {
-    return createFilterFromString(filterString);
-});

@@ -45,7 +45,7 @@ import { initializeUsages, persistUsages, selectUsages } from '../features/usage
 import {
     initializePythonPackage,
     selectFilteredPythonPackage,
-    selectPythonPackage
+    selectPythonPackage,
 } from '../features/packageData/apiSlice';
 
 export const App: React.FC = function () {

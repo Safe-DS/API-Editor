@@ -177,4 +177,4 @@ const comparisonFunction = function (comparisonOperator: string): ((a: number, b
  */
 export const isValidFilterToken = function (token: string): boolean {
     return Boolean(parsePotentiallyNegatedToken(token));
-}
+};
