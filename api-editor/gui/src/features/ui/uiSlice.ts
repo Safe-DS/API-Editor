@@ -30,7 +30,6 @@ type UserAction =
     | EnumUserAction
     | RenameUserAction
     | OptionalUserAction
-    | DescriptionUserAction
     | TodoUserAction;
 
 const NoUserAction = {
@@ -229,12 +228,6 @@ const uiSlice = createSlice({
                 target: action.payload,
             };
         },
-        showDescriptionAnnotationForm(state, action: PayloadAction<string>) {
-            state.currentUserAction = {
-                type: 'description',
-                target: action.payload,
-            };
-        },
         showTodoAnnotationForm(state, action: PayloadAction<string>) {
             state.currentUserAction = {
                 type: 'todo',
@@ -306,7 +299,6 @@ export const {
     showMoveAnnotationForm,
     showOptionalAnnotationForm,
     showRenameAnnotationForm,
-    showDescriptionAnnotationForm,
     showTodoAnnotationForm,
     hideAnnotationForm,
 

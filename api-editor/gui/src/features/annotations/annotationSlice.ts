@@ -42,9 +42,6 @@ export interface AnnotationStore {
     removes: {
         [target: string]: RemoveAnnotation;
     };
-    descriptions: {
-        [target: string]: DescriptionAnnotation;
-    };
     todos: {
         [target: string]: TodoAnnotation;
     };
@@ -277,18 +274,6 @@ export interface RemoveAnnotation {
     readonly target: string;
 }
 
-export interface DescriptionAnnotation {
-    /**
-     * ID of the annotated Python declaration.
-     */
-    readonly target: string;
-
-    /**
-     * Description for the declaration.
-     */
-    readonly newDescription: string;
-}
-
 export interface TodoAnnotation {
     /**
      * ID of the annotated Python declaration.
@@ -317,7 +302,6 @@ export const initialState: AnnotationStore = {
     renamings: {},
     requireds: {},
     removes: {},
-    descriptions: {},
     todos: {},
 };
 
@@ -479,12 +463,6 @@ const annotationsSlice = createSlice({
         removeRemove(state, action: PayloadAction<string>) {
             delete state.removes[action.payload];
         },
-        upsertDescription(state, action: PayloadAction<DescriptionAnnotation>) {
-            state.descriptions[action.payload.target] = action.payload;
-        },
-        removeDescription(state, action: PayloadAction<string>) {
-            delete state.descriptions[action.payload];
-        },
         upsertTodo(state, action: PayloadAction<TodoAnnotation>) {
             state.todos[action.payload.target] = action.payload;
         },
@@ -526,8 +504,6 @@ export const {
     removeRenaming,
     addRequired,
     removeRequired,
-    upsertDescription,
-    removeDescription,
     upsertTodo,
     removeTodo,
     addRemove,
@@ -588,10 +564,6 @@ export const selectRemove =
     (target: string) =>
     (state: RootState): RemoveAnnotation | undefined =>
         selectAnnotations(state).removes[target];
-export const selectDescription =
-    (target: string) =>
-        (state: RootState): DescriptionAnnotation | undefined =>
-            selectAnnotations(state).descriptions[target];
 export const selectTodo =
     (target: string) =>
         (state: RootState): TodoAnnotation | undefined =>
