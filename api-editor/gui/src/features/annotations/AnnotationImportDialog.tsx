@@ -27,6 +27,7 @@ export const AnnotationImportDialog: React.FC = function () {
         boundaries: {},
         constants: {},
         calledAfters: {},
+        descriptions: {},
         enums: {},
         groups: {},
         moves: {},
@@ -35,6 +36,7 @@ export const AnnotationImportDialog: React.FC = function () {
         renamings: {},
         requireds: {},
         removes: {},
+        todos: {},
     });
     const dispatch = useAppDispatch();
 

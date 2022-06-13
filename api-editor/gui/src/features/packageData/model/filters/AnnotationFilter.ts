@@ -53,6 +53,7 @@ export class AnnotationFilter extends AbstractPythonFilter {
                     id in annotations.boundaries ||
                     id in annotations.calledAfters ||
                     id in annotations.constants ||
+                    id in annotations.descriptions ||
                     id in annotations.enums ||
                     id in annotations.groups ||
                     id in annotations.moves ||
@@ -60,7 +61,8 @@ export class AnnotationFilter extends AbstractPythonFilter {
                     id in annotations.pures ||
                     id in annotations.removes ||
                     id in annotations.renamings ||
-                    id in annotations.requireds
+                    id in annotations.requireds ||
+                    id in annotations.todos
                 );
             case AnnotationType.Attribute:
                 return id in annotations.attributes;
@@ -70,6 +72,8 @@ export class AnnotationFilter extends AbstractPythonFilter {
                 return id in annotations.calledAfters;
             case AnnotationType.Constant:
                 return id in annotations.constants;
+            case AnnotationType.Description:
+                return id in annotations.descriptions;
             case AnnotationType.Enum:
                 return id in annotations.enums;
             case AnnotationType.Group:
@@ -86,6 +90,8 @@ export class AnnotationFilter extends AbstractPythonFilter {
                 return id in annotations.renamings;
             case AnnotationType.Required:
                 return id in annotations.requireds;
+            case AnnotationType.Todo:
+                return id in annotations.todos;
             default:
                 return true;
         }
@@ -98,6 +104,7 @@ export enum AnnotationType {
     Boundary,
     CalledAfter,
     Constant,
+    Description,
     Enum,
     Group,
     Move,
@@ -106,4 +113,5 @@ export enum AnnotationType {
     Remove,
     Rename,
     Required,
+    Todo,
 }

@@ -99,6 +99,8 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
             return new AnnotationFilter(AnnotationType.CalledAfter);
         case 'annotation:@constant':
             return new AnnotationFilter(AnnotationType.Constant);
+        case 'annotation:@description':
+            return new AnnotationFilter(AnnotationType.Description);
         case 'annotation:@enum':
             return new AnnotationFilter(AnnotationType.Enum);
         case 'annotation:@group':
@@ -115,6 +117,8 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
             return new AnnotationFilter(AnnotationType.Rename);
         case 'annotation:@required':
             return new AnnotationFilter(AnnotationType.Required);
+        case 'annotation:@todo':
+            return new AnnotationFilter(AnnotationType.Todo);
     }
 
     // Name

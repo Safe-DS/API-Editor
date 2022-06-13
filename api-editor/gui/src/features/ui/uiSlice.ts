@@ -25,10 +25,12 @@ type UserAction =
     | BoundaryUserAction
     | CalledAfterUserAction
     | ConstantUserAction
+    | DescriptionUserAction
     | GroupUserAction
     | EnumUserAction
     | RenameUserAction
-    | OptionalUserAction;
+    | OptionalUserAction
+    | TodoUserAction;
 
 const NoUserAction = {
     type: 'none',
@@ -56,6 +58,11 @@ interface ConstantUserAction {
     readonly target: string;
 }
 
+interface DescriptionUserAction {
+    readonly type: 'description';
+    readonly target: string;
+}
+
 interface EnumUserAction {
     readonly type: 'enum';
     readonly target: string;
@@ -74,6 +81,16 @@ interface OptionalUserAction {
 
 interface RenameUserAction {
     readonly type: 'rename';
+    readonly target: string;
+}
+
+interface DescriptionUserAction {
+    readonly type: 'description';
+    readonly target: string;
+}
+
+interface TodoUserAction {
+    readonly type: 'todo';
     readonly target: string;
 }
 
@@ -174,6 +191,12 @@ const uiSlice = createSlice({
                 target: action.payload,
             };
         },
+        showDescriptionAnnotationForm(state, action: PayloadAction<string>) {
+            state.currentUserAction = {
+                type: 'description',
+                target: action.payload,
+            };
+        },
         showGroupAnnotationForm(state, action: PayloadAction<GroupTarget>) {
             state.currentUserAction = {
                 type: 'group',
@@ -205,6 +228,12 @@ const uiSlice = createSlice({
                 target: action.payload,
             };
         },
+        showTodoAnnotationForm(state, action: PayloadAction<string>) {
+            state.currentUserAction = {
+                type: 'todo',
+                target: action.payload,
+            };
+        },
         hideAnnotationForm(state) {
             state.currentUserAction = NoUserAction;
         },
@@ -226,6 +255,13 @@ const uiSlice = createSlice({
             const all = action.payload;
             for (const item of all) {
                 delete state.expandedInTreeView[item];
+            }
+        },
+        setExactlyExpandedInTreeView(state, action: PayloadAction<string[]>) {
+            const all = action.payload;
+            state.expandedInTreeView = {};
+            for (const item of all) {
+                state.expandedInTreeView[item] = true;
             }
         },
         setTreeViewScrollOffset(state, action: PayloadAction<number>) {
@@ -257,16 +293,19 @@ export const {
     showBoundaryAnnotationForm,
     showCalledAfterAnnotationForm,
     showConstantAnnotationForm,
+    showDescriptionAnnotationForm,
     showEnumAnnotationForm,
     showGroupAnnotationForm,
     showMoveAnnotationForm,
     showOptionalAnnotationForm,
     showRenameAnnotationForm,
+    showTodoAnnotationForm,
     hideAnnotationForm,
 
     toggleIsExpandedInTreeView,
     setAllExpandedInTreeView,
     setAllCollapsedInTreeView,
+    setExactlyExpandedInTreeView,
     setTreeViewScrollOffset,
     setHeatMapMode,
 

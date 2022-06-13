@@ -62,6 +62,7 @@ class PythonClass(
     methods: List<PythonFunction> = emptyList(),
     var isPublic: Boolean = true,
     var description: String = "",
+    var todo: String = "",
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
     var originalClass: OriginalPythonClass? = null
 ) : PythonDeclaration() {
@@ -81,7 +82,8 @@ class PythonClass(
 
 class PythonConstructor(
     parameters: List<PythonParameter> = emptyList(),
-    val callToOriginalAPI: PythonCall? = null
+    val callToOriginalAPI: PythonCall? = null,
+    var todo: String = ""
 ) : PythonAstNode() {
 
     val parameters = MutableContainmentList(parameters)
@@ -126,6 +128,7 @@ class PythonFunction(
     results: List<PythonResult> = emptyList(),
     var isPublic: Boolean = true,
     var description: String = "",
+    var todo: String = "",
     var isPure: Boolean = false,
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
     var callToOriginalAPI: PythonCall? = null

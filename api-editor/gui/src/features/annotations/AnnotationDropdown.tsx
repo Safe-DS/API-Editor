@@ -13,6 +13,8 @@ import {
     showMoveAnnotationForm,
     showOptionalAnnotationForm,
     showRenameAnnotationForm,
+    showDescriptionAnnotationForm,
+    showTodoAnnotationForm,
 } from '../ui/uiSlice';
 
 interface AnnotationDropdownProps {
@@ -20,6 +22,7 @@ interface AnnotationDropdownProps {
     showBoundary?: boolean;
     showCalledAfter?: boolean;
     showConstant?: boolean;
+    showDescription?: boolean;
     showEnum?: boolean;
     showGroup?: boolean;
     showMove?: boolean;
@@ -28,6 +31,7 @@ interface AnnotationDropdownProps {
     showRename?: boolean;
     showRequired?: boolean;
     showRemove?: boolean;
+    showTodo?: boolean;
     target: string;
 }
 
@@ -36,6 +40,7 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
     showBoundary = false,
     showCalledAfter = false,
     showConstant = false,
+    showDescription = false,
     showGroup = false,
     showEnum = false,
     showMove = false,
@@ -44,6 +49,7 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
     showRename = false,
     showRequired = false,
     showRemove = false,
+    showTodo = false,
     target,
 }) {
     const dispatch = useAppDispatch();
@@ -79,6 +85,11 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                     {showConstant && (
                         <MenuItem onClick={() => dispatch(showConstantAnnotationForm(target))}>@constant</MenuItem>
                     )}
+                    {showDescription && (
+                        <MenuItem onClick={() => dispatch(showDescriptionAnnotationForm(target))}>
+                            @description
+                        </MenuItem>
+                    )}
                     {showEnum && <MenuItem onClick={() => dispatch(showEnumAnnotationForm(target))}>@enum</MenuItem>}
                     {showGroup && (
                         <MenuItem
@@ -104,6 +115,7 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                         <MenuItem onClick={() => dispatch(showRenameAnnotationForm(target))}>@rename</MenuItem>
                     )}
                     {showRequired && <MenuItem onClick={() => dispatch(addRequired({ target }))}>@required</MenuItem>}
+                    {showTodo && <MenuItem onClick={() => dispatch(showTodoAnnotationForm(target))}>@todo</MenuItem>}
                 </MenuList>
             </Menu>
         </Box>

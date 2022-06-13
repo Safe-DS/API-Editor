@@ -15,6 +15,9 @@ export interface AnnotationStore {
     constants: {
         [target: string]: ConstantAnnotation;
     };
+    descriptions: {
+        [target: string]: DescriptionAnnotation;
+    };
     enums: {
         [target: string]: EnumAnnotation;
     };
@@ -38,6 +41,9 @@ export interface AnnotationStore {
     };
     removes: {
         [target: string]: RemoveAnnotation;
+    };
+    todos: {
+        [target: string]: TodoAnnotation;
     };
 }
 
@@ -145,6 +151,18 @@ export interface ConstantAnnotation {
      * Default value
      */
     readonly defaultValue: DefaultValue;
+}
+
+export interface DescriptionAnnotation {
+    /**
+     * ID of the annotated Python declaration.
+     */
+    readonly target: string;
+
+    /**
+     * Description for the declaration.
+     */
+    readonly newDescription: string;
 }
 
 export interface EnumAnnotation {
@@ -256,6 +274,18 @@ export interface RemoveAnnotation {
     readonly target: string;
 }
 
+export interface TodoAnnotation {
+    /**
+     * ID of the annotated Python declaration.
+     */
+    readonly target: string;
+
+    /**
+     * A Todo for the declaration.
+     */
+    readonly newTodo: string;
+}
+
 // Initial state -------------------------------------------------------------------------------------------------------
 
 export const initialState: AnnotationStore = {
@@ -263,6 +293,7 @@ export const initialState: AnnotationStore = {
     boundaries: {},
     calledAfters: {},
     constants: {},
+    descriptions: {},
     enums: {},
     groups: {},
     moves: {},
@@ -271,6 +302,7 @@ export const initialState: AnnotationStore = {
     renamings: {},
     requireds: {},
     removes: {},
+    todos: {},
 };
 
 // Thunks --------------------------------------------------------------------------------------------------------------
@@ -339,6 +371,12 @@ const annotationsSlice = createSlice({
         },
         removeConstant(state, action: PayloadAction<string>) {
             delete state.constants[action.payload];
+        },
+        upsertDescription(state, action: PayloadAction<DescriptionAnnotation>) {
+            state.descriptions[action.payload.target] = action.payload;
+        },
+        removeDescription(state, action: PayloadAction<string>) {
+            delete state.descriptions[action.payload];
         },
         upsertEnum(state, action: PayloadAction<EnumAnnotation>) {
             state.enums[action.payload.target] = action.payload;
@@ -425,6 +463,12 @@ const annotationsSlice = createSlice({
         removeRemove(state, action: PayloadAction<string>) {
             delete state.removes[action.payload];
         },
+        upsertTodo(state, action: PayloadAction<TodoAnnotation>) {
+            state.todos[action.payload.target] = action.payload;
+        },
+        removeTodo(state, action: PayloadAction<string>) {
+            delete state.todos[action.payload];
+        },
     },
     extraReducers(builder) {
         builder.addCase(initializeAnnotations.fulfilled, (state, action) => action.payload);
@@ -444,6 +488,8 @@ export const {
     removeCalledAfter,
     upsertConstant,
     removeConstant,
+    upsertDescription,
+    removeDescription,
     upsertEnum,
     removeEnum,
     upsertGroup,
@@ -458,6 +504,8 @@ export const {
     removeRenaming,
     addRequired,
     removeRequired,
+    upsertTodo,
+    removeTodo,
     addRemove,
     removeRemove,
 } = actions;
@@ -480,6 +528,10 @@ export const selectConstant =
     (target: string) =>
     (state: RootState): ConstantAnnotation | undefined =>
         selectAnnotations(state).constants[target];
+export const selectDescription =
+    (target: string) =>
+    (state: RootState): DescriptionAnnotation | undefined =>
+        selectAnnotations(state).descriptions[target];
 export const selectEnum =
     (target: string) =>
     (state: RootState): EnumAnnotation | undefined =>
@@ -512,3 +564,7 @@ export const selectRemove =
     (target: string) =>
     (state: RootState): RemoveAnnotation | undefined =>
         selectAnnotations(state).removes[target];
+export const selectTodo =
+    (target: string) =>
+    (state: RootState): TodoAnnotation | undefined =>
+        selectAnnotations(state).todos[target];
