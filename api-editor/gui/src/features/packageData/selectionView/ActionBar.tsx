@@ -7,7 +7,7 @@ import { AnnotationStore, selectAnnotations } from '../../annotations/annotation
 import { useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
-import { setAllCollapsedInTreeView, setAllExpandedInTreeView } from '../../ui/uiSlice';
+import { setAllCollapsedInTreeView, setAllExpandedInTreeView, setExactlyExpandedInTreeView } from '../../ui/uiSlice';
 
 interface ActionBarProps {
     declaration: PythonDeclaration;
@@ -21,6 +21,8 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration, pyth
     const navigate = useNavigate();
 
     const annotations = useAppSelector(selectAnnotations);
+    const isMatched = (node: PythonDeclaration): boolean =>
+        pythonFilter.shouldKeepDeclaration(node, annotations, usages);
 
     return (
         <HStack borderTop={1} layerStyle="subtleBorder" padding="0.5em 1em" marginTop={0} w="100%">
@@ -85,6 +87,14 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration, pyth
                 }}
             >
                 Collapse Selected
+            </Button>
+            <Button
+                accessKey="m"
+                onClick={() => {
+                    dispatch(setExactlyExpandedInTreeView(getMatchedNodesAndParents(pythonPackage, isMatched)));
+                }}
+            >
+                Expand Matched
             </Button>
         </HStack>
     );
@@ -189,4 +199,43 @@ const getDescendants = function (current: PythonDeclaration): string[] {
         childrenList = [...childrenList, ...list];
     }
     return childrenList;
+};
+
+const getMatchedNodesAndParents = function (
+    pythonPackage: PythonPackage,
+    isMatched: (declaration: PythonDeclaration) => boolean,
+): string[] {
+    return doGetMatchedNodesAndParents(pythonPackage, isMatched).nodesToExpand;
+};
+
+interface DoGetMatchedNodesAndParentsResult {
+    nodesToExpand: string[];
+    subtreeShouldBeExpanded: boolean;
+}
+
+const doGetMatchedNodesAndParents = function (
+    current: PythonDeclaration,
+    isMatched: (declaration: PythonDeclaration) => boolean,
+): DoGetMatchedNodesAndParentsResult {
+    const nodesToExpand: string[] = [];
+    let shouldExpandThisNode = false;
+
+    for (const child of current.children()) {
+        const { nodesToExpand: childrenNodesToExpand, subtreeShouldBeExpanded } = doGetMatchedNodesAndParents(
+            child,
+            isMatched,
+        );
+
+        nodesToExpand.push(...childrenNodesToExpand);
+        shouldExpandThisNode ||= subtreeShouldBeExpanded;
+    }
+
+    if (shouldExpandThisNode) {
+        nodesToExpand.push(current.pathAsString());
+    }
+
+    return {
+        nodesToExpand,
+        subtreeShouldBeExpanded: isMatched(current) || shouldExpandThisNode,
+    };
 };
