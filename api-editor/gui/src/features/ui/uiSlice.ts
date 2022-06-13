@@ -228,6 +228,13 @@ const uiSlice = createSlice({
                 delete state.expandedInTreeView[item];
             }
         },
+        setExactlyExpandedInTreeView(state, action: PayloadAction<string[]>) {
+            const all = action.payload;
+            state.expandedInTreeView = {};
+            for (const item of all) {
+                state.expandedInTreeView[item] = true;
+            }
+        },
         setTreeViewScrollOffset(state, action: PayloadAction<number>) {
             state.treeViewScrollOffset = action.payload;
         },
@@ -267,6 +274,7 @@ export const {
     toggleIsExpandedInTreeView,
     setAllExpandedInTreeView,
     setAllCollapsedInTreeView,
+    setExactlyExpandedInTreeView,
     setTreeViewScrollOffset,
     setHeatMapMode,
 
