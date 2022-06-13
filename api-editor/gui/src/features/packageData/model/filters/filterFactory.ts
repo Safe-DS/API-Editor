@@ -101,6 +101,8 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
             return new AnnotationFilter(AnnotationType.Constant);
         case 'annotation:@description':
             return new AnnotationFilter(AnnotationType.Description);
+        case 'is:done': // Deliberate special case. It should be transparent to users it's an annotation.
+            return new AnnotationFilter(AnnotationType.Done);
         case 'annotation:@enum':
             return new AnnotationFilter(AnnotationType.Enum);
         case 'annotation:@group':

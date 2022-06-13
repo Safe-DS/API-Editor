@@ -54,6 +54,7 @@ export class AnnotationFilter extends AbstractPythonFilter {
                     id in annotations.calledAfters ||
                     id in annotations.constants ||
                     id in annotations.descriptions ||
+                    // Deliberately not checking annotations.done. It should be transparent to users it's an annotation.
                     id in annotations.enums ||
                     id in annotations.groups ||
                     id in annotations.moves ||
@@ -74,6 +75,8 @@ export class AnnotationFilter extends AbstractPythonFilter {
                 return id in annotations.constants;
             case AnnotationType.Description:
                 return id in annotations.descriptions;
+            case AnnotationType.Done:
+                return id in annotations.dones;
             case AnnotationType.Enum:
                 return id in annotations.enums;
             case AnnotationType.Group:
@@ -105,6 +108,7 @@ export enum AnnotationType {
     CalledAfter,
     Constant,
     Description,
+    Done,
     Enum,
     Group,
     Move,

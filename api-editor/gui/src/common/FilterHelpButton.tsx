@@ -17,8 +17,8 @@ import React from 'react';
 
 export const FilterHelpButton = function () {
     return (
-        <Box>
-            <Popover>
+        <Box zIndex={100}>
+            <Popover isLazy={true}>
                 <PopoverTrigger>
                     <IconButton variant="ghost" icon={<Icon name="help" />} aria-label="help" />
                 </PopoverTrigger>
@@ -45,6 +45,12 @@ export const FilterHelpButton = function () {
                                     Displays only elements that have the given visibility. Replace [visibility] with one
                                     of <em>public, internal</em>.
                                 </ChakraText>
+                            </ListItem>
+                            <ListItem>
+                                <ChakraText>
+                                    <strong>is:done</strong>
+                                </ChakraText>
+                                <ChakraText>Displays only elements that are marked as done.</ChakraText>
                             </ListItem>
                             <ListItem>
                                 <ChakraText>
