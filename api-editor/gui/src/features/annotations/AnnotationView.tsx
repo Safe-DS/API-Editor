@@ -20,6 +20,7 @@ import {
     removeRenaming,
     removeRequired,
     removeRemove,
+    removeTodo,
     selectAttribute,
     selectBoundary,
     selectCalledAfters,
@@ -33,6 +34,7 @@ import {
     selectRenaming,
     selectRequired,
     selectRemove,
+    selectTodo,
 } from './annotationSlice';
 import {
     showAttributeAnnotationForm,
@@ -44,6 +46,7 @@ import {
     showMoveAnnotationForm,
     showOptionalAnnotationForm,
     showRenameAnnotationForm,
+    showTodoAnnotationForm,
 } from '../ui/uiSlice';
 
 interface AnnotationViewProps {
@@ -66,6 +69,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
     const removeAnnotation = useAppSelector(selectRemove(target));
     const renameAnnotation = useAppSelector(selectRenaming(target));
     const requiredAnnotation = useAppSelector(selectRequired(target));
+    const todoAnnotation = useAppSelector(selectTodo(target));
 
     if (
         !attributeAnnotation &&
@@ -80,7 +84,8 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
         !pureAnnotation &&
         !removeAnnotation &&
         !renameAnnotation &&
-        !requiredAnnotation
+        !requiredAnnotation &&
+        !todoAnnotation
     ) {
         // eslint-disable-next-line react/jsx-no-useless-fragment
         return <></>;
@@ -171,6 +176,13 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                 />
             )}
             {requiredAnnotation && <Annotation type="required" onDelete={() => dispatch(removeRequired(target))} />}
+            {todoAnnotation && (
+                <Annotation
+                    type="todo"
+                    onEdit={() => dispatch(showTodoAnnotationForm(target))}
+                    onDelete={() => dispatch(removeTodo(target))}
+                />
+            )}
         </Stack>
     );
 };

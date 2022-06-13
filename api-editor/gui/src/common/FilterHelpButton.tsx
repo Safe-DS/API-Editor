@@ -87,7 +87,7 @@ export const FilterHelpButton = function () {
                                     with one of{' '}
                                     <em>
                                         @attribute, @boundary, @calledAfter, @constant, @description, @enum, @group,
-                                        @move, @optional, @pure, @remove, @renaming, @required
+                                        @move, @optional, @pure, @remove, @renaming, @required, @todo
                                     </em>
                                     .
                                 </ChakraText>

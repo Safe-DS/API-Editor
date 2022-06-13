@@ -238,6 +238,21 @@ class PythonCodeGeneratorTest {
                     |        self.testAttribute2: int = 2
             """.trimMargin()
         }
+
+        @Test
+        fun `should store todo if it is not blank`() {
+            val testClass = PythonClass(
+                name = "TestClass",
+                todo = "Lorem ipsum\n\nDolor sit amet"
+            )
+
+            testClass.toPythonCode() shouldBe """
+                    |# TODO: Lorem ipsum
+                    |        Dolor sit amet
+                    |class TestClass:
+                    |    pass
+            """.trimMargin()
+        }
     }
 
     @Nested
@@ -439,6 +454,20 @@ class PythonCodeGeneratorTest {
                 |    self.testAttribute2 = 2
                 |
                 |    self.instance = OriginalClass()
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should store todo if it is not blank`() {
+            val testConstructor = PythonConstructor(
+                todo = "Lorem ipsum\n\nDolor sit amet"
+            )
+
+            testConstructor.toPythonCode() shouldBe """
+                    |# TODO: Lorem ipsum
+                    |        Dolor sit amet
+                    |def __init__():
+                    |    pass
             """.trimMargin()
         }
     }
@@ -684,6 +713,21 @@ class PythonCodeGeneratorTest {
                     |        Test parameter 2
                     |    ${"\"\"\""}
                     |
+                    |    pass
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should store todo if it is not blank`() {
+            val testFunction = PythonFunction(
+                name = "testFunction",
+                todo = "Lorem ipsum\n\nDolor sit amet"
+            )
+
+            testFunction.toPythonCode() shouldBe """
+                    |# TODO: Lorem ipsum
+                    |        Dolor sit amet
+                    |def testFunction():
                     |    pass
             """.trimMargin()
         }

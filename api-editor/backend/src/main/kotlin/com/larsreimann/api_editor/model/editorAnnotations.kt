@@ -129,6 +129,12 @@ object RequiredAnnotation : EditorAnnotation() {
 }
 
 @Serializable
+data class TodoAnnotation(val message: String) : EditorAnnotation() {
+    @Transient
+    override val validTargets = ANY_DECLARATION
+}
+
+@Serializable
 sealed class DefaultValue
 
 @Serializable
@@ -179,7 +185,6 @@ val ANY_DECLARATION = setOf(
     FUNCTION_PARAMETER
 )
 val GLOBAL_DECLARATIONS = setOf(CLASS, GLOBAL_FUNCTION)
-val CLASSES = setOf(CLASS)
 val FUNCTIONS = setOf(GLOBAL_FUNCTION, METHOD)
 val PARAMETERS = setOf(
     CONSTRUCTOR_PARAMETER,

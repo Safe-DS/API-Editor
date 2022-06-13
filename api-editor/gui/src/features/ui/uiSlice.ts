@@ -29,7 +29,8 @@ type UserAction =
     | GroupUserAction
     | EnumUserAction
     | RenameUserAction
-    | OptionalUserAction;
+    | OptionalUserAction
+    | TodoUserAction;
 
 const NoUserAction = {
     type: 'none',
@@ -80,6 +81,16 @@ interface OptionalUserAction {
 
 interface RenameUserAction {
     readonly type: 'rename';
+    readonly target: string;
+}
+
+interface DescriptionUserAction {
+    readonly type: 'description';
+    readonly target: string;
+}
+
+interface TodoUserAction {
+    readonly type: 'todo';
     readonly target: string;
 }
 
@@ -217,6 +228,12 @@ const uiSlice = createSlice({
                 target: action.payload,
             };
         },
+        showTodoAnnotationForm(state, action: PayloadAction<string>) {
+            state.currentUserAction = {
+                type: 'todo',
+                target: action.payload,
+            };
+        },
         hideAnnotationForm(state) {
             state.currentUserAction = NoUserAction;
         },
@@ -282,6 +299,7 @@ export const {
     showMoveAnnotationForm,
     showOptionalAnnotationForm,
     showRenameAnnotationForm,
+    showTodoAnnotationForm,
     hideAnnotationForm,
 
     toggleIsExpandedInTreeView,

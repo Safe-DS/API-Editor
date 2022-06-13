@@ -29,6 +29,7 @@ fun AnnotationDropdown(
     showRemove: Boolean = false,
     showRename: Boolean = false,
     showRequired: Boolean = false,
+    showTodo: Boolean = false,
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -100,6 +101,11 @@ fun AnnotationDropdown(
             if (showRequired) {
                 DropdownMenuItem(onClick = {}) {
                     Text(labels.getString("AnnotationDropdown.Option.Required"))
+                }
+            }
+            if (showTodo) {
+                DropdownMenuItem(onClick = {}) {
+                    Text(labels.getString("AnnotationDropdown.Option.Todo"))
                 }
             }
         }
