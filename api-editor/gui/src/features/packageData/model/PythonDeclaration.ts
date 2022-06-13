@@ -16,6 +16,13 @@ export abstract class PythonDeclaration {
         return true;
     }
 
+    *descendantsOrSelf(): Generator<PythonDeclaration> {
+        yield this;
+        for (const child of this.children()) {
+            yield* child.descendantsOrSelf();
+        }
+    }
+
     path(): string[] {
         let current: Optional<PythonDeclaration> = this;
         const result: string[] = [];

@@ -34,7 +34,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration, pyth
                         navigate(`/${navStr}`);
 
                         //update tree selection
-                        const parents = getParents(navStr, pythonPackage);
+                        const parents = getAncestors(navStr, pythonPackage);
                         dispatch(setAllExpandedInTreeView(parents));
                     }
                 }}
@@ -49,7 +49,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration, pyth
                         navigate(`/${navStr}`);
 
                         //update tree selection
-                        const parents = getParents(navStr, pythonPackage);
+                        const parents = getAncestors(navStr, pythonPackage);
                         dispatch(setAllExpandedInTreeView(parents));
                     }
                 }}
@@ -59,7 +59,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration, pyth
             <Button
                 accessKey="a"
                 onClick={() => {
-                    dispatch(setAllExpandedInTreeView(getDescendants(pythonPackage)));
+                    dispatch(setAllExpandedInTreeView(getDescendantsOrSelf(pythonPackage)));
                 }}
             >
                 Expand All
@@ -67,7 +67,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration, pyth
             <Button
                 accessKey="s"
                 onClick={() => {
-                    dispatch(setAllCollapsedInTreeView(getDescendants(pythonPackage)));
+                    dispatch(setAllCollapsedInTreeView(getDescendantsOrSelf(pythonPackage)));
                 }}
             >
                 Collapse All
@@ -75,7 +75,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration, pyth
             <Button
                 accessKey="y"
                 onClick={() => {
-                    dispatch(setAllExpandedInTreeView(getDescendants(declaration)));
+                    dispatch(setAllExpandedInTreeView(getDescendantsOrSelf(declaration)));
                 }}
             >
                 Expand Selected
@@ -83,7 +83,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration, pyth
             <Button
                 accessKey="x"
                 onClick={() => {
-                    dispatch(setAllCollapsedInTreeView(getDescendants(declaration)));
+                    dispatch(setAllCollapsedInTreeView(getDescendantsOrSelf(declaration)));
                 }}
             >
                 Collapse Selected
@@ -178,27 +178,21 @@ const getLastElementInTree = function (current: PythonDeclaration): PythonDeclar
     return current;
 };
 
-const getParents = function (navStr: string, filteredPythonPackage: PythonPackage): string[] {
-    const parents: string[] = [];
+const getAncestors = function (navStr: string, filteredPythonPackage: PythonPackage): string[] {
+    const ancestors: string[] = [];
     let currentElement = filteredPythonPackage.getByRelativePathAsString(navStr);
     if (currentElement) {
         currentElement = currentElement.parent();
         while (currentElement) {
-            parents.push(currentElement.pathAsString());
+            ancestors.push(currentElement.pathAsString());
             currentElement = currentElement.parent();
         }
     }
-    return parents;
+    return ancestors;
 };
 
-const getDescendants = function (current: PythonDeclaration): string[] {
-    let childrenList: string[] = [current.pathAsString()];
-    let children = current.children();
-    for (const child of children) {
-        const list = getDescendants(child);
-        childrenList = [...childrenList, ...list];
-    }
-    return childrenList;
+const getDescendantsOrSelf = function (current: PythonDeclaration): string[] {
+    return [...current.descendantsOrSelf()].map((descendant) => descendant.pathAsString());
 };
 
 const getMatchedNodesAndParents = function (
