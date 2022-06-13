@@ -19,6 +19,7 @@ report/
 
 # Compilation/build outputs
 build/
+coverage/
 dist/
 dist-ssr/
 out/
