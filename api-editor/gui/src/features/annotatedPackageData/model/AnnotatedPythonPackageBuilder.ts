@@ -142,6 +142,7 @@ export class AnnotatedPythonPackageBuilder {
         'Boundary',
         'CalledAfters',
         'Constant',
+        'Description',
         'Enum',
         'Groups',
         'Move',
@@ -150,6 +151,7 @@ export class AnnotatedPythonPackageBuilder {
         'Remove',
         'Rename',
         'Required',
+        'Todo'
     ];
 
     #getExistingAnnotations(target: string): InferableAnnotation[] {
@@ -192,6 +194,12 @@ export class AnnotatedPythonPackageBuilder {
                 const constantAnnotation = this.annotationStore.constants[target];
                 if (constantAnnotation) {
                     return new InferableConstantAnnotation(constantAnnotation);
+                }
+                break;
+            case 'Description':
+                const descriptionAnnotation = this.annotationStore.descriptions[target];
+                if (descriptionAnnotation) {
+                    return new InferableDescriptionAnnotation(descriptionAnnotation);
                 }
                 break;
             case 'Groups':
@@ -242,12 +250,6 @@ export class AnnotatedPythonPackageBuilder {
                 const requiredAnnotation = this.annotationStore.requireds[target];
                 if (requiredAnnotation) {
                     return new InferableRequiredAnnotation();
-                }
-                break;
-            case 'Description':
-                const descriptionAnnotation = this.annotationStore.descriptions[target];
-                if (descriptionAnnotation) {
-                    return new InferableDescriptionAnnotation(descriptionAnnotation);
                 }
                 break;
             case 'Todo':

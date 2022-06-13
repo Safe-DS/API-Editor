@@ -25,6 +25,7 @@ type UserAction =
     | BoundaryUserAction
     | CalledAfterUserAction
     | ConstantUserAction
+    | DescriptionUserAction
     | GroupUserAction
     | EnumUserAction
     | RenameUserAction
@@ -55,6 +56,11 @@ interface CalledAfterUserAction {
 
 interface ConstantUserAction {
     readonly type: 'constant';
+    readonly target: string;
+}
+
+interface DescriptionUserAction {
+    readonly type: 'description';
     readonly target: string;
 }
 
@@ -186,6 +192,12 @@ const uiSlice = createSlice({
                 target: action.payload,
             };
         },
+        showDescriptionAnnotationForm(state, action: PayloadAction<string>) {
+            state.currentUserAction = {
+                type: 'description',
+                target: action.payload,
+            };
+        },
         showGroupAnnotationForm(state, action: PayloadAction<GroupTarget>) {
             state.currentUserAction = {
                 type: 'group',
@@ -288,6 +300,7 @@ export const {
     showBoundaryAnnotationForm,
     showCalledAfterAnnotationForm,
     showConstantAnnotationForm,
+    showDescriptionAnnotationForm,
     showEnumAnnotationForm,
     showGroupAnnotationForm,
     showMoveAnnotationForm,

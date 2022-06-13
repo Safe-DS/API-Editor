@@ -86,7 +86,9 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                         <MenuItem onClick={() => dispatch(showConstantAnnotationForm(target))}>@constant</MenuItem>
                     )}
                     {showDescription && (
-                        <MenuItem onClick={() => dispatch(showDescriptionAnnotationForm(target))}>@description</MenuItem>
+                        <MenuItem onClick={() => dispatch(showDescriptionAnnotationForm(target))}>
+                            @description
+                        </MenuItem>
                     )}
                     {showEnum && <MenuItem onClick={() => dispatch(showEnumAnnotationForm(target))}>@enum</MenuItem>}
                     {showGroup && (

@@ -15,7 +15,7 @@ from package_parser.model.api import (
     ParameterAndResultDocstring,
     ParameterAssignment,
 )
-from package_parser.utils import parent_id
+from package_parser.utils import parent_qualified_name
 
 from ._file_filters import _is_init_file
 
@@ -315,7 +315,7 @@ class _AstVisitor:
             return True
 
         # Containing class is re-exported (always false if the current API element is not a method)
-        if parent_id(qualified_name) in self.reexported:
+        if parent_qualified_name(qualified_name) in self.reexported:
             return True
 
         # The slicing is necessary so __init__ functions are not excluded (already handled in the first condition).

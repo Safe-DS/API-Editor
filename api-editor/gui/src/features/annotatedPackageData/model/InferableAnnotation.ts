@@ -103,15 +103,6 @@ export class InferableDescriptionAnnotation extends InferableAnnotation {
     }
 }
 
-export class InferableTodoAnnotation extends InferableAnnotation {
-    readonly newTodo: string;
-
-    constructor(todoAnnotation: TodoAnnotation) {
-        super(dataPathPrefix + 'TodoAnnotation');
-        this.newTodo = todoAnnotation.newTodo;
-    }
-}
-
 export class InferableGroupAnnotation extends InferableAnnotation {
     readonly groupName: string;
     readonly parameters: string[];
@@ -179,3 +170,11 @@ export class InferableRemoveAnnotation extends InferableAnnotation {
     }
 }
 
+export class InferableTodoAnnotation extends InferableAnnotation {
+    readonly newTodo: string;
+
+    constructor(todoAnnotation: TodoAnnotation) {
+        super(dataPathPrefix + 'TodoAnnotation');
+        this.newTodo = todoAnnotation.newTodo;
+    }
+}
