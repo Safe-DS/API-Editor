@@ -193,6 +193,12 @@ export class AnnotatedPythonPackageBuilder {
                     return new InferableConstantAnnotation(constantAnnotation);
                 }
                 break;
+            case 'Description':
+                const descriptionAnnotation = this.annotationStore.descriptions[target];
+                if (descriptionAnnotation) {
+                    return new InferableDescriptionAnnotation(descriptionAnnotation);
+                }
+                break;
             case 'Groups':
                 const groupAnnotations = this.annotationStore.groups[target];
                 if (!groupAnnotations) {
@@ -241,12 +247,6 @@ export class AnnotatedPythonPackageBuilder {
                 const requiredAnnotation = this.annotationStore.requireds[target];
                 if (requiredAnnotation) {
                     return new InferableRequiredAnnotation();
-                }
-                break;
-            case 'Description':
-                const descriptionAnnotation = this.annotationStore.descriptions[target];
-                if (descriptionAnnotation) {
-                    return new InferableDescriptionAnnotation(descriptionAnnotation);
                 }
                 break;
         }
