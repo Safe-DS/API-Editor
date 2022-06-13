@@ -141,6 +141,7 @@ export class AnnotatedPythonPackageBuilder {
         'Boundary',
         'CalledAfters',
         'Constant',
+        'Description',
         'Enum',
         'Groups',
         'Move',
@@ -195,7 +196,9 @@ export class AnnotatedPythonPackageBuilder {
                 break;
             case 'Description':
                 const descriptionAnnotation = this.annotationStore.descriptions[target];
+                console.log(this.annotationStore.descriptions)
                 if (descriptionAnnotation) {
+                    console.log(descriptionAnnotation)
                     return new InferableDescriptionAnnotation(descriptionAnnotation);
                 }
                 break;
