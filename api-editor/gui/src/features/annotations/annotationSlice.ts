@@ -18,6 +18,9 @@ export interface AnnotationStore {
     descriptions: {
         [target: string]: DescriptionAnnotation;
     };
+    dones: {
+        [target: string]: DoneAnnotation;
+    }
     enums: {
         [target: string]: EnumAnnotation;
     };
@@ -165,6 +168,19 @@ export interface DescriptionAnnotation {
     readonly newDescription: string;
 }
 
+/**
+ * The element is fully annotated and all annotations are checked.
+ *
+ * **Important:** While this is implemented as an annotation it should **not** be counted in the heat map or the
+ * statistics.
+ */
+export interface DoneAnnotation {
+    /**
+     * ID of the annotated Python declaration.
+     */
+    readonly target: string;
+}
+
 export interface EnumAnnotation {
     /**
      * ID of the annotated Python declaration.
@@ -294,6 +310,7 @@ export const initialState: AnnotationStore = {
     calledAfters: {},
     constants: {},
     descriptions: {},
+    dones: {},
     enums: {},
     groups: {},
     moves: {},
@@ -377,6 +394,12 @@ const annotationsSlice = createSlice({
         },
         removeDescription(state, action: PayloadAction<string>) {
             delete state.descriptions[action.payload];
+        },
+        addDone(state, action: PayloadAction<DoneAnnotation>) {
+            state.dones[action.payload.target] = action.payload;
+        },
+        removeDone(state, action: PayloadAction<string>) {
+            delete state.dones[action.payload];
         },
         upsertEnum(state, action: PayloadAction<EnumAnnotation>) {
             state.enums[action.payload.target] = action.payload;
@@ -490,6 +513,8 @@ export const {
     removeConstant,
     upsertDescription,
     removeDescription,
+    addDone,
+    removeDone,
     upsertEnum,
     removeEnum,
     upsertGroup,
@@ -532,6 +557,10 @@ export const selectDescription =
     (target: string) =>
     (state: RootState): DescriptionAnnotation | undefined =>
         selectAnnotations(state).descriptions[target];
+export const selectDone =
+    (target: string) =>
+        (state: RootState): DoneAnnotation | undefined =>
+            selectAnnotations(state).dones[target];
 export const selectEnum =
     (target: string) =>
     (state: RootState): EnumAnnotation | undefined =>

@@ -4,6 +4,7 @@ import { AnnotationDropdown } from '../../annotations/AnnotationDropdown';
 import { AnnotationView } from '../../annotations/AnnotationView';
 import { PythonParameter } from '../model/PythonParameter';
 import { DocumentationText } from './DocumentationText';
+import {DoneButton} from "../../annotations/DoneButton";
 
 interface ParameterNodeProps {
     pythonParameter: PythonParameter;
@@ -29,17 +30,20 @@ export const ParameterNode: React.FC<ParameterNodeProps> = function ({ isTitle, 
                     </Heading>
                 )}
                 {pythonParameter.isPublic && isExplicitParameter && (
-                    <AnnotationDropdown
-                        target={id}
-                        showAttribute={isConstructorParameter}
-                        showBoundary
-                        showConstant
-                        showDescription
-                        showEnum
-                        showOptional
-                        showRename
-                        showRequired
-                    />
+                    <>
+                        <AnnotationDropdown
+                            target={id}
+                            showAttribute={isConstructorParameter}
+                            showBoundary
+                            showConstant
+                            showDescription
+                            showEnum
+                            showOptional
+                            showRename
+                            showRequired
+                        />
+                        <DoneButton target={id} />
+                    </>
                 )}
             </HStack>
 
