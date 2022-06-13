@@ -5,6 +5,7 @@ import { AnnotationView } from '../../annotations/AnnotationView';
 import { PythonClass } from '../model/PythonClass';
 import { DocumentationText } from './DocumentationText';
 import { SectionListViewItem } from './SectionListViewItem';
+import { DoneButton } from '../../annotations/DoneButton';
 
 interface ClassViewProps {
     pythonClass: PythonClass;
@@ -21,7 +22,10 @@ export const ClassView: React.FC<ClassViewProps> = function ({ pythonClass }) {
                         {pythonClass.name} {!pythonClass.isPublic && '(private)'}
                     </Heading>
                     {pythonClass.isPublic && (
-                        <AnnotationDropdown target={id} showDescription showMove showRemove showRename showTodo />
+                        <>
+                            <AnnotationDropdown target={id} showDescription showMove showRemove showRename showTodo />
+                            <DoneButton target={id} />
+                        </>
                     )}
                 </HStack>
 

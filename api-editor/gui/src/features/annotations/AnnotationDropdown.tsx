@@ -1,8 +1,8 @@
 import { Box, Button, Icon, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
 import React from 'react';
 import { FaChevronDown } from 'react-icons/fa';
-import { useAppDispatch } from '../../app/hooks';
-import { addPure, addRemove, addRequired } from './annotationSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { addPure, addRemove, addRequired, selectDone } from './annotationSlice';
 import {
     showAttributeAnnotationForm,
     showBoundaryAnnotationForm,
@@ -53,12 +53,19 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
     target,
 }) {
     const dispatch = useAppDispatch();
+    const isDone = Boolean(useAppSelector(selectDone(target)));
 
     return (
         // Box gets rid of popper.js warning "CSS margin styles cannot be used"
         <Box>
             <Menu>
-                <MenuButton as={Button} size="sm" variant="outline" rightIcon={<Icon as={FaChevronDown} />}>
+                <MenuButton
+                    as={Button}
+                    size="sm"
+                    variant="outline"
+                    rightIcon={<Icon as={FaChevronDown} />}
+                    disabled={isDone}
+                >
                     Annotations
                 </MenuButton>
                 <MenuList>

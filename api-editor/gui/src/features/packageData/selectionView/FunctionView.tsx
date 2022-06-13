@@ -9,6 +9,7 @@ import { DocumentationText } from './DocumentationText';
 import { ParameterNode } from './ParameterNode';
 import { useAppSelector } from '../../../app/hooks';
 import { selectCalledAfters } from '../../annotations/annotationSlice';
+import { DoneButton } from '../../annotations/DoneButton';
 
 interface FunctionViewProps {
     pythonFunction: PythonFunction;
@@ -31,17 +32,20 @@ export const FunctionView: React.FC<FunctionViewProps> = function ({ pythonFunct
                         {pythonFunction.name} {!pythonFunction.isPublic && '(private)'}
                     </Heading>
                     {pythonFunction.isPublic && (
-                        <AnnotationDropdown
-                            target={id}
-                            showCalledAfter={hasRemainingCalledAfters}
-                            showDescription
-                            showGroup={pythonFunction.explicitParameters().length >= 2}
-                            showMove={pythonFunction.containingModuleOrClass instanceof PythonModule}
-                            showPure
-                            showRemove
-                            showRename
-                            showTodo
-                        />
+                        <>
+                            <AnnotationDropdown
+                                target={id}
+                                showCalledAfter={hasRemainingCalledAfters}
+                                showDescription
+                                showGroup={pythonFunction.explicitParameters().length >= 2}
+                                showMove={pythonFunction.containingModuleOrClass instanceof PythonModule}
+                                showPure
+                                showRemove
+                                showRename
+                                showTodo
+                            />
+                            <DoneButton target={id} />
+                        </>
                     )}
                 </HStack>
 
