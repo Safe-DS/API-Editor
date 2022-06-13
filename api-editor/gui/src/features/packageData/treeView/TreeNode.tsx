@@ -1,5 +1,5 @@
 import { HStack, Icon, Text as ChakraText } from '@chakra-ui/react';
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import { IconType } from 'react-icons/lib';
 import { useLocation } from 'react-router';
 import { useNavigate } from 'react-router-dom';
@@ -60,9 +60,17 @@ export const TreeNode: React.FC<TreeNodeProps> = function ({
 
     const fontWeight = filter.shouldKeepDeclaration(declaration, annotations, usages) ? 'bold' : undefined;
 
-    const handleClick = () => {
+    const handleNodeClick = (event: MouseEvent) => {
+        if (event.shiftKey) {
+            dispatch(toggleIsExpandedInTreeView(declaration.pathAsString()));
+        } else {
+            navigate(`/${declaration.pathAsString()}`);
+        }
+    };
+
+    const handleVisibilityIndicatorClick = (event: MouseEvent) => {
         dispatch(toggleIsExpandedInTreeView(declaration.pathAsString()));
-        navigate(`/${declaration.pathAsString()}`);
+        event.stopPropagation();
     };
 
     const interpolation =
@@ -78,12 +86,13 @@ export const TreeNode: React.FC<TreeNodeProps> = function ({
             color={color}
             backgroundColor={backgroundColor}
             paddingLeft={paddingLeft}
-            onClick={handleClick}
+            onClick={handleNodeClick}
         >
             <VisibilityIndicator
                 hasChildren={isExpandable}
                 showChildren={showChildren}
                 isSelected={isSelected(declaration, currentPathname)}
+                onClick={handleVisibilityIndicatorClick}
             />
             <Icon as={icon} />
             {displayHeatMap && (

@@ -17,7 +17,6 @@ import React, { useState } from 'react';
 import { useAppDispatch } from '../../app/hooks';
 import { StyledDropzone } from '../../common/StyledDropzone';
 import { isValidJsonFile } from '../../common/util/validation';
-import { resetAnnotations } from '../annotations/annotationSlice';
 import { UsageCountJson, UsageCountStore } from './model/UsageCountStore';
 import { toggleUsageImportDialog } from '../ui/uiSlice';
 import { setUsages } from './usageSlice';
@@ -47,7 +46,6 @@ export const UsageImportDialog: React.FC = function () {
             reader.onload = () => {
                 if (typeof reader.result === 'string') {
                     setNewUsages(reader.result);
-                    dispatch(resetAnnotations());
                 }
             };
             reader.readAsText(acceptedFiles[0]);
