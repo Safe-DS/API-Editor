@@ -9,7 +9,7 @@ import { DocumentationText } from './DocumentationText';
 import { ParameterNode } from './ParameterNode';
 import { useAppSelector } from '../../../app/hooks';
 import { selectCalledAfters } from '../../annotations/annotationSlice';
-import {DoneButton} from "../../annotations/DoneButton";
+import { DoneButton } from '../../annotations/DoneButton';
 
 interface FunctionViewProps {
     pythonFunction: PythonFunction;

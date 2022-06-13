@@ -20,7 +20,7 @@ export interface AnnotationStore {
     };
     dones: {
         [target: string]: DoneAnnotation;
-    }
+    };
     enums: {
         [target: string]: EnumAnnotation;
     };
@@ -559,8 +559,8 @@ export const selectDescription =
         selectAnnotations(state).descriptions[target];
 export const selectDone =
     (target: string) =>
-        (state: RootState): DoneAnnotation | undefined =>
-            selectAnnotations(state).dones[target];
+    (state: RootState): DoneAnnotation | undefined =>
+        selectAnnotations(state).dones[target];
 export const selectEnum =
     (target: string) =>
     (state: RootState): EnumAnnotation | undefined =>
