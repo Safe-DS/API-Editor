@@ -20,6 +20,7 @@ fun AnnotationDropdown(
     showBoundary: Boolean = false,
     showCalledAfter: Boolean = false,
     showConstant: Boolean = false,
+    showDescription: Boolean = false,
     showEnum: Boolean = false,
     showGroup: Boolean = false,
     showMove: Boolean = false,
