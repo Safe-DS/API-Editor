@@ -25,11 +25,11 @@ type UserAction =
     | BoundaryUserAction
     | CalledAfterUserAction
     | ConstantUserAction
+    | DescriptionUserAction
     | GroupUserAction
     | EnumUserAction
     | RenameUserAction
-    | OptionalUserAction
-    | DescriptionUserAction;
+    | OptionalUserAction;
 
 const NoUserAction = {
     type: 'none',
@@ -57,6 +57,11 @@ interface ConstantUserAction {
     readonly target: string;
 }
 
+interface DescriptionUserAction {
+    readonly type: 'description';
+    readonly target: string;
+}
+
 interface EnumUserAction {
     readonly type: 'enum';
     readonly target: string;
@@ -75,11 +80,6 @@ interface OptionalUserAction {
 
 interface RenameUserAction {
     readonly type: 'rename';
-    readonly target: string;
-}
-
-interface DescriptionUserAction {
-    readonly type: 'description';
     readonly target: string;
 }
 
@@ -180,6 +180,12 @@ const uiSlice = createSlice({
                 target: action.payload,
             };
         },
+        showDescriptionAnnotationForm(state, action: PayloadAction<string>) {
+            state.currentUserAction = {
+                type: 'description',
+                target: action.payload,
+            };
+        },
         showGroupAnnotationForm(state, action: PayloadAction<GroupTarget>) {
             state.currentUserAction = {
                 type: 'group',
@@ -208,12 +214,6 @@ const uiSlice = createSlice({
         showRenameAnnotationForm(state, action: PayloadAction<string>) {
             state.currentUserAction = {
                 type: 'rename',
-                target: action.payload,
-            };
-        },
-        showDescriptionAnnotationForm(state, action: PayloadAction<string>) {
-            state.currentUserAction = {
-                type: 'description',
                 target: action.payload,
             };
         },
@@ -276,12 +276,12 @@ export const {
     showBoundaryAnnotationForm,
     showCalledAfterAnnotationForm,
     showConstantAnnotationForm,
+    showDescriptionAnnotationForm,
     showEnumAnnotationForm,
     showGroupAnnotationForm,
     showMoveAnnotationForm,
     showOptionalAnnotationForm,
     showRenameAnnotationForm,
-    showDescriptionAnnotationForm,
     hideAnnotationForm,
 
     toggleIsExpandedInTreeView,
