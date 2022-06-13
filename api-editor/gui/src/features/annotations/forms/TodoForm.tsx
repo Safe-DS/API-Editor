@@ -1,4 +1,4 @@
-import {FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Textarea} from '@chakra-ui/react';
+import { FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Textarea } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
@@ -18,7 +18,6 @@ interface TodoFormState {
 export const TodoForm: React.FC<TodoFormProps> = function ({ target }) {
     const targetPath = target.pathAsString();
     const prevNewTodo = useAppSelector(selectTodo(targetPath))?.newTodo;
-    const oldTodo = target.todo;
 
     // Hooks -----------------------------------------------------------------------------------------------------------
 
@@ -45,9 +44,9 @@ export const TodoForm: React.FC<TodoFormProps> = function ({ target }) {
 
     useEffect(() => {
         reset({
-            newTodo: prevNewTodo ?? oldTodo,
+            newTodo: prevNewTodo ?? '',
         });
-    }, [reset, prevNewTodo, oldTodo]);
+    }, [reset, prevNewTodo]);
 
     // Event handlers --------------------------------------------------------------------------------------------------
 
@@ -74,9 +73,11 @@ export const TodoForm: React.FC<TodoFormProps> = function ({ target }) {
             onCancel={onCancel}
         >
             <FormControl isInvalid={Boolean(errors.newTodo)}>
-                <FormLabel>Update todo:</FormLabel>
+                <FormLabel>New todo for "{target.name}":</FormLabel>
                 <Textarea
-                    {...register('newTodo')}
+                    {...register('newTodo', {
+                        required: 'This is required.',
+                    })}
                 />
                 <FormErrorMessage>
                     <FormErrorIcon /> {errors.newTodo?.message}
