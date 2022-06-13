@@ -566,5 +566,5 @@ export const selectRemove =
         selectAnnotations(state).removes[target];
 export const selectTodo =
     (target: string) =>
-        (state: RootState): TodoAnnotation | undefined =>
-            selectAnnotations(state).todos[target];
+    (state: RootState): TodoAnnotation | undefined =>
+        selectAnnotations(state).todos[target];

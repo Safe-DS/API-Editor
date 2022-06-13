@@ -151,7 +151,7 @@ export class AnnotatedPythonPackageBuilder {
         'Remove',
         'Rename',
         'Required',
-        'Todo'
+        'Todo',
     ];
 
     #getExistingAnnotations(target: string): InferableAnnotation[] {

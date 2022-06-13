@@ -115,9 +115,7 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                         <MenuItem onClick={() => dispatch(showRenameAnnotationForm(target))}>@rename</MenuItem>
                     )}
                     {showRequired && <MenuItem onClick={() => dispatch(addRequired({ target }))}>@required</MenuItem>}
-                    {showTodo && (
-                        <MenuItem onClick={() => dispatch(showTodoAnnotationForm(target))}>@todo</MenuItem>
-                    )}
+                    {showTodo && <MenuItem onClick={() => dispatch(showTodoAnnotationForm(target))}>@todo</MenuItem>}
                 </MenuList>
             </Menu>
         </Box>
