@@ -4,7 +4,6 @@ from typing import Optional, Union
 
 import astroid
 from numpydoc.docscrape import NumpyDocString
-
 from package_parser.model.api import (
     API,
     Class,
@@ -17,6 +16,7 @@ from package_parser.model.api import (
     ParameterAssignment,
 )
 from package_parser.utils import parent_qualified_name
+
 from ._file_filters import _is_init_file
 
 
