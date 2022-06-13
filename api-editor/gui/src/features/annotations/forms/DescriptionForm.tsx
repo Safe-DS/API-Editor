@@ -1,14 +1,13 @@
-import { FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Textarea } from '@chakra-ui/react';
+import { FormControl, FormLabel, Textarea } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
 import { selectDescription, upsertDescription } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
 import { hideAnnotationForm } from '../../ui/uiSlice';
-import {PythonClass} from "../../packageData/model/PythonClass";
-import {PythonFunction} from "../../packageData/model/PythonFunction";
-import {PythonParameter} from "../../packageData/model/PythonParameter";
+import { PythonClass } from '../../packageData/model/PythonClass';
+import { PythonFunction } from '../../packageData/model/PythonFunction';
+import { PythonParameter } from '../../packageData/model/PythonParameter';
 
 interface DescriptionFormProps {
     readonly target: PythonClass | PythonFunction | PythonParameter;
@@ -31,7 +30,6 @@ export const DescriptionForm: React.FC<DescriptionFormProps> = function ({ targe
         handleSubmit,
         setFocus,
         reset,
-        formState: { errors },
     } = useForm<DescriptionFormState>({
         defaultValues: {
             newDescription: '',
@@ -76,12 +74,9 @@ export const DescriptionForm: React.FC<DescriptionFormProps> = function ({ targe
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
         >
-            <FormControl isInvalid={Boolean(errors.newDescription)}>
-                <FormLabel>Update description:</FormLabel>
+            <FormControl>
+                <FormLabel>New description for "{target.name}":</FormLabel>
                 <Textarea {...register('newDescription')} />
-                <FormErrorMessage>
-                    <FormErrorIcon /> {errors.newDescription?.message}
-                </FormErrorMessage>
             </FormControl>
         </AnnotationForm>
     );
