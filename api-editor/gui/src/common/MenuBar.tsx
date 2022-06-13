@@ -13,6 +13,7 @@ import {
     MenuList,
     MenuOptionGroup,
     Spacer,
+    Text as ChakraText,
     useColorMode,
 } from '@chakra-ui/react';
 import React from 'react';
@@ -31,6 +32,7 @@ import {
 import { DeleteAllAnnotations } from './DeleteAllAnnotations';
 import { GenerateAdapters } from './GenerateAdapters';
 import { FilterInput } from './FilterInput';
+import { selectNumberOfMatchedNodes } from '../features/packageData/apiSlice';
 
 interface MenuBarProps {
     displayInferErrors: (errors: string[]) => void;
@@ -155,9 +157,24 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
             <Spacer />
 
             <HStack>
+                <MatchCount />
                 <FilterInput />
                 <FilterHelpButton />
             </HStack>
         </Flex>
     );
+};
+
+const MatchCount = function () {
+    const count = useAppSelector(selectNumberOfMatchedNodes);
+    let text;
+    if (count === 0) {
+        text = 'No matches';
+    } else if (count === 1) {
+        text = '1 match';
+    } else {
+        text = `${count} matches`;
+    }
+
+    return <ChakraText fontWeight="bold">{text}</ChakraText>;
 };

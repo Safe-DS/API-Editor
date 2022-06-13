@@ -68,3 +68,15 @@ export const selectFilteredPythonPackage = createSelector(
         return filter.applyToPackage(pythonPackage, annotations, usages);
     },
 );
+export const selectNumberOfMatchedNodes = createSelector(
+    [selectFilteredPythonPackage, selectAnnotations, selectUsages, selectFilter],
+    (pythonPackage, annotations, usages, filter) => {
+        let result = -1; // We start with -1, since the PythonPackage is always kept but should not be counted
+        for (const declaration of pythonPackage.descendantsOrSelf()) {
+            if (filter.shouldKeepDeclaration(declaration, annotations, usages)) {
+                result++;
+            }
+        }
+        return result;
+    },
+);
