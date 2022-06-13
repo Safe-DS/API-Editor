@@ -1,8 +1,11 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { PythonPackage } from './model/PythonPackage';
 import { parsePythonPackageJson, PythonPackageJson } from './model/PythonPackageBuilder';
 import * as idb from 'idb-keyval';
+import { selectFilter } from '../ui/uiSlice';
+import { selectUsages } from '../usages/usageSlice';
+import { selectAnnotations } from '../annotations/annotationSlice';
 
 export interface APIState {
     pythonPackage: PythonPackage;
@@ -59,3 +62,9 @@ export const apiReducer = reducer;
 
 const selectAPI = (state: RootState) => state.api;
 export const selectPythonPackage = (state: RootState) => selectAPI(state).pythonPackage;
+export const selectFilteredPythonPackage = createSelector(
+    [selectPythonPackage, selectAnnotations, selectUsages, selectFilter],
+    (pythonPackage, annotations, usages, filter) => {
+        return filter.applyToPackage(pythonPackage, annotations, usages);
+    },
+);
