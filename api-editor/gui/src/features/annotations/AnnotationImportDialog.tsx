@@ -27,6 +27,7 @@ export const AnnotationImportDialog: React.FC = function () {
         boundaries: {},
         constants: {},
         calledAfters: {},
+        descriptions: {},
         enums: {},
         groups: {},
         moves: {},

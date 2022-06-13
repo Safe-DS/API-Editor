@@ -28,7 +28,8 @@ type UserAction =
     | GroupUserAction
     | EnumUserAction
     | RenameUserAction
-    | OptionalUserAction;
+    | OptionalUserAction
+    | DescriptionUserAction;
 
 const NoUserAction = {
     type: 'none',
@@ -74,6 +75,11 @@ interface OptionalUserAction {
 
 interface RenameUserAction {
     readonly type: 'rename';
+    readonly target: string;
+}
+
+interface DescriptionUserAction {
+    readonly type: 'description';
     readonly target: string;
 }
 
@@ -205,6 +211,12 @@ const uiSlice = createSlice({
                 target: action.payload,
             };
         },
+        showDescriptionAnnotationForm(state, action: PayloadAction<string>) {
+            state.currentUserAction = {
+                type: 'description',
+                target: action.payload,
+            };
+        },
         hideAnnotationForm(state) {
             state.currentUserAction = NoUserAction;
         },
@@ -226,6 +238,13 @@ const uiSlice = createSlice({
             const all = action.payload;
             for (const item of all) {
                 delete state.expandedInTreeView[item];
+            }
+        },
+        setExactlyExpandedInTreeView(state, action: PayloadAction<string[]>) {
+            const all = action.payload;
+            state.expandedInTreeView = {};
+            for (const item of all) {
+                state.expandedInTreeView[item] = true;
             }
         },
         setTreeViewScrollOffset(state, action: PayloadAction<number>) {
@@ -262,11 +281,13 @@ export const {
     showMoveAnnotationForm,
     showOptionalAnnotationForm,
     showRenameAnnotationForm,
+    showDescriptionAnnotationForm,
     hideAnnotationForm,
 
     toggleIsExpandedInTreeView,
     setAllExpandedInTreeView,
     setAllCollapsedInTreeView,
+    setExactlyExpandedInTreeView,
     setTreeViewScrollOffset,
     setHeatMapMode,
 

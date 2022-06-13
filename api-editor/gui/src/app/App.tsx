@@ -17,6 +17,7 @@ import { initializeAnnotations, persistAnnotations, selectAnnotations } from '..
 import { BoundaryForm } from '../features/annotations/forms/BoundaryForm';
 import { CalledAfterForm } from '../features/annotations/forms/CalledAfterForm';
 import { ConstantForm } from '../features/annotations/forms/ConstantForm';
+import { DescriptionForm } from '../features/annotations/forms/DescriptionForm';
 import { EnumForm } from '../features/annotations/forms/EnumForm';
 import { GroupForm } from '../features/annotations/forms/GroupForm';
 import { MoveForm } from '../features/annotations/forms/MoveForm';
@@ -103,6 +104,7 @@ export const App: React.FC = function () {
                     {currentUserAction.type === 'constant' && (
                         <ConstantForm target={userActionTarget || pythonPackage} />
                     )}
+                    {currentUserAction.type === 'description' && <DescriptionForm target={userActionTarget || pythonPackage} />}
                     {currentUserAction.type === 'enum' && <EnumForm target={userActionTarget || pythonPackage} />}
                     {currentUserAction.type === 'group' && (
                         <GroupForm

@@ -195,7 +195,8 @@ class AnnotationValidator(private val annotatedPythonPackage: SerializablePython
                 "Optional",
                 "Pure",
                 "Rename",
-                "Required", "Todo"
+                "Required",
+                "Todo"
             )
             this["Enum"] = mutableSetOf("Description", "Group", "Rename", "Required", "Todo")
             this["Group"] =

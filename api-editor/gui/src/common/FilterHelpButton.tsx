@@ -86,7 +86,7 @@ export const FilterHelpButton = function () {
                                     Displays only elements that are annotated with the given type xy. Replace [type]
                                     with one of{' '}
                                     <em>
-                                        @attribute, @boundary, @calledAfter, @constant, @enum, @group, @move, @optional,
+                                        @attribute, @boundary, @calledAfter, @constant, @description, @enum, @group, @move, @optional,
                                         @pure, @remove, @renaming, @required
                                     </em>
                                     .

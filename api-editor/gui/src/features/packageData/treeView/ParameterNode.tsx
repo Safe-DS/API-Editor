@@ -61,6 +61,7 @@ const getMapWithAnnotation = function (pythonParameter: PythonParameter, annotat
     specificValue += annotations.boundaries[qname] !== undefined ? 1 : 0;
     specificValue += annotations.enums[qname] !== undefined ? 1 : 0;
     specificValue += annotations.constants[qname] !== undefined ? 1 : 0;
+    specificValue += annotations.descriptions[qname] !== undefined ? 1 : 0;
     specificValue += annotations.optionals[qname] !== undefined ? 1 : 0;
     specificValue += annotations.requireds[qname] !== undefined ? 1 : 0;
     specificValue += annotations.renamings[qname] !== undefined ? 1 : 0;

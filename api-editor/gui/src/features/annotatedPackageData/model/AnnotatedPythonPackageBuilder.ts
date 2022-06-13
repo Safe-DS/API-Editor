@@ -25,6 +25,7 @@ import {
     InferableRemoveAnnotation,
     InferableRenameAnnotation,
     InferableRequiredAnnotation,
+    InferableDescriptionAnnotation,
 } from './InferableAnnotation';
 
 export class AnnotatedPythonPackageBuilder {
@@ -240,6 +241,12 @@ export class AnnotatedPythonPackageBuilder {
                 const requiredAnnotation = this.annotationStore.requireds[target];
                 if (requiredAnnotation) {
                     return new InferableRequiredAnnotation();
+                }
+                break;
+            case 'Description':
+                const descriptionAnnotation = this.annotationStore.descriptions[target];
+                if (descriptionAnnotation) {
+                    return new InferableDescriptionAnnotation(descriptionAnnotation);
                 }
                 break;
         }
