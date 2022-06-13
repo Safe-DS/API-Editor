@@ -171,10 +171,10 @@ export class InferableRemoveAnnotation extends InferableAnnotation {
 }
 
 export class InferableTodoAnnotation extends InferableAnnotation {
-    readonly newTodo: string;
+    readonly message: string;
 
     constructor(todoAnnotation: TodoAnnotation) {
         super(dataPathPrefix + 'TodoAnnotation');
-        this.newTodo = todoAnnotation.newTodo;
+        this.message = todoAnnotation.newTodo;
     }
 }
