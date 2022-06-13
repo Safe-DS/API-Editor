@@ -30,7 +30,6 @@ private fun PythonPackage.processAnnotations() {
     processRemoveAnnotations()
     processDescriptionAnnotations()
     processRenameAnnotations()
-    processDescriptionAnnotations()
     processMoveAnnotations()
     processBoundaryAnnotations()
     processParameterAnnotations()

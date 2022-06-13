@@ -96,11 +96,6 @@ fun AnnotationDropdown(
                     Text(labels.getString("AnnotationDropdown.Option.Required"))
                 }
             }
-            if (showDescription) {
-                DropdownMenuItem(onClick = {}) {
-                    Text(labels.getString("AnnotationDropdown.Option.Description"))
-                }
-            }
         }
     }
 }
