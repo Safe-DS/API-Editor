@@ -25,12 +25,7 @@ export const DescriptionForm: React.FC<DescriptionFormProps> = function ({ targe
     // Hooks -----------------------------------------------------------------------------------------------------------
 
     const dispatch = useAppDispatch();
-    const {
-        register,
-        handleSubmit,
-        setFocus,
-        reset,
-    } = useForm<DescriptionFormState>({
+    const { register, handleSubmit, setFocus, reset } = useForm<DescriptionFormState>({
         defaultValues: {
             newDescription: '',
         },

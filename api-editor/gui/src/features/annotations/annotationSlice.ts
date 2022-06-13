@@ -506,8 +506,8 @@ export const selectConstant =
         selectAnnotations(state).constants[target];
 export const selectDescription =
     (target: string) =>
-        (state: RootState): DescriptionAnnotation | undefined =>
-            selectAnnotations(state).descriptions[target];
+    (state: RootState): DescriptionAnnotation | undefined =>
+        selectAnnotations(state).descriptions[target];
 export const selectEnum =
     (target: string) =>
     (state: RootState): EnumAnnotation | undefined =>
