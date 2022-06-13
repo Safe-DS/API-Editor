@@ -39,6 +39,7 @@ export const FunctionView: React.FC<FunctionViewProps> = function ({ pythonFunct
                             showPure
                             showRemove
                             showRename
+                            showDescription
                         />
                     )}
                 </HStack>

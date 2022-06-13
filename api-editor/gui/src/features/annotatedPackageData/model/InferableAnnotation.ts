@@ -12,6 +12,7 @@ import {
     MoveAnnotation,
     OptionalAnnotation,
     RenameAnnotation,
+    DescriptionAnnotation,
 } from '../../annotations/annotationSlice';
 
 const dataPathPrefix = 'com.larsreimann.api_editor.model.';
@@ -156,5 +157,14 @@ export class InferableRequiredAnnotation extends InferableAnnotation {
 export class InferableRemoveAnnotation extends InferableAnnotation {
     constructor() {
         super(dataPathPrefix + 'RemoveAnnotation');
+    }
+}
+
+export class InferableDescriptionAnnotation extends InferableAnnotation {
+    readonly newDescription: string;
+
+    constructor(descriptionAnnotation: DescriptionAnnotation) {
+        super(dataPathPrefix + 'DescriptionAnnotation');
+        this.newDescription = descriptionAnnotation.newDescription;
     }
 }

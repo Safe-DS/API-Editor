@@ -39,6 +39,9 @@ export interface AnnotationStore {
     removes: {
         [target: string]: RemoveAnnotation;
     };
+    descriptions: {
+        [target: string]: DescriptionAnnotation;
+    };
 }
 
 export interface AttributeAnnotation {
@@ -256,6 +259,18 @@ export interface RemoveAnnotation {
     readonly target: string;
 }
 
+export interface DescriptionAnnotation {
+    /**
+     * ID of the annotated Python declaration.
+     */
+    readonly target: string;
+
+    /**
+     * New name for the declaration.
+     */
+    readonly newDescription: string;
+}
+
 // Initial state -------------------------------------------------------------------------------------------------------
 
 export const initialState: AnnotationStore = {
@@ -271,6 +286,7 @@ export const initialState: AnnotationStore = {
     renamings: {},
     requireds: {},
     removes: {},
+    descriptions: {},
 };
 
 // Thunks --------------------------------------------------------------------------------------------------------------
@@ -425,6 +441,12 @@ const annotationsSlice = createSlice({
         removeRemove(state, action: PayloadAction<string>) {
             delete state.removes[action.payload];
         },
+        upsertDescription(state, action: PayloadAction<DescriptionAnnotation>) {
+            state.descriptions[action.payload.target] = action.payload;
+        },
+        removeDescription(state, action: PayloadAction<string>) {
+            delete state.descriptions[action.payload];
+        },
     },
     extraReducers(builder) {
         builder.addCase(initializeAnnotations.fulfilled, (state, action) => action.payload);
@@ -458,6 +480,8 @@ export const {
     removeRenaming,
     addRequired,
     removeRequired,
+    upsertDescription,
+    removeDescription,
     addRemove,
     removeRemove,
 } = actions;
@@ -512,3 +536,7 @@ export const selectRemove =
     (target: string) =>
     (state: RootState): RemoveAnnotation | undefined =>
         selectAnnotations(state).removes[target];
+export const selectDescription =
+    (target: string) =>
+        (state: RootState): DescriptionAnnotation | undefined =>
+            selectAnnotations(state).descriptions[target];

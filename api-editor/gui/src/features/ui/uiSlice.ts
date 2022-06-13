@@ -205,6 +205,12 @@ const uiSlice = createSlice({
                 target: action.payload,
             };
         },
+        showDescriptionAnnotationForm(state, action: PayloadAction<string>) {
+            state.currentUserAction = {
+                type: 'description',
+                target: action.payload,
+            };
+        },
         hideAnnotationForm(state) {
             state.currentUserAction = NoUserAction;
         },
@@ -262,6 +268,7 @@ export const {
     showMoveAnnotationForm,
     showOptionalAnnotationForm,
     showRenameAnnotationForm,
+    showDescriptionAnnotationForm,
     hideAnnotationForm,
 
     toggleIsExpandedInTreeView,

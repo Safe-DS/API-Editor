@@ -123,6 +123,12 @@ data class RenameAnnotation(val newName: String) : EditorAnnotation() {
 }
 
 @Serializable
+data class DescriptionAnnotation(val newDescription: String) : EditorAnnotation() {
+    @Transient
+    override val validTargets = CLASSES.union(FUNCTIONS).union(PARAMETERS)
+}
+
+@Serializable
 object RequiredAnnotation : EditorAnnotation() {
     @Transient
     override val validTargets = PARAMETERS
