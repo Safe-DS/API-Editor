@@ -34,6 +34,7 @@ export const ParameterNode: React.FC<ParameterNodeProps> = function ({ isTitle, 
                         showAttribute={isConstructorParameter}
                         showBoundary
                         showConstant
+                        showDescription
                         showEnum
                         showOptional
                         showRename

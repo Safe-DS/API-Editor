@@ -25,6 +25,7 @@ import {
     InferableRemoveAnnotation,
     InferableRenameAnnotation,
     InferableRequiredAnnotation,
+    InferableDescriptionAnnotation,
 } from './InferableAnnotation';
 
 export class AnnotatedPythonPackageBuilder {
@@ -140,6 +141,7 @@ export class AnnotatedPythonPackageBuilder {
         'Boundary',
         'CalledAfters',
         'Constant',
+        'Description',
         'Enum',
         'Groups',
         'Move',
@@ -190,6 +192,12 @@ export class AnnotatedPythonPackageBuilder {
                 const constantAnnotation = this.annotationStore.constants[target];
                 if (constantAnnotation) {
                     return new InferableConstantAnnotation(constantAnnotation);
+                }
+                break;
+            case 'Description':
+                const descriptionAnnotation = this.annotationStore.descriptions[target];
+                if (descriptionAnnotation) {
+                    return new InferableDescriptionAnnotation(descriptionAnnotation);
                 }
                 break;
             case 'Groups':

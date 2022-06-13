@@ -53,6 +53,7 @@ export class AnnotationFilter extends AbstractPythonFilter {
                     id in annotations.boundaries ||
                     id in annotations.calledAfters ||
                     id in annotations.constants ||
+                    id in annotations.descriptions ||
                     id in annotations.enums ||
                     id in annotations.groups ||
                     id in annotations.moves ||
@@ -70,6 +71,8 @@ export class AnnotationFilter extends AbstractPythonFilter {
                 return id in annotations.calledAfters;
             case AnnotationType.Constant:
                 return id in annotations.constants;
+            case AnnotationType.Description:
+                return id in annotations.descriptions;
             case AnnotationType.Enum:
                 return id in annotations.enums;
             case AnnotationType.Group:
@@ -98,6 +101,7 @@ export enum AnnotationType {
     Boundary,
     CalledAfter,
     Constant,
+    Description,
     Enum,
     Group,
     Move,

@@ -34,6 +34,7 @@ export const FunctionView: React.FC<FunctionViewProps> = function ({ pythonFunct
                         <AnnotationDropdown
                             target={id}
                             showCalledAfter={hasRemainingCalledAfters}
+                            showDescription
                             showGroup={pythonFunction.explicitParameters().length >= 2}
                             showMove={pythonFunction.containingModuleOrClass instanceof PythonModule}
                             showPure

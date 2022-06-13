@@ -4,6 +4,7 @@ import {
     CalledAfterAnnotation,
     ComparisonOperator,
     ConstantAnnotation,
+    DescriptionAnnotation,
     DefaultType,
     DefaultValue,
     EnumAnnotation,
@@ -89,6 +90,15 @@ export class InferableConstantAnnotation extends InferableAnnotation {
     constructor(constantAnnotation: ConstantAnnotation) {
         super(dataPathPrefix + 'ConstantAnnotation');
         this.defaultValue = convertDefaultValue(constantAnnotation.defaultType, constantAnnotation.defaultValue);
+    }
+}
+
+export class InferableDescriptionAnnotation extends InferableAnnotation {
+    readonly newDescription: string;
+
+    constructor(descriptionAnnotation: DescriptionAnnotation) {
+        super(dataPathPrefix + 'DescriptionAnnotation');
+        this.newDescription = descriptionAnnotation.newDescription;
     }
 }
 

@@ -52,6 +52,7 @@ const getMapWithAnnotation = function (pythonClass: PythonClass, annotations: An
     let specificValue = 0;
 
     specificValue += annotations.moves[qname] !== undefined ? 1 : 0;
+    specificValue += annotations.descriptions[qname] !== undefined ? 1 : 0;
     specificValue += annotations.renamings[qname] !== undefined ? 1 : 0;
     specificValue += annotations.removes[qname] !== undefined ? 1 : 0;
 

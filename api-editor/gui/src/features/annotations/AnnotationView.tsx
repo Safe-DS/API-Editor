@@ -11,6 +11,7 @@ import {
     removeBoundary,
     removeCalledAfter,
     removeConstant,
+    removeDescription,
     removeEnum,
     removeGroup,
     removeMove,
@@ -23,6 +24,7 @@ import {
     selectBoundary,
     selectCalledAfters,
     selectConstant,
+    selectDescription,
     selectEnum,
     selectGroups,
     selectMove,
@@ -36,6 +38,7 @@ import {
     showAttributeAnnotationForm,
     showBoundaryAnnotationForm,
     showConstantAnnotationForm,
+    showDescriptionAnnotationForm,
     showEnumAnnotationForm,
     showGroupAnnotationForm,
     showMoveAnnotationForm,
@@ -54,6 +57,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
     const boundaryAnnotation = useAppSelector(selectBoundary(target));
     const calledAfterAnnotation = useAppSelector(selectCalledAfters(target));
     const constantAnnotation = useAppSelector(selectConstant(target));
+    const descriptionAnnotation = useAppSelector(selectDescription(target));
     const enumAnnotation = useAppSelector(selectEnum(target));
     const groupAnnotations = useAppSelector(selectGroups(target));
     const moveAnnotation = useAppSelector(selectMove(target));
@@ -68,6 +72,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
         !boundaryAnnotation &&
         !calledAfterAnnotation &&
         !constantAnnotation &&
+        !descriptionAnnotation &&
         !enumAnnotation &&
         !groupAnnotations &&
         !moveAnnotation &&
@@ -113,6 +118,13 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     name={valueToString(constantAnnotation.defaultValue, constantAnnotation.defaultType)}
                     onEdit={() => dispatch(showConstantAnnotationForm(target))}
                     onDelete={() => dispatch(removeConstant(target))}
+                />
+            )}
+            {descriptionAnnotation && (
+                <Annotation
+                    type="description"
+                    onEdit={() => dispatch(showDescriptionAnnotationForm(target))}
+                    onDelete={() => dispatch(removeDescription(target))}
                 />
             )}
             {enumAnnotation && (
