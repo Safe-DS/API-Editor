@@ -1,8 +1,11 @@
 import inspect
+import logging
 import re
 from typing import Optional, Union
 
 import astroid
+from astroid.context import InferenceContext
+from astroid.helpers import safe_infer
 from numpydoc.docscrape import NumpyDocString
 from package_parser.model.api import (
     API,
@@ -93,12 +96,20 @@ class _AstVisitor:
                 # Find re-exported declarations in __init__.py files
                 if _is_init_file(module_node.file) and is_public_module(module_node.qname()):
                     for declaration, _ in global_node.names:
-                        reexported_name = f"{base_import_path}.{declaration}"
+                        context = InferenceContext()
+                        context.lookupname = declaration
+                        node = safe_infer(global_node, context)
 
-                        # if reexported_name.startswith(module_node.name):
-                        if reexported_name not in self.reexported:
-                            self.reexported[reexported_name] = []
-                        self.reexported[reexported_name] += [id_]
+                        if node is None:
+                            logging.warning(f"Could not resolve 'from {global_node.modname} import {declaration}")
+                            continue
+
+                        reexported_name = node.qname()
+
+                        if reexported_name.startswith(module_node.name):
+                            if reexported_name not in self.reexported:
+                                self.reexported[reexported_name] = []
+                            self.reexported[reexported_name].append(id_)
 
         # Remember module, so we can later add classes and global functions
         module = Module(
