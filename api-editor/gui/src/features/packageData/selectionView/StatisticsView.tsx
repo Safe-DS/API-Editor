@@ -1,72 +1,53 @@
-import React, {ReactElement} from 'react';
+import React, { ReactElement } from 'react';
 import {
+    BarElement,
+    CategoryScale,
     Chart as ChartJS,
-    CategoryScale,
-    PointElement,
-    LineElement,
     LinearScale,
-    BarElement,
+    LineElement,
+    PointElement,
     Title,
-    Tooltip
+    Tooltip,
 } from 'chart.js';
-
-ChartJS.register(
-    CategoryScale,
-    PointElement,
-    LineElement,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip
-);
-
 import { Bar, Line } from 'react-chartjs-2';
-import PythonPackage from "../model/PythonPackage";
-import {VStack} from "@chakra-ui/react";
-import {UsageCountStore} from "../../usages/model/UsageCountStore";
+import { PythonPackage } from '../model/PythonPackage';
+import { VStack } from '@chakra-ui/react';
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
 
+ChartJS.register(CategoryScale, PointElement, LineElement, LinearScale, BarElement, Title, Tooltip);
 
 interface FunctionViewProps {
     pythonPackage: PythonPackage;
     usages: UsageCountStore;
 }
 
-const StatisticsView: React.FC<FunctionViewProps> = function ({pythonPackage, usages}) {
-
+const StatisticsView: React.FC<FunctionViewProps> = function ({ pythonPackage, usages }) {
     const usedThreshold = 1;
 
     const classLabels = ['full', 'public', 'used'];
     const classValues = getClassValues(pythonPackage, usages, usedThreshold);
-    const classBarChart = createBarChart(classLabels, classValues, "Classes");
+    const classBarChart = createBarChart(classLabels, classValues, 'Classes');
 
     const functionLabels = ['full', 'public', 'used'];
     const functionValues = getFunctionValues(pythonPackage, usages, usedThreshold);
-    const functionBarChart = createBarChart(functionLabels, functionValues, "Functions");
+    const functionBarChart = createBarChart(functionLabels, functionValues, 'Functions');
 
     const parameterLabels = ['full', 'public', 'used', 'useful'];
     const parameterValues = getParameterValues(pythonPackage, usages, usedThreshold);
-    const parameterBarChart = createBarChart(parameterLabels, parameterValues, "Parameters");
-
+    const parameterBarChart = createBarChart(parameterLabels, parameterValues, 'Parameters');
 
     const thresholds = [...Array(26).keys()];
     thresholds.shift();
-    const classLineChart = createLineChart(usages, thresholds, getUsedClasses, "Classes per Threshold");
-    const functionLineChart = createLineChart(usages, thresholds, getUsedFunctions, "Classes per Threshold");
-    const parameterLineChart = createLineChart(usages, thresholds, getUsefulParameters, "Classes per Threshold");
+    const classLineChart = createLineChart(usages, thresholds, getUsedClasses, 'Classes per Threshold');
+    const functionLineChart = createLineChart(usages, thresholds, getUsedFunctions, 'Classes per Threshold');
+    const parameterLineChart = createLineChart(usages, thresholds, getUsefulParameters, 'Classes per Threshold');
 
     return (
         <VStack>
-            {classBarChart},
-            {functionBarChart},
-            {parameterBarChart},
-            {classLineChart},
-            {functionLineChart},
+            {classBarChart},{functionBarChart},{parameterBarChart},{classLineChart},{functionLineChart},
             {parameterLineChart}
         </VStack>
-    )
-
-
-
+    );
 };
 
 let getClassValues = function (pythonPackage: PythonPackage, usages: UsageCountStore, usedThreshold: number) {
@@ -75,7 +56,7 @@ let getClassValues = function (pythonPackage: PythonPackage, usages: UsageCountS
 
     let publicClasses = 0;
     classes.forEach((element) => {
-        publicClasses += (element.isPublic) ? 1 : 0
+        publicClasses += element.isPublic ? 1 : 0;
     });
 
     result.push(classes.length);
@@ -83,7 +64,7 @@ let getClassValues = function (pythonPackage: PythonPackage, usages: UsageCountS
     result.push(getUsedClasses(usages, usedThreshold));
 
     return result;
-}
+};
 
 let getFunctionValues = function (pythonPackage: PythonPackage, usages: UsageCountStore, usedThreshold: number) {
     const functions = pythonPackage.getFunctions();
@@ -91,7 +72,7 @@ let getFunctionValues = function (pythonPackage: PythonPackage, usages: UsageCou
 
     let publicFunctions = 0;
     functions.forEach((element) => {
-        publicFunctions += (element.isPublic) ? 1 : 0
+        publicFunctions += element.isPublic ? 1 : 0;
     });
 
     result.push(functions.length);
@@ -99,7 +80,7 @@ let getFunctionValues = function (pythonPackage: PythonPackage, usages: UsageCou
     result.push(getUsedFunctions(usages, usedThreshold));
 
     return result;
-}
+};
 
 let getParameterValues = function (pythonPackage: PythonPackage, usages: UsageCountStore, usedThreshold: number) {
     const parameters = pythonPackage.getParameter();
@@ -107,7 +88,7 @@ let getParameterValues = function (pythonPackage: PythonPackage, usages: UsageCo
 
     let publicParameters = 0;
     parameters.forEach((element) => {
-        publicParameters += (element.isPublic) ? 1 : 0
+        publicParameters += element.isPublic ? 1 : 0;
     });
 
     result.push(parameters.length);
@@ -116,37 +97,45 @@ let getParameterValues = function (pythonPackage: PythonPackage, usages: UsageCo
     result.push(getUsefulParameters(usages, usedThreshold));
 
     return result;
-}
+};
 
 let getUsedClasses = function (usages: UsageCountStore, usedThreshold: number): number {
     let usedClasses = 0;
     usages.classUsages.forEach((value) => {
-        usedClasses += (value >= usedThreshold) ? 1 : 0});
+        usedClasses += value >= usedThreshold ? 1 : 0;
+    });
     return usedClasses;
-}
+};
 
 let getUsedFunctions = function (usages: UsageCountStore, usedThreshold: number): number {
     let usedFunctions = 0;
     usages.functionUsages.forEach((value) => {
-        usedFunctions += (value >= usedThreshold) ? 1 : 0});
+        usedFunctions += value >= usedThreshold ? 1 : 0;
+    });
     return usedFunctions;
-}
+};
 
 let getUsedParameters = function (usages: UsageCountStore, usedThreshold: number): string[] {
     let usedParameters: string[] = [];
     usages.parameterUsages.forEach((value, key) => {
-        if (value >= usedThreshold) {usedParameters.push(key)}
+        if (value >= usedThreshold) {
+            usedParameters.push(key);
+        }
     });
     return usedParameters;
-}
+};
 
 let getUsefulParameters = function (usages: UsageCountStore, usedThreshold: number): number {
     const usedParameters = getUsedParameters(usages, usedThreshold);
     let usefulParameter = 0;
-    usedParameters.forEach((name) => { // @ts-ignore
-        if (usages.valueUsages.get(name).size > 1) {usefulParameter++}});
+    usedParameters.forEach((name) => {
+        // @ts-ignore
+        if (usages.valueUsages.get(name).size > 1) {
+            usefulParameter++;
+        }
+    });
     return usefulParameter;
-}
+};
 
 let createBarChart = function (labels: string[], values: number[], title: string): ReactElement {
     const options = {
@@ -180,28 +169,21 @@ let createBarChart = function (labels: string[], values: number[], title: string
         datasets: [
             {
                 data: labels.map((key) => dataValues.get(key)),
-                borderColor: [
-                    "#9A1D1D",
-                    "#7768AE",
-                    "#FFCC00",
-                    "#1BA25A"
-                ],
-                backgroundColor: [
-                    "#9A1D1D",
-                    "#7768AE",
-                    "#FFCC00",
-                    "#1BA25A"
-                ],
-            }
+                borderColor: ['#9A1D1D', '#7768AE', '#FFCC00', '#1BA25A'],
+                backgroundColor: ['#9A1D1D', '#7768AE', '#FFCC00', '#1BA25A'],
+            },
         ],
     };
 
-    return (
-        <Bar options={options} data={data} />
-    )
-}
+    return <Bar options={options} data={data} />;
+};
 
-let createLineChart = function (usages: UsageCountStore, labels: number[], getValue: Function, title: string): ReactElement {
+let createLineChart = function (
+    usages: UsageCountStore,
+    labels: number[],
+    getValue: Function,
+    title: string,
+): ReactElement {
     const options = {
         responsive: true,
         plugins: {
@@ -227,14 +209,11 @@ let createLineChart = function (usages: UsageCountStore, labels: number[], getVa
                 data: labels.map((key) => dataValues.get(key)),
                 borderColor: 'rgb(255, 99, 132)',
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
-            }
+            },
         ],
     };
 
-    return (
-        <Line options={options} data={data} />
-    )
-}
-
+    return <Line options={options} data={data} />;
+};
 
 export default StatisticsView;

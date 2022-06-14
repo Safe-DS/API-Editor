@@ -12,14 +12,16 @@ import { ParameterView } from './ParameterView';
 import { ActionBar } from './ActionBar';
 import { useAppSelector } from '../../../app/hooks';
 import { selectRawPythonPackage } from '../apiSlice';
-import StatisticsView from "./StatisticsView";
+import StatisticsView from './StatisticsView';
+import { selectUsages } from '../../usages/usageSlice';
 
 export const SelectionView: React.FC = function () {
-    const rawPythonPackage = useAppSelector(selectRawPythonPackage);
-    const declaration = rawPythonPackage.getDeclarationById(useLocation().pathname.split('/').splice(1).join('/'));
+    const pythonPackage = useAppSelector(selectRawPythonPackage);
+    const usages = useAppSelector(selectUsages);
+    const declaration = pythonPackage.getDeclarationById(useLocation().pathname.split('/').splice(1).join('/'));
     const location = useLocation().pathname;
 
-    if (location === "/statisticsView") {
+    if (location === '/statisticsView') {
         return (
             <VStack h="100%">
                 <Box w="100%" flexGrow={1} overflowY="scroll">
@@ -31,7 +33,6 @@ export const SelectionView: React.FC = function () {
         );
     }
 
-    const declaration = pythonPackage.getByRelativePath(location.split('/').splice(2));
     if (!declaration) {
         return null;
     }
