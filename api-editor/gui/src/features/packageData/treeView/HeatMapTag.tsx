@@ -15,7 +15,7 @@ export enum HeatMapInterpolation {
 export const HeatMapTag: React.FC<HeatMapTagProps> = function ({ actualValue, maxValue, interpolation }) {
     const bg = backgroundColor(actualValue, maxValue ?? 0, interpolation);
     const opacity = maxValue === undefined ? 0 : 1;
-    const boxWidth = maxValue === undefined ? 0 : maxValue.toString().length * 6.7;
+    const boxWidth = maxValue === undefined ? 0 : 16 + maxValue.toString().length * 5;
 
     return (
         <Tag
@@ -28,6 +28,7 @@ export const HeatMapTag: React.FC<HeatMapTagProps> = function ({ actualValue, ma
             width={boxWidth}
             border="1px solid white"
             boxSizing="border-box"
+            fontFamily="monospace"
         >
             {actualValue}
         </Tag>
