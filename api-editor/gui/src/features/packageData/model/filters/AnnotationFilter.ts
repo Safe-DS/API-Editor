@@ -1,11 +1,11 @@
-import {PythonClass} from '../PythonClass';
-import {PythonFunction} from '../PythonFunction';
-import {PythonModule} from '../PythonModule';
-import {PythonParameter} from '../PythonParameter';
-import {AbstractPythonFilter} from './AbstractPythonFilter';
-import {PythonDeclaration} from '../PythonDeclaration';
-import {AnnotationStore} from '../../../annotations/annotationSlice';
-import {UsageCountStore} from '../../../usages/model/UsageCountStore';
+import { PythonClass } from '../PythonClass';
+import { PythonFunction } from '../PythonFunction';
+import { PythonModule } from '../PythonModule';
+import { PythonParameter } from '../PythonParameter';
+import { AbstractPythonFilter } from './AbstractPythonFilter';
+import { PythonDeclaration } from '../PythonDeclaration';
+import { AnnotationStore } from '../../../annotations/annotationSlice';
+import { UsageCountStore } from '../../../usages/model/UsageCountStore';
 
 /**
  * Keeps only declarations with either an arbitrary or a specific annotation.

@@ -94,14 +94,18 @@ class _AstVisitor:
                     from_imports.append(FromImport(base_import_path, name, alias))
 
                 # Find re-exported declarations in __init__.py files
-                if _is_init_file(module_node.file) and is_public_module(module_node.qname()):
+                if _is_init_file(module_node.file) and is_public_module(
+                    module_node.qname()
+                ):
                     for declaration, _ in global_node.names:
                         context = InferenceContext()
                         context.lookupname = declaration
                         node = safe_infer(global_node, context)
 
                         if node is None:
-                            logging.warning(f"Could not resolve 'from {global_node.modname} import {declaration}")
+                            logging.warning(
+                                f"Could not resolve 'from {global_node.modname} import {declaration}"
+                            )
                             continue
 
                         reexported_name = node.qname()
@@ -331,7 +335,10 @@ class _AstVisitor:
             return True
 
         # Containing class is re-exported (always false if the current API element is not a method)
-        if isinstance(self.__declaration_stack[-1], Class) and parent_qualified_name(qualified_name) in self.reexported:
+        if (
+            isinstance(self.__declaration_stack[-1], Class)
+            and parent_qualified_name(qualified_name) in self.reexported
+        ):
             return True
 
         # The slicing is necessary so __init__ functions are not excluded (already handled in the first condition).

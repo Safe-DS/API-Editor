@@ -57,7 +57,6 @@ const parsePythonModuleJson = function (
     functions: Map<string, PythonFunction>,
     idToDeclaration: Map<string, PythonDeclaration>,
 ): PythonModule {
-
     // Classes
     const classesInModule = moduleJson.classes
         .filter((classId) => classes.has(classId) && classes.get(classId)!.reexportedBy.length === 0)

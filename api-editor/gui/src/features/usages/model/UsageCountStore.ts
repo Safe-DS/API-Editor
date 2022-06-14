@@ -1,9 +1,9 @@
 import { PythonPackage } from '../../packageData/model/PythonPackage';
 import { PythonParameter } from '../../packageData/model/PythonParameter';
-import {PythonDeclaration} from "../../packageData/model/PythonDeclaration";
-import {PythonModule} from "../../packageData/model/PythonModule";
-import {PythonClass} from "../../packageData/model/PythonClass";
-import {PythonFunction} from "../../packageData/model/PythonFunction";
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
+import { PythonModule } from '../../packageData/model/PythonModule';
+import { PythonClass } from '../../packageData/model/PythonClass';
+import { PythonFunction } from '../../packageData/model/PythonFunction';
 
 export interface UsageCountJson {
     module_counts?: {
