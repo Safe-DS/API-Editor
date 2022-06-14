@@ -23,8 +23,11 @@ import { selectAnnotations } from '../features/annotations/annotationSlice';
 import { FilterHelpButton } from './FilterHelpButton';
 import {
     HeatMapMode,
-    selectHeatMapMode, selectSortingMode,
-    setHeatMapMode, setSortingMode, SortingMode,
+    selectHeatMapMode,
+    selectSortingMode,
+    setHeatMapMode,
+    setSortingMode,
+    SortingMode,
     toggleAnnotationImportDialog,
     toggleAPIImportDialog,
     toggleUsageImportDialog,
@@ -108,7 +111,11 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                             </MenuOptionGroup>
                             <MenuDivider />
                             <MenuGroup title="Class/Function Sorting">
-                                <MenuOptionGroup type="radio" defaultValue={SortingMode.Alphabetical} value={sortingMode}>
+                                <MenuOptionGroup
+                                    type="radio"
+                                    defaultValue={SortingMode.Alphabetical}
+                                    value={sortingMode}
+                                >
                                     <MenuItemOption
                                         paddingLeft={8}
                                         value={SortingMode.Alphabetical}
