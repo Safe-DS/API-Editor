@@ -23,8 +23,8 @@ import { selectAnnotations } from '../features/annotations/annotationSlice';
 import { FilterHelpButton } from './FilterHelpButton';
 import {
     HeatMapMode,
-    selectHeatMapMode,
-    setHeatMapMode,
+    selectHeatMapMode, selectSortingMode,
+    setHeatMapMode, setSortingMode, SortingMode,
     toggleAnnotationImportDialog,
     toggleAPIImportDialog,
     toggleUsageImportDialog,
@@ -43,6 +43,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
     const dispatch = useAppDispatch();
 
     const annotationStore = useAppSelector(selectAnnotations);
+    const sortingMode = useAppSelector(selectSortingMode);
     const heatMapMode = useAppSelector(selectHeatMapMode);
 
     const exportAnnotations = () => {
@@ -58,17 +59,6 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
     const colorModeArray: string[] = [];
     if (colorMode === 'dark') {
         colorModeArray.push('darkMode');
-    }
-
-    let heatMapModeString: string = '';
-    if (heatMapMode === HeatMapMode.None) {
-        heatMapModeString = 'none';
-    } else if (heatMapMode === HeatMapMode.Usages) {
-        heatMapModeString = 'usages';
-    } else if (heatMapMode === HeatMapMode.Usefulness) {
-        heatMapModeString = 'usefulness';
-    } else if (heatMapMode === HeatMapMode.Annotations) {
-        heatMapModeString = 'annotations';
     }
 
     return (
@@ -117,32 +107,51 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                                 </MenuItemOption>
                             </MenuOptionGroup>
                             <MenuDivider />
-                            <MenuGroup title="Heat Map Mode">
-                                <MenuOptionGroup type="radio" defaultValue="none" value={heatMapModeString}>
+                            <MenuGroup title="Class/Function Sorting">
+                                <MenuOptionGroup type="radio" defaultValue={SortingMode.Alphabetical} value={sortingMode}>
                                     <MenuItemOption
                                         paddingLeft={8}
-                                        value={'none'}
+                                        value={SortingMode.Alphabetical}
+                                        onClick={() => dispatch(setSortingMode(SortingMode.Alphabetical))}
+                                    >
+                                        Alphabetical
+                                    </MenuItemOption>
+                                    <MenuItemOption
+                                        paddingLeft={8}
+                                        value={SortingMode.Usages}
+                                        onClick={() => dispatch(setSortingMode(SortingMode.Usages))}
+                                    >
+                                        Usages (Descending)
+                                    </MenuItemOption>
+                                </MenuOptionGroup>
+                            </MenuGroup>
+                            <MenuDivider />
+                            <MenuGroup title="Heat Map Mode">
+                                <MenuOptionGroup type="radio" defaultValue={HeatMapMode.None} value={heatMapMode}>
+                                    <MenuItemOption
+                                        paddingLeft={8}
+                                        value={HeatMapMode.None}
                                         onClick={() => dispatch(setHeatMapMode(HeatMapMode.None))}
                                     >
                                         None
                                     </MenuItemOption>
                                     <MenuItemOption
                                         paddingLeft={8}
-                                        value={'usages'}
+                                        value={HeatMapMode.Usages}
                                         onClick={() => dispatch(setHeatMapMode(HeatMapMode.Usages))}
                                     >
                                         Usages
                                     </MenuItemOption>
                                     <MenuItemOption
                                         paddingLeft={8}
-                                        value={'usefulness'}
+                                        value={HeatMapMode.Usefulness}
                                         onClick={() => dispatch(setHeatMapMode(HeatMapMode.Usefulness))}
                                     >
                                         Usefulness
                                     </MenuItemOption>
                                     <MenuItemOption
                                         paddingLeft={8}
-                                        value={'annotations'}
+                                        value={HeatMapMode.Annotations}
                                         onClick={() => dispatch(setHeatMapMode(HeatMapMode.Annotations))}
                                     >
                                         Annotations
