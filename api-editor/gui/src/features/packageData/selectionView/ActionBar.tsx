@@ -24,16 +24,12 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    console.log("-----------------------------------------------------");
-
     const pythonPackage = useAppSelector(selectFilteredPythonPackage);
     const pythonFilter = useAppSelector(selectFilter);
     const annotations = useAppSelector(selectAnnotations);
     const usages = useAppSelector(selectUsages);
     const isMatched = (node: PythonDeclaration): boolean =>
         pythonFilter.shouldKeepDeclaration(node, annotations, usages);
-
-    console.log(pythonPackage);
 
     return (
         <HStack borderTop={1} layerStyle="subtleBorder" padding="0.5em 1em" marginTop={0} w="100%">
@@ -128,7 +124,6 @@ const getNextElementPath = function (
 };
 
 const getNextElementInTree = function (current: PythonDeclaration): PythonDeclaration | null {
-    console.log(current);
     if (current.children().length > 0) {
         return current.children()[0];
     } else if (current.parent()) {
@@ -192,6 +187,7 @@ const getLastElementInTree = function (current: PythonDeclaration): PythonDeclar
 
 const getAncestors = function (navStr: string, filteredPythonPackage: PythonPackage): string[] {
     const ancestors: string[] = [];
+
     let currentElement = filteredPythonPackage.getDeclarationById(navStr);
     if (currentElement) {
         currentElement = currentElement.parent();
@@ -200,6 +196,7 @@ const getAncestors = function (navStr: string, filteredPythonPackage: PythonPack
             currentElement = currentElement.parent();
         }
     }
+
     return ancestors;
 };
 

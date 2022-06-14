@@ -48,7 +48,7 @@ export class PythonPackage extends PythonDeclaration {
         version = this.version,
         modules = this.modules,
     }: PythonPackageShallowCopy = {}): PythonPackage {
-        return new PythonPackage(distribution, name, version, modules);
+        return new PythonPackage(distribution, name, version, modules, this.idToDeclaration);
     }
 
     toString(): string {
