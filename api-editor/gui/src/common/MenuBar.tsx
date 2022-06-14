@@ -64,6 +64,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
         colorModeArray.push('darkMode');
     }
 
+    const showStatistics = () => {};
     return (
         <Flex as="nav" borderBottom={1} layerStyle="subtleBorder" padding="0.5em 1em">
             <HStack>
