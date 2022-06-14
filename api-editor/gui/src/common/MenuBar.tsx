@@ -110,7 +110,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                                 </MenuItemOption>
                             </MenuOptionGroup>
                             <MenuDivider />
-                            <MenuGroup title="Class/Function Sorting">
+                            <MenuGroup title="Module/Class/Function Sorting">
                                 <MenuOptionGroup
                                     type="radio"
                                     defaultValue={SortingMode.Alphabetical}
