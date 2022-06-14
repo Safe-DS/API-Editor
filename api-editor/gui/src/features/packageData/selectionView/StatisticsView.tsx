@@ -21,7 +21,7 @@ interface FunctionViewProps {
     usages: UsageCountStore;
 }
 
-const StatisticsView: React.FC<FunctionViewProps> = function ({ pythonPackage, usages }) {
+export const StatisticsView: React.FC<FunctionViewProps> = function ({ pythonPackage, usages }) {
     const usedThreshold = 1;
 
     const classLabels = ['full', 'public', 'used'];
@@ -215,5 +215,3 @@ let createLineChart = function (
 
     return <Line options={options} data={data} />;
 };
-
-export default StatisticsView;

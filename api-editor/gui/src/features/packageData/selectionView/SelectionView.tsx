@@ -12,7 +12,7 @@ import { ParameterView } from './ParameterView';
 import { ActionBar } from './ActionBar';
 import { useAppSelector } from '../../../app/hooks';
 import { selectRawPythonPackage } from '../apiSlice';
-import StatisticsView from './StatisticsView';
+import { StatisticsView } from './StatisticsView';
 import { selectUsages } from '../../usages/usageSlice';
 
 export const SelectionView: React.FC = function () {
