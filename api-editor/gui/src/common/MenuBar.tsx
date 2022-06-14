@@ -36,7 +36,7 @@ import { DeleteAllAnnotations } from './DeleteAllAnnotations';
 import { GenerateAdapters } from './GenerateAdapters';
 import { FilterInput } from './FilterInput';
 import { selectNumberOfMatchedNodes } from '../features/packageData/apiSlice';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 interface MenuBarProps {
     displayInferErrors: (errors: string[]) => void;
@@ -62,9 +62,9 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
     };
 
     const setStatisticsViewPath = () => {
-        const tmp = "statisticsView"
-        navigate((`/${tmp}`));
-    }
+        const tmp = 'statisticsView';
+        navigate(`/${tmp}`);
+    };
 
     const colorModeArray: string[] = [];
     if (colorMode === 'dark') {
@@ -177,7 +177,6 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                 </Box>
 
                 <Button onClick={setStatisticsViewPath}>Statistics View</Button>
-
             </HStack>
 
             <Spacer />

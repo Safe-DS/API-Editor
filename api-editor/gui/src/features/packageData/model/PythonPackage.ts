@@ -5,7 +5,6 @@ import { PythonClass } from './PythonClass';
 import { PythonFunction } from './PythonFunction';
 import { PythonParameter } from './PythonParameter';
 
-
 interface PythonPackageShallowCopy {
     distribution?: string;
     name?: string;
@@ -105,5 +104,4 @@ export class PythonPackage extends PythonDeclaration {
         }
         return result;
     }
-
 }
