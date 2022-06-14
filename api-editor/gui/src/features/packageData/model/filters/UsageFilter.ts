@@ -1,15 +1,15 @@
-import PythonClass from '../PythonClass';
-import PythonFunction from '../PythonFunction';
-import PythonModule from '../PythonModule';
-import PythonParameter from '../PythonParameter';
-import AbstractPythonFilter from './AbstractPythonFilter';
-import { AnnotationsState } from '../../../annotations/annotationSlice';
+import { PythonClass } from '../PythonClass';
+import { PythonFunction } from '../PythonFunction';
+import { PythonModule } from '../PythonModule';
+import { PythonParameter } from '../PythonParameter';
+import { AbstractPythonFilter } from './AbstractPythonFilter';
+import { AnnotationStore } from '../../../annotations/annotationSlice';
 import { UsageCountStore } from '../../../usages/model/UsageCountStore';
 
 /**
  * Keeps only declarations are used a certain number of times.
  */
-export default class UsageFilter extends AbstractPythonFilter {
+export class UsageFilter extends AbstractPythonFilter {
     /**
      * @param comparison How actual and expected usages should be compared.
      * @param expectedUsage The expected number of usages.
@@ -21,30 +21,27 @@ export default class UsageFilter extends AbstractPythonFilter {
         super();
     }
 
-    shouldKeepModule(_pythonModule: PythonModule, _annotations: AnnotationsState, _usages: UsageCountStore): boolean {
-        return false;
+    shouldKeepModule(pythonModule: PythonModule, annotations: AnnotationStore, usages: UsageCountStore): boolean {
+        const moduleUsages = usages.moduleUsages.get(pythonModule.id);
+        return this.shouldKeepWithUsages(moduleUsages);
     }
 
-    shouldKeepClass(pythonClass: PythonClass, annotations: AnnotationsState, usages: UsageCountStore): boolean {
-        const classUsages = usages.classUsages.get(pythonClass.qualifiedName);
+    shouldKeepClass(pythonClass: PythonClass, annotations: AnnotationStore, usages: UsageCountStore): boolean {
+        const classUsages = usages.classUsages.get(pythonClass.id);
         return this.shouldKeepWithUsages(classUsages);
     }
 
-    shouldKeepFunction(
-        pythonFunction: PythonFunction,
-        annotations: AnnotationsState,
-        usages: UsageCountStore,
-    ): boolean {
-        const functionUsages = usages.functionUsages.get(pythonFunction.qualifiedName);
+    shouldKeepFunction(pythonFunction: PythonFunction, annotations: AnnotationStore, usages: UsageCountStore): boolean {
+        const functionUsages = usages.functionUsages.get(pythonFunction.id);
         return this.shouldKeepWithUsages(functionUsages);
     }
 
     shouldKeepParameter(
         pythonParameter: PythonParameter,
-        annotations: AnnotationsState,
+        annotations: AnnotationStore,
         usages: UsageCountStore,
     ): boolean {
-        const parameterUsages = usages.parameterUsages.get(pythonParameter.qualifiedName());
+        const parameterUsages = usages.parameterUsages.get(pythonParameter.id);
         return this.shouldKeepWithUsages(parameterUsages);
     }
 

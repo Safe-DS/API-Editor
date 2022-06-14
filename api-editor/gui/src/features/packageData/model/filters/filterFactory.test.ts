@@ -1,9 +1,9 @@
-import { createFilterFromString } from './filterFactory';
+import { createFilterFromString, isValidFilterToken } from './filterFactory';
 import { ConjunctiveFilter } from './ConjunctiveFilter';
-import VisibilityFilter, { Visibility } from './VisibilityFilter';
+import { Visibility, VisibilityFilter } from './VisibilityFilter';
 import { NegatedFilter } from './NegatedFilter';
-import NameFilter from './NameFilter';
-import UsageFilter from './UsageFilter';
+import { NameFilter } from './NameFilter';
+import { UsageFilter } from './UsageFilter';
 import { UsefulnessFilter } from './UsefulnessFilter';
 import { greaterThan } from './comparisons';
 
@@ -86,5 +86,22 @@ describe('createFilterFromString', () => {
         expect(positiveFilter).toBeInstanceOf(UsefulnessFilter);
         expect((positiveFilter as UsefulnessFilter).comparison).toEqual(greaterThan);
         expect((positiveFilter as UsefulnessFilter).expectedUsefulness).toBe(2);
+    });
+});
+
+describe('isValidFilterToken', () => {
+    test.each`
+        token                    | expectedResult
+        ${'is:public'}           | ${true}
+        ${'!is:public'}          | ${true}
+        ${'name:foo'}            | ${true}
+        ${'usages:>2'}           | ${true}
+        ${'usefulness:>2'}       | ${true}
+        ${'is:'}                 | ${false}
+        ${'is:public:'}          | ${false}
+        ${'annotations:any'}     | ${false}
+        ${'annotation:optional'} | ${false}
+    `("handles detect valid/invalid tokens (token: '$token')", ({ token, expectedResult }) => {
+        expect(isValidFilterToken(token)).toBe(expectedResult);
     });
 });

@@ -1,11 +1,7 @@
 import { Optional } from '../../../common/util/types';
 
-export default class PythonFromImport {
-    constructor(
-        readonly module: string,
-        readonly declaration: string,
-        readonly alias: Optional<string> = null,
-    ) {}
+export class PythonFromImport {
+    constructor(readonly module: string, readonly declaration: string, readonly alias: Optional<string> = null) {}
 
     toString(): string {
         if (this.alias === null) {

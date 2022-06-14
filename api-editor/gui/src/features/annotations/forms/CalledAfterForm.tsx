@@ -2,9 +2,10 @@ import { FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Select } from 
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { hideAnnotationForms, selectCalledAfters, upsertCalledAfter } from '../annotationSlice';
+import { selectCalledAfters, upsertCalledAfter } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
-import PythonFunction from '../../packageData/model/PythonFunction';
+import { PythonFunction } from '../../packageData/model/PythonFunction';
+import { hideAnnotationForm } from '../../ui/uiSlice';
 
 interface CalledAfterFormProps {
     readonly target: PythonFunction;
@@ -15,7 +16,7 @@ interface CalledAfterFormState {
 }
 
 export const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ target }) {
-    const targetPath = target.pathAsString();
+    const targetPath = target.id;
     const currentCalledAfters = Object.keys(useAppSelector(selectCalledAfters(targetPath)));
 
     const remainingCalledAfters = target
@@ -39,7 +40,11 @@ export const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ targe
     });
 
     useEffect(() => {
-        setFocus('calledAfterName');
+        try {
+            setFocus('calledAfterName');
+        } catch (e) {
+            // ignore
+        }
     }, [setFocus]);
 
     useEffect(() => {
@@ -57,11 +62,11 @@ export const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ targe
                 ...data,
             }),
         );
-        dispatch(hideAnnotationForms());
+        dispatch(hideAnnotationForm());
     };
 
     const onCancel = () => {
-        dispatch(hideAnnotationForms());
+        dispatch(hideAnnotationForm());
     };
 
     // Rendering -------------------------------------------------------------------------------------------------------

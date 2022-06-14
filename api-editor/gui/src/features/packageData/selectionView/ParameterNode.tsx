@@ -1,29 +1,20 @@
-import {
-    Box,
-    Heading,
-    HStack,
-    Stack,
-    Text as ChakraText,
-} from '@chakra-ui/react';
+import { Box, Heading, HStack, Stack, Text as ChakraText } from '@chakra-ui/react';
 import React from 'react';
-import AnnotationDropdown from '../../annotations/AnnotationDropdown';
-import AnnotationView from '../../annotations/AnnotationView';
-import PythonParameter from '../model/PythonParameter';
-import DocumentationText from './DocumentationText';
+import { AnnotationDropdown } from '../../annotations/AnnotationDropdown';
+import { AnnotationView } from '../../annotations/AnnotationView';
+import { PythonParameter } from '../model/PythonParameter';
+import { DocumentationText } from './DocumentationText';
+import { DoneButton } from '../../annotations/DoneButton';
 
 interface ParameterNodeProps {
     pythonParameter: PythonParameter;
     isTitle: boolean;
 }
 
-const ParameterNode: React.FC<ParameterNodeProps> = function ({
-    isTitle,
-    pythonParameter,
-}) {
-    const id = pythonParameter.pathAsString();
+export const ParameterNode: React.FC<ParameterNodeProps> = function ({ isTitle, pythonParameter }) {
+    const id = pythonParameter.id;
 
-    const isConstructorParameter =
-        pythonParameter.parent()?.name === '__init__';
+    const isConstructorParameter = pythonParameter.parent()?.name === '__init__';
     const isExplicitParameter = pythonParameter.isExplicitParameter();
 
     return (
@@ -31,26 +22,28 @@ const ParameterNode: React.FC<ParameterNodeProps> = function ({
             <HStack>
                 {isTitle ? (
                     <Heading as="h3" size="lg">
-                        {pythonParameter.name}{' '}
-                        {!pythonParameter.isPublic && '(private)'}
+                        {pythonParameter.name} {!pythonParameter.isPublic && '(private)'}
                     </Heading>
                 ) : (
                     <Heading as="h4" size="sm">
-                        {pythonParameter.name}{' '}
-                        {!pythonParameter.isPublic && '(private)'}
+                        {pythonParameter.name} {!pythonParameter.isPublic && '(private)'}
                     </Heading>
                 )}
                 {pythonParameter.isPublic && isExplicitParameter && (
-                    <AnnotationDropdown
-                        target={id}
-                        showAttribute={isConstructorParameter}
-                        showBoundary
-                        showConstant
-                        showEnum
-                        showOptional
-                        showRename
-                        showRequired
-                    />
+                    <>
+                        <AnnotationDropdown
+                            target={id}
+                            showAttribute={isConstructorParameter}
+                            showBoundary
+                            showConstant
+                            showDescription
+                            showEnum
+                            showOptional
+                            showRename
+                            showRequired
+                        />
+                        <DoneButton target={id} />
+                    </>
                 )}
             </HStack>
 
@@ -58,17 +51,11 @@ const ParameterNode: React.FC<ParameterNodeProps> = function ({
 
             <Box paddingLeft={4}>
                 {pythonParameter.description ? (
-                    <DocumentationText
-                        inputText={pythonParameter?.description}
-                    />
+                    <DocumentationText inputText={pythonParameter?.description} />
                 ) : (
-                    <ChakraText color="gray.500">
-                        There is no documentation for this parameter.
-                    </ChakraText>
+                    <ChakraText color="gray.500">There is no documentation for this parameter.</ChakraText>
                 )}
             </Box>
         </Stack>
     );
 };
-
-export default ParameterNode;

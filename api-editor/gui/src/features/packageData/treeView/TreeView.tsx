@@ -2,40 +2,42 @@ import { Box } from '@chakra-ui/react';
 import React, { memo, useCallback, useEffect, useRef } from 'react';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import PythonClass from '../model/PythonClass';
-import PythonDeclaration from '../model/PythonDeclaration';
-import PythonFunction from '../model/PythonFunction';
-import PythonModule from '../model/PythonModule';
-import PythonPackage from '../model/PythonPackage';
-import PythonParameter from '../model/PythonParameter';
-import { selectAllExpandedInTreeView, selectTreeViewScrollOffset, setTreeViewScrollOffset } from '../packageDataSlice';
+import { PythonClass } from '../model/PythonClass';
+import { PythonDeclaration } from '../model/PythonDeclaration';
+import { PythonFunction } from '../model/PythonFunction';
+import { PythonModule } from '../model/PythonModule';
+import { PythonPackage } from '../model/PythonPackage';
+import { PythonParameter } from '../model/PythonParameter';
+import {
+    selectAllExpandedInTreeView,
+    selectFilter,
+    selectTreeViewScrollOffset,
+    setTreeViewScrollOffset,
+} from '../../ui/uiSlice';
 import { ClassNode } from './ClassNode';
 import { FunctionNode } from './FunctionNode';
 import { ModuleNode } from './ModuleNode';
 import { ParameterNode } from './ParameterNode';
-import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
-import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { AutoSizer } from '../../../common/AutoSizer';
+import { selectFlatSortedDeclarationList } from '../apiSlice';
+import { selectUsages } from '../../usages/usageSlice';
 
 interface ScrollOffset {
     scrollOffset: number;
-}
-
-interface TreeViewProps {
-    pythonPackage: PythonPackage;
-    filter: AbstractPythonFilter;
-    usages: UsageCountStore;
 }
 
 interface AutoSizerProps {
     height: number;
 }
 
-export const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage, filter, usages }) => {
+export const TreeView: React.FC = memo(() => {
     const dispatch = useAppDispatch();
-    const allExpanded = useAppSelector(selectAllExpandedInTreeView);
 
-    let children = walkChildrenInPreorder(allExpanded, pythonPackage);
+    const filter = useAppSelector(selectFilter);
+    const usages = useAppSelector(selectUsages);
+    const allExpanded = useAppSelector(selectAllExpandedInTreeView);
+    const flatSortedList = useAppSelector(selectFlatSortedDeclarationList);
+    const children = getNodes(allExpanded, flatSortedList);
     const previousScrollOffset = useAppSelector(selectTreeViewScrollOffset);
 
     // Keep a reference to the last FixedSizeList before everything is dismounted
@@ -71,7 +73,7 @@ export const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage, filter, 
                     itemSize={24}
                     itemCount={children.length}
                     itemData={{ children, filter, usages }}
-                    itemKey={(index, data) => data.children[index]?.pathAsString()}
+                    itemKey={(index, data) => data.children[index].id}
                     width="100%"
                     height={height}
                     style={{
@@ -88,16 +90,13 @@ export const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage, filter, 
     );
 });
 
-const walkChildrenInPreorder = function (
+const getNodes = function (
     allExpandedItemsInTreeView: { [target: string]: true },
-    declaration: PythonDeclaration,
+    declarations: PythonDeclaration[],
 ): PythonDeclaration[] {
-    return declaration.children().flatMap((it) => {
-        if (allExpandedItemsInTreeView[it.pathAsString()]) {
-            return [it, ...walkChildrenInPreorder(allExpandedItemsInTreeView, it)];
-        } else {
-            return [it];
-        }
+    return declarations.filter((it) => {
+        const parent = it.parent();
+        return parent && (parent instanceof PythonPackage || parent.id in allExpandedItemsInTreeView);
     });
 };
 

@@ -1,77 +1,108 @@
-import json
 import logging
-import multiprocessing
-from multiprocessing import synchronize
+import signal
+from multiprocessing import Pool
 from pathlib import Path
+from typing import TypeVar
 
 import astroid
-from package_parser.utils import ASTWalker, initialize_and_read_exclude_file, list_files
+from astroid.builder import AstroidBuilder
+from package_parser.utils import ASTWalker, list_files, parse_python_code
 
 from ...model.usages import UsageCountStore
 from ._ast_visitor import _UsageFinder
 
-__N_PROCESSES = 12
+
+def find_usages(
+    package_name: str, src_dir: Path, n_processes: int, batch_size: int
+) -> UsageCountStore:
+    python_files = list_files(src_dir, ".py")
+    python_file_batches = _split_into_batches(python_files, batch_size)
+
+    aggregated_counts = UsageCountStore()
+
+    for batch_index in range(0, len(python_file_batches), n_processes):
+        python_file_batches_slice = python_file_batches[
+            batch_index : batch_index + n_processes
+        ]
+        n_process_to_spawn = min(n_processes, len(python_file_batches_slice))
+
+        with Pool(
+            processes=n_process_to_spawn,
+            initializer=_initializer,
+            initargs=[logging.root.level],
+        ) as pool:
+            batch_counts = pool.starmap(
+                _find_usages_in_batch,
+                [[package_name, it] for it in python_file_batches_slice],
+            )
+
+            for batch_count in batch_counts:
+                aggregated_counts.merge_other_into_self(batch_count)
+
+    return aggregated_counts
 
 
-def find_usages(package_name: str, src_dir: Path, tmp_dir: Path):
-    candidate_python_files = list_files(src_dir, ".py")
-
-    exclude_file = tmp_dir.joinpath("$$$$$exclude$$$$$.txt")
-    excluded_python_files = set(initialize_and_read_exclude_file(exclude_file))
-
-    python_files = [
-        it for it in candidate_python_files if it not in excluded_python_files
-    ]
-
-    tmp_dir.mkdir(parents=True, exist_ok=True)
-
-    lock = multiprocessing.Lock()
-    with multiprocessing.Pool(
-        processes=__N_PROCESSES,
-        initializer=__initialize_process_environment,
-        initargs=(lock,),
-    ) as pool:
-        pool.starmap(
-            __find_usages_in_single_file,
-            [[package_name, it, exclude_file, tmp_dir] for it in python_files],
-        )
-    pool.join()
-    pool.close()
-
-    return _merge_results(tmp_dir)
+T = TypeVar("T")
 
 
-_lock: synchronize.Lock = multiprocessing.Lock()
+def _split_into_batches(list_: list[T], batch_size: int) -> list[list[T]]:
+    """
+    Splits a list into batches of size batch_size.
+    """
+
+    batches = []
+    batch = []
+
+    for python_file in list_:
+        batch.append(python_file)
+        if len(batch) >= batch_size:
+            batches.append(batch)
+            batch = []
+
+    if len(batch) > 0:
+        batches.append(batch)
+
+    return batches
 
 
-def __initialize_process_environment(lock: synchronize.Lock):
-    global _lock
-    _lock = lock
+def _initializer(log_level: int) -> None:
+    """
+    Ignore CTRL+C in the worker process.
+    """
+
+    logging.basicConfig(level=log_level)
+    signal.signal(signal.SIGINT, signal.SIG_IGN)
 
 
-def __find_usages_in_single_file(
+def _find_usages_in_batch(
+    package_name: str, python_files: list[str]
+) -> UsageCountStore:
+    ast_builder = AstroidBuilder()
+    usage_finder = _UsageFinder(package_name)
+    ast_walker = ASTWalker(usage_finder)
+
+    for python_file in python_files:
+        _find_usages_in_single_file(package_name, python_file, ast_builder, ast_walker)
+
+    return usage_finder.usages
+
+
+def _find_usages_in_single_file(
     package_name: str,
     python_file: str,
-    exclude_file: Path,
-    tmp_dir: Path,
-):
+    ast_builder: AstroidBuilder,
+    ast_walker: ASTWalker,
+) -> None:
     logging.info(f"Working on {python_file}")
 
+    # noinspection PyBroadException
     try:
-        with open(python_file, "r") as f:
+        with open(python_file, "r", encoding="UTF-8") as f:
             source = f.read()
 
         if __is_relevant_python_file(package_name, source):
-            usage_finder = _UsageFinder(package_name, python_file)
-            ASTWalker(usage_finder).walk(astroid.parse(source))
-
-            tmp_file = tmp_dir.joinpath(
-                python_file.replace("/", "__")
-                .replace("\\", "__")
-                .replace(".py", ".json")
-            )
-            with tmp_file.open("w") as f:
-                json.dump(usage_finder.usages.to_json(), f, indent=2)
+            module = parse_python_code(source, ast_builder=ast_builder)
+            ast_walker.walk(module)
         else:
             logging.info(f"Skipping {python_file} (irrelevant file)")
 
@@ -81,25 +112,9 @@ def __find_usages_in_single_file(
         logging.warning(f"Skipping {python_file} (invalid syntax)")
     except RecursionError:
         logging.warning(f"Skipping {python_file} (infinite recursion)")
-
-    with _lock:
-        with exclude_file.open("a") as f:
-            f.write(f"{python_file}\n")
+    except Exception as e:
+        logging.error(f"Skipping {python_file} (unknown error: {e})")
 
 
 def __is_relevant_python_file(package_name: str, source_code: str) -> bool:
     return package_name in source_code
-
-
-def _merge_results(tmp_dir: Path) -> UsageCountStore:
-    result = UsageCountStore()
-
-    files = list_files(tmp_dir, extension=".json")
-    for index, file in enumerate(files):
-        logging.info(f"Merging {file} ({index + 1}/{len(files)})")
-
-        with open(file, "r") as f:
-            other_usage_store = UsageCountStore.from_json(json.load(f))
-            result.merge_other_into_self(other_usage_store)
-
-    return result

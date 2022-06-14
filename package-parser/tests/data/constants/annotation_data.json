@@ -15,8 +15,8 @@
         "target": "test/test/UsedClass/used_method/constant_required_parameter"
     },
     "test/test/UsedClass/used_method/constant_optional_parameter": {
-        "defaultType": "string",
-        "defaultValue": "test",
+        "defaultType": "number",
+        "defaultValue": 0.5,
         "target": "test/test/UsedClass/used_method/constant_optional_parameter"
     }
 }

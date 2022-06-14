@@ -97,29 +97,26 @@ def test_extract_condition():
 def test_extract_dependencies_from_docstring_pattern_adverbial_clause():
     param_docstring_nlp = nlp("ignored when probability is False")
     dependent_param = Parameter(
+        id_="sklearn/sklearn.linear_model/LogisticRegression/random_state",
         name="random_state",
         qname="sklearn.linear_model.LogisticRegression.random_state",
-        pname="sklearn/sklearn.linear_model/LogisticRegression/random_state",
         default_value=None,
-        is_public=True,
         assigned_by=ParameterAssignment.NAME_ONLY,
+        is_public=True,
         docstring=ParameterAndResultDocstring(
             type="param possible types", description=param_docstring_nlp.text
         ),
     )
     dependee_param = Parameter(
+        id_="sklearn/sklearn.linear_model/LogisticRegression/probability",
         name="probability",
         qname="sklearn.linear_model.LogisticRegression.probability",
-        pname="sklearn/sklearn.linear_model/LogisticRegression/probability",
         default_value=None,
-        is_public=True,
         assigned_by=ParameterAssignment.NAME_ONLY,
+        is_public=True,
         docstring=ParameterAndResultDocstring(
             type="param possible types", description="param probability docstring"
         ),
-    )
-    pattern_parameter_subordinating_conjunction = nlp(
-        "ignored when probability is False"
     )
     func_params = [dependent_param, dependee_param]
     match = (314159265, [0, 3, 2])

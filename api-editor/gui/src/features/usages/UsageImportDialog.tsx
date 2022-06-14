@@ -13,32 +13,25 @@ import {
     ModalOverlay,
     Text as ChakraText,
 } from '@chakra-ui/react';
-import * as idb from 'idb-keyval';
 import React, { useState } from 'react';
-import { useAppDispatch } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { StyledDropzone } from '../../common/StyledDropzone';
-import { Setter } from '../../common/util/types';
 import { isValidJsonFile } from '../../common/util/validation';
-import { resetAnnotations } from '../annotations/annotationSlice';
 import { UsageCountJson, UsageCountStore } from './model/UsageCountStore';
+import { toggleUsageImportDialog } from '../ui/uiSlice';
+import { setUsages } from './usageSlice';
+import { selectRawPythonPackage } from '../packageData/apiSlice';
 
-import { toggleUsageImportDialog } from './usageSlice';
-
-interface ImportPythonPackageDialogProps {
-    setUsages: Setter<UsageCountStore>;
-}
-
-export const UsageImportDialog: React.FC<ImportPythonPackageDialogProps> = function ({ setUsages }) {
+export const UsageImportDialog: React.FC = function () {
     const [fileName, setFileName] = useState('');
     const [newUsages, setNewUsages] = useState<string>();
     const dispatch = useAppDispatch();
+    const api = useAppSelector(selectRawPythonPackage);
 
     const submit = async () => {
         if (newUsages) {
             const parsedUsages = JSON.parse(newUsages) as UsageCountJson;
-            setUsages(UsageCountStore.fromJson(parsedUsages));
-
-            await idb.set('usages', parsedUsages);
+            dispatch(setUsages(UsageCountStore.fromJson(parsedUsages, api)));
         }
         close();
     };
@@ -55,7 +48,6 @@ export const UsageImportDialog: React.FC<ImportPythonPackageDialogProps> = funct
             reader.onload = () => {
                 if (typeof reader.result === 'string') {
                     setNewUsages(reader.result);
-                    dispatch(resetAnnotations());
                 }
             };
             reader.readAsText(acceptedFiles[0]);

@@ -1,11 +1,9 @@
 import { Box, Button, Icon, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
 import React from 'react';
 import { FaChevronDown } from 'react-icons/fa';
-import { useAppDispatch } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { addPure, addRemove, addRequired, selectDone } from './annotationSlice';
 import {
-    addPure,
-    addRequired,
-    addRemove,
     showAttributeAnnotationForm,
     showBoundaryAnnotationForm,
     showCalledAfterAnnotationForm,
@@ -15,13 +13,16 @@ import {
     showMoveAnnotationForm,
     showOptionalAnnotationForm,
     showRenameAnnotationForm,
-} from './annotationSlice';
+    showDescriptionAnnotationForm,
+    showTodoAnnotationForm,
+} from '../ui/uiSlice';
 
 interface AnnotationDropdownProps {
     showAttribute?: boolean;
     showBoundary?: boolean;
     showCalledAfter?: boolean;
     showConstant?: boolean;
+    showDescription?: boolean;
     showEnum?: boolean;
     showGroup?: boolean;
     showMove?: boolean;
@@ -30,14 +31,16 @@ interface AnnotationDropdownProps {
     showRename?: boolean;
     showRequired?: boolean;
     showRemove?: boolean;
+    showTodo?: boolean;
     target: string;
 }
 
-const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
+export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
     showAttribute = false,
     showBoundary = false,
     showCalledAfter = false,
     showConstant = false,
+    showDescription = false,
     showGroup = false,
     showEnum = false,
     showMove = false,
@@ -46,15 +49,23 @@ const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
     showRename = false,
     showRequired = false,
     showRemove = false,
+    showTodo = false,
     target,
 }) {
     const dispatch = useAppDispatch();
+    const isDone = Boolean(useAppSelector(selectDone(target)));
 
     return (
         // Box gets rid of popper.js warning "CSS margin styles cannot be used"
         <Box>
             <Menu>
-                <MenuButton as={Button} size="sm" variant="outline" rightIcon={<Icon as={FaChevronDown} />}>
+                <MenuButton
+                    as={Button}
+                    size="sm"
+                    variant="outline"
+                    rightIcon={<Icon as={FaChevronDown} />}
+                    disabled={isDone}
+                >
                     Annotations
                 </MenuButton>
                 <MenuList>
@@ -81,6 +92,11 @@ const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                     {showConstant && (
                         <MenuItem onClick={() => dispatch(showConstantAnnotationForm(target))}>@constant</MenuItem>
                     )}
+                    {showDescription && (
+                        <MenuItem onClick={() => dispatch(showDescriptionAnnotationForm(target))}>
+                            @description
+                        </MenuItem>
+                    )}
                     {showEnum && <MenuItem onClick={() => dispatch(showEnumAnnotationForm(target))}>@enum</MenuItem>}
                     {showGroup && (
                         <MenuItem
@@ -106,10 +122,9 @@ const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                         <MenuItem onClick={() => dispatch(showRenameAnnotationForm(target))}>@rename</MenuItem>
                     )}
                     {showRequired && <MenuItem onClick={() => dispatch(addRequired({ target }))}>@required</MenuItem>}
+                    {showTodo && <MenuItem onClick={() => dispatch(showTodoAnnotationForm(target))}>@todo</MenuItem>}
                 </MenuList>
             </Menu>
         </Box>
     );
 };
-
-export default AnnotationDropdown;

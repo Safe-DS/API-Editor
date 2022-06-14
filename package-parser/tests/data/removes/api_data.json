@@ -4,235 +4,121 @@
     "version": "0.0.1",
     "modules": [
         {
+            "id": "test/test",
             "name": "test",
-            "pname": "test/test",
-            "imports": [],
-            "from_imports": [],
-            "classes": ["test.UnusedClass", "test.UsedClass"],
-            "functions": ["test.unused_global_function", "test.used_global_function"]
+            "classes": ["test/test/UnusedClass", "test/test/UsedClass"],
+            "functions": ["test/test/unused_global_function", "test/test/used_global_function"]
         }
     ],
     "classes": [
         {
+            "id": "test/test/UnusedClass",
             "name": "UnusedClass",
             "qname": "test.UnusedClass",
-            "pname": "test/test/UnusedClass",
-            "decorators": [],
-            "is_public": true,
-            "description": "",
-            "docstring": "",
-            "superclasses": [],
-            "source_code": "",
-            "methods": ["test.UnusedClass.unused_method"]
+            "methods": ["test/test/UnusedClass/unused_method"]
         },
         {
+            "id": "test/test/UsedClass",
             "name": "UsedClass",
             "qname": "test.UsedClass",
-            "pname": "test/test/UsedClass",
-            "decorators": [],
-            "is_public": true,
-            "description": "",
-            "docstring": "",
-            "superclasses": [],
-            "source_code": "",
-            "methods": ["test.UsedClass.unused_method", "test.UsedClass.used_method"]
+            "methods": ["test/test/UsedClass/unused_method", "test/test/UsedClass/used_method"]
         }
     ],
     "functions": [
         {
+            "id": "test/test/unused_global_function",
             "name": "unused_global_function",
-            "unique_name": "unused_global_function",
             "qname": "test.unused_global_function",
-            "pname": "test/test/unused_global_function",
-            "unique_qname": "test.unused_global_function",
-            "decorators": [],
             "parameters": [
                 {
+                    "id": "test/test/unused_global_function/unused_parameter",
                     "name": "unused_parameter",
                     "qname": "test.unused_global_function.unused_parameter",
-                    "pname": "test/test/unused_global_function/unused_parameter",
-                    "default_value": null,
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": null
                 },
                 {
+                    "id": "test/test/unused_global_function/used_parameter",
                     "name": "used_parameter",
                     "qname": "test.unused_global_function.used_parameter",
-                    "pname": "test/test/unused_global_function/used_parameter",
-                    "default_value": "'bla'",
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": "'bla'"
                 }
-            ],
-            "results": [],
-            "is_public": true,
-            "description": "",
-            "docstring": "",
-            "source_code": ""
+            ]
         },
         {
+            "id": "test/test/used_global_function",
             "name": "used_global_function",
-            "unique_name": "used_global_function",
             "qname": "test.used_global_function",
-            "pname": "test/test/used_global_function",
-            "unique_qname": "test.used_global_function",
-            "decorators": [],
             "parameters": [
                 {
+                    "id": "test/test/used_global_function/unused_parameter",
                     "name": "unused_parameter",
                     "qname": "test.used_global_function.unused_parameter",
-                    "pname": "test/test/used_global_function/unused_parameter",
-                    "default_value": null,
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": null
                 },
                 {
+                    "id": "test/test/used_global_function/used_parameter",
                     "name": "used_parameter",
                     "qname": "test.used_global_function.used_parameter",
-                    "pname": "test/test/used_global_function/used_parameter",
-                    "default_value": "'bla'",
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": "'bla'"
                 }
-            ],
-            "results": [],
-            "is_public": true,
-            "description": "",
-            "docstring": "",
-            "source_code": ""
+            ]
         },
         {
+            "id": "test/test/UnusedClass/unused_method",
             "name": "unused_method",
-            "unique_name": "unused_method",
             "qname": "test.UnusedClass.unused_method",
-            "pname": "test/test/UnusedClass/unused_method",
-            "unique_qname": "test.UnusedClass.unused_method",
-            "decorators": [],
             "parameters": [
                 {
+                    "id": "test/test/UnusedClass/unused_method/unused_parameter",
                     "name": "unused_parameter",
                     "qname": "test.UnusedClass.unused_method.unused_parameter",
-                    "pname": "test/test/UnusedClass/unused_method/unused_parameter",
-                    "default_value": null,
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": null
                 },
                 {
+                    "id": "test/test/UnusedClass/unused_method/used_parameter",
                     "name": "used_parameter",
                     "qname": "test.UnusedClass.unused_method.used_parameter",
-                    "pname": "test/test/UnusedClass/unused_method/used_parameter",
-                    "default_value": "'bla'",
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": "'bla'"
                 }
-            ],
-            "results": [],
-            "is_public": true,
-            "description": "",
-            "docstring": "",
-            "source_code": ""
+            ]
         },
         {
+            "id": "test/test/UsedClass/unused_method",
             "name": "unused_method",
-            "unique_name": "unused_method",
             "qname": "test.UsedClass.unused_method",
-            "pname": "test/test/UsedClass/unused_method",
-            "unique_qname": "test.UsedClass.unused_method",
-            "decorators": [],
             "parameters": [
                 {
+                    "id": "test/test/UsedClass/unused_method/unused_parameter",
                     "name": "unused_parameter",
                     "qname": "test.UsedClass.unused_method.unused_parameter",
-                    "pname": "test/test/UsedClass/unused_method/unused_parameter",
-                    "default_value": null,
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": null
                 },
                 {
+                    "id": "test/test/UsedClass/unused_method/used_parameter",
                     "name": "used_parameter",
                     "qname": "test.UsedClass.unused_method.used_parameter",
-                    "pname": "test/test/UsedClass/unused_method/used_parameter",
-                    "default_value": "'bla'",
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": "'bla'"
                 }
-            ],
-            "results": [],
-            "is_public": true,
-            "description": "",
-            "docstring": "",
-            "source_code": ""
+            ]
         },
         {
+            "id": "test/test/UsedClass/used_method",
             "name": "used_method",
-            "unique_name": "used_method",
             "qname": "test.UsedClass.used_method",
-            "pname": "test/test/UsedClass/used_method",
-            "unique_qname": "test.UsedClass.used_method",
-            "decorators": [],
             "parameters": [
                 {
+                    "id": "test/test/UsedClass/used_method/unused_parameter",
                     "name": "unused_parameter",
                     "qname": "test.UsedClass.used_method.unused_parameter",
-                    "pname": "test/test/UsedClass/used_method/unused_parameter",
-                    "default_value": null,
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": null
                 },
                 {
+                    "id": "test/test/UsedClass/used_method/used_parameter",
                     "name": "used_parameter",
                     "qname": "test.UsedClass.used_method.used_parameter",
-                    "pname": "test/test/UsedClass/used_method/used_parameter",
-                    "default_value": "'bla'",
-                    "is_public": true,
-                    "assigned_by": "POSITION_OR_NAME",
-                    "docstring": {
-                        "type": "str",
-                        "description": ""
-                    }
+                    "default_value": "'bla'"
                 }
-            ],
-            "results": [],
-            "is_public": true,
-            "description": "",
-            "docstring": "",
-            "source_code": ""
+            ]
         }
     ]
 }

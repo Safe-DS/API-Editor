@@ -19,8 +19,11 @@ report/
 
 # Compilation/build outputs
 build/
+coverage/
 dist/
 dist-ssr/
+out/
+tmp/
 
 api-editor/backend/src/main/resources/static/
 

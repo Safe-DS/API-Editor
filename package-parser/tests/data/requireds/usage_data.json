@@ -1,58 +1,58 @@
 {
     "class_counts": {},
     "function_counts": {
-        "test.some_global_function": 10
+        "test/test/some_global_function": 10
     },
     "parameter_counts": {
-        "test.some_global_function.required_parameter_that_should_be_constant": 10,
-        "test.some_global_function.required_parameter_that_should_be_required": 10,
-        "test.some_global_function.required_parameter_that_should_be_required_with_non_string": 10,
-        "test.some_global_function.required_parameter_that_should_be_optional": 10,
-        "test.some_global_function.required_parameter_that_should_be_optional_with_non_string": 10,
-        "test.some_global_function.optional_parameter_that_should_be_constant": 0,
-        "test.some_global_function.optional_parameter_that_should_be_required": 4,
-        "test.some_global_function.optional_parameter_that_should_be_required_with_non_string": 9,
-        "test.some_global_function.optional_parameter_that_should_be_optional_with_same_default": 2,
-        "test.some_global_function.optional_parameter_that_should_be_optional_with_different_default": 8,
-        "test.some_global_function.optional_parameter_that_should_be_optional_with_non_string": 8
+        "test/test/some_global_function/required_parameter_that_should_be_constant": 10,
+        "test/test/some_global_function/required_parameter_that_should_be_required": 10,
+        "test/test/some_global_function/required_parameter_that_should_be_required_with_non_string": 10,
+        "test/test/some_global_function/required_parameter_that_should_be_optional": 10,
+        "test/test/some_global_function/required_parameter_that_should_be_optional_with_non_string": 10,
+        "test/test/some_global_function/optional_parameter_that_should_be_constant": 0,
+        "test/test/some_global_function/optional_parameter_that_should_be_required": 4,
+        "test/test/some_global_function/optional_parameter_that_should_be_required_with_non_string": 9,
+        "test/test/some_global_function/optional_parameter_that_should_be_optional_with_same_default": 2,
+        "test/test/some_global_function/optional_parameter_that_should_be_optional_with_different_default": 8,
+        "test/test/some_global_function/optional_parameter_that_should_be_optional_with_non_string": 8
     },
     "value_counts": {
-        "test.some_global_function.required_parameter_that_should_be_constant": {
+        "test/test/some_global_function/required_parameter_that_should_be_constant": {
             "'test'": 10
         },
-        "test.some_global_function.required_parameter_that_should_be_required": {
+        "test/test/some_global_function/required_parameter_that_should_be_required": {
             "'test'": 4,
             "'test2'": 6
         },
-        "test.some_global_function.required_parameter_that_should_be_required_with_non_string": {
+        "test/test/some_global_function/required_parameter_that_should_be_required_with_non_string": {
             "'test'": 1,
             "'test2'": 4,
             "non_string": 5
         },
-        "test.some_global_function.required_parameter_that_should_be_optional": {
+        "test/test/some_global_function/required_parameter_that_should_be_optional": {
             "'test'": 2,
             "'test2'": 8
         },
-        "test.some_global_function.required_parameter_that_should_be_optional_with_non_string": {
+        "test/test/some_global_function/required_parameter_that_should_be_optional_with_non_string": {
             "'test'": 2,
             "non_string": 2,
             "'test2'": 6
         },
-        "test.some_global_function.optional_parameter_that_should_be_constant": {},
-        "test.some_global_function.optional_parameter_that_should_be_required": {
+        "test/test/some_global_function/optional_parameter_that_should_be_constant": {},
+        "test/test/some_global_function/optional_parameter_that_should_be_required": {
             "'test2'": 4
         },
-        "test.some_global_function.optional_parameter_that_should_be_required_with_non_string": {
+        "test/test/some_global_function/optional_parameter_that_should_be_required_with_non_string": {
             "'test2'": 4,
             "non_string": 5
         },
-        "test.some_global_function.optional_parameter_that_should_be_optional_with_same_default": {
+        "test/test/some_global_function/optional_parameter_that_should_be_optional_with_same_default": {
             "'test2'": 2
         },
-        "test.some_global_function.optional_parameter_that_should_be_optional_with_different_default": {
+        "test/test/some_global_function/optional_parameter_that_should_be_optional_with_different_default": {
             "'test2'": 8
         },
-        "test.some_global_function.optional_parameter_that_should_be_optional_with_non_string": {
+        "test/test/some_global_function/optional_parameter_that_should_be_optional_with_non_string": {
             "non_string": 2,
             "'test2'": 6
         }

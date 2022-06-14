@@ -181,28 +181,11 @@ class AnnotationValidator(private val annotatedPythonPackage: SerializablePython
 
     companion object {
         private var possibleCombinations = buildMap<String, Set<String>> {
-            this["Attribute"] = mutableSetOf("Rename")
-            this["Boundary"] = mutableSetOf("Group", "Optional", "Rename", "Required")
-            this["CalledAfter"] = mutableSetOf("CalledAfter", "Group", "Move", "Pure", "Rename")
+            this["Attribute"] = mutableSetOf("Description", "Rename", "Todo")
+            this["Boundary"] = mutableSetOf("Description", "Group", "Optional", "Rename", "Required", "Todo")
+            this["CalledAfter"] = mutableSetOf("CalledAfter", "Description", "Group", "Move", "Pure", "Rename")
             this["Constant"] = mutableSetOf()
-            this["Enum"] = mutableSetOf("Group", "Rename", "Required")
-            this["Group"] =
-                mutableSetOf(
-                    "Boundary",
-                    "CalledAfter",
-                    "Enum",
-                    "Group",
-                    "Move",
-                    "Optional",
-                    "Pure",
-                    "Rename",
-                    "Required"
-                )
-            this["Move"] = mutableSetOf("CalledAfter", "Group", "Pure", "Rename")
-            this["Optional"] = mutableSetOf("Boundary", "Group", "Rename")
-            this["Pure"] = mutableSetOf("CalledAfter", "Group", "Move", "Rename")
-            this["Remove"] = mutableSetOf()
-            this["Rename"] = mutableSetOf(
+            this["Description"] = mutableSetOf(
                 "Attribute",
                 "Boundary",
                 "CalledAfter",
@@ -211,9 +194,52 @@ class AnnotationValidator(private val annotatedPythonPackage: SerializablePython
                 "Move",
                 "Optional",
                 "Pure",
+                "Rename",
+                "Required",
+                "Todo"
+            )
+            this["Enum"] = mutableSetOf("Description", "Group", "Rename", "Required", "Todo")
+            this["Group"] =
+                mutableSetOf(
+                    "Boundary",
+                    "CalledAfter",
+                    "Description",
+                    "Enum",
+                    "Group",
+                    "Move",
+                    "Optional",
+                    "Pure",
+                    "Rename",
+                    "Required",
+                    "Todo"
+                )
+            this["Move"] = mutableSetOf("CalledAfter", "Description", "Group", "Pure", "Rename")
+            this["Optional"] = mutableSetOf("Boundary", "Description", "Group", "Rename", "Todo")
+            this["Pure"] = mutableSetOf("CalledAfter", "Description", "Group", "Move", "Rename")
+            this["Remove"] = mutableSetOf()
+            this["Rename"] = mutableSetOf(
+                "Attribute",
+                "Boundary",
+                "CalledAfter",
+                "Description",
+                "Enum",
+                "Group",
+                "Move",
+                "Optional",
+                "Pure",
+                "Required", "Todo"
+            )
+            this["Required"] = mutableSetOf("Boundary", "Description", "Enum", "Group", "Rename", "Todo")
+            this["Todo"] = mutableSetOf(
+                "Attribute",
+                "Boundary",
+                "Description",
+                "Enum",
+                "Group",
+                "Optional",
+                "Rename",
                 "Required"
             )
-            this["Required"] = mutableSetOf("Boundary", "Enum", "Group", "Rename")
         }
     }
 }

@@ -1,69 +1,69 @@
 {
     "class_counts": {
-        "test.UsedClass": 5
+        "test/test/UsedClass": 5
     },
     "function_counts": {
-        "test.used_global_function": 5,
-        "test.UsedClass.used_method": 5
+        "test/test/used_global_function": 5,
+        "test/test/UsedClass/used_method": 5
     },
     "parameter_counts": {
-        "test.used_global_function.constant_required_parameter": 5,
-        "test.used_global_function.variable_required_parameter": 5,
-        "test.used_global_function.constant_optional_parameter": 5,
-        "test.used_global_function.variable_optional_parameter": 5,
-        "test.UsedClass.used_method.constant_required_parameter": 5,
-        "test.UsedClass.used_method.variable_required_parameter": 5,
-        "test.UsedClass.used_method.constant_optional_parameter": 0,
-        "test.UsedClass.used_method.variable_optional_parameter": 3,
-        "test.UsedClass.used_method.should_not_be_constant_one": 5,
-        "test.UsedClass.used_method.should_not_be_constant_two": 5,
-        "test.UsedClass.used_method.should_not_be_constant_three": 5,
-        "test.UsedClass.used_method.should_not_be_constant_four": 5,
-        "test.UsedClass.used_method.should_not_be_constant_five": 5,
-        "test.UsedClass.used_method.should_not_be_constant_six": 5
+        "test/test/used_global_function/constant_required_parameter": 5,
+        "test/test/used_global_function/variable_required_parameter": 5,
+        "test/test/used_global_function/constant_optional_parameter": 5,
+        "test/test/used_global_function/variable_optional_parameter": 5,
+        "test/test/UsedClass/used_method/constant_required_parameter": 5,
+        "test/test/UsedClass/used_method/variable_required_parameter": 5,
+        "test/test/UsedClass/used_method/constant_optional_parameter": 0,
+        "test/test/UsedClass/used_method/variable_optional_parameter": 3,
+        "test/test/UsedClass/used_method/should_not_be_constant_one": 5,
+        "test/test/UsedClass/used_method/should_not_be_constant_two": 5,
+        "test/test/UsedClass/used_method/should_not_be_constant_three": 5,
+        "test/test/UsedClass/used_method/should_not_be_constant_four": 5,
+        "test/test/UsedClass/used_method/should_not_be_constant_five": 5,
+        "test/test/UsedClass/used_method/should_not_be_constant_six": 5
     },
     "value_counts": {
-        "test.used_global_function.constant_required_parameter": {
+        "test/test/used_global_function/constant_required_parameter": {
             "'test'": 5
         },
-        "test.used_global_function.variable_required_parameter": {
+        "test/test/used_global_function/variable_required_parameter": {
             "'test'": 2,
             "'test2'": 3
         },
-        "test.used_global_function.constant_optional_parameter": {
+        "test/test/used_global_function/constant_optional_parameter": {
             "'test2()'": 5
         },
-        "test.used_global_function.variable_optional_parameter": {
+        "test/test/used_global_function/variable_optional_parameter": {
             "'test'": 2,
             "'test2'": 3
         },
-        "test.UsedClass.used_method.constant_required_parameter": {
+        "test/test/UsedClass/used_method/constant_required_parameter": {
             "'test'": 5
         },
-        "test.UsedClass.used_method.variable_required_parameter": {
+        "test/test/UsedClass/used_method/variable_required_parameter": {
             "'test'": 2,
             "'test2'": 3
         },
-        "test.UsedClass.used_method.constant_optional_parameter": {},
-        "test.UsedClass.used_method.variable_optional_parameter": {
+        "test/test/UsedClass/used_method/constant_optional_parameter": {},
+        "test/test/UsedClass/used_method/variable_optional_parameter": {
             "'test2'": 3
         },
-        "test.UsedClass.used_method.should_not_be_constant_one": {
+        "test/test/UsedClass/used_method/should_not_be_constant_one": {
             "hallo": 5
         },
-        "test.UsedClass.used_method.should_not_be_constant_two": {
+        "test/test/UsedClass/used_method/should_not_be_constant_two": {
             "hallo()": 5
         },
-        "test.UsedClass.used_method.should_not_be_constant_three": {
+        "test/test/UsedClass/used_method/should_not_be_constant_three": {
             "test_hallo1()": 5
         },
-        "test.UsedClass.used_method.should_not_be_constant_four": {
-            "test.hallo21()": 5
+        "test/test/UsedClass/used_method/should_not_be_constant_four": {
+            "test/test/hallo21()": 5
         },
-        "test.UsedClass.used_method.should_not_be_constant_five": {
+        "test/test/UsedClass/used_method/should_not_be_constant_five": {
             "test'": 5
         },
-        "test.UsedClass.used_method.should_not_be_constant_six": {
+        "test/test/UsedClass/used_method/should_not_be_constant_six": {
             "'test": 5
         }
     }

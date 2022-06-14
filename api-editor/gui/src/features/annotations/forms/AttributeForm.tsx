@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import PythonDeclaration from '../../packageData/model/PythonDeclaration';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
 import { selectAttribute, upsertAttribute } from '../annotationSlice';
 import { TypeValueForm, TypeValueFormState } from './TypeValueForm';
 
@@ -9,7 +9,7 @@ interface AttributeFormProps {
 }
 
 export const AttributeForm: React.FC<AttributeFormProps> = function ({ target }) {
-    const targetPath = target.pathAsString();
+    const targetPath = target.id;
 
     // Hooks -----------------------------------------------------------------------------------------------------------
     const previousAnnotation = useAppSelector(selectAttribute(targetPath));

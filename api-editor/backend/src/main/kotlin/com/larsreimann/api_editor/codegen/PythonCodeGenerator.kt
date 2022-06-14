@@ -117,10 +117,14 @@ fun PythonAttribute.toPythonCode() = buildString {
 }
 
 fun PythonClass.toPythonCode() = buildString {
+    val todoComment = todoComment(todo)
     val docstring = docstring()
     val constructorString = constructor?.toPythonCode() ?: ""
     val methodsString = methods.joinToString("\n\n") { it.toPythonCode() }
 
+    if (todoComment.isNotBlank()) {
+        appendLine(todoComment)
+    }
     appendLine("class $name:")
     if (docstring.isNotBlank()) {
         appendIndented("\"\"\"\n")
@@ -143,6 +147,7 @@ fun PythonClass.toPythonCode() = buildString {
 }
 
 fun PythonConstructor.toPythonCode() = buildString {
+    val todoComment = todoComment(todo)
     val parametersString = parameters.toPythonCode()
     val boundariesString = parameters
         .mapNotNull { it.boundary?.toPythonCode(it.name) }
@@ -155,6 +160,9 @@ fun PythonConstructor.toPythonCode() = buildString {
         ?.let { "self.instance = ${it.toPythonCode()}" }
         ?: ""
 
+    if (todoComment.isNotBlank()) {
+        appendLine(todoComment)
+    }
     appendLine("def __init__($parametersString):")
     if (boundariesString.isNotBlank()) {
         appendIndented(boundariesString)
@@ -202,6 +210,7 @@ fun PythonEnumInstance.toPythonCode(enumName: String): String {
 }
 
 fun PythonFunction.toPythonCode() = buildString {
+    val todoComment = todoComment(todo)
     val parametersString = parameters.toPythonCode()
     val docstring = docstring()
     val boundariesString = parameters
@@ -211,6 +220,9 @@ fun PythonFunction.toPythonCode() = buildString {
         ?.let { "return ${it.toPythonCode()}" }
         ?: ""
 
+    if (todoComment.isNotBlank()) {
+        appendLine(todoComment)
+    }
     if (isStaticMethod()) {
         appendLine("@staticmethod")
     }
@@ -355,5 +367,24 @@ fun Boundary.toPythonCode(parameterName: String) = buildString {
     } else if (upperLimitType == LESS_THAN_OR_EQUALS) {
         appendLine("if not $parameterName <= $upperIntervalLimit:")
         appendIndented("raise ValueError(f'Valid values of $parameterName must be less than or equal to $upperIntervalLimit, but {$parameterName} was assigned.')")
+    }
+}
+
+fun todoComment(message: String) = buildString {
+    if (message.isBlank()) {
+        return ""
+    }
+
+    val lines = message.trim().lines()
+    val firstLine = lines.first()
+    val remainingLines = lines.drop(1)
+
+    appendLine("# TODO: ${firstLine.trim()}")
+    remainingLines.forEachIndexed { index, line ->
+        val indentedLine = "#       $line"
+        append(indentedLine.trim())
+        if (index < remainingLines.size - 1) {
+            appendLine()
+        }
     }
 }
