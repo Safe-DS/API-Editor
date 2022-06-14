@@ -17,30 +17,21 @@ import React, { useState } from 'react';
 import { useAppDispatch } from '../../app/hooks';
 import { StyledDropzone } from '../../common/StyledDropzone';
 import { isValidJsonFile } from '../../common/util/validation';
-import { AnnotationStore, setAnnotations } from './annotationSlice';
+import { AnnotationStore, initialState, mergeAnnotations, setAnnotations } from './annotationSlice';
 import { hideAnnotationImportDialog, toggleAnnotationImportDialog } from '../ui/uiSlice';
 
 export const AnnotationImportDialog: React.FC = function () {
     const [fileName, setFileName] = useState('');
-    const [newAnnotationStore, setNewAnnotationStore] = useState<AnnotationStore>({
-        attributes: {},
-        boundaries: {},
-        constants: {},
-        calledAfters: {},
-        descriptions: {},
-        enums: {},
-        groups: {},
-        moves: {},
-        optionals: {},
-        pures: {},
-        renamings: {},
-        requireds: {},
-        removes: {},
-        todos: {},
-    });
+    const [newAnnotationStore, setNewAnnotationStore] = useState<AnnotationStore>(initialState);
     const dispatch = useAppDispatch();
 
-    const submit = () => {
+    const merge = () => {
+        if (fileName) {
+            dispatch(mergeAnnotations(newAnnotationStore));
+        }
+        dispatch(hideAnnotationImportDialog());
+    };
+    const replace = () => {
         if (fileName) {
             dispatch(setAnnotations(newAnnotationStore));
         }
@@ -94,8 +85,11 @@ export const AnnotationImportDialog: React.FC = function () {
                 </ModalBody>
                 <ModalFooter>
                     <HStack spacing={4}>
-                        <Button colorScheme="blue" onClick={submit}>
-                            Submit
+                        <Button colorScheme="blue" onClick={merge}>
+                            Merge into existing
+                        </Button>
+                        <Button colorScheme="gray" onClick={replace}>
+                            Replace existing
                         </Button>
                         <Button colorScheme="red" onClick={close}>
                             Cancel

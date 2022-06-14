@@ -13,6 +13,7 @@ import {
     MenuList,
     MenuOptionGroup,
     Spacer,
+    Text as ChakraText,
     useColorMode,
 } from '@chakra-ui/react';
 import React from 'react';
@@ -23,7 +24,10 @@ import { FilterHelpButton } from './FilterHelpButton';
 import {
     HeatMapMode,
     selectHeatMapMode,
+    selectSortingMode,
     setHeatMapMode,
+    setSortingMode,
+    SortingMode,
     toggleAnnotationImportDialog,
     toggleAPIImportDialog,
     toggleUsageImportDialog,
@@ -31,6 +35,7 @@ import {
 import { DeleteAllAnnotations } from './DeleteAllAnnotations';
 import { GenerateAdapters } from './GenerateAdapters';
 import { FilterInput } from './FilterInput';
+import { selectNumberOfMatchedNodes } from '../features/packageData/apiSlice';
 
 interface MenuBarProps {
     displayInferErrors: (errors: string[]) => void;
@@ -41,6 +46,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
     const dispatch = useAppDispatch();
 
     const annotationStore = useAppSelector(selectAnnotations);
+    const sortingMode = useAppSelector(selectSortingMode);
     const heatMapMode = useAppSelector(selectHeatMapMode);
 
     const exportAnnotations = () => {
@@ -58,18 +64,6 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
         colorModeArray.push('darkMode');
     }
 
-    let heatMapModeString: string = '';
-    if (heatMapMode === HeatMapMode.None) {
-        heatMapModeString = 'none';
-    } else if (heatMapMode === HeatMapMode.Usages) {
-        heatMapModeString = 'usages';
-    } else if (heatMapMode === HeatMapMode.Usefulness) {
-        heatMapModeString = 'usefulness';
-    } else if (heatMapMode === HeatMapMode.Annotations) {
-        heatMapModeString = 'annotations';
-    }
-
-    const showStatistics = () => {};
     return (
         <Flex as="nav" borderBottom={1} layerStyle="subtleBorder" padding="0.5em 1em">
             <HStack>
@@ -115,36 +109,60 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                                     Dark mode
                                 </MenuItemOption>
                             </MenuOptionGroup>
+                            <MenuDivider />
                             <MenuItemOption value={'statistics'} onClick={showStatistics}>
                                 Statistics
                             </MenuItemOption>
                             <MenuDivider />
-                            <MenuGroup title="Heat Map Mode">
-                                <MenuOptionGroup type="radio" defaultValue="none" value={heatMapModeString}>
+                            <MenuGroup title="Module/Class/Function Sorting">
+                                <MenuOptionGroup
+                                    type="radio"
+                                    defaultValue={SortingMode.Alphabetical}
+                                    value={sortingMode}
+                                >
                                     <MenuItemOption
                                         paddingLeft={8}
-                                        value={'none'}
+                                        value={SortingMode.Alphabetical}
+                                        onClick={() => dispatch(setSortingMode(SortingMode.Alphabetical))}
+                                    >
+                                        Alphabetical
+                                    </MenuItemOption>
+                                    <MenuItemOption
+                                        paddingLeft={8}
+                                        value={SortingMode.Usages}
+                                        onClick={() => dispatch(setSortingMode(SortingMode.Usages))}
+                                    >
+                                        Usages (Descending)
+                                    </MenuItemOption>
+                                </MenuOptionGroup>
+                            </MenuGroup>
+                            <MenuDivider />
+                            <MenuGroup title="Heat Map Mode">
+                                <MenuOptionGroup type="radio" defaultValue={HeatMapMode.None} value={heatMapMode}>
+                                    <MenuItemOption
+                                        paddingLeft={8}
+                                        value={HeatMapMode.None}
                                         onClick={() => dispatch(setHeatMapMode(HeatMapMode.None))}
                                     >
                                         None
                                     </MenuItemOption>
                                     <MenuItemOption
                                         paddingLeft={8}
-                                        value={'usages'}
+                                        value={HeatMapMode.Usages}
                                         onClick={() => dispatch(setHeatMapMode(HeatMapMode.Usages))}
                                     >
                                         Usages
                                     </MenuItemOption>
                                     <MenuItemOption
                                         paddingLeft={8}
-                                        value={'usefulness'}
+                                        value={HeatMapMode.Usefulness}
                                         onClick={() => dispatch(setHeatMapMode(HeatMapMode.Usefulness))}
                                     >
                                         Usefulness
                                     </MenuItemOption>
                                     <MenuItemOption
                                         paddingLeft={8}
-                                        value={'annotations'}
+                                        value={HeatMapMode.Annotations}
                                         onClick={() => dispatch(setHeatMapMode(HeatMapMode.Annotations))}
                                     >
                                         Annotations
@@ -159,9 +177,24 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
             <Spacer />
 
             <HStack>
+                <MatchCount />
                 <FilterInput />
                 <FilterHelpButton />
             </HStack>
         </Flex>
     );
+};
+
+const MatchCount = function () {
+    const count = useAppSelector(selectNumberOfMatchedNodes);
+    let text;
+    if (count === 0) {
+        text = 'No matches';
+    } else if (count === 1) {
+        text = '1 match';
+    } else {
+        text = `${count} matches`;
+    }
+
+    return <ChakraText fontWeight="bold">{text}</ChakraText>;
 };

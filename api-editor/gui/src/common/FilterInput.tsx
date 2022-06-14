@@ -24,7 +24,7 @@ export const FilterInput: React.FC = function () {
     const filterIsValid = invalidTokens.length === 0;
 
     return (
-        <Box>
+        <Box zIndex={50}>
             <Popover
                 returnFocusOnClose={false}
                 isOpen={!filterIsValid}

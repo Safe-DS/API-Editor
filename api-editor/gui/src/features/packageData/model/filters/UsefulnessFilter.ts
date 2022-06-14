@@ -21,8 +21,9 @@ export class UsefulnessFilter extends AbstractPythonFilter {
         super();
     }
 
-    shouldKeepModule(_pythonModule: PythonModule, _annotations: AnnotationStore, _usages: UsageCountStore): boolean {
-        return false;
+    shouldKeepModule(pythonModule: PythonModule, annotations: AnnotationStore, usages: UsageCountStore): boolean {
+        const moduleUsefulness = usages.moduleUsages.get(pythonModule.id);
+        return this.shouldKeepWithUsefulness(moduleUsefulness);
     }
 
     shouldKeepClass(pythonClass: PythonClass, annotations: AnnotationStore, usages: UsageCountStore): boolean {
