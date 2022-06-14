@@ -26,13 +26,17 @@ export const parsePythonPackageJson = function (packageJson: PythonPackageJson):
         packageJson.classes.map((it) => parsePythonClassJson(it, functions)).map((it) => [it.id, it]),
     );
 
+    // Reexport map from IDs to Python classes and functions
+    const reexportMap = new Map();
+
     return new PythonPackage(
         packageJson.distribution,
         packageJson.package,
         packageJson.version,
         packageJson.modules
-            .map((it) => parsePythonModuleJson(it, classes, functions))
+            .map((it) => parsePythonModuleJson(it, classes, functions, reexportMap))
             .sort((a, b) => a.name.localeCompare(b.name)),
+        reexportMap,
     );
 };
 
@@ -49,7 +53,26 @@ const parsePythonModuleJson = function (
     moduleJson: PythonModuleJson,
     classes: Map<string, PythonClass>,
     functions: Map<string, PythonFunction>,
+    reexportMap: Map<string, PythonClass | PythonFunction>,
 ): PythonModule {
+    const classesInModule = moduleJson.classes
+        .filter((classId) => classes.has(classId) && classes.get(classId)!.reexportedBy.length === 0)
+        .map((classId) => classes.get(classId)!);
+    const reexportedClasses = [...classes.values()].filter((it) => it.reexportedBy.includes(moduleJson.id));
+    const allClasses = [...classesInModule, ...reexportedClasses];
+    for (const cls of reexportedClasses) {
+        reexportMap.set(cls.id, cls);
+    }
+
+    const functionsInModule = moduleJson.functions
+        .filter((functionId) => functions.has(functionId) && functions.get(functionId)!.reexportedBy.length === 0)
+        .map((functionId) => functions.get(functionId)!);
+    const reexportedFunctions = [...functions.values()].filter((it) => it.reexportedBy.includes(moduleJson.id));
+    const allFunctions = [...functionsInModule, ...reexportedFunctions];
+    for (const func of reexportedFunctions) {
+        reexportMap.set(func.id, func);
+    }
+
     return new PythonModule(
         moduleJson.id,
         moduleJson.name,
@@ -62,14 +85,8 @@ const parsePythonModuleJson = function (
                 return moduleComparison;
             }
         }),
-        moduleJson.classes
-            .sort((a, b) => a.localeCompare(b))
-            .filter((classQualifiedName) => classes.has(classQualifiedName))
-            .map((classQualifiedName) => classes.get(classQualifiedName) as PythonClass),
-        moduleJson.functions
-            .sort((a, b) => a.localeCompare(b))
-            .filter((functionUniqueQualifiedName) => functions.has(functionUniqueQualifiedName))
-            .map((functionUniqueQualifiedName) => functions.get(functionUniqueQualifiedName) as PythonFunction),
+        allClasses.sort((a, b) => a.name.localeCompare(b.name)),
+        allFunctions.sort((a, b) => a.name.localeCompare(b.name)),
     );
 };
 
@@ -100,6 +117,7 @@ interface PythonClassJson {
     superclasses: string[];
     methods: string[];
     is_public: boolean;
+    reexported_by: string[];
     description: Optional<string>;
     docstring: Optional<string>;
 }
@@ -108,17 +126,20 @@ const parsePythonClassJson = function (
     classJson: PythonClassJson,
     functions: Map<string, PythonFunction>,
 ): PythonClass {
+    const methods = classJson.methods
+        .sort((a, b) => a.localeCompare(b))
+        .filter((functionId) => functions.has(functionId))
+        .map((functionId) => functions.get(functionId) as PythonFunction);
+
     return new PythonClass(
         classJson.id,
         classJson.name,
         classJson.qname,
         classJson.decorators,
         classJson.superclasses,
-        classJson.methods
-            .sort((a, b) => a.localeCompare(b))
-            .filter((functionUniqueQualifiedName) => functions.has(functionUniqueQualifiedName))
-            .map((functionUniqueQualifiedName) => functions.get(functionUniqueQualifiedName) as PythonFunction),
+        methods,
         classJson.is_public,
+        classJson.reexported_by,
         classJson.description ?? '',
         classJson.docstring ?? '',
     );
@@ -132,6 +153,7 @@ interface PythonFunctionJson {
     parameters: PythonParameterJson[];
     results: PythonResultJson[];
     is_public: boolean;
+    reexported_by: string[];
     description: Optional<string>;
     docstring: Optional<string>;
 }
@@ -145,6 +167,7 @@ const parsePythonFunctionJson = function (functionJson: PythonFunctionJson): Pyt
         functionJson.parameters.map(parsePythonParameterJson),
         functionJson.results.map(parsePythonResultJson),
         functionJson.is_public,
+        functionJson.reexported_by,
         functionJson.description ?? '',
         functionJson.docstring ?? '',
     );

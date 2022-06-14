@@ -14,6 +14,7 @@ export class PythonClass extends PythonDeclaration {
         readonly superclasses: string[] = [],
         readonly methods: PythonFunction[] = [],
         readonly isPublic: boolean = true,
+        readonly reexportedBy: string[] = [],
         readonly description = '',
         readonly fullDocstring = '',
     ) {

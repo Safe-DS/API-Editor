@@ -16,6 +16,7 @@ export class PythonFunction extends PythonDeclaration {
         readonly parameters: PythonParameter[] = [],
         readonly results: PythonResult[] = [],
         readonly isPublic: boolean = false,
+        readonly reexportedBy: string[] = [],
         readonly description = '',
         readonly fullDocstring = '',
     ) {
