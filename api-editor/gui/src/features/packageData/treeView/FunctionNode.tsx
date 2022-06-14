@@ -50,5 +50,6 @@ const getMapWithUsages = function (usages: UsageCountStore, pythonFunction: Pyth
 const useAnnotationCounts = function (pythonFunction: PythonFunction): ValuePair {
     return new ValuePair(
         useAppSelector(selectNumberOfAnnotations(pythonFunction.id)),
-        maximumNumberOfFunctionAnnotations);
+        maximumNumberOfFunctionAnnotations,
+    );
 };
