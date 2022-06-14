@@ -101,17 +101,17 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration, pyth
 };
 
 const getNextElementPath = function (
-    current: PythonDeclaration,
+    start: PythonDeclaration,
     filter: AbstractPythonFilter,
     annotations: AnnotationStore,
     usages: UsageCountStore,
 ): string | null {
-    const nextElement = getNextElementInTree(current);
-    if (nextElement) {
-        if (filter.shouldKeepDeclaration(nextElement, annotations, usages)) {
-            return nextElement.id;
+    let current = getNextElementInTree(start);
+    while (current !== start && current !== null) {
+        if (filter.shouldKeepDeclaration(current, annotations, usages)) {
+            return current.id;
         }
-        return getNextElementPath(nextElement, filter, annotations, usages);
+        current = getNextElementInTree(current);
     }
     return null;
 };
@@ -141,17 +141,17 @@ const getNextFromParentInTree = function (current: PythonDeclaration): PythonDec
 };
 
 const getPreviousElementPath = function (
-    current: PythonDeclaration,
+    start: PythonDeclaration,
     filter: AbstractPythonFilter,
     annotations: AnnotationStore,
     usages: UsageCountStore,
 ): string | null {
-    const previousElement = getPreviousElementInTree(current);
-    if (previousElement) {
-        if (filter.shouldKeepDeclaration(previousElement, annotations, usages)) {
-            return previousElement.id;
+    let current = getPreviousElementInTree(start);
+    while (current !== start && current !== null) {
+        if (filter.shouldKeepDeclaration(current, annotations, usages)) {
+            return current.id;
         }
-        return getPreviousElementPath(previousElement, filter, annotations, usages);
+        current = getPreviousElementInTree(current);
     }
     return null;
 };
