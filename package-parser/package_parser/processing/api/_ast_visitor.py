@@ -22,9 +22,7 @@ from ._file_filters import _is_init_file
 
 class _AstVisitor:
     def __init__(self, api: API) -> None:
-        # Key of dict is ID of declaration. Value is list of modules that re-export this declaration. For each module
-        # we store its ID and its qualified name.
-        self.reexported: dict[str, list[tuple[str, str, str]]] = {}
+        self.reexported: dict[str, list[str]] = {}
         self.api: API = api
         self.__declaration_stack: list[Union[Module, Class, Function]] = []
 
@@ -93,15 +91,14 @@ class _AstVisitor:
                     from_imports.append(FromImport(base_import_path, name, alias))
 
                 # Find re-exported declarations in __init__.py files
-                if _is_init_file(module_node.file):
+                if _is_init_file(module_node.file) and is_public_module(module_node.qname()):
                     for declaration, _ in global_node.names:
-                        reexported_id = f"{base_import_path}.{declaration}"
+                        reexported_name = f"{base_import_path}.{declaration}"
 
                         # if reexported_name.startswith(module_node.name):
-                        if reexported_id not in self.reexported:
-                            self.reexported[reexported_id] = []
-                        self.reexported[reexported_id] += [(id_, module_node.qname())]
-
+                        if reexported_name not in self.reexported:
+                            self.reexported[reexported_name] = []
+                        self.reexported[reexported_name] += [id_]
 
         # Remember module, so we can later add classes and global functions
         module = Module(
@@ -137,7 +134,7 @@ class _AstVisitor:
             decorator_names,
             class_node.basenames,
             self.is_public(class_node.name, qname),
-            self.reexported.get(qname, []), # TODO
+            self.reexported.get(qname, []),
             _AstVisitor.__description(numpydoc),
             class_node.doc,
         )
@@ -167,7 +164,6 @@ class _AstVisitor:
 
         numpydoc = NumpyDocString(inspect.cleandoc(function_node.doc or ""))
         is_public = self.is_public(function_node.name, qname)
-        reexports = self._transitive_hull_for_public_reexports(qname)
 
         function = Function(
             self.__get_function_id(function_node.name, decorator_names),
@@ -178,7 +174,7 @@ class _AstVisitor:
             ),
             [],  # TODO: results
             is_public,
-            ,
+            self.reexported.get(qname, []),
             _AstVisitor.__description(numpydoc),
             function_node.doc,
         )
@@ -320,36 +316,16 @@ class _AstVisitor:
         if name.startswith("_") and not name.endswith("__"):
             return False
 
-        if self._is_publicly_reexported(qualified_name):
+        if qualified_name in self.reexported:
             return True
 
-        # Containing class is reexported
-        if isinstance(self.__declaration_stack[-1], Class) and self._is_publicly_reexported(
-            parent_qualified_name(qualified_name)
-        ):
+        # Containing class is re-exported (always false if the current API element is not a method)
+        if isinstance(self.__declaration_stack[-1], Class) and parent_qualified_name(qualified_name) in self.reexported:
             return True
 
         # The slicing is necessary so __init__ functions are not excluded (already handled in the first condition).
         return all(not it.startswith("_") for it in qualified_name.split(".")[:-1])
 
-    def _is_publicly_reexported(self, id_: str) -> bool:
-        return len(self._transitive_hull_for_public_reexports(id_)) > 0
 
-    def _transitive_hull_for_public_reexports(self, id_: str) -> list[tuple[str, str]]:
-        return [
-            (id_, qualified_name)
-            for id_, qualified_name
-            in self._transitive_hull_for_reexports(id_)
-            if _is_public_module(qualified_name)
-        ]
-
-    def _transitive_hull_for_reexports(self, id_: str) -> list[tuple[str, str]]:
-        result = []
-        for id_, id_ in self.reexported.get(id_, []):
-            result.append((id_, id_))
-            result.extend(self._transitive_hull_for_reexports(id_))
-        return result
-
-
-def _is_public_module(module_name: str) -> bool:
+def is_public_module(module_name: str) -> bool:
     return all(not it.startswith("_") for it in module_name.split("."))
