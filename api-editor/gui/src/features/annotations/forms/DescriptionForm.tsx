@@ -18,7 +18,7 @@ interface DescriptionFormState {
 }
 
 export const DescriptionForm: React.FC<DescriptionFormProps> = function ({ target }) {
-    const targetPath = target.pathAsString();
+    const targetPath = target.id;
     const prevNewDescription = useAppSelector(selectDescription(targetPath))?.newDescription;
     const oldDescription = target.description;
 

@@ -1,8 +1,11 @@
 import inspect
+import logging
 import re
 from typing import Optional, Union
 
 import astroid
+from astroid.context import InferenceContext
+from astroid.helpers import safe_infer
 from numpydoc.docscrape import NumpyDocString
 from package_parser.model.api import (
     API,
@@ -22,7 +25,7 @@ from ._file_filters import _is_init_file
 
 class _AstVisitor:
     def __init__(self, api: API) -> None:
-        self.reexported: set[str] = set()
+        self.reexported: dict[str, list[str]] = {}
         self.api: API = api
         self.__declaration_stack: list[Union[Module, Class, Function]] = []
 
@@ -66,6 +69,7 @@ class _AstVisitor:
         imports: list[Import] = []
         from_imports: list[FromImport] = []
         visited_global_nodes: set[astroid.NodeNG] = set()
+        id_ = f"{self.api.package}/{module_node.qname()}"
 
         for _, global_node_list in module_node.globals.items():
             global_node = global_node_list[0]
@@ -90,16 +94,30 @@ class _AstVisitor:
                     from_imports.append(FromImport(base_import_path, name, alias))
 
                 # Find re-exported declarations in __init__.py files
-                if _is_init_file(module_node.file):
+                if _is_init_file(module_node.file) and is_public_module(
+                    module_node.qname()
+                ):
                     for declaration, _ in global_node.names:
-                        reexported_name = f"{base_import_path}.{declaration}"
+                        context = InferenceContext()
+                        context.lookupname = declaration
+                        node = safe_infer(global_node, context)
+
+                        if node is None:
+                            logging.warning(
+                                f"Could not resolve 'from {global_node.modname} import {declaration}"
+                            )
+                            continue
+
+                        reexported_name = node.qname()
 
                         if reexported_name.startswith(module_node.name):
-                            self.reexported.add(reexported_name)
+                            if reexported_name not in self.reexported:
+                                self.reexported[reexported_name] = []
+                            self.reexported[reexported_name].append(id_)
 
         # Remember module, so we can later add classes and global functions
         module = Module(
-            f"{self.api.package}/{module_node.qname()}",
+            id_,
             module_node.qname(),
             imports,
             from_imports,
@@ -131,6 +149,7 @@ class _AstVisitor:
             decorator_names,
             class_node.basenames,
             self.is_public(class_node.name, qname),
+            self.reexported.get(qname, []),
             _AstVisitor.__description(numpydoc),
             class_node.doc,
         )
@@ -170,6 +189,7 @@ class _AstVisitor:
             ),
             [],  # TODO: results
             is_public,
+            self.reexported.get(qname, []),
             _AstVisitor.__description(numpydoc),
             function_node.doc,
         )
@@ -315,8 +335,15 @@ class _AstVisitor:
             return True
 
         # Containing class is re-exported (always false if the current API element is not a method)
-        if parent_qualified_name(qualified_name) in self.reexported:
+        if (
+            isinstance(self.__declaration_stack[-1], Class)
+            and parent_qualified_name(qualified_name) in self.reexported
+        ):
             return True
 
         # The slicing is necessary so __init__ functions are not excluded (already handled in the first condition).
         return all(not it.startswith("_") for it in qualified_name.split(".")[:-1])
+
+
+def is_public_module(module_name: str) -> bool:
+    return all(not it.startswith("_") for it in module_name.split("."))

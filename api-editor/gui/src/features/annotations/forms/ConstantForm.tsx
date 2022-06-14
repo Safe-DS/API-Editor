@@ -9,7 +9,7 @@ interface ConstantFormProps {
 }
 
 export const ConstantForm: React.FC<ConstantFormProps> = function ({ target }) {
-    const targetPath = target.pathAsString();
+    const targetPath = target.id;
 
     // Hooks -----------------------------------------------------------------------------------------------------------
     const constantDefinition = useAppSelector(selectConstant(targetPath));

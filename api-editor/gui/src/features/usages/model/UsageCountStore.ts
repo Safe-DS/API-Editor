@@ -1,5 +1,9 @@
 import { PythonPackage } from '../../packageData/model/PythonPackage';
 import { PythonParameter } from '../../packageData/model/PythonParameter';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
+import { PythonModule } from '../../packageData/model/PythonModule';
+import { PythonClass } from '../../packageData/model/PythonClass';
+import { PythonFunction } from '../../packageData/model/PythonFunction';
 
 export interface UsageCountJson {
     module_counts?: {
@@ -66,6 +70,20 @@ export class UsageCountStore {
             this.parameterUsefulness.size === 0 ? 0 : Math.max(...this.parameterUsefulness.values());
     }
 
+    getUsageCount(declaration: PythonDeclaration): number {
+        if (declaration instanceof PythonModule) {
+            return this.moduleUsages.get(declaration.id) ?? 0;
+        } else if (declaration instanceof PythonClass) {
+            return this.classUsages.get(declaration.id) ?? 0;
+        } else if (declaration instanceof PythonFunction) {
+            return this.functionUsages.get(declaration.id) ?? 0;
+        } else if (declaration instanceof PythonParameter) {
+            return this.parameterUsages.get(declaration.id) ?? 0;
+        } else {
+            return 0;
+        }
+    }
+
     toJson(): UsageCountJson {
         return {
             module_counts: Object.fromEntries(this.moduleUsages),
@@ -87,7 +105,7 @@ export class UsageCountStore {
      */
     private addImplicitUsagesOfDefaultValues(api: PythonPackage) {
         for (const [parameterId, parameterUsageCount] of this.parameterUsages.entries()) {
-            const parameter = api.getByRelativePathAsString(parameterId);
+            const parameter = api.getDeclarationById(parameterId);
             if (!(parameter instanceof PythonParameter)) {
                 continue;
             }

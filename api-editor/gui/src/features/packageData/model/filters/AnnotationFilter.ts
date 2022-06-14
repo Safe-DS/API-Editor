@@ -44,7 +44,7 @@ export class AnnotationFilter extends AbstractPythonFilter {
         annotations: AnnotationStore,
         _usages: UsageCountStore,
     ): boolean {
-        const id = pythonDeclaration.pathAsString();
+        const id = pythonDeclaration.id;
 
         switch (this.type) {
             case AnnotationType.Any:

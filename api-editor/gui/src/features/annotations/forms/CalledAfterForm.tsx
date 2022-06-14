@@ -16,7 +16,7 @@ interface CalledAfterFormState {
 }
 
 export const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ target }) {
-    const targetPath = target.pathAsString();
+    const targetPath = target.id;
     const currentCalledAfters = Object.keys(useAppSelector(selectCalledAfters(targetPath)));
 
     const remainingCalledAfters = target

@@ -22,7 +22,7 @@ interface GroupFormState {
 }
 
 export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName }) {
-    const targetPath = target.pathAsString();
+    const targetPath = target.id;
     const currentGroups = useAppSelector(selectGroups(targetPath));
     let prevGroupAnnotation: GroupAnnotation | undefined;
     if (groupName && currentGroups) {

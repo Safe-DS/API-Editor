@@ -50,7 +50,7 @@ export const TreeNode: React.FC<TreeNodeProps> = function ({
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const showChildren = useAppSelector(selectIsExpandedInTreeView(declaration.pathAsString()));
+    const showChildren = useAppSelector(selectIsExpandedInTreeView(declaration.id));
     const annotations = useAppSelector(selectAnnotations);
 
     const level = levelOf(declaration);
@@ -62,14 +62,14 @@ export const TreeNode: React.FC<TreeNodeProps> = function ({
 
     const handleNodeClick = (event: MouseEvent) => {
         if (event.shiftKey) {
-            dispatch(toggleIsExpandedInTreeView(declaration.pathAsString()));
+            dispatch(toggleIsExpandedInTreeView(declaration.id));
         } else {
-            navigate(`/${declaration.pathAsString()}`);
+            navigate(`/${declaration.id}`);
         }
     };
 
     const handleVisibilityIndicatorClick = (event: MouseEvent) => {
-        dispatch(toggleIsExpandedInTreeView(declaration.pathAsString()));
+        dispatch(toggleIsExpandedInTreeView(declaration.id));
         event.stopPropagation();
     };
 
@@ -104,9 +104,9 @@ export const TreeNode: React.FC<TreeNodeProps> = function ({
 };
 
 const levelOf = function (declaration: PythonDeclaration): number {
-    return declaration.path().length - 2;
+    return declaration.id.split('/').length - 2;
 };
 
 const isSelected = function (declaration: PythonDeclaration, currentPathname: string): boolean {
-    return `/${declaration.pathAsString()}` === currentPathname;
+    return `/${declaration.id}` === currentPathname;
 };

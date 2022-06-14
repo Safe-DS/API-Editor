@@ -12,7 +12,7 @@ interface ClassViewProps {
 }
 
 export const ClassView: React.FC<ClassViewProps> = function ({ pythonClass }) {
-    const id = pythonClass.pathAsString();
+    const id = pythonClass.id;
 
     return (
         <Stack spacing={8}>

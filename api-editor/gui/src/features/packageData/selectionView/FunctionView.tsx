@@ -16,7 +16,7 @@ interface FunctionViewProps {
 }
 
 export const FunctionView: React.FC<FunctionViewProps> = function ({ pythonFunction }) {
-    const id = pythonFunction.pathAsString();
+    const id = pythonFunction.id;
 
     // If more @calledAfter annotations can be added
     const currentCalledAfters = Object.keys(useAppSelector(selectCalledAfters(id)));

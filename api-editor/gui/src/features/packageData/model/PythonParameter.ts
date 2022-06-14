@@ -40,10 +40,6 @@ export class PythonParameter extends PythonDeclaration {
         return [];
     }
 
-    isPublicDeclaration(): boolean {
-        return this.isPublic;
-    }
-
     isExplicitParameter(): boolean {
         return this.assignedBy !== PythonParameterAssignment.IMPLICIT;
     }

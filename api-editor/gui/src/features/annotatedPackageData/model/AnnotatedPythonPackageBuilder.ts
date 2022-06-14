@@ -17,6 +17,7 @@ import {
     InferableBoundaryAnnotation,
     InferableCalledAfterAnnotation,
     InferableConstantAnnotation,
+    InferableDescriptionAnnotation,
     InferableEnumAnnotation,
     InferableGroupAnnotation,
     InferableMoveAnnotation,
@@ -25,7 +26,6 @@ import {
     InferableRemoveAnnotation,
     InferableRenameAnnotation,
     InferableRequiredAnnotation,
-    InferableDescriptionAnnotation,
     InferableTodoAnnotation,
 } from './InferableAnnotation';
 
@@ -44,7 +44,7 @@ export class AnnotatedPythonPackageBuilder {
             this.pythonPackage.distribution,
             this.pythonPackage.version,
             this.#buildAnnotatedPythonModules(this.pythonPackage.modules),
-            this.#getExistingAnnotations(this.pythonPackage.pathAsString()),
+            this.#getExistingAnnotations(this.pythonPackage.id),
         );
     }
 
@@ -57,7 +57,7 @@ export class AnnotatedPythonPackageBuilder {
                     pythonModule.fromImports,
                     this.#buildAnnotatedPythonClasses(pythonModule),
                     this.#buildAnnotatedPythonFunctions(pythonModule),
-                    this.#getExistingAnnotations(pythonModule.pathAsString()),
+                    this.#getExistingAnnotations(pythonModule.id),
                 ),
         );
     }
@@ -74,7 +74,7 @@ export class AnnotatedPythonPackageBuilder {
                     pythonClass.isPublic,
                     pythonClass.description,
                     pythonClass.fullDocstring,
-                    this.#getExistingAnnotations(pythonClass.pathAsString()),
+                    this.#getExistingAnnotations(pythonClass.id),
                 ),
         );
     }
@@ -101,7 +101,7 @@ export class AnnotatedPythonPackageBuilder {
             pythonFunction.isPublic,
             pythonFunction.description,
             pythonFunction.fullDocstring,
-            this.#getExistingAnnotations(pythonFunction.pathAsString()),
+            this.#getExistingAnnotations(pythonFunction.id),
         );
     }
 
@@ -119,7 +119,7 @@ export class AnnotatedPythonPackageBuilder {
                     pythonParameter.isPublic,
                     pythonParameter.typeInDocs,
                     pythonParameter.description,
-                    this.#getExistingAnnotations(pythonParameter.pathAsString()),
+                    this.#getExistingAnnotations(pythonParameter.id),
                 ),
         );
     }
@@ -132,7 +132,7 @@ export class AnnotatedPythonPackageBuilder {
                     pythonResult.typeInDocs,
                     pythonResult.typeInDocs,
                     pythonResult.description,
-                    this.#getExistingAnnotations(pythonResult.pathAsString()),
+                    this.#getExistingAnnotations(pythonResult.id),
                 ),
         );
     }
