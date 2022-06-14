@@ -1,7 +1,4 @@
-import { PythonClass } from './PythonClass';
 import { PythonFunction } from './PythonFunction';
-import { PythonModule } from './PythonModule';
-import { PythonPackage } from './PythonPackage';
 import { PythonParameter } from './PythonParameter';
 
 test('toString without decorators and parameters', () => {

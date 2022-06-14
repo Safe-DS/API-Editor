@@ -56,9 +56,6 @@ export const App: React.FC = function () {
     useIndexedDB();
 
     const pythonPackage = useAppSelector(selectRawPythonPackage);
-    const usages = useAppSelector(selectUsages);
-    const pythonFilter = useAppSelector(selectFilter);
-    const filteredPythonPackage = useAppSelector(selectFilteredPythonPackage);
 
     const [showInferErrorDialog, setShowInferErrorDialog] = useState(false);
     const [inferErrors, setInferErrors] = useState<string[]>([]);
