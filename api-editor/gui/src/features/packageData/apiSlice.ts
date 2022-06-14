@@ -110,6 +110,9 @@ const selectSortedPythonPackages = createSelector(
                                         (usages.functionUsages.get(b.id) ?? 0) - (usages.functionUsages.get(a.id) ?? 0),
                                 ),
                             ),
+                    ).sort(
+                        (a, b) =>
+                            (usages.moduleUsages.get(b.id) ?? 0) - (usages.moduleUsages.get(a.id) ?? 0),
                     ),
                 );
         }
