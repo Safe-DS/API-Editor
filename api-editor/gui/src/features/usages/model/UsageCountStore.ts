@@ -2,6 +2,9 @@ import { PythonPackage } from '../../packageData/model/PythonPackage';
 import { PythonParameter } from '../../packageData/model/PythonParameter';
 
 export interface UsageCountJson {
+    module_counts?: {
+        [target: string]: number;
+    };
     class_counts: {
         [target: string]: number;
     };
@@ -21,6 +24,7 @@ export interface UsageCountJson {
 export class UsageCountStore {
     static fromJson(json: UsageCountJson, api?: PythonPackage): UsageCountStore {
         return new UsageCountStore(
+            new Map(Object.entries(json.module_counts ?? {})),
             new Map(Object.entries(json.class_counts)),
             new Map(Object.entries(json.function_counts)),
             new Map(Object.entries(json.parameter_counts)),
@@ -37,6 +41,7 @@ export class UsageCountStore {
     readonly parameterMaxUsefulness: number;
 
     constructor(
+        readonly moduleUsages: Map<string, number> = new Map(),
         readonly classUsages: Map<string, number> = new Map(),
         readonly functionUsages: Map<string, number> = new Map(),
         readonly parameterUsages: Map<string, number> = new Map(),
@@ -45,6 +50,7 @@ export class UsageCountStore {
     ) {
         if (api) {
             this.addImplicitUsagesOfDefaultValues(api);
+            this.computeModuleUsages(api);
         }
 
         this.classMaxUsages = classUsages.size === 0 ? 0 : Math.max(...classUsages.values());
@@ -60,6 +66,7 @@ export class UsageCountStore {
 
     toJson(): UsageCountJson {
         return {
+            module_counts: Object.fromEntries(this.moduleUsages),
             class_counts: Object.fromEntries(this.classUsages),
             function_counts: Object.fromEntries(this.functionUsages),
             parameter_counts: Object.fromEntries(this.parameterUsages),
@@ -109,6 +116,19 @@ export class UsageCountStore {
                 this.valueUsages.get(parameterId)!.set(defaultValue, 0);
             }
             this.valueUsages.get(parameterId)!.set(defaultValue, nImplicitUsages + nExplicitUsage);
+        }
+    }
+
+    private computeModuleUsages(api: PythonPackage) {
+        for (const module of api.modules) {
+            let moduleUsageCount = 0;
+            for (const cls of module.classes) {
+                moduleUsageCount += this.classUsages.get(cls.id) ?? 0;
+            }
+            for (const func of module.functions) {
+                moduleUsageCount += this.functionUsages.get(func.id) ?? 0;
+            }
+            this.moduleUsages.set(module.id, moduleUsageCount);
         }
     }
 
