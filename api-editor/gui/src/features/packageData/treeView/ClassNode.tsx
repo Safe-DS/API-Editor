@@ -6,7 +6,7 @@ import { TreeNode, ValuePair } from './TreeNode';
 import { AbstractPythonFilter } from '../model/filters/AbstractPythonFilter';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { useAppSelector } from '../../../app/hooks';
-import { AnnotationStore, selectAnnotations } from '../../annotations/annotationSlice';
+import { maximumNumberOfClassAnnotations, selectNumberOfAnnotations } from '../../annotations/annotationSlice';
 import { HeatMapMode, selectHeatMapMode } from '../../ui/uiSlice';
 
 interface ClassNodeProps {
@@ -17,12 +17,12 @@ interface ClassNodeProps {
 
 export const ClassNode: React.FC<ClassNodeProps> = function ({ pythonClass, filter, usages }) {
     const hasMethods = !isEmptyList(pythonClass.methods);
-    const annotations = useAppSelector(selectAnnotations);
+    const annotationCounts = useAnnotationCounts(pythonClass);
     const heatMapMode = useAppSelector(selectHeatMapMode);
-    let valuePair: ValuePair = new ValuePair(undefined, undefined);
 
+    let valuePair: ValuePair = new ValuePair(0, 1);
     if (heatMapMode === HeatMapMode.Annotations) {
-        valuePair = getMapWithAnnotation(pythonClass, annotations);
+        valuePair = annotationCounts;
     } else if (heatMapMode === HeatMapMode.Usages || heatMapMode === HeatMapMode.Usefulness) {
         valuePair = getMapWithUsages(usages, pythonClass);
     }
@@ -46,16 +46,6 @@ const getMapWithUsages = function (usages: UsageCountStore, pythonClass: PythonC
     return new ValuePair(specificValue, maxValue);
 };
 
-const getMapWithAnnotation = function (pythonClass: PythonClass, annotations: AnnotationStore): ValuePair {
-    const maxValue = 3;
-    const qname = pythonClass.pathAsString();
-    let specificValue = 0;
-
-    specificValue += annotations.moves[qname] !== undefined ? 1 : 0;
-    specificValue += annotations.descriptions[qname] !== undefined ? 1 : 0;
-    specificValue += annotations.renamings[qname] !== undefined ? 1 : 0;
-    specificValue += annotations.removes[qname] !== undefined ? 1 : 0;
-    specificValue += annotations.todos[qname] !== undefined ? 1 : 0;
-
-    return new ValuePair(specificValue, maxValue);
+const useAnnotationCounts = function (pythonClass: PythonClass): ValuePair {
+    return new ValuePair(useAppSelector(selectNumberOfAnnotations(pythonClass.id)), maximumNumberOfClassAnnotations);
 };
