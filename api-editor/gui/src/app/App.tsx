@@ -36,7 +36,6 @@ import {
     initializeUI,
     persistUI,
     selectCurrentUserAction,
-    selectFilter,
     selectShowAnnotationImportDialog,
     selectShowAPIImportDialog,
     selectShowUsageImportDialog,
@@ -44,11 +43,7 @@ import {
     setFilterString,
 } from '../features/ui/uiSlice';
 import { initializeUsages, persistUsages, selectUsages } from '../features/usages/usageSlice';
-import {
-    initializePythonPackage,
-    selectFilteredPythonPackage,
-    selectRawPythonPackage,
-} from '../features/packageData/apiSlice';
+import { initializePythonPackage, selectRawPythonPackage } from '../features/packageData/apiSlice';
 import { PythonClass } from '../features/packageData/model/PythonClass';
 import { PythonParameter } from '../features/packageData/model/PythonParameter';
 
@@ -122,9 +117,7 @@ export const App: React.FC = function () {
                         />
                     )}
                     {currentUserAction.type === 'move' && <MoveForm target={userActionTarget || pythonPackage} />}
-                    {currentUserAction.type === 'none' && (
-                        <TreeView />
-                    )}
+                    {currentUserAction.type === 'none' && <TreeView />}
                     {currentUserAction.type === 'optional' && (
                         <OptionalForm target={userActionTarget || pythonPackage} />
                     )}
