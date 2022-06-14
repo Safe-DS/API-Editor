@@ -1,17 +1,17 @@
 import { HStack, Icon, Text as ChakraText } from '@chakra-ui/react';
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import { IconType } from 'react-icons/lib';
 import { useLocation } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import PythonDeclaration from '../model/PythonDeclaration';
+import { PythonDeclaration } from '../model/PythonDeclaration';
 import {
     HeatMapMode,
     selectHeatMapMode,
     selectIsExpandedInTreeView,
     toggleIsExpandedInTreeView,
 } from '../../ui/uiSlice';
-import VisibilityIndicator from './VisibilityIndicator';
+import { VisibilityIndicator } from './VisibilityIndicator';
 import { AbstractPythonFilter } from '../model/filters/AbstractPythonFilter';
 import { selectAnnotations } from '../../annotations/annotationSlice';
 import { HeatMapInterpolation, HeatMapTag } from './HeatMapTag';
@@ -50,7 +50,7 @@ export const TreeNode: React.FC<TreeNodeProps> = function ({
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const showChildren = useAppSelector(selectIsExpandedInTreeView(declaration.pathAsString()));
+    const showChildren = useAppSelector(selectIsExpandedInTreeView(declaration.id));
     const annotations = useAppSelector(selectAnnotations);
 
     const level = levelOf(declaration);
@@ -60,9 +60,17 @@ export const TreeNode: React.FC<TreeNodeProps> = function ({
 
     const fontWeight = filter.shouldKeepDeclaration(declaration, annotations, usages) ? 'bold' : undefined;
 
-    const handleClick = () => {
-        dispatch(toggleIsExpandedInTreeView(declaration.pathAsString()));
-        navigate(`/${declaration.pathAsString()}`);
+    const handleNodeClick = (event: MouseEvent) => {
+        if (event.shiftKey) {
+            dispatch(toggleIsExpandedInTreeView(declaration.id));
+        } else {
+            navigate(`/${declaration.id}`);
+        }
+    };
+
+    const handleVisibilityIndicatorClick = (event: MouseEvent) => {
+        dispatch(toggleIsExpandedInTreeView(declaration.id));
+        event.stopPropagation();
     };
 
     const interpolation =
@@ -78,12 +86,13 @@ export const TreeNode: React.FC<TreeNodeProps> = function ({
             color={color}
             backgroundColor={backgroundColor}
             paddingLeft={paddingLeft}
-            onClick={handleClick}
+            onClick={handleNodeClick}
         >
             <VisibilityIndicator
                 hasChildren={isExpandable}
                 showChildren={showChildren}
                 isSelected={isSelected(declaration, currentPathname)}
+                onClick={handleVisibilityIndicatorClick}
             />
             <Icon as={icon} />
             {displayHeatMap && (
@@ -95,9 +104,9 @@ export const TreeNode: React.FC<TreeNodeProps> = function ({
 };
 
 const levelOf = function (declaration: PythonDeclaration): number {
-    return declaration.path().length - 2;
+    return declaration.id.split('/').length - 2;
 };
 
 const isSelected = function (declaration: PythonDeclaration, currentPathname: string): boolean {
-    return `/${declaration.pathAsString()}` === currentPathname;
+    return `/${declaration.id}` === currentPathname;
 };

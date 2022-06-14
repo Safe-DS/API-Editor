@@ -99,6 +99,10 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
             return new AnnotationFilter(AnnotationType.CalledAfter);
         case 'annotation:@constant':
             return new AnnotationFilter(AnnotationType.Constant);
+        case 'annotation:@description':
+            return new AnnotationFilter(AnnotationType.Description);
+        case 'is:done': // Deliberate special case. It should be transparent to users it's an annotation.
+            return new AnnotationFilter(AnnotationType.Done);
         case 'annotation:@enum':
             return new AnnotationFilter(AnnotationType.Enum);
         case 'annotation:@group':
@@ -115,6 +119,8 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
             return new AnnotationFilter(AnnotationType.Rename);
         case 'annotation:@required':
             return new AnnotationFilter(AnnotationType.Required);
+        case 'annotation:@todo':
+            return new AnnotationFilter(AnnotationType.Todo);
     }
 
     // Name
@@ -167,4 +173,14 @@ const comparisonFunction = function (comparisonOperator: string): ((a: number, b
         default:
             return null;
     }
+};
+
+/**
+ * Returns whether the given token describes a valid filter. Note that the entire filter string contains multiple
+ * tokens, which are separated by commas.
+ *
+ * @param token The token to check.
+ */
+export const isValidFilterToken = function (token: string): boolean {
+    return Boolean(parsePotentiallyNegatedToken(token));
 };

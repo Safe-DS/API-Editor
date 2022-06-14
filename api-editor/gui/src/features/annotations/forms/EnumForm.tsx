@@ -13,7 +13,7 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import { FaPlus, FaTrash } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { pythonIdentifierPattern } from '../../../common/validation';
-import PythonDeclaration from '../../packageData/model/PythonDeclaration';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
 import { selectEnum, upsertEnum } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
 import { hideAnnotationForm } from '../../ui/uiSlice';
@@ -31,10 +31,10 @@ interface EnumFormState {
 }
 
 export const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
-    const targetPath = target.pathAsString();
+    const targetPath = target.id;
 
     // Hooks -----------------------------------------------------------------------------------------------------------
-    const enumDefinition = useAppSelector(selectEnum(target.pathAsString()));
+    const enumDefinition = useAppSelector(selectEnum(target.id));
     const dispatch = useAppDispatch();
 
     const {

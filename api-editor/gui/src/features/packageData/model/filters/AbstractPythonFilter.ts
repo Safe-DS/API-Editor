@@ -1,10 +1,10 @@
-import PythonClass from '../PythonClass';
-import PythonFunction from '../PythonFunction';
-import PythonModule from '../PythonModule';
-import PythonParameter from '../PythonParameter';
-import PythonPackage from '../PythonPackage';
+import { PythonClass } from '../PythonClass';
+import { PythonFunction } from '../PythonFunction';
+import { PythonModule } from '../PythonModule';
+import { PythonParameter } from '../PythonParameter';
+import { PythonPackage } from '../PythonPackage';
 import { isEmptyList } from '../../../../common/util/listOperations';
-import PythonDeclaration from '../PythonDeclaration';
+import { PythonDeclaration } from '../PythonDeclaration';
 import { AnnotationStore } from '../../../annotations/annotationSlice';
 import { UsageCountStore } from '../../../usages/model/UsageCountStore';
 
@@ -78,12 +78,9 @@ export abstract class AbstractPythonFilter {
             .filter((it) => it !== null);
 
         // Create filtered package
-        return new PythonPackage(
-            pythonPackage.distribution,
-            pythonPackage.name,
-            pythonPackage.version,
-            modules as PythonModule[],
-        );
+        return pythonPackage.shallowCopy({
+            modules: modules as PythonModule[],
+        });
     }
 
     /**
@@ -116,13 +113,10 @@ export abstract class AbstractPythonFilter {
         }
 
         // Otherwise, create filtered module
-        return new PythonModule(
-            pythonModule.name,
-            pythonModule.imports,
-            pythonModule.fromImports,
-            classes as PythonClass[],
-            functions as PythonFunction[],
-        );
+        return pythonModule.shallowCopy({
+            classes: classes as PythonClass[],
+            functions: functions as PythonFunction[],
+        });
     }
 
     /**
@@ -150,16 +144,9 @@ export abstract class AbstractPythonFilter {
         }
 
         // Otherwise, create filtered class
-        return new PythonClass(
-            pythonClass.name,
-            pythonClass.qualifiedName,
-            pythonClass.decorators,
-            pythonClass.superclasses,
-            methods as PythonFunction[],
-            pythonClass.isPublic,
-            pythonClass.description,
-            pythonClass.fullDocstring,
-        );
+        return pythonClass.shallowCopy({
+            methods: methods as PythonFunction[],
+        });
     }
 
     /**
@@ -185,17 +172,8 @@ export abstract class AbstractPythonFilter {
         }
 
         // Otherwise, create filtered function
-        return new PythonFunction(
-            pythonFunction.name,
-            pythonFunction.uniqueName,
-            pythonFunction.qualifiedName,
-            pythonFunction.uniqueQualifiedName,
-            pythonFunction.decorators,
+        return pythonFunction.shallowCopy({
             parameters,
-            pythonFunction.results,
-            pythonFunction.isPublic,
-            pythonFunction.description,
-            pythonFunction.fullDocstring,
-        );
+        });
     }
 }

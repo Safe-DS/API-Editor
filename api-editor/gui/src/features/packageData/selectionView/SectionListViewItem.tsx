@@ -1,10 +1,4 @@
-import {
-    Heading,
-    ListItem,
-    Stack,
-    Text,
-    UnorderedList,
-} from '@chakra-ui/react';
+import { Heading, ListItem, Stack, Text, UnorderedList } from '@chakra-ui/react';
 import React from 'react';
 import { isEmptyList } from '../../../common/util/listOperations';
 
@@ -13,10 +7,7 @@ interface ClassViewItemProps {
     inputElements: string[] | string;
 }
 
-const SectionListViewItem: React.FC<ClassViewItemProps> = function ({
-    title,
-    inputElements,
-}) {
+export const SectionListViewItem: React.FC<ClassViewItemProps> = function ({ title, inputElements }) {
     if (typeof inputElements === 'string') {
         // eslint-disable-next-line no-param-reassign
         inputElements = [inputElements];
@@ -42,5 +33,3 @@ const SectionListViewItem: React.FC<ClassViewItemProps> = function ({
         </Stack>
     );
 };
-
-export default SectionListViewItem;

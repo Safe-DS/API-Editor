@@ -10,55 +10,52 @@ import {
     ModalOverlay,
     UnorderedList,
 } from '@chakra-ui/react';
-import React, {useEffect, useState} from 'react';
-import {MenuBar} from '../common/MenuBar';
-import {AnnotationImportDialog} from '../features/annotations/AnnotationImportDialog';
-import {
-    initializeAnnotations,
-    persistAnnotations,
-    selectAnnotations
-} from '../features/annotations/annotationSlice';
-import {BoundaryForm} from '../features/annotations/forms/BoundaryForm';
-import {CalledAfterForm} from '../features/annotations/forms/CalledAfterForm';
-import {ConstantForm} from '../features/annotations/forms/ConstantForm';
-import {EnumForm} from '../features/annotations/forms/EnumForm';
-import {GroupForm} from '../features/annotations/forms/GroupForm';
-import {MoveForm} from '../features/annotations/forms/MoveForm';
-import {OptionalForm} from '../features/annotations/forms/OptionalForm';
-import {RenameForm} from '../features/annotations/forms/RenameForm';
-import {PackageDataImportDialog} from '../features/packageData/PackageDataImportDialog';
-import {SelectionView} from '../features/packageData/selectionView/SelectionView';
-import {TreeView} from '../features/packageData/treeView/TreeView';
-import {useAppDispatch, useAppSelector} from './hooks';
-import PythonFunction from '../features/packageData/model/PythonFunction';
-import {AttributeForm} from '../features/annotations/forms/AttributeForm';
-import {UsageImportDialog} from '../features/usages/UsageImportDialog';
+import React, { useEffect, useState } from 'react';
+import { MenuBar } from '../common/MenuBar';
+import { AnnotationImportDialog } from '../features/annotations/AnnotationImportDialog';
+import { initializeAnnotations, persistAnnotations, selectAnnotations } from '../features/annotations/annotationSlice';
+import { BoundaryForm } from '../features/annotations/forms/BoundaryForm';
+import { CalledAfterForm } from '../features/annotations/forms/CalledAfterForm';
+import { ConstantForm } from '../features/annotations/forms/ConstantForm';
+import { DescriptionForm } from '../features/annotations/forms/DescriptionForm';
+import { EnumForm } from '../features/annotations/forms/EnumForm';
+import { GroupForm } from '../features/annotations/forms/GroupForm';
+import { MoveForm } from '../features/annotations/forms/MoveForm';
+import { OptionalForm } from '../features/annotations/forms/OptionalForm';
+import { RenameForm } from '../features/annotations/forms/RenameForm';
+import { TodoForm } from '../features/annotations/forms/TodoForm';
+import { PackageDataImportDialog } from '../features/packageData/PackageDataImportDialog';
+import { SelectionView } from '../features/packageData/selectionView/SelectionView';
+import { TreeView } from '../features/packageData/treeView/TreeView';
+import { useAppDispatch, useAppSelector } from './hooks';
+import { PythonFunction } from '../features/packageData/model/PythonFunction';
+import { AttributeForm } from '../features/annotations/forms/AttributeForm';
+import { UsageImportDialog } from '../features/usages/UsageImportDialog';
 import {
     BatchMode,
     GroupUserAction,
     initializeUI,
-    persistUI, selectBatchMode,
+    persistUI,
+    selectBatchMode,
     selectCurrentUserAction,
-    selectFilter,
     selectShowAnnotationImportDialog,
     selectShowAPIImportDialog,
     selectShowUsageImportDialog,
     selectUI,
     setFilterString,
 } from '../features/ui/uiSlice';
-import {initializeUsages, persistUsages, selectUsages} from '../features/usages/usageSlice';
-import {initializePythonPackage, selectPythonPackage} from '../features/packageData/apiSlice';
-import {ConstantBatchForm} from "../features/annotations/batchforms/ConstantBatchForm";
-import {getAllSelectedElements} from "../features/packageData/selectionView/ActionBar";
+import { initializeUsages, persistUsages, selectUsages } from '../features/usages/usageSlice';
+import { initializePythonPackage, selectRawPythonPackage } from '../features/packageData/apiSlice';
+import { PythonClass } from '../features/packageData/model/PythonClass';
+import { PythonParameter } from '../features/packageData/model/PythonParameter';
+import { ConstantBatchForm } from '../features/annotations/batchforms/ConstantBatchForm';
+import { getAllSelectedElements } from '../features/packageData/selectionView/ActionBar';
 
 export const App: React.FC = function () {
     useIndexedDB();
 
     const annotationStore = useAppSelector(selectAnnotations);
-    const pythonPackage = useAppSelector(selectPythonPackage);
-    const usages = useAppSelector(selectUsages);
-    const pythonFilter = useAppSelector(selectFilter);
-    const filteredPythonPackage = pythonFilter.applyToPackage(pythonPackage, useAppSelector(selectAnnotations), usages);
+    const pythonPackage = useAppSelector(selectRawPythonPackage);
 
     const [showInferErrorDialog, setShowInferErrorDialog] = useState(false);
     const [inferErrors, setInferErrors] = useState<string[]>([]);
@@ -68,7 +65,7 @@ export const App: React.FC = function () {
     };
 
     const currentUserAction = useAppSelector(selectCurrentUserAction);
-    const userActionTarget = pythonPackage.getByRelativePathAsString(currentUserAction.target);
+    const userActionTarget = pythonPackage.getDeclarationById(currentUserAction.target);
     const showAnnotationImportDialog = useAppSelector(selectShowAnnotationImportDialog);
     const showAPIImportDialog = useAppSelector(selectShowAPIImportDialog);
     const showUsagesImportDialog = useAppSelector(selectShowUsageImportDialog);
@@ -84,7 +81,7 @@ export const App: React.FC = function () {
                 h="100vh"
             >
                 <GridItem gridArea="menu" colSpan={2}>
-                    <MenuBar pythonPackage={pythonPackage} displayInferErrors={displayInferErrors}/>
+                    <MenuBar displayInferErrors={displayInferErrors} />
                 </GridItem>
                 <GridItem
                     gridArea="leftPane"
@@ -97,18 +94,24 @@ export const App: React.FC = function () {
                     resize="horizontal"
                 >
                     {currentUserAction.type === 'attribute' && (
-                        <AttributeForm target={userActionTarget || pythonPackage}/>
+                        <AttributeForm target={userActionTarget || pythonPackage} />
                     )}
                     {currentUserAction.type === 'boundary' && (
-                        <BoundaryForm target={userActionTarget || pythonPackage}/>
+                        <BoundaryForm target={userActionTarget || pythonPackage} />
                     )}
                     {currentUserAction.type === 'calledAfter' && userActionTarget instanceof PythonFunction && (
-                        <CalledAfterForm target={userActionTarget}/>
+                        <CalledAfterForm target={userActionTarget} />
                     )}
                     {currentUserAction.type === 'constant' && (
-                        <ConstantForm target={userActionTarget || pythonPackage}/>
+                        <ConstantForm target={userActionTarget || pythonPackage} />
                     )}
-                    {currentUserAction.type === 'enum' && <EnumForm target={userActionTarget || pythonPackage}/>}
+                    {currentUserAction.type === 'description' &&
+                        (userActionTarget instanceof PythonClass ||
+                            userActionTarget instanceof PythonFunction ||
+                            userActionTarget instanceof PythonParameter) && (
+                            <DescriptionForm target={userActionTarget} />
+                        )}
+                    {currentUserAction.type === 'enum' && <EnumForm target={userActionTarget || pythonPackage} />}
                     {currentUserAction.type === 'group' && (
                         <GroupForm
                             target={userActionTarget || pythonPackage}
@@ -119,28 +122,31 @@ export const App: React.FC = function () {
                             }
                         />
                     )}
-                    {currentUserAction.type === 'move' && <MoveForm target={userActionTarget || pythonPackage}/>}
-                    {currentUserAction.type === 'none' && (
-                        <TreeView pythonPackage={filteredPythonPackage} filter={pythonFilter} usages={usages}/>
-                    )}
+                    {currentUserAction.type === 'move' && <MoveForm target={userActionTarget || pythonPackage} />}
+                    {currentUserAction.type === 'none' && <TreeView />}
                     {currentUserAction.type === 'optional' && (
-                        <OptionalForm target={userActionTarget || pythonPackage}/>
+                        <OptionalForm target={userActionTarget || pythonPackage} />
                     )}
-                    {currentUserAction.type === 'rename' && <RenameForm target={userActionTarget || pythonPackage}/>}
+                    {currentUserAction.type === 'rename' && <RenameForm target={userActionTarget || pythonPackage} />}
+                    {currentUserAction.type === 'todo' && <TodoForm target={userActionTarget || pythonPackage} />}
                 </GridItem>
                 <GridItem gridArea="rightPane" overflow="auto">
-                    {batchMode === BatchMode.None && (
-                        <SelectionView pythonPackage={pythonPackage} pythonFilter={pythonFilter} usages={usages}/>
-                        )}
+                    {batchMode === BatchMode.None && <SelectionView />}
                     {batchMode === BatchMode.Constant && (
                         <ConstantBatchForm
-                        target={getAllSelectedElements(userActionTarget || pythonPackage, pythonFilter, annotationStore, usages)}/>
-                        )}
+                            target={getAllSelectedElements(
+                                userActionTarget || pythonPackage,
+                                pythonFilter,
+                                annotationStore,
+                                usages,
+                            )}
+                        />
+                    )}
                 </GridItem>
 
-                {showAnnotationImportDialog && <AnnotationImportDialog/>}
-                {showAPIImportDialog && <PackageDataImportDialog setFilter={setFilterString}/>}
-                {showUsagesImportDialog && <UsageImportDialog/>}
+                {showAnnotationImportDialog && <AnnotationImportDialog />}
+                {showAPIImportDialog && <PackageDataImportDialog setFilter={setFilterString} />}
+                {showUsagesImportDialog && <UsageImportDialog />}
             </Grid>
             <Modal
                 isOpen={showInferErrorDialog}
@@ -149,10 +155,10 @@ export const App: React.FC = function () {
                 size="xl"
                 isCentered
             >
-                <ModalOverlay/>
+                <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>Infer errors</ModalHeader>
-                    <ModalCloseButton/>
+                    <ModalCloseButton />
                     <ModalBody paddingLeft={10} paddingBottom={6}>
                         <UnorderedList spacing={5}>
                             {inferErrors.map((error, index) => (

@@ -2,8 +2,9 @@ import { Box, Heading, HStack, Stack, Text as ChakraText } from '@chakra-ui/reac
 import React from 'react';
 import { AnnotationDropdown } from '../../annotations/AnnotationDropdown';
 import { AnnotationView } from '../../annotations/AnnotationView';
-import PythonParameter from '../model/PythonParameter';
-import DocumentationText from './DocumentationText';
+import { PythonParameter } from '../model/PythonParameter';
+import { DocumentationText } from './DocumentationText';
+import { DoneButton } from '../../annotations/DoneButton';
 
 interface ParameterNodeProps {
     pythonParameter: PythonParameter;
@@ -11,7 +12,7 @@ interface ParameterNodeProps {
 }
 
 export const ParameterNode: React.FC<ParameterNodeProps> = function ({ isTitle, pythonParameter }) {
-    const id = pythonParameter.pathAsString();
+    const id = pythonParameter.id;
 
     const isConstructorParameter = pythonParameter.parent()?.name === '__init__';
     const isExplicitParameter = pythonParameter.isExplicitParameter();
@@ -29,16 +30,20 @@ export const ParameterNode: React.FC<ParameterNodeProps> = function ({ isTitle, 
                     </Heading>
                 )}
                 {pythonParameter.isPublic && isExplicitParameter && (
-                    <AnnotationDropdown
-                        target={id}
-                        showAttribute={isConstructorParameter}
-                        showBoundary
-                        showConstant
-                        showEnum
-                        showOptional
-                        showRename
-                        showRequired
-                    />
+                    <>
+                        <AnnotationDropdown
+                            target={id}
+                            showAttribute={isConstructorParameter}
+                            showBoundary
+                            showConstant
+                            showDescription
+                            showEnum
+                            showOptional
+                            showRename
+                            showRequired
+                        />
+                        <DoneButton target={id} />
+                    </>
                 )}
             </HStack>
 

@@ -2,16 +2,17 @@ import { Box, Heading, HStack, Stack, Text as ChakraText } from '@chakra-ui/reac
 import React from 'react';
 import { AnnotationDropdown } from '../../annotations/AnnotationDropdown';
 import { AnnotationView } from '../../annotations/AnnotationView';
-import PythonClass from '../model/PythonClass';
-import DocumentationText from './DocumentationText';
-import SectionListViewItem from './SectionListViewItem';
+import { PythonClass } from '../model/PythonClass';
+import { DocumentationText } from './DocumentationText';
+import { SectionListViewItem } from './SectionListViewItem';
+import { DoneButton } from '../../annotations/DoneButton';
 
 interface ClassViewProps {
     pythonClass: PythonClass;
 }
 
 export const ClassView: React.FC<ClassViewProps> = function ({ pythonClass }) {
-    const id = pythonClass.pathAsString();
+    const id = pythonClass.id;
 
     return (
         <Stack spacing={8}>
@@ -20,7 +21,12 @@ export const ClassView: React.FC<ClassViewProps> = function ({ pythonClass }) {
                     <Heading as="h3" size="lg">
                         {pythonClass.name} {!pythonClass.isPublic && '(private)'}
                     </Heading>
-                    {pythonClass.isPublic && <AnnotationDropdown target={id} showMove showRemove showRename />}
+                    {pythonClass.isPublic && (
+                        <>
+                            <AnnotationDropdown target={id} showDescription showMove showRemove showRename showTodo />
+                            <DoneButton target={id} />
+                        </>
+                    )}
                 </HStack>
 
                 <AnnotationView target={id} />

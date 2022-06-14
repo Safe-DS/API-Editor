@@ -3,6 +3,21 @@ import * as idb from 'idb-keyval';
 import { RootState } from '../../app/store';
 import PythonDeclaration from "../packageData/model/PythonDeclaration";
 
+/**
+ * How many annotations can be applied to a class at once.
+ */
+export const maximumNumberOfClassAnnotations = 5;
+
+/**
+ * How many annotations can be applied to a function at once.
+ */
+export const maximumNumberOfFunctionAnnotations = 7;
+
+/**
+ * How many annotations can be applied to a parameter at once.
+ */
+export const maximumNumberOfParameterAnnotations = 8;
+
 export interface AnnotationStore {
     attributes: {
         [target: string]: AttributeAnnotation;
@@ -15,6 +30,12 @@ export interface AnnotationStore {
     };
     constants: {
         [target: string]: ConstantAnnotation;
+    };
+    descriptions: {
+        [target: string]: DescriptionAnnotation;
+    };
+    dones: {
+        [target: string]: DoneAnnotation;
     };
     enums: {
         [target: string]: EnumAnnotation;
@@ -39,6 +60,9 @@ export interface AnnotationStore {
     };
     removes: {
         [target: string]: RemoveAnnotation;
+    };
+    todos: {
+        [target: string]: TodoAnnotation;
     };
 }
 
@@ -146,6 +170,31 @@ export interface ConstantAnnotation {
      * Default value
      */
     readonly defaultValue: DefaultValue;
+}
+
+export interface DescriptionAnnotation {
+    /**
+     * ID of the annotated Python declaration.
+     */
+    readonly target: string;
+
+    /**
+     * Description for the declaration.
+     */
+    readonly newDescription: string;
+}
+
+/**
+ * The element is fully annotated and all annotations are checked.
+ *
+ * **Important:** While this is implemented as an annotation it should **not** be counted in the heat map or the
+ * statistics.
+ */
+export interface DoneAnnotation {
+    /**
+     * ID of the annotated Python declaration.
+     */
+    readonly target: string;
 }
 
 export interface EnumAnnotation {
@@ -257,6 +306,18 @@ export interface RemoveAnnotation {
     readonly target: string;
 }
 
+export interface TodoAnnotation {
+    /**
+     * ID of the annotated Python declaration.
+     */
+    readonly target: string;
+
+    /**
+     * A Todo for the declaration.
+     */
+    readonly newTodo: string;
+}
+
 // Initial state -------------------------------------------------------------------------------------------------------
 
 export const initialState: AnnotationStore = {
@@ -264,6 +325,8 @@ export const initialState: AnnotationStore = {
     boundaries: {},
     calledAfters: {},
     constants: {},
+    descriptions: {},
+    dones: {},
     enums: {},
     groups: {},
     moves: {},
@@ -272,6 +335,7 @@ export const initialState: AnnotationStore = {
     renamings: {},
     requireds: {},
     removes: {},
+    todos: {},
 };
 
 // Thunks --------------------------------------------------------------------------------------------------------------
@@ -307,6 +371,29 @@ const annotationsSlice = createSlice({
                 ...initialState,
                 ...action.payload,
             };
+        },
+        mergeAnnotations(state, action: PayloadAction<AnnotationStore>) {
+            for (const annotationType of Object.keys(action.payload)) {
+                if (annotationType === 'calledAfters' || annotationType === 'groups') {
+                    for (const target of Object.keys(action.payload[annotationType])) {
+                        // @ts-ignore
+                        state[annotationType][target] = {
+                            // @ts-ignore
+                            ...(state[annotationType][target] ?? {}),
+                            // @ts-ignore
+                            ...action.payload[annotationType][target],
+                        };
+                    }
+                } else {
+                    // @ts-ignore
+                    state[annotationType] = {
+                        // @ts-ignore
+                        ...state[annotationType],
+                        // @ts-ignore
+                        ...action.payload[annotationType],
+                    };
+                }
+            }
         },
         resetAnnotations() {
             return initialState;
@@ -345,6 +432,18 @@ const annotationsSlice = createSlice({
         },
         removeConstant(state, action: PayloadAction<string>) {
             delete state.constants[action.payload];
+        },
+        upsertDescription(state, action: PayloadAction<DescriptionAnnotation>) {
+            state.descriptions[action.payload.target] = action.payload;
+        },
+        removeDescription(state, action: PayloadAction<string>) {
+            delete state.descriptions[action.payload];
+        },
+        addDone(state, action: PayloadAction<DoneAnnotation>) {
+            state.dones[action.payload.target] = action.payload;
+        },
+        removeDone(state, action: PayloadAction<string>) {
+            delete state.dones[action.payload];
         },
         upsertEnum(state, action: PayloadAction<EnumAnnotation>) {
             state.enums[action.payload.target] = action.payload;
@@ -469,6 +568,12 @@ const annotationsSlice = createSlice({
         removeRemove(state, action: PayloadAction<string>) {
             delete state.removes[action.payload];
         },
+        upsertTodo(state, action: PayloadAction<TodoAnnotation>) {
+            state.todos[action.payload.target] = action.payload;
+        },
+        removeTodo(state, action: PayloadAction<string>) {
+            delete state.todos[action.payload];
+        },
     },
     extraReducers(builder) {
         builder.addCase(initializeAnnotations.fulfilled, (state, action) => action.payload);
@@ -478,6 +583,7 @@ const annotationsSlice = createSlice({
 const { actions, reducer } = annotationsSlice;
 export const {
     setAnnotations,
+    mergeAnnotations,
     resetAnnotations,
 
     upsertAttribute,
@@ -488,6 +594,10 @@ export const {
     removeCalledAfter,
     upsertConstant,
     removeConstant,
+    upsertDescription,
+    removeDescription,
+    addDone,
+    removeDone,
     upsertEnum,
     removeEnum,
     upsertGroup,
@@ -502,6 +612,8 @@ export const {
     removeRenaming,
     addRequired,
     removeRequired,
+    upsertTodo,
+    removeTodo,
     addRemove,
     removeRemove,
 } = actions;
@@ -524,6 +636,14 @@ export const selectConstant =
     (target: string) =>
     (state: RootState): ConstantAnnotation | undefined =>
         selectAnnotations(state).constants[target];
+export const selectDescription =
+    (target: string) =>
+    (state: RootState): DescriptionAnnotation | undefined =>
+        selectAnnotations(state).descriptions[target];
+export const selectDone =
+    (target: string) =>
+    (state: RootState): DoneAnnotation | undefined =>
+        selectAnnotations(state).dones[target];
 export const selectEnum =
     (target: string) =>
     (state: RootState): EnumAnnotation | undefined =>
@@ -556,3 +676,18 @@ export const selectRemove =
     (target: string) =>
     (state: RootState): RemoveAnnotation | undefined =>
         selectAnnotations(state).removes[target];
+export const selectTodo =
+    (target: string) =>
+    (state: RootState): TodoAnnotation | undefined =>
+        selectAnnotations(state).todos[target];
+export const selectNumberOfAnnotations =
+    (target: string) =>
+    (state: RootState): number => {
+        return Object.values(selectAnnotations(state)).reduce((acc, annotations) => {
+            if (target in annotations) {
+                return acc + 1;
+            } else {
+                return acc;
+            }
+        }, 0);
+    };

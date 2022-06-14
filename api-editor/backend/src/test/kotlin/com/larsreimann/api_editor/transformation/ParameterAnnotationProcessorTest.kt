@@ -3,6 +3,7 @@ package com.larsreimann.api_editor.transformation
 import com.larsreimann.api_editor.model.AttributeAnnotation
 import com.larsreimann.api_editor.model.ConstantAnnotation
 import com.larsreimann.api_editor.model.DefaultBoolean
+import com.larsreimann.api_editor.model.DefaultNone
 import com.larsreimann.api_editor.model.OptionalAnnotation
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.model.RequiredAnnotation
@@ -12,6 +13,7 @@ import com.larsreimann.api_editor.mutable_model.PythonCall
 import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonNone
 import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.api_editor.mutable_model.PythonParameter
 import com.larsreimann.api_editor.mutable_model.PythonReference
@@ -194,5 +196,25 @@ class ParameterAnnotationProcessorTest {
         testPackage.annotations
             .filterIsInstance<RequiredAnnotation>()
             .shouldBeEmpty()
+    }
+
+    @Test // https://github.com/lars-reimann/api-editor/issues/616
+    fun `should work when multiple parameters are set to constant null`() {
+        val callToOriginalAPI = testMethod.callToOriginalAPI.shouldNotBeNull()
+
+        val testParameter2 = PythonParameter(name = "testParameter2")
+        testMethod.parameters += testParameter2
+        callToOriginalAPI.arguments += PythonArgument(
+            value = PythonReference(testParameter2)
+        )
+
+        testParameter.annotations += ConstantAnnotation(DefaultNone)
+        testParameter2.annotations += ConstantAnnotation(DefaultNone)
+
+        testPackage.processParameterAnnotations()
+
+        callToOriginalAPI.arguments.shouldHaveSize(2)
+        callToOriginalAPI.arguments[0].value.shouldBeInstanceOf<PythonNone>()
+        callToOriginalAPI.arguments[1].value.shouldBeInstanceOf<PythonNone>()
     }
 }

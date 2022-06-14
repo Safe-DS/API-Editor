@@ -11,6 +11,7 @@ import {
     removeBoundary,
     removeCalledAfter,
     removeConstant,
+    removeDescription,
     removeEnum,
     removeGroup,
     removeMove,
@@ -19,10 +20,12 @@ import {
     removeRenaming,
     removeRequired,
     removeRemove,
+    removeTodo,
     selectAttribute,
     selectBoundary,
     selectCalledAfters,
     selectConstant,
+    selectDescription,
     selectEnum,
     selectGroups,
     selectMove,
@@ -31,16 +34,20 @@ import {
     selectRenaming,
     selectRequired,
     selectRemove,
+    selectTodo,
+    selectDone,
 } from './annotationSlice';
 import {
     showAttributeAnnotationForm,
     showBoundaryAnnotationForm,
     showConstantAnnotationForm,
+    showDescriptionAnnotationForm,
     showEnumAnnotationForm,
     showGroupAnnotationForm,
     showMoveAnnotationForm,
     showOptionalAnnotationForm,
     showRenameAnnotationForm,
+    showTodoAnnotationForm,
 } from '../ui/uiSlice';
 
 interface AnnotationViewProps {
@@ -54,6 +61,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
     const boundaryAnnotation = useAppSelector(selectBoundary(target));
     const calledAfterAnnotation = useAppSelector(selectCalledAfters(target));
     const constantAnnotation = useAppSelector(selectConstant(target));
+    const descriptionAnnotation = useAppSelector(selectDescription(target));
     const enumAnnotation = useAppSelector(selectEnum(target));
     const groupAnnotations = useAppSelector(selectGroups(target));
     const moveAnnotation = useAppSelector(selectMove(target));
@@ -62,12 +70,14 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
     const removeAnnotation = useAppSelector(selectRemove(target));
     const renameAnnotation = useAppSelector(selectRenaming(target));
     const requiredAnnotation = useAppSelector(selectRequired(target));
+    const todoAnnotation = useAppSelector(selectTodo(target));
 
     if (
         !attributeAnnotation &&
         !boundaryAnnotation &&
         !calledAfterAnnotation &&
         !constantAnnotation &&
+        !descriptionAnnotation &&
         !enumAnnotation &&
         !groupAnnotations &&
         !moveAnnotation &&
@@ -75,7 +85,8 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
         !pureAnnotation &&
         !removeAnnotation &&
         !renameAnnotation &&
-        !requiredAnnotation
+        !requiredAnnotation &&
+        !todoAnnotation
     ) {
         // eslint-disable-next-line react/jsx-no-useless-fragment
         return <></>;
@@ -85,6 +96,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
         <Stack maxW="fit-content">
             {attributeAnnotation && (
                 <Annotation
+                    target={target}
                     type="attribute"
                     name={valueToString(attributeAnnotation.defaultValue, attributeAnnotation.defaultType)}
                     onEdit={() => dispatch(showAttributeAnnotationForm(target))}
@@ -93,6 +105,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
             )}
             {boundaryAnnotation && (
                 <Annotation
+                    target={target}
                     type="boundary"
                     name={boundaryToString(boundaryAnnotation)}
                     onEdit={() => dispatch(showBoundaryAnnotationForm(target))}
@@ -101,6 +114,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
             )}
             {Object.keys(calledAfterAnnotation).map((calledAfterName) => (
                 <Annotation
+                    target={target}
                     type="calledAfter"
                     name={calledAfterName}
                     key={calledAfterName}
@@ -109,14 +123,24 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
             ))}
             {constantAnnotation && (
                 <Annotation
+                    target={target}
                     type="constant"
                     name={valueToString(constantAnnotation.defaultValue, constantAnnotation.defaultType)}
                     onEdit={() => dispatch(showConstantAnnotationForm(target))}
                     onDelete={() => dispatch(removeConstant(target))}
                 />
             )}
+            {descriptionAnnotation && (
+                <Annotation
+                    target={target}
+                    type="description"
+                    onEdit={() => dispatch(showDescriptionAnnotationForm(target))}
+                    onDelete={() => dispatch(removeDescription(target))}
+                />
+            )}
             {enumAnnotation && (
                 <Annotation
+                    target={target}
                     type="enum"
                     name={enumAnnotation.enumName}
                     onEdit={() => dispatch(showEnumAnnotationForm(target))}
@@ -126,6 +150,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
             {Object.keys(groupAnnotations).map((groupName) => (
                 <Annotation
                     key={groupName}
+                    target={target}
                     type="group"
                     name={groupName}
                     onEdit={() => dispatch(showGroupAnnotationForm({ target, groupName }))}
@@ -134,6 +159,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
             ))}
             {moveAnnotation && (
                 <Annotation
+                    target={target}
                     type="move"
                     name={moveAnnotation.destination}
                     onEdit={() => dispatch(showMoveAnnotationForm(target))}
@@ -142,23 +168,37 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
             )}
             {optionalAnnotation && (
                 <Annotation
+                    target={target}
                     type="optional"
                     name={valueToString(optionalAnnotation.defaultValue, optionalAnnotation.defaultType)}
                     onEdit={() => dispatch(showOptionalAnnotationForm(target))}
                     onDelete={() => dispatch(removeOptional(target))}
                 />
             )}
-            {pureAnnotation && <Annotation type="pure" onDelete={() => dispatch(removePure(target))} />}
-            {removeAnnotation && <Annotation type="remove" onDelete={() => dispatch(removeRemove(target))} />}
+            {pureAnnotation && <Annotation target={target} type="pure" onDelete={() => dispatch(removePure(target))} />}
+            {removeAnnotation && (
+                <Annotation target={target} type="remove" onDelete={() => dispatch(removeRemove(target))} />
+            )}
             {renameAnnotation && (
                 <Annotation
+                    target={target}
                     type="rename"
                     name={renameAnnotation.newName}
                     onEdit={() => dispatch(showRenameAnnotationForm(target))}
                     onDelete={() => dispatch(removeRenaming(target))}
                 />
             )}
-            {requiredAnnotation && <Annotation type="required" onDelete={() => dispatch(removeRequired(target))} />}
+            {requiredAnnotation && (
+                <Annotation target={target} type="required" onDelete={() => dispatch(removeRequired(target))} />
+            )}
+            {todoAnnotation && (
+                <Annotation
+                    target={target}
+                    type="todo"
+                    onEdit={() => dispatch(showTodoAnnotationForm(target))}
+                    onDelete={() => dispatch(removeTodo(target))}
+                />
+            )}
         </Stack>
     );
 };
@@ -202,20 +242,23 @@ const boundaryToString = (boundary: BoundaryAnnotation) => {
 };
 
 interface AnnotationProps {
+    target: string;
     type: string;
     name?: string;
     onEdit?: () => void;
     onDelete: () => void;
 }
 
-const Annotation: React.FC<AnnotationProps> = function ({ name, onDelete, onEdit, type }) {
+const Annotation: React.FC<AnnotationProps> = function ({ target, name, onDelete, onEdit, type }) {
+    const isDone = Boolean(useAppSelector(selectDone(target)));
+
     return (
         <ButtonGroup size="sm" variant="outline" isAttached>
             <Button
                 leftIcon={<FaWrench />}
                 flexGrow={1}
                 justifyContent="flex-start"
-                disabled={!onEdit}
+                disabled={!onEdit || isDone}
                 onClick={onEdit}
             >
                 @{type}
@@ -225,7 +268,13 @@ const Annotation: React.FC<AnnotationProps> = function ({ name, onDelete, onEdit
                     </ChakraText>
                 )}
             </Button>
-            <IconButton icon={<FaTrash />} aria-label="Delete annotation" colorScheme="red" onClick={onDelete} />
+            <IconButton
+                icon={<FaTrash />}
+                aria-label="Delete annotation"
+                colorScheme="red"
+                disabled={isDone}
+                onClick={onDelete}
+            />
         </ButtonGroup>
     );
 };

@@ -3,7 +3,7 @@ import * as idb from 'idb-keyval';
 import { RootState } from '../../app/store';
 import { CalledAfterTarget, GroupTarget } from '../annotations/annotationSlice';
 import { AbstractPythonFilter } from '../packageData/model/filters/AbstractPythonFilter';
-import { createFilterFromString } from '../packageData/model/filters/filterFactory';
+import { createFilterFromString, isValidFilterToken } from '../packageData/model/filters/filterFactory';
 
 export interface UIState {
     showAnnotationImportDialog: boolean;
@@ -17,6 +17,7 @@ export interface UIState {
     treeViewScrollOffset: number;
     heatMapMode: HeatMapMode;
     filterString: string;
+    sortingMode: SortingMode;
     batchMode: BatchMode;
 }
 
@@ -26,10 +27,12 @@ type UserAction =
     | BoundaryUserAction
     | CalledAfterUserAction
     | ConstantUserAction
+    | DescriptionUserAction
     | GroupUserAction
     | EnumUserAction
     | RenameUserAction
-    | OptionalUserAction;
+    | OptionalUserAction
+    | TodoUserAction;
 
 const NoUserAction = {
     type: 'none',
@@ -57,6 +60,11 @@ interface ConstantUserAction {
     readonly target: string;
 }
 
+interface DescriptionUserAction {
+    readonly type: 'description';
+    readonly target: string;
+}
+
 interface EnumUserAction {
     readonly type: 'enum';
     readonly target: string;
@@ -78,11 +86,26 @@ interface RenameUserAction {
     readonly target: string;
 }
 
+interface DescriptionUserAction {
+    readonly type: 'description';
+    readonly target: string;
+}
+
+interface TodoUserAction {
+    readonly type: 'todo';
+    readonly target: string;
+}
+
 export enum HeatMapMode {
-    None,
-    Usages,
-    Usefulness,
-    Annotations,
+    None = 'none',
+    Usages = 'usages',
+    Usefulness = 'usefulness',
+    Annotations = 'annotations',
+}
+
+export enum SortingMode {
+    Alphabetical = 'alphabetical',
+    Usages = 'usages',
 }
 
 export enum BatchMode {
@@ -107,6 +130,7 @@ export const initialState: UIState = {
     treeViewScrollOffset: 0,
     heatMapMode: HeatMapMode.None,
     filterString: 'is:public',
+    sortingMode: SortingMode.Alphabetical,
     batchMode: BatchMode.None,
 };
 
@@ -186,6 +210,12 @@ const uiSlice = createSlice({
                 target: action.payload,
             };
         },
+        showDescriptionAnnotationForm(state, action: PayloadAction<string>) {
+            state.currentUserAction = {
+                type: 'description',
+                target: action.payload,
+            };
+        },
         showGroupAnnotationForm(state, action: PayloadAction<GroupTarget>) {
             state.currentUserAction = {
                 type: 'group',
@@ -217,6 +247,12 @@ const uiSlice = createSlice({
                 target: action.payload,
             };
         },
+        showTodoAnnotationForm(state, action: PayloadAction<string>) {
+            state.currentUserAction = {
+                type: 'todo',
+                target: action.payload,
+            };
+        },
         hideAnnotationForm(state) {
             state.currentUserAction = NoUserAction;
         },
@@ -240,6 +276,13 @@ const uiSlice = createSlice({
                 delete state.expandedInTreeView[item];
             }
         },
+        setExactlyExpandedInTreeView(state, action: PayloadAction<string[]>) {
+            const all = action.payload;
+            state.expandedInTreeView = {};
+            for (const item of all) {
+                state.expandedInTreeView[item] = true;
+            }
+        },
         setTreeViewScrollOffset(state, action: PayloadAction<number>) {
             state.treeViewScrollOffset = action.payload;
         },
@@ -248,6 +291,9 @@ const uiSlice = createSlice({
         },
         setFilterString(state, action: PayloadAction<string>) {
             state.filterString = action.payload;
+        },
+        setSortingMode(state, action: PayloadAction<SortingMode>) {
+            state.sortingMode = action.payload;
         },
         setBatchMode(state, action: PayloadAction<BatchMode>) {
             state.batchMode = action.payload;
@@ -272,19 +318,23 @@ export const {
     showBoundaryAnnotationForm,
     showCalledAfterAnnotationForm,
     showConstantAnnotationForm,
+    showDescriptionAnnotationForm,
     showEnumAnnotationForm,
     showGroupAnnotationForm,
     showMoveAnnotationForm,
     showOptionalAnnotationForm,
     showRenameAnnotationForm,
+    showTodoAnnotationForm,
     hideAnnotationForm,
 
     toggleIsExpandedInTreeView,
     setAllExpandedInTreeView,
     setAllCollapsedInTreeView,
+    setExactlyExpandedInTreeView,
     setTreeViewScrollOffset,
     setHeatMapMode,
     setFilterString,
+    setSortingMode,
     setBatchMode,
 } = actions;
 export const uiReducer = reducer;
@@ -304,7 +354,18 @@ export const selectAllExpandedInTreeView = (state: RootState): { [target: string
 export const selectTreeViewScrollOffset = (state: RootState): number => selectUI(state).treeViewScrollOffset;
 export const selectHeatMapMode = (state: RootState): HeatMapMode => selectUI(state).heatMapMode;
 export const selectFilterString = (state: RootState): string => selectUI(state).filterString;
-export const selectFilter = createSelector([selectFilterString], (filterString: string): AbstractPythonFilter => {
-    return createFilterFromString(filterString);
+
+/**
+ * Keep only the valid parts of the filter string to improve caching of selectFilter.
+ */
+const selectLongestValidFilterString = createSelector([selectFilterString], (filterString: string): string => {
+    return filterString.split(' ').filter(isValidFilterToken).join(' ');
 });
+export const selectFilter = createSelector(
+    [selectLongestValidFilterString],
+    (filterString: string): AbstractPythonFilter => {
+        return createFilterFromString(filterString);
+    },
+);
+export const selectSortingMode = (state: RootState): SortingMode => selectUI(state).sortingMode;
 export const selectBatchMode = (state: RootState): BatchMode => selectUI(state).batchMode;

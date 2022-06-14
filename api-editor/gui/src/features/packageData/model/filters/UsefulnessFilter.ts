@@ -1,7 +1,7 @@
-import PythonClass from '../PythonClass';
-import PythonFunction from '../PythonFunction';
-import PythonModule from '../PythonModule';
-import PythonParameter from '../PythonParameter';
+import { PythonClass } from '../PythonClass';
+import { PythonFunction } from '../PythonFunction';
+import { PythonModule } from '../PythonModule';
+import { PythonParameter } from '../PythonParameter';
 import { AbstractPythonFilter } from './AbstractPythonFilter';
 import { AnnotationStore } from '../../../annotations/annotationSlice';
 import { UsageCountStore } from '../../../usages/model/UsageCountStore';
@@ -21,17 +21,18 @@ export class UsefulnessFilter extends AbstractPythonFilter {
         super();
     }
 
-    shouldKeepModule(_pythonModule: PythonModule, _annotations: AnnotationStore, _usages: UsageCountStore): boolean {
-        return false;
+    shouldKeepModule(pythonModule: PythonModule, annotations: AnnotationStore, usages: UsageCountStore): boolean {
+        const moduleUsefulness = usages.moduleUsages.get(pythonModule.id);
+        return this.shouldKeepWithUsefulness(moduleUsefulness);
     }
 
     shouldKeepClass(pythonClass: PythonClass, annotations: AnnotationStore, usages: UsageCountStore): boolean {
-        const classUsefulness = usages.classUsages.get(pythonClass.qualifiedName);
+        const classUsefulness = usages.classUsages.get(pythonClass.id);
         return this.shouldKeepWithUsefulness(classUsefulness);
     }
 
     shouldKeepFunction(pythonFunction: PythonFunction, annotations: AnnotationStore, usages: UsageCountStore): boolean {
-        const functionUsefulness = usages.functionUsages.get(pythonFunction.qualifiedName);
+        const functionUsefulness = usages.functionUsages.get(pythonFunction.id);
         return this.shouldKeepWithUsefulness(functionUsefulness);
     }
 
@@ -40,7 +41,7 @@ export class UsefulnessFilter extends AbstractPythonFilter {
         annotations: AnnotationStore,
         usages: UsageCountStore,
     ): boolean {
-        const parameterUsefulness = usages.parameterUsefulness.get(pythonParameter.qualifiedName());
+        const parameterUsefulness = usages.parameterUsefulness.get(pythonParameter.id);
         return this.shouldKeepWithUsefulness(parameterUsefulness);
     }
 

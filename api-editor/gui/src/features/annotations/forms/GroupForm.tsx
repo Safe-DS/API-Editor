@@ -3,9 +3,9 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { pythonIdentifierPattern } from '../../../common/validation';
-import PythonDeclaration from '../../packageData/model/PythonDeclaration';
-import PythonFunction from '../../packageData/model/PythonFunction';
-import PythonParameter from '../../packageData/model/PythonParameter';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
+import { PythonFunction } from '../../packageData/model/PythonFunction';
+import { PythonParameter } from '../../packageData/model/PythonParameter';
 import { GroupAnnotation, selectGroups, upsertGroup } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
 import { hideAnnotationForm } from '../../ui/uiSlice';
@@ -22,7 +22,7 @@ interface GroupFormState {
 }
 
 export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName }) {
-    const targetPath = target.pathAsString();
+    const targetPath = target.id;
     const currentGroups = useAppSelector(selectGroups(targetPath));
     let prevGroupAnnotation: GroupAnnotation | undefined;
     if (groupName && currentGroups) {

@@ -1,6 +1,6 @@
 import multiprocessing
 from functools import partial
-from typing import Any
+from pathlib import Path
 
 from package_parser.cli._run_annotations import _run_annotations
 from package_parser.cli._run_api import _run_api_command
@@ -8,13 +8,25 @@ from package_parser.cli._run_usages import _run_usages_command
 from package_parser.cli._shared_constants import _API_KEY, _USAGES_KEY
 
 
-def _run_all_command(args):
-    out = args.out
-    tmp = args.out.joinpath("tmp")
-    out_file_annotations = args.out.joinpath("annotations.json")
+def _run_all_command(
+    package: str,
+    src_dir_path: Path,
+    client_dir_path: Path,
+    out_dir_path: Path,
+    n_processes: int,
+    batch_size: int,
+) -> None:
+    out_file_annotations = out_dir_path.joinpath("annotations.json")
     results = _run_in_parallel(
-        partial(_run_api_command, args.package, args.src, out),
-        partial(_run_usages_command, args.package, args.client, tmp, out),
+        partial(_run_api_command, package, src_dir_path, out_dir_path),
+        partial(
+            _run_usages_command,
+            package,
+            client_dir_path,
+            out_dir_path,
+            n_processes,
+            batch_size,
+        ),
     )
     _run_annotations(results[_API_KEY], results[_USAGES_KEY], out_file_annotations)
 
