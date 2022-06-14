@@ -95,10 +95,10 @@ class _AstVisitor:
                     for declaration, _ in global_node.names:
                         reexported_name = f"{base_import_path}.{declaration}"
 
-                        if reexported_name.startswith(module_node.name):
-                            if reexported_name not in self.reexported:
-                                self.reexported[reexported_name] = []
-                            self.reexported[reexported_name] += [id_]
+                        # if reexported_name.startswith(module_node.name):
+                        if reexported_name not in self.reexported:
+                            self.reexported[reexported_name] = []
+                        self.reexported[reexported_name] += [id_]
 
         # Remember module, so we can later add classes and global functions
         module = Module(
@@ -320,11 +320,12 @@ class _AstVisitor:
             return True
 
         # Containing class is re-exported (always false if the current API element is not a method)
-        if parent_qualified_name(qualified_name) in self.reexported:
+        if isinstance(self.__declaration_stack[-1], Class) and parent_qualified_name(qualified_name) in self.reexported:
             return True
 
         # The slicing is necessary so __init__ functions are not excluded (already handled in the first condition).
         return all(not it.startswith("_") for it in qualified_name.split(".")[:-1])
+
 
 def is_public_module(module_name: str) -> bool:
     return all(not it.startswith("_") for it in module_name.split("."))
