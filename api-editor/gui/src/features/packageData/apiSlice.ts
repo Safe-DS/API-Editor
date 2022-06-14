@@ -75,42 +75,46 @@ const selectSortedPythonPackages = createSelector(
                     pythonPackage.distribution,
                     pythonPackage.name,
                     pythonPackage.version,
-                    pythonPackage.modules.map(
-                        (module) =>
-                            new PythonModule(
-                                module.id,
-                                module.name,
-                                module.imports,
-                                module.fromImports,
-                                module.classes
-                                    .map(
-                                        (cls) =>
-                                            new PythonClass(
-                                                cls.id,
-                                                cls.name,
-                                                cls.qualifiedName,
-                                                cls.decorators,
-                                                cls.superclasses,
-                                                cls.methods.sort(
-                                                    (a, b) =>
-                                                        (usages.functionUsages.get(b.id) ?? 0) -
-                                                        (usages.functionUsages.get(a.id) ?? 0),
+                    pythonPackage.modules
+                        .map(
+                            (module) =>
+                                new PythonModule(
+                                    module.id,
+                                    module.name,
+                                    module.imports,
+                                    module.fromImports,
+                                    module.classes
+                                        .map(
+                                            (cls) =>
+                                                new PythonClass(
+                                                    cls.id,
+                                                    cls.name,
+                                                    cls.qualifiedName,
+                                                    cls.decorators,
+                                                    cls.superclasses,
+                                                    cls.methods.sort(
+                                                        (a, b) =>
+                                                            (usages.functionUsages.get(b.id) ?? 0) -
+                                                            (usages.functionUsages.get(a.id) ?? 0),
+                                                    ),
+                                                    cls.isPublic,
+                                                    cls.description,
+                                                    cls.fullDocstring,
                                                 ),
-                                                cls.isPublic,
-                                                cls.description,
-                                                cls.fullDocstring,
-                                            ),
-                                    )
-                                    .sort(
+                                        )
+                                        .sort(
+                                            (a, b) =>
+                                                (usages.classUsages.get(b.id) ?? 0) -
+                                                (usages.classUsages.get(a.id) ?? 0),
+                                        ),
+                                    [...module.functions].sort(
                                         (a, b) =>
-                                            (usages.classUsages.get(b.id) ?? 0) - (usages.classUsages.get(a.id) ?? 0),
+                                            (usages.functionUsages.get(b.id) ?? 0) -
+                                            (usages.functionUsages.get(a.id) ?? 0),
                                     ),
-                                [...module.functions].sort(
-                                    (a, b) =>
-                                        (usages.functionUsages.get(b.id) ?? 0) - (usages.functionUsages.get(a.id) ?? 0),
                                 ),
-                            ),
-                    ),
+                        )
+                        .sort((a, b) => (usages.moduleUsages.get(b.id) ?? 0) - (usages.moduleUsages.get(a.id) ?? 0)),
                 );
         }
     },

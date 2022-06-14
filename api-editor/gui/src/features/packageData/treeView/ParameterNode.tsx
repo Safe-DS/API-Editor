@@ -18,7 +18,7 @@ export const ParameterNode: React.FC<ParameterNodeProps> = function ({ pythonPar
     const annotationCounts = useAnnotationCounts(pythonParameter);
     const heatMapMode = useAppSelector(selectHeatMapMode);
 
-    let valuePair: ValuePair = new ValuePair(0, 1);
+    let valuePair: ValuePair = new ValuePair(undefined, undefined);
     if (heatMapMode === HeatMapMode.Annotations) {
         valuePair = annotationCounts;
     } else if (heatMapMode === HeatMapMode.Usages) {
