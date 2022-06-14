@@ -1,19 +1,21 @@
-import { PythonClass } from './PythonClass';
 import { PythonDeclaration } from './PythonDeclaration';
 import { PythonModule } from './PythonModule';
-import { PythonFunction } from './PythonFunction';
 import { Optional } from '../../../common/util/types';
 
 export class PythonPackage extends PythonDeclaration {
+    readonly id: string;
+    readonly isPublic: boolean = true;
+
     constructor(
         readonly distribution: string,
         readonly name: string,
         readonly version: string,
         readonly modules: PythonModule[] = [],
-        private readonly reexportMap: Map<string, PythonClass | PythonFunction> = new Map(),
+        private readonly idToDeclaration: Map<string, PythonDeclaration> = new Map(),
     ) {
         super();
 
+        this.id = name;
         this.modules.forEach((it) => {
             it.containingPackage = this;
         });
@@ -27,13 +29,10 @@ export class PythonPackage extends PythonDeclaration {
         return this.modules;
     }
 
-    getByRelativePath(relativePath: string[]): Optional<PythonDeclaration> {
-        const id = this.name + '/' + relativePath.join('/');
-        if (this.reexportMap.has(id)) {
-            return this.reexportMap.get(id);
+    getDeclarationById(id: string): Optional<PythonDeclaration> {
+        if (this.idToDeclaration.has(id)) {
+            return this.idToDeclaration.get(id);
         }
-
-        return super.getByRelativePath(relativePath);
     }
 
     toString(): string {

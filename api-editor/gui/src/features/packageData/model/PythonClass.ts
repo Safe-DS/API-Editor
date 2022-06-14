@@ -35,10 +35,6 @@ export class PythonClass extends PythonDeclaration {
         return this.methods;
     }
 
-    isPublicDeclaration(): boolean {
-        return this.isPublic;
-    }
-
     toString(): string {
         let result = '';
 

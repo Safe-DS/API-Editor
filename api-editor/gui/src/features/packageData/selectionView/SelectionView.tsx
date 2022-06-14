@@ -21,7 +21,7 @@ interface SelectionViewProps {
 }
 
 export const SelectionView: React.FC<SelectionViewProps> = function ({ pythonPackage, pythonFilter, usages }) {
-    const declaration = pythonPackage.getByRelativePath(useLocation().pathname.split('/').splice(2));
+    const declaration = pythonPackage.getDeclarationById(useLocation().pathname.split('/').splice(1).join('/'));
 
     if (!declaration) {
         return null;

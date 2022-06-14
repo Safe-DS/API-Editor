@@ -17,7 +17,7 @@ interface RenameFormState {
 }
 
 export const RenameForm: React.FC<RenameFormProps> = function ({ target }) {
-    const targetPath = target.pathAsString();
+    const targetPath = target.id;
     const prevNewName = useAppSelector(selectRenaming(targetPath))?.newName;
     const oldName = target.name;
 

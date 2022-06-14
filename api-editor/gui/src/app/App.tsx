@@ -68,7 +68,7 @@ export const App: React.FC = function () {
     };
 
     const currentUserAction = useAppSelector(selectCurrentUserAction);
-    const userActionTarget = pythonPackage.getByRelativePathAsString(currentUserAction.target);
+    const userActionTarget = pythonPackage.getDeclarationById(currentUserAction.target);
     const showAnnotationImportDialog = useAppSelector(selectShowAnnotationImportDialog);
     const showAPIImportDialog = useAppSelector(selectShowAPIImportDialog);
     const showUsagesImportDialog = useAppSelector(selectShowUsageImportDialog);

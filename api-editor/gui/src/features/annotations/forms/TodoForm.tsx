@@ -16,7 +16,7 @@ interface TodoFormState {
 }
 
 export const TodoForm: React.FC<TodoFormProps> = function ({ target }) {
-    const targetPath = target.pathAsString();
+    const targetPath = target.id;
     const prevNewTodo = useAppSelector(selectTodo(targetPath))?.newTodo;
 
     // Hooks -----------------------------------------------------------------------------------------------------------

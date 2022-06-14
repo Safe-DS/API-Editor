@@ -98,6 +98,7 @@ const selectSortedPythonPackages = createSelector(
                                                             (usages.functionUsages.get(a.id) ?? 0),
                                                     ),
                                                     cls.isPublic,
+                                                    cls.reexportedBy,
                                                     cls.description,
                                                     cls.fullDocstring,
                                                 ),

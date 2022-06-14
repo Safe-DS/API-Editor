@@ -2,7 +2,7 @@ import { Optional } from '../../../common/util/types';
 import { PythonClass } from './PythonClass';
 import { PythonDeclaration } from './PythonDeclaration';
 import { PythonModule } from './PythonModule';
-import { PythonParameter } from './PythonParameter';
+import { PythonParameter, PythonParameterAssignment } from './PythonParameter';
 import { PythonResult } from './PythonResult';
 
 export class PythonFunction extends PythonDeclaration {
@@ -41,10 +41,6 @@ export class PythonFunction extends PythonDeclaration {
         return this.parameters;
     }
 
-    isPublicDeclaration(): boolean {
-        return this.isPublic;
-    }
-
     getUniqueName(): string {
         const segments = this.id.split('/');
         return segments[segments.length - 1];
@@ -63,11 +59,7 @@ export class PythonFunction extends PythonDeclaration {
     }
 
     explicitParameters(): PythonParameter[] {
-        if (this.parent() instanceof PythonModule) {
-            return this.children();
-        }
-
-        return this.children().slice(1);
+        return this.parameters.filter((it) => it.assignedBy !== PythonParameterAssignment.IMPLICIT);
     }
 
     siblingFunctions(): PythonFunction[] {

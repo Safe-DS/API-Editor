@@ -87,7 +87,7 @@ export class UsageCountStore {
      */
     private addImplicitUsagesOfDefaultValues(api: PythonPackage) {
         for (const [parameterId, parameterUsageCount] of this.parameterUsages.entries()) {
-            const parameter = api.getByRelativePathAsString(parameterId);
+            const parameter = api.getDeclarationById(parameterId);
             if (!(parameter instanceof PythonParameter)) {
                 continue;
             }

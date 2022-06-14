@@ -71,7 +71,7 @@ export const TreeView: React.FC<TreeViewProps> = memo(({ pythonPackage, filter, 
                     itemSize={24}
                     itemCount={children.length}
                     itemData={{ children, filter, usages }}
-                    itemKey={(index, data) => data.children[index]?.pathAsString()}
+                    itemKey={(index, data) => data.children[index].id}
                     width="100%"
                     height={height}
                     style={{
@@ -93,7 +93,7 @@ const walkChildrenInPreorder = function (
     declaration: PythonDeclaration,
 ): PythonDeclaration[] {
     return declaration.children().flatMap((it) => {
-        if (allExpandedItemsInTreeView[it.pathAsString()]) {
+        if (allExpandedItemsInTreeView[it.id]) {
             return [it, ...walkChildrenInPreorder(allExpandedItemsInTreeView, it)];
         } else {
             return [it];

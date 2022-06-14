@@ -7,6 +7,8 @@ import { PythonImport } from './PythonImport';
 import { PythonPackage } from './PythonPackage';
 
 export class PythonModule extends PythonDeclaration {
+    readonly isPublic: boolean;
+
     containingPackage: Optional<PythonPackage>;
 
     constructor(
@@ -19,6 +21,8 @@ export class PythonModule extends PythonDeclaration {
     ) {
         super();
 
+        this.isPublic = !this.name.split('.').some((it) => it.startsWith('_'));
+
         this.containingPackage = null;
 
         this.classes.forEach((it) => {
@@ -28,10 +32,6 @@ export class PythonModule extends PythonDeclaration {
         this.functions.forEach((it) => {
             it.containingModuleOrClass = this;
         });
-    }
-
-    isPublicDeclaration(): boolean {
-        return !this.name.split('.').some((it) => it.startsWith('_'));
     }
 
     parent(): Optional<PythonPackage> {

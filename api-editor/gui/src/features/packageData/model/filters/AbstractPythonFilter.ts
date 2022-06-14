@@ -159,6 +159,7 @@ export abstract class AbstractPythonFilter {
             pythonClass.superclasses,
             methods as PythonFunction[],
             pythonClass.isPublic,
+            pythonClass.reexportedBy,
             pythonClass.description,
             pythonClass.fullDocstring,
         );
@@ -195,6 +196,7 @@ export abstract class AbstractPythonFilter {
             parameters,
             pythonFunction.results,
             pythonFunction.isPublic,
+            pythonFunction.reexportedBy,
             pythonFunction.description,
             pythonFunction.fullDocstring,
         );

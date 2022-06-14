@@ -109,7 +109,7 @@ const getNextElementPath = function (
     const nextElement = getNextElementInTree(current);
     if (nextElement) {
         if (filter.shouldKeepDeclaration(nextElement, annotations, usages)) {
-            return nextElement.pathAsString();
+            return nextElement.id;
         }
         return getNextElementPath(nextElement, filter, annotations, usages);
     }
@@ -149,7 +149,7 @@ const getPreviousElementPath = function (
     const previousElement = getPreviousElementInTree(current);
     if (previousElement) {
         if (filter.shouldKeepDeclaration(previousElement, annotations, usages)) {
-            return previousElement.pathAsString();
+            return previousElement.id;
         }
         return getPreviousElementPath(previousElement, filter, annotations, usages);
     }
@@ -180,11 +180,11 @@ const getLastElementInTree = function (current: PythonDeclaration): PythonDeclar
 
 const getAncestors = function (navStr: string, filteredPythonPackage: PythonPackage): string[] {
     const ancestors: string[] = [];
-    let currentElement = filteredPythonPackage.getByRelativePathAsString(navStr);
+    let currentElement = filteredPythonPackage.getDeclarationById(navStr);
     if (currentElement) {
         currentElement = currentElement.parent();
         while (currentElement) {
-            ancestors.push(currentElement.pathAsString());
+            ancestors.push(currentElement.id);
             currentElement = currentElement.parent();
         }
     }
@@ -192,7 +192,7 @@ const getAncestors = function (navStr: string, filteredPythonPackage: PythonPack
 };
 
 const getDescendantsOrSelf = function (current: PythonDeclaration): string[] {
-    return [...current.descendantsOrSelf()].map((descendant) => descendant.pathAsString());
+    return [...current.descendantsOrSelf()].map((descendant) => descendant.id);
 };
 
 const getMatchedNodesAndParents = function (
@@ -225,7 +225,7 @@ const doGetMatchedNodesAndParents = function (
     }
 
     if (shouldExpandThisNode) {
-        nodesToExpand.push(current.pathAsString());
+        nodesToExpand.push(current.id);
     }
 
     return {
