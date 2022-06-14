@@ -1,5 +1,5 @@
 import { PythonPackage } from '../../packageData/model/PythonPackage';
-import {PythonParameter} from "../../packageData/model/PythonParameter";
+import { PythonParameter } from '../../packageData/model/PythonParameter';
 
 export interface UsageCountJson {
     class_counts: {
@@ -83,8 +83,9 @@ export class UsageCountStore {
                 continue;
             }
 
-            const defaultValue = parameter.defaultValue
-            if (defaultValue === undefined || defaultValue === null) { // defaultValue could be an empty string
+            const defaultValue = parameter.defaultValue;
+            if (defaultValue === undefined || defaultValue === null) {
+                // defaultValue could be an empty string
                 continue;
             }
 
@@ -99,7 +100,7 @@ export class UsageCountStore {
                 continue;
             }
 
-            const nExplicitUsage  = this.valueUsages.get(parameterId)?.get(defaultValue) ?? 0;
+            const nExplicitUsage = this.valueUsages.get(parameterId)?.get(defaultValue) ?? 0;
 
             if (!this.valueUsages.has(parameterId)) {
                 this.valueUsages.set(parameterId, new Map());

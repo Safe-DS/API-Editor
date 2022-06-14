@@ -14,13 +14,13 @@ import {
     Text as ChakraText,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import {useAppDispatch, useAppSelector} from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { StyledDropzone } from '../../common/StyledDropzone';
 import { isValidJsonFile } from '../../common/util/validation';
 import { UsageCountJson, UsageCountStore } from './model/UsageCountStore';
 import { toggleUsageImportDialog } from '../ui/uiSlice';
 import { setUsages } from './usageSlice';
-import {selectPythonPackage} from "../packageData/apiSlice";
+import { selectPythonPackage } from '../packageData/apiSlice';
 
 export const UsageImportDialog: React.FC = function () {
     const [fileName, setFileName] = useState('');
