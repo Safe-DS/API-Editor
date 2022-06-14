@@ -58,7 +58,9 @@ const parsePythonModuleJson = function (
     const classesInModule = moduleJson.classes
         .filter((classId) => classes.has(classId) && classes.get(classId)!.reexportedBy.length === 0)
         .map((classId) => classes.get(classId)!);
-    const reexportedClasses = [...classes.values()].filter((it) => it.reexportedBy.includes(moduleJson.id));
+    const reexportedClasses = [...classes.values()].filter(
+        (it) => it.reexportedBy.length > 0 && it.reexportedBy[0] === moduleJson.id,
+    );
     const allClasses = [...classesInModule, ...reexportedClasses];
     for (const cls of reexportedClasses) {
         reexportMap.set(cls.id, cls);
@@ -67,7 +69,9 @@ const parsePythonModuleJson = function (
     const functionsInModule = moduleJson.functions
         .filter((functionId) => functions.has(functionId) && functions.get(functionId)!.reexportedBy.length === 0)
         .map((functionId) => functions.get(functionId)!);
-    const reexportedFunctions = [...functions.values()].filter((it) => it.reexportedBy.includes(moduleJson.id));
+    const reexportedFunctions = [...functions.values()].filter(
+        (it) => it.reexportedBy.length > 0 && it.reexportedBy[0] === moduleJson.id,
+    );
     const allFunctions = [...functionsInModule, ...reexportedFunctions];
     for (const func of reexportedFunctions) {
         reexportMap.set(func.id, func);
