@@ -9,10 +9,10 @@ interface ConstantBatchFormProps {
     targets: PythonDeclaration[];
 }
 
-export const ConstantBatchForm: React.FC<ConstantBatchFormProps> = function ({targets}) {
+export const ConstantBatchForm: React.FC<ConstantBatchFormProps> = function ({ targets }) {
     //only parameters can have constant annotations
-    const targetParameters = targets.filter(t => t instanceof PythonParameter);
-    const targetPaths = targetParameters.map(t => t.id);
+    const targetParameters = targets.filter((t) => t instanceof PythonParameter);
+    const targetPaths = targetParameters.map((t) => t.id);
 
     // Hooks -----------------------------------------------------------------------------------------------------------
     const dispatch = useAppDispatch();
@@ -27,7 +27,7 @@ export const ConstantBatchForm: React.FC<ConstantBatchFormProps> = function ({ta
         //         defaultValue: data.defaultValue,
         //     });
         // });
-        targetPaths.forEach(targetPath => {
+        targetPaths.forEach((targetPath) => {
             dispatch(
                 upsertConstant({
                     target: targetPath,
@@ -40,10 +40,6 @@ export const ConstantBatchForm: React.FC<ConstantBatchFormProps> = function ({ta
     // Rendering -------------------------------------------------------------------------------------------------------
 
     return (
-        <TypeValueBatchForm
-            targets={targets}
-            annotationType="constant"
-            onUpsertAnnotation={handleUpsertAnnotation}
-        />
+        <TypeValueBatchForm targets={targets} annotationType="constant" onUpsertAnnotation={handleUpsertAnnotation} />
     );
 };

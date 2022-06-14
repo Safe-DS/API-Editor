@@ -20,7 +20,7 @@ interface ActionBarProps {
     declaration: PythonDeclaration;
 }
 
-export const ActionBar: React.FC<ActionBarProps> = function ({declaration}) {
+export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
@@ -114,7 +114,12 @@ export const ActionBar: React.FC<ActionBarProps> = function ({declaration}) {
     );
 };
 
-export const getAllSelectedElements = function (current: PythonDeclaration, filter: AbstractPythonFilter, annotations: AnnotationStore, usages: UsageCountStore): PythonDeclaration[] {
+export const getAllSelectedElements = function (
+    current: PythonDeclaration,
+    filter: AbstractPythonFilter,
+    annotations: AnnotationStore,
+    usages: UsageCountStore,
+): PythonDeclaration[] {
     let topmostElement = current;
     while (topmostElement.parent()) {
         const parent = topmostElement.parent();
@@ -123,9 +128,14 @@ export const getAllSelectedElements = function (current: PythonDeclaration, filt
         }
     }
     return getAllSelectedChildren(topmostElement, filter, annotations, usages);
-}
+};
 
-const getAllSelectedChildren = function (current: PythonDeclaration, filter: AbstractPythonFilter, annotations: AnnotationStore, usages: UsageCountStore): PythonDeclaration[] {
+const getAllSelectedChildren = function (
+    current: PythonDeclaration,
+    filter: AbstractPythonFilter,
+    annotations: AnnotationStore,
+    usages: UsageCountStore,
+): PythonDeclaration[] {
     const selectedElements: PythonDeclaration[] = [];
     if (filter.shouldKeepDeclaration(current, annotations, usages)) {
         selectedElements.push(current);
@@ -134,7 +144,7 @@ const getAllSelectedChildren = function (current: PythonDeclaration, filter: Abs
         selectedElements.push(...getAllSelectedChildren(child, filter, annotations, usages));
     }
     return selectedElements;
-}
+};
 
 const getNextElementPath = function (
     declarations: PythonDeclaration[],

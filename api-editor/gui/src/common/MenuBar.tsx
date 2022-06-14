@@ -102,33 +102,27 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
 
                 <Box>
                     <Menu closeOnSelect={false}>
-                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown}/>}>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
                             Batch
                         </MenuButton>
                         <MenuList>
-                            <MenuGroup title={"Annotate"}>
-                                <MenuItem paddingLeft={8}
-                                          onClick={() => dispatch(setBatchMode(BatchMode.Rename))}>
+                            <MenuGroup title={'Annotate'}>
+                                <MenuItem paddingLeft={8} onClick={() => dispatch(setBatchMode(BatchMode.Rename))}>
                                     Rename
                                 </MenuItem>
-                                <MenuItem paddingLeft={8}
-                                          onClick={() => dispatch(setBatchMode(BatchMode.Move))}>
+                                <MenuItem paddingLeft={8} onClick={() => dispatch(setBatchMode(BatchMode.Move))}>
                                     Move
                                 </MenuItem>
-                                <MenuItem paddingLeft={8}
-                                          onClick={() => dispatch(setBatchMode(BatchMode.Remove))}>
+                                <MenuItem paddingLeft={8} onClick={() => dispatch(setBatchMode(BatchMode.Remove))}>
                                     Remove
                                 </MenuItem>
-                                <MenuItem paddingLeft={8}
-                                          onClick={() => dispatch(setBatchMode(BatchMode.Constant))}>
+                                <MenuItem paddingLeft={8} onClick={() => dispatch(setBatchMode(BatchMode.Constant))}>
                                     Constant
                                 </MenuItem>
-                                <MenuItem paddingLeft={8}
-                                          onClick={() => dispatch(setBatchMode(BatchMode.Optional))}>
+                                <MenuItem paddingLeft={8} onClick={() => dispatch(setBatchMode(BatchMode.Optional))}>
                                     Optional
                                 </MenuItem>
-                                <MenuItem paddingLeft={8}
-                                          onClick={() => dispatch(setBatchMode(BatchMode.Required))}>
+                                <MenuItem paddingLeft={8} onClick={() => dispatch(setBatchMode(BatchMode.Required))}>
                                     Required
                                 </MenuItem>
                             </MenuGroup>

@@ -1,4 +1,4 @@
-import {Button, Heading, HStack, Stack} from '@chakra-ui/react';
+import { Button, Heading, HStack, Stack } from '@chakra-ui/react';
 import React from 'react';
 
 interface AnnotationFormProps {
@@ -8,7 +8,12 @@ interface AnnotationFormProps {
     children: React.ReactNode;
 }
 
-export const AnnotationBatchForm: React.FC<AnnotationFormProps> = function ({heading, onCancel, onConfirm, children}) {
+export const AnnotationBatchForm: React.FC<AnnotationFormProps> = function ({
+    heading,
+    onCancel,
+    onConfirm,
+    children,
+}) {
     return (
         <Stack spacing={8} p={4}>
             <Heading as="h3" size="lg">
