@@ -70,10 +70,10 @@ const selectSortedPythonPackages = createSelector(
                 return pythonPackage;
             case SortingMode.Usages: // Descending
                 return pythonPackage.shallowCopy({
-                    modules: pythonPackage.modules
+                    modules: [...pythonPackage.modules]
                         .map((module) =>
                             module.shallowCopy({
-                                classes: module.classes
+                                classes: [...module.classes]
                                     .map((cls) =>
                                         cls.shallowCopy({
                                             methods: [...cls.methods].sort(
