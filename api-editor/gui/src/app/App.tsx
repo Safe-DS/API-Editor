@@ -47,7 +47,7 @@ import { initializeUsages, persistUsages, selectUsages } from '../features/usage
 import {
     initializePythonPackage,
     selectFilteredPythonPackage,
-    selectPythonPackage,
+    selectRawPythonPackage,
 } from '../features/packageData/apiSlice';
 import { PythonClass } from '../features/packageData/model/PythonClass';
 import { PythonParameter } from '../features/packageData/model/PythonParameter';
@@ -55,7 +55,7 @@ import { PythonParameter } from '../features/packageData/model/PythonParameter';
 export const App: React.FC = function () {
     useIndexedDB();
 
-    const pythonPackage = useAppSelector(selectPythonPackage);
+    const pythonPackage = useAppSelector(selectRawPythonPackage);
     const usages = useAppSelector(selectUsages);
     const pythonFilter = useAppSelector(selectFilter);
     const filteredPythonPackage = useAppSelector(selectFilteredPythonPackage);
@@ -135,7 +135,7 @@ export const App: React.FC = function () {
                     {currentUserAction.type === 'todo' && <TodoForm target={userActionTarget || pythonPackage} />}
                 </GridItem>
                 <GridItem gridArea="rightPane" overflow="auto">
-                    <SelectionView pythonPackage={pythonPackage} pythonFilter={pythonFilter} usages={usages} />
+                    <SelectionView />
                 </GridItem>
 
                 {showAnnotationImportDialog && <AnnotationImportDialog />}

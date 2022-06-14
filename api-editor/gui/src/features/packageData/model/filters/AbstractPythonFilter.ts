@@ -78,12 +78,9 @@ export abstract class AbstractPythonFilter {
             .filter((it) => it !== null);
 
         // Create filtered package
-        return new PythonPackage(
-            pythonPackage.distribution,
-            pythonPackage.name,
-            pythonPackage.version,
-            modules as PythonModule[],
-        );
+        return pythonPackage.shallowCopy({
+            modules: modules as PythonModule[],
+        });
     }
 
     /**
@@ -116,14 +113,10 @@ export abstract class AbstractPythonFilter {
         }
 
         // Otherwise, create filtered module
-        return new PythonModule(
-            pythonModule.id,
-            pythonModule.name,
-            pythonModule.imports,
-            pythonModule.fromImports,
-            classes as PythonClass[],
-            functions as PythonFunction[],
-        );
+        return pythonModule.shallowCopy({
+            classes: classes as PythonClass[],
+            functions: functions as PythonFunction[],
+        });
     }
 
     /**
@@ -151,18 +144,9 @@ export abstract class AbstractPythonFilter {
         }
 
         // Otherwise, create filtered class
-        return new PythonClass(
-            pythonClass.id,
-            pythonClass.name,
-            pythonClass.qualifiedName,
-            pythonClass.decorators,
-            pythonClass.superclasses,
-            methods as PythonFunction[],
-            pythonClass.isPublic,
-            pythonClass.reexportedBy,
-            pythonClass.description,
-            pythonClass.fullDocstring,
-        );
+        return pythonClass.shallowCopy({
+            methods: methods as PythonFunction[],
+        });
     }
 
     /**
@@ -188,17 +172,8 @@ export abstract class AbstractPythonFilter {
         }
 
         // Otherwise, create filtered function
-        return new PythonFunction(
-            pythonFunction.id,
-            pythonFunction.name,
-            pythonFunction.qualifiedName,
-            pythonFunction.decorators,
+        return pythonFunction.shallowCopy({
             parameters,
-            pythonFunction.results,
-            pythonFunction.isPublic,
-            pythonFunction.reexportedBy,
-            pythonFunction.description,
-            pythonFunction.fullDocstring,
-        );
+        });
     }
 }

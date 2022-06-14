@@ -7,22 +7,33 @@ import { AnnotationStore, selectAnnotations } from '../../annotations/annotation
 import { useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
-import { setAllCollapsedInTreeView, setAllExpandedInTreeView, setExactlyExpandedInTreeView } from '../../ui/uiSlice';
+import {
+    selectFilter,
+    setAllCollapsedInTreeView,
+    setAllExpandedInTreeView,
+    setExactlyExpandedInTreeView,
+} from '../../ui/uiSlice';
+import { selectFilteredPythonPackage } from '../apiSlice';
+import { selectUsages } from '../../usages/usageSlice';
 
 interface ActionBarProps {
     declaration: PythonDeclaration;
-    pythonPackage: PythonPackage;
-    pythonFilter: AbstractPythonFilter;
-    usages: UsageCountStore;
 }
 
-export const ActionBar: React.FC<ActionBarProps> = function ({ declaration, pythonPackage, pythonFilter, usages }) {
+export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
+    console.log("-----------------------------------------------------");
+
+    const pythonPackage = useAppSelector(selectFilteredPythonPackage);
+    const pythonFilter = useAppSelector(selectFilter);
     const annotations = useAppSelector(selectAnnotations);
+    const usages = useAppSelector(selectUsages);
     const isMatched = (node: PythonDeclaration): boolean =>
         pythonFilter.shouldKeepDeclaration(node, annotations, usages);
+
+    console.log(pythonPackage);
 
     return (
         <HStack borderTop={1} layerStyle="subtleBorder" padding="0.5em 1em" marginTop={0} w="100%">
@@ -117,6 +128,7 @@ const getNextElementPath = function (
 };
 
 const getNextElementInTree = function (current: PythonDeclaration): PythonDeclaration | null {
+    console.log(current);
     if (current.children().length > 0) {
         return current.children()[0];
     } else if (current.parent()) {

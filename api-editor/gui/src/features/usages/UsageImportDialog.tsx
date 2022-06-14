@@ -20,13 +20,13 @@ import { isValidJsonFile } from '../../common/util/validation';
 import { UsageCountJson, UsageCountStore } from './model/UsageCountStore';
 import { toggleUsageImportDialog } from '../ui/uiSlice';
 import { setUsages } from './usageSlice';
-import { selectPythonPackage } from '../packageData/apiSlice';
+import { selectRawPythonPackage } from '../packageData/apiSlice';
 
 export const UsageImportDialog: React.FC = function () {
     const [fileName, setFileName] = useState('');
     const [newUsages, setNewUsages] = useState<string>();
     const dispatch = useAppDispatch();
-    const api = useAppSelector(selectPythonPackage);
+    const api = useAppSelector(selectRawPythonPackage);
 
     const submit = async () => {
         if (newUsages) {
