@@ -3,9 +3,11 @@ import { RootState } from '../../app/store';
 import { PythonPackage } from './model/PythonPackage';
 import { parsePythonPackageJson, PythonPackageJson } from './model/PythonPackageBuilder';
 import * as idb from 'idb-keyval';
-import { selectFilter } from '../ui/uiSlice';
+import { selectFilter, selectSortingMode, SortingMode } from '../ui/uiSlice';
 import { selectUsages } from '../usages/usageSlice';
 import { selectAnnotations } from '../annotations/annotationSlice';
+import { PythonModule } from './model/PythonModule';
+import { PythonClass } from './model/PythonClass';
 
 export interface APIState {
     pythonPackage: PythonPackage;
@@ -62,8 +64,59 @@ export const apiReducer = reducer;
 
 const selectAPI = (state: RootState) => state.api;
 export const selectPythonPackage = (state: RootState) => selectAPI(state).pythonPackage;
+const selectSortedPythonPackages = createSelector(
+    [selectPythonPackage, selectSortingMode, selectUsages],
+    (pythonPackage, sortingMode, usages) => {
+        switch (sortingMode) {
+            case SortingMode.Alphabetical:
+                return pythonPackage;
+            case SortingMode.Usages: // Descending
+                return new PythonPackage(
+                    pythonPackage.distribution,
+                    pythonPackage.name,
+                    pythonPackage.version,
+                    pythonPackage.modules.map(
+                        (module) =>
+                            new PythonModule(
+                                module.id,
+                                module.name,
+                                module.imports,
+                                module.fromImports,
+                                module.classes
+                                    .map(
+                                        (cls) =>
+                                            new PythonClass(
+                                                cls.id,
+                                                cls.name,
+                                                cls.qualifiedName,
+                                                cls.decorators,
+                                                cls.superclasses,
+                                                cls.methods.sort(
+                                                    (a, b) =>
+                                                        (usages.functionUsages.get(b.id) ?? 0) -
+                                                        (usages.functionUsages.get(a.id) ?? 0),
+                                                ),
+                                                cls.isPublic,
+                                                cls.description,
+                                                cls.fullDocstring,
+                                            ),
+                                    )
+                                    .sort(
+                                        (a, b) =>
+                                            (usages.classUsages.get(b.id) ?? 0) - (usages.classUsages.get(a.id) ?? 0),
+                                    ),
+                                [...module.functions].sort(
+                                    (a, b) =>
+                                        (usages.functionUsages.get(b.id) ?? 0) - (usages.functionUsages.get(a.id) ?? 0),
+                                ),
+                            ),
+                    ),
+                );
+        }
+    },
+);
 export const selectFilteredPythonPackage = createSelector(
-    [selectPythonPackage, selectAnnotations, selectUsages, selectFilter],
+    [selectSortedPythonPackages, selectAnnotations, selectUsages, selectFilter],
     (pythonPackage, annotations, usages, filter) => {
         return filter.applyToPackage(pythonPackage, annotations, usages);
     },

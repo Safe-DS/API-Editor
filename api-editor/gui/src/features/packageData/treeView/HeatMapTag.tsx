@@ -26,6 +26,8 @@ export const HeatMapTag: React.FC<HeatMapTagProps> = function ({ actualValue, ma
             size="sm"
             variant="solid"
             width={boxWidth}
+            border="1px solid white"
+            boxSizing="border-box"
         >
             {actualValue}
         </Tag>

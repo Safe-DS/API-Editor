@@ -17,6 +17,7 @@ export interface UIState {
     treeViewScrollOffset: number;
     heatMapMode: HeatMapMode;
     filterString: string;
+    sortingMode: SortingMode;
 }
 
 type UserAction =
@@ -95,10 +96,15 @@ interface TodoUserAction {
 }
 
 export enum HeatMapMode {
-    None,
-    Usages,
-    Usefulness,
-    Annotations,
+    None = 'none',
+    Usages = 'usages',
+    Usefulness = 'usefulness',
+    Annotations = 'annotations',
+}
+
+export enum SortingMode {
+    Alphabetical = 'alphabetical',
+    Usages = 'usages',
 }
 
 // Initial state -------------------------------------------------------------------------------------------------------
@@ -113,6 +119,7 @@ export const initialState: UIState = {
     treeViewScrollOffset: 0,
     heatMapMode: HeatMapMode.None,
     filterString: 'is:public',
+    sortingMode: SortingMode.Alphabetical,
 };
 
 // Thunks --------------------------------------------------------------------------------------------------------------
@@ -273,6 +280,9 @@ const uiSlice = createSlice({
         setFilterString(state, action: PayloadAction<string>) {
             state.filterString = action.payload;
         },
+        setSortingMode(state, action: PayloadAction<SortingMode>) {
+            state.sortingMode = action.payload;
+        },
     },
     extraReducers(builder) {
         builder.addCase(initializeUI.fulfilled, (state, action) => action.payload);
@@ -310,6 +320,7 @@ export const {
     setHeatMapMode,
 
     setFilterString,
+    setSortingMode,
 } = actions;
 export const uiReducer = reducer;
 
@@ -341,3 +352,4 @@ export const selectFilter = createSelector(
         return createFilterFromString(filterString);
     },
 );
+export const selectSortingMode = (state: RootState): SortingMode => selectUI(state).sortingMode;
