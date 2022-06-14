@@ -6,6 +6,8 @@ import * as idb from 'idb-keyval';
 import { selectFilter, selectSortingMode, SortingMode } from '../ui/uiSlice';
 import { selectUsages } from '../usages/usageSlice';
 import { selectAnnotations } from '../annotations/annotationSlice';
+import { PythonDeclaration } from './model/PythonDeclaration';
+import { UsageCountStore } from '../usages/model/UsageCountStore';
 
 export interface APIState {
     pythonPackage: PythonPackage;
@@ -62,44 +64,44 @@ export const apiReducer = reducer;
 
 const selectAPI = (state: RootState) => state.api;
 export const selectRawPythonPackage = (state: RootState) => selectAPI(state).pythonPackage;
-const selectSortedPythonPackages = createSelector(
-    [selectRawPythonPackage, selectSortingMode, selectUsages],
-    (pythonPackage, sortingMode, usages) => {
-        switch (sortingMode) {
-            case SortingMode.Alphabetical:
-                return pythonPackage;
-            case SortingMode.Usages: // Descending
-                return pythonPackage.shallowCopy({
-                    modules: [...pythonPackage.modules]
-                        .map((module) =>
-                            module.shallowCopy({
-                                classes: [...module.classes]
-                                    .map((cls) =>
-                                        cls.shallowCopy({
-                                            methods: [...cls.methods].sort(
-                                                (a, b) =>
-                                                    (usages.functionUsages.get(b.id) ?? 0) -
-                                                    (usages.functionUsages.get(a.id) ?? 0),
-                                            ),
-                                        }),
-                                    )
-                                    .sort(
-                                        (a, b) =>
-                                            (usages.classUsages.get(b.id) ?? 0) - (usages.classUsages.get(a.id) ?? 0),
-                                    ),
-                                functions: [...module.functions].sort(
-                                    (a, b) =>
-                                        (usages.functionUsages.get(b.id) ?? 0) - (usages.functionUsages.get(a.id) ?? 0),
-                                ),
-                            }),
-                        )
-                        .sort((a, b) => (usages.moduleUsages.get(b.id) ?? 0) - (usages.moduleUsages.get(a.id) ?? 0)),
-                });
-        }
-    },
-);
+// const selectSortedPythonPackages = createSelector(
+//     [selectRawPythonPackage, selectSortingMode, selectUsages],
+//     (pythonPackage, sortingMode, usages) => {
+//         switch (sortingMode) {
+//             case SortingMode.Alphabetical:
+//                 return pythonPackage;
+//             case SortingMode.Usages: // Descending
+//                 return pythonPackage.shallowCopy({
+//                     modules: [...pythonPackage.modules]
+//                         .map((module) =>
+//                             module.shallowCopy({
+//                                 classes: [...module.classes]
+//                                     .map((cls) =>
+//                                         cls.shallowCopy({
+//                                             methods: [...cls.methods].sort(
+//                                                 (a, b) =>
+//                                                     (usages.functionUsages.get(b.id) ?? 0) -
+//                                                     (usages.functionUsages.get(a.id) ?? 0),
+//                                             ),
+//                                         }),
+//                                     )
+//                                     .sort(
+//                                         (a, b) =>
+//                                             (usages.classUsages.get(b.id) ?? 0) - (usages.classUsages.get(a.id) ?? 0),
+//                                     ),
+//                                 functions: [...module.functions].sort(
+//                                     (a, b) =>
+//                                         (usages.functionUsages.get(b.id) ?? 0) - (usages.functionUsages.get(a.id) ?? 0),
+//                                 ),
+//                             }),
+//                         )
+//                         .sort((a, b) => (usages.moduleUsages.get(b.id) ?? 0) - (usages.moduleUsages.get(a.id) ?? 0)),
+//                 });
+//         }
+//     },
+// );
 export const selectFilteredPythonPackage = createSelector(
-    [selectSortedPythonPackages, selectAnnotations, selectUsages, selectFilter],
+    [selectRawPythonPackage, selectAnnotations, selectUsages, selectFilter],
     (pythonPackage, annotations, usages, filter) => {
         return filter.applyToPackage(pythonPackage, annotations, usages);
     },
@@ -116,3 +118,31 @@ export const selectNumberOfMatchedNodes = createSelector(
         return result;
     },
 );
+export const selectFlatSortedDeclarationList = createSelector(
+    [selectFilteredPythonPackage, selectSortingMode, selectUsages],
+    (pythonPackage, sortingMode, usages) => {
+        switch (sortingMode) {
+            case SortingMode.Alphabetical:
+                return walkChildrenInPreorder(pythonPackage, sortAlphabetically);
+            case SortingMode.Usages: // Descending
+                return walkChildrenInPreorder(pythonPackage, sortByUsages(usages));
+        }
+    },
+);
+
+const walkChildrenInPreorder = function (
+    declaration: PythonDeclaration,
+    sorter: (a: PythonDeclaration, b: PythonDeclaration) => number,
+): PythonDeclaration[] {
+    return [...declaration.children()].sort(sorter).flatMap((it) => {
+        return [it, ...walkChildrenInPreorder(it, sorter)];
+    });
+};
+
+const sortAlphabetically = (a: PythonDeclaration, b: PythonDeclaration) => {
+    return a.name.localeCompare(b.name);
+};
+
+const sortByUsages = (usages: UsageCountStore) => (a: PythonDeclaration, b: PythonDeclaration) => {
+    return usages.getUsageCount(b) - usages.getUsageCount(a);
+};

@@ -126,7 +126,7 @@ export const App: React.FC = function () {
                     )}
                     {currentUserAction.type === 'move' && <MoveForm target={userActionTarget || pythonPackage} />}
                     {currentUserAction.type === 'none' && (
-                        <TreeView pythonPackage={filteredPythonPackage} filter={pythonFilter} usages={usages} />
+                        <TreeView />
                     )}
                     {currentUserAction.type === 'optional' && (
                         <OptionalForm target={userActionTarget || pythonPackage} />
