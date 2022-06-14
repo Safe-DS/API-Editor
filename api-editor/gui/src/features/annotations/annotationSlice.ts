@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import * as idb from 'idb-keyval';
 import { RootState } from '../../app/store';
-import PythonDeclaration from "../packageData/model/PythonDeclaration";
+import { PythonDeclaration } from '../packageData/model/PythonDeclaration';
 
 /**
  * How many annotations can be applied to a class at once.
@@ -537,8 +537,8 @@ const annotationsSlice = createSlice({
             const newRenamings: { [p: string]: RenameAnnotation } = {};
             for (const declaration of action.payload) {
                 newRenamings[declaration.name] = {
-                    target: "",//TODO übergeben und fixen
-                    newName: "",//TODO
+                    target: '', //TODO übergeben und fixen
+                    newName: '', //TODO
                 };
             }
             state.renamings = {

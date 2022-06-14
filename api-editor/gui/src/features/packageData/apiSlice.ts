@@ -64,42 +64,6 @@ export const apiReducer = reducer;
 
 const selectAPI = (state: RootState) => state.api;
 export const selectRawPythonPackage = (state: RootState) => selectAPI(state).pythonPackage;
-// const selectSortedPythonPackages = createSelector(
-//     [selectRawPythonPackage, selectSortingMode, selectUsages],
-//     (pythonPackage, sortingMode, usages) => {
-//         switch (sortingMode) {
-//             case SortingMode.Alphabetical:
-//                 return pythonPackage;
-//             case SortingMode.Usages: // Descending
-//                 return pythonPackage.shallowCopy({
-//                     modules: [...pythonPackage.modules]
-//                         .map((module) =>
-//                             module.shallowCopy({
-//                                 classes: [...module.classes]
-//                                     .map((cls) =>
-//                                         cls.shallowCopy({
-//                                             methods: [...cls.methods].sort(
-//                                                 (a, b) =>
-//                                                     (usages.functionUsages.get(b.id) ?? 0) -
-//                                                     (usages.functionUsages.get(a.id) ?? 0),
-//                                             ),
-//                                         }),
-//                                     )
-//                                     .sort(
-//                                         (a, b) =>
-//                                             (usages.classUsages.get(b.id) ?? 0) - (usages.classUsages.get(a.id) ?? 0),
-//                                     ),
-//                                 functions: [...module.functions].sort(
-//                                     (a, b) =>
-//                                         (usages.functionUsages.get(b.id) ?? 0) - (usages.functionUsages.get(a.id) ?? 0),
-//                                 ),
-//                             }),
-//                         )
-//                         .sort((a, b) => (usages.moduleUsages.get(b.id) ?? 0) - (usages.moduleUsages.get(a.id) ?? 0)),
-//                 });
-//         }
-//     },
-// );
 export const selectFilteredPythonPackage = createSelector(
     [selectRawPythonPackage, selectAnnotations, selectUsages, selectFilter],
     (pythonPackage, annotations, usages, filter) => {
