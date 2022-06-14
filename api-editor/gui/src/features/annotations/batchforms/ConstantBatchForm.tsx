@@ -1,18 +1,18 @@
 import React from 'react';
 import { useAppDispatch } from '../../../app/hooks';
-import PythonDeclaration from '../../packageData/model/PythonDeclaration';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
 import { upsertConstant } from '../annotationSlice';
 import { TypeValueBatchForm, TypeValueBatchFormState } from './TypeValueBatchForm';
-import PythonParameter from '../../packageData/model/PythonParameter';
+import { PythonParameter } from '../../packageData/model/PythonParameter';
 
 interface ConstantBatchFormProps {
-    target: PythonDeclaration[];
+    targets: PythonDeclaration[];
 }
 
-export const ConstantBatchForm: React.FC<ConstantBatchFormProps> = function ({target}) {
+export const ConstantBatchForm: React.FC<ConstantBatchFormProps> = function ({targets}) {
     //only parameters can have constant annotations
-    target = target.filter(t => t instanceof PythonParameter);
-    const targetPaths = target.map(t => t.pathAsString());
+    const targetParameters = targets.filter(t => t instanceof PythonParameter);
+    const targetPaths = targetParameters.map(t => t.id);
 
     // Hooks -----------------------------------------------------------------------------------------------------------
     const dispatch = useAppDispatch();
@@ -41,7 +41,7 @@ export const ConstantBatchForm: React.FC<ConstantBatchFormProps> = function ({ta
 
     return (
         <TypeValueBatchForm
-            target={target}
+            targets={targets}
             annotationType="constant"
             onUpsertAnnotation={handleUpsertAnnotation}
         />

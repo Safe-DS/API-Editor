@@ -27,13 +27,13 @@ import React, { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch } from '../../../app/hooks';
 import { booleanPattern, numberPattern } from '../../../common/validation';
-import PythonDeclaration from '../../packageData/model/PythonDeclaration';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
 import { DefaultType, DefaultValue } from '../annotationSlice';
 import { AnnotationBatchForm } from './AnnotationBatchForm';
-import {hideAnnotationForm} from "../../ui/uiSlice";
+import { hideAnnotationForm } from '../../ui/uiSlice';
 
 interface TypeValueBatchFormProps {
-    target: PythonDeclaration[];
+    targets: PythonDeclaration[];
     annotationType: string;
     onUpsertAnnotation: (data: TypeValueBatchFormState) => void;
 }
@@ -44,7 +44,7 @@ export interface TypeValueBatchFormState {
 }
 
 export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
-    target,
+    targets,
     annotationType,
     onUpsertAnnotation,
 }) {
@@ -162,7 +162,7 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
             </AnnotationBatchForm>
             {confirmWindowVisible && (
                 <ConfirmAnnotations
-                    count={target.length}
+                    count={targets.length}
                     handleSave={() => handleSave(data)}
                     setConfirmVisible={setConfirmWindowVisible}
                 />

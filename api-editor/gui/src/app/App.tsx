@@ -37,7 +37,7 @@ import {
     initializeUI,
     persistUI,
     selectBatchMode,
-    selectCurrentUserAction,
+    selectCurrentUserAction, selectFilter,
     selectShowAnnotationImportDialog,
     selectShowAPIImportDialog,
     selectShowUsageImportDialog,
@@ -54,8 +54,10 @@ import { getAllSelectedElements } from '../features/packageData/selectionView/Ac
 export const App: React.FC = function () {
     useIndexedDB();
 
-    const annotationStore = useAppSelector(selectAnnotations);
     const pythonPackage = useAppSelector(selectRawPythonPackage);
+    const annotationStore = useAppSelector(selectAnnotations);
+    const usages = useAppSelector(selectUsages);
+    const filter = useAppSelector(selectFilter);
 
     const [showInferErrorDialog, setShowInferErrorDialog] = useState(false);
     const [inferErrors, setInferErrors] = useState<string[]>([]);
@@ -134,9 +136,9 @@ export const App: React.FC = function () {
                     {batchMode === BatchMode.None && <SelectionView />}
                     {batchMode === BatchMode.Constant && (
                         <ConstantBatchForm
-                            target={getAllSelectedElements(
+                            targets={getAllSelectedElements(
                                 userActionTarget || pythonPackage,
-                                pythonFilter,
+                                filter,
                                 annotationStore,
                                 usages,
                             )}
