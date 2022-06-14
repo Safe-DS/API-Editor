@@ -10,7 +10,7 @@ export const maximumNumberOfClassAnnotations = 5;
 /**
  * How many annotations can be applied to a function at once.
  */
-export const maximumNumberOfFunctionAnnotations = 6;
+export const maximumNumberOfFunctionAnnotations = 7;
 
 /**
  * How many annotations can be applied to a parameter at once.
@@ -371,6 +371,29 @@ const annotationsSlice = createSlice({
                 ...action.payload,
             };
         },
+        mergeAnnotations(state, action: PayloadAction<AnnotationStore>) {
+            for (const annotationType of Object.keys(action.payload)) {
+                if (annotationType === 'calledAfters' || annotationType === 'groups') {
+                    for (const target of Object.keys(action.payload[annotationType])) {
+                        // @ts-ignore
+                        state[annotationType][target] = {
+                            // @ts-ignore
+                            ...(state[annotationType][target] ?? {}),
+                            // @ts-ignore
+                            ...action.payload[annotationType][target],
+                        };
+                    }
+                } else {
+                    // @ts-ignore
+                    state[annotationType] = {
+                        // @ts-ignore
+                        ...state[annotationType],
+                        // @ts-ignore
+                        ...action.payload[annotationType],
+                    };
+                }
+            }
+        },
         resetAnnotations() {
             return initialState;
         },
@@ -516,6 +539,7 @@ const annotationsSlice = createSlice({
 const { actions, reducer } = annotationsSlice;
 export const {
     setAnnotations,
+    mergeAnnotations,
     resetAnnotations,
 
     upsertAttribute,
