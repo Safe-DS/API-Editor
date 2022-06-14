@@ -91,7 +91,7 @@ class _AstVisitor:
                     from_imports.append(FromImport(base_import_path, name, alias))
 
                 # Find re-exported declarations in __init__.py files
-                if _is_init_file(module_node.file):
+                if _is_init_file(module_node.file) and is_public_module(module_node.qname()):
                     for declaration, _ in global_node.names:
                         reexported_name = f"{base_import_path}.{declaration}"
 
@@ -325,3 +325,6 @@ class _AstVisitor:
 
         # The slicing is necessary so __init__ functions are not excluded (already handled in the first condition).
         return all(not it.startswith("_") for it in qualified_name.split(".")[:-1])
+
+def is_public_module(module_name: str) -> bool:
+    return all(not it.startswith("_") for it in module_name.split("."))
