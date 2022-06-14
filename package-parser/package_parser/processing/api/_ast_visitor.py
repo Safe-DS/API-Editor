@@ -22,7 +22,7 @@ from ._file_filters import _is_init_file
 
 class _AstVisitor:
     def __init__(self, api: API) -> None:
-        self.reexported: set[str] = set()
+        self.reexported: dict[str, list[str]] = {}
         self.api: API = api
         self.__declaration_stack: list[Union[Module, Class, Function]] = []
 
@@ -66,6 +66,7 @@ class _AstVisitor:
         imports: list[Import] = []
         from_imports: list[FromImport] = []
         visited_global_nodes: set[astroid.NodeNG] = set()
+        id_ = f"{self.api.package}/{module_node.qname()}"
 
         for _, global_node_list in module_node.globals.items():
             global_node = global_node_list[0]
@@ -95,11 +96,13 @@ class _AstVisitor:
                         reexported_name = f"{base_import_path}.{declaration}"
 
                         if reexported_name.startswith(module_node.name):
-                            self.reexported.add(reexported_name)
+                            if reexported_name not in self.reexported:
+                                self.reexported[reexported_name] = []
+                            self.reexported[reexported_name] += [id_]
 
         # Remember module, so we can later add classes and global functions
         module = Module(
-            f"{self.api.package}/{module_node.qname()}",
+            id_,
             module_node.qname(),
             imports,
             from_imports,
@@ -131,6 +134,7 @@ class _AstVisitor:
             decorator_names,
             class_node.basenames,
             self.is_public(class_node.name, qname),
+            self.reexported.get(qname, []),
             _AstVisitor.__description(numpydoc),
             class_node.doc,
         )
@@ -170,6 +174,7 @@ class _AstVisitor:
             ),
             [],  # TODO: results
             is_public,
+            self.reexported.get(qname, []),
             _AstVisitor.__description(numpydoc),
             function_node.doc,
         )
