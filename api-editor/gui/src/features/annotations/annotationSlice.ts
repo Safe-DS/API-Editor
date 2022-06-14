@@ -2,6 +2,21 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import * as idb from 'idb-keyval';
 import { RootState } from '../../app/store';
 
+/**
+ * How many annotations can be applied to a class at once.
+ */
+export const maximumNumberOfClassAnnotations = 5;
+
+/**
+ * How many annotations can be applied to a function at once.
+ */
+export const maximumNumberOfFunctionAnnotations = 6;
+
+/**
+ * How many annotations can be applied to a parameter at once.
+ */
+export const maximumNumberOfParameterAnnotations = 8;
+
 export interface AnnotationStore {
     attributes: {
         [target: string]: AttributeAnnotation;
@@ -597,3 +612,14 @@ export const selectTodo =
     (target: string) =>
     (state: RootState): TodoAnnotation | undefined =>
         selectAnnotations(state).todos[target];
+export const selectNumberOfAnnotations =
+    (target: string) =>
+    (state: RootState): number => {
+        return Object.values(selectAnnotations(state)).reduce((acc, annotations) => {
+            if (target in annotations) {
+                return acc + 1;
+            } else {
+                return acc;
+            }
+        }, 0);
+    };
