@@ -33,6 +33,7 @@ export class UsageCountStore {
         );
     }
 
+    readonly moduleMaxUsages: number;
     readonly classMaxUsages: number;
     readonly functionMaxUsages: number;
     readonly parameterMaxUsages: number;
@@ -53,6 +54,7 @@ export class UsageCountStore {
             this.computeModuleUsages(api);
         }
 
+        this.moduleMaxUsages = moduleUsages.size === 0 ? 0 : Math.max(...moduleUsages.values());
         this.classMaxUsages = classUsages.size === 0 ? 0 : Math.max(...classUsages.values());
         this.functionMaxUsages = functionUsages.size === 0 ? 0 : Math.max(...functionUsages.values());
         this.parameterMaxUsages = parameterUsages.size === 0 ? 0 : Math.max(...parameterUsages.values());
