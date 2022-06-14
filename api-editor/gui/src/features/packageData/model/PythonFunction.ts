@@ -2,8 +2,21 @@ import { Optional } from '../../../common/util/types';
 import { PythonClass } from './PythonClass';
 import { PythonDeclaration } from './PythonDeclaration';
 import { PythonModule } from './PythonModule';
-import { PythonParameter } from './PythonParameter';
+import { PythonParameter, PythonParameterAssignment } from './PythonParameter';
 import { PythonResult } from './PythonResult';
+
+interface PythonFunctionShallowCopy {
+    id?: string;
+    name?: string;
+    qualifiedName?: string;
+    decorators?: string[];
+    parameters?: PythonParameter[];
+    results?: PythonResult[];
+    isPublic?: boolean;
+    reexportedBy?: string[];
+    description?: string;
+    fullDocstring?: string;
+}
 
 export class PythonFunction extends PythonDeclaration {
     containingModuleOrClass: Optional<PythonModule | PythonClass>;
@@ -16,6 +29,7 @@ export class PythonFunction extends PythonDeclaration {
         readonly parameters: PythonParameter[] = [],
         readonly results: PythonResult[] = [],
         readonly isPublic: boolean = false,
+        readonly reexportedBy: string[] = [],
         readonly description = '',
         readonly fullDocstring = '',
     ) {
@@ -40,10 +54,6 @@ export class PythonFunction extends PythonDeclaration {
         return this.parameters;
     }
 
-    isPublicDeclaration(): boolean {
-        return this.isPublic;
-    }
-
     getUniqueName(): string {
         const segments = this.id.split('/');
         return segments[segments.length - 1];
@@ -62,11 +72,7 @@ export class PythonFunction extends PythonDeclaration {
     }
 
     explicitParameters(): PythonParameter[] {
-        if (this.parent() instanceof PythonModule) {
-            return this.children();
-        }
-
-        return this.children().slice(1);
+        return this.parameters.filter((it) => it.assignedBy !== PythonParameterAssignment.IMPLICIT);
     }
 
     siblingFunctions(): PythonFunction[] {
@@ -74,6 +80,32 @@ export class PythonFunction extends PythonDeclaration {
             (this.parent()
                 ?.children()
                 .filter((it) => it instanceof PythonFunction && it.name !== this.name) as PythonFunction[]) ?? []
+        );
+    }
+
+    shallowCopy({
+        id = this.id,
+        name = this.name,
+        qualifiedName = this.qualifiedName,
+        decorators = this.decorators,
+        parameters = this.parameters,
+        results = this.results,
+        isPublic = this.isPublic,
+        reexportedBy = this.reexportedBy,
+        description = this.description,
+        fullDocstring = this.fullDocstring,
+    }: PythonFunctionShallowCopy = {}): PythonFunction {
+        return new PythonFunction(
+            id,
+            name,
+            qualifiedName,
+            decorators,
+            parameters,
+            results,
+            isPublic,
+            reexportedBy,
+            description,
+            fullDocstring,
         );
     }
 

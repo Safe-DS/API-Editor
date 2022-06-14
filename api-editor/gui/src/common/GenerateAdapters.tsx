@@ -18,7 +18,7 @@ import React, { useRef, useState } from 'react';
 import { useAppSelector } from '../app/hooks';
 import { selectAnnotations } from '../features/annotations/annotationSlice';
 import { AnnotatedPythonPackageBuilder } from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
-import { selectPythonPackage } from '../features/packageData/apiSlice';
+import { selectRawPythonPackage } from '../features/packageData/apiSlice';
 
 interface GenerateAdaptersProps {
     displayInferErrors: (errors: string[]) => void;
@@ -31,7 +31,7 @@ export const GenerateAdapters: React.FC<GenerateAdaptersProps> = function ({ dis
     const cancelRef = useRef(null);
 
     const annotationStore = useAppSelector(selectAnnotations);
-    const pythonPackage = useAppSelector(selectPythonPackage);
+    const pythonPackage = useAppSelector(selectRawPythonPackage);
 
     const packageNameIsValid = !shouldValidate || newPackageName !== '';
 

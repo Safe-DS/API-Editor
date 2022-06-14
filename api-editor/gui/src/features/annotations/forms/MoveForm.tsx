@@ -17,7 +17,7 @@ interface MoveFormState {
 }
 
 export const MoveForm: React.FC<MoveFormProps> = function ({ target }) {
-    const targetPath = target.pathAsString();
+    const targetPath = target.id;
     const prevDestination = useAppSelector(selectMove(targetPath))?.destination;
     const oldModulePath = target?.parent()?.name;
 

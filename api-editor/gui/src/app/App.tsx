@@ -36,28 +36,20 @@ import {
     initializeUI,
     persistUI,
     selectCurrentUserAction,
-    selectFilter,
     selectShowAnnotationImportDialog,
     selectShowAPIImportDialog,
     selectShowUsageImportDialog,
     selectUI,
 } from '../features/ui/uiSlice';
 import { initializeUsages, persistUsages, selectUsages } from '../features/usages/usageSlice';
-import {
-    initializePythonPackage,
-    selectFilteredPythonPackage,
-    selectPythonPackage,
-} from '../features/packageData/apiSlice';
+import { initializePythonPackage, selectRawPythonPackage } from '../features/packageData/apiSlice';
 import { PythonClass } from '../features/packageData/model/PythonClass';
 import { PythonParameter } from '../features/packageData/model/PythonParameter';
 
 export const App: React.FC = function () {
     useIndexedDB();
 
-    const pythonPackage = useAppSelector(selectPythonPackage);
-    const usages = useAppSelector(selectUsages);
-    const pythonFilter = useAppSelector(selectFilter);
-    const filteredPythonPackage = useAppSelector(selectFilteredPythonPackage);
+    const pythonPackage = useAppSelector(selectRawPythonPackage);
 
     const [showInferErrorDialog, setShowInferErrorDialog] = useState(false);
     const [inferErrors, setInferErrors] = useState<string[]>([]);
@@ -67,7 +59,7 @@ export const App: React.FC = function () {
     };
 
     const currentUserAction = useAppSelector(selectCurrentUserAction);
-    const userActionTarget = pythonPackage.getByRelativePathAsString(currentUserAction.target);
+    const userActionTarget = pythonPackage.getDeclarationById(currentUserAction.target);
     const showAnnotationImportDialog = useAppSelector(selectShowAnnotationImportDialog);
     const showAPIImportDialog = useAppSelector(selectShowAPIImportDialog);
     const showUsagesImportDialog = useAppSelector(selectShowUsageImportDialog);
@@ -124,9 +116,7 @@ export const App: React.FC = function () {
                         />
                     )}
                     {currentUserAction.type === 'move' && <MoveForm target={userActionTarget || pythonPackage} />}
-                    {currentUserAction.type === 'none' && (
-                        <TreeView pythonPackage={filteredPythonPackage} filter={pythonFilter} usages={usages} />
-                    )}
+                    {currentUserAction.type === 'none' && <TreeView />}
                     {currentUserAction.type === 'optional' && (
                         <OptionalForm target={userActionTarget || pythonPackage} />
                     )}

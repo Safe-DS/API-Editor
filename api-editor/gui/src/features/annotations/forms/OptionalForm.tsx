@@ -9,7 +9,7 @@ interface OptionalFormProps {
 }
 
 export const OptionalForm: React.FC<OptionalFormProps> = function ({ target }) {
-    const targetPath = target.pathAsString();
+    const targetPath = target.id;
 
     // Hooks -----------------------------------------------------------------------------------------------------------
     const optionalDefinition = useAppSelector(selectOptional(targetPath));

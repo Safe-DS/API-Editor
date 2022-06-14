@@ -204,6 +204,7 @@ class Class:
             json.get("decorators", []),
             json.get("superclasses", []),
             json.get("is_public", True),
+            json.get("reexported_by", []),
             json.get("description", ""),
             json.get("docstring", ""),
         )
@@ -220,6 +221,7 @@ class Class:
         decorators: list[str],
         superclasses: list[str],
         is_public: bool,
+        reexported_by: list[str],
         description: str,
         docstring: str,
     ) -> None:
@@ -229,6 +231,7 @@ class Class:
         self.superclasses: list[str] = superclasses
         self.methods: list[str] = []
         self.is_public: bool = is_public
+        self.reexported_by: list[str] = reexported_by
         self.description: str = description
         self.docstring: str = docstring
 
@@ -248,6 +251,7 @@ class Class:
             "superclasses": self.superclasses,
             "methods": self.methods,
             "is_public": self.is_public,
+            "reexported_by": self.reexported_by,
             "description": self.description,
             "docstring": self.docstring,
         }
@@ -261,6 +265,7 @@ class Function:
     parameters: list[Parameter]
     results: list[Result]
     is_public: bool
+    reexported_by: list[str]
     description: str
     docstring: str
 
@@ -276,6 +281,7 @@ class Function:
             ],
             [Result.from_json(result_json) for result_json in json.get("results", [])],
             json.get("is_public", True),
+            json.get("reexported_by", []),
             json.get("description", ""),
             json.get("docstring", ""),
         )
@@ -293,6 +299,7 @@ class Function:
             "parameters": [parameter.to_json() for parameter in self.parameters],
             "results": [result.to_json() for result in self.results],
             "is_public": self.is_public,
+            "reexported_by": self.reexported_by,
             "description": self.description,
             "docstring": self.docstring,
         }

@@ -7,20 +7,28 @@ import { AnnotationStore, selectAnnotations } from '../../annotations/annotation
 import { useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
-import { setAllCollapsedInTreeView, setAllExpandedInTreeView, setExactlyExpandedInTreeView } from '../../ui/uiSlice';
+import {
+    selectFilter,
+    setAllCollapsedInTreeView,
+    setAllExpandedInTreeView,
+    setExactlyExpandedInTreeView,
+} from '../../ui/uiSlice';
+import { selectFilteredPythonPackage, selectFlatSortedDeclarationList } from '../apiSlice';
+import { selectUsages } from '../../usages/usageSlice';
 
 interface ActionBarProps {
     declaration: PythonDeclaration;
-    pythonPackage: PythonPackage;
-    pythonFilter: AbstractPythonFilter;
-    usages: UsageCountStore;
 }
 
-export const ActionBar: React.FC<ActionBarProps> = function ({ declaration, pythonPackage, pythonFilter, usages }) {
+export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
+    const allDeclarations = useAppSelector(selectFlatSortedDeclarationList);
+    const pythonPackage = useAppSelector(selectFilteredPythonPackage);
+    const pythonFilter = useAppSelector(selectFilter);
     const annotations = useAppSelector(selectAnnotations);
+    const usages = useAppSelector(selectUsages);
     const isMatched = (node: PythonDeclaration): boolean =>
         pythonFilter.shouldKeepDeclaration(node, annotations, usages);
 
@@ -28,7 +36,13 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration, pyth
         <HStack borderTop={1} layerStyle="subtleBorder" padding="0.5em 1em" marginTop={0} w="100%">
             <Button
                 onClick={() => {
-                    let navStr = getPreviousElementPath(declaration, pythonFilter, annotations, usages);
+                    let navStr = getPreviousElementPath(
+                        allDeclarations,
+                        declaration,
+                        pythonFilter,
+                        annotations,
+                        usages,
+                    );
                     if (navStr !== null) {
                         //navigate to element
                         navigate(`/${navStr}`);
@@ -43,7 +57,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration, pyth
             </Button>
             <Button
                 onClick={() => {
-                    let navStr = getNextElementPath(declaration, pythonFilter, annotations, usages);
+                    let navStr = getNextElementPath(allDeclarations, declaration, pythonFilter, annotations, usages);
                     if (navStr !== null) {
                         //navigate to element
                         navigate(`/${navStr}`);
@@ -101,98 +115,82 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration, pyth
 };
 
 const getNextElementPath = function (
-    current: PythonDeclaration,
+    declarations: PythonDeclaration[],
+    start: PythonDeclaration,
     filter: AbstractPythonFilter,
     annotations: AnnotationStore,
     usages: UsageCountStore,
-): string | null {
-    const nextElement = getNextElementInTree(current);
-    if (nextElement) {
-        if (filter.shouldKeepDeclaration(nextElement, annotations, usages)) {
-            return nextElement.pathAsString();
+): string {
+    let current = getNextElementInTree(declarations, start);
+    while (current !== start) {
+        if (filter.shouldKeepDeclaration(current, annotations, usages)) {
+            return current.id;
         }
-        return getNextElementPath(nextElement, filter, annotations, usages);
+        current = getNextElementInTree(declarations, current);
     }
-    return null;
+    return start.id;
 };
 
-const getNextElementInTree = function (current: PythonDeclaration): PythonDeclaration | null {
-    if (current.children().length > 0) {
-        return current.children()[0];
-    } else if (current.parent()) {
-        return getNextFromParentInTree(current);
+const getNextElementInTree = function (
+    declarations: PythonDeclaration[],
+    current: PythonDeclaration,
+): PythonDeclaration {
+    if (declarations.length === 0) {
+        return current;
     }
-    return null;
-};
 
-const getNextFromParentInTree = function (current: PythonDeclaration): PythonDeclaration | null {
-    if (current instanceof PythonPackage && current.children().length > 0) {
-        return current.children()[0];
-    }
-    const parent = current.parent();
-    if (parent) {
-        const index = parent.children().indexOf(current);
-        if (parent.children().length > index + 1) {
-            return parent.children()[index + 1];
-        }
-        return getNextFromParentInTree(parent);
-    }
-    return null;
+    const index = declarations.indexOf(current);
+    const nextIndex = (index + 1) % declarations.length;
+    return declarations[nextIndex];
 };
 
 const getPreviousElementPath = function (
-    current: PythonDeclaration,
+    declarations: PythonDeclaration[],
+    start: PythonDeclaration,
     filter: AbstractPythonFilter,
     annotations: AnnotationStore,
     usages: UsageCountStore,
 ): string | null {
-    const previousElement = getPreviousElementInTree(current);
-    if (previousElement) {
-        if (filter.shouldKeepDeclaration(previousElement, annotations, usages)) {
-            return previousElement.pathAsString();
+    let current = getPreviousElementInTree(declarations, start);
+    while (current !== start && current !== null) {
+        if (filter.shouldKeepDeclaration(current, annotations, usages)) {
+            return current.id;
         }
-        return getPreviousElementPath(previousElement, filter, annotations, usages);
+        current = getPreviousElementInTree(declarations, current);
     }
     return null;
 };
 
-const getPreviousElementInTree = function (current: PythonDeclaration): PythonDeclaration | null {
-    const parent = current.parent();
-    if (parent) {
-        const index = parent.children().indexOf(current);
-        if (index > 0) {
-            return getLastElementInTree(parent.children()[index - 1]);
-        }
-        if (parent instanceof PythonPackage) {
-            return getLastElementInTree(parent);
-        }
-        return parent;
+const getPreviousElementInTree = function (
+    declarations: PythonDeclaration[],
+    current: PythonDeclaration,
+): PythonDeclaration {
+    if (declarations.length === 0) {
+        return current;
     }
-    return null;
-};
 
-const getLastElementInTree = function (current: PythonDeclaration): PythonDeclaration {
-    if (current.children().length > 0) {
-        return getLastElementInTree(current.children()[current.children().length - 1]);
-    }
-    return current;
+    const index = declarations.indexOf(current);
+    const previousIndex = (index - 1 + declarations.length) % declarations.length;
+    return declarations[previousIndex];
 };
 
 const getAncestors = function (navStr: string, filteredPythonPackage: PythonPackage): string[] {
     const ancestors: string[] = [];
-    let currentElement = filteredPythonPackage.getByRelativePathAsString(navStr);
+
+    let currentElement = filteredPythonPackage.getDeclarationById(navStr);
     if (currentElement) {
         currentElement = currentElement.parent();
         while (currentElement) {
-            ancestors.push(currentElement.pathAsString());
+            ancestors.push(currentElement.id);
             currentElement = currentElement.parent();
         }
     }
+
     return ancestors;
 };
 
 const getDescendantsOrSelf = function (current: PythonDeclaration): string[] {
-    return [...current.descendantsOrSelf()].map((descendant) => descendant.pathAsString());
+    return [...current.descendantsOrSelf()].map((descendant) => descendant.id);
 };
 
 const getMatchedNodesAndParents = function (
@@ -225,7 +223,7 @@ const doGetMatchedNodesAndParents = function (
     }
 
     if (shouldExpandThisNode) {
-        nodesToExpand.push(current.pathAsString());
+        nodesToExpand.push(current.id);
     }
 
     return {

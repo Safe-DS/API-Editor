@@ -10,17 +10,13 @@ import { FunctionView } from './FunctionView';
 import { ModuleView } from './ModuleView';
 import { ParameterView } from './ParameterView';
 import { ActionBar } from './ActionBar';
-import { StatisticsView } from './StatisticsView';
 import { useAppSelector } from '../../../app/hooks';
-import { selectPythonPackage } from '../apiSlice';
-import { selectFilter } from '../../ui/uiSlice';
-import { selectUsages } from '../../usages/usageSlice';
+import { selectRawPythonPackage } from '../apiSlice';
+import { StatisticsView } from './StatisticsView';
 
 export const SelectionView: React.FC = function () {
-    const pythonPackage = useAppSelector(selectPythonPackage);
-    const pythonFilter = useAppSelector(selectFilter);
-    const usages = useAppSelector(selectUsages);
-    const declaration = pythonPackage.getByRelativePath(useLocation().pathname.split('/').splice(2));
+    const rawPythonPackage = useAppSelector(selectRawPythonPackage);
+    const declaration = rawPythonPackage.getDeclarationById(useLocation().pathname.split('/').splice(1).join('/'));
 
     if (!declaration) {
         return null;
@@ -38,12 +34,7 @@ export const SelectionView: React.FC = function () {
                 </Box>
             </Box>
 
-            <ActionBar
-                declaration={declaration}
-                pythonPackage={pythonPackage}
-                pythonFilter={pythonFilter}
-                usages={usages}
-            />
+            <ActionBar declaration={declaration} />
         </VStack>
     );
 };

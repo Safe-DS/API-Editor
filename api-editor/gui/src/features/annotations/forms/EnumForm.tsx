@@ -31,10 +31,10 @@ interface EnumFormState {
 }
 
 export const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
-    const targetPath = target.pathAsString();
+    const targetPath = target.id;
 
     // Hooks -----------------------------------------------------------------------------------------------------------
-    const enumDefinition = useAppSelector(selectEnum(target.pathAsString()));
+    const enumDefinition = useAppSelector(selectEnum(target.id));
     const dispatch = useAppDispatch();
 
     const {
