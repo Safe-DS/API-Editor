@@ -113,7 +113,7 @@ The other four buttons expand or collapse the entire tree view or only the selec
 On the menu bar is a button to delete all annotations. Use this button wisely, or export the annotations (File → Export → Annotations) before proceeding.
 
 ## Generate API
-The button *Generate adapters* creates the improved API.
+The button _Generate adapters_ creates the improved API.
 If there are any conflicts with annotations, they will be displayed and a new API won't be generated.
 e.g, a module cannot have the annotations remove and move. One of them should be removed.
 After generation, you can select the folder in which the file is to be stored.
