@@ -2,7 +2,22 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import * as idb from 'idb-keyval';
 import { RootState } from '../../app/store';
 
-export interface AnnotationsState {
+/**
+ * How many annotations can be applied to a class at once.
+ */
+export const maximumNumberOfClassAnnotations = 5;
+
+/**
+ * How many annotations can be applied to a function at once.
+ */
+export const maximumNumberOfFunctionAnnotations = 7;
+
+/**
+ * How many annotations can be applied to a parameter at once.
+ */
+export const maximumNumberOfParameterAnnotations = 8;
+
+export interface AnnotationStore {
     attributes: {
         [target: string]: AttributeAnnotation;
     };
@@ -15,7 +30,12 @@ export interface AnnotationsState {
     constants: {
         [target: string]: ConstantAnnotation;
     };
-    currentUserAction: UserAction;
+    descriptions: {
+        [target: string]: DescriptionAnnotation;
+    };
+    dones: {
+        [target: string]: DoneAnnotation;
+    };
     enums: {
         [target: string]: EnumAnnotation;
     };
@@ -40,7 +60,9 @@ export interface AnnotationsState {
     removes: {
         [target: string]: RemoveAnnotation;
     };
-    showImportDialog: boolean;
+    todos: {
+        [target: string]: TodoAnnotation;
+    };
 }
 
 export interface AttributeAnnotation {
@@ -147,6 +169,31 @@ export interface ConstantAnnotation {
      * Default value
      */
     readonly defaultValue: DefaultValue;
+}
+
+export interface DescriptionAnnotation {
+    /**
+     * ID of the annotated Python declaration.
+     */
+    readonly target: string;
+
+    /**
+     * Description for the declaration.
+     */
+    readonly newDescription: string;
+}
+
+/**
+ * The element is fully annotated and all annotations are checked.
+ *
+ * **Important:** While this is implemented as an annotation it should **not** be counted in the heat map or the
+ * statistics.
+ */
+export interface DoneAnnotation {
+    /**
+     * ID of the annotated Python declaration.
+     */
+    readonly target: string;
 }
 
 export interface EnumAnnotation {
@@ -258,72 +305,27 @@ export interface RemoveAnnotation {
     readonly target: string;
 }
 
-type UserAction =
-    | typeof NoUserAction
-    | AttributeUserAction
-    | BoundaryUserAction
-    | CalledAfterUserAction
-    | ConstantUserAction
-    | GroupUserAction
-    | EnumUserAction
-    | RenameUserAction
-    | OptionalUserAction;
-
-const NoUserAction = {
-    type: 'none',
-    target: '',
-};
-
-interface AttributeUserAction {
-    readonly type: 'attribute';
+export interface TodoAnnotation {
+    /**
+     * ID of the annotated Python declaration.
+     */
     readonly target: string;
-}
 
-interface BoundaryUserAction {
-    readonly type: 'boundary';
-    readonly target: string;
-}
-
-interface CalledAfterUserAction {
-    readonly type: 'calledAfter';
-    readonly target: string;
-    readonly calledAfterName: string;
-}
-
-interface ConstantUserAction {
-    readonly type: 'constant';
-    readonly target: string;
-}
-
-interface EnumUserAction {
-    readonly type: 'enum';
-    readonly target: string;
-}
-
-export interface GroupUserAction {
-    readonly type: 'group';
-    readonly target: string;
-    readonly groupName: string;
-}
-
-interface OptionalUserAction {
-    readonly type: 'optional';
-    readonly target: string;
-}
-
-interface RenameUserAction {
-    readonly type: 'rename';
-    readonly target: string;
+    /**
+     * A Todo for the declaration.
+     */
+    readonly newTodo: string;
 }
 
 // Initial state -------------------------------------------------------------------------------------------------------
 
-export const initialState: AnnotationsState = {
+export const initialState: AnnotationStore = {
     attributes: {},
     boundaries: {},
     calledAfters: {},
     constants: {},
-    currentUserAction: NoUserAction,
+    descriptions: {},
+    dones: {},
     enums: {},
     groups: {},
     moves: {},
@@ -331,15 +333,15 @@ export const initialState: AnnotationsState = {
     pures: {},
     renamings: {},
     requireds: {},
-    showImportDialog: false,
     removes: {},
+    todos: {},
 };
 
 // Thunks --------------------------------------------------------------------------------------------------------------
 
 export const initializeAnnotations = createAsyncThunk('annotations/initialize', async () => {
     try {
-        const storedAnnotations = (await idb.get('annotations')) as AnnotationsState;
+        const storedAnnotations = (await idb.get('annotations')) as AnnotationStore;
         return {
             ...initialState,
             ...storedAnnotations,
@@ -349,19 +351,50 @@ export const initializeAnnotations = createAsyncThunk('annotations/initialize', 
     }
 });
 
+export const persistAnnotations = createAsyncThunk('annotations/persist', async (state: AnnotationStore) => {
+    try {
+        await idb.set('annotations', state);
+    } catch {
+        // ignore
+    }
+});
+
 // Slice ---------------------------------------------------------------------------------------------------------------
 
 const annotationsSlice = createSlice({
     name: 'annotations',
     initialState,
     reducers: {
-        set(_state, action: PayloadAction<AnnotationsState>) {
+        setAnnotations(_state, action: PayloadAction<AnnotationStore>) {
             return {
                 ...initialState,
                 ...action.payload,
             };
         },
-        reset() {
+        mergeAnnotations(state, action: PayloadAction<AnnotationStore>) {
+            for (const annotationType of Object.keys(action.payload)) {
+                if (annotationType === 'calledAfters' || annotationType === 'groups') {
+                    for (const target of Object.keys(action.payload[annotationType])) {
+                        // @ts-ignore
+                        state[annotationType][target] = {
+                            // @ts-ignore
+                            ...(state[annotationType][target] ?? {}),
+                            // @ts-ignore
+                            ...action.payload[annotationType][target],
+                        };
+                    }
+                } else {
+                    // @ts-ignore
+                    state[annotationType] = {
+                        // @ts-ignore
+                        ...state[annotationType],
+                        // @ts-ignore
+                        ...action.payload[annotationType],
+                    };
+                }
+            }
+        },
+        resetAnnotations() {
             return initialState;
         },
         upsertAttribute(state, action: PayloadAction<AttributeAnnotation>) {
@@ -393,6 +426,18 @@ const annotationsSlice = createSlice({
         },
         removeConstant(state, action: PayloadAction<string>) {
             delete state.constants[action.payload];
+        },
+        upsertDescription(state, action: PayloadAction<DescriptionAnnotation>) {
+            state.descriptions[action.payload.target] = action.payload;
+        },
+        removeDescription(state, action: PayloadAction<string>) {
+            delete state.descriptions[action.payload];
+        },
+        addDone(state, action: PayloadAction<DoneAnnotation>) {
+            state.dones[action.payload.target] = action.payload;
+        },
+        removeDone(state, action: PayloadAction<string>) {
+            delete state.dones[action.payload];
         },
         upsertEnum(state, action: PayloadAction<EnumAnnotation>) {
             state.enums[action.payload.target] = action.payload;
@@ -479,70 +524,11 @@ const annotationsSlice = createSlice({
         removeRemove(state, action: PayloadAction<string>) {
             delete state.removes[action.payload];
         },
-        showAttributeAnnotationForm(state, action: PayloadAction<string>) {
-            state.currentUserAction = {
-                type: 'attribute',
-                target: action.payload,
-            };
+        upsertTodo(state, action: PayloadAction<TodoAnnotation>) {
+            state.todos[action.payload.target] = action.payload;
         },
-        showBoundaryAnnotationForm(state, action: PayloadAction<string>) {
-            state.currentUserAction = {
-                type: 'boundary',
-                target: action.payload,
-            };
-        },
-        showCalledAfterAnnotationForm(state, action: PayloadAction<CalledAfterTarget>) {
-            state.currentUserAction = {
-                type: 'calledAfter',
-                target: action.payload.target,
-                calledAfterName: action.payload.calledAfterName,
-            };
-        },
-        showConstantAnnotationForm(state, action: PayloadAction<string>) {
-            state.currentUserAction = {
-                type: 'constant',
-                target: action.payload,
-            };
-        },
-        showGroupAnnotationForm(state, action: PayloadAction<GroupTarget>) {
-            state.currentUserAction = {
-                type: 'group',
-                target: action.payload.target,
-                groupName: action.payload.groupName,
-            };
-        },
-        showEnumAnnotationForm(state, action: PayloadAction<string>) {
-            state.currentUserAction = {
-                type: 'enum',
-                target: action.payload,
-            };
-        },
-        showMoveAnnotationForm(state, action: PayloadAction<string>) {
-            state.currentUserAction = {
-                type: 'move',
-                target: action.payload,
-            };
-        },
-        showOptionalAnnotationForm(state, action: PayloadAction<string>) {
-            state.currentUserAction = {
-                type: 'optional',
-                target: action.payload,
-            };
-        },
-        showRenameAnnotationForm(state, action: PayloadAction<string>) {
-            state.currentUserAction = {
-                type: 'rename',
-                target: action.payload,
-            };
-        },
-        hideAnnotationForms(state) {
-            state.currentUserAction = NoUserAction;
-        },
-        toggleImportDialog(state) {
-            state.showImportDialog = !state.showImportDialog;
-        },
-        hideImportDialog(state) {
-            state.showImportDialog = false;
+        removeTodo(state, action: PayloadAction<string>) {
+            delete state.todos[action.payload];
         },
     },
     extraReducers(builder) {
@@ -552,8 +538,9 @@ const annotationsSlice = createSlice({
 
 const { actions, reducer } = annotationsSlice;
 export const {
-    set: setAnnotations,
-    reset: resetAnnotations,
+    setAnnotations,
+    mergeAnnotations,
+    resetAnnotations,
 
     upsertAttribute,
     removeAttribute,
@@ -563,6 +550,10 @@ export const {
     removeCalledAfter,
     upsertConstant,
     removeConstant,
+    upsertDescription,
+    removeDescription,
+    addDone,
+    removeDone,
     upsertEnum,
     removeEnum,
     upsertGroup,
@@ -577,22 +568,10 @@ export const {
     removeRenaming,
     addRequired,
     removeRequired,
+    upsertTodo,
+    removeTodo,
     addRemove,
     removeRemove,
-
-    showAttributeAnnotationForm,
-    showBoundaryAnnotationForm,
-    showCalledAfterAnnotationForm,
-    showConstantAnnotationForm,
-    showEnumAnnotationForm,
-    showGroupAnnotationForm,
-    showMoveAnnotationForm,
-    showOptionalAnnotationForm,
-    showRenameAnnotationForm,
-    hideAnnotationForms,
-
-    toggleImportDialog: toggleAnnotationImportDialog,
-    hideImportDialog: hideAnnotationImportDialog,
 } = actions;
 export const annotationsReducer = reducer;
 
@@ -613,7 +592,14 @@ export const selectConstant =
     (target: string) =>
     (state: RootState): ConstantAnnotation | undefined =>
         selectAnnotations(state).constants[target];
-export const selectCurrentUserAction = (state: RootState): UserAction => selectAnnotations(state).currentUserAction;
+export const selectDescription =
+    (target: string) =>
+    (state: RootState): DescriptionAnnotation | undefined =>
+        selectAnnotations(state).descriptions[target];
+export const selectDone =
+    (target: string) =>
+    (state: RootState): DoneAnnotation | undefined =>
+        selectAnnotations(state).dones[target];
 export const selectEnum =
     (target: string) =>
     (state: RootState): EnumAnnotation | undefined =>
@@ -642,9 +628,22 @@ export const selectRequired =
     (target: string) =>
     (state: RootState): RequiredAnnotation | undefined =>
         selectAnnotations(state).requireds[target];
-export const selectShowAnnotationImportDialog = (state: RootState): boolean =>
-    selectAnnotations(state).showImportDialog;
 export const selectRemove =
     (target: string) =>
     (state: RootState): RemoveAnnotation | undefined =>
         selectAnnotations(state).removes[target];
+export const selectTodo =
+    (target: string) =>
+    (state: RootState): TodoAnnotation | undefined =>
+        selectAnnotations(state).todos[target];
+export const selectNumberOfAnnotations =
+    (target: string) =>
+    (state: RootState): number => {
+        return Object.values(selectAnnotations(state)).reduce((acc, annotations) => {
+            if (target in annotations) {
+                return acc + 1;
+            } else {
+                return acc;
+            }
+        }, 0);
+    };

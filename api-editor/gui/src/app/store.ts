@@ -1,15 +1,33 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { annotationsReducer } from '../features/annotations/annotationSlice';
-import packageDataReducer from '../features/packageData/packageDataSlice';
-import usageReducer from '../features/usages/usageSlice';
+import { apiReducer } from '../features/packageData/apiSlice';
+import { usageReducer } from '../features/usages/usageSlice';
+import { uiReducer } from '../features/ui/uiSlice';
 
 export const store = configureStore({
     reducer: {
         annotations: annotationsReducer,
-        packageData: packageDataReducer,
+        api: apiReducer,
+        ui: uiReducer,
         usages: usageReducer,
     },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: {
+                // Ignore these action types
+                ignoredActions: [
+                    'api/initialize',
+                    'api/initialize/fulfilled',
+                    'api/setPythonPackage',
+                    'usages/initialize',
+                    'usages/initialize/fulfilled',
+                    'usages/setUsages',
+                ],
+                // Ignore these paths in the state
+                ignoredPaths: ['api.pythonPackage', 'usages.usages'],
+            },
+        }),
 });
 
 setupListeners(store.dispatch);

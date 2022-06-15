@@ -1,15 +1,15 @@
 import { ConjunctiveFilter } from './ConjunctiveFilter';
-import NameFilter from './NameFilter';
-import AbstractPythonFilter from './AbstractPythonFilter';
-import DeclarationTypeFilter, { DeclarationType } from './DeclarationTypeFilter';
-import VisibilityFilter, { Visibility } from './VisibilityFilter';
+import { NameFilter } from './NameFilter';
+import { AbstractPythonFilter } from './AbstractPythonFilter';
+import { DeclarationType, DeclarationTypeFilter } from './DeclarationTypeFilter';
+import { Visibility, VisibilityFilter } from './VisibilityFilter';
 import { NegatedFilter } from './NegatedFilter';
 import { Optional } from '../../../../common/util/types';
-import AnnotationFilter, { AnnotationType } from './AnnotationFilter';
-import UsageFilter from './UsageFilter';
+import { AnnotationFilter, AnnotationType } from './AnnotationFilter';
+import { UsageFilter } from './UsageFilter';
 import { UsefulnessFilter } from './UsefulnessFilter';
 import { equals, greaterThan, greaterThanOrEqual, lessThan, lessThanOrEqual } from './comparisons';
-import ParameterAssignmentFilter from './ParameterAssignmentFilter';
+import { ParameterAssignmentFilter } from './ParameterAssignmentFilter';
 import { PythonParameterAssignment } from '../PythonParameter';
 import { RequiredOrOptional, RequiredOrOptionalFilter } from './RequiredOrOptionalFilter';
 
@@ -99,6 +99,10 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
             return new AnnotationFilter(AnnotationType.CalledAfter);
         case 'annotation:@constant':
             return new AnnotationFilter(AnnotationType.Constant);
+        case 'annotation:@description':
+            return new AnnotationFilter(AnnotationType.Description);
+        case 'is:done': // Deliberate special case. It should be transparent to users it's an annotation.
+            return new AnnotationFilter(AnnotationType.Done);
         case 'annotation:@enum':
             return new AnnotationFilter(AnnotationType.Enum);
         case 'annotation:@group':
@@ -115,6 +119,8 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
             return new AnnotationFilter(AnnotationType.Rename);
         case 'annotation:@required':
             return new AnnotationFilter(AnnotationType.Required);
+        case 'annotation:@todo':
+            return new AnnotationFilter(AnnotationType.Todo);
     }
 
     // Name
@@ -167,4 +173,14 @@ const comparisonFunction = function (comparisonOperator: string): ((a: number, b
         default:
             return null;
     }
+};
+
+/**
+ * Returns whether the given token describes a valid filter. Note that the entire filter string contains multiple
+ * tokens, which are separated by commas.
+ *
+ * @param token The token to check.
+ */
+export const isValidFilterToken = function (token: string): boolean {
+    return Boolean(parsePotentiallyNegatedToken(token));
 };

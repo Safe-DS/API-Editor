@@ -1,13 +1,13 @@
 import React from 'react';
 import { FaChalkboard } from 'react-icons/fa';
 import { isEmptyList } from '../../../common/util/listOperations';
-import PythonClass from '../model/PythonClass';
+import { PythonClass } from '../model/PythonClass';
 import { TreeNode, ValuePair } from './TreeNode';
-import AbstractPythonFilter from '../model/filters/AbstractPythonFilter';
+import { AbstractPythonFilter } from '../model/filters/AbstractPythonFilter';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { useAppSelector } from '../../../app/hooks';
-import { AnnotationsState, selectAnnotations } from '../../annotations/annotationSlice';
-import { HeatMapMode, selectHeatMapMode } from '../packageDataSlice';
+import { maximumNumberOfClassAnnotations, selectNumberOfAnnotations } from '../../annotations/annotationSlice';
+import { HeatMapMode, selectHeatMapMode } from '../../ui/uiSlice';
 
 interface ClassNodeProps {
     pythonClass: PythonClass;
@@ -17,12 +17,12 @@ interface ClassNodeProps {
 
 export const ClassNode: React.FC<ClassNodeProps> = function ({ pythonClass, filter, usages }) {
     const hasMethods = !isEmptyList(pythonClass.methods);
-    const annotations = useAppSelector(selectAnnotations);
+    const annotationCounts = useAnnotationCounts(pythonClass);
     const heatMapMode = useAppSelector(selectHeatMapMode);
-    let valuePair: ValuePair = new ValuePair(undefined, undefined);
 
+    let valuePair: ValuePair = new ValuePair(undefined, undefined);
     if (heatMapMode === HeatMapMode.Annotations) {
-        valuePair = getMapWithAnnotation(pythonClass, annotations);
+        valuePair = annotationCounts;
     } else if (heatMapMode === HeatMapMode.Usages || heatMapMode === HeatMapMode.Usefulness) {
         valuePair = getMapWithUsages(usages, pythonClass);
     }
@@ -42,18 +42,10 @@ export const ClassNode: React.FC<ClassNodeProps> = function ({ pythonClass, filt
 
 const getMapWithUsages = function (usages: UsageCountStore, pythonClass: PythonClass): ValuePair {
     const maxValue = usages.classMaxUsages;
-    const specificValue = usages.classUsages.get(pythonClass.qualifiedName) ?? 0;
+    const specificValue = usages.classUsages.get(pythonClass.id) ?? 0;
     return new ValuePair(specificValue, maxValue);
 };
 
-const getMapWithAnnotation = function (pythonClass: PythonClass, annotations: AnnotationsState): ValuePair {
-    const maxValue = 3;
-    const qname = pythonClass.pathAsString();
-    let specificValue = 0;
-
-    specificValue += annotations.moves[qname] !== undefined ? 1 : 0;
-    specificValue += annotations.renamings[qname] !== undefined ? 1 : 0;
-    specificValue += annotations.removes[qname] !== undefined ? 1 : 0;
-
-    return new ValuePair(specificValue, maxValue);
+const useAnnotationCounts = function (pythonClass: PythonClass): ValuePair {
+    return new ValuePair(useAppSelector(selectNumberOfAnnotations(pythonClass.id)), maximumNumberOfClassAnnotations);
 };
