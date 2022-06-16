@@ -1,4 +1,4 @@
-package com.larsreimann.api_editor.backend
+package com.larsreimann.api_editor.server
 
 import com.larsreimann.api_editor.codegen.generateCode
 import com.larsreimann.api_editor.model.SerializablePythonPackage

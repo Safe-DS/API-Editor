@@ -13,7 +13,7 @@ plugins {
 }
 
 application {
-    mainClass.set("com.larsreimann.api_editor.backend.ApplicationKt")
+    mainClass.set("com.larsreimann.api_editor.server.ApplicationKt")
 }
 
 java {
@@ -36,14 +36,13 @@ dependencies {
     implementation("io.ktor:ktor-server:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     implementation("com.larsreimann:modeling-core:2.0.0")
+    implementation("com.larsreimann.safe-ds:safe-ds-core:1.0.0")
 
-    // We can later pull this from Maven Central (or some other repo) once published
-    implementation(files("lib/de.unibonn.simpleml-1.0.0-SNAPSHOT.jar"))
+    // Required, otherwise serializeToFormattedString does not compile
     implementation("org.eclipse.xtext:org.eclipse.xtext:2.27.0")
 
     testImplementation(kotlin("test"))
     testImplementation("io.kotest:kotest-assertions-core-jvm:5.3.0")
-    testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
     testImplementation("io.mockk:mockk:1.12.4")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")

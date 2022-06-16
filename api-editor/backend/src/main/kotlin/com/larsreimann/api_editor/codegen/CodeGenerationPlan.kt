@@ -2,7 +2,7 @@ package com.larsreimann.api_editor.codegen
 
 import com.larsreimann.api_editor.mutable_model.PythonModule
 import com.larsreimann.api_editor.mutable_model.PythonPackage
-import de.unibonn.simpleml.constant.SmlFileExtension
+import com.larsreimann.safeds.constant.SdsFileExtension
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.File
@@ -41,7 +41,7 @@ private fun createStubFile(workingDirectory: File, module: PythonModule) {
     workingDirectory
         .resolve("stub")
         .resolve(module.name.replace('.', '/'))
-        .resolve(module.name.split(".").last() + "." + SmlFileExtension.Stub)
+        .resolve(module.name.split(".").last() + "." + SdsFileExtension.Stub)
         .createFile(module.toStubCode())
 }
 
