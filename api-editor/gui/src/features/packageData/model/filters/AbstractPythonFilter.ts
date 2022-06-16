@@ -92,11 +92,6 @@ export abstract class AbstractPythonFilter {
         annotations: AnnotationStore,
         usages: UsageCountStore,
     ): PythonModule | null {
-        // If the module is kept, keep the entire subtree
-        if (this.shouldKeepModule(pythonModule, annotations, usages)) {
-            return pythonModule;
-        }
-
         // Filter classes
         const classes = pythonModule.classes
             .map((it) => this.applyToClass(it, annotations, usages))
@@ -108,7 +103,11 @@ export abstract class AbstractPythonFilter {
             .filter((it) => it !== null);
 
         // Return null if all classes and functions are removed
-        if (isEmptyList(classes) && isEmptyList(functions)) {
+        if (
+            !this.shouldKeepModule(pythonModule, annotations, usages) &&
+            isEmptyList(classes) &&
+            isEmptyList(functions)
+        ) {
             return null;
         }
 
@@ -128,18 +127,13 @@ export abstract class AbstractPythonFilter {
         annotations: AnnotationStore,
         usages: UsageCountStore,
     ): PythonClass | null {
-        // If the class is kept, keep the entire subtree
-        if (this.shouldKeepClass(pythonClass, annotations, usages)) {
-            return pythonClass;
-        }
-
         // Filter methods
         const methods = pythonClass.methods
             .map((it) => this.applyToFunction(it, annotations, usages))
             .filter((it) => it !== null);
 
         // Return null if all methods are removed
-        if (isEmptyList(methods)) {
+        if (!this.shouldKeepClass(pythonClass, annotations, usages) && isEmptyList(methods)) {
             return null;
         }
 
@@ -158,16 +152,11 @@ export abstract class AbstractPythonFilter {
         annotations: AnnotationStore,
         usages: UsageCountStore,
     ): PythonFunction | null {
-        // If the function is kept, keep the entire subtree
-        if (this.shouldKeepFunction(pythonFunction, annotations, usages)) {
-            return pythonFunction;
-        }
-
         // Filter parameters
         const parameters = pythonFunction.parameters.filter((it) => this.shouldKeepParameter(it, annotations, usages));
 
         // Return null if all parameters are removed
-        if (isEmptyList(parameters)) {
+        if (!this.shouldKeepFunction(pythonFunction, annotations, usages) && isEmptyList(parameters)) {
             return null;
         }
 
