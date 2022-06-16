@@ -1,4 +1,5 @@
 import {
+    Box,
     Grid,
     GridItem,
     ListItem,
@@ -9,6 +10,7 @@ import {
     ModalHeader,
     ModalOverlay,
     UnorderedList,
+    VStack,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { MenuBar } from '../common/MenuBar';
@@ -45,11 +47,13 @@ import { initializeUsages, persistUsages, selectUsages } from '../features/usage
 import { initializePythonPackage, selectRawPythonPackage } from '../features/packageData/apiSlice';
 import { PythonClass } from '../features/packageData/model/PythonClass';
 import { PythonParameter } from '../features/packageData/model/PythonParameter';
+import { ActionBar } from '../features/packageData/selectionView/ActionBar';
+import { useLocation } from 'react-router-dom';
 
 export const App: React.FC = function () {
     useIndexedDB();
 
-    const pythonPackage = useAppSelector(selectRawPythonPackage);
+    const rawPythonPackage = useAppSelector(selectRawPythonPackage);
 
     const [showInferErrorDialog, setShowInferErrorDialog] = useState(false);
     const [inferErrors, setInferErrors] = useState<string[]>([]);
@@ -58,8 +62,9 @@ export const App: React.FC = function () {
         setShowInferErrorDialog(true);
     };
 
+    const declaration = rawPythonPackage.getDeclarationById(useLocation().pathname.split('/').splice(1).join('/'));
     const currentUserAction = useAppSelector(selectCurrentUserAction);
-    const userActionTarget = pythonPackage.getDeclarationById(currentUserAction.target);
+    const userActionTarget = rawPythonPackage.getDeclarationById(currentUserAction.target);
     const showAnnotationImportDialog = useAppSelector(selectShowAnnotationImportDialog);
     const showAPIImportDialog = useAppSelector(selectShowAPIImportDialog);
     const showUsagesImportDialog = useAppSelector(selectShowUsageImportDialog);
@@ -87,16 +92,16 @@ export const App: React.FC = function () {
                     resize="horizontal"
                 >
                     {currentUserAction.type === 'attribute' && (
-                        <AttributeForm target={userActionTarget || pythonPackage} />
+                        <AttributeForm target={userActionTarget || rawPythonPackage} />
                     )}
                     {currentUserAction.type === 'boundary' && (
-                        <BoundaryForm target={userActionTarget || pythonPackage} />
+                        <BoundaryForm target={userActionTarget || rawPythonPackage} />
                     )}
                     {currentUserAction.type === 'calledAfter' && userActionTarget instanceof PythonFunction && (
                         <CalledAfterForm target={userActionTarget} />
                     )}
                     {currentUserAction.type === 'constant' && (
-                        <ConstantForm target={userActionTarget || pythonPackage} />
+                        <ConstantForm target={userActionTarget || rawPythonPackage} />
                     )}
                     {currentUserAction.type === 'description' &&
                         (userActionTarget instanceof PythonClass ||
@@ -104,10 +109,10 @@ export const App: React.FC = function () {
                             userActionTarget instanceof PythonParameter) && (
                             <DescriptionForm target={userActionTarget} />
                         )}
-                    {currentUserAction.type === 'enum' && <EnumForm target={userActionTarget || pythonPackage} />}
+                    {currentUserAction.type === 'enum' && <EnumForm target={userActionTarget || rawPythonPackage} />}
                     {currentUserAction.type === 'group' && (
                         <GroupForm
-                            target={userActionTarget || pythonPackage}
+                            target={userActionTarget || rawPythonPackage}
                             groupName={
                                 (currentUserAction as GroupUserAction)?.groupName
                                     ? (currentUserAction as GroupUserAction)?.groupName
@@ -115,16 +120,23 @@ export const App: React.FC = function () {
                             }
                         />
                     )}
-                    {currentUserAction.type === 'move' && <MoveForm target={userActionTarget || pythonPackage} />}
+                    {currentUserAction.type === 'move' && <MoveForm target={userActionTarget || rawPythonPackage} />}
                     {currentUserAction.type === 'none' && <TreeView />}
                     {currentUserAction.type === 'optional' && (
-                        <OptionalForm target={userActionTarget || pythonPackage} />
+                        <OptionalForm target={userActionTarget || rawPythonPackage} />
                     )}
-                    {currentUserAction.type === 'rename' && <RenameForm target={userActionTarget || pythonPackage} />}
-                    {currentUserAction.type === 'todo' && <TodoForm target={userActionTarget || pythonPackage} />}
+                    {currentUserAction.type === 'rename' && (
+                        <RenameForm target={userActionTarget || rawPythonPackage} />
+                    )}
+                    {currentUserAction.type === 'todo' && <TodoForm target={userActionTarget || rawPythonPackage} />}
                 </GridItem>
                 <GridItem gridArea="rightPane" overflow="auto">
-                    <SelectionView />
+                    <VStack h="100%" spacing={0}>
+                        <Box flexGrow={1} overflowY="auto" width="100%">
+                            <SelectionView />
+                        </Box>
+                        {currentUserAction.type === 'none' && <ActionBar declaration={declaration} />}
+                    </VStack>
                 </GridItem>
 
                 {showAnnotationImportDialog && <AnnotationImportDialog />}

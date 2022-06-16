@@ -1,6 +1,6 @@
-package com.larsreimann.api_editor.backend
+package com.larsreimann.api_editor.server
 
-import de.unibonn.simpleml.SimpleMLStandaloneSetup
+import com.larsreimann.safeds.SafeDSStandaloneSetup
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.engine.embeddedServer
@@ -14,7 +14,7 @@ import io.ktor.server.request.path
 import org.slf4j.event.Level
 
 fun main() {
-    SimpleMLStandaloneSetup.doSetup()
+    SafeDSStandaloneSetup.doSetup()
 
     embeddedServer(Netty, port = 4280, host = "localhost") {
         configureHTTP()
