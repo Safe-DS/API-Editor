@@ -1,5 +1,4 @@
 import {
-    Box,
     Grid,
     GridItem,
     ListItem,
@@ -10,7 +9,6 @@ import {
     ModalHeader,
     ModalOverlay,
     UnorderedList,
-    VStack,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { MenuBar } from '../common/MenuBar';
@@ -72,9 +70,9 @@ export const App: React.FC = function () {
     return (
         <>
             <Grid
-                autoColumns="0fr 1fr"
+                autoColumns="0fr 1fr 0fr"
                 autoRows="0fr 1fr"
-                templateAreas='"menu menu" "leftPane rightPane"'
+                templateAreas='"menu menu" "leftPane rightPane" "footer footer"'
                 w="100vw"
                 h="100vh"
             >
@@ -131,18 +129,17 @@ export const App: React.FC = function () {
                     {currentUserAction.type === 'todo' && <TodoForm target={userActionTarget || rawPythonPackage} />}
                 </GridItem>
                 <GridItem gridArea="rightPane" overflow="auto">
-                    <VStack h="100%" spacing={0}>
-                        <Box flexGrow={1} overflowY="auto" width="100%">
-                            <SelectionView />
-                        </Box>
-                        {currentUserAction.type === 'none' && <ActionBar declaration={declaration} />}
-                    </VStack>
+                    <SelectionView />
+                </GridItem>
+                <GridItem gridArea="footer" colSpan={2}>
+                    {currentUserAction.type === 'none' && <ActionBar declaration={declaration} />}
                 </GridItem>
 
                 {showAnnotationImportDialog && <AnnotationImportDialog />}
                 {showAPIImportDialog && <PackageDataImportDialog />}
                 {showUsagesImportDialog && <UsageImportDialog />}
             </Grid>
+
             <Modal
                 isOpen={showInferErrorDialog}
                 onClose={() => setShowInferErrorDialog(false)}
