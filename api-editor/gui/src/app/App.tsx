@@ -52,8 +52,7 @@ import { initializePythonPackage, selectRawPythonPackage } from '../features/pac
 import { PythonClass } from '../features/packageData/model/PythonClass';
 import { PythonParameter } from '../features/packageData/model/PythonParameter';
 import { ConstantBatchForm } from '../features/annotations/batchforms/ConstantBatchForm';
-import { getAllSelectedElements } from '../features/packageData/selectionView/ActionBar';
-import { ActionBar } from '../features/packageData/selectionView/ActionBar';
+import { ActionBar, getAllSelectedElements } from '../features/packageData/selectionView/ActionBar';
 import { useLocation } from 'react-router-dom';
 
 export const App: React.FC = function () {
@@ -141,22 +140,24 @@ export const App: React.FC = function () {
                     {currentUserAction.type === 'todo' && <TodoForm target={userActionTarget || rawPythonPackage} />}
                 </GridItem>
                 <GridItem gridArea="rightPane" overflow="auto">
-                    {batchMode === BatchMode.None && <VStack h="100%" spacing={0}>
+                    <VStack h="100%" spacing={0}>
                         <Box flexGrow={1} overflowY="auto" width="100%">
-                            <SelectionView />
-                        </Box>
-                        {currentUserAction.type === 'none' && <ActionBar declaration={declaration} />}
-                    </VStack>}
-                    {batchMode === BatchMode.Constant && (
-                        <ConstantBatchForm
-                            targets={getAllSelectedElements(
-                                userActionTarget || pythonPackage,
-                                filter,
-                                annotationStore,
-                                usages,
+                            {batchMode === BatchMode.None && <SelectionView />}
+
+                            {batchMode === BatchMode.Constant && (
+                                <ConstantBatchForm
+                                    targets={getAllSelectedElements(
+                                        userActionTarget || rawPythonPackage,
+                                        filter,
+                                        annotationStore,
+                                        usages,
+                                    )}
+                                />
                             )}
-                        />
-                    )}
+                        </Box>
+
+                        {currentUserAction.type === 'none' && <ActionBar declaration={declaration} />}
+                    </VStack>
                 </GridItem>
 
                 {showAnnotationImportDialog && <AnnotationImportDialog />}
