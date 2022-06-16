@@ -13,7 +13,7 @@ plugins {
 }
 
 application {
-    mainClass.set("com.larsreimann.api_editor.backend.ApplicationKt")
+    mainClass.set("com.larsreimann.api_editor.server.ApplicationKt")
 }
 
 java {
