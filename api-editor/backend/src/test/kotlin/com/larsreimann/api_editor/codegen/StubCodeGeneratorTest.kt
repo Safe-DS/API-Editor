@@ -14,28 +14,28 @@ import com.larsreimann.api_editor.mutable_model.PythonResult
 import com.larsreimann.api_editor.mutable_model.PythonString
 import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
 import com.larsreimann.api_editor.mutable_model.PythonStringifiedType
-import de.unibonn.simpleml.SimpleMLStandaloneSetup
-import de.unibonn.simpleml.emf.annotationCallsOrEmpty
-import de.unibonn.simpleml.emf.argumentsOrEmpty
-import de.unibonn.simpleml.emf.classMembersOrEmpty
-import de.unibonn.simpleml.emf.compilationUnitMembersOrEmpty
-import de.unibonn.simpleml.emf.constraintsOrEmpty
-import de.unibonn.simpleml.emf.parametersOrEmpty
-import de.unibonn.simpleml.emf.parentTypesOrEmpty
-import de.unibonn.simpleml.emf.resultsOrEmpty
-import de.unibonn.simpleml.emf.typeParametersOrEmpty
-import de.unibonn.simpleml.emf.variantsOrEmpty
-import de.unibonn.simpleml.simpleML.SmlAttribute
-import de.unibonn.simpleml.simpleML.SmlBoolean
-import de.unibonn.simpleml.simpleML.SmlClass
-import de.unibonn.simpleml.simpleML.SmlEnum
-import de.unibonn.simpleml.simpleML.SmlFloat
-import de.unibonn.simpleml.simpleML.SmlFunction
-import de.unibonn.simpleml.simpleML.SmlInt
-import de.unibonn.simpleml.simpleML.SmlNamedType
-import de.unibonn.simpleml.simpleML.SmlNull
-import de.unibonn.simpleml.simpleML.SmlString
-import de.unibonn.simpleml.stdlibAccess.uniqueAnnotationCallOrNull
+import com.larsreimann.safeds.SafeDSStandaloneSetup
+import com.larsreimann.safeds.emf.annotationCallsOrEmpty
+import com.larsreimann.safeds.emf.argumentsOrEmpty
+import com.larsreimann.safeds.emf.classMembersOrEmpty
+import com.larsreimann.safeds.emf.compilationUnitMembersOrEmpty
+import com.larsreimann.safeds.emf.constraintsOrEmpty
+import com.larsreimann.safeds.emf.parametersOrEmpty
+import com.larsreimann.safeds.emf.parentTypesOrEmpty
+import com.larsreimann.safeds.emf.resultsOrEmpty
+import com.larsreimann.safeds.emf.typeParametersOrEmpty
+import com.larsreimann.safeds.emf.variantsOrEmpty
+import com.larsreimann.safeds.safeDS.SdsAttribute
+import com.larsreimann.safeds.safeDS.SdsBoolean
+import com.larsreimann.safeds.safeDS.SdsClass
+import com.larsreimann.safeds.safeDS.SdsEnum
+import com.larsreimann.safeds.safeDS.SdsFloat
+import com.larsreimann.safeds.safeDS.SdsFunction
+import com.larsreimann.safeds.safeDS.SdsInt
+import com.larsreimann.safeds.safeDS.SdsNamedType
+import com.larsreimann.safeds.safeDS.SdsNull
+import com.larsreimann.safeds.safeDS.SdsString
+import com.larsreimann.safeds.stdlibAccess.uniqueAnnotationCallOrNull
 import io.kotest.assertions.asClue
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
@@ -56,8 +56,8 @@ import org.junit.jupiter.params.provider.CsvSource
 class StubCodeGeneratorTest {
 
     @BeforeEach
-    fun initSimpleML() {
-        SimpleMLStandaloneSetup.doSetup()
+    fun initSafeDS() {
+        SafeDSStandaloneSetup.doSetup()
     }
 
     @Nested
@@ -136,14 +136,14 @@ class StubCodeGeneratorTest {
     }
 
     @Nested
-    inner class ToSmlCompilationUnit {
+    inner class ToSdsCompilationUnit {
 
         @Test
         fun `should handle empty modules`() {
             val pythonModule = PythonModule(name = "testModule")
 
-            val smlCompilationUnit = pythonModule.toSmlCompilationUnit()
-            smlCompilationUnit.asClue {
+            val SdsCompilationUnit = pythonModule.toSdsCompilationUnit()
+            SdsCompilationUnit.asClue {
                 it.annotationCallsOrEmpty().shouldBeEmpty()
                 it.name shouldBe "testModule"
                 it.imports.shouldBeEmpty()
@@ -160,11 +160,11 @@ class StubCodeGeneratorTest {
                 )
             )
 
-            val smlCompilationUnit = pythonModule.toSmlCompilationUnit()
-            smlCompilationUnit.members.shouldHaveSize(1)
+            val SdsCompilationUnit = pythonModule.toSdsCompilationUnit()
+            SdsCompilationUnit.members.shouldHaveSize(1)
 
-            smlCompilationUnit.members[0]
-                .shouldBeInstanceOf<SmlClass>()
+            SdsCompilationUnit.members[0]
+                .shouldBeInstanceOf<SdsClass>()
                 .name
                 .shouldBe("TestClass")
         }
@@ -178,11 +178,11 @@ class StubCodeGeneratorTest {
                 )
             )
 
-            val smlCompilationUnit = pythonModule.toSmlCompilationUnit()
-            smlCompilationUnit.members.shouldHaveSize(1)
+            val SdsCompilationUnit = pythonModule.toSdsCompilationUnit()
+            SdsCompilationUnit.members.shouldHaveSize(1)
 
-            smlCompilationUnit.members[0]
-                .shouldBeInstanceOf<SmlFunction>()
+            SdsCompilationUnit.members[0]
+                .shouldBeInstanceOf<SdsFunction>()
                 .name
                 .shouldBe("testFunction")
         }
@@ -196,24 +196,24 @@ class StubCodeGeneratorTest {
                 )
             )
 
-            val smlCompilationUnit = pythonModule.toSmlCompilationUnit()
-            smlCompilationUnit.members.shouldHaveSize(1)
+            val SdsCompilationUnit = pythonModule.toSdsCompilationUnit()
+            SdsCompilationUnit.members.shouldHaveSize(1)
 
-            smlCompilationUnit.members[0]
-                .shouldBeInstanceOf<SmlEnum>()
+            SdsCompilationUnit.members[0]
+                .shouldBeInstanceOf<SdsEnum>()
                 .name
                 .shouldBe("TestEnum")
         }
     }
 
     @Nested
-    inner class ToSmlClass {
+    inner class ToSdsClass {
 
         @Test
         fun `should handle empty classes`() {
             val pythonClass = PythonClass(name = "TestClass")
 
-            pythonClass.toSmlClass().asClue {
+            pythonClass.toSdsClass().asClue {
                 it.name shouldBe "TestClass"
                 it.annotationCallsOrEmpty().shouldBeEmpty()
                 it.typeParametersOrEmpty().shouldBeEmpty()
@@ -228,25 +228,25 @@ class StubCodeGeneratorTest {
         fun `should convert name to camel case`() {
             val pythonClass = PythonClass(name = "test_class")
 
-            val smlClass = pythonClass.toSmlClass()
+            val SdsClass = pythonClass.toSdsClass()
 
-            smlClass.name shouldBe "TestClass"
+            SdsClass.name shouldBe "TestClass"
         }
 
         @Test
         fun `should store python name if it differs from stub name`() {
             val pythonClass = PythonClass(name = "test_class")
 
-            val smlClass = pythonClass.toSmlClass()
+            val SdsClass = pythonClass.toSdsClass()
 
-            val pythonNameAnnotationUseOrNull = smlClass.uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
+            val pythonNameAnnotationUseOrNull = SdsClass.uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
             pythonNameAnnotationUseOrNull.shouldNotBeNull()
 
             val arguments = pythonNameAnnotationUseOrNull.argumentsOrEmpty()
             arguments.shouldHaveSize(1)
 
             val pythonName = arguments[0].value
-            pythonName.shouldBeInstanceOf<SmlString>()
+            pythonName.shouldBeInstanceOf<SdsString>()
             pythonName.value shouldBe "test_class"
         }
 
@@ -254,9 +254,9 @@ class StubCodeGeneratorTest {
         fun `should not store python name if it is identical to stub name`() {
             val pythonClass = PythonClass(name = "TestClass")
 
-            val smlClass = pythonClass.toSmlClass()
+            val SdsClass = pythonClass.toSdsClass()
 
-            val pythonNameAnnotationUseOrNull = smlClass.uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
+            val pythonNameAnnotationUseOrNull = SdsClass.uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
             pythonNameAnnotationUseOrNull.shouldBeNull()
         }
 
@@ -267,16 +267,16 @@ class StubCodeGeneratorTest {
                 description = "Lorem ipsum"
             )
 
-            val smlClass = pythonClass.toSmlClass()
+            val SdsClass = pythonClass.toSdsClass()
 
-            val descriptionAnnotationUseOrNull = smlClass.uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
+            val descriptionAnnotationUseOrNull = SdsClass.uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
             descriptionAnnotationUseOrNull.shouldNotBeNull()
 
             val arguments = descriptionAnnotationUseOrNull.argumentsOrEmpty()
             arguments.shouldHaveSize(1)
 
             val description = arguments[0].value
-            description.shouldBeInstanceOf<SmlString>()
+            description.shouldBeInstanceOf<SdsString>()
             description.value shouldBe "Lorem ipsum"
         }
 
@@ -287,9 +287,9 @@ class StubCodeGeneratorTest {
                 description = ""
             )
 
-            val smlClass = pythonClass.toSmlClass()
+            val SdsClass = pythonClass.toSdsClass()
 
-            val descriptionOrNull = smlClass.uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
+            val descriptionOrNull = SdsClass.uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
             descriptionOrNull.shouldBeNull()
         }
 
@@ -319,8 +319,8 @@ class StubCodeGeneratorTest {
                 )
             )
 
-            val smlClass = pythonClass.toSmlClass()
-            val constructorParameterNames = smlClass.parametersOrEmpty().map { it.name }
+            val SdsClass = pythonClass.toSdsClass()
+            val constructorParameterNames = SdsClass.parametersOrEmpty().map { it.name }
 
             constructorParameterNames.shouldContainExactly(
                 "positionOnly",
@@ -338,9 +338,9 @@ class StubCodeGeneratorTest {
                 )
             )
 
-            val smlClass = pythonClass.toSmlClass()
-            smlClass.classMembersOrEmpty()
-                .filterIsInstance<SmlAttribute>()
+            val SdsClass = pythonClass.toSdsClass()
+            SdsClass.classMembersOrEmpty()
+                .filterIsInstance<SdsAttribute>()
                 .map { it.name }
                 .shouldContainExactly("testAttribute")
         }
@@ -354,26 +354,26 @@ class StubCodeGeneratorTest {
                 )
             )
 
-            val smlClass = pythonClass.toSmlClass()
-            smlClass.classMembersOrEmpty()
-                .filterIsInstance<SmlFunction>()
+            val SdsClass = pythonClass.toSdsClass()
+            SdsClass.classMembersOrEmpty()
+                .filterIsInstance<SdsFunction>()
                 .map { it.name }
                 .shouldContainExactly("testMethod")
         }
     }
 
     @Nested
-    inner class ToSmlAttribute {
+    inner class ToSdsAttribute {
 
         @Test
         fun `should handle simple attributes`() {
             val pythonAttribute = PythonAttribute(name = "testAttribute")
-            pythonAttribute.toSmlAttribute().asClue {
+            pythonAttribute.toSdsAttribute().asClue {
                 it.name shouldBe "testAttribute"
                 it.annotationCallsOrEmpty().shouldBeEmpty()
 
                 val type = it.type
-                type.shouldBeInstanceOf<SmlNamedType>()
+                type.shouldBeInstanceOf<SdsNamedType>()
                 type.declaration.name shouldBe "Any"
                 type.isNullable.shouldBeTrue()
             }
@@ -383,8 +383,8 @@ class StubCodeGeneratorTest {
         fun `should convert name to camel case`() {
             val pythonAttribute = PythonAttribute(name = "Test_attribute")
 
-            val smlParameter = pythonAttribute.toSmlAttribute()
-            smlParameter.name shouldBe "testAttribute"
+            val SdsParameter = pythonAttribute.toSdsAttribute()
+            SdsParameter.name shouldBe "testAttribute"
         }
 
         @Test
@@ -392,21 +392,21 @@ class StubCodeGeneratorTest {
             val pythonAttribute = PythonAttribute(name = "Test_attribute")
 
             val arguments = pythonAttribute
-                .toSmlAttribute()
+                .toSdsAttribute()
                 .uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
                 .shouldNotBeNull()
                 .argumentsOrEmpty()
             arguments.shouldHaveSize(1)
 
             val pythonName = arguments[0].value
-            pythonName.shouldBeInstanceOf<SmlString>()
+            pythonName.shouldBeInstanceOf<SdsString>()
             pythonName.value shouldBe "Test_attribute"
         }
 
         @Test
         fun `should not store python name if it is identical to stub name`() {
             val pythonAttribute = PythonAttribute(name = "testAttribute")
-            pythonAttribute.toSmlAttribute()
+            pythonAttribute.toSdsAttribute()
                 .uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
                 .shouldBeNull()
         }
@@ -419,14 +419,14 @@ class StubCodeGeneratorTest {
             )
 
             val arguments = pythonAttribute
-                .toSmlAttribute()
+                .toSdsAttribute()
                 .uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
                 .shouldNotBeNull()
                 .argumentsOrEmpty()
             arguments.shouldHaveSize(1)
 
             val description = arguments[0].value
-            description.shouldBeInstanceOf<SmlString>()
+            description.shouldBeInstanceOf<SdsString>()
             description.value shouldBe "Lorem ipsum"
         }
 
@@ -438,7 +438,7 @@ class StubCodeGeneratorTest {
             )
 
             pythonAttribute
-                .toSmlAttribute()
+                .toSdsAttribute()
                 .uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
                 .shouldBeNull()
         }
@@ -451,9 +451,9 @@ class StubCodeGeneratorTest {
             )
 
             pythonAttribute
-                .toSmlAttribute()
+                .toSdsAttribute()
                 .type
-                .shouldBeInstanceOf<SmlNamedType>()
+                .shouldBeInstanceOf<SdsNamedType>()
                 .asClue {
                     it.declaration.name shouldBe "String"
                     it.isNullable.shouldBeFalse()
@@ -462,13 +462,13 @@ class StubCodeGeneratorTest {
     }
 
     @Nested
-    inner class ToSmlFunction {
+    inner class ToSdsFunction {
 
         @Test
         fun `should handle empty functions`() {
             val pythonFunction = PythonFunction(name = "testFunction")
 
-            pythonFunction.toSmlFunction().asClue {
+            pythonFunction.toSdsFunction().asClue {
                 it.name shouldBe "testFunction"
                 it.isStatic.shouldBeFalse()
                 it.annotationCallsOrEmpty().shouldBeEmpty()
@@ -490,7 +490,7 @@ class StubCodeGeneratorTest {
                 methods = listOf(pythonFunction)
             )
 
-            pythonFunction.toSmlFunction().asClue {
+            pythonFunction.toSdsFunction().asClue {
                 it.isStatic.shouldBeTrue()
             }
         }
@@ -503,7 +503,7 @@ class StubCodeGeneratorTest {
             )
 
             pythonFunction
-                .toSmlFunction()
+                .toSdsFunction()
                 .uniqueAnnotationCallOrNull(QualifiedName.create("Pure"))
                 .shouldNotBeNull()
         }
@@ -512,25 +512,25 @@ class StubCodeGeneratorTest {
         fun `should convert name to camel case`() {
             val pythonFunction = PythonFunction(name = "Test_function")
 
-            val smlFunction = pythonFunction.toSmlFunction()
-            smlFunction.name shouldBe "testFunction"
+            val SdsFunction = pythonFunction.toSdsFunction()
+            SdsFunction.name shouldBe "testFunction"
         }
 
         @Test
         fun `should store python name if it differs from stub name`() {
             val pythonFunction = PythonFunction(name = "Test_function")
 
-            val smlFunction = pythonFunction.toSmlFunction()
+            val SdsFunction = pythonFunction.toSdsFunction()
 
             val pythonNameAnnotationUseOrNull =
-                smlFunction.uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
+                SdsFunction.uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
             pythonNameAnnotationUseOrNull.shouldNotBeNull()
 
             val arguments = pythonNameAnnotationUseOrNull.argumentsOrEmpty()
             arguments.shouldHaveSize(1)
 
             val pythonName = arguments[0].value
-            pythonName.shouldBeInstanceOf<SmlString>()
+            pythonName.shouldBeInstanceOf<SdsString>()
             pythonName.value shouldBe "Test_function"
         }
 
@@ -538,10 +538,10 @@ class StubCodeGeneratorTest {
         fun `should not store python name if it is identical to stub name`() {
             val pythonFunction = PythonFunction(name = "testFunction")
 
-            val smlFunction = pythonFunction.toSmlFunction()
+            val SdsFunction = pythonFunction.toSdsFunction()
 
             val pythonNameAnnotationUseOrNull =
-                smlFunction.uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
+                SdsFunction.uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
             pythonNameAnnotationUseOrNull.shouldBeNull()
         }
 
@@ -552,17 +552,17 @@ class StubCodeGeneratorTest {
                 description = "Lorem ipsum"
             )
 
-            val smlFunction = pythonFunction.toSmlFunction()
+            val SdsFunction = pythonFunction.toSdsFunction()
 
             val descriptionAnnotationUseOrNull =
-                smlFunction.uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
+                SdsFunction.uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
             descriptionAnnotationUseOrNull.shouldNotBeNull()
 
             val arguments = descriptionAnnotationUseOrNull.argumentsOrEmpty()
             arguments.shouldHaveSize(1)
 
             val description = arguments[0].value
-            description.shouldBeInstanceOf<SmlString>()
+            description.shouldBeInstanceOf<SdsString>()
             description.value shouldBe "Lorem ipsum"
         }
 
@@ -573,9 +573,9 @@ class StubCodeGeneratorTest {
                 description = ""
             )
 
-            val smlFunction = pythonFunction.toSmlFunction()
+            val SdsFunction = pythonFunction.toSdsFunction()
 
-            val descriptionOrNull = smlFunction.uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
+            val descriptionOrNull = SdsFunction.uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
             descriptionOrNull.shouldBeNull()
         }
 
@@ -603,7 +603,7 @@ class StubCodeGeneratorTest {
                 )
             )
 
-            pythonFunction.toSmlFunction()
+            pythonFunction.toSdsFunction()
                 .parametersOrEmpty().map { it.name }
                 .shouldContainExactly(
                     "positionOnly",
@@ -621,7 +621,7 @@ class StubCodeGeneratorTest {
                 )
             )
 
-            pythonFunction.toSmlFunction()
+            pythonFunction.toSdsFunction()
                 .resultsOrEmpty().map { it.name }
                 .shouldContainExactly(
                     "testResult"
@@ -630,7 +630,7 @@ class StubCodeGeneratorTest {
     }
 
     @Nested
-    inner class ToSmlParameter {
+    inner class ToSdsParameter {
 
         @Test
         fun `should return null for implicit parameters`() {
@@ -639,20 +639,20 @@ class StubCodeGeneratorTest {
                 assignedBy = PythonParameterAssignment.IMPLICIT
             )
 
-            pythonParameter.toSmlParameterOrNull().shouldBeNull()
+            pythonParameter.toSdsParameterOrNull().shouldBeNull()
         }
 
         @Test
         fun `should handle simple parameters`() {
             val pythonParameter = PythonParameter(name = "testParameter")
-            pythonParameter.toSmlParameterOrNull()
+            pythonParameter.toSdsParameterOrNull()
                 .shouldNotBeNull()
                 .asClue {
                     it.name shouldBe "testParameter"
                     it.annotationCallsOrEmpty().shouldBeEmpty()
 
                     val type = it.type
-                    type.shouldBeInstanceOf<SmlNamedType>()
+                    type.shouldBeInstanceOf<SdsNamedType>()
                     type.declaration.name shouldBe "Any"
                     type.isNullable.shouldBeTrue()
 
@@ -664,10 +664,10 @@ class StubCodeGeneratorTest {
         fun `should convert name to camel case`() {
             val pythonParameter = PythonParameter(name = "Test_parameter")
 
-            val smlParameter = pythonParameter
-                .toSmlParameterOrNull()
+            val SdsParameter = pythonParameter
+                .toSdsParameterOrNull()
                 .shouldNotBeNull()
-            smlParameter.name shouldBe "testParameter"
+            SdsParameter.name shouldBe "testParameter"
         }
 
         @Test
@@ -675,7 +675,7 @@ class StubCodeGeneratorTest {
             val pythonParameter = PythonParameter(name = "Test_parameter")
 
             val arguments = pythonParameter
-                .toSmlParameterOrNull()
+                .toSdsParameterOrNull()
                 .shouldNotBeNull()
                 .uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
                 .shouldNotBeNull()
@@ -683,7 +683,7 @@ class StubCodeGeneratorTest {
             arguments.shouldHaveSize(1)
 
             val pythonName = arguments[0].value
-            pythonName.shouldBeInstanceOf<SmlString>()
+            pythonName.shouldBeInstanceOf<SdsString>()
             pythonName.value shouldBe "Test_parameter"
         }
 
@@ -691,7 +691,7 @@ class StubCodeGeneratorTest {
         fun `should not store python name if it is identical to stub name`() {
             val pythonParameter = PythonParameter(name = "testParameter")
 
-            pythonParameter.toSmlParameterOrNull()
+            pythonParameter.toSdsParameterOrNull()
                 .shouldNotBeNull()
                 .uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
                 .shouldBeNull()
@@ -705,7 +705,7 @@ class StubCodeGeneratorTest {
             )
 
             val arguments = pythonParameter
-                .toSmlParameterOrNull()
+                .toSdsParameterOrNull()
                 .shouldNotBeNull()
                 .uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
                 .shouldNotBeNull()
@@ -713,7 +713,7 @@ class StubCodeGeneratorTest {
             arguments.shouldHaveSize(1)
 
             val description = arguments[0].value
-            description.shouldBeInstanceOf<SmlString>()
+            description.shouldBeInstanceOf<SdsString>()
             description.value shouldBe "Lorem ipsum"
         }
 
@@ -725,7 +725,7 @@ class StubCodeGeneratorTest {
             )
 
             pythonParameter
-                .toSmlParameterOrNull()
+                .toSdsParameterOrNull()
                 .shouldNotBeNull()
                 .uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
                 .shouldBeNull()
@@ -739,10 +739,10 @@ class StubCodeGeneratorTest {
             )
 
             pythonParameter
-                .toSmlParameterOrNull()
+                .toSdsParameterOrNull()
                 .shouldNotBeNull()
                 .type
-                .shouldBeInstanceOf<SmlNamedType>()
+                .shouldBeInstanceOf<SdsNamedType>()
                 .asClue {
                     it.declaration.name shouldBe "String"
                     it.isNullable.shouldBeFalse()
@@ -757,26 +757,26 @@ class StubCodeGeneratorTest {
             )
 
             pythonParameter
-                .toSmlParameterOrNull()
+                .toSdsParameterOrNull()
                 .shouldNotBeNull()
                 .defaultValue
-                .shouldBeInstanceOf<SmlNull>()
+                .shouldBeInstanceOf<SdsNull>()
         }
     }
 
     @Nested
-    inner class ToSmlResult {
+    inner class ToSdsResult {
 
         @Test
         fun `should handle simple results`() {
             val pythonResult = PythonResult(name = "testResult")
 
-            pythonResult.toSmlResult().asClue {
+            pythonResult.toSdsResult().asClue {
                 it.name shouldBe "testResult"
                 it.annotationCallsOrEmpty().shouldBeEmpty()
 
                 val type = it.type
-                type.shouldBeInstanceOf<SmlNamedType>()
+                type.shouldBeInstanceOf<SdsNamedType>()
                 type.declaration.name shouldBe "Any"
                 type.isNullable.shouldBeTrue()
             }
@@ -786,17 +786,17 @@ class StubCodeGeneratorTest {
         fun `should convert name to camel case`() {
             val pythonResult = PythonResult(name = "Test_result")
 
-            val smlResult = pythonResult.toSmlResult()
-            smlResult.name shouldBe "testResult"
+            val SdsResult = pythonResult.toSdsResult()
+            SdsResult.name shouldBe "testResult"
         }
 
         @Test
         fun `should store python name if it differs from stub name`() {
             val pythonResult = PythonResult(name = "Test_result")
 
-            val smlFunction = pythonResult.toSmlResult()
+            val SdsFunction = pythonResult.toSdsResult()
 
-            val pythonNameAnnotationUseOrNull = smlFunction
+            val pythonNameAnnotationUseOrNull = SdsFunction
                 .uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
                 .shouldNotBeNull()
 
@@ -804,7 +804,7 @@ class StubCodeGeneratorTest {
             arguments.shouldHaveSize(1)
 
             val pythonName = arguments[0].value
-            pythonName.shouldBeInstanceOf<SmlString>()
+            pythonName.shouldBeInstanceOf<SdsString>()
             pythonName.value shouldBe "Test_result"
         }
 
@@ -812,7 +812,7 @@ class StubCodeGeneratorTest {
         fun `should not store python name if it is identical to stub name`() {
             val pythonResult = PythonResult(name = "testResult")
 
-            pythonResult.toSmlResult()
+            pythonResult.toSdsResult()
                 .uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
                 .shouldBeNull()
         }
@@ -824,16 +824,16 @@ class StubCodeGeneratorTest {
                 description = "Lorem ipsum"
             )
 
-            val smlResult = pythonResult.toSmlResult()
+            val SdsResult = pythonResult.toSdsResult()
 
-            val arguments = smlResult
+            val arguments = SdsResult
                 .uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
                 .shouldNotBeNull()
                 .argumentsOrEmpty()
             arguments.shouldHaveSize(1)
 
             val description = arguments[0].value
-            description.shouldBeInstanceOf<SmlString>()
+            description.shouldBeInstanceOf<SdsString>()
             description.value shouldBe "Lorem ipsum"
         }
 
@@ -844,9 +844,9 @@ class StubCodeGeneratorTest {
                 description = ""
             )
 
-            val smlFunction = pythonResult.toSmlResult()
+            val SdsFunction = pythonResult.toSdsResult()
 
-            val descriptionOrNull = smlFunction.uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
+            val descriptionOrNull = SdsFunction.uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
             descriptionOrNull.shouldBeNull()
         }
 
@@ -857,20 +857,20 @@ class StubCodeGeneratorTest {
                 type = PythonStringifiedType("str")
             )
 
-            val type = pythonResult.toSmlResult().type.shouldBeInstanceOf<SmlNamedType>()
+            val type = pythonResult.toSdsResult().type.shouldBeInstanceOf<SdsNamedType>()
             type.declaration.name shouldBe "String"
             type.isNullable.shouldBeFalse()
         }
     }
 
     @Nested
-    inner class ToSmlEnum {
+    inner class ToSdsEnum {
 
         @Test
         fun `should handle empty enums`() {
             val pythonEnum = PythonEnum(name = "TestEnum")
 
-            pythonEnum.toSmlEnum().asClue {
+            pythonEnum.toSdsEnum().asClue {
                 it.name shouldBe "TestEnum"
                 it.annotationCallsOrEmpty().shouldBeEmpty()
                 it.variantsOrEmpty().shouldBeEmpty()
@@ -881,24 +881,24 @@ class StubCodeGeneratorTest {
         fun `should convert name to camel case`() {
             val pythonEnum = PythonEnum(name = "test_enum")
 
-            val smlEnum = pythonEnum.toSmlEnum()
-            smlEnum.name shouldBe "TestEnum"
+            val SdsEnum = pythonEnum.toSdsEnum()
+            SdsEnum.name shouldBe "TestEnum"
         }
 
         @Test
         fun `should store python name if it differs from stub name`() {
             val pythonEnum = PythonEnum(name = "test_enum")
 
-            val smlEnum = pythonEnum.toSmlEnum()
+            val SdsEnum = pythonEnum.toSdsEnum()
 
-            val pythonNameAnnotationUseOrNull = smlEnum.uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
+            val pythonNameAnnotationUseOrNull = SdsEnum.uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
             pythonNameAnnotationUseOrNull.shouldNotBeNull()
 
             val arguments = pythonNameAnnotationUseOrNull.argumentsOrEmpty()
             arguments.shouldHaveSize(1)
 
             val pythonName = arguments[0].value
-            pythonName.shouldBeInstanceOf<SmlString>()
+            pythonName.shouldBeInstanceOf<SdsString>()
             pythonName.value shouldBe "test_enum"
         }
 
@@ -906,9 +906,9 @@ class StubCodeGeneratorTest {
         fun `should not store python name if it is identical to stub name`() {
             val pythonEnum = PythonEnum(name = "TestEnum")
 
-            val smlEnum = pythonEnum.toSmlEnum()
+            val SdsEnum = pythonEnum.toSdsEnum()
 
-            val pythonNameAnnotationUseOrNull = smlEnum.uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
+            val pythonNameAnnotationUseOrNull = SdsEnum.uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
             pythonNameAnnotationUseOrNull.shouldBeNull()
         }
 
@@ -919,13 +919,13 @@ class StubCodeGeneratorTest {
                 description = "Lorem ipsum"
             )
 
-            val arguments = pythonEnum.toSmlEnum()
+            val arguments = pythonEnum.toSdsEnum()
                 .uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
                 .shouldNotBeNull().argumentsOrEmpty()
             arguments.shouldHaveSize(1)
 
             val description = arguments[0].value
-            description.shouldBeInstanceOf<SmlString>()
+            description.shouldBeInstanceOf<SdsString>()
             description.value shouldBe "Lorem ipsum"
         }
 
@@ -937,7 +937,7 @@ class StubCodeGeneratorTest {
             )
 
             pythonEnum
-                .toSmlEnum()
+                .toSdsEnum()
                 .uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
                 .shouldBeNull()
         }
@@ -951,7 +951,7 @@ class StubCodeGeneratorTest {
                 )
             )
 
-            pythonEnum.toSmlEnum()
+            pythonEnum.toSdsEnum()
                 .variantsOrEmpty()
                 .map { it.name }
                 .shouldContainExactly("TestEnumInstance")
@@ -959,13 +959,13 @@ class StubCodeGeneratorTest {
     }
 
     @Nested
-    inner class ToSmlEnumVariant {
+    inner class ToSdsEnumVariant {
 
         @Test
         fun `should handle empty enum variant`() {
             val pythonEnumInstance = PythonEnumInstance(name = "TestEnumInstance")
 
-            pythonEnumInstance.toSmlEnumVariant().asClue {
+            pythonEnumInstance.toSdsEnumVariant().asClue {
                 it.name shouldBe "TestEnumInstance"
                 it.annotationCallsOrEmpty().shouldBeEmpty()
                 it.typeParametersOrEmpty().shouldBeEmpty()
@@ -978,22 +978,22 @@ class StubCodeGeneratorTest {
         fun `should convert name to camel case`() {
             val pythonEnumInstance = PythonEnumInstance(name = "test_enum_instance")
 
-            val smlEnumVariant = pythonEnumInstance.toSmlEnumVariant()
-            smlEnumVariant.name shouldBe "TestEnumInstance"
+            val SdsEnumVariant = pythonEnumInstance.toSdsEnumVariant()
+            SdsEnumVariant.name shouldBe "TestEnumInstance"
         }
 
         @Test
         fun `should store python name if it differs from stub name`() {
             val pythonEnumInstance = PythonEnumInstance(name = "test_enum_instance")
 
-            val arguments = pythonEnumInstance.toSmlEnumVariant()
+            val arguments = pythonEnumInstance.toSdsEnumVariant()
                 .uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
                 .shouldNotBeNull()
                 .argumentsOrEmpty()
             arguments.shouldHaveSize(1)
 
             val pythonName = arguments[0].value
-            pythonName.shouldBeInstanceOf<SmlString>()
+            pythonName.shouldBeInstanceOf<SdsString>()
             pythonName.value shouldBe "test_enum_instance"
         }
 
@@ -1001,7 +1001,7 @@ class StubCodeGeneratorTest {
         fun `should not store python name if it is identical to stub name`() {
             val pythonEnumInstance = PythonEnumInstance(name = "TestEnumInstance")
 
-            pythonEnumInstance.toSmlEnumVariant()
+            pythonEnumInstance.toSdsEnumVariant()
                 .uniqueAnnotationCallOrNull(QualifiedName.create("PythonName"))
                 .shouldBeNull()
         }
@@ -1013,14 +1013,14 @@ class StubCodeGeneratorTest {
                 description = "Lorem ipsum"
             )
 
-            val arguments = pythonEnumInstance.toSmlEnumVariant()
+            val arguments = pythonEnumInstance.toSdsEnumVariant()
                 .uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
                 .shouldNotBeNull()
                 .argumentsOrEmpty()
             arguments.shouldHaveSize(1)
 
             val description = arguments[0].value
-            description.shouldBeInstanceOf<SmlString>()
+            description.shouldBeInstanceOf<SdsString>()
             description.value shouldBe "Lorem ipsum"
         }
 
@@ -1031,7 +1031,7 @@ class StubCodeGeneratorTest {
                 description = ""
             )
 
-            pythonEnumInstance.toSmlEnumVariant()
+            pythonEnumInstance.toSdsEnumVariant()
                 .uniqueAnnotationCallOrNull(QualifiedName.create("Description"))
                 .shouldBeNull()
         }
@@ -1078,51 +1078,51 @@ class StubCodeGeneratorTest {
 
         @Test
         fun `should convert named types`() {
-            val smlType = PythonNamedType(PythonEnum(name = "MyEnum")).toSmlType().shouldBeInstanceOf<SmlNamedType>()
-            smlType.declaration.name shouldBe "MyEnum"
-            smlType.isNullable.shouldBeFalse()
+            val SdsType = PythonNamedType(PythonEnum(name = "MyEnum")).toSdsType().shouldBeInstanceOf<SdsNamedType>()
+            SdsType.declaration.name shouldBe "MyEnum"
+            SdsType.isNullable.shouldBeFalse()
         }
 
         @Test
         fun `should convert stringified type 'bool' to Boolean`() {
-            val smlType = PythonStringifiedType("bool").toSmlType().shouldBeInstanceOf<SmlNamedType>()
-            smlType.declaration.name shouldBe "Boolean"
-            smlType.isNullable.shouldBeFalse()
+            val SdsType = PythonStringifiedType("bool").toSdsType().shouldBeInstanceOf<SdsNamedType>()
+            SdsType.declaration.name shouldBe "Boolean"
+            SdsType.isNullable.shouldBeFalse()
         }
 
         @Test
         fun `should convert stringified type 'float' to Float`() {
-            val smlType = PythonStringifiedType("float").toSmlType().shouldBeInstanceOf<SmlNamedType>()
-            smlType.declaration.name shouldBe "Float"
-            smlType.isNullable.shouldBeFalse()
+            val SdsType = PythonStringifiedType("float").toSdsType().shouldBeInstanceOf<SdsNamedType>()
+            SdsType.declaration.name shouldBe "Float"
+            SdsType.isNullable.shouldBeFalse()
         }
 
         @Test
         fun `should convert stringified type 'int' to Int`() {
-            val smlType = PythonStringifiedType("int").toSmlType().shouldBeInstanceOf<SmlNamedType>()
-            smlType.declaration.name shouldBe "Int"
-            smlType.isNullable.shouldBeFalse()
+            val SdsType = PythonStringifiedType("int").toSdsType().shouldBeInstanceOf<SdsNamedType>()
+            SdsType.declaration.name shouldBe "Int"
+            SdsType.isNullable.shouldBeFalse()
         }
 
         @Test
         fun `should convert stringified type 'str' to String`() {
-            val smlType = PythonStringifiedType("str").toSmlType().shouldBeInstanceOf<SmlNamedType>()
-            smlType.declaration.name shouldBe "String"
-            smlType.isNullable.shouldBeFalse()
+            val SdsType = PythonStringifiedType("str").toSdsType().shouldBeInstanceOf<SdsNamedType>()
+            SdsType.declaration.name shouldBe "String"
+            SdsType.isNullable.shouldBeFalse()
         }
 
         @Test
         fun `should convert other types to nullable Any`() {
-            val smlType = PythonStringifiedType("other").toSmlType().shouldBeInstanceOf<SmlNamedType>()
-            smlType.declaration.name shouldBe "Any"
-            smlType.isNullable.shouldBeTrue()
+            val SdsType = PythonStringifiedType("other").toSdsType().shouldBeInstanceOf<SdsNamedType>()
+            SdsType.declaration.name shouldBe "Any"
+            SdsType.isNullable.shouldBeTrue()
         }
 
         @Test
         fun `should convert null to nullable Any`() {
-            val smlType = null.toSmlType().shouldBeInstanceOf<SmlNamedType>()
-            smlType.declaration.name shouldBe "Any"
-            smlType.isNullable.shouldBeTrue()
+            val SdsType = null.toSdsType().shouldBeInstanceOf<SdsNamedType>()
+            SdsType.declaration.name shouldBe "Any"
+            SdsType.isNullable.shouldBeTrue()
         }
     }
 
@@ -1132,79 +1132,79 @@ class StubCodeGeneratorTest {
         @Test
         fun `should convert blank strings to null`() {
             PythonStringifiedExpression(" ")
-                .toSmlExpression()
+                .toSdsExpression()
                 .shouldBeNull()
         }
 
         @Test
         fun `should convert False to a false boolean literal`() {
-            val smlBoolean = PythonStringifiedExpression("False")
-                .toSmlExpression()
-                .shouldBeInstanceOf<SmlBoolean>()
-            smlBoolean.isTrue.shouldBeFalse()
+            val SdsBoolean = PythonStringifiedExpression("False")
+                .toSdsExpression()
+                .shouldBeInstanceOf<SdsBoolean>()
+            SdsBoolean.isTrue.shouldBeFalse()
         }
 
         @Test
         fun `should convert True to a true boolean literal`() {
-            val smlBoolean = PythonStringifiedExpression("True")
-                .toSmlExpression()
-                .shouldBeInstanceOf<SmlBoolean>()
-            smlBoolean.isTrue.shouldBeTrue()
+            val SdsBoolean = PythonStringifiedExpression("True")
+                .toSdsExpression()
+                .shouldBeInstanceOf<SdsBoolean>()
+            SdsBoolean.isTrue.shouldBeTrue()
         }
 
         @Test
         fun `should convert None to a null literal`() {
             PythonStringifiedExpression("None")
-                .toSmlExpression()
-                .shouldBeInstanceOf<SmlNull>()
+                .toSdsExpression()
+                .shouldBeInstanceOf<SdsNull>()
         }
 
         @Test
         fun `should convert ints to integer literals`() {
-            val smlInt = PythonStringifiedExpression("123")
-                .toSmlExpression()
-                .shouldBeInstanceOf<SmlInt>()
-            smlInt.value shouldBe 123
+            val SdsInt = PythonStringifiedExpression("123")
+                .toSdsExpression()
+                .shouldBeInstanceOf<SdsInt>()
+            SdsInt.value shouldBe 123
         }
 
         @Test
         fun `should convert floats to float literals`() {
-            val smlFloat = PythonStringifiedExpression("123.45")
-                .toSmlExpression()
-                .shouldBeInstanceOf<SmlFloat>()
-            smlFloat.value shouldBe 123.45
+            val SdsFloat = PythonStringifiedExpression("123.45")
+                .toSdsExpression()
+                .shouldBeInstanceOf<SdsFloat>()
+            SdsFloat.value shouldBe 123.45
         }
 
         @Test
         fun `should convert single-quoted strings to string literals`() {
-            val smlString = PythonStringifiedExpression("'string'")
-                .toSmlExpression()
-                .shouldBeInstanceOf<SmlString>()
-            smlString.value shouldBe "string"
+            val SdsString = PythonStringifiedExpression("'string'")
+                .toSdsExpression()
+                .shouldBeInstanceOf<SdsString>()
+            SdsString.value shouldBe "string"
         }
 
         @Test
         fun `should convert double-quoted strings to string literals`() {
-            val smlString = PythonStringifiedExpression("\"string\"")
-                .toSmlExpression()
-                .shouldBeInstanceOf<SmlString>()
-            smlString.value shouldBe "string"
+            val SdsString = PythonStringifiedExpression("\"string\"")
+                .toSdsExpression()
+                .shouldBeInstanceOf<SdsString>()
+            SdsString.value shouldBe "string"
         }
 
         @Test
         fun `should convert other stringified expressions to '###invalid###' strings`() {
-            val smlString = PythonStringifiedExpression("unknown")
-                .toSmlExpression()
-                .shouldBeInstanceOf<SmlString>()
-            smlString.value shouldBe "###invalid###unknown###"
+            val SdsString = PythonStringifiedExpression("unknown")
+                .toSdsExpression()
+                .shouldBeInstanceOf<SdsString>()
+            SdsString.value shouldBe "###invalid###unknown###"
         }
 
         @Test
         fun `should convert other expressions to '###invalid###' strings`() {
-            val smlString = PythonString("unknown")
-                .toSmlExpression()
-                .shouldBeInstanceOf<SmlString>()
-            smlString.value shouldBe "###invalid###PythonString(value=unknown)###"
+            val SdsString = PythonString("unknown")
+                .toSdsExpression()
+                .shouldBeInstanceOf<SdsString>()
+            SdsString.value shouldBe "###invalid###PythonString(value=unknown)###"
         }
     }
 }

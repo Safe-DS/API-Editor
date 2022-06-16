@@ -1248,26 +1248,26 @@ class PythonCodeGeneratorTest {
 
         @Test
         fun `should convert stringified type 'bool' to Boolean`() {
-            val smlType = PythonStringifiedType("bool")
-            smlType.toPythonCodeOrNull() shouldBe "bool"
+            val SdsType = PythonStringifiedType("bool")
+            SdsType.toPythonCodeOrNull() shouldBe "bool"
         }
 
         @Test
         fun `should convert stringified type 'float' to Float`() {
-            val smlType = PythonStringifiedType("float")
-            smlType.toPythonCodeOrNull() shouldBe "float"
+            val SdsType = PythonStringifiedType("float")
+            SdsType.toPythonCodeOrNull() shouldBe "float"
         }
 
         @Test
         fun `should convert stringified type 'int' to Int`() {
-            val smlType = PythonStringifiedType("int")
-            smlType.toPythonCodeOrNull() shouldBe "int"
+            val SdsType = PythonStringifiedType("int")
+            SdsType.toPythonCodeOrNull() shouldBe "int"
         }
 
         @Test
         fun `should convert stringified type 'str' to String`() {
-            val smlType = PythonStringifiedType("str")
-            smlType.toPythonCodeOrNull() shouldBe "str"
+            val SdsType = PythonStringifiedType("str")
+            SdsType.toPythonCodeOrNull() shouldBe "str"
         }
 
         @Test

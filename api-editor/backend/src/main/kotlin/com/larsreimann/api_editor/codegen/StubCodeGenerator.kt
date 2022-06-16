@@ -14,48 +14,48 @@ import com.larsreimann.api_editor.mutable_model.PythonResult
 import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
 import com.larsreimann.api_editor.mutable_model.PythonStringifiedType
 import com.larsreimann.api_editor.mutable_model.PythonType
-import de.unibonn.simpleml.constant.SmlFileExtension
-import de.unibonn.simpleml.emf.createSmlAnnotationCall
-import de.unibonn.simpleml.emf.createSmlArgument
-import de.unibonn.simpleml.emf.createSmlAttribute
-import de.unibonn.simpleml.emf.createSmlBoolean
-import de.unibonn.simpleml.emf.createSmlClass
-import de.unibonn.simpleml.emf.createSmlCompilationUnit
-import de.unibonn.simpleml.emf.createSmlDummyResource
-import de.unibonn.simpleml.emf.createSmlEnum
-import de.unibonn.simpleml.emf.createSmlEnumVariant
-import de.unibonn.simpleml.emf.createSmlFloat
-import de.unibonn.simpleml.emf.createSmlFunction
-import de.unibonn.simpleml.emf.createSmlInt
-import de.unibonn.simpleml.emf.createSmlNamedType
-import de.unibonn.simpleml.emf.createSmlNull
-import de.unibonn.simpleml.emf.createSmlParameter
-import de.unibonn.simpleml.emf.createSmlResult
-import de.unibonn.simpleml.emf.createSmlString
-import de.unibonn.simpleml.serializer.SerializationResult
-import de.unibonn.simpleml.serializer.serializeToFormattedString
-import de.unibonn.simpleml.simpleML.SmlAbstractExpression
-import de.unibonn.simpleml.simpleML.SmlAbstractType
-import de.unibonn.simpleml.simpleML.SmlAnnotationCall
-import de.unibonn.simpleml.simpleML.SmlAttribute
-import de.unibonn.simpleml.simpleML.SmlClass
-import de.unibonn.simpleml.simpleML.SmlCompilationUnit
-import de.unibonn.simpleml.simpleML.SmlEnum
-import de.unibonn.simpleml.simpleML.SmlEnumVariant
-import de.unibonn.simpleml.simpleML.SmlFunction
-import de.unibonn.simpleml.simpleML.SmlParameter
-import de.unibonn.simpleml.simpleML.SmlResult
+import com.larsreimann.safeds.constant.SdsFileExtension
+import com.larsreimann.safeds.emf.createSdsAnnotationCall
+import com.larsreimann.safeds.emf.createSdsArgument
+import com.larsreimann.safeds.emf.createSdsAttribute
+import com.larsreimann.safeds.emf.createSdsBoolean
+import com.larsreimann.safeds.emf.createSdsClass
+import com.larsreimann.safeds.emf.createSdsCompilationUnit
+import com.larsreimann.safeds.emf.createSdsDummyResource
+import com.larsreimann.safeds.emf.createSdsEnum
+import com.larsreimann.safeds.emf.createSdsEnumVariant
+import com.larsreimann.safeds.emf.createSdsFloat
+import com.larsreimann.safeds.emf.createSdsFunction
+import com.larsreimann.safeds.emf.createSdsInt
+import com.larsreimann.safeds.emf.createSdsNamedType
+import com.larsreimann.safeds.emf.createSdsNull
+import com.larsreimann.safeds.emf.createSdsParameter
+import com.larsreimann.safeds.emf.createSdsResult
+import com.larsreimann.safeds.emf.createSdsString
+import com.larsreimann.safeds.serializer.SerializationResult
+import com.larsreimann.safeds.serializer.serializeToFormattedString
+import com.larsreimann.safeds.safeDS.SdsAbstractExpression
+import com.larsreimann.safeds.safeDS.SdsAbstractType
+import com.larsreimann.safeds.safeDS.SdsAnnotationCall
+import com.larsreimann.safeds.safeDS.SdsAttribute
+import com.larsreimann.safeds.safeDS.SdsClass
+import com.larsreimann.safeds.safeDS.SdsCompilationUnit
+import com.larsreimann.safeds.safeDS.SdsEnum
+import com.larsreimann.safeds.safeDS.SdsEnumVariant
+import com.larsreimann.safeds.safeDS.SdsFunction
+import com.larsreimann.safeds.safeDS.SdsParameter
+import com.larsreimann.safeds.safeDS.SdsResult
 
 /**
  * Create Simple-ML stub code for the Python module.
  */
 fun PythonModule.toStubCode(): String {
-    val compilationUnit = toSmlCompilationUnit()
+    val compilationUnit = toSdsCompilationUnit()
 
     // Required to serialize the compilation unit
-    createSmlDummyResource(
+    createSdsDummyResource(
         "compilationUnitStub",
-        SmlFileExtension.Stub,
+        SdsFileExtension.Stub,
         compilationUnit
     )
 
@@ -68,12 +68,12 @@ fun PythonModule.toStubCode(): String {
 /**
  * Creates a Simple-ML compilation unit that corresponds to the Python module.
  */
-fun PythonModule.toSmlCompilationUnit(): SmlCompilationUnit {
-    val classes = classes.map { it.toSmlClass() }
-    val functions = functions.map { it.toSmlFunction() }
-    val enums = enums.map { it.toSmlEnum() }
+fun PythonModule.toSdsCompilationUnit(): SdsCompilationUnit {
+    val classes = classes.map { it.toSdsClass() }
+    val functions = functions.map { it.toSdsFunction() }
+    val enums = enums.map { it.toSdsEnum() }
 
-    return createSmlCompilationUnit(
+    return createSdsCompilationUnit(
         packageName = name,
         members = classes + functions + enums
     )
@@ -82,20 +82,20 @@ fun PythonModule.toSmlCompilationUnit(): SmlCompilationUnit {
 /**
  * Creates a Simple-ML class that corresponds to the Python class.
  */
-fun PythonClass.toSmlClass(): SmlClass {
+fun PythonClass.toSdsClass(): SdsClass {
     val stubName = name.snakeCaseToUpperCamelCase()
 
-    val attributes = attributes.map { it.toSmlAttribute() }
-    val methods = methods.map { it.toSmlFunction() }
+    val attributes = attributes.map { it.toSdsAttribute() }
+    val methods = methods.map { it.toSdsFunction() }
 
-    return createSmlClass(
+    return createSdsClass(
         name = stubName,
         annotationCalls = buildList {
             if (name != stubName) {
-                add(createSmlPythonNameAnnotationUse(name))
+                add(createSdsPythonNameAnnotationUse(name))
             }
             if (description.isNotBlank()) {
-                add(createSmlDescriptionAnnotationUse(description))
+                add(createSdsDescriptionAnnotationUse(description))
             }
         },
         parameters = buildConstructor(),
@@ -103,142 +103,142 @@ fun PythonClass.toSmlClass(): SmlClass {
     )
 }
 
-private fun PythonClass.buildConstructor(): List<SmlParameter> {
+private fun PythonClass.buildConstructor(): List<SdsParameter> {
     return constructor
         ?.parameters
-        ?.mapNotNull { it.toSmlParameterOrNull() }
+        ?.mapNotNull { it.toSdsParameterOrNull() }
         .orEmpty()
 }
 
 /**
  * Creates a Simple-ML attribute that corresponds to the Python attribute.
  */
-fun PythonAttribute.toSmlAttribute(): SmlAttribute {
+fun PythonAttribute.toSdsAttribute(): SdsAttribute {
     val stubName = name.snakeCaseToLowerCamelCase()
 
-    return createSmlAttribute(
+    return createSdsAttribute(
         name = stubName,
         annotationCalls = buildList {
             if (name != stubName) {
-                add(createSmlPythonNameAnnotationUse(name))
+                add(createSdsPythonNameAnnotationUse(name))
             }
             if (description.isNotBlank()) {
-                add(createSmlDescriptionAnnotationUse(description))
+                add(createSdsDescriptionAnnotationUse(description))
             }
         },
-        type = type.toSmlType()
+        type = type.toSdsType()
     )
 }
 
-fun PythonFunction.toSmlFunction(): SmlFunction {
+fun PythonFunction.toSdsFunction(): SdsFunction {
     val stubName = name.snakeCaseToLowerCamelCase()
 
-    return createSmlFunction(
+    return createSdsFunction(
         name = stubName,
         isStatic = isStaticMethod(),
         annotationCalls = buildList {
             if (isPure) {
-                add(createSmlAnnotationCall("Pure"))
+                add(createSdsAnnotationCall("Pure"))
             }
             if (name != stubName) {
-                add(createSmlPythonNameAnnotationUse(name))
+                add(createSdsPythonNameAnnotationUse(name))
             }
             if (description.isNotBlank()) {
-                add(createSmlDescriptionAnnotationUse(description))
+                add(createSdsDescriptionAnnotationUse(description))
             }
         },
-        parameters = parameters.mapNotNull { it.toSmlParameterOrNull() },
-        results = results.map { it.toSmlResult() }
+        parameters = parameters.mapNotNull { it.toSdsParameterOrNull() },
+        results = results.map { it.toSdsResult() }
     )
 }
 
-private fun createSmlDescriptionAnnotationUse(description: String): SmlAnnotationCall {
-    return createSmlAnnotationCall(
+private fun createSdsDescriptionAnnotationUse(description: String): SdsAnnotationCall {
+    return createSdsAnnotationCall(
         "Description",
-        listOf(createSmlArgument(createSmlString(description)))
+        listOf(createSdsArgument(createSdsString(description)))
     )
 }
 
-private fun createSmlPythonNameAnnotationUse(name: String): SmlAnnotationCall {
-    return createSmlAnnotationCall(
+private fun createSdsPythonNameAnnotationUse(name: String): SdsAnnotationCall {
+    return createSdsAnnotationCall(
         "PythonName",
-        listOf(createSmlArgument(createSmlString(name)))
+        listOf(createSdsArgument(createSdsString(name)))
     )
 }
 
-fun PythonParameter.toSmlParameterOrNull(): SmlParameter? {
+fun PythonParameter.toSdsParameterOrNull(): SdsParameter? {
     if (assignedBy == IMPLICIT) {
         return null
     }
 
     val stubName = name.snakeCaseToLowerCamelCase()
 
-    return createSmlParameter(
+    return createSdsParameter(
         name = stubName,
         annotationCalls = buildList {
             if (name != stubName) {
-                add(createSmlPythonNameAnnotationUse(name))
+                add(createSdsPythonNameAnnotationUse(name))
             }
             if (description.isNotBlank()) {
-                add(createSmlDescriptionAnnotationUse(description))
+                add(createSdsDescriptionAnnotationUse(description))
             }
         },
-        type = type.toSmlType(),
-        defaultValue = defaultValue?.toSmlExpression()
+        type = type.toSdsType(),
+        defaultValue = defaultValue?.toSdsExpression()
     )
 }
 
-fun PythonResult.toSmlResult(): SmlResult {
+fun PythonResult.toSdsResult(): SdsResult {
     val stubName = name.snakeCaseToLowerCamelCase()
 
-    return createSmlResult(
+    return createSdsResult(
         name = stubName,
         annotationCalls = buildList {
             if (name != stubName) {
-                add(createSmlPythonNameAnnotationUse(name))
+                add(createSdsPythonNameAnnotationUse(name))
             }
             if (description.isNotBlank()) {
-                add(createSmlDescriptionAnnotationUse(description))
+                add(createSdsDescriptionAnnotationUse(description))
             }
         },
-        type = type.toSmlType()
+        type = type.toSdsType()
     )
 }
 
 /**
  * Creates a Simple-ML enum that corresponds to the Python enum.
  */
-fun PythonEnum.toSmlEnum(): SmlEnum {
+fun PythonEnum.toSdsEnum(): SdsEnum {
     val stubName = name.snakeCaseToUpperCamelCase()
 
-    return createSmlEnum(
+    return createSdsEnum(
         name = stubName,
         annotationCalls = buildList {
             if (name != stubName) {
-                add(createSmlPythonNameAnnotationUse(name))
+                add(createSdsPythonNameAnnotationUse(name))
             }
             if (description.isNotBlank()) {
-                add(createSmlDescriptionAnnotationUse(description))
+                add(createSdsDescriptionAnnotationUse(description))
             }
         },
-        variants = instances.map { it.toSmlEnumVariant() },
+        variants = instances.map { it.toSdsEnumVariant() },
     )
 }
 
 /**
  * Creates a Simple-ML enum variant that corresponds to the Python enum instance.
  */
-fun PythonEnumInstance.toSmlEnumVariant(): SmlEnumVariant {
+fun PythonEnumInstance.toSdsEnumVariant(): SdsEnumVariant {
     val stubName = name.snakeCaseToUpperCamelCase()
 
-    return createSmlEnumVariant(
+    return createSdsEnumVariant(
         name = stubName,
         annotationCalls = buildList {
             if (name != stubName) {
-                add(createSmlPythonNameAnnotationUse(name))
+                add(createSdsPythonNameAnnotationUse(name))
             }
             if (description.isNotBlank()) {
-                add(createSmlDescriptionAnnotationUse(description))
+                add(createSdsDescriptionAnnotationUse(description))
             }
         }
     )
@@ -260,35 +260,35 @@ private fun String.snakeCaseToCamelCase(): String {
 
 // Type conversions ----------------------------------------------------------------------------------------------------
 
-fun PythonType?.toSmlType(): SmlAbstractType {
+fun PythonType?.toSdsType(): SdsAbstractType {
     return when (this) {
         is PythonNamedType -> {
-            createSmlNamedType(
-                declaration = createSmlClass(this.declaration!!.name)
+            createSdsNamedType(
+                declaration = createSdsClass(this.declaration!!.name)
             )
         }
         is PythonStringifiedType -> {
             when (this.string) {
-                "bool" -> createSmlNamedType(
-                    declaration = createSmlClass("Boolean")
+                "bool" -> createSdsNamedType(
+                    declaration = createSdsClass("Boolean")
                 )
-                "float" -> createSmlNamedType(
-                    declaration = createSmlClass("Float")
+                "float" -> createSdsNamedType(
+                    declaration = createSdsClass("Float")
                 )
-                "int" -> createSmlNamedType(
-                    declaration = createSmlClass("Int")
+                "int" -> createSdsNamedType(
+                    declaration = createSdsClass("Int")
                 )
-                "str" -> createSmlNamedType(
-                    declaration = createSmlClass("String")
+                "str" -> createSdsNamedType(
+                    declaration = createSdsClass("String")
                 )
-                else -> createSmlNamedType(
-                    declaration = createSmlClass("Any"),
+                else -> createSdsNamedType(
+                    declaration = createSdsClass("Any"),
                     isNullable = true
                 )
             }
         }
-        null -> createSmlNamedType(
-            declaration = createSmlClass("Any"),
+        null -> createSdsNamedType(
+            declaration = createSdsClass("Any"),
             isNullable = true
         )
     }
@@ -296,20 +296,20 @@ fun PythonType?.toSmlType(): SmlAbstractType {
 
 // Value conversions ---------------------------------------------------------------------------------------------------
 
-fun PythonExpression.toSmlExpression(): SmlAbstractExpression? {
+fun PythonExpression.toSdsExpression(): SdsAbstractExpression? {
     if (this !is PythonStringifiedExpression) {
-        return createSmlString("###invalid###$this###")
+        return createSdsString("###invalid###$this###")
     }
 
     return when {
         string.isBlank() -> null
-        string == "False" -> createSmlBoolean(false)
-        string == "True" -> createSmlBoolean(true)
-        string == "None" -> createSmlNull()
-        string.isIntLiteral() -> createSmlInt(string.toInt())
-        string.isFloatLiteral() -> createSmlFloat(string.toDouble())
-        string.isStringLiteral() -> createSmlString(string.substring(1, string.length - 1))
-        else -> createSmlString("###invalid###$string###")
+        string == "False" -> createSdsBoolean(false)
+        string == "True" -> createSdsBoolean(true)
+        string == "None" -> createSdsNull()
+        string.isIntLiteral() -> createSdsInt(string.toInt())
+        string.isFloatLiteral() -> createSdsFloat(string.toDouble())
+        string.isStringLiteral() -> createSdsString(string.substring(1, string.length - 1))
+        else -> createSdsString("###invalid###$string###")
     }
 }
 
