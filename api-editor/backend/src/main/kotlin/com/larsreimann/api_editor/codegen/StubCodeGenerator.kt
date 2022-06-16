@@ -32,8 +32,6 @@ import com.larsreimann.safeds.emf.createSdsNull
 import com.larsreimann.safeds.emf.createSdsParameter
 import com.larsreimann.safeds.emf.createSdsResult
 import com.larsreimann.safeds.emf.createSdsString
-import com.larsreimann.safeds.serializer.SerializationResult
-import com.larsreimann.safeds.serializer.serializeToFormattedString
 import com.larsreimann.safeds.safeDS.SdsAbstractExpression
 import com.larsreimann.safeds.safeDS.SdsAbstractType
 import com.larsreimann.safeds.safeDS.SdsAnnotationCall
@@ -45,6 +43,8 @@ import com.larsreimann.safeds.safeDS.SdsEnumVariant
 import com.larsreimann.safeds.safeDS.SdsFunction
 import com.larsreimann.safeds.safeDS.SdsParameter
 import com.larsreimann.safeds.safeDS.SdsResult
+import com.larsreimann.safeds.serializer.SerializationResult
+import com.larsreimann.safeds.serializer.serializeToFormattedString
 
 /**
  * Create Simple-ML stub code for the Python module.
