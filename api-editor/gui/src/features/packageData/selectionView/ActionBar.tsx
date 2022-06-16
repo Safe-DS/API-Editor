@@ -139,7 +139,7 @@ const getNextElementInTree = function (
         return current;
     }
 
-    const index = declarations.findIndex(it => it.id === current.id);
+    const index = declarations.findIndex((it) => it.id === current.id);
     const nextIndex = (index + 1) % declarations.length;
     return declarations[nextIndex];
 };
@@ -169,7 +169,7 @@ const getPreviousElementInTree = function (
         return current;
     }
 
-    const index = declarations.findIndex(it => it.id === current.id);
+    const index = declarations.findIndex((it) => it.id === current.id);
     const previousIndex = (index - 1 + declarations.length) % declarations.length;
     return declarations[previousIndex];
 };
