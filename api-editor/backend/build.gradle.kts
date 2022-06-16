@@ -1,3 +1,4 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val javaVersion: String by project
@@ -24,6 +25,10 @@ java {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = javaVersion
+}
+
+tasks.withType<ShadowJar> {
+    archiveFileName.set("${project.group}-${project.name}-${project.version}-all.jar")
 }
 
 // Dependencies --------------------------------------------------------------------------------------------------------

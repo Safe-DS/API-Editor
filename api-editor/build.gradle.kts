@@ -32,7 +32,7 @@ kover {
 // Subprojects ---------------------------------------------------------------------------------------------------------
 
 subprojects {
-    group = "com.larsreimann"
+    group = "com.larsreimann.api-editor"
     version = "0.0.1"
 
     repositories {
