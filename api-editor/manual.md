@@ -35,7 +35,7 @@ _Continuous_ or _Discrete_ refers to the set of real numbers or integers.
 <img src="img/boundary.jpg" alt="Edit a boundary annotation" style="max-width: 450px;">
 
 * ### CalledAfter
-When a function is usually been called after another function, it should be marked with a CalledAfter annotation.
+When a function may only be called after another function, it should be marked with a CalledAfter annotation.
 The two functions must be in the same class.
 
 * ### Constant
@@ -66,7 +66,9 @@ Classes with this annotation will be moved to a custom module.
 A new default value for the parameter should be added. e.g, The function ``f(x=1)`` would be converted to ``f(x)``.
 
 * ### Pure
-
+This annotation applies to functions that have no side effects and whose return value is the same if the parameters passed in the calls are the same.
+An invocation of such a function can be deleted if the return value isn't assigned.
+The second attribute allows the function to be cached.
 
 * ### Remove
 A class or a function that is marked with this annotation should be removed.
@@ -117,4 +119,4 @@ The button _Generate adapters_ creates the improved API.
 If there are any conflicts with annotations, they will be displayed and a new API won't be generated.
 e.g, a module cannot have the annotations remove and move. One of them should be removed.
 After generation, you can select the folder in which the file is to be stored.
-It is a zip file with two folders. They are _adapter_ which contains the new API and [_stub_](https://simple-ml.de/).
+It is a zip file with two folders. They are _adapter_ which contains the new API and [_stub_](https://github.com/lars-reimann/safe-data-science/blob/main/docs/DSL/stub-language/README.md).
