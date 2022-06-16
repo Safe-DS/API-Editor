@@ -136,7 +136,7 @@ export const App: React.FC = function () {
                         <Box flexGrow={1} overflowY="auto" width="100%">
                             <SelectionView />
                         </Box>
-                        <ActionBar declaration={declaration} />
+                        {currentUserAction.type === 'none' && <ActionBar declaration={declaration} />}
                     </VStack>
                 </GridItem>
 
