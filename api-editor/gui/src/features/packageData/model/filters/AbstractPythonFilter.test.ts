@@ -89,7 +89,7 @@ beforeEach(() => {
 });
 
 describe('AbstractPythonFilter::applyToPackage', () => {
-    test('keeps modules for which the filter returns true, their ancestors, and their descendants', () => {
+    test('keeps modules for which the filter returns true, and their ancestors.', () => {
         const filter = new NameFilter('test_module_1');
         const filteredPackage = filter.applyToPackage(pythonPackage, annotations, new UsageCountStore());
 
@@ -97,19 +97,10 @@ describe('AbstractPythonFilter::applyToPackage', () => {
         expect(names(modules)).toEqual(['test_module_1']);
 
         const classes = modules[0].classes;
-        expect(names(classes)).toEqual(['test_class_1', 'test_class_2']);
-
-        const methods = classes[0].methods;
-        expect(names(methods)).toEqual(['test_method_1', 'test_method_2']);
-
-        const methodParameters = methods[0].parameters;
-        expect(names(methodParameters)).toEqual(['test_parameter_1', 'test_parameter_2']);
+        expect(names(classes)).toEqual([]);
 
         const globalFunctions = modules[0].functions;
-        expect(names(globalFunctions)).toEqual(['test_global_function_1', 'test_global_function_2']);
-
-        const globalFunctionParameters = globalFunctions[0].parameters;
-        expect(names(globalFunctionParameters)).toEqual(['test_parameter_1', 'test_parameter_2']);
+        expect(names(globalFunctions)).toEqual([]);
     });
 
     test('keeps classes for which the filter returns true, their ancestors, and their descendants', () => {
@@ -123,10 +114,7 @@ describe('AbstractPythonFilter::applyToPackage', () => {
         expect(names(classes)).toEqual(['test_class_1']);
 
         const methods = classes[0].methods;
-        expect(names(methods)).toEqual(['test_method_1', 'test_method_2']);
-
-        const methodParameters = methods[0].parameters;
-        expect(names(methodParameters)).toEqual(['test_parameter_1', 'test_parameter_2']);
+        expect(names(methods)).toEqual([]);
 
         const globalFunctions = modules[0].functions;
         expect(names(globalFunctions)).toEqual([]);
@@ -146,7 +134,7 @@ describe('AbstractPythonFilter::applyToPackage', () => {
         expect(names(methods)).toEqual(['test_method_1']);
 
         const methodParameters = methods[0].parameters;
-        expect(names(methodParameters)).toEqual(['test_parameter_1', 'test_parameter_2']);
+        expect(names(methodParameters)).toEqual([]);
 
         const globalFunctions = modules[0].functions;
         expect(names(globalFunctions)).toEqual([]);
@@ -166,7 +154,7 @@ describe('AbstractPythonFilter::applyToPackage', () => {
         expect(names(globalFunctions)).toEqual(['test_global_function_1']);
 
         const globalFunctionParameters = globalFunctions[0].parameters;
-        expect(names(globalFunctionParameters)).toEqual(['test_parameter_1', 'test_parameter_2']);
+        expect(names(globalFunctionParameters)).toEqual([]);
     });
 
     test('keeps parameters for which the filter returns true, their ancestors, and their descendants', () => {

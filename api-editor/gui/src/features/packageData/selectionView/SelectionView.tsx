@@ -9,7 +9,6 @@ import { ClassView } from './ClassView';
 import { FunctionView } from './FunctionView';
 import { ModuleView } from './ModuleView';
 import { ParameterView } from './ParameterView';
-import { ActionBar } from './ActionBar';
 import { useAppSelector } from '../../../app/hooks';
 import { selectRawPythonPackage } from '../apiSlice';
 import { StatisticsView } from './StatisticsView';
@@ -47,8 +46,6 @@ export const SelectionView: React.FC = function () {
                     {declaration instanceof PythonParameter && <ParameterView pythonParameter={declaration} />}
                 </Box>
             </Box>
-
-            <ActionBar declaration={declaration} />
         </VStack>
     );
 };

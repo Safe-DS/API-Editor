@@ -32,8 +32,8 @@ kover {
 // Subprojects ---------------------------------------------------------------------------------------------------------
 
 subprojects {
-    group = "com.larsreimann"
-    version = "0.0.1"
+    group = "com.larsreimann.api-editor"
+    version = "1.0.0"
 
     repositories {
         mavenCentral()

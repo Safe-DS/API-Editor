@@ -15,9 +15,10 @@ import {
 } from '../../ui/uiSlice';
 import { selectFilteredPythonPackage, selectFlatSortedDeclarationList } from '../apiSlice';
 import { selectUsages } from '../../usages/usageSlice';
+import { Optional } from '../../../common/util/types';
 
 interface ActionBarProps {
-    declaration: PythonDeclaration;
+    declaration: Optional<PythonDeclaration>;
 }
 
 export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
@@ -35,10 +36,11 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
     return (
         <HStack borderTop={1} layerStyle="subtleBorder" padding="0.5em 1em" marginTop={0} w="100%">
             <Button
+                disabled={!declaration}
                 onClick={() => {
                     let navStr = getPreviousElementPath(
                         allDeclarations,
-                        declaration,
+                        declaration!,
                         pythonFilter,
                         annotations,
                         usages,
@@ -56,8 +58,9 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
                 Previous
             </Button>
             <Button
+                disabled={!declaration}
                 onClick={() => {
-                    let navStr = getNextElementPath(allDeclarations, declaration, pythonFilter, annotations, usages);
+                    let navStr = getNextElementPath(allDeclarations, declaration!, pythonFilter, annotations, usages);
                     if (navStr !== null) {
                         //navigate to element
                         navigate(`/${navStr}`);
@@ -88,16 +91,18 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
             </Button>
             <Button
                 accessKey="y"
+                disabled={!declaration}
                 onClick={() => {
-                    dispatch(setAllExpandedInTreeView(getDescendantsOrSelf(declaration)));
+                    dispatch(setAllExpandedInTreeView(getDescendantsOrSelf(declaration!)));
                 }}
             >
                 Expand Selected
             </Button>
             <Button
                 accessKey="x"
+                disabled={!declaration}
                 onClick={() => {
-                    dispatch(setAllCollapsedInTreeView(getDescendantsOrSelf(declaration)));
+                    dispatch(setAllCollapsedInTreeView(getDescendantsOrSelf(declaration!)));
                 }}
             >
                 Collapse Selected
@@ -139,7 +144,7 @@ const getNextElementInTree = function (
         return current;
     }
 
-    const index = declarations.indexOf(current);
+    const index = declarations.findIndex((it) => it.id === current.id);
     const nextIndex = (index + 1) % declarations.length;
     return declarations[nextIndex];
 };
@@ -169,7 +174,7 @@ const getPreviousElementInTree = function (
         return current;
     }
 
-    const index = declarations.indexOf(current);
+    const index = declarations.findIndex((it) => it.id === current.id);
     const previousIndex = (index - 1 + declarations.length) % declarations.length;
     return declarations[previousIndex];
 };
