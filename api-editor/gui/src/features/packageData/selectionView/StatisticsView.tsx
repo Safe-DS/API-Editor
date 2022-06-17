@@ -11,13 +11,11 @@ import {
 } from 'chart.js';
 import {Bar, Line} from 'react-chartjs-2';
 import {PythonPackage} from '../model/PythonPackage';
-import {Box, Flex} from '@chakra-ui/react';
 import {UsageCountStore} from '../../usages/model/UsageCountStore';
-import { Button, Heading, VStack, Wrap, WrapItem } from '@chakra-ui/react';
-import React from 'react';
-import { selectAnnotations } from '../../annotations/annotationSlice';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectFilterString, setFilterString } from '../../ui/uiSlice';
+import {Box, Flex, Button, Heading, VStack, Wrap, WrapItem} from '@chakra-ui/react';
+import {selectAnnotations} from '../../annotations/annotationSlice';
+import {useAppDispatch, useAppSelector} from '../../../app/hooks';
+import {selectFilterString, setFilterString} from '../../ui/uiSlice';
 
 ChartJS.register(CategoryScale, PointElement, LineElement, LinearScale, BarElement, Title, Tooltip);
 
@@ -27,8 +25,8 @@ interface FunctionViewProps {
 }
 
 export const StatisticsView: React.FC<FunctionViewProps> = function ({pythonPackage, usages}) {
-    
-        const annotations = useAppSelector(selectAnnotations);
+
+    const annotations = useAppSelector(selectAnnotations);
     const filterString = useAppSelector(selectFilterString);
     const dispatch = useAppDispatch();
 
@@ -46,9 +44,8 @@ export const StatisticsView: React.FC<FunctionViewProps> = function ({pythonPack
     const requiredsSize = Object.keys(annotations.requireds).length;
     const removesSize = Object.keys(annotations.removes).length;
     const todoSize = Object.keys(annotations.todos).length;
-    
-    
-    
+
+
     const usedThreshold = 1;
 
     const classLabels = ['full', 'public', 'used'];
@@ -87,35 +84,55 @@ export const StatisticsView: React.FC<FunctionViewProps> = function ({pythonPack
         'Parameters per Threshold',
     );
 
+    const filterAction = (annotation: string) => {
+        const annotationFilterPrefix = 'annotation:@';
+        const annotationFilterString = annotationFilterPrefix + annotation;
+
+        //Remove existing annotation filter
+        const filterList = filterString.split(' ');
+        let newFilter = '';
+        for (const element of filterList) {
+            if (!element.startsWith(annotationFilterPrefix)) {
+                newFilter += element;
+                newFilter += ' ';
+            }
+        }
+
+        newFilter += annotationFilterString;
+        dispatch(setFilterString(newFilter));
+    };
+
     return (
-        <div>
-            <Flex wrap='wrap'>
-                <Box minWidth='350px' flex='1 1 33%'>
-                    {classBarChart}
-                </Box>
-                <Box minWidth='350px' flex='1 1 33%'>
-                    {functionBarChart}
-                </Box>
-                <Box minWidth='350px' flex='1 33%'>
-                    {parameterBarChart}
-                </Box>
-            </Flex>
-            <Flex wrap='wrap'>
-                <Box minWidth='350px' flex='1 1 33%'>
-                    {classLineChart}
-                </Box>
-                <Box minWidth='350px' flex='1 1 33%'>
-                    {functionLineChart}
-                </Box>
-                <Box minWidth='350px' flex='1 1 33%'>
-                    {parameterLineChart}
-                </Box>
-            </Flex>
-        
-        <VStack spacing={4}>
+        <VStack spacing='4'>
             <Heading as="h2" size="md">
                 Statistics
             </Heading>
+            <Box width='100%'>
+                <Flex wrap='wrap'>
+                    <Box minWidth='350px' flex='1 1 33%'>
+                        {classBarChart}
+                    </Box>
+                    <Box minWidth='350px' flex='1 1 33%'>
+                        {functionBarChart}
+                    </Box>
+                    <Box minWidth='350px' flex='1 33%'>
+                        {parameterBarChart}
+                    </Box>
+                </Flex>
+            </Box>
+            <Box width='100%'>
+                <Flex wrap='wrap'>
+                    <Box minWidth='350px' flex='1 1 33%'>
+                        {classLineChart}
+                    </Box>
+                    <Box minWidth='350px' flex='1 1 33%'>
+                        {functionLineChart}
+                    </Box>
+                    <Box minWidth='350px' flex='1 1 33%'>
+                        {parameterLineChart}
+                    </Box>
+                </Flex>
+            </Box>
             <Heading as="h3" size="md">
                 Annotations
             </Heading>
@@ -139,7 +156,8 @@ export const StatisticsView: React.FC<FunctionViewProps> = function ({pythonPack
                     ></Button>
                 </WrapItem>
                 <WrapItem>
-                    <Button onClick={() => filterAction('constant')} children={'Constants: ' + constantsSize}></Button>
+                    <Button onClick={() => filterAction('constant')}
+                            children={'Constants: ' + constantsSize}></Button>
                 </WrapItem>
                 <WrapItem>
                     <Button
@@ -148,36 +166,62 @@ export const StatisticsView: React.FC<FunctionViewProps> = function ({pythonPack
                     ></Button>
                 </WrapItem>
                 <WrapItem>
-                    <Button onClick={() => filterAction('enum')} children={'Enums: ' + enumsSize}></Button>
+                    <Button
+                        onClick={() => filterAction('enum')}
+                        children={'Enums: ' + enumsSize}
+                    ></Button>
                 </WrapItem>
                 <WrapItem>
-                    <Button onClick={() => filterAction('group')} children={'Groups: ' + groupsSize}></Button>
+                    <Button
+                        onClick={() => filterAction('group')}
+                        children={'Groups: ' + groupsSize}
+                    ></Button>
                 </WrapItem>
                 <WrapItem>
-                    <Button onClick={() => filterAction('move')} children={'Move: ' + movesSize}></Button>
+                    <Button
+                        onClick={() => filterAction('move')}
+                        children={'Move: ' + movesSize}
+                    ></Button>
                 </WrapItem>
                 <WrapItem>
-                    <Button onClick={() => filterAction('optional')} children={'Optionals: ' + optionalsSize}></Button>
+                    <Button
+                        onClick={() => filterAction('optional')}
+                        children={'Optionals: ' + optionalsSize}
+                    ></Button>
                 </WrapItem>
                 <WrapItem>
-                    <Button onClick={() => filterAction('pure')} children={'Pures: ' + puresSize}></Button>
+                    <Button
+                        onClick={() => filterAction('pure')}
+                        children={'Pures: ' + puresSize}
+                    ></Button>
                 </WrapItem>
                 <WrapItem>
-                    <Button onClick={() => filterAction('remove')} children={'Removes: ' + removesSize}></Button>
+                    <Button
+                        onClick={() => filterAction('remove')}
+                        children={'Removes: ' + removesSize}
+                    ></Button>
                 </WrapItem>
                 <WrapItem>
-                    <Button onClick={() => filterAction('rename')} children={'Renaming: ' + renamingsSize}></Button>
+                    <Button
+                        onClick={() => filterAction('rename')}
+                        children={'Renaming: ' + renamingsSize}
+                    ></Button>
                 </WrapItem>
                 <WrapItem>
-                    <Button onClick={() => filterAction('required')} children={'Requireds: ' + requiredsSize}></Button>
-                </WrapItem>{' '}
+                    <Button
+                        onClick={() => filterAction('required')}
+                        children={'Requireds: ' + requiredsSize}
+                    ></Button>
+                </WrapItem>
                 <WrapItem>
-                    <Button onClick={() => filterAction('todo')} children={'Todos: ' + todoSize}></Button>
+                    <Button
+                        onClick={() => filterAction('todo')}
+                        children={'Todos: ' + todoSize}
+                    ></Button>
                 </WrapItem>
             </Wrap>
         </VStack>
-        </div>
-    );
+    )
 };
 
 export let getClassValues = function (pythonPackage: PythonPackage, usages: UsageCountStore, usedThreshold: number) {
@@ -307,22 +351,4 @@ let createLineChart = function (
     };
 
     return <Line options={options} data={data}/>;
-    
-        const filterAction = (annotation: string) => {
-        const annotationFilterPrefix = 'annotation:@';
-        const annotationFilterString = annotationFilterPrefix + annotation;
-
-        //Remove existing annotation filter
-        const filterList = filterString.split(' ');
-        let newFilter = '';
-        for (const element of filterList) {
-            if (!element.startsWith(annotationFilterPrefix)) {
-                newFilter += element;
-                newFilter += ' ';
-            }
-        }
-
-        newFilter += annotationFilterString;
-        dispatch(setFilterString(newFilter));
-    };
 };
