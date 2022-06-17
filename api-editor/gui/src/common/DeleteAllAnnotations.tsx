@@ -31,13 +31,13 @@ export const DeleteAllAnnotations = function () {
 
     return (
         <>
-            <Button onClick={() => setIsOpen(true)}>Delete all annotations</Button>
+            <Button onClick={() => setIsOpen(true)}>Delete All Annotations</Button>
 
             <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={handleCancel}>
                 <AlertDialogOverlay>
                     <AlertDialogContent>
                         <AlertDialogHeader>
-                            <Heading>Delete all annotations</Heading>
+                            <Heading>Delete All Annotations</Heading>
                         </AlertDialogHeader>
 
                         <AlertDialogBody>

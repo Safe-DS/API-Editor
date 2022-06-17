@@ -27,7 +27,7 @@ export const CompleteButton: React.FC<CompleteButtonProps> = function ({ target 
     } else {
         return (
             <Button size="sm" variant="outline" onClick={() => dispatch(addComplete({ target }))}>
-                Mark as complete
+                Mark as Complete
             </Button>
         );
     }

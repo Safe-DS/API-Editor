@@ -69,7 +69,7 @@ export const PackageDataImportDialog: React.FC = function () {
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>
-                    <Heading>Import API data</Heading>
+                    <Heading>Import API Data</Heading>
                 </ModalHeader>
                 <ModalBody>
                     <FormControl>

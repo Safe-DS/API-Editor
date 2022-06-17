@@ -78,7 +78,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
                     }
                 }}
             >
-                Go to parent
+                Go to Parent
             </Button>
 
             <Button

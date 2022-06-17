@@ -97,7 +97,7 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
     return (
         <>
             <AnnotationBatchForm
-                heading={`Add @${annotationType} annotation`}
+                heading={`Add @${annotationType} Annotations`}
                 onConfirm={handleSubmit(handleConfirm)}
                 onCancel={handleCancel}
             >
