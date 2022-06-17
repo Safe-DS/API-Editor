@@ -1,16 +1,8 @@
 import {
-    AlertDialog,
-    AlertDialogBody,
-    AlertDialogContent,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogOverlay,
-    Button,
     FormControl,
     FormErrorIcon,
     FormErrorMessage,
     FormLabel,
-    Heading,
     Input,
     NumberDecrementStepper,
     NumberIncrementStepper,
@@ -21,21 +13,22 @@ import {
     RadioGroup,
     Select,
     Stack,
-    Text,
 } from '@chakra-ui/react';
-import React, { useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useAppDispatch } from '../../../app/hooks';
-import { booleanPattern, numberPattern } from '../../../common/validation';
-import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
-import { DefaultType, DefaultValue } from '../annotationSlice';
-import { AnnotationBatchForm } from './AnnotationBatchForm';
-import { hideAnnotationForm } from '../../ui/uiSlice';
+import React, {useState} from 'react';
+import {useForm} from 'react-hook-form';
+import {useAppDispatch} from '../../../app/hooks';
+import {booleanPattern, numberPattern} from '../../../common/validation';
+import {PythonDeclaration} from '../../packageData/model/PythonDeclaration';
+import {DefaultType, DefaultValue} from '../annotationSlice';
+import {AnnotationBatchForm} from './AnnotationBatchForm';
+import {hideAnnotationForm} from '../../ui/uiSlice';
+import {ConfirmAnnotations} from './ConfirmAnnotations';
 
 interface TypeValueBatchFormProps {
     targets: PythonDeclaration[];
     annotationType: string;
     onUpsertAnnotation: (data: TypeValueBatchFormState) => void;
+
 }
 
 export interface TypeValueBatchFormState {
@@ -44,10 +37,10 @@ export interface TypeValueBatchFormState {
 }
 
 export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
-    targets,
-    annotationType,
-    onUpsertAnnotation,
-}) {
+                                                                                   targets,
+                                                                                   annotationType,
+                                                                                   onUpsertAnnotation,
+                                                                               }) {
     const dispatch = useAppDispatch();
 
     const {
@@ -56,7 +49,7 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
         reset,
         setValue,
         watch,
-        formState: { errors },
+        formState: {errors},
     } = useForm<TypeValueBatchFormState>({
         defaultValues: {
             defaultType: 'string',
@@ -67,7 +60,7 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
     const watchDefaultType = watch('defaultType');
 
     let [confirmWindowVisible, setConfirmWindowVisible] = useState(false);
-    let [data, setData] = useState<TypeValueBatchFormState>({ defaultType: 'string', defaultValue: '' });
+    let [data, setData] = useState<TypeValueBatchFormState>({defaultType: 'string', defaultValue: ''});
 
     // Event handlers ----------------------------------------------------------
 
@@ -80,11 +73,11 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
     };
 
     const handleSave = (annotationData: TypeValueBatchFormState) => {
-        let toUpsert = { ...annotationData };
+        let toUpsert = {...annotationData};
         if (annotationData.defaultType === 'boolean') {
-            toUpsert = { ...annotationData, defaultValue: annotationData.defaultValue === 'true' };
+            toUpsert = {...annotationData, defaultValue: annotationData.defaultValue === 'true'};
         } else if (annotationData.defaultType === 'none') {
-            toUpsert = { ...annotationData, defaultValue: null };
+            toUpsert = {...annotationData, defaultValue: null};
         }
         onUpsertAnnotation(toUpsert);
 
@@ -138,8 +131,8 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
                                     })}
                                 />
                                 <NumberInputStepper>
-                                    <NumberIncrementStepper />
-                                    <NumberDecrementStepper />
+                                    <NumberIncrementStepper/>
+                                    <NumberDecrementStepper/>
                                 </NumberInputStepper>
                             </NumberInput>
                         )}
@@ -155,10 +148,12 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
                             </Select>
                         )}
                         <FormErrorMessage>
-                            <FormErrorIcon /> {errors.defaultValue?.message}
+                            <FormErrorIcon/> {errors.defaultValue?.message}
                         </FormErrorMessage>
                     </FormControl>
                 )}
+
+                <FormLabel>This will only annotate parameters.</FormLabel>
             </AnnotationBatchForm>
             {confirmWindowVisible && (
                 <ConfirmAnnotations
@@ -168,45 +163,5 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
                 />
             )}
         </>
-    );
-};
-
-interface ConfirmAnnotationsProps {
-    count: number;
-    handleSave: () => void;
-    setConfirmVisible: (visible: boolean) => void;
-}
-
-const ConfirmAnnotations: React.FC<ConfirmAnnotationsProps> = function ({ count, handleSave, setConfirmVisible }) {
-    const handleCancel = () => {
-        setConfirmVisible(false);
-        hideAnnotationForm();
-    };
-
-    const useCancelRef = useRef(null);
-
-    return (
-        <AlertDialog isOpen={true} leastDestructiveRef={useCancelRef} onClose={handleCancel}>
-            <AlertDialogOverlay>
-                <AlertDialogContent>
-                    <AlertDialogHeader>
-                        <Heading>Annotate selected items</Heading>
-                    </AlertDialogHeader>
-
-                    <AlertDialogBody>
-                        <Text>This will annotate {count} items, are you sure?</Text>
-                    </AlertDialogBody>
-
-                    <AlertDialogFooter>
-                        <Button ref={useCancelRef} onClick={handleCancel}>
-                            Cancel
-                        </Button>
-                        <Button colorScheme="green" onClick={handleSave} ml={3}>
-                            Confirm
-                        </Button>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialogOverlay>
-        </AlertDialog>
     );
 };

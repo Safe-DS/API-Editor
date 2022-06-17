@@ -1,16 +1,16 @@
 import React from 'react';
 import {useAppDispatch} from '../../../app/hooks';
 import {PythonDeclaration} from '../../packageData/model/PythonDeclaration';
-import {ConstantAnnotation, upsertConstants} from '../annotationSlice';
+import {OptionalAnnotation, upsertOptionals} from '../annotationSlice';
 import {TypeValueBatchForm, TypeValueBatchFormState} from './TypeValueBatchForm';
 import {PythonParameter} from '../../packageData/model/PythonParameter';
 
-interface ConstantBatchFormProps {
+interface OptionalBatchFormProps {
     targets: PythonDeclaration[];
 }
 
-export const ConstantBatchForm: React.FC<ConstantBatchFormProps> = function ({targets}) {
-    //only parameters can have constant annotations
+export const OptionalBatchForm: React.FC<OptionalBatchFormProps> = function ({targets}) {
+    //only parameters can have optional annotations
     const filteredTargets = targets.filter((t) => t instanceof PythonParameter);
     const targetPaths = filteredTargets.map((t) => t.id);
 
@@ -20,7 +20,7 @@ export const ConstantBatchForm: React.FC<ConstantBatchFormProps> = function ({ta
     // Event handlers --------------------------------------------------------------------------------------------------
 
     const handleUpsertAnnotation = (data: TypeValueBatchFormState) => {
-        const all: ConstantAnnotation[] = [];
+        const all: OptionalAnnotation[] = [];
         targetPaths.forEach(targetPath => {
             all.push({
                 target: targetPath,
@@ -28,13 +28,13 @@ export const ConstantBatchForm: React.FC<ConstantBatchFormProps> = function ({ta
                 defaultValue: data.defaultValue,
             });
         });
-        dispatch(upsertConstants(all))
+        dispatch(upsertOptionals(all))
     };
 
     // Rendering -------------------------------------------------------------------------------------------------------
 
     return (
-        <TypeValueBatchForm targets={filteredTargets} annotationType="constant"
+        <TypeValueBatchForm targets={filteredTargets} annotationType="optional"
                             onUpsertAnnotation={handleUpsertAnnotation}/>
     );
 };
