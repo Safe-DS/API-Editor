@@ -20,7 +20,7 @@ import { StyledDropzone } from '../../common/StyledDropzone';
 import { isValidJsonFile } from '../../common/util/validation';
 import { resetAnnotations } from '../annotations/annotationSlice';
 import { parsePythonPackageJson, PythonPackageJson } from './model/PythonPackageBuilder';
-import { resetUI, toggleAPIImportDialog } from '../ui/uiSlice';
+import { resetUIAfterAPIImport, toggleAPIImportDialog } from '../ui/uiSlice';
 import { persistPythonPackage, setPythonPackage } from './apiSlice';
 import { resetUsages } from '../usages/usageSlice';
 
@@ -39,8 +39,8 @@ export const PackageDataImportDialog: React.FC = function () {
 
             // Reset other slices
             dispatch(resetAnnotations());
-            dispatch(resetUI());
             dispatch(resetUsages());
+            dispatch(resetUIAfterAPIImport());
             navigate('/');
         }
     };

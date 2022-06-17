@@ -115,10 +115,12 @@ export const initialState: UIState = {
     showUsageImportDialog: false,
 
     currentUserAction: NoUserAction,
+
     expandedInTreeView: {},
     treeViewScrollOffset: 0,
-    heatMapMode: HeatMapMode.None,
     filterString: 'is:public',
+
+    heatMapMode: HeatMapMode.None,
     sortingMode: SortingMode.Alphabetical,
 };
 
@@ -158,6 +160,22 @@ const uiSlice = createSlice({
         },
         resetUI() {
             return initialState;
+        },
+        resetUIAfterAPIImport(state) {
+            return {
+                ...state,
+
+                showAnnotationImportDialog: initialState.showAnnotationImportDialog,
+                showAPIImportDialog: initialState.showAPIImportDialog,
+                showUsageImportDialog: initialState.showUsageImportDialog,
+
+                currentUserAction: initialState.currentUserAction,
+
+                expandedInTreeView: initialState.expandedInTreeView,
+                treeViewScrollOffset: initialState.treeViewScrollOffset,
+
+                filterString: initialState.filterString,
+            };
         },
 
         toggleAnnotationImportDialog(state) {
@@ -286,6 +304,7 @@ const { actions, reducer } = uiSlice;
 export const {
     setUI,
     resetUI,
+    resetUIAfterAPIImport,
 
     toggleAnnotationImportDialog,
     hideAnnotationImportDialog,
