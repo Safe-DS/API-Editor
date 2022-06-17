@@ -18,12 +18,11 @@ import { selectUsages } from '../../usages/usageSlice';
 
 ChartJS.register(CategoryScale, PointElement, LineElement, LinearScale, BarElement, Title, Tooltip);
 
-
 interface ParameterViewProps {
     pythonParameter: PythonParameter;
 }
 
-export const ParameterView: React.FC<ParameterViewProps> = function ({pythonParameter}) {
+export const ParameterView: React.FC<ParameterViewProps> = function ({ pythonParameter }) {
     const usages = useAppSelector(selectUsages);
     const parameterUsages = usages.valueUsages.get(pythonParameter.id);
 
@@ -104,8 +103,8 @@ const isStringifiedLiteral = function (value: string): boolean {
     if (value.startsWith("'") && value.endsWith("'")) {
         return true;
     }
-    if (value === "True" || value === "False") {
+    if (value === 'True' || value === 'False') {
         return true;
     }
     return Boolean(value.match(/^[+-]?\d+(\.\d*)?$/u));
-}
+};
