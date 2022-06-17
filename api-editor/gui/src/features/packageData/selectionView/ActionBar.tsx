@@ -1,22 +1,22 @@
-import {Button, HStack} from '@chakra-ui/react';
+import { Button, HStack } from '@chakra-ui/react';
 import React from 'react';
-import {PythonPackage} from '../model/PythonPackage';
-import {PythonDeclaration} from '../model/PythonDeclaration';
-import {AbstractPythonFilter} from '../model/filters/AbstractPythonFilter';
-import {AnnotationStore, selectAnnotations} from '../../annotations/annotationSlice';
-import {useNavigate} from 'react-router';
-import {useAppDispatch, useAppSelector} from '../../../app/hooks';
-import {UsageCountStore} from '../../usages/model/UsageCountStore';
-import {selectFilter, setAllCollapsedInTreeView, setAllExpandedInTreeView} from '../../ui/uiSlice';
-import {selectFilteredPythonPackage, selectFlatSortedDeclarationList} from '../apiSlice';
-import {selectUsages} from '../../usages/usageSlice';
-import {Optional} from '../../../common/util/types';
+import { PythonPackage } from '../model/PythonPackage';
+import { PythonDeclaration } from '../model/PythonDeclaration';
+import { AbstractPythonFilter } from '../model/filters/AbstractPythonFilter';
+import { AnnotationStore, selectAnnotations } from '../../annotations/annotationSlice';
+import { useNavigate } from 'react-router';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
+import { selectFilter, setAllCollapsedInTreeView, setAllExpandedInTreeView } from '../../ui/uiSlice';
+import { selectFilteredPythonPackage, selectFlatSortedDeclarationList } from '../apiSlice';
+import { selectUsages } from '../../usages/usageSlice';
+import { Optional } from '../../../common/util/types';
 
 interface ActionBarProps {
     declaration: Optional<PythonDeclaration>;
 }
 
-export const ActionBar: React.FC<ActionBarProps> = function ({declaration}) {
+export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
@@ -117,7 +117,9 @@ export const getAllSelectedElements = function (
             topmostElement = parent;
         }
     }
-    return [...topmostElement.descendantsOrSelf()].filter((it) => filter.shouldKeepDeclaration(it, annotations, usages));
+    return [...topmostElement.descendantsOrSelf()].filter((it) =>
+        filter.shouldKeepDeclaration(it, annotations, usages),
+    );
 };
 
 const getNextElementPath = function (
