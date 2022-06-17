@@ -17,9 +17,9 @@ import {
     removeMove,
     removeOptional,
     removePure,
+    removeRemove,
     removeRenaming,
     removeRequired,
-    removeRemove,
     removeTodo,
     selectAttribute,
     selectBoundary,
@@ -31,11 +31,10 @@ import {
     selectMove,
     selectOptional,
     selectPure,
+    selectRemove,
     selectRenaming,
     selectRequired,
-    selectRemove,
     selectTodo,
-    selectComplete,
 } from './annotationSlice';
 import {
     showAttributeAnnotationForm,
@@ -249,16 +248,14 @@ interface AnnotationProps {
     onDelete: () => void;
 }
 
-const Annotation: React.FC<AnnotationProps> = function ({ target, name, onDelete, onEdit, type }) {
-    const isDone = Boolean(useAppSelector(selectComplete(target)));
-
+const Annotation: React.FC<AnnotationProps> = function ({ name, onDelete, onEdit, type }) {
     return (
         <ButtonGroup size="sm" variant="outline" isAttached>
             <Button
                 leftIcon={<FaWrench />}
                 flexGrow={1}
                 justifyContent="flex-start"
-                disabled={!onEdit || isDone}
+                disabled={!onEdit}
                 onClick={onEdit}
             >
                 @{type}
@@ -268,13 +265,7 @@ const Annotation: React.FC<AnnotationProps> = function ({ target, name, onDelete
                     </ChakraText>
                 )}
             </Button>
-            <IconButton
-                icon={<FaTrash />}
-                aria-label="Delete annotation"
-                colorScheme="red"
-                disabled={isDone}
-                onClick={onDelete}
-            />
+            <IconButton icon={<FaTrash />} aria-label="Delete annotation" colorScheme="red" onClick={onDelete} />
         </ButtonGroup>
     );
 };
