@@ -59,13 +59,13 @@ export const DestinationBatchForm: React.FC<DestinationBatchFormProps> = functio
                 onConfirm={handleSubmit(handleConfirm)}
                 onCancel={handleCancel}
             >
-                <FormLabel>Destination for classes:</FormLabel>
+                <FormLabel>Destination module:</FormLabel>
                 <Input
                     {...register('destination', {
                         required: 'This is required.',
                     })}
                 />
-                <FormLabel>This will only annotate classes.</FormLabel>
+                <FormLabel>This will only annotate classes and global functions.</FormLabel>
             </AnnotationBatchForm>
             {confirmWindowVisible && (
                 <ConfirmAnnotations
