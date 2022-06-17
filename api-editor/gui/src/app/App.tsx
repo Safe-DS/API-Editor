@@ -157,67 +157,37 @@ export const App: React.FC = function () {
 
                         {batchMode === BatchMode.Constant && (
                             <ConstantBatchForm
-                                targets={getMatchedElements(
-                                    rawPythonPackage,
-                                    filter,
-                                    annotationStore,
-                                    usages,
-                                )}
+                                targets={getMatchedElements(rawPythonPackage, filter, annotationStore, usages)}
                             />
                         )}
 
                         {batchMode === BatchMode.Rename && (
                             <RenameBatchForm
-                                targets={getMatchedElements(
-                                    rawPythonPackage,
-                                    filter,
-                                    annotationStore,
-                                    usages,
-                                )}
+                                targets={getMatchedElements(rawPythonPackage, filter, annotationStore, usages)}
                             />
                         )}
 
                         {batchMode === BatchMode.Move && (
                             <MoveBatchForm
-                                targets={getMatchedElements(
-                                    rawPythonPackage,
-                                    filter,
-                                    annotationStore,
-                                    usages,
-                                )}
+                                targets={getMatchedElements(rawPythonPackage, filter, annotationStore, usages)}
                             />
                         )}
 
                         {batchMode === BatchMode.Required && (
                             <RequiredBatchForm
-                                targets={getMatchedElements(
-                                    rawPythonPackage,
-                                    filter,
-                                    annotationStore,
-                                    usages,
-                                )}
+                                targets={getMatchedElements(rawPythonPackage, filter, annotationStore, usages)}
                             />
                         )}
 
                         {batchMode === BatchMode.Optional && (
                             <OptionalBatchForm
-                                targets={getMatchedElements(
-                                    rawPythonPackage,
-                                    filter,
-                                    annotationStore,
-                                    usages,
-                                )}
+                                targets={getMatchedElements(rawPythonPackage, filter, annotationStore, usages)}
                             />
                         )}
 
                         {batchMode === BatchMode.Remove && (
                             <RemoveBatchForm
-                                targets={getMatchedElements(
-                                    rawPythonPackage,
-                                    filter,
-                                    annotationStore,
-                                    usages,
-                                )}
+                                targets={getMatchedElements(rawPythonPackage, filter, annotationStore, usages)}
                             />
                         )}
                     </Box>
