@@ -70,7 +70,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
             </Button>
 
             <Button
-                accessKey="p"
+                accessKey="u"
                 onClick={() => {
                     const parent = declaration?.parent();
                     if (parent && !(parent instanceof PythonPackage)) {
