@@ -29,6 +29,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
     return (
         <HStack borderTop={1} layerStyle="subtleBorder" padding="0.5em 1em" marginTop={0} w="100%">
             <Button
+                accessKey="p"
                 disabled={!declaration}
                 onClick={() => {
                     let navStr = getPreviousElementPath(
@@ -51,6 +52,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
                 Previous
             </Button>
             <Button
+                accessKey="n"
                 disabled={!declaration}
                 onClick={() => {
                     let navStr = getNextElementPath(allDeclarations, declaration!, pythonFilter, annotations, usages);
