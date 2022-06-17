@@ -22,9 +22,11 @@ import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { selectAnnotations } from '../features/annotations/annotationSlice';
 import { FilterHelpButton } from './FilterHelpButton';
 import {
+    BatchMode,
     HeatMapMode,
     selectHeatMapMode,
     selectSortingMode,
+    setBatchMode,
     setHeatMapMode,
     setSortingMode,
     SortingMode,
@@ -97,6 +99,36 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
 
                 <GenerateAdapters displayInferErrors={displayInferErrors} />
                 <DeleteAllAnnotations />
+
+                <Box>
+                    <Menu closeOnSelect={false}>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
+                            Batch
+                        </MenuButton>
+                        <MenuList>
+                            <MenuGroup title={'Annotate'}>
+                                <MenuItem paddingLeft={8} onClick={() => dispatch(setBatchMode(BatchMode.Rename))}>
+                                    Rename
+                                </MenuItem>
+                                <MenuItem paddingLeft={8} onClick={() => dispatch(setBatchMode(BatchMode.Move))}>
+                                    Move
+                                </MenuItem>
+                                <MenuItem paddingLeft={8} onClick={() => dispatch(setBatchMode(BatchMode.Remove))}>
+                                    Remove
+                                </MenuItem>
+                                <MenuItem paddingLeft={8} onClick={() => dispatch(setBatchMode(BatchMode.Required))}>
+                                    Required
+                                </MenuItem>
+                                <MenuItem paddingLeft={8} onClick={() => dispatch(setBatchMode(BatchMode.Constant))}>
+                                    Constant
+                                </MenuItem>
+                                <MenuItem paddingLeft={8} onClick={() => dispatch(setBatchMode(BatchMode.Optional))}>
+                                    Optional
+                                </MenuItem>
+                            </MenuGroup>
+                        </MenuList>
+                    </Menu>
+                </Box>
 
                 <Box>
                     <Menu closeOnSelect={false}>

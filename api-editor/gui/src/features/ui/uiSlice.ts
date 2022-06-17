@@ -18,6 +18,7 @@ export interface UIState {
     heatMapMode: HeatMapMode;
     filterString: string;
     sortingMode: SortingMode;
+    batchMode: BatchMode;
 }
 
 type UserAction =
@@ -107,6 +108,16 @@ export enum SortingMode {
     Usages = 'usages',
 }
 
+export enum BatchMode {
+    None,
+    Rename,
+    Move,
+    Remove,
+    Constant,
+    Optional,
+    Required,
+}
+
 // Initial state -------------------------------------------------------------------------------------------------------
 
 export const initialState: UIState = {
@@ -122,6 +133,7 @@ export const initialState: UIState = {
 
     heatMapMode: HeatMapMode.None,
     sortingMode: SortingMode.Alphabetical,
+    batchMode: BatchMode.None,
 };
 
 // Thunks --------------------------------------------------------------------------------------------------------------
@@ -261,8 +273,8 @@ const uiSlice = createSlice({
         },
         hideAnnotationForm(state) {
             state.currentUserAction = NoUserAction;
+            state.batchMode = BatchMode.None;
         },
-
         toggleIsExpandedInTreeView(state, action: PayloadAction<string>) {
             if (state.expandedInTreeView[action.payload]) {
                 delete state.expandedInTreeView[action.payload];
@@ -293,6 +305,9 @@ const uiSlice = createSlice({
         },
         setSortingMode(state, action: PayloadAction<SortingMode>) {
             state.sortingMode = action.payload;
+        },
+        setBatchMode(state, action: PayloadAction<BatchMode>) {
+            state.batchMode = action.payload;
         },
     },
     extraReducers(builder) {
@@ -329,9 +344,9 @@ export const {
     setAllCollapsedInTreeView,
     setTreeViewScrollOffset,
     setHeatMapMode,
-
     setFilterString,
     setSortingMode,
+    setBatchMode,
 } = actions;
 export const uiReducer = reducer;
 
@@ -364,3 +379,4 @@ export const selectFilter = createSelector(
     },
 );
 export const selectSortingMode = (state: RootState): SortingMode => selectUI(state).sortingMode;
+export const selectBatchMode = (state: RootState): BatchMode => selectUI(state).batchMode;
