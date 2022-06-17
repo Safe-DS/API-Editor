@@ -14,6 +14,7 @@ export interface UIState {
     showAnnotationImportDialog: boolean;
     showAPIImportDialog: boolean;
     showUsageImportDialog: boolean;
+    showAddFilterDialog: boolean;
 
     currentUserAction: UserAction;
     expandedInTreeView: {
@@ -118,6 +119,7 @@ export enum SortingMode {
 export const initialState: UIState = {
     showAnnotationImportDialog: false,
     showAPIImportDialog: false,
+    showAddFilterDialog: false,
     showUsageImportDialog: false,
 
     currentUserAction: NoUserAction,
@@ -128,7 +130,7 @@ export const initialState: UIState = {
 
     heatMapMode: HeatMapMode.None,
     sortingMode: SortingMode.Alphabetical,
-    filterList: [{filter: 'is:public', name: 'public'}],
+    filterList: [{filter: 'is:public', name: 'is:public'}],
 };
 
 // Thunks --------------------------------------------------------------------------------------------------------------
@@ -197,7 +199,9 @@ const uiSlice = createSlice({
         toggleUsageImportDialog(state) {
             state.showUsageImportDialog = !state.showUsageImportDialog;
         },
-
+        toggleAddFilterDialog(state) {
+            state.showAddFilterDialog = !state.showAddFilterDialog;
+        },
         showAttributeAnnotationForm(state, action: PayloadAction<string>) {
             state.currentUserAction = {
                 type: 'attribute',
@@ -323,6 +327,7 @@ export const {
     hideAnnotationImportDialog,
     toggleAPIImportDialog,
     toggleUsageImportDialog,
+    toggleAddFilterDialog,
 
     showAttributeAnnotationForm,
     showBoundaryAnnotationForm,
@@ -355,6 +360,7 @@ export const selectShowAnnotationImportDialog = (state: RootState): boolean =>
     selectUI(state).showAnnotationImportDialog;
 export const selectShowAPIImportDialog = (state: RootState): boolean => selectUI(state).showAPIImportDialog;
 export const selectShowUsageImportDialog = (state: RootState): boolean => selectUI(state).showUsageImportDialog;
+export const selectShowAddFilterDialog = (state: RootState): boolean => selectUI(state).showAddFilterDialog;
 export const selectCurrentUserAction = (state: RootState): UserAction => selectUI(state).currentUserAction;
 export const selectIsExpandedInTreeView =
     (target: string) =>

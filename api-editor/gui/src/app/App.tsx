@@ -11,7 +11,7 @@ import {
     UnorderedList,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { MenuBar } from '../common/MenuBar';
+import {AddFilterDialog, MenuBar} from '../common/MenuBar';
 import { AnnotationImportDialog } from '../features/annotations/AnnotationImportDialog';
 import { initializeAnnotations, persistAnnotations, selectAnnotations } from '../features/annotations/annotationSlice';
 import { BoundaryForm } from '../features/annotations/forms/BoundaryForm';
@@ -40,6 +40,7 @@ import {
     selectShowAPIImportDialog,
     selectShowUsageImportDialog,
     selectUI,
+    selectShowAddFilterDialog,
 } from '../features/ui/uiSlice';
 import { initializeUsages, persistUsages, selectUsages } from '../features/usages/usageSlice';
 import { initializePythonPackage, selectRawPythonPackage } from '../features/packageData/apiSlice';
@@ -66,6 +67,7 @@ export const App: React.FC = function () {
     const showAnnotationImportDialog = useAppSelector(selectShowAnnotationImportDialog);
     const showAPIImportDialog = useAppSelector(selectShowAPIImportDialog);
     const showUsagesImportDialog = useAppSelector(selectShowUsageImportDialog);
+    const showAddFilterDialog = useAppSelector(selectShowAddFilterDialog);
 
     return (
         <>
@@ -138,6 +140,7 @@ export const App: React.FC = function () {
                 {showAnnotationImportDialog && <AnnotationImportDialog />}
                 {showAPIImportDialog && <PackageDataImportDialog />}
                 {showUsagesImportDialog && <UsageImportDialog />}
+                {showAddFilterDialog && <AddFilterDialog />}
             </Grid>
 
             <Modal

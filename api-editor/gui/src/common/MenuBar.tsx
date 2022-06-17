@@ -1,9 +1,10 @@
 import {
     Box,
     Button,
-    Flex,
+    Flex, FormControl, FormLabel, Heading,
     HStack,
     Icon,
+    Input,
     Menu,
     MenuButton,
     MenuDivider,
@@ -11,7 +12,7 @@ import {
     MenuItem,
     MenuItemOption,
     MenuList,
-    MenuOptionGroup,
+    MenuOptionGroup, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay,
     Spacer,
     Text as ChakraText,
     useColorMode,
@@ -31,13 +32,14 @@ import {
     toggleAnnotationImportDialog,
     toggleAPIImportDialog,
     toggleUsageImportDialog,
-    Filter, setFilterString,
+    Filter, setFilterString, toggleAddFilterDialog
 } from '../features/ui/uiSlice';
 import {DeleteAllAnnotations} from './DeleteAllAnnotations';
 import {GenerateAdapters} from './GenerateAdapters';
 import {FilterInput} from './FilterInput';
 import {selectNumberOfMatchedNodes} from '../features/packageData/apiSlice';
 import {FilterOptions} from "react-markdown/lib/react-markdown";
+import {useNavigate} from "react-router-dom";
 
 interface MenuBarProps {
     displayInferErrors: (errors: string[]) => void;
@@ -52,14 +54,6 @@ export const MenuBar: React.FC<MenuBarProps> = function ({displayInferErrors}) {
     const heatMapMode = useAppSelector(selectHeatMapMode);
     const filterList = useAppSelector(selectFilterList);
     const targetString = useAppSelector(selectFilterString);
-
-    const saveInput = () => {
-        // filterList.push([targetString, targetString]);
-        dispatch(addFilter({filter: targetString, name: targetString}));
-        for(let i=0; i<filterList.length; i++){
-            console.log(filterList[i].filter+ " + "+filterList[i].name);
-        }
-    };
 
     const exportAnnotations = () => {
         const a = document.createElement('a');
@@ -180,7 +174,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({displayInferErrors}) {
                         </MenuList>
                     </Menu>
                 </Box>
-                <Button onClick={() => {saveInput()}}>Save input</Button>
+                <Button onClick={() => dispatch(toggleAddFilterDialog())}>Save input</Button>
                 <Box>
                     <Menu //closeOnSelect={true}
                         >
@@ -189,7 +183,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({displayInferErrors}) {
                         </MenuButton>
                         <MenuList>
                             <MenuGroup>
-                                <FilterOptions/>
+                                <FilterMenuOptions/>
                             </MenuGroup>
                         </MenuList>
                     </Menu>
@@ -221,7 +215,7 @@ const MatchCount = function () {
     return <ChakraText fontWeight="bold">{text}</ChakraText>;
 };
 
-const FilterOptions = function (){
+const FilterMenuOptions: React.FC = function (){
     const filters = useAppSelector(selectFilterList);
     let options = filters.map((it)=>{return <FilterOption filter={it.filter} name={it.name}/>});
     return <MenuOptionGroup>{options}</MenuOptionGroup>;
@@ -230,4 +224,48 @@ const FilterOptions = function (){
 const FilterOption: React.FC<Filter> = function ({filter, name}){
     const dispatch = useAppDispatch();
     return <MenuItemOption onClick={()=>{dispatch(setFilterString(filter))}} >{name}</MenuItemOption>;
+};
+
+export const AddFilterDialog: React.FC = function () {
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const filter = useAppSelector(selectFilterString).clone();// possible fix for not editable filter and name
+
+    const submit = () => {
+        let exists: boolean = false;
+        if (!exists) {
+            dispatch(addFilter({filter: 'filter', name: 'name'}))
+        }
+    };
+    const close = () => dispatch(toggleAddFilterDialog());
+
+    return (
+        <Modal onClose={close} isOpen size="xl">
+            <ModalOverlay />
+            <ModalContent>
+                <ModalHeader>
+                    <Heading>Add Filter</Heading>
+                </ModalHeader>
+                <ModalBody>
+                    <FormControl>
+                        <FormLabel>
+                            Add a Filter to store it.
+                        </FormLabel>
+                        <Input id='name' type='text' value={filter} />
+                        <Input id='filter' type='text' value={filter} />
+                    </FormControl>
+                </ModalBody>
+                <ModalFooter>
+                    <HStack spacing={4}>
+                        <Button colorScheme="blue" onClick={submit}>
+                            Submit
+                        </Button>
+                        <Button colorScheme="red" onClick={close}>
+                            Cancel
+                        </Button>
+                    </HStack>
+                </ModalFooter>
+            </ModalContent>
+        </Modal>
+    );
 };
