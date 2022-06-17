@@ -1,4 +1,4 @@
-import React, {ReactElement} from 'react';
+import React, { ReactElement } from 'react';
 import {
     BarElement,
     CategoryScale,
@@ -9,13 +9,13 @@ import {
     Title,
     Tooltip,
 } from 'chart.js';
-import {Bar, Line} from 'react-chartjs-2';
-import {PythonPackage} from '../model/PythonPackage';
-import {UsageCountStore} from '../../usages/model/UsageCountStore';
-import {Box, Flex, Button, Heading, VStack, Wrap, WrapItem} from '@chakra-ui/react';
-import {selectAnnotations} from '../../annotations/annotationSlice';
-import {useAppDispatch, useAppSelector} from '../../../app/hooks';
-import {selectFilterString, setFilterString} from '../../ui/uiSlice';
+import { Bar, Line } from 'react-chartjs-2';
+import { PythonPackage } from '../model/PythonPackage';
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
+import { Box, Flex, Button, Heading, VStack, Wrap, WrapItem } from '@chakra-ui/react';
+import { selectAnnotations } from '../../annotations/annotationSlice';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { selectFilterString, setFilterString } from '../../ui/uiSlice';
 
 ChartJS.register(CategoryScale, PointElement, LineElement, LinearScale, BarElement, Title, Tooltip);
 
@@ -24,8 +24,7 @@ interface FunctionViewProps {
     usages: UsageCountStore;
 }
 
-export const StatisticsView: React.FC<FunctionViewProps> = function ({pythonPackage, usages}) {
-
+export const StatisticsView: React.FC<FunctionViewProps> = function ({ pythonPackage, usages }) {
     const annotations = useAppSelector(selectAnnotations);
     const filterString = useAppSelector(selectFilterString);
     const dispatch = useAppDispatch();
@@ -44,7 +43,6 @@ export const StatisticsView: React.FC<FunctionViewProps> = function ({pythonPack
     const requiredsSize = Object.keys(annotations.requireds).length;
     const removesSize = Object.keys(annotations.removes).length;
     const todoSize = Object.keys(annotations.todos).length;
-
 
     const usedThreshold = 1;
 
@@ -103,32 +101,32 @@ export const StatisticsView: React.FC<FunctionViewProps> = function ({pythonPack
     };
 
     return (
-        <VStack spacing='4'>
+        <VStack spacing="4">
             <Heading as="h2" size="md">
                 Statistics
             </Heading>
-            <Box width='100%'>
-                <Flex wrap='wrap'>
-                    <Box minWidth='350px' flex='1 1 33%'>
+            <Box width="100%">
+                <Flex wrap="wrap">
+                    <Box minWidth="350px" flex="1 1 33%">
                         {classBarChart}
                     </Box>
-                    <Box minWidth='350px' flex='1 1 33%'>
+                    <Box minWidth="350px" flex="1 1 33%">
                         {functionBarChart}
                     </Box>
-                    <Box minWidth='350px' flex='1 33%'>
+                    <Box minWidth="350px" flex="1 33%">
                         {parameterBarChart}
                     </Box>
                 </Flex>
             </Box>
-            <Box width='100%'>
-                <Flex wrap='wrap'>
-                    <Box minWidth='350px' flex='1 1 33%'>
+            <Box width="100%">
+                <Flex wrap="wrap">
+                    <Box minWidth="350px" flex="1 1 33%">
                         {classLineChart}
                     </Box>
-                    <Box minWidth='350px' flex='1 1 33%'>
+                    <Box minWidth="350px" flex="1 1 33%">
                         {functionLineChart}
                     </Box>
-                    <Box minWidth='350px' flex='1 1 33%'>
+                    <Box minWidth="350px" flex="1 1 33%">
                         {parameterLineChart}
                     </Box>
                 </Flex>
@@ -156,8 +154,7 @@ export const StatisticsView: React.FC<FunctionViewProps> = function ({pythonPack
                     ></Button>
                 </WrapItem>
                 <WrapItem>
-                    <Button onClick={() => filterAction('constant')}
-                            children={'Constants: ' + constantsSize}></Button>
+                    <Button onClick={() => filterAction('constant')} children={'Constants: ' + constantsSize}></Button>
                 </WrapItem>
                 <WrapItem>
                     <Button
@@ -166,62 +163,35 @@ export const StatisticsView: React.FC<FunctionViewProps> = function ({pythonPack
                     ></Button>
                 </WrapItem>
                 <WrapItem>
-                    <Button
-                        onClick={() => filterAction('enum')}
-                        children={'Enums: ' + enumsSize}
-                    ></Button>
+                    <Button onClick={() => filterAction('enum')} children={'Enums: ' + enumsSize}></Button>
                 </WrapItem>
                 <WrapItem>
-                    <Button
-                        onClick={() => filterAction('group')}
-                        children={'Groups: ' + groupsSize}
-                    ></Button>
+                    <Button onClick={() => filterAction('group')} children={'Groups: ' + groupsSize}></Button>
                 </WrapItem>
                 <WrapItem>
-                    <Button
-                        onClick={() => filterAction('move')}
-                        children={'Move: ' + movesSize}
-                    ></Button>
+                    <Button onClick={() => filterAction('move')} children={'Move: ' + movesSize}></Button>
                 </WrapItem>
                 <WrapItem>
-                    <Button
-                        onClick={() => filterAction('optional')}
-                        children={'Optionals: ' + optionalsSize}
-                    ></Button>
+                    <Button onClick={() => filterAction('optional')} children={'Optionals: ' + optionalsSize}></Button>
                 </WrapItem>
                 <WrapItem>
-                    <Button
-                        onClick={() => filterAction('pure')}
-                        children={'Pures: ' + puresSize}
-                    ></Button>
+                    <Button onClick={() => filterAction('pure')} children={'Pures: ' + puresSize}></Button>
                 </WrapItem>
                 <WrapItem>
-                    <Button
-                        onClick={() => filterAction('remove')}
-                        children={'Removes: ' + removesSize}
-                    ></Button>
+                    <Button onClick={() => filterAction('remove')} children={'Removes: ' + removesSize}></Button>
                 </WrapItem>
                 <WrapItem>
-                    <Button
-                        onClick={() => filterAction('rename')}
-                        children={'Renaming: ' + renamingsSize}
-                    ></Button>
+                    <Button onClick={() => filterAction('rename')} children={'Renaming: ' + renamingsSize}></Button>
                 </WrapItem>
                 <WrapItem>
-                    <Button
-                        onClick={() => filterAction('required')}
-                        children={'Requireds: ' + requiredsSize}
-                    ></Button>
+                    <Button onClick={() => filterAction('required')} children={'Requireds: ' + requiredsSize}></Button>
                 </WrapItem>
                 <WrapItem>
-                    <Button
-                        onClick={() => filterAction('todo')}
-                        children={'Todos: ' + todoSize}
-                    ></Button>
+                    <Button onClick={() => filterAction('todo')} children={'Todos: ' + todoSize}></Button>
                 </WrapItem>
             </Wrap>
         </VStack>
-    )
+    );
 };
 
 export let getClassValues = function (pythonPackage: PythonPackage, usages: UsageCountStore, usedThreshold: number) {
@@ -256,7 +226,11 @@ export let getFunctionValues = function (pythonPackage: PythonPackage, usages: U
     return result;
 };
 
-export let getParameterValues = function (pythonPackage: PythonPackage, usages: UsageCountStore, usedThreshold: number) {
+export let getParameterValues = function (
+    pythonPackage: PythonPackage,
+    usages: UsageCountStore,
+    usedThreshold: number,
+) {
     const parameters = pythonPackage.getParameters();
     let result: number[] = [];
 
@@ -311,7 +285,7 @@ let createBarChart = function (labels: string[], values: number[], title: string
         ],
     };
 
-    return <Bar options={options} data={data}/>;
+    return <Bar options={options} data={data} />;
 };
 
 let createLineChart = function (
@@ -350,5 +324,5 @@ let createLineChart = function (
         ],
     };
 
-    return <Line options={options} data={data}/>;
+    return <Line options={options} data={data} />;
 };
