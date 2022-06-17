@@ -11,6 +11,7 @@ export const StatisticsView: React.FC = function () {
 
     const boundariesSize = Object.keys(annotations.boundaries).length;
     const constantsSize = Object.keys(annotations.constants).length;
+    const descriptionSize = Object.keys(annotations.descriptions).length;
     const enumsSize = Object.keys(annotations.enums).length;
     const optionalsSize = Object.keys(annotations.optionals).length;
     const movesSize = Object.keys(annotations.moves).length;
@@ -21,6 +22,7 @@ export const StatisticsView: React.FC = function () {
     const renamingsSize = Object.keys(annotations.renamings).length;
     const requiredsSize = Object.keys(annotations.requireds).length;
     const removesSize = Object.keys(annotations.removes).length;
+    const todoSize = Object.keys(annotations.todos).length;
 
     const filterAction = (annotation: string) => {
         const annotationFilterPrefix = 'annotation:@';
@@ -71,6 +73,12 @@ export const StatisticsView: React.FC = function () {
                     <Button onClick={() => filterAction('constant')} children={'Constants: ' + constantsSize}></Button>
                 </WrapItem>
                 <WrapItem>
+                    <Button
+                        onClick={() => filterAction('description')}
+                        children={'Descriptions: ' + descriptionSize}
+                    ></Button>
+                </WrapItem>
+                <WrapItem>
                     <Button onClick={() => filterAction('enum')} children={'Enums: ' + enumsSize}></Button>
                 </WrapItem>
                 <WrapItem>
@@ -93,6 +101,9 @@ export const StatisticsView: React.FC = function () {
                 </WrapItem>
                 <WrapItem>
                     <Button onClick={() => filterAction('required')} children={'Requireds: ' + requiredsSize}></Button>
+                </WrapItem>{' '}
+                <WrapItem>
+                    <Button onClick={() => filterAction('todo')} children={'Todos: ' + todoSize}></Button>
                 </WrapItem>
             </Wrap>
         </VStack>
