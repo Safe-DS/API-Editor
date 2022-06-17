@@ -61,44 +61,32 @@ export const StatisticsView: React.FC<FunctionViewProps> = function ({ pythonPac
     );
 
     return (
-        <Wrap w='100%'>
-            <WrapItem flex='0 0 100%' flexWrap='wrap'>
-                <WrapItem w='33%' minWidth='min-content'>
-                    <Center w='100%'>
-                        {classBarChart}
-                    </Center>
+        <Wrap w="100%">
+            <WrapItem flex="0 0 100%" flexWrap="wrap">
+                <WrapItem w="33%" minWidth="min-content">
+                    <Center w="100%">{classBarChart}</Center>
                 </WrapItem>
-                <Spacer/>
-                <WrapItem w='33%' minWidth='min-content'>
-                    <Center w='100%'>
-                        {functionBarChart}
-                    </Center>
+                <Spacer />
+                <WrapItem w="33%" minWidth="min-content">
+                    <Center w="100%">{functionBarChart}</Center>
                 </WrapItem>
-                <Spacer/>
-                <WrapItem w='33%' minWidth='min-content'>
-                    <Center w='100%'>
-                        {parameterBarChart}
-                    </Center>
+                <Spacer />
+                <WrapItem w="33%" minWidth="min-content">
+                    <Center w="100%">{parameterBarChart}</Center>
                 </WrapItem>
             </WrapItem>
 
-            <WrapItem flex='0 0 100%' flexWrap='wrap'>
-                <WrapItem w='33%' minWidth='min-content'>
-                    <Center w='100%'>
-                        {classLineChart}
-                    </Center>
+            <WrapItem flex="0 0 100%" flexWrap="wrap">
+                <WrapItem w="33%" minWidth="min-content">
+                    <Center w="100%">{classLineChart}</Center>
                 </WrapItem>
-                <Spacer/>
-                <WrapItem w='33%' minWidth='min-content'>
-                    <Center w='100%'>
-                        {functionLineChart}
-                    </Center>
+                <Spacer />
+                <WrapItem w="33%" minWidth="min-content">
+                    <Center w="100%">{functionLineChart}</Center>
                 </WrapItem>
-                <Spacer/>
-                <WrapItem w='33%' minWidth='min-content'>
-                    <Center w='100%'>
-                        {parameterLineChart}
-                    </Center>
+                <Spacer />
+                <WrapItem w="33%" minWidth="min-content">
+                    <Center w="100%">{parameterLineChart}</Center>
                 </WrapItem>
             </WrapItem>
         </Wrap>
