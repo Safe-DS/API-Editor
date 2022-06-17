@@ -9,7 +9,7 @@ import { DocumentationText } from './DocumentationText';
 import { ParameterNode } from './ParameterNode';
 import { useAppSelector } from '../../../app/hooks';
 import { selectCalledAfters } from '../../annotations/annotationSlice';
-import { DoneButton } from '../../annotations/DoneButton';
+import { CompleteButton } from '../../annotations/CompleteButton';
 
 interface FunctionViewProps {
     pythonFunction: PythonFunction;
@@ -44,7 +44,7 @@ export const FunctionView: React.FC<FunctionViewProps> = function ({ pythonFunct
                                 showRename
                                 showTodo
                             />
-                            <DoneButton target={id} />
+                            <CompleteButton target={id} />
                         </>
                     )}
                 </HStack>

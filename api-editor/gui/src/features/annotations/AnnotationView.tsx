@@ -35,7 +35,7 @@ import {
     selectRequired,
     selectRemove,
     selectTodo,
-    selectDone,
+    selectComplete,
 } from './annotationSlice';
 import {
     showAttributeAnnotationForm,
@@ -250,7 +250,7 @@ interface AnnotationProps {
 }
 
 const Annotation: React.FC<AnnotationProps> = function ({ target, name, onDelete, onEdit, type }) {
-    const isDone = Boolean(useAppSelector(selectDone(target)));
+    const isDone = Boolean(useAppSelector(selectComplete(target)));
 
     return (
         <ButtonGroup size="sm" variant="outline" isAttached>
