@@ -52,9 +52,9 @@ export class AnnotationFilter extends AbstractPythonFilter {
                     id in annotations.attributes ||
                     id in annotations.boundaries ||
                     id in annotations.calledAfters ||
+                    // Deliberately not checking annotations.complete. It should be transparent it's an annotation.
                     id in annotations.constants ||
                     id in annotations.descriptions ||
-                    // Deliberately not checking annotations.done. It should be transparent to users it's an annotation.
                     id in annotations.enums ||
                     id in annotations.groups ||
                     id in annotations.moves ||
@@ -71,12 +71,12 @@ export class AnnotationFilter extends AbstractPythonFilter {
                 return id in annotations.boundaries;
             case AnnotationType.CalledAfter:
                 return id in annotations.calledAfters;
+            case AnnotationType.Complete:
+                return id in annotations.completes;
             case AnnotationType.Constant:
                 return id in annotations.constants;
             case AnnotationType.Description:
                 return id in annotations.descriptions;
-            case AnnotationType.Done:
-                return id in annotations.dones;
             case AnnotationType.Enum:
                 return id in annotations.enums;
             case AnnotationType.Group:
@@ -106,9 +106,9 @@ export enum AnnotationType {
     Attribute,
     Boundary,
     CalledAfter,
+    Complete,
     Constant,
     Description,
-    Done,
     Enum,
     Group,
     Move,
