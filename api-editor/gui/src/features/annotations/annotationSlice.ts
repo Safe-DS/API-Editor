@@ -430,6 +430,11 @@ const annotationsSlice = createSlice({
         upsertConstant(state, action: PayloadAction<ConstantAnnotation>) {
             state.constants[action.payload.target] = action.payload;
         },
+        upsertConstants(state, action: PayloadAction<ConstantAnnotation[]>) {
+            action.payload.forEach((annotation) => {
+                state.constants[annotation.target] = annotation;
+            });
+        },
         removeConstant(state, action: PayloadAction<string>) {
             delete state.constants[action.payload];
         },
@@ -491,11 +496,21 @@ const annotationsSlice = createSlice({
         upsertMove(state, action: PayloadAction<MoveAnnotation>) {
             state.moves[action.payload.target] = action.payload;
         },
+        upsertMoves(state, action: PayloadAction<MoveAnnotation[]>) {
+            action.payload.forEach((annotation) => {
+                state.moves[annotation.target] = annotation;
+            });
+        },
         removeMove(state, action: PayloadAction<string>) {
             delete state.moves[action.payload];
         },
         upsertOptional(state, action: PayloadAction<OptionalAnnotation>) {
             state.optionals[action.payload.target] = action.payload;
+        },
+        upsertOptionals(state, action: PayloadAction<OptionalAnnotation[]>) {
+            action.payload.forEach((annotation) => {
+                state.optionals[annotation.target] = annotation;
+            });
         },
         removeOptional(state, action: PayloadAction<string>) {
             delete state.optionals[action.payload];
@@ -509,17 +524,32 @@ const annotationsSlice = createSlice({
         upsertRenaming(state, action: PayloadAction<RenameAnnotation>) {
             state.renamings[action.payload.target] = action.payload;
         },
+        upsertRenamings(state, action: PayloadAction<RenameAnnotation[]>) {
+            action.payload.forEach((annotation) => {
+                state.renamings[annotation.target] = annotation;
+            });
+        },
         removeRenaming(state, action: PayloadAction<string>) {
             delete state.renamings[action.payload];
         },
         addRequired(state, action: PayloadAction<RequiredAnnotation>) {
             state.requireds[action.payload.target] = action.payload;
         },
+        upsertRequireds(state, action: PayloadAction<RequiredAnnotation[]>) {
+            action.payload.forEach((annotation) => {
+                state.requireds[annotation.target] = annotation;
+            });
+        },
         removeRequired(state, action: PayloadAction<string>) {
             delete state.requireds[action.payload];
         },
         addRemove(state, action: PayloadAction<RemoveAnnotation>) {
             state.removes[action.payload.target] = action.payload;
+        },
+        upsertRemoves(state, action: PayloadAction<RemoveAnnotation[]>) {
+            action.payload.forEach((annotation) => {
+                state.removes[annotation.target] = annotation;
+            });
         },
         removeRemove(state, action: PayloadAction<string>) {
             delete state.removes[action.payload];
@@ -551,6 +581,7 @@ export const {
     addComplete,
     removeComplete,
     upsertConstant,
+    upsertConstants,
     removeConstant,
     upsertDescription,
     removeDescription,
@@ -559,18 +590,23 @@ export const {
     upsertGroup,
     removeGroup,
     upsertMove,
+    upsertMoves,
     removeMove,
     upsertOptional,
+    upsertOptionals,
     removeOptional,
     addPure,
     removePure,
     upsertRenaming,
+    upsertRenamings,
     removeRenaming,
     addRequired,
+    upsertRequireds,
     removeRequired,
     upsertTodo,
     removeTodo,
     addRemove,
+    upsertRemoves,
     removeRemove,
 } = actions;
 export const annotationsReducer = reducer;
