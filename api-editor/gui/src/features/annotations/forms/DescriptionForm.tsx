@@ -65,7 +65,7 @@ export const DescriptionForm: React.FC<DescriptionFormProps> = function ({ targe
 
     return (
         <AnnotationForm
-            heading={`${prevNewDescription ? 'Edit' : 'Add'} @description annotation`}
+            heading={`${prevNewDescription ? 'Edit' : 'Add'} @description Annotation`}
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
         >

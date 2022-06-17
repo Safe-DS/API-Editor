@@ -70,7 +70,7 @@ export const RenameForm: React.FC<RenameFormProps> = function ({ target }) {
 
     return (
         <AnnotationForm
-            heading={`${prevNewName ? 'Edit' : 'Add'} @rename annotation`}
+            heading={`${prevNewName ? 'Edit' : 'Add'} @rename Annotation`}
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
         >

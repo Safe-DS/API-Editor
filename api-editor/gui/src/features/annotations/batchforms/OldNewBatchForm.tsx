@@ -69,7 +69,7 @@ export const OldNewBatchForm: React.FC<OldNewBatchFormProps> = function ({
     return (
         <>
             <AnnotationBatchForm
-                heading={`Add @${annotationType} annotation`}
+                heading={`Add @${annotationType} Annotations`}
                 onConfirm={handleSubmit(handleConfirm)}
                 onCancel={handleCancel}
             >

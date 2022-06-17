@@ -144,7 +144,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                         <MenuList>
                             <MenuOptionGroup type="checkbox" value={colorModeArray}>
                                 <MenuItemOption value={'darkMode'} onClick={toggleColorMode}>
-                                    Dark mode
+                                    Dark Mode
                                 </MenuItemOption>
                             </MenuOptionGroup>
                             <MenuDivider />
@@ -175,7 +175,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                                 </MenuOptionGroup>
                             </MenuGroup>
                             <MenuDivider />
-                            <MenuGroup title="Heat Map Mode">
+                            <MenuGroup title="Heatmap Mode">
                                 <MenuOptionGroup type="radio" defaultValue={HeatMapMode.None} value={heatMapMode}>
                                     <MenuItemOption
                                         paddingLeft={8}
