@@ -11,10 +11,24 @@ import { ModuleView } from './ModuleView';
 import { ParameterView } from './ParameterView';
 import { useAppSelector } from '../../../app/hooks';
 import { selectRawPythonPackage } from '../apiSlice';
+import { StatisticsView } from './StatisticsView';
 
 export const SelectionView: React.FC = function () {
     const rawPythonPackage = useAppSelector(selectRawPythonPackage);
     const declaration = rawPythonPackage.getDeclarationById(useLocation().pathname.split('/').splice(1).join('/'));
+    const location = useLocation().pathname;
+
+    if (location === '/statisticsView') {
+        return (
+            <VStack h="100%">
+                <Box w="100%" flexGrow={1} overflowY="scroll">
+                    <Box padding={4}>
+                        <StatisticsView />
+                    </Box>
+                </Box>
+            </VStack>
+        );
+    }
 
     if (!declaration) {
         return null;
