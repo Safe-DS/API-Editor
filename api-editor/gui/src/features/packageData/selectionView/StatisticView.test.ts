@@ -92,18 +92,18 @@ const expectedParameterCount = new Map([
 
 test('getClassValues', () => {
     for (const [usedThreshold, values] of Array.from(expectedClassCount.entries())) {
-        expect(getClassValues(pythonPackage, usages, usedThreshold)).toBe(values);
+        expect(getClassValues(pythonPackage, usages, usedThreshold)).toEqual(values);
     }
 });
 
 test('getFunctionValues', () => {
     for (const [usedThreshold, values] of Array.from(expectedFunctionCount.entries())) {
-        expect(getFunctionValues(pythonPackage, usages, usedThreshold)).toBe(values);
+        expect(getFunctionValues(pythonPackage, usages, usedThreshold)).toEqual(values);
     }
 });
 
 test('getParameterValues', () => {
     for (const [usedThreshold, values] of Array.from(expectedParameterCount.entries())) {
-        expect(getParameterValues(pythonPackage, usages, usedThreshold)).toBe(values);
+        expect(getParameterValues(pythonPackage, usages, usedThreshold)).toEqual(values);
     }
 });
