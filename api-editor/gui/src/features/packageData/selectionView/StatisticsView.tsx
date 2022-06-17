@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, {ReactElement} from 'react';
 import {
     BarElement,
     CategoryScale,
@@ -9,10 +9,10 @@ import {
     Title,
     Tooltip,
 } from 'chart.js';
-import { Bar, Line } from 'react-chartjs-2';
-import { PythonPackage } from '../model/PythonPackage';
-import { Center, Spacer, Wrap, WrapItem } from '@chakra-ui/react';
-import { UsageCountStore } from '../../usages/model/UsageCountStore';
+import {Bar, Line} from 'react-chartjs-2';
+import {PythonPackage} from '../model/PythonPackage';
+import {Box, Flex} from '@chakra-ui/react';
+import {UsageCountStore} from '../../usages/model/UsageCountStore';
 
 ChartJS.register(CategoryScale, PointElement, LineElement, LinearScale, BarElement, Title, Tooltip);
 
@@ -21,7 +21,7 @@ interface FunctionViewProps {
     usages: UsageCountStore;
 }
 
-export const StatisticsView: React.FC<FunctionViewProps> = function ({ pythonPackage, usages }) {
+export const StatisticsView: React.FC<FunctionViewProps> = function ({pythonPackage, usages}) {
     const usedThreshold = 1;
 
     const classLabels = ['full', 'public', 'used'];
@@ -61,39 +61,34 @@ export const StatisticsView: React.FC<FunctionViewProps> = function ({ pythonPac
     );
 
     return (
-        <Wrap w="100%">
-            <WrapItem flex="0 0 100%" flexWrap="wrap">
-                <WrapItem w="33%" minWidth="min-content">
-                    <Center w="100%">{classBarChart}</Center>
-                </WrapItem>
-                <Spacer />
-                <WrapItem w="33%" minWidth="min-content">
-                    <Center w="100%">{functionBarChart}</Center>
-                </WrapItem>
-                <Spacer />
-                <WrapItem w="33%" minWidth="min-content">
-                    <Center w="100%">{parameterBarChart}</Center>
-                </WrapItem>
-            </WrapItem>
-
-            <WrapItem flex="0 0 100%" flexWrap="wrap">
-                <WrapItem w="33%" minWidth="min-content">
-                    <Center w="100%">{classLineChart}</Center>
-                </WrapItem>
-                <Spacer />
-                <WrapItem w="33%" minWidth="min-content">
-                    <Center w="100%">{functionLineChart}</Center>
-                </WrapItem>
-                <Spacer />
-                <WrapItem w="33%" minWidth="min-content">
-                    <Center w="100%">{parameterLineChart}</Center>
-                </WrapItem>
-            </WrapItem>
-        </Wrap>
+        <div>
+            <Flex wrap='wrap'>
+                <Box minWidth='350px' flex='1 1 33%'>
+                    {classBarChart}
+                </Box>
+                <Box minWidth='350px' flex='1 1 33%'>
+                    {functionBarChart}
+                </Box>
+                <Box minWidth='350px' flex='1 33%'>
+                    {parameterBarChart}
+                </Box>
+            </Flex>
+            <Flex wrap='wrap'>
+                <Box minWidth='350px' flex='1 1 33%'>
+                    {classLineChart}
+                </Box>
+                <Box minWidth='350px' flex='1 1 33%'>
+                    {functionLineChart}
+                </Box>
+                <Box minWidth='350px' flex='1 1 33%'>
+                    {parameterLineChart}
+                </Box>
+            </Flex>
+        </div>
     );
 };
 
-let getClassValues = function (pythonPackage: PythonPackage, usages: UsageCountStore, usedThreshold: number) {
+export let getClassValues = function (pythonPackage: PythonPackage, usages: UsageCountStore, usedThreshold: number) {
     const classes = pythonPackage.getClasses();
     let result: number[] = [];
 
@@ -109,7 +104,7 @@ let getClassValues = function (pythonPackage: PythonPackage, usages: UsageCountS
     return result;
 };
 
-let getFunctionValues = function (pythonPackage: PythonPackage, usages: UsageCountStore, usedThreshold: number) {
+export let getFunctionValues = function (pythonPackage: PythonPackage, usages: UsageCountStore, usedThreshold: number) {
     const functions = pythonPackage.getFunctions();
     let result: number[] = [];
 
@@ -125,7 +120,7 @@ let getFunctionValues = function (pythonPackage: PythonPackage, usages: UsageCou
     return result;
 };
 
-let getParameterValues = function (pythonPackage: PythonPackage, usages: UsageCountStore, usedThreshold: number) {
+export let getParameterValues = function (pythonPackage: PythonPackage, usages: UsageCountStore, usedThreshold: number) {
     const parameters = pythonPackage.getParameters();
     let result: number[] = [];
 
@@ -180,7 +175,7 @@ let createBarChart = function (labels: string[], values: number[], title: string
         ],
     };
 
-    return <Bar options={options} data={data} />;
+    return <Bar options={options} data={data}/>;
 };
 
 let createLineChart = function (
@@ -219,5 +214,5 @@ let createLineChart = function (
         ],
     };
 
-    return <Line options={options} data={data} />;
+    return <Line options={options} data={data}/>;
 };

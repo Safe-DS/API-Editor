@@ -4,6 +4,7 @@ import {PythonClass} from "../model/PythonClass";
 import {PythonFunction} from "../model/PythonFunction";
 import {PythonParameter} from "../model/PythonParameter";
 import {UsageCountStore} from "../../usages/model/UsageCountStore";
+import {getClassValues, getFunctionValues, getParameterValues} from "./StatisticsView";
 
 let parameterTest: PythonParameter[] = [
     new PythonParameter("test/test.test/parameterTestClass/privateParameterTestFunction/parameterTest0", "parameterTest0", "test.test.parameterTestClass.privateParameterTestFunction.parameterTest0", "", undefined, true, "", "", []),
@@ -28,12 +29,12 @@ let parameterTestFunctions: PythonFunction[] = [
 ]
 
 let testClasses: PythonClass[] = [
-    new PythonClass("test/test.test/privateClassTest" ,"privateClassTest", "test.test.privateClassTest", [], [], [], false, [], "", ""),
-    new PythonClass("test/test.test/classTest0" ,"classTest0", "test.test.classTest0", [], [], [], true, [], "", ""),
-    new PythonClass("test/test.test/classTest1" ,"classTest1", "test.test.classTest1", [], [], [], true, [], "", ""),
-    new PythonClass("test/test.test/classTest2" ,"classTest2", "test.test.classTest2", [], [], [], true, [], "", ""),
-    new PythonClass("test/test.test/functionTestClass" ,"functionTestClass", "test.test.functionTestClass", [], [], testFunctions, true, [], "", ""),
-    new PythonClass("test/test.test/parameterTestClass" ,"parameterTestClass", "test.test.parameterTestClass", [], [], parameterTestFunctions, true, [], "", "")
+    new PythonClass("test/test.test/privateClassTest", "privateClassTest", "test.test.privateClassTest", [], [], [], false, [], "", ""),
+    new PythonClass("test/test.test/classTest0", "classTest0", "test.test.classTest0", [], [], [], true, [], "", ""),
+    new PythonClass("test/test.test/classTest1", "classTest1", "test.test.classTest1", [], [], [], true, [], "", ""),
+    new PythonClass("test/test.test/classTest2", "classTest2", "test.test.classTest2", [], [], [], true, [], "", ""),
+    new PythonClass("test/test.test/functionTestClass", "functionTestClass", "test.test.functionTestClass", [], [], testFunctions, true, [], "", ""),
+    new PythonClass("test/test.test/parameterTestClass", "parameterTestClass", "test.test.parameterTestClass", [], [], parameterTestFunctions, true, [], "", "")
 ]
 
 const testModules = [new PythonModule("test/test.test", "test.test", [], [], testClasses, [])];
@@ -69,7 +70,7 @@ const moduleUsages = new Map([
     ["test/test.test", 0]
 ])
 
-const usages: UsageCountStore = new UsageCountStore(moduleUsages, classUsages, functionUsages, parameterUsages, new Map (), pythonPackage)
+const usages: UsageCountStore = new UsageCountStore(moduleUsages, classUsages, functionUsages, parameterUsages, new Map(), pythonPackage)
 
 const expectedClassCount = new Map([
     [0, [6, 5, 5]],
@@ -89,14 +90,20 @@ const expectedParameterCount = new Map([
     [3, [4, 3, 0]]
 ])
 
-for (const threshold of expectedClassCount) {
-    assert(function(pythonPackage, usages, threshold) == expectedClassCount[threshold]);
-}
+test('getClassValues', () => {
+    for (const [usedThreshold, values] of Array.from(expectedClassCount.entries())) {
+        expect(getClassValues(pythonPackage, usages, usedThreshold)).toBe(values);
+    }
+});
 
-for (const threshold of expectedFunctionCount) {
-    assert(function(pythonPackage, usages, threshold) == expectedFunctionCount[threshold]);
-}
+test('getFunctionValues', () => {
+    for (const [usedThreshold, values] of Array.from(expectedFunctionCount.entries())) {
+        expect(getFunctionValues(pythonPackage, usages, usedThreshold)).toBe(values);
+    }
+});
 
-for (const threshold of expectedParameterCountex) {
-    assert(function(pythonPackage, usages, threshold) == expectedParameterCount[threshold]);
-}
+test('getParameterValues', () => {
+    for (const [usedThreshold, values] of Array.from(expectedParameterCount.entries())) {
+        expect(getParameterValues(pythonPackage, usages, usedThreshold)).toBe(values);
+    }
+});
