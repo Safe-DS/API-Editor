@@ -71,7 +71,6 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
         colorModeArray.push('darkMode');
     }
 
-    const showStatistics = () => {};
     return (
         <Flex as="nav" borderBottom={1} layerStyle="subtleBorder" padding="0.5em 1em">
             <HStack>
@@ -118,7 +117,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                                 </MenuItemOption>
                             </MenuOptionGroup>
                             <MenuDivider />
-                            <MenuItemOption value={'statistics'} onClick={showStatistics}>
+                            <MenuItemOption value={'statistics'} onClick={setStatisticsViewPath}>
                                 Statistics
                             </MenuItemOption>
                             <MenuDivider />
@@ -180,7 +179,6 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                         </MenuList>
                     </Menu>
                 </Box>
-                <Button onClick={setStatisticsViewPath}>Statistics View</Button>
             </HStack>
 
             <Spacer />
