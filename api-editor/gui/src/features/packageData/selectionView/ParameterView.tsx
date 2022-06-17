@@ -2,7 +2,6 @@ import { Heading, Stack, Text as ChakraText } from '@chakra-ui/react';
 import React from 'react';
 import { PythonParameter } from '../model/PythonParameter';
 import { ParameterNode } from './ParameterNode';
-import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import {
     BarElement,
     CategoryScale,
@@ -14,17 +13,20 @@ import {
     Tooltip,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { useAppSelector } from '../../../app/hooks';
+import { selectUsages } from '../../usages/usageSlice';
 
 ChartJS.register(CategoryScale, PointElement, LineElement, LinearScale, BarElement, Title, Tooltip);
 
 
 interface ParameterViewProps {
     pythonParameter: PythonParameter;
-    usages: UsageCountStore;
 }
 
-export const ParameterView: React.FC<ParameterViewProps> = function ({pythonParameter, usages}) {
+export const ParameterView: React.FC<ParameterViewProps> = function ({pythonParameter}) {
+    const usages = useAppSelector(selectUsages);
     const parameterUsages = usages.valueUsages.get(pythonParameter.id);
+
     return (
         <Stack spacing={8}>
             <ParameterNode isTitle pythonParameter={pythonParameter} />
