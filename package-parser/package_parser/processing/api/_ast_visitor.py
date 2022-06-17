@@ -1,7 +1,11 @@
 import inspect
+import logging
+import re
 from typing import Optional, Union
 
 import astroid
+from astroid.context import InferenceContext
+from astroid.helpers import safe_infer
 from numpydoc.docscrape import NumpyDocString
 from package_parser.model.api import (
     API,
@@ -14,28 +18,58 @@ from package_parser.model.api import (
     ParameterAndResultDocstring,
     ParameterAssignment,
 )
-from package_parser.utils import parent_qname
+from package_parser.utils import parent_qualified_name
 
 from ._file_filters import _is_init_file
 
 
 class _AstVisitor:
     def __init__(self, api: API) -> None:
-        self.reexported: set[str] = set()
+        self.reexported: dict[str, list[str]] = {}
         self.api: API = api
         self.__declaration_stack: list[Union[Module, Class, Function]] = []
 
-    def __get_pname(self, name: str) -> str:
+    def __get_id(self, name: str) -> str:
         segments = [self.api.package]
         segments += [it.name for it in self.__declaration_stack]
         segments += [name]
 
         return "/".join(segments)
 
+    def __get_function_id(self, name: str, decorators: list[str]) -> str:
+        def is_getter() -> bool:
+            return "property" in decorators
+
+        def is_setter() -> bool:
+            for decorator in decorators:
+                if re.search(r"^[^.]*.setter$", decorator):
+                    return True
+
+            return False
+
+        def is_deleter() -> bool:
+            for decorator in decorators:
+                if re.search(r"^[^.]*.deleter$", decorator):
+                    return True
+
+            return False
+
+        result = self.__get_id(name)
+
+        if is_getter():
+            result += "@getter"
+        elif is_setter():
+            result += "@setter"
+        elif is_deleter():
+            result += "@deleter"
+
+        return result
+
     def enter_module(self, module_node: astroid.Module):
         imports: list[Import] = []
         from_imports: list[FromImport] = []
         visited_global_nodes: set[astroid.NodeNG] = set()
+        id_ = f"{self.api.package}/{module_node.qname()}"
 
         for _, global_node_list in module_node.globals.items():
             global_node = global_node_list[0]
@@ -60,17 +94,31 @@ class _AstVisitor:
                     from_imports.append(FromImport(base_import_path, name, alias))
 
                 # Find re-exported declarations in __init__.py files
-                if _is_init_file(module_node.file):
+                if _is_init_file(module_node.file) and is_public_module(
+                    module_node.qname()
+                ):
                     for declaration, _ in global_node.names:
-                        reexported_name = f"{base_import_path}.{declaration}"
+                        context = InferenceContext()
+                        context.lookupname = declaration
+                        node = safe_infer(global_node, context)
+
+                        if node is None:
+                            logging.warning(
+                                f"Could not resolve 'from {global_node.modname} import {declaration}"
+                            )
+                            continue
+
+                        reexported_name = node.qname()
 
                         if reexported_name.startswith(module_node.name):
-                            self.reexported.add(reexported_name)
+                            if reexported_name not in self.reexported:
+                                self.reexported[reexported_name] = []
+                            self.reexported[reexported_name].append(id_)
 
         # Remember module, so we can later add classes and global functions
         module = Module(
+            id_,
             module_node.qname(),
-            f"{self.api.package}/{module_node.qname()}",
             imports,
             from_imports,
         )
@@ -96,14 +144,14 @@ class _AstVisitor:
 
         # Remember class, so we can later add methods
         class_ = Class(
+            self.__get_id(class_node.name),
             qname,
-            self.__get_pname(class_node.name),
             decorator_names,
             class_node.basenames,
             self.is_public(class_node.name, qname),
+            self.reexported.get(qname, []),
             _AstVisitor.__description(numpydoc),
             class_node.doc,
-            class_node.as_string(),
         )
         self.__declaration_stack.append(class_)
 
@@ -118,7 +166,7 @@ class _AstVisitor:
             # Ignore nested classes for now
             if isinstance(parent, Module):
                 self.api.add_class(class_)
-                parent.add_class(class_.qname)
+                parent.add_class(class_.id)
 
     def enter_functiondef(self, function_node: astroid.FunctionDef) -> None:
         qname = function_node.qname()
@@ -133,17 +181,17 @@ class _AstVisitor:
         is_public = self.is_public(function_node.name, qname)
 
         function = Function(
+            self.__get_function_id(function_node.name, decorator_names),
             qname,
-            self.__get_pname(function_node.name),
             decorator_names,
             self.__function_parameters(
-                function_node, is_public, qname, self.__get_pname(function_node.name)
+                function_node, is_public, qname, self.__get_id(function_node.name)
             ),
             [],  # TODO: results
             is_public,
+            self.reexported.get(qname, []),
             _AstVisitor.__description(numpydoc),
             function_node.doc,
-            function_node.as_string(),
         )
         self.__declaration_stack.append(function)
 
@@ -158,10 +206,10 @@ class _AstVisitor:
             # Ignore nested functions for now
             if isinstance(parent, Module):
                 self.api.add_function(function)
-                parent.add_function(function.unique_qname)
+                parent.add_function(function.id)
             elif isinstance(parent, Class):
                 self.api.add_function(function)
-                parent.add_method(function.unique_qname)
+                parent.add_method(function.id)
 
     @staticmethod
     def __description(numpydoc: NumpyDocString) -> str:
@@ -184,7 +232,7 @@ class _AstVisitor:
         node: astroid.FunctionDef,
         function_is_public: bool,
         function_qname: str,
-        function_pname: str,
+        function_id: str,
     ) -> list[Parameter]:
         parameters = node.args
         n_implicit_parameters = node.implicit_parameters()
@@ -199,12 +247,12 @@ class _AstVisitor:
         # Arguments that can be specified positionally only ( f(1) works but not f(x=1) )
         result = [
             Parameter(
-                it.name,
+                id_=function_id + "/" + it.name,
+                name=it.name,
                 qname=function_qname + "." + it.name,
-                pname=function_pname + "/" + it.name,
                 default_value=None,
-                is_public=function_is_public,
                 assigned_by=ParameterAssignment.POSITION_ONLY,
+                is_public=function_is_public,
                 docstring=_AstVisitor.__parameter_docstring(function_numpydoc, it.name),
             )
             for it in parameters.posonlyargs
@@ -213,15 +261,15 @@ class _AstVisitor:
         # Arguments that can be specified positionally or by name ( f(1) and f(x=1) both work )
         result += [
             Parameter(
+                function_id + "/" + it.name,
                 it.name,
                 function_qname + "." + it.name,
-                function_pname + "/" + it.name,
                 _AstVisitor.__parameter_default(
                     parameters.defaults,
                     index - len(parameters.args) + len(parameters.defaults),
                 ),
-                function_is_public,
                 ParameterAssignment.POSITION_OR_NAME,
+                function_is_public,
                 _AstVisitor.__parameter_docstring(function_numpydoc, it.name),
             )
             for index, it in enumerate(parameters.args)
@@ -230,21 +278,25 @@ class _AstVisitor:
         # Arguments that can be specified by name only ( f(x=1) works but not f(1) )
         result += [
             Parameter(
+                function_id + "/" + it.name,
                 it.name,
                 function_qname + "." + it.name,
-                function_pname + "/" + it.name,
                 _AstVisitor.__parameter_default(
                     parameters.kw_defaults,
                     index - len(parameters.kwonlyargs) + len(parameters.kw_defaults),
                 ),
-                function_is_public,
                 ParameterAssignment.NAME_ONLY,
+                function_is_public,
                 _AstVisitor.__parameter_docstring(function_numpydoc, it.name),
             )
             for index, it in enumerate(parameters.kwonlyargs)
         ]
 
-        return result[n_implicit_parameters:]
+        implicit_parameters = result[:n_implicit_parameters]
+        for implicit_parameter in implicit_parameters:
+            implicit_parameter.assigned_by = ParameterAssignment.IMPLICIT
+
+        return result
 
     @staticmethod
     def __parameter_default(
@@ -283,8 +335,15 @@ class _AstVisitor:
             return True
 
         # Containing class is re-exported (always false if the current API element is not a method)
-        if parent_qname(qualified_name) in self.reexported:
+        if (
+            isinstance(self.__declaration_stack[-1], Class)
+            and parent_qualified_name(qualified_name) in self.reexported
+        ):
             return True
 
         # The slicing is necessary so __init__ functions are not excluded (already handled in the first condition).
         return all(not it.startswith("_") for it in qualified_name.split(".")[:-1])
+
+
+def is_public_module(module_name: str) -> bool:
+    return all(not it.startswith("_") for it in module_name.split("."))

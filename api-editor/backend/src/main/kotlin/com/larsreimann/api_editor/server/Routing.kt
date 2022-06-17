@@ -1,8 +1,10 @@
-package com.larsreimann.api_editor.backend
+package com.larsreimann.api_editor.server
 
 import com.larsreimann.api_editor.codegen.generateCode
 import com.larsreimann.api_editor.model.SerializablePythonPackage
 import com.larsreimann.api_editor.mutable_model.convertPackage
+import com.larsreimann.api_editor.transformation.processing_exceptions.ConflictingEnumException
+import com.larsreimann.api_editor.transformation.processing_exceptions.ConflictingGroupException
 import com.larsreimann.api_editor.transformation.transform
 import com.larsreimann.api_editor.validation.AnnotationValidator
 import io.ktor.http.ContentDisposition
@@ -24,6 +26,7 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
+import io.ktor.server.util.getOrFail
 import java.io.File
 
 fun Application.configureRouting() {
@@ -55,9 +58,9 @@ fun Route.echo() {
 }
 
 fun Route.infer() {
-    post("/infer") {
+    post("/generate-adapters/{newPackageName}") {
         val pythonPackage = call.receive<SerializablePythonPackage>()
-        when (val doInferResult = doInfer(pythonPackage)) {
+        when (val doInferResult = doInfer(pythonPackage, call.parameters.getOrFail("newPackageName"))) {
             is DoInferResult.ValidationFailure -> {
                 call.respond(HttpStatusCode.Conflict, doInferResult.messages)
             }
@@ -84,7 +87,7 @@ fun Route.infer() {
     }
 }
 
-fun doInfer(originalPythonPackage: SerializablePythonPackage): DoInferResult {
+fun doInfer(originalPythonPackage: SerializablePythonPackage, newPackageNew: String): DoInferResult {
     // Validate
     val errors = AnnotationValidator(originalPythonPackage).validate()
     if (errors.isNotEmpty()) {
@@ -93,7 +96,14 @@ fun doInfer(originalPythonPackage: SerializablePythonPackage): DoInferResult {
 
     // Process package
     val mutablePackage = convertPackage(originalPythonPackage)
-    mutablePackage.transform()
+
+    try {
+        mutablePackage.transform(newPackageNew)
+    } catch (e: ConflictingEnumException) {
+        return DoInferResult.ValidationFailure(listOf(e.message!!))
+    } catch (e: ConflictingGroupException) {
+        return DoInferResult.ValidationFailure(listOf(e.message!!))
+    }
 
     // Build files
     val path = mutablePackage.generateCode()

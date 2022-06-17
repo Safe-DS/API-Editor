@@ -4,6 +4,7 @@ import {
     CalledAfterAnnotation,
     ComparisonOperator,
     ConstantAnnotation,
+    DescriptionAnnotation,
     DefaultType,
     DefaultValue,
     EnumAnnotation,
@@ -12,6 +13,7 @@ import {
     MoveAnnotation,
     OptionalAnnotation,
     RenameAnnotation,
+    TodoAnnotation,
 } from '../../annotations/annotationSlice';
 
 const dataPathPrefix = 'com.larsreimann.api_editor.model.';
@@ -92,6 +94,15 @@ export class InferableConstantAnnotation extends InferableAnnotation {
     }
 }
 
+export class InferableDescriptionAnnotation extends InferableAnnotation {
+    readonly newDescription: string;
+
+    constructor(descriptionAnnotation: DescriptionAnnotation) {
+        super(dataPathPrefix + 'DescriptionAnnotation');
+        this.newDescription = descriptionAnnotation.newDescription;
+    }
+}
+
 export class InferableGroupAnnotation extends InferableAnnotation {
     readonly groupName: string;
     readonly parameters: string[];
@@ -156,5 +167,14 @@ export class InferableRequiredAnnotation extends InferableAnnotation {
 export class InferableRemoveAnnotation extends InferableAnnotation {
     constructor() {
         super(dataPathPrefix + 'RemoveAnnotation');
+    }
+}
+
+export class InferableTodoAnnotation extends InferableAnnotation {
+    readonly message: string;
+
+    constructor(todoAnnotation: TodoAnnotation) {
+        super(dataPathPrefix + 'TodoAnnotation');
+        this.message = todoAnnotation.newTodo;
     }
 }

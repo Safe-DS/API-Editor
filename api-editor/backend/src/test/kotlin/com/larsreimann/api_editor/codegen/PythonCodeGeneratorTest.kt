@@ -238,6 +238,23 @@ class PythonCodeGeneratorTest {
                     |        self.testAttribute2: int = 2
             """.trimMargin()
         }
+
+        @Test
+        fun `should store todo if it is not blank`() {
+            val testClass = PythonClass(
+                name = "TestClass",
+                todo = "    Lorem ipsum\n\n    Dolor sit\namet\n"
+            )
+
+            testClass.toPythonCode() shouldBe """
+                    |# TODO: Lorem ipsum
+                    |#
+                    |#           Dolor sit
+                    |#       amet
+                    |class TestClass:
+                    |    pass
+            """.trimMargin()
+        }
     }
 
     @Nested
@@ -439,6 +456,22 @@ class PythonCodeGeneratorTest {
                 |    self.testAttribute2 = 2
                 |
                 |    self.instance = OriginalClass()
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should store todo if it is not blank`() {
+            val testConstructor = PythonConstructor(
+                todo = "    Lorem ipsum\n\n    Dolor sit\namet\n"
+            )
+
+            testConstructor.toPythonCode() shouldBe """
+                    |# TODO: Lorem ipsum
+                    |#
+                    |#           Dolor sit
+                    |#       amet
+                    |def __init__():
+                    |    pass
             """.trimMargin()
         }
     }
@@ -684,6 +717,23 @@ class PythonCodeGeneratorTest {
                     |        Test parameter 2
                     |    ${"\"\"\""}
                     |
+                    |    pass
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should store todo if it is not blank`() {
+            val testFunction = PythonFunction(
+                name = "testFunction",
+                todo = "    Lorem ipsum\n\n    Dolor sit\namet\n"
+            )
+
+            testFunction.toPythonCode() shouldBe """
+                    |# TODO: Lorem ipsum
+                    |#
+                    |#           Dolor sit
+                    |#       amet
+                    |def testFunction():
                     |    pass
             """.trimMargin()
         }
@@ -1160,7 +1210,7 @@ class PythonCodeGeneratorTest {
 
         @Test
         fun `should handle None`() {
-            val expression = PythonNone
+            val expression = PythonNone()
             expression.toPythonCode() shouldBe "None"
         }
 
@@ -1198,26 +1248,26 @@ class PythonCodeGeneratorTest {
 
         @Test
         fun `should convert stringified type 'bool' to Boolean`() {
-            val smlType = PythonStringifiedType("bool")
-            smlType.toPythonCodeOrNull() shouldBe "bool"
+            val SdsType = PythonStringifiedType("bool")
+            SdsType.toPythonCodeOrNull() shouldBe "bool"
         }
 
         @Test
         fun `should convert stringified type 'float' to Float`() {
-            val smlType = PythonStringifiedType("float")
-            smlType.toPythonCodeOrNull() shouldBe "float"
+            val SdsType = PythonStringifiedType("float")
+            SdsType.toPythonCodeOrNull() shouldBe "float"
         }
 
         @Test
         fun `should convert stringified type 'int' to Int`() {
-            val smlType = PythonStringifiedType("int")
-            smlType.toPythonCodeOrNull() shouldBe "int"
+            val SdsType = PythonStringifiedType("int")
+            SdsType.toPythonCodeOrNull() shouldBe "int"
         }
 
         @Test
         fun `should convert stringified type 'str' to String`() {
-            val smlType = PythonStringifiedType("str")
-            smlType.toPythonCodeOrNull() shouldBe "str"
+            val SdsType = PythonStringifiedType("str")
+            SdsType.toPythonCodeOrNull() shouldBe "str"
         }
 
         @Test

@@ -1,22 +1,23 @@
-import { AnnotationsState } from '../../annotations/annotationSlice';
-import PythonClass from '../../packageData/model/PythonClass';
-import PythonFunction from '../../packageData/model/PythonFunction';
-import PythonModule from '../../packageData/model/PythonModule';
-import PythonPackage from '../../packageData/model/PythonPackage';
-import PythonParameter from '../../packageData/model/PythonParameter';
-import PythonResult from '../../packageData/model/PythonResult';
-import AnnotatedPythonClass from './AnnotatedPythonClass';
-import AnnotatedPythonFunction from './AnnotatedPythonFunction';
-import AnnotatedPythonModule from './AnnotatedPythonModule';
-import AnnotatedPythonPackage from './AnnotatedPythonPackage';
-import AnnotatedPythonParameter from './AnnotatedPythonParameter';
-import AnnotatedPythonResult from './AnnotatedPythonResult';
+import { AnnotationStore } from '../../annotations/annotationSlice';
+import { PythonClass } from '../../packageData/model/PythonClass';
+import { PythonFunction } from '../../packageData/model/PythonFunction';
+import { PythonModule } from '../../packageData/model/PythonModule';
+import { PythonPackage } from '../../packageData/model/PythonPackage';
+import { PythonParameter } from '../../packageData/model/PythonParameter';
+import { PythonResult } from '../../packageData/model/PythonResult';
+import { AnnotatedPythonClass } from './AnnotatedPythonClass';
+import { AnnotatedPythonFunction } from './AnnotatedPythonFunction';
+import { AnnotatedPythonModule } from './AnnotatedPythonModule';
+import { AnnotatedPythonPackage } from './AnnotatedPythonPackage';
+import { AnnotatedPythonParameter } from './AnnotatedPythonParameter';
+import { AnnotatedPythonResult } from './AnnotatedPythonResult';
 import {
     InferableAnnotation,
     InferableAttributeAnnotation,
     InferableBoundaryAnnotation,
     InferableCalledAfterAnnotation,
     InferableConstantAnnotation,
+    InferableDescriptionAnnotation,
     InferableEnumAnnotation,
     InferableGroupAnnotation,
     InferableMoveAnnotation,
@@ -25,13 +26,14 @@ import {
     InferableRemoveAnnotation,
     InferableRenameAnnotation,
     InferableRequiredAnnotation,
+    InferableTodoAnnotation,
 } from './InferableAnnotation';
 
-export default class AnnotatedPythonPackageBuilder {
+export class AnnotatedPythonPackageBuilder {
     readonly pythonPackage: PythonPackage;
-    readonly annotationStore: AnnotationsState;
+    readonly annotationStore: AnnotationStore;
 
-    constructor(pythonPackage: PythonPackage, annotationStore: AnnotationsState) {
+    constructor(pythonPackage: PythonPackage, annotationStore: AnnotationStore) {
         this.pythonPackage = pythonPackage;
         this.annotationStore = annotationStore;
     }
@@ -42,7 +44,7 @@ export default class AnnotatedPythonPackageBuilder {
             this.pythonPackage.distribution,
             this.pythonPackage.version,
             this.#buildAnnotatedPythonModules(this.pythonPackage.modules),
-            this.#getExistingAnnotations(this.pythonPackage.pathAsString()),
+            this.#getExistingAnnotations(this.pythonPackage.id),
         );
     }
 
@@ -55,7 +57,7 @@ export default class AnnotatedPythonPackageBuilder {
                     pythonModule.fromImports,
                     this.#buildAnnotatedPythonClasses(pythonModule),
                     this.#buildAnnotatedPythonFunctions(pythonModule),
-                    this.#getExistingAnnotations(pythonModule.pathAsString()),
+                    this.#getExistingAnnotations(pythonModule.id),
                 ),
         );
     }
@@ -72,7 +74,7 @@ export default class AnnotatedPythonPackageBuilder {
                     pythonClass.isPublic,
                     pythonClass.description,
                     pythonClass.fullDocstring,
-                    this.#getExistingAnnotations(pythonClass.pathAsString()),
+                    this.#getExistingAnnotations(pythonClass.id),
                 ),
         );
     }
@@ -99,7 +101,7 @@ export default class AnnotatedPythonPackageBuilder {
             pythonFunction.isPublic,
             pythonFunction.description,
             pythonFunction.fullDocstring,
-            this.#getExistingAnnotations(pythonFunction.pathAsString()),
+            this.#getExistingAnnotations(pythonFunction.id),
         );
     }
 
@@ -117,7 +119,7 @@ export default class AnnotatedPythonPackageBuilder {
                     pythonParameter.isPublic,
                     pythonParameter.typeInDocs,
                     pythonParameter.description,
-                    this.#getExistingAnnotations(pythonParameter.pathAsString()),
+                    this.#getExistingAnnotations(pythonParameter.id),
                 ),
         );
     }
@@ -127,10 +129,10 @@ export default class AnnotatedPythonPackageBuilder {
             (pythonResult: PythonResult) =>
                 new AnnotatedPythonResult(
                     pythonResult.name,
-                    pythonResult.type,
+                    pythonResult.typeInDocs,
                     pythonResult.typeInDocs,
                     pythonResult.description,
-                    this.#getExistingAnnotations(pythonResult.pathAsString()),
+                    this.#getExistingAnnotations(pythonResult.id),
                 ),
         );
     }
@@ -140,6 +142,7 @@ export default class AnnotatedPythonPackageBuilder {
         'Boundary',
         'CalledAfters',
         'Constant',
+        'Description',
         'Enum',
         'Groups',
         'Move',
@@ -148,6 +151,7 @@ export default class AnnotatedPythonPackageBuilder {
         'Remove',
         'Rename',
         'Required',
+        'Todo',
     ];
 
     #getExistingAnnotations(target: string): InferableAnnotation[] {
@@ -190,6 +194,12 @@ export default class AnnotatedPythonPackageBuilder {
                 const constantAnnotation = this.annotationStore.constants[target];
                 if (constantAnnotation) {
                     return new InferableConstantAnnotation(constantAnnotation);
+                }
+                break;
+            case 'Description':
+                const descriptionAnnotation = this.annotationStore.descriptions[target];
+                if (descriptionAnnotation) {
+                    return new InferableDescriptionAnnotation(descriptionAnnotation);
                 }
                 break;
             case 'Groups':
@@ -240,6 +250,12 @@ export default class AnnotatedPythonPackageBuilder {
                 const requiredAnnotation = this.annotationStore.requireds[target];
                 if (requiredAnnotation) {
                     return new InferableRequiredAnnotation();
+                }
+                break;
+            case 'Todo':
+                const todoAnnotation = this.annotationStore.todos[target];
+                if (todoAnnotation) {
+                    return new InferableTodoAnnotation(todoAnnotation);
                 }
                 break;
         }

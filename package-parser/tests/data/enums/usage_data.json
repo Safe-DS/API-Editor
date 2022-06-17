@@ -1,6 +1,14 @@
 {
     "class_counts": {},
-    "function_counts": {},
-    "parameter_counts": {},
-    "value_counts": {}
+    "function_counts": {
+        "test/test/some_global_function": 1
+    },
+    "parameter_counts": {
+        "test/test/some_global_function/enum_parameter_but_constant": 1
+    },
+    "value_counts": {
+        "test/test/some_global_function/enum_parameter_but_constant": {
+            "'auto'": 1
+        }
+    }
 }

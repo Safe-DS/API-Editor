@@ -1,16 +1,16 @@
-import PythonClass from '../PythonClass';
-import PythonFunction from '../PythonFunction';
-import PythonModule from '../PythonModule';
-import PythonParameter from '../PythonParameter';
-import AbstractPythonFilter from './AbstractPythonFilter';
-import PythonDeclaration from '../PythonDeclaration';
-import { AnnotationsState } from '../../../annotations/annotationSlice';
+import { PythonClass } from '../PythonClass';
+import { PythonFunction } from '../PythonFunction';
+import { PythonModule } from '../PythonModule';
+import { PythonParameter } from '../PythonParameter';
+import { AbstractPythonFilter } from './AbstractPythonFilter';
+import { PythonDeclaration } from '../PythonDeclaration';
+import { AnnotationStore } from '../../../annotations/annotationSlice';
 import { UsageCountStore } from '../../../usages/model/UsageCountStore';
 
 /**
  * Keeps only declarations with either an arbitrary or a specific annotation.
  */
-export default class AnnotationFilter extends AbstractPythonFilter {
+export class AnnotationFilter extends AbstractPythonFilter {
     /**
      * @param type The annotations to look for. If this is set to `AnnotationType.Any` all annotated declarations are
      * kept. For other values only declarations with the specified annotation are kept.
@@ -19,25 +19,21 @@ export default class AnnotationFilter extends AbstractPythonFilter {
         super();
     }
 
-    shouldKeepModule(pythonModule: PythonModule, annotations: AnnotationsState, usages: UsageCountStore): boolean {
+    shouldKeepModule(pythonModule: PythonModule, annotations: AnnotationStore, usages: UsageCountStore): boolean {
         return this.shouldKeepDeclaration(pythonModule, annotations, usages);
     }
 
-    shouldKeepClass(pythonClass: PythonClass, annotations: AnnotationsState, usages: UsageCountStore): boolean {
+    shouldKeepClass(pythonClass: PythonClass, annotations: AnnotationStore, usages: UsageCountStore): boolean {
         return this.shouldKeepDeclaration(pythonClass, annotations, usages);
     }
 
-    shouldKeepFunction(
-        pythonFunction: PythonFunction,
-        annotations: AnnotationsState,
-        usages: UsageCountStore,
-    ): boolean {
+    shouldKeepFunction(pythonFunction: PythonFunction, annotations: AnnotationStore, usages: UsageCountStore): boolean {
         return this.shouldKeepDeclaration(pythonFunction, annotations, usages);
     }
 
     shouldKeepParameter(
         pythonParameter: PythonParameter,
-        annotations: AnnotationsState,
+        annotations: AnnotationStore,
         usages: UsageCountStore,
     ): boolean {
         return this.shouldKeepDeclaration(pythonParameter, annotations, usages);
@@ -45,10 +41,10 @@ export default class AnnotationFilter extends AbstractPythonFilter {
 
     shouldKeepDeclaration(
         pythonDeclaration: PythonDeclaration,
-        annotations: AnnotationsState,
+        annotations: AnnotationStore,
         _usages: UsageCountStore,
     ): boolean {
-        const id = pythonDeclaration.pathAsString();
+        const id = pythonDeclaration.id;
 
         switch (this.type) {
             case AnnotationType.Any:
@@ -57,6 +53,8 @@ export default class AnnotationFilter extends AbstractPythonFilter {
                     id in annotations.boundaries ||
                     id in annotations.calledAfters ||
                     id in annotations.constants ||
+                    id in annotations.descriptions ||
+                    // Deliberately not checking annotations.done. It should be transparent to users it's an annotation.
                     id in annotations.enums ||
                     id in annotations.groups ||
                     id in annotations.moves ||
@@ -64,7 +62,8 @@ export default class AnnotationFilter extends AbstractPythonFilter {
                     id in annotations.pures ||
                     id in annotations.removes ||
                     id in annotations.renamings ||
-                    id in annotations.requireds
+                    id in annotations.requireds ||
+                    id in annotations.todos
                 );
             case AnnotationType.Attribute:
                 return id in annotations.attributes;
@@ -74,6 +73,10 @@ export default class AnnotationFilter extends AbstractPythonFilter {
                 return id in annotations.calledAfters;
             case AnnotationType.Constant:
                 return id in annotations.constants;
+            case AnnotationType.Description:
+                return id in annotations.descriptions;
+            case AnnotationType.Done:
+                return id in annotations.dones;
             case AnnotationType.Enum:
                 return id in annotations.enums;
             case AnnotationType.Group:
@@ -90,6 +93,8 @@ export default class AnnotationFilter extends AbstractPythonFilter {
                 return id in annotations.renamings;
             case AnnotationType.Required:
                 return id in annotations.requireds;
+            case AnnotationType.Todo:
+                return id in annotations.todos;
             default:
                 return true;
         }
@@ -102,6 +107,8 @@ export enum AnnotationType {
     Boundary,
     CalledAfter,
     Constant,
+    Description,
+    Done,
     Enum,
     Group,
     Move,
@@ -110,4 +117,5 @@ export enum AnnotationType {
     Remove,
     Rename,
     Required,
+    Todo,
 }

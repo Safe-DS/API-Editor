@@ -3,9 +3,10 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { pythonIdentifierPattern } from '../../../common/validation';
-import PythonDeclaration from '../../packageData/model/PythonDeclaration';
-import { hideAnnotationForms, selectRenaming, upsertRenaming } from '../annotationSlice';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
+import { selectRenaming, upsertRenaming } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
+import { hideAnnotationForm } from '../../ui/uiSlice';
 
 interface RenameFormProps {
     readonly target: PythonDeclaration;
@@ -16,7 +17,7 @@ interface RenameFormState {
 }
 
 export const RenameForm: React.FC<RenameFormProps> = function ({ target }) {
-    const targetPath = target.pathAsString();
+    const targetPath = target.id;
     const prevNewName = useAppSelector(selectRenaming(targetPath))?.newName;
     const oldName = target.name;
 
@@ -36,7 +37,11 @@ export const RenameForm: React.FC<RenameFormProps> = function ({ target }) {
     });
 
     useEffect(() => {
-        setFocus('newName');
+        try {
+            setFocus('newName');
+        } catch (e) {
+            // ignore
+        }
     }, [setFocus]);
 
     useEffect(() => {
@@ -54,11 +59,11 @@ export const RenameForm: React.FC<RenameFormProps> = function ({ target }) {
                 ...data,
             }),
         );
-        dispatch(hideAnnotationForms());
+        dispatch(hideAnnotationForm());
     };
 
     const onCancel = () => {
-        dispatch(hideAnnotationForms());
+        dispatch(hideAnnotationForm());
     };
 
     // Rendering -------------------------------------------------------------------------------------------------------

@@ -1,12 +1,13 @@
 {
     "name": "com.larsreimann.api_editor.gui",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "private": true,
     "scripts": {
         "dev": "vite",
         "build": "tsc && vite build",
         "serve": "vite preview",
         "test": "jest src",
+        "test-with-coverage": "jest src --coverage",
         "gen:theme-typings": "chakra-cli tokens src/theme/index.ts -- out src/theme/index.d.ts",
         "postinstall": "npm run gen:theme-typings"
     },

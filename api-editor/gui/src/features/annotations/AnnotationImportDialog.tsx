@@ -17,37 +17,21 @@ import React, { useState } from 'react';
 import { useAppDispatch } from '../../app/hooks';
 import { StyledDropzone } from '../../common/StyledDropzone';
 import { isValidJsonFile } from '../../common/util/validation';
-import {
-    AnnotationsState,
-    hideAnnotationImportDialog,
-    setAnnotations,
-    toggleAnnotationImportDialog,
-} from './annotationSlice';
+import { AnnotationStore, initialState, mergeAnnotations, setAnnotations } from './annotationSlice';
+import { hideAnnotationImportDialog, toggleAnnotationImportDialog } from '../ui/uiSlice';
 
 export const AnnotationImportDialog: React.FC = function () {
     const [fileName, setFileName] = useState('');
-    const [newAnnotationStore, setNewAnnotationStore] = useState<AnnotationsState>({
-        attributes: {},
-        boundaries: {},
-        constants: {},
-        calledAfters: {},
-        currentUserAction: {
-            target: '',
-            type: 'none',
-        },
-        enums: {},
-        groups: {},
-        moves: {},
-        optionals: {},
-        pures: {},
-        renamings: {},
-        requireds: {},
-        showImportDialog: false,
-        removes: {},
-    });
+    const [newAnnotationStore, setNewAnnotationStore] = useState<AnnotationStore>(initialState);
     const dispatch = useAppDispatch();
 
-    const submit = () => {
+    const merge = () => {
+        if (fileName) {
+            dispatch(mergeAnnotations(newAnnotationStore));
+        }
+        dispatch(hideAnnotationImportDialog());
+    };
+    const replace = () => {
         if (fileName) {
             dispatch(setAnnotations(newAnnotationStore));
         }
@@ -65,7 +49,7 @@ export const AnnotationImportDialog: React.FC = function () {
             const reader = new FileReader();
             reader.onload = () => {
                 if (typeof reader.result === 'string') {
-                    const readAnnotationJson = JSON.parse(reader.result) as AnnotationsState;
+                    const readAnnotationJson = JSON.parse(reader.result) as AnnotationStore;
                     setNewAnnotationStore(readAnnotationJson);
                 }
             };
@@ -101,8 +85,11 @@ export const AnnotationImportDialog: React.FC = function () {
                 </ModalBody>
                 <ModalFooter>
                     <HStack spacing={4}>
-                        <Button colorScheme="blue" onClick={submit}>
-                            Submit
+                        <Button colorScheme="blue" onClick={merge}>
+                            Merge into existing
+                        </Button>
+                        <Button colorScheme="gray" onClick={replace}>
+                            Replace existing
                         </Button>
                         <Button colorScheme="red" onClick={close}>
                             Cancel

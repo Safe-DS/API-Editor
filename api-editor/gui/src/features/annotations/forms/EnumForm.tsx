@@ -13,9 +13,10 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import { FaPlus, FaTrash } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { pythonIdentifierPattern } from '../../../common/validation';
-import PythonDeclaration from '../../packageData/model/PythonDeclaration';
-import { hideAnnotationForms, selectEnum, upsertEnum } from '../annotationSlice';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
+import { selectEnum, upsertEnum } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
+import { hideAnnotationForm } from '../../ui/uiSlice';
 
 interface EnumFormProps {
     target: PythonDeclaration;
@@ -30,10 +31,10 @@ interface EnumFormState {
 }
 
 export const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
-    const targetPath = target.pathAsString();
+    const targetPath = target.id;
 
     // Hooks -----------------------------------------------------------------------------------------------------------
-    const enumDefinition = useAppSelector(selectEnum(target.pathAsString()));
+    const enumDefinition = useAppSelector(selectEnum(target.id));
     const dispatch = useAppDispatch();
 
     const {
@@ -60,7 +61,11 @@ export const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
     });
 
     useEffect(() => {
-        setFocus('enumName');
+        try {
+            setFocus('enumName');
+        } catch (e) {
+            // ignore
+        }
     }, [setFocus]);
 
     useEffect(() => {
@@ -97,11 +102,11 @@ export const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
                 ...data,
             }),
         );
-        dispatch(hideAnnotationForms());
+        dispatch(hideAnnotationForm());
     };
 
     const onCancel = () => {
-        dispatch(hideAnnotationForms());
+        dispatch(hideAnnotationForm());
     };
 
     // Rendering -------------------------------------------------------------------------------------------------------

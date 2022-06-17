@@ -1,7 +1,7 @@
 import { InferableAnnotation } from './InferableAnnotation';
-import AnnotatedPythonModule from './AnnotatedPythonModule';
+import { AnnotatedPythonModule } from './AnnotatedPythonModule';
 
-export default class AnnotatedPythonPackage {
+export class AnnotatedPythonPackage {
     constructor(
         readonly distribution: string,
         readonly name: string,

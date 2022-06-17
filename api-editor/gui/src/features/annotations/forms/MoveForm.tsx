@@ -3,9 +3,10 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { moduleNamePattern } from '../../../common/validation';
-import PythonDeclaration from '../../packageData/model/PythonDeclaration';
-import { hideAnnotationForms, selectMove, upsertMove } from '../annotationSlice';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
+import { selectMove, upsertMove } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
+import { hideAnnotationForm } from '../../ui/uiSlice';
 
 interface MoveFormProps {
     readonly target: PythonDeclaration;
@@ -16,7 +17,7 @@ interface MoveFormState {
 }
 
 export const MoveForm: React.FC<MoveFormProps> = function ({ target }) {
-    const targetPath = target.pathAsString();
+    const targetPath = target.id;
     const prevDestination = useAppSelector(selectMove(targetPath))?.destination;
     const oldModulePath = target?.parent()?.name;
 
@@ -36,7 +37,11 @@ export const MoveForm: React.FC<MoveFormProps> = function ({ target }) {
     });
 
     useEffect(() => {
-        setFocus('destination');
+        try {
+            setFocus('destination');
+        } catch (e) {
+            // ignore
+        }
     }, [setFocus]);
 
     useEffect(() => {
@@ -54,11 +59,11 @@ export const MoveForm: React.FC<MoveFormProps> = function ({ target }) {
                 ...data,
             }),
         );
-        dispatch(hideAnnotationForms());
+        dispatch(hideAnnotationForm());
     };
 
     const onCancel = () => {
-        dispatch(hideAnnotationForms());
+        dispatch(hideAnnotationForm());
     };
 
     // Rendering -------------------------------------------------------------------------------------------------------
