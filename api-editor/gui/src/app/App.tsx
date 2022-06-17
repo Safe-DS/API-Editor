@@ -1,4 +1,5 @@
 import {
+    Box,
     Grid,
     GridItem,
     ListItem,
@@ -13,7 +14,12 @@ import {
 import React, { useEffect, useState } from 'react';
 import { MenuBar } from '../common/MenuBar';
 import { AnnotationImportDialog } from '../features/annotations/AnnotationImportDialog';
-import { initializeAnnotations, persistAnnotations, selectAnnotations } from '../features/annotations/annotationSlice';
+import {
+    AnnotationStore,
+    initializeAnnotations,
+    persistAnnotations,
+    selectAnnotations,
+} from '../features/annotations/annotationSlice';
 import { BoundaryForm } from '../features/annotations/forms/BoundaryForm';
 import { CalledAfterForm } from '../features/annotations/forms/CalledAfterForm';
 import { ConstantForm } from '../features/annotations/forms/ConstantForm';
@@ -32,27 +38,42 @@ import { PythonFunction } from '../features/packageData/model/PythonFunction';
 import { AttributeForm } from '../features/annotations/forms/AttributeForm';
 import { UsageImportDialog } from '../features/usages/UsageImportDialog';
 import {
+    BatchMode,
     GroupUserAction,
     initializeUI,
     persistUI,
+    selectBatchMode,
     selectCurrentUserAction,
+    selectFilter,
     selectShowAnnotationImportDialog,
     selectShowAPIImportDialog,
     selectShowUsageImportDialog,
     selectUI,
-    setFilterString,
 } from '../features/ui/uiSlice';
 import { initializeUsages, persistUsages, selectUsages } from '../features/usages/usageSlice';
 import { initializePythonPackage, selectRawPythonPackage } from '../features/packageData/apiSlice';
 import { PythonClass } from '../features/packageData/model/PythonClass';
 import { PythonParameter } from '../features/packageData/model/PythonParameter';
+import { ConstantBatchForm } from '../features/annotations/batchforms/ConstantBatchForm';
 import { ActionBar } from '../features/packageData/selectionView/ActionBar';
 import { useLocation } from 'react-router-dom';
+import { RenameBatchForm } from '../features/annotations/batchforms/RenameBatchForm';
+import { RequiredBatchForm } from '../features/annotations/batchforms/RequiredBatchForm';
+import { OptionalBatchForm } from '../features/annotations/batchforms/OptionalBatchForm';
+import { RemoveBatchForm } from '../features/annotations/batchforms/RemoveBatchForm';
+import { MoveBatchForm } from '../features/annotations/batchforms/MoveBatchForm';
+import { PythonPackage } from '../features/packageData/model/PythonPackage';
+import { AbstractPythonFilter } from '../features/packageData/model/filters/AbstractPythonFilter';
+import { UsageCountStore } from '../features/usages/model/UsageCountStore';
+import { PythonDeclaration } from '../features/packageData/model/PythonDeclaration';
 
 export const App: React.FC = function () {
     useIndexedDB();
 
     const rawPythonPackage = useAppSelector(selectRawPythonPackage);
+    const annotationStore = useAppSelector(selectAnnotations);
+    const usages = useAppSelector(selectUsages);
+    const filter = useAppSelector(selectFilter);
 
     const [showInferErrorDialog, setShowInferErrorDialog] = useState(false);
     const [inferErrors, setInferErrors] = useState<string[]>([]);
@@ -67,6 +88,7 @@ export const App: React.FC = function () {
     const showAnnotationImportDialog = useAppSelector(selectShowAnnotationImportDialog);
     const showAPIImportDialog = useAppSelector(selectShowAPIImportDialog);
     const showUsagesImportDialog = useAppSelector(selectShowUsageImportDialog);
+    const batchMode = useAppSelector(selectBatchMode);
 
     return (
         <>
@@ -130,14 +152,52 @@ export const App: React.FC = function () {
                     {currentUserAction.type === 'todo' && <TodoForm target={userActionTarget || rawPythonPackage} />}
                 </GridItem>
                 <GridItem gridArea="rightPane" overflow="auto">
-                    <SelectionView />
+                    <Box flexGrow={1} overflowY="auto" width="100%">
+                        {batchMode === BatchMode.None && <SelectionView />}
+
+                        {batchMode === BatchMode.Constant && (
+                            <ConstantBatchForm
+                                targets={getMatchedElements(rawPythonPackage, filter, annotationStore, usages)}
+                            />
+                        )}
+
+                        {batchMode === BatchMode.Rename && (
+                            <RenameBatchForm
+                                targets={getMatchedElements(rawPythonPackage, filter, annotationStore, usages)}
+                            />
+                        )}
+
+                        {batchMode === BatchMode.Move && (
+                            <MoveBatchForm
+                                targets={getMatchedElements(rawPythonPackage, filter, annotationStore, usages)}
+                            />
+                        )}
+
+                        {batchMode === BatchMode.Required && (
+                            <RequiredBatchForm
+                                targets={getMatchedElements(rawPythonPackage, filter, annotationStore, usages)}
+                            />
+                        )}
+
+                        {batchMode === BatchMode.Optional && (
+                            <OptionalBatchForm
+                                targets={getMatchedElements(rawPythonPackage, filter, annotationStore, usages)}
+                            />
+                        )}
+
+                        {batchMode === BatchMode.Remove && (
+                            <RemoveBatchForm
+                                targets={getMatchedElements(rawPythonPackage, filter, annotationStore, usages)}
+                            />
+                        )}
+                    </Box>
                 </GridItem>
                 <GridItem gridArea="footer" colSpan={2}>
                     {currentUserAction.type === 'none' && <ActionBar declaration={declaration} />}
                 </GridItem>
 
                 {showAnnotationImportDialog && <AnnotationImportDialog />}
-                {showAPIImportDialog && <PackageDataImportDialog setFilter={setFilterString} />}
+                {showAPIImportDialog && <PackageDataImportDialog />}
                 {showUsagesImportDialog && <UsageImportDialog />}
             </Grid>
 
@@ -164,7 +224,6 @@ export const App: React.FC = function () {
         </>
     );
 };
-
 const useIndexedDB = function () {
     usePersistentAPIState();
     usePersistentAnnotations();
@@ -242,4 +301,13 @@ const usePersistentUsages = function () {
             dispatch(persistUsages(usages));
         }
     }, [dispatch, usages, isInitialized]);
+};
+
+export const getMatchedElements = function (
+    pythonPackage: PythonPackage,
+    filter: AbstractPythonFilter,
+    annotations: AnnotationStore,
+    usages: UsageCountStore,
+): PythonDeclaration[] {
+    return [...pythonPackage.descendantsOrSelf()].filter((it) => filter.shouldKeepDeclaration(it, annotations, usages));
 };

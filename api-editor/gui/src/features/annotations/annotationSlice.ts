@@ -27,14 +27,14 @@ export interface AnnotationStore {
     calledAfters: {
         [target: string]: { [calledAfterName: string]: CalledAfterAnnotation };
     };
+    completes: {
+        [target: string]: CompleteAnnotation;
+    };
     constants: {
         [target: string]: ConstantAnnotation;
     };
     descriptions: {
         [target: string]: DescriptionAnnotation;
-    };
-    dones: {
-        [target: string]: DoneAnnotation;
     };
     enums: {
         [target: string]: EnumAnnotation;
@@ -154,6 +154,19 @@ export interface CalledAfterTarget {
     readonly calledAfterName: string;
 }
 
+/**
+ * The element is fully annotated and all annotations are checked.
+ *
+ * **Important:** While this is implemented as an annotation it should **not** be counted in the heat map or the
+ * statistics.
+ */
+export interface CompleteAnnotation {
+    /**
+     * ID of the annotated Python declaration.
+     */
+    readonly target: string;
+}
+
 export interface ConstantAnnotation {
     /**
      * ID of the annotated Python declaration
@@ -181,19 +194,6 @@ export interface DescriptionAnnotation {
      * Description for the declaration.
      */
     readonly newDescription: string;
-}
-
-/**
- * The element is fully annotated and all annotations are checked.
- *
- * **Important:** While this is implemented as an annotation it should **not** be counted in the heat map or the
- * statistics.
- */
-export interface DoneAnnotation {
-    /**
-     * ID of the annotated Python declaration.
-     */
-    readonly target: string;
 }
 
 export interface EnumAnnotation {
@@ -323,9 +323,9 @@ export const initialState: AnnotationStore = {
     attributes: {},
     boundaries: {},
     calledAfters: {},
+    completes: {},
     constants: {},
     descriptions: {},
-    dones: {},
     enums: {},
     groups: {},
     moves: {},
@@ -421,8 +421,19 @@ const annotationsSlice = createSlice({
                 delete state.calledAfters[action.payload.target];
             }
         },
+        addComplete(state, action: PayloadAction<CompleteAnnotation>) {
+            state.completes[action.payload.target] = action.payload;
+        },
+        removeComplete(state, action: PayloadAction<string>) {
+            delete state.completes[action.payload];
+        },
         upsertConstant(state, action: PayloadAction<ConstantAnnotation>) {
             state.constants[action.payload.target] = action.payload;
+        },
+        upsertConstants(state, action: PayloadAction<ConstantAnnotation[]>) {
+            action.payload.forEach((annotation) => {
+                state.constants[annotation.target] = annotation;
+            });
         },
         removeConstant(state, action: PayloadAction<string>) {
             delete state.constants[action.payload];
@@ -432,12 +443,6 @@ const annotationsSlice = createSlice({
         },
         removeDescription(state, action: PayloadAction<string>) {
             delete state.descriptions[action.payload];
-        },
-        addDone(state, action: PayloadAction<DoneAnnotation>) {
-            state.dones[action.payload.target] = action.payload;
-        },
-        removeDone(state, action: PayloadAction<string>) {
-            delete state.dones[action.payload];
         },
         upsertEnum(state, action: PayloadAction<EnumAnnotation>) {
             state.enums[action.payload.target] = action.payload;
@@ -491,11 +496,21 @@ const annotationsSlice = createSlice({
         upsertMove(state, action: PayloadAction<MoveAnnotation>) {
             state.moves[action.payload.target] = action.payload;
         },
+        upsertMoves(state, action: PayloadAction<MoveAnnotation[]>) {
+            action.payload.forEach((annotation) => {
+                state.moves[annotation.target] = annotation;
+            });
+        },
         removeMove(state, action: PayloadAction<string>) {
             delete state.moves[action.payload];
         },
         upsertOptional(state, action: PayloadAction<OptionalAnnotation>) {
             state.optionals[action.payload.target] = action.payload;
+        },
+        upsertOptionals(state, action: PayloadAction<OptionalAnnotation[]>) {
+            action.payload.forEach((annotation) => {
+                state.optionals[annotation.target] = annotation;
+            });
         },
         removeOptional(state, action: PayloadAction<string>) {
             delete state.optionals[action.payload];
@@ -509,17 +524,32 @@ const annotationsSlice = createSlice({
         upsertRenaming(state, action: PayloadAction<RenameAnnotation>) {
             state.renamings[action.payload.target] = action.payload;
         },
+        upsertRenamings(state, action: PayloadAction<RenameAnnotation[]>) {
+            action.payload.forEach((annotation) => {
+                state.renamings[annotation.target] = annotation;
+            });
+        },
         removeRenaming(state, action: PayloadAction<string>) {
             delete state.renamings[action.payload];
         },
         addRequired(state, action: PayloadAction<RequiredAnnotation>) {
             state.requireds[action.payload.target] = action.payload;
         },
+        upsertRequireds(state, action: PayloadAction<RequiredAnnotation[]>) {
+            action.payload.forEach((annotation) => {
+                state.requireds[annotation.target] = annotation;
+            });
+        },
         removeRequired(state, action: PayloadAction<string>) {
             delete state.requireds[action.payload];
         },
         addRemove(state, action: PayloadAction<RemoveAnnotation>) {
             state.removes[action.payload.target] = action.payload;
+        },
+        upsertRemoves(state, action: PayloadAction<RemoveAnnotation[]>) {
+            action.payload.forEach((annotation) => {
+                state.removes[annotation.target] = annotation;
+            });
         },
         removeRemove(state, action: PayloadAction<string>) {
             delete state.removes[action.payload];
@@ -548,29 +578,35 @@ export const {
     removeBoundary,
     upsertCalledAfter,
     removeCalledAfter,
+    addComplete,
+    removeComplete,
     upsertConstant,
+    upsertConstants,
     removeConstant,
     upsertDescription,
     removeDescription,
-    addDone,
-    removeDone,
     upsertEnum,
     removeEnum,
     upsertGroup,
     removeGroup,
     upsertMove,
+    upsertMoves,
     removeMove,
     upsertOptional,
+    upsertOptionals,
     removeOptional,
     addPure,
     removePure,
     upsertRenaming,
+    upsertRenamings,
     removeRenaming,
     addRequired,
+    upsertRequireds,
     removeRequired,
     upsertTodo,
     removeTodo,
     addRemove,
+    upsertRemoves,
     removeRemove,
 } = actions;
 export const annotationsReducer = reducer;
@@ -588,6 +624,10 @@ export const selectCalledAfters =
     (target: string) =>
     (state: RootState): { [calledAfter: string]: CalledAfterAnnotation } =>
         selectAnnotations(state).calledAfters[target] ?? {};
+export const selectComplete =
+    (target: string) =>
+    (state: RootState): CompleteAnnotation | undefined =>
+        selectAnnotations(state).completes[target];
 export const selectConstant =
     (target: string) =>
     (state: RootState): ConstantAnnotation | undefined =>
@@ -596,10 +636,6 @@ export const selectDescription =
     (target: string) =>
     (state: RootState): DescriptionAnnotation | undefined =>
         selectAnnotations(state).descriptions[target];
-export const selectDone =
-    (target: string) =>
-    (state: RootState): DoneAnnotation | undefined =>
-        selectAnnotations(state).dones[target];
 export const selectEnum =
     (target: string) =>
     (state: RootState): EnumAnnotation | undefined =>
