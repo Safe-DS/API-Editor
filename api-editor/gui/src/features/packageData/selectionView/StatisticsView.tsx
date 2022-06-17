@@ -11,7 +11,7 @@ import {
 } from 'chart.js';
 import { Bar, Line } from 'react-chartjs-2';
 import { PythonPackage } from '../model/PythonPackage';
-import {Center, Spacer, Wrap, WrapItem} from '@chakra-ui/react';
+import { Center, Spacer, Wrap, WrapItem } from '@chakra-ui/react';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 
 ChartJS.register(CategoryScale, PointElement, LineElement, LinearScale, BarElement, Title, Tooltip);
