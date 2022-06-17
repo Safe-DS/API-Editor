@@ -1,9 +1,9 @@
-import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {createAsyncThunk, createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import * as idb from 'idb-keyval';
-import { RootState } from '../../app/store';
-import { CalledAfterTarget, GroupTarget } from '../annotations/annotationSlice';
-import { AbstractPythonFilter } from '../packageData/model/filters/AbstractPythonFilter';
-import { createFilterFromString, isValidFilterToken } from '../packageData/model/filters/filterFactory';
+import {RootState} from '../../app/store';
+import {CalledAfterTarget, GroupTarget} from '../annotations/annotationSlice';
+import {AbstractPythonFilter} from '../packageData/model/filters/AbstractPythonFilter';
+import {createFilterFromString, isValidFilterToken} from '../packageData/model/filters/filterFactory';
 
 export interface UIState {
     showAnnotationImportDialog: boolean;
@@ -115,10 +115,12 @@ export const initialState: UIState = {
     showUsageImportDialog: false,
 
     currentUserAction: NoUserAction,
+
     expandedInTreeView: {},
     treeViewScrollOffset: 0,
-    heatMapMode: HeatMapMode.None,
     filterString: 'is:public',
+
+    heatMapMode: HeatMapMode.None,
     sortingMode: SortingMode.Alphabetical,
 };
 
@@ -158,6 +160,22 @@ const uiSlice = createSlice({
         },
         resetUI() {
             return initialState;
+        },
+        resetUIAfterAPIImport(state) {
+            return {
+                ...state,
+
+                showAnnotationImportDialog: initialState.showAnnotationImportDialog,
+                showAPIImportDialog: initialState.showAPIImportDialog,
+                showUsageImportDialog: initialState.showUsageImportDialog,
+
+                currentUserAction: initialState.currentUserAction,
+
+                expandedInTreeView: initialState.expandedInTreeView,
+                treeViewScrollOffset: initialState.treeViewScrollOffset,
+
+                filterString: initialState.filterString
+            }
         },
 
         toggleAnnotationImportDialog(state) {
@@ -282,10 +300,11 @@ const uiSlice = createSlice({
     },
 });
 
-const { actions, reducer } = uiSlice;
+const {actions, reducer} = uiSlice;
 export const {
     setUI,
     resetUI,
+    resetUIAfterAPIImport,
 
     toggleAnnotationImportDialog,
     hideAnnotationImportDialog,
@@ -324,8 +343,8 @@ export const selectShowUsageImportDialog = (state: RootState): boolean => select
 export const selectCurrentUserAction = (state: RootState): UserAction => selectUI(state).currentUserAction;
 export const selectIsExpandedInTreeView =
     (target: string) =>
-    (state: RootState): boolean =>
-        Boolean(selectUI(state).expandedInTreeView[target]);
+        (state: RootState): boolean =>
+            Boolean(selectUI(state).expandedInTreeView[target]);
 export const selectAllExpandedInTreeView = (state: RootState): { [target: string]: true } =>
     selectUI(state).expandedInTreeView;
 export const selectTreeViewScrollOffset = (state: RootState): number => selectUI(state).treeViewScrollOffset;

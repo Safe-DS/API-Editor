@@ -13,23 +13,18 @@ import {
     ModalOverlay,
     Text as ChakraText,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../../app/hooks';
-import { StyledDropzone } from '../../common/StyledDropzone';
-import { Setter } from '../../common/util/types';
-import { isValidJsonFile } from '../../common/util/validation';
-import { resetAnnotations } from '../annotations/annotationSlice';
-import { parsePythonPackageJson, PythonPackageJson } from './model/PythonPackageBuilder';
-import { resetUI, toggleAPIImportDialog } from '../ui/uiSlice';
-import { persistPythonPackage, setPythonPackage } from './apiSlice';
-import { resetUsages } from '../usages/usageSlice';
+import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {useAppDispatch} from '../../app/hooks';
+import {StyledDropzone} from '../../common/StyledDropzone';
+import {isValidJsonFile} from '../../common/util/validation';
+import {resetAnnotations} from '../annotations/annotationSlice';
+import {parsePythonPackageJson, PythonPackageJson} from './model/PythonPackageBuilder';
+import {resetUIAfterAPIImport, toggleAPIImportDialog} from '../ui/uiSlice';
+import {persistPythonPackage, setPythonPackage} from './apiSlice';
+import {resetUsages} from '../usages/usageSlice';
 
-interface ImportPythonPackageDialogProps {
-    setFilter: Setter<string>;
-}
-
-export const PackageDataImportDialog: React.FC<ImportPythonPackageDialogProps> = function ({ setFilter }) {
+export const PackageDataImportDialog: React.FC = function () {
     const [fileName, setFileName] = useState('');
     const [newPythonPackage, setNewPythonPackage] = useState<string>();
     const navigate = useNavigate();
@@ -44,9 +39,8 @@ export const PackageDataImportDialog: React.FC<ImportPythonPackageDialogProps> =
 
             // Reset other slices
             dispatch(resetAnnotations());
-            dispatch(resetUI());
             dispatch(resetUsages());
-            setFilter('is:public');
+            dispatch(resetUIAfterAPIImport());
             navigate('/');
         }
     };
