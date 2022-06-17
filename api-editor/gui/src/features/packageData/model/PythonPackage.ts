@@ -66,7 +66,7 @@ export default class PythonPackage extends PythonDeclaration {
         return result;
     }
 
-    getParameter(): PythonParameter[] {
+    getParameters(): PythonParameter[] {
         let result: PythonParameter[] = [];
         for (const pythonFunction of this.getFunctions()) {
             let children = pythonFunction.children();
@@ -76,5 +76,4 @@ export default class PythonPackage extends PythonDeclaration {
         }
         return result;
     }
-
 }

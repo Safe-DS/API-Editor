@@ -50,9 +50,9 @@ const StatisticsView: React.FC<FunctionViewProps> = function ({pythonPackage, us
 
     const thresholds = [...Array(26).keys()];
     thresholds.shift();
-    const classLineChart = createLineChart(usages, thresholds, getUsedClasses, "Classes per Threshold");
-    const functionLineChart = createLineChart(usages, thresholds, getUsedFunctions, "Classes per Threshold");
-    const parameterLineChart = createLineChart(usages, thresholds, getUsefulParameters, "Classes per Threshold");
+    const classLineChart = createLineChart(usages, pythonPackage, thresholds, usages.getNumberOfUsedPublicClasses, "Classes per Threshold");
+    const functionLineChart = createLineChart(usages, pythonPackage, thresholds, usages.getNumberOfUsedPublicFunctions, "Functions per Threshold");
+    const parameterLineChart = createLineChart(usages, pythonPackage, thresholds, usages.getNumberOfUsefulPublicParameters, "Parameters per Threshold");
 
     return (
         <VStack>
@@ -80,7 +80,7 @@ let getClassValues = function (pythonPackage: PythonPackage, usages: UsageCountS
 
     result.push(classes.length);
     result.push(publicClasses);
-    result.push(getUsedClasses(usages, usedThreshold));
+    result.push(usages.getNumberOfUsedPublicClasses(pythonPackage, usedThreshold));
 
     return result;
 }
@@ -96,13 +96,13 @@ let getFunctionValues = function (pythonPackage: PythonPackage, usages: UsageCou
 
     result.push(functions.length);
     result.push(publicFunctions);
-    result.push(getUsedFunctions(usages, usedThreshold));
+    result.push(usages.getNumberOfUsedPublicFunctions(pythonPackage, usedThreshold));
 
     return result;
 }
 
 let getParameterValues = function (pythonPackage: PythonPackage, usages: UsageCountStore, usedThreshold: number) {
-    const parameters = pythonPackage.getParameter();
+    const parameters = pythonPackage.getParameters();
     let result: number[] = [];
 
     let publicParameters = 0;
@@ -112,40 +112,10 @@ let getParameterValues = function (pythonPackage: PythonPackage, usages: UsageCo
 
     result.push(parameters.length);
     result.push(publicParameters);
-    result.push(getUsedParameters(usages, usedThreshold).length);
-    result.push(getUsefulParameters(usages, usedThreshold));
+    result.push(usages.getUsedPublicParameters(pythonPackage, usedThreshold).length);
+    result.push(usages.getNumberOfUsefulPublicParameters(pythonPackage, usedThreshold));
 
     return result;
-}
-
-let getUsedClasses = function (usages: UsageCountStore, usedThreshold: number): number {
-    let usedClasses = 0;
-    usages.classUsages.forEach((value) => {
-        usedClasses += (value >= usedThreshold) ? 1 : 0});
-    return usedClasses;
-}
-
-let getUsedFunctions = function (usages: UsageCountStore, usedThreshold: number): number {
-    let usedFunctions = 0;
-    usages.functionUsages.forEach((value) => {
-        usedFunctions += (value >= usedThreshold) ? 1 : 0});
-    return usedFunctions;
-}
-
-let getUsedParameters = function (usages: UsageCountStore, usedThreshold: number): string[] {
-    let usedParameters: string[] = [];
-    usages.parameterUsages.forEach((value, key) => {
-        if (value >= usedThreshold) {usedParameters.push(key)}
-    });
-    return usedParameters;
-}
-
-let getUsefulParameters = function (usages: UsageCountStore, usedThreshold: number): number {
-    const usedParameters = getUsedParameters(usages, usedThreshold);
-    let usefulParameter = 0;
-    usedParameters.forEach((name) => { // @ts-ignore
-        if (usages.valueUsages.get(name).size > 1) {usefulParameter++}});
-    return usefulParameter;
 }
 
 let createBarChart = function (labels: string[], values: number[], title: string): ReactElement {
@@ -201,7 +171,7 @@ let createBarChart = function (labels: string[], values: number[], title: string
     )
 }
 
-let createLineChart = function (usages: UsageCountStore, labels: number[], getValue: Function, title: string): ReactElement {
+let createLineChart = function (usages: UsageCountStore, pythonPackage: PythonPackage, labels: number[], getValue: Function, title: string): ReactElement {
     const options = {
         responsive: true,
         plugins: {
@@ -217,7 +187,7 @@ let createLineChart = function (usages: UsageCountStore, labels: number[], getVa
 
     const dataValues = new Map();
     for (const label of labels) {
-        dataValues.set(label, getValue(usages, label));
+        dataValues.set(label, getValue.call(usages, pythonPackage, label));
     }
 
     const data = {
