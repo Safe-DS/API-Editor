@@ -11,7 +11,7 @@ import {
 } from 'chart.js';
 import { Bar, Line } from 'react-chartjs-2';
 import { PythonPackage } from '../model/PythonPackage';
-import { VStack } from '@chakra-ui/react';
+import {Center, Spacer, Wrap, WrapItem} from '@chakra-ui/react';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 
 ChartJS.register(CategoryScale, PointElement, LineElement, LinearScale, BarElement, Title, Tooltip);
@@ -43,10 +43,47 @@ export const StatisticsView: React.FC<FunctionViewProps> = function ({ pythonPac
     const parameterLineChart = createLineChart(usages, pythonPackage, thresholds, usages.getNumberOfUsefulPublicParameters, "Parameters per Threshold");
 
     return (
-        <VStack>
-            {classBarChart},{functionBarChart},{parameterBarChart},{classLineChart},{functionLineChart},
-            {parameterLineChart}
-        </VStack>
+        <Wrap w='100%'>
+            <WrapItem flex='0 0 100%'>
+                <WrapItem w='33%'>
+                    <Center w='100%'>
+                        {classBarChart}
+                    </Center>
+                </WrapItem>
+                <Spacer/>
+                <WrapItem w='33%'>
+                    <Center w='100%'>
+                        {functionBarChart}
+                    </Center>
+                </WrapItem>
+                <Spacer/>
+                <WrapItem w='33%'>
+                    <Center w='100%'>
+                        {parameterBarChart}
+                    </Center>
+                </WrapItem>
+            </WrapItem>
+
+            <WrapItem flex='0 0 100%'>
+                <WrapItem w='33%'>
+                    <Center w='100%'>
+                        {classLineChart}
+                    </Center>
+                </WrapItem>
+                <Spacer/>
+                <WrapItem w='33%'>
+                    <Center w='100%'>
+                        {functionLineChart}
+                    </Center>
+                </WrapItem>
+                <Spacer/>
+                <WrapItem w='33%'>
+                    <Center w='100%'>
+                        {parameterLineChart}
+                    </Center>
+                </WrapItem>
+            </WrapItem>
+        </Wrap>
     );
 };
 
