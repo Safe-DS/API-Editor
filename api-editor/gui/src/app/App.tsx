@@ -14,7 +14,12 @@ import {
 import React, { useEffect, useState } from 'react';
 import { MenuBar } from '../common/MenuBar';
 import { AnnotationImportDialog } from '../features/annotations/AnnotationImportDialog';
-import { initializeAnnotations, persistAnnotations, selectAnnotations } from '../features/annotations/annotationSlice';
+import {
+    AnnotationStore,
+    initializeAnnotations,
+    persistAnnotations,
+    selectAnnotations,
+} from '../features/annotations/annotationSlice';
 import { BoundaryForm } from '../features/annotations/forms/BoundaryForm';
 import { CalledAfterForm } from '../features/annotations/forms/CalledAfterForm';
 import { ConstantForm } from '../features/annotations/forms/ConstantForm';
@@ -50,13 +55,17 @@ import { initializePythonPackage, selectRawPythonPackage } from '../features/pac
 import { PythonClass } from '../features/packageData/model/PythonClass';
 import { PythonParameter } from '../features/packageData/model/PythonParameter';
 import { ConstantBatchForm } from '../features/annotations/batchforms/ConstantBatchForm';
-import { ActionBar, getAllSelectedElements } from '../features/packageData/selectionView/ActionBar';
+import { ActionBar } from '../features/packageData/selectionView/ActionBar';
 import { useLocation } from 'react-router-dom';
 import { RenameBatchForm } from '../features/annotations/batchforms/RenameBatchForm';
 import { RequiredBatchForm } from '../features/annotations/batchforms/RequiredBatchForm';
 import { OptionalBatchForm } from '../features/annotations/batchforms/OptionalBatchForm';
 import { RemoveBatchForm } from '../features/annotations/batchforms/RemoveBatchForm';
 import { MoveBatchForm } from '../features/annotations/batchforms/MoveBatchForm';
+import { PythonPackage } from '../features/packageData/model/PythonPackage';
+import { AbstractPythonFilter } from '../features/packageData/model/filters/AbstractPythonFilter';
+import { UsageCountStore } from '../features/usages/model/UsageCountStore';
+import { PythonDeclaration } from '../features/packageData/model/PythonDeclaration';
 
 export const App: React.FC = function () {
     useIndexedDB();
@@ -148,8 +157,8 @@ export const App: React.FC = function () {
 
                         {batchMode === BatchMode.Constant && (
                             <ConstantBatchForm
-                                targets={getAllSelectedElements(
-                                    userActionTarget || rawPythonPackage,
+                                targets={getMatchedElements(
+                                    rawPythonPackage,
                                     filter,
                                     annotationStore,
                                     usages,
@@ -159,8 +168,8 @@ export const App: React.FC = function () {
 
                         {batchMode === BatchMode.Rename && (
                             <RenameBatchForm
-                                targets={getAllSelectedElements(
-                                    userActionTarget || rawPythonPackage,
+                                targets={getMatchedElements(
+                                    rawPythonPackage,
                                     filter,
                                     annotationStore,
                                     usages,
@@ -170,8 +179,8 @@ export const App: React.FC = function () {
 
                         {batchMode === BatchMode.Move && (
                             <MoveBatchForm
-                                targets={getAllSelectedElements(
-                                    userActionTarget || rawPythonPackage,
+                                targets={getMatchedElements(
+                                    rawPythonPackage,
                                     filter,
                                     annotationStore,
                                     usages,
@@ -181,8 +190,8 @@ export const App: React.FC = function () {
 
                         {batchMode === BatchMode.Required && (
                             <RequiredBatchForm
-                                targets={getAllSelectedElements(
-                                    userActionTarget || rawPythonPackage,
+                                targets={getMatchedElements(
+                                    rawPythonPackage,
                                     filter,
                                     annotationStore,
                                     usages,
@@ -192,8 +201,8 @@ export const App: React.FC = function () {
 
                         {batchMode === BatchMode.Optional && (
                             <OptionalBatchForm
-                                targets={getAllSelectedElements(
-                                    userActionTarget || rawPythonPackage,
+                                targets={getMatchedElements(
+                                    rawPythonPackage,
                                     filter,
                                     annotationStore,
                                     usages,
@@ -203,8 +212,8 @@ export const App: React.FC = function () {
 
                         {batchMode === BatchMode.Remove && (
                             <RemoveBatchForm
-                                targets={getAllSelectedElements(
-                                    userActionTarget || rawPythonPackage,
+                                targets={getMatchedElements(
+                                    rawPythonPackage,
                                     filter,
                                     annotationStore,
                                     usages,
@@ -245,7 +254,6 @@ export const App: React.FC = function () {
         </>
     );
 };
-
 const useIndexedDB = function () {
     usePersistentAPIState();
     usePersistentAnnotations();
@@ -323,4 +331,13 @@ const usePersistentUsages = function () {
             dispatch(persistUsages(usages));
         }
     }, [dispatch, usages, isInitialized]);
+};
+
+export const getMatchedElements = function (
+    pythonPackage: PythonPackage,
+    filter: AbstractPythonFilter,
+    annotations: AnnotationStore,
+    usages: UsageCountStore,
+): PythonDeclaration[] {
+    return [...pythonPackage.descendantsOrSelf()].filter((it) => filter.shouldKeepDeclaration(it, annotations, usages));
 };

@@ -104,24 +104,6 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
     );
 };
 
-export const getAllSelectedElements = function (
-    current: PythonDeclaration,
-    filter: AbstractPythonFilter,
-    annotations: AnnotationStore,
-    usages: UsageCountStore,
-): PythonDeclaration[] {
-    let topmostElement = current;
-    while (topmostElement.parent()) {
-        const parent = topmostElement.parent();
-        if (parent) {
-            topmostElement = parent;
-        }
-    }
-    return [...topmostElement.descendantsOrSelf()].filter((it) =>
-        filter.shouldKeepDeclaration(it, annotations, usages),
-    );
-};
-
 const getNextElementPath = function (
     declarations: PythonDeclaration[],
     start: PythonDeclaration,
