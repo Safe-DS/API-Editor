@@ -10,12 +10,14 @@ interface EmptyBatchFormProps {
     targets: PythonDeclaration[];
     annotationType: string;
     onUpsertAnnotation: () => void;
+    targetLabel: string;
 }
 
 export const EmptyBatchForm: React.FC<EmptyBatchFormProps> = function ({
     targets,
     annotationType,
     onUpsertAnnotation,
+    targetLabel,
 }) {
     const dispatch = useAppDispatch();
 
@@ -46,7 +48,7 @@ export const EmptyBatchForm: React.FC<EmptyBatchFormProps> = function ({
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             >
-                <FormLabel>This will annotate everything except modules.</FormLabel>
+                <FormLabel>{targetLabel}</FormLabel>
             </AnnotationBatchForm>
             {confirmWindowVisible && (
                 <ConfirmAnnotations

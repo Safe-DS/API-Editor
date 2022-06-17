@@ -86,7 +86,7 @@ export const OldNewBatchForm: React.FC<OldNewBatchFormProps> = function ({
                         required: 'This is required.',
                     })}
                 />
-                <FormLabel>This will annotate everything except Modules.</FormLabel>
+                <FormLabel>This will annotate classes, functions, and parameters.</FormLabel>
             </AnnotationBatchForm>
             {confirmWindowVisible && (
                 <ConfirmAnnotations

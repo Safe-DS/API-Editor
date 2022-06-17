@@ -36,6 +36,7 @@ export const RequiredBatchForm: React.FC<RequiredBatchFormProps> = function ({ t
             targets={filteredTargets}
             annotationType="required"
             onUpsertAnnotation={handleUpsertAnnotation}
+            targetLabel="This will annotate parameters."
         />
     );
 };

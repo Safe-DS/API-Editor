@@ -2,16 +2,19 @@ import React from 'react';
 import { useAppDispatch } from '../../../app/hooks';
 import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
 import { RenameAnnotation, upsertRenamings } from '../annotationSlice';
-import { PythonModule } from '../../packageData/model/PythonModule';
 import { OldNewBatchForm, OldNewBatchFormState } from './OldNewBatchForm';
-import { PythonPackage } from '../../packageData/model/PythonPackage';
+import { PythonClass } from '../../packageData/model/PythonClass';
+import { PythonFunction } from '../../packageData/model/PythonFunction';
+import { PythonParameter } from '../../packageData/model/PythonParameter';
 
 interface RenameBatchFormProps {
     targets: PythonDeclaration[];
 }
 
 export const RenameBatchForm: React.FC<RenameBatchFormProps> = function ({ targets }) {
-    const filteredTargets = targets.filter((t) => !(t instanceof PythonModule || t instanceof PythonPackage));
+    const filteredTargets = targets.filter(
+        (t) => t instanceof PythonClass || t instanceof PythonFunction || t instanceof PythonParameter,
+    );
 
     // Hooks -----------------------------------------------------------------------------------------------------------
     const dispatch = useAppDispatch();

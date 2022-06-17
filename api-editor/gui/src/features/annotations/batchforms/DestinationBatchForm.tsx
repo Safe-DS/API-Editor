@@ -65,7 +65,7 @@ export const DestinationBatchForm: React.FC<DestinationBatchFormProps> = functio
                         required: 'This is required.',
                     })}
                 />
-                <FormLabel>This will only annotate classes and global functions.</FormLabel>
+                <FormLabel>This will annotate classes and global functions.</FormLabel>
             </AnnotationBatchForm>
             {confirmWindowVisible && (
                 <ConfirmAnnotations

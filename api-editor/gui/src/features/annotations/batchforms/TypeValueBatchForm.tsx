@@ -152,7 +152,7 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
                     </FormControl>
                 )}
 
-                <FormLabel>This will only annotate parameters.</FormLabel>
+                <FormLabel>This will annotate parameters.</FormLabel>
             </AnnotationBatchForm>
             {confirmWindowVisible && (
                 <ConfirmAnnotations
