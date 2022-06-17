@@ -1,10 +1,10 @@
 import React from 'react';
-import {useAppDispatch} from '../../../app/hooks';
-import {PythonDeclaration} from '../../packageData/model/PythonDeclaration';
-import {RemoveAnnotation, upsertRemoves} from '../annotationSlice';
-import {EmptyBatchForm} from './EmptyBatchForm';
-import {PythonClass} from "../../packageData/model/PythonClass";
-import {PythonFunction} from "../../packageData/model/PythonFunction";
+import { useAppDispatch } from '../../../app/hooks';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
+import { RemoveAnnotation, upsertRemoves } from '../annotationSlice';
+import { EmptyBatchForm } from './EmptyBatchForm';
+import { PythonClass } from '../../packageData/model/PythonClass';
+import { PythonFunction } from '../../packageData/model/PythonFunction';
 
 interface RemoveBatchFormProps {
     targets: PythonDeclaration[];
