@@ -142,6 +142,7 @@ let createBarChart = function (labels: string[], values: number[], title: string
 
 let createLineChart = function (
     usages: UsageCountStore,
+    pythonPackage: PythonPackage,
     labels: number[],
     getValue: Function,
     title: string,

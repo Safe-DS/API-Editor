@@ -5,9 +5,6 @@ import { PythonModule } from '../../packageData/model/PythonModule';
 import { PythonClass } from '../../packageData/model/PythonClass';
 import { PythonFunction } from '../../packageData/model/PythonFunction';
 
-import PythonParameter from "../../packageData/model/PythonParameter";
-import PythonPackage from "../../packageData/model/PythonPackage";
-
 export interface UsageCountJson {
     module_counts?: {
         [target: string]: number;
@@ -171,7 +168,7 @@ export class UsageCountStore {
         const pythonClasses = pyPackage.getClasses();
         let usedClasses = 0;
         for (const pyClass of pythonClasses) {
-            const tmp = this.classUsages.get(pyClass.qualifiedName);
+            const tmp = this.classUsages.get(pyClass.id);
             if (tmp !== undefined && pyClass.isPublic) {
                 usedClasses += (tmp >= usedThreshold) ? 1 : 0
             }
@@ -183,7 +180,7 @@ export class UsageCountStore {
         const pythonFunctions = pyPackage.getFunctions();
         let usedFunctions = 0;
         for (const pyFunction of pythonFunctions) {
-            const tmp = this.functionUsages.get(pyFunction.qualifiedName);
+            const tmp = this.functionUsages.get(pyFunction.id);
             if (tmp !== undefined && pyFunction.isPublic) {
                 usedFunctions += (tmp >= usedThreshold) ? 1 : 0
             }
@@ -195,7 +192,7 @@ export class UsageCountStore {
         const pythonParameters = pyPackage.getParameters();
         let usedParameters: PythonParameter[] = [];
         for (const pyParameter of pythonParameters) {
-            const tmp = this.parameterUsages.get(pyParameter.qualifiedName());
+            const tmp = this.parameterUsages.get(pyParameter.id);
             if (tmp !== undefined && pyParameter.isPublic) {
                 if (tmp >= usedThreshold) {
                     usedParameters.push(pyParameter)
@@ -209,7 +206,7 @@ export class UsageCountStore {
         const usedParameters = this.getUsedPublicParameters(pyPackage, usedThreshold);
         let usefulParameter = 0;
         for (const pyParameter of usedParameters) {
-            let tmp = this.valueUsages.get(pyParameter.qualifiedName());
+            let tmp = this.valueUsages.get(pyParameter.id);
             if (tmp !== undefined) {
                 if (tmp.size > 1) {
                     usefulParameter++
