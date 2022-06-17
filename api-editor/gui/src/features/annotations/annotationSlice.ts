@@ -590,8 +590,8 @@ export const selectCalledAfters =
         selectAnnotations(state).calledAfters[target] ?? {};
 export const selectComplete =
     (target: string) =>
-        (state: RootState): CompleteAnnotation | undefined =>
-            selectAnnotations(state).completes[target];
+    (state: RootState): CompleteAnnotation | undefined =>
+        selectAnnotations(state).completes[target];
 export const selectConstant =
     (target: string) =>
     (state: RootState): ConstantAnnotation | undefined =>
