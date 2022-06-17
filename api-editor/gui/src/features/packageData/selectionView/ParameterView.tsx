@@ -1,8 +1,8 @@
-import {Heading, Stack, Text as ChakraText} from '@chakra-ui/react';
-import React, {ReactElement} from 'react';
-import {PythonParameter} from '../model/PythonParameter';
-import {ParameterNode} from './ParameterNode';
-import {UsageCountStore} from "../../usages/model/UsageCountStore";
+import { Heading, Stack, Text as ChakraText } from '@chakra-ui/react';
+import React from 'react';
+import { PythonParameter } from '../model/PythonParameter';
+import { ParameterNode } from './ParameterNode';
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import {
     BarElement,
     CategoryScale,
@@ -13,7 +13,7 @@ import {
     Title,
     Tooltip,
 } from 'chart.js';
-import {Bar} from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, PointElement, LineElement, LinearScale, BarElement, Title, Tooltip);
 
@@ -27,7 +27,7 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({pythonPara
     const parameterUsages = usages.valueUsages.get(pythonParameter.id);
     return (
         <Stack spacing={8}>
-            <ParameterNode isTitle pythonParameter={pythonParameter}/>
+            <ParameterNode isTitle pythonParameter={pythonParameter} />
 
             {pythonParameter.defaultValue && (
                 <Stack spacing={4}>
@@ -50,16 +50,16 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({pythonPara
             {parameterUsages && (
                 <Stack spacing={4}>
                     <Heading as="h4" size="md">
-                        Usages
+                        Most common values
                     </Heading>
-                    {createBarChart(parameterUsages, pythonParameter.name)}
+                    {createBarChart(parameterUsages)}
                 </Stack>
             )}
         </Stack>
     );
 };
 
-let createBarChart = function (parameterUsages: Map<string, number>, parameter: string): ReactElement {
+const createBarChart = function (parameterUsages: Map<string, number>): React.ReactElement {
     const options = {
         indexAxis: 'y' as const,
         elements: {
@@ -72,10 +72,6 @@ let createBarChart = function (parameterUsages: Map<string, number>, parameter: 
             legend: {
                 display: false as const,
             },
-            title: {
-                display: true,
-                text: `${parameter} usages`,
-            },
         },
     };
 
@@ -87,16 +83,16 @@ let createBarChart = function (parameterUsages: Map<string, number>, parameter: 
         datasets: [
             {
                 data: labels.map((key) => sortedParameterUsages.get(key)),
-                borderColor: labels.map((key) => isStringifiedLiteral(key) ? '#871F78' : '#888888'),
-                backgroundColor: labels.map((key) => isStringifiedLiteral(key) ? '#871F78' : '#888888'),
+                borderColor: labels.map((key) => (isStringifiedLiteral(key) ? '#871F78' : '#888888')),
+                backgroundColor: labels.map((key) => (isStringifiedLiteral(key) ? '#871F78' : '#888888')),
             },
         ],
     };
 
-    return <Bar options={options} data={data}/>;
+    return <Bar options={options} data={data} />;
 };
 
-let isStringifiedLiteral = function (value: string): boolean {
+const isStringifiedLiteral = function (value: string): boolean {
     if (value === 'None') {
         return true;
     }
@@ -109,6 +105,6 @@ let isStringifiedLiteral = function (value: string): boolean {
     if (value === "True" || value === "False") {
         return true;
     }
-    return !!value.match(/^-?\d+$/);
+    return Boolean(value.match(/^-?\d+$/u));
 
 }
