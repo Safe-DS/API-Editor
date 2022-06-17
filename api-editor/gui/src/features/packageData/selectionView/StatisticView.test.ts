@@ -229,9 +229,9 @@ const expectedFunctionCount = new Map([
 ]);
 
 const expectedParameterCount = new Map([
-    [0, [4, 3, 3]],
-    [1, [4, 3, 2]],
-    [3, [4, 3, 0]],
+    [0, [4, 3, 3, 0]],
+    [1, [4, 3, 2, 0]],
+    [3, [4, 3, 0, 0]],
 ]);
 
 test('getClassValues', () => {
