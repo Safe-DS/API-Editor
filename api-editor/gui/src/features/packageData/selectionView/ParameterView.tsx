@@ -105,6 +105,5 @@ const isStringifiedLiteral = function (value: string): boolean {
     if (value === "True" || value === "False") {
         return true;
     }
-    return Boolean(value.match(/^-?\d+$/u));
-
+    return Boolean(value.match(/^[+-]?\d+(\.\d*)?$/u));
 }
