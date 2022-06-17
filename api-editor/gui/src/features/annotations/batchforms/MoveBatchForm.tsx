@@ -12,9 +12,7 @@ interface MoveBatchFormProps {
 
 export const MoveBatchForm: React.FC<MoveBatchFormProps> = function ({ targets }) {
     const filteredTargets = targets.filter(
-        (t) =>
-            t instanceof PythonClass ||
-            (t instanceof PythonFunction && t.isGlobal()),
+        (t) => t instanceof PythonClass || (t instanceof PythonFunction && t.isGlobal()),
     );
     const targetPaths = filteredTargets.map((t) => t.id);
 
