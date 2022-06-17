@@ -23,7 +23,7 @@ export const SelectionView: React.FC = function () {
             <VStack h="100%">
                 <Box w="100%" flexGrow={1} overflowY="scroll">
                     <Box padding={4}>
-                        <StatisticsView/>
+                        <StatisticsView />
                     </Box>
                 </Box>
             </VStack>

@@ -1,4 +1,4 @@
-import {Button, Heading, VStack, Wrap, WrapItem} from '@chakra-ui/react';
+import { Button, Heading, VStack, Wrap, WrapItem } from '@chakra-ui/react';
 import React from 'react';
 import { selectAnnotations } from '../../annotations/annotationSlice';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
