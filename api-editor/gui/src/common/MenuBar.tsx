@@ -19,7 +19,7 @@ import {
 import React from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { selectAnnotations } from '../features/annotations/annotationSlice';
+import { selectAnnotationStore } from '../features/annotations/annotationSlice';
 import { FilterHelpButton } from './FilterHelpButton';
 import {
     HeatMapMode,
@@ -45,7 +45,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
     const { colorMode, toggleColorMode } = useColorMode();
     const dispatch = useAppDispatch();
 
-    const annotationStore = useAppSelector(selectAnnotations);
+    const annotationStore = useAppSelector(selectAnnotationStore);
     const sortingMode = useAppSelector(selectSortingMode);
     const heatMapMode = useAppSelector(selectHeatMapMode);
 

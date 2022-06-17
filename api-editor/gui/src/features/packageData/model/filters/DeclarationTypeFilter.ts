@@ -3,7 +3,7 @@ import { PythonFunction } from '../PythonFunction';
 import { PythonModule } from '../PythonModule';
 import { PythonParameter } from '../PythonParameter';
 import { AbstractPythonFilter } from './AbstractPythonFilter';
-import { AnnotationStore } from '../../../annotations/annotationSlice';
+import {AnnotationSlice, AnnotationStore} from '../../../annotations/annotationSlice';
 import { UsageCountStore } from '../../../usages/model/UsageCountStore';
 
 /**
@@ -17,26 +17,26 @@ export class DeclarationTypeFilter extends AbstractPythonFilter {
         super();
     }
 
-    shouldKeepModule(_pythonModule: PythonModule, _annotations: AnnotationStore, _usages: UsageCountStore): boolean {
+    shouldKeepModule(pythonModule: PythonModule, annotations: AnnotationStore, usages: UsageCountStore): boolean {
         return this.type === DeclarationType.Module;
     }
 
-    shouldKeepClass(_pythonClass: PythonClass, _annotations: AnnotationStore, _usages: UsageCountStore): boolean {
+    shouldKeepClass(pythonClass: PythonClass, annotations: AnnotationStore, usages: UsageCountStore): boolean {
         return this.type === DeclarationType.Class;
     }
 
     shouldKeepFunction(
-        _pythonFunction: PythonFunction,
-        _annotations: AnnotationStore,
-        _usages: UsageCountStore,
+        pythonFunction: PythonFunction,
+        annotations: AnnotationStore,
+        usages: UsageCountStore,
     ): boolean {
         return this.type === DeclarationType.Function;
     }
 
     shouldKeepParameter(
-        _pythonParameter: PythonParameter,
-        _annotations: AnnotationStore,
-        _usages: UsageCountStore,
+        pythonParameter: PythonParameter,
+        annotations: AnnotationStore,
+        usages: UsageCountStore,
     ): boolean {
         return this.type === DeclarationType.Parameter;
     }

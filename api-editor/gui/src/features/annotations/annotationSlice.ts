@@ -17,6 +17,8 @@ export const maximumNumberOfFunctionAnnotations = 7;
  */
 export const maximumNumberOfParameterAnnotations = 8;
 
+const maximumUndoHistoryLength = 10;
+
 export interface AnnotationStore {
     attributes: {
         [target: string]: AttributeAnnotation;
@@ -63,6 +65,12 @@ export interface AnnotationStore {
     todos: {
         [target: string]: TodoAnnotation;
     };
+}
+
+export interface AnnotationSlice {
+    annotations: AnnotationStore,
+    queue: AnnotationStore[];
+    queueIndex: number;
 }
 
 export interface AttributeAnnotation {
@@ -319,29 +327,62 @@ export interface TodoAnnotation {
 
 // Initial state -------------------------------------------------------------------------------------------------------
 
-export const initialState: AnnotationStore = {
-    attributes: {},
-    boundaries: {},
-    calledAfters: {},
-    completes: {},
-    constants: {},
-    descriptions: {},
+export const initialAnnotationStore = {
+    attributes: {
+    },
+    boundaries: {
+    },
+    calledAfters: {
+    }
+    ,
+    completes: {
+    }
+    ,
+    constants: {
+    }
+    ,
+    descriptions: {
+    }
+    ,
     enums: {},
-    groups: {},
-    moves: {},
-    optionals: {},
-    pures: {},
-    renamings: {},
-    requireds: {},
-    removes: {},
-    todos: {},
+    groups: {
+    }
+    ,
+    moves: {
+    }
+    ,
+    optionals: {
+    }
+    ,
+    pures: {
+    }
+    ,
+    renamings: {
+    }
+    ,
+    requireds: {
+    }
+    ,
+    removes: {
+    }
+    ,
+    todos: {
+    }
+    ,
+}
+
+export const initialState: AnnotationSlice = {
+    annotations: initialAnnotationStore,
+    queue: [initialAnnotationStore],
+    /** The index that contains the state after an undo */
+    queueIndex: -1,
 };
 
 // Thunks --------------------------------------------------------------------------------------------------------------
 
 export const initializeAnnotations = createAsyncThunk('annotations/initialize', async () => {
     try {
-        const storedAnnotations = (await idb.get('annotations')) as AnnotationStore;
+        const storedAnnotations = (await idb.get('annotations')) as AnnotationSlice;
         return {
             ...initialState,
             ...storedAnnotations,
@@ -351,7 +392,7 @@ export const initializeAnnotations = createAsyncThunk('annotations/initialize', 
     }
 });
 
-export const persistAnnotations = createAsyncThunk('annotations/persist', async (state: AnnotationStore) => {
+export const persistAnnotations = createAsyncThunk('annotations/persist', async (state: AnnotationSlice) => {
     try {
         await idb.set('annotations', state);
     } catch {
@@ -365,10 +406,30 @@ const annotationsSlice = createSlice({
     name: 'annotations',
     initialState,
     reducers: {
+        undo(state) {
+            if(0 <= state.queueIndex && state.queueIndex < state.queue.length) {
+                return {
+                    annotations: state.queue[state.queueIndex],
+                    queue: state.queue,
+                    queueIndex: state.queueIndex - 1
+                }
+            }
+            return state
+        },
+        redo(state) {
+            if(-1 <= state.queueIndex && state.queueIndex + 2 < state.queue.length) {
+                return {
+                    annotations: state.queue[state.queueIndex + 2],
+                    queue: state.queue,
+                    queueIndex: state.queueIndex + 1
+                }
+            }
+            return state
+        },
         setAnnotations(_state, action: PayloadAction<AnnotationStore>) {
             return {
                 ...initialState,
-                ...action.payload,
+                annotations: action.payload,
             };
         },
         mergeAnnotations(state, action: PayloadAction<AnnotationStore>) {
@@ -376,18 +437,18 @@ const annotationsSlice = createSlice({
                 if (annotationType === 'calledAfters' || annotationType === 'groups') {
                     for (const target of Object.keys(action.payload[annotationType])) {
                         // @ts-ignore
-                        state[annotationType][target] = {
+                        state.annotations[annotationType][target] = {
                             // @ts-ignore
-                            ...(state[annotationType][target] ?? {}),
+                            ...(state.annotations[annotationType][target] ?? {}),
                             // @ts-ignore
                             ...action.payload[annotationType][target],
                         };
                     }
                 } else {
                     // @ts-ignore
-                    state[annotationType] = {
+                    state.annotations[annotationType] = {
                         // @ts-ignore
-                        ...state[annotationType],
+                        ...state.annotations[annotationType],
                         // @ts-ignore
                         ...action.payload[annotationType],
                     };
@@ -398,58 +459,106 @@ const annotationsSlice = createSlice({
             return initialState;
         },
         upsertAttribute(state, action: PayloadAction<AttributeAnnotation>) {
-            state.attributes[action.payload.target] = action.payload;
+            state.annotations.attributes[action.payload.target] = action.payload;
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         removeAttribute(state, action: PayloadAction<string>) {
-            delete state.attributes[action.payload];
+            delete state.annotations.attributes[action.payload];
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         upsertBoundary(state, action: PayloadAction<BoundaryAnnotation>) {
-            state.boundaries[action.payload.target] = action.payload;
+            state.annotations.boundaries[action.payload.target] = action.payload;
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         removeBoundary(state, action: PayloadAction<string>) {
-            delete state.boundaries[action.payload];
+            delete state.annotations.boundaries[action.payload];
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         upsertCalledAfter(state, action: PayloadAction<CalledAfterAnnotation>) {
-            if (!state.calledAfters[action.payload.target]) {
-                state.calledAfters[action.payload.target] = {};
+            if (!state.annotations.calledAfters[action.payload.target]) {
+                state.annotations.calledAfters[action.payload.target] = {};
             }
-            state.calledAfters[action.payload.target][action.payload.calledAfterName] = action.payload;
+            state.annotations.calledAfters[action.payload.target][action.payload.calledAfterName] = action.payload;
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         removeCalledAfter(state, action: PayloadAction<CalledAfterTarget>) {
-            delete state.calledAfters[action.payload.target][action.payload.calledAfterName];
-            if (Object.keys(state.calledAfters[action.payload.target]).length === 0) {
-                delete state.calledAfters[action.payload.target];
+            delete state.annotations.calledAfters[action.payload.target][action.payload.calledAfterName];
+            if (Object.keys(state.annotations.calledAfters[action.payload.target]).length === 0) {
+                delete state.annotations.calledAfters[action.payload.target];
             }
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         addComplete(state, action: PayloadAction<CompleteAnnotation>) {
-            state.completes[action.payload.target] = action.payload;
+            state.annotations.completes[action.payload.target] = action.payload;
         },
         removeComplete(state, action: PayloadAction<string>) {
-            delete state.completes[action.payload];
+            delete state.annotations.completes[action.payload];
         },
         upsertConstant(state, action: PayloadAction<ConstantAnnotation>) {
-            state.constants[action.payload.target] = action.payload;
+            state.annotations.constants[action.payload.target] = action.payload;
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         removeConstant(state, action: PayloadAction<string>) {
-            delete state.constants[action.payload];
+            delete state.annotations.constants[action.payload];
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         upsertDescription(state, action: PayloadAction<DescriptionAnnotation>) {
-            state.descriptions[action.payload.target] = action.payload;
+            state.annotations.descriptions[action.payload.target] = action.payload;
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         removeDescription(state, action: PayloadAction<string>) {
-            delete state.descriptions[action.payload];
+            delete state.annotations.descriptions[action.payload];
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         upsertEnum(state, action: PayloadAction<EnumAnnotation>) {
-            state.enums[action.payload.target] = action.payload;
+            state.annotations.enums[action.payload.target] = action.payload;
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         removeEnum(state, action: PayloadAction<string>) {
-            delete state.enums[action.payload];
+            delete state.annotations.enums[action.payload];
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         upsertGroup(state, action: PayloadAction<GroupAnnotation>) {
-            if (!state.groups[action.payload.target]) {
-                state.groups[action.payload.target] = {};
+            if (!state.annotations.groups[action.payload.target]) {
+                state.annotations.groups[action.payload.target] = {};
             } else {
-                const targetGroups = state.groups[action.payload.target];
+                const targetGroups = state.annotations.groups[action.payload.target];
                 const otherGroupNames = Object.values(targetGroups)
                     .filter((group) => group.groupName !== action.payload.groupName)
                     .map((group) => group.groupName);
@@ -472,7 +581,7 @@ const annotationsSlice = createSlice({
                             groupName: group.groupName,
                         });
                     } else if (needsChange) {
-                        state.groups[group.target][group.groupName] = {
+                        state.annotations.groups[group.target][group.groupName] = {
                             parameters: currentGroupParameter,
                             groupName: group.groupName,
                             target: group.target,
@@ -480,61 +589,136 @@ const annotationsSlice = createSlice({
                     }
                 }
             }
-            state.groups[action.payload.target][action.payload.groupName] = action.payload;
+            state.annotations.groups[action.payload.target][action.payload.groupName] = action.payload;
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         removeGroup(state, action: PayloadAction<GroupTarget>) {
-            delete state.groups[action.payload.target][action.payload.groupName];
-            if (Object.keys(state.groups[action.payload.target]).length === 0) {
-                delete state.groups[action.payload.target];
+            delete state.annotations.groups[action.payload.target][action.payload.groupName];
+            if (Object.keys(state.annotations.groups[action.payload.target]).length === 0) {
+                delete state.annotations.groups[action.payload.target];
             }
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         upsertMove(state, action: PayloadAction<MoveAnnotation>) {
-            state.moves[action.payload.target] = action.payload;
+            state.annotations.moves[action.payload.target] = action.payload;
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         removeMove(state, action: PayloadAction<string>) {
-            delete state.moves[action.payload];
+            delete state.annotations.moves[action.payload];
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         upsertOptional(state, action: PayloadAction<OptionalAnnotation>) {
-            state.optionals[action.payload.target] = action.payload;
+            state.annotations.optionals[action.payload.target] = action.payload;
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         removeOptional(state, action: PayloadAction<string>) {
-            delete state.optionals[action.payload];
+            delete state.annotations.optionals[action.payload];
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         addPure(state, action: PayloadAction<PureAnnotation>) {
-            state.pures[action.payload.target] = action.payload;
+            state.annotations.pures[action.payload.target] = action.payload;
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         removePure(state, action: PayloadAction<string>) {
-            delete state.pures[action.payload];
+            delete state.annotations.pures[action.payload];
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         upsertRenaming(state, action: PayloadAction<RenameAnnotation>) {
-            state.renamings[action.payload.target] = action.payload;
+            state.annotations.renamings[action.payload.target] = action.payload;
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         removeRenaming(state, action: PayloadAction<string>) {
-            delete state.renamings[action.payload];
+            delete state.annotations.renamings[action.payload];
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         addRequired(state, action: PayloadAction<RequiredAnnotation>) {
-            state.requireds[action.payload.target] = action.payload;
+            state.annotations.requireds[action.payload.target] = action.payload;
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         removeRequired(state, action: PayloadAction<string>) {
-            delete state.requireds[action.payload];
+            delete state.annotations.requireds[action.payload];
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         addRemove(state, action: PayloadAction<RemoveAnnotation>) {
-            state.removes[action.payload.target] = action.payload;
+            state.annotations.removes[action.payload.target] = action.payload;
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         removeRemove(state, action: PayloadAction<string>) {
-            delete state.removes[action.payload];
+            delete state.annotations.removes[action.payload];
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         upsertTodo(state, action: PayloadAction<TodoAnnotation>) {
-            state.todos[action.payload.target] = action.payload;
+            state.annotations.todos[action.payload.target] = action.payload;
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         removeTodo(state, action: PayloadAction<string>) {
-            delete state.todos[action.payload];
+            delete state.annotations.todos[action.payload];
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
     },
     extraReducers(builder) {
         builder.addCase(initializeAnnotations.fulfilled, (state, action) => action.payload);
     },
 });
+
+const updatedQueue = function (state: AnnotationSlice): [AnnotationStore[], number] {
+    const annotations = JSON.parse(JSON.stringify(state.annotations))
+
+    if(state.queueIndex >= maximumUndoHistoryLength - 2) {
+        state.queue.shift();
+        state.queueIndex = state.queueIndex - 1;
+    }
+
+    return [[...state.queue.slice(0, state.queueIndex + 2), annotations], state.queueIndex + 1]
+}
 
 const { actions, reducer } = annotationsSlice;
 export const {
@@ -572,74 +756,77 @@ export const {
     removeTodo,
     addRemove,
     removeRemove,
+    undo,
+    redo,
 } = actions;
 export const annotationsReducer = reducer;
 
-export const selectAnnotations = (state: RootState) => state.annotations;
+export const selectAnnotationSlice = (state: RootState) => state.annotations;
+export const selectAnnotationStore = (state: RootState) => state.annotations.annotations;
 export const selectAttribute =
     (target: string) =>
     (state: RootState): AttributeAnnotation | undefined =>
-        selectAnnotations(state).attributes[target];
+        selectAnnotationStore(state).attributes[target];
 export const selectBoundary =
     (target: string) =>
     (state: RootState): BoundaryAnnotation | undefined =>
-        selectAnnotations(state).boundaries[target];
+        selectAnnotationStore(state).boundaries[target];
 export const selectCalledAfters =
     (target: string) =>
     (state: RootState): { [calledAfter: string]: CalledAfterAnnotation } =>
-        selectAnnotations(state).calledAfters[target] ?? {};
+        selectAnnotationStore(state).calledAfters[target] ?? {};
 export const selectComplete =
     (target: string) =>
     (state: RootState): CompleteAnnotation | undefined =>
-        selectAnnotations(state).completes[target];
+        selectAnnotationStore(state).completes[target];
 export const selectConstant =
     (target: string) =>
     (state: RootState): ConstantAnnotation | undefined =>
-        selectAnnotations(state).constants[target];
+        selectAnnotationStore(state).constants[target];
 export const selectDescription =
     (target: string) =>
     (state: RootState): DescriptionAnnotation | undefined =>
-        selectAnnotations(state).descriptions[target];
+        selectAnnotationStore(state).descriptions[target];
 export const selectEnum =
     (target: string) =>
     (state: RootState): EnumAnnotation | undefined =>
-        selectAnnotations(state).enums[target];
+        selectAnnotationStore(state).enums[target];
 export const selectGroups =
     (target: string) =>
     (state: RootState): { [groupName: string]: GroupAnnotation } =>
-        selectAnnotations(state).groups[target] ?? {};
+        selectAnnotationStore(state).groups[target] ?? {};
 export const selectMove =
     (target: string) =>
     (state: RootState): MoveAnnotation | undefined =>
-        selectAnnotations(state).moves[target];
+        selectAnnotationStore(state).moves[target];
 export const selectOptional =
     (target: string) =>
     (state: RootState): OptionalAnnotation | undefined =>
-        selectAnnotations(state).optionals[target];
+        selectAnnotationStore(state).optionals[target];
 export const selectPure =
     (target: string) =>
     (state: RootState): PureAnnotation | undefined =>
-        selectAnnotations(state).pures[target];
+        selectAnnotationStore(state).pures[target];
 export const selectRenaming =
     (target: string) =>
     (state: RootState): RenameAnnotation | undefined =>
-        selectAnnotations(state).renamings[target];
+        selectAnnotationStore(state).renamings[target];
 export const selectRequired =
     (target: string) =>
     (state: RootState): RequiredAnnotation | undefined =>
-        selectAnnotations(state).requireds[target];
+        selectAnnotationStore(state).requireds[target];
 export const selectRemove =
     (target: string) =>
     (state: RootState): RemoveAnnotation | undefined =>
-        selectAnnotations(state).removes[target];
+        selectAnnotationStore(state).removes[target];
 export const selectTodo =
     (target: string) =>
     (state: RootState): TodoAnnotation | undefined =>
-        selectAnnotations(state).todos[target];
+        selectAnnotationStore(state).todos[target];
 export const selectNumberOfAnnotations =
     (target: string) =>
     (state: RootState): number => {
-        return Object.values(selectAnnotations(state)).reduce((acc, annotations) => {
+        return Object.values(selectAnnotationStore(state)).reduce((acc, annotations) => {
             if (target in annotations) {
                 return acc + 1;
             } else {

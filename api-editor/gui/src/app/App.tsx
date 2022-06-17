@@ -13,7 +13,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import { MenuBar } from '../common/MenuBar';
 import { AnnotationImportDialog } from '../features/annotations/AnnotationImportDialog';
-import { initializeAnnotations, persistAnnotations, selectAnnotations } from '../features/annotations/annotationSlice';
+import { initializeAnnotations, persistAnnotations, selectAnnotationSlice } from '../features/annotations/annotationSlice';
 import { BoundaryForm } from '../features/annotations/forms/BoundaryForm';
 import { CalledAfterForm } from '../features/annotations/forms/CalledAfterForm';
 import { ConstantForm } from '../features/annotations/forms/ConstantForm';
@@ -173,7 +173,7 @@ const useIndexedDB = function () {
 
 const usePersistentAnnotations = function () {
     const dispatch = useAppDispatch();
-    const annotationStore = useAppSelector(selectAnnotations);
+    const annotationSlice = useAppSelector(selectAnnotationSlice);
     const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {
@@ -185,9 +185,9 @@ const usePersistentAnnotations = function () {
 
     useEffect(() => {
         if (isInitialized) {
-            dispatch(persistAnnotations(annotationStore));
+            dispatch(persistAnnotations(annotationSlice));
         }
-    }, [dispatch, annotationStore, isInitialized]);
+    }, [dispatch, annotationSlice, isInitialized]);
 };
 
 const usePersistentAPIState = function () {

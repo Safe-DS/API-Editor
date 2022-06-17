@@ -3,7 +3,7 @@ import React from 'react';
 import { PythonPackage } from '../model/PythonPackage';
 import { PythonDeclaration } from '../model/PythonDeclaration';
 import { AbstractPythonFilter } from '../model/filters/AbstractPythonFilter';
-import { AnnotationStore, selectAnnotations } from '../../annotations/annotationSlice';
+import {AnnotationStore, selectAnnotationStore, undo, redo} from '../../annotations/annotationSlice';
 import { useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
@@ -23,7 +23,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
     const allDeclarations = useAppSelector(selectFlatSortedDeclarationList);
     const pythonPackage = useAppSelector(selectFilteredPythonPackage);
     const pythonFilter = useAppSelector(selectFilter);
-    const annotations = useAppSelector(selectAnnotations);
+    const annotations = useAppSelector(selectAnnotationStore);
     const usages = useAppSelector(selectUsages);
 
     return (
@@ -99,6 +99,24 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
                 }}
             >
                 Collapse Selected
+            </Button>
+            <Button
+                accessKey=""
+                disabled={!declaration}
+                onClick={() => {
+                    dispatch(undo());
+                }}
+            >
+                Undo
+            </Button>
+            <Button
+                accessKey=""
+                disabled={!declaration}
+                onClick={() => {
+                    dispatch(redo());
+                }}
+            >
+                Redo
             </Button>
         </HStack>
     );

@@ -4,7 +4,7 @@ import { PythonModule } from '../PythonModule';
 import { PythonParameter } from '../PythonParameter';
 import { AbstractPythonFilter } from './AbstractPythonFilter';
 import { PythonDeclaration } from '../PythonDeclaration';
-import { AnnotationStore } from '../../../annotations/annotationSlice';
+import {AnnotationSlice, AnnotationStore} from '../../../annotations/annotationSlice';
 import { UsageCountStore } from '../../../usages/model/UsageCountStore';
 
 /**
@@ -40,8 +40,8 @@ export class VisibilityFilter extends AbstractPythonFilter {
 
     shouldKeepDeclaration(
         pythonDeclaration: PythonDeclaration,
-        _annotations: AnnotationStore,
-        _usages: UsageCountStore,
+        annotations: AnnotationStore,
+        usages: UsageCountStore,
     ): boolean {
         return pythonDeclaration.isPublic === (this.visibility === Visibility.Public);
     }

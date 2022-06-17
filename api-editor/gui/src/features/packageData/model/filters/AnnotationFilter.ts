@@ -4,7 +4,7 @@ import { PythonModule } from '../PythonModule';
 import { PythonParameter } from '../PythonParameter';
 import { AbstractPythonFilter } from './AbstractPythonFilter';
 import { PythonDeclaration } from '../PythonDeclaration';
-import { AnnotationStore } from '../../../annotations/annotationSlice';
+import {AnnotationSlice, AnnotationStore} from '../../../annotations/annotationSlice';
 import { UsageCountStore } from '../../../usages/model/UsageCountStore';
 
 /**
@@ -42,7 +42,7 @@ export class AnnotationFilter extends AbstractPythonFilter {
     shouldKeepDeclaration(
         pythonDeclaration: PythonDeclaration,
         annotations: AnnotationStore,
-        _usages: UsageCountStore,
+        usages: UsageCountStore,
     ): boolean {
         const id = pythonDeclaration.id;
 

@@ -5,7 +5,7 @@ import { parsePythonPackageJson, PythonPackageJson } from './model/PythonPackage
 import * as idb from 'idb-keyval';
 import { selectFilter, selectSortingMode, SortingMode } from '../ui/uiSlice';
 import { selectUsages } from '../usages/usageSlice';
-import { selectAnnotations } from '../annotations/annotationSlice';
+import { selectAnnotationStore } from '../annotations/annotationSlice';
 import { PythonDeclaration } from './model/PythonDeclaration';
 import { UsageCountStore } from '../usages/model/UsageCountStore';
 
@@ -65,13 +65,13 @@ export const apiReducer = reducer;
 const selectAPI = (state: RootState) => state.api;
 export const selectRawPythonPackage = (state: RootState) => selectAPI(state).pythonPackage;
 export const selectFilteredPythonPackage = createSelector(
-    [selectRawPythonPackage, selectAnnotations, selectUsages, selectFilter],
+    [selectRawPythonPackage, selectAnnotationStore, selectUsages, selectFilter],
     (pythonPackage, annotations, usages, filter) => {
         return filter.applyToPackage(pythonPackage, annotations, usages);
     },
 );
 export const selectNumberOfMatchedNodes = createSelector(
-    [selectFilteredPythonPackage, selectAnnotations, selectUsages, selectFilter],
+    [selectFilteredPythonPackage, selectAnnotationStore, selectUsages, selectFilter],
     (pythonPackage, annotations, usages, filter) => {
         let result = -1; // We start with -1, since the PythonPackage is always kept but should not be counted
         for (const declaration of pythonPackage.descendantsOrSelf()) {

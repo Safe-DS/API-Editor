@@ -1,6 +1,6 @@
 import { AbstractPythonFilter } from './AbstractPythonFilter';
 import { PythonClass } from '../PythonClass';
-import { AnnotationStore } from '../../../annotations/annotationSlice';
+import {AnnotationSlice, AnnotationStore} from '../../../annotations/annotationSlice';
 import { UsageCountStore } from '../../../usages/model/UsageCountStore';
 import { PythonFunction } from '../PythonFunction';
 import { PythonModule } from '../PythonModule';
@@ -11,26 +11,26 @@ export class RequiredOrOptionalFilter extends AbstractPythonFilter {
         super();
     }
 
-    shouldKeepModule(_pythonModule: PythonModule, _annotations: AnnotationStore, _usages: UsageCountStore): boolean {
+    shouldKeepModule(pythonModule: PythonModule, annotations: AnnotationStore, usages: UsageCountStore): boolean {
         return false;
     }
 
-    shouldKeepClass(_pythonClass: PythonClass, _annotations: AnnotationStore, _usages: UsageCountStore): boolean {
+    shouldKeepClass(pythonClass: PythonClass, annotations: AnnotationStore, usages: UsageCountStore): boolean {
         return false;
     }
 
     shouldKeepFunction(
-        _pythonFunction: PythonFunction,
-        _annotations: AnnotationStore,
-        _usages: UsageCountStore,
+        pythonFunction: PythonFunction,
+        annotations: AnnotationStore,
+        usages: UsageCountStore,
     ): boolean {
         return false;
     }
 
     shouldKeepParameter(
         pythonParameter: PythonParameter,
-        _annotations: AnnotationStore,
-        _usages: UsageCountStore,
+        annotations: AnnotationStore,
+        usages: UsageCountStore,
     ): boolean {
         return (pythonParameter.defaultValue === null) === (this.keepOnly === RequiredOrOptional.Required);
     }

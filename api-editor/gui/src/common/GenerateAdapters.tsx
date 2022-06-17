@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useRef, useState } from 'react';
 import { useAppSelector } from '../app/hooks';
-import { selectAnnotations } from '../features/annotations/annotationSlice';
+import { selectAnnotationStore } from '../features/annotations/annotationSlice';
 import { AnnotatedPythonPackageBuilder } from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
 import { selectRawPythonPackage } from '../features/packageData/apiSlice';
 
@@ -30,7 +30,7 @@ export const GenerateAdapters: React.FC<GenerateAdaptersProps> = function ({ dis
     const [shouldValidate, setShouldValidate] = useState(false);
     const cancelRef = useRef(null);
 
-    const annotationStore = useAppSelector(selectAnnotations);
+    const annotationStore = useAppSelector(selectAnnotationStore);
     const pythonPackage = useAppSelector(selectRawPythonPackage);
 
     const packageNameIsValid = !shouldValidate || newPackageName !== '';

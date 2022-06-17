@@ -17,12 +17,12 @@ import React, { useState } from 'react';
 import { useAppDispatch } from '../../app/hooks';
 import { StyledDropzone } from '../../common/StyledDropzone';
 import { isValidJsonFile } from '../../common/util/validation';
-import { AnnotationStore, initialState, mergeAnnotations, setAnnotations } from './annotationSlice';
+import { AnnotationStore, initialAnnotationStore, mergeAnnotations, setAnnotations } from './annotationSlice';
 import { hideAnnotationImportDialog, toggleAnnotationImportDialog } from '../ui/uiSlice';
 
 export const AnnotationImportDialog: React.FC = function () {
     const [fileName, setFileName] = useState('');
-    const [newAnnotationStore, setNewAnnotationStore] = useState<AnnotationStore>(initialState);
+    const [newAnnotationStore, setNewAnnotationStore] = useState<AnnotationStore>(initialAnnotationStore);
     const dispatch = useAppDispatch();
 
     const merge = () => {
