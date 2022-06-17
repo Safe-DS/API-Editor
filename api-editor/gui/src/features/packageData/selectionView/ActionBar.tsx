@@ -68,6 +68,19 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
             >
                 Next
             </Button>
+
+            <Button
+                accessKey="p"
+                onClick={() => {
+                    const parent = declaration?.parent();
+                    if (parent && !(parent instanceof PythonPackage)) {
+                        navigate(`/${parent.id}`);
+                    }
+                }}
+            >
+                Go to parent
+            </Button>
+
             <Button
                 accessKey="a"
                 onClick={() => {
@@ -84,6 +97,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
             >
                 Collapse All
             </Button>
+
             <Button
                 accessKey="y"
                 disabled={!declaration}
