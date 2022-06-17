@@ -17,37 +17,49 @@ import {
     useColorMode,
 } from '@chakra-ui/react';
 import React from 'react';
-import { FaChevronDown } from 'react-icons/fa';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { selectAnnotations } from '../features/annotations/annotationSlice';
-import { FilterHelpButton } from './FilterHelpButton';
+import {FaChevronDown} from 'react-icons/fa';
+import {useAppDispatch, useAppSelector} from '../app/hooks';
+import {selectAnnotations} from '../features/annotations/annotationSlice';
+import {FilterHelpButton} from './FilterHelpButton';
 import {
-    HeatMapMode,
+    HeatMapMode, selectFilterList, selectFilterString,
     selectHeatMapMode,
-    selectSortingMode,
+    selectSortingMode, addFilter,
     setHeatMapMode,
     setSortingMode,
     SortingMode,
     toggleAnnotationImportDialog,
     toggleAPIImportDialog,
     toggleUsageImportDialog,
+    Filter, setFilterString,
 } from '../features/ui/uiSlice';
-import { DeleteAllAnnotations } from './DeleteAllAnnotations';
-import { GenerateAdapters } from './GenerateAdapters';
-import { FilterInput } from './FilterInput';
-import { selectNumberOfMatchedNodes } from '../features/packageData/apiSlice';
+import {DeleteAllAnnotations} from './DeleteAllAnnotations';
+import {GenerateAdapters} from './GenerateAdapters';
+import {FilterInput} from './FilterInput';
+import {selectNumberOfMatchedNodes} from '../features/packageData/apiSlice';
+import {FilterOptions} from "react-markdown/lib/react-markdown";
 
 interface MenuBarProps {
     displayInferErrors: (errors: string[]) => void;
 }
 
-export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors }) {
-    const { colorMode, toggleColorMode } = useColorMode();
+export const MenuBar: React.FC<MenuBarProps> = function ({displayInferErrors}) {
+    const {colorMode, toggleColorMode} = useColorMode();
     const dispatch = useAppDispatch();
 
     const annotationStore = useAppSelector(selectAnnotations);
     const sortingMode = useAppSelector(selectSortingMode);
     const heatMapMode = useAppSelector(selectHeatMapMode);
+    const filterList = useAppSelector(selectFilterList);
+    const targetString = useAppSelector(selectFilterString);
+
+    const saveInput = () => {
+        // filterList.push([targetString, targetString]);
+        dispatch(addFilter({filter: targetString, name: targetString}));
+        for(let i=0; i<filterList.length; i++){
+            console.log(filterList[i].filter+ " + "+filterList[i].name);
+        }
+    };
 
     const exportAnnotations = () => {
         const a = document.createElement('a');
@@ -70,7 +82,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                 {/* Box gets rid of popper.js warning "CSS margin styles cannot be used" */}
                 <Box>
                     <Menu>
-                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown}/>}>
                             File
                         </MenuButton>
                         <MenuList>
@@ -85,7 +97,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                                     Annotations
                                 </MenuItem>
                             </MenuGroup>
-                            <MenuDivider />
+                            <MenuDivider/>
                             <MenuGroup title="Export">
                                 <MenuItem paddingLeft={8} onClick={exportAnnotations}>
                                     Annotations
@@ -95,12 +107,12 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                     </Menu>
                 </Box>
 
-                <GenerateAdapters displayInferErrors={displayInferErrors} />
-                <DeleteAllAnnotations />
+                <GenerateAdapters displayInferErrors={displayInferErrors}/>
+                <DeleteAllAnnotations/>
 
                 <Box>
                     <Menu closeOnSelect={false}>
-                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown}/>}>
                             Settings
                         </MenuButton>
                         <MenuList>
@@ -109,7 +121,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                                     Dark mode
                                 </MenuItemOption>
                             </MenuOptionGroup>
-                            <MenuDivider />
+                            <MenuDivider/>
                             <MenuGroup title="Module/Class/Function Sorting">
                                 <MenuOptionGroup
                                     type="radio"
@@ -132,7 +144,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                                     </MenuItemOption>
                                 </MenuOptionGroup>
                             </MenuGroup>
-                            <MenuDivider />
+                            <MenuDivider/>
                             <MenuGroup title="Heat Map Mode">
                                 <MenuOptionGroup type="radio" defaultValue={HeatMapMode.None} value={heatMapMode}>
                                     <MenuItemOption
@@ -168,14 +180,28 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                         </MenuList>
                     </Menu>
                 </Box>
+                <Button onClick={() => {saveInput()}}>Save input</Button>
+                <Box>
+                    <Menu //closeOnSelect={true}
+                        >
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown}/>}>
+                            Load Filter
+                        </MenuButton>
+                        <MenuList>
+                            <MenuGroup>
+                                <FilterOptions/>
+                            </MenuGroup>
+                        </MenuList>
+                    </Menu>
+                </Box>
             </HStack>
 
-            <Spacer />
+            <Spacer/>
 
             <HStack>
-                <MatchCount />
-                <FilterInput />
-                <FilterHelpButton />
+                <MatchCount/>
+                <FilterInput/>
+                <FilterHelpButton/>
             </HStack>
         </Flex>
     );
@@ -193,4 +219,15 @@ const MatchCount = function () {
     }
 
     return <ChakraText fontWeight="bold">{text}</ChakraText>;
+};
+
+const FilterOptions = function (){
+    const filters = useAppSelector(selectFilterList);
+    let options = filters.map((it)=>{return <FilterOption filter={it.filter} name={it.name}/>});
+    return <MenuOptionGroup>{options}</MenuOptionGroup>;
+};
+
+const FilterOption: React.FC<Filter> = function ({filter, name}){
+    const dispatch = useAppDispatch();
+    return <MenuItemOption onClick={()=>{dispatch(setFilterString(filter))}} >{name}</MenuItemOption>;
 };

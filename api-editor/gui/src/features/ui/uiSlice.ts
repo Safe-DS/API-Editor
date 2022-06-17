@@ -5,6 +5,11 @@ import { CalledAfterTarget, GroupTarget } from '../annotations/annotationSlice';
 import { AbstractPythonFilter } from '../packageData/model/filters/AbstractPythonFilter';
 import { createFilterFromString, isValidFilterToken } from '../packageData/model/filters/filterFactory';
 
+export interface Filter{
+    filter: string;
+    name: string;
+}
+
 export interface UIState {
     showAnnotationImportDialog: boolean;
     showAPIImportDialog: boolean;
@@ -18,6 +23,7 @@ export interface UIState {
     heatMapMode: HeatMapMode;
     filterString: string;
     sortingMode: SortingMode;
+    filterList: Filter[];
 }
 
 type UserAction =
@@ -122,6 +128,7 @@ export const initialState: UIState = {
 
     heatMapMode: HeatMapMode.None,
     sortingMode: SortingMode.Alphabetical,
+    filterList: [{filter: 'is:public', name: 'public'}],
 };
 
 // Thunks --------------------------------------------------------------------------------------------------------------
@@ -291,6 +298,12 @@ const uiSlice = createSlice({
         setFilterString(state, action: PayloadAction<string>) {
             state.filterString = action.payload;
         },
+        setFilterList(state, action: PayloadAction<Filter[]>) {
+            state.filterList = action.payload;
+        },
+        addFilter(state, action: PayloadAction<Filter>){
+            state.filterList.push(action.payload);
+        },
         setSortingMode(state, action: PayloadAction<SortingMode>) {
             state.sortingMode = action.payload;
         },
@@ -331,6 +344,8 @@ export const {
     setHeatMapMode,
 
     setFilterString,
+    setFilterList,
+    addFilter,
     setSortingMode,
 } = actions;
 export const uiReducer = reducer;
@@ -350,6 +365,7 @@ export const selectAllExpandedInTreeView = (state: RootState): { [target: string
 export const selectTreeViewScrollOffset = (state: RootState): number => selectUI(state).treeViewScrollOffset;
 export const selectHeatMapMode = (state: RootState): HeatMapMode => selectUI(state).heatMapMode;
 export const selectFilterString = (state: RootState): string => selectUI(state).filterString;
+export const selectFilterList = (state: RootState): Filter[] => selectUI(state).filterList;
 
 /**
  * Keep only the valid parts of the filter string to improve caching of selectFilter.
