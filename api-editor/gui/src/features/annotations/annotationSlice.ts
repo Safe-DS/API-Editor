@@ -1,6 +1,6 @@
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import * as idb from 'idb-keyval';
-import {RootState} from '../../app/store';
+import { RootState } from '../../app/store';
 
 /**
  * How many annotations can be applied to a class at once.
