@@ -25,8 +25,6 @@ interface ParameterViewProps {
 
 export const ParameterView: React.FC<ParameterViewProps> = function ({pythonParameter, usages}) {
     const parameterUsages = usages.valueUsages.get(pythonParameter.id);
-    //parameterUsages is of type Map<string, number>
-    //only use the 10 most used parameters
     return (
         <Stack spacing={8}>
             <ParameterNode isTitle pythonParameter={pythonParameter}/>
