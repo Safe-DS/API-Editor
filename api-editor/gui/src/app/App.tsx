@@ -44,7 +44,6 @@ import {
     selectShowAPIImportDialog,
     selectShowUsageImportDialog,
     selectUI,
-    setFilterString,
 } from '../features/ui/uiSlice';
 import {initializeUsages, persistUsages, selectUsages} from '../features/usages/usageSlice';
 import {initializePythonPackage, selectRawPythonPackage} from '../features/packageData/apiSlice';
@@ -218,9 +217,9 @@ export const App: React.FC = function () {
                     {currentUserAction.type === 'none' && <ActionBar declaration={declaration}/>}
                 </GridItem>
 
-                {showAnnotationImportDialog && <AnnotationImportDialog/>}
-                {showAPIImportDialog && <PackageDataImportDialog setFilter={setFilterString}/>}
-                {showUsagesImportDialog && <UsageImportDialog/>}
+                {showAnnotationImportDialog && <AnnotationImportDialog />}
+                {showAPIImportDialog && <PackageDataImportDialog />}
+                {showUsagesImportDialog && <UsageImportDialog />}
             </Grid>
 
             <Modal

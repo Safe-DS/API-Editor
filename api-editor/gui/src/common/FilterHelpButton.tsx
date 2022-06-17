@@ -48,9 +48,9 @@ export const FilterHelpButton = function () {
                             </ListItem>
                             <ListItem>
                                 <ChakraText>
-                                    <strong>is:done</strong>
+                                    <strong>is:complete</strong>
                                 </ChakraText>
-                                <ChakraText>Displays only elements that are marked as done.</ChakraText>
+                                <ChakraText>Displays only elements that are marked as complete.</ChakraText>
                             </ListItem>
                             <ListItem>
                                 <ChakraText>

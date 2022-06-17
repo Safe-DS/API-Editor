@@ -4,7 +4,7 @@ import { AnnotationDropdown } from '../../annotations/AnnotationDropdown';
 import { AnnotationView } from '../../annotations/AnnotationView';
 import { PythonParameter } from '../model/PythonParameter';
 import { DocumentationText } from './DocumentationText';
-import { DoneButton } from '../../annotations/DoneButton';
+import { CompleteButton } from '../../annotations/CompleteButton';
 
 interface ParameterNodeProps {
     pythonParameter: PythonParameter;
@@ -42,7 +42,7 @@ export const ParameterNode: React.FC<ParameterNodeProps> = function ({ isTitle, 
                             showRename
                             showRequired
                         />
-                        <DoneButton target={id} />
+                        <CompleteButton target={id} />
                     </>
                 )}
             </HStack>
