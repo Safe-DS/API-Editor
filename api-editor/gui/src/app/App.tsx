@@ -10,27 +10,27 @@ import {
     ModalOverlay,
     UnorderedList,
 } from '@chakra-ui/react';
-import React, {useEffect, useState} from 'react';
-import {MenuBar} from '../common/MenuBar';
-import {AnnotationImportDialog} from '../features/annotations/AnnotationImportDialog';
-import {initializeAnnotations, persistAnnotations, selectAnnotations} from '../features/annotations/annotationSlice';
-import {BoundaryForm} from '../features/annotations/forms/BoundaryForm';
-import {CalledAfterForm} from '../features/annotations/forms/CalledAfterForm';
-import {ConstantForm} from '../features/annotations/forms/ConstantForm';
-import {DescriptionForm} from '../features/annotations/forms/DescriptionForm';
-import {EnumForm} from '../features/annotations/forms/EnumForm';
-import {GroupForm} from '../features/annotations/forms/GroupForm';
-import {MoveForm} from '../features/annotations/forms/MoveForm';
-import {OptionalForm} from '../features/annotations/forms/OptionalForm';
-import {RenameForm} from '../features/annotations/forms/RenameForm';
-import {TodoForm} from '../features/annotations/forms/TodoForm';
-import {PackageDataImportDialog} from '../features/packageData/PackageDataImportDialog';
-import {SelectionView} from '../features/packageData/selectionView/SelectionView';
-import {TreeView} from '../features/packageData/treeView/TreeView';
-import {useAppDispatch, useAppSelector} from './hooks';
-import {PythonFunction} from '../features/packageData/model/PythonFunction';
-import {AttributeForm} from '../features/annotations/forms/AttributeForm';
-import {UsageImportDialog} from '../features/usages/UsageImportDialog';
+import React, { useEffect, useState } from 'react';
+import { MenuBar } from '../common/MenuBar';
+import { AnnotationImportDialog } from '../features/annotations/AnnotationImportDialog';
+import { initializeAnnotations, persistAnnotations, selectAnnotations } from '../features/annotations/annotationSlice';
+import { BoundaryForm } from '../features/annotations/forms/BoundaryForm';
+import { CalledAfterForm } from '../features/annotations/forms/CalledAfterForm';
+import { ConstantForm } from '../features/annotations/forms/ConstantForm';
+import { DescriptionForm } from '../features/annotations/forms/DescriptionForm';
+import { EnumForm } from '../features/annotations/forms/EnumForm';
+import { GroupForm } from '../features/annotations/forms/GroupForm';
+import { MoveForm } from '../features/annotations/forms/MoveForm';
+import { OptionalForm } from '../features/annotations/forms/OptionalForm';
+import { RenameForm } from '../features/annotations/forms/RenameForm';
+import { TodoForm } from '../features/annotations/forms/TodoForm';
+import { PackageDataImportDialog } from '../features/packageData/PackageDataImportDialog';
+import { SelectionView } from '../features/packageData/selectionView/SelectionView';
+import { TreeView } from '../features/packageData/treeView/TreeView';
+import { useAppDispatch, useAppSelector } from './hooks';
+import { PythonFunction } from '../features/packageData/model/PythonFunction';
+import { AttributeForm } from '../features/annotations/forms/AttributeForm';
+import { UsageImportDialog } from '../features/usages/UsageImportDialog';
 import {
     GroupUserAction,
     initializeUI,
@@ -41,12 +41,12 @@ import {
     selectShowUsageImportDialog,
     selectUI,
 } from '../features/ui/uiSlice';
-import {initializeUsages, persistUsages, selectUsages} from '../features/usages/usageSlice';
-import {initializePythonPackage, selectRawPythonPackage} from '../features/packageData/apiSlice';
-import {PythonClass} from '../features/packageData/model/PythonClass';
-import {PythonParameter} from '../features/packageData/model/PythonParameter';
-import {ActionBar} from '../features/packageData/selectionView/ActionBar';
-import {useLocation} from 'react-router-dom';
+import { initializeUsages, persistUsages, selectUsages } from '../features/usages/usageSlice';
+import { initializePythonPackage, selectRawPythonPackage } from '../features/packageData/apiSlice';
+import { PythonClass } from '../features/packageData/model/PythonClass';
+import { PythonParameter } from '../features/packageData/model/PythonParameter';
+import { ActionBar } from '../features/packageData/selectionView/ActionBar';
+import { useLocation } from 'react-router-dom';
 
 export const App: React.FC = function () {
     useIndexedDB();
