@@ -1,5 +1,5 @@
-import React, {useRef} from 'react';
-import {hideAnnotationForm} from '../../ui/uiSlice';
+import React, { useRef } from 'react';
+import { hideAnnotationForm } from '../../ui/uiSlice';
 import {
     AlertDialog,
     AlertDialogBody,
@@ -12,7 +12,7 @@ import {
     ListItem,
     UnorderedList,
 } from '@chakra-ui/react';
-import {PythonDeclaration} from "../../packageData/model/PythonDeclaration";
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
 
 interface ConfirmAnnotationsProps {
     targets: PythonDeclaration[];
@@ -21,10 +21,10 @@ interface ConfirmAnnotationsProps {
 }
 
 export const ConfirmAnnotations: React.FC<ConfirmAnnotationsProps> = function ({
-                                                                                   targets,
-                                                                                   handleSave,
-                                                                                   setConfirmVisible,
-                                                                               }) {
+    targets,
+    handleSave,
+    setConfirmVisible,
+}) {
     const handleCancel = () => {
         setConfirmVisible(false);
         hideAnnotationForm();
@@ -33,7 +33,7 @@ export const ConfirmAnnotations: React.FC<ConfirmAnnotationsProps> = function ({
     const useCancelRef = useRef(null);
 
     return (
-        <AlertDialog isOpen={true} leastDestructiveRef={useCancelRef} onClose={handleCancel} scrollBehavior={"inside"}>
+        <AlertDialog isOpen={true} leastDestructiveRef={useCancelRef} onClose={handleCancel} scrollBehavior={'inside'}>
             <AlertDialogOverlay>
                 <AlertDialogContent>
                     <AlertDialogHeader>

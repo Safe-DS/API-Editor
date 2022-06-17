@@ -10,14 +10,14 @@ import {
     Heading,
     Input,
     ListItem,
-    UnorderedList
+    UnorderedList,
 } from '@chakra-ui/react';
-import React, {useRef, useState} from 'react';
-import {useForm} from 'react-hook-form';
-import {useAppDispatch} from '../../../app/hooks';
-import {PythonDeclaration} from '../../packageData/model/PythonDeclaration';
-import {AnnotationBatchForm} from './AnnotationBatchForm';
-import {hideAnnotationForm} from '../../ui/uiSlice';
+import React, { useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useAppDispatch } from '../../../app/hooks';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
+import { AnnotationBatchForm } from './AnnotationBatchForm';
+import { hideAnnotationForm } from '../../ui/uiSlice';
 
 interface OldNewBatchFormProps {
     targets: PythonDeclaration[];
@@ -31,13 +31,13 @@ export interface OldNewBatchFormState {
 }
 
 export const OldNewBatchForm: React.FC<OldNewBatchFormProps> = function ({
-                                                                             targets,
-                                                                             annotationType,
-                                                                             onUpsertAnnotation,
-                                                                         }) {
+    targets,
+    annotationType,
+    onUpsertAnnotation,
+}) {
     const dispatch = useAppDispatch();
 
-    const {handleSubmit, register} = useForm<OldNewBatchFormState>({
+    const { handleSubmit, register } = useForm<OldNewBatchFormState>({
         defaultValues: {
             oldString: '',
             newString: '',
@@ -45,12 +45,12 @@ export const OldNewBatchForm: React.FC<OldNewBatchFormProps> = function ({
     });
 
     let [confirmWindowVisible, setConfirmWindowVisible] = useState(false);
-    let [data, setData] = useState<OldNewBatchFormState>({oldString: '', newString: ''});
+    let [data, setData] = useState<OldNewBatchFormState>({ oldString: '', newString: '' });
 
     // Event handlers ----------------------------------------------------------
 
     const handleSave = (annotationData: OldNewBatchFormState) => {
-        onUpsertAnnotation({...annotationData});
+        onUpsertAnnotation({ ...annotationData });
 
         setConfirmWindowVisible(false);
         dispatch(hideAnnotationForm());
@@ -108,11 +108,11 @@ interface ConfirmAnnotationsProps {
 }
 
 const ConfirmAnnotations: React.FC<ConfirmAnnotationsProps> = function ({
-                                                                            targets,
-                                                                            data,
-                                                                            handleSave,
-                                                                            setConfirmVisible,
-                                                                        }) {
+    targets,
+    data,
+    handleSave,
+    setConfirmVisible,
+}) {
     const handleCancel = () => {
         setConfirmVisible(false);
         hideAnnotationForm();
@@ -120,11 +120,16 @@ const ConfirmAnnotations: React.FC<ConfirmAnnotationsProps> = function ({
 
     const useCancelRef = useRef(null);
 
-    const filteredTargets = targets.filter(t => t.name !== t.name.replace(data.oldString, data.newString));
+    const filteredTargets = targets.filter((t) => t.name !== t.name.replace(data.oldString, data.newString));
 
     return (
-        <AlertDialog isOpen={true} leastDestructiveRef={useCancelRef} onClose={handleCancel}
-                     size={"xl"} scrollBehavior={"inside"}>
+        <AlertDialog
+            isOpen={true}
+            leastDestructiveRef={useCancelRef}
+            onClose={handleCancel}
+            size={'xl'}
+            scrollBehavior={'inside'}
+        >
             <AlertDialogOverlay>
                 <AlertDialogContent>
                     <AlertDialogHeader>
