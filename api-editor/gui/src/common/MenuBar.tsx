@@ -17,10 +17,10 @@ import {
     useColorMode,
 } from '@chakra-ui/react';
 import React from 'react';
-import {FaChevronDown} from 'react-icons/fa';
-import {useAppDispatch, useAppSelector} from '../app/hooks';
-import {selectAnnotations} from '../features/annotations/annotationSlice';
-import {FilterHelpButton} from './FilterHelpButton';
+import { FaChevronDown } from 'react-icons/fa';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { selectAnnotations } from '../features/annotations/annotationSlice';
+import { FilterHelpButton } from './FilterHelpButton';
 import {
     BatchMode,
     HeatMapMode,
@@ -34,17 +34,17 @@ import {
     toggleAPIImportDialog,
     toggleUsageImportDialog,
 } from '../features/ui/uiSlice';
-import {DeleteAllAnnotations} from './DeleteAllAnnotations';
-import {GenerateAdapters} from './GenerateAdapters';
-import {FilterInput} from './FilterInput';
-import {selectNumberOfMatchedNodes} from '../features/packageData/apiSlice';
+import { DeleteAllAnnotations } from './DeleteAllAnnotations';
+import { GenerateAdapters } from './GenerateAdapters';
+import { FilterInput } from './FilterInput';
+import { selectNumberOfMatchedNodes } from '../features/packageData/apiSlice';
 
 interface MenuBarProps {
     displayInferErrors: (errors: string[]) => void;
 }
 
-export const MenuBar: React.FC<MenuBarProps> = function ({displayInferErrors}) {
-    const {colorMode, toggleColorMode} = useColorMode();
+export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors }) {
+    const { colorMode, toggleColorMode } = useColorMode();
     const dispatch = useAppDispatch();
 
     const annotationStore = useAppSelector(selectAnnotations);
@@ -72,7 +72,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({displayInferErrors}) {
                 {/* Box gets rid of popper.js warning "CSS margin styles cannot be used" */}
                 <Box>
                     <Menu>
-                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown}/>}>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
                             File
                         </MenuButton>
                         <MenuList>
@@ -87,7 +87,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({displayInferErrors}) {
                                     Annotations
                                 </MenuItem>
                             </MenuGroup>
-                            <MenuDivider/>
+                            <MenuDivider />
                             <MenuGroup title="Export">
                                 <MenuItem paddingLeft={8} onClick={exportAnnotations}>
                                     Annotations
@@ -97,12 +97,12 @@ export const MenuBar: React.FC<MenuBarProps> = function ({displayInferErrors}) {
                     </Menu>
                 </Box>
 
-                <GenerateAdapters displayInferErrors={displayInferErrors}/>
-                <DeleteAllAnnotations/>
+                <GenerateAdapters displayInferErrors={displayInferErrors} />
+                <DeleteAllAnnotations />
 
                 <Box>
                     <Menu closeOnSelect={false}>
-                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown}/>}>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
                             Batch
                         </MenuButton>
                         <MenuList>
@@ -132,7 +132,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({displayInferErrors}) {
 
                 <Box>
                     <Menu closeOnSelect={false}>
-                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown}/>}>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
                             Settings
                         </MenuButton>
                         <MenuList>
@@ -141,7 +141,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({displayInferErrors}) {
                                     Dark mode
                                 </MenuItemOption>
                             </MenuOptionGroup>
-                            <MenuDivider/>
+                            <MenuDivider />
                             <MenuGroup title="Module/Class/Function Sorting">
                                 <MenuOptionGroup
                                     type="radio"
@@ -164,7 +164,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({displayInferErrors}) {
                                     </MenuItemOption>
                                 </MenuOptionGroup>
                             </MenuGroup>
-                            <MenuDivider/>
+                            <MenuDivider />
                             <MenuGroup title="Heat Map Mode">
                                 <MenuOptionGroup type="radio" defaultValue={HeatMapMode.None} value={heatMapMode}>
                                     <MenuItemOption
@@ -202,12 +202,12 @@ export const MenuBar: React.FC<MenuBarProps> = function ({displayInferErrors}) {
                 </Box>
             </HStack>
 
-            <Spacer/>
+            <Spacer />
 
             <HStack>
-                <MatchCount/>
-                <FilterInput/>
-                <FilterHelpButton/>
+                <MatchCount />
+                <FilterInput />
+                <FilterHelpButton />
             </HStack>
         </Flex>
     );

@@ -1,5 +1,5 @@
-import React, {useRef} from "react";
-import {hideAnnotationForm} from "../../ui/uiSlice";
+import React, { useRef } from 'react';
+import { hideAnnotationForm } from '../../ui/uiSlice';
 import {
     AlertDialog,
     AlertDialogBody,
@@ -9,8 +9,8 @@ import {
     AlertDialogOverlay,
     Button,
     Heading,
-    Text
-} from "@chakra-ui/react";
+    Text,
+} from '@chakra-ui/react';
 
 interface ConfirmAnnotationsProps {
     count: number;
@@ -18,7 +18,11 @@ interface ConfirmAnnotationsProps {
     setConfirmVisible: (visible: boolean) => void;
 }
 
-export const ConfirmAnnotations: React.FC<ConfirmAnnotationsProps> = function ({count, handleSave, setConfirmVisible}) {
+export const ConfirmAnnotations: React.FC<ConfirmAnnotationsProps> = function ({
+    count,
+    handleSave,
+    setConfirmVisible,
+}) {
     const handleCancel = () => {
         setConfirmVisible(false);
         hideAnnotationForm();

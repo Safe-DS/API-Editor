@@ -1,17 +1,16 @@
-import {FormLabel, Input,} from '@chakra-ui/react';
-import React, {useState} from 'react';
-import {useForm} from 'react-hook-form';
-import {useAppDispatch} from '../../../app/hooks';
-import {PythonDeclaration} from '../../packageData/model/PythonDeclaration';
-import {AnnotationBatchForm} from './AnnotationBatchForm';
-import {hideAnnotationForm} from '../../ui/uiSlice';
-import {ConfirmAnnotations} from "./ConfirmAnnotations";
+import { FormLabel, Input } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useAppDispatch } from '../../../app/hooks';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
+import { AnnotationBatchForm } from './AnnotationBatchForm';
+import { hideAnnotationForm } from '../../ui/uiSlice';
+import { ConfirmAnnotations } from './ConfirmAnnotations';
 
 interface OldNewBatchFormProps {
     targets: PythonDeclaration[];
     annotationType: string;
     onUpsertAnnotation: (data: OldNewBatchFormState) => void;
-
 }
 
 export interface OldNewBatchFormState {
@@ -20,16 +19,13 @@ export interface OldNewBatchFormState {
 }
 
 export const OldNewBatchForm: React.FC<OldNewBatchFormProps> = function ({
-                                                                             targets,
-                                                                             annotationType,
-                                                                             onUpsertAnnotation,
-                                                                         }) {
+    targets,
+    annotationType,
+    onUpsertAnnotation,
+}) {
     const dispatch = useAppDispatch();
 
-    const {
-        handleSubmit,
-        register,
-    } = useForm<OldNewBatchFormState>({
+    const { handleSubmit, register } = useForm<OldNewBatchFormState>({
         defaultValues: {
             oldString: '',
             newString: '',
@@ -37,12 +33,12 @@ export const OldNewBatchForm: React.FC<OldNewBatchFormProps> = function ({
     });
 
     let [confirmWindowVisible, setConfirmWindowVisible] = useState(false);
-    let [data, setData] = useState<OldNewBatchFormState>({oldString: '', newString: ''});
+    let [data, setData] = useState<OldNewBatchFormState>({ oldString: '', newString: '' });
 
     // Event handlers ----------------------------------------------------------
 
     const handleSave = (annotationData: OldNewBatchFormState) => {
-        onUpsertAnnotation({...annotationData});
+        onUpsertAnnotation({ ...annotationData });
 
         setConfirmWindowVisible(false);
         dispatch(hideAnnotationForm());

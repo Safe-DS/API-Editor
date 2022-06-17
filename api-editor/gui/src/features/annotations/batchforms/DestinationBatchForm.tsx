@@ -1,17 +1,16 @@
-import {FormLabel, Input,} from '@chakra-ui/react';
-import React, {useState} from 'react';
-import {useForm} from 'react-hook-form';
-import {useAppDispatch} from '../../../app/hooks';
-import {PythonDeclaration} from '../../packageData/model/PythonDeclaration';
-import {AnnotationBatchForm} from './AnnotationBatchForm';
-import {hideAnnotationForm} from '../../ui/uiSlice';
-import {ConfirmAnnotations} from "./ConfirmAnnotations";
+import { FormLabel, Input } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useAppDispatch } from '../../../app/hooks';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
+import { AnnotationBatchForm } from './AnnotationBatchForm';
+import { hideAnnotationForm } from '../../ui/uiSlice';
+import { ConfirmAnnotations } from './ConfirmAnnotations';
 
 interface DestinationBatchFormProps {
     targets: PythonDeclaration[];
     annotationType: string;
     onUpsertAnnotation: (data: DestinationBatchFormState) => void;
-
 }
 
 export interface DestinationBatchFormState {
@@ -19,28 +18,25 @@ export interface DestinationBatchFormState {
 }
 
 export const DestinationBatchForm: React.FC<DestinationBatchFormProps> = function ({
-                                                                                       targets,
-                                                                                       annotationType,
-                                                                                       onUpsertAnnotation,
-                                                                                   }) {
+    targets,
+    annotationType,
+    onUpsertAnnotation,
+}) {
     const dispatch = useAppDispatch();
 
-    const {
-        handleSubmit,
-        register,
-    } = useForm<DestinationBatchFormState>({
+    const { handleSubmit, register } = useForm<DestinationBatchFormState>({
         defaultValues: {
             destination: '',
         },
     });
 
     let [confirmWindowVisible, setConfirmWindowVisible] = useState(false);
-    let [data, setData] = useState<DestinationBatchFormState>({destination: ''});
+    let [data, setData] = useState<DestinationBatchFormState>({ destination: '' });
 
     // Event handlers ----------------------------------------------------------
 
     const handleSave = (annotationData: DestinationBatchFormState) => {
-        onUpsertAnnotation({...annotationData});
+        onUpsertAnnotation({ ...annotationData });
 
         setConfirmWindowVisible(false);
         dispatch(hideAnnotationForm());

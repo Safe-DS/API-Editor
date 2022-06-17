@@ -1,15 +1,15 @@
 import React from 'react';
-import {useAppDispatch} from '../../../app/hooks';
-import {PythonDeclaration} from '../../packageData/model/PythonDeclaration';
-import {OptionalAnnotation, upsertOptionals} from '../annotationSlice';
-import {TypeValueBatchForm, TypeValueBatchFormState} from './TypeValueBatchForm';
-import {PythonParameter} from '../../packageData/model/PythonParameter';
+import { useAppDispatch } from '../../../app/hooks';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
+import { OptionalAnnotation, upsertOptionals } from '../annotationSlice';
+import { TypeValueBatchForm, TypeValueBatchFormState } from './TypeValueBatchForm';
+import { PythonParameter } from '../../packageData/model/PythonParameter';
 
 interface OptionalBatchFormProps {
     targets: PythonDeclaration[];
 }
 
-export const OptionalBatchForm: React.FC<OptionalBatchFormProps> = function ({targets}) {
+export const OptionalBatchForm: React.FC<OptionalBatchFormProps> = function ({ targets }) {
     //only parameters can have optional annotations
     const filteredTargets = targets.filter((t) => t instanceof PythonParameter);
     const targetPaths = filteredTargets.map((t) => t.id);
@@ -21,20 +21,23 @@ export const OptionalBatchForm: React.FC<OptionalBatchFormProps> = function ({ta
 
     const handleUpsertAnnotation = (data: TypeValueBatchFormState) => {
         const all: OptionalAnnotation[] = [];
-        targetPaths.forEach(targetPath => {
+        targetPaths.forEach((targetPath) => {
             all.push({
                 target: targetPath,
                 defaultType: data.defaultType,
                 defaultValue: data.defaultValue,
             });
         });
-        dispatch(upsertOptionals(all))
+        dispatch(upsertOptionals(all));
     };
 
     // Rendering -------------------------------------------------------------------------------------------------------
 
     return (
-        <TypeValueBatchForm targets={filteredTargets} annotationType="optional"
-                            onUpsertAnnotation={handleUpsertAnnotation}/>
+        <TypeValueBatchForm
+            targets={filteredTargets}
+            annotationType="optional"
+            onUpsertAnnotation={handleUpsertAnnotation}
+        />
     );
 };

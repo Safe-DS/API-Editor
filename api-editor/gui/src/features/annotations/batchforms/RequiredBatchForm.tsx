@@ -1,15 +1,15 @@
 import React from 'react';
-import {useAppDispatch} from '../../../app/hooks';
-import {PythonDeclaration} from '../../packageData/model/PythonDeclaration';
-import {RequiredAnnotation, upsertRequireds} from '../annotationSlice';
-import {PythonParameter} from '../../packageData/model/PythonParameter';
-import {EmptyBatchForm} from "./EmptyBatchForm";
+import { useAppDispatch } from '../../../app/hooks';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
+import { RequiredAnnotation, upsertRequireds } from '../annotationSlice';
+import { PythonParameter } from '../../packageData/model/PythonParameter';
+import { EmptyBatchForm } from './EmptyBatchForm';
 
 interface RequiredBatchFormProps {
     targets: PythonDeclaration[];
 }
 
-export const RequiredBatchForm: React.FC<RequiredBatchFormProps> = function ({targets}) {
+export const RequiredBatchForm: React.FC<RequiredBatchFormProps> = function ({ targets }) {
     //only parameters can have required annotations
     const filteredTargets = targets.filter((t) => t instanceof PythonParameter);
     const targetPaths = filteredTargets.map((t) => t.id);
@@ -21,18 +21,21 @@ export const RequiredBatchForm: React.FC<RequiredBatchFormProps> = function ({ta
 
     const handleUpsertAnnotation = () => {
         const all: RequiredAnnotation[] = [];
-        targetPaths.forEach(targetPath => {
+        targetPaths.forEach((targetPath) => {
             all.push({
                 target: targetPath,
             });
         });
-        dispatch(upsertRequireds(all))
+        dispatch(upsertRequireds(all));
     };
 
     // Rendering -------------------------------------------------------------------------------------------------------
 
     return (
-        <EmptyBatchForm targets={filteredTargets} annotationType="required"
-                        onUpsertAnnotation={handleUpsertAnnotation}/>
+        <EmptyBatchForm
+            targets={filteredTargets}
+            annotationType="required"
+            onUpsertAnnotation={handleUpsertAnnotation}
+        />
     );
 };
