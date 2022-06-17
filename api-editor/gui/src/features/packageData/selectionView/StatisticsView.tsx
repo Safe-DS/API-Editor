@@ -38,9 +38,27 @@ export const StatisticsView: React.FC<FunctionViewProps> = function ({ pythonPac
 
     const thresholds = [...Array(26).keys()];
     thresholds.shift();
-    const classLineChart = createLineChart(usages, pythonPackage, thresholds, usages.getNumberOfUsedPublicClasses, "Classes per Threshold");
-    const functionLineChart = createLineChart(usages, pythonPackage, thresholds, usages.getNumberOfUsedPublicFunctions, "Functions per Threshold");
-    const parameterLineChart = createLineChart(usages, pythonPackage, thresholds, usages.getNumberOfUsefulPublicParameters, "Parameters per Threshold");
+    const classLineChart = createLineChart(
+        usages,
+        pythonPackage,
+        thresholds,
+        usages.getNumberOfUsedPublicClasses,
+        'Classes per Threshold',
+    );
+    const functionLineChart = createLineChart(
+        usages,
+        pythonPackage,
+        thresholds,
+        usages.getNumberOfUsedPublicFunctions,
+        'Functions per Threshold',
+    );
+    const parameterLineChart = createLineChart(
+        usages,
+        pythonPackage,
+        thresholds,
+        usages.getNumberOfUsefulPublicParameters,
+        'Parameters per Threshold',
+    );
 
     return (
         <VStack>
