@@ -29,21 +29,21 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({pythonPara
         <Stack spacing={8}>
             <ParameterNode isTitle pythonParameter={pythonParameter} />
 
-            {pythonParameter.defaultValue && (
-                <Stack spacing={4}>
-                    <Heading as="h4" size="md">
-                        Default value
-                    </Heading>
-                    <ChakraText paddingLeft={4}>{pythonParameter.defaultValue}</ChakraText>
-                </Stack>
-            )}
-
             {pythonParameter.typeInDocs && (
                 <Stack spacing={4}>
                     <Heading as="h4" size="md">
                         Type
                     </Heading>
                     <ChakraText paddingLeft={4}>{pythonParameter.typeInDocs}</ChakraText>
+                </Stack>
+            )}
+
+            {pythonParameter.defaultValue && (
+                <Stack spacing={4}>
+                    <Heading as="h4" size="md">
+                        Default value
+                    </Heading>
+                    <ChakraText paddingLeft={4}>{pythonParameter.defaultValue}</ChakraText>
                 </Stack>
             )}
 
