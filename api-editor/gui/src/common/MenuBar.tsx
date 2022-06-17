@@ -36,6 +36,7 @@ import { DeleteAllAnnotations } from './DeleteAllAnnotations';
 import { GenerateAdapters } from './GenerateAdapters';
 import { FilterInput } from './FilterInput';
 import { selectNumberOfMatchedNodes } from '../features/packageData/apiSlice';
+import { useNavigate } from "react-router-dom";
 
 interface MenuBarProps {
     displayInferErrors: (errors: string[]) => void;
@@ -44,6 +45,7 @@ interface MenuBarProps {
 export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors }) {
     const { colorMode, toggleColorMode } = useColorMode();
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const annotationStore = useAppSelector(selectAnnotations);
     const sortingMode = useAppSelector(selectSortingMode);
@@ -57,6 +59,11 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
         a.href = URL.createObjectURL(file);
         a.download = 'annotations.json';
         a.click();
+    };
+
+    const setStatisticsViewPath = () => {
+        const tmp = 'statisticsView';
+        navigate(`/${tmp}`);
     };
 
     const colorModeArray: string[] = [];
@@ -173,6 +180,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                         </MenuList>
                     </Menu>
                 </Box>
+                <Button onClick={setStatisticsViewPath}>Statistics View</Button>
             </HStack>
 
             <Spacer />
