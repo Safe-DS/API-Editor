@@ -170,7 +170,7 @@ export class UsageCountStore {
         for (const pyClass of pythonClasses) {
             const tmp = this.classUsages.get(pyClass.id);
             if (tmp !== undefined && pyClass.isPublic) {
-                usedClasses += (tmp >= usedThreshold) ? 1 : 0
+                usedClasses += tmp >= usedThreshold ? 1 : 0;
             }
         }
         return usedClasses;
@@ -182,7 +182,7 @@ export class UsageCountStore {
         for (const pyFunction of pythonFunctions) {
             const tmp = this.functionUsages.get(pyFunction.id);
             if (tmp !== undefined && pyFunction.isPublic) {
-                usedFunctions += (tmp >= usedThreshold) ? 1 : 0
+                usedFunctions += tmp >= usedThreshold ? 1 : 0;
             }
         }
         return usedFunctions;
@@ -195,7 +195,7 @@ export class UsageCountStore {
             const tmp = this.parameterUsages.get(pyParameter.id);
             if (tmp !== undefined && pyParameter.isPublic) {
                 if (tmp >= usedThreshold) {
-                    usedParameters.push(pyParameter)
+                    usedParameters.push(pyParameter);
                 }
             }
         }
@@ -209,7 +209,7 @@ export class UsageCountStore {
             let tmp = this.valueUsages.get(pyParameter.id);
             if (tmp !== undefined) {
                 if (tmp.size > 1) {
-                    usefulParameter++
+                    usefulParameter++;
                 }
             }
         }
