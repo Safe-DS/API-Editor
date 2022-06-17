@@ -38,6 +38,7 @@ import { DeleteAllAnnotations } from './DeleteAllAnnotations';
 import { GenerateAdapters } from './GenerateAdapters';
 import { FilterInput } from './FilterInput';
 import { selectNumberOfMatchedNodes } from '../features/packageData/apiSlice';
+import { useNavigate } from 'react-router-dom';
 
 interface MenuBarProps {
     displayInferErrors: (errors: string[]) => void;
@@ -46,6 +47,7 @@ interface MenuBarProps {
 export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors }) {
     const { colorMode, toggleColorMode } = useColorMode();
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const annotationStore = useAppSelector(selectAnnotations);
     const sortingMode = useAppSelector(selectSortingMode);
@@ -59,6 +61,10 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
         a.href = URL.createObjectURL(file);
         a.download = 'annotations.json';
         a.click();
+    };
+
+    const setStatisticsViewPath = () => {
+        navigate(`/statisticsView`);
     };
 
     const colorModeArray: string[] = [];
@@ -141,6 +147,10 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                                     Dark mode
                                 </MenuItemOption>
                             </MenuOptionGroup>
+                            <MenuDivider />
+                            <MenuItemOption value={'statistics'} onClick={setStatisticsViewPath}>
+                                Statistics
+                            </MenuItemOption>
                             <MenuDivider />
                             <MenuGroup title="Module/Class/Function Sorting">
                                 <MenuOptionGroup
