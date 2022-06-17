@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { hideAnnotationForm } from '../../ui/uiSlice';
+import React, {useRef} from 'react';
+import {hideAnnotationForm} from '../../ui/uiSlice';
 import {
     AlertDialog,
     AlertDialogBody,
@@ -9,20 +9,22 @@ import {
     AlertDialogOverlay,
     Button,
     Heading,
-    Text,
+    ListItem,
+    UnorderedList,
 } from '@chakra-ui/react';
+import {PythonDeclaration} from "../../packageData/model/PythonDeclaration";
 
 interface ConfirmAnnotationsProps {
-    count: number;
+    targets: PythonDeclaration[];
     handleSave: () => void;
     setConfirmVisible: (visible: boolean) => void;
 }
 
 export const ConfirmAnnotations: React.FC<ConfirmAnnotationsProps> = function ({
-    count,
-    handleSave,
-    setConfirmVisible,
-}) {
+                                                                                   targets,
+                                                                                   handleSave,
+                                                                                   setConfirmVisible,
+                                                                               }) {
     const handleCancel = () => {
         setConfirmVisible(false);
         hideAnnotationForm();
@@ -31,15 +33,19 @@ export const ConfirmAnnotations: React.FC<ConfirmAnnotationsProps> = function ({
     const useCancelRef = useRef(null);
 
     return (
-        <AlertDialog isOpen={true} leastDestructiveRef={useCancelRef} onClose={handleCancel}>
+        <AlertDialog isOpen={true} leastDestructiveRef={useCancelRef} onClose={handleCancel} scrollBehavior={"inside"}>
             <AlertDialogOverlay>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <Heading>Annotate selected items</Heading>
+                        <Heading>This will annotate these {targets.length} items</Heading>
                     </AlertDialogHeader>
 
                     <AlertDialogBody>
-                        <Text>This will annotate {count} items, are you sure?</Text>
+                        <UnorderedList>
+                            {targets.map((target) => (
+                                <ListItem key={target.id}>{target.id}</ListItem>
+                            ))}
+                        </UnorderedList>
                     </AlertDialogBody>
 
                     <AlertDialogFooter>

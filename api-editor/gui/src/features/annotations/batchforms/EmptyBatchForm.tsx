@@ -1,10 +1,10 @@
-import { FormLabel } from '@chakra-ui/react';
-import React, { useState } from 'react';
-import { useAppDispatch } from '../../../app/hooks';
-import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
-import { AnnotationBatchForm } from './AnnotationBatchForm';
-import { hideAnnotationForm } from '../../ui/uiSlice';
-import { ConfirmAnnotations } from './ConfirmAnnotations';
+import {FormLabel} from '@chakra-ui/react';
+import React, {useState} from 'react';
+import {useAppDispatch} from '../../../app/hooks';
+import {PythonDeclaration} from '../../packageData/model/PythonDeclaration';
+import {AnnotationBatchForm} from './AnnotationBatchForm';
+import {hideAnnotationForm} from '../../ui/uiSlice';
+import {ConfirmAnnotations} from './ConfirmAnnotations';
 
 interface EmptyBatchFormProps {
     targets: PythonDeclaration[];
@@ -13,10 +13,10 @@ interface EmptyBatchFormProps {
 }
 
 export const EmptyBatchForm: React.FC<EmptyBatchFormProps> = function ({
-    targets,
-    annotationType,
-    onUpsertAnnotation,
-}) {
+                                                                           targets,
+                                                                           annotationType,
+                                                                           onUpsertAnnotation,
+                                                                       }) {
     const dispatch = useAppDispatch();
 
     let [confirmWindowVisible, setConfirmWindowVisible] = useState(false);
@@ -50,7 +50,7 @@ export const EmptyBatchForm: React.FC<EmptyBatchFormProps> = function ({
             </AnnotationBatchForm>
             {confirmWindowVisible && (
                 <ConfirmAnnotations
-                    count={targets.length}
+                    targets={targets}
                     handleSave={() => handleSave()}
                     setConfirmVisible={setConfirmWindowVisible}
                 />
