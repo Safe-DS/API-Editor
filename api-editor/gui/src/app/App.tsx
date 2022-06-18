@@ -56,7 +56,7 @@ import { initializePythonPackage, selectRawPythonPackage } from '../features/pac
 import { PythonClass } from '../features/packageData/model/PythonClass';
 import { PythonParameter } from '../features/packageData/model/PythonParameter';
 import { ConstantBatchForm } from '../features/annotations/batchforms/ConstantBatchForm';
-import { ActionBar } from '../features/packageData/selectionView/ActionBar';
+import { ActionBar } from '../features/actionBar/ActionBar';
 import { useLocation } from 'react-router-dom';
 import { RenameBatchForm } from '../features/annotations/batchforms/RenameBatchForm';
 import { RequiredBatchForm } from '../features/annotations/batchforms/RequiredBatchForm';

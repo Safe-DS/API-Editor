@@ -4,6 +4,7 @@ import { RootState } from '../../app/store';
 import { CalledAfterTarget, GroupTarget } from '../annotations/annotationSlice';
 import { AbstractPythonFilter } from '../packageData/model/filters/AbstractPythonFilter';
 import { createFilterFromString, isValidFilterToken } from '../packageData/model/filters/filterFactory';
+import {isValidUsername} from "../../common/util/validation";
 
 export interface UIState {
     showAnnotationImportDialog: boolean;
@@ -387,3 +388,4 @@ export const selectFilter = createSelector(
 export const selectSortingMode = (state: RootState): SortingMode => selectUI(state).sortingMode;
 export const selectBatchMode = (state: RootState): BatchMode => selectUI(state).batchMode;
 export const selectUsername = (state: RootState): string => selectUI(state).username;
+export const selectUsernameIsValid = (state: RootState): boolean => isValidUsername(selectUsername(state));
