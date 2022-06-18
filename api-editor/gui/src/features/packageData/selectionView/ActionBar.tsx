@@ -3,7 +3,7 @@ import React from 'react';
 import { PythonPackage } from '../model/PythonPackage';
 import { PythonDeclaration } from '../model/PythonDeclaration';
 import { AbstractPythonFilter } from '../model/filters/AbstractPythonFilter';
-import {AnnotationStore, selectAnnotationStore, undo, redo} from '../../annotations/annotationSlice';
+import { AnnotationStore, selectAnnotationStore, undo, redo } from '../../annotations/annotationSlice';
 import { useNavigate } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
