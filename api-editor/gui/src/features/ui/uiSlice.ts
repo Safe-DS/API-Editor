@@ -23,6 +23,7 @@ export interface UIState {
     treeViewScrollOffset: number;
     heatMapMode: HeatMapMode;
     filterString: string;
+    filterName: string;
     sortingMode: SortingMode;
     filterList: Filter[];
 }
@@ -127,6 +128,7 @@ export const initialState: UIState = {
     expandedInTreeView: {},
     treeViewScrollOffset: 0,
     filterString: 'is:public',
+    filterName: '',
 
     heatMapMode: HeatMapMode.None,
     sortingMode: SortingMode.Alphabetical,
@@ -305,6 +307,9 @@ const uiSlice = createSlice({
         setFilterList(state, action: PayloadAction<Filter[]>) {
             state.filterList = action.payload;
         },
+        setFilterName(state, action: PayloadAction<string>){
+            state.filterName = action.payload;
+        },
         addFilter(state, action: PayloadAction<Filter>){
             state.filterList.push(action.payload);
         },
@@ -349,6 +354,7 @@ export const {
     setHeatMapMode,
 
     setFilterString,
+    setFilterName,
     setFilterList,
     addFilter,
     setSortingMode,
@@ -364,13 +370,14 @@ export const selectShowAddFilterDialog = (state: RootState): boolean => selectUI
 export const selectCurrentUserAction = (state: RootState): UserAction => selectUI(state).currentUserAction;
 export const selectIsExpandedInTreeView =
     (target: string) =>
-    (state: RootState): boolean =>
-        Boolean(selectUI(state).expandedInTreeView[target]);
+        (state: RootState): boolean =>
+            Boolean(selectUI(state).expandedInTreeView[target]);
 export const selectAllExpandedInTreeView = (state: RootState): { [target: string]: true } =>
     selectUI(state).expandedInTreeView;
 export const selectTreeViewScrollOffset = (state: RootState): number => selectUI(state).treeViewScrollOffset;
 export const selectHeatMapMode = (state: RootState): HeatMapMode => selectUI(state).heatMapMode;
 export const selectFilterString = (state: RootState): string => selectUI(state).filterString;
+export const selectFilterName = (state: RootState): string => selectUI(state).filterName;
 export const selectFilterList = (state: RootState): Filter[] => selectUI(state).filterList;
 
 /**

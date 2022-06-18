@@ -1,4 +1,5 @@
 import {
+    Code,
     Box,
     Button,
     Flex, FormControl, FormLabel, Heading,
@@ -14,6 +15,7 @@ import {
     MenuList,
     MenuOptionGroup, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay,
     Spacer,
+    VStack,
     Text as ChakraText,
     useColorMode,
 } from '@chakra-ui/react';
@@ -32,7 +34,7 @@ import {
     toggleAnnotationImportDialog,
     toggleAPIImportDialog,
     toggleUsageImportDialog,
-    Filter, setFilterString, toggleAddFilterDialog
+    Filter, setFilterString, toggleAddFilterDialog, selectFilterName, setFilterName
 } from '../features/ui/uiSlice';
 import {DeleteAllAnnotations} from './DeleteAllAnnotations';
 import {GenerateAdapters} from './GenerateAdapters';
@@ -174,10 +176,10 @@ export const MenuBar: React.FC<MenuBarProps> = function ({displayInferErrors}) {
                         </MenuList>
                     </Menu>
                 </Box>
-                <Button onClick={() => dispatch(toggleAddFilterDialog())}>Save input</Button>
+                <Button onClick={() => dispatch(toggleAddFilterDialog())}>Save Filter</Button>
                 <Box>
                     <Menu //closeOnSelect={true}
-                        >
+                    >
                         <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown}/>}>
                             Load Filter
                         </MenuButton>
@@ -217,7 +219,7 @@ const MatchCount = function () {
 
 const FilterMenuOptions: React.FC = function (){
     const filters = useAppSelector(selectFilterList);
-    let options = filters.map((it)=>{return <FilterOption filter={it.filter} name={it.name}/>});
+    let options = filters.map((it)=>{return <FilterOption filter={it.filter} name={it.name} key={it.filter+it.name}/>});
     return <MenuOptionGroup>{options}</MenuOptionGroup>;
 };
 
@@ -227,14 +229,15 @@ const FilterOption: React.FC<Filter> = function ({filter, name}){
 };
 
 export const AddFilterDialog: React.FC = function () {
-    const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const filter = useAppSelector(selectFilterString).clone();// possible fix for not editable filter and name
-
+    const filter = useAppSelector(selectFilterString);
+    const name = useAppSelector(selectFilterName);
     const submit = () => {
         let exists: boolean = false;
         if (!exists) {
-            dispatch(addFilter({filter: 'filter', name: 'name'}))
+            dispatch(addFilter({filter: filter, name: name}));
+            dispatch(setFilterName(""));
+            dispatch(toggleAddFilterDialog());
         }
     };
     const close = () => dispatch(toggleAddFilterDialog());
@@ -244,15 +247,14 @@ export const AddFilterDialog: React.FC = function () {
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>
-                    <Heading>Add Filter</Heading>
+                    <Heading>Save Filter</Heading>
                 </ModalHeader>
                 <ModalBody>
+                    <HStack marginBottom={5}><ChakraText>Name the filter </ChakraText><Code>{filter}</Code><ChakraText> to store it:</ChakraText></HStack>
                     <FormControl>
-                        <FormLabel>
-                            Add a Filter to store it.
-                        </FormLabel>
-                        <Input id='name' type='text' value={filter} />
-                        <Input id='filter' type='text' value={filter} />
+                        <Input id='nameinput' type='text' value={name}
+                               onChange={(event) => dispatch(setFilterName(event.target.value))}
+                               placeholder='name'/>
                     </FormControl>
                 </ModalBody>
                 <ModalFooter>
