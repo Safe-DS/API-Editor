@@ -29,6 +29,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
     return (
         <HStack borderTop={1} layerStyle="subtleBorder" padding="0.5em 1em" marginTop={0} w="100%">
             <Button
+                accessKey="p"
                 disabled={!declaration}
                 onClick={() => {
                     let navStr = getPreviousElementPath(
@@ -51,6 +52,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
                 Previous
             </Button>
             <Button
+                accessKey="n"
                 disabled={!declaration}
                 onClick={() => {
                     let navStr = getNextElementPath(allDeclarations, declaration!, pythonFilter, annotations, usages);
@@ -66,6 +68,19 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
             >
                 Next
             </Button>
+
+            <Button
+                accessKey="u"
+                onClick={() => {
+                    const parent = declaration?.parent();
+                    if (parent && !(parent instanceof PythonPackage)) {
+                        navigate(`/${parent.id}`);
+                    }
+                }}
+            >
+                Go to Parent
+            </Button>
+
             <Button
                 accessKey="a"
                 onClick={() => {
@@ -82,6 +97,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
             >
                 Collapse All
             </Button>
+
             <Button
                 accessKey="y"
                 disabled={!declaration}

@@ -141,7 +141,7 @@ export const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
 
     return (
         <AnnotationForm
-            heading={`${prevInterval ? 'Edit' : 'Add'} @boundary annotation`}
+            heading={`${prevInterval ? 'Edit' : 'Add'} @boundary Annotation`}
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
         >

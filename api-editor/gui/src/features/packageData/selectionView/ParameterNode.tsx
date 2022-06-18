@@ -1,10 +1,11 @@
-import { Box, Heading, HStack, Stack, Text as ChakraText } from '@chakra-ui/react';
+import { Box, Heading, HStack, Link as ChakraLink, Stack, Text as ChakraText } from '@chakra-ui/react';
 import React from 'react';
 import { AnnotationDropdown } from '../../annotations/AnnotationDropdown';
 import { AnnotationView } from '../../annotations/AnnotationView';
 import { PythonParameter } from '../model/PythonParameter';
 import { DocumentationText } from './DocumentationText';
 import { CompleteButton } from '../../annotations/CompleteButton';
+import { Link } from 'react-router-dom';
 
 interface ParameterNodeProps {
     pythonParameter: PythonParameter;
@@ -26,7 +27,9 @@ export const ParameterNode: React.FC<ParameterNodeProps> = function ({ isTitle, 
                     </Heading>
                 ) : (
                     <Heading as="h4" size="sm">
-                        {pythonParameter.name} {!pythonParameter.isPublic && '(private)'}
+                        <ChakraLink as={Link} to={`/${id}`}>
+                            {pythonParameter.name} {!pythonParameter.isPublic && '(private)'}
+                        </ChakraLink>
                     </Heading>
                 )}
                 {pythonParameter.isPublic && isExplicitParameter && (

@@ -9,6 +9,7 @@ import {
     HeatMapMode,
     selectHeatMapMode,
     selectIsExpandedInTreeView,
+    setAllCollapsedInTreeView,
     toggleIsExpandedInTreeView,
 } from '../../ui/uiSlice';
 import { VisibilityIndicator } from './VisibilityIndicator';
@@ -60,16 +61,24 @@ export const TreeNode: React.FC<TreeNodeProps> = function ({
 
     const fontWeight = filter.shouldKeepDeclaration(declaration, annotations, usages) ? 'bold' : undefined;
 
+    const toggleExpanded = () => {
+        if (showChildren) {
+            dispatch(setAllCollapsedInTreeView([...declaration.descendantsOrSelf()].map((d) => d.id)));
+        } else {
+            dispatch(toggleIsExpandedInTreeView(declaration.id));
+        }
+    };
+
     const handleNodeClick = (event: MouseEvent) => {
         if (event.shiftKey) {
-            dispatch(toggleIsExpandedInTreeView(declaration.id));
+            toggleExpanded();
         } else {
             navigate(`/${declaration.id}`);
         }
     };
 
     const handleVisibilityIndicatorClick = (event: MouseEvent) => {
-        dispatch(toggleIsExpandedInTreeView(declaration.id));
+        toggleExpanded();
         event.stopPropagation();
     };
 

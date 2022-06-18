@@ -95,7 +95,7 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
             return new AnnotationFilter(AnnotationType.Attribute);
         case 'annotation:@boundary':
             return new AnnotationFilter(AnnotationType.Boundary);
-        case 'annotation:@calledAfter':
+        case 'annotation:@calledafter':
             return new AnnotationFilter(AnnotationType.CalledAfter);
         case 'is:complete': // Deliberate special case. It should be transparent to users it's an annotation.
             return new AnnotationFilter(AnnotationType.Complete);

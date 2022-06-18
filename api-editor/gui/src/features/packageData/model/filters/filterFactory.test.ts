@@ -90,18 +90,18 @@ describe('createFilterFromString', () => {
 });
 
 describe('isValidFilterToken', () => {
-    test.each`
-        token                    | expectedResult
-        ${'is:public'}           | ${true}
-        ${'!is:public'}          | ${true}
-        ${'name:foo'}            | ${true}
-        ${'usages:>2'}           | ${true}
-        ${'usefulness:>2'}       | ${true}
-        ${'is:'}                 | ${false}
-        ${'is:public:'}          | ${false}
-        ${'annotations:any'}     | ${false}
-        ${'annotation:optional'} | ${false}
-    `("handles detect valid/invalid tokens (token: '$token')", ({ token, expectedResult }) => {
+    test.each([
+        ['is:public', true],
+        ['!is:public', true],
+        ['name:foo', true],
+        ['usages:>2', true],
+        ['usefulness:>2', true],
+        ['annotation:@calledAfter', true], // https://github.com/lars-reimann/api-editor/issues/669
+        ['is:', false],
+        ['is:public:', false],
+        ['annotations:any', false],
+        ['annotation:optional', false],
+    ])("handles detect valid/invalid tokens (token: '%s')", (token: string, expectedResult: boolean) => {
         expect(isValidFilterToken(token)).toBe(expectedResult);
     });
 });

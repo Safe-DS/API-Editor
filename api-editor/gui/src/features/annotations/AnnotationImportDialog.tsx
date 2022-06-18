@@ -62,7 +62,7 @@ export const AnnotationImportDialog: React.FC = function () {
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>
-                    <Heading>Import annotations</Heading>
+                    <Heading>Import Annotations</Heading>
                 </ModalHeader>
                 <ModalBody>
                     <FormControl>
@@ -86,10 +86,10 @@ export const AnnotationImportDialog: React.FC = function () {
                 <ModalFooter>
                     <HStack spacing={4}>
                         <Button colorScheme="blue" onClick={merge}>
-                            Merge into existing
+                            Merge into Existing
                         </Button>
                         <Button colorScheme="gray" onClick={replace}>
-                            Replace existing
+                            Replace Existing
                         </Button>
                         <Button colorScheme="red" onClick={close}>
                             Cancel

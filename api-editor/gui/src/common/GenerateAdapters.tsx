@@ -78,13 +78,13 @@ export const GenerateAdapters: React.FC<GenerateAdaptersProps> = function ({ dis
 
     return (
         <>
-            <Button onClick={() => setIsOpen(true)}>Generate adapters</Button>
+            <Button onClick={() => setIsOpen(true)}>Generate Adapters</Button>
 
             <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={handleCancel}>
                 <AlertDialogOverlay>
                     <AlertDialogContent>
                         <AlertDialogHeader>
-                            <Heading>Generate adapters</Heading>
+                            <Heading>Generate Adapters</Heading>
                         </AlertDialogHeader>
 
                         <AlertDialogBody>

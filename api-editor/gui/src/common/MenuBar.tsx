@@ -22,9 +22,11 @@ import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { selectAnnotationStore } from '../features/annotations/annotationSlice';
 import { FilterHelpButton } from './FilterHelpButton';
 import {
+    BatchMode,
     HeatMapMode,
     selectHeatMapMode,
     selectSortingMode,
+    setBatchMode,
     setHeatMapMode,
     setSortingMode,
     SortingMode,
@@ -36,6 +38,7 @@ import { DeleteAllAnnotations } from './DeleteAllAnnotations';
 import { GenerateAdapters } from './GenerateAdapters';
 import { FilterInput } from './FilterInput';
 import { selectNumberOfMatchedNodes } from '../features/packageData/apiSlice';
+import { useNavigate } from 'react-router-dom';
 
 interface MenuBarProps {
     displayInferErrors: (errors: string[]) => void;
@@ -44,6 +47,7 @@ interface MenuBarProps {
 export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors }) {
     const { colorMode, toggleColorMode } = useColorMode();
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const annotationStore = useAppSelector(selectAnnotationStore);
     const sortingMode = useAppSelector(selectSortingMode);
@@ -57,6 +61,10 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
         a.href = URL.createObjectURL(file);
         a.download = 'annotations.json';
         a.click();
+    };
+
+    const setStatisticsViewPath = () => {
+        navigate(`/statistics-view`);
     };
 
     const colorModeArray: string[] = [];
@@ -101,12 +109,44 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                 <Box>
                     <Menu closeOnSelect={false}>
                         <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
+                            Batch
+                        </MenuButton>
+                        <MenuList>
+                            <MenuGroup title={'Annotate'}>
+                                <MenuItem paddingLeft={8} onClick={() => dispatch(setBatchMode(BatchMode.Rename))}>
+                                    Rename
+                                </MenuItem>
+                                <MenuItem paddingLeft={8} onClick={() => dispatch(setBatchMode(BatchMode.Move))}>
+                                    Move
+                                </MenuItem>
+                                <MenuItem paddingLeft={8} onClick={() => dispatch(setBatchMode(BatchMode.Remove))}>
+                                    Remove
+                                </MenuItem>
+                                <MenuItem paddingLeft={8} onClick={() => dispatch(setBatchMode(BatchMode.Required))}>
+                                    Required
+                                </MenuItem>
+                                <MenuItem paddingLeft={8} onClick={() => dispatch(setBatchMode(BatchMode.Constant))}>
+                                    Constant
+                                </MenuItem>
+                                <MenuItem paddingLeft={8} onClick={() => dispatch(setBatchMode(BatchMode.Optional))}>
+                                    Optional
+                                </MenuItem>
+                            </MenuGroup>
+                        </MenuList>
+                    </Menu>
+                </Box>
+
+                <Button onClick={setStatisticsViewPath}>Statistics View</Button>
+
+                <Box>
+                    <Menu closeOnSelect={false}>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
                             Settings
                         </MenuButton>
                         <MenuList>
                             <MenuOptionGroup type="checkbox" value={colorModeArray}>
                                 <MenuItemOption value={'darkMode'} onClick={toggleColorMode}>
-                                    Dark mode
+                                    Dark Mode
                                 </MenuItemOption>
                             </MenuOptionGroup>
                             <MenuDivider />
@@ -133,7 +173,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                                 </MenuOptionGroup>
                             </MenuGroup>
                             <MenuDivider />
-                            <MenuGroup title="Heat Map Mode">
+                            <MenuGroup title="Heatmap Mode">
                                 <MenuOptionGroup type="radio" defaultValue={HeatMapMode.None} value={heatMapMode}>
                                     <MenuItemOption
                                         paddingLeft={8}
