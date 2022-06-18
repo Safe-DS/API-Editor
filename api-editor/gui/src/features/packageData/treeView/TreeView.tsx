@@ -94,6 +94,8 @@ const getNodes = function (
     allExpandedItemsInTreeView: { [target: string]: true },
     declarations: PythonDeclaration[],
 ): PythonDeclaration[] {
+    console.log(declarations.map((it) => `-[ ] ${it.name}`).join('\n'));
+
     return declarations.filter((it) => {
         const parent = it.parent();
         return parent && (parent instanceof PythonPackage || parent.id in allExpandedItemsInTreeView);

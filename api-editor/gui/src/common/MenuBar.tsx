@@ -136,6 +136,8 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                     </Menu>
                 </Box>
 
+                <Button onClick={setStatisticsViewPath}>Statistics View</Button>
+
                 <Box>
                     <Menu closeOnSelect={false}>
                         <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
@@ -147,10 +149,6 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                                     Dark Mode
                                 </MenuItemOption>
                             </MenuOptionGroup>
-                            <MenuDivider />
-                            <MenuItemOption value={'statistics'} onClick={setStatisticsViewPath}>
-                                Statistics
-                            </MenuItemOption>
                             <MenuDivider />
                             <MenuGroup title="Module/Class/Function Sorting">
                                 <MenuOptionGroup
@@ -210,8 +208,6 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                         </MenuList>
                     </Menu>
                 </Box>
-
-                <Button onClick={setStatisticsViewPath}>Statistics View</Button>
             </HStack>
 
             <Spacer />
