@@ -4,6 +4,7 @@ from package_parser.model.annotations import (
     Interval,
 )
 from package_parser.model.api import API
+from ._constants import autogen_author
 
 
 def _generate_boundary_annotations(api: API, annotations: AnnotationStore) -> None:
@@ -54,6 +55,8 @@ def _generate_boundary_annotations(api: API, annotations: AnnotationStore) -> No
             )
             boundary = BoundaryAnnotation(
                 target=parameter.id,
+                authors=[autogen_author],
+                reviewers=[],
                 interval=interval,
             )
             annotations.boundaries.append(boundary)

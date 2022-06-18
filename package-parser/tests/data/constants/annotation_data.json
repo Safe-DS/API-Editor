@@ -1,22 +1,30 @@
 {
     "test/test/used_global_function/constant_required_parameter": {
+        "target": "test/test/used_global_function/constant_required_parameter",
+        "authors": ["$autogen$"],
+        "reviewers": [],
         "defaultType": "string",
-        "defaultValue": "test",
-        "target": "test/test/used_global_function/constant_required_parameter"
+        "defaultValue": "test"
     },
     "test/test/used_global_function/constant_optional_parameter": {
+        "target": "test/test/used_global_function/constant_optional_parameter",
+        "authors": ["$autogen$"],
+        "reviewers": [],
         "defaultType": "string",
-        "defaultValue": "test2()",
-        "target": "test/test/used_global_function/constant_optional_parameter"
+        "defaultValue": "test2()"
     },
     "test/test/UsedClass/used_method/constant_required_parameter": {
+        "target": "test/test/UsedClass/used_method/constant_required_parameter",
+        "authors": ["$autogen$"],
+        "reviewers": [],
         "defaultType": "string",
-        "defaultValue": "test",
-        "target": "test/test/UsedClass/used_method/constant_required_parameter"
+        "defaultValue": "test"
     },
     "test/test/UsedClass/used_method/constant_optional_parameter": {
+        "target": "test/test/UsedClass/used_method/constant_optional_parameter",
+        "authors": ["$autogen$"],
+        "reviewers": [],
         "defaultType": "number",
-        "defaultValue": 0.5,
-        "target": "test/test/UsedClass/used_method/constant_optional_parameter"
+        "defaultValue": 0.5
     }
 }
