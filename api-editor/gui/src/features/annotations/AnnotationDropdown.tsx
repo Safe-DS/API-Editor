@@ -14,7 +14,7 @@ import {
     showOptionalAnnotationForm,
     showRenameAnnotationForm,
     showDescriptionAnnotationForm,
-    showTodoAnnotationForm,
+    showTodoAnnotationForm, selectUsernameIsValid,
 } from '../ui/uiSlice';
 
 interface AnnotationDropdownProps {
@@ -54,6 +54,8 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
 }) {
     const dispatch = useAppDispatch();
     const isComplete = Boolean(useAppSelector(selectComplete(target)));
+    const isValidUsername = Boolean(useAppSelector(selectUsernameIsValid));
+    const isDisabled = isComplete || !isValidUsername;
 
     return (
         // Box gets rid of popper.js warning "CSS margin styles cannot be used"
@@ -64,7 +66,7 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                     size="sm"
                     variant="outline"
                     rightIcon={<Icon as={FaChevronDown} />}
-                    disabled={isComplete}
+                    disabled={isDisabled}
                 >
                     Annotations
                 </MenuButton>

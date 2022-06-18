@@ -152,7 +152,12 @@ export interface CalledAfterAnnotation extends Annotation {
     readonly calledAfterName: string;
 }
 
-export interface CalledAfterTarget extends Annotation {
+export interface CalledAfterTarget {
+    /**
+     * ID of the annotated Python declaration.
+     */
+    readonly target: string;
+
     /**
      * Name of the callable to be called first
      */

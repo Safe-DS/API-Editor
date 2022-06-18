@@ -37,6 +37,7 @@ import {
     selectTodo,
 } from './annotationSlice';
 import {
+    selectUsernameIsValid,
     showAttributeAnnotationForm,
     showBoundaryAnnotationForm,
     showConstantAnnotationForm,
@@ -249,13 +250,15 @@ interface AnnotationProps {
 }
 
 const Annotation: React.FC<AnnotationProps> = function ({ name, onDelete, onEdit, type }) {
+    const isValidUsername = useAppSelector(selectUsernameIsValid);
+
     return (
         <ButtonGroup size="sm" variant="outline" isAttached>
             <Button
                 leftIcon={<FaWrench />}
                 flexGrow={1}
                 justifyContent="flex-start"
-                disabled={!onEdit}
+                disabled={!onEdit || !isValidUsername}
                 onClick={onEdit}
             >
                 @{type}
@@ -265,7 +268,13 @@ const Annotation: React.FC<AnnotationProps> = function ({ name, onDelete, onEdit
                     </ChakraText>
                 )}
             </Button>
-            <IconButton icon={<FaTrash />} aria-label="Delete annotation" colorScheme="red" onClick={onDelete} />
+            <IconButton
+                icon={<FaTrash />}
+                aria-label="Delete annotation"
+                colorScheme="red"
+                disabled={!isValidUsername}
+                onClick={onDelete}
+            />
         </ButtonGroup>
     );
 };
