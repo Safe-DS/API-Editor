@@ -20,6 +20,13 @@ export const maximumNumberOfParameterAnnotations = 8;
 
 const maximumUndoHistoryLength = 10;
 
+export interface AnnotationSlice {
+    annotations: AnnotationStore;
+    queue: AnnotationStore[];
+    queueIndex: number;
+    username: string;
+}
+
 export interface AnnotationStore {
     attributes: {
         [target: string]: AttributeAnnotation;
@@ -66,13 +73,6 @@ export interface AnnotationStore {
     todos: {
         [target: string]: TodoAnnotation;
     };
-}
-
-export interface AnnotationSlice {
-    annotations: AnnotationStore;
-    queue: AnnotationStore[];
-    queueIndex: number;
-    username: string;
 }
 
 export interface Annotation {
@@ -292,8 +292,7 @@ export const initialAnnotationStore: AnnotationStore = {
 export const initialAnnotationSlice: AnnotationSlice = {
     annotations: initialAnnotationStore,
     queue: [initialAnnotationStore],
-    /** The index that contains the state after an undo */
-    queueIndex: -1,
+    queueIndex: -1, // The index that contains the state after an undo
     username: '',
 };
 
@@ -328,8 +327,8 @@ const annotationsSlice = createSlice({
         undo(state) {
             if (0 <= state.queueIndex && state.queueIndex < state.queue.length) {
                 return {
+                    ...state,
                     annotations: state.queue[state.queueIndex],
-                    queue: state.queue,
                     queueIndex: state.queueIndex - 1,
                 };
             }
@@ -338,8 +337,8 @@ const annotationsSlice = createSlice({
         redo(state) {
             if (0 <= state.queueIndex + 2 && state.queueIndex + 2 < state.queue.length) {
                 return {
+                    ...state,
                     annotations: state.queue[state.queueIndex + 2],
-                    queue: state.queue,
                     queueIndex: state.queueIndex + 1,
                 };
             }
@@ -627,7 +626,7 @@ const annotationsSlice = createSlice({
 });
 
 const updateQueue = function (state: AnnotationSlice) {
-    const annotations = JSON.parse(JSON.stringify(state.annotations));
+    const annotations = JSON.parse(JSON.stringify(state.annotations)) as AnnotationStore;
 
     if (state.queueIndex >= maximumUndoHistoryLength - 2) {
         state.queue.shift();
