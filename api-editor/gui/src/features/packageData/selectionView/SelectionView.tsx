@@ -1,4 +1,4 @@
-import { Box, VStack } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 import { useLocation } from 'react-router';
 import { PythonClass } from '../model/PythonClass';
@@ -18,15 +18,11 @@ export const SelectionView: React.FC = function () {
     const declaration = rawPythonPackage.getDeclarationById(useLocation().pathname.split('/').splice(1).join('/'));
     const location = useLocation().pathname;
 
-    if (location === '/statisticsView') {
+    if (location === '/statistics-view') {
         return (
-            <VStack h="100%">
-                <Box w="100%" flexGrow={1} overflowY="scroll">
-                    <Box padding={4}>
-                        <StatisticsView />
-                    </Box>
-                </Box>
-            </VStack>
+            <Box overflowY="auto" h="100%" w="100%" padding={4}>
+                <StatisticsView />
+            </Box>
         );
     }
 
@@ -35,15 +31,11 @@ export const SelectionView: React.FC = function () {
     }
 
     return (
-        <VStack h="100%" spacing={0}>
-            <Box flexGrow={1} overflowY="auto" width="100%">
-                <Box padding={4}>
-                    {declaration instanceof PythonFunction && <FunctionView pythonFunction={declaration} />}
-                    {declaration instanceof PythonClass && <ClassView pythonClass={declaration} />}
-                    {declaration instanceof PythonModule && <ModuleView pythonModule={declaration} />}
-                    {declaration instanceof PythonParameter && <ParameterView pythonParameter={declaration} />}
-                </Box>
-            </Box>
-        </VStack>
+        <Box overflowY="auto" h="100%" w="100%" padding={4}>
+            {declaration instanceof PythonFunction && <FunctionView pythonFunction={declaration} />}
+            {declaration instanceof PythonClass && <ClassView pythonClass={declaration} />}
+            {declaration instanceof PythonModule && <ModuleView pythonModule={declaration} />}
+            {declaration instanceof PythonParameter && <ParameterView pythonParameter={declaration} />}
+        </Box>
     );
 };

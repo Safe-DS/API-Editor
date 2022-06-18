@@ -163,4 +163,56 @@ export class UsageCountStore {
 
         return totalValueUsages - maxValueUsage;
     }
+
+    public getNumberOfUsedPublicClasses(pyPackage: PythonPackage, usedThreshold: number): number {
+        const pythonClasses = pyPackage.getClasses();
+        let usedClasses = 0;
+        for (const pyClass of pythonClasses) {
+            const tmp = this.classUsages.get(pyClass.id);
+            if (tmp !== undefined && pyClass.isPublic) {
+                usedClasses += tmp >= usedThreshold ? 1 : 0;
+            }
+        }
+        return usedClasses;
+    }
+
+    public getNumberOfUsedPublicFunctions(pyPackage: PythonPackage, usedThreshold: number): number {
+        const pythonFunctions = pyPackage.getFunctions();
+        let usedFunctions = 0;
+        for (const pyFunction of pythonFunctions) {
+            const tmp = this.functionUsages.get(pyFunction.id);
+            if (tmp !== undefined && pyFunction.isPublic) {
+                usedFunctions += tmp >= usedThreshold ? 1 : 0;
+            }
+        }
+        return usedFunctions;
+    }
+
+    public getUsedPublicParameters(pyPackage: PythonPackage, usedThreshold: number): PythonParameter[] {
+        const pythonParameters = pyPackage.getParameters();
+        let usedParameters: PythonParameter[] = [];
+        for (const pyParameter of pythonParameters) {
+            const tmp = this.parameterUsages.get(pyParameter.id);
+            if (tmp !== undefined && pyParameter.isPublic) {
+                if (tmp >= usedThreshold) {
+                    usedParameters.push(pyParameter);
+                }
+            }
+        }
+        return usedParameters;
+    }
+
+    public getNumberOfUsefulPublicParameters(pyPackage: PythonPackage, usedThreshold: number): number {
+        const usedParameters = this.getUsedPublicParameters(pyPackage, usedThreshold);
+        let usefulParameter = 0;
+        for (const pyParameter of usedParameters) {
+            let tmp = this.valueUsages.get(pyParameter.id);
+            if (tmp !== undefined) {
+                if (tmp.size > 1) {
+                    usefulParameter++;
+                }
+            }
+        }
+        return usefulParameter;
+    }
 }
