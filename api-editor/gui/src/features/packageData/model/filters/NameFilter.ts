@@ -4,7 +4,7 @@ import { PythonModule } from '../PythonModule';
 import { PythonParameter } from '../PythonParameter';
 import { AbstractPythonFilter } from './AbstractPythonFilter';
 import { PythonDeclaration } from '../PythonDeclaration';
-import {AnnotationSlice, AnnotationStore} from '../../../annotations/annotationSlice';
+import { AnnotationStore } from '../../../annotations/annotationSlice';
 import { UsageCountStore } from '../../../usages/model/UsageCountStore';
 
 /**
@@ -40,8 +40,8 @@ export class NameFilter extends AbstractPythonFilter {
 
     shouldKeepDeclaration(
         pythonDeclaration: PythonDeclaration,
-        annotations: AnnotationStore,
-        usages: UsageCountStore,
+        _annotations: AnnotationStore,
+        _usages: UsageCountStore,
     ): boolean {
         return pythonDeclaration.name.toLowerCase().includes(this.substring.toLowerCase());
     }

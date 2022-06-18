@@ -68,7 +68,7 @@ export interface AnnotationStore {
 }
 
 export interface AnnotationSlice {
-    annotations: AnnotationStore,
+    annotations: AnnotationStore;
     queue: AnnotationStore[];
     queueIndex: number;
 }
@@ -328,48 +328,22 @@ export interface TodoAnnotation {
 // Initial state -------------------------------------------------------------------------------------------------------
 
 export const initialAnnotationStore = {
-    attributes: {
-    },
-    boundaries: {
-    },
-    calledAfters: {
-    }
-    ,
-    completes: {
-    }
-    ,
-    constants: {
-    }
-    ,
-    descriptions: {
-    }
-    ,
+    attributes: {},
+    boundaries: {},
+    calledAfters: {},
+    completes: {},
+    constants: {},
+    descriptions: {},
     enums: {},
-    groups: {
-    }
-    ,
-    moves: {
-    }
-    ,
-    optionals: {
-    }
-    ,
-    pures: {
-    }
-    ,
-    renamings: {
-    }
-    ,
-    requireds: {
-    }
-    ,
-    removes: {
-    }
-    ,
-    todos: {
-    }
-    ,
-}
+    groups: {},
+    moves: {},
+    optionals: {},
+    pures: {},
+    renamings: {},
+    requireds: {},
+    removes: {},
+    todos: {},
+};
 
 export const initialState: AnnotationSlice = {
     annotations: initialAnnotationStore,
@@ -407,24 +381,24 @@ const annotationsSlice = createSlice({
     initialState,
     reducers: {
         undo(state) {
-            if(0 <= state.queueIndex && state.queueIndex < state.queue.length) {
+            if (0 <= state.queueIndex && state.queueIndex < state.queue.length) {
                 return {
                     annotations: state.queue[state.queueIndex],
                     queue: state.queue,
-                    queueIndex: state.queueIndex - 1
-                }
+                    queueIndex: state.queueIndex - 1,
+                };
             }
-            return state
+            return state;
         },
         redo(state) {
-            if(-1 <= state.queueIndex && state.queueIndex + 2 < state.queue.length) {
+            if (-1 <= state.queueIndex && state.queueIndex + 2 < state.queue.length) {
                 return {
                     annotations: state.queue[state.queueIndex + 2],
                     queue: state.queue,
-                    queueIndex: state.queueIndex + 1
-                }
+                    queueIndex: state.queueIndex + 1,
+                };
             }
-            return state
+            return state;
         },
         setAnnotations(_state, action: PayloadAction<AnnotationStore>) {
             return {
@@ -740,15 +714,15 @@ const annotationsSlice = createSlice({
 });
 
 const updatedQueue = function (state: AnnotationSlice): [AnnotationStore[], number] {
-    const annotations = JSON.parse(JSON.stringify(state.annotations))
+    const annotations = JSON.parse(JSON.stringify(state.annotations));
 
-    if(state.queueIndex >= maximumUndoHistoryLength - 2) {
+    if (state.queueIndex >= maximumUndoHistoryLength - 2) {
         state.queue.shift();
         state.queueIndex = state.queueIndex - 1;
     }
 
-    return [[...state.queue.slice(0, state.queueIndex + 2), annotations], state.queueIndex + 1]
-}
+    return [[...state.queue.slice(0, state.queueIndex + 2), annotations], state.queueIndex + 1];
+};
 
 const { actions, reducer } = annotationsSlice;
 export const {

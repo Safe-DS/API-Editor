@@ -3,7 +3,7 @@ import { PythonFunction } from '../PythonFunction';
 import { PythonModule } from '../PythonModule';
 import { PythonParameter } from '../PythonParameter';
 import { AbstractPythonFilter } from './AbstractPythonFilter';
-import {AnnotationSlice, AnnotationStore} from '../../../annotations/annotationSlice';
+import { AnnotationStore } from '../../../annotations/annotationSlice';
 import { UsageCountStore } from '../../../usages/model/UsageCountStore';
 
 /**
