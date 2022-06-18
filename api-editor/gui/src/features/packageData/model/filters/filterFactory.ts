@@ -140,7 +140,7 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
     }
 
     // Usages
-    const usageMatch = /^usages(?<comparison>:(<|<=|>=|>)?)(?<expected>\d+)$/u.exec(token);
+    const usageMatch = /^usages:(?<comparison>(<|<=|=|>=|>)?)(?<expected>\d+)$/u.exec(token);
     if (usageMatch) {
         const comparisonOperator = usageMatch?.groups?.comparison as string;
         const comparison = comparisonFunction(comparisonOperator);
@@ -154,7 +154,7 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
     }
 
     // Usefulness
-    const usefulnessMatch = /^usefulness(?<comparison>:(<|<=|>=|>)?)(?<expected>\d+)$/u.exec(token);
+    const usefulnessMatch = /^usefulness:(?<comparison>(<|<=|=|>=|>)?)(?<expected>\d+)$/u.exec(token);
     if (usefulnessMatch) {
         const comparisonOperator = usefulnessMatch?.groups?.comparison as string;
         const comparison = comparisonFunction(comparisonOperator);
@@ -170,15 +170,15 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
 
 const comparisonFunction = function (comparisonOperator: string): ((a: number, b: number) => boolean) | null {
     switch (comparisonOperator) {
-        case ':<':
+        case '<':
             return lessThan;
-        case ':<=':
+        case '<=':
             return lessThanOrEqual;
-        case ':':
+        case '=':
             return equals;
-        case ':>=':
+        case '>=':
             return greaterThanOrEqual;
-        case ':>':
+        case '>':
             return greaterThan;
         default:
             return null;
