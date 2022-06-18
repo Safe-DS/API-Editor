@@ -2,8 +2,7 @@ import { Button, Icon } from '@chakra-ui/react';
 import React from 'react';
 import { FaCheck } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { addComplete, removeComplete, selectComplete } from './annotationSlice';
-import { selectUsernameIsValid } from '../ui/uiSlice';
+import { addComplete, removeComplete, selectComplete, selectUsernameIsValid } from './annotationSlice';
 
 interface CompleteButtonProps {
     target: string;

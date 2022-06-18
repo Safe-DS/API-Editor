@@ -2,7 +2,7 @@ import { Box, Button, Icon, Menu, MenuButton, MenuItem, MenuList } from '@chakra
 import React from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { addPure, addRemove, addRequired, selectComplete } from './annotationSlice';
+import {addPure, addRemove, addRequired, selectComplete, selectUsernameIsValid} from './annotationSlice';
 import {
     showAttributeAnnotationForm,
     showBoundaryAnnotationForm,
@@ -14,7 +14,7 @@ import {
     showOptionalAnnotationForm,
     showRenameAnnotationForm,
     showDescriptionAnnotationForm,
-    showTodoAnnotationForm, selectUsernameIsValid,
+    showTodoAnnotationForm,
 } from '../ui/uiSlice';
 
 interface AnnotationDropdownProps {

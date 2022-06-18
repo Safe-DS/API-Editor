@@ -10,9 +10,9 @@ import {
     PopoverTrigger,
 } from '@chakra-ui/react';
 import React from 'react';
-import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {selectUsername, setUsername} from "../ui/uiSlice";
-import {isValidUsername} from "../../common/util/validation";
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { isValidUsername } from '../../common/util/validation';
+import {selectUsername, setUsername} from '../annotations/annotationSlice';
 
 export const UsernameInput: React.FC = function () {
     const dispatch = useAppDispatch();

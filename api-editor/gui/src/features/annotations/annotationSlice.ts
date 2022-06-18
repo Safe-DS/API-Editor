@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import * as idb from 'idb-keyval';
 import { RootState } from '../../app/store';
+import { isValidUsername } from '../../common/util/validation';
 
 /**
  * How many annotations can be applied to a class at once.
@@ -71,6 +72,7 @@ export interface AnnotationSlice {
     annotations: AnnotationStore;
     queue: AnnotationStore[];
     queueIndex: number;
+    username: string;
 }
 
 export interface Annotation {
@@ -292,6 +294,7 @@ export const initialAnnotationSlice: AnnotationSlice = {
     queue: [initialAnnotationStore],
     /** The index that contains the state after an undo */
     queueIndex: -1,
+    username: '',
 };
 
 // Thunks --------------------------------------------------------------------------------------------------------------
@@ -613,6 +616,10 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
+
+        setUsername(state, action: PayloadAction<string>) {
+            state.username = action.payload;
+        },
     },
     extraReducers(builder) {
         builder.addCase(initializeAnnotations.fulfilled, (state, action) => action.payload);
@@ -673,8 +680,11 @@ export const {
     addRemove,
     upsertRemoves,
     removeRemove,
+
     undo,
     redo,
+
+    setUsername,
 } = actions;
 export const annotationsReducer = reducer;
 
@@ -751,3 +761,5 @@ export const selectNumberOfAnnotations =
             }
         }, 0);
     };
+export const selectUsername = (state: RootState): string => selectAnnotationSlice(state).username;
+export const selectUsernameIsValid = (state: RootState): boolean => isValidUsername(selectUsername(state));

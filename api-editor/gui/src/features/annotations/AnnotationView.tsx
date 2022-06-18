@@ -35,9 +35,9 @@ import {
     selectRenaming,
     selectRequired,
     selectTodo,
+    selectUsernameIsValid,
 } from './annotationSlice';
 import {
-    selectUsernameIsValid,
     showAttributeAnnotationForm,
     showBoundaryAnnotationForm,
     showConstantAnnotationForm,
