@@ -683,7 +683,7 @@ const updateQueue = function (state: AnnotationSlice) {
         state.queueIndex = state.queueIndex - 1;
     }
 
-    state.queue = [...state.queue.slice(0, state.queueIndex + 2), annotations]
+    state.queue = [...state.queue.slice(0, state.queueIndex + 2), annotations];
     state.queueIndex = state.queueIndex + 1;
 };
 
