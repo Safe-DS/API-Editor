@@ -64,7 +64,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
     };
 
     const setStatisticsViewPath = () => {
-        navigate(`/statisticsView`);
+        navigate(`/statistics-view`);
     };
 
     const colorModeArray: string[] = [];

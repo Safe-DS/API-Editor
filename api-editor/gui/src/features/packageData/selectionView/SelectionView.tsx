@@ -18,7 +18,7 @@ export const SelectionView: React.FC = function () {
     const declaration = rawPythonPackage.getDeclarationById(useLocation().pathname.split('/').splice(1).join('/'));
     const location = useLocation().pathname;
 
-    if (location === '/statisticsView') {
+    if (location === '/statistics-view') {
         return (
             <Box overflowY="auto" h="100%" w="100%" padding={4}>
                 <StatisticsView />
