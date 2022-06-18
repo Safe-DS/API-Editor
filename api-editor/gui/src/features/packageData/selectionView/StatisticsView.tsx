@@ -13,7 +13,7 @@ import { Bar, Line } from 'react-chartjs-2';
 import { PythonPackage } from '../model/PythonPackage';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { Box, Flex, Button, Heading, VStack, Wrap, WrapItem } from '@chakra-ui/react';
-import { selectAnnotations } from '../../annotations/annotationSlice';
+import { selectAnnotationStore } from '../../annotations/annotationSlice';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectFilterString, setFilterString } from '../../ui/uiSlice';
 import { selectRawPythonPackage } from '../apiSlice';
@@ -24,7 +24,7 @@ ChartJS.register(CategoryScale, PointElement, LineElement, LinearScale, BarEleme
 export const StatisticsView: React.FC = function () {
     const rawPythonPackage = useAppSelector(selectRawPythonPackage);
     const usages = useAppSelector(selectUsages);
-    const annotations = useAppSelector(selectAnnotations);
+    const annotations = useAppSelector(selectAnnotationStore);
     const filterString = useAppSelector(selectFilterString);
     const dispatch = useAppDispatch();
 

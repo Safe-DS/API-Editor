@@ -327,7 +327,7 @@ export interface TodoAnnotation {
 
 // Initial state -------------------------------------------------------------------------------------------------------
 
-export const initialAnnotationStore = {
+export const initialAnnotationStore: AnnotationStore = {
     attributes: {},
     boundaries: {},
     calledAfters: {},
@@ -345,7 +345,7 @@ export const initialAnnotationStore = {
     todos: {},
 };
 
-export const initialState: AnnotationSlice = {
+export const initialAnnotationSlice: AnnotationSlice = {
     annotations: initialAnnotationStore,
     queue: [initialAnnotationStore],
     /** The index that contains the state after an undo */
@@ -358,11 +358,11 @@ export const initializeAnnotations = createAsyncThunk('annotations/initialize', 
     try {
         const storedAnnotations = (await idb.get('annotations')) as AnnotationSlice;
         return {
-            ...initialState,
+            ...initialAnnotationSlice,
             ...storedAnnotations,
         };
     } catch {
-        return initialState;
+        return initialAnnotationSlice;
     }
 });
 
@@ -378,7 +378,7 @@ export const persistAnnotations = createAsyncThunk('annotations/persist', async 
 
 const annotationsSlice = createSlice({
     name: 'annotations',
-    initialState,
+    initialState: initialAnnotationSlice,
     reducers: {
         undo(state) {
             if (0 <= state.queueIndex && state.queueIndex < state.queue.length) {
@@ -402,7 +402,7 @@ const annotationsSlice = createSlice({
         },
         setAnnotations(_state, action: PayloadAction<AnnotationStore>) {
             return {
-                ...initialState,
+                ...initialAnnotationSlice,
                 annotations: action.payload,
             };
         },
@@ -430,7 +430,7 @@ const annotationsSlice = createSlice({
             }
         },
         resetAnnotations() {
-            return initialState;
+            return initialAnnotationSlice;
         },
         upsertAttribute(state, action: PayloadAction<AttributeAnnotation>) {
             state.annotations.attributes[action.payload.target] = action.payload;
@@ -495,7 +495,7 @@ const annotationsSlice = createSlice({
         },
         upsertConstants(state, action: PayloadAction<ConstantAnnotation[]>) {
             action.payload.forEach((annotation) => {
-                state.constants[annotation.target] = annotation;
+                state.annotations.constants[annotation.target] = annotation;
             });
         },
         removeConstant(state, action: PayloadAction<string>) {
@@ -593,7 +593,7 @@ const annotationsSlice = createSlice({
         },
         upsertMoves(state, action: PayloadAction<MoveAnnotation[]>) {
             action.payload.forEach((annotation) => {
-                state.moves[annotation.target] = annotation;
+                state.annotations.moves[annotation.target] = annotation;
             });
         },
         removeMove(state, action: PayloadAction<string>) {
@@ -612,7 +612,7 @@ const annotationsSlice = createSlice({
         },
         upsertOptionals(state, action: PayloadAction<OptionalAnnotation[]>) {
             action.payload.forEach((annotation) => {
-                state.optionals[annotation.target] = annotation;
+                state.annotations.optionals[annotation.target] = annotation;
             });
         },
         removeOptional(state, action: PayloadAction<string>) {
@@ -645,7 +645,7 @@ const annotationsSlice = createSlice({
         },
         upsertRenamings(state, action: PayloadAction<RenameAnnotation[]>) {
             action.payload.forEach((annotation) => {
-                state.renamings[annotation.target] = annotation;
+                state.annotations.renamings[annotation.target] = annotation;
             });
         },
         removeRenaming(state, action: PayloadAction<string>) {
@@ -664,7 +664,7 @@ const annotationsSlice = createSlice({
         },
         upsertRequireds(state, action: PayloadAction<RequiredAnnotation[]>) {
             action.payload.forEach((annotation) => {
-                state.requireds[annotation.target] = annotation;
+                state.annotations.requireds[annotation.target] = annotation;
             });
         },
         removeRequired(state, action: PayloadAction<string>) {
@@ -683,7 +683,7 @@ const annotationsSlice = createSlice({
         },
         upsertRemoves(state, action: PayloadAction<RemoveAnnotation[]>) {
             action.payload.forEach((annotation) => {
-                state.removes[annotation.target] = annotation;
+                state.annotations.removes[annotation.target] = annotation;
             });
         },
         removeRemove(state, action: PayloadAction<string>) {

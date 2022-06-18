@@ -1,4 +1,4 @@
-import { AnnotationSlice } from '../../annotations/annotationSlice';
+import { AnnotationStore } from '../../annotations/annotationSlice';
 import { PythonClass } from '../../packageData/model/PythonClass';
 import { PythonFunction } from '../../packageData/model/PythonFunction';
 import { PythonModule } from '../../packageData/model/PythonModule';
@@ -31,9 +31,9 @@ import {
 
 export class AnnotatedPythonPackageBuilder {
     readonly pythonPackage: PythonPackage;
-    readonly annotationStore: AnnotationSlice;
+    readonly annotationStore: AnnotationStore;
 
-    constructor(pythonPackage: PythonPackage, annotationStore: AnnotationSlice) {
+    constructor(pythonPackage: PythonPackage, annotationStore: AnnotationStore) {
         this.pythonPackage = pythonPackage;
         this.annotationStore = annotationStore;
     }
