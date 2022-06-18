@@ -2,7 +2,7 @@ import { createFilterFromString, isValidFilterToken } from './filterFactory';
 import { ConjunctiveFilter } from './ConjunctiveFilter';
 import { Visibility, VisibilityFilter } from './VisibilityFilter';
 import { NegatedFilter } from './NegatedFilter';
-import { NameFilter } from './NameFilter';
+import { NameStringFilter } from './NameStringFilter';
 import { UsageFilter } from './UsageFilter';
 import { UsefulnessFilter } from './UsefulnessFilter';
 import { greaterThan } from './comparisons';
@@ -57,13 +57,13 @@ describe('createFilterFromString', () => {
     });
 
     test('handles name filter', () => {
-        const completeFilter = createFilterFromString('name:foo');
+        const completeFilter = createFilterFromString('name:=foo');
         expect(completeFilter).toBeInstanceOf(ConjunctiveFilter);
         expect((completeFilter as ConjunctiveFilter).filters).toHaveLength(1);
 
         const positiveFilter = (completeFilter as ConjunctiveFilter).filters[0];
-        expect(positiveFilter).toBeInstanceOf(NameFilter);
-        expect((positiveFilter as NameFilter).substring).toBe('foo');
+        expect(positiveFilter).toBeInstanceOf(NameStringFilter);
+        expect((positiveFilter as NameStringFilter).string).toBe('foo');
     });
 
     test('handles usages filter', () => {
@@ -93,7 +93,7 @@ describe('isValidFilterToken', () => {
     test.each([
         ['is:public', true],
         ['!is:public', true],
-        ['name:foo', true],
+        ['name:=foo', true],
         ['usages:>2', true],
         ['usefulness:>2', true],
         ['annotation:@calledAfter', true], // https://github.com/lars-reimann/api-editor/issues/669

@@ -72,11 +72,19 @@ export const FilterHelpButton = function () {
                             </ListItem>
                             <ListItem>
                                 <ChakraText>
-                                    <strong>name:xy</strong>
+                                    <strong>name:[operator][string]</strong>
                                 </ChakraText>
                                 <ChakraText>
-                                    Displays only elements with names that contain the given string xy.
+                                    Displays only elements with matching names (case-sensitive). Replace [operator] with{' '}
+                                    <em>=</em> to display only elements that match the [string] exactly or with{' '}
+                                    <em>~</em> to display only elements that contain the [string] as a substring.
                                 </ChakraText>
+                            </ListItem>
+                            <ListItem>
+                                <ChakraText>
+                                    <strong>name:/[regex]/</strong>
+                                </ChakraText>
+                                <ChakraText>Displays only elements with names that match the given [regex].</ChakraText>
                             </ListItem>
                             <ListItem>
                                 <ChakraText>
@@ -104,8 +112,8 @@ export const FilterHelpButton = function () {
                                 </ChakraText>
                                 <ChakraText>
                                     Displays only elements that are used a certain number of times. Replace [operator]
-                                    with one of <em>&lt;, &lt;=, &gt;=, &gt;</em> or omit it to match by equality.
-                                    Replace [expected] with the expected number of usages.
+                                    with one of <em>&lt;, &lt;=, =, &gt;=, &gt;</em>. Replace [expected] with the
+                                    expected number of usages.
                                 </ChakraText>
                             </ListItem>
                             <ListItem>
@@ -114,8 +122,8 @@ export const FilterHelpButton = function () {
                                 </ChakraText>
                                 <ChakraText>
                                     Displays only elements that have a certain usefulness. Replace [operator] with one
-                                    of <em>&lt;, &lt;=, &gt;=, &gt;</em> or omit it to match by equality. Replace
-                                    [expected] with the expected usefulness.
+                                    of <em>&lt;, &lt;=, =, &gt;=, &gt;</em>. Replace [expected] with the expected
+                                    usefulness.
                                 </ChakraText>
                             </ListItem>
                             <ListItem>
