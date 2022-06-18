@@ -406,9 +406,7 @@ const annotationsSlice = createSlice({
                 ...action.payload,
             };
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         mergeAnnotationStore(state, action: PayloadAction<AnnotationStore>) {
             for (const annotationType of Object.keys(action.payload)) {
@@ -433,44 +431,32 @@ const annotationsSlice = createSlice({
                 }
             }
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         resetAnnotationStore(state) {
             state.annotations = initialAnnotationStore;
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         upsertAttribute(state, action: PayloadAction<AttributeAnnotation>) {
             state.annotations.attributes[action.payload.target] = action.payload;
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         removeAttribute(state, action: PayloadAction<string>) {
             delete state.annotations.attributes[action.payload];
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         upsertBoundary(state, action: PayloadAction<BoundaryAnnotation>) {
             state.annotations.boundaries[action.payload.target] = action.payload;
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         removeBoundary(state, action: PayloadAction<string>) {
             delete state.annotations.boundaries[action.payload];
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         upsertCalledAfter(state, action: PayloadAction<CalledAfterAnnotation>) {
             if (!state.annotations.calledAfters[action.payload.target]) {
@@ -478,9 +464,7 @@ const annotationsSlice = createSlice({
             }
             state.annotations.calledAfters[action.payload.target][action.payload.calledAfterName] = action.payload;
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         removeCalledAfter(state, action: PayloadAction<CalledAfterTarget>) {
             delete state.annotations.calledAfters[action.payload.target][action.payload.calledAfterName];
@@ -488,9 +472,7 @@ const annotationsSlice = createSlice({
                 delete state.annotations.calledAfters[action.payload.target];
             }
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         addComplete(state, action: PayloadAction<CompleteAnnotation>) {
             state.annotations.completes[action.payload.target] = action.payload;
@@ -501,53 +483,39 @@ const annotationsSlice = createSlice({
         upsertConstant(state, action: PayloadAction<ConstantAnnotation>) {
             state.annotations.constants[action.payload.target] = action.payload;
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         upsertConstants(state, action: PayloadAction<ConstantAnnotation[]>) {
             action.payload.forEach((annotation) => {
                 state.annotations.constants[annotation.target] = annotation;
             });
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         removeConstant(state, action: PayloadAction<string>) {
             delete state.annotations.constants[action.payload];
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         upsertDescription(state, action: PayloadAction<DescriptionAnnotation>) {
             state.annotations.descriptions[action.payload.target] = action.payload;
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         removeDescription(state, action: PayloadAction<string>) {
             delete state.annotations.descriptions[action.payload];
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         upsertEnum(state, action: PayloadAction<EnumAnnotation>) {
             state.annotations.enums[action.payload.target] = action.payload;
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         removeEnum(state, action: PayloadAction<string>) {
             delete state.annotations.enums[action.payload];
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         upsertGroup(state, action: PayloadAction<GroupAnnotation>) {
             if (!state.annotations.groups[action.payload.target]) {
@@ -586,9 +554,7 @@ const annotationsSlice = createSlice({
             }
             state.annotations.groups[action.payload.target][action.payload.groupName] = action.payload;
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         removeGroup(state, action: PayloadAction<GroupTarget>) {
             delete state.annotations.groups[action.payload.target][action.payload.groupName];
@@ -596,152 +562,112 @@ const annotationsSlice = createSlice({
                 delete state.annotations.groups[action.payload.target];
             }
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         upsertMove(state, action: PayloadAction<MoveAnnotation>) {
             state.annotations.moves[action.payload.target] = action.payload;
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         upsertMoves(state, action: PayloadAction<MoveAnnotation[]>) {
             action.payload.forEach((annotation) => {
                 state.annotations.moves[annotation.target] = annotation;
             });
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         removeMove(state, action: PayloadAction<string>) {
             delete state.annotations.moves[action.payload];
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         upsertOptional(state, action: PayloadAction<OptionalAnnotation>) {
             state.annotations.optionals[action.payload.target] = action.payload;
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         upsertOptionals(state, action: PayloadAction<OptionalAnnotation[]>) {
             action.payload.forEach((annotation) => {
                 state.annotations.optionals[annotation.target] = annotation;
             });
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         removeOptional(state, action: PayloadAction<string>) {
             delete state.annotations.optionals[action.payload];
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         addPure(state, action: PayloadAction<PureAnnotation>) {
             state.annotations.pures[action.payload.target] = action.payload;
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         removePure(state, action: PayloadAction<string>) {
             delete state.annotations.pures[action.payload];
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         upsertRenaming(state, action: PayloadAction<RenameAnnotation>) {
             state.annotations.renamings[action.payload.target] = action.payload;
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         upsertRenamings(state, action: PayloadAction<RenameAnnotation[]>) {
             action.payload.forEach((annotation) => {
                 state.annotations.renamings[annotation.target] = annotation;
             });
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         removeRenaming(state, action: PayloadAction<string>) {
             delete state.annotations.renamings[action.payload];
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         addRequired(state, action: PayloadAction<RequiredAnnotation>) {
             state.annotations.requireds[action.payload.target] = action.payload;
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         upsertRequireds(state, action: PayloadAction<RequiredAnnotation[]>) {
             action.payload.forEach((annotation) => {
                 state.annotations.requireds[annotation.target] = annotation;
             });
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         removeRequired(state, action: PayloadAction<string>) {
             delete state.annotations.requireds[action.payload];
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         addRemove(state, action: PayloadAction<RemoveAnnotation>) {
             state.annotations.removes[action.payload.target] = action.payload;
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         upsertRemoves(state, action: PayloadAction<RemoveAnnotation[]>) {
             action.payload.forEach((annotation) => {
                 state.annotations.removes[annotation.target] = annotation;
             });
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         removeRemove(state, action: PayloadAction<string>) {
             delete state.annotations.removes[action.payload];
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         upsertTodo(state, action: PayloadAction<TodoAnnotation>) {
             state.annotations.todos[action.payload.target] = action.payload;
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
         removeTodo(state, action: PayloadAction<string>) {
             delete state.annotations.todos[action.payload];
 
-            const [newQueue, newQueueIndex] = updatedQueue(state);
-            state.queue = newQueue;
-            state.queueIndex = newQueueIndex;
+            updateQueue(state);
         },
     },
     extraReducers(builder) {
@@ -749,7 +675,7 @@ const annotationsSlice = createSlice({
     },
 });
 
-const updatedQueue = function (state: AnnotationSlice): [AnnotationStore[], number] {
+const updateQueue = function (state: AnnotationSlice) {
     const annotations = JSON.parse(JSON.stringify(state.annotations));
 
     if (state.queueIndex >= maximumUndoHistoryLength - 2) {
@@ -757,7 +683,8 @@ const updatedQueue = function (state: AnnotationSlice): [AnnotationStore[], numb
         state.queueIndex = state.queueIndex - 1;
     }
 
-    return [[...state.queue.slice(0, state.queueIndex + 2), annotations], state.queueIndex + 1];
+    state.queue = [...state.queue.slice(0, state.queueIndex + 2), annotations]
+    state.queueIndex = state.queueIndex + 1;
 };
 
 const { actions, reducer } = annotationsSlice;
