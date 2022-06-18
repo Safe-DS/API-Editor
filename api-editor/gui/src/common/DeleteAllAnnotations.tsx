@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useRef, useState } from 'react';
 import { useAppDispatch } from '../app/hooks';
-import { resetAnnotations } from '../features/annotations/annotationSlice';
+import { resetAnnotationSlice } from '../features/annotations/annotationSlice';
 
 export const DeleteAllAnnotations = function () {
     const dispatch = useAppDispatch();
@@ -22,7 +22,7 @@ export const DeleteAllAnnotations = function () {
     // Event handlers ----------------------------------------------------------
 
     const handleConfirm = () => {
-        dispatch(resetAnnotations());
+        dispatch(resetAnnotationSlice());
         setIsOpen(false);
     };
     const handleCancel = () => setIsOpen(false);

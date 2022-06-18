@@ -400,16 +400,17 @@ const annotationsSlice = createSlice({
             }
             return state;
         },
-        setAnnotationStore(_state, action: PayloadAction<AnnotationStore>) {
-            return {
-                ...initialAnnotationSlice,
-                annotations: {
-                    ...initialAnnotationStore,
-                    ...action.payload,
-                },
+        setAnnotationStore(state, action: PayloadAction<AnnotationStore>) {
+            state.annotations = {
+                ...initialAnnotationStore,
+                ...action.payload,
             };
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
-        mergeAnnotations(state, action: PayloadAction<AnnotationStore>) {
+        mergeAnnotationStore(state, action: PayloadAction<AnnotationStore>) {
             for (const annotationType of Object.keys(action.payload)) {
                 if (annotationType === 'calledAfters' || annotationType === 'groups') {
                     for (const target of Object.keys(action.payload[annotationType])) {
@@ -431,9 +432,19 @@ const annotationsSlice = createSlice({
                     };
                 }
             }
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
-        resetAnnotations() {
-            return initialAnnotationSlice;
+        resetAnnotationSlice() {
+            const [newQueue, newQueueIndex] = updatedQueue(initialAnnotationSlice);
+
+            return {
+                ...initialAnnotationSlice,
+                queue: newQueue,
+                queueIndex: newQueueIndex
+            };
         },
         upsertAttribute(state, action: PayloadAction<AttributeAnnotation>) {
             state.annotations.attributes[action.payload.target] = action.payload;
@@ -730,8 +741,8 @@ const updatedQueue = function (state: AnnotationSlice): [AnnotationStore[], numb
 const { actions, reducer } = annotationsSlice;
 export const {
     setAnnotationStore,
-    mergeAnnotations,
-    resetAnnotations,
+    mergeAnnotationStore,
+    resetAnnotationSlice,
 
     upsertAttribute,
     removeAttribute,
