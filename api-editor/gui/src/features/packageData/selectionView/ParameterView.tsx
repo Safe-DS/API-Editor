@@ -42,7 +42,7 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({ pythonPar
             {pythonParameter.defaultValue && (
                 <Stack spacing={4}>
                     <Heading as="h4" size="md">
-                        Default value
+                        Default Value
                     </Heading>
                     <ChakraText paddingLeft={4}>{pythonParameter.defaultValue}</ChakraText>
                 </Stack>
@@ -51,7 +51,7 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({ pythonPar
             {parameterUsages && (
                 <Stack spacing={4}>
                     <Heading as="h4" size="md">
-                        Most common values
+                        Most Common Values
                     </Heading>
                     {createBarChart(parameterUsages)}
                 </Stack>

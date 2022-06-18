@@ -44,7 +44,7 @@ export const EmptyBatchForm: React.FC<EmptyBatchFormProps> = function ({
     return (
         <>
             <AnnotationBatchForm
-                heading={`Add @${annotationType} annotation`}
+                heading={`Add @${annotationType} Annotations`}
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             >

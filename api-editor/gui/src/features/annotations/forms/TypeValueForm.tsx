@@ -98,7 +98,7 @@ export const TypeValueForm: React.FC<TypeValueFormProps> = function ({
 
     return (
         <AnnotationForm
-            heading={`${previousDefaultType ? 'Edit' : 'Add'} @${annotationType} annotation`}
+            heading={`${previousDefaultType ? 'Edit' : 'Add'} @${annotationType} Annotation`}
             onSave={handleSubmit(handleSave)}
             onCancel={handleCancel}
         >

@@ -113,7 +113,7 @@ export const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
 
     return (
         <AnnotationForm
-            heading={`${enumDefinition ? 'Edit' : 'Add'} @enum annotation`}
+            heading={`${enumDefinition ? 'Edit' : 'Add'} @enum Annotation`}
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
         >

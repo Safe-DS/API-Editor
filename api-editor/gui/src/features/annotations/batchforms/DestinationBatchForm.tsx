@@ -1,4 +1,4 @@
-import { FormLabel, Input } from '@chakra-ui/react';
+import { FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch } from '../../../app/hooks';
@@ -24,7 +24,11 @@ export const DestinationBatchForm: React.FC<DestinationBatchFormProps> = functio
 }) {
     const dispatch = useAppDispatch();
 
-    const { handleSubmit, register } = useForm<DestinationBatchFormState>({
+    const {
+        handleSubmit,
+        register,
+        formState: { errors },
+    } = useForm<DestinationBatchFormState>({
         defaultValues: {
             destination: '',
         },
@@ -55,16 +59,22 @@ export const DestinationBatchForm: React.FC<DestinationBatchFormProps> = functio
     return (
         <>
             <AnnotationBatchForm
-                heading={`Add @${annotationType} annotation`}
+                heading={`Add @${annotationType} Annotations`}
                 onConfirm={handleSubmit(handleConfirm)}
                 onCancel={handleCancel}
             >
-                <FormLabel>Destination module:</FormLabel>
-                <Input
-                    {...register('destination', {
-                        required: 'This is required.',
-                    })}
-                />
+                <FormControl isInvalid={Boolean(errors?.destination)}>
+                    <FormLabel>Destination module:</FormLabel>
+                    <Input
+                        {...register('destination', {
+                            required: 'This is required.',
+                        })}
+                    />
+                    <FormErrorMessage>
+                        <FormErrorIcon /> {errors.destination?.message}
+                    </FormErrorMessage>
+                </FormControl>
+
                 <FormLabel>This will annotate classes and global functions.</FormLabel>
             </AnnotationBatchForm>
             {confirmWindowVisible && (

@@ -6,6 +6,9 @@ import {
     AlertDialogHeader,
     AlertDialogOverlay,
     Button,
+    FormControl,
+    FormErrorIcon,
+    FormErrorMessage,
     FormLabel,
     Heading,
     Input,
@@ -37,7 +40,11 @@ export const OldNewBatchForm: React.FC<OldNewBatchFormProps> = function ({
 }) {
     const dispatch = useAppDispatch();
 
-    const { handleSubmit, register } = useForm<OldNewBatchFormState>({
+    const {
+        handleSubmit,
+        register,
+        formState: { errors },
+    } = useForm<OldNewBatchFormState>({
         defaultValues: {
             oldString: '',
             newString: '',
@@ -69,23 +76,34 @@ export const OldNewBatchForm: React.FC<OldNewBatchFormProps> = function ({
     return (
         <>
             <AnnotationBatchForm
-                heading={`Add @${annotationType} annotation`}
+                heading={`Add @${annotationType} Annotations`}
                 onConfirm={handleSubmit(handleConfirm)}
                 onCancel={handleCancel}
             >
-                <FormLabel>String to be replaced:</FormLabel>
-                <Input
-                    {...register('oldString', {
-                        required: 'This is required.',
-                    })}
-                />
+                <FormControl isInvalid={Boolean(errors.oldString)}>
+                    <FormLabel>String to be replaced:</FormLabel>
+                    <Input
+                        {...register('oldString', {
+                            required: 'This is required.',
+                        })}
+                    />
+                    <FormErrorMessage>
+                        <FormErrorIcon /> {errors.oldString?.message}
+                    </FormErrorMessage>
+                </FormControl>
 
-                <FormLabel>Replacement String:</FormLabel>
-                <Input
-                    {...register('newString', {
-                        required: 'This is required.',
-                    })}
-                />
+                <FormControl isInvalid={Boolean(errors.newString)}>
+                    <FormLabel>Replacement String:</FormLabel>
+                    <Input
+                        {...register('newString', {
+                            required: 'This is required.',
+                        })}
+                    />
+                    <FormErrorMessage>
+                        <FormErrorIcon /> {errors.newString?.message}
+                    </FormErrorMessage>
+                </FormControl>
+
                 <FormLabel>This will annotate classes, functions, and parameters.</FormLabel>
             </AnnotationBatchForm>
             {confirmWindowVisible && (
