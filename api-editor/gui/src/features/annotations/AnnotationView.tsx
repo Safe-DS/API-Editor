@@ -254,9 +254,17 @@ const Annotation: React.FC<AnnotationProps> = function ({ name, onDelete, onEdit
 
     return (
         <ButtonGroup size="sm" variant="outline" isAttached>
+            <IconButton
+                icon={<FaTrash />}
+                aria-label="Delete annotation"
+                colorScheme="red"
+                disabled={!isValidUsername}
+                onClick={onDelete}
+            />
             <Button
                 leftIcon={<FaWrench />}
                 flexGrow={1}
+                borderLeft="none"
                 justifyContent="flex-start"
                 disabled={!onEdit || !isValidUsername}
                 onClick={onEdit}
@@ -268,13 +276,9 @@ const Annotation: React.FC<AnnotationProps> = function ({ name, onDelete, onEdit
                     </ChakraText>
                 )}
             </Button>
-            <IconButton
-                icon={<FaTrash />}
-                aria-label="Delete annotation"
-                colorScheme="red"
-                disabled={!isValidUsername}
-                onClick={onDelete}
-            />
+            <Button colorScheme="green">
+                Mark as Correct
+            </Button>
         </ButtonGroup>
     );
 };
