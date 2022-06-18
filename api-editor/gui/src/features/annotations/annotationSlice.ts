@@ -509,6 +509,10 @@ const annotationsSlice = createSlice({
             action.payload.forEach((annotation) => {
                 state.annotations.constants[annotation.target] = annotation;
             });
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         removeConstant(state, action: PayloadAction<string>) {
             delete state.annotations.constants[action.payload];
@@ -607,6 +611,10 @@ const annotationsSlice = createSlice({
             action.payload.forEach((annotation) => {
                 state.annotations.moves[annotation.target] = annotation;
             });
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         removeMove(state, action: PayloadAction<string>) {
             delete state.annotations.moves[action.payload];
@@ -626,6 +634,10 @@ const annotationsSlice = createSlice({
             action.payload.forEach((annotation) => {
                 state.annotations.optionals[annotation.target] = annotation;
             });
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         removeOptional(state, action: PayloadAction<string>) {
             delete state.annotations.optionals[action.payload];
@@ -659,6 +671,10 @@ const annotationsSlice = createSlice({
             action.payload.forEach((annotation) => {
                 state.annotations.renamings[annotation.target] = annotation;
             });
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         removeRenaming(state, action: PayloadAction<string>) {
             delete state.annotations.renamings[action.payload];
@@ -678,6 +694,10 @@ const annotationsSlice = createSlice({
             action.payload.forEach((annotation) => {
                 state.annotations.requireds[annotation.target] = annotation;
             });
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         removeRequired(state, action: PayloadAction<string>) {
             delete state.annotations.requireds[action.payload];
@@ -697,6 +717,10 @@ const annotationsSlice = createSlice({
             action.payload.forEach((annotation) => {
                 state.annotations.removes[annotation.target] = annotation;
             });
+
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         removeRemove(state, action: PayloadAction<string>) {
             delete state.annotations.removes[action.payload];
