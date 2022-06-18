@@ -63,7 +63,7 @@ describe('createFilterFromString', () => {
 
         const positiveFilter = (completeFilter as ConjunctiveFilter).filters[0];
         expect(positiveFilter).toBeInstanceOf(NameStringFilter);
-        expect((positiveFilter as NameStringFilter).substring).toBe('foo');
+        expect((positiveFilter as NameStringFilter).string).toBe('foo');
     });
 
     test('handles usages filter', () => {

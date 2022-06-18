@@ -125,9 +125,13 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
     }
 
     // Name
-    const nameStringMatch = /^name:(?<name>\w+)$/u.exec(token);
+    const nameStringMatch = /^name:(?<comparison>[=~])(?<name>\w+)$/u.exec(token);
     if (nameStringMatch) {
-        return new NameStringFilter(nameStringMatch?.groups?.name as string);
+        const comparisonOperator = nameStringMatch?.groups?.comparison as string;
+        return new NameStringFilter(
+            nameStringMatch?.groups?.name as string,
+            comparisonOperator === '='
+        );
     }
 
     const nameRegexMatch = /^name:\/(?<regex>.*)\/$/u.exec(token);
