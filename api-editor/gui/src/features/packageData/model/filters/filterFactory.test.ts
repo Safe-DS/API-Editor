@@ -2,7 +2,7 @@ import { createFilterFromString, isValidFilterToken } from './filterFactory';
 import { ConjunctiveFilter } from './ConjunctiveFilter';
 import { Visibility, VisibilityFilter } from './VisibilityFilter';
 import { NegatedFilter } from './NegatedFilter';
-import { NameFilter } from './NameFilter';
+import { NameStringFilter } from './NameStringFilter';
 import { UsageFilter } from './UsageFilter';
 import { UsefulnessFilter } from './UsefulnessFilter';
 import { greaterThan } from './comparisons';
@@ -62,8 +62,8 @@ describe('createFilterFromString', () => {
         expect((completeFilter as ConjunctiveFilter).filters).toHaveLength(1);
 
         const positiveFilter = (completeFilter as ConjunctiveFilter).filters[0];
-        expect(positiveFilter).toBeInstanceOf(NameFilter);
-        expect((positiveFilter as NameFilter).substring).toBe('foo');
+        expect(positiveFilter).toBeInstanceOf(NameStringFilter);
+        expect((positiveFilter as NameStringFilter).substring).toBe('foo');
     });
 
     test('handles usages filter', () => {

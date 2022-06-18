@@ -72,10 +72,18 @@ export const FilterHelpButton = function () {
                             </ListItem>
                             <ListItem>
                                 <ChakraText>
-                                    <strong>name:xy</strong>
+                                    <strong>name:[substring]</strong>
                                 </ChakraText>
                                 <ChakraText>
-                                    Displays only elements with names that contain the given string xy.
+                                    Displays only elements with names that contain the given [substring].
+                                </ChakraText>
+                            </ListItem>
+                            <ListItem>
+                                <ChakraText>
+                                    <strong>name:/[regex]/</strong>
+                                </ChakraText>
+                                <ChakraText>
+                                    Displays only elements with names that match the given [regex].
                                 </ChakraText>
                             </ListItem>
                             <ListItem>

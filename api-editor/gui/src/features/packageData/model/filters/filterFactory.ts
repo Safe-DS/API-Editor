@@ -1,5 +1,5 @@
 import { ConjunctiveFilter } from './ConjunctiveFilter';
-import { NameFilter } from './NameFilter';
+import { NameStringFilter } from './NameStringFilter';
 import { AbstractPythonFilter } from './AbstractPythonFilter';
 import { DeclarationType, DeclarationTypeFilter } from './DeclarationTypeFilter';
 import { Visibility, VisibilityFilter } from './VisibilityFilter';
@@ -12,6 +12,7 @@ import { equals, greaterThan, greaterThanOrEqual, lessThan, lessThanOrEqual } fr
 import { ParameterAssignmentFilter } from './ParameterAssignmentFilter';
 import { PythonParameterAssignment } from '../PythonParameter';
 import { RequiredOrOptional, RequiredOrOptionalFilter } from './RequiredOrOptionalFilter';
+import {NameRegexFilter} from "./NameRegexFilter";
 
 /**
  * Creates a filter from the given string. This method handles conjunctions, negations, and non-negated tokens.
@@ -124,9 +125,14 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
     }
 
     // Name
-    const nameMatch = /^name:(?<name>\w+)$/u.exec(token);
-    if (nameMatch) {
-        return new NameFilter(nameMatch?.groups?.name as string);
+    const nameStringMatch = /^name:(?<name>\w+)$/u.exec(token);
+    if (nameStringMatch) {
+        return new NameStringFilter(nameStringMatch?.groups?.name as string);
+    }
+
+    const nameRegexMatch = /^name:\/(?<regex>.*)\/$/u.exec(token);
+    if (nameRegexMatch) {
+        return new NameRegexFilter(nameRegexMatch?.groups?.regex as string);
     }
 
     // Usages
