@@ -12,7 +12,7 @@ import { equals, greaterThan, greaterThanOrEqual, lessThan, lessThanOrEqual } fr
 import { ParameterAssignmentFilter } from './ParameterAssignmentFilter';
 import { PythonParameterAssignment } from '../PythonParameter';
 import { RequiredOrOptional, RequiredOrOptionalFilter } from './RequiredOrOptionalFilter';
-import {NameRegexFilter} from "./NameRegexFilter";
+import { NameRegexFilter } from './NameRegexFilter';
 
 /**
  * Creates a filter from the given string. This method handles conjunctions, negations, and non-negated tokens.
@@ -128,10 +128,7 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
     const nameStringMatch = /^name:(?<comparison>[=~])(?<name>\w+)$/u.exec(token);
     if (nameStringMatch) {
         const comparisonOperator = nameStringMatch?.groups?.comparison as string;
-        return new NameStringFilter(
-            nameStringMatch?.groups?.name as string,
-            comparisonOperator === '='
-        );
+        return new NameStringFilter(nameStringMatch?.groups?.name as string, comparisonOperator === '=');
     }
 
     const nameRegexMatch = /^name:\/(?<regex>.*)\/$/u.exec(token);

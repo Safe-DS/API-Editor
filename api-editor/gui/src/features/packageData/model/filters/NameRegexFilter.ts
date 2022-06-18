@@ -19,7 +19,7 @@ export class NameRegexFilter extends AbstractPythonFilter {
     constructor(regex: string) {
         super();
 
-        this.regex = RegExp(regex, "u");
+        this.regex = RegExp(regex, 'u');
     }
 
     shouldKeepModule(pythonModule: PythonModule, annotations: AnnotationStore, usages: UsageCountStore): boolean {

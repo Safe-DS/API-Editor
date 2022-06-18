@@ -11,7 +11,6 @@ import { UsageCountStore } from '../../../usages/model/UsageCountStore';
  * Keeps only declarations that have a given string in their name.
  */
 export class NameStringFilter extends AbstractPythonFilter {
-
     /**
      * @param string The string that must be part of the name of the declaration.
      * @param matchExactly Whether the name must match the substring exactly.
