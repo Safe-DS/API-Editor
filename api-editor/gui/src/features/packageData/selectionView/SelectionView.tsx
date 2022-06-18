@@ -20,10 +20,8 @@ export const SelectionView: React.FC = function () {
 
     if (location === '/statisticsView') {
         return (
-            <Box overflowY="auto" h="100%" w="100%">
-                <Box padding={4}>
-                    <StatisticsView />
-                </Box>
+            <Box overflowY="auto" h="100%" w="100%" padding={4}>
+                <StatisticsView />
             </Box>
         );
     }
@@ -33,13 +31,11 @@ export const SelectionView: React.FC = function () {
     }
 
     return (
-        <Box overflowY="auto" h="100%" w="100%">
-            <Box padding={4}>
-                {declaration instanceof PythonFunction && <FunctionView pythonFunction={declaration} />}
-                {declaration instanceof PythonClass && <ClassView pythonClass={declaration} />}
-                {declaration instanceof PythonModule && <ModuleView pythonModule={declaration} />}
-                {declaration instanceof PythonParameter && <ParameterView pythonParameter={declaration} />}
-            </Box>
+        <Box overflowY="auto" h="100%" w="100%" padding={4}>
+            {declaration instanceof PythonFunction && <FunctionView pythonFunction={declaration} />}
+            {declaration instanceof PythonClass && <ClassView pythonClass={declaration} />}
+            {declaration instanceof PythonModule && <ModuleView pythonModule={declaration} />}
+            {declaration instanceof PythonParameter && <ParameterView pythonParameter={declaration} />}
         </Box>
     );
 };
