@@ -8,6 +8,7 @@ from package_parser.model.annotations import (
 )
 from package_parser.model.api import API, Parameter
 from package_parser.model.usages import UsageCountStore
+
 from ._constants import autogen_author
 
 
@@ -43,7 +44,7 @@ def _generate_constant_annotation(
                 authors=[autogen_author],
                 reviewers=[],
                 defaultType=default_type,
-                defaultValue=default_value
+                defaultValue=default_value,
             )
         )
 
@@ -60,9 +61,7 @@ def _generate_required_or_optional_annotation(
         if parameter.is_optional():
             annotations.requireds.append(
                 RequiredAnnotation(
-                    target=parameter.id,
-                    authors=[autogen_author],
-                    reviewers=[]
+                    target=parameter.id, authors=[autogen_author], reviewers=[]
                 )
             )
         return
@@ -111,9 +110,7 @@ def _generate_required_or_optional_annotation(
         if parameter.is_optional():
             annotations.requireds.append(
                 RequiredAnnotation(
-                    target=parameter.id,
-                    authors=[autogen_author],
-                    reviewers=[]
+                    target=parameter.id, authors=[autogen_author], reviewers=[]
                 )
             )
     else:
@@ -129,7 +126,7 @@ def _generate_required_or_optional_annotation(
                         authors=[autogen_author],
                         reviewers=[],
                         defaultType=default_type,
-                        defaultValue=default_value
+                        defaultValue=default_value,
                     )
                 )
 

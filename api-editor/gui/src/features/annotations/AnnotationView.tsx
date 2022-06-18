@@ -276,9 +276,7 @@ const Annotation: React.FC<AnnotationProps> = function ({ name, onDelete, onEdit
                     </ChakraText>
                 )}
             </Button>
-            <Button>
-                Mark as Correct
-            </Button>
+            <Button>Mark as Correct</Button>
         </ButtonGroup>
     );
 };

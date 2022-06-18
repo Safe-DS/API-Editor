@@ -14,9 +14,7 @@ from package_parser.model.annotations import (
 
 def test_base_annotation_to_json():
     annotation = AbstractAnnotation(
-        target="test/test",
-        authors=["$autogen$"],
-        reviewers=[]
+        target="test/test", authors=["$autogen$"], reviewers=[]
     )
     assert annotation.to_json() == {
         "target": "test/test",
@@ -31,7 +29,7 @@ def test_constant_annotation_to_json():
         authors=["$autogen$"],
         reviewers=[],
         defaultType="string",
-        defaultValue="test"
+        defaultValue="test",
     )
     assert annotation.to_json() == {
         "target": "test/test",
@@ -44,22 +42,18 @@ def test_constant_annotation_to_json():
 
 def test_remove_annotation_to_json():
     annotation = RemoveAnnotation(
-        target="test/test",
-        authors=["$autogen$"],
-        reviewers=[]
+        target="test/test", authors=["$autogen$"], reviewers=[]
     )
     assert annotation.to_json() == {
         "target": "test/test",
         "authors": ["$autogen$"],
-        "reviewers": []
+        "reviewers": [],
     }
 
 
 def test_required_annotation_to_json():
     annotation = RequiredAnnotation(
-        target="test/test",
-        authors=["$autogen$"],
-        reviewers=[]
+        target="test/test", authors=["$autogen$"], reviewers=[]
     )
     assert annotation.to_json() == {
         "target": "test/test",
@@ -74,7 +68,7 @@ def test_optional_annotation_to_json():
         authors=["$autogen$"],
         reviewers=[],
         defaultType="string",
-        defaultValue="test"
+        defaultValue="test",
     )
     assert annotation.to_json() == {
         "target": "test/test",
@@ -90,7 +84,7 @@ def test_boundary_annotation_to_json():
         target="test/test",
         authors=["$autogen$"],
         reviewers=[],
-        interval=Interval(False, 0, 0, 0, 0)
+        interval=Interval(False, 0, 0, 0, 0),
     )
     assert annotation.to_json() == {
         "target": "test/test",
@@ -112,7 +106,7 @@ def test_enum_annotation_to_json():
         authors=["$autogen$"],
         reviewers=[],
         enumName="test",
-        pairs=[EnumPair("test", "test")]
+        pairs=[EnumPair("test", "test")],
     )
     assert annotation.to_json() == {
         "target": "test/test",
@@ -145,7 +139,7 @@ def test_annotation_store():
             authors=["$autogen$"],
             reviewers=[],
             defaultType="string",
-            defaultValue="test"
+            defaultValue="test",
         )
     )
     annotations.constants.append(
@@ -154,7 +148,7 @@ def test_annotation_store():
             authors=["$autogen$"],
             reviewers=[],
             defaultType="string",
-            defaultValue="test"
+            defaultValue="test",
         )
     )
     annotations.boundaries.append(
@@ -171,7 +165,7 @@ def test_annotation_store():
             authors=["$autogen$"],
             reviewers=[],
             enumName="test",
-            pairs=[EnumPair("test", "test")]
+            pairs=[EnumPair("test", "test")],
         )
     )
     assert annotations.to_json() == {

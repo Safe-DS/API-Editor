@@ -4,6 +4,7 @@ from package_parser.model.annotations import (
     Interval,
 )
 from package_parser.model.api import API
+
 from ._constants import autogen_author
 
 

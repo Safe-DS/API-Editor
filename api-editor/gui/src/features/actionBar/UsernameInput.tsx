@@ -12,7 +12,7 @@ import {
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { isValidUsername } from '../../common/util/validation';
-import {selectUsername, setUsername} from '../annotations/annotationSlice';
+import { selectUsername, setUsername } from '../annotations/annotationSlice';
 
 export const UsernameInput: React.FC = function () {
     const dispatch = useAppDispatch();
