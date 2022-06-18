@@ -438,7 +438,7 @@ const annotationsSlice = createSlice({
             state.queueIndex = newQueueIndex;
         },
         resetAnnotationStore(state) {
-            state.annotations = initialAnnotationStore
+            state.annotations = initialAnnotationStore;
 
             const [newQueue, newQueueIndex] = updatedQueue(state);
             state.queue = newQueue;
