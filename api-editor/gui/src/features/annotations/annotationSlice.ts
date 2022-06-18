@@ -75,9 +75,19 @@ export interface AnnotationSlice {
 
 export interface Annotation {
     /**
-     * ID of the annotated Python declaration
+     * ID of the annotated Python declaration.
      */
     readonly target: string;
+
+    /**
+     * Usernames of people who created or changed the annotation.
+     */
+    readonly authors: string[];
+
+    /**
+     * Usernames of people who marked the annotation as correct.
+     */
+    readonly reviewers: string[];
 }
 
 export interface AttributeAnnotation extends Annotation {
@@ -201,7 +211,12 @@ export interface GroupAnnotation extends Annotation {
     readonly parameters: string[];
 }
 
-export interface GroupTarget extends Annotation {
+export interface GroupTarget {
+    /**
+     * ID of the annotated Python declaration.
+     */
+    readonly target: string;
+
     /**
      * Name of the grouped object
      */
@@ -241,7 +256,6 @@ export interface RequiredAnnotation extends Annotation {}
 export interface RemoveAnnotation extends Annotation {}
 
 export interface TodoAnnotation extends Annotation {
-
     /**
      * A Todo for the declaration.
      */
@@ -471,6 +485,8 @@ const annotationsSlice = createSlice({
                             parameters: currentGroupParameter,
                             groupName: group.groupName,
                             target: group.target,
+                            authors: group.authors,
+                            reviewers: group.reviewers,
                         };
                     }
                 }
