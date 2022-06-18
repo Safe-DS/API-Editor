@@ -252,10 +252,8 @@ let createBarChart = function (labels: string[], values: number[], title: string
     };
 
     const dataValues = new Map();
-    let count = 0;
-    for (const label of labels) {
-        dataValues.set(label, values[count]);
-        count++;
+    for (let index = 0; index < labels.length; index++) {
+        dataValues.set(labels[index], values[index]);
     }
 
     const data = {

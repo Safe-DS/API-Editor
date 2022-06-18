@@ -6,7 +6,7 @@ import { PythonParameter } from '../model/PythonParameter';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { getClassValues, getFunctionValues, getParameterValues } from './StatisticsView';
 
-let parameterTest: PythonParameter[] = [
+const parameterTest: PythonParameter[] = [
     new PythonParameter(
         'test/test.test/parameterTestClass/privateParameterTestFunction/parameterTest0',
         'parameterTest0',
@@ -42,7 +42,7 @@ let parameterTest: PythonParameter[] = [
     ),
 ];
 
-let privateParameterTest: PythonParameter[] = [
+const privateParameterTest: PythonParameter[] = [
     new PythonParameter(
         'test/test.test/parameterTestClass/privateParameterTestFunction/privateParameterTest',
         'privateParameterTest',
@@ -56,7 +56,7 @@ let privateParameterTest: PythonParameter[] = [
     ),
 ];
 
-let testFunctions: PythonFunction[] = [
+const testFunctions: PythonFunction[] = [
     new PythonFunction(
         'test/test.test/parameterTestClass/privateTestFunction',
         'privateTestFunction',
@@ -107,7 +107,7 @@ let testFunctions: PythonFunction[] = [
     ),
 ];
 
-let parameterTestFunctions: PythonFunction[] = [
+const parameterTestFunctions: PythonFunction[] = [
     new PythonFunction(
         'test/test.test/parameterTestClass/privateParameterTestFunction',
         'privateParameterTestFunction',
@@ -134,7 +134,7 @@ let parameterTestFunctions: PythonFunction[] = [
     ),
 ];
 
-let testClasses: PythonClass[] = [
+const testClasses: PythonClass[] = [
     new PythonClass(
         'test/test.test/privateClassTest',
         'privateClassTest',
