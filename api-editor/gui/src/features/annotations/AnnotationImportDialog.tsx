@@ -17,7 +17,7 @@ import React, { useState } from 'react';
 import { useAppDispatch } from '../../app/hooks';
 import { StyledDropzone } from '../../common/StyledDropzone';
 import { isValidJsonFile } from '../../common/util/validation';
-import { AnnotationStore, initialAnnotationStore, mergeAnnotations, setAnnotations } from './annotationSlice';
+import { AnnotationStore, initialAnnotationStore, mergeAnnotations, setAnnotationStore } from './annotationSlice';
 import { hideAnnotationImportDialog, toggleAnnotationImportDialog } from '../ui/uiSlice';
 
 export const AnnotationImportDialog: React.FC = function () {
@@ -33,7 +33,7 @@ export const AnnotationImportDialog: React.FC = function () {
     };
     const replace = () => {
         if (fileName) {
-            dispatch(setAnnotations(newAnnotationStore));
+            dispatch(setAnnotationStore(newAnnotationStore));
         }
         dispatch(hideAnnotationImportDialog());
     };
