@@ -195,34 +195,24 @@ export const StatisticsView: React.FC = function () {
 
 export let getClassValues = function (pythonPackage: PythonPackage, usages: UsageCountStore, usedThreshold: number) {
     const classes = pythonPackage.getClasses();
-    let result: number[] = [];
+    const publicClasses = classes.filter((it) => it.isPublic);
 
-    let publicClasses = 0;
-    classes.forEach((element) => {
-        publicClasses += element.isPublic ? 1 : 0;
-    });
-
-    result.push(classes.length);
-    result.push(publicClasses);
-    result.push(usages.getNumberOfUsedPublicClasses(pythonPackage, usedThreshold));
-
-    return result;
+    return [
+        classes.length,
+        publicClasses.length,
+        usages.getNumberOfUsedPublicClasses(pythonPackage, usedThreshold),
+    ];
 };
 
 export let getFunctionValues = function (pythonPackage: PythonPackage, usages: UsageCountStore, usedThreshold: number) {
     const functions = pythonPackage.getFunctions();
-    let result: number[] = [];
+    const publicFunctions = functions.filter((it) => it.isPublic);
 
-    let publicFunctions = 0;
-    functions.forEach((element) => {
-        publicFunctions += element.isPublic ? 1 : 0;
-    });
-
-    result.push(functions.length);
-    result.push(publicFunctions);
-    result.push(usages.getNumberOfUsedPublicFunctions(pythonPackage, usedThreshold));
-
-    return result;
+    return [
+        functions.length,
+        publicFunctions.length,
+        usages.getNumberOfUsedPublicFunctions(pythonPackage, usedThreshold),
+    ]
 };
 
 export let getParameterValues = function (
@@ -231,19 +221,14 @@ export let getParameterValues = function (
     usedThreshold: number,
 ) {
     const parameters = pythonPackage.getParameters();
-    let result: number[] = [];
+    const publicParameters = parameters.filter((it) => it.isPublic);
 
-    let publicParameters = 0;
-    parameters.forEach((element) => {
-        publicParameters += element.isPublic ? 1 : 0;
-    });
-
-    result.push(parameters.length);
-    result.push(publicParameters);
-    result.push(usages.getUsedPublicParameters(pythonPackage, usedThreshold).length);
-    result.push(usages.getNumberOfUsefulPublicParameters(pythonPackage, usedThreshold));
-
-    return result;
+    return [
+        parameters.length,
+        publicParameters.length,
+        usages.getUsedPublicParameters(pythonPackage, usedThreshold).length,
+        usages.getNumberOfUsefulPublicParameters(pythonPackage, usedThreshold),
+    ]
 };
 
 let createBarChart = function (labels: string[], values: number[], title: string): ReactElement {
