@@ -437,14 +437,12 @@ const annotationsSlice = createSlice({
             state.queue = newQueue;
             state.queueIndex = newQueueIndex;
         },
-        resetAnnotationSlice() {
-            const [newQueue, newQueueIndex] = updatedQueue(initialAnnotationSlice);
+        resetAnnotationStore(state) {
+            state.annotations = initialAnnotationStore
 
-            return {
-                ...initialAnnotationSlice,
-                queue: newQueue,
-                queueIndex: newQueueIndex
-            };
+            const [newQueue, newQueueIndex] = updatedQueue(state);
+            state.queue = newQueue;
+            state.queueIndex = newQueueIndex;
         },
         upsertAttribute(state, action: PayloadAction<AttributeAnnotation>) {
             state.annotations.attributes[action.payload.target] = action.payload;
@@ -742,7 +740,7 @@ const { actions, reducer } = annotationsSlice;
 export const {
     setAnnotationStore,
     mergeAnnotationStore,
-    resetAnnotationSlice,
+    resetAnnotationStore,
 
     upsertAttribute,
     removeAttribute,
