@@ -18,7 +18,8 @@ import {
     AnnotationStore,
     initializeAnnotations,
     persistAnnotations,
-    selectAnnotations,
+    selectAnnotationSlice,
+    selectAnnotationStore,
 } from '../features/annotations/annotationSlice';
 import { BoundaryForm } from '../features/annotations/forms/BoundaryForm';
 import { CalledAfterForm } from '../features/annotations/forms/CalledAfterForm';
@@ -71,7 +72,7 @@ export const App: React.FC = function () {
     useIndexedDB();
 
     const rawPythonPackage = useAppSelector(selectRawPythonPackage);
-    const annotationStore = useAppSelector(selectAnnotations);
+    const annotationStore = useAppSelector(selectAnnotationStore);
     const usages = useAppSelector(selectUsages);
     const filter = useAppSelector(selectFilter);
 
@@ -233,7 +234,7 @@ const useIndexedDB = function () {
 
 const usePersistentAnnotations = function () {
     const dispatch = useAppDispatch();
-    const annotationStore = useAppSelector(selectAnnotations);
+    const annotationSlice = useAppSelector(selectAnnotationSlice);
     const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {
@@ -245,9 +246,9 @@ const usePersistentAnnotations = function () {
 
     useEffect(() => {
         if (isInitialized) {
-            dispatch(persistAnnotations(annotationStore));
+            dispatch(persistAnnotations(annotationSlice));
         }
-    }, [dispatch, annotationStore, isInitialized]);
+    }, [dispatch, annotationSlice, isInitialized]);
 };
 
 const usePersistentAPIState = function () {

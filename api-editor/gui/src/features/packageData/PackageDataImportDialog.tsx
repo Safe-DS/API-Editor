@@ -18,7 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../app/hooks';
 import { StyledDropzone } from '../../common/StyledDropzone';
 import { isValidJsonFile } from '../../common/util/validation';
-import { resetAnnotations } from '../annotations/annotationSlice';
+import { resetAnnotationStore } from '../annotations/annotationSlice';
 import { parsePythonPackageJson, PythonPackageJson } from './model/PythonPackageBuilder';
 import { resetUIAfterAPIImport, toggleAPIImportDialog } from '../ui/uiSlice';
 import { persistPythonPackage, setPythonPackage } from './apiSlice';
@@ -38,7 +38,7 @@ export const PackageDataImportDialog: React.FC = function () {
             dispatch(persistPythonPackage(parsedPythonPackage));
 
             // Reset other slices
-            dispatch(resetAnnotations());
+            dispatch(resetAnnotationStore());
             dispatch(resetUsages());
             dispatch(resetUIAfterAPIImport());
             navigate('/');
@@ -57,7 +57,7 @@ export const PackageDataImportDialog: React.FC = function () {
             reader.onload = () => {
                 if (typeof reader.result === 'string') {
                     setNewPythonPackage(reader.result);
-                    dispatch(resetAnnotations());
+                    dispatch(resetAnnotationStore());
                 }
             };
             reader.readAsText(acceptedFiles[0]);
