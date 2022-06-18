@@ -16,15 +16,14 @@ import { Box, Flex, Button, Heading, VStack, Wrap, WrapItem } from '@chakra-ui/r
 import { selectAnnotations } from '../../annotations/annotationSlice';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectFilterString, setFilterString } from '../../ui/uiSlice';
+import { selectRawPythonPackage } from '../apiSlice';
+import { selectUsages } from '../../usages/usageSlice';
 
 ChartJS.register(CategoryScale, PointElement, LineElement, LinearScale, BarElement, Title, Tooltip);
 
-interface FunctionViewProps {
-    pythonPackage: PythonPackage;
-    usages: UsageCountStore;
-}
-
-export const StatisticsView: React.FC<FunctionViewProps> = function ({ pythonPackage, usages }) {
+export const StatisticsView: React.FC = function () {
+    const rawPythonPackage = useAppSelector(selectRawPythonPackage);
+    const usages = useAppSelector(selectUsages);
     const annotations = useAppSelector(selectAnnotations);
     const filterString = useAppSelector(selectFilterString);
     const dispatch = useAppDispatch();
@@ -47,36 +46,36 @@ export const StatisticsView: React.FC<FunctionViewProps> = function ({ pythonPac
     const usedThreshold = 1;
 
     const classLabels = ['full', 'public', 'used'];
-    const classValues = getClassValues(pythonPackage, usages, usedThreshold);
+    const classValues = getClassValues(rawPythonPackage, usages, usedThreshold);
     const classBarChart = createBarChart(classLabels, classValues, 'Classes');
 
     const functionLabels = ['full', 'public', 'used'];
-    const functionValues = getFunctionValues(pythonPackage, usages, usedThreshold);
+    const functionValues = getFunctionValues(rawPythonPackage, usages, usedThreshold);
     const functionBarChart = createBarChart(functionLabels, functionValues, 'Functions');
 
     const parameterLabels = ['full', 'public', 'used', 'useful'];
-    const parameterValues = getParameterValues(pythonPackage, usages, usedThreshold);
+    const parameterValues = getParameterValues(rawPythonPackage, usages, usedThreshold);
     const parameterBarChart = createBarChart(parameterLabels, parameterValues, 'Parameters');
 
     const thresholds = [...Array(26).keys()];
     thresholds.shift();
     const classLineChart = createLineChart(
         usages,
-        pythonPackage,
+        rawPythonPackage,
         thresholds,
         usages.getNumberOfUsedPublicClasses,
         'Classes per Threshold',
     );
     const functionLineChart = createLineChart(
         usages,
-        pythonPackage,
+        rawPythonPackage,
         thresholds,
         usages.getNumberOfUsedPublicFunctions,
         'Functions per Threshold',
     );
     const parameterLineChart = createLineChart(
         usages,
-        pythonPackage,
+        rawPythonPackage,
         thresholds,
         usages.getNumberOfUsefulPublicParameters,
         'Parameters per Threshold',
