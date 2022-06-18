@@ -391,7 +391,7 @@ const annotationsSlice = createSlice({
             return state;
         },
         redo(state) {
-            if (-1 <= state.queueIndex && state.queueIndex + 2 < state.queue.length) {
+            if (0 <= state.queueIndex + 2 && state.queueIndex + 2 < state.queue.length) {
                 return {
                     annotations: state.queue[state.queueIndex + 2],
                     queue: state.queue,
