@@ -197,11 +197,7 @@ export let getClassValues = function (pythonPackage: PythonPackage, usages: Usag
     const classes = pythonPackage.getClasses();
     const publicClasses = classes.filter((it) => it.isPublic);
 
-    return [
-        classes.length,
-        publicClasses.length,
-        usages.getNumberOfUsedPublicClasses(pythonPackage, usedThreshold),
-    ];
+    return [classes.length, publicClasses.length, usages.getNumberOfUsedPublicClasses(pythonPackage, usedThreshold)];
 };
 
 export let getFunctionValues = function (pythonPackage: PythonPackage, usages: UsageCountStore, usedThreshold: number) {
@@ -212,7 +208,7 @@ export let getFunctionValues = function (pythonPackage: PythonPackage, usages: U
         functions.length,
         publicFunctions.length,
         usages.getNumberOfUsedPublicFunctions(pythonPackage, usedThreshold),
-    ]
+    ];
 };
 
 export let getParameterValues = function (
@@ -228,7 +224,7 @@ export let getParameterValues = function (
         publicParameters.length,
         usages.getUsedPublicParameters(pythonPackage, usedThreshold).length,
         usages.getNumberOfUsefulPublicParameters(pythonPackage, usedThreshold),
-    ]
+    ];
 };
 
 let createBarChart = function (labels: string[], values: number[], title: string): ReactElement {
