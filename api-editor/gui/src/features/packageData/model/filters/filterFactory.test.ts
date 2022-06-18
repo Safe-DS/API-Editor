@@ -57,7 +57,7 @@ describe('createFilterFromString', () => {
     });
 
     test('handles name filter', () => {
-        const completeFilter = createFilterFromString('name:foo');
+        const completeFilter = createFilterFromString('name:=foo');
         expect(completeFilter).toBeInstanceOf(ConjunctiveFilter);
         expect((completeFilter as ConjunctiveFilter).filters).toHaveLength(1);
 
@@ -93,7 +93,7 @@ describe('isValidFilterToken', () => {
     test.each([
         ['is:public', true],
         ['!is:public', true],
-        ['name:foo', true],
+        ['name:=foo', true],
         ['usages:>2', true],
         ['usefulness:>2', true],
         ['annotation:@calledAfter', true], // https://github.com/lars-reimann/api-editor/issues/669

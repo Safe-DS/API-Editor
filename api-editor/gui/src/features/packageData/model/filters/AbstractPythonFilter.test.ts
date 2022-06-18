@@ -90,7 +90,7 @@ beforeEach(() => {
 
 describe('AbstractPythonFilter::applyToPackage', () => {
     test('keeps modules for which the filter returns true, and their ancestors.', () => {
-        const filter = new NameStringFilter('test_module_1');
+        const filter = new NameStringFilter('test_module_1', false);
         const filteredPackage = filter.applyToPackage(pythonPackage, annotations, new UsageCountStore());
 
         const modules = filteredPackage.modules;
@@ -104,7 +104,7 @@ describe('AbstractPythonFilter::applyToPackage', () => {
     });
 
     test('keeps classes for which the filter returns true, their ancestors, and their descendants', () => {
-        const filter = new NameStringFilter('test_class_1');
+        const filter = new NameStringFilter('test_class_1', false);
         const filteredPackage = filter.applyToPackage(pythonPackage, annotations, new UsageCountStore());
 
         const modules = filteredPackage.modules;
@@ -121,7 +121,7 @@ describe('AbstractPythonFilter::applyToPackage', () => {
     });
 
     test('keeps methods for which the filter returns true, their ancestors, and their descendants', () => {
-        const filter = new NameStringFilter('test_method_1');
+        const filter = new NameStringFilter('test_method_1', false);
         const filteredPackage = filter.applyToPackage(pythonPackage, annotations, new UsageCountStore());
 
         const modules = filteredPackage.modules;
@@ -141,7 +141,7 @@ describe('AbstractPythonFilter::applyToPackage', () => {
     });
 
     test('keeps global functions for which the filter returns true, their ancestors, and their descendants', () => {
-        const filter = new NameStringFilter('test_global_function_1');
+        const filter = new NameStringFilter('test_global_function_1', false);
         const filteredPackage = filter.applyToPackage(pythonPackage, annotations, new UsageCountStore());
 
         const modules = filteredPackage.modules;
@@ -158,7 +158,7 @@ describe('AbstractPythonFilter::applyToPackage', () => {
     });
 
     test('keeps parameters for which the filter returns true, their ancestors, and their descendants', () => {
-        const filter = new NameStringFilter('test_parameter_1');
+        const filter = new NameStringFilter('test_parameter_1', false);
         const filteredPackage = filter.applyToPackage(pythonPackage, annotations, new UsageCountStore());
 
         const modules = filteredPackage.modules;
