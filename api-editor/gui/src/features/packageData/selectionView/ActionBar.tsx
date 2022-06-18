@@ -82,7 +82,6 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
             </Button>
 
             <Button
-                accessKey="a"
                 onClick={() => {
                     dispatch(setAllExpandedInTreeView(getDescendantsOrSelf(pythonPackage)));
                 }}
@@ -90,7 +89,6 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
                 Expand All
             </Button>
             <Button
-                accessKey="s"
                 onClick={() => {
                     dispatch(setAllCollapsedInTreeView(getDescendantsOrSelf(pythonPackage)));
                 }}
@@ -99,7 +97,6 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
             </Button>
 
             <Button
-                accessKey="y"
                 disabled={!declaration}
                 onClick={() => {
                     dispatch(setAllExpandedInTreeView(getDescendantsOrSelf(declaration!)));
@@ -108,7 +105,6 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
                 Expand Selected
             </Button>
             <Button
-                accessKey="x"
                 disabled={!declaration}
                 onClick={() => {
                     dispatch(setAllCollapsedInTreeView(getDescendantsOrSelf(declaration!)));
@@ -117,7 +113,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
                 Collapse Selected
             </Button>
             <Button
-                accessKey=""
+                accessKey="z"
                 disabled={!declaration}
                 onClick={() => {
                     dispatch(undo());
@@ -126,7 +122,7 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
                 Undo
             </Button>
             <Button
-                accessKey=""
+                accessKey="y"
                 disabled={!declaration}
                 onClick={() => {
                     dispatch(redo());
