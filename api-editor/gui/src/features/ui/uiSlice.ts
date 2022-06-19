@@ -319,9 +319,6 @@ const uiSlice = createSlice({
         setFilterString(state, action: PayloadAction<string>) {
             state.filterString = action.payload;
         },
-        setFilterList(state, action: PayloadAction<Filter[]>) {
-            state.filterList = action.payload;
-        },
         setFilterName(state, action: PayloadAction<string>) {
             state.filterName = action.payload;
         },
@@ -375,7 +372,6 @@ export const {
     setHeatMapMode,
     setFilterString,
     setFilterName,
-    setFilterList,
     addFilter,
     removeFilter,
     setSortingMode,
