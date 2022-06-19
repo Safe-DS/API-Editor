@@ -1,8 +1,9 @@
-import { Button, ButtonGroup, IconButton, Stack, Text as ChakraText } from '@chakra-ui/react';
+import { Button, ButtonGroup, Icon, IconButton, Stack, Text as ChakraText } from '@chakra-ui/react';
 import React from 'react';
-import { FaTrash, FaWrench } from 'react-icons/fa';
+import { FaCheck, FaTrash, FaWrench } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
+    Annotation,
     BoundaryAnnotation,
     ComparisonOperator,
     DefaultType,
@@ -95,106 +96,116 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
     return (
         <Stack maxW="fit-content">
             {attributeAnnotation && (
-                <Annotation
-                    target={target}
+                <AnnotationTag
                     type="attribute"
                     name={valueToString(attributeAnnotation.defaultValue, attributeAnnotation.defaultType)}
+                    annotation={attributeAnnotation}
                     onEdit={() => dispatch(showAttributeAnnotationForm(target))}
                     onDelete={() => dispatch(removeAttribute(target))}
                 />
             )}
             {boundaryAnnotation && (
-                <Annotation
-                    target={target}
+                <AnnotationTag
                     type="boundary"
                     name={boundaryToString(boundaryAnnotation)}
+                    annotation={boundaryAnnotation}
                     onEdit={() => dispatch(showBoundaryAnnotationForm(target))}
                     onDelete={() => dispatch(removeBoundary(target))}
                 />
             )}
             {Object.keys(calledAfterAnnotation).map((calledAfterName) => (
                 <Annotation
-                    target={target}
                     type="calledAfter"
                     name={calledAfterName}
                     key={calledAfterName}
+                    annotation={calledAfterAnnotation[calledAfterName]}
                     onDelete={() => dispatch(removeCalledAfter({ target, calledAfterName }))}
                 />
             ))}
             {constantAnnotation && (
-                <Annotation
-                    target={target}
+                <AnnotationTag
                     type="constant"
                     name={valueToString(constantAnnotation.defaultValue, constantAnnotation.defaultType)}
+                    annotation={constantAnnotation}
                     onEdit={() => dispatch(showConstantAnnotationForm(target))}
                     onDelete={() => dispatch(removeConstant(target))}
                 />
             )}
             {descriptionAnnotation && (
-                <Annotation
-                    target={target}
+                <AnnotationTag
                     type="description"
+                    annotation={descriptionAnnotation}
                     onEdit={() => dispatch(showDescriptionAnnotationForm(target))}
                     onDelete={() => dispatch(removeDescription(target))}
                 />
             )}
             {enumAnnotation && (
-                <Annotation
-                    target={target}
+                <AnnotationTag
                     type="enum"
                     name={enumAnnotation.enumName}
+                    annotation={enumAnnotation}
                     onEdit={() => dispatch(showEnumAnnotationForm(target))}
                     onDelete={() => dispatch(removeEnum(target))}
                 />
             )}
             {Object.keys(groupAnnotations).map((groupName) => (
-                <Annotation
+                <AnnotationTag
                     key={groupName}
-                    target={target}
                     type="group"
                     name={groupName}
+                    annotation={groupAnnotations[groupName]}
                     onEdit={() => dispatch(showGroupAnnotationForm({ target, groupName }))}
                     onDelete={() => dispatch(removeGroup({ target, groupName }))}
                 />
             ))}
             {moveAnnotation && (
-                <Annotation
-                    target={target}
+                <AnnotationTag
                     type="move"
                     name={moveAnnotation.destination}
+                    annotation={moveAnnotation}
                     onEdit={() => dispatch(showMoveAnnotationForm(target))}
                     onDelete={() => dispatch(removeMove(target))}
                 />
             )}
             {optionalAnnotation && (
-                <Annotation
-                    target={target}
+                <AnnotationTag
                     type="optional"
                     name={valueToString(optionalAnnotation.defaultValue, optionalAnnotation.defaultType)}
+                    annotation={optionalAnnotation}
                     onEdit={() => dispatch(showOptionalAnnotationForm(target))}
                     onDelete={() => dispatch(removeOptional(target))}
                 />
             )}
-            {pureAnnotation && <Annotation target={target} type="pure" onDelete={() => dispatch(removePure(target))} />}
+            {pureAnnotation && (
+                <AnnotationTag type="pure" annotation={pureAnnotation} onDelete={() => dispatch(removePure(target))} />
+            )}
             {removeAnnotation && (
-                <Annotation target={target} type="remove" onDelete={() => dispatch(removeRemove(target))} />
+                <AnnotationTag
+                    type="remove"
+                    annotation={removeAnnotation}
+                    onDelete={() => dispatch(removeRemove(target))}
+                />
             )}
             {renameAnnotation && (
-                <Annotation
-                    target={target}
+                <AnnotationTag
                     type="rename"
                     name={renameAnnotation.newName}
+                    annotation={renameAnnotation}
                     onEdit={() => dispatch(showRenameAnnotationForm(target))}
                     onDelete={() => dispatch(removeRenaming(target))}
                 />
             )}
             {requiredAnnotation && (
-                <Annotation target={target} type="required" onDelete={() => dispatch(removeRequired(target))} />
+                <AnnotationTag
+                    type="required"
+                    annotation={requiredAnnotation}
+                    onDelete={() => dispatch(removeRequired(target))}
+                />
             )}
             {todoAnnotation && (
-                <Annotation
-                    target={target}
+                <AnnotationTag
                     type="todo"
+                    annotation={todoAnnotation}
                     onEdit={() => dispatch(showTodoAnnotationForm(target))}
                     onDelete={() => dispatch(removeTodo(target))}
                 />
@@ -241,16 +252,18 @@ const boundaryToString = (boundary: BoundaryAnnotation) => {
     return result;
 };
 
-interface AnnotationProps {
-    target: string;
+interface AnnotationTagProps {
     type: string;
     name?: string;
+    annotation: Annotation;
     onEdit?: () => void;
     onDelete: () => void;
+    onReview: () => void;
 }
 
-const Annotation: React.FC<AnnotationProps> = function ({ name, onDelete, onEdit, type }) {
+const AnnotationTag: React.FC<AnnotationTagProps> = function ({ type, name, annotation, onDelete, onEdit, onReview }) {
     const isValidUsername = useAppSelector(selectUsernameIsValid);
+    const isReviewed = (annotation.reviewers?.length ?? 0) > 0;
 
     return (
         <ButtonGroup size="sm" variant="outline" isAttached>
@@ -276,6 +289,22 @@ const Annotation: React.FC<AnnotationProps> = function ({ name, onDelete, onEdit
                     </ChakraText>
                 )}
             </Button>
+            {isReviewed ? (
+                <Button
+                    size="sm"
+                    variant="solid"
+                    colorScheme="green"
+                    rightIcon={<Icon as={FaCheck} />}
+                    disabled={!isValidUsername}
+                    onClick={onReview}
+                >
+                    Correct
+                </Button>
+            ) : (
+                <Button size="sm" variant="outline" disabled={!isValidUsername} onClick={onReview}>
+                    Mark as Correct
+                </Button>
+            )}
             <Button>Mark as Correct</Button>
         </ButtonGroup>
     );
