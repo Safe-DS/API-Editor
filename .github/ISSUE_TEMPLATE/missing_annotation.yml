@@ -1,6 +1,5 @@
 name: "Missing annotation (autogen)"
 description: "An annotation should have been generated automatically but wasn't."
-title: ""
 labels: ["bug", "missing annotation"]
 
 body:
