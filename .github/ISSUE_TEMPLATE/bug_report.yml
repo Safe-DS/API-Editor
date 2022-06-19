@@ -25,10 +25,10 @@ body:
       required: true
 
   - type: textarea
-    id: reproduction
+    id: expected-behavior
     attributes:
-      label: To Reproduce
-      description: Steps to reproduce the behavior.
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen.
     validations:
       required: true
 
@@ -41,7 +41,7 @@ body:
       required: false
 
   - type: textarea
-    id: expected-behavior
+    id: additional-context
     attributes:
       label: Additional Context (optional)
       description: Do you have anything else to add?
