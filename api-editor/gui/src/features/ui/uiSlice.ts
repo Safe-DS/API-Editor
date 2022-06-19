@@ -143,8 +143,10 @@ export const initialState: UIState = {
 
     heatMapMode: HeatMapMode.None,
     sortingMode: SortingMode.Alphabetical,
-    filterList: [{ filter: 'is:public', name: 'default' },
-        {filter: 'is:public usefulness:>0 !name:=X !name:=y', name: 'sklearn'}],
+    filterList: [
+        { filter: 'is:public', name: 'default' },
+        { filter: 'is:public usefulness:>0 !name:=X !name:=y', name: 'sklearn' },
+    ],
     batchMode: BatchMode.None,
 };
 
