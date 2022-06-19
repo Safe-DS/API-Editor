@@ -12,7 +12,7 @@ import {
     UnorderedList,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { AddFilterDialog, MenuBar } from '../common/MenuBar';
+import { MenuBar } from '../common/MenuBar';
 import { AnnotationImportDialog } from '../features/annotations/AnnotationImportDialog';
 import {
     AnnotationStore,
@@ -68,6 +68,7 @@ import { PythonPackage } from '../features/packageData/model/PythonPackage';
 import { AbstractPythonFilter } from '../features/packageData/model/filters/AbstractPythonFilter';
 import { UsageCountStore } from '../features/usages/model/UsageCountStore';
 import { PythonDeclaration } from '../features/packageData/model/PythonDeclaration';
+import { SaveFilterDialog } from '../features/packageData/model/filters/SaveFilterDialog';
 
 export const App: React.FC = function () {
     useIndexedDB();
@@ -202,7 +203,7 @@ export const App: React.FC = function () {
                 {showAnnotationImportDialog && <AnnotationImportDialog />}
                 {showAPIImportDialog && <PackageDataImportDialog />}
                 {showUsagesImportDialog && <UsageImportDialog />}
-                {showAddFilterDialog && <AddFilterDialog />}
+                {showAddFilterDialog && <SaveFilterDialog />}
             </Grid>
 
             <Modal

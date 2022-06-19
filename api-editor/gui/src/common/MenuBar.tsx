@@ -1,11 +1,9 @@
 import {
-    Code,
     Box,
     Button,
-    Flex, FormControl, FormLabel, Heading,
+    Flex,
     HStack,
     Icon,
-    Input,
     Menu,
     MenuButton,
     MenuDivider,
@@ -13,9 +11,8 @@ import {
     MenuItem,
     MenuItemOption,
     MenuList,
-    MenuOptionGroup, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay,
+    MenuOptionGroup,
     Spacer,
-    VStack,
     Text as ChakraText,
     useColorMode,
 } from '@chakra-ui/react';
@@ -25,12 +22,10 @@ import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { selectAnnotationStore } from '../features/annotations/annotationSlice';
 import { FilterHelpButton } from './FilterHelpButton';
 import {
-    addFilter,
     BatchMode,
     HeatMapMode,
     selectHeatMapMode,
     selectFilterList,
-    selectFilterString,
     setBatchMode,
     selectSortingMode,
     setHeatMapMode,
@@ -39,14 +34,14 @@ import {
     toggleAnnotationImportDialog,
     toggleAPIImportDialog,
     toggleUsageImportDialog,
-    Filter, setFilterString, toggleAddFilterDialog, selectFilterName, setFilterName
+    Filter, setFilterString, toggleAddFilterDialog, selectFilterString,
 } from '../features/ui/uiSlice';
 import { DeleteAllAnnotations } from './DeleteAllAnnotations';
 import { GenerateAdapters } from './GenerateAdapters';
 import { FilterInput } from './FilterInput';
 import { selectNumberOfMatchedNodes } from '../features/packageData/apiSlice';
-import { FilterOptions } from 'react-markdown/lib/react-markdown';
 import { useNavigate } from 'react-router-dom';
+import { isValidFilterToken } from "../features/packageData/model/filters/filterFactory";
 
 interface MenuBarProps {
     displayInferErrors: (errors: string[]) => void;
@@ -60,8 +55,13 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
     const annotationStore = useAppSelector(selectAnnotationStore);
     const sortingMode = useAppSelector(selectSortingMode);
     const heatMapMode = useAppSelector(selectHeatMapMode);
+    const filters = useAppSelector(selectFilterList);
+    const filterString = useAppSelector(selectFilterString);
     const filterList = useAppSelector(selectFilterList);
-    const targetString = useAppSelector(selectFilterString);
+    const loadFilterOptions = filters.map((it)=>{return <FilterOption filter={it.filter} name={it.name} key={it.filter+it.name}/>});
+    const invalidTokens = filterString.split(' ').filter((token) => token !== '' && !isValidFilterToken(token));
+    const filterIsValid = invalidTokens.length === 0;
+    const alreadyIncluded = filterList.some((it) => {return it.filter === filterString});
 
     const exportAnnotations = () => {
         const a = document.createElement('a');
@@ -218,25 +218,24 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                         </MenuList>
                     </Menu>
                 </Box>
-                <Button onClick={() => dispatch(toggleAddFilterDialog())}>Save Filter</Button>
-                <Box>
-                    <Menu //closeOnSelect={true}
-                    >
-                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown}/>}>
-                            Load Filter
-                        </MenuButton>
-                        <MenuList>
-                            <MenuGroup>
-                                <FilterMenuOptions/>
-                            </MenuGroup>
-                        </MenuList>
-                    </Menu>
-                </Box>
             </HStack>
 
             <Spacer />
 
             <HStack>
+                <Button onClick={() => dispatch(toggleAddFilterDialog())} isDisabled={!filterIsValid || alreadyIncluded}>Save Filter</Button>
+                <Box>
+                    <Menu>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown}/>}>
+                            Load Filter
+                        </MenuButton>
+                        <MenuList>
+                            <MenuGroup>
+                                <MenuOptionGroup>{loadFilterOptions}</MenuOptionGroup>
+                            </MenuGroup>
+                        </MenuList>
+                    </Menu>
+                </Box>
                 <MatchCount />
                 <FilterInput />
                 <FilterHelpButton />
@@ -259,57 +258,7 @@ const MatchCount = function () {
     return <ChakraText fontWeight="bold">{text}</ChakraText>;
 };
 
-const FilterMenuOptions: React.FC = function (){
-    const filters = useAppSelector(selectFilterList);
-    let options = filters.map((it)=>{return <FilterOption filter={it.filter} name={it.name} key={it.filter+it.name}/>});
-    return <MenuOptionGroup>{options}</MenuOptionGroup>;
-};
-
 const FilterOption: React.FC<Filter> = function ({filter, name}){
     const dispatch = useAppDispatch();
     return <MenuItemOption onClick={()=>{dispatch(setFilterString(filter))}} >{name}</MenuItemOption>;
-};
-
-export const AddFilterDialog: React.FC = function () {
-    const dispatch = useAppDispatch();
-    const filter = useAppSelector(selectFilterString);
-    const name = useAppSelector(selectFilterName);
-    const submit = () => {
-        let exists: boolean = false;
-        if (!exists) {
-            dispatch(addFilter({filter: filter, name: name}));
-            dispatch(setFilterName(""));
-            dispatch(toggleAddFilterDialog());
-        }
-    };
-    const close = () => dispatch(toggleAddFilterDialog());
-
-    return (
-        <Modal onClose={close} isOpen size="xl">
-            <ModalOverlay />
-            <ModalContent>
-                <ModalHeader>
-                    <Heading>Save Filter</Heading>
-                </ModalHeader>
-                <ModalBody>
-                    <HStack marginBottom={5}><ChakraText>Name the filter </ChakraText><Code>{filter}</Code><ChakraText> to store it:</ChakraText></HStack>
-                    <FormControl>
-                        <Input id='nameinput' type='text' value={name}
-                               onChange={(event) => dispatch(setFilterName(event.target.value))}
-                               placeholder='name'/>
-                    </FormControl>
-                </ModalBody>
-                <ModalFooter>
-                    <HStack spacing={4}>
-                        <Button colorScheme="blue" onClick={submit}>
-                            Submit
-                        </Button>
-                        <Button colorScheme="red" onClick={close}>
-                            Cancel
-                        </Button>
-                    </HStack>
-                </ModalFooter>
-            </ModalContent>
-        </Modal>
-    );
 };
