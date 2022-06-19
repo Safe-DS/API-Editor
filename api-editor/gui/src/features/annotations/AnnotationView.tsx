@@ -311,7 +311,7 @@ interface AnnotationTagProps {
 
 const AnnotationTag: React.FC<AnnotationTagProps> = function ({ type, name, annotation, onDelete, onEdit, onReview }) {
     const isValidUsername = useAppSelector(selectUsernameIsValid);
-    const isReviewed = (annotation.reviewers?.length ?? 0) > 0;
+    const isCorrect = (annotation.reviewers?.length ?? 0) > 0;
 
     return (
         <ButtonGroup size="sm" variant="outline" isAttached>
@@ -319,7 +319,7 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({ type, name, anno
                 icon={<FaTrash />}
                 aria-label="Delete annotation"
                 colorScheme="red"
-                disabled={!isValidUsername}
+                disabled={!isValidUsername || isCorrect}
                 onClick={onDelete}
             />
             <Button
@@ -327,7 +327,7 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({ type, name, anno
                 flexGrow={1}
                 borderLeft="none"
                 justifyContent="flex-start"
-                disabled={!onEdit || !isValidUsername}
+                disabled={!onEdit || !isValidUsername || isCorrect}
                 onClick={onEdit}
             >
                 @{type}
@@ -337,7 +337,7 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({ type, name, anno
                     </ChakraText>
                 )}
             </Button>
-            {isReviewed ? (
+            {isCorrect ? (
                 <Button
                     size="sm"
                     variant="solid"
