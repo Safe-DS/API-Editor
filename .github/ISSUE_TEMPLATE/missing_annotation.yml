@@ -8,7 +8,7 @@ body:
     attributes:
       label: URL Hash
       description: Copy the part of the URL that starts with `#` from the address bar of your browser.
-      placeholder: ex. #/sklearn/sklearn.metrics
+      placeholder: ex. `#/sklearn/sklearn.metrics`
     validations:
       required: true
 
