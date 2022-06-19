@@ -22,7 +22,7 @@ export const FilterHelpButton = function () {
                 <PopoverTrigger>
                     <IconButton variant="ghost" icon={<Icon name="help" />} aria-label="help" />
                 </PopoverTrigger>
-                <PopoverContent minWidth={462} fontSize="sm" marginRight={2}>
+                <PopoverContent minWidth={600} fontSize="sm" marginRight={2}>
                     <PopoverArrow />
                     <PopoverCloseButton />
                     <PopoverHeader>Filter Options</PopoverHeader>
