@@ -7,7 +7,7 @@ import {
     selectFilterList,
     selectFilterString,
     setFilterString,
-    toggleAddFilterDialog
+    toggleAddFilterDialog,
 } from '../ui/uiSlice';
 import { isValidFilterToken } from './model/filterFactory';
 

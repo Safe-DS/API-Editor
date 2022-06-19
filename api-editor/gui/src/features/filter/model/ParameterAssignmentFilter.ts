@@ -1,7 +1,7 @@
 import { PythonClass } from '../../packageData/model/PythonClass';
 import { PythonFunction } from '../../packageData/model/PythonFunction';
 import { PythonModule } from '../../packageData/model/PythonModule';
-import {PythonParameter, PythonParameterAssignment} from '../../packageData/model/PythonParameter';
+import { PythonParameter, PythonParameterAssignment } from '../../packageData/model/PythonParameter';
 import { AnnotationStore } from '../../annotations/annotationSlice';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { AbstractPythonFilter } from './AbstractPythonFilter';
