@@ -5,7 +5,7 @@ import { CalledAfterTarget, GroupTarget } from '../annotations/annotationSlice';
 import { AbstractPythonFilter } from '../packageData/model/filters/AbstractPythonFilter';
 import { createFilterFromString, isValidFilterToken } from '../packageData/model/filters/filterFactory';
 
-export interface Filter{
+export interface Filter {
     filter: string;
     name: string;
 }
@@ -143,7 +143,7 @@ export const initialState: UIState = {
 
     heatMapMode: HeatMapMode.None,
     sortingMode: SortingMode.Alphabetical,
-    filterList: [{filter: 'is:public', name: 'is:public'}],
+    filterList: [{ filter: 'is:public', name: 'is:public' }],
     batchMode: BatchMode.None,
 };
 
@@ -319,10 +319,10 @@ const uiSlice = createSlice({
         setFilterList(state, action: PayloadAction<Filter[]>) {
             state.filterList = action.payload;
         },
-        setFilterName(state, action: PayloadAction<string>){
+        setFilterName(state, action: PayloadAction<string>) {
             state.filterName = action.payload;
         },
-        addFilter(state, action: PayloadAction<Filter>){
+        addFilter(state, action: PayloadAction<Filter>) {
             state.filterList.push(action.payload);
         },
         setSortingMode(state, action: PayloadAction<SortingMode>) {
@@ -385,8 +385,8 @@ export const selectShowAddFilterDialog = (state: RootState): boolean => selectUI
 export const selectCurrentUserAction = (state: RootState): UserAction => selectUI(state).currentUserAction;
 export const selectIsExpandedInTreeView =
     (target: string) =>
-        (state: RootState): boolean =>
-            Boolean(selectUI(state).expandedInTreeView[target]);
+    (state: RootState): boolean =>
+        Boolean(selectUI(state).expandedInTreeView[target]);
 export const selectAllExpandedInTreeView = (state: RootState): { [target: string]: true } =>
     selectUI(state).expandedInTreeView;
 export const selectTreeViewScrollOffset = (state: RootState): number => selectUI(state).treeViewScrollOffset;

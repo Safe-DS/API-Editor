@@ -20,15 +20,15 @@ import {
     PopoverTrigger,
 } from '@chakra-ui/react';
 import React from 'react';
-import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
+import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
 import {
     addFilter,
     selectFilterList,
     selectFilterName,
     selectFilterString,
     setFilterName,
-    toggleAddFilterDialog
-} from "../../../ui/uiSlice";
+    toggleAddFilterDialog,
+} from '../../../ui/uiSlice';
 
 export const SaveFilterDialog: React.FC = function () {
     const dispatch = useAppDispatch();
@@ -37,28 +37,30 @@ export const SaveFilterDialog: React.FC = function () {
     const savedFilters = useAppSelector(selectFilterList);
 
     const alreadyIncluded: boolean = savedFilters.some((it) => {
-        return it.name === name
+        return it.name === name;
     });
 
     const submit = () => {
-        dispatch(addFilter({filter, name}));
-        dispatch(setFilterName(""));
+        dispatch(addFilter({ filter, name }));
+        dispatch(setFilterName(''));
         dispatch(toggleAddFilterDialog());
     };
     const close = () => {
         dispatch(toggleAddFilterDialog());
-        dispatch(setFilterName(""));
+        dispatch(setFilterName(''));
     };
 
     return (
         <Modal onClose={close} isOpen size="xl">
-            <ModalOverlay/>
+            <ModalOverlay />
             <ModalContent>
                 <ModalHeader>
                     <Heading>Save Filter</Heading>
                 </ModalHeader>
                 <ModalBody>
-                    <FormLabel>Name for the current filter <Code>{filter}</Code></FormLabel>
+                    <FormLabel>
+                        Name for the current filter <Code>{filter}</Code>
+                    </FormLabel>
 
                     <FormControl>
                         <Popover
@@ -66,22 +68,26 @@ export const SaveFilterDialog: React.FC = function () {
                             isOpen={alreadyIncluded}
                             placement="bottom"
                             closeOnBlur={false}
-                            autoFocus={false}>
+                            autoFocus={false}
+                        >
                             <PopoverTrigger>
-                                <Input id='name_input' type='text' value={name}
-                                       onChange={(event) => dispatch(setFilterName(event.target.value))}
-                                       placeholder='Name'/>
+                                <Input
+                                    id="name_input"
+                                    type="text"
+                                    value={name}
+                                    onChange={(event) => dispatch(setFilterName(event.target.value))}
+                                    placeholder="Name"
+                                />
                             </PopoverTrigger>
-                            {alreadyIncluded && <PopoverContent minWidth={462} fontSize="sm" marginRight={2}>
-                                <PopoverArrow/>
-                                <PopoverHeader>Invalid name</PopoverHeader>
-                                <PopoverBody>
-                                    The name entered is already assigned to the saved filters
-                                </PopoverBody>
-                            </PopoverContent>}
+                            {alreadyIncluded && (
+                                <PopoverContent minWidth={462} fontSize="sm" marginRight={2}>
+                                    <PopoverArrow />
+                                    <PopoverHeader>Invalid name</PopoverHeader>
+                                    <PopoverBody>The name entered is already assigned to the saved filters</PopoverBody>
+                                </PopoverContent>
+                            )}
                         </Popover>
                     </FormControl>
-
                 </ModalBody>
                 <ModalFooter>
                     <HStack spacing={4}>

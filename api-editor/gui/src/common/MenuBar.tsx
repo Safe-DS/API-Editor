@@ -34,14 +34,17 @@ import {
     toggleAnnotationImportDialog,
     toggleAPIImportDialog,
     toggleUsageImportDialog,
-    Filter, setFilterString, toggleAddFilterDialog, selectFilterString,
+    Filter,
+    setFilterString,
+    toggleAddFilterDialog,
+    selectFilterString,
 } from '../features/ui/uiSlice';
 import { DeleteAllAnnotations } from './DeleteAllAnnotations';
 import { GenerateAdapters } from './GenerateAdapters';
 import { FilterInput } from './FilterInput';
 import { selectNumberOfMatchedNodes } from '../features/packageData/apiSlice';
 import { useNavigate } from 'react-router-dom';
-import { isValidFilterToken } from "../features/packageData/model/filters/filterFactory";
+import { isValidFilterToken } from '../features/packageData/model/filters/filterFactory';
 
 interface MenuBarProps {
     displayInferErrors: (errors: string[]) => void;
@@ -58,10 +61,14 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
     const filters = useAppSelector(selectFilterList);
     const filterString = useAppSelector(selectFilterString);
     const filterList = useAppSelector(selectFilterList);
-    const loadFilterOptions = filters.map((it)=>{return <FilterOption filter={it.filter} name={it.name} key={it.filter+it.name}/>});
+    const loadFilterOptions = filters.map((it) => {
+        return <FilterOption filter={it.filter} name={it.name} key={it.filter + it.name} />;
+    });
     const invalidTokens = filterString.split(' ').filter((token) => token !== '' && !isValidFilterToken(token));
     const filterIsValid = invalidTokens.length === 0;
-    const alreadyIncluded = filterList.some((it) => {return it.filter === filterString});
+    const alreadyIncluded = filterList.some((it) => {
+        return it.filter === filterString;
+    });
 
     const exportAnnotations = () => {
         const a = document.createElement('a');
@@ -88,7 +95,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                 {/* Box gets rid of popper.js warning "CSS margin styles cannot be used" */}
                 <Box>
                     <Menu>
-                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown}/>}>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
                             File
                         </MenuButton>
                         <MenuList>
@@ -103,7 +110,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                                     Annotations
                                 </MenuItem>
                             </MenuGroup>
-                            <MenuDivider/>
+                            <MenuDivider />
                             <MenuGroup title="Export">
                                 <MenuItem paddingLeft={8} onClick={exportAnnotations}>
                                     Annotations
@@ -223,10 +230,15 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
             <Spacer />
 
             <HStack>
-                <Button onClick={() => dispatch(toggleAddFilterDialog())} isDisabled={!filterIsValid || alreadyIncluded}>Save Filter</Button>
+                <Button
+                    onClick={() => dispatch(toggleAddFilterDialog())}
+                    isDisabled={!filterIsValid || alreadyIncluded}
+                >
+                    Save Filter
+                </Button>
                 <Box>
                     <Menu>
-                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown}/>}>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
                             Load Filter
                         </MenuButton>
                         <MenuList>
@@ -258,7 +270,15 @@ const MatchCount = function () {
     return <ChakraText fontWeight="bold">{text}</ChakraText>;
 };
 
-const FilterOption: React.FC<Filter> = function ({filter, name}){
+const FilterOption: React.FC<Filter> = function ({ filter, name }) {
     const dispatch = useAppDispatch();
-    return <MenuItemOption onClick={()=>{dispatch(setFilterString(filter))}} >{name}</MenuItemOption>;
+    return (
+        <MenuItemOption
+            onClick={() => {
+                dispatch(setFilterString(filter));
+            }}
+        >
+            {name}
+        </MenuItemOption>
+    );
 };
