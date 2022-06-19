@@ -1,5 +1,5 @@
 name: 'Bug report'
-description: "Report that something does not work as expected"
+description: 'Report that something does not work as expected'
 labels: ['bug']
 
 body:
