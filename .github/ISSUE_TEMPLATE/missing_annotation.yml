@@ -1,6 +1,6 @@
-name: "Missing annotation (autogen)"
+name: 'Missing annotation (autogen)'
 description: "An annotation should have been generated automatically but wasn't."
-labels: ["bug", "missing annotation"]
+labels: ['bug', 'missing annotation']
 
 body:
   - type: input
@@ -8,7 +8,7 @@ body:
     attributes:
       label: URL Hash
       description: Copy the part of the URL that starts with `#` from the address bar of your browser.
-      placeholder: "ex. #/sklearn/sklearn.metrics"
+      placeholder: 'ex. #/sklearn/sklearn.metrics'
     validations:
       required: true
 
@@ -18,12 +18,12 @@ body:
       label: Expected Annotation Type
       description: Which annotation did you expect to be generated automatically?
       options:
-        - "@boundary"
-        - "@constant"
-        - "@enum"
-        - "@optional"
-        - "@remove"
-        - "@required"
+        - '@boundary'
+        - '@constant'
+        - '@enum'
+        - '@optional'
+        - '@remove'
+        - '@required'
     validations:
       required: true
 
