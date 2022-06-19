@@ -13,38 +13,29 @@ import {
     MenuList,
     MenuOptionGroup,
     Spacer,
-    Text as ChakraText,
     useColorMode,
 } from '@chakra-ui/react';
 import React from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { selectAnnotationStore } from '../features/annotations/annotationSlice';
-import { FilterHelpButton } from './FilterHelpButton';
 import {
     BatchMode,
     HeatMapMode,
     selectHeatMapMode,
-    selectFilterList,
-    setBatchMode,
     selectSortingMode,
+    setBatchMode,
     setHeatMapMode,
     setSortingMode,
     SortingMode,
     toggleAnnotationImportDialog,
     toggleAPIImportDialog,
     toggleUsageImportDialog,
-    Filter,
-    setFilterString,
-    toggleAddFilterDialog,
-    selectFilterString,
 } from '../features/ui/uiSlice';
 import { DeleteAllAnnotations } from './DeleteAllAnnotations';
 import { GenerateAdapters } from './GenerateAdapters';
-import { FilterInput } from './FilterInput';
-import { selectNumberOfMatchedNodes } from '../features/packageData/apiSlice';
 import { useNavigate } from 'react-router-dom';
-import { isValidFilterToken } from '../features/packageData/model/filters/filterFactory';
+import { FilterControls } from './FilterControls';
 
 interface MenuBarProps {
     displayInferErrors: (errors: string[]) => void;
@@ -58,17 +49,6 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
     const annotationStore = useAppSelector(selectAnnotationStore);
     const sortingMode = useAppSelector(selectSortingMode);
     const heatMapMode = useAppSelector(selectHeatMapMode);
-    const filters = useAppSelector(selectFilterList);
-    const filterString = useAppSelector(selectFilterString);
-    const filterList = useAppSelector(selectFilterList);
-    const loadFilterOptions = filters.map((it) => {
-        return <FilterOption filter={it.filter} name={it.name} key={it.filter + it.name} />;
-    });
-    const invalidTokens = filterString.split(' ').filter((token) => token !== '' && !isValidFilterToken(token));
-    const filterIsValid = invalidTokens.length === 0;
-    const alreadyIncluded = filterList.some((it) => {
-        return it.filter === filterString;
-    });
 
     const exportAnnotations = () => {
         const a = document.createElement('a');
@@ -229,56 +209,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
 
             <Spacer />
 
-            <HStack>
-                <Button
-                    onClick={() => dispatch(toggleAddFilterDialog())}
-                    isDisabled={!filterIsValid || alreadyIncluded}
-                >
-                    Save Filter
-                </Button>
-                <Box>
-                    <Menu>
-                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
-                            Load Filter
-                        </MenuButton>
-                        <MenuList>
-                            <MenuGroup>
-                                <MenuOptionGroup>{loadFilterOptions}</MenuOptionGroup>
-                            </MenuGroup>
-                        </MenuList>
-                    </Menu>
-                </Box>
-                <MatchCount />
-                <FilterInput />
-                <FilterHelpButton />
-            </HStack>
+            <FilterControls />
         </Flex>
-    );
-};
-
-const MatchCount = function () {
-    const count = useAppSelector(selectNumberOfMatchedNodes);
-    let text;
-    if (count === 0) {
-        text = 'No matches';
-    } else if (count === 1) {
-        text = '1 match';
-    } else {
-        text = `${count} matches`;
-    }
-
-    return <ChakraText fontWeight="bold">{text}</ChakraText>;
-};
-
-const FilterOption: React.FC<Filter> = function ({ filter, name }) {
-    const dispatch = useAppDispatch();
-    return (
-        <MenuItemOption
-            onClick={() => {
-                dispatch(setFilterString(filter));
-            }}
-        >
-            {name}
-        </MenuItemOption>
     );
 };
