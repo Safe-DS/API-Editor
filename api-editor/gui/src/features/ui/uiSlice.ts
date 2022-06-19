@@ -328,6 +328,9 @@ const uiSlice = createSlice({
         addFilter(state, action: PayloadAction<Filter>) {
             state.filterList.push(action.payload);
         },
+        removeFilter(state, action: PayloadAction<string>) {
+            state.filterList = state.filterList.filter((filter) => filter.filter !== action.payload);
+        },
         setSortingMode(state, action: PayloadAction<SortingMode>) {
             state.sortingMode = action.payload;
         },
@@ -374,6 +377,7 @@ export const {
     setFilterName,
     setFilterList,
     addFilter,
+    removeFilter,
     setSortingMode,
     setBatchMode,
 } = actions;
