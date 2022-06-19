@@ -729,10 +729,10 @@ const withAuthorAndReviewers = function <T extends Annotation>(
     newAnnotation: T,
     author: string,
 ): T {
-    const authors = oldAnnotation?.authors ?? [];
+    let authors = oldAnnotation?.authors ?? [];
     const reviewers = oldAnnotation?.reviewers ?? [];
 
-    authors.push(author);
+    authors = [...authors.filter((it) => it !== author), author];
 
     return {
         ...newAnnotation,
