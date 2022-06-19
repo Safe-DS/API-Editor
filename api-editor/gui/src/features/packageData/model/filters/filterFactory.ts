@@ -13,6 +13,7 @@ import { ParameterAssignmentFilter } from './ParameterAssignmentFilter';
 import { PythonParameterAssignment } from '../PythonParameter';
 import { RequiredOrOptional, RequiredOrOptionalFilter } from './RequiredOrOptionalFilter';
 import { NameRegexFilter } from './NameRegexFilter';
+import { DoneFilter } from './DoneFilter';
 
 /**
  * Creates a filter from the given string. This method handles conjunctions, negations, and non-negated tokens.
@@ -88,6 +89,10 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
             return new ParameterAssignmentFilter(PythonParameterAssignment.POSITION_OR_NAME);
         case 'is:nameonly':
             return new ParameterAssignmentFilter(PythonParameterAssignment.NAME_ONLY);
+
+        // Done
+        case 'is:done':
+            return new DoneFilter();
 
         // Annotations
         case 'annotation:any':

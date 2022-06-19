@@ -18,6 +18,7 @@ yarn.lock
 report/
 
 # Compilation/build outputs
+bin/
 build/
 coverage/
 dist/

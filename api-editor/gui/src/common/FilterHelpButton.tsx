@@ -48,6 +48,15 @@ export const FilterHelpButton = function () {
                             </ListItem>
                             <ListItem>
                                 <ChakraText>
+                                    <strong>is:done</strong>
+                                </ChakraText>
+                                <ChakraText>
+                                    Displays only elements that are marked as complete and where all annotations are
+                                    marked as correct.
+                                </ChakraText>
+                            </ListItem>
+                            <ListItem>
+                                <ChakraText>
                                     <strong>is:complete</strong>
                                 </ChakraText>
                                 <ChakraText>Displays only elements that are marked as complete.</ChakraText>
