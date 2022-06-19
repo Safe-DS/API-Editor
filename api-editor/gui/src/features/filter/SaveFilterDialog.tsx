@@ -1,6 +1,6 @@
 import {
-    Code,
     Button,
+    Code,
     FormControl,
     FormLabel,
     Heading,
@@ -19,35 +19,26 @@ import {
     PopoverHeader,
     PopoverTrigger,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import {
-    addFilter,
-    selectFilterList,
-    selectFilterName,
-    selectFilterString,
-    setFilterName,
-    toggleAddFilterDialog,
-} from '../ui/uiSlice';
+import { addFilter, selectFilterList, selectFilterString, toggleAddFilterDialog } from '../ui/uiSlice';
 
 export const SaveFilterDialog: React.FC = function () {
     const dispatch = useAppDispatch();
     const filter = useAppSelector(selectFilterString);
-    const name = useAppSelector(selectFilterName);
     const savedFilters = useAppSelector(selectFilterList);
+    const [filterName, setFilterName] = useState('');
 
     const alreadyIncluded: boolean = savedFilters.some((it) => {
-        return it.name === name;
+        return it.name === filterName;
     });
 
     const submit = () => {
-        dispatch(addFilter({ filter, name }));
-        dispatch(setFilterName(''));
+        dispatch(addFilter({ filter, name: filterName }));
         dispatch(toggleAddFilterDialog());
     };
     const close = () => {
         dispatch(toggleAddFilterDialog());
-        dispatch(setFilterName(''));
     };
 
     return (
@@ -74,8 +65,8 @@ export const SaveFilterDialog: React.FC = function () {
                                 <Input
                                     id="name_input"
                                     type="text"
-                                    value={name}
-                                    onChange={(event) => dispatch(setFilterName(event.target.value))}
+                                    value={filterName}
+                                    onChange={(event) => setFilterName(event.target.value)}
                                     placeholder="Name"
                                 />
                             </PopoverTrigger>

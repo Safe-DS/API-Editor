@@ -23,10 +23,9 @@ export interface UIState {
     treeViewScrollOffset: number;
     heatMapMode: HeatMapMode;
     filterString: string;
-    filterName: string;
+    filterList: Filter[];
     sortingMode: SortingMode;
     batchMode: BatchMode;
-    filterList: Filter[];
 }
 
 type UserAction =
@@ -138,15 +137,15 @@ export const initialState: UIState = {
 
     expandedInTreeView: {},
     treeViewScrollOffset: 0,
-    filterString: 'is:public',
-    filterName: '',
 
-    heatMapMode: HeatMapMode.None,
-    sortingMode: SortingMode.Alphabetical,
+    filterString: 'is:public',
     filterList: [
         { filter: 'is:public', name: 'default' },
         { filter: 'is:public usefulness:>0 !name:=X !name:=y', name: 'sklearn' },
     ],
+
+    heatMapMode: HeatMapMode.None,
+    sortingMode: SortingMode.Alphabetical,
     batchMode: BatchMode.None,
 };
 
@@ -319,9 +318,6 @@ const uiSlice = createSlice({
         setFilterString(state, action: PayloadAction<string>) {
             state.filterString = action.payload;
         },
-        setFilterName(state, action: PayloadAction<string>) {
-            state.filterName = action.payload;
-        },
         addFilter(state, action: PayloadAction<Filter>) {
             state.filterList.push(action.payload);
         },
@@ -371,7 +367,6 @@ export const {
     setTreeViewScrollOffset,
     setHeatMapMode,
     setFilterString,
-    setFilterName,
     addFilter,
     removeFilter,
     setSortingMode,
@@ -395,7 +390,6 @@ export const selectAllExpandedInTreeView = (state: RootState): { [target: string
 export const selectTreeViewScrollOffset = (state: RootState): number => selectUI(state).treeViewScrollOffset;
 export const selectHeatMapMode = (state: RootState): HeatMapMode => selectUI(state).heatMapMode;
 export const selectFilterString = (state: RootState): string => selectUI(state).filterString;
-export const selectFilterName = (state: RootState): string => selectUI(state).filterName;
 export const selectFilterList = (state: RootState): Filter[] => selectUI(state).filterList;
 
 /**
