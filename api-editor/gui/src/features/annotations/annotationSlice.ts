@@ -1,7 +1,7 @@
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import * as idb from 'idb-keyval';
-import {RootState} from '../../app/store';
-import {isValidUsername} from '../../common/util/validation';
+import { RootState } from '../../app/store';
+import { isValidUsername } from '../../common/util/validation';
 
 /**
  * How many annotations can be applied to a class at once.
@@ -172,8 +172,7 @@ export interface CalledAfterTarget {
  * **Important:** While this is implemented as an annotation it should **not** be counted in the heat map or the
  * statistics.
  */
-export interface CompleteAnnotation extends Annotation {
-}
+export interface CompleteAnnotation extends Annotation {}
 
 export interface ConstantAnnotation extends Annotation {
     /**
@@ -250,8 +249,7 @@ export interface OptionalAnnotation extends Annotation {
     readonly defaultValue: DefaultValue;
 }
 
-export interface PureAnnotation extends Annotation {
-}
+export interface PureAnnotation extends Annotation {}
 
 export interface RenameAnnotation extends Annotation {
     /**
@@ -260,11 +258,9 @@ export interface RenameAnnotation extends Annotation {
     readonly newName: string;
 }
 
-export interface RequiredAnnotation extends Annotation {
-}
+export interface RequiredAnnotation extends Annotation {}
 
-export interface RemoveAnnotation extends Annotation {
-}
+export interface RemoveAnnotation extends Annotation {}
 
 export interface TodoAnnotation extends Annotation {
     /**
@@ -402,9 +398,9 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         reviewAttribute(state, action: PayloadAction<string>) {
-            state.annotations.attributes[action.payload] = withReviewer(
+            state.annotations.attributes[action.payload] = withToggledReviewer(
                 state.annotations.attributes[action.payload],
-                state.username
+                state.username,
             );
         },
         upsertBoundary(state, action: PayloadAction<BoundaryAnnotation>) {
@@ -422,9 +418,9 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         reviewBoundary(state, action: PayloadAction<string>) {
-            state.annotations.boundaries[action.payload] = withReviewer(
+            state.annotations.boundaries[action.payload] = withToggledReviewer(
                 state.annotations.boundaries[action.payload],
-                state.username
+                state.username,
             );
         },
         upsertCalledAfter(state, action: PayloadAction<CalledAfterAnnotation>) {
@@ -448,11 +444,10 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         reviewCalledAfter(state, action: PayloadAction<CalledAfterTarget>) {
-            state.annotations.calledAfters[action.payload.target][action.payload.calledAfterName] =
-                withReviewer(
-                    state.annotations.calledAfters[action.payload.target][action.payload.calledAfterName],
-                    state.username
-                );
+            state.annotations.calledAfters[action.payload.target][action.payload.calledAfterName] = withToggledReviewer(
+                state.annotations.calledAfters[action.payload.target][action.payload.calledAfterName],
+                state.username,
+            );
         },
         addComplete(state, action: PayloadAction<CompleteAnnotation>) {
             state.annotations.completes[action.payload.target] = withAuthorAndReviewers(
@@ -491,9 +486,9 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         reviewConstant(state, action: PayloadAction<string>) {
-            state.annotations.constants[action.payload] = withReviewer(
+            state.annotations.constants[action.payload] = withToggledReviewer(
                 state.annotations.constants[action.payload],
-                state.username
+                state.username,
             );
         },
         upsertDescription(state, action: PayloadAction<DescriptionAnnotation>) {
@@ -511,9 +506,9 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         reviewDescription(state, action: PayloadAction<string>) {
-            state.annotations.descriptions[action.payload] = withReviewer(
+            state.annotations.descriptions[action.payload] = withToggledReviewer(
                 state.annotations.descriptions[action.payload],
-                state.username
+                state.username,
             );
         },
         upsertEnum(state, action: PayloadAction<EnumAnnotation>) {
@@ -531,9 +526,9 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         reviewEnum(state, action: PayloadAction<string>) {
-            state.annotations.enums[action.payload] = withReviewer(
+            state.annotations.enums[action.payload] = withToggledReviewer(
                 state.annotations.enums[action.payload],
-                state.username
+                state.username,
             );
         },
         upsertGroup(state, action: PayloadAction<GroupAnnotation>) {
@@ -592,9 +587,9 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         reviewGroup(state, action: PayloadAction<GroupTarget>) {
-            state.annotations.groups[action.payload.target][action.payload.groupName] = withReviewer(
+            state.annotations.groups[action.payload.target][action.payload.groupName] = withToggledReviewer(
                 state.annotations.groups[action.payload.target][action.payload.groupName],
-                state.username
+                state.username,
             );
         },
         upsertMove(state, action: PayloadAction<MoveAnnotation>) {
@@ -623,9 +618,9 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         reviewMove(state, action: PayloadAction<string>) {
-            state.annotations.moves[action.payload] = withReviewer(
+            state.annotations.moves[action.payload] = withToggledReviewer(
                 state.annotations.moves[action.payload],
-                state.username
+                state.username,
             );
         },
         upsertOptional(state, action: PayloadAction<OptionalAnnotation>) {
@@ -654,9 +649,9 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         reviewOptional(state, action: PayloadAction<string>) {
-            state.annotations.optionals[action.payload] = withReviewer(
+            state.annotations.optionals[action.payload] = withToggledReviewer(
                 state.annotations.optionals[action.payload],
-                state.username
+                state.username,
             );
         },
         addPure(state, action: PayloadAction<PureAnnotation>) {
@@ -674,9 +669,9 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         reviewPure(state, action: PayloadAction<string>) {
-            state.annotations.pures[action.payload] = withReviewer(
+            state.annotations.pures[action.payload] = withToggledReviewer(
                 state.annotations.pures[action.payload],
-                state.username
+                state.username,
             );
         },
         upsertRenaming(state, action: PayloadAction<RenameAnnotation>) {
@@ -705,9 +700,9 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         reviewRenaming(state, action: PayloadAction<string>) {
-            state.annotations.renamings[action.payload] = withReviewer(
+            state.annotations.renamings[action.payload] = withToggledReviewer(
                 state.annotations.renamings[action.payload],
-                state.username
+                state.username,
             );
         },
         addRequired(state, action: PayloadAction<RequiredAnnotation>) {
@@ -736,9 +731,9 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         reviewRequired(state, action: PayloadAction<string>) {
-            state.annotations.requireds[action.payload] = withReviewer(
+            state.annotations.requireds[action.payload] = withToggledReviewer(
                 state.annotations.requireds[action.payload],
-                state.username
+                state.username,
             );
         },
         addRemove(state, action: PayloadAction<RemoveAnnotation>) {
@@ -767,9 +762,9 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         reviewRemove(state, action: PayloadAction<string>) {
-            state.annotations.removes[action.payload] = withReviewer(
+            state.annotations.removes[action.payload] = withToggledReviewer(
                 state.annotations.removes[action.payload],
-                state.username
+                state.username,
             );
         },
         upsertTodo(state, action: PayloadAction<TodoAnnotation>) {
@@ -787,9 +782,9 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         reviewTodo(state, action: PayloadAction<string>) {
-            state.annotations.todos[action.payload] = withReviewer(
+            state.annotations.todos[action.payload] = withToggledReviewer(
                 state.annotations.todos[action.payload],
-                state.username
+                state.username,
             );
         },
 
@@ -831,17 +826,21 @@ const withAuthorAndReviewers = function <T extends Annotation>(
     };
 };
 
-const withReviewer = function <T extends Annotation>(
-    oldAnnotation: T,
-    reviewer: string
-): T {
-    return {
-        ...oldAnnotation,
-        reviewers: [reviewer]
+const withToggledReviewer = function <T extends Annotation>(oldAnnotation: T, reviewer: string): T {
+    if (oldAnnotation.reviewers?.includes(reviewer) ?? false) {
+        return {
+            ...oldAnnotation,
+            reviewers: [],
+        };
+    } else {
+        return {
+            ...oldAnnotation,
+            reviewers: [reviewer],
+        };
     }
-}
+};
 
-const {actions, reducer} = annotationsSlice;
+const { actions, reducer } = annotationsSlice;
 export const {
     setAnnotationStore,
     mergeAnnotationStore,
@@ -909,74 +908,74 @@ export const selectAnnotationSlice = (state: RootState) => state.annotations;
 export const selectAnnotationStore = (state: RootState) => state.annotations.annotations;
 export const selectAttribute =
     (target: string) =>
-        (state: RootState): AttributeAnnotation | undefined =>
-            selectAnnotationStore(state).attributes[target];
+    (state: RootState): AttributeAnnotation | undefined =>
+        selectAnnotationStore(state).attributes[target];
 export const selectBoundary =
     (target: string) =>
-        (state: RootState): BoundaryAnnotation | undefined =>
-            selectAnnotationStore(state).boundaries[target];
+    (state: RootState): BoundaryAnnotation | undefined =>
+        selectAnnotationStore(state).boundaries[target];
 export const selectCalledAfters =
     (target: string) =>
-        (state: RootState): { [calledAfter: string]: CalledAfterAnnotation } =>
-            selectAnnotationStore(state).calledAfters[target] ?? {};
+    (state: RootState): { [calledAfter: string]: CalledAfterAnnotation } =>
+        selectAnnotationStore(state).calledAfters[target] ?? {};
 export const selectComplete =
     (target: string) =>
-        (state: RootState): CompleteAnnotation | undefined =>
-            selectAnnotationStore(state).completes[target];
+    (state: RootState): CompleteAnnotation | undefined =>
+        selectAnnotationStore(state).completes[target];
 export const selectConstant =
     (target: string) =>
-        (state: RootState): ConstantAnnotation | undefined =>
-            selectAnnotationStore(state).constants[target];
+    (state: RootState): ConstantAnnotation | undefined =>
+        selectAnnotationStore(state).constants[target];
 export const selectDescription =
     (target: string) =>
-        (state: RootState): DescriptionAnnotation | undefined =>
-            selectAnnotationStore(state).descriptions[target];
+    (state: RootState): DescriptionAnnotation | undefined =>
+        selectAnnotationStore(state).descriptions[target];
 export const selectEnum =
     (target: string) =>
-        (state: RootState): EnumAnnotation | undefined =>
-            selectAnnotationStore(state).enums[target];
+    (state: RootState): EnumAnnotation | undefined =>
+        selectAnnotationStore(state).enums[target];
 export const selectGroups =
     (target: string) =>
-        (state: RootState): { [groupName: string]: GroupAnnotation } =>
-            selectAnnotationStore(state).groups[target] ?? {};
+    (state: RootState): { [groupName: string]: GroupAnnotation } =>
+        selectAnnotationStore(state).groups[target] ?? {};
 export const selectMove =
     (target: string) =>
-        (state: RootState): MoveAnnotation | undefined =>
-            selectAnnotationStore(state).moves[target];
+    (state: RootState): MoveAnnotation | undefined =>
+        selectAnnotationStore(state).moves[target];
 export const selectOptional =
     (target: string) =>
-        (state: RootState): OptionalAnnotation | undefined =>
-            selectAnnotationStore(state).optionals[target];
+    (state: RootState): OptionalAnnotation | undefined =>
+        selectAnnotationStore(state).optionals[target];
 export const selectPure =
     (target: string) =>
-        (state: RootState): PureAnnotation | undefined =>
-            selectAnnotationStore(state).pures[target];
+    (state: RootState): PureAnnotation | undefined =>
+        selectAnnotationStore(state).pures[target];
 export const selectRenaming =
     (target: string) =>
-        (state: RootState): RenameAnnotation | undefined =>
-            selectAnnotationStore(state).renamings[target];
+    (state: RootState): RenameAnnotation | undefined =>
+        selectAnnotationStore(state).renamings[target];
 export const selectRequired =
     (target: string) =>
-        (state: RootState): RequiredAnnotation | undefined =>
-            selectAnnotationStore(state).requireds[target];
+    (state: RootState): RequiredAnnotation | undefined =>
+        selectAnnotationStore(state).requireds[target];
 export const selectRemove =
     (target: string) =>
-        (state: RootState): RemoveAnnotation | undefined =>
-            selectAnnotationStore(state).removes[target];
+    (state: RootState): RemoveAnnotation | undefined =>
+        selectAnnotationStore(state).removes[target];
 export const selectTodo =
     (target: string) =>
-        (state: RootState): TodoAnnotation | undefined =>
-            selectAnnotationStore(state).todos[target];
+    (state: RootState): TodoAnnotation | undefined =>
+        selectAnnotationStore(state).todos[target];
 export const selectNumberOfAnnotations =
     (target: string) =>
-        (state: RootState): number => {
-            return Object.values(selectAnnotationStore(state)).reduce((acc, annotations) => {
-                if (target in annotations) {
-                    return acc + 1;
-                } else {
-                    return acc;
-                }
-            }, 0);
-        };
+    (state: RootState): number => {
+        return Object.values(selectAnnotationStore(state)).reduce((acc, annotations) => {
+            if (target in annotations) {
+                return acc + 1;
+            } else {
+                return acc;
+            }
+        }, 0);
+    };
 export const selectUsername = (state: RootState): string => selectAnnotationSlice(state).username;
 export const selectUsernameIsValid = (state: RootState): boolean => isValidUsername(selectUsername(state));

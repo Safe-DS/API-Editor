@@ -353,7 +353,6 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({ type, name, anno
                     Mark as Correct
                 </Button>
             )}
-            <Button>Mark as Correct</Button>
         </ButtonGroup>
     );
 };
