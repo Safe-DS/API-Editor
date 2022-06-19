@@ -2,6 +2,7 @@ import {
     Button,
     Code,
     FormControl,
+    FormErrorMessage,
     FormLabel,
     Heading,
     HStack,
@@ -12,12 +13,6 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
-    Popover,
-    PopoverArrow,
-    PopoverBody,
-    PopoverContent,
-    PopoverHeader,
-    PopoverTrigger,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -34,7 +29,7 @@ export const SaveFilterDialog: React.FC = function () {
     });
 
     const submit = () => {
-        if (filterName !== "" && !alreadyIncluded) {
+        if (filterName !== '' && !alreadyIncluded) {
             dispatch(addFilter({ filter, name: filterName }));
             dispatch(toggleAddFilterDialog());
         }
@@ -51,40 +46,32 @@ export const SaveFilterDialog: React.FC = function () {
                     <Heading>Save Filter</Heading>
                 </ModalHeader>
                 <ModalBody>
-                    <FormLabel>
-                        Name for the current filter <Code>{filter}</Code>
-                    </FormLabel>
-
-                    <FormControl>
-                        <Popover
-                            returnFocusOnClose={false}
-                            isOpen={alreadyIncluded}
-                            placement="bottom"
-                            closeOnBlur={false}
-                            autoFocus={false}
-                        >
-                            <PopoverTrigger>
-                                <Input
-                                    id="name_input"
-                                    type="text"
-                                    value={filterName}
-                                    onChange={(event) => setFilterName(event.target.value)}
-                                    placeholder="Name"
-                                />
-                            </PopoverTrigger>
-                            {alreadyIncluded && (
-                                <PopoverContent minWidth={462} fontSize="sm" marginRight={2}>
-                                    <PopoverArrow />
-                                    <PopoverHeader>Invalid name</PopoverHeader>
-                                    <PopoverBody>The name entered is already assigned to the saved filters</PopoverBody>
-                                </PopoverContent>
-                            )}
-                        </Popover>
+                    <FormControl isInvalid={alreadyIncluded || filterName.trim() === ''}>
+                        <FormLabel htmlFor="newFilterName">
+                            Name for the current filter <Code>{filter}</Code>:
+                        </FormLabel>
+                        <Input
+                            type="text"
+                            id="newFilterName"
+                            value={filterName}
+                            onChange={(event) => setFilterName(event.target.value)}
+                            spellCheck={false}
+                        />
+                        {alreadyIncluded && (
+                            <FormErrorMessage>A filter with this name is saved already.</FormErrorMessage>
+                        )}
+                        {filterName.trim() === '' && (
+                            <FormErrorMessage>The filter name must not be blank.</FormErrorMessage>
+                        )}
                     </FormControl>
                 </ModalBody>
                 <ModalFooter>
                     <HStack spacing={4}>
-                        <Button colorScheme="blue" onClick={submit} isDisabled={alreadyIncluded}>
+                        <Button
+                            colorScheme="blue"
+                            onClick={submit}
+                            isDisabled={alreadyIncluded || filterName.trim() === ''}
+                        >
                             Submit
                         </Button>
                         <Button colorScheme="red" onClick={close}>
