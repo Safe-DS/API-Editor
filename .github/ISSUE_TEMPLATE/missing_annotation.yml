@@ -1,0 +1,53 @@
+name: "Missing annotation (autogen)"
+description: "An annotation should have been generated automatically but wasn't."
+title: ""
+labels: ["bug", "missing annotation"]
+
+body:
+  - type: input
+    id: url-hash
+    attributes:
+      label: URL Hash
+      description: Copy the part of the URL that starts with `#` from the address bar of your browser.
+      placeholder: ex. #/sklearn/sklearn.metrics
+    validations:
+      required: true
+
+  - type: dropdown
+    id: expected-annotation-type
+    attributes:
+      label: Expected Annotation Type
+      description: Which annotation did you expect to be generated automatically?
+      options:
+        - @boundary
+        - @constant
+        - @enum
+        - @optional
+        - @remove
+        - @required
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-annotation-inputs
+    attributes:
+      label: Expected Annotation Inputs
+      description: Which inputs did you expect the annotation to have?
+    validations:
+      required: false
+
+  - type: textarea
+    id: suggested-solution
+    attributes:
+      label: Suggested Solution
+      description: Do you already have an idea how this problem could be fixed?
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Do you have anything else to add?
+    validations:
+      required: false
