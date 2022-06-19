@@ -969,8 +969,10 @@ export const selectTodo =
 export const selectNumberOfAnnotations =
     (target: string) =>
     (state: RootState): number => {
-        return Object.values(selectAnnotationStore(state)).reduce((acc, annotations) => {
-            if (target in annotations) {
+        return Object.entries(selectAnnotationStore(state)).reduce((acc, [annotationType, annotations]) => {
+            if (annotationType === 'completes') {
+                return acc;
+            } else if (target in annotations) {
                 return acc + 1;
             } else {
                 return acc;

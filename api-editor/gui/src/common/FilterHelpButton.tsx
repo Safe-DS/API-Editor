@@ -22,7 +22,7 @@ export const FilterHelpButton = function () {
                 <PopoverTrigger>
                     <IconButton variant="ghost" icon={<Icon name="help" />} aria-label="help" />
                 </PopoverTrigger>
-                <PopoverContent minWidth={462} fontSize="sm" marginRight={2}>
+                <PopoverContent minWidth={600} fontSize="sm" marginRight={2}>
                     <PopoverArrow />
                     <PopoverCloseButton />
                     <PopoverHeader>Filter Options</PopoverHeader>
@@ -44,6 +44,15 @@ export const FilterHelpButton = function () {
                                 <ChakraText>
                                     Displays only elements that have the given visibility. Replace [visibility] with one
                                     of <em>public, internal</em>.
+                                </ChakraText>
+                            </ListItem>
+                            <ListItem>
+                                <ChakraText>
+                                    <strong>is:done</strong>
+                                </ChakraText>
+                                <ChakraText>
+                                    Displays only elements that are marked as complete and where all annotations are
+                                    marked as correct.
                                 </ChakraText>
                             </ListItem>
                             <ListItem>
