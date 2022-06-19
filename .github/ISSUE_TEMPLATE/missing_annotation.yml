@@ -19,12 +19,12 @@ body:
       label: Expected Annotation Type
       description: Which annotation did you expect to be generated automatically?
       options:
-        - @boundary
-        - @constant
-        - @enum
-        - @optional
-        - @remove
-        - @required
+        - "@boundary"
+        - "@constant"
+        - "@enum"
+        - "@optional"
+        - "@remove"
+        - "@required"
     validations:
       required: true
 
