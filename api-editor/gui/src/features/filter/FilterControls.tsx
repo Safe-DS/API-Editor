@@ -4,7 +4,7 @@ import {
     selectFilterString,
     setFilterString,
     toggleAddFilterDialog,
-} from '../features/ui/uiSlice';
+} from '../ui/uiSlice';
 import { FilterInput } from './FilterInput';
 import { FilterHelpButton } from './FilterHelpButton';
 import React from 'react';
@@ -20,9 +20,9 @@ import {
     MenuOptionGroup,
     Text as ChakraText,
 } from '@chakra-ui/react';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { isValidFilterToken } from '../features/packageData/model/filters/filterFactory';
-import { selectNumberOfMatchedNodes } from '../features/packageData/apiSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { isValidFilterToken } from '../packageData/model/filters/filterFactory';
+import { selectNumberOfMatchedNodes } from '../packageData/apiSlice';
 import { FaChevronDown } from 'react-icons/fa';
 
 export const FilterControls = function () {

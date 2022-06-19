@@ -20,7 +20,7 @@ import {
     PopoverTrigger,
 } from '@chakra-ui/react';
 import React from 'react';
-import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
     addFilter,
     selectFilterList,
@@ -28,7 +28,7 @@ import {
     selectFilterString,
     setFilterName,
     toggleAddFilterDialog,
-} from '../../../ui/uiSlice';
+} from '../ui/uiSlice';
 
 export const SaveFilterDialog: React.FC = function () {
     const dispatch = useAppDispatch();

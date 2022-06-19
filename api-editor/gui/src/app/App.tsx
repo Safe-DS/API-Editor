@@ -68,7 +68,7 @@ import { PythonPackage } from '../features/packageData/model/PythonPackage';
 import { AbstractPythonFilter } from '../features/packageData/model/filters/AbstractPythonFilter';
 import { UsageCountStore } from '../features/usages/model/UsageCountStore';
 import { PythonDeclaration } from '../features/packageData/model/PythonDeclaration';
-import { SaveFilterDialog } from '../features/packageData/model/filters/SaveFilterDialog';
+import { SaveFilterDialog } from '../features/filter/SaveFilterDialog';
 
 export const App: React.FC = function () {
     useIndexedDB();

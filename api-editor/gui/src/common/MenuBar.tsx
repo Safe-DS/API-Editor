@@ -35,7 +35,7 @@ import {
 import { DeleteAllAnnotations } from './DeleteAllAnnotations';
 import { GenerateAdapters } from './GenerateAdapters';
 import { useNavigate } from 'react-router-dom';
-import { FilterControls } from './FilterControls';
+import { FilterControls } from '../features/filter/FilterControls';
 
 interface MenuBarProps {
     displayInferErrors: (errors: string[]) => void;
