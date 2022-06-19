@@ -33,12 +33,12 @@ body:
       label: Expected Annotation Inputs
       description: Which inputs did you expect the annotation to have?
     validations:
-      required: false
+      required: true
 
   - type: textarea
     id: suggested-solution
     attributes:
-      label: Suggested Solution
+      label: Suggested Solution (optional)
       description: Do you already have an idea how this problem could be fixed?
     validations:
       required: false
@@ -46,7 +46,7 @@ body:
   - type: textarea
     id: additional-context
     attributes:
-      label: Additional Context
+      label: Additional Context (optional)
       description: Do you have anything else to add?
     validations:
       required: false
