@@ -2,7 +2,7 @@ import { Box, Button, Icon, Menu, MenuButton, MenuItem, MenuList } from '@chakra
 import React from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { addPure, addRemove, addRequired, selectComplete } from './annotationSlice';
+import { addPure, addRemove, addRequired, selectComplete, selectUsernameIsValid } from './annotationSlice';
 import {
     showAttributeAnnotationForm,
     showBoundaryAnnotationForm,
@@ -54,6 +54,8 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
 }) {
     const dispatch = useAppDispatch();
     const isComplete = Boolean(useAppSelector(selectComplete(target)));
+    const isValidUsername = Boolean(useAppSelector(selectUsernameIsValid));
+    const isDisabled = isComplete || !isValidUsername;
 
     return (
         // Box gets rid of popper.js warning "CSS margin styles cannot be used"
@@ -64,7 +66,7 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                     size="sm"
                     variant="outline"
                     rightIcon={<Icon as={FaChevronDown} />}
-                    disabled={isComplete}
+                    disabled={isDisabled}
                 >
                     Annotations
                 </MenuButton>

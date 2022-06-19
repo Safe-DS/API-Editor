@@ -1,32 +1,38 @@
 {
     "test/test/some_global_function/parameter_with_lower_bound": {
+        "target": "test/test/some_global_function/parameter_with_lower_bound",
+        "authors": ["$autogen$"],
+        "reviewers": [],
         "interval": {
             "isDiscrete": true,
             "lowerIntervalLimit": 0,
             "lowerLimitType": 1,
             "upperIntervalLimit": 0,
             "upperLimitType": 2
-        },
-        "target": "test/test/some_global_function/parameter_with_lower_bound"
+        }
     },
     "test/test/some_global_function/parameter_with_upper_bound_and_union": {
+        "target": "test/test/some_global_function/parameter_with_upper_bound_and_union",
+        "authors": ["$autogen$"],
+        "reviewers": [],
         "interval": {
             "isDiscrete": false,
             "lowerIntervalLimit": 0,
             "lowerLimitType": 2,
             "upperIntervalLimit": 1.0,
             "upperLimitType": 1
-        },
-        "target": "test/test/some_global_function/parameter_with_upper_bound_and_union"
+        }
     },
     "test/test/some_global_function/parameter_with_interval": {
+        "target": "test/test/some_global_function/parameter_with_interval",
+        "authors": ["$autogen$"],
+        "reviewers": [],
         "interval": {
             "isDiscrete": false,
             "lowerIntervalLimit": 0.0,
             "lowerLimitType": 0,
             "upperIntervalLimit": 1.0,
             "upperLimitType": 0
-        },
-        "target": "test/test/some_global_function/parameter_with_interval"
+        }
     }
 }

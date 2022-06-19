@@ -6,6 +6,8 @@ from typing import Any
 @dataclass
 class AbstractAnnotation:
     target: str
+    authors: list[str]
+    reviewers: list[str]
 
     def to_json(self) -> dict:
         return asdict(self)
@@ -67,12 +69,12 @@ class EnumAnnotation(AbstractAnnotation):
 
 @dataclass
 class AnnotationStore:
+    boundaries: list[BoundaryAnnotation]
     constants: list[ConstantAnnotation]
+    enums: list[EnumAnnotation]
+    optionals: list[OptionalAnnotation]
     removes: list[RemoveAnnotation]
     requireds: list[RequiredAnnotation]
-    optionals: list[OptionalAnnotation]
-    boundaries: list[BoundaryAnnotation]
-    enums: list[EnumAnnotation]
 
     def __init__(self):
         self.constants = []

@@ -3,6 +3,8 @@ import re
 from package_parser.model.annotations import AnnotationStore, EnumAnnotation, EnumPair
 from package_parser.model.api import API
 
+from ._constants import autogen_author
+
 
 def _generate_enum_annotations(api: API, annotations: AnnotationStore) -> None:
     """
@@ -42,7 +44,13 @@ def _generate_enum_annotations(api: API, annotations: AnnotationStore) -> None:
         if len(pairs) > 0:
             enum_name = __to_enum_name(parameter.name)
             annotations.enums.append(
-                EnumAnnotation(target=parameter.id, enumName=enum_name, pairs=pairs)
+                EnumAnnotation(
+                    target=parameter.id,
+                    authors=[autogen_author],
+                    reviewers=[],
+                    enumName=enum_name,
+                    pairs=pairs,
+                )
             )
 
 
