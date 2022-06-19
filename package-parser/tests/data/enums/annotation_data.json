@@ -1,5 +1,8 @@
 {
     "test/test/some_global_function/enum_parameter": {
+        "target": "test/test/some_global_function/enum_parameter",
+        "authors": ["$autogen$"],
+        "reviewers": [],
         "enumName": "EnumParameter",
         "pairs": [
             {
@@ -14,10 +17,12 @@
                 "instanceName": "KdTree",
                 "stringValue": "kd_tree"
             }
-        ],
-        "target": "test/test/some_global_function/enum_parameter"
+        ]
     },
     "test/test/some_global_function/enum_parameter_with_union": {
+        "target": "test/test/some_global_function/enum_parameter_with_union",
+        "authors": ["$autogen$"],
+        "reviewers": [],
         "enumName": "EnumParameterWithUnion",
         "pairs": [
             {
@@ -32,7 +37,6 @@
                 "instanceName": "KdTree",
                 "stringValue": "kd_tree"
             }
-        ],
-        "target": "test/test/some_global_function/enum_parameter_with_union"
+        ]
     }
 }

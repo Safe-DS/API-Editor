@@ -4,20 +4,13 @@ import { PythonModule } from '../PythonModule';
 import { PythonParameter } from '../PythonParameter';
 import { AbstractPythonFilter } from './AbstractPythonFilter';
 import { PythonDeclaration } from '../PythonDeclaration';
-import { AnnotationStore } from '../../../annotations/annotationSlice';
+import { Annotation, AnnotationStore } from '../../../annotations/annotationSlice';
 import { UsageCountStore } from '../../../usages/model/UsageCountStore';
 
 /**
- * Keeps only declarations that have a given string in their name.
+ * Keeps only declarations that are marked as complete and all annotations as correct.
  */
-export class NameFilter extends AbstractPythonFilter {
-    /**
-     * @param substring The string that must be part of the name of the declaration.
-     */
-    constructor(readonly substring: string) {
-        super();
-    }
-
+export class DoneFilter extends AbstractPythonFilter {
     shouldKeepModule(pythonModule: PythonModule, annotations: AnnotationStore, usages: UsageCountStore): boolean {
         return this.shouldKeepDeclaration(pythonModule, annotations, usages);
     }
@@ -40,9 +33,30 @@ export class NameFilter extends AbstractPythonFilter {
 
     shouldKeepDeclaration(
         pythonDeclaration: PythonDeclaration,
-        _annotations: AnnotationStore,
+        annotations: AnnotationStore,
         _usages: UsageCountStore,
     ): boolean {
-        return pythonDeclaration.name.toLowerCase().includes(this.substring.toLowerCase());
+        return (
+            pythonDeclaration.id in annotations.completes &&
+            this.getAnnotationsForTarget(pythonDeclaration.id, annotations).every(
+                (annotation) => (annotation.reviewers?.length ?? 0) > 0,
+            )
+        );
+    }
+
+    private getAnnotationsForTarget(target: string, annotationStore: AnnotationStore): Annotation[] {
+        return Object.entries(annotationStore).flatMap(([key, value]) => {
+            if (!(target in value)) {
+                return [];
+            }
+
+            if (key === 'calledAfters' || key === 'groups') {
+                return Object.values(value[target]);
+            } else if (key === 'completes') {
+                return [];
+            } else {
+                return [value[target]];
+            }
+        });
     }
 }

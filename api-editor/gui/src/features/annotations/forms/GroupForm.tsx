@@ -125,7 +125,7 @@ export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName
 
     return (
         <AnnotationForm
-            heading={`${prevGroupAnnotation ? 'Edit' : 'Add'} @group annotation`}
+            heading={`${prevGroupAnnotation ? 'Edit' : 'Add'} @group Annotation`}
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
         >

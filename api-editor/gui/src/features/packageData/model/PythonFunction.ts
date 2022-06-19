@@ -59,6 +59,10 @@ export class PythonFunction extends PythonDeclaration {
         return segments[segments.length - 1];
     }
 
+    isGlobal(): boolean {
+        return this.containingModuleOrClass instanceof PythonModule;
+    }
+
     isGetter(): boolean {
         return this.decorators.includes('property');
     }

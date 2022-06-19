@@ -9,11 +9,12 @@ import {
     HeatMapMode,
     selectHeatMapMode,
     selectIsExpandedInTreeView,
+    setAllCollapsedInTreeView,
     toggleIsExpandedInTreeView,
 } from '../../ui/uiSlice';
 import { VisibilityIndicator } from './VisibilityIndicator';
 import { AbstractPythonFilter } from '../model/filters/AbstractPythonFilter';
-import { selectAnnotations } from '../../annotations/annotationSlice';
+import { selectAnnotationStore } from '../../annotations/annotationSlice';
 import { HeatMapInterpolation, HeatMapTag } from './HeatMapTag';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 
@@ -51,7 +52,7 @@ export const TreeNode: React.FC<TreeNodeProps> = function ({
     const dispatch = useAppDispatch();
 
     const showChildren = useAppSelector(selectIsExpandedInTreeView(declaration.id));
-    const annotations = useAppSelector(selectAnnotations);
+    const annotations = useAppSelector(selectAnnotationStore);
 
     const level = levelOf(declaration);
     const paddingLeft = level === 0 ? '1rem' : `${1 + 0.75 * level}rem`;
@@ -60,16 +61,24 @@ export const TreeNode: React.FC<TreeNodeProps> = function ({
 
     const fontWeight = filter.shouldKeepDeclaration(declaration, annotations, usages) ? 'bold' : undefined;
 
+    const toggleExpanded = () => {
+        if (showChildren) {
+            dispatch(setAllCollapsedInTreeView([...declaration.descendantsOrSelf()].map((d) => d.id)));
+        } else {
+            dispatch(toggleIsExpandedInTreeView(declaration.id));
+        }
+    };
+
     const handleNodeClick = (event: MouseEvent) => {
         if (event.shiftKey) {
-            dispatch(toggleIsExpandedInTreeView(declaration.id));
+            toggleExpanded();
         } else {
             navigate(`/${declaration.id}`);
         }
     };
 
     const handleVisibilityIndicatorClick = (event: MouseEvent) => {
-        dispatch(toggleIsExpandedInTreeView(declaration.id));
+        toggleExpanded();
         event.stopPropagation();
     };
 

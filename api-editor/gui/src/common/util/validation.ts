@@ -2,6 +2,10 @@ export const isValidPythonIdentifier = function (value: string): boolean {
     return /^[A-Za-z_][A-Za-z_0-9]*$/u.test(value);
 };
 
+export const isValidUsername = function (value: string): boolean {
+    return /^[A-Za-z0-9_\-]+$/u.test(value);
+};
+
 export const isValidJsonFile = function (value: string): boolean {
     const validJsonIdentifier = /^.*\.(json)$/u;
     return validJsonIdentifier.test(value);

@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useRef, useState } from 'react';
 import { useAppDispatch } from '../app/hooks';
-import { resetAnnotations } from '../features/annotations/annotationSlice';
+import { resetAnnotationStore } from '../features/annotations/annotationSlice';
 
 export const DeleteAllAnnotations = function () {
     const dispatch = useAppDispatch();
@@ -22,7 +22,7 @@ export const DeleteAllAnnotations = function () {
     // Event handlers ----------------------------------------------------------
 
     const handleConfirm = () => {
-        dispatch(resetAnnotations());
+        dispatch(resetAnnotationStore());
         setIsOpen(false);
     };
     const handleCancel = () => setIsOpen(false);
@@ -31,13 +31,13 @@ export const DeleteAllAnnotations = function () {
 
     return (
         <>
-            <Button onClick={() => setIsOpen(true)}>Delete all annotations</Button>
+            <Button onClick={() => setIsOpen(true)}>Delete All Annotations</Button>
 
             <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={handleCancel}>
                 <AlertDialogOverlay>
                     <AlertDialogContent>
                         <AlertDialogHeader>
-                            <Heading>Delete all annotations</Heading>
+                            <Heading>Delete All Annotations</Heading>
                         </AlertDialogHeader>
 
                         <AlertDialogBody>

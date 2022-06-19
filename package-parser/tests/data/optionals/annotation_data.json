@@ -1,22 +1,30 @@
 {
     "test/test/some_global_function/required_parameter_that_should_be_optional": {
+        "target": "test/test/some_global_function/required_parameter_that_should_be_optional",
+        "authors": ["$autogen$"],
+        "reviewers": [],
         "defaultType": "string",
-        "defaultValue": "test2",
-        "target": "test/test/some_global_function/required_parameter_that_should_be_optional"
+        "defaultValue": "test2"
     },
     "test/test/some_global_function/required_parameter_that_should_be_optional_with_non_string": {
+        "target": "test/test/some_global_function/required_parameter_that_should_be_optional_with_non_string",
+        "authors": ["$autogen$"],
+        "reviewers": [],
         "defaultType": "string",
-        "defaultValue": "test2",
-        "target": "test/test/some_global_function/required_parameter_that_should_be_optional_with_non_string"
+        "defaultValue": "test2"
     },
     "test/test/some_global_function/optional_parameter_that_should_be_optional_with_different_default": {
+        "target": "test/test/some_global_function/optional_parameter_that_should_be_optional_with_different_default",
+        "authors": ["$autogen$"],
+        "reviewers": [],
         "defaultType": "string",
-        "defaultValue": "test2",
-        "target": "test/test/some_global_function/optional_parameter_that_should_be_optional_with_different_default"
+        "defaultValue": "test2"
     },
     "test/test/some_global_function/optional_parameter_that_should_be_optional_with_non_string": {
+        "target": "test/test/some_global_function/optional_parameter_that_should_be_optional_with_non_string",
+        "authors": ["$autogen$"],
+        "reviewers": [],
         "defaultType": "string",
-        "defaultValue": "test2",
-        "target": "test/test/some_global_function/optional_parameter_that_should_be_optional_with_non_string"
+        "defaultValue": "test2"
     }
 }

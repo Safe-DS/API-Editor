@@ -1,14 +1,22 @@
 {
     "test/test/UnusedClass": {
-        "target": "test/test/UnusedClass"
+        "target": "test/test/UnusedClass",
+        "authors": ["$autogen$"],
+        "reviewers": []
     },
     "test/test/unused_global_function": {
-        "target": "test/test/unused_global_function"
+        "target": "test/test/unused_global_function",
+        "authors": ["$autogen$"],
+        "reviewers": []
     },
     "test/test/UnusedClass/unused_method": {
-        "target": "test/test/UnusedClass/unused_method"
+        "target": "test/test/UnusedClass/unused_method",
+        "authors": ["$autogen$"],
+        "reviewers": []
     },
     "test/test/UsedClass/unused_method": {
-        "target": "test/test/UsedClass/unused_method"
+        "target": "test/test/UsedClass/unused_method",
+        "authors": ["$autogen$"],
+        "reviewers": []
     }
 }

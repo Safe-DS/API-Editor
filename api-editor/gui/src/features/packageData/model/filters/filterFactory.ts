@@ -1,5 +1,5 @@
 import { ConjunctiveFilter } from './ConjunctiveFilter';
-import { NameFilter } from './NameFilter';
+import { NameStringFilter } from './NameStringFilter';
 import { AbstractPythonFilter } from './AbstractPythonFilter';
 import { DeclarationType, DeclarationTypeFilter } from './DeclarationTypeFilter';
 import { Visibility, VisibilityFilter } from './VisibilityFilter';
@@ -12,6 +12,8 @@ import { equals, greaterThan, greaterThanOrEqual, lessThan, lessThanOrEqual } fr
 import { ParameterAssignmentFilter } from './ParameterAssignmentFilter';
 import { PythonParameterAssignment } from '../PythonParameter';
 import { RequiredOrOptional, RequiredOrOptionalFilter } from './RequiredOrOptionalFilter';
+import { NameRegexFilter } from './NameRegexFilter';
+import { DoneFilter } from './DoneFilter';
 
 /**
  * Creates a filter from the given string. This method handles conjunctions, negations, and non-negated tokens.
@@ -88,6 +90,10 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
         case 'is:nameonly':
             return new ParameterAssignmentFilter(PythonParameterAssignment.NAME_ONLY);
 
+        // Done
+        case 'is:done':
+            return new DoneFilter();
+
         // Annotations
         case 'annotation:any':
             return new AnnotationFilter(AnnotationType.Any);
@@ -95,7 +101,7 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
             return new AnnotationFilter(AnnotationType.Attribute);
         case 'annotation:@boundary':
             return new AnnotationFilter(AnnotationType.Boundary);
-        case 'annotation:@calledAfter':
+        case 'annotation:@calledafter':
             return new AnnotationFilter(AnnotationType.CalledAfter);
         case 'is:complete': // Deliberate special case. It should be transparent to users it's an annotation.
             return new AnnotationFilter(AnnotationType.Complete);
@@ -124,13 +130,19 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
     }
 
     // Name
-    const nameMatch = /^name:(?<name>\w+)$/u.exec(token);
-    if (nameMatch) {
-        return new NameFilter(nameMatch?.groups?.name as string);
+    const nameStringMatch = /^name:(?<comparison>[=~])(?<name>\w+)$/u.exec(token);
+    if (nameStringMatch) {
+        const comparisonOperator = nameStringMatch?.groups?.comparison as string;
+        return new NameStringFilter(nameStringMatch?.groups?.name as string, comparisonOperator === '=');
+    }
+
+    const nameRegexMatch = /^name:\/(?<regex>.*)\/$/u.exec(token);
+    if (nameRegexMatch) {
+        return new NameRegexFilter(nameRegexMatch?.groups?.regex as string);
     }
 
     // Usages
-    const usageMatch = /^usages(?<comparison>:(<|<=|>=|>)?)(?<expected>\d+)$/u.exec(token);
+    const usageMatch = /^usages:(?<comparison>(<|<=|=|>=|>)?)(?<expected>\d+)$/u.exec(token);
     if (usageMatch) {
         const comparisonOperator = usageMatch?.groups?.comparison as string;
         const comparison = comparisonFunction(comparisonOperator);
@@ -144,7 +156,7 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
     }
 
     // Usefulness
-    const usefulnessMatch = /^usefulness(?<comparison>:(<|<=|>=|>)?)(?<expected>\d+)$/u.exec(token);
+    const usefulnessMatch = /^usefulness:(?<comparison>(<|<=|=|>=|>)?)(?<expected>\d+)$/u.exec(token);
     if (usefulnessMatch) {
         const comparisonOperator = usefulnessMatch?.groups?.comparison as string;
         const comparison = comparisonFunction(comparisonOperator);
@@ -160,15 +172,15 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
 
 const comparisonFunction = function (comparisonOperator: string): ((a: number, b: number) => boolean) | null {
     switch (comparisonOperator) {
-        case ':<':
+        case '<':
             return lessThan;
-        case ':<=':
+        case '<=':
             return lessThanOrEqual;
-        case ':':
+        case '=':
             return equals;
-        case ':>=':
+        case '>=':
             return greaterThanOrEqual;
-        case ':>':
+        case '>':
             return greaterThan;
         default:
             return null;

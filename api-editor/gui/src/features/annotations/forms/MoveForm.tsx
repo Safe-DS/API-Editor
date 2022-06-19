@@ -70,7 +70,7 @@ export const MoveForm: React.FC<MoveFormProps> = function ({ target }) {
 
     return (
         <AnnotationForm
-            heading={`${prevDestination ? 'Edit' : 'Add'} @move annotation`}
+            heading={`${prevDestination ? 'Edit' : 'Add'} @move Annotation`}
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
         >

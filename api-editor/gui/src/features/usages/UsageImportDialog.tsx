@@ -59,7 +59,7 @@ export const UsageImportDialog: React.FC = function () {
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>
-                    <Heading>Import usages</Heading>
+                    <Heading>Import Usages</Heading>
                 </ModalHeader>
                 <ModalBody>
                     <FormControl>

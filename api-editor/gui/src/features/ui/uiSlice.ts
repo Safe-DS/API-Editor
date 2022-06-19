@@ -25,6 +25,7 @@ export interface UIState {
     filterString: string;
     filterName: string;
     sortingMode: SortingMode;
+    batchMode: BatchMode;
     filterList: Filter[];
 }
 
@@ -115,6 +116,16 @@ export enum SortingMode {
     Usages = 'usages',
 }
 
+export enum BatchMode {
+    None,
+    Rename,
+    Move,
+    Remove,
+    Constant,
+    Optional,
+    Required,
+}
+
 // Initial state -------------------------------------------------------------------------------------------------------
 
 export const initialState: UIState = {
@@ -133,6 +144,7 @@ export const initialState: UIState = {
     heatMapMode: HeatMapMode.None,
     sortingMode: SortingMode.Alphabetical,
     filterList: [{filter: 'is:public', name: 'is:public'}],
+    batchMode: BatchMode.None,
 };
 
 // Thunks --------------------------------------------------------------------------------------------------------------
@@ -274,8 +286,8 @@ const uiSlice = createSlice({
         },
         hideAnnotationForm(state) {
             state.currentUserAction = NoUserAction;
+            state.batchMode = BatchMode.None;
         },
-
         toggleIsExpandedInTreeView(state, action: PayloadAction<string>) {
             if (state.expandedInTreeView[action.payload]) {
                 delete state.expandedInTreeView[action.payload];
@@ -316,6 +328,9 @@ const uiSlice = createSlice({
         setSortingMode(state, action: PayloadAction<SortingMode>) {
             state.sortingMode = action.payload;
         },
+        setBatchMode(state, action: PayloadAction<BatchMode>) {
+            state.batchMode = action.payload;
+        },
     },
     extraReducers(builder) {
         builder.addCase(initializeUI.fulfilled, (state, action) => action.payload);
@@ -352,12 +367,12 @@ export const {
     setAllCollapsedInTreeView,
     setTreeViewScrollOffset,
     setHeatMapMode,
-
     setFilterString,
     setFilterName,
     setFilterList,
     addFilter,
     setSortingMode,
+    setBatchMode,
 } = actions;
 export const uiReducer = reducer;
 
@@ -393,3 +408,4 @@ export const selectFilter = createSelector(
     },
 );
 export const selectSortingMode = (state: RootState): SortingMode => selectUI(state).sortingMode;
+export const selectBatchMode = (state: RootState): BatchMode => selectUI(state).batchMode;

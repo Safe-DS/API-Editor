@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import * as idb from 'idb-keyval';
 import { RootState } from '../../app/store';
+import { isValidUsername } from '../../common/util/validation';
 
 /**
  * How many annotations can be applied to a class at once.
@@ -16,6 +17,15 @@ export const maximumNumberOfFunctionAnnotations = 7;
  * How many annotations can be applied to a parameter at once.
  */
 export const maximumNumberOfParameterAnnotations = 8;
+
+const maximumUndoHistoryLength = 10;
+
+export interface AnnotationSlice {
+    annotations: AnnotationStore;
+    queue: AnnotationStore[];
+    queueIndex: number;
+    username: string;
+}
 
 export interface AnnotationStore {
     attributes: {
@@ -65,12 +75,24 @@ export interface AnnotationStore {
     };
 }
 
-export interface AttributeAnnotation {
+export interface Annotation {
     /**
-     * ID of the annotated Python declaration
+     * ID of the annotated Python declaration.
      */
     readonly target: string;
 
+    /**
+     * Usernames of people who created or changed the annotation.
+     */
+    readonly authors?: string[];
+
+    /**
+     * Usernames of people who marked the annotation as correct.
+     */
+    readonly reviewers?: string[];
+}
+
+export interface AttributeAnnotation extends Annotation {
     /**
      * Type of default value
      */
@@ -85,12 +107,7 @@ export interface AttributeAnnotation {
 export type DefaultType = 'string' | 'number' | 'boolean' | 'none';
 export type DefaultValue = string | number | boolean | null;
 
-export interface BoundaryAnnotation {
-    /**
-     * ID of the annotated Python declaration
-     */
-    readonly target: string;
-
+export interface BoundaryAnnotation extends Annotation {
     /**
      * The interval specifying possible numeric values
      */
@@ -130,12 +147,7 @@ export enum ComparisonOperator {
     UNRESTRICTED,
 }
 
-export interface CalledAfterAnnotation {
-    /**
-     * ID of the annotated Python declaration
-     */
-    readonly target: string;
-
+export interface CalledAfterAnnotation extends Annotation {
     /**
      * Name of the callable to be called first
      */
@@ -144,7 +156,7 @@ export interface CalledAfterAnnotation {
 
 export interface CalledAfterTarget {
     /**
-     * ID of the annotated Python declaration
+     * ID of the annotated Python declaration.
      */
     readonly target: string;
 
@@ -160,19 +172,9 @@ export interface CalledAfterTarget {
  * **Important:** While this is implemented as an annotation it should **not** be counted in the heat map or the
  * statistics.
  */
-export interface CompleteAnnotation {
-    /**
-     * ID of the annotated Python declaration.
-     */
-    readonly target: string;
-}
+export interface CompleteAnnotation extends Annotation {}
 
-export interface ConstantAnnotation {
-    /**
-     * ID of the annotated Python declaration
-     */
-    readonly target: string;
-
+export interface ConstantAnnotation extends Annotation {
     /**
      * Type of default value
      */
@@ -184,24 +186,14 @@ export interface ConstantAnnotation {
     readonly defaultValue: DefaultValue;
 }
 
-export interface DescriptionAnnotation {
-    /**
-     * ID of the annotated Python declaration.
-     */
-    readonly target: string;
-
+export interface DescriptionAnnotation extends Annotation {
     /**
      * Description for the declaration.
      */
     readonly newDescription: string;
 }
 
-export interface EnumAnnotation {
-    /**
-     * ID of the annotated Python declaration.
-     */
-    target: string;
-
+export interface EnumAnnotation extends Annotation {
     /**
      * Name of the enum class that should be created.
      */
@@ -214,12 +206,7 @@ export interface EnumPair {
     readonly instanceName: string;
 }
 
-export interface GroupAnnotation {
-    /**
-     * ID of the annotated Python declaration
-     */
-    readonly target: string;
-
+export interface GroupAnnotation extends Annotation {
     /**
      * Name of the grouped object
      */
@@ -233,7 +220,7 @@ export interface GroupAnnotation {
 
 export interface GroupTarget {
     /**
-     * ID of the annotated Python declaration
+     * ID of the annotated Python declaration.
      */
     readonly target: string;
 
@@ -243,24 +230,14 @@ export interface GroupTarget {
     readonly groupName: string;
 }
 
-export interface MoveAnnotation {
-    /**
-     * ID of the annotated Python declaration.
-     */
-    readonly target: string;
-
+export interface MoveAnnotation extends Annotation {
     /**
      * Qualified path to the destination
      */
     readonly destination: string;
 }
 
-export interface OptionalAnnotation {
-    /**
-     * ID of the annotated Python declaration
-     */
-    readonly target: string;
-
+export interface OptionalAnnotation extends Annotation {
     /**
      * Type of default value
      */
@@ -272,45 +249,20 @@ export interface OptionalAnnotation {
     readonly defaultValue: DefaultValue;
 }
 
-export interface PureAnnotation {
-    /**
-     * ID of the annotated Python declaration.
-     */
-    readonly target: string;
-}
+export interface PureAnnotation extends Annotation {}
 
-export interface RenameAnnotation {
-    /**
-     * ID of the annotated Python declaration.
-     */
-    readonly target: string;
-
+export interface RenameAnnotation extends Annotation {
     /**
      * New name for the declaration.
      */
     readonly newName: string;
 }
 
-export interface RequiredAnnotation {
-    /**
-     * ID of the annotated Python declaration.
-     */
-    readonly target: string;
-}
+export interface RequiredAnnotation extends Annotation {}
 
-export interface RemoveAnnotation {
-    /**
-     * ID of the annotated Python declaration.
-     */
-    readonly target: string;
-}
+export interface RemoveAnnotation extends Annotation {}
 
-export interface TodoAnnotation {
-    /**
-     * ID of the annotated Python declaration.
-     */
-    readonly target: string;
-
+export interface TodoAnnotation extends Annotation {
     /**
      * A Todo for the declaration.
      */
@@ -319,7 +271,7 @@ export interface TodoAnnotation {
 
 // Initial state -------------------------------------------------------------------------------------------------------
 
-export const initialState: AnnotationStore = {
+export const initialAnnotationStore: AnnotationStore = {
     attributes: {},
     boundaries: {},
     calledAfters: {},
@@ -337,21 +289,28 @@ export const initialState: AnnotationStore = {
     todos: {},
 };
 
+export const initialAnnotationSlice: AnnotationSlice = {
+    annotations: initialAnnotationStore,
+    queue: [initialAnnotationStore],
+    queueIndex: -1, // The index that contains the state after an undo
+    username: '',
+};
+
 // Thunks --------------------------------------------------------------------------------------------------------------
 
 export const initializeAnnotations = createAsyncThunk('annotations/initialize', async () => {
     try {
-        const storedAnnotations = (await idb.get('annotations')) as AnnotationStore;
+        const storedAnnotations = (await idb.get('annotations')) as AnnotationSlice;
         return {
-            ...initialState,
+            ...initialAnnotationSlice,
             ...storedAnnotations,
         };
     } catch {
-        return initialState;
+        return initialAnnotationSlice;
     }
 });
 
-export const persistAnnotations = createAsyncThunk('annotations/persist', async (state: AnnotationStore) => {
+export const persistAnnotations = createAsyncThunk('annotations/persist', async (state: AnnotationSlice) => {
     try {
         await idb.set('annotations', state);
     } catch {
@@ -363,93 +322,220 @@ export const persistAnnotations = createAsyncThunk('annotations/persist', async 
 
 const annotationsSlice = createSlice({
     name: 'annotations',
-    initialState,
+    initialState: initialAnnotationSlice,
     reducers: {
-        setAnnotations(_state, action: PayloadAction<AnnotationStore>) {
-            return {
-                ...initialState,
+        undo(state) {
+            if (0 <= state.queueIndex && state.queueIndex < state.queue.length) {
+                return {
+                    ...state,
+                    annotations: state.queue[state.queueIndex],
+                    queueIndex: state.queueIndex - 1,
+                };
+            }
+            return state;
+        },
+        redo(state) {
+            if (0 <= state.queueIndex + 2 && state.queueIndex + 2 < state.queue.length) {
+                return {
+                    ...state,
+                    annotations: state.queue[state.queueIndex + 2],
+                    queueIndex: state.queueIndex + 1,
+                };
+            }
+            return state;
+        },
+        setAnnotationStore(state, action: PayloadAction<AnnotationStore>) {
+            state.annotations = {
+                ...initialAnnotationStore,
                 ...action.payload,
             };
+
+            updateQueue(state);
         },
-        mergeAnnotations(state, action: PayloadAction<AnnotationStore>) {
+        // TODO update
+        mergeAnnotationStore(state, action: PayloadAction<AnnotationStore>) {
             for (const annotationType of Object.keys(action.payload)) {
                 if (annotationType === 'calledAfters' || annotationType === 'groups') {
                     for (const target of Object.keys(action.payload[annotationType])) {
                         // @ts-ignore
-                        state[annotationType][target] = {
+                        state.annotations[annotationType][target] = {
                             // @ts-ignore
-                            ...(state[annotationType][target] ?? {}),
+                            ...(state.annotations[annotationType][target] ?? {}),
                             // @ts-ignore
                             ...action.payload[annotationType][target],
                         };
                     }
                 } else {
                     // @ts-ignore
-                    state[annotationType] = {
+                    state.annotations[annotationType] = {
                         // @ts-ignore
-                        ...state[annotationType],
+                        ...state.annotations[annotationType],
                         // @ts-ignore
                         ...action.payload[annotationType],
                     };
                 }
             }
+
+            updateQueue(state);
         },
-        resetAnnotations() {
-            return initialState;
+        resetAnnotationStore(state) {
+            state.annotations = initialAnnotationStore;
+
+            updateQueue(state);
         },
         upsertAttribute(state, action: PayloadAction<AttributeAnnotation>) {
-            state.attributes[action.payload.target] = action.payload;
+            state.annotations.attributes[action.payload.target] = withAuthorAndReviewers(
+                state.annotations.attributes[action.payload.target],
+                action.payload,
+                state.username,
+            );
+
+            updateQueue(state);
         },
         removeAttribute(state, action: PayloadAction<string>) {
-            delete state.attributes[action.payload];
+            delete state.annotations.attributes[action.payload];
+
+            updateQueue(state);
+        },
+        reviewAttribute(state, action: PayloadAction<string>) {
+            state.annotations.attributes[action.payload] = withToggledReviewer(
+                state.annotations.attributes[action.payload],
+                state.username,
+            );
         },
         upsertBoundary(state, action: PayloadAction<BoundaryAnnotation>) {
-            state.boundaries[action.payload.target] = action.payload;
+            state.annotations.boundaries[action.payload.target] = withAuthorAndReviewers(
+                state.annotations.boundaries[action.payload.target],
+                action.payload,
+                state.username,
+            );
+
+            updateQueue(state);
         },
         removeBoundary(state, action: PayloadAction<string>) {
-            delete state.boundaries[action.payload];
+            delete state.annotations.boundaries[action.payload];
+
+            updateQueue(state);
+        },
+        reviewBoundary(state, action: PayloadAction<string>) {
+            state.annotations.boundaries[action.payload] = withToggledReviewer(
+                state.annotations.boundaries[action.payload],
+                state.username,
+            );
         },
         upsertCalledAfter(state, action: PayloadAction<CalledAfterAnnotation>) {
-            if (!state.calledAfters[action.payload.target]) {
-                state.calledAfters[action.payload.target] = {};
+            if (!state.annotations.calledAfters[action.payload.target]) {
+                state.annotations.calledAfters[action.payload.target] = {};
             }
-            state.calledAfters[action.payload.target][action.payload.calledAfterName] = action.payload;
+            state.annotations.calledAfters[action.payload.target][action.payload.calledAfterName] =
+                withAuthorAndReviewers(
+                    state.annotations.calledAfters[action.payload.target][action.payload.calledAfterName],
+                    action.payload,
+                    state.username,
+                );
+            updateQueue(state);
         },
         removeCalledAfter(state, action: PayloadAction<CalledAfterTarget>) {
-            delete state.calledAfters[action.payload.target][action.payload.calledAfterName];
-            if (Object.keys(state.calledAfters[action.payload.target]).length === 0) {
-                delete state.calledAfters[action.payload.target];
+            delete state.annotations.calledAfters[action.payload.target][action.payload.calledAfterName];
+            if (Object.keys(state.annotations.calledAfters[action.payload.target]).length === 0) {
+                delete state.annotations.calledAfters[action.payload.target];
             }
+
+            updateQueue(state);
+        },
+        reviewCalledAfter(state, action: PayloadAction<CalledAfterTarget>) {
+            state.annotations.calledAfters[action.payload.target][action.payload.calledAfterName] = withToggledReviewer(
+                state.annotations.calledAfters[action.payload.target][action.payload.calledAfterName],
+                state.username,
+            );
         },
         addComplete(state, action: PayloadAction<CompleteAnnotation>) {
-            state.completes[action.payload.target] = action.payload;
+            state.annotations.completes[action.payload.target] = withAuthorAndReviewers(
+                state.annotations.completes[action.payload.target],
+                action.payload,
+                state.username,
+            );
         },
         removeComplete(state, action: PayloadAction<string>) {
-            delete state.completes[action.payload];
+            delete state.annotations.completes[action.payload];
         },
+        // Cannot review complete annotations
         upsertConstant(state, action: PayloadAction<ConstantAnnotation>) {
-            state.constants[action.payload.target] = action.payload;
+            state.annotations.constants[action.payload.target] = withAuthorAndReviewers(
+                state.annotations.constants[action.payload.target],
+                action.payload,
+                state.username,
+            );
+
+            updateQueue(state);
+        },
+        upsertConstants(state, action: PayloadAction<ConstantAnnotation[]>) {
+            action.payload.forEach((annotation) => {
+                state.annotations.constants[annotation.target] = withAuthorAndReviewers(
+                    state.annotations.constants[annotation.target],
+                    annotation,
+                    state.username,
+                );
+            });
+
+            updateQueue(state);
         },
         removeConstant(state, action: PayloadAction<string>) {
-            delete state.constants[action.payload];
+            delete state.annotations.constants[action.payload];
+
+            updateQueue(state);
+        },
+        reviewConstant(state, action: PayloadAction<string>) {
+            state.annotations.constants[action.payload] = withToggledReviewer(
+                state.annotations.constants[action.payload],
+                state.username,
+            );
         },
         upsertDescription(state, action: PayloadAction<DescriptionAnnotation>) {
-            state.descriptions[action.payload.target] = action.payload;
+            state.annotations.descriptions[action.payload.target] = withAuthorAndReviewers(
+                state.annotations.descriptions[action.payload.target],
+                action.payload,
+                state.username,
+            );
+
+            updateQueue(state);
         },
         removeDescription(state, action: PayloadAction<string>) {
-            delete state.descriptions[action.payload];
+            delete state.annotations.descriptions[action.payload];
+
+            updateQueue(state);
+        },
+        reviewDescription(state, action: PayloadAction<string>) {
+            state.annotations.descriptions[action.payload] = withToggledReviewer(
+                state.annotations.descriptions[action.payload],
+                state.username,
+            );
         },
         upsertEnum(state, action: PayloadAction<EnumAnnotation>) {
-            state.enums[action.payload.target] = action.payload;
+            state.annotations.enums[action.payload.target] = withAuthorAndReviewers(
+                state.annotations.enums[action.payload.target],
+                action.payload,
+                state.username,
+            );
+
+            updateQueue(state);
         },
         removeEnum(state, action: PayloadAction<string>) {
-            delete state.enums[action.payload];
+            delete state.annotations.enums[action.payload];
+
+            updateQueue(state);
+        },
+        reviewEnum(state, action: PayloadAction<string>) {
+            state.annotations.enums[action.payload] = withToggledReviewer(
+                state.annotations.enums[action.payload],
+                state.username,
+            );
         },
         upsertGroup(state, action: PayloadAction<GroupAnnotation>) {
-            if (!state.groups[action.payload.target]) {
-                state.groups[action.payload.target] = {};
+            if (!state.annotations.groups[action.payload.target]) {
+                state.annotations.groups[action.payload.target] = {};
             } else {
-                const targetGroups = state.groups[action.payload.target];
+                const targetGroups = state.annotations.groups[action.payload.target];
                 const otherGroupNames = Object.values(targetGroups)
                     .filter((group) => group.groupName !== action.payload.groupName)
                     .map((group) => group.groupName);
@@ -472,63 +558,238 @@ const annotationsSlice = createSlice({
                             groupName: group.groupName,
                         });
                     } else if (needsChange) {
-                        state.groups[group.target][group.groupName] = {
-                            parameters: currentGroupParameter,
-                            groupName: group.groupName,
-                            target: group.target,
-                        };
+                        state.annotations.groups[group.target][group.groupName] = withAuthorAndReviewers(
+                            state.annotations.groups[group.target][group.groupName],
+                            {
+                                parameters: currentGroupParameter,
+                                groupName: group.groupName,
+                                target: group.target,
+                            },
+                            state.username,
+                        );
                     }
                 }
             }
-            state.groups[action.payload.target][action.payload.groupName] = action.payload;
+            state.annotations.groups[action.payload.target][action.payload.groupName] = withAuthorAndReviewers(
+                state.annotations.groups[action.payload.target][action.payload.groupName],
+                action.payload,
+                state.username,
+            );
+
+            updateQueue(state);
         },
         removeGroup(state, action: PayloadAction<GroupTarget>) {
-            delete state.groups[action.payload.target][action.payload.groupName];
-            if (Object.keys(state.groups[action.payload.target]).length === 0) {
-                delete state.groups[action.payload.target];
+            delete state.annotations.groups[action.payload.target][action.payload.groupName];
+            if (Object.keys(state.annotations.groups[action.payload.target]).length === 0) {
+                delete state.annotations.groups[action.payload.target];
             }
+
+            updateQueue(state);
+        },
+        reviewGroup(state, action: PayloadAction<GroupTarget>) {
+            state.annotations.groups[action.payload.target][action.payload.groupName] = withToggledReviewer(
+                state.annotations.groups[action.payload.target][action.payload.groupName],
+                state.username,
+            );
         },
         upsertMove(state, action: PayloadAction<MoveAnnotation>) {
-            state.moves[action.payload.target] = action.payload;
+            state.annotations.moves[action.payload.target] = withAuthorAndReviewers(
+                state.annotations.moves[action.payload.target],
+                action.payload,
+                state.username,
+            );
+
+            updateQueue(state);
+        },
+        upsertMoves(state, action: PayloadAction<MoveAnnotation[]>) {
+            action.payload.forEach((annotation) => {
+                state.annotations.moves[annotation.target] = withAuthorAndReviewers(
+                    state.annotations.moves[annotation.target],
+                    annotation,
+                    state.username,
+                );
+            });
+
+            updateQueue(state);
         },
         removeMove(state, action: PayloadAction<string>) {
-            delete state.moves[action.payload];
+            delete state.annotations.moves[action.payload];
+
+            updateQueue(state);
+        },
+        reviewMove(state, action: PayloadAction<string>) {
+            state.annotations.moves[action.payload] = withToggledReviewer(
+                state.annotations.moves[action.payload],
+                state.username,
+            );
         },
         upsertOptional(state, action: PayloadAction<OptionalAnnotation>) {
-            state.optionals[action.payload.target] = action.payload;
+            state.annotations.optionals[action.payload.target] = withAuthorAndReviewers(
+                state.annotations.optionals[action.payload.target],
+                action.payload,
+                state.username,
+            );
+
+            updateQueue(state);
+        },
+        upsertOptionals(state, action: PayloadAction<OptionalAnnotation[]>) {
+            action.payload.forEach((annotation) => {
+                state.annotations.optionals[annotation.target] = withAuthorAndReviewers(
+                    state.annotations.optionals[annotation.target],
+                    annotation,
+                    state.username,
+                );
+            });
+
+            updateQueue(state);
         },
         removeOptional(state, action: PayloadAction<string>) {
-            delete state.optionals[action.payload];
+            delete state.annotations.optionals[action.payload];
+
+            updateQueue(state);
+        },
+        reviewOptional(state, action: PayloadAction<string>) {
+            state.annotations.optionals[action.payload] = withToggledReviewer(
+                state.annotations.optionals[action.payload],
+                state.username,
+            );
         },
         addPure(state, action: PayloadAction<PureAnnotation>) {
-            state.pures[action.payload.target] = action.payload;
+            state.annotations.pures[action.payload.target] = withAuthorAndReviewers(
+                state.annotations.pures[action.payload.target],
+                action.payload,
+                state.username,
+            );
+
+            updateQueue(state);
         },
         removePure(state, action: PayloadAction<string>) {
-            delete state.pures[action.payload];
+            delete state.annotations.pures[action.payload];
+
+            updateQueue(state);
+        },
+        reviewPure(state, action: PayloadAction<string>) {
+            state.annotations.pures[action.payload] = withToggledReviewer(
+                state.annotations.pures[action.payload],
+                state.username,
+            );
         },
         upsertRenaming(state, action: PayloadAction<RenameAnnotation>) {
-            state.renamings[action.payload.target] = action.payload;
+            state.annotations.renamings[action.payload.target] = withAuthorAndReviewers(
+                state.annotations.renamings[action.payload.target],
+                action.payload,
+                state.username,
+            );
+
+            updateQueue(state);
+        },
+        upsertRenamings(state, action: PayloadAction<RenameAnnotation[]>) {
+            action.payload.forEach((annotation) => {
+                state.annotations.renamings[annotation.target] = withAuthorAndReviewers(
+                    state.annotations.renamings[annotation.target],
+                    annotation,
+                    state.username,
+                );
+            });
+
+            updateQueue(state);
         },
         removeRenaming(state, action: PayloadAction<string>) {
-            delete state.renamings[action.payload];
+            delete state.annotations.renamings[action.payload];
+
+            updateQueue(state);
+        },
+        reviewRenaming(state, action: PayloadAction<string>) {
+            state.annotations.renamings[action.payload] = withToggledReviewer(
+                state.annotations.renamings[action.payload],
+                state.username,
+            );
         },
         addRequired(state, action: PayloadAction<RequiredAnnotation>) {
-            state.requireds[action.payload.target] = action.payload;
+            state.annotations.requireds[action.payload.target] = withAuthorAndReviewers(
+                state.annotations.requireds[action.payload.target],
+                action.payload,
+                state.username,
+            );
+
+            updateQueue(state);
+        },
+        upsertRequireds(state, action: PayloadAction<RequiredAnnotation[]>) {
+            action.payload.forEach((annotation) => {
+                state.annotations.requireds[annotation.target] = withAuthorAndReviewers(
+                    state.annotations.requireds[annotation.target],
+                    annotation,
+                    state.username,
+                );
+            });
+
+            updateQueue(state);
         },
         removeRequired(state, action: PayloadAction<string>) {
-            delete state.requireds[action.payload];
+            delete state.annotations.requireds[action.payload];
+
+            updateQueue(state);
+        },
+        reviewRequired(state, action: PayloadAction<string>) {
+            state.annotations.requireds[action.payload] = withToggledReviewer(
+                state.annotations.requireds[action.payload],
+                state.username,
+            );
         },
         addRemove(state, action: PayloadAction<RemoveAnnotation>) {
-            state.removes[action.payload.target] = action.payload;
+            state.annotations.removes[action.payload.target] = withAuthorAndReviewers(
+                state.annotations.removes[action.payload.target],
+                action.payload,
+                state.username,
+            );
+
+            updateQueue(state);
+        },
+        upsertRemoves(state, action: PayloadAction<RemoveAnnotation[]>) {
+            action.payload.forEach((annotation) => {
+                state.annotations.removes[annotation.target] = withAuthorAndReviewers(
+                    state.annotations.removes[annotation.target],
+                    annotation,
+                    state.username,
+                );
+            });
+
+            updateQueue(state);
         },
         removeRemove(state, action: PayloadAction<string>) {
-            delete state.removes[action.payload];
+            delete state.annotations.removes[action.payload];
+
+            updateQueue(state);
+        },
+        reviewRemove(state, action: PayloadAction<string>) {
+            state.annotations.removes[action.payload] = withToggledReviewer(
+                state.annotations.removes[action.payload],
+                state.username,
+            );
         },
         upsertTodo(state, action: PayloadAction<TodoAnnotation>) {
-            state.todos[action.payload.target] = action.payload;
+            state.annotations.todos[action.payload.target] = withAuthorAndReviewers(
+                state.annotations.todos[action.payload.target],
+                action.payload,
+                state.username,
+            );
+
+            updateQueue(state);
         },
         removeTodo(state, action: PayloadAction<string>) {
-            delete state.todos[action.payload];
+            delete state.annotations.todos[action.payload];
+
+            updateQueue(state);
+        },
+        reviewTodo(state, action: PayloadAction<string>) {
+            state.annotations.todos[action.payload] = withToggledReviewer(
+                state.annotations.todos[action.payload],
+                state.username,
+            );
+        },
+
+        setUsername(state, action: PayloadAction<string>) {
+            state.username = action.payload;
         },
     },
     extraReducers(builder) {
@@ -536,114 +797,187 @@ const annotationsSlice = createSlice({
     },
 });
 
+const updateQueue = function (state: AnnotationSlice) {
+    const annotations = JSON.parse(JSON.stringify(state.annotations)) as AnnotationStore;
+
+    if (state.queueIndex >= maximumUndoHistoryLength - 2) {
+        state.queue.shift();
+        state.queueIndex = state.queueIndex - 1;
+    }
+
+    state.queue = [...state.queue.slice(0, state.queueIndex + 2), annotations];
+    state.queueIndex = state.queueIndex + 1;
+};
+
+const withAuthorAndReviewers = function <T extends Annotation>(
+    oldAnnotation: T | void,
+    newAnnotation: T,
+    author: string,
+): T {
+    let authors = oldAnnotation?.authors ?? [];
+    const reviewers = oldAnnotation?.reviewers ?? [];
+
+    authors = [...authors.filter((it) => it !== author), author];
+
+    return {
+        ...newAnnotation,
+        authors,
+        reviewers,
+    };
+};
+
+const withToggledReviewer = function <T extends Annotation>(oldAnnotation: T, reviewer: string): T {
+    if (oldAnnotation.reviewers?.includes(reviewer) ?? false) {
+        return {
+            ...oldAnnotation,
+            reviewers: [],
+        };
+    } else {
+        return {
+            ...oldAnnotation,
+            reviewers: [reviewer],
+        };
+    }
+};
+
 const { actions, reducer } = annotationsSlice;
 export const {
-    setAnnotations,
-    mergeAnnotations,
-    resetAnnotations,
+    setAnnotationStore,
+    mergeAnnotationStore,
+    resetAnnotationStore,
 
     upsertAttribute,
     removeAttribute,
+    reviewAttribute,
     upsertBoundary,
     removeBoundary,
+    reviewBoundary,
     upsertCalledAfter,
     removeCalledAfter,
+    reviewCalledAfter,
     addComplete,
     removeComplete,
     upsertConstant,
+    upsertConstants,
     removeConstant,
+    reviewConstant,
     upsertDescription,
     removeDescription,
+    reviewDescription,
     upsertEnum,
     removeEnum,
+    reviewEnum,
     upsertGroup,
     removeGroup,
+    reviewGroup,
     upsertMove,
+    upsertMoves,
     removeMove,
+    reviewMove,
     upsertOptional,
+    upsertOptionals,
     removeOptional,
+    reviewOptional,
     addPure,
     removePure,
+    reviewPure,
     upsertRenaming,
+    upsertRenamings,
     removeRenaming,
+    reviewRenaming,
     addRequired,
+    upsertRequireds,
     removeRequired,
+    reviewRequired,
     upsertTodo,
     removeTodo,
+    reviewTodo,
     addRemove,
+    upsertRemoves,
     removeRemove,
+    reviewRemove,
+
+    undo,
+    redo,
+
+    setUsername,
 } = actions;
 export const annotationsReducer = reducer;
 
-export const selectAnnotations = (state: RootState) => state.annotations;
+export const selectAnnotationSlice = (state: RootState) => state.annotations;
+export const selectAnnotationStore = (state: RootState) => state.annotations.annotations;
 export const selectAttribute =
     (target: string) =>
     (state: RootState): AttributeAnnotation | undefined =>
-        selectAnnotations(state).attributes[target];
+        selectAnnotationStore(state).attributes[target];
 export const selectBoundary =
     (target: string) =>
     (state: RootState): BoundaryAnnotation | undefined =>
-        selectAnnotations(state).boundaries[target];
+        selectAnnotationStore(state).boundaries[target];
 export const selectCalledAfters =
     (target: string) =>
     (state: RootState): { [calledAfter: string]: CalledAfterAnnotation } =>
-        selectAnnotations(state).calledAfters[target] ?? {};
+        selectAnnotationStore(state).calledAfters[target] ?? {};
 export const selectComplete =
     (target: string) =>
     (state: RootState): CompleteAnnotation | undefined =>
-        selectAnnotations(state).completes[target];
+        selectAnnotationStore(state).completes[target];
 export const selectConstant =
     (target: string) =>
     (state: RootState): ConstantAnnotation | undefined =>
-        selectAnnotations(state).constants[target];
+        selectAnnotationStore(state).constants[target];
 export const selectDescription =
     (target: string) =>
     (state: RootState): DescriptionAnnotation | undefined =>
-        selectAnnotations(state).descriptions[target];
+        selectAnnotationStore(state).descriptions[target];
 export const selectEnum =
     (target: string) =>
     (state: RootState): EnumAnnotation | undefined =>
-        selectAnnotations(state).enums[target];
+        selectAnnotationStore(state).enums[target];
 export const selectGroups =
     (target: string) =>
     (state: RootState): { [groupName: string]: GroupAnnotation } =>
-        selectAnnotations(state).groups[target] ?? {};
+        selectAnnotationStore(state).groups[target] ?? {};
 export const selectMove =
     (target: string) =>
     (state: RootState): MoveAnnotation | undefined =>
-        selectAnnotations(state).moves[target];
+        selectAnnotationStore(state).moves[target];
 export const selectOptional =
     (target: string) =>
     (state: RootState): OptionalAnnotation | undefined =>
-        selectAnnotations(state).optionals[target];
+        selectAnnotationStore(state).optionals[target];
 export const selectPure =
     (target: string) =>
     (state: RootState): PureAnnotation | undefined =>
-        selectAnnotations(state).pures[target];
+        selectAnnotationStore(state).pures[target];
 export const selectRenaming =
     (target: string) =>
     (state: RootState): RenameAnnotation | undefined =>
-        selectAnnotations(state).renamings[target];
+        selectAnnotationStore(state).renamings[target];
 export const selectRequired =
     (target: string) =>
     (state: RootState): RequiredAnnotation | undefined =>
-        selectAnnotations(state).requireds[target];
+        selectAnnotationStore(state).requireds[target];
 export const selectRemove =
     (target: string) =>
     (state: RootState): RemoveAnnotation | undefined =>
-        selectAnnotations(state).removes[target];
+        selectAnnotationStore(state).removes[target];
 export const selectTodo =
     (target: string) =>
     (state: RootState): TodoAnnotation | undefined =>
-        selectAnnotations(state).todos[target];
+        selectAnnotationStore(state).todos[target];
 export const selectNumberOfAnnotations =
     (target: string) =>
     (state: RootState): number => {
-        return Object.values(selectAnnotations(state)).reduce((acc, annotations) => {
-            if (target in annotations) {
+        return Object.entries(selectAnnotationStore(state)).reduce((acc, [annotationType, annotations]) => {
+            if (annotationType === 'completes') {
+                return acc;
+            } else if (target in annotations) {
                 return acc + 1;
             } else {
                 return acc;
             }
         }, 0);
     };
+export const selectUsername = (state: RootState): string => selectAnnotationSlice(state).username;
+export const selectUsernameIsValid = (state: RootState): boolean => isValidUsername(selectUsername(state));
