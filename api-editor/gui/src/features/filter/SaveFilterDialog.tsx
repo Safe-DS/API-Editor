@@ -34,8 +34,10 @@ export const SaveFilterDialog: React.FC = function () {
     });
 
     const submit = () => {
-        dispatch(addFilter({ filter, name: filterName }));
-        dispatch(toggleAddFilterDialog());
+        if (filterName !== "" && !alreadyIncluded) {
+            dispatch(addFilter({ filter, name: filterName }));
+            dispatch(toggleAddFilterDialog());
+        }
     };
     const close = () => {
         dispatch(toggleAddFilterDialog());
