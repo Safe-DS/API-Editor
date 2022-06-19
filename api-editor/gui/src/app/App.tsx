@@ -50,6 +50,7 @@ import {
     selectShowAPIImportDialog,
     selectShowUsageImportDialog,
     selectUI,
+    selectShowAddFilterDialog,
 } from '../features/ui/uiSlice';
 import { initializeUsages, persistUsages, selectUsages } from '../features/usages/usageSlice';
 import { initializePythonPackage, selectRawPythonPackage } from '../features/packageData/apiSlice';
@@ -64,9 +65,10 @@ import { OptionalBatchForm } from '../features/annotations/batchforms/OptionalBa
 import { RemoveBatchForm } from '../features/annotations/batchforms/RemoveBatchForm';
 import { MoveBatchForm } from '../features/annotations/batchforms/MoveBatchForm';
 import { PythonPackage } from '../features/packageData/model/PythonPackage';
-import { AbstractPythonFilter } from '../features/packageData/model/filters/AbstractPythonFilter';
+import { AbstractPythonFilter } from '../features/filter/model/AbstractPythonFilter';
 import { UsageCountStore } from '../features/usages/model/UsageCountStore';
 import { PythonDeclaration } from '../features/packageData/model/PythonDeclaration';
+import { SaveFilterDialog } from '../features/filter/SaveFilterDialog';
 
 export const App: React.FC = function () {
     useIndexedDB();
@@ -90,6 +92,7 @@ export const App: React.FC = function () {
     const showAPIImportDialog = useAppSelector(selectShowAPIImportDialog);
     const showUsagesImportDialog = useAppSelector(selectShowUsageImportDialog);
     const batchMode = useAppSelector(selectBatchMode);
+    const showAddFilterDialog = useAppSelector(selectShowAddFilterDialog);
 
     return (
         <>
@@ -200,6 +203,7 @@ export const App: React.FC = function () {
                 {showAnnotationImportDialog && <AnnotationImportDialog />}
                 {showAPIImportDialog && <PackageDataImportDialog />}
                 {showUsagesImportDialog && <UsageImportDialog />}
+                {showAddFilterDialog && <SaveFilterDialog />}
             </Grid>
 
             <Modal

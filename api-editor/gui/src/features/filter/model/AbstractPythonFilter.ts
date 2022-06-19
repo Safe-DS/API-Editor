@@ -1,12 +1,12 @@
-import { PythonClass } from '../PythonClass';
-import { PythonFunction } from '../PythonFunction';
-import { PythonModule } from '../PythonModule';
-import { PythonParameter } from '../PythonParameter';
-import { PythonPackage } from '../PythonPackage';
-import { isEmptyList } from '../../../../common/util/listOperations';
-import { PythonDeclaration } from '../PythonDeclaration';
-import { AnnotationStore } from '../../../annotations/annotationSlice';
-import { UsageCountStore } from '../../../usages/model/UsageCountStore';
+import { PythonClass } from '../../packageData/model/PythonClass';
+import { PythonFunction } from '../../packageData/model/PythonFunction';
+import { PythonModule } from '../../packageData/model/PythonModule';
+import { PythonParameter } from '../../packageData/model/PythonParameter';
+import { PythonPackage } from '../../packageData/model/PythonPackage';
+import { isEmptyList } from '../../../common/util/listOperations';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
+import { AnnotationStore } from '../../annotations/annotationSlice';
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
 
 /**
  * An abstract base class for filters of Python declarations. To create a new filter create a new subclass and override

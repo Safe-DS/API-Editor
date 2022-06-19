@@ -1,10 +1,10 @@
-import { PythonClass } from '../PythonClass';
-import { PythonFunction } from '../PythonFunction';
-import { PythonModule } from '../PythonModule';
-import { PythonParameter } from '../PythonParameter';
+import { PythonClass } from '../../packageData/model/PythonClass';
+import { PythonFunction } from '../../packageData/model/PythonFunction';
+import { PythonModule } from '../../packageData/model/PythonModule';
+import { PythonParameter } from '../../packageData/model/PythonParameter';
+import { AnnotationStore } from '../../annotations/annotationSlice';
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { AbstractPythonFilter } from './AbstractPythonFilter';
-import { AnnotationStore } from '../../../annotations/annotationSlice';
-import { UsageCountStore } from '../../../usages/model/UsageCountStore';
 
 /**
  * Keeps only declarations are used a certain number of times.

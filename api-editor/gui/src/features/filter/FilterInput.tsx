@@ -12,9 +12,9 @@ import {
     UnorderedList,
 } from '@chakra-ui/react';
 import React from 'react';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { selectFilterString, setFilterString } from '../features/ui/uiSlice';
-import { isValidFilterToken } from '../features/packageData/model/filters/filterFactory';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { selectFilterString, setFilterString } from '../ui/uiSlice';
+import { isValidFilterToken } from './model/filterFactory';
 
 export const FilterInput: React.FC = function () {
     const dispatch = useAppDispatch();

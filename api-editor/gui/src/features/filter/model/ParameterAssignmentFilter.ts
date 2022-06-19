@@ -1,10 +1,10 @@
+import { PythonClass } from '../../packageData/model/PythonClass';
+import { PythonFunction } from '../../packageData/model/PythonFunction';
+import { PythonModule } from '../../packageData/model/PythonModule';
+import { PythonParameter, PythonParameterAssignment } from '../../packageData/model/PythonParameter';
+import { AnnotationStore } from '../../annotations/annotationSlice';
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { AbstractPythonFilter } from './AbstractPythonFilter';
-import { PythonModule } from '../PythonModule';
-import { PythonClass } from '../PythonClass';
-import { PythonFunction } from '../PythonFunction';
-import { AnnotationStore } from '../../../annotations/annotationSlice';
-import { UsageCountStore } from '../../../usages/model/UsageCountStore';
-import { PythonParameter, PythonParameterAssignment } from '../PythonParameter';
 
 export class ParameterAssignmentFilter extends AbstractPythonFilter {
     constructor(readonly assignedBy: PythonParameterAssignment) {

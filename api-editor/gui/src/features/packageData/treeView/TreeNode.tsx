@@ -13,7 +13,7 @@ import {
     toggleIsExpandedInTreeView,
 } from '../../ui/uiSlice';
 import { VisibilityIndicator } from './VisibilityIndicator';
-import { AbstractPythonFilter } from '../model/filters/AbstractPythonFilter';
+import { AbstractPythonFilter } from '../../filter/model/AbstractPythonFilter';
 import { selectAnnotationStore } from '../../annotations/annotationSlice';
 import { HeatMapInterpolation, HeatMapTag } from './HeatMapTag';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';

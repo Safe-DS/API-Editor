@@ -1,21 +1,25 @@
-import { PythonClass } from '../PythonClass';
-import { PythonFunction } from '../PythonFunction';
-import { PythonModule } from '../PythonModule';
-import { PythonParameter } from '../PythonParameter';
+import { PythonClass } from '../../packageData/model/PythonClass';
+import { PythonFunction } from '../../packageData/model/PythonFunction';
+import { PythonModule } from '../../packageData/model/PythonModule';
+import { PythonParameter } from '../../packageData/model/PythonParameter';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
+import { AnnotationStore } from '../../annotations/annotationSlice';
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { AbstractPythonFilter } from './AbstractPythonFilter';
-import { PythonDeclaration } from '../PythonDeclaration';
-import { AnnotationStore } from '../../../annotations/annotationSlice';
-import { UsageCountStore } from '../../../usages/model/UsageCountStore';
 
 /**
- * Keeps only declarations with a specified visibility (public/internal)
+ * Keeps only declarations that have a name matching the given regex.
  */
-export class VisibilityFilter extends AbstractPythonFilter {
+export class NameRegexFilter extends AbstractPythonFilter {
+    readonly regex: RegExp;
+
     /**
-     * @param visibility The visibility of the declaration to keep.
+     * @param regex The regex that must match the name of the declaration.
      */
-    constructor(readonly visibility: Visibility) {
+    constructor(regex: string) {
         super();
+
+        this.regex = RegExp(regex, 'u');
     }
 
     shouldKeepModule(pythonModule: PythonModule, annotations: AnnotationStore, usages: UsageCountStore): boolean {
@@ -43,11 +47,6 @@ export class VisibilityFilter extends AbstractPythonFilter {
         _annotations: AnnotationStore,
         _usages: UsageCountStore,
     ): boolean {
-        return pythonDeclaration.isPublic === (this.visibility === Visibility.Public);
+        return this.regex.test(pythonDeclaration.name);
     }
-}
-
-export enum Visibility {
-    Public,
-    Internal,
 }

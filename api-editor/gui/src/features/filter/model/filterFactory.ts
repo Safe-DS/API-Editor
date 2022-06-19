@@ -4,16 +4,16 @@ import { AbstractPythonFilter } from './AbstractPythonFilter';
 import { DeclarationType, DeclarationTypeFilter } from './DeclarationTypeFilter';
 import { Visibility, VisibilityFilter } from './VisibilityFilter';
 import { NegatedFilter } from './NegatedFilter';
-import { Optional } from '../../../../common/util/types';
+import { Optional } from '../../../common/util/types';
 import { AnnotationFilter, AnnotationType } from './AnnotationFilter';
 import { UsageFilter } from './UsageFilter';
 import { UsefulnessFilter } from './UsefulnessFilter';
 import { equals, greaterThan, greaterThanOrEqual, lessThan, lessThanOrEqual } from './comparisons';
 import { ParameterAssignmentFilter } from './ParameterAssignmentFilter';
-import { PythonParameterAssignment } from '../PythonParameter';
 import { RequiredOrOptional, RequiredOrOptionalFilter } from './RequiredOrOptionalFilter';
 import { NameRegexFilter } from './NameRegexFilter';
 import { DoneFilter } from './DoneFilter';
+import { PythonParameterAssignment } from '../../packageData/model/PythonParameter';
 
 /**
  * Creates a filter from the given string. This method handles conjunctions, negations, and non-negated tokens.

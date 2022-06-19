@@ -1,11 +1,11 @@
-import { PythonClass } from '../PythonClass';
-import { PythonFunction } from '../PythonFunction';
-import { PythonModule } from '../PythonModule';
-import { PythonParameter } from '../PythonParameter';
+import { PythonClass } from '../../packageData/model/PythonClass';
+import { PythonFunction } from '../../packageData/model/PythonFunction';
+import { PythonModule } from '../../packageData/model/PythonModule';
+import { PythonParameter } from '../../packageData/model/PythonParameter';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
+import { Annotation, AnnotationStore } from '../../annotations/annotationSlice';
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { AbstractPythonFilter } from './AbstractPythonFilter';
-import { PythonDeclaration } from '../PythonDeclaration';
-import { Annotation, AnnotationStore } from '../../../annotations/annotationSlice';
-import { UsageCountStore } from '../../../usages/model/UsageCountStore';
 
 /**
  * Keeps only declarations that are marked as complete and all annotations as correct.

@@ -2,13 +2,19 @@ import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@r
 import * as idb from 'idb-keyval';
 import { RootState } from '../../app/store';
 import { CalledAfterTarget, GroupTarget } from '../annotations/annotationSlice';
-import { AbstractPythonFilter } from '../packageData/model/filters/AbstractPythonFilter';
-import { createFilterFromString, isValidFilterToken } from '../packageData/model/filters/filterFactory';
+import { AbstractPythonFilter } from '../filter/model/AbstractPythonFilter';
+import { createFilterFromString, isValidFilterToken } from '../filter/model/filterFactory';
+
+export interface Filter {
+    filter: string;
+    name: string;
+}
 
 export interface UIState {
     showAnnotationImportDialog: boolean;
     showAPIImportDialog: boolean;
     showUsageImportDialog: boolean;
+    showAddFilterDialog: boolean;
 
     currentUserAction: UserAction;
     expandedInTreeView: {
@@ -17,6 +23,7 @@ export interface UIState {
     treeViewScrollOffset: number;
     heatMapMode: HeatMapMode;
     filterString: string;
+    filterList: Filter[];
     sortingMode: SortingMode;
     batchMode: BatchMode;
 }
@@ -123,13 +130,19 @@ export enum BatchMode {
 export const initialState: UIState = {
     showAnnotationImportDialog: false,
     showAPIImportDialog: false,
+    showAddFilterDialog: false,
     showUsageImportDialog: false,
 
     currentUserAction: NoUserAction,
 
     expandedInTreeView: {},
     treeViewScrollOffset: 0,
+
     filterString: 'is:public',
+    filterList: [
+        { filter: 'is:public', name: 'default' },
+        { filter: 'is:public usefulness:>0 !name:=X !name:=y', name: 'sklearn' },
+    ],
 
     heatMapMode: HeatMapMode.None,
     sortingMode: SortingMode.Alphabetical,
@@ -202,7 +215,9 @@ const uiSlice = createSlice({
         toggleUsageImportDialog(state) {
             state.showUsageImportDialog = !state.showUsageImportDialog;
         },
-
+        toggleAddFilterDialog(state) {
+            state.showAddFilterDialog = !state.showAddFilterDialog;
+        },
         showAttributeAnnotationForm(state, action: PayloadAction<string>) {
             state.currentUserAction = {
                 type: 'attribute',
@@ -303,6 +318,12 @@ const uiSlice = createSlice({
         setFilterString(state, action: PayloadAction<string>) {
             state.filterString = action.payload;
         },
+        addFilter(state, action: PayloadAction<Filter>) {
+            state.filterList.push(action.payload);
+        },
+        removeFilter(state, action: PayloadAction<string>) {
+            state.filterList = state.filterList.filter((filter) => filter.filter !== action.payload);
+        },
         setSortingMode(state, action: PayloadAction<SortingMode>) {
             state.sortingMode = action.payload;
         },
@@ -325,6 +346,7 @@ export const {
     hideAnnotationImportDialog,
     toggleAPIImportDialog,
     toggleUsageImportDialog,
+    toggleAddFilterDialog,
 
     showAttributeAnnotationForm,
     showBoundaryAnnotationForm,
@@ -345,6 +367,8 @@ export const {
     setTreeViewScrollOffset,
     setHeatMapMode,
     setFilterString,
+    addFilter,
+    removeFilter,
     setSortingMode,
     setBatchMode,
 } = actions;
@@ -355,6 +379,7 @@ export const selectShowAnnotationImportDialog = (state: RootState): boolean =>
     selectUI(state).showAnnotationImportDialog;
 export const selectShowAPIImportDialog = (state: RootState): boolean => selectUI(state).showAPIImportDialog;
 export const selectShowUsageImportDialog = (state: RootState): boolean => selectUI(state).showUsageImportDialog;
+export const selectShowAddFilterDialog = (state: RootState): boolean => selectUI(state).showAddFilterDialog;
 export const selectCurrentUserAction = (state: RootState): UserAction => selectUI(state).currentUserAction;
 export const selectIsExpandedInTreeView =
     (target: string) =>
@@ -365,6 +390,7 @@ export const selectAllExpandedInTreeView = (state: RootState): { [target: string
 export const selectTreeViewScrollOffset = (state: RootState): number => selectUI(state).treeViewScrollOffset;
 export const selectHeatMapMode = (state: RootState): HeatMapMode => selectUI(state).heatMapMode;
 export const selectFilterString = (state: RootState): string => selectUI(state).filterString;
+export const selectFilterList = (state: RootState): Filter[] => selectUI(state).filterList;
 
 /**
  * Keep only the valid parts of the filter string to improve caching of selectFilter.
