@@ -1,10 +1,10 @@
+import { PythonClass } from '../../packageData/model/PythonClass';
+import { PythonFunction } from '../../packageData/model/PythonFunction';
+import { PythonModule } from '../../packageData/model/PythonModule';
+import { PythonParameter } from '../../packageData/model/PythonParameter';
+import { AnnotationStore } from '../../annotations/annotationSlice';
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { AbstractPythonFilter } from './AbstractPythonFilter';
-import { PythonClass } from '../PythonClass';
-import { PythonFunction } from '../PythonFunction';
-import { PythonParameter } from '../PythonParameter';
-import { PythonModule } from '../PythonModule';
-import { AnnotationStore } from '../../../annotations/annotationSlice';
-import { UsageCountStore } from '../../../usages/model/UsageCountStore';
 
 /**
  * Keeps declarations iff the contained filter discards it.

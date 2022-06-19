@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { PythonPackage } from '../packageData/model/PythonPackage';
 import { selectFilteredPythonPackage, selectFlatSortedDeclarationList } from '../packageData/apiSlice';
 import { Optional } from '../../common/util/types';
-import { AbstractPythonFilter } from '../packageData/model/filters/AbstractPythonFilter';
+import { AbstractPythonFilter } from '../filter/model/AbstractPythonFilter';
 import { AnnotationStore, redo, selectAnnotationStore, undo } from '../annotations/annotationSlice';
 import { selectFilter, setAllCollapsedInTreeView, setAllExpandedInTreeView } from '../ui/uiSlice';
 import { PythonDeclaration } from '../packageData/model/PythonDeclaration';

@@ -21,7 +21,7 @@ import {
     Text as ChakraText,
 } from '@chakra-ui/react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { isValidFilterToken } from '../packageData/model/filters/filterFactory';
+import { isValidFilterToken } from './model/filterFactory';
 import { selectNumberOfMatchedNodes } from '../packageData/apiSlice';
 import { FaChevronDown } from 'react-icons/fa';
 

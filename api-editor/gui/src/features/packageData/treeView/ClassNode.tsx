@@ -3,7 +3,7 @@ import { FaChalkboard } from 'react-icons/fa';
 import { isEmptyList } from '../../../common/util/listOperations';
 import { PythonClass } from '../model/PythonClass';
 import { TreeNode, ValuePair } from './TreeNode';
-import { AbstractPythonFilter } from '../model/filters/AbstractPythonFilter';
+import { AbstractPythonFilter } from '../../filter/model/AbstractPythonFilter';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { useAppSelector } from '../../../app/hooks';
 import { maximumNumberOfClassAnnotations, selectNumberOfAnnotations } from '../../annotations/annotationSlice';

@@ -2,7 +2,7 @@ import React from 'react';
 import { FaKeyboard } from 'react-icons/fa';
 import { PythonParameter } from '../model/PythonParameter';
 import { TreeNode, ValuePair } from './TreeNode';
-import { AbstractPythonFilter } from '../model/filters/AbstractPythonFilter';
+import { AbstractPythonFilter } from '../../filter/model/AbstractPythonFilter';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { useAppSelector } from '../../../app/hooks';
 import { maximumNumberOfParameterAnnotations, selectNumberOfAnnotations } from '../../annotations/annotationSlice';

@@ -14,7 +14,7 @@ import {
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectFilterString, setFilterString } from '../ui/uiSlice';
-import { isValidFilterToken } from '../packageData/model/filters/filterFactory';
+import { isValidFilterToken } from './model/filterFactory';
 
 export const FilterInput: React.FC = function () {
     const dispatch = useAppDispatch();

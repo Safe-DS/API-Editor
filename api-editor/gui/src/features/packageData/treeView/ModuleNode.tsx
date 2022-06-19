@@ -3,7 +3,7 @@ import { FaArchive } from 'react-icons/fa';
 import { isEmptyList } from '../../../common/util/listOperations';
 import { PythonModule } from '../model/PythonModule';
 import { TreeNode, ValuePair } from './TreeNode';
-import { AbstractPythonFilter } from '../model/filters/AbstractPythonFilter';
+import { AbstractPythonFilter } from '../../filter/model/AbstractPythonFilter';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { useAppSelector } from '../../../app/hooks';
 import { HeatMapMode, selectHeatMapMode } from '../../ui/uiSlice';

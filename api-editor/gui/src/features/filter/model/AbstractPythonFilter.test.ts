@@ -1,14 +1,14 @@
 // noinspection UnnecessaryLocalVariableJS,DuplicatedCode
 
-import { PythonPackage } from '../PythonPackage';
-import { PythonParameter } from '../PythonParameter';
-import { PythonModule } from '../PythonModule';
-import { PythonClass } from '../PythonClass';
-import { PythonFunction } from '../PythonFunction';
+import { PythonClass } from '../../packageData/model/PythonClass';
+import { PythonFunction } from '../../packageData/model/PythonFunction';
+import { PythonModule } from '../../packageData/model/PythonModule';
+import { PythonParameter } from '../../packageData/model/PythonParameter';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
+import { PythonPackage } from '../../packageData/model/PythonPackage';
 import { NameStringFilter } from './NameStringFilter';
-import { initialAnnotationStore as annotations } from '../../../annotations/annotationSlice';
-import { PythonDeclaration } from '../PythonDeclaration';
-import { UsageCountStore } from '../../../usages/model/UsageCountStore';
+import { initialAnnotationStore as annotations } from '../../annotations/annotationSlice';
 
 let pythonPackage: PythonPackage;
 

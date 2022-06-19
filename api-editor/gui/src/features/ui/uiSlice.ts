@@ -2,8 +2,8 @@ import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@r
 import * as idb from 'idb-keyval';
 import { RootState } from '../../app/store';
 import { CalledAfterTarget, GroupTarget } from '../annotations/annotationSlice';
-import { AbstractPythonFilter } from '../packageData/model/filters/AbstractPythonFilter';
-import { createFilterFromString, isValidFilterToken } from '../packageData/model/filters/filterFactory';
+import { AbstractPythonFilter } from '../filter/model/AbstractPythonFilter';
+import { createFilterFromString, isValidFilterToken } from '../filter/model/filterFactory';
 
 export interface Filter {
     filter: string;
