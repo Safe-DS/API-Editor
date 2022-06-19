@@ -10,6 +10,7 @@ import {
     toggleAddFilterDialog,
 } from '../ui/uiSlice';
 import { isValidFilterToken } from './model/filterFactory';
+import { isEmptyList } from '../../common/util/listOperations';
 
 export const FilterPersistence = function () {
     const dispatch = useAppDispatch();
@@ -42,7 +43,11 @@ export const FilterPersistence = function () {
 
             <Box>
                 <Menu>
-                    <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
+                    <MenuButton
+                        as={Button}
+                        rightIcon={<Icon as={FaChevronDown} />}
+                        disabled={isEmptyList(savedFilters)}
+                    >
                         Load Filter
                     </MenuButton>
                     <MenuList>
