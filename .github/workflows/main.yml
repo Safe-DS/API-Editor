@@ -39,14 +39,16 @@ jobs:
         uses: gradle/wrapper-validation-action@v1
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew check
 
-      - name: Upload distribution
-        uses: actions/upload-artifact@v3
-        with:
-          name: API-Editor
-          path: api-editor/backend/build/libs/*-all.jar
-          if-no-files-found: error
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
+
 
   build-package-parser:
     runs-on: ubuntu-latest

@@ -28,7 +28,7 @@ tasks.withType<KotlinCompile> {
 }
 
 tasks.withType<ShadowJar> {
-    archiveFileName.set("${project.group}-${project.name}-${project.version}-all.jar")
+    archiveFileName.set("${project.group}-${project.name}-all.jar")
 }
 
 // Dependencies --------------------------------------------------------------------------------------------------------
