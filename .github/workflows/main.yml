@@ -7,9 +7,6 @@ on:
 jobs:
   build-api-editor:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./api-editor
 
     strategy:
       matrix:
@@ -40,6 +37,7 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew check
+        working-directory: ./api-editor
 
       - name: Install dependencies
         run: npm ci
