@@ -39,14 +39,7 @@ jobs:
         uses: gradle/wrapper-validation-action@v1
 
       - name: Build with Gradle
-        run: ./gradlew build
-
-      - name: Upload distribution
-        uses: actions/upload-artifact@v3
-        with:
-          name: API-Editor
-          path: api-editor/backend/build/libs/*-all.jar
-          if-no-files-found: error
+        run: ./gradlew check
 
   build-package-parser:
     runs-on: ubuntu-latest
