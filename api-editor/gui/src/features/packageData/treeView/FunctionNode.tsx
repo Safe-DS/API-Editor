@@ -6,7 +6,10 @@ import { TreeNode, ValuePair } from './TreeNode';
 import { AbstractPythonFilter } from '../../filter/model/AbstractPythonFilter';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { useAppSelector } from '../../../app/hooks';
-import { maximumNumberOfFunctionAnnotations, selectNumberOfAnnotationsOnTarget } from '../../annotations/annotationSlice';
+import {
+    maximumNumberOfFunctionAnnotations,
+    selectNumberOfAnnotationsOnTarget,
+} from '../../annotations/annotationSlice';
 import { HeatMapMode, selectHeatMapMode } from '../../ui/uiSlice';
 
 interface FunctionNodeProps {

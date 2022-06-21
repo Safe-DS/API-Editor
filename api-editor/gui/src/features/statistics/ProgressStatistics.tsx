@@ -71,16 +71,10 @@ export const ProgressStatistics = function () {
             <Box width="100%">
                 <HStack width="100%" justify="space-between">
                     <Box width="40%">
-                        <Pie
-                            data={completionData}
-                            options={completionOptions}
-                        />
+                        <Pie data={completionData} options={completionOptions} />
                     </Box>
                     <Box width="40%">
-                        <Pie
-                            data={correctnessData}
-                            options={correctnessOptions}
-                        />
+                        <Pie data={correctnessData} options={correctnessOptions} />
                     </Box>
                 </HStack>
             </Box>

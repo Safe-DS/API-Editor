@@ -1,11 +1,11 @@
 import React from 'react';
 import { Box, Flex, Heading } from '@chakra-ui/react';
-import {useAppSelector} from "../../app/hooks";
-import {selectRawPythonPackage} from "../packageData/apiSlice";
-import {selectUsages} from "../usages/usageSlice";
-import {createBarChart} from "./ChartWrappers";
-import {PythonPackage} from "../packageData/model/PythonPackage";
-import {UsageCountStore} from "../usages/model/UsageCountStore";
+import { useAppSelector } from '../../app/hooks';
+import { selectRawPythonPackage } from '../packageData/apiSlice';
+import { selectUsages } from '../usages/usageSlice';
+import { createBarChart } from './ChartWrappers';
+import { PythonPackage } from '../packageData/model/PythonPackage';
+import { UsageCountStore } from '../usages/model/UsageCountStore';
 
 export const ApiSizeStatistics = function () {
     const rawPythonPackage = useAppSelector(selectRawPythonPackage);

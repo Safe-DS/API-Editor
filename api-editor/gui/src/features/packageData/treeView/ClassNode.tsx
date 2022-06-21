@@ -47,5 +47,8 @@ const getMapWithUsages = function (usages: UsageCountStore, pythonClass: PythonC
 };
 
 const useAnnotationCounts = function (pythonClass: PythonClass): ValuePair {
-    return new ValuePair(useAppSelector(selectNumberOfAnnotationsOnTarget(pythonClass.id)), maximumNumberOfClassAnnotations);
+    return new ValuePair(
+        useAppSelector(selectNumberOfAnnotationsOnTarget(pythonClass.id)),
+        maximumNumberOfClassAnnotations,
+    );
 };
