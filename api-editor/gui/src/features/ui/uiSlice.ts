@@ -334,7 +334,7 @@ const uiSlice = createSlice({
         },
         toggleStatisticsView(state) {
             state.showStatistics = !state.showStatistics;
-        }
+        },
     },
     extraReducers(builder) {
         builder.addCase(initializeUI.fulfilled, (state, action) => action.payload);
