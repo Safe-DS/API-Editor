@@ -64,21 +64,24 @@ export const StatisticsView: React.FC = function () {
         rawPythonPackage,
         thresholds,
         usages.getNumberOfUsedPublicClasses,
-        'Classes per Threshold',
+        'Classes',
+        'Minimum usefulness',
     );
     const functionLineChart = createLineChart(
         usages,
         rawPythonPackage,
         thresholds,
         usages.getNumberOfUsedPublicFunctions,
-        'Functions per Threshold',
+        'Functions',
+        'Minimum usefulness',
     );
     const parameterLineChart = createLineChart(
         usages,
         rawPythonPackage,
         thresholds,
         usages.getNumberOfUsefulPublicParameters,
-        'Parameters per Threshold',
+        'Parameters',
+        'Minimum usefulness',
     );
 
     const filterAction = (annotation: string) => {
@@ -160,7 +163,7 @@ export const StatisticsView: React.FC = function () {
                     <Button onClick={() => filterAction('todo')} children={'Todos: ' + todoSize}></Button>
                 </WrapItem>
             </Wrap>
-            <Heading as ="h3" size="md">
+            <Heading as="h3" size="md">
                 API Size
             </Heading>
             <Box width="100%">
@@ -177,7 +180,7 @@ export const StatisticsView: React.FC = function () {
                 </Flex>
             </Box>
             <Heading as="h3" size="md">
-                API Size per Usefulness Threshold
+                API Size per Minimum Usefulness Threshold
             </Heading>
             <Box width="100%">
                 <Flex wrap="wrap">
@@ -275,6 +278,7 @@ let createLineChart = function (
     labels: number[],
     getValue: Function,
     title: string,
+    xAxisLabel: string,
 ): ReactElement {
     const options = {
         responsive: true,
@@ -285,6 +289,14 @@ let createLineChart = function (
             title: {
                 display: true,
                 text: title,
+            },
+        },
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: xAxisLabel,
+                },
             },
         },
     };
@@ -301,6 +313,7 @@ let createLineChart = function (
                 data: labels.map((key) => dataValues.get(key)),
                 borderColor: 'rgb(255, 99, 132)',
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                // xAxisID: 'x'
             },
         ],
     };
