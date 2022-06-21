@@ -17,7 +17,7 @@ export const ProgressStatistics = function () {
     const numberOfCompleteMatchedNodes = matchedNodes.filter((it) => it.id in completed).length;
 
     const completionData = {
-        labels: ['Complete', 'Not Marked as Complete'],
+        labels: ['Complete', 'Incomplete?'],
         datasets: [
             {
                 data: [numberOfCompleteMatchedNodes, numberOfMatchedNodes - numberOfCompleteMatchedNodes],
@@ -43,7 +43,7 @@ export const ProgressStatistics = function () {
     const numberOfReviewedAnnotations = allAnnotations.filter((it) => (it.reviewers?.length ?? 0) > 0).length;
 
     const correctnessData = {
-        labels: ['Correct', 'Not Marked As Correct'],
+        labels: ['Correct', 'Incorrect?'],
         datasets: [
             {
                 data: [numberOfReviewedAnnotations, numberOfAnnotations - numberOfReviewedAnnotations],
