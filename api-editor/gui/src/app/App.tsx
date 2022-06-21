@@ -69,6 +69,7 @@ import { AbstractPythonFilter } from '../features/filter/model/AbstractPythonFil
 import { UsageCountStore } from '../features/usages/model/UsageCountStore';
 import { PythonDeclaration } from '../features/packageData/model/PythonDeclaration';
 import { SaveFilterDialog } from '../features/filter/SaveFilterDialog';
+import { StatisticsView } from '../features/packageData/selectionView/StatisticsView';
 
 export const App: React.FC = function () {
     useIndexedDB();
@@ -93,17 +94,17 @@ export const App: React.FC = function () {
     const showUsagesImportDialog = useAppSelector(selectShowUsageImportDialog);
     const batchMode = useAppSelector(selectBatchMode);
     const showAddFilterDialog = useAppSelector(selectShowAddFilterDialog);
-
+    
     return (
         <>
             <Grid
                 autoColumns="0fr 1fr 0fr"
-                autoRows="0fr 1fr"
-                templateAreas='"menu menu" "leftPane rightPane" "footer footer"'
+                autoRows="0fr 1fr 0fr"
+                templateAreas='"menu menu menu" "leftPane middlePane rightPane" "footer footer footer"'
                 w="100vw"
                 h="100vh"
             >
-                <GridItem gridArea="menu" colSpan={2}>
+                <GridItem gridArea="menu" colSpan={3}>
                     <MenuBar displayInferErrors={displayInferErrors} />
                 </GridItem>
                 <GridItem
@@ -155,7 +156,7 @@ export const App: React.FC = function () {
                     )}
                     {currentUserAction.type === 'todo' && <TodoForm target={userActionTarget || rawPythonPackage} />}
                 </GridItem>
-                <GridItem gridArea="rightPane" overflow="auto">
+                <GridItem gridArea="middlePane" overflow="auto">
                     <Box flexGrow={1} overflowY="auto" width="100%">
                         {batchMode === BatchMode.None && <SelectionView />}
 
@@ -196,7 +197,23 @@ export const App: React.FC = function () {
                         )}
                     </Box>
                 </GridItem>
-                <GridItem gridArea="footer" colSpan={2}>
+                <GridItem
+                    gridArea="rightPane"
+                    overflow="auto"
+                    // minW="20vw"
+                    w="500px"
+                    // maxW="80vw"
+                    borderLeft={1}
+                    layerStyle="subtleBorder"
+                    resize="horizontal"
+                >
+                    {/*{location === '/statistics-view' && (*/}
+                        <Box padding={4}>
+                            <StatisticsView />
+                        </Box>
+                    {/*)}*/}
+                </GridItem>
+                <GridItem gridArea="footer" colSpan={3}>
                     {currentUserAction.type === 'none' && <ActionBar declaration={declaration} />}
                 </GridItem>
 
