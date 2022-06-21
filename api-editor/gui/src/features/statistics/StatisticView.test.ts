@@ -4,7 +4,7 @@ import { PythonClass } from '../packageData/model/PythonClass';
 import { PythonFunction } from '../packageData/model/PythonFunction';
 import { PythonParameter } from '../packageData/model/PythonParameter';
 import { UsageCountStore } from '../usages/model/UsageCountStore';
-import { getClassValues, getFunctionValues, getParameterValues } from './StatisticsView';
+import { getClassValues, getFunctionValues, getParameterValues } from './ApiSizeStatistics';
 
 const parameterTest: PythonParameter[] = [
     new PythonParameter(
