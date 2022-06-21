@@ -1,7 +1,7 @@
-import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import * as idb from 'idb-keyval';
-import { RootState } from '../../app/store';
-import { isValidUsername } from '../../common/util/validation';
+import {RootState} from '../../app/store';
+import {isValidUsername} from '../../common/util/validation';
 
 /**
  * How many annotations can be applied to a class at once.
@@ -978,20 +978,24 @@ export const selectNumberOfAnnotationsOnTarget =
             }
         }, 0);
     };
-export const selectAllAnnotations = createSelector(selectAnnotationStore, (annotationStore) => {
-    return Object.entries(annotationStore).flatMap(([annotationType, targetToAnnotations]) => {
-        switch (annotationType) {
-            case 'completes':
-                return [];
-            case 'calledAfters':
-            case 'groups':
-                return Object.values(targetToAnnotations).flatMap((nameToAnnotations) =>
-                    Object.values(nameToAnnotations),
-                );
-            default:
-                return Object.values(targetToAnnotations);
-        }
-    });
-});
+export const selectAllAnnotationsOnTargets =
+    (targets: string[]) =>
+    (state: RootState): Annotation[] =>
+        targets.flatMap((target) => selectAllAnnotationsOnTarget(target)(state));
+const selectAllAnnotationsOnTarget =
+    (target: string) =>
+    (state: RootState): Annotation[] => {
+        return Object.entries(selectAnnotationStore(state)).flatMap(([annotationType, targetToAnnotations]) => {
+            switch (annotationType) {
+                case 'completes':
+                    return [];
+                case 'calledAfters':
+                case 'groups':
+                    return Object.values(targetToAnnotations[target] ?? {});
+                default:
+                    return targetToAnnotations[target] ?? [];
+            }
+        });
+    };
 export const selectUsername = (state: RootState): string => selectAnnotationSlice(state).username;
 export const selectUsernameIsValid = (state: RootState): boolean => isValidUsername(selectUsername(state));

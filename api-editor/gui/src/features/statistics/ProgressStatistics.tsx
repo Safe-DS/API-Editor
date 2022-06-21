@@ -1,8 +1,8 @@
 import React from 'react';
 import { Box, Heading, HStack } from '@chakra-ui/react';
 import { useAppSelector } from '../../app/hooks';
-import { selectMatchedNodes, selectNumberOfMatchedNodes } from '../packageData/apiSlice';
-import {selectAllAnnotations, selectAnnotationStore} from '../annotations/annotationSlice';
+import { selectMatchedNodes } from '../packageData/apiSlice';
+import { selectAllAnnotationsOnTargets, selectAnnotationStore } from '../annotations/annotationSlice';
 import { Pie } from 'react-chartjs-2';
 
 import { ArcElement, Chart as ChartJS, Title, Tooltip } from 'chart.js';
@@ -12,8 +12,9 @@ ChartJS.register(ArcElement, Title, Tooltip);
 export const ProgressStatistics = function () {
     // Completion Progress
     const completed = useAppSelector(selectAnnotationStore).completes;
-    const numberOfMatchedNodes = useAppSelector(selectNumberOfMatchedNodes);
-    const numberOfCompleteMatchedNodes = useAppSelector(selectMatchedNodes).filter((it) => it.id in completed).length;
+    const matchedNodes = useAppSelector(selectMatchedNodes);
+    const numberOfMatchedNodes = matchedNodes.length;
+    const numberOfCompleteMatchedNodes = matchedNodes.filter((it) => it.id in completed).length;
 
     const completionData = {
         labels: ['Complete', 'Not Marked as Complete'],
@@ -37,7 +38,7 @@ export const ProgressStatistics = function () {
     };
 
     // Review Progress
-    const allAnnotations = useAppSelector(selectAllAnnotations);
+    const allAnnotations = useAppSelector(selectAllAnnotationsOnTargets(matchedNodes.map((it) => it.id)));
     const numberOfAnnotations = allAnnotations.length;
     const numberOfReviewedAnnotations = allAnnotations.filter((it) => (it.reviewers?.length ?? 0) > 0).length;
 
