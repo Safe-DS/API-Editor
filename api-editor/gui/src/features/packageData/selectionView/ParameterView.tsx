@@ -1,4 +1,4 @@
-import { Heading, Stack, Text as ChakraText } from '@chakra-ui/react';
+import { Box, Heading, Stack, Text as ChakraText } from '@chakra-ui/react';
 import React from 'react';
 import { PythonParameter } from '../model/PythonParameter';
 import { ParameterNode } from './ParameterNode';
@@ -53,7 +53,9 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({ pythonPar
                     <Heading as="h4" size="md">
                         Most Common Values
                     </Heading>
-                    {createBarChart(parameterUsages)}
+                    <Box w="30vw" maxWidth="640px">
+                        {createBarChart(parameterUsages)}
+                    </Box>
                 </Stack>
             )}
         </Stack>
