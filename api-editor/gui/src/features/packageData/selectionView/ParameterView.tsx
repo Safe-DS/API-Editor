@@ -54,7 +54,7 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({ pythonPar
                         Most Common Values
                     </Heading>
                     <Box w="30vw" maxWidth="640px">
-                    {createBarChart(parameterUsages)}
+                        {createBarChart(parameterUsages)}
                     </Box>
                 </Stack>
             )}
