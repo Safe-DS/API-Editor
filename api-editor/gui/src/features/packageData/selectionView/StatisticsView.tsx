@@ -101,35 +101,6 @@ export const StatisticsView: React.FC = function () {
 
     return (
         <VStack spacing="4">
-            <Heading as="h2" size="md">
-                Statistics
-            </Heading>
-            <Box width="100%">
-                <Flex wrap="wrap">
-                    <Box minWidth="350px" flex="1 1 33%">
-                        {classBarChart}
-                    </Box>
-                    <Box minWidth="350px" flex="1 1 33%">
-                        {functionBarChart}
-                    </Box>
-                    <Box minWidth="350px" flex="1 33%">
-                        {parameterBarChart}
-                    </Box>
-                </Flex>
-            </Box>
-            <Box width="100%">
-                <Flex wrap="wrap">
-                    <Box minWidth="350px" flex="1 1 33%">
-                        {classLineChart}
-                    </Box>
-                    <Box minWidth="350px" flex="1 1 33%">
-                        {functionLineChart}
-                    </Box>
-                    <Box minWidth="350px" flex="1 1 33%">
-                        {parameterLineChart}
-                    </Box>
-                </Flex>
-            </Box>
             <Heading as="h3" size="md">
                 Annotations
             </Heading>
@@ -189,6 +160,38 @@ export const StatisticsView: React.FC = function () {
                     <Button onClick={() => filterAction('todo')} children={'Todos: ' + todoSize}></Button>
                 </WrapItem>
             </Wrap>
+            <Heading as ="h3" size="md">
+                API Size
+            </Heading>
+            <Box width="100%">
+                <Flex wrap="wrap">
+                    <Box minWidth="350px" flex="1 1 33%">
+                        {classBarChart}
+                    </Box>
+                    <Box minWidth="350px" flex="1 1 33%">
+                        {functionBarChart}
+                    </Box>
+                    <Box minWidth="350px" flex="1 33%">
+                        {parameterBarChart}
+                    </Box>
+                </Flex>
+            </Box>
+            <Heading as="h3" size="md">
+                API Size per Usefulness Threshold
+            </Heading>
+            <Box width="100%">
+                <Flex wrap="wrap">
+                    <Box minWidth="350px" flex="1 1 33%">
+                        {classLineChart}
+                    </Box>
+                    <Box minWidth="350px" flex="1 1 33%">
+                        {functionLineChart}
+                    </Box>
+                    <Box minWidth="350px" flex="1 1 33%">
+                        {parameterLineChart}
+                    </Box>
+                </Flex>
+            </Box>
         </VStack>
     );
 };
