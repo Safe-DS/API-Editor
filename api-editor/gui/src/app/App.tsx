@@ -94,7 +94,7 @@ export const App: React.FC = function () {
     const showUsagesImportDialog = useAppSelector(selectShowUsageImportDialog);
     const batchMode = useAppSelector(selectBatchMode);
     const showAddFilterDialog = useAppSelector(selectShowAddFilterDialog);
-    
+
     return (
         <>
             <Grid
@@ -111,8 +111,8 @@ export const App: React.FC = function () {
                     gridArea="leftPane"
                     overflow="auto"
                     minW="20vw"
-                    w="40vw"
-                    maxW="80vw"
+                    w="30vw"
+                    maxW="50vw"
                     borderRight={1}
                     layerStyle="subtleBorder"
                     resize="horizontal"
