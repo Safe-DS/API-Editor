@@ -23,6 +23,7 @@ import {
     BatchMode,
     HeatMapMode,
     selectHeatMapMode,
+    selectShowStatistics,
     selectSortingMode,
     setBatchMode,
     setHeatMapMode,
@@ -30,11 +31,11 @@ import {
     SortingMode,
     toggleAnnotationImportDialog,
     toggleAPIImportDialog,
+    toggleStatisticsView,
     toggleUsageImportDialog,
 } from '../features/ui/uiSlice';
 import { DeleteAllAnnotations } from './DeleteAllAnnotations';
 import { GenerateAdapters } from './GenerateAdapters';
-import { useNavigate } from 'react-router-dom';
 import { FilterControls } from '../features/filter/FilterControls';
 
 interface MenuBarProps {
@@ -44,11 +45,11 @@ interface MenuBarProps {
 export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors }) {
     const { colorMode, toggleColorMode } = useColorMode();
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
 
     const annotationStore = useAppSelector(selectAnnotationStore);
     const sortingMode = useAppSelector(selectSortingMode);
     const heatMapMode = useAppSelector(selectHeatMapMode);
+    const showStatistics = useAppSelector(selectShowStatistics);
 
     const exportAnnotations = () => {
         const a = document.createElement('a');
@@ -60,13 +61,12 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
         a.click();
     };
 
-    const setStatisticsViewPath = () => {
-        navigate(`/statistics-view`);
-    };
-
-    const colorModeArray: string[] = [];
+    const visualSettings: string[] = [];
     if (colorMode === 'dark') {
-        colorModeArray.push('darkMode');
+        visualSettings.push('darkMode');
+    }
+    if (showStatistics) {
+        visualSettings.push('statistics');
     }
 
     return (
@@ -133,19 +133,25 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                     </Menu>
                 </Box>
 
-                <Button onClick={setStatisticsViewPath}>Statistics View</Button>
-
                 <Box>
                     <Menu closeOnSelect={false}>
                         <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
                             Settings
                         </MenuButton>
                         <MenuList>
-                            <MenuOptionGroup type="checkbox" value={colorModeArray}>
-                                <MenuItemOption value={'darkMode'} onClick={toggleColorMode}>
-                                    Dark Mode
-                                </MenuItemOption>
-                            </MenuOptionGroup>
+                            <MenuGroup title="Visual">
+                                <MenuOptionGroup type="checkbox" value={visualSettings}>
+                                    <MenuItemOption value={'darkMode'} onClick={toggleColorMode}>
+                                        Dark Mode
+                                    </MenuItemOption>
+                                    <MenuItemOption
+                                        value={'statistics'}
+                                        onClick={() => dispatch(toggleStatisticsView())}
+                                    >
+                                        Show Statistics
+                                    </MenuItemOption>
+                                </MenuOptionGroup>
+                            </MenuGroup>
                             <MenuDivider />
                             <MenuGroup title="Module/Class/Function Sorting">
                                 <MenuOptionGroup

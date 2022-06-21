@@ -26,6 +26,7 @@ export interface UIState {
     filterList: Filter[];
     sortingMode: SortingMode;
     batchMode: BatchMode;
+    showStatistics: boolean;
 }
 
 type UserAction =
@@ -147,6 +148,7 @@ export const initialState: UIState = {
     heatMapMode: HeatMapMode.None,
     sortingMode: SortingMode.Alphabetical,
     batchMode: BatchMode.None,
+    showStatistics: true,
 };
 
 // Thunks --------------------------------------------------------------------------------------------------------------
@@ -330,6 +332,9 @@ const uiSlice = createSlice({
         setBatchMode(state, action: PayloadAction<BatchMode>) {
             state.batchMode = action.payload;
         },
+        toggleStatisticsView(state) {
+            state.showStatistics = !state.showStatistics;
+        },
     },
     extraReducers(builder) {
         builder.addCase(initializeUI.fulfilled, (state, action) => action.payload);
@@ -371,6 +376,7 @@ export const {
     removeFilter,
     setSortingMode,
     setBatchMode,
+    toggleStatisticsView,
 } = actions;
 export const uiReducer = reducer;
 
@@ -406,3 +412,4 @@ export const selectFilter = createSelector(
 );
 export const selectSortingMode = (state: RootState): SortingMode => selectUI(state).sortingMode;
 export const selectBatchMode = (state: RootState): BatchMode => selectUI(state).batchMode;
+export const selectShowStatistics = (state: RootState): boolean => selectUI(state).showStatistics;
