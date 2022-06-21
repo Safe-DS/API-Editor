@@ -1,9 +1,9 @@
-import { PythonPackage } from '../model/PythonPackage';
-import { PythonModule } from '../model/PythonModule';
-import { PythonClass } from '../model/PythonClass';
-import { PythonFunction } from '../model/PythonFunction';
-import { PythonParameter } from '../model/PythonParameter';
-import { UsageCountStore } from '../../usages/model/UsageCountStore';
+import { PythonPackage } from '../packageData/model/PythonPackage';
+import { PythonModule } from '../packageData/model/PythonModule';
+import { PythonClass } from '../packageData/model/PythonClass';
+import { PythonFunction } from '../packageData/model/PythonFunction';
+import { PythonParameter } from '../packageData/model/PythonParameter';
+import { UsageCountStore } from '../usages/model/UsageCountStore';
 import { getClassValues, getFunctionValues, getParameterValues } from './StatisticsView';
 
 const parameterTest: PythonParameter[] = [
