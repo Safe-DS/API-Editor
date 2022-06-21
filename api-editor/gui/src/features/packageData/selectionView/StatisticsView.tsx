@@ -12,7 +12,7 @@ import {
 import { Bar, Line } from 'react-chartjs-2';
 import { PythonPackage } from '../model/PythonPackage';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
-import { Box, Flex, Button, Heading, VStack, Wrap, WrapItem } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, SimpleGrid, VStack } from '@chakra-ui/react';
 import { selectAnnotationStore } from '../../annotations/annotationSlice';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectFilterString, setFilterString } from '../../ui/uiSlice';
@@ -107,62 +107,28 @@ export const StatisticsView: React.FC = function () {
             <Heading as="h3" size="md">
                 Annotations
             </Heading>
-            <Wrap mx="auto" padding="10px 10px 10px 10px">
-                <WrapItem>
-                    <Button
-                        onClick={() => filterAction('attribute')}
-                        children={'Attributes: ' + attributesSize}
-                    ></Button>
-                </WrapItem>
-                <WrapItem>
-                    <Button
-                        onClick={() => filterAction('boundary')}
-                        children={'Boundaries: ' + boundariesSize}
-                    ></Button>
-                </WrapItem>
-                <WrapItem>
-                    <Button
-                        onClick={() => filterAction('calledAfter')}
-                        children={'CalledAfter: ' + calledAftersSize}
-                    ></Button>
-                </WrapItem>
-                <WrapItem>
-                    <Button onClick={() => filterAction('constant')} children={'Constants: ' + constantsSize}></Button>
-                </WrapItem>
-                <WrapItem>
-                    <Button
-                        onClick={() => filterAction('description')}
-                        children={'Descriptions: ' + descriptionSize}
-                    ></Button>
-                </WrapItem>
-                <WrapItem>
-                    <Button onClick={() => filterAction('enum')} children={'Enums: ' + enumsSize}></Button>
-                </WrapItem>
-                <WrapItem>
-                    <Button onClick={() => filterAction('group')} children={'Groups: ' + groupsSize}></Button>
-                </WrapItem>
-                <WrapItem>
-                    <Button onClick={() => filterAction('move')} children={'Move: ' + movesSize}></Button>
-                </WrapItem>
-                <WrapItem>
-                    <Button onClick={() => filterAction('optional')} children={'Optionals: ' + optionalsSize}></Button>
-                </WrapItem>
-                <WrapItem>
-                    <Button onClick={() => filterAction('pure')} children={'Pures: ' + puresSize}></Button>
-                </WrapItem>
-                <WrapItem>
-                    <Button onClick={() => filterAction('remove')} children={'Removes: ' + removesSize}></Button>
-                </WrapItem>
-                <WrapItem>
-                    <Button onClick={() => filterAction('rename')} children={'Renaming: ' + renamingsSize}></Button>
-                </WrapItem>
-                <WrapItem>
-                    <Button onClick={() => filterAction('required')} children={'Requireds: ' + requiredsSize}></Button>
-                </WrapItem>
-                <WrapItem>
-                    <Button onClick={() => filterAction('todo')} children={'Todos: ' + todoSize}></Button>
-                </WrapItem>
-            </Wrap>
+            <SimpleGrid columns={2} spacing={4}>
+                <Button onClick={() => filterAction('attribute')} children={'Attributes: ' + attributesSize}></Button>
+                <Button onClick={() => filterAction('boundary')} children={'Boundaries: ' + boundariesSize}></Button>
+                <Button
+                    onClick={() => filterAction('calledAfter')}
+                    children={'CalledAfter: ' + calledAftersSize}
+                ></Button>
+                <Button onClick={() => filterAction('constant')} children={'Constants: ' + constantsSize}></Button>
+                <Button
+                    onClick={() => filterAction('description')}
+                    children={'Descriptions: ' + descriptionSize}
+                ></Button>
+                <Button onClick={() => filterAction('enum')} children={'Enums: ' + enumsSize}></Button>
+                <Button onClick={() => filterAction('group')} children={'Groups: ' + groupsSize}></Button>
+                <Button onClick={() => filterAction('move')} children={'Move: ' + movesSize}></Button>
+                <Button onClick={() => filterAction('optional')} children={'Optionals: ' + optionalsSize}></Button>
+                <Button onClick={() => filterAction('pure')} children={'Pures: ' + puresSize}></Button>
+                <Button onClick={() => filterAction('remove')} children={'Removes: ' + removesSize}></Button>
+                <Button onClick={() => filterAction('rename')} children={'Renaming: ' + renamingsSize}></Button>
+                <Button onClick={() => filterAction('required')} children={'Requireds: ' + requiredsSize}></Button>
+                <Button onClick={() => filterAction('todo')} children={'Todos: ' + todoSize}></Button>
+            </SimpleGrid>
             <Heading as="h3" size="md">
                 API Size
             </Heading>
