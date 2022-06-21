@@ -6,6 +6,17 @@ The `api-editor` is a tool to improve the API of a Python library in a semi-auto
 
 The automation described above relies on structured information about the existing Python library. This information can be computed automatically by the [package-parser][package-parser].
 
+## For Users
+
+1. Install [OpenJDK 17](https://adoptium.net/).
+2. Download the file `api-editor-<version>.jar` from the [latest release](https://github.com/lars-reimann/api-editor/releases/latest) (listed under "Assets").
+3. Run the program:
+    ```shell
+    java -jar api-editor-<version>.jar
+    ```
+
+## For Developers
+
 ### Installation
 
 1. Install [OpenJDK 17](https://adoptium.net/).
