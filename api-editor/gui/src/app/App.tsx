@@ -51,6 +51,7 @@ import {
     selectShowUsageImportDialog,
     selectUI,
     selectShowAddFilterDialog,
+    selectShowStatistics,
 } from '../features/ui/uiSlice';
 import { initializeUsages, persistUsages, selectUsages } from '../features/usages/usageSlice';
 import { initializePythonPackage, selectRawPythonPackage } from '../features/packageData/apiSlice';
@@ -94,6 +95,7 @@ export const App: React.FC = function () {
     const showUsagesImportDialog = useAppSelector(selectShowUsageImportDialog);
     const batchMode = useAppSelector(selectBatchMode);
     const showAddFilterDialog = useAppSelector(selectShowAddFilterDialog);
+    const showStatistics = useAppSelector(selectShowStatistics);
 
     return (
         <>
@@ -197,22 +199,20 @@ export const App: React.FC = function () {
                         )}
                     </Box>
                 </GridItem>
-                <GridItem
-                    gridArea="rightPane"
-                    overflow="auto"
-                    // minW="20vw"
-                    w="500px"
-                    // maxW="80vw"
-                    borderLeft={1}
-                    layerStyle="subtleBorder"
-                    resize="horizontal"
-                >
-                    {/*{location === '/statistics-view' && (*/}
+                {showStatistics && (
+                    <GridItem
+                        gridArea="rightPane"
+                        overflow="auto"
+                        w="20vw"
+                        borderLeft={1}
+                        layerStyle="subtleBorder"
+                        resize="horizontal"
+                    >
                         <Box padding={4}>
                             <StatisticsView />
                         </Box>
-                    {/*)}*/}
-                </GridItem>
+                    </GridItem>
+                )}
                 <GridItem gridArea="footer" colSpan={3}>
                     {currentUserAction.type === 'none' && <ActionBar declaration={declaration} />}
                 </GridItem>
