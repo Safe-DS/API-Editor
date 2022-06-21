@@ -36,16 +36,16 @@ jobs:
         uses: gradle/wrapper-validation-action@v1
 
       - name: Build with Gradle
-        run: ./gradlew check
+        run: ./gradlew build
         working-directory: ./api-editor
 
       - name: Install dependencies
         run: npm ci
 
       - name: Release
+        run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release
 
 
   build-package-parser:

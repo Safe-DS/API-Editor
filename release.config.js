@@ -8,7 +8,7 @@ module.exports = {
             {
                 assets: [
                     {
-                        path: 'api-editor/backend/build/libs/*-all.jar',
+                        path: 'api-editor/backend/build/libs/api-editor-shadow.jar',
                         name: 'api-editor-${nextRelease.gitTag}.jar',
                         label: 'API-Editor (${nextRelease.gitTag})',
                     },
