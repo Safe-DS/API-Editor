@@ -103,11 +103,11 @@ export const StatisticsView: React.FC = function () {
     };
 
     return (
-        <VStack spacing="4">
+        <VStack spacing={4}>
             <Heading as="h3" size="md">
                 Annotations
             </Heading>
-            <SimpleGrid columns={2} spacing={4}>
+            <SimpleGrid columns={2} spacing={2}>
                 <Button onClick={() => filterAction('attribute')} children={'Attributes: ' + attributesSize}></Button>
                 <Button onClick={() => filterAction('boundary')} children={'Boundaries: ' + boundariesSize}></Button>
                 <Button
