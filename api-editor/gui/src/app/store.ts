@@ -14,19 +14,7 @@ export const store = configureStore({
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
-            serializableCheck: {
-                // Ignore these action types
-                ignoredActions: [
-                    'api/initialize',
-                    'api/initialize/fulfilled',
-                    'api/setPythonPackage',
-                    'usages/initialize',
-                    'usages/initialize/fulfilled',
-                    'usages/setUsages',
-                ],
-                // Ignore these paths in the state
-                ignoredPaths: ['api.pythonPackage', 'usages.usages'],
-            },
+            serializableCheck: false,
         }),
 });
 
