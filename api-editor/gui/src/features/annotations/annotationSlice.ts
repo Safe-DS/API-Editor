@@ -352,7 +352,6 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        // TODO update
         mergeAnnotationStore(state, action: PayloadAction<AnnotationStore>) {
             for (const annotationType of Object.keys(action.payload)) {
                 if (annotationType === 'calledAfters' || annotationType === 'groups') {
@@ -966,7 +965,7 @@ export const selectTodo =
     (target: string) =>
     (state: RootState): TodoAnnotation | undefined =>
         selectAnnotationStore(state).todos[target];
-export const selectNumberOfAnnotations =
+export const selectNumberOfAnnotationsOnTarget =
     (target: string) =>
     (state: RootState): number => {
         return Object.entries(selectAnnotationStore(state)).reduce((acc, [annotationType, annotations]) => {
@@ -978,6 +977,25 @@ export const selectNumberOfAnnotations =
                 return acc;
             }
         }, 0);
+    };
+export const selectAllAnnotationsOnTargets =
+    (targets: string[]) =>
+    (state: RootState): Annotation[] =>
+        targets.flatMap((target) => selectAllAnnotationsOnTarget(target)(state));
+const selectAllAnnotationsOnTarget =
+    (target: string) =>
+    (state: RootState): Annotation[] => {
+        return Object.entries(selectAnnotationStore(state)).flatMap(([annotationType, targetToAnnotations]) => {
+            switch (annotationType) {
+                case 'completes':
+                    return [];
+                case 'calledAfters':
+                case 'groups':
+                    return Object.values(targetToAnnotations[target] ?? {});
+                default:
+                    return targetToAnnotations[target] ?? [];
+            }
+        });
     };
 export const selectUsername = (state: RootState): string => selectAnnotationSlice(state).username;
 export const selectUsernameIsValid = (state: RootState): boolean => isValidUsername(selectUsername(state));
