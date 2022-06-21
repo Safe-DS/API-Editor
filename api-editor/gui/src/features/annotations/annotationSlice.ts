@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import * as idb from 'idb-keyval';
 import { RootState } from '../../app/store';
 import { isValidUsername } from '../../common/util/validation';
@@ -352,7 +352,6 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        // TODO update
         mergeAnnotationStore(state, action: PayloadAction<AnnotationStore>) {
             for (const annotationType of Object.keys(action.payload)) {
                 if (annotationType === 'calledAfters' || annotationType === 'groups') {
@@ -966,7 +965,7 @@ export const selectTodo =
     (target: string) =>
     (state: RootState): TodoAnnotation | undefined =>
         selectAnnotationStore(state).todos[target];
-export const selectNumberOfAnnotations =
+export const selectNumberOfAnnotationsOnTarget =
     (target: string) =>
     (state: RootState): number => {
         return Object.entries(selectAnnotationStore(state)).reduce((acc, [annotationType, annotations]) => {
@@ -979,5 +978,20 @@ export const selectNumberOfAnnotations =
             }
         }, 0);
     };
+export const selectAllAnnotations = createSelector(selectAnnotationStore, (annotationStore) => {
+    return Object.entries(annotationStore).flatMap(([annotationType, targetToAnnotations]) => {
+        switch (annotationType) {
+            case 'completes':
+                return [];
+            case 'calledAfters':
+            case 'groups':
+                return Object.values(targetToAnnotations).flatMap((nameToAnnotations) =>
+                    Object.values(nameToAnnotations),
+                );
+            default:
+                return Object.values(targetToAnnotations);
+        }
+    });
+});
 export const selectUsername = (state: RootState): string => selectAnnotationSlice(state).username;
 export const selectUsernameIsValid = (state: RootState): boolean => isValidUsername(selectUsername(state));

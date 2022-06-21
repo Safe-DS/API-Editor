@@ -3,6 +3,7 @@ import { PythonPackage } from '../packageData/model/PythonPackage';
 import React, { ReactElement } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
 import {
+    ArcElement,
     BarElement,
     CategoryScale,
     Chart as ChartJS,
@@ -13,7 +14,7 @@ import {
     Tooltip,
 } from 'chart.js';
 
-ChartJS.register(CategoryScale, PointElement, LineElement, LinearScale, BarElement, Title, Tooltip);
+ChartJS.register(ArcElement, CategoryScale, PointElement, LineElement, LinearScale, BarElement, Title, Tooltip);
 
 export const createBarChart = function (labels: string[], values: number[], title: string): ReactElement {
     const options = {

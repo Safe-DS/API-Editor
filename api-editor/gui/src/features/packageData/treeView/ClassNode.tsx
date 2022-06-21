@@ -6,7 +6,7 @@ import { TreeNode, ValuePair } from './TreeNode';
 import { AbstractPythonFilter } from '../../filter/model/AbstractPythonFilter';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { useAppSelector } from '../../../app/hooks';
-import { maximumNumberOfClassAnnotations, selectNumberOfAnnotations } from '../../annotations/annotationSlice';
+import { maximumNumberOfClassAnnotations, selectNumberOfAnnotationsOnTarget } from '../../annotations/annotationSlice';
 import { HeatMapMode, selectHeatMapMode } from '../../ui/uiSlice';
 
 interface ClassNodeProps {
@@ -47,5 +47,5 @@ const getMapWithUsages = function (usages: UsageCountStore, pythonClass: PythonC
 };
 
 const useAnnotationCounts = function (pythonClass: PythonClass): ValuePair {
-    return new ValuePair(useAppSelector(selectNumberOfAnnotations(pythonClass.id)), maximumNumberOfClassAnnotations);
+    return new ValuePair(useAppSelector(selectNumberOfAnnotationsOnTarget(pythonClass.id)), maximumNumberOfClassAnnotations);
 };
