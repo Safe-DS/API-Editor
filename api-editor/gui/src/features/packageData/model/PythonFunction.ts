@@ -59,6 +59,14 @@ export class PythonFunction extends PythonDeclaration {
         return segments[segments.length - 1];
     }
 
+    preferredQualifiedName(): string {
+        if (this.containingModuleOrClass) {
+            return `${this.containingModuleOrClass.preferredQualifiedName()}.${this.name}`;
+        } else {
+            return this.name;
+        }
+    }
+
     isGlobal(): boolean {
         return this.containingModuleOrClass instanceof PythonModule;
     }

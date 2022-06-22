@@ -5,6 +5,7 @@ import { PythonParameter } from '../../packageData/model/PythonParameter';
 import { AnnotationStore } from '../../annotations/annotationSlice';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { AbstractPythonFilter } from './AbstractPythonFilter';
+import {PythonDeclaration} from "../../packageData/model/PythonDeclaration";
 
 /**
  * Keeps only declarations that have a given string in their qualified name.
@@ -18,36 +19,36 @@ export class QualifiedNameStringFilter extends AbstractPythonFilter {
         super();
     }
 
-    shouldKeepModule(pythonModule: PythonModule, _annotations: AnnotationStore, _usages: UsageCountStore): boolean {
+    shouldKeepModule(pythonModule: PythonModule, annotations: AnnotationStore, usages: UsageCountStore): boolean {
         // For modules the qualified name is the same as the name.
-        return this.shouldKeepQualifiedName(pythonModule.name);
+        return this.shouldKeepDeclaration(pythonModule, annotations, usages);
     }
 
-    shouldKeepClass(pythonClass: PythonClass, _annotations: AnnotationStore, _usages: UsageCountStore): boolean {
-        return this.shouldKeepQualifiedName(pythonClass.qualifiedName);
+    shouldKeepClass(pythonClass: PythonClass, annotations: AnnotationStore, usages: UsageCountStore): boolean {
+        return this.shouldKeepDeclaration(pythonClass, annotations, usages);
     }
 
-    shouldKeepFunction(
-        pythonFunction: PythonFunction,
-        _annotations: AnnotationStore,
-        _usages: UsageCountStore,
-    ): boolean {
-        return this.shouldKeepQualifiedName(pythonFunction.qualifiedName);
+    shouldKeepFunction(pythonFunction: PythonFunction, annotations: AnnotationStore, usages: UsageCountStore): boolean {
+        return this.shouldKeepDeclaration(pythonFunction, annotations, usages);
     }
 
     shouldKeepParameter(
         pythonParameter: PythonParameter,
+        annotations: AnnotationStore,
+        usages: UsageCountStore,
+    ): boolean {
+        return this.shouldKeepDeclaration(pythonParameter, annotations, usages);
+    }
+
+    shouldKeepDeclaration(
+        pythonDeclaration: PythonDeclaration,
         _annotations: AnnotationStore,
         _usages: UsageCountStore,
     ): boolean {
-        return this.shouldKeepQualifiedName(pythonParameter.qualifiedName);
-    }
-
-    private shouldKeepQualifiedName(qualifiedName: string): boolean {
         if (this.matchExactly) {
-            return qualifiedName === this.string;
+            return pythonDeclaration.preferredQualifiedName() === this.string;
         } else {
-            return qualifiedName.includes(this.string);
+            return pythonDeclaration.preferredQualifiedName().includes(this.string);
         }
     }
 }

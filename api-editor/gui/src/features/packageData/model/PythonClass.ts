@@ -48,6 +48,14 @@ export class PythonClass extends PythonDeclaration {
         return this.methods;
     }
 
+    preferredQualifiedName(): string {
+        if (this.containingModule) {
+            return `${this.containingModule.preferredQualifiedName()}.${this.name}`;
+        } else {
+            return this.name;
+        }
+    }
+
     shallowCopy({
         id = this.id,
         name = this.name,

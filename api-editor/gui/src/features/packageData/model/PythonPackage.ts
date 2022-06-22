@@ -39,6 +39,10 @@ export class PythonPackage extends PythonDeclaration {
         return this.modules;
     }
 
+    preferredQualifiedName(): string {
+        return this.name;
+    }
+
     getDeclarationById(id: string): Optional<PythonDeclaration> {
         if (this.idToDeclaration.has(id)) {
             return this.idToDeclaration.get(id);

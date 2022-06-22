@@ -9,6 +9,8 @@ export abstract class PythonDeclaration {
 
     abstract children(): PythonDeclaration[];
 
+    abstract preferredQualifiedName(): string;
+
     getUniqueName(): string {
         return this.name;
     }
