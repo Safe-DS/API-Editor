@@ -85,8 +85,8 @@ export const FilterHelpButton = function () {
                                 </ChakraText>
                                 <ChakraText>
                                     Displays only elements with matching names (case-sensitive). Replace [operator] with{' '}
-                                    <em>=</em> to display only elements that match [string] exactly or with{' '}
-                                    <em>~</em> to display only elements that contain [string] as a substring.
+                                    <em>=</em> to display only elements that match [string] exactly or with <em>~</em>{' '}
+                                    to display only elements that contain [string] as a substring.
                                 </ChakraText>
                             </ListItem>
                             <ListItem>
@@ -100,16 +100,18 @@ export const FilterHelpButton = function () {
                                     <strong>qname:[operator][string]</strong>
                                 </ChakraText>
                                 <ChakraText>
-                                    Displays only elements with matching qualified names (case-sensitive). Replace [operator] with{' '}
-                                    <em>=</em> to display only elements that match [string] exactly or with{' '}
-                                    <em>~</em> to display only elements that contain [string] as a substring.
+                                    Displays only elements with matching qualified names (case-sensitive). Replace
+                                    [operator] with <em>=</em> to display only elements that match [string] exactly or
+                                    with <em>~</em> to display only elements that contain [string] as a substring.
                                 </ChakraText>
                             </ListItem>
                             <ListItem>
                                 <ChakraText>
                                     <strong>qname:/[regex]/</strong>
                                 </ChakraText>
-                                <ChakraText>Displays only elements with qualified names that match the given [regex].</ChakraText>
+                                <ChakraText>
+                                    Displays only elements with qualified names that match the given [regex].
+                                </ChakraText>
                             </ListItem>
                             <ListItem>
                                 <ChakraText>
