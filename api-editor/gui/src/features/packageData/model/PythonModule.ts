@@ -51,6 +51,10 @@ export class PythonModule extends PythonDeclaration {
         return [...this.classes, ...this.functions];
     }
 
+    preferredQualifiedName(): string {
+        return this.name;
+    }
+
     shallowCopy({
         id = this.id,
         name = this.name,

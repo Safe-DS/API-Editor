@@ -14,6 +14,8 @@ import { RequiredOrOptional, RequiredOrOptionalFilter } from './RequiredOrOption
 import { NameRegexFilter } from './NameRegexFilter';
 import { DoneFilter } from './DoneFilter';
 import { PythonParameterAssignment } from '../../packageData/model/PythonParameter';
+import { QualifiedNameStringFilter } from './QualifiedNameStringFilter';
+import { QualifiedNameRegexFilter } from './QualifiedNameRegexFilter';
 
 /**
  * Creates a filter from the given string. This method handles conjunctions, negations, and non-negated tokens.
@@ -138,7 +140,30 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
 
     const nameRegexMatch = /^name:\/(?<regex>.*)\/$/u.exec(token);
     if (nameRegexMatch) {
-        return new NameRegexFilter(nameRegexMatch?.groups?.regex as string);
+        try {
+            return new NameRegexFilter(nameRegexMatch?.groups?.regex as string);
+        } catch (e) {
+            return undefined;
+        }
+    }
+
+    // Name
+    const qualifiedNameStringMatch = /^qname:(?<comparison>[=~])(?<qname>[\w.]+)$/u.exec(token);
+    if (qualifiedNameStringMatch) {
+        const comparisonOperator = qualifiedNameStringMatch?.groups?.comparison as string;
+        return new QualifiedNameStringFilter(
+            qualifiedNameStringMatch?.groups?.qname as string,
+            comparisonOperator === '=',
+        );
+    }
+
+    const qualifiedNameRegexMatch = /^qname:\/(?<regex>.*)\/$/u.exec(token);
+    if (qualifiedNameRegexMatch) {
+        try {
+            return new QualifiedNameRegexFilter(qualifiedNameRegexMatch?.groups?.regex as string);
+        } catch (e) {
+            return undefined;
+        }
     }
 
     // Usages

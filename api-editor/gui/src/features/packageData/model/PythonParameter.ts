@@ -40,6 +40,14 @@ export class PythonParameter extends PythonDeclaration {
         return [];
     }
 
+    preferredQualifiedName(): string {
+        if (this.containingFunction) {
+            return `${this.containingFunction.preferredQualifiedName()}.${this.name}`;
+        } else {
+            return this.name;
+        }
+    }
+
     isExplicitParameter(): boolean {
         return this.assignedBy !== PythonParameterAssignment.IMPLICIT;
     }

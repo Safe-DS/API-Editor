@@ -25,6 +25,14 @@ export class PythonResult extends PythonDeclaration {
         return [];
     }
 
+    preferredQualifiedName(): string {
+        if (this.containingFunction) {
+            return `${this.containingFunction.preferredQualifiedName()}.${this.name}`;
+        } else {
+            return this.name;
+        }
+    }
+
     toString(): string {
         return `Result "${this.name}"`;
     }
