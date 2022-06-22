@@ -3,8 +3,7 @@ package com.larsreimann.api_editor.server
 import com.larsreimann.safeds.SafeDSStandaloneSetup
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
-import io.ktor.server.engine.embeddedServer
-import io.ktor.server.netty.Netty
+import io.ktor.server.netty.EngineMain
 import io.ktor.server.plugins.callloging.CallLogging
 import io.ktor.server.plugins.compression.Compression
 import io.ktor.server.plugins.compression.deflate
@@ -13,14 +12,15 @@ import io.ktor.server.plugins.compression.minimumSize
 import io.ktor.server.request.path
 import org.slf4j.event.Level
 
-fun main() {
+fun main(args: Array<String>) {
     SafeDSStandaloneSetup.doSetup()
+    EngineMain.main(args)
+}
 
-    embeddedServer(Netty, port = 4280, host = "localhost") {
-        configureHTTP()
-        configureMonitoring()
-        configureRouting()
-    }.start(wait = true)
+fun Application.module() {
+    configureHTTP()
+    configureMonitoring()
+    configureRouting()
 }
 
 fun Application.configureHTTP() {
