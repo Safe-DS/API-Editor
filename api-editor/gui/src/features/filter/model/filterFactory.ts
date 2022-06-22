@@ -140,7 +140,11 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
 
     const nameRegexMatch = /^name:\/(?<regex>.*)\/$/u.exec(token);
     if (nameRegexMatch) {
-        return new NameRegexFilter(nameRegexMatch?.groups?.regex as string);
+        try {
+            return new NameRegexFilter(nameRegexMatch?.groups?.regex as string);
+        } catch (e) {
+            return undefined;
+        }
     }
 
     // Name
@@ -155,7 +159,11 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
 
     const qualifiedNameRegexMatch = /^qname:\/(?<regex>.*)\/$/u.exec(token);
     if (qualifiedNameRegexMatch) {
-        return new QualifiedNameRegexFilter(qualifiedNameRegexMatch?.groups?.regex as string);
+        try {
+            return new QualifiedNameRegexFilter(qualifiedNameRegexMatch?.groups?.regex as string);
+        } catch (e) {
+            return undefined;
+        }
     }
 
     // Usages
