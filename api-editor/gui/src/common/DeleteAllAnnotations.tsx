@@ -11,8 +11,8 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import React, { useRef, useState } from 'react';
-import {useAppDispatch, useAppSelector} from '../app/hooks';
-import {resetAnnotationStore, selectUsernameIsValid} from '../features/annotations/annotationSlice';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { resetAnnotationStore, selectUsernameIsValid } from '../features/annotations/annotationSlice';
 
 export const DeleteAllAnnotations = function () {
     const dispatch = useAppDispatch();
@@ -34,7 +34,9 @@ export const DeleteAllAnnotations = function () {
 
     return (
         <>
-            <Button onClick={() => setIsOpen(true)} disabled={!usernameIsValid}>Delete All Annotations</Button>
+            <Button onClick={() => setIsOpen(true)} disabled={!usernameIsValid}>
+                Delete All Annotations
+            </Button>
 
             <AlertDialog isOpen={isOpen && usernameIsValid} leastDestructiveRef={cancelRef} onClose={handleCancel}>
                 <AlertDialogOverlay>

@@ -18,7 +18,7 @@ import {
 import React from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import {selectAnnotationStore, selectUsernameIsValid} from '../features/annotations/annotationSlice';
+import { selectAnnotationStore, selectUsernameIsValid } from '../features/annotations/annotationSlice';
 import {
     BatchMode,
     HeatMapMode,
