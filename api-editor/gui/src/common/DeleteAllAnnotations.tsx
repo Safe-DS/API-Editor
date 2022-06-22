@@ -36,7 +36,7 @@ export const DeleteAllAnnotations = function () {
         <>
             <Button onClick={() => setIsOpen(true)} disabled={!usernameIsValid}>Delete All Annotations</Button>
 
-            <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={handleCancel}>
+            <AlertDialog isOpen={isOpen && usernameIsValid} leastDestructiveRef={cancelRef} onClose={handleCancel}>
                 <AlertDialogOverlay>
                     <AlertDialogContent>
                         <AlertDialogHeader>
