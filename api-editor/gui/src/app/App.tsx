@@ -20,6 +20,7 @@ import {
     persistAnnotations,
     selectAnnotationSlice,
     selectAnnotationStore,
+    selectUsernameIsValid,
 } from '../features/annotations/annotationSlice';
 import { BoundaryForm } from '../features/annotations/forms/BoundaryForm';
 import { CalledAfterForm } from '../features/annotations/forms/CalledAfterForm';
@@ -96,6 +97,7 @@ export const App: React.FC = function () {
     const batchMode = useAppSelector(selectBatchMode);
     const showAddFilterDialog = useAppSelector(selectShowAddFilterDialog);
     const showStatistics = useAppSelector(selectShowStatistics);
+    const isValidUsername = useAppSelector(selectUsernameIsValid);
 
     return (
         <>
@@ -160,39 +162,39 @@ export const App: React.FC = function () {
                 </GridItem>
                 <GridItem gridArea="middlePane" overflow="auto">
                     <Box flexGrow={1} overflowY="auto" width="100%">
-                        {batchMode === BatchMode.None && <SelectionView />}
+                        {(batchMode === BatchMode.None || !isValidUsername) && <SelectionView />}
 
-                        {batchMode === BatchMode.Constant && (
+                        {batchMode === BatchMode.Constant && isValidUsername && (
                             <ConstantBatchForm
                                 targets={getMatchedElements(rawPythonPackage, filter, annotationStore, usages)}
                             />
                         )}
 
-                        {batchMode === BatchMode.Rename && (
+                        {batchMode === BatchMode.Rename && isValidUsername && (
                             <RenameBatchForm
                                 targets={getMatchedElements(rawPythonPackage, filter, annotationStore, usages)}
                             />
                         )}
 
-                        {batchMode === BatchMode.Move && (
+                        {batchMode === BatchMode.Move && isValidUsername && (
                             <MoveBatchForm
                                 targets={getMatchedElements(rawPythonPackage, filter, annotationStore, usages)}
                             />
                         )}
 
-                        {batchMode === BatchMode.Required && (
+                        {batchMode === BatchMode.Required && isValidUsername && (
                             <RequiredBatchForm
                                 targets={getMatchedElements(rawPythonPackage, filter, annotationStore, usages)}
                             />
                         )}
 
-                        {batchMode === BatchMode.Optional && (
+                        {batchMode === BatchMode.Optional && isValidUsername && (
                             <OptionalBatchForm
                                 targets={getMatchedElements(rawPythonPackage, filter, annotationStore, usages)}
                             />
                         )}
 
-                        {batchMode === BatchMode.Remove && (
+                        {batchMode === BatchMode.Remove && isValidUsername && (
                             <RemoveBatchForm
                                 targets={getMatchedElements(rawPythonPackage, filter, annotationStore, usages)}
                             />

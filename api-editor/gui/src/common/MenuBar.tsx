@@ -18,7 +18,7 @@ import {
 import React from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { selectAnnotationStore } from '../features/annotations/annotationSlice';
+import { selectAnnotationStore, selectUsernameIsValid } from '../features/annotations/annotationSlice';
 import {
     BatchMode,
     HeatMapMode,
@@ -50,6 +50,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
     const sortingMode = useAppSelector(selectSortingMode);
     const heatMapMode = useAppSelector(selectHeatMapMode);
     const showStatistics = useAppSelector(selectShowStatistics);
+    const usernameIsValid = useAppSelector(selectUsernameIsValid);
 
     const exportAnnotations = () => {
         const a = document.createElement('a');
@@ -105,7 +106,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
 
                 <Box>
                     <Menu closeOnSelect={false}>
-                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />} disabled={!usernameIsValid}>
                             Batch
                         </MenuButton>
                         <MenuList>
