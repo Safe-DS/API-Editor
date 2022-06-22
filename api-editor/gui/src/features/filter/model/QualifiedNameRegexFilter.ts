@@ -5,7 +5,7 @@ import { PythonParameter } from '../../packageData/model/PythonParameter';
 import { AnnotationStore } from '../../annotations/annotationSlice';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { AbstractPythonFilter } from './AbstractPythonFilter';
-import {PythonDeclaration} from "../../packageData/model/PythonDeclaration";
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
 
 /**
  * Keeps only declarations that have a qualified name matching the given regex.
