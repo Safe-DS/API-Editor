@@ -46,7 +46,7 @@ export const AnnotationStatistics = function () {
     return (
         <>
             <Heading as="h3" size="md">
-                Annotations
+                Annotations on Matched Elements
             </Heading>
             <SimpleGrid columns={2} spacing={2}>
                 <Button onClick={() => filterAction('attribute')} children={'Attributes: ' + attributesSize}></Button>
