@@ -161,7 +161,7 @@ export const App: React.FC = function () {
                 </GridItem>
                 <GridItem gridArea="middlePane" overflow="auto">
                     <Box flexGrow={1} overflowY="auto" width="100%">
-                        {batchMode === BatchMode.None || !isValidUsername && <SelectionView/>}
+                        {(batchMode === BatchMode.None || !isValidUsername) && <SelectionView/>}
 
                         {batchMode === BatchMode.Constant && isValidUsername && (
                             <ConstantBatchForm
