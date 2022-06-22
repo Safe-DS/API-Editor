@@ -1,27 +1,30 @@
 import React from 'react';
 import { Button, Heading, SimpleGrid } from '@chakra-ui/react';
-import { selectAnnotationStore } from '../annotations/annotationSlice';
+import { Annotation, selectAnnotationStore } from '../annotations/annotationSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectFilterString, setFilterString } from '../ui/uiSlice';
+import { selectMatchedNodes } from '../packageData/apiSlice';
 
 export const AnnotationStatistics = function () {
     const dispatch = useAppDispatch();
 
+    const matchedIds = useAppSelector(selectMatchedNodes).map((it) => it.id);
+
     const annotations = useAppSelector(selectAnnotationStore);
-    const boundariesSize = Object.keys(annotations.boundaries).length;
-    const constantsSize = Object.keys(annotations.constants).length;
-    const descriptionSize = Object.keys(annotations.descriptions).length;
-    const enumsSize = Object.keys(annotations.enums).length;
-    const optionalsSize = Object.keys(annotations.optionals).length;
-    const movesSize = Object.keys(annotations.moves).length;
-    const groupsSize = Object.keys(annotations.groups).length;
-    const calledAftersSize = Object.keys(annotations.calledAfters).length;
-    const attributesSize = Object.keys(annotations.attributes).length;
-    const puresSize = Object.keys(annotations.pures).length;
-    const renamingsSize = Object.keys(annotations.renamings).length;
-    const requiredsSize = Object.keys(annotations.requireds).length;
-    const removesSize = Object.keys(annotations.removes).length;
-    const todoSize = Object.keys(annotations.todos).length;
+    const attributesSize = countNonRepeatableAnnotation(annotations.attributes, matchedIds);
+    const boundariesSize = countNonRepeatableAnnotation(annotations.boundaries, matchedIds);
+    const calledAftersSize = countRepeatableAnnotation(annotations.calledAfters, matchedIds);
+    const constantsSize = countNonRepeatableAnnotation(annotations.constants, matchedIds);
+    const descriptionSize = countNonRepeatableAnnotation(annotations.descriptions, matchedIds);
+    const enumsSize = countNonRepeatableAnnotation(annotations.enums, matchedIds);
+    const groupsSize = countRepeatableAnnotation(annotations.groups, matchedIds);
+    const optionalsSize = countNonRepeatableAnnotation(annotations.optionals, matchedIds);
+    const movesSize = countNonRepeatableAnnotation(annotations.moves, matchedIds);
+    const puresSize = countNonRepeatableAnnotation(annotations.pures, matchedIds);
+    const removesSize = countNonRepeatableAnnotation(annotations.removes, matchedIds);
+    const renamingsSize = countNonRepeatableAnnotation(annotations.renamings, matchedIds);
+    const requiredsSize = countNonRepeatableAnnotation(annotations.requireds, matchedIds);
+    const todoSize = countNonRepeatableAnnotation(annotations.todos, matchedIds);
 
     const filterString = useAppSelector(selectFilterString);
 
@@ -46,7 +49,7 @@ export const AnnotationStatistics = function () {
     return (
         <>
             <Heading as="h3" size="md">
-                Annotations
+                Annotations on Matched Elements
             </Heading>
             <SimpleGrid columns={2} spacing={2}>
                 <Button onClick={() => filterAction('attribute')} children={'Attributes: ' + attributesSize}></Button>
@@ -72,4 +75,21 @@ export const AnnotationStatistics = function () {
             </SimpleGrid>
         </>
     );
+};
+
+const countNonRepeatableAnnotation = (targetToAnnotation: { [target: string]: Annotation }, matchedIds: string[]) => {
+    return Object.keys(targetToAnnotation).filter((it) => matchedIds.includes(it)).length;
+};
+
+const countRepeatableAnnotation = (
+    targetToNameToAnnotation: { [target: string]: { [name: string]: Annotation } },
+    matchedIds: string[],
+) => {
+    return Object.entries(targetToNameToAnnotation).reduce((acc, [target, nameToAnnotations]) => {
+        if (matchedIds.includes(target)) {
+            return acc + Object.keys(nameToAnnotations).length;
+        } else {
+            return acc;
+        }
+    }, 0);
 };

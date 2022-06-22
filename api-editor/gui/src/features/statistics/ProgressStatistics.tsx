@@ -66,7 +66,7 @@ export const ProgressStatistics = function () {
     return (
         <>
             <Heading as="h3" size="md">
-                Progress
+                Progress on Matched Elements
             </Heading>
             <Box width="100%">
                 <HStack width="100%" justify="space-between">
