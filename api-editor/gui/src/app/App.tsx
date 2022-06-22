@@ -11,33 +11,33 @@ import {
     ModalOverlay,
     UnorderedList,
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
-import { MenuBar } from '../common/MenuBar';
-import { AnnotationImportDialog } from '../features/annotations/AnnotationImportDialog';
+import React, {useEffect, useState} from 'react';
+import {MenuBar} from '../common/MenuBar';
+import {AnnotationImportDialog} from '../features/annotations/AnnotationImportDialog';
 import {
     AnnotationStore,
     initializeAnnotations,
     persistAnnotations,
     selectAnnotationSlice,
-    selectAnnotationStore,
+    selectAnnotationStore, selectUsernameIsValid,
 } from '../features/annotations/annotationSlice';
-import { BoundaryForm } from '../features/annotations/forms/BoundaryForm';
-import { CalledAfterForm } from '../features/annotations/forms/CalledAfterForm';
-import { ConstantForm } from '../features/annotations/forms/ConstantForm';
-import { DescriptionForm } from '../features/annotations/forms/DescriptionForm';
-import { EnumForm } from '../features/annotations/forms/EnumForm';
-import { GroupForm } from '../features/annotations/forms/GroupForm';
-import { MoveForm } from '../features/annotations/forms/MoveForm';
-import { OptionalForm } from '../features/annotations/forms/OptionalForm';
-import { RenameForm } from '../features/annotations/forms/RenameForm';
-import { TodoForm } from '../features/annotations/forms/TodoForm';
-import { PackageDataImportDialog } from '../features/packageData/PackageDataImportDialog';
-import { SelectionView } from '../features/packageData/selectionView/SelectionView';
-import { TreeView } from '../features/packageData/treeView/TreeView';
-import { useAppDispatch, useAppSelector } from './hooks';
-import { PythonFunction } from '../features/packageData/model/PythonFunction';
-import { AttributeForm } from '../features/annotations/forms/AttributeForm';
-import { UsageImportDialog } from '../features/usages/UsageImportDialog';
+import {BoundaryForm} from '../features/annotations/forms/BoundaryForm';
+import {CalledAfterForm} from '../features/annotations/forms/CalledAfterForm';
+import {ConstantForm} from '../features/annotations/forms/ConstantForm';
+import {DescriptionForm} from '../features/annotations/forms/DescriptionForm';
+import {EnumForm} from '../features/annotations/forms/EnumForm';
+import {GroupForm} from '../features/annotations/forms/GroupForm';
+import {MoveForm} from '../features/annotations/forms/MoveForm';
+import {OptionalForm} from '../features/annotations/forms/OptionalForm';
+import {RenameForm} from '../features/annotations/forms/RenameForm';
+import {TodoForm} from '../features/annotations/forms/TodoForm';
+import {PackageDataImportDialog} from '../features/packageData/PackageDataImportDialog';
+import {SelectionView} from '../features/packageData/selectionView/SelectionView';
+import {TreeView} from '../features/packageData/treeView/TreeView';
+import {useAppDispatch, useAppSelector} from './hooks';
+import {PythonFunction} from '../features/packageData/model/PythonFunction';
+import {AttributeForm} from '../features/annotations/forms/AttributeForm';
+import {UsageImportDialog} from '../features/usages/UsageImportDialog';
 import {
     BatchMode,
     GroupUserAction,
@@ -53,24 +53,24 @@ import {
     selectShowAddFilterDialog,
     selectShowStatistics,
 } from '../features/ui/uiSlice';
-import { initializeUsages, persistUsages, selectUsages } from '../features/usages/usageSlice';
-import { initializePythonPackage, selectRawPythonPackage } from '../features/packageData/apiSlice';
-import { PythonClass } from '../features/packageData/model/PythonClass';
-import { PythonParameter } from '../features/packageData/model/PythonParameter';
-import { ConstantBatchForm } from '../features/annotations/batchforms/ConstantBatchForm';
-import { ActionBar } from '../features/actionBar/ActionBar';
-import { useLocation } from 'react-router-dom';
-import { RenameBatchForm } from '../features/annotations/batchforms/RenameBatchForm';
-import { RequiredBatchForm } from '../features/annotations/batchforms/RequiredBatchForm';
-import { OptionalBatchForm } from '../features/annotations/batchforms/OptionalBatchForm';
-import { RemoveBatchForm } from '../features/annotations/batchforms/RemoveBatchForm';
-import { MoveBatchForm } from '../features/annotations/batchforms/MoveBatchForm';
-import { PythonPackage } from '../features/packageData/model/PythonPackage';
-import { AbstractPythonFilter } from '../features/filter/model/AbstractPythonFilter';
-import { UsageCountStore } from '../features/usages/model/UsageCountStore';
-import { PythonDeclaration } from '../features/packageData/model/PythonDeclaration';
-import { SaveFilterDialog } from '../features/filter/SaveFilterDialog';
-import { StatisticsView } from '../features/statistics/StatisticsView';
+import {initializeUsages, persistUsages, selectUsages} from '../features/usages/usageSlice';
+import {initializePythonPackage, selectRawPythonPackage} from '../features/packageData/apiSlice';
+import {PythonClass} from '../features/packageData/model/PythonClass';
+import {PythonParameter} from '../features/packageData/model/PythonParameter';
+import {ConstantBatchForm} from '../features/annotations/batchforms/ConstantBatchForm';
+import {ActionBar} from '../features/actionBar/ActionBar';
+import {useLocation} from 'react-router-dom';
+import {RenameBatchForm} from '../features/annotations/batchforms/RenameBatchForm';
+import {RequiredBatchForm} from '../features/annotations/batchforms/RequiredBatchForm';
+import {OptionalBatchForm} from '../features/annotations/batchforms/OptionalBatchForm';
+import {RemoveBatchForm} from '../features/annotations/batchforms/RemoveBatchForm';
+import {MoveBatchForm} from '../features/annotations/batchforms/MoveBatchForm';
+import {PythonPackage} from '../features/packageData/model/PythonPackage';
+import {AbstractPythonFilter} from '../features/filter/model/AbstractPythonFilter';
+import {UsageCountStore} from '../features/usages/model/UsageCountStore';
+import {PythonDeclaration} from '../features/packageData/model/PythonDeclaration';
+import {SaveFilterDialog} from '../features/filter/SaveFilterDialog';
+import {StatisticsView} from '../features/statistics/StatisticsView';
 
 export const App: React.FC = function () {
     useIndexedDB();
@@ -96,6 +96,7 @@ export const App: React.FC = function () {
     const batchMode = useAppSelector(selectBatchMode);
     const showAddFilterDialog = useAppSelector(selectShowAddFilterDialog);
     const showStatistics = useAppSelector(selectShowStatistics);
+    const isValidUsername = useAppSelector(selectUsernameIsValid);
 
     return (
         <>
@@ -107,7 +108,7 @@ export const App: React.FC = function () {
                 h="100vh"
             >
                 <GridItem gridArea="menu" colSpan={3}>
-                    <MenuBar displayInferErrors={displayInferErrors} />
+                    <MenuBar displayInferErrors={displayInferErrors}/>
                 </GridItem>
                 <GridItem
                     gridArea="leftPane"
@@ -120,24 +121,24 @@ export const App: React.FC = function () {
                     resize="horizontal"
                 >
                     {currentUserAction.type === 'attribute' && (
-                        <AttributeForm target={userActionTarget || rawPythonPackage} />
+                        <AttributeForm target={userActionTarget || rawPythonPackage}/>
                     )}
                     {currentUserAction.type === 'boundary' && (
-                        <BoundaryForm target={userActionTarget || rawPythonPackage} />
+                        <BoundaryForm target={userActionTarget || rawPythonPackage}/>
                     )}
                     {currentUserAction.type === 'calledAfter' && userActionTarget instanceof PythonFunction && (
-                        <CalledAfterForm target={userActionTarget} />
+                        <CalledAfterForm target={userActionTarget}/>
                     )}
                     {currentUserAction.type === 'constant' && (
-                        <ConstantForm target={userActionTarget || rawPythonPackage} />
+                        <ConstantForm target={userActionTarget || rawPythonPackage}/>
                     )}
                     {currentUserAction.type === 'description' &&
                         (userActionTarget instanceof PythonClass ||
                             userActionTarget instanceof PythonFunction ||
                             userActionTarget instanceof PythonParameter) && (
-                            <DescriptionForm target={userActionTarget} />
+                            <DescriptionForm target={userActionTarget}/>
                         )}
-                    {currentUserAction.type === 'enum' && <EnumForm target={userActionTarget || rawPythonPackage} />}
+                    {currentUserAction.type === 'enum' && <EnumForm target={userActionTarget || rawPythonPackage}/>}
                     {currentUserAction.type === 'group' && (
                         <GroupForm
                             target={userActionTarget || rawPythonPackage}
@@ -148,51 +149,51 @@ export const App: React.FC = function () {
                             }
                         />
                     )}
-                    {currentUserAction.type === 'move' && <MoveForm target={userActionTarget || rawPythonPackage} />}
-                    {currentUserAction.type === 'none' && <TreeView />}
+                    {currentUserAction.type === 'move' && <MoveForm target={userActionTarget || rawPythonPackage}/>}
+                    {currentUserAction.type === 'none' && <TreeView/>}
                     {currentUserAction.type === 'optional' && (
-                        <OptionalForm target={userActionTarget || rawPythonPackage} />
+                        <OptionalForm target={userActionTarget || rawPythonPackage}/>
                     )}
                     {currentUserAction.type === 'rename' && (
-                        <RenameForm target={userActionTarget || rawPythonPackage} />
+                        <RenameForm target={userActionTarget || rawPythonPackage}/>
                     )}
-                    {currentUserAction.type === 'todo' && <TodoForm target={userActionTarget || rawPythonPackage} />}
+                    {currentUserAction.type === 'todo' && <TodoForm target={userActionTarget || rawPythonPackage}/>}
                 </GridItem>
                 <GridItem gridArea="middlePane" overflow="auto">
                     <Box flexGrow={1} overflowY="auto" width="100%">
-                        {batchMode === BatchMode.None && <SelectionView />}
+                        {batchMode === BatchMode.None || !isValidUsername && <SelectionView/>}
 
-                        {batchMode === BatchMode.Constant && (
+                        {batchMode === BatchMode.Constant && isValidUsername && (
                             <ConstantBatchForm
                                 targets={getMatchedElements(rawPythonPackage, filter, annotationStore, usages)}
                             />
                         )}
 
-                        {batchMode === BatchMode.Rename && (
+                        {batchMode === BatchMode.Rename && isValidUsername && (
                             <RenameBatchForm
                                 targets={getMatchedElements(rawPythonPackage, filter, annotationStore, usages)}
                             />
                         )}
 
-                        {batchMode === BatchMode.Move && (
+                        {batchMode === BatchMode.Move && isValidUsername && (
                             <MoveBatchForm
                                 targets={getMatchedElements(rawPythonPackage, filter, annotationStore, usages)}
                             />
                         )}
 
-                        {batchMode === BatchMode.Required && (
+                        {batchMode === BatchMode.Required && isValidUsername && (
                             <RequiredBatchForm
                                 targets={getMatchedElements(rawPythonPackage, filter, annotationStore, usages)}
                             />
                         )}
 
-                        {batchMode === BatchMode.Optional && (
+                        {batchMode === BatchMode.Optional && isValidUsername && (
                             <OptionalBatchForm
                                 targets={getMatchedElements(rawPythonPackage, filter, annotationStore, usages)}
                             />
                         )}
 
-                        {batchMode === BatchMode.Remove && (
+                        {batchMode === BatchMode.Remove && isValidUsername && (
                             <RemoveBatchForm
                                 targets={getMatchedElements(rawPythonPackage, filter, annotationStore, usages)}
                             />
@@ -209,18 +210,18 @@ export const App: React.FC = function () {
                         resize="horizontal"
                     >
                         <Box padding={4}>
-                            <StatisticsView />
+                            <StatisticsView/>
                         </Box>
                     </GridItem>
                 )}
                 <GridItem gridArea="footer" colSpan={3}>
-                    {currentUserAction.type === 'none' && <ActionBar declaration={declaration} />}
+                    {currentUserAction.type === 'none' && <ActionBar declaration={declaration}/>}
                 </GridItem>
 
-                {showAnnotationImportDialog && <AnnotationImportDialog />}
-                {showAPIImportDialog && <PackageDataImportDialog />}
-                {showUsagesImportDialog && <UsageImportDialog />}
-                {showAddFilterDialog && <SaveFilterDialog />}
+                {showAnnotationImportDialog && <AnnotationImportDialog/>}
+                {showAPIImportDialog && <PackageDataImportDialog/>}
+                {showUsagesImportDialog && <UsageImportDialog/>}
+                {showAddFilterDialog && <SaveFilterDialog/>}
             </Grid>
 
             <Modal
@@ -230,10 +231,10 @@ export const App: React.FC = function () {
                 size="xl"
                 isCentered
             >
-                <ModalOverlay />
+                <ModalOverlay/>
                 <ModalContent>
                     <ModalHeader>Infer errors</ModalHeader>
-                    <ModalCloseButton />
+                    <ModalCloseButton/>
                     <ModalBody paddingLeft={10} paddingBottom={6}>
                         <UnorderedList spacing={5}>
                             {inferErrors.map((error, index) => (
