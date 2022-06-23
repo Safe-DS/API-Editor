@@ -49,10 +49,6 @@ dependencies {
 
 // Tasks ---------------------------------------------------------------------------------------------------------------
 
-tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions.freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
-}
-
 tasks.test {
     useJUnitPlatform()
 }
