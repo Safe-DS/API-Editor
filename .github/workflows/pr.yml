@@ -62,7 +62,6 @@ jobs:
 
   gui-test-coverage:
     runs-on: ubuntu-latest
-    if: ${{ github.actor != 'dependabot[bot]' }} # GUI tests are already run as part of build-api-editor
     defaults:
       run:
         working-directory: ./api-editor/gui
@@ -89,7 +88,7 @@ jobs:
         run: npm run test-with-coverage
 
       - name: Upload test report
-
+        if: ${{ github.actor != 'dependabot[bot]' }}
         uses: actions/upload-artifact@v3
         with:
           name: gui test coverage
