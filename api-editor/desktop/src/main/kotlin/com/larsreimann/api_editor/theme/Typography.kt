@@ -1,4 +1,4 @@
-package com.larsreimann.python_api_editor.theme
+package com.larsreimann.api_editor.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.graphics.Color

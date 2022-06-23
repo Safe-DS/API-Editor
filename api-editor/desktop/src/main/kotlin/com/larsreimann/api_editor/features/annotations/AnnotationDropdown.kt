@@ -1,4 +1,4 @@
-package com.larsreimann.python_api_editor
+package com.larsreimann.api_editor.features.annotations
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.DropdownMenu

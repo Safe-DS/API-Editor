@@ -1,4 +1,4 @@
-package com.larsreimann.python_api_editor.data
+package com.larsreimann.api_editor.features.settings
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
