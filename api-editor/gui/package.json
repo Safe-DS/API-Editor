@@ -23,7 +23,7 @@
         "chart.js": "^3.8.0",
         "framer-motion": "^6.3.10",
         "idb-keyval": "^6.1.0",
-        "katex": "^0.15.6",
+        "katex": "^0.16.0",
         "react": "^18.2.0",
         "react-chartjs-2": "^4.2.0",
         "react-dom": "^18.1.0",
