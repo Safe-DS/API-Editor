@@ -16,7 +16,6 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
-import com.larsreimann.api_editor.features.annotations.AnnotationDropdown
 import com.larsreimann.api_editor.features.settings.Settings
 import com.larsreimann.api_editor.theme.PythonApiEditorTheme
 import org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi
@@ -51,11 +50,11 @@ fun Content(settings: Settings) {
 //                        HeatmapTag(1000, 10000, interpolation = HeatmapInterpolation.Logarithmic)
 //                        HeatmapTag(10000, 10000, interpolation = HeatmapInterpolation.Logarithmic)
 //                    }
-                    AnnotationDropdown(
-                        showAttribute = true,
-                        showBoundary = true,
-                        showCalledAfter = true
-                    )
+//                    AnnotationDropdown(
+//                        showAttribute = true,
+//                        showBoundary = true,
+//                        showCalledAfter = true
+//                    )
                 }
             }
             second(160.dp) {
