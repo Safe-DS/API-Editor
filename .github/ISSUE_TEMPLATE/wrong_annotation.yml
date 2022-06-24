@@ -39,7 +39,7 @@ body:
     id: expected-annotation-type
     attributes:
       label: Expected Annotation Type
-      description: Which annotation did you expect to be generated automatically?
+      description: Which annotation, if any, did you expect to be generated automatically?
       options:
         - '@boundary'
         - '@constant'
@@ -47,6 +47,7 @@ body:
         - '@optional'
         - '@remove'
         - '@required'
+        - None
     validations:
       required: true
 
