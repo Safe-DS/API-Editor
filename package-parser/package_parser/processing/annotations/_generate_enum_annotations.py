@@ -57,13 +57,7 @@ def _generate_enum_annotations(api: API, annotations: AnnotationStore) -> None:
 def _enum_name(parameter_name: str) -> str:
     segments = re.split(r"_", parameter_name)
 
-    return "".join(
-        [
-            segment.capitalize()
-            for segment in segments
-            if segment != ""
-        ]
-    )
+    return "".join([segment.capitalize() for segment in segments if segment != ""])
 
 
 def _enum_instance_name(string_value: str) -> str:
