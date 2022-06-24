@@ -27,7 +27,7 @@ def _generate_enum_annotations(api: API, annotations: AnnotationStore) -> None:
                 if type_in_union["kind"] == "EnumType":
                     values = sorted(list(type_in_union["values"]))
                     for string_value in values:
-                        instance_name = __to_enum_name(string_value)
+                        instance_name = _enum_instance_name(string_value)
                         pairs.append(
                             EnumPair(
                                 stringValue=string_value, instanceName=instance_name
@@ -36,13 +36,13 @@ def _generate_enum_annotations(api: API, annotations: AnnotationStore) -> None:
         elif "kind" in enum_type and enum_type["kind"] == "EnumType":
             values = sorted(list(enum_type["values"]))
             for string_value in values:
-                instance_name = __to_enum_name(string_value)
+                instance_name = _enum_instance_name(string_value)
                 pairs.append(
                     EnumPair(stringValue=string_value, instanceName=instance_name)
                 )
 
         if len(pairs) > 0:
-            enum_name = __to_enum_name(parameter.name)
+            enum_name = _enum_name(parameter.name)
             annotations.enums.append(
                 EnumAnnotation(
                     target=parameter.id,
@@ -54,10 +54,22 @@ def _generate_enum_annotations(api: API, annotations: AnnotationStore) -> None:
             )
 
 
-def __to_enum_name(parameter_name: str) -> str:
-    parameter_name = re.sub("[^a-zA-Z_]", "", parameter_name)
-    value_split = re.split("_", parameter_name)
-    parameter_name = ""
-    for split in value_split:
-        parameter_name += split.capitalize()
-    return parameter_name
+def _enum_name(parameter_name: str) -> str:
+    segments = re.split(r"_", parameter_name)
+
+    return "".join([segment.capitalize() for segment in segments if segment != ""])
+
+
+def _enum_instance_name(string_value: str) -> str:
+    segments = re.split(r"[_-]", string_value)
+
+    result = "_".join(
+        re.sub(r"\W", "", segment).upper()
+        for segment in segments
+        if re.sub(r"\W", "", segment) != ""
+    )
+
+    if len(result) == 0 or result[0].isdigit():
+        result = "_" + result
+
+    return result
