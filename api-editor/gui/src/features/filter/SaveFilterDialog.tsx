@@ -68,7 +68,7 @@ export const SaveFilterDialog: React.FC = function () {
                             )}
                         </FormControl>
 
-                        <FormControl isInvalid={!filterStringIsValid || filterString.trim() === ''}>
+                        <FormControl isInvalid={!filterStringIsValid}>
                             <FormLabel htmlFor="newFilterString">Filter String:</FormLabel>
                             <Textarea
                                 id="newFilterString"
