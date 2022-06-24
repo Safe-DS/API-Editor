@@ -105,7 +105,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                 <DeleteAllAnnotations />
 
                 <Box>
-                    <Menu closeOnSelect={false}>
+                    <Menu>
                         <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />} disabled={!usernameIsValid}>
                             Batch
                         </MenuButton>
