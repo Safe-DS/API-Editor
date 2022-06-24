@@ -6,7 +6,9 @@
         {
             "id": "test/test",
             "name": "test",
-            "functions": ["test/test/some_global_function"]
+            "functions": [
+                "test/test/some_global_function"
+            ]
         }
     ],
     "functions": [
@@ -48,6 +50,15 @@
                     "qname": "test.some_global_function.enum_parameter_but_constant",
                     "docstring": {
                         "type": "{'auto', 'kd_tree', 'kd-means++'}, default=None",
+                        "description": ""
+                    }
+                },
+                {
+                    "id": "test/test/some_global_function/issue_760",
+                    "name": "issue_760",
+                    "qname": "test.some_global_function.issue_760",
+                    "docstring": {
+                        "type": "{'l1', 'l2'}, default=None",
                         "description": ""
                     }
                 }
