@@ -47,7 +47,7 @@ body:
         - '@optional'
         - '@remove'
         - '@required'
-        - 'None'
+        - 'No annotation'
     validations:
       required: true
 
