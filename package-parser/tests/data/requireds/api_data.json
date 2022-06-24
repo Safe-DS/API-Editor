@@ -80,6 +80,13 @@
                     "name": "optional_parameter_that_should_be_optional_with_non_string",
                     "qname": "test.some_global_function.optional_parameter_that_should_be_optional_with_non_string",
                     "default_value": "'test'"
+                },
+                {
+                    "issue": "https://github.com/lars-reimann/api-editor/issues/715",
+                    "id": "test/test/some_global_function/issue_715",
+                    "name": "issue_715",
+                    "qname": "test.test.some_global_function.issue_715",
+                    "default_value": "None"
                 }
             ]
         }
