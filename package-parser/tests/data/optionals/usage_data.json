@@ -58,7 +58,7 @@
             "'test2'": 6
         },
         "test/test/some_global_function/issue_715": {
-            "1": 5,
+            "1": 8,
             "non_string": 1,
             "non_string_2": 1
         }
