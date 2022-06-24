@@ -1,9 +1,9 @@
-import { Code, Flex, HStack, IconButton, Stack, Text } from '@chakra-ui/react';
+import { Code, Flex, HStack, IconButton, Stack, Text as ChakraText, UnorderedList } from '@chakra-ui/react';
 import 'katex/dist/katex.min.css';
 import React, { ClassAttributes, FunctionComponent, HTMLAttributes, useState } from 'react';
 import { FaChevronDown, FaChevronRight } from 'react-icons/fa';
 import ReactMarkdown from 'react-markdown';
-import { CodeComponent, ReactMarkdownProps } from 'react-markdown/lib/ast-to-react';
+import { CodeComponent, ReactMarkdownProps, UnorderedListComponent } from 'react-markdown/lib/ast-to-react';
 import rehypeKatex from 'rehype-katex';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
@@ -17,16 +17,21 @@ type ParagraphComponent = FunctionComponent<
 >;
 
 const CustomText: ParagraphComponent = function ({ className, children }) {
-    return <Text className={className}>{children}</Text>;
+    return <ChakraText className={className}>{children}</ChakraText>;
 };
 
 const CustomCode: CodeComponent = function ({ className, children }) {
     return <Code className={className}>{children}</Code>;
 };
 
+const CustomUnorderedList: UnorderedListComponent = function ({ className, children }) {
+    return <UnorderedList className={className}>{children}</UnorderedList>;
+};
+
 const components = {
     p: CustomText,
     code: CustomCode,
+    ul: CustomUnorderedList,
 };
 
 export const DocumentationText: React.FC<DocumentationTextProps> = function ({ inputText = '' }) {
