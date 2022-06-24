@@ -18,12 +18,12 @@ body:
       label: Actual Annotation Type
       description: Which annotation was generated automatically?
       options:
-        - '@boundary'
-        - '@constant'
-        - '@enum'
-        - '@optional'
-        - '@remove'
-        - '@required'
+        - '`@boundary`'
+        - '`@constant`'
+        - '`@enum`'
+        - '`@optional`'
+        - '`@remove`'
+        - '`@required`'
     validations:
       required: true
 
@@ -39,14 +39,15 @@ body:
     id: expected-annotation-type
     attributes:
       label: Expected Annotation Type
-      description: Which annotation did you expect to be generated automatically?
+      description: Which annotation, if any, did you expect to be generated automatically?
       options:
-        - '@boundary'
-        - '@constant'
-        - '@enum'
-        - '@optional'
-        - '@remove'
-        - '@required'
+        - '`@boundary`'
+        - '`@constant`'
+        - '`@enum`'
+        - '`@optional`'
+        - '`@remove`'
+        - '`@required`'
+        - 'No annotation'
     validations:
       required: true
 
