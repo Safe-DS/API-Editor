@@ -13,6 +13,7 @@ import {
     RadioGroup,
     Select,
     Stack,
+    Text as ChakraText,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -152,7 +153,7 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
                     </FormControl>
                 )}
 
-                <FormLabel>This will annotate parameters.</FormLabel>
+                <ChakraText>This will annotate parameters.</ChakraText>
             </AnnotationBatchForm>
             {confirmWindowVisible && (
                 <ConfirmAnnotations

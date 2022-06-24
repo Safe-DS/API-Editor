@@ -1,4 +1,4 @@
-import { FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react';
+import { FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Input, Text as ChakraText } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch } from '../../../app/hooks';
@@ -82,17 +82,13 @@ export const OldNewBatchForm: React.FC<OldNewBatchFormProps> = function ({
 
                 <FormControl isInvalid={Boolean(errors.newString)}>
                     <FormLabel>Replacement String:</FormLabel>
-                    <Input
-                        {...register('newString', {
-                            required: 'This is required.',
-                        })}
-                    />
+                    <Input {...register('newString')} />
                     <FormErrorMessage>
                         <FormErrorIcon /> {errors.newString?.message}
                     </FormErrorMessage>
                 </FormControl>
 
-                <FormLabel>This will annotate classes, functions, and parameters.</FormLabel>
+                <ChakraText>This will annotate classes, functions, and parameters.</ChakraText>
             </AnnotationBatchForm>
             {confirmWindowVisible && (
                 <ConfirmAnnotations

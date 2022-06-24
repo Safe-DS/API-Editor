@@ -1,4 +1,4 @@
-import { FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react';
+import { FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Input, Text as ChakraText } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch } from '../../../app/hooks';
@@ -75,7 +75,7 @@ export const DestinationBatchForm: React.FC<DestinationBatchFormProps> = functio
                     </FormErrorMessage>
                 </FormControl>
 
-                <FormLabel>This will annotate classes and global functions.</FormLabel>
+                <ChakraText>This will annotate classes and global functions.</ChakraText>
             </AnnotationBatchForm>
             {confirmWindowVisible && (
                 <ConfirmAnnotations
