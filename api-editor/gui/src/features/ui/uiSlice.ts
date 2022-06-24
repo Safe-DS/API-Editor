@@ -320,8 +320,11 @@ const uiSlice = createSlice({
         setFilterString(state, action: PayloadAction<string>) {
             state.filterString = action.payload;
         },
-        addFilter(state, action: PayloadAction<Filter>) {
-            state.filterList.push(action.payload);
+        upsertFilter(state, action: PayloadAction<Filter>) {
+            state.filterList = [
+                ...state.filterList.filter((filter) => filter.name !== action.payload.name),
+                action.payload,
+            ];
         },
         removeFilter(state, action: PayloadAction<string>) {
             state.filterList = state.filterList.filter((filter) => filter.filter !== action.payload);
@@ -372,7 +375,7 @@ export const {
     setTreeViewScrollOffset,
     setHeatMapMode,
     setFilterString,
-    addFilter,
+    upsertFilter,
     removeFilter,
     setSortingMode,
     setBatchMode,
