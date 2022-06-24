@@ -64,7 +64,7 @@ import {
     showRenameAnnotationForm,
     showTodoAnnotationForm,
 } from '../ui/uiSlice';
-import {truncate} from "../../common/util/stringOperations";
+import { truncate } from '../../common/util/stringOperations';
 
 interface AnnotationViewProps {
     target: string;
