@@ -401,6 +401,8 @@ const annotationsSlice = createSlice({
                 state.annotations.attributes[action.payload],
                 state.username,
             );
+
+            updateQueue(state);
         },
         upsertBoundary(state, action: PayloadAction<BoundaryAnnotation>) {
             state.annotations.boundaries[action.payload.target] = withAuthorAndReviewers(
@@ -421,6 +423,8 @@ const annotationsSlice = createSlice({
                 state.annotations.boundaries[action.payload],
                 state.username,
             );
+
+            updateQueue(state);
         },
         upsertCalledAfter(state, action: PayloadAction<CalledAfterAnnotation>) {
             if (!state.annotations.calledAfters[action.payload.target]) {
@@ -447,6 +451,8 @@ const annotationsSlice = createSlice({
                 state.annotations.calledAfters[action.payload.target][action.payload.calledAfterName],
                 state.username,
             );
+
+            updateQueue(state);
         },
         addComplete(state, action: PayloadAction<CompleteAnnotation>) {
             state.annotations.completes[action.payload.target] = withAuthorAndReviewers(
@@ -454,9 +460,13 @@ const annotationsSlice = createSlice({
                 action.payload,
                 state.username,
             );
+
+            updateQueue(state);
         },
         removeComplete(state, action: PayloadAction<string>) {
             delete state.annotations.completes[action.payload];
+
+            updateQueue(state);
         },
         // Cannot review complete annotations
         upsertConstant(state, action: PayloadAction<ConstantAnnotation>) {
@@ -489,6 +499,8 @@ const annotationsSlice = createSlice({
                 state.annotations.constants[action.payload],
                 state.username,
             );
+
+            updateQueue(state);
         },
         upsertDescription(state, action: PayloadAction<DescriptionAnnotation>) {
             state.annotations.descriptions[action.payload.target] = withAuthorAndReviewers(
@@ -509,6 +521,8 @@ const annotationsSlice = createSlice({
                 state.annotations.descriptions[action.payload],
                 state.username,
             );
+
+            updateQueue(state);
         },
         upsertEnum(state, action: PayloadAction<EnumAnnotation>) {
             state.annotations.enums[action.payload.target] = withAuthorAndReviewers(
@@ -529,6 +543,8 @@ const annotationsSlice = createSlice({
                 state.annotations.enums[action.payload],
                 state.username,
             );
+
+            updateQueue(state);
         },
         upsertGroup(state, action: PayloadAction<GroupAnnotation>) {
             if (!state.annotations.groups[action.payload.target]) {
@@ -590,6 +606,8 @@ const annotationsSlice = createSlice({
                 state.annotations.groups[action.payload.target][action.payload.groupName],
                 state.username,
             );
+
+            updateQueue(state);
         },
         upsertMove(state, action: PayloadAction<MoveAnnotation>) {
             state.annotations.moves[action.payload.target] = withAuthorAndReviewers(
@@ -621,6 +639,8 @@ const annotationsSlice = createSlice({
                 state.annotations.moves[action.payload],
                 state.username,
             );
+
+            updateQueue(state);
         },
         upsertOptional(state, action: PayloadAction<OptionalAnnotation>) {
             state.annotations.optionals[action.payload.target] = withAuthorAndReviewers(
@@ -652,6 +672,8 @@ const annotationsSlice = createSlice({
                 state.annotations.optionals[action.payload],
                 state.username,
             );
+
+            updateQueue(state);
         },
         addPure(state, action: PayloadAction<PureAnnotation>) {
             state.annotations.pures[action.payload.target] = withAuthorAndReviewers(
@@ -672,6 +694,8 @@ const annotationsSlice = createSlice({
                 state.annotations.pures[action.payload],
                 state.username,
             );
+
+            updateQueue(state);
         },
         upsertRenaming(state, action: PayloadAction<RenameAnnotation>) {
             state.annotations.renamings[action.payload.target] = withAuthorAndReviewers(
@@ -703,6 +727,8 @@ const annotationsSlice = createSlice({
                 state.annotations.renamings[action.payload],
                 state.username,
             );
+
+            updateQueue(state);
         },
         addRequired(state, action: PayloadAction<RequiredAnnotation>) {
             state.annotations.requireds[action.payload.target] = withAuthorAndReviewers(
@@ -734,6 +760,8 @@ const annotationsSlice = createSlice({
                 state.annotations.requireds[action.payload],
                 state.username,
             );
+
+            updateQueue(state);
         },
         addRemove(state, action: PayloadAction<RemoveAnnotation>) {
             state.annotations.removes[action.payload.target] = withAuthorAndReviewers(
@@ -765,6 +793,8 @@ const annotationsSlice = createSlice({
                 state.annotations.removes[action.payload],
                 state.username,
             );
+
+            updateQueue(state);
         },
         upsertTodo(state, action: PayloadAction<TodoAnnotation>) {
             state.annotations.todos[action.payload.target] = withAuthorAndReviewers(
@@ -785,6 +815,8 @@ const annotationsSlice = createSlice({
                 state.annotations.todos[action.payload],
                 state.username,
             );
+
+            updateQueue(state);
         },
 
         setUsername(state, action: PayloadAction<string>) {
