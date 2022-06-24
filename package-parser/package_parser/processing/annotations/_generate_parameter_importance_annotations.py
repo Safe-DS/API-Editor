@@ -146,6 +146,10 @@ def _should_be_required(
     :return: True means the parameter should be required, False means it should be optional
     """
 
+    # Most common value is the only literal value
+    if n_different_literal_values == 1:
+        return False
+
     return (
         most_common_value_count - second_most_common_value_count
         < total_literal_value_count / n_different_literal_values

@@ -14,7 +14,8 @@
         "test/test/some_global_function/optional_parameter_that_should_be_required_with_non_string": 9,
         "test/test/some_global_function/optional_parameter_that_should_be_optional_with_same_default": 2,
         "test/test/some_global_function/optional_parameter_that_should_be_optional_with_different_default": 8,
-        "test/test/some_global_function/optional_parameter_that_should_be_optional_with_non_string": 8
+        "test/test/some_global_function/optional_parameter_that_should_be_optional_with_non_string": 8,
+        "test/test/some_global_function/issue_715": 10
     },
     "value_counts": {
         "test/test/some_global_function/required_parameter_that_should_be_constant": {
@@ -55,6 +56,11 @@
         "test/test/some_global_function/optional_parameter_that_should_be_optional_with_non_string": {
             "non_string": 2,
             "'test2'": 6
+        },
+        "test/test/some_global_function/issue_715": {
+            "1": 8,
+            "non_string": 1,
+            "non_string_2": 1
         }
     }
 }

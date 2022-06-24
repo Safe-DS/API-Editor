@@ -26,5 +26,12 @@
         "reviewers": [],
         "defaultType": "string",
         "defaultValue": "test2"
+    },
+    "test/test/some_global_function/issue_715": {
+        "target": "test/test/some_global_function/issue_715",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "defaultType": "number",
+        "defaultValue": 1.0
     }
 }
