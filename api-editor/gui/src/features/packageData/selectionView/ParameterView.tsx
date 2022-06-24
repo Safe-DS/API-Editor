@@ -108,5 +108,5 @@ const isStringifiedLiteral = function (value: string): boolean {
     if (value === 'True' || value === 'False') {
         return true;
     }
-    return Boolean(value.match(/^[+-]?\d+(\.\d*)?$/u));
+    return !Number.isNaN(Number.parseFloat(value));
 };
