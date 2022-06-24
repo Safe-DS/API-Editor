@@ -13,6 +13,13 @@
         "defaultType": "string",
         "defaultValue": "test2"
     },
+    "test/test/some_global_function/optional_parameter_that_should_be_optional_with_same_default": {
+        "target": "test/test/some_global_function/optional_parameter_that_should_be_optional_with_same_default",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "defaultType": "string",
+        "defaultValue": "test"
+    },
     "test/test/some_global_function/optional_parameter_that_should_be_optional_with_different_default": {
         "target": "test/test/some_global_function/optional_parameter_that_should_be_optional_with_different_default",
         "authors": ["$autogen$"],

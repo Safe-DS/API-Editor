@@ -58,12 +58,11 @@ def _generate_required_or_optional_annotation(
 
     # If the most common value is not a stringified literal, make parameter required
     if not _is_stringified_literal(most_common_values[0]):
-        if parameter.is_optional():
-            annotations.requireds.append(
-                RequiredAnnotation(
-                    target=parameter.id, authors=[autogen_author], reviewers=[]
-                )
+        annotations.requireds.append(
+            RequiredAnnotation(
+                target=parameter.id, authors=[autogen_author], reviewers=[]
             )
+        )
         return
 
     # Compute metrics
@@ -107,28 +106,26 @@ def _generate_required_or_optional_annotation(
         total_literal_value_count,
         n_different_literal_values,
     ):
-        if parameter.is_optional():
-            annotations.requireds.append(
-                RequiredAnnotation(
-                    target=parameter.id, authors=[autogen_author], reviewers=[]
+        annotations.requireds.append(
+            RequiredAnnotation(
+                target=parameter.id, authors=[autogen_author], reviewers=[]
+            )
+        )
+    else:
+        (
+            default_type,
+            default_value,
+        ) = _get_default_type_and_value_for_stringified_value(literal_values[0])
+        if default_type is not None:  # Just for mypy, always true
+            annotations.optionals.append(
+                OptionalAnnotation(
+                    target=parameter.id,
+                    authors=[autogen_author],
+                    reviewers=[],
+                    defaultType=default_type,
+                    defaultValue=default_value,
                 )
             )
-    else:
-        if parameter.is_required() or parameter.default_value != literal_values[0]:
-            (
-                default_type,
-                default_value,
-            ) = _get_default_type_and_value_for_stringified_value(literal_values[0])
-            if default_type is not None:  # Just for mypy, always true
-                annotations.optionals.append(
-                    OptionalAnnotation(
-                        target=parameter.id,
-                        authors=[autogen_author],
-                        reviewers=[],
-                        defaultType=default_type,
-                        defaultValue=default_value,
-                    )
-                )
 
 
 def _should_be_required(
