@@ -64,6 +64,7 @@ import {
     showRenameAnnotationForm,
     showTodoAnnotationForm,
 } from '../ui/uiSlice';
+import {truncate} from "../../common/util/stringOperations";
 
 interface AnnotationViewProps {
     target: string;
@@ -252,6 +253,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
             {todoAnnotation && (
                 <AnnotationTag
                     type="todo"
+                    name={truncate(todoAnnotation.newTodo, 50)}
                     annotation={todoAnnotation}
                     onEdit={() => dispatch(showTodoAnnotationForm(target))}
                     onDelete={() => dispatch(removeTodo(target))}
