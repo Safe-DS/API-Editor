@@ -44,6 +44,7 @@ export const ParameterNode: React.FC<ParameterNodeProps> = function ({ isTitle, 
                         showOptional
                         showRename
                         showRequired
+                        showTodo
                     />
                 )}
                 <CompleteButton target={id} />
