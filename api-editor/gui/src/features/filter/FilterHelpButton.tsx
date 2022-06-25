@@ -18,7 +18,7 @@ import React from 'react';
 export const FilterHelpButton = function () {
     return (
         <Box zIndex={100}>
-            <Popover isLazy={true}>
+            <Popover isLazy={true} placement="top">
                 <PopoverTrigger>
                     <IconButton variant="ghost" icon={<Icon name="help" />} aria-label="help" />
                 </PopoverTrigger>
@@ -26,7 +26,7 @@ export const FilterHelpButton = function () {
                     <PopoverArrow />
                     <PopoverCloseButton />
                     <PopoverHeader>Filter Options</PopoverHeader>
-                    <PopoverBody>
+                    <PopoverBody maxHeight="50vh" overflow="auto">
                         <UnorderedList spacing={2}>
                             <ListItem>
                                 <ChakraText>

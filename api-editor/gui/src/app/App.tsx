@@ -47,12 +47,12 @@ import {
     selectBatchMode,
     selectCurrentUserAction,
     selectFilter,
+    selectShowAddFilterDialog,
     selectShowAnnotationImportDialog,
     selectShowAPIImportDialog,
+    selectShowStatistics,
     selectShowUsageImportDialog,
     selectUI,
-    selectShowAddFilterDialog,
-    selectShowStatistics,
 } from '../features/ui/uiSlice';
 import { initializeUsages, persistUsages, selectUsages } from '../features/usages/usageSlice';
 import { initializePythonPackage, selectRawPythonPackage } from '../features/packageData/apiSlice';
@@ -60,7 +60,6 @@ import { PythonClass } from '../features/packageData/model/PythonClass';
 import { PythonParameter } from '../features/packageData/model/PythonParameter';
 import { ConstantBatchForm } from '../features/annotations/batchforms/ConstantBatchForm';
 import { Footer } from '../features/footer/Footer';
-import { useLocation } from 'react-router-dom';
 import { RenameBatchForm } from '../features/annotations/batchforms/RenameBatchForm';
 import { RequiredBatchForm } from '../features/annotations/batchforms/RequiredBatchForm';
 import { OptionalBatchForm } from '../features/annotations/batchforms/OptionalBatchForm';
@@ -88,7 +87,6 @@ export const App: React.FC = function () {
         setShowInferErrorDialog(true);
     };
 
-    const declaration = rawPythonPackage.getDeclarationById(useLocation().pathname.split('/').splice(1).join('/'));
     const currentUserAction = useAppSelector(selectCurrentUserAction);
     const userActionTarget = rawPythonPackage.getDeclarationById(currentUserAction.target);
     const showAnnotationImportDialog = useAppSelector(selectShowAnnotationImportDialog);
@@ -216,7 +214,7 @@ export const App: React.FC = function () {
                     </GridItem>
                 )}
                 <GridItem gridArea="footer" colSpan={3}>
-                    {currentUserAction.type === 'none' && <Footer declaration={declaration} />}
+                    <Footer />
                 </GridItem>
 
                 {showAnnotationImportDialog && <AnnotationImportDialog />}

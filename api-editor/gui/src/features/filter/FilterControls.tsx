@@ -9,9 +9,9 @@ export const FilterControls = function () {
     return (
         <HStack>
             <FilterPersistence />
-            <MatchCount />
             <FilterInput />
             <FilterHelpButton />
+            <MatchCount />
         </HStack>
     );
 };

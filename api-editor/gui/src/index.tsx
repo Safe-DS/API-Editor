@@ -12,7 +12,7 @@ const root = createRoot(container!);
 root.render(
     <React.StrictMode>
         <Provider store={store}>
-            <ChakraProvider theme={apiEditorTheme}>
+            <ChakraProvider resetCSS theme={apiEditorTheme}>
                 <ColorModeScript initialColorMode={apiEditorTheme.config.initialColorMode} />
                 <HashRouter>
                     <App />
