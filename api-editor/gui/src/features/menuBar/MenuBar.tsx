@@ -15,7 +15,7 @@ import {
     useColorMode,
 } from '@chakra-ui/react';
 import React from 'react';
-import { FaChevronDown } from 'react-icons/fa';
+import { FaArrowLeft, FaArrowRight, FaArrowUp, FaChevronDown, FaRedo, FaUndo } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
     AnnotationStore,
@@ -56,7 +56,7 @@ import {
     selectRawPythonPackage,
 } from '../packageData/apiSlice';
 import { selectUsages } from '../usages/usageSlice';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface MenuBarProps {
     displayInferErrors: (errors: string[]) => void;
@@ -135,35 +135,190 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                     </Menu>
                 </Box>
 
-
-                <DeleteAllAnnotations />
+                <Box>
+                    <Menu>
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
+                            Edit
+                        </MenuButton>
+                        <MenuList>
+                            <MenuItem
+                                paddingLeft={8}
+                                onClick={() => dispatch(undo())}
+                                icon={<FaUndo />}
+                                command="Ctrl+Z"
+                            >
+                                Undo
+                            </MenuItem>
+                            <MenuItem
+                                paddingLeft={8}
+                                onClick={() => dispatch(redo())}
+                                icon={<FaRedo />}
+                                command="Ctrl+Y"
+                            >
+                                Redo
+                            </MenuItem>
+                            <MenuDivider />
+                            <MenuGroup title={'Batch Annotate'}>
+                                <MenuItem
+                                    paddingLeft={8}
+                                    onClick={() => dispatch(setBatchMode(BatchMode.Constant))}
+                                    isDisabled={!usernameIsValid}
+                                >
+                                    Constant
+                                </MenuItem>
+                                <MenuItem
+                                    paddingLeft={8}
+                                    onClick={() => dispatch(setBatchMode(BatchMode.Move))}
+                                    isDisabled={!usernameIsValid}
+                                >
+                                    Move
+                                </MenuItem>
+                                <MenuItem
+                                    paddingLeft={8}
+                                    onClick={() => dispatch(setBatchMode(BatchMode.Optional))}
+                                    isDisabled={!usernameIsValid}
+                                >
+                                    Optional
+                                </MenuItem>
+                                <MenuItem
+                                    paddingLeft={8}
+                                    onClick={() => dispatch(setBatchMode(BatchMode.Remove))}
+                                    isDisabled={!usernameIsValid}
+                                >
+                                    Remove
+                                </MenuItem>
+                                <MenuItem
+                                    paddingLeft={8}
+                                    onClick={() => dispatch(setBatchMode(BatchMode.Rename))}
+                                    isDisabled={!usernameIsValid}
+                                >
+                                    Rename
+                                </MenuItem>
+                                <MenuItem
+                                    paddingLeft={8}
+                                    onClick={() => dispatch(setBatchMode(BatchMode.Required))}
+                                    isDisabled={!usernameIsValid}
+                                >
+                                    Required
+                                </MenuItem>
+                            </MenuGroup>
+                            <MenuDivider />
+                            <DeleteAllAnnotations />
+                        </MenuList>
+                    </Menu>
+                </Box>
 
                 <Box>
                     <Menu>
-                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />} disabled={!usernameIsValid}>
-                            Batch
+                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
+                            Navigate
                         </MenuButton>
                         <MenuList>
-                            <MenuGroup title={'Annotate'}>
-                                <MenuItem paddingLeft={8} onClick={() => dispatch(setBatchMode(BatchMode.Rename))}>
-                                    Rename
-                                </MenuItem>
-                                <MenuItem paddingLeft={8} onClick={() => dispatch(setBatchMode(BatchMode.Move))}>
-                                    Move
-                                </MenuItem>
-                                <MenuItem paddingLeft={8} onClick={() => dispatch(setBatchMode(BatchMode.Remove))}>
-                                    Remove
-                                </MenuItem>
-                                <MenuItem paddingLeft={8} onClick={() => dispatch(setBatchMode(BatchMode.Required))}>
-                                    Required
-                                </MenuItem>
-                                <MenuItem paddingLeft={8} onClick={() => dispatch(setBatchMode(BatchMode.Constant))}>
-                                    Constant
-                                </MenuItem>
-                                <MenuItem paddingLeft={8} onClick={() => dispatch(setBatchMode(BatchMode.Optional))}>
-                                    Optional
-                                </MenuItem>
-                            </MenuGroup>
+                            <MenuItem
+                                paddingLeft={8}
+                                onClick={() => {
+                                    let navStr = getPreviousElementPath(
+                                        allDeclarations,
+                                        declaration!,
+                                        pythonFilter,
+                                        annotations,
+                                        usages,
+                                    );
+                                    if (navStr !== null) {
+                                        //navigate to element
+                                        navigate(`/${navStr}`);
+
+                                        //update tree selection
+                                        const parents = getAncestors(navStr, pythonPackage);
+                                        dispatch(setAllExpandedInTreeView(parents));
+                                    }
+                                }}
+                                isDisabled={!declaration}
+                                icon={<FaArrowLeft />}
+                                command="Ctrl+Left"
+                            >
+                                Go to Previous Match
+                            </MenuItem>
+                            <MenuItem
+                                paddingLeft={8}
+                                onClick={() => {
+                                    let navStr = getNextElementPath(
+                                        allDeclarations,
+                                        declaration!,
+                                        pythonFilter,
+                                        annotations,
+                                        usages,
+                                    );
+                                    if (navStr !== null) {
+                                        //navigate to element
+                                        navigate(`/${navStr}`);
+
+                                        //update tree selection
+                                        const parents = getAncestors(navStr, pythonPackage);
+                                        dispatch(setAllExpandedInTreeView(parents));
+                                    }
+                                }}
+                                isDisabled={!declaration}
+                                icon={<FaArrowRight />}
+                                command="Ctrl+Right"
+                            >
+                                Go to Next Match
+                            </MenuItem>
+                            <MenuItem
+                                paddingLeft={8}
+                                onClick={() => {
+                                    const parent = declaration?.parent();
+                                    if (parent && !(parent instanceof PythonPackage)) {
+                                        navigate(`/${parent.id}`);
+                                    }
+                                }}
+                                isDisabled={!declaration}
+                                icon={<FaArrowUp />}
+                                command="Ctrl+Up"
+                            >
+                                Go to Parent
+                            </MenuItem>
+
+                            <MenuDivider />
+
+                            <MenuItem
+                                paddingLeft={8}
+                                onClick={() => {
+                                    dispatch(setAllExpandedInTreeView(getDescendantsOrSelf(pythonPackage)));
+                                }}
+                                command="Ctrl+,"
+                            >
+                                Expand All
+                            </MenuItem>
+                            <MenuItem
+                                paddingLeft={8}
+                                onClick={() => {
+                                    dispatch(setAllCollapsedInTreeView(getDescendantsOrSelf(pythonPackage)));
+                                }}
+                                command="Ctrl+."
+                            >
+                                Collapse All
+                            </MenuItem>
+                            <MenuItem
+                                paddingLeft={8}
+                                onClick={() => {
+                                    dispatch(setAllExpandedInTreeView(getDescendantsOrSelf(declaration!)));
+                                }}
+                                isDisabled={!declaration}
+                                command="Ctrl+Alt+,"
+                            >
+                                Expand Selected
+                            </MenuItem>
+                            <MenuItem
+                                paddingLeft={8}
+                                onClick={() => {
+                                    dispatch(setAllCollapsedInTreeView(getDescendantsOrSelf(declaration!)));
+                                }}
+                                isDisabled={!declaration}
+                                command="Ctrl+Alt+."
+                            >
+                                Collapse Selected
+                            </MenuItem>
                         </MenuList>
                     </Menu>
                 </Box>
@@ -256,115 +411,6 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                     </Menu>
                 </Box>
             </HStack>
-
-            <Button
-                accessKey="p"
-                disabled={!declaration}
-                onClick={() => {
-                    let navStr = getPreviousElementPath(
-                        allDeclarations,
-                        declaration!,
-                        pythonFilter,
-                        annotations,
-                        usages,
-                    );
-                    if (navStr !== null) {
-                        //navigate to element
-                        navigate(`/${navStr}`);
-
-                        //update tree selection
-                        const parents = getAncestors(navStr, pythonPackage);
-                        dispatch(setAllExpandedInTreeView(parents));
-                    }
-                }}
-            >
-                Previous
-            </Button>
-            <Button
-                accessKey="n"
-                disabled={!declaration}
-                onClick={() => {
-                    let navStr = getNextElementPath(
-                        allDeclarations,
-                        declaration!,
-                        pythonFilter,
-                        annotations,
-                        usages,
-                    );
-                    if (navStr !== null) {
-                        //navigate to element
-                        navigate(`/${navStr}`);
-
-                        //update tree selection
-                        const parents = getAncestors(navStr, pythonPackage);
-                        dispatch(setAllExpandedInTreeView(parents));
-                    }
-                }}
-            >
-                Next
-            </Button>
-
-            <Button
-                accessKey="u"
-                onClick={() => {
-                    const parent = declaration?.parent();
-                    if (parent && !(parent instanceof PythonPackage)) {
-                        navigate(`/${parent.id}`);
-                    }
-                }}
-            >
-                Go to Parent
-            </Button>
-
-            <Button
-                onClick={() => {
-                    dispatch(setAllExpandedInTreeView(getDescendantsOrSelf(pythonPackage)));
-                }}
-            >
-                Expand All
-            </Button>
-            <Button
-                onClick={() => {
-                    dispatch(setAllCollapsedInTreeView(getDescendantsOrSelf(pythonPackage)));
-                }}
-            >
-                Collapse All
-            </Button>
-
-            <Button
-                disabled={!declaration}
-                onClick={() => {
-                    dispatch(setAllExpandedInTreeView(getDescendantsOrSelf(declaration!)));
-                }}
-            >
-                Expand Selected
-            </Button>
-            <Button
-                disabled={!declaration}
-                onClick={() => {
-                    dispatch(setAllCollapsedInTreeView(getDescendantsOrSelf(declaration!)));
-                }}
-            >
-                Collapse Selected
-            </Button>
-            <Button
-                accessKey="z"
-                disabled={!declaration}
-                onClick={() => {
-                    dispatch(undo());
-                }}
-            >
-                Undo
-            </Button>
-            <Button
-                accessKey="y"
-                disabled={!declaration}
-                onClick={() => {
-                    dispatch(redo());
-                }}
-            >
-                Redo
-            </Button>
         </Flex>
     );
 };

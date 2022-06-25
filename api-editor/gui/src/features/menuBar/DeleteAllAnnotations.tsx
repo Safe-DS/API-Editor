@@ -7,10 +7,12 @@ import {
     AlertDialogOverlay,
     Button,
     Heading,
+    MenuItem,
     Text as ChakraText,
     VStack,
 } from '@chakra-ui/react';
 import React, { useRef, useState } from 'react';
+import { FaTrash } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { resetAnnotationStore, selectUsernameIsValid } from '../annotations/annotationSlice';
 
@@ -34,9 +36,9 @@ export const DeleteAllAnnotations = function () {
 
     return (
         <>
-            <Button onClick={() => setIsOpen(true)} disabled={!usernameIsValid}>
+            <MenuItem onClick={() => setIsOpen(true)} paddingLeft={8} disabled={!usernameIsValid} icon={<FaTrash />}>
                 Delete All Annotations
-            </Button>
+            </MenuItem>
 
             <AlertDialog isOpen={isOpen && usernameIsValid} leastDestructiveRef={cancelRef} onClose={handleCancel}>
                 <AlertDialogOverlay>
@@ -47,10 +49,12 @@ export const DeleteAllAnnotations = function () {
 
                         <AlertDialogBody>
                             <VStack alignItems="flexStart">
-                                <ChakraText>Are you sure? You can't undo this action afterwards.</ChakraText>
                                 <ChakraText>
-                                    Hint: Consider exporting your work first by clicking on the "Export" button in the
-                                    menu bar.
+                                    <strong>Are you sure?</strong>
+                                </ChakraText>
+                                <ChakraText>
+                                    Hint: Consider exporting your work first selecting "File &gt; Export &gt;
+                                    Annotations" in the menu bar.
                                 </ChakraText>
                             </VStack>
                         </AlertDialogBody>
