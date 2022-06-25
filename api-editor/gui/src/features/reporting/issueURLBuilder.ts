@@ -12,7 +12,7 @@ export const missingAnnotationURL = function (target: string): string {
     return `${baseMissingAnnotationURL}&url-hash=${urlHash}`;
 };
 
-const baseWrongAnnotationURL = `${baseURL}?assignees=&labels=bug%2Cwrong+annotation&template=wrong_annotation.yml`;
+const baseWrongAnnotationURL = `${baseURL}?assignees=&template=wrong_annotation.yml&labels=bug%2Cwrong+annotation%2C`;
 
 export const wrongAnnotationURL = function (annotationType: string, annotation: Annotation): string {
     const minimalAnnotation = { ...annotation };
@@ -22,10 +22,11 @@ export const wrongAnnotationURL = function (annotationType: string, annotation: 
     // noinspection JSConstantReassignment
     delete minimalAnnotation.reviewers;
 
+    const label = encodeURIComponent(`@${annotationType}`);
     const urlHash = encodeURIComponent(`\`#/${annotation.target}\``);
     const actualAnnotationType = encodeURIComponent(`\`@${annotationType}\``);
     const actualAnnotationInputs = encodeURIComponent(
         `\`\`\`json5\n${JSON.stringify(minimalAnnotation, null, 4)}\n\`\`\``,
     );
-    return `${baseWrongAnnotationURL}&url-hash=${urlHash}&actual-annotation-type=${actualAnnotationType}&actual-annotation-inputs=${actualAnnotationInputs}`;
+    return `${baseWrongAnnotationURL}${label}&url-hash=${urlHash}&actual-annotation-type=${actualAnnotationType}&actual-annotation-inputs=${actualAnnotationInputs}`;
 };
