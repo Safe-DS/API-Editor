@@ -12,6 +12,7 @@ import {
     MenuItemOption,
     MenuList,
     MenuOptionGroup,
+    Spacer,
     useColorMode,
 } from '@chakra-ui/react';
 import React from 'react';
@@ -57,6 +58,7 @@ import {
 } from '../packageData/apiSlice';
 import { selectUsages } from '../usages/usageSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
+import {SelectionBreadcrumbs} from "./SelectionBreadcrumbs";
 
 interface MenuBarProps {
     displayInferErrors: (errors: string[]) => void;
@@ -423,6 +425,12 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                         </MenuList>
                     </Menu>
                 </Box>
+            </HStack>
+
+            <Spacer />
+
+            <HStack>
+                <SelectionBreadcrumbs />
             </HStack>
         </Flex>
     );

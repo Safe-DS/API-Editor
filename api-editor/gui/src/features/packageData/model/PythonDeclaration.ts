@@ -15,6 +15,14 @@ export abstract class PythonDeclaration {
         return this.name;
     }
 
+    *ancestorsOrSelf(): Generator<PythonDeclaration> {
+        let current: Optional<PythonDeclaration> = this
+        while (current) {
+            yield current
+            current = current.parent()
+        }
+    }
+
     *descendantsOrSelf(): Generator<PythonDeclaration> {
         yield this;
         for (const child of this.children()) {
