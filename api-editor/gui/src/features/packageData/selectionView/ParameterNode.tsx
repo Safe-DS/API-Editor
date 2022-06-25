@@ -55,7 +55,7 @@ export const ParameterNode: React.FC<ParameterNodeProps> = function ({ isTitle, 
 
             <Box paddingLeft={4}>
                 {pythonParameter.description ? (
-                    <DocumentationText inputText={pythonParameter?.description} />
+                    <DocumentationText declaration={pythonParameter} inputText={pythonParameter?.description} />
                 ) : (
                     <ChakraText color="gray.500">There is no documentation for this parameter.</ChakraText>
                 )}

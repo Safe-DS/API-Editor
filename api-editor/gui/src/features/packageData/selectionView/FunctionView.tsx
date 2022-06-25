@@ -57,7 +57,7 @@ export const FunctionView: React.FC<FunctionViewProps> = function ({ pythonFunct
 
                 <Box paddingLeft={4}>
                     {pythonFunction.description ? (
-                        <DocumentationText inputText={pythonFunction.description} />
+                        <DocumentationText declaration={pythonFunction} inputText={pythonFunction.description} />
                     ) : (
                         <ChakraText color="gray.500">There is no documentation for this function.</ChakraText>
                     )}
