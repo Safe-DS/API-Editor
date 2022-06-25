@@ -14,6 +14,7 @@ import {
     MenuOptionGroup,
     Spacer,
     useColorMode,
+    useToast,
 } from '@chakra-ui/react';
 import React from 'react';
 import { FaArrowLeft, FaArrowRight, FaArrowUp, FaChevronDown, FaRedo, FaUndo } from 'react-icons/fa';
@@ -69,6 +70,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
     const { colorMode, toggleColorMode } = useColorMode();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const toast = useToast();
 
     const annotationStore = useAppSelector(selectAnnotationStore);
     const sortingMode = useAppSelector(selectSortingMode);
@@ -119,8 +121,24 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
             return;
         }
 
-        let navStr = getPreviousElementPath(allDeclarations, declaration, pythonFilter, annotations, usages);
+        let { id: navStr, wrappedAround } = getPreviousElementPath(
+            allDeclarations,
+            declaration,
+            pythonFilter,
+            annotations,
+            usages,
+        );
         if (navStr !== null) {
+            if (wrappedAround) {
+                toast({
+                    title: 'Start of List',
+                    description: 'You reached the start of the list. Going back to its end\u2026',
+                    status: 'info',
+                    duration: 4000,
+                    isClosable: true,
+                });
+            }
+
             //navigate to element
             navigate(`/${navStr}`);
 
@@ -134,8 +152,24 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
             return;
         }
 
-        let navStr = getNextElementPath(allDeclarations, declaration, pythonFilter, annotations, usages);
+        let { id: navStr, wrappedAround } = getNextElementPath(
+            allDeclarations,
+            declaration,
+            pythonFilter,
+            annotations,
+            usages,
+        );
         if (navStr !== null) {
+            if (wrappedAround) {
+                toast({
+                    title: 'End of List',
+                    description: 'You reached the end of the list. Going back to its start\u2026',
+                    status: 'info',
+                    duration: 4000,
+                    isClosable: true,
+                });
+            }
+
             //navigate to element
             navigate(`/${navStr}`);
 
@@ -460,17 +494,23 @@ const getPreviousElementPath = function (
     filter: AbstractPythonFilter,
     annotations: AnnotationStore,
     usages: UsageCountStore,
-): string {
+): { id: string; wrappedAround: boolean } {
     let currentIndex = getPreviousIndex(declarations, getIndex(declarations, start));
     let current = getElementAtIndex(declarations, currentIndex);
+    let wrappedAround = false;
     while (current !== null && current !== start) {
         if (filter.shouldKeepDeclaration(current, annotations, usages)) {
-            return current.id;
+            return { id: current.id, wrappedAround };
         }
+
+        const oldIndex = currentIndex;
         currentIndex = getPreviousIndex(declarations, currentIndex);
         current = getElementAtIndex(declarations, currentIndex);
+        if (oldIndex !== null && currentIndex !== null && currentIndex >= oldIndex) {
+            wrappedAround = true;
+        }
     }
-    return start.id;
+    return { id: start.id, wrappedAround };
 };
 
 const getNextElementPath = function (
@@ -479,17 +519,23 @@ const getNextElementPath = function (
     filter: AbstractPythonFilter,
     annotations: AnnotationStore,
     usages: UsageCountStore,
-): string {
+): { id: string; wrappedAround: boolean } {
     let currentIndex = getNextIndex(declarations, getIndex(declarations, start));
     let current = getElementAtIndex(declarations, currentIndex);
+    let wrappedAround = false;
     while (current !== null && current !== start) {
         if (filter.shouldKeepDeclaration(current, annotations, usages)) {
-            return current.id;
+            return { id: current.id, wrappedAround };
         }
+
+        const oldIndex = currentIndex;
         currentIndex = getNextIndex(declarations, currentIndex);
         current = getElementAtIndex(declarations, currentIndex);
+        if (oldIndex !== null && currentIndex !== null && currentIndex <= oldIndex) {
+            wrappedAround = true;
+        }
     }
-    return start.id;
+    return { id: start.id, wrappedAround };
 };
 
 const getPreviousIndex = function (declarations: PythonDeclaration[], currentIndex: number | null): number | null {
