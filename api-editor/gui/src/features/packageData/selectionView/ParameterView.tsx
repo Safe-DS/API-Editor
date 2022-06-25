@@ -73,8 +73,14 @@ const createBarChart = function (parameterUsages: Map<string, number>): React.Re
         responsive: true,
         plugins: {
             legend: {
-                display: false as const,
+                display: false,
             },
+            tooltip: {
+                interaction: {
+                    axis: 'y'
+                },
+                intersect: false,
+            }
         },
     };
 
