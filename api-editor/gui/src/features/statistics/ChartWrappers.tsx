@@ -35,10 +35,10 @@ export const createBarChart = function (labels: string[], values: number[], titl
             },
             tooltip: {
                 interaction: {
-                    axis: 'y'
+                    axis: 'y',
                 },
                 intersect: false,
-            }
+            },
         },
     };
 

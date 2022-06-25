@@ -77,10 +77,10 @@ const createBarChart = function (parameterUsages: Map<string, number>): React.Re
             },
             tooltip: {
                 interaction: {
-                    axis: 'y'
+                    axis: 'y',
                 },
                 intersect: false,
-            }
+            },
         },
     };
 
