@@ -7,8 +7,8 @@ import { CodeComponent, ReactMarkdownProps, UnorderedListComponent } from 'react
 import rehypeKatex from 'rehype-katex';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
-import {useAppSelector} from "../../../app/hooks";
-import {selectExpandDocumentationByDefault} from "../../ui/uiSlice";
+import { useAppSelector } from '../../../app/hooks';
+import { selectExpandDocumentationByDefault } from '../../ui/uiSlice';
 
 interface DocumentationTextProps {
     inputText: string;
@@ -37,7 +37,7 @@ const components = {
 };
 
 export const DocumentationText: React.FC<DocumentationTextProps> = function ({ inputText = '' }) {
-    const expandDocumentationByDefault = useAppSelector(selectExpandDocumentationByDefault)
+    const expandDocumentationByDefault = useAppSelector(selectExpandDocumentationByDefault);
 
     const preprocessedText = inputText
         // replace single new-lines by spaces

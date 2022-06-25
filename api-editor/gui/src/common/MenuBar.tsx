@@ -21,7 +21,8 @@ import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { selectAnnotationStore, selectUsernameIsValid } from '../features/annotations/annotationSlice';
 import {
     BatchMode,
-    HeatMapMode, selectExpandDocumentationByDefault,
+    HeatMapMode,
+    selectExpandDocumentationByDefault,
     selectHeatMapMode,
     selectShowStatistics,
     selectSortingMode,
@@ -30,7 +31,8 @@ import {
     setSortingMode,
     SortingMode,
     toggleAnnotationImportDialog,
-    toggleAPIImportDialog, toggleExpandDocumentationByDefault,
+    toggleAPIImportDialog,
+    toggleExpandDocumentationByDefault,
     toggleStatisticsView,
     toggleUsageImportDialog,
 } from '../features/ui/uiSlice';
