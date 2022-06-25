@@ -12,6 +12,7 @@ import {
     FormLabel,
     Heading,
     Input,
+    MenuItem,
     VStack,
 } from '@chakra-ui/react';
 import React, { useRef, useState } from 'react';
@@ -78,7 +79,7 @@ export const GenerateAdapters: React.FC<GenerateAdaptersProps> = function ({ dis
 
     return (
         <>
-            <Button onClick={() => setIsOpen(true)}>Generate Adapters</Button>
+            <MenuItem onClick={() => setIsOpen(true)} paddingLeft={8}>Adapters</MenuItem>
 
             <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={handleCancel}>
                 <AlertDialogOverlay>

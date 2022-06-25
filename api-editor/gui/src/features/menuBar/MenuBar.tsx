@@ -126,6 +126,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                             </MenuGroup>
                             <MenuDivider />
                             <MenuGroup title="Export">
+                                <GenerateAdapters displayInferErrors={displayInferErrors} />
                                 <MenuItem paddingLeft={8} onClick={exportAnnotations}>
                                     Annotations
                                 </MenuItem>
@@ -134,7 +135,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                     </Menu>
                 </Box>
 
-                <GenerateAdapters displayInferErrors={displayInferErrors} />
+
                 <DeleteAllAnnotations />
 
                 <Box>
