@@ -148,7 +148,7 @@ const resolveRelativeLink = function (currentDeclaration: PythonDeclaration, lin
         return linkedDeclarationName;
     }
 
-    return `[${currentDeclaration.preferredQualifiedName()}](${sibling.id})`;
+    return `[${sibling.preferredQualifiedName()}](${sibling.id})`;
 };
 
 const resolveAbsoluteLink = function (
