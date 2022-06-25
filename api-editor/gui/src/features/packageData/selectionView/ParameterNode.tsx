@@ -33,21 +33,19 @@ export const ParameterNode: React.FC<ParameterNodeProps> = function ({ isTitle, 
                     </Heading>
                 )}
                 {pythonParameter.isPublic && isExplicitParameter && (
-                    <>
-                        <AnnotationDropdown
-                            target={id}
-                            showAttribute={isConstructorParameter}
-                            showBoundary
-                            showConstant
-                            showDescription
-                            showEnum
-                            showOptional
-                            showRename
-                            showRequired
-                        />
-                        <CompleteButton target={id} />
-                    </>
+                    <AnnotationDropdown
+                        target={id}
+                        showAttribute={isConstructorParameter}
+                        showBoundary
+                        showConstant
+                        showDescription
+                        showEnum
+                        showOptional
+                        showRename
+                        showRequired
+                    />
                 )}
+                <CompleteButton target={id} />
             </HStack>
 
             <AnnotationView target={id} />
