@@ -6,6 +6,7 @@ import { PythonParameter } from '../model/PythonParameter';
 import { DocumentationText } from './DocumentationText';
 import { CompleteButton } from '../../annotations/CompleteButton';
 import { Link } from 'react-router-dom';
+import {MissingAnnotationButton} from "../../annotations/MissingAnnotationButton";
 
 interface ParameterNodeProps {
     pythonParameter: PythonParameter;
@@ -46,6 +47,7 @@ export const ParameterNode: React.FC<ParameterNodeProps> = function ({ isTitle, 
                     />
                 )}
                 <CompleteButton target={id} />
+                <MissingAnnotationButton target={id} />
             </HStack>
 
             <AnnotationView target={id} />
