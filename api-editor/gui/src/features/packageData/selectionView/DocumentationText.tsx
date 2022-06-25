@@ -7,6 +7,8 @@ import { CodeComponent, ReactMarkdownProps, UnorderedListComponent } from 'react
 import rehypeKatex from 'rehype-katex';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
+import {useAppSelector} from "../../../app/hooks";
+import {selectExpandDocumentationByDefault} from "../../ui/uiSlice";
 
 interface DocumentationTextProps {
     inputText: string;
@@ -35,6 +37,8 @@ const components = {
 };
 
 export const DocumentationText: React.FC<DocumentationTextProps> = function ({ inputText = '' }) {
+    const expandDocumentationByDefault = useAppSelector(selectExpandDocumentationByDefault)
+
     const preprocessedText = inputText
         // replace single new-lines by spaces
         .replaceAll(/(?<!\n)\n(?!\n)/gu, ' ')
@@ -45,7 +49,7 @@ export const DocumentationText: React.FC<DocumentationTextProps> = function ({ i
 
     const shortenedText = preprocessedText.split('\n\n')[0];
     const hasMultipleLines = shortenedText !== preprocessedText;
-    const [readMore, setReadMore] = useState(false);
+    const [readMore, setReadMore] = useState(expandDocumentationByDefault);
 
     return (
         <Flex justifyContent="flex-start">

@@ -21,7 +21,7 @@ import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { selectAnnotationStore, selectUsernameIsValid } from '../features/annotations/annotationSlice';
 import {
     BatchMode,
-    HeatMapMode,
+    HeatMapMode, selectExpandDocumentationByDefault,
     selectHeatMapMode,
     selectShowStatistics,
     selectSortingMode,
@@ -30,7 +30,7 @@ import {
     setSortingMode,
     SortingMode,
     toggleAnnotationImportDialog,
-    toggleAPIImportDialog,
+    toggleAPIImportDialog, toggleExpandDocumentationByDefault,
     toggleStatisticsView,
     toggleUsageImportDialog,
 } from '../features/ui/uiSlice';
@@ -51,6 +51,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
     const heatMapMode = useAppSelector(selectHeatMapMode);
     const showStatistics = useAppSelector(selectShowStatistics);
     const usernameIsValid = useAppSelector(selectUsernameIsValid);
+    const expandDocumentationByDefault = useAppSelector(selectExpandDocumentationByDefault);
 
     const exportAnnotations = () => {
         const a = document.createElement('a');
@@ -68,6 +69,9 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
     }
     if (showStatistics) {
         visualSettings.push('statistics');
+    }
+    if (expandDocumentationByDefault) {
+        visualSettings.push('toggleDocumentationByDefault');
     }
 
     return (
@@ -150,6 +154,12 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                                         onClick={() => dispatch(toggleStatisticsView())}
                                     >
                                         Show Statistics
+                                    </MenuItemOption>
+                                    <MenuItemOption
+                                        value={'toggleDocumentationByDefault'}
+                                        onClick={() => dispatch(toggleExpandDocumentationByDefault())}
+                                    >
+                                        Expand Documentation by Default
                                     </MenuItemOption>
                                 </MenuOptionGroup>
                             </MenuGroup>

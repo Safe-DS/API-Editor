@@ -30,6 +30,7 @@ export interface UIState {
     sortingMode: SortingMode;
     batchMode: BatchMode;
     showStatistics: boolean;
+    expandDocumentationByDefault: boolean;
 }
 
 type UserAction =
@@ -153,6 +154,7 @@ export const initialState: UIState = {
     sortingMode: SortingMode.Default,
     batchMode: BatchMode.None,
     showStatistics: true,
+    expandDocumentationByDefault: false,
 };
 
 // Thunks --------------------------------------------------------------------------------------------------------------
@@ -342,6 +344,9 @@ const uiSlice = createSlice({
         toggleStatisticsView(state) {
             state.showStatistics = !state.showStatistics;
         },
+        toggleExpandDocumentationByDefault(state) {
+            state.expandDocumentationByDefault = !state.expandDocumentationByDefault;
+        },
     },
     extraReducers(builder) {
         builder.addCase(initializeUI.fulfilled, (state, action) => action.payload);
@@ -384,6 +389,7 @@ export const {
     setSortingMode,
     setBatchMode,
     toggleStatisticsView,
+    toggleExpandDocumentationByDefault,
 } = actions;
 export const uiReducer = reducer;
 
@@ -432,6 +438,8 @@ export const selectSorter = (state: RootState): ((a: PythonDeclaration, b: Pytho
 };
 export const selectBatchMode = (state: RootState): BatchMode => selectUI(state).batchMode;
 export const selectShowStatistics = (state: RootState): boolean => selectUI(state).showStatistics;
+export const selectExpandDocumentationByDefault = (state: RootState): boolean =>
+    selectUI(state).expandDocumentationByDefault;
 
 const sortInSameOrder = (_a: PythonDeclaration, _b: PythonDeclaration) => {
     return 1;
