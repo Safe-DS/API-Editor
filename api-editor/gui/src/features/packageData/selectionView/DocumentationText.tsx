@@ -26,7 +26,7 @@ import { useAppSelector } from '../../../app/hooks';
 import { selectExpandDocumentationByDefault } from '../../ui/uiSlice';
 import { Link as RouterLink } from 'react-router-dom';
 import { PythonDeclaration } from '../model/PythonDeclaration';
-import {PythonPackage} from "../model/PythonPackage";
+import { PythonPackage } from '../model/PythonPackage';
 
 interface DocumentationTextProps {
     declaration: PythonDeclaration;
@@ -81,7 +81,15 @@ export const DocumentationText: React.FC<DocumentationTextProps> = function ({ d
         // replace relative links to functions
         .replaceAll(/:func:`(\w*)`/gu, (_match, name) => resolveRelativeLink(declaration, name))
         // replace absolute links to modules
-        .replaceAll(/:mod:`([\w.]*)`/gu, (_match, qualifiedName) => resolveAbsoluteLink(declaration, qualifiedName, 1));
+        .replaceAll(/:mod:`([\w.]*)`/gu, (_match, qualifiedName) => resolveAbsoluteLink(declaration, qualifiedName, 1))
+        // replace absolute links to classes
+        .replaceAll(/:class:`~?([\w.]*)`/gu, (_match, qualifiedName) =>
+            resolveAbsoluteLink(declaration, qualifiedName, 2),
+        )
+        // replace absolute links to classes
+        .replaceAll(/:func:`~?([\w.]*)`/gu, (_match, qualifiedName) =>
+            resolveAbsoluteLink(declaration, qualifiedName, 2),
+        );
 
     const shortenedText = preprocessedText.split('\n\n')[0];
     const hasMultipleLines = shortenedText !== preprocessedText;
@@ -139,13 +147,13 @@ const resolveRelativeLink = function (currentDeclaration: PythonDeclaration, lin
         return linkedDeclarationName;
     }
 
-    return `[${linkedDeclarationName}](${sibling.id})`;
+    return `[${currentDeclaration.preferredQualifiedName()}](${sibling.id})`;
 };
 
 const resolveAbsoluteLink = function (
     currentDeclaration: PythonDeclaration,
     linkedDeclarationQualifiedName: string,
-    segmentCount: number
+    segmentCount: number,
 ): string {
     let segments = linkedDeclarationQualifiedName.split('.');
     if (segments.length < segmentCount) {
@@ -155,9 +163,9 @@ const resolveAbsoluteLink = function (
     segments = [
         segments.slice(0, segments.length - segmentCount + 1).join('.'),
         ...segments.slice(segments.length - segmentCount + 1),
-    ]
+    ];
 
-    let current = currentDeclaration.root()
+    let current = currentDeclaration.root();
     if (!(current instanceof PythonPackage)) {
         return linkedDeclarationQualifiedName;
     }
@@ -171,5 +179,5 @@ const resolveAbsoluteLink = function (
         current = next;
     }
 
-    return `[${linkedDeclarationQualifiedName}](${current.id})`;
+    return `[${current.preferredQualifiedName()}](${current.id})`;
 };
