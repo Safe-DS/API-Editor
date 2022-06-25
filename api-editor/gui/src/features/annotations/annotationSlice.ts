@@ -468,6 +468,19 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
+        toggleComplete(state, action: PayloadAction<string>) {
+            if (state.annotations.completes[action.payload]) {
+                delete state.annotations.completes[action.payload];
+            } else {
+                state.annotations.completes[action.payload] = withAuthorAndReviewers(
+                    state.annotations.completes[action.payload],
+                    { target: action.payload },
+                    state.username,
+                );
+            }
+
+            updateQueue(state);
+        },
         // Cannot review complete annotations
         upsertConstant(state, action: PayloadAction<ConstantAnnotation>) {
             state.annotations.constants[action.payload.target] = withAuthorAndReviewers(
@@ -888,6 +901,7 @@ export const {
     reviewCalledAfter,
     addComplete,
     removeComplete,
+    toggleComplete,
     upsertConstant,
     upsertConstants,
     removeConstant,
