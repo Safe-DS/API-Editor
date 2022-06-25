@@ -8,8 +8,11 @@ import { PythonModule } from '../model/PythonModule';
 import { DocumentationText } from './DocumentationText';
 import { ParameterNode } from './ParameterNode';
 import { useAppSelector } from '../../../app/hooks';
-import { selectCalledAfters } from '../../annotations/annotationSlice';
+import { selectAnnotationStore, selectCalledAfters } from '../../annotations/annotationSlice';
 import { CompleteButton } from '../../annotations/CompleteButton';
+import { PythonParameter } from '../model/PythonParameter';
+import { selectFilter, selectSorter } from '../../ui/uiSlice';
+import { selectUsages } from '../../usages/usageSlice';
 
 interface FunctionViewProps {
     pythonFunction: PythonFunction;
@@ -17,8 +20,9 @@ interface FunctionViewProps {
 
 export const FunctionView: React.FC<FunctionViewProps> = function ({ pythonFunction }) {
     const id = pythonFunction.id;
+    const parameters = useSortedAndFilteredParameters(pythonFunction);
 
-    // If more @calledAfter annotations can be added
+    // Whether more @calledAfter annotations can be added
     const currentCalledAfters = Object.keys(useAppSelector(selectCalledAfters(id)));
     const hasRemainingCalledAfters = pythonFunction
         .siblingFunctions()
@@ -62,13 +66,11 @@ export const FunctionView: React.FC<FunctionViewProps> = function ({ pythonFunct
 
             <Stack spacing={4}>
                 <Heading as="h4" size="md">
-                    Parameters
+                    Sorted & Filtered Parameters
                 </Heading>
                 <Stack spacing={6} paddingLeft={4}>
-                    {!isEmptyList(pythonFunction.parameters) ? (
-                        pythonFunction.parameters.map((parameters) => (
-                            <ParameterNode key={parameters.name} pythonParameter={parameters} isTitle={false} />
-                        ))
+                    {!isEmptyList(parameters) ? (
+                        parameters.map((it) => <ParameterNode key={it.name} pythonParameter={it} isTitle={false} />)
                     ) : (
                         <ChakraText paddingLeft={4} color="gray.500">
                             There are no parameters.
@@ -78,4 +80,14 @@ export const FunctionView: React.FC<FunctionViewProps> = function ({ pythonFunct
             </Stack>
         </Stack>
     );
+};
+
+const useSortedAndFilteredParameters = function (pythonFunction: PythonFunction): PythonParameter[] {
+    const parameters = pythonFunction.parameters;
+    const annotations = useAppSelector(selectAnnotationStore);
+    const usages = useAppSelector(selectUsages);
+    const filter = useAppSelector(selectFilter);
+    const sorter = useAppSelector(selectSorter);
+
+    return parameters.filter((it) => filter.shouldKeepDeclaration(it, annotations, usages)).sort(sorter);
 };

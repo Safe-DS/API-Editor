@@ -3,11 +3,10 @@ import { RootState } from '../../app/store';
 import { PythonPackage } from './model/PythonPackage';
 import { parsePythonPackageJson, PythonPackageJson } from './model/PythonPackageBuilder';
 import * as idb from 'idb-keyval';
-import { selectFilter, selectSortingMode, SortingMode } from '../ui/uiSlice';
+import { selectFilter, selectSorter } from '../ui/uiSlice';
 import { selectUsages } from '../usages/usageSlice';
 import { selectAnnotationStore } from '../annotations/annotationSlice';
 import { PythonDeclaration } from './model/PythonDeclaration';
-import { UsageCountStore } from '../usages/model/UsageCountStore';
 
 export interface APIState {
     pythonPackage: PythonPackage;
@@ -65,14 +64,9 @@ export const apiReducer = reducer;
 const selectAPI = (state: RootState) => state.api;
 export const selectRawPythonPackage = (state: RootState) => selectAPI(state).pythonPackage;
 export const selectFlatSortedDeclarationList = createSelector(
-    [selectRawPythonPackage, selectSortingMode, selectUsages],
-    (pythonPackage, sortingMode, usages) => {
-        switch (sortingMode) {
-            case SortingMode.Alphabetical:
-                return walkChildrenInPreorder(pythonPackage, sortAlphabetically);
-            case SortingMode.Usages: // Descending
-                return walkChildrenInPreorder(pythonPackage, sortByUsages(usages));
-        }
+    [selectRawPythonPackage, selectSorter],
+    (pythonPackage, sorter) => {
+        return walkChildrenInPreorder(pythonPackage, sorter);
     },
 );
 export const selectFilteredPythonPackage = createSelector(
@@ -100,14 +94,9 @@ export const selectNumberOfMatchedNodes = createSelector([selectMatchedNodes], (
     return matchedNodes.length;
 });
 export const selectFlatFilteredAndSortedDeclarationList = createSelector(
-    [selectFilteredPythonPackage, selectSortingMode, selectUsages],
-    (pythonPackage, sortingMode, usages) => {
-        switch (sortingMode) {
-            case SortingMode.Alphabetical:
-                return walkChildrenInPreorder(pythonPackage, sortAlphabetically);
-            case SortingMode.Usages: // Descending
-                return walkChildrenInPreorder(pythonPackage, sortByUsages(usages));
-        }
+    [selectFilteredPythonPackage, selectSorter],
+    (pythonPackage, sorter) => {
+        return walkChildrenInPreorder(pythonPackage, sorter);
     },
 );
 
@@ -118,12 +107,4 @@ const walkChildrenInPreorder = function (
     return [...declaration.children()].sort(sorter).flatMap((it) => {
         return [it, ...walkChildrenInPreorder(it, sorter)];
     });
-};
-
-const sortAlphabetically = (a: PythonDeclaration, b: PythonDeclaration) => {
-    return a.name.localeCompare(b.name);
-};
-
-const sortByUsages = (usages: UsageCountStore) => (a: PythonDeclaration, b: PythonDeclaration) => {
-    return usages.getUsageCount(b) - usages.getUsageCount(a);
 };

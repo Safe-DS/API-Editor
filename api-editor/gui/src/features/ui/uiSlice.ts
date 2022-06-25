@@ -4,6 +4,9 @@ import { RootState } from '../../app/store';
 import { CalledAfterTarget, GroupTarget } from '../annotations/annotationSlice';
 import { AbstractPythonFilter } from '../filter/model/AbstractPythonFilter';
 import { createFilterFromString, isValidFilterToken } from '../filter/model/filterFactory';
+import { PythonDeclaration } from '../packageData/model/PythonDeclaration';
+import { UsageCountStore } from '../usages/model/UsageCountStore';
+import { selectUsages } from '../usages/usageSlice';
 
 export interface Filter {
     filter: string;
@@ -112,6 +115,7 @@ export enum HeatMapMode {
 }
 
 export enum SortingMode {
+    Default = 'default',
     Alphabetical = 'alphabetical',
     Usages = 'usages',
 }
@@ -146,7 +150,7 @@ export const initialState: UIState = {
     ],
 
     heatMapMode: HeatMapMode.None,
-    sortingMode: SortingMode.Alphabetical,
+    sortingMode: SortingMode.Default,
     batchMode: BatchMode.None,
     showStatistics: true,
 };
@@ -414,5 +418,29 @@ export const selectFilter = createSelector(
     },
 );
 export const selectSortingMode = (state: RootState): SortingMode => selectUI(state).sortingMode;
+export const selectSorter = (state: RootState): ((a: PythonDeclaration, b: PythonDeclaration) => number) => {
+    const sortingMode = selectSortingMode(state);
+    const usages = selectUsages(state);
+    switch (sortingMode) {
+        case SortingMode.Default:
+            return sortInSameOrder;
+        case SortingMode.Alphabetical:
+            return sortAlphabetically;
+        case SortingMode.Usages: // Descending
+            return sortByUsages(usages);
+    }
+};
 export const selectBatchMode = (state: RootState): BatchMode => selectUI(state).batchMode;
 export const selectShowStatistics = (state: RootState): boolean => selectUI(state).showStatistics;
+
+const sortInSameOrder = (_a: PythonDeclaration, _b: PythonDeclaration) => {
+    return 1;
+};
+
+const sortAlphabetically = (a: PythonDeclaration, b: PythonDeclaration) => {
+    return a.name.localeCompare(b.name);
+};
+
+const sortByUsages = (usages: UsageCountStore) => (a: PythonDeclaration, b: PythonDeclaration) => {
+    return usages.getUsageCount(b) - usages.getUsageCount(a);
+};
