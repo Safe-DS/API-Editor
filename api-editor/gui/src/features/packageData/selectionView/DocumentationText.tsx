@@ -99,6 +99,7 @@ export const DocumentationText: React.FC<DocumentationTextProps> = function ({ d
         <Flex justifyContent="flex-start">
             <HStack
                 alignItems="flex-start"
+                overflow="hidden"
                 cursor={!hasMultipleLines || readMore ? undefined : 'pointer'}
                 onClick={
                     !hasMultipleLines || readMore
@@ -122,7 +123,7 @@ export const DocumentationText: React.FC<DocumentationTextProps> = function ({ d
                     />
                 )}
 
-                <Stack spacing={4}>
+                <Stack spacing={4} overflowX="auto" paddingBottom={4}>
                     <ReactMarkdown
                         components={components}
                         rehypePlugins={[rehypeKatex]}

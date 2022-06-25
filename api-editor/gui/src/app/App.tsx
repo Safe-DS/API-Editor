@@ -158,8 +158,8 @@ export const App: React.FC = function () {
                     )}
                     {currentUserAction.type === 'todo' && <TodoForm target={userActionTarget || rawPythonPackage} />}
                 </GridItem>
-                <GridItem gridArea="middlePane" overflow="auto">
-                    <Box flexGrow={1} overflowY="auto" width="100%">
+                <GridItem gridArea="middlePane" overflow="auto" display="flex">
+                    <Box flexGrow={1} overflowY="auto" width="100%" >
                         {(batchMode === BatchMode.None || !isValidUsername) && <SelectionView />}
 
                         {batchMode === BatchMode.Constant && isValidUsername && (
