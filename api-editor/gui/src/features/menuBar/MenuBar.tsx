@@ -23,6 +23,7 @@ import {
     redo,
     selectAnnotationStore,
     selectUsernameIsValid,
+    toggleComplete,
     undo,
 } from '../annotations/annotationSlice';
 import {
@@ -106,6 +107,13 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
     }
 
     // Event handlers
+    const markSelectedElementAsComplete = () => {
+        if (!declaration || declaration instanceof PythonPackage || !usernameIsValid) {
+            return;
+        }
+
+        dispatch(toggleComplete(declaration.id));
+    };
     const goToPreviousMatch = () => {
         if (!declaration) {
             return;
@@ -162,6 +170,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
     // Keyboard shortcuts
     useKeyboardShortcut(false, true, false, 'z', () => dispatch(undo()));
     useKeyboardShortcut(false, true, false, 'y', () => dispatch(redo()));
+    useKeyboardShortcut(false, true, true, 'c', markSelectedElementAsComplete);
     useKeyboardShortcut(false, true, false, 'ArrowLeft', goToPreviousMatch);
     useKeyboardShortcut(false, true, false, 'ArrowRight', goToNextMatch);
     useKeyboardShortcut(false, true, false, 'ArrowUp', goToParent);
@@ -224,6 +233,15 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                                 command="Ctrl+Y"
                             >
                                 Redo
+                            </MenuItem>
+                            <MenuDivider />
+                            <MenuItem
+                                paddingLeft={8}
+                                onClick={markSelectedElementAsComplete}
+                                isDisabled={!declaration || declaration instanceof PythonPackage || !usernameIsValid}
+                                command="Ctrl+Alt+C"
+                            >
+                                Toggle Completion of Selected Element
                             </MenuItem>
                             <MenuDivider />
                             <MenuGroup title={'Batch Annotate'}>
