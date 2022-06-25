@@ -389,6 +389,10 @@ const annotationsSlice = createSlice({
                 state.username,
             );
 
+            delete state.annotations.constants[action.payload.target];
+            delete state.annotations.optionals[action.payload.target];
+            delete state.annotations.requireds[action.payload.target];
+
             updateQueue(state);
         },
         removeAttribute(state, action: PayloadAction<string>) {
@@ -489,6 +493,10 @@ const annotationsSlice = createSlice({
                 state.username,
             );
 
+            delete state.annotations.attributes[action.payload.target];
+            delete state.annotations.optionals[action.payload.target];
+            delete state.annotations.requireds[action.payload.target];
+
             updateQueue(state);
         },
         upsertConstants(state, action: PayloadAction<ConstantAnnotation[]>) {
@@ -498,6 +506,10 @@ const annotationsSlice = createSlice({
                     annotation,
                     state.username,
                 );
+
+                delete state.annotations.attributes[annotation.target];
+                delete state.annotations.optionals[annotation.target];
+                delete state.annotations.requireds[annotation.target];
             });
 
             updateQueue(state);
@@ -662,6 +674,10 @@ const annotationsSlice = createSlice({
                 state.username,
             );
 
+            delete state.annotations.attributes[action.payload.target];
+            delete state.annotations.constants[action.payload.target];
+            delete state.annotations.requireds[action.payload.target];
+
             updateQueue(state);
         },
         upsertOptionals(state, action: PayloadAction<OptionalAnnotation[]>) {
@@ -671,6 +687,10 @@ const annotationsSlice = createSlice({
                     annotation,
                     state.username,
                 );
+
+                delete state.annotations.attributes[annotation.target];
+                delete state.annotations.constants[annotation.target];
+                delete state.annotations.requireds[annotation.target];
             });
 
             updateQueue(state);
@@ -750,15 +770,23 @@ const annotationsSlice = createSlice({
                 state.username,
             );
 
+            delete state.annotations.attributes[action.payload.target];
+            delete state.annotations.constants[action.payload.target];
+            delete state.annotations.optionals[action.payload.target];
+
             updateQueue(state);
         },
-        upsertRequireds(state, action: PayloadAction<RequiredAnnotation[]>) {
+        addRequireds(state, action: PayloadAction<RequiredAnnotation[]>) {
             action.payload.forEach((annotation) => {
                 state.annotations.requireds[annotation.target] = withAuthorAndReviewers(
                     state.annotations.requireds[annotation.target],
                     annotation,
                     state.username,
                 );
+
+                delete state.annotations.attributes[annotation.target];
+                delete state.annotations.constants[annotation.target];
+                delete state.annotations.optionals[annotation.target];
             });
 
             updateQueue(state);
@@ -931,7 +959,7 @@ export const {
     removeRenaming,
     reviewRenaming,
     addRequired,
-    upsertRequireds,
+    addRequireds,
     removeRequired,
     reviewRequired,
     upsertTodo,
