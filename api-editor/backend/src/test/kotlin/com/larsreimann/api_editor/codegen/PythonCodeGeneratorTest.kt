@@ -462,7 +462,17 @@ class PythonCodeGeneratorTest {
         @Test
         fun `should store todo if it is not blank`() {
             val testConstructor = PythonConstructor(
-                todo = "    Lorem ipsum\n\n    Dolor sit\namet\n"
+                todo = "    Lorem ipsum\n\n    Dolor sit\namet\n",
+                parameters = listOf(
+                    PythonParameter(
+                        name = "self",
+                        assignedBy = PythonParameterAssignment.IMPLICIT
+                    ),
+                    PythonParameter(
+                        name = "unfinished",
+                        todo = "    Lorem ipsum\n\n    Dolor sit\namet\n",
+                    ),
+                )
             )
 
             testConstructor.toPythonCode() shouldBe """
@@ -470,7 +480,11 @@ class PythonCodeGeneratorTest {
                     |#
                     |#           Dolor sit
                     |#       amet
-                    |def __init__():
+                    |# TODO(param:unfinished): Lorem ipsum
+                    |#
+                    |#           Dolor sit
+                    |#       amet
+                    |def __init__(self, unfinished):
                     |    pass
             """.trimMargin()
         }
@@ -725,7 +739,13 @@ class PythonCodeGeneratorTest {
         fun `should store todo if it is not blank`() {
             val testFunction = PythonFunction(
                 name = "testFunction",
-                todo = "    Lorem ipsum\n\n    Dolor sit\namet\n"
+                todo = "    Lorem ipsum\n\n    Dolor sit\namet\n",
+                parameters = listOf(
+                    PythonParameter(
+                        name = "unfinished",
+                        todo = "    Lorem ipsum\n\n    Dolor sit\namet\n",
+                    ),
+                )
             )
 
             testFunction.toPythonCode() shouldBe """
@@ -733,7 +753,11 @@ class PythonCodeGeneratorTest {
                     |#
                     |#           Dolor sit
                     |#       amet
-                    |def testFunction():
+                    |# TODO(param:unfinished): Lorem ipsum
+                    |#
+                    |#           Dolor sit
+                    |#       amet
+                    |def testFunction(unfinished):
                     |    pass
             """.trimMargin()
         }
@@ -741,7 +765,6 @@ class PythonCodeGeneratorTest {
 
     @Nested
     inner class ModuleToPythonCode {
-
         private lateinit var testModule: PythonModule
         private lateinit var testClasses: List<PythonClass>
         private lateinit var testFunctions: List<PythonFunction>

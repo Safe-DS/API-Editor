@@ -188,6 +188,7 @@ class PythonParameter(
     defaultValue: PythonExpression? = null,
     var assignedBy: PythonParameterAssignment = PythonParameterAssignment.POSITION_OR_NAME,
     var description: String = "",
+    var todo: String = "",
     var boundary: Boundary? = null,
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
 ) : PythonDeclaration() {
