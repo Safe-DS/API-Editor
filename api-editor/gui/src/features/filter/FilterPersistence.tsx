@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Button, Icon, Menu, MenuButton, MenuGroup, MenuItem, MenuList } from '@chakra-ui/react';
-import { FaChevronDown } from 'react-icons/fa';
+import { FaChevronUp } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
     removeFilter,
@@ -43,11 +43,7 @@ export const FilterPersistence = function () {
 
             <Box>
                 <Menu>
-                    <MenuButton
-                        as={Button}
-                        rightIcon={<Icon as={FaChevronDown} />}
-                        disabled={isEmptyList(savedFilters)}
-                    >
+                    <MenuButton as={Button} rightIcon={<Icon as={FaChevronUp} />} disabled={isEmptyList(savedFilters)}>
                         Load Filter
                     </MenuButton>
                     <MenuList>

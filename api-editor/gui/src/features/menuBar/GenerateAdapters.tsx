@@ -12,13 +12,14 @@ import {
     FormLabel,
     Heading,
     Input,
+    MenuItem,
     VStack,
 } from '@chakra-ui/react';
 import React, { useRef, useState } from 'react';
-import { useAppSelector } from '../app/hooks';
-import { selectAnnotationStore } from '../features/annotations/annotationSlice';
-import { AnnotatedPythonPackageBuilder } from '../features/annotatedPackageData/model/AnnotatedPythonPackageBuilder';
-import { selectRawPythonPackage } from '../features/packageData/apiSlice';
+import { useAppSelector } from '../../app/hooks';
+import { selectAnnotationStore } from '../annotations/annotationSlice';
+import { AnnotatedPythonPackageBuilder } from '../annotatedPackageData/model/AnnotatedPythonPackageBuilder';
+import { selectRawPythonPackage } from '../packageData/apiSlice';
 
 interface GenerateAdaptersProps {
     displayInferErrors: (errors: string[]) => void;
@@ -78,7 +79,9 @@ export const GenerateAdapters: React.FC<GenerateAdaptersProps> = function ({ dis
 
     return (
         <>
-            <Button onClick={() => setIsOpen(true)}>Generate Adapters</Button>
+            <MenuItem onClick={() => setIsOpen(true)} paddingLeft={8}>
+                Adapters
+            </MenuItem>
 
             <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={handleCancel}>
                 <AlertDialogOverlay>
