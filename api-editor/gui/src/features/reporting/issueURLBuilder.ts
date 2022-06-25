@@ -8,15 +8,24 @@ export const featureRequestURL = `${baseURL}?assignees=&labels=enhancement&templ
 const baseMissingAnnotationURL = `${baseURL}?assignees=&labels=bug%2Cmissing+annotation&template=missing_annotation.yml`;
 
 export const missingAnnotationURL = function (target: string): string {
-    const urlHash = encodeURIComponent(`\`${target}\``);
+    const urlHash = encodeURIComponent(`\`#/${target}\``);
     return `${baseMissingAnnotationURL}&url-hash=${urlHash}`;
 };
 
 const baseWrongAnnotationURL = `${baseURL}?assignees=&labels=bug%2Cwrong+annotation&template=wrong_annotation.yml`;
 
 export const wrongAnnotationURL = function (annotationType: string, annotation: Annotation): string {
-    const urlHash = encodeURIComponent(`\`${annotation.target}\``);
+    const minimalAnnotation = { ...annotation };
+
+    // noinspection JSConstantReassignment
+    delete minimalAnnotation.authors;
+    // noinspection JSConstantReassignment
+    delete minimalAnnotation.reviewers;
+
+    const urlHash = encodeURIComponent(`\`#/${annotation.target}\``);
     const actualAnnotationType = encodeURIComponent(`\`@${annotationType}\``);
-    const actualAnnotationInputs = encodeURIComponent(`\`\`\`json5\n${JSON.stringify(annotation, null, 4)}\`\`\``);
+    const actualAnnotationInputs = encodeURIComponent(
+        `\`\`\`json5\n${JSON.stringify(minimalAnnotation, null, 4)}\n\`\`\``,
+    );
     return `${baseWrongAnnotationURL}&url-hash=${urlHash}&actual-annotation-type=${actualAnnotationType}&actual-annotation-inputs=${actualAnnotationInputs}`;
 };
