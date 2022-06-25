@@ -147,7 +147,7 @@ fun PythonClass.toPythonCode() = buildString {
 }
 
 fun PythonConstructor.toPythonCode() = buildString {
-    val todoComment = todoComment(todo)
+    val todoComments = listOf(todoComment(todo)) + parameters.map { todoComment(it.todo, "param:${it.name}") }
     val parametersString = parameters.toPythonCode()
     val boundariesString = parameters
         .mapNotNull { it.boundary?.toPythonCode(it.name) }
@@ -160,8 +160,10 @@ fun PythonConstructor.toPythonCode() = buildString {
         ?.let { "self.instance = ${it.toPythonCode()}" }
         ?: ""
 
-    if (todoComment.isNotBlank()) {
-        appendLine(todoComment)
+    todoComments.forEach {
+        if (it.isNotBlank()) {
+            appendLine(it)
+        }
     }
     appendLine("def __init__($parametersString):")
     if (boundariesString.isNotBlank()) {
@@ -210,7 +212,7 @@ fun PythonEnumInstance.toPythonCode(enumName: String): String {
 }
 
 fun PythonFunction.toPythonCode() = buildString {
-    val todoComment = todoComment(todo)
+    val todoComments = listOf(todoComment(todo)) + parameters.map { todoComment(it.todo, "param:${it.name}") }
     val parametersString = parameters.toPythonCode()
     val docstring = docstring()
     val boundariesString = parameters
@@ -220,8 +222,10 @@ fun PythonFunction.toPythonCode() = buildString {
         ?.let { "return ${it.toPythonCode()}" }
         ?: ""
 
-    if (todoComment.isNotBlank()) {
-        appendLine(todoComment)
+    todoComments.forEach {
+        if (it.isNotBlank()) {
+            appendLine(it)
+        }
     }
     if (isStaticMethod()) {
         appendLine("@staticmethod")
@@ -328,6 +332,7 @@ fun PythonType?.toPythonCodeOrNull(): String? {
                 else -> null
             }
         }
+
         null -> null
     }
 }
@@ -370,7 +375,7 @@ fun Boundary.toPythonCode(parameterName: String) = buildString {
     }
 }
 
-fun todoComment(message: String) = buildString {
+fun todoComment(message: String, scope: String = "") = buildString {
     if (message.isBlank()) {
         return ""
     }
@@ -379,7 +384,12 @@ fun todoComment(message: String) = buildString {
     val firstLine = lines.first()
     val remainingLines = lines.drop(1)
 
-    appendLine("# TODO: ${firstLine.trim()}")
+    append("# TODO")
+    if (scope.isNotBlank()) {
+        append("($scope)")
+    }
+    appendLine(": ${firstLine.trim()}")
+
     remainingLines.forEachIndexed { index, line ->
         val indentedLine = "#       $line"
         append(indentedLine.trim())

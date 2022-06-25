@@ -484,7 +484,7 @@ class PythonCodeGeneratorTest {
                     |#
                     |#           Dolor sit
                     |#       amet
-                    |def __init__():
+                    |def __init__(self, unfinished):
                     |    pass
             """.trimMargin()
         }
@@ -742,10 +742,6 @@ class PythonCodeGeneratorTest {
                 todo = "    Lorem ipsum\n\n    Dolor sit\namet\n",
                 parameters = listOf(
                     PythonParameter(
-                        name = "self",
-                        assignedBy = PythonParameterAssignment.IMPLICIT
-                    ),
-                    PythonParameter(
                         name = "unfinished",
                         todo = "    Lorem ipsum\n\n    Dolor sit\namet\n",
                     ),
@@ -761,7 +757,7 @@ class PythonCodeGeneratorTest {
                     |#
                     |#           Dolor sit
                     |#       amet
-                    |def testFunction():
+                    |def testFunction(unfinished):
                     |    pass
             """.trimMargin()
         }
