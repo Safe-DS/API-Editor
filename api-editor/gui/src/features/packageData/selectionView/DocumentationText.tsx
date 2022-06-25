@@ -40,7 +40,7 @@ type LinkComponent = ComponentType<ComponentPropsWithoutRef<'a'> & ReactMarkdown
 
 const CustomLink: LinkComponent = function ({ className, children, href }) {
     return (
-        <ChakraLink as={RouterLink} to={href ?? '#'} className={className}>
+        <ChakraLink as={RouterLink} to={href ?? '#'} className={className} textDecoration="underline">
             {children}
         </ChakraLink>
     );
