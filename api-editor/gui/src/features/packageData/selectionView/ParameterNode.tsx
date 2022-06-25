@@ -6,7 +6,7 @@ import { PythonParameter } from '../model/PythonParameter';
 import { DocumentationText } from './DocumentationText';
 import { CompleteButton } from '../../annotations/CompleteButton';
 import { Link } from 'react-router-dom';
-import {MissingAnnotationButton} from "../../annotations/MissingAnnotationButton";
+import { MissingAnnotationButton } from '../../annotations/MissingAnnotationButton';
 
 interface ParameterNodeProps {
     pythonParameter: PythonParameter;

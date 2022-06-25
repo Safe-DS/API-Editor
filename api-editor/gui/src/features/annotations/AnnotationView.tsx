@@ -330,7 +330,7 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
 }) {
     const isValidUsername = useAppSelector(selectUsernameIsValid);
     const isCorrect = (annotation.reviewers?.length ?? 0) > 0;
-    const isReportable = reportable && (annotation.authors ?? []).includes("$autogen$")
+    const isReportable = reportable && (annotation.authors ?? []).includes('$autogen$');
 
     return (
         <ButtonGroup size="sm" variant="outline" isAttached>

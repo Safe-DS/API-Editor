@@ -13,7 +13,7 @@ import { CompleteButton } from '../../annotations/CompleteButton';
 import { PythonParameter } from '../model/PythonParameter';
 import { selectFilter, selectSorter } from '../../ui/uiSlice';
 import { selectUsages } from '../../usages/usageSlice';
-import {MissingAnnotationButton} from "../../annotations/MissingAnnotationButton";
+import { MissingAnnotationButton } from '../../annotations/MissingAnnotationButton';
 
 interface FunctionViewProps {
     pythonFunction: PythonFunction;

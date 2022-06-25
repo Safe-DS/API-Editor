@@ -6,7 +6,7 @@ import { PythonClass } from '../model/PythonClass';
 import { DocumentationText } from './DocumentationText';
 import { SectionListViewItem } from './SectionListViewItem';
 import { CompleteButton } from '../../annotations/CompleteButton';
-import {MissingAnnotationButton} from "../../annotations/MissingAnnotationButton";
+import { MissingAnnotationButton } from '../../annotations/MissingAnnotationButton';
 
 interface ClassViewProps {
     pythonClass: PythonClass;
