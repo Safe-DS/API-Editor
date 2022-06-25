@@ -75,6 +75,8 @@ export const DocumentationText: React.FC<DocumentationTextProps> = function ({ d
         .replaceAll(/:math:`([^`]*)`/gu, '$$1$')
         // replace block math elements
         .replaceAll(/\.\. math::\s*(\S.*)\n\n/gu, '$$\n$1\n$$\n\n')
+        // replace relative links to classes
+        .replaceAll(/:class:`(\w*)`/gu, (_match, name) => resolveRelativeLink(declaration, name))
         // replace relative links to functions
         .replaceAll(/:func:`(\w*)`/gu, (_match, name) => resolveRelativeLink(declaration, name));
 
@@ -129,7 +131,7 @@ const resolveRelativeLink = function (currentDeclaration: PythonDeclaration, lin
         return linkedDeclarationName;
     }
 
-    const sibling = parent.children().find(it => it.name === linkedDeclarationName);
+    const sibling = parent.children().find((it) => it.name === linkedDeclarationName);
     if (!sibling) {
         return linkedDeclarationName;
     }
