@@ -79,7 +79,9 @@ export const GenerateAdapters: React.FC<GenerateAdaptersProps> = function ({ dis
 
     return (
         <>
-            <MenuItem onClick={() => setIsOpen(true)} paddingLeft={8}>Adapters</MenuItem>
+            <MenuItem onClick={() => setIsOpen(true)} paddingLeft={8}>
+                Adapters
+            </MenuItem>
 
             <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={handleCancel}>
                 <AlertDialogOverlay>

@@ -26,8 +26,8 @@ export const useKeyboardShortcut = function (
                 event.key === key
             ) {
                 callbackRef.current(event);
-                event.preventDefault()
-                event.stopPropagation()
+                event.preventDefault();
+                event.stopPropagation();
             }
         },
         [shiftKey, ctrlKey, altKey, key],
