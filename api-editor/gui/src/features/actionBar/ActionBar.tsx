@@ -149,6 +149,25 @@ export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
     );
 };
 
+const getPreviousElementPath = function (
+    declarations: PythonDeclaration[],
+    start: PythonDeclaration,
+    filter: AbstractPythonFilter,
+    annotations: AnnotationStore,
+    usages: UsageCountStore,
+): string {
+    let currentIndex = getPreviousIndex(declarations, getIndex(declarations, start));
+    let current = getElementAtIndex(declarations, currentIndex);
+    while (current !== null && current !== start) {
+        if (filter.shouldKeepDeclaration(current, annotations, usages)) {
+            return current.id;
+        }
+        currentIndex = getPreviousIndex(declarations, currentIndex);
+        current = getElementAtIndex(declarations, currentIndex);
+    }
+    return start.id;
+};
+
 const getNextElementPath = function (
     declarations: PythonDeclaration[],
     start: PythonDeclaration,
@@ -156,57 +175,47 @@ const getNextElementPath = function (
     annotations: AnnotationStore,
     usages: UsageCountStore,
 ): string {
-    let current = getNextElementInTree(declarations, start);
-    while (current !== start) {
+    let currentIndex = getNextIndex(declarations, getIndex(declarations, start));
+    let current = getElementAtIndex(declarations, currentIndex);
+    while (current !== null && current !== start) {
         if (filter.shouldKeepDeclaration(current, annotations, usages)) {
             return current.id;
         }
-        current = getNextElementInTree(declarations, current);
+        currentIndex = getNextIndex(declarations, currentIndex);
+        current = getElementAtIndex(declarations, currentIndex);
     }
     return start.id;
 };
 
-const getNextElementInTree = function (
-    declarations: PythonDeclaration[],
-    current: PythonDeclaration,
-): PythonDeclaration {
-    if (declarations.length === 0) {
-        return current;
+const getPreviousIndex = function (declarations: PythonDeclaration[], currentIndex: number | null): number | null {
+    if (currentIndex === null || currentIndex < 0 || currentIndex >= declarations.length) {
+        return null;
     }
 
-    const index = declarations.findIndex((it) => it.id === current.id);
-    const nextIndex = (index + 1) % declarations.length;
-    return declarations[nextIndex];
+    return (currentIndex - 1 + declarations.length) % declarations.length;
 };
 
-const getPreviousElementPath = function (
-    declarations: PythonDeclaration[],
-    start: PythonDeclaration,
-    filter: AbstractPythonFilter,
-    annotations: AnnotationStore,
-    usages: UsageCountStore,
-): string | null {
-    let current = getPreviousElementInTree(declarations, start);
-    while (current !== start && current !== null) {
-        if (filter.shouldKeepDeclaration(current, annotations, usages)) {
-            return current.id;
-        }
-        current = getPreviousElementInTree(declarations, current);
+const getNextIndex = function (declarations: PythonDeclaration[], currentIndex: number | null): number | null {
+    if (currentIndex === null || currentIndex < 0 || currentIndex >= declarations.length) {
+        return null;
     }
-    return null;
+
+    return (currentIndex + 1) % declarations.length;
 };
 
-const getPreviousElementInTree = function (
-    declarations: PythonDeclaration[],
-    current: PythonDeclaration,
-): PythonDeclaration {
-    if (declarations.length === 0) {
-        return current;
-    }
-
+const getIndex = function (declarations: PythonDeclaration[], current: PythonDeclaration): number | null {
     const index = declarations.findIndex((it) => it.id === current.id);
-    const previousIndex = (index - 1 + declarations.length) % declarations.length;
-    return declarations[previousIndex];
+    if (index === -1) {
+        return null;
+    }
+    return index;
+};
+
+const getElementAtIndex = function (declarations: PythonDeclaration[], index: number | null): PythonDeclaration | null {
+    if (index === null) {
+        return null;
+    }
+    return declarations[index];
 };
 
 const getAncestors = function (navStr: string, filteredPythonPackage: PythonPackage): string[] {
