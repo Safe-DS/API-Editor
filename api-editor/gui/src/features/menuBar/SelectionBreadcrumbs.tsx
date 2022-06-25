@@ -18,7 +18,7 @@ export const SelectionBreadcrumbs = function () {
     return (
         <Breadcrumb>
             {declarations.map((it) => (
-                <BreadcrumbItem>
+                <BreadcrumbItem key={it.id}>
                     <RouterLink to={it.id}>{it.name}</RouterLink>
                 </BreadcrumbItem>
             ))}
