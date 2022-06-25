@@ -33,7 +33,7 @@ export const ClassView: React.FC<ClassViewProps> = function ({ pythonClass }) {
 
                 <Box paddingLeft={4}>
                     {pythonClass.description ? (
-                        <DocumentationText inputText={pythonClass.description} />
+                        <DocumentationText declaration={pythonClass} inputText={pythonClass.description} />
                     ) : (
                         <ChakraText color="gray.500">There is no documentation for this class.</ChakraText>
                     )}
