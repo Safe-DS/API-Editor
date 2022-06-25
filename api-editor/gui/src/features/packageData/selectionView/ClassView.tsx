@@ -22,11 +22,9 @@ export const ClassView: React.FC<ClassViewProps> = function ({ pythonClass }) {
                         {pythonClass.name} {!pythonClass.isPublic && '(private)'}
                     </Heading>
                     {pythonClass.isPublic && (
-                        <>
-                            <AnnotationDropdown target={id} showDescription showMove showRemove showRename showTodo />
-                            <CompleteButton target={id} />
-                        </>
+                        <AnnotationDropdown target={id} showDescription showMove showRemove showRename showTodo />
                     )}
+                    <CompleteButton target={id} />
                 </HStack>
 
                 <AnnotationView target={id} />

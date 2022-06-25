@@ -36,21 +36,19 @@ export const FunctionView: React.FC<FunctionViewProps> = function ({ pythonFunct
                         {pythonFunction.name} {!pythonFunction.isPublic && '(private)'}
                     </Heading>
                     {pythonFunction.isPublic && (
-                        <>
-                            <AnnotationDropdown
-                                target={id}
-                                showCalledAfter={hasRemainingCalledAfters}
-                                showDescription
-                                showGroup={pythonFunction.explicitParameters().length >= 2}
-                                showMove={pythonFunction.containingModuleOrClass instanceof PythonModule}
-                                showPure
-                                showRemove
-                                showRename
-                                showTodo
-                            />
-                            <CompleteButton target={id} />
-                        </>
+                        <AnnotationDropdown
+                            target={id}
+                            showCalledAfter={hasRemainingCalledAfters}
+                            showDescription
+                            showGroup={pythonFunction.explicitParameters().length >= 2}
+                            showMove={pythonFunction.containingModuleOrClass instanceof PythonModule}
+                            showPure
+                            showRemove
+                            showRename
+                            showTodo
+                        />
                     )}
+                    <CompleteButton target={id} />
                 </HStack>
 
                 <AnnotationView target={id} />
