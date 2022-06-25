@@ -68,6 +68,8 @@ export const selectFlatSortedDeclarationList = createSelector(
     [selectRawPythonPackage, selectSortingMode, selectUsages],
     (pythonPackage, sortingMode, usages) => {
         switch (sortingMode) {
+            case SortingMode.Default:
+                return walkChildrenInPreorder(pythonPackage, sortInSameOrder);
             case SortingMode.Alphabetical:
                 return walkChildrenInPreorder(pythonPackage, sortAlphabetically);
             case SortingMode.Usages: // Descending
@@ -103,6 +105,8 @@ export const selectFlatFilteredAndSortedDeclarationList = createSelector(
     [selectFilteredPythonPackage, selectSortingMode, selectUsages],
     (pythonPackage, sortingMode, usages) => {
         switch (sortingMode) {
+            case SortingMode.Default:
+                return walkChildrenInPreorder(pythonPackage, sortInSameOrder);
             case SortingMode.Alphabetical:
                 return walkChildrenInPreorder(pythonPackage, sortAlphabetically);
             case SortingMode.Usages: // Descending
@@ -119,6 +123,10 @@ const walkChildrenInPreorder = function (
         return [it, ...walkChildrenInPreorder(it, sorter)];
     });
 };
+
+const sortInSameOrder = (_a: PythonDeclaration, _b: PythonDeclaration) => {
+    return 1;
+}
 
 const sortAlphabetically = (a: PythonDeclaration, b: PythonDeclaration) => {
     return a.name.localeCompare(b.name);

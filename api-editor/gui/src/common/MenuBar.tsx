@@ -154,12 +154,15 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                                 </MenuOptionGroup>
                             </MenuGroup>
                             <MenuDivider />
-                            <MenuGroup title="Module/Class/Function Sorting">
-                                <MenuOptionGroup
-                                    type="radio"
-                                    defaultValue={SortingMode.Alphabetical}
-                                    value={sortingMode}
-                                >
+                            <MenuGroup title="API Element Sorting">
+                                <MenuOptionGroup type="radio" defaultValue={SortingMode.Default} value={sortingMode}>
+                                    <MenuItemOption
+                                        paddingLeft={8}
+                                        value={SortingMode.Default}
+                                        onClick={() => dispatch(setSortingMode(SortingMode.Default))}
+                                    >
+                                        Default
+                                    </MenuItemOption>
                                     <MenuItemOption
                                         paddingLeft={8}
                                         value={SortingMode.Alphabetical}

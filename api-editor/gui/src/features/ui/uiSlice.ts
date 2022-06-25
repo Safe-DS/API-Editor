@@ -112,6 +112,7 @@ export enum HeatMapMode {
 }
 
 export enum SortingMode {
+    Default = 'default',
     Alphabetical = 'alphabetical',
     Usages = 'usages',
 }
@@ -146,7 +147,7 @@ export const initialState: UIState = {
     ],
 
     heatMapMode: HeatMapMode.None,
-    sortingMode: SortingMode.Alphabetical,
+    sortingMode: SortingMode.Default,
     batchMode: BatchMode.None,
     showStatistics: true,
 };
