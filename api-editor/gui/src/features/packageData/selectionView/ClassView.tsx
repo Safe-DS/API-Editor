@@ -6,6 +6,7 @@ import { PythonClass } from '../model/PythonClass';
 import { DocumentationText } from './DocumentationText';
 import { SectionListViewItem } from './SectionListViewItem';
 import { CompleteButton } from '../../annotations/CompleteButton';
+import {MissingAnnotationButton} from "../../annotations/MissingAnnotationButton";
 
 interface ClassViewProps {
     pythonClass: PythonClass;
@@ -25,6 +26,7 @@ export const ClassView: React.FC<ClassViewProps> = function ({ pythonClass }) {
                         <AnnotationDropdown target={id} showDescription showMove showRemove showRename showTodo />
                     )}
                     <CompleteButton target={id} />
+                    <MissingAnnotationButton target={id} />
                 </HStack>
 
                 <AnnotationView target={id} />
