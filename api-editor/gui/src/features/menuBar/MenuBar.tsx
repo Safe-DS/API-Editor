@@ -17,8 +17,8 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import { FaChevronDown } from 'react-icons/fa';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { selectAnnotationStore, selectUsernameIsValid } from '../features/annotations/annotationSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { selectAnnotationStore, selectUsernameIsValid } from '../annotations/annotationSlice';
 import {
     BatchMode,
     HeatMapMode,
@@ -35,10 +35,10 @@ import {
     toggleExpandDocumentationByDefault,
     toggleStatisticsView,
     toggleUsageImportDialog,
-} from '../features/ui/uiSlice';
+} from '../ui/uiSlice';
 import { DeleteAllAnnotations } from './DeleteAllAnnotations';
 import { GenerateAdapters } from './GenerateAdapters';
-import { FilterControls } from '../features/filter/FilterControls';
+import { FilterControls } from '../filter/FilterControls';
 
 interface MenuBarProps {
     displayInferErrors: (errors: string[]) => void;

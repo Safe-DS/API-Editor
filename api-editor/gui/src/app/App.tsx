@@ -12,7 +12,7 @@ import {
     UnorderedList,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { MenuBar } from '../common/MenuBar';
+import { MenuBar } from '../features/menuBar/MenuBar';
 import { AnnotationImportDialog } from '../features/annotations/AnnotationImportDialog';
 import {
     AnnotationStore,
@@ -59,7 +59,7 @@ import { initializePythonPackage, selectRawPythonPackage } from '../features/pac
 import { PythonClass } from '../features/packageData/model/PythonClass';
 import { PythonParameter } from '../features/packageData/model/PythonParameter';
 import { ConstantBatchForm } from '../features/annotations/batchforms/ConstantBatchForm';
-import { ActionBar } from '../features/actionBar/ActionBar';
+import { Footer } from '../features/footer/Footer';
 import { useLocation } from 'react-router-dom';
 import { RenameBatchForm } from '../features/annotations/batchforms/RenameBatchForm';
 import { RequiredBatchForm } from '../features/annotations/batchforms/RequiredBatchForm';
@@ -216,7 +216,7 @@ export const App: React.FC = function () {
                     </GridItem>
                 )}
                 <GridItem gridArea="footer" colSpan={3}>
-                    {currentUserAction.type === 'none' && <ActionBar declaration={declaration} />}
+                    {currentUserAction.type === 'none' && <Footer declaration={declaration} />}
                 </GridItem>
 
                 {showAnnotationImportDialog && <AnnotationImportDialog />}

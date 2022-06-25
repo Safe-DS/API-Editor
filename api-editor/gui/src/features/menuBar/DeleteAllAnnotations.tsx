@@ -11,8 +11,8 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import React, { useRef, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { resetAnnotationStore, selectUsernameIsValid } from '../features/annotations/annotationSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { resetAnnotationStore, selectUsernameIsValid } from '../annotations/annotationSlice';
 
 export const DeleteAllAnnotations = function () {
     const dispatch = useAppDispatch();

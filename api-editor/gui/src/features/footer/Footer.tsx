@@ -17,7 +17,7 @@ interface ActionBarProps {
     declaration: Optional<PythonDeclaration>;
 }
 
-export const ActionBar: React.FC<ActionBarProps> = function ({ declaration }) {
+export const Footer: React.FC<ActionBarProps> = function ({ declaration }) {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
