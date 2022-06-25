@@ -58,7 +58,7 @@ import {
 } from '../packageData/apiSlice';
 import { selectUsages } from '../usages/usageSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
-import {SelectionBreadcrumbs} from "./SelectionBreadcrumbs";
+import { SelectionBreadcrumbs } from './SelectionBreadcrumbs';
 
 interface MenuBarProps {
     displayInferErrors: (errors: string[]) => void;

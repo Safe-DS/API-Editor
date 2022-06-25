@@ -16,10 +16,10 @@ export abstract class PythonDeclaration {
     }
 
     *ancestorsOrSelf(): Generator<PythonDeclaration> {
-        let current: Optional<PythonDeclaration> = this
+        let current: Optional<PythonDeclaration> = this;
         while (current) {
-            yield current
-            current = current.parent()
+            yield current;
+            current = current.parent();
         }
     }
 
