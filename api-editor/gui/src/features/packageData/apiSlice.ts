@@ -64,6 +64,17 @@ export const apiReducer = reducer;
 
 const selectAPI = (state: RootState) => state.api;
 export const selectRawPythonPackage = (state: RootState) => selectAPI(state).pythonPackage;
+export const selectFlatSortedDeclarationList = createSelector(
+    [selectRawPythonPackage, selectSortingMode, selectUsages],
+    (pythonPackage, sortingMode, usages) => {
+        switch (sortingMode) {
+            case SortingMode.Alphabetical:
+                return walkChildrenInPreorder(pythonPackage, sortAlphabetically);
+            case SortingMode.Usages: // Descending
+                return walkChildrenInPreorder(pythonPackage, sortByUsages(usages));
+        }
+    },
+);
 export const selectFilteredPythonPackage = createSelector(
     [selectRawPythonPackage, selectAnnotationStore, selectUsages, selectFilter],
     (pythonPackage, annotations, usages, filter) => {
@@ -88,7 +99,7 @@ export const selectMatchedNodes = createSelector(
 export const selectNumberOfMatchedNodes = createSelector([selectMatchedNodes], (matchedNodes) => {
     return matchedNodes.length;
 });
-export const selectFlatSortedDeclarationList = createSelector(
+export const selectFlatFilteredAndSortedDeclarationList = createSelector(
     [selectFilteredPythonPackage, selectSortingMode, selectUsages],
     (pythonPackage, sortingMode, usages) => {
         switch (sortingMode) {
