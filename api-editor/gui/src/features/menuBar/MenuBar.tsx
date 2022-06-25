@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import { FaArrowLeft, FaArrowRight, FaArrowUp, FaChevronDown, FaRedo, FaUndo } from 'react-icons/fa';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector, useKeyboardShortcut } from '../../app/hooks';
 import {
     AnnotationStore,
     redo,
@@ -103,6 +103,72 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
         visualSettings.push('toggleDocumentationByDefault');
     }
 
+    // Event handlers
+    const goToPreviousMatch = () => {
+        if (!declaration) {
+            return;
+        }
+
+        let navStr = getPreviousElementPath(allDeclarations, declaration, pythonFilter, annotations, usages);
+        if (navStr !== null) {
+            //navigate to element
+            navigate(`/${navStr}`);
+
+            //update tree selection
+            const parents = getAncestors(navStr, pythonPackage);
+            dispatch(setAllExpandedInTreeView(parents));
+        }
+    };
+    const goToNextMatch = () => {
+        if (!declaration) {
+            return;
+        }
+
+        let navStr = getNextElementPath(allDeclarations, declaration, pythonFilter, annotations, usages);
+        if (navStr !== null) {
+            //navigate to element
+            navigate(`/${navStr}`);
+
+            //update tree selection
+            const parents = getAncestors(navStr, pythonPackage);
+            dispatch(setAllExpandedInTreeView(parents));
+        }
+    };
+    const goToParent = () => {
+        const parent = declaration?.parent();
+        if (parent && !(parent instanceof PythonPackage)) {
+            navigate(`/${parent.id}`);
+        }
+    };
+    const expandAll = () => {
+        dispatch(setAllExpandedInTreeView(getDescendantsOrSelf(pythonPackage)));
+    };
+    const collapseAll = () => {
+        dispatch(setAllCollapsedInTreeView(getDescendantsOrSelf(pythonPackage)));
+    };
+    const expandSelected = () => {
+        if (declaration) {
+            dispatch(setAllExpandedInTreeView(getDescendantsOrSelf(declaration)));
+        }
+    };
+    const collapseSelected = () => {
+        if (declaration) {
+            dispatch(setAllCollapsedInTreeView(getDescendantsOrSelf(declaration)));
+        }
+    };
+
+    // Keyboard shortcuts
+    useKeyboardShortcut(false, true, false, 'z', () => dispatch(undo()));
+    useKeyboardShortcut(false, true, false, 'y', () => dispatch(redo()));
+    useKeyboardShortcut(false, true, false, 'ArrowLeft', goToPreviousMatch);
+    useKeyboardShortcut(false, true, false, 'ArrowRight', goToNextMatch);
+    useKeyboardShortcut(false, true, false, 'ArrowUp', goToParent);
+    useKeyboardShortcut(false, true, false, ',', expandAll);
+    useKeyboardShortcut(false, true, false, '.', collapseAll);
+    useKeyboardShortcut(false, true, true, ',', expandSelected);
+    useKeyboardShortcut(false, true, true, '.', collapseSelected);
+
+    // Render
     return (
         <Flex as="nav" borderBottom={1} layerStyle="subtleBorder" padding="0.5em 1em">
             <HStack>
@@ -216,23 +282,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                         <MenuList>
                             <MenuItem
                                 paddingLeft={8}
-                                onClick={() => {
-                                    let navStr = getPreviousElementPath(
-                                        allDeclarations,
-                                        declaration!,
-                                        pythonFilter,
-                                        annotations,
-                                        usages,
-                                    );
-                                    if (navStr !== null) {
-                                        //navigate to element
-                                        navigate(`/${navStr}`);
-
-                                        //update tree selection
-                                        const parents = getAncestors(navStr, pythonPackage);
-                                        dispatch(setAllExpandedInTreeView(parents));
-                                    }
-                                }}
+                                onClick={goToPreviousMatch}
                                 isDisabled={!declaration}
                                 icon={<FaArrowLeft />}
                                 command="Ctrl+Left"
@@ -241,23 +291,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                             </MenuItem>
                             <MenuItem
                                 paddingLeft={8}
-                                onClick={() => {
-                                    let navStr = getNextElementPath(
-                                        allDeclarations,
-                                        declaration!,
-                                        pythonFilter,
-                                        annotations,
-                                        usages,
-                                    );
-                                    if (navStr !== null) {
-                                        //navigate to element
-                                        navigate(`/${navStr}`);
-
-                                        //update tree selection
-                                        const parents = getAncestors(navStr, pythonPackage);
-                                        dispatch(setAllExpandedInTreeView(parents));
-                                    }
-                                }}
+                                onClick={goToNextMatch}
                                 isDisabled={!declaration}
                                 icon={<FaArrowRight />}
                                 command="Ctrl+Right"
@@ -266,12 +300,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                             </MenuItem>
                             <MenuItem
                                 paddingLeft={8}
-                                onClick={() => {
-                                    const parent = declaration?.parent();
-                                    if (parent && !(parent instanceof PythonPackage)) {
-                                        navigate(`/${parent.id}`);
-                                    }
-                                }}
+                                onClick={goToParent}
                                 isDisabled={!declaration}
                                 icon={<FaArrowUp />}
                                 command="Ctrl+Up"
@@ -281,29 +310,15 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
 
                             <MenuDivider />
 
-                            <MenuItem
-                                paddingLeft={8}
-                                onClick={() => {
-                                    dispatch(setAllExpandedInTreeView(getDescendantsOrSelf(pythonPackage)));
-                                }}
-                                command="Ctrl+,"
-                            >
+                            <MenuItem paddingLeft={8} onClick={expandAll} command="Ctrl+,">
                                 Expand All
                             </MenuItem>
-                            <MenuItem
-                                paddingLeft={8}
-                                onClick={() => {
-                                    dispatch(setAllCollapsedInTreeView(getDescendantsOrSelf(pythonPackage)));
-                                }}
-                                command="Ctrl+."
-                            >
+                            <MenuItem paddingLeft={8} onClick={collapseAll} command="Ctrl+.">
                                 Collapse All
                             </MenuItem>
                             <MenuItem
                                 paddingLeft={8}
-                                onClick={() => {
-                                    dispatch(setAllExpandedInTreeView(getDescendantsOrSelf(declaration!)));
-                                }}
+                                onClick={expandSelected}
                                 isDisabled={!declaration}
                                 command="Ctrl+Alt+,"
                             >
@@ -311,9 +326,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                             </MenuItem>
                             <MenuItem
                                 paddingLeft={8}
-                                onClick={() => {
-                                    dispatch(setAllCollapsedInTreeView(getDescendantsOrSelf(declaration!)));
-                                }}
+                                onClick={collapseSelected}
                                 isDisabled={!declaration}
                                 command="Ctrl+Alt+."
                             >
