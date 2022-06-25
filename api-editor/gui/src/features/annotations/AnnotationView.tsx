@@ -1,6 +1,6 @@
 import { Button, ButtonGroup, Icon, IconButton, Stack, Text as ChakraText } from '@chakra-ui/react';
 import React from 'react';
-import { FaCheck, FaTrash, FaWrench } from 'react-icons/fa';
+import { FaCheck, FaFlag, FaTrash, FaWrench } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
     Annotation,
@@ -65,6 +65,7 @@ import {
     showTodoAnnotationForm,
 } from '../ui/uiSlice';
 import { truncate } from '../../common/util/stringOperations';
+import { wrongAnnotationURL } from '../reporting/issueURLBuilder';
 
 interface AnnotationViewProps {
     target: string;
@@ -132,6 +133,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     onReview={() => {
                         dispatch(reviewBoundary(target));
                     }}
+                    reportable
                 />
             )}
             {Object.keys(calledAfterAnnotation).map((calledAfterName) => (
@@ -154,6 +156,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     onReview={() => {
                         dispatch(reviewConstant(target));
                     }}
+                    reportable
                 />
             )}
             {descriptionAnnotation && (
@@ -177,6 +180,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     onReview={() => {
                         dispatch(reviewEnum(target));
                     }}
+                    reportable
                 />
             )}
             {Object.keys(groupAnnotations).map((groupName) => (
@@ -212,6 +216,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     onReview={() => {
                         dispatch(reviewOptional(target));
                     }}
+                    reportable
                 />
             )}
             {pureAnnotation && (
@@ -228,6 +233,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     annotation={removeAnnotation}
                     onDelete={() => dispatch(removeRemove(target))}
                     onReview={() => dispatch(reviewRemove(target))}
+                    reportable
                 />
             )}
             {renameAnnotation && (
@@ -248,6 +254,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     annotation={requiredAnnotation}
                     onDelete={() => dispatch(removeRequired(target))}
                     onReview={() => dispatch(reviewRequired(target))}
+                    reportable
                 />
             )}
             {todoAnnotation && (
@@ -309,11 +316,21 @@ interface AnnotationTagProps {
     onEdit?: () => void;
     onDelete: () => void;
     onReview: () => void;
+    reportable?: boolean;
 }
 
-const AnnotationTag: React.FC<AnnotationTagProps> = function ({ type, name, annotation, onDelete, onEdit, onReview }) {
+const AnnotationTag: React.FC<AnnotationTagProps> = function ({
+    type,
+    name,
+    annotation,
+    onDelete,
+    onEdit,
+    onReview,
+    reportable = false,
+}) {
     const isValidUsername = useAppSelector(selectUsernameIsValid);
     const isCorrect = (annotation.reviewers?.length ?? 0) > 0;
+    const isReportable = reportable && (annotation.authors ?? []).includes('$autogen$');
 
     return (
         <ButtonGroup size="sm" variant="outline" isAttached>
@@ -354,6 +371,16 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({ type, name, anno
                 <Button size="sm" variant="outline" disabled={!isValidUsername} onClick={onReview}>
                     Mark as Correct
                 </Button>
+            )}
+            {isReportable && (
+                <IconButton
+                    icon={<FaFlag />}
+                    aria-label="Report Wrong Annotation"
+                    colorScheme="orange"
+                    onClick={() => {
+                        window.open(wrongAnnotationURL(type, annotation), '_blank');
+                    }}
+                />
             )}
         </ButtonGroup>
     );

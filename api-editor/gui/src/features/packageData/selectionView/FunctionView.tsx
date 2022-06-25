@@ -13,6 +13,7 @@ import { CompleteButton } from '../../annotations/CompleteButton';
 import { PythonParameter } from '../model/PythonParameter';
 import { selectFilter, selectSorter } from '../../ui/uiSlice';
 import { selectUsages } from '../../usages/usageSlice';
+import { MissingAnnotationButton } from '../../annotations/MissingAnnotationButton';
 
 interface FunctionViewProps {
     pythonFunction: PythonFunction;
@@ -49,6 +50,7 @@ export const FunctionView: React.FC<FunctionViewProps> = function ({ pythonFunct
                         />
                     )}
                     <CompleteButton target={id} />
+                    <MissingAnnotationButton target={id} />
                 </HStack>
 
                 <AnnotationView target={id} />

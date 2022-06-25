@@ -61,6 +61,7 @@ import {
 import { selectUsages } from '../usages/usageSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { SelectionBreadcrumbs } from './SelectionBreadcrumbs';
+import { HelpMenu } from './HelpMenu';
 
 interface MenuBarProps {
     displayInferErrors: (errors: string[]) => void;
@@ -278,7 +279,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                                 Toggle Completion of Selected Element
                             </MenuItem>
                             <MenuDivider />
-                            <MenuGroup title={'Batch Annotate'}>
+                            <MenuGroup title="Batch Annotate">
                                 <MenuItem
                                     paddingLeft={8}
                                     onClick={() => dispatch(setBatchMode(BatchMode.Constant))}
@@ -477,6 +478,8 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                         </MenuList>
                     </Menu>
                 </Box>
+
+                <HelpMenu />
             </HStack>
 
             <Spacer />
