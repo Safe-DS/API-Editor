@@ -71,6 +71,7 @@ import { UsageCountStore } from '../features/usages/model/UsageCountStore';
 import { PythonDeclaration } from '../features/packageData/model/PythonDeclaration';
 import { SaveFilterDialog } from '../features/filter/SaveFilterDialog';
 import { StatisticsView } from '../features/statistics/StatisticsView';
+import {useAnnotationToasts} from "../features/achievements/AnnotationToast";
 
 export const App: React.FC = function () {
     useIndexedDB();
@@ -96,6 +97,8 @@ export const App: React.FC = function () {
     const showAddFilterDialog = useAppSelector(selectShowAddFilterDialog);
     const showStatistics = useAppSelector(selectShowStatistics);
     const isValidUsername = useAppSelector(selectUsernameIsValid);
+
+    useAnnotationToasts();
 
     return (
         <>
