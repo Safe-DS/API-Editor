@@ -9,7 +9,10 @@ import { PythonParameter, PythonParameterAssignment } from './PythonParameter';
 import { PythonResult } from './PythonResult';
 import { PythonDeclaration } from './PythonDeclaration';
 
+const EXPECTED_API_SCHEMA_VERSION = 1;
+
 export interface PythonPackageJson {
+    schemaVersion: number;
     distribution: string;
     package: string;
     version: string;
@@ -18,7 +21,11 @@ export interface PythonPackageJson {
     functions: PythonFunctionJson[];
 }
 
-export const parsePythonPackageJson = function (packageJson: PythonPackageJson): PythonPackage {
+export const parsePythonPackageJson = function (packageJson: PythonPackageJson): PythonPackage | null {
+    if ((packageJson.schemaVersion ?? 1) !== EXPECTED_API_SCHEMA_VERSION) {
+        return null;
+    }
+
     const idToDeclaration = new Map();
 
     // Functions

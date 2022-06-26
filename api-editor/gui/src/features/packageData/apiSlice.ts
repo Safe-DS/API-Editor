@@ -14,8 +14,10 @@ export interface APIState {
 
 // Initial state -------------------------------------------------------------------------------------------------------
 
+const initialPythonPackage = new PythonPackage('empty', 'empty', '0.0.1');
+
 const initialState: APIState = {
-    pythonPackage: new PythonPackage('empty', 'empty', '0.0.1'),
+    pythonPackage: initialPythonPackage,
 };
 
 // Thunks --------------------------------------------------------------------------------------------------------------
@@ -23,8 +25,9 @@ const initialState: APIState = {
 export const initializePythonPackage = createAsyncThunk('api/initialize', async () => {
     try {
         const storedPythonPackageJson = (await idb.get('api')) as PythonPackageJson;
+
         return {
-            pythonPackage: parsePythonPackageJson(storedPythonPackageJson),
+            pythonPackage: parsePythonPackageJson(storedPythonPackageJson) ?? initialPythonPackage,
         };
     } catch {
         return initialState;
