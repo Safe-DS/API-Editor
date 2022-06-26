@@ -1,4 +1,5 @@
 from package_parser.model.annotations import (
+    ANNOTATION_SCHEMA_VERSION,
     AbstractAnnotation,
     AnnotationStore,
     BoundaryAnnotation,
@@ -8,7 +9,7 @@ from package_parser.model.annotations import (
     Interval,
     OptionalAnnotation,
     RemoveAnnotation,
-    RequiredAnnotation, ANNOTATION_SCHEMA_VERSION,
+    RequiredAnnotation,
 )
 
 

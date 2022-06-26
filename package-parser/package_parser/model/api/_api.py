@@ -16,6 +16,7 @@ from package_parser.utils import parent_id
 
 API_SCHEMA_VERSION = 1
 
+
 class API:
     @staticmethod
     def from_json(json: Any) -> API:

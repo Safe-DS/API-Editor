@@ -1,9 +1,7 @@
 from typing import Any
 
 import pytest
-from package_parser.model.usages import UsageCountStore
-
-from package_parser.model.usages import USAGES_SCHEMA_VERSION
+from package_parser.model.usages import USAGES_SCHEMA_VERSION, UsageCountStore
 
 
 @pytest.fixture

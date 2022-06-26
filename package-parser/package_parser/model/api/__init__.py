@@ -1,6 +1,6 @@
 from ._api import (
-    API_SCHEMA_VERSION,
     API,
+    API_SCHEMA_VERSION,
     Class,
     FromImport,
     Function,

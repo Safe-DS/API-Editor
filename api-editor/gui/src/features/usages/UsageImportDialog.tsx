@@ -43,7 +43,7 @@ export const UsageImportDialog: React.FC = function () {
 
         if (newUsages) {
             const parsedUsages = JSON.parse(newUsages) as UsageCountJson;
-            const usageCountStore = UsageCountStore.fromJson(parsedUsages, api)
+            const usageCountStore = UsageCountStore.fromJson(parsedUsages, api);
             if (usageCountStore) {
                 dispatch(setUsages(usageCountStore));
                 close();
@@ -53,10 +53,9 @@ export const UsageImportDialog: React.FC = function () {
                     description: 'This file is not compatible with the current version of the API Editor.',
                     status: 'error',
                     duration: 4000,
-                })
+                });
             }
         }
-
     };
     const close = () => dispatch(toggleUsageImportDialog());
 
