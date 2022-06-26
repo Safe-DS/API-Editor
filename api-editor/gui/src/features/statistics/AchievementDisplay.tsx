@@ -6,7 +6,7 @@ export const AchievementDisplay: React.FC = function () {
     const authorCount = 1000;
     const cleanerCount = 300;
     const completionistCount = 40;
-    const editorCount = 5;
+    const editorCount = 500;
 
     return (
         <>
@@ -15,33 +15,61 @@ export const AchievementDisplay: React.FC = function () {
             </Heading>
             <Box>
                 <SimpleGrid columns={2} spacing={4}>
-                    <AchievementCard currentCount={auditorCount} achievement={auditorAchievement} />
-                    <AchievementCard currentCount={authorCount} achievement={authorAchievement} />
-                    <AchievementCard currentCount={cleanerCount} achievement={cleanerAchievement} />
-                    <AchievementCard currentCount={completionistCount} achievement={completionistAchievement} />
-                    <AchievementCard currentCount={editorCount} achievement={editorAchievement} />
+                    <AchievementCard
+                        currentCount={auditorCount}
+                        achievement={auditorAchievement}
+                        description={`${pluralize(auditorCount, 'annotation')} marked as correct`}
+                    />
+                    <AchievementCard
+                        currentCount={authorCount}
+                        achievement={authorAchievement}
+                        description={`${pluralize(authorCount, 'annotation')} created`}
+                    />
+                    <AchievementCard
+                        currentCount={cleanerCount}
+                        achievement={cleanerAchievement}
+                        description={`${pluralize(cleanerCount, 'annotation')} removed`}
+                    />
+                    <AchievementCard
+                        currentCount={completionistCount}
+                        achievement={completionistAchievement}
+                        description={`${pluralize(completionistCount, 'API element')} marked as complete`}
+                    />
+                    <AchievementCard
+                        currentCount={editorCount}
+                        achievement={editorAchievement}
+                        description={`${pluralize(editorCount, 'annotation')} changed`}
+                    />
                 </SimpleGrid>
             </Box>
         </>
     );
 };
 
+const pluralize = function (count: number, noun: string): string {
+    return `${count} ${noun}${count === 1 ? '' : 's'}`;
+};
+
 interface AchievementCardProps {
     achievement: Achievement;
     currentCount: number;
+    description: string;
 }
 
-const AchievementCard: React.FC<AchievementCardProps> = function ({ achievement, currentCount }) {
+const AchievementCard: React.FC<AchievementCardProps> = function ({ achievement, currentCount, description }) {
     const currentAchievementLevel = achievement.level(currentCount);
     if (!currentAchievementLevel) {
         return null;
     }
 
     return (
-        <VStack boxShadow='base' rounded="md" border={1} layerStyle="subtleBorder" padding={4}>
+        <VStack boxShadow="xl" rounded="md" border={1} layerStyle="subtleBorder" padding={4}>
             <Img src={currentAchievementLevel.image} alt={currentAchievementLevel.label} />
-            <Center>
+            <Center fontWeight="bold">
                 <ChakraText>{currentAchievementLevel.label}</ChakraText>
+            </Center>
+            <Center>
+                <ChakraText textAlign="center">{description}</ChakraText>
             </Center>
         </VStack>
     );
