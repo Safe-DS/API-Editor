@@ -31,6 +31,16 @@ export const UsageImportDialog: React.FC = function () {
     const api = useAppSelector(selectRawPythonPackage);
 
     const submit = async () => {
+        if (!fileName) {
+            toast({
+                title: 'No File Selected',
+                description: 'Select a file to import or cancel this dialog.',
+                status: 'error',
+                duration: 4000,
+            });
+            return;
+        }
+
         if (newUsages) {
             const parsedUsages = JSON.parse(newUsages) as UsageCountJson;
             const usageCountStore = UsageCountStore.fromJson(parsedUsages, api)

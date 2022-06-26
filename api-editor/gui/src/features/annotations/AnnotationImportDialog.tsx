@@ -12,30 +12,64 @@ import {
     ModalHeader,
     ModalOverlay,
     Text as ChakraText,
+    useToast,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useAppDispatch } from '../../app/hooks';
 import { StyledDropzone } from '../../common/StyledDropzone';
 import { isValidJsonFile } from '../../common/util/validation';
-import { AnnotationStore, initialAnnotationStore, mergeAnnotationStore, setAnnotationStore } from './annotationSlice';
+import {
+    AnnotationStore,
+    EXPECTED_ANNOTATION_STORE_SCHEMA_VERSION,
+    initialAnnotationStore,
+    mergeAnnotationStore,
+    setAnnotationStore,
+    VersionedAnnotationStore,
+} from './annotationSlice';
 import { hideAnnotationImportDialog, toggleAnnotationImportDialog } from '../ui/uiSlice';
 
 export const AnnotationImportDialog: React.FC = function () {
+    const toast = useToast();
     const [fileName, setFileName] = useState('');
-    const [newAnnotationStore, setNewAnnotationStore] = useState<AnnotationStore>(initialAnnotationStore);
+    const [newAnnotationStore, setNewAnnotationStore] = useState<VersionedAnnotationStore>(initialAnnotationStore);
     const dispatch = useAppDispatch();
 
-    const merge = () => {
-        if (fileName) {
-            dispatch(mergeAnnotationStore(newAnnotationStore));
+    const validate = () => {
+        if (!fileName) {
+            toast({
+                title: 'No File Selected',
+                description: 'Select a file to import or cancel this dialog.',
+                status: 'error',
+                duration: 4000,
+            });
+            return false;
         }
-        dispatch(hideAnnotationImportDialog());
+
+        if ((newAnnotationStore.schemaVersion ?? 1) !== EXPECTED_ANNOTATION_STORE_SCHEMA_VERSION) {
+            toast({
+                title: 'Old Annotation File',
+                description: 'This file is not compatible with the current version of the API Editor.',
+                status: 'error',
+                duration: 4000,
+            });
+            return false;
+        }
+
+        return true;
+    };
+    const merge = () => {
+        if (validate()) {
+            delete newAnnotationStore.schemaVersion;
+            dispatch(mergeAnnotationStore(newAnnotationStore));
+            dispatch(hideAnnotationImportDialog());
+        }
     };
     const replace = () => {
-        if (fileName) {
+        if (validate()) {
+            delete newAnnotationStore.schemaVersion;
             dispatch(setAnnotationStore(newAnnotationStore));
+            dispatch(hideAnnotationImportDialog());
         }
-        dispatch(hideAnnotationImportDialog());
     };
     const close = () => dispatch(toggleAnnotationImportDialog());
 

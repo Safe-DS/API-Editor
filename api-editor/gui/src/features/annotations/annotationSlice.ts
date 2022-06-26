@@ -11,16 +11,20 @@ export const maximumNumberOfClassAnnotations = 5;
 /**
  * How many annotations can be applied to a function at once.
  */
-export const maximumNumberOfFunctionAnnotations = 7;
+export const maximumNumberOfFunctionAnnotations = 8;
 
 /**
  * How many annotations can be applied to a parameter at once.
  */
-export const maximumNumberOfParameterAnnotations = 8;
+export const maximumNumberOfParameterAnnotations = 9;
 
 const maximumUndoHistoryLength = 10;
 
+export const EXPECTED_ANNOTATION_STORE_SCHEMA_VERSION = 1;
+export const EXPECTED_ANNOTATION_SLICE_SCHEMA_VERSION = 1;
+
 export interface AnnotationSlice {
+    schemaVersion?: number;
     annotations: AnnotationStore;
     queue: AnnotationStore[];
     queueIndex: number;
@@ -73,6 +77,10 @@ export interface AnnotationStore {
     todos: {
         [target: string]: TodoAnnotation;
     };
+}
+
+export interface VersionedAnnotationStore extends AnnotationStore {
+    schemaVersion?: number;
 }
 
 export interface Annotation {
@@ -301,6 +309,10 @@ export const initialAnnotationSlice: AnnotationSlice = {
 export const initializeAnnotations = createAsyncThunk('annotations/initialize', async () => {
     try {
         const storedAnnotations = (await idb.get('annotations')) as AnnotationSlice;
+        if ((storedAnnotations.schemaVersion ?? 1) !== EXPECTED_ANNOTATION_SLICE_SCHEMA_VERSION) {
+            return initialAnnotationSlice;
+        }
+
         return {
             ...initialAnnotationSlice,
             ...storedAnnotations,

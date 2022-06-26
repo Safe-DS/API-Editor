@@ -33,6 +33,16 @@ export const PackageDataImportDialog: React.FC = function () {
     const dispatch = useAppDispatch();
 
     const submit = async () => {
+        if (!fileName) {
+            toast({
+                title: 'No File Selected',
+                description: 'Select a file to import or cancel this dialog.',
+                status: 'error',
+                duration: 4000,
+            });
+            return;
+        }
+
         if (newPythonPackageString) {
             const pythonPackageJson = JSON.parse(newPythonPackageString) as PythonPackageJson;
             const pythonPackage = parsePythonPackageJson(pythonPackageJson);

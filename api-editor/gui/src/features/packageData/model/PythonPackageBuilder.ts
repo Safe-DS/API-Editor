@@ -12,7 +12,7 @@ import { PythonDeclaration } from './PythonDeclaration';
 const EXPECTED_API_SCHEMA_VERSION = 1;
 
 export interface PythonPackageJson {
-    schemaVersion: number;
+    schemaVersion?: number;
     distribution: string;
     package: string;
     version: string;
