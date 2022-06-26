@@ -492,6 +492,7 @@ const annotationsSlice = createSlice({
                 action.payload,
                 state.username,
             );
+            state.numberOfElementsMarkedAsComplete++;
 
             updateQueue(state);
         },
@@ -510,6 +511,7 @@ const annotationsSlice = createSlice({
                     { target: action.payload },
                     state.username,
                 );
+                state.numberOfElementsMarkedAsComplete++;
             }
 
             updateQueue(state);
