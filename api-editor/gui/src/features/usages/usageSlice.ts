@@ -19,7 +19,7 @@ export const initializeUsages = createAsyncThunk('usages/initialize', async () =
     try {
         const storedUsageCountStoreJson = (await idb.get('usages')) as UsageCountJson;
         return {
-            usages: UsageCountStore.fromJson(storedUsageCountStoreJson),
+            usages: UsageCountStore.fromJson(storedUsageCountStoreJson) ?? new UsageCountStore(),
         };
     } catch {
         return initialState;

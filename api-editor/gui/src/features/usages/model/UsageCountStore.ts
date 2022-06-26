@@ -5,7 +5,10 @@ import { PythonModule } from '../../packageData/model/PythonModule';
 import { PythonClass } from '../../packageData/model/PythonClass';
 import { PythonFunction } from '../../packageData/model/PythonFunction';
 
+const EXPECTED_USAGES_SCHEMA_VERSION = 1;
+
 export interface UsageCountJson {
+    schemaVersion?: number;
     module_counts?: {
         [target: string]: number;
     };
@@ -26,7 +29,11 @@ export interface UsageCountJson {
 }
 
 export class UsageCountStore {
-    static fromJson(json: UsageCountJson, api?: PythonPackage): UsageCountStore {
+    static fromJson(json: UsageCountJson, api?: PythonPackage): UsageCountStore | null {
+        if ((json.schemaVersion ?? 1) !== EXPECTED_USAGES_SCHEMA_VERSION) {
+            return null;
+        }
+
         return new UsageCountStore(
             new Map(Object.entries(json.module_counts ?? {})),
             new Map(Object.entries(json.class_counts)),

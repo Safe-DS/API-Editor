@@ -12,6 +12,7 @@ import {
     ModalHeader,
     ModalOverlay,
     Text as ChakraText,
+    useToast,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -23,6 +24,7 @@ import { setUsages } from './usageSlice';
 import { selectRawPythonPackage } from '../packageData/apiSlice';
 
 export const UsageImportDialog: React.FC = function () {
+    const toast = useToast();
     const [fileName, setFileName] = useState('');
     const [newUsages, setNewUsages] = useState<string>();
     const dispatch = useAppDispatch();
@@ -31,9 +33,20 @@ export const UsageImportDialog: React.FC = function () {
     const submit = async () => {
         if (newUsages) {
             const parsedUsages = JSON.parse(newUsages) as UsageCountJson;
-            dispatch(setUsages(UsageCountStore.fromJson(parsedUsages, api)));
+            const usageCountStore = UsageCountStore.fromJson(parsedUsages, api)
+            if (usageCountStore) {
+                dispatch(setUsages(usageCountStore));
+                close();
+            } else {
+                toast({
+                    title: 'Old Usage Count File',
+                    description: 'This file is not compatible with the current version of the API Editor.',
+                    status: 'error',
+                    duration: 4000,
+                })
+            }
         }
-        close();
+
     };
     const close = () => dispatch(toggleUsageImportDialog());
 
