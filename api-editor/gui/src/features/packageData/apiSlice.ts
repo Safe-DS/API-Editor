@@ -8,14 +8,28 @@ import { selectUsages } from '../usages/usageSlice';
 import { selectAnnotationStore } from '../annotations/annotationSlice';
 import { PythonDeclaration } from './model/PythonDeclaration';
 
+export const EXPECTED_API_SCHEMA_VERSION = 1;
+
 export interface APIState {
     pythonPackage: PythonPackage;
 }
 
 // Initial state -------------------------------------------------------------------------------------------------------
 
+const initialPythonPackageJson: PythonPackageJson = {
+    schemaVersion: EXPECTED_API_SCHEMA_VERSION,
+    distribution: 'empty',
+    package: 'empty',
+    version: '0.0.1',
+    modules: [],
+    classes: [],
+    functions: [],
+};
+
+const initialPythonPackage = new PythonPackage('empty', 'empty', '0.0.1');
+
 const initialState: APIState = {
-    pythonPackage: new PythonPackage('empty', 'empty', '0.0.1'),
+    pythonPackage: initialPythonPackage,
 };
 
 // Thunks --------------------------------------------------------------------------------------------------------------
@@ -23,8 +37,14 @@ const initialState: APIState = {
 export const initializePythonPackage = createAsyncThunk('api/initialize', async () => {
     try {
         const storedPythonPackageJson = (await idb.get('api')) as PythonPackageJson;
+        const pythonPackage = parsePythonPackageJson(storedPythonPackageJson);
+        if (!pythonPackage) {
+            await idb.set('api', initialPythonPackageJson);
+            return initialState;
+        }
+
         return {
-            pythonPackage: parsePythonPackageJson(storedPythonPackageJson),
+            pythonPackage,
         };
     } catch {
         return initialState;

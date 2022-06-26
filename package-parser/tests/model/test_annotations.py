@@ -1,4 +1,5 @@
 from package_parser.model.annotations import (
+    ANNOTATION_SCHEMA_VERSION,
     AbstractAnnotation,
     AnnotationStore,
     BoundaryAnnotation,
@@ -169,6 +170,7 @@ def test_annotation_store():
         )
     )
     assert annotations.to_json() == {
+        "schemaVersion": ANNOTATION_SCHEMA_VERSION,
         "boundaries": {
             "test/boundary": {
                 "target": "test/boundary",

@@ -3,6 +3,8 @@ from __future__ import annotations
 from collections import Counter
 from typing import Any
 
+USAGES_SCHEMA_VERSION = 1
+
 ClassId = str
 FunctionId = str
 ParameterId = str
@@ -184,6 +186,7 @@ class UsageCountStore:
         """Converts this class to a dictionary, which can later be serialized as JSON."""
 
         return {
+            "schemaVersion": USAGES_SCHEMA_VERSION,
             "class_counts": {
                 class_id: usage_count
                 for class_id, usage_count in self.class_usages.most_common()

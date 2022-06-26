@@ -12,6 +12,7 @@ import {
     ModalHeader,
     ModalOverlay,
     Text as ChakraText,
+    useToast,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -25,23 +26,43 @@ import { persistPythonPackage, setPythonPackage } from './apiSlice';
 import { resetUsages } from '../usages/usageSlice';
 
 export const PackageDataImportDialog: React.FC = function () {
+    const toast = useToast();
     const [fileName, setFileName] = useState('');
-    const [newPythonPackage, setNewPythonPackage] = useState<string>();
+    const [newPythonPackageString, setNewPythonPackageString] = useState<string>();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
     const submit = async () => {
-        if (newPythonPackage) {
-            const parsedPythonPackage = JSON.parse(newPythonPackage) as PythonPackageJson;
+        if (!fileName) {
+            toast({
+                title: 'No File Selected',
+                description: 'Select a file to import or cancel this dialog.',
+                status: 'error',
+                duration: 4000,
+            });
+            return;
+        }
 
-            dispatch(setPythonPackage(parsePythonPackageJson(parsedPythonPackage)));
-            dispatch(persistPythonPackage(parsedPythonPackage));
+        if (newPythonPackageString) {
+            const pythonPackageJson = JSON.parse(newPythonPackageString) as PythonPackageJson;
+            const pythonPackage = parsePythonPackageJson(pythonPackageJson);
+            if (pythonPackage) {
+                dispatch(setPythonPackage(pythonPackage));
+                dispatch(persistPythonPackage(pythonPackageJson));
 
-            // Reset other slices
-            dispatch(resetAnnotationStore());
-            dispatch(resetUsages());
-            dispatch(resetUIAfterAPIImport());
-            navigate('/');
+                // Reset other slices
+                dispatch(resetAnnotationStore());
+                dispatch(resetUsages());
+                dispatch(resetUIAfterAPIImport());
+                navigate('/');
+            } else {
+                toast({
+                    title: 'Old API File',
+                    description: 'This file is not compatible with the current version of the API Editor.',
+                    status: 'error',
+                    duration: 4000,
+                });
+            }
         }
     };
     const close = () => dispatch(toggleAPIImportDialog());
@@ -56,7 +77,7 @@ export const PackageDataImportDialog: React.FC = function () {
             const reader = new FileReader();
             reader.onload = () => {
                 if (typeof reader.result === 'string') {
-                    setNewPythonPackage(reader.result);
+                    setNewPythonPackageString(reader.result);
                     dispatch(resetAnnotationStore());
                 }
             };

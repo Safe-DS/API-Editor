@@ -2,6 +2,8 @@ from dataclasses import asdict, dataclass
 from enum import Enum
 from typing import Any
 
+ANNOTATION_SCHEMA_VERSION = 1
+
 
 @dataclass
 class AbstractAnnotation:
@@ -86,6 +88,7 @@ class AnnotationStore:
 
     def to_json(self) -> dict:
         return {
+            "schemaVersion": ANNOTATION_SCHEMA_VERSION,
             "constants": {
                 annotation.target: annotation.to_json() for annotation in self.constants
             },
