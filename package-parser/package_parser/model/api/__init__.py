@@ -1,4 +1,5 @@
 from ._api import (
+    API_SCHEMA_VERSION,
     API,
     Class,
     FromImport,

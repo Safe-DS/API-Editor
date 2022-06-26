@@ -8,7 +8,7 @@ from package_parser.model.annotations import (
     Interval,
     OptionalAnnotation,
     RemoveAnnotation,
-    RequiredAnnotation,
+    RequiredAnnotation, ANNOTATION_SCHEMA_VERSION,
 )
 
 
@@ -169,6 +169,7 @@ def test_annotation_store():
         )
     )
     assert annotations.to_json() == {
+        "schemaVersion": ANNOTATION_SCHEMA_VERSION,
         "boundaries": {
             "test/boundary": {
                 "target": "test/boundary",

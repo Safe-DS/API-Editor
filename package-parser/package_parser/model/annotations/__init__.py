@@ -1,4 +1,5 @@
 from ._annotations import (
+    ANNOTATION_SCHEMA_VERSION,
     AbstractAnnotation,
     AnnotationStore,
     BoundaryAnnotation,

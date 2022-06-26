@@ -14,6 +14,7 @@ from package_parser.model.api._types import (
 )
 from package_parser.utils import parent_id
 
+API_SCHEMA_VERSION = 1
 
 class API:
     @staticmethod
@@ -96,6 +97,7 @@ class API:
 
     def to_json(self) -> Any:
         return {
+            "schemaVersion": API_SCHEMA_VERSION,
             "distribution": self.distribution,
             "package": self.package,
             "version": self.version,
