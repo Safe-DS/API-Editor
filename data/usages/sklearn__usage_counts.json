@@ -1,4 +1,5 @@
 {
+    "schemaVersion": 1,
     "class_counts": {
         "sklearn/sklearn.preprocessing._label/LabelEncoder": 22465,
         "sklearn/sklearn.preprocessing._data/StandardScaler": 12598,

@@ -1,4 +1,5 @@
 {
+    "schemaVersion": 1,
     "constants": {
         "sklearn/sklearn._config/set_config/assume_finite": {
             "target": "sklearn/sklearn._config/set_config/assume_finite",
