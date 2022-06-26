@@ -9,6 +9,7 @@ import { ConfirmAnnotations } from './ConfirmAnnotations';
 interface EmptyBatchFormProps {
     targets: PythonDeclaration[];
     annotationType: string;
+    description: string;
     onUpsertAnnotation: () => void;
     targetLabel: string;
 }
@@ -16,6 +17,7 @@ interface EmptyBatchFormProps {
 export const EmptyBatchForm: React.FC<EmptyBatchFormProps> = function ({
     targets,
     annotationType,
+    description,
     onUpsertAnnotation,
     targetLabel,
 }) {
@@ -45,6 +47,7 @@ export const EmptyBatchForm: React.FC<EmptyBatchFormProps> = function ({
         <>
             <AnnotationBatchForm
                 heading={`Add @${annotationType} Annotations`}
+                description={description}
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             >

@@ -35,6 +35,7 @@ export const RequiredBatchForm: React.FC<RequiredBatchFormProps> = function ({ t
         <EmptyBatchForm
             targets={filteredTargets}
             annotationType="required"
+            description="Make matched parameters required."
             onUpsertAnnotation={handleUpsertAnnotation}
             targetLabel="This will annotate parameters."
         />

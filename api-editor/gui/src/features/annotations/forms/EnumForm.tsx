@@ -114,6 +114,7 @@ export const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
     return (
         <AnnotationForm
             heading={`${enumDefinition ? 'Edit' : 'Add'} @enum Annotation`}
+            description="Replace this string parameter with an enum parameter."
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
         >

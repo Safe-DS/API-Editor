@@ -37,6 +37,7 @@ export const OptionalBatchForm: React.FC<OptionalBatchFormProps> = function ({ t
         <TypeValueBatchForm
             targets={filteredTargets}
             annotationType="optional"
+            description="Make matched parameters optional and set their default value."
             onUpsertAnnotation={handleUpsertAnnotation}
         />
     );

@@ -38,6 +38,7 @@ export const MoveBatchForm: React.FC<MoveBatchFormProps> = function ({ targets }
         <DestinationBatchForm
             targets={filteredTargets}
             annotationType="move"
+            description="Move matched global declarations to another module."
             onUpsertAnnotation={handleUpsertAnnotation}
         />
     );

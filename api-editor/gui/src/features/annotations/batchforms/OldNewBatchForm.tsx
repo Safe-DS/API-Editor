@@ -10,6 +10,7 @@ import { ConfirmAnnotations } from './ConfirmAnnotations';
 interface OldNewBatchFormProps {
     targets: PythonDeclaration[];
     annotationType: string;
+    description: string;
     onUpsertAnnotation: (data: OldNewBatchFormState) => void;
 }
 
@@ -21,6 +22,7 @@ export interface OldNewBatchFormState {
 export const OldNewBatchForm: React.FC<OldNewBatchFormProps> = function ({
     targets,
     annotationType,
+    description,
     onUpsertAnnotation,
 }) {
     const dispatch = useAppDispatch();
@@ -65,6 +67,7 @@ export const OldNewBatchForm: React.FC<OldNewBatchFormProps> = function ({
         <>
             <AnnotationBatchForm
                 heading={`Add @${annotationType} Annotations`}
+                description={description}
                 onConfirm={handleSubmit(handleConfirm)}
                 onCancel={handleCancel}
             >

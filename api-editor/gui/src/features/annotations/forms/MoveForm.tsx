@@ -71,6 +71,7 @@ export const MoveForm: React.FC<MoveFormProps> = function ({ target }) {
     return (
         <AnnotationForm
             heading={`${prevDestination ? 'Edit' : 'Add'} @move Annotation`}
+            description="Move this global declaration to another module."
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
         >
