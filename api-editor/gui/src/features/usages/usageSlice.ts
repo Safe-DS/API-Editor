@@ -3,6 +3,8 @@ import { RootState } from '../../app/store';
 import { UsageCountJson, UsageCountStore } from './model/UsageCountStore';
 import * as idb from 'idb-keyval';
 
+export const EXPECTED_USAGES_SCHEMA_VERSION = 1;
+
 export interface UsageState {
     usages: UsageCountStore;
 }

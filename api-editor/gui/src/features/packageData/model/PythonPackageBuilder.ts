@@ -8,8 +8,7 @@ import { PythonPackage } from './PythonPackage';
 import { PythonParameter, PythonParameterAssignment } from './PythonParameter';
 import { PythonResult } from './PythonResult';
 import { PythonDeclaration } from './PythonDeclaration';
-
-const EXPECTED_API_SCHEMA_VERSION = 1;
+import { EXPECTED_API_SCHEMA_VERSION } from '../apiSlice';
 
 export interface PythonPackageJson {
     schemaVersion?: number;

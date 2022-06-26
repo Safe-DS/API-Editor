@@ -23,8 +23,6 @@ export const maximumNumberOfParameterAnnotations = 9;
 
 const maximumUndoHistoryLength = 10;
 
-
-
 export interface AnnotationSlice {
     schemaVersion?: number;
     annotations: AnnotationStore;
