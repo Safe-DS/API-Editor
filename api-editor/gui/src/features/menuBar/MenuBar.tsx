@@ -399,16 +399,18 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                         <MenuList>
                             <MenuGroup title="Visual">
                                 <MenuOptionGroup type="checkbox" value={visualSettings}>
-                                    <MenuItemOption value={'darkMode'} onClick={toggleColorMode}>
+                                    <MenuItemOption paddingLeft={8} value={'darkMode'} onClick={toggleColorMode}>
                                         Dark Mode
                                     </MenuItemOption>
                                     <MenuItemOption
+                                        paddingLeft={8}
                                         value={'statistics'}
                                         onClick={() => dispatch(toggleStatisticsView())}
                                     >
                                         Show Statistics
                                     </MenuItemOption>
                                     <MenuItemOption
+                                        paddingLeft={8}
                                         value={'toggleDocumentationByDefault'}
                                         onClick={() => dispatch(toggleExpandDocumentationByDefault())}
                                     >

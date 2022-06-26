@@ -1,5 +1,10 @@
-import { bugReportURL, featureRequestURL, missingAnnotationURL, wrongAnnotationURL } from './issueURLBuilder';
+import { bugReportURL, featureRequestURL, missingAnnotationURL, userGuideURL, wrongAnnotationURL } from './urlBuilder';
 import fetch from 'node-fetch';
+
+test('user guide URL should be correct', async () => {
+    const response = await fetch(userGuideURL);
+    expect(response.status).toBe(200);
+});
 
 test('bug report URL should be correct', async () => {
     const response = await fetch(bugReportURL);
