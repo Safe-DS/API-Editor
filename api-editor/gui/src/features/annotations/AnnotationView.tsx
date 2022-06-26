@@ -65,7 +65,7 @@ import {
     showTodoAnnotationForm,
 } from '../ui/uiSlice';
 import { truncate } from '../../common/util/stringOperations';
-import { wrongAnnotationURL } from '../reporting/issueURLBuilder';
+import { wrongAnnotationURL } from '../externalLinks/urlBuilder';
 
 interface AnnotationViewProps {
     target: string;

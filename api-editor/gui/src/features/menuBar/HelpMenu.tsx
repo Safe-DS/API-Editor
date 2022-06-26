@@ -1,7 +1,7 @@
 import { Box, Button, Icon, Menu, MenuButton, MenuGroup, MenuItem, MenuList } from '@chakra-ui/react';
 import React from 'react';
 import { FaBug, FaChevronDown, FaLightbulb } from 'react-icons/fa';
-import { bugReportURL, featureRequestURL } from '../reporting/issueURLBuilder';
+import { bugReportURL, featureRequestURL, userGuideURL } from '../externalLinks/urlBuilder';
 
 export const HelpMenu = function () {
     return (
@@ -11,6 +11,16 @@ export const HelpMenu = function () {
                     Help
                 </MenuButton>
                 <MenuList>
+                    <MenuGroup title="Documentation">
+                        <MenuItem
+                            paddingLeft={8}
+                            onClick={() => {
+                                window.open(userGuideURL, '_blank');
+                            }}
+                        >
+                            User Guide
+                        </MenuItem>
+                    </MenuGroup>
                     <MenuGroup title="Feedback">
                         <MenuItem
                             paddingLeft={8}

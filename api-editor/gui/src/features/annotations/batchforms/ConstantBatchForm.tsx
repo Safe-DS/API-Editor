@@ -37,6 +37,7 @@ export const ConstantBatchForm: React.FC<ConstantBatchFormProps> = function ({ t
         <TypeValueBatchForm
             targets={filteredTargets}
             annotationType="constant"
+            description="Delete matched parameters and replace references to them with a constant value."
             onUpsertAnnotation={handleUpsertAnnotation}
         />
     );

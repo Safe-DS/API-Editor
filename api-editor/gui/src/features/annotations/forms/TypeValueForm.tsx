@@ -27,6 +27,7 @@ import { hideAnnotationForm } from '../../ui/uiSlice';
 interface TypeValueFormProps {
     target: PythonDeclaration;
     annotationType: string;
+    description: string;
     previousDefaultType: Optional<DefaultType>;
     previousDefaultValue: Optional<DefaultValue>;
     onUpsertAnnotation: (data: TypeValueFormState) => void;
@@ -40,6 +41,7 @@ export interface TypeValueFormState {
 export const TypeValueForm: React.FC<TypeValueFormProps> = function ({
     target,
     annotationType,
+    description,
     previousDefaultType,
     previousDefaultValue,
     onUpsertAnnotation,
@@ -99,6 +101,7 @@ export const TypeValueForm: React.FC<TypeValueFormProps> = function ({
     return (
         <AnnotationForm
             heading={`${previousDefaultType ? 'Edit' : 'Add'} @${annotationType} Annotation`}
+            description={description}
             onSave={handleSubmit(handleSave)}
             onCancel={handleCancel}
         >

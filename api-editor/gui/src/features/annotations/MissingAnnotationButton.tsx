@@ -1,7 +1,7 @@
 import { IconButton } from '@chakra-ui/react';
 import React from 'react';
 import { FaFlag } from 'react-icons/fa';
-import { missingAnnotationURL } from '../reporting/issueURLBuilder';
+import { missingAnnotationURL } from '../externalLinks/urlBuilder';
 
 interface MissingAnnotationButtonProps {
     target: string;

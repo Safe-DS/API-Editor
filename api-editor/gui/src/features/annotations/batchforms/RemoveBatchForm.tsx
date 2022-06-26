@@ -35,6 +35,7 @@ export const RemoveBatchForm: React.FC<RemoveBatchFormProps> = function ({ targe
         <EmptyBatchForm
             targets={filteredTargets}
             annotationType="remove"
+            description="Remove matched classes and functions."
             onUpsertAnnotation={handleUpsertAnnotation}
             targetLabel="This will annotate classes and functions."
         />

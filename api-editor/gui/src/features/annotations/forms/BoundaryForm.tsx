@@ -142,6 +142,7 @@ export const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
     return (
         <AnnotationForm
             heading={`${prevInterval ? 'Edit' : 'Add'} @boundary Annotation`}
+            description="Specify the interval of valid values of this numeric parameter."
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
         >
