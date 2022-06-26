@@ -41,7 +41,7 @@ export const AchievementDisplay: React.FC = function () {
                 Achievements
             </Heading>
             <Box>
-                <SimpleGrid columns={{ base: 1, 'wqhd': 2 }} spacing={4}>
+                <SimpleGrid columns={{ base: 1, wqhd: 2 }} spacing={4}>
                     <AchievementCard
                         currentCount={auditorCount}
                         achievement={auditorAchievement}

@@ -35,10 +35,10 @@ const breakpoints = {
     lg: '960px',
     xl: '1200px',
     '2xl': '1536px',
-    'fullHD': '1920px',
-    'wqhd': '2560px',
+    fullHD: '1920px',
+    wqhd: '2560px',
     '4kuhd': '3840px',
-}
+};
 
 const apiEditorTheme = extendTheme({
     config,

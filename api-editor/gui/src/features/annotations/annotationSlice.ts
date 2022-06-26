@@ -1010,7 +1010,11 @@ const withAuthorAndReviewers = function <T extends Annotation>(
     };
 };
 
-const withToggledReviewer = function <T extends Annotation>(state: AnnotationSlice, oldAnnotation: T, reviewer: string): T {
+const withToggledReviewer = function <T extends Annotation>(
+    state: AnnotationSlice,
+    oldAnnotation: T,
+    reviewer: string,
+): T {
     if (oldAnnotation.reviewers?.includes(reviewer) ?? false) {
         return {
             ...oldAnnotation,
