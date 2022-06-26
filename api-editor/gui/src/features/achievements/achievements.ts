@@ -1,5 +1,5 @@
 interface CurrentAchievementLevel {
-    label: string;
+    title: string;
     image: string;
 }
 
@@ -19,7 +19,7 @@ export class Achievement {
         }
 
         return {
-            label: `${achievementLevel.prefix} ${this.name}`,
+            title: `${achievementLevel.prefix} ${this.name}`,
             image: achievementLevel.badgeURL,
         };
     }

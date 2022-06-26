@@ -1,6 +1,6 @@
-import { Heading, HStack, Img, Text as ChakraText, useToast, VStack } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
-import { useAppSelector } from '../../app/hooks';
+import {Heading, HStack, Img, Text as ChakraText, useToast, VStack} from '@chakra-ui/react';
+import React, {useEffect} from 'react';
+import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {
     selectNumberOfAnnotationsChanged,
     selectNumberOfAnnotationsCreated,
@@ -16,6 +16,7 @@ import {
     completionistAchievement,
     editorAchievement,
 } from './achievements';
+import {rememberTitle, selectCelebratedTitles, selectUIIsLoaded} from '../ui/uiSlice';
 
 export const useAnnotationToasts = () => {
     useAnnotationToast(auditorAchievement, useAppSelector(selectNumberOfAnnotationsMarkedAsCorrect));
@@ -27,10 +28,13 @@ export const useAnnotationToasts = () => {
 
 const useAnnotationToast = (achievement: Achievement, currentCount: number) => {
     const toast = useToast();
-    const [previousLabel, setPreviousLabel] = React.useState<string>("");
+    const dispatch = useAppDispatch();
+    const celebratedTitles = useAppSelector(selectCelebratedTitles);
+    const uiIsLoaded = useAppSelector(selectUIIsLoaded);
 
     useEffect(() => {
-        if (currentCount === 0) {
+        // UI is not loaded yet
+        if (!uiIsLoaded) {
             return;
         }
 
@@ -40,21 +44,20 @@ const useAnnotationToast = (achievement: Achievement, currentCount: number) => {
             return;
         }
 
-        // Prevent messages when only the count but not the label changes
-        if (currentAchievementLevel.label === previousLabel) {
+        // Prevent duplicate messages
+        if (celebratedTitles.includes(currentAchievementLevel.title)) {
             return;
         }
-        setPreviousLabel(currentAchievementLevel.label);
+        dispatch(rememberTitle(currentAchievementLevel.title));
 
         toast({
-            duration: 4000,
+            duration: 5000,
             isClosable: true,
             render: () => (
-                <AnnotationToast image={currentAchievementLevel.image} label={currentAchievementLevel.label} />
+                <AnnotationToast image={currentAchievementLevel.image} label={currentAchievementLevel.title}/>
             ),
         });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [achievement, currentCount, toast]);
+    }, [achievement, celebratedTitles, currentCount, uiIsLoaded, dispatch, toast]);
 };
 
 interface AnnotationToastProps {
@@ -62,7 +65,7 @@ interface AnnotationToastProps {
     label: string;
 }
 
-const AnnotationToast: React.FC<AnnotationToastProps> = function ({ image, label }) {
+const AnnotationToast: React.FC<AnnotationToastProps> = function ({image, label}) {
     return (
         <HStack
             bgGradient="linear(to-r, #afafaf, #ededed 18%, #c2c2c2, #f1f1f1)"
@@ -75,7 +78,7 @@ const AnnotationToast: React.FC<AnnotationToastProps> = function ({ image, label
             padding={4}
             spacing={4}
         >
-            <Img src={image} alt={label} maxH="100%" />
+            <Img src={image} alt={label} maxH="100%"/>
             <VStack paddingRight={2}>
                 <Heading size="md">Achievement unlocked!</Heading>
                 <ChakraText textAlign="center">{`You are now a ${label}.`}</ChakraText>
