@@ -3,6 +3,9 @@ import * as idb from 'idb-keyval';
 import { RootState } from '../../app/store';
 import { isValidUsername } from '../../common/util/validation';
 
+export const EXPECTED_ANNOTATION_STORE_SCHEMA_VERSION = 1;
+export const EXPECTED_ANNOTATION_SLICE_SCHEMA_VERSION = 1;
+
 /**
  * How many annotations can be applied to a class at once.
  */
@@ -20,8 +23,7 @@ export const maximumNumberOfParameterAnnotations = 9;
 
 const maximumUndoHistoryLength = 10;
 
-export const EXPECTED_ANNOTATION_STORE_SCHEMA_VERSION = 1;
-export const EXPECTED_ANNOTATION_SLICE_SCHEMA_VERSION = 1;
+
 
 export interface AnnotationSlice {
     schemaVersion?: number;

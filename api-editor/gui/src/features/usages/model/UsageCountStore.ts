@@ -93,6 +93,7 @@ export class UsageCountStore {
 
     toJson(): UsageCountJson {
         return {
+            schemaVersion: EXPECTED_USAGES_SCHEMA_VERSION,
             module_counts: Object.fromEntries(this.moduleUsages),
             class_counts: Object.fromEntries(this.classUsages),
             function_counts: Object.fromEntries(this.functionUsages),

@@ -8,12 +8,15 @@ import { PythonDeclaration } from '../packageData/model/PythonDeclaration';
 import { UsageCountStore } from '../usages/model/UsageCountStore';
 import { selectUsages } from '../usages/usageSlice';
 
+const EXPECTED_UI_SCHEMA_VERSION = 1;
+
 export interface Filter {
     filter: string;
     name: string;
 }
 
 export interface UIState {
+    schemaVersion?: number;
     showAnnotationImportDialog: boolean;
     showAPIImportDialog: boolean;
     showUsageImportDialog: boolean;
@@ -162,6 +165,10 @@ export const initialState: UIState = {
 export const initializeUI = createAsyncThunk('ui/initialize', async () => {
     try {
         const storedState = (await idb.get('ui')) as UIState;
+        if ((storedState.schemaVersion ?? 1) !== EXPECTED_UI_SCHEMA_VERSION) {
+            return initialState;
+        }
+
         return {
             ...initialState,
             ...storedState,
