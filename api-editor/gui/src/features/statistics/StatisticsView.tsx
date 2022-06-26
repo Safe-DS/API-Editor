@@ -4,7 +4,7 @@ import { AnnotationStatistics } from './AnnotationStatistics';
 import { ApiSizeStatistics } from './ApiSizeStatistics';
 import { ApiSizeVsUsefulnessStatistics } from './ApiSizeVsUsefulnessStatistics';
 import { ProgressStatistics } from './ProgressStatistics';
-import { AchievementDisplay } from './AchievementDisplay';
+import { AchievementDisplay } from '../achievements/AchievementDisplay';
 
 export const StatisticsView: React.FC = function () {
     return (
