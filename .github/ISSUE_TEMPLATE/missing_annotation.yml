@@ -34,7 +34,7 @@ body:
       description: Which inputs did you expect the annotation to have? If possible, provide the JSON for the expected annotation.
     validations:
       required: true
-      
+
   - type: textarea
     id: minimal-api-data
     attributes:
@@ -42,7 +42,7 @@ body:
       description: If possible, provide the JSON for a minimal API with the element that should have been annotated, and its ancestors.
     validations:
       required: false
- 
+
   - type: textarea
     id: minimal-usage-store
     attributes:
