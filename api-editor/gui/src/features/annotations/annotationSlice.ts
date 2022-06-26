@@ -408,7 +408,7 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         upsertAttribute(state, action: PayloadAction<AttributeAnnotation>) {
-            updateCreationOrChangedCount(state, state.annotations.attributes[action.payload.target])
+            updateCreationOrChangedCount(state, state.annotations.attributes[action.payload.target]);
 
             state.annotations.attributes[action.payload.target] = withAuthorAndReviewers(
                 state.annotations.attributes[action.payload.target],
@@ -438,7 +438,7 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         upsertBoundary(state, action: PayloadAction<BoundaryAnnotation>) {
-            updateCreationOrChangedCount(state, state.annotations.boundaries[action.payload.target])
+            updateCreationOrChangedCount(state, state.annotations.boundaries[action.payload.target]);
 
             state.annotations.boundaries[action.payload.target] = withAuthorAndReviewers(
                 state.annotations.boundaries[action.payload.target],
@@ -468,7 +468,10 @@ const annotationsSlice = createSlice({
                 state.annotations.calledAfters[action.payload.target] = {};
             }
 
-            updateCreationOrChangedCount(state, state.annotations.calledAfters[action.payload.target][action.payload.calledAfterName])
+            updateCreationOrChangedCount(
+                state,
+                state.annotations.calledAfters[action.payload.target][action.payload.calledAfterName],
+            );
 
             state.annotations.calledAfters[action.payload.target][action.payload.calledAfterName] =
                 withAuthorAndReviewers(
@@ -528,7 +531,7 @@ const annotationsSlice = createSlice({
         },
         // Cannot review complete annotations
         upsertConstant(state, action: PayloadAction<ConstantAnnotation>) {
-            updateCreationOrChangedCount(state, state.annotations.constants[action.payload.target])
+            updateCreationOrChangedCount(state, state.annotations.constants[action.payload.target]);
 
             state.annotations.constants[action.payload.target] = withAuthorAndReviewers(
                 state.annotations.constants[action.payload.target],
@@ -544,7 +547,7 @@ const annotationsSlice = createSlice({
         },
         upsertConstants(state, action: PayloadAction<ConstantAnnotation[]>) {
             action.payload.forEach((annotation) => {
-                updateCreationOrChangedCount(state, state.annotations.constants[annotation.target])
+                updateCreationOrChangedCount(state, state.annotations.constants[annotation.target]);
 
                 state.annotations.constants[annotation.target] = withAuthorAndReviewers(
                     state.annotations.constants[annotation.target],
@@ -575,7 +578,7 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         upsertDescription(state, action: PayloadAction<DescriptionAnnotation>) {
-            updateCreationOrChangedCount(state, state.annotations.descriptions[action.payload.target])
+            updateCreationOrChangedCount(state, state.annotations.descriptions[action.payload.target]);
 
             state.annotations.descriptions[action.payload.target] = withAuthorAndReviewers(
                 state.annotations.descriptions[action.payload.target],
@@ -601,7 +604,7 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         upsertEnum(state, action: PayloadAction<EnumAnnotation>) {
-            updateCreationOrChangedCount(state, state.annotations.enums[action.payload.target])
+            updateCreationOrChangedCount(state, state.annotations.enums[action.payload.target]);
 
             state.annotations.enums[action.payload.target] = withAuthorAndReviewers(
                 state.annotations.enums[action.payload.target],
@@ -666,7 +669,10 @@ const annotationsSlice = createSlice({
                 }
             }
 
-            updateCreationOrChangedCount(state, state.annotations.groups[action.payload.target][action.payload.groupName])
+            updateCreationOrChangedCount(
+                state,
+                state.annotations.groups[action.payload.target][action.payload.groupName],
+            );
 
             state.annotations.groups[action.payload.target][action.payload.groupName] = withAuthorAndReviewers(
                 state.annotations.groups[action.payload.target][action.payload.groupName],
@@ -695,7 +701,7 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         upsertMove(state, action: PayloadAction<MoveAnnotation>) {
-            updateCreationOrChangedCount(state, state.annotations.moves[action.payload.target])
+            updateCreationOrChangedCount(state, state.annotations.moves[action.payload.target]);
 
             state.annotations.moves[action.payload.target] = withAuthorAndReviewers(
                 state.annotations.moves[action.payload.target],
@@ -707,7 +713,7 @@ const annotationsSlice = createSlice({
         },
         upsertMoves(state, action: PayloadAction<MoveAnnotation[]>) {
             action.payload.forEach((annotation) => {
-                updateCreationOrChangedCount(state, state.annotations.moves[annotation.target])
+                updateCreationOrChangedCount(state, state.annotations.moves[annotation.target]);
 
                 state.annotations.moves[annotation.target] = withAuthorAndReviewers(
                     state.annotations.moves[annotation.target],
@@ -734,7 +740,7 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         upsertOptional(state, action: PayloadAction<OptionalAnnotation>) {
-            updateCreationOrChangedCount(state, state.annotations.optionals[action.payload.target])
+            updateCreationOrChangedCount(state, state.annotations.optionals[action.payload.target]);
 
             state.annotations.optionals[action.payload.target] = withAuthorAndReviewers(
                 state.annotations.optionals[action.payload.target],
@@ -750,7 +756,7 @@ const annotationsSlice = createSlice({
         },
         upsertOptionals(state, action: PayloadAction<OptionalAnnotation[]>) {
             action.payload.forEach((annotation) => {
-                updateCreationOrChangedCount(state, state.annotations.optionals[annotation.target])
+                updateCreationOrChangedCount(state, state.annotations.optionals[annotation.target]);
 
                 state.annotations.optionals[annotation.target] = withAuthorAndReviewers(
                     state.annotations.optionals[annotation.target],
@@ -781,7 +787,7 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         addPure(state, action: PayloadAction<PureAnnotation>) {
-            updateCreationOrChangedCount(state, state.annotations.pures[action.payload.target])
+            updateCreationOrChangedCount(state, state.annotations.pures[action.payload.target]);
 
             state.annotations.pures[action.payload.target] = withAuthorAndReviewers(
                 state.annotations.pures[action.payload.target],
@@ -807,7 +813,7 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         upsertRenaming(state, action: PayloadAction<RenameAnnotation>) {
-            updateCreationOrChangedCount(state, state.annotations.renamings[action.payload.target])
+            updateCreationOrChangedCount(state, state.annotations.renamings[action.payload.target]);
 
             state.annotations.renamings[action.payload.target] = withAuthorAndReviewers(
                 state.annotations.renamings[action.payload.target],
@@ -819,7 +825,7 @@ const annotationsSlice = createSlice({
         },
         upsertRenamings(state, action: PayloadAction<RenameAnnotation[]>) {
             action.payload.forEach((annotation) => {
-                updateCreationOrChangedCount(state, state.annotations.renamings[annotation.target])
+                updateCreationOrChangedCount(state, state.annotations.renamings[annotation.target]);
 
                 state.annotations.renamings[annotation.target] = withAuthorAndReviewers(
                     state.annotations.renamings[annotation.target],
@@ -846,7 +852,7 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         addRequired(state, action: PayloadAction<RequiredAnnotation>) {
-            updateCreationOrChangedCount(state, state.annotations.requireds[action.payload.target])
+            updateCreationOrChangedCount(state, state.annotations.requireds[action.payload.target]);
 
             state.annotations.requireds[action.payload.target] = withAuthorAndReviewers(
                 state.annotations.requireds[action.payload.target],
@@ -862,7 +868,7 @@ const annotationsSlice = createSlice({
         },
         addRequireds(state, action: PayloadAction<RequiredAnnotation[]>) {
             action.payload.forEach((annotation) => {
-                updateCreationOrChangedCount(state, state.annotations.requireds[annotation.target])
+                updateCreationOrChangedCount(state, state.annotations.requireds[annotation.target]);
 
                 state.annotations.requireds[annotation.target] = withAuthorAndReviewers(
                     state.annotations.requireds[annotation.target],
@@ -893,7 +899,7 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         addRemove(state, action: PayloadAction<RemoveAnnotation>) {
-            updateCreationOrChangedCount(state, state.annotations.removes[action.payload.target])
+            updateCreationOrChangedCount(state, state.annotations.removes[action.payload.target]);
 
             state.annotations.removes[action.payload.target] = withAuthorAndReviewers(
                 state.annotations.removes[action.payload.target],
@@ -905,7 +911,7 @@ const annotationsSlice = createSlice({
         },
         upsertRemoves(state, action: PayloadAction<RemoveAnnotation[]>) {
             action.payload.forEach((annotation) => {
-                updateCreationOrChangedCount(state, state.annotations.removes[annotation.target])
+                updateCreationOrChangedCount(state, state.annotations.removes[annotation.target]);
 
                 state.annotations.removes[annotation.target] = withAuthorAndReviewers(
                     state.annotations.removes[annotation.target],
@@ -932,7 +938,7 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         upsertTodo(state, action: PayloadAction<TodoAnnotation>) {
-            updateCreationOrChangedCount(state, state.annotations.todos[action.payload.target])
+            updateCreationOrChangedCount(state, state.annotations.todos[action.payload.target]);
 
             state.annotations.todos[action.payload.target] = withAuthorAndReviewers(
                 state.annotations.todos[action.payload.target],
@@ -985,7 +991,7 @@ const updateCreationOrChangedCount = function (state: AnnotationSlice, annotatio
     } else {
         state.numberOfAnnotationsCreated++;
     }
-}
+};
 
 const withAuthorAndReviewers = function <T extends Annotation>(
     oldAnnotation: T | void,

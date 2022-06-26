@@ -1,4 +1,4 @@
-import {pluralize, truncate} from './stringOperations';
+import { pluralize, truncate } from './stringOperations';
 
 describe('truncate', () => {
     test('should return strings with at most max length unchanged', () => {
