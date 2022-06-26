@@ -431,6 +431,7 @@ const annotationsSlice = createSlice({
                 state.annotations.attributes[action.payload],
                 state.username,
             );
+            state.numberOfAnnotationsMarkedAsCorrect++;
 
             updateQueue(state);
         },
@@ -454,6 +455,7 @@ const annotationsSlice = createSlice({
                 state.annotations.boundaries[action.payload],
                 state.username,
             );
+            state.numberOfAnnotationsMarkedAsCorrect++;
 
             updateQueue(state);
         },
@@ -483,6 +485,7 @@ const annotationsSlice = createSlice({
                 state.annotations.calledAfters[action.payload.target][action.payload.calledAfterName],
                 state.username,
             );
+            state.numberOfAnnotationsMarkedAsCorrect++;
 
             updateQueue(state);
         },
@@ -556,6 +559,7 @@ const annotationsSlice = createSlice({
                 state.annotations.constants[action.payload],
                 state.username,
             );
+            state.numberOfAnnotationsMarkedAsCorrect++;
 
             updateQueue(state);
         },
@@ -579,6 +583,7 @@ const annotationsSlice = createSlice({
                 state.annotations.descriptions[action.payload],
                 state.username,
             );
+            state.numberOfAnnotationsMarkedAsCorrect++;
 
             updateQueue(state);
         },
@@ -602,6 +607,7 @@ const annotationsSlice = createSlice({
                 state.annotations.enums[action.payload],
                 state.username,
             );
+            state.numberOfAnnotationsMarkedAsCorrect++;
 
             updateQueue(state);
         },
@@ -666,6 +672,7 @@ const annotationsSlice = createSlice({
                 state.annotations.groups[action.payload.target][action.payload.groupName],
                 state.username,
             );
+            state.numberOfAnnotationsMarkedAsCorrect++;
 
             updateQueue(state);
         },
@@ -700,6 +707,7 @@ const annotationsSlice = createSlice({
                 state.annotations.moves[action.payload],
                 state.username,
             );
+            state.numberOfAnnotationsMarkedAsCorrect++;
 
             updateQueue(state);
         },
@@ -742,6 +750,7 @@ const annotationsSlice = createSlice({
                 state.annotations.optionals[action.payload],
                 state.username,
             );
+            state.numberOfAnnotationsMarkedAsCorrect++;
 
             updateQueue(state);
         },
@@ -765,6 +774,7 @@ const annotationsSlice = createSlice({
                 state.annotations.pures[action.payload],
                 state.username,
             );
+            state.numberOfAnnotationsMarkedAsCorrect++;
 
             updateQueue(state);
         },
@@ -799,6 +809,7 @@ const annotationsSlice = createSlice({
                 state.annotations.renamings[action.payload],
                 state.username,
             );
+            state.numberOfAnnotationsMarkedAsCorrect++;
 
             updateQueue(state);
         },
@@ -841,6 +852,7 @@ const annotationsSlice = createSlice({
                 state.annotations.requireds[action.payload],
                 state.username,
             );
+            state.numberOfAnnotationsMarkedAsCorrect++;
 
             updateQueue(state);
         },
@@ -875,6 +887,7 @@ const annotationsSlice = createSlice({
                 state.annotations.removes[action.payload],
                 state.username,
             );
+            state.numberOfAnnotationsMarkedAsCorrect++;
 
             updateQueue(state);
         },
@@ -898,6 +911,7 @@ const annotationsSlice = createSlice({
                 state.annotations.todos[action.payload],
                 state.username,
             );
+            state.numberOfAnnotationsMarkedAsCorrect++;
 
             updateQueue(state);
         },
