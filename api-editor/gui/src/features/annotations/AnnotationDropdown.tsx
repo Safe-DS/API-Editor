@@ -1,4 +1,4 @@
-import { Box, Button, Icon, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
+import { Box, Button, Icon, Menu, MenuButton, MenuGroup, MenuItem, MenuList } from '@chakra-ui/react';
 import React from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -8,12 +8,12 @@ import {
     showBoundaryAnnotationForm,
     showCalledAfterAnnotationForm,
     showConstantAnnotationForm,
+    showDescriptionAnnotationForm,
     showEnumAnnotationForm,
     showGroupAnnotationForm,
     showMoveAnnotationForm,
     showOptionalAnnotationForm,
     showRenameAnnotationForm,
-    showDescriptionAnnotationForm,
     showTodoAnnotationForm,
 } from '../ui/uiSlice';
 
@@ -71,60 +71,120 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                     Annotations
                 </MenuButton>
                 <MenuList>
-                    {showAttribute && (
-                        <MenuItem onClick={() => dispatch(showAttributeAnnotationForm(target))}>@attribute</MenuItem>
+                    {(showEnum || showBoundary) && (
+                        <MenuGroup title="Type">
+                            {showBoundary && (
+                                <MenuItem onClick={() => dispatch(showBoundaryAnnotationForm(target))} paddingLeft={8}>
+                                    @boundary
+                                </MenuItem>
+                            )}
+                            {showEnum && (
+                                <MenuItem onClick={() => dispatch(showEnumAnnotationForm(target))} paddingLeft={8}>
+                                    @enum
+                                </MenuItem>
+                            )}
+                        </MenuGroup>
                     )}
-                    {showBoundary && (
-                        <MenuItem onClick={() => dispatch(showBoundaryAnnotationForm(target))}>@boundary</MenuItem>
+
+                    {(showAttribute || showConstant || showOptional || showRequired) && (
+                        <MenuGroup title="Value">
+                            {showAttribute && (
+                                <MenuItem onClick={() => dispatch(showAttributeAnnotationForm(target))} paddingLeft={8}>
+                                    @attribute
+                                </MenuItem>
+                            )}
+                            {showConstant && (
+                                <MenuItem onClick={() => dispatch(showConstantAnnotationForm(target))} paddingLeft={8}>
+                                    @constant
+                                </MenuItem>
+                            )}
+                            {showOptional && (
+                                <MenuItem onClick={() => dispatch(showOptionalAnnotationForm(target))} paddingLeft={8}>
+                                    @optional
+                                </MenuItem>
+                            )}
+                            {showRequired && (
+                                <MenuItem onClick={() => dispatch(addRequired({ target }))} paddingLeft={8}>
+                                    @required
+                                </MenuItem>
+                            )}
+                        </MenuGroup>
                     )}
-                    {showCalledAfter && (
-                        <MenuItem
-                            onClick={() =>
-                                dispatch(
-                                    showCalledAfterAnnotationForm({
-                                        target,
-                                        calledAfterName: '',
-                                    }),
-                                )
-                            }
-                        >
-                            @calledAfter
-                        </MenuItem>
+
+                    {(showCalledAfter ||
+                        showDescription ||
+                        showGroup ||
+                        showMove ||
+                        showPure ||
+                        showRemove ||
+                        showRename ||
+                        showTodo) && (
+                        <MenuGroup title="Uncategorized">
+                            {showCalledAfter && (
+                                <MenuItem
+                                    onClick={() =>
+                                        dispatch(
+                                            showCalledAfterAnnotationForm({
+                                                target,
+                                                calledAfterName: '',
+                                            }),
+                                        )
+                                    }
+                                    paddingLeft={8}
+                                >
+                                    @calledAfter
+                                </MenuItem>
+                            )}
+                            {showDescription && (
+                                <MenuItem
+                                    onClick={() => dispatch(showDescriptionAnnotationForm(target))}
+                                    paddingLeft={8}
+                                >
+                                    @description
+                                </MenuItem>
+                            )}
+                            {showGroup && (
+                                <MenuItem
+                                    onClick={() =>
+                                        dispatch(
+                                            showGroupAnnotationForm({
+                                                target,
+                                                groupName: '',
+                                            }),
+                                        )
+                                    }
+                                    paddingLeft={8}
+                                >
+                                    @group
+                                </MenuItem>
+                            )}
+                            {showMove && (
+                                <MenuItem onClick={() => dispatch(showMoveAnnotationForm(target))} paddingLeft={8}>
+                                    @move
+                                </MenuItem>
+                            )}
+                            {showPure && (
+                                <MenuItem onClick={() => dispatch(addPure({ target }))} paddingLeft={8}>
+                                    @pure
+                                </MenuItem>
+                            )}
+                            {showRemove && (
+                                <MenuItem onClick={() => dispatch(addRemove({ target }))} paddingLeft={8}>
+                                    @remove
+                                </MenuItem>
+                            )}
+                            {showRename && (
+                                <MenuItem onClick={() => dispatch(showRenameAnnotationForm(target))} paddingLeft={8}>
+                                    @rename
+                                </MenuItem>
+                            )}
+                            {showTodo && (
+                                <MenuItem onClick={() => dispatch(showTodoAnnotationForm(target))} paddingLeft={8}>
+                                    @todo
+                                </MenuItem>
+                            )}
+                        </MenuGroup>
                     )}
-                    {showConstant && (
-                        <MenuItem onClick={() => dispatch(showConstantAnnotationForm(target))}>@constant</MenuItem>
-                    )}
-                    {showDescription && (
-                        <MenuItem onClick={() => dispatch(showDescriptionAnnotationForm(target))}>
-                            @description
-                        </MenuItem>
-                    )}
-                    {showEnum && <MenuItem onClick={() => dispatch(showEnumAnnotationForm(target))}>@enum</MenuItem>}
-                    {showGroup && (
-                        <MenuItem
-                            onClick={() =>
-                                dispatch(
-                                    showGroupAnnotationForm({
-                                        target,
-                                        groupName: '',
-                                    }),
-                                )
-                            }
-                        >
-                            @group
-                        </MenuItem>
-                    )}
-                    {showMove && <MenuItem onClick={() => dispatch(showMoveAnnotationForm(target))}>@move</MenuItem>}
-                    {showOptional && (
-                        <MenuItem onClick={() => dispatch(showOptionalAnnotationForm(target))}>@optional</MenuItem>
-                    )}
-                    {showPure && <MenuItem onClick={() => dispatch(addPure({ target }))}>@pure</MenuItem>}
-                    {showRemove && <MenuItem onClick={() => dispatch(addRemove({ target }))}>@remove</MenuItem>}
-                    {showRename && (
-                        <MenuItem onClick={() => dispatch(showRenameAnnotationForm(target))}>@rename</MenuItem>
-                    )}
-                    {showRequired && <MenuItem onClick={() => dispatch(addRequired({ target }))}>@required</MenuItem>}
-                    {showTodo && <MenuItem onClick={() => dispatch(showTodoAnnotationForm(target))}>@todo</MenuItem>}
                 </MenuList>
             </Menu>
         </Box>
