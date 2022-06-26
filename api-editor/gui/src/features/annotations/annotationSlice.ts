@@ -29,6 +29,13 @@ export interface AnnotationSlice {
     queue: AnnotationStore[];
     queueIndex: number;
     username: string;
+
+    // Metrics for achievements
+    numberOfElementsMarkedAsComplete: number;
+    numberOfAnnotationsMarkedAsCorrect: number;
+    numberOfAnnotationsCreated: number;
+    numberOfAnnotationsChanged: number;
+    numberOfAnnotationsDeleted: number;
 }
 
 export interface AnnotationStore {
@@ -302,6 +309,12 @@ export const initialAnnotationSlice: AnnotationSlice = {
     queue: [initialAnnotationStore],
     queueIndex: -1, // The index that contains the state after an undo
     username: '',
+
+    numberOfElementsMarkedAsComplete: 0,
+    numberOfAnnotationsMarkedAsCorrect: 0,
+    numberOfAnnotationsCreated: 0,
+    numberOfAnnotationsChanged: 0,
+    numberOfAnnotationsDeleted: 0,
 };
 
 // Thunks --------------------------------------------------------------------------------------------------------------
@@ -409,6 +422,7 @@ const annotationsSlice = createSlice({
         },
         removeAttribute(state, action: PayloadAction<string>) {
             delete state.annotations.attributes[action.payload];
+            state.numberOfAnnotationsDeleted++;
 
             updateQueue(state);
         },
@@ -431,6 +445,7 @@ const annotationsSlice = createSlice({
         },
         removeBoundary(state, action: PayloadAction<string>) {
             delete state.annotations.boundaries[action.payload];
+            state.numberOfAnnotationsDeleted++;
 
             updateQueue(state);
         },
@@ -458,6 +473,7 @@ const annotationsSlice = createSlice({
             delete state.annotations.calledAfters[action.payload.target][action.payload.calledAfterName];
             if (Object.keys(state.annotations.calledAfters[action.payload.target]).length === 0) {
                 delete state.annotations.calledAfters[action.payload.target];
+                state.numberOfAnnotationsDeleted++;
             }
 
             updateQueue(state);
@@ -481,6 +497,7 @@ const annotationsSlice = createSlice({
         },
         removeComplete(state, action: PayloadAction<string>) {
             delete state.annotations.completes[action.payload];
+            // We don't update numberOfAnnotationsDeleted deliberately
 
             updateQueue(state);
         },
@@ -528,6 +545,7 @@ const annotationsSlice = createSlice({
         },
         removeConstant(state, action: PayloadAction<string>) {
             delete state.annotations.constants[action.payload];
+            state.numberOfAnnotationsDeleted++;
 
             updateQueue(state);
         },
@@ -550,6 +568,7 @@ const annotationsSlice = createSlice({
         },
         removeDescription(state, action: PayloadAction<string>) {
             delete state.annotations.descriptions[action.payload];
+            state.numberOfAnnotationsDeleted++;
 
             updateQueue(state);
         },
@@ -572,6 +591,7 @@ const annotationsSlice = createSlice({
         },
         removeEnum(state, action: PayloadAction<string>) {
             delete state.annotations.enums[action.payload];
+            state.numberOfAnnotationsDeleted++;
 
             updateQueue(state);
         },
@@ -634,6 +654,7 @@ const annotationsSlice = createSlice({
             delete state.annotations.groups[action.payload.target][action.payload.groupName];
             if (Object.keys(state.annotations.groups[action.payload.target]).length === 0) {
                 delete state.annotations.groups[action.payload.target];
+                state.numberOfAnnotationsDeleted++;
             }
 
             updateQueue(state);
@@ -668,6 +689,7 @@ const annotationsSlice = createSlice({
         },
         removeMove(state, action: PayloadAction<string>) {
             delete state.annotations.moves[action.payload];
+            state.numberOfAnnotationsDeleted++;
 
             updateQueue(state);
         },
@@ -709,6 +731,7 @@ const annotationsSlice = createSlice({
         },
         removeOptional(state, action: PayloadAction<string>) {
             delete state.annotations.optionals[action.payload];
+            state.numberOfAnnotationsDeleted++;
 
             updateQueue(state);
         },
@@ -731,6 +754,7 @@ const annotationsSlice = createSlice({
         },
         removePure(state, action: PayloadAction<string>) {
             delete state.annotations.pures[action.payload];
+            state.numberOfAnnotationsDeleted++;
 
             updateQueue(state);
         },
@@ -764,6 +788,7 @@ const annotationsSlice = createSlice({
         },
         removeRenaming(state, action: PayloadAction<string>) {
             delete state.annotations.renamings[action.payload];
+            state.numberOfAnnotationsDeleted++;
 
             updateQueue(state);
         },
@@ -805,6 +830,7 @@ const annotationsSlice = createSlice({
         },
         removeRequired(state, action: PayloadAction<string>) {
             delete state.annotations.requireds[action.payload];
+            state.numberOfAnnotationsDeleted++;
 
             updateQueue(state);
         },
@@ -838,6 +864,7 @@ const annotationsSlice = createSlice({
         },
         removeRemove(state, action: PayloadAction<string>) {
             delete state.annotations.removes[action.payload];
+            state.numberOfAnnotationsDeleted++;
 
             updateQueue(state);
         },
@@ -860,6 +887,7 @@ const annotationsSlice = createSlice({
         },
         removeTodo(state, action: PayloadAction<string>) {
             delete state.annotations.todos[action.payload];
+            state.numberOfAnnotationsDeleted++;
 
             updateQueue(state);
         },
@@ -1085,3 +1113,14 @@ const selectAllAnnotationsOnTarget =
     };
 export const selectUsername = (state: RootState): string => selectAnnotationSlice(state).username;
 export const selectUsernameIsValid = (state: RootState): boolean => isValidUsername(selectUsername(state));
+
+export const selectNumberOfElementsMarkedAsComplete = (state: RootState): number =>
+    selectAnnotationSlice(state).numberOfElementsMarkedAsComplete;
+export const selectNumberOfAnnotationsMarkedAsCorrect = (state: RootState): number =>
+    selectAnnotationSlice(state).numberOfAnnotationsMarkedAsCorrect;
+export const selectNumberOfAnnotationsCreated = (state: RootState): number =>
+    selectAnnotationSlice(state).numberOfAnnotationsCreated;
+export const selectNumberOfAnnotationsChanged = (state: RootState): number =>
+    selectAnnotationSlice(state).numberOfAnnotationsChanged;
+export const selectNumberOfAnnotationsDeleted = (state: RootState): number =>
+    selectAnnotationSlice(state).numberOfAnnotationsDeleted;

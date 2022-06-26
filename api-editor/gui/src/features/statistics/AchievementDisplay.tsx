@@ -1,12 +1,30 @@
 import { Box, Center, Heading, Img, SimpleGrid, Text as ChakraText, VStack } from '@chakra-ui/react';
 import React from 'react';
+import { useAppSelector } from '../../app/hooks';
+import {
+    selectNumberOfAnnotationsChanged,
+    selectNumberOfAnnotationsCreated,
+    selectNumberOfAnnotationsDeleted,
+    selectNumberOfAnnotationsMarkedAsCorrect,
+    selectNumberOfElementsMarkedAsComplete,
+} from '../annotations/annotationSlice';
 
 export const AchievementDisplay: React.FC = function () {
-    const auditorCount = 100;
-    const authorCount = 1000;
-    const cleanerCount = 300;
-    const completionistCount = 40;
-    const editorCount = 500;
+    const auditorCount = useAppSelector(selectNumberOfAnnotationsMarkedAsCorrect);
+    const authorCount = useAppSelector(selectNumberOfAnnotationsCreated);
+    const cleanerCount = useAppSelector(selectNumberOfAnnotationsDeleted);
+    const completionistCount = useAppSelector(selectNumberOfElementsMarkedAsComplete);
+    const editorCount = useAppSelector(selectNumberOfAnnotationsChanged);
+
+    if (
+        auditorCount === 0 &&
+        authorCount === 0 &&
+        cleanerCount === 0 &&
+        completionistCount === 0 &&
+        editorCount === 0
+    ) {
+        return null;
+    }
 
     return (
         <>
@@ -111,7 +129,7 @@ class AchievementLevel {
 }
 
 export const auditorAchievement = new Achievement('Auditor', [
-    new AchievementLevel('Rookie', 1, 'O Stars Auditor'),
+    new AchievementLevel('Rookie', 1, '0 Stars Auditor'),
     new AchievementLevel('Beginner', 10, '1 Star Auditor'),
     new AchievementLevel('Senior', 100, '2 Stars Auditor'),
     new AchievementLevel('Pro', 250, '3 Stars Auditor'),
@@ -119,7 +137,7 @@ export const auditorAchievement = new Achievement('Auditor', [
     new AchievementLevel('Master', 1000, '5 Stars Auditor'),
 ]);
 export const authorAchievement = new Achievement('Author', [
-    new AchievementLevel('Rookie', 1, 'O Stars Author'),
+    new AchievementLevel('Rookie', 1, '0 Stars Author'),
     new AchievementLevel('Beginner', 10, '1 Star Author'),
     new AchievementLevel('Senior', 100, '2 Stars Author'),
     new AchievementLevel('Pro', 250, '3 Stars Author'),
@@ -127,7 +145,7 @@ export const authorAchievement = new Achievement('Author', [
     new AchievementLevel('Master', 1000, '5 Stars Author'),
 ]);
 export const cleanerAchievement = new Achievement('Cleaner', [
-    new AchievementLevel('Rookie', 1, 'O Stars Cleaner'),
+    new AchievementLevel('Rookie', 1, '0 Stars Cleaner'),
     new AchievementLevel('Beginner', 10, '1 Star Cleaner'),
     new AchievementLevel('Senior', 100, '2 Stars Cleaner'),
     new AchievementLevel('Pro', 250, '3 Stars Cleaner'),
@@ -135,7 +153,7 @@ export const cleanerAchievement = new Achievement('Cleaner', [
     new AchievementLevel('Master', 1000, '5 Stars Cleaner'),
 ]);
 export const completionistAchievement = new Achievement('Completionist', [
-    new AchievementLevel('Rookie', 1, 'O Stars Completionist'),
+    new AchievementLevel('Rookie', 1, '0 Stars Completionist'),
     new AchievementLevel('Beginner', 10, '1 Star Completionist'),
     new AchievementLevel('Senior', 100, '2 Stars Completionist'),
     new AchievementLevel('Pro', 250, '3 Stars Completionist'),
