@@ -69,7 +69,7 @@ export const TodoForm: React.FC<TodoFormProps> = function ({ target }) {
     return (
         <AnnotationForm
             heading={`${prevNewTodo ? 'Edit' : 'Add'} @todo Annotation`}
-            description="Take a note about additional (manual) changes you need to make to this declaration."
+            description="Note additional (manual) changes you need to make to this declaration."
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
         >
