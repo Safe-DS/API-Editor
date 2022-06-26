@@ -9,8 +9,7 @@ Before you can start adding own annotations, you need to import the [generated A
 
 <img src="img/import.jpg" alt="Import API Data">
 
-Now you can select packages, classes, functions, or parameters from the tree view on the right side
-and see the further information (documentation, annotation, etc.) about the selected element on the left side.
+Now you can select packages, classes, functions, or parameters from the tree view on the right side and see the further information (documentation, annotation, etc.) about the selected element on the left side.
 
 ## Annotations
 An improved API is created through annotations.
