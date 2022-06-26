@@ -4,7 +4,8 @@ import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
 import { PythonModule } from '../../packageData/model/PythonModule';
 import { PythonClass } from '../../packageData/model/PythonClass';
 import { PythonFunction } from '../../packageData/model/PythonFunction';
-import { EXPECTED_USAGES_SCHEMA_VERSION } from '../usageSlice';
+
+export const EXPECTED_USAGES_SCHEMA_VERSION = 1;
 
 export interface UsageCountJson {
     schemaVersion?: number;
