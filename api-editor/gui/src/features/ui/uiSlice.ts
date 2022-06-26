@@ -34,6 +34,9 @@ export interface UIState {
     batchMode: BatchMode;
     showStatistics: boolean;
     expandDocumentationByDefault: boolean;
+
+    celebratedTitles: string[];
+    isLoaded: boolean;
 }
 
 type UserAction =
@@ -158,6 +161,9 @@ export const initialState: UIState = {
     batchMode: BatchMode.None,
     showStatistics: true,
     expandDocumentationByDefault: false,
+
+    celebratedTitles: [],
+    isLoaded: false,
 };
 
 // Thunks --------------------------------------------------------------------------------------------------------------
@@ -166,15 +172,22 @@ export const initializeUI = createAsyncThunk('ui/initialize', async () => {
     try {
         const storedState = (await idb.get('ui')) as UIState;
         if ((storedState.schemaVersion ?? 1) !== EXPECTED_UI_SCHEMA_VERSION) {
-            return initialState;
+            return {
+                ...initialState,
+                isLoaded: true,
+            };
         }
 
         return {
             ...initialState,
             ...storedState,
+            isLoaded: true,
         };
     } catch {
-        return initialState;
+        return {
+            ...initialState,
+            isLoaded: true,
+        };
     }
 });
 
@@ -354,6 +367,10 @@ const uiSlice = createSlice({
         toggleExpandDocumentationByDefault(state) {
             state.expandDocumentationByDefault = !state.expandDocumentationByDefault;
         },
+
+        rememberTitle(state, action: PayloadAction<string>) {
+            state.celebratedTitles.push(action.payload);
+        },
     },
     extraReducers(builder) {
         builder.addCase(initializeUI.fulfilled, (state, action) => action.payload);
@@ -397,6 +414,7 @@ export const {
     setBatchMode,
     toggleStatisticsView,
     toggleExpandDocumentationByDefault,
+    rememberTitle,
 } = actions;
 export const uiReducer = reducer;
 
@@ -459,3 +477,6 @@ const sortAlphabetically = (a: PythonDeclaration, b: PythonDeclaration) => {
 const sortByUsages = (usages: UsageCountStore) => (a: PythonDeclaration, b: PythonDeclaration) => {
     return usages.getUsageCount(b) - usages.getUsageCount(a);
 };
+
+export const selectCelebratedTitles = (state: RootState): string[] => selectUI(state).celebratedTitles;
+export const selectUIIsLoaded = (state: RootState): boolean => selectUI(state).isLoaded;
