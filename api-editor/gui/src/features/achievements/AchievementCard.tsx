@@ -16,9 +16,9 @@ export const AchievementCard: React.FC<AchievementCardProps> = function ({ achie
 
     return (
         <VStack boxShadow="xl" rounded="md" border={1} layerStyle="subtleBorder" padding={4}>
-            <Img src={currentAchievementLevel.image} alt={currentAchievementLevel.label} />
+            <Img src={currentAchievementLevel.image} alt={currentAchievementLevel.title} />
             <Center fontWeight="bold">
-                <ChakraText>{currentAchievementLevel.label}</ChakraText>
+                <ChakraText>{currentAchievementLevel.title}</ChakraText>
             </Center>
             <Center>
                 <ChakraText textAlign="center">{description}</ChakraText>
