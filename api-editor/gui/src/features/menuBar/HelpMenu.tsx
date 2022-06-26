@@ -1,7 +1,7 @@
 import { Box, Button, Icon, Menu, MenuButton, MenuGroup, MenuItem, MenuList } from '@chakra-ui/react';
 import React from 'react';
 import { FaBug, FaChevronDown, FaLightbulb } from 'react-icons/fa';
-import {bugReportURL, featureRequestURL, userGuideURL} from '../externalLinks/urlBuilder';
+import { bugReportURL, featureRequestURL, userGuideURL } from '../externalLinks/urlBuilder';
 
 export const HelpMenu = function () {
     return (

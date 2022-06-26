@@ -73,9 +73,11 @@ export const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ targe
 
     return (
         <AnnotationForm
-            heading='@calledAfter Annotation'
+            heading="@calledAfter Annotation"
             description="Specify that this function must be called after another function."
-            onSave={handleSubmit(onSave)} onCancel={onCancel}>
+            onSave={handleSubmit(onSave)}
+            onCancel={onCancel}
+        >
             <FormControl isInvalid={Boolean(errors?.calledAfterName)}>
                 <FormLabel>Name of the callable to be called before:</FormLabel>
                 <Select
