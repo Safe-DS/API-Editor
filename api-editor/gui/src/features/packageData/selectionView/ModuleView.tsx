@@ -9,6 +9,7 @@ import { groupBy, isEmptyList } from '../../../common/util/listOperations';
 import { PythonModule } from '../model/PythonModule';
 import { CodeComponent } from 'react-markdown/lib/ast-to-react';
 import { CompleteButton } from '../../annotations/CompleteButton';
+import {MinimalDataCopyButtons} from "../../annotations/MinimalDataCopyButtons";
 
 // See https://github.com/remarkjs/react-markdown#use-custom-components-syntax-highlight
 const CustomCode: CodeComponent = function ({
@@ -71,6 +72,7 @@ export const ModuleView: React.FC<ModuleViewProps> = function ({ pythonModule })
                     {pythonModule.name} {!pythonModule.isPublic && '(private)'}
                 </Heading>
                 <CompleteButton target={pythonModule.id} />
+                <MinimalDataCopyButtons target={pythonModule.id} />
             </HStack>
 
             <Stack spacing={4}>
