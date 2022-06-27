@@ -1106,15 +1106,23 @@ export const selectAnnotationStore = (state: RootState) => state.annotations.ann
 export const selectAttribute =
     (target: string) =>
     (state: RootState): AttributeAnnotation | undefined =>
-        selectAnnotation(selectAnnotationStore(state).attributes[target]);
+        validAnnotation(selectAnnotationStore(state).attributes[target]);
 export const selectBoundary =
     (target: string) =>
     (state: RootState): BoundaryAnnotation | undefined =>
-        selectAnnotation(selectAnnotationStore(state).boundaries[target]);
+        validAnnotation(selectAnnotationStore(state).boundaries[target]);
 export const selectCalledAfters =
     (target: string) =>
-    (state: RootState): { [calledAfter: string]: CalledAfterAnnotation } =>
-        selectAnnotationStore(state).calledAfters[target] ?? {};
+    (state: RootState): { [calledAfter: string]: CalledAfterAnnotation } => {
+        const candidates = selectAnnotationStore(state).calledAfters[target] ?? {};
+        const result: { [calledAfter: string]: CalledAfterAnnotation } = {};
+        for (const [calledAfterName, calledAfter] of Object.entries(candidates)) {
+            if (!calledAfter.isRemoved) {
+                result[calledAfterName] = calledAfter;
+            }
+        }
+        return result;
+    };
 export const selectComplete =
     (target: string) =>
     (state: RootState): CompleteAnnotation | undefined =>
@@ -1122,49 +1130,57 @@ export const selectComplete =
 export const selectConstant =
     (target: string) =>
     (state: RootState): ConstantAnnotation | undefined =>
-        selectAnnotation(selectAnnotationStore(state).constants[target]);
+        validAnnotation(selectAnnotationStore(state).constants[target]);
 export const selectDescription =
     (target: string) =>
     (state: RootState): DescriptionAnnotation | undefined =>
-        selectAnnotation(selectAnnotationStore(state).descriptions[target]);
+        validAnnotation(selectAnnotationStore(state).descriptions[target]);
 export const selectEnum =
     (target: string) =>
     (state: RootState): EnumAnnotation | undefined =>
-        selectAnnotation(selectAnnotationStore(state).enums[target]);
+        validAnnotation(selectAnnotationStore(state).enums[target]);
 export const selectGroups =
     (target: string) =>
-    (state: RootState): { [groupName: string]: GroupAnnotation } =>
-        selectAnnotationStore(state).groups[target] ?? {};
+    (state: RootState): { [groupName: string]: GroupAnnotation } => {
+        const candidates = selectAnnotationStore(state).groups[target] ?? {};
+        const result: { [groupName: string]: GroupAnnotation } = {};
+        for (const [groupName, group] of Object.entries(candidates)) {
+            if (!group.isRemoved) {
+                result[groupName] = group;
+            }
+        }
+        return result;
+    };
 export const selectMove =
     (target: string) =>
     (state: RootState): MoveAnnotation | undefined =>
-        selectAnnotation(selectAnnotationStore(state).moves[target]);
+        validAnnotation(selectAnnotationStore(state).moves[target]);
 export const selectOptional =
     (target: string) =>
     (state: RootState): OptionalAnnotation | undefined =>
-        selectAnnotation(selectAnnotationStore(state).optionals[target]);
+        validAnnotation(selectAnnotationStore(state).optionals[target]);
 export const selectPure =
     (target: string) =>
     (state: RootState): PureAnnotation | undefined =>
-        selectAnnotation(selectAnnotationStore(state).pures[target]);
+        validAnnotation(selectAnnotationStore(state).pures[target]);
 export const selectRenaming =
     (target: string) =>
     (state: RootState): RenameAnnotation | undefined =>
-        selectAnnotation(selectAnnotationStore(state).renamings[target]);
+        validAnnotation(selectAnnotationStore(state).renamings[target]);
 export const selectRequired =
     (target: string) =>
     (state: RootState): RequiredAnnotation | undefined =>
-        selectAnnotation(selectAnnotationStore(state).requireds[target]);
+        validAnnotation(selectAnnotationStore(state).requireds[target]);
 export const selectRemove =
     (target: string) =>
     (state: RootState): RemoveAnnotation | undefined =>
-        selectAnnotation(selectAnnotationStore(state).removes[target]);
+        validAnnotation(selectAnnotationStore(state).removes[target]);
 export const selectTodo =
     (target: string) =>
     (state: RootState): TodoAnnotation | undefined =>
-        selectAnnotation(selectAnnotationStore(state).todos[target]);
+        validAnnotation(selectAnnotationStore(state).todos[target]);
 
-const selectAnnotation = function <T extends Annotation>(annotation: T | undefined): T | undefined {
+const validAnnotation = function <T extends Annotation>(annotation: T | undefined): T | undefined {
     if (annotation && !annotation.isRemoved) {
         return annotation;
     } else {
