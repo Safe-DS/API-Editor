@@ -96,7 +96,7 @@ const CustomBarChart: React.FC<CustomBarChartProps> = function ({ parameterUsage
                 },
                 ticks: {
                     color: textColor,
-                }
+                },
             },
             y: {
                 grid: {
@@ -104,7 +104,7 @@ const CustomBarChart: React.FC<CustomBarChartProps> = function ({ parameterUsage
                 },
                 ticks: {
                     color: textColor,
-                }
+                },
             },
         },
     };

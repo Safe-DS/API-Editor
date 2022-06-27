@@ -119,7 +119,7 @@ export const CustomLineChart: React.FC<CustomLineChartProps> = function ({
             title: {
                 display: true,
                 text: title,
-                color: textColor
+                color: textColor,
             },
         },
         scales: {

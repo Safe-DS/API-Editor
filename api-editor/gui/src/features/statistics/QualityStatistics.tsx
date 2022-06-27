@@ -78,7 +78,12 @@ const QualityPieChart: React.FC<QualityPieChartProps> = function ({ annotationTy
         labels: ['Correct', 'Changed', 'Removed', 'Unchecked'],
         datasets: [
             {
-                data: [numberOfCorrectAnnotations, numberOfChangedAnnotations, numberOfRemovedAnnotations, numberOfUncheckedAnnotations],
+                data: [
+                    numberOfCorrectAnnotations,
+                    numberOfChangedAnnotations,
+                    numberOfRemovedAnnotations,
+                    numberOfUncheckedAnnotations,
+                ],
                 backgroundColor: [correctBg, changedBg, removedBg, uncheckedBg],
                 borderColor: [correctBorder, changedBorder, removedBorder, uncheckedBorder],
                 borderWidth: 1,
