@@ -172,13 +172,13 @@ export class AnnotatedPythonPackageBuilder {
         switch (annotationType) {
             case 'Attribute':
                 const attributeAnnotation = this.annotationStore.attributes[target];
-                if (attributeAnnotation) {
+                if (attributeAnnotation && !attributeAnnotation.isRemoved) {
                     return new InferableAttributeAnnotation(attributeAnnotation);
                 }
                 break;
             case 'Boundary':
                 const boundaryAnnotation = this.annotationStore.boundaries[target];
-                if (boundaryAnnotation) {
+                if (boundaryAnnotation && !boundaryAnnotation.isRemoved) {
                     return new InferableBoundaryAnnotation(boundaryAnnotation);
                 }
                 break;
@@ -187,18 +187,18 @@ export class AnnotatedPythonPackageBuilder {
                 if (!calledAfterAnnotations) {
                     break;
                 }
-                return Object.values(calledAfterAnnotations).map(
-                    (calledAfterAnnotation) => new InferableCalledAfterAnnotation(calledAfterAnnotation),
-                );
+                return Object.values(calledAfterAnnotations)
+                    .filter((it) => !it.isRemoved)
+                    .map((calledAfterAnnotation) => new InferableCalledAfterAnnotation(calledAfterAnnotation));
             case 'Constant':
                 const constantAnnotation = this.annotationStore.constants[target];
-                if (constantAnnotation) {
+                if (constantAnnotation && !constantAnnotation.isRemoved) {
                     return new InferableConstantAnnotation(constantAnnotation);
                 }
                 break;
             case 'Description':
                 const descriptionAnnotation = this.annotationStore.descriptions[target];
-                if (descriptionAnnotation) {
+                if (descriptionAnnotation && !descriptionAnnotation.isRemoved) {
                     return new InferableDescriptionAnnotation(descriptionAnnotation);
                 }
                 break;
@@ -207,54 +207,54 @@ export class AnnotatedPythonPackageBuilder {
                 if (!groupAnnotations) {
                     break;
                 }
-                return Object.values(groupAnnotations).map(
-                    (groupAnnotation) => new InferableGroupAnnotation(groupAnnotation),
-                );
+                return Object.values(groupAnnotations)
+                    .filter((it) => !it.isRemoved)
+                    .map((groupAnnotation) => new InferableGroupAnnotation(groupAnnotation));
             case 'Enum':
                 const enumAnnotation = this.annotationStore.enums[target];
-                if (enumAnnotation) {
+                if (enumAnnotation && !enumAnnotation.isRemoved) {
                     return new InferableEnumAnnotation(enumAnnotation);
                 }
                 break;
             case 'Move':
                 const moveAnnotation = this.annotationStore.moves[target];
-                if (moveAnnotation) {
+                if (moveAnnotation && !moveAnnotation.isRemoved) {
                     return new InferableMoveAnnotation(moveAnnotation);
                 }
                 break;
             case 'Optional':
                 const optionalAnnotation = this.annotationStore.optionals[target];
-                if (optionalAnnotation) {
+                if (optionalAnnotation && !optionalAnnotation.isRemoved) {
                     return new InferableOptionalAnnotation(optionalAnnotation);
                 }
                 break;
             case 'Pure':
                 const pureAnnotation = this.annotationStore.pures[target];
-                if (pureAnnotation) {
+                if (pureAnnotation && !pureAnnotation.isRemoved) {
                     return new InferablePureAnnotation();
                 }
                 break;
             case 'Remove':
                 const removeAnnotation = this.annotationStore.removes[target];
-                if (removeAnnotation) {
+                if (removeAnnotation && !removeAnnotation.isRemoved) {
                     return new InferableRemoveAnnotation();
                 }
                 break;
             case 'Rename':
                 const renameAnnotation = this.annotationStore.renamings[target];
-                if (renameAnnotation) {
+                if (renameAnnotation && !renameAnnotation.isRemoved) {
                     return new InferableRenameAnnotation(renameAnnotation);
                 }
                 break;
             case 'Required':
                 const requiredAnnotation = this.annotationStore.requireds[target];
-                if (requiredAnnotation) {
+                if (requiredAnnotation && !requiredAnnotation.isRemoved) {
                     return new InferableRequiredAnnotation();
                 }
                 break;
             case 'Todo':
                 const todoAnnotation = this.annotationStore.todos[target];
-                if (todoAnnotation) {
+                if (todoAnnotation && !todoAnnotation.isRemoved) {
                     return new InferableTodoAnnotation(todoAnnotation);
                 }
                 break;
