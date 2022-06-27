@@ -1,4 +1,7 @@
 import { Annotation } from '../annotations/annotationSlice';
+import { UsageCountStore } from '../usages/model/UsageCountStore';
+import { buildMinimalUsagesReproducerJSON } from '../usages/minimalUsagesReproducer';
+import { PythonPackage } from '../packageData/model/PythonPackage';
 
 const baseURL = 'https://github.com/lars-reimann/api-editor';
 
@@ -17,27 +20,51 @@ export const featureRequestURL = `${issueBaseURL}?assignees=&labels=enhancement&
 
 const baseMissingAnnotationURL = `${issueBaseURL}?assignees=&labels=bug%2Cmissing+annotation&template=missing_annotation.yml`;
 
-export const missingAnnotationURL = function (target: string): string {
+export const missingAnnotationURL = function (
+    target: string,
+    pythonPackage: PythonPackage,
+    usages: UsageCountStore,
+): string {
+    const declaration = pythonPackage.getDeclarationById(target);
+
     const urlHash = encodeURIComponent(`\`#/${target}\``);
-    return `${baseMissingAnnotationURL}&url-hash=${urlHash}`;
+    const minimalUsageStore = encodeURIComponent(jsonCode(buildMinimalUsagesReproducerJSON(usages, declaration)));
+
+    return baseMissingAnnotationURL + `&url-hash=${urlHash}` + `&minimal-usage-store=${minimalUsageStore}`;
 };
 
 const baseWrongAnnotationURL = `${issueBaseURL}?assignees=&template=wrong_annotation.yml&labels=bug%2Cwrong+annotation%2C`;
 
-export const wrongAnnotationURL = function (annotationType: string, annotation: Annotation): string {
+export const wrongAnnotationURL = function (
+    annotationType: string,
+    annotation: Annotation,
+    pythonPackage: PythonPackage,
+    usages: UsageCountStore,
+): string {
     const minimalAnnotation = {
         ...annotation,
-        authors: ["$autogen$"]
+        authors: ['$autogen$'],
     };
-
     // noinspection JSConstantReassignment
     delete minimalAnnotation.reviewers;
+
+    const declaration = pythonPackage.getDeclarationById(annotation.target);
 
     const label = encodeURIComponent(`@${annotationType}`);
     const urlHash = encodeURIComponent(`\`#/${annotation.target}\``);
     const actualAnnotationType = encodeURIComponent(`\`@${annotationType}\``);
-    const actualAnnotationInputs = encodeURIComponent(
-        `\`\`\`json5\n${JSON.stringify(minimalAnnotation, null, 4)}\n\`\`\``,
+    const actualAnnotationInputs = encodeURIComponent(jsonCode(JSON.stringify(minimalAnnotation, null, 4)));
+    const minimalUsageStore = encodeURIComponent(jsonCode(buildMinimalUsagesReproducerJSON(usages, declaration)));
+
+    return (
+        `${baseWrongAnnotationURL}${label}` +
+        `&url-hash=${urlHash}` +
+        `&actual-annotation-type=${actualAnnotationType}` +
+        `&actual-annotation-inputs=${actualAnnotationInputs}` +
+        `&minimal-usage-store=${minimalUsageStore}`
     );
-    return `${baseWrongAnnotationURL}${label}&url-hash=${urlHash}&actual-annotation-type=${actualAnnotationType}&actual-annotation-inputs=${actualAnnotationInputs}`;
+};
+
+const jsonCode = function (json: string): string {
+    return `\`\`\`json5\n${json}\n\`\`\``;
 };

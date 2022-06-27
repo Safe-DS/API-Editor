@@ -66,6 +66,8 @@ import {
 } from '../ui/uiSlice';
 import { truncate } from '../../common/util/stringOperations';
 import { wrongAnnotationURL } from '../externalLinks/urlBuilder';
+import {selectRawPythonPackage} from "../packageData/apiSlice";
+import {selectUsages} from "../usages/usageSlice";
 
 interface AnnotationViewProps {
     target: string;
@@ -333,6 +335,9 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
     const authors = annotation.authors ?? []
     const isReportable = reportable && authors.length === 1 && authors.includes('$autogen$');
 
+    const pythonPackage = useAppSelector(selectRawPythonPackage);
+    const usages = useAppSelector(selectUsages);
+
     return (
         <ButtonGroup size="sm" variant="outline" isAttached>
             <IconButton
@@ -381,7 +386,7 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
                         colorScheme="orange"
                         disabled={isCorrect || !isValidUsername}
                         onClick={() => {
-                            window.open(wrongAnnotationURL(type, annotation), '_blank');
+                            window.open(wrongAnnotationURL(type, annotation, pythonPackage, usages), '_blank');
                         }}
                     />
                 </Tooltip>

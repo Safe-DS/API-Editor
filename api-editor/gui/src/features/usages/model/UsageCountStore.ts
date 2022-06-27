@@ -91,6 +91,24 @@ export class UsageCountStore {
         }
     }
 
+    getUsageCountOrNull(declaration: PythonDeclaration): number | null {
+        if (declaration instanceof PythonModule) {
+            return this.moduleUsages.get(declaration.id) ?? null;
+        } else if (declaration instanceof PythonClass) {
+            return this.classUsages.get(declaration.id) ?? null;
+        } else if (declaration instanceof PythonFunction) {
+            return this.functionUsages.get(declaration.id) ?? null;
+        } else if (declaration instanceof PythonParameter) {
+            return this.parameterUsages.get(declaration.id) ?? null;
+        } else {
+            return null;
+        }
+    }
+
+    getValueCountsOrNull(parameter: PythonParameter): Map<string, number> | null {
+        return this.valueUsages.get(parameter.id) ?? null;
+    }
+
     toJson(): UsageCountJson {
         return {
             schemaVersion: EXPECTED_USAGES_SCHEMA_VERSION,
