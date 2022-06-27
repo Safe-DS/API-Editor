@@ -1,5 +1,7 @@
 import { Optional } from '../../../common/util/types';
 
+export const EXPECTED_API_SCHEMA_VERSION = 1;
+
 export interface PythonPackageJson {
     schemaVersion?: number;
     distribution: string;

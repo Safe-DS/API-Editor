@@ -7,8 +7,8 @@ import { PythonPackage } from './PythonPackage';
 import { PythonParameter, PythonParameterAssignment } from './PythonParameter';
 import { PythonResult } from './PythonResult';
 import { PythonDeclaration } from './PythonDeclaration';
-import { EXPECTED_API_SCHEMA_VERSION } from '../apiSlice';
 import {
+    EXPECTED_API_SCHEMA_VERSION,
     PythonClassJson,
     PythonFromImportJson,
     PythonFunctionJson,

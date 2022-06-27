@@ -1,15 +1,13 @@
 import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { PythonPackage } from './model/PythonPackage';
-import { parsePythonPackageJson } from './model/PythonPackageBuilder';
+import { parsePythonPackageJson} from './model/PythonPackageBuilder';
 import * as idb from 'idb-keyval';
 import { selectFilter, selectSorter } from '../ui/uiSlice';
 import { selectUsages } from '../usages/usageSlice';
 import { selectAnnotationStore } from '../annotations/annotationSlice';
 import { PythonDeclaration } from './model/PythonDeclaration';
-import { PythonPackageJson } from './model/APIJsonData';
-
-export const EXPECTED_API_SCHEMA_VERSION = 1;
+import {EXPECTED_API_SCHEMA_VERSION, PythonPackageJson} from "./model/APIJsonData";
 
 export interface APIState {
     pythonPackage: PythonPackage;
