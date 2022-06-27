@@ -22,6 +22,7 @@ export const DataCopyButtons: React.FC<MinimalDataButtonsProps> = function ({ ta
     const { onCopy: onCopyUsages } = useClipboard(
         details(jsonCode(buildMinimalUsagesStoreJson(usages, declaration)), `Minimal Usage Store for \`${target}\``),
     );
+    const { onCopy: onCopyQualifiedName } = useClipboard(declaration?.preferredQualifiedName() ?? '');
 
     return (
         <ButtonGroup size="sm" variant="outline" isAttached>
@@ -43,6 +44,16 @@ export const DataCopyButtons: React.FC<MinimalDataButtonsProps> = function ({ ta
                     }}
                 >
                     Usages
+                </Button>
+            </Tooltip>
+            <Tooltip label="Copy the qualified name of this declaration to the clipboard.">
+                <Button
+                    leftIcon={<FaClipboard />}
+                    onClick={() => {
+                        onCopyQualifiedName();
+                    }}
+                >
+                    Qualified Name
                 </Button>
             </Tooltip>
         </ButtonGroup>
