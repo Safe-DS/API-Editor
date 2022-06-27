@@ -5,3 +5,15 @@ export const truncate = function (text: string, maxLength: number): string {
 export const pluralize = function (count: number, noun: string): string {
     return `${count} ${noun}${count === 1 ? '' : 's'}`;
 };
+
+export const jsonCode = function (json: string): string {
+    return `\`\`\`json5\n${json}\n\`\`\``;
+};
+
+export const details = function (text: string, summary: string): string {
+    return `<details>
+    <summary>${summary}</summary>
+
+${text}
+</details>`;
+};
