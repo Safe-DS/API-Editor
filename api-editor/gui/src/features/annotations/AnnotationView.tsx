@@ -353,7 +353,7 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
                 @{type}
                 {name && (
                     <ChakraText as="span" fontWeight="normal" justifySelf="flex-end">
-                        : {name}
+                        : {name} {annotation.isRemoved}
                     </ChakraText>
                 )}
             </Button>

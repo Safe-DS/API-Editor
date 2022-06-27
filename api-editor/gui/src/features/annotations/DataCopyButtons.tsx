@@ -12,7 +12,7 @@ interface MinimalDataButtonsProps {
     target: string;
 }
 
-export const MinimalDataCopyButtons: React.FC<MinimalDataButtonsProps> = function ({ target }) {
+export const DataCopyButtons: React.FC<MinimalDataButtonsProps> = function ({ target }) {
     const pythonPackage = useAppSelector(selectRawPythonPackage);
     const declaration = pythonPackage.getDeclarationById(target);
     const usages = useAppSelector(selectUsages);
@@ -22,6 +22,7 @@ export const MinimalDataCopyButtons: React.FC<MinimalDataButtonsProps> = functio
     const { onCopy: onCopyUsages } = useClipboard(
         details(jsonCode(buildMinimalUsagesStoreJson(usages, declaration)), `Minimal Usage Store for \`${target}\``),
     );
+    const { onCopy: onCopyQualifiedName } = useClipboard(declaration?.preferredQualifiedName() ?? '');
 
     return (
         <ButtonGroup size="sm" variant="outline" isAttached>
@@ -43,6 +44,16 @@ export const MinimalDataCopyButtons: React.FC<MinimalDataButtonsProps> = functio
                     }}
                 >
                     Usages
+                </Button>
+            </Tooltip>
+            <Tooltip label="Copy the qualified name of this declaration to the clipboard.">
+                <Button
+                    leftIcon={<FaClipboard />}
+                    onClick={() => {
+                        onCopyQualifiedName();
+                    }}
+                >
+                    Qualified Name
                 </Button>
             </Tooltip>
         </ButtonGroup>
