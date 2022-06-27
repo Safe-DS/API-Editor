@@ -1196,8 +1196,8 @@ export const selectNumberOfAnnotationsOnTarget =
                     return acc;
                 case 'calledAfters':
                 case 'groups':
-                    const candidates = Object.values( targetToAnnotations[target] ?? {});
-                    if (candidates.some(annotation => !annotation.isRemoved)) {
+                    const candidates = Object.values(targetToAnnotations[target] ?? {});
+                    if (candidates.some((annotation) => annotation && !annotation.isRemoved)) {
                         return acc + 1;
                     } else {
                         return acc;
@@ -1225,9 +1225,11 @@ const selectAllAnnotationsOnTarget =
                     return [];
                 case 'calledAfters':
                 case 'groups':
-                    return Object.values(targetToAnnotations[target] ?? {});
+                    return Object.values(targetToAnnotations[target] ?? {}).filter(
+                        (annotation) => annotation && !annotation.isRemoved,
+                    );
                 default:
-                    return targetToAnnotations[target] ?? [];
+                    return [targetToAnnotations[target]].filter((annotation) => annotation && !annotation.isRemoved);
             }
         });
     };
