@@ -1,4 +1,4 @@
-import {Optional} from '../../../common/util/types';
+import { Optional } from '../../../common/util/types';
 
 export interface PythonPackageJson {
     schemaVersion?: number;

@@ -5,7 +5,7 @@ import { PythonFromImport } from './PythonFromImport';
 import { PythonFunction } from './PythonFunction';
 import { PythonImport } from './PythonImport';
 import { PythonPackage } from './PythonPackage';
-import {PythonModuleJson} from "./APIJsonData";
+import { PythonModuleJson } from './APIJsonData';
 
 interface PythonPackageShallowCopy {
     id?: string;

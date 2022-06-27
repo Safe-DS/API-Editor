@@ -5,7 +5,7 @@ import { PythonClass } from './PythonClass';
 import { PythonFunction } from './PythonFunction';
 import { PythonParameter } from './PythonParameter';
 import { EXPECTED_API_SCHEMA_VERSION } from '../apiSlice';
-import {PythonPackageJson} from "./APIJsonData";
+import { PythonPackageJson } from './APIJsonData';
 
 interface PythonPackageShallowCopy {
     distribution?: string;

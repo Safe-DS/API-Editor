@@ -2,7 +2,7 @@ import { Optional } from '../../../common/util/types';
 import { PythonDeclaration } from './PythonDeclaration';
 import { PythonFunction } from './PythonFunction';
 import { PythonModule } from './PythonModule';
-import {PythonClassJson} from "./APIJsonData";
+import { PythonClassJson } from './APIJsonData';
 
 interface PythonClassShallowCopy {
     id?: string;

@@ -1,5 +1,5 @@
 import { Optional } from '../../../common/util/types';
-import {PythonImportJson} from "./APIJsonData";
+import { PythonImportJson } from './APIJsonData';
 
 export class PythonImport {
     constructor(readonly module: string, readonly alias: Optional<string> = null) {}
