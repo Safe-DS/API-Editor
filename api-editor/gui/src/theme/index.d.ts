@@ -1,8 +1,11 @@
 // regenerate by running
 // npx @chakra-ui/cli tokens path/to/your/theme.(js|ts)
 export interface ThemeTypings {
-    borders: 'none' | '1px' | '2px' | '4px' | '8px';
-    breakpoints: 'base' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+    blur: 'none' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | (string & {});
+    borders: 'none' | '1px' | '2px' | '4px' | '8px' | (string & {});
+    borderStyles: string & {};
+    borderWidths: string & {};
+    breakpoints: 'base' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'fullHD' | 'wqhd' | '4kuhd' | (string & {});
     colors:
         | 'transparent'
         | 'current'
@@ -187,7 +190,12 @@ export interface ThemeTypings {
         | 'telegram.600'
         | 'telegram.700'
         | 'telegram.800'
-        | 'telegram.900';
+        | 'telegram.900'
+        | 'chakra-body-text'
+        | 'chakra-body-bg'
+        | 'chakra-border-color'
+        | 'chakra-placeholder-color'
+        | (string & {});
     colorSchemes:
         | 'whiteAlpha'
         | 'blackAlpha'
@@ -206,8 +214,9 @@ export interface ThemeTypings {
         | 'messenger'
         | 'whatsapp'
         | 'twitter'
-        | 'telegram';
-    fonts: 'heading' | 'body' | 'mono';
+        | 'telegram'
+        | (string & {});
+    fonts: 'heading' | 'body' | 'mono' | (string & {});
     fontSizes:
         | 'xs'
         | 'sm'
@@ -221,7 +230,8 @@ export interface ThemeTypings {
         | '6xl'
         | '7xl'
         | '8xl'
-        | '9xl';
+        | '9xl'
+        | (string & {});
     fontWeights:
         | 'hairline'
         | 'thin'
@@ -231,15 +241,10 @@ export interface ThemeTypings {
         | 'semibold'
         | 'bold'
         | 'extrabold'
-        | 'black';
-    layerStyles: 'subtleBorder';
-    letterSpacings:
-        | 'tighter'
-        | 'tight'
-        | 'normal'
-        | 'wide'
-        | 'wider'
-        | 'widest';
+        | 'black'
+        | (string & {});
+    layerStyles: 'subtleBorder' | (string & {});
+    letterSpacings: 'tighter' | 'tight' | 'normal' | 'wide' | 'wider' | 'widest' | (string & {});
     lineHeights:
         | '3'
         | '4'
@@ -255,8 +260,9 @@ export interface ThemeTypings {
         | 'short'
         | 'base'
         | 'tall'
-        | 'taller';
-    radii: 'none' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'full';
+        | 'taller'
+        | (string & {});
+    radii: 'none' | 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'full' | (string & {});
     shadows:
         | 'xs'
         | 'sm'
@@ -268,7 +274,8 @@ export interface ThemeTypings {
         | 'outline'
         | 'inner'
         | 'none'
-        | 'dark-lg';
+        | 'dark-lg'
+        | (string & {});
     sizes:
         | '1'
         | '2'
@@ -323,7 +330,8 @@ export interface ThemeTypings {
         | 'container.sm'
         | 'container.md'
         | 'container.lg'
-        | 'container.xl';
+        | 'container.xl'
+        | (string & {});
     space:
         | '1'
         | '-1'
@@ -390,9 +398,26 @@ export interface ThemeTypings {
         | '2.5'
         | '-2.5'
         | '3.5'
-        | '-3.5';
-    textStyles: never;
-    transition: never;
+        | '-3.5'
+        | (string & {});
+    textStyles: string & {};
+    transition:
+        | 'property.common'
+        | 'property.colors'
+        | 'property.dimensions'
+        | 'property.position'
+        | 'property.background'
+        | 'easing.ease-in'
+        | 'easing.ease-out'
+        | 'easing.ease-in-out'
+        | 'duration.ultra-fast'
+        | 'duration.faster'
+        | 'duration.fast'
+        | 'duration.normal'
+        | 'duration.slow'
+        | 'duration.slower'
+        | 'duration.ultra-slow'
+        | (string & {});
     zIndices:
         | 'hide'
         | 'auto'
@@ -406,184 +431,175 @@ export interface ThemeTypings {
         | 'popover'
         | 'skipLink'
         | 'toast'
-        | 'tooltip';
+        | 'tooltip'
+        | (string & {});
     components: {
         Accordion: {
-            sizes: never;
-            variants: never;
+            sizes: string & {};
+            variants: string & {};
         };
         Alert: {
-            sizes: never;
-            variants: 'subtle' | 'left-accent' | 'top-accent' | 'solid';
+            sizes: string & {};
+            variants: 'subtle' | 'left-accent' | 'top-accent' | 'solid' | (string & {});
         };
         Avatar: {
-            sizes: '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
-            variants: never;
+            sizes: '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full' | (string & {});
+            variants: string & {};
         };
         Badge: {
-            sizes: never;
-            variants: 'solid' | 'subtle' | 'outline';
+            sizes: string & {};
+            variants: 'solid' | 'subtle' | 'outline' | (string & {});
         };
         Breadcrumb: {
-            sizes: never;
-            variants: never;
+            sizes: string & {};
+            variants: string & {};
         };
         Button: {
-            sizes: 'lg' | 'md' | 'sm' | 'xs';
-            variants: 'ghost' | 'outline' | 'solid' | 'link' | 'unstyled';
+            sizes: 'lg' | 'md' | 'sm' | 'xs' | (string & {});
+            variants: 'ghost' | 'outline' | 'solid' | 'link' | 'unstyled' | (string & {});
         };
         Checkbox: {
-            sizes: 'sm' | 'md' | 'lg';
-            variants: never;
+            sizes: 'sm' | 'md' | 'lg' | (string & {});
+            variants: string & {};
         };
         CloseButton: {
-            sizes: 'lg' | 'md' | 'sm';
-            variants: never;
+            sizes: 'lg' | 'md' | 'sm' | (string & {});
+            variants: string & {};
         };
         Code: {
-            sizes: never;
-            variants: 'solid' | 'subtle' | 'outline';
+            sizes: string & {};
+            variants: 'solid' | 'subtle' | 'outline' | (string & {});
         };
         Container: {
-            sizes: never;
-            variants: never;
+            sizes: string & {};
+            variants: string & {};
         };
         Divider: {
-            sizes: never;
-            variants: 'solid' | 'dashed';
+            sizes: string & {};
+            variants: 'solid' | 'dashed' | (string & {});
         };
         Drawer: {
-            sizes: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
-            variants: never;
+            sizes: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full' | (string & {});
+            variants: string & {};
         };
         Editable: {
-            sizes: never;
-            variants: never;
+            sizes: string & {};
+            variants: string & {};
         };
         Form: {
-            sizes: never;
-            variants: never;
+            sizes: string & {};
+            variants: string & {};
+        };
+        FormError: {
+            sizes: string & {};
+            variants: string & {};
         };
         FormLabel: {
-            sizes: never;
-            variants: never;
+            sizes: string & {};
+            variants: string & {};
         };
         Heading: {
-            sizes: '4xl' | '3xl' | '2xl' | 'xl' | 'lg' | 'md' | 'sm' | 'xs';
-            variants: never;
+            sizes: '4xl' | '3xl' | '2xl' | 'xl' | 'lg' | 'md' | 'sm' | 'xs' | (string & {});
+            variants: string & {};
         };
         Input: {
-            sizes: 'lg' | 'md' | 'sm' | 'xs';
-            variants: 'outline' | 'filled' | 'flushed' | 'unstyled';
+            sizes: 'lg' | 'md' | 'sm' | 'xs' | (string & {});
+            variants: 'outline' | 'filled' | 'flushed' | 'unstyled' | (string & {});
         };
         Kbd: {
-            sizes: never;
-            variants: never;
+            sizes: string & {};
+            variants: string & {};
         };
         Link: {
-            sizes: never;
-            variants: never;
+            sizes: string & {};
+            variants: string & {};
         };
         List: {
-            sizes: never;
-            variants: never;
+            sizes: string & {};
+            variants: string & {};
         };
         Menu: {
-            sizes: never;
-            variants: never;
+            sizes: string & {};
+            variants: string & {};
         };
         Modal: {
-            sizes:
-                | 'xs'
-                | 'sm'
-                | 'md'
-                | 'lg'
-                | 'xl'
-                | '2xl'
-                | '3xl'
-                | '4xl'
-                | '5xl'
-                | '6xl'
-                | 'full';
-            variants: never;
+            sizes: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | 'full' | (string & {});
+            variants: string & {};
         };
         NumberInput: {
-            sizes: 'xs' | 'sm' | 'md' | 'lg';
-            variants: 'outline' | 'filled' | 'flushed' | 'unstyled';
+            sizes: 'xs' | 'sm' | 'md' | 'lg' | (string & {});
+            variants: 'outline' | 'filled' | 'flushed' | 'unstyled' | (string & {});
         };
         PinInput: {
-            sizes: 'lg' | 'md' | 'sm' | 'xs';
-            variants: 'outline' | 'flushed' | 'filled' | 'unstyled';
+            sizes: 'lg' | 'md' | 'sm' | 'xs' | (string & {});
+            variants: 'outline' | 'flushed' | 'filled' | 'unstyled' | (string & {});
         };
         Popover: {
-            sizes: never;
-            variants: never;
+            sizes: string & {};
+            variants: string & {};
         };
         Progress: {
-            sizes: 'xs' | 'sm' | 'md' | 'lg';
-            variants: never;
+            sizes: 'xs' | 'sm' | 'md' | 'lg' | (string & {});
+            variants: string & {};
         };
         Radio: {
-            sizes: 'md' | 'lg' | 'sm';
-            variants: never;
+            sizes: 'md' | 'lg' | 'sm' | (string & {});
+            variants: string & {};
         };
         Select: {
-            sizes: 'lg' | 'md' | 'sm' | 'xs';
-            variants: 'outline' | 'filled' | 'flushed' | 'unstyled';
+            sizes: 'lg' | 'md' | 'sm' | 'xs' | (string & {});
+            variants: 'outline' | 'filled' | 'flushed' | 'unstyled' | (string & {});
         };
         Skeleton: {
-            sizes: never;
-            variants: never;
+            sizes: string & {};
+            variants: string & {};
         };
         SkipLink: {
-            sizes: never;
-            variants: never;
+            sizes: string & {};
+            variants: string & {};
         };
         Slider: {
-            sizes: 'lg' | 'md' | 'sm';
-            variants: never;
+            sizes: 'lg' | 'md' | 'sm' | (string & {});
+            variants: string & {};
         };
         Spinner: {
-            sizes: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-            variants: never;
+            sizes: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | (string & {});
+            variants: string & {};
         };
         Stat: {
-            sizes: 'md';
-            variants: never;
+            sizes: 'md' | (string & {});
+            variants: string & {};
         };
         Switch: {
-            sizes: 'sm' | 'md' | 'lg';
-            variants: never;
+            sizes: 'sm' | 'md' | 'lg' | (string & {});
+            variants: string & {};
         };
         Table: {
-            sizes: 'sm' | 'md' | 'lg';
-            variants: 'simple' | 'striped' | 'unstyled';
+            sizes: 'sm' | 'md' | 'lg' | (string & {});
+            variants: 'simple' | 'striped' | 'unstyled' | (string & {});
         };
         Tabs: {
-            sizes: 'sm' | 'md' | 'lg';
+            sizes: 'sm' | 'md' | 'lg' | (string & {});
             variants:
                 | 'line'
                 | 'enclosed'
                 | 'enclosed-colored'
                 | 'soft-rounded'
                 | 'solid-rounded'
-                | 'unstyled';
+                | 'unstyled'
+                | (string & {});
         };
         Tag: {
-            sizes: 'sm' | 'md' | 'lg';
-            variants: 'subtle' | 'solid' | 'outline';
+            sizes: 'sm' | 'md' | 'lg' | (string & {});
+            variants: 'subtle' | 'solid' | 'outline' | (string & {});
         };
         Textarea: {
-            sizes: 'xs' | 'sm' | 'md' | 'lg';
-            variants: 'outline' | 'flushed' | 'filled' | 'unstyled';
+            sizes: 'xs' | 'sm' | 'md' | 'lg' | (string & {});
+            variants: 'outline' | 'flushed' | 'filled' | 'unstyled' | (string & {});
         };
         Tooltip: {
-            sizes: never;
-            variants: never;
-        };
-        FormError: {
-            sizes: never;
-            variants: never;
+            sizes: string & {};
+            variants: string & {};
         };
     };
 }
