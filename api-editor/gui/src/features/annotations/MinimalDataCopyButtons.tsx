@@ -16,7 +16,9 @@ export const MinimalDataCopyButtons: React.FC<MinimalDataButtonsProps> = functio
     const pythonPackage = useAppSelector(selectRawPythonPackage);
     const declaration = pythonPackage.getDeclarationById(target);
     const usages = useAppSelector(selectUsages);
-    const { onCopy: onCopyAPI } = useClipboard(details(jsonCode(buildMinimalAPIJson(declaration)), `Minimal API Data for \`${target}\``));
+    const { onCopy: onCopyAPI } = useClipboard(
+        details(jsonCode(buildMinimalAPIJson(declaration)), `Minimal API Data for \`${target}\``),
+    );
     const { onCopy: onCopyUsages } = useClipboard(
         details(jsonCode(buildMinimalUsagesStoreJson(usages, declaration)), `Minimal Usage Store for \`${target}\``),
     );
