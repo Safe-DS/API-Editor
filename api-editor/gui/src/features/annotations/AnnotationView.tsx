@@ -1,13 +1,4 @@
-import {
-    Button,
-    ButtonGroup,
-    Icon,
-    IconButton,
-    Stack,
-    Text as ChakraText,
-    Tooltip,
-    useClipboard,
-} from '@chakra-ui/react';
+import { Button, ButtonGroup, Icon, IconButton, Stack, Text as ChakraText, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 import { FaCheck, FaFlag, FaTrash, FaWrench } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -73,11 +64,8 @@ import {
     showRenameAnnotationForm,
     showTodoAnnotationForm,
 } from '../ui/uiSlice';
-import {jsonCode, truncate} from '../../common/util/stringOperations';
+import { truncate } from '../../common/util/stringOperations';
 import { wrongAnnotationURL } from '../externalLinks/urlBuilder';
-import {selectRawPythonPackage} from "../packageData/apiSlice";
-import {selectUsages} from "../usages/usageSlice";
-import {buildMinimalAPIJson} from "../packageData/minimalAPIBuilder";
 
 interface AnnotationViewProps {
     target: string;
@@ -342,13 +330,8 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
 }) {
     const isValidUsername = useAppSelector(selectUsernameIsValid);
     const isCorrect = (annotation.reviewers?.length ?? 0) > 0;
-    const authors = annotation.authors ?? []
+    const authors = annotation.authors ?? [];
     const isReportable = reportable && authors.length === 1 && authors.includes('$autogen$');
-
-    const pythonPackage = useAppSelector(selectRawPythonPackage);
-    const declaration = pythonPackage.getDeclarationById(annotation.target);
-    const usages = useAppSelector(selectUsages);
-    const { onCopy } = useClipboard(jsonCode(buildMinimalAPIJson(declaration)));
 
     return (
         <ButtonGroup size="sm" variant="outline" isAttached>
@@ -398,8 +381,7 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
                         colorScheme="orange"
                         disabled={isCorrect || !isValidUsername}
                         onClick={() => {
-                            onCopy();
-                            window.open(wrongAnnotationURL(type, annotation, pythonPackage, usages), '_blank');
+                            window.open(wrongAnnotationURL(type, annotation), '_blank');
                         }}
                     />
                 </Tooltip>
