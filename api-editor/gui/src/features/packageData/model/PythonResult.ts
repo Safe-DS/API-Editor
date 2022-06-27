@@ -1,7 +1,7 @@
 import { Optional } from '../../../common/util/types';
 import { PythonDeclaration } from './PythonDeclaration';
 import { PythonFunction } from './PythonFunction';
-import { PythonResultJson } from './PythonPackageBuilder';
+import {PythonResultJson} from "./APIJsonData";
 
 export class PythonResult extends PythonDeclaration {
     readonly id: string;

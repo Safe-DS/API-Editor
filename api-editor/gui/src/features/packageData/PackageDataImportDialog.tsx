@@ -20,10 +20,11 @@ import { useAppDispatch } from '../../app/hooks';
 import { StyledDropzone } from '../../common/StyledDropzone';
 import { isValidJsonFile } from '../../common/util/validation';
 import { resetAnnotationStore } from '../annotations/annotationSlice';
-import { parsePythonPackageJson, PythonPackageJson } from './model/PythonPackageBuilder';
+import { parsePythonPackageJson} from './model/PythonPackageBuilder';
 import { resetUIAfterAPIImport, toggleAPIImportDialog } from '../ui/uiSlice';
 import { persistPythonPackage, setPythonPackage } from './apiSlice';
 import { resetUsages } from '../usages/usageSlice';
+import {PythonPackageJson} from "./model/APIJsonData";
 
 export const PackageDataImportDialog: React.FC = function () {
     const toast = useToast();

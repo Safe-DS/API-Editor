@@ -4,7 +4,7 @@ import { PythonDeclaration } from './PythonDeclaration';
 import { PythonModule } from './PythonModule';
 import { PythonParameter, PythonParameterAssignment } from './PythonParameter';
 import { PythonResult } from './PythonResult';
-import { PythonFunctionJson } from './PythonPackageBuilder';
+import {PythonFunctionJson} from "./APIJsonData";
 
 interface PythonFunctionShallowCopy {
     id?: string;

@@ -1,7 +1,7 @@
 import { Optional } from '../../../common/util/types';
 import { PythonDeclaration } from './PythonDeclaration';
 import { PythonFunction } from './PythonFunction';
-import { PythonParameterJson } from './PythonPackageBuilder';
+import {PythonParameterJson} from "./APIJsonData";
 
 export enum PythonParameterAssignment {
     IMPLICIT = 'IMPLICIT',
