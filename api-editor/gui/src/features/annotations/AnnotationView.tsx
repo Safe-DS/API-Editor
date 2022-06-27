@@ -379,6 +379,7 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
                         icon={<FaFlag />}
                         aria-label="Report Wrong Annotation"
                         colorScheme="orange"
+                        disabled={isCorrect || !isValidUsername}
                         onClick={() => {
                             window.open(wrongAnnotationURL(type, annotation), '_blank');
                         }}
