@@ -1190,13 +1190,25 @@ const validAnnotation = function <T extends Annotation>(annotation: T | undefine
 export const selectNumberOfAnnotationsOnTarget =
     (target: string) =>
     (state: RootState): number => {
-        return Object.entries(selectAnnotationStore(state)).reduce((acc, [annotationType, annotations]) => {
-            if (annotationType === 'completes') {
-                return acc;
-            } else if (target in annotations) {
-                return acc + 1;
-            } else {
-                return acc;
+        return Object.entries(selectAnnotationStore(state)).reduce((acc, [annotationType, targetToAnnotations]) => {
+            switch (annotationType) {
+                case 'completes':
+                    return acc;
+                case 'calledAfters':
+                case 'groups':
+                    const candidates = Object.values( targetToAnnotations[target] ?? {});
+                    if (candidates.some(annotation => !annotation.isRemoved)) {
+                        return acc + 1;
+                    } else {
+                        return acc;
+                    }
+                default:
+                    const candidate = targetToAnnotations[target];
+                    if (candidate && !candidate.isRemoved) {
+                        return acc + 1;
+                    } else {
+                        return acc;
+                    }
             }
         }, 0);
     };
