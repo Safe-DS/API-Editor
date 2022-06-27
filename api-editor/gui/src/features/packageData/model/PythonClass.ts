@@ -2,6 +2,7 @@ import { Optional } from '../../../common/util/types';
 import { PythonDeclaration } from './PythonDeclaration';
 import { PythonFunction } from './PythonFunction';
 import { PythonModule } from './PythonModule';
+import {PythonClassJson} from "./PythonPackageBuilder";
 
 interface PythonClassShallowCopy {
     id?: string;
@@ -68,7 +69,7 @@ export class PythonClass extends PythonDeclaration {
         description = this.description,
         fullDocstring = this.fullDocstring,
     }: PythonClassShallowCopy = {}): PythonClass {
-        return new PythonClass(
+        const result = new PythonClass(
             id,
             name,
             qualifiedName,
@@ -80,6 +81,8 @@ export class PythonClass extends PythonDeclaration {
             description,
             fullDocstring,
         );
+        result.containingModule = this.containingModule
+        return result;
     }
 
     toString(): string {
@@ -97,5 +100,20 @@ export class PythonClass extends PythonDeclaration {
         }
 
         return result;
+    }
+
+    toJson(): PythonClassJson {
+        return {
+            id: this.id,
+            name: this.name,
+            qname: this.qualifiedName,
+            decorators: this.decorators,
+            superclasses: this.superclasses,
+            methods: this.methods.map((it) => it.id),
+            is_public: this.isPublic,
+            reexported_by: this.reexportedBy,
+            description: this.description,
+            docstring: this.fullDocstring,
+        };
     }
 }

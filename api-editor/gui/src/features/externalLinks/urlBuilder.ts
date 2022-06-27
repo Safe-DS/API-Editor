@@ -1,7 +1,8 @@
 import { Annotation } from '../annotations/annotationSlice';
 import { UsageCountStore } from '../usages/model/UsageCountStore';
-import { buildMinimalUsagesReproducerJSON } from '../usages/minimalUsagesReproducer';
+import { buildMinimalUsagesStoreJson } from '../usages/minimalUsageStoreBuilder';
 import { PythonPackage } from '../packageData/model/PythonPackage';
+import { jsonCode } from '../../common/util/stringOperations';
 
 const baseURL = 'https://github.com/lars-reimann/api-editor';
 
@@ -28,9 +29,15 @@ export const missingAnnotationURL = function (
     const declaration = pythonPackage.getDeclarationById(target);
 
     const urlHash = encodeURIComponent(`\`#/${target}\``);
-    const minimalUsageStore = encodeURIComponent(jsonCode(buildMinimalUsagesReproducerJSON(usages, declaration)));
+    // const minimalAPIData = encodeURIComponent(jsonCode(buildMinimalAPIJson(declaration)));
+    const minimalUsageStore = encodeURIComponent(jsonCode(buildMinimalUsagesStoreJson(usages, declaration)));
 
-    return baseMissingAnnotationURL + `&url-hash=${urlHash}` + `&minimal-usage-store=${minimalUsageStore}`;
+    return (
+        baseMissingAnnotationURL +
+        `&url-hash=${urlHash}` +
+        // `&minimal-api-data=${minimalAPIData}` + // Not possible, too long URL
+        `&minimal-usage-store=${minimalUsageStore}`
+    );
 };
 
 const baseWrongAnnotationURL = `${issueBaseURL}?assignees=&template=wrong_annotation.yml&labels=bug%2Cwrong+annotation%2C`;
@@ -54,17 +61,15 @@ export const wrongAnnotationURL = function (
     const urlHash = encodeURIComponent(`\`#/${annotation.target}\``);
     const actualAnnotationType = encodeURIComponent(`\`@${annotationType}\``);
     const actualAnnotationInputs = encodeURIComponent(jsonCode(JSON.stringify(minimalAnnotation, null, 4)));
-    const minimalUsageStore = encodeURIComponent(jsonCode(buildMinimalUsagesReproducerJSON(usages, declaration)));
+    // const minimalAPIData = encodeURIComponent(jsonCode(buildMinimalAPIJson(declaration)));
+    const minimalUsageStore = encodeURIComponent(jsonCode(buildMinimalUsagesStoreJson(usages, declaration)));
 
     return (
         `${baseWrongAnnotationURL}${label}` +
         `&url-hash=${urlHash}` +
         `&actual-annotation-type=${actualAnnotationType}` +
         `&actual-annotation-inputs=${actualAnnotationInputs}` +
+        // `&minimal-api-data=${minimalAPIData}` + // Not possible, too long URL
         `&minimal-usage-store=${minimalUsageStore}`
     );
-};
-
-const jsonCode = function (json: string): string {
-    return `\`\`\`json5\n${json}\n\`\`\``;
 };

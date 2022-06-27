@@ -48,7 +48,7 @@ export const parsePythonPackageJson = function (packageJson: PythonPackageJson):
     );
 };
 
-interface PythonModuleJson {
+export interface PythonModuleJson {
     id: string;
     name: string;
     imports: PythonImportJson[];
@@ -100,7 +100,7 @@ const parsePythonModuleJson = function (
     return result;
 };
 
-interface PythonImportJson {
+export interface PythonImportJson {
     module: string;
     alias: Optional<string>;
 }
@@ -109,7 +109,7 @@ const parsePythonImportJson = function (importJson: PythonImportJson): PythonImp
     return new PythonImport(importJson.module, importJson.alias);
 };
 
-interface PythonFromImportJson {
+export interface PythonFromImportJson {
     module: string;
     declaration: string;
     alias: Optional<string>;
@@ -119,7 +119,7 @@ const parsePythonFromImportJson = function (fromImportJson: PythonFromImportJson
     return new PythonFromImport(fromImportJson.module, fromImportJson.declaration, fromImportJson.alias);
 };
 
-interface PythonClassJson {
+export interface PythonClassJson {
     id: string;
     name: string;
     qname: string;
@@ -158,7 +158,7 @@ const parsePythonClassJson = function (
     return result;
 };
 
-interface PythonFunctionJson {
+export interface PythonFunctionJson {
     id: string;
     name: string;
     qname: string;
@@ -191,7 +191,7 @@ const parsePythonFunctionJson = function (
     return result;
 };
 
-interface PythonParameterJson {
+export interface PythonParameterJson {
     id: string;
     name: string;
     qname: string;
@@ -239,7 +239,7 @@ const parsePythonParameterAssignment = function (
     }
 };
 
-interface PythonResultJson {
+export interface PythonResultJson {
     name: string;
     docstring: {
         type: Optional<string>;

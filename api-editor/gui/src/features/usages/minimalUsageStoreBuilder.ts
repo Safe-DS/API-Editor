@@ -7,7 +7,7 @@ import { PythonModule } from '../packageData/model/PythonModule';
 import { PythonClass } from '../packageData/model/PythonClass';
 import { PythonFunction } from '../packageData/model/PythonFunction';
 
-export const buildMinimalUsagesReproducerJSON = function (
+export const buildMinimalUsagesStoreJson = function (
     usages: UsageCountStore,
     declaration: Optional<PythonDeclaration>,
 ): string {

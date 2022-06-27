@@ -1,12 +1,13 @@
 import { Optional } from '../../../common/util/types';
 import { PythonDeclaration } from './PythonDeclaration';
 import { PythonFunction } from './PythonFunction';
+import { PythonParameterJson } from './PythonPackageBuilder';
 
 export enum PythonParameterAssignment {
-    IMPLICIT,
-    POSITION_ONLY,
-    POSITION_OR_NAME,
-    NAME_ONLY,
+    IMPLICIT = 'IMPLICIT',
+    POSITION_ONLY = 'POSITION_ONLY',
+    POSITION_OR_NAME = 'POSITION_OR_NAME',
+    NAME_ONLY = 'NAME_ONLY',
 }
 
 export class PythonParameter extends PythonDeclaration {
@@ -56,8 +57,24 @@ export class PythonParameter extends PythonDeclaration {
         return `Parameter "${this.name}"`;
     }
 
+    toJson(): PythonParameterJson {
+        return {
+            id: this.id,
+            name: this.name,
+            qname: this.qualifiedName,
+            default_value: this.defaultValue,
+            assigned_by: this.assignedBy,
+            is_public: this.isPublic,
+            docstring: {
+                type: this.typeInDocs,
+                description: this.description,
+            },
+            type: this.type,
+        };
+    }
+
     clone(): PythonParameter {
-        return new PythonParameter(
+        const result = new PythonParameter(
             this.id,
             this.name,
             this.qualifiedName,
@@ -67,5 +84,7 @@ export class PythonParameter extends PythonDeclaration {
             this.typeInDocs,
             this.description,
         );
+        result.containingFunction = this.containingFunction;
+        return result;
     }
 }
