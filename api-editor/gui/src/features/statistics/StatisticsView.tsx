@@ -5,6 +5,7 @@ import { ApiSizeStatistics } from './ApiSizeStatistics';
 import { ApiSizeVsUsefulnessStatistics } from './ApiSizeVsUsefulnessStatistics';
 import { ProgressStatistics } from './ProgressStatistics';
 import { AchievementDisplay } from '../achievements/AchievementDisplay';
+import { QualityStatistics } from './QualityStatistics';
 
 export const StatisticsView: React.FC = function () {
     return (
@@ -13,6 +14,7 @@ export const StatisticsView: React.FC = function () {
             <AnnotationStatistics />
             <ApiSizeStatistics />
             <ApiSizeVsUsefulnessStatistics />
+            <QualityStatistics />
             <AchievementDisplay />
         </VStack>
     );

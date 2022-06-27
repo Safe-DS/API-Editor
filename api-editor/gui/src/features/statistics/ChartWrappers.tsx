@@ -1,6 +1,6 @@
 import { UsageCountStore } from '../usages/model/UsageCountStore';
 import { PythonPackage } from '../packageData/model/PythonPackage';
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { Bar, Line } from 'react-chartjs-2';
 import {
     ArcElement,
@@ -13,10 +13,20 @@ import {
     Title,
     Tooltip,
 } from 'chart.js';
+import { useColorModeValue } from '@chakra-ui/react';
 
 ChartJS.register(ArcElement, CategoryScale, PointElement, LineElement, LinearScale, BarElement, Title, Tooltip);
 
-export const createBarChart = function (labels: string[], values: number[], title: string): ReactElement {
+interface CustomBarChartProps {
+    labels: string[];
+    values: number[];
+    title: string;
+}
+
+export const CustomBarChart: React.FC<CustomBarChartProps> = function ({ labels, values, title }) {
+    const gridColor = useColorModeValue('#BBB', '#555');
+    const textColor = useColorModeValue('#000', '#FFF');
+
     const options = {
         indexAxis: 'y' as const,
         elements: {
@@ -32,12 +42,31 @@ export const createBarChart = function (labels: string[], values: number[], titl
             title: {
                 display: true,
                 text: title,
+                color: textColor,
             },
             tooltip: {
                 interaction: {
                     axis: 'y',
                 },
                 intersect: false,
+            },
+        },
+        scales: {
+            x: {
+                grid: {
+                    color: gridColor,
+                },
+                ticks: {
+                    color: textColor,
+                },
+            },
+            y: {
+                grid: {
+                    color: gridColor,
+                },
+                ticks: {
+                    color: textColor,
+                },
             },
         },
     };
@@ -61,14 +90,26 @@ export const createBarChart = function (labels: string[], values: number[], titl
     return <Bar options={options} data={data} />;
 };
 
-export const createLineChart = function (
-    usages: UsageCountStore,
-    pythonPackage: PythonPackage,
-    labels: number[],
-    getValue: Function,
-    title: string,
-    xAxisLabel: string,
-): ReactElement {
+interface CustomLineChartProps {
+    usages: UsageCountStore;
+    pythonPackage: PythonPackage;
+    labels: number[];
+    getValue: Function;
+    title: string;
+    xAxisLabel: string;
+}
+
+export const CustomLineChart: React.FC<CustomLineChartProps> = function ({
+    usages,
+    pythonPackage,
+    labels,
+    getValue,
+    title,
+    xAxisLabel,
+}) {
+    const gridColor = useColorModeValue('#BBB', '#555');
+    const textColor = useColorModeValue('#000', '#FFF');
+
     const options = {
         responsive: true,
         plugins: {
@@ -78,6 +119,7 @@ export const createLineChart = function (
             title: {
                 display: true,
                 text: title,
+                color: textColor,
             },
         },
         scales: {
@@ -85,6 +127,21 @@ export const createLineChart = function (
                 title: {
                     display: true,
                     text: xAxisLabel,
+                    color: textColor,
+                },
+                grid: {
+                    color: gridColor,
+                },
+                ticks: {
+                    color: textColor,
+                },
+            },
+            y: {
+                grid: {
+                    color: gridColor,
+                },
+                ticks: {
+                    color: textColor,
                 },
             },
         },

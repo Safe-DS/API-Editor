@@ -8,7 +8,7 @@
         "serve": "vite preview",
         "test": "jest src",
         "test-with-coverage": "jest src --coverage",
-        "gen:theme-typings": "chakra-cli tokens src/theme/index.ts -- out src/theme/index.d.ts",
+        "gen:theme-typings": "chakra-cli tokens src/theme/index.ts",
         "postinstall": "npm run gen:theme-typings"
     },
     "prettier": "@lars-reimann/prettier-config",
