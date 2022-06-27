@@ -7,7 +7,7 @@ import { DocumentationText } from './DocumentationText';
 import { CompleteButton } from '../../annotations/CompleteButton';
 import { Link } from 'react-router-dom';
 import { MissingAnnotationButton } from '../../annotations/MissingAnnotationButton';
-import {MinimalDataButtons} from "../../annotations/MinimalDataButtons";
+import {MinimalDataCopyButtons} from "../../annotations/MinimalDataCopyButtons";
 
 interface ParameterNodeProps {
     pythonParameter: PythonParameter;
@@ -50,7 +50,7 @@ export const ParameterNode: React.FC<ParameterNodeProps> = function ({ isTitle, 
                 )}
                 <CompleteButton target={id} />
                 <MissingAnnotationButton target={id} />
-                <MinimalDataButtons target={id} />
+                <MinimalDataCopyButtons target={id} />
             </HStack>
 
             <AnnotationView target={id} />

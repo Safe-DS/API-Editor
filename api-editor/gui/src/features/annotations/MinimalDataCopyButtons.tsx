@@ -5,19 +5,21 @@ import { useAppSelector } from '../../app/hooks';
 import { selectRawPythonPackage } from '../packageData/apiSlice';
 import { selectUsages } from '../usages/usageSlice';
 import { buildMinimalAPIJson } from '../packageData/minimalAPIBuilder';
-import { jsonCode } from '../../common/util/stringOperations';
+import { details, jsonCode } from '../../common/util/stringOperations';
 import { buildMinimalUsagesStoreJson } from '../usages/minimalUsageStoreBuilder';
 
 interface MinimalDataButtonsProps {
     target: string;
 }
 
-export const MinimalDataButtons: React.FC<MinimalDataButtonsProps> = function ({ target }) {
+export const MinimalDataCopyButtons: React.FC<MinimalDataButtonsProps> = function ({ target }) {
     const pythonPackage = useAppSelector(selectRawPythonPackage);
     const declaration = pythonPackage.getDeclarationById(target);
     const usages = useAppSelector(selectUsages);
-    const { onCopy: onCopyAPI } = useClipboard(jsonCode(buildMinimalAPIJson(declaration)));
-    const { onCopy: onCopyUsages } = useClipboard(jsonCode(buildMinimalUsagesStoreJson(usages, declaration)));
+    const { onCopy: onCopyAPI } = useClipboard(details(jsonCode(buildMinimalAPIJson(declaration)), 'Minimal API Data'));
+    const { onCopy: onCopyUsages } = useClipboard(
+        details(jsonCode(buildMinimalUsagesStoreJson(usages, declaration)), 'Minimal Usage Store'),
+    );
 
     return (
         <ButtonGroup size="sm" variant="outline" isAttached>
