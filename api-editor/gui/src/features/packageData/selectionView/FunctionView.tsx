@@ -14,7 +14,7 @@ import { PythonParameter } from '../model/PythonParameter';
 import { selectFilter, selectSorter } from '../../ui/uiSlice';
 import { selectUsages } from '../../usages/usageSlice';
 import { MissingAnnotationButton } from '../../annotations/MissingAnnotationButton';
-import {MinimalDataCopyButtons} from "../../annotations/MinimalDataCopyButtons";
+import { MinimalDataCopyButtons } from '../../annotations/MinimalDataCopyButtons';
 
 interface FunctionViewProps {
     pythonFunction: PythonFunction;

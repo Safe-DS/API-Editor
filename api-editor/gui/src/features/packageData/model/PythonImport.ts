@@ -1,5 +1,5 @@
 import { Optional } from '../../../common/util/types';
-import {PythonImportJson} from "./PythonPackageBuilder";
+import { PythonImportJson } from './PythonPackageBuilder';
 
 export class PythonImport {
     constructor(readonly module: string, readonly alias: Optional<string> = null) {}
@@ -15,7 +15,7 @@ export class PythonImport {
     toJson(): PythonImportJson {
         return {
             module: this.module,
-            alias: this.alias
-        }
+            alias: this.alias,
+        };
     }
 }

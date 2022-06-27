@@ -2,7 +2,7 @@ import { Optional } from '../../../common/util/types';
 import { PythonDeclaration } from './PythonDeclaration';
 import { PythonFunction } from './PythonFunction';
 import { PythonModule } from './PythonModule';
-import {PythonClassJson} from "./PythonPackageBuilder";
+import { PythonClassJson } from './PythonPackageBuilder';
 
 interface PythonClassShallowCopy {
     id?: string;
@@ -81,7 +81,7 @@ export class PythonClass extends PythonDeclaration {
             description,
             fullDocstring,
         );
-        result.containingModule = this.containingModule
+        result.containingModule = this.containingModule;
         return result;
     }
 

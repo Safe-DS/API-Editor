@@ -7,7 +7,7 @@ import { DocumentationText } from './DocumentationText';
 import { SectionListViewItem } from './SectionListViewItem';
 import { CompleteButton } from '../../annotations/CompleteButton';
 import { MissingAnnotationButton } from '../../annotations/MissingAnnotationButton';
-import {MinimalDataCopyButtons} from "../../annotations/MinimalDataCopyButtons";
+import { MinimalDataCopyButtons } from '../../annotations/MinimalDataCopyButtons';
 
 interface ClassViewProps {
     pythonClass: PythonClass;

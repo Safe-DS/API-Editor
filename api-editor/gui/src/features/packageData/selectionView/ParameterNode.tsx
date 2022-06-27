@@ -7,7 +7,7 @@ import { DocumentationText } from './DocumentationText';
 import { CompleteButton } from '../../annotations/CompleteButton';
 import { Link } from 'react-router-dom';
 import { MissingAnnotationButton } from '../../annotations/MissingAnnotationButton';
-import {MinimalDataCopyButtons} from "../../annotations/MinimalDataCopyButtons";
+import { MinimalDataCopyButtons } from '../../annotations/MinimalDataCopyButtons';
 
 interface ParameterNodeProps {
     pythonParameter: PythonParameter;

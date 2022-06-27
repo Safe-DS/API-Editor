@@ -120,7 +120,7 @@ export class PythonFunction extends PythonDeclaration {
             description,
             fullDocstring,
         );
-        result.containingModuleOrClass = this.containingModuleOrClass
+        result.containingModuleOrClass = this.containingModuleOrClass;
         return result;
     }
 
