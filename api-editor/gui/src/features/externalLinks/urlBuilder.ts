@@ -25,10 +25,11 @@ export const missingAnnotationURL = function (target: string): string {
 const baseWrongAnnotationURL = `${issueBaseURL}?assignees=&template=wrong_annotation.yml&labels=bug%2Cwrong+annotation%2C`;
 
 export const wrongAnnotationURL = function (annotationType: string, annotation: Annotation): string {
-    const minimalAnnotation = { ...annotation };
+    const minimalAnnotation = {
+        ...annotation,
+        authors: ["$autogen$"]
+    };
 
-    // noinspection JSConstantReassignment
-    delete minimalAnnotation.authors;
     // noinspection JSConstantReassignment
     delete minimalAnnotation.reviewers;
 
