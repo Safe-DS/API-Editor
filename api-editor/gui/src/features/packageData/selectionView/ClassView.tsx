@@ -7,7 +7,7 @@ import { DocumentationText } from './DocumentationText';
 import { SectionListViewItem } from './SectionListViewItem';
 import { CompleteButton } from '../../annotations/CompleteButton';
 import { MissingAnnotationButton } from '../../annotations/MissingAnnotationButton';
-import { MinimalDataCopyButtons } from '../../annotations/MinimalDataCopyButtons';
+import { DataCopyButtons } from '../../annotations/DataCopyButtons';
 
 interface ClassViewProps {
     pythonClass: PythonClass;
@@ -28,7 +28,7 @@ export const ClassView: React.FC<ClassViewProps> = function ({ pythonClass }) {
                     )}
                     <CompleteButton target={id} />
                     <MissingAnnotationButton target={id} />
-                    <MinimalDataCopyButtons target={id} />
+                    <DataCopyButtons target={id} />
                 </HStack>
 
                 <AnnotationView target={id} />

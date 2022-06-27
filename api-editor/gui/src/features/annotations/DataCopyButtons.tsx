@@ -12,7 +12,7 @@ interface MinimalDataButtonsProps {
     target: string;
 }
 
-export const MinimalDataCopyButtons: React.FC<MinimalDataButtonsProps> = function ({ target }) {
+export const DataCopyButtons: React.FC<MinimalDataButtonsProps> = function ({ target }) {
     const pythonPackage = useAppSelector(selectRawPythonPackage);
     const declaration = pythonPackage.getDeclarationById(target);
     const usages = useAppSelector(selectUsages);
