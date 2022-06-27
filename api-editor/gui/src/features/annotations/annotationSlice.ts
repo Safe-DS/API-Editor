@@ -421,9 +421,9 @@ const annotationsSlice = createSlice({
                 state.username,
             );
 
-            delete state.annotations.constants[action.payload.target];
-            delete state.annotations.optionals[action.payload.target];
-            delete state.annotations.requireds[action.payload.target];
+            removeAnnotation(state, state.annotations.constants, action.payload.target);
+            removeAnnotation(state, state.annotations.optionals, action.payload.target);
+            removeAnnotation(state, state.annotations.requireds, action.payload.target);
 
             updateQueue(state);
         },
@@ -545,9 +545,9 @@ const annotationsSlice = createSlice({
                 state.username,
             );
 
-            delete state.annotations.attributes[action.payload.target];
-            delete state.annotations.optionals[action.payload.target];
-            delete state.annotations.requireds[action.payload.target];
+            removeAnnotation(state, state.annotations.attributes, action.payload.target);
+            removeAnnotation(state, state.annotations.optionals, action.payload.target);
+            removeAnnotation(state, state.annotations.requireds, action.payload.target);
 
             updateQueue(state);
         },
@@ -561,9 +561,9 @@ const annotationsSlice = createSlice({
                     state.username,
                 );
 
-                delete state.annotations.attributes[annotation.target];
-                delete state.annotations.optionals[annotation.target];
-                delete state.annotations.requireds[annotation.target];
+                removeAnnotation(state, state.annotations.attributes, annotation.target);
+                removeAnnotation(state, state.annotations.optionals, annotation.target);
+                removeAnnotation(state, state.annotations.requireds, annotation.target);
             });
 
             updateQueue(state);
@@ -747,9 +747,9 @@ const annotationsSlice = createSlice({
                 state.username,
             );
 
-            delete state.annotations.attributes[action.payload.target];
-            delete state.annotations.constants[action.payload.target];
-            delete state.annotations.requireds[action.payload.target];
+            removeAnnotation(state, state.annotations.attributes, action.payload.target);
+            removeAnnotation(state, state.annotations.constants, action.payload.target);
+            removeAnnotation(state, state.annotations.requireds, action.payload.target);
 
             updateQueue(state);
         },
@@ -763,9 +763,9 @@ const annotationsSlice = createSlice({
                     state.username,
                 );
 
-                delete state.annotations.attributes[annotation.target];
-                delete state.annotations.constants[annotation.target];
-                delete state.annotations.requireds[annotation.target];
+                removeAnnotation(state, state.annotations.attributes, annotation.target);
+                removeAnnotation(state, state.annotations.constants, annotation.target);
+                removeAnnotation(state, state.annotations.requireds, annotation.target);
             });
 
             updateQueue(state);
@@ -853,9 +853,9 @@ const annotationsSlice = createSlice({
                 state.username,
             );
 
-            delete state.annotations.attributes[action.payload.target];
-            delete state.annotations.constants[action.payload.target];
-            delete state.annotations.optionals[action.payload.target];
+            removeAnnotation(state, state.annotations.attributes, action.payload.target);
+            removeAnnotation(state, state.annotations.constants, action.payload.target);
+            removeAnnotation(state, state.annotations.optionals, action.payload.target);
 
             updateQueue(state);
         },
@@ -869,9 +869,9 @@ const annotationsSlice = createSlice({
                     state.username,
                 );
 
-                delete state.annotations.attributes[annotation.target];
-                delete state.annotations.constants[annotation.target];
-                delete state.annotations.optionals[annotation.target];
+                removeAnnotation(state, state.annotations.attributes, annotation.target);
+                removeAnnotation(state, state.annotations.constants, annotation.target);
+                removeAnnotation(state, state.annotations.optionals, annotation.target);
             });
 
             updateQueue(state);
