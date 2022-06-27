@@ -66,7 +66,7 @@ const buildMinimalFunction = function (
         if (parent instanceof PythonClass) {
             return buildMinimalClass(parent, [fun]);
         } else {
-            return buildMinimalModule(undefined, [], [fun]);
+            return buildMinimalModule(parent ?? undefined, [], [fun]);
         }
     } else {
         const fun = new PythonFunction(
