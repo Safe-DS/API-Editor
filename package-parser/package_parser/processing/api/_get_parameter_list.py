@@ -5,7 +5,7 @@ from package_parser.processing.api.documentation import AbstractDocumentationPar
 from package_parser.processing.api.model import Parameter, ParameterAssignment
 
 
-def _get_parameter_list(
+def get_parameter_list(
     documentation_parser: AbstractDocumentationParser,
     function_node: astroid.FunctionDef,
     function_id: str,
@@ -74,6 +74,45 @@ def _get_parameter_list(
         implicit_parameter.assigned_by = ParameterAssignment.IMPLICIT
 
     return result
+
+
+def _get_parameters_assigned_by(
+    function_node: astroid.FunctionDef
+) -> dict[str, ParameterAssignment]:
+    parameters = function_node.args
+    n_implicit_parameters = function_node.implicit_parameters()
+
+    result = {}
+    for arg in parameters.posonlyargs:
+        result[arg.name] = ParameterAssignment.POSITION_ONLY
+
+    for arg in parameters.args:
+        result[arg.name] = ParameterAssignment.POSITION_OR_NAME
+
+    if parameters.vararg is not None:
+        result[parameters.vararg] = ParameterAssignment.POSITIONAL_VARARG
+
+    for arg in parameters.kwonlyargs:
+        result[arg.name] = ParameterAssignment.NAME_ONLY
+
+    if parameters.kwarg is not None:
+        result[parameters.kwarg] = ParameterAssignment.KEYWORD_VARARG
+
+    # Overwrite assigned_by for implicit parameters
+    for arg in parameters.arguments[:n_implicit_parameters]:
+        result[arg.name] = ParameterAssignment.IMPLICIT
+
+    return result
+
+
+def _get_stringified_default_value(function_node: astroid.FunctionDef, parameter_name) -> Optional[str]:
+    try:
+        default_value = function_node.args.default_value(parameter_name)
+        if default_value is None:
+            return None
+        return default_value.as_string()
+    except astroid.exceptions.NoDefault:
+        return None
 
 
 def _get_parameter_default(

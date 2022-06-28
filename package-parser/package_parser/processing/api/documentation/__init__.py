@@ -4,5 +4,6 @@ from ._APIElementDocumentation import (
     FunctionDocumentation,
     ParameterDocumentation,
 )
+from ._DefaultDocumentationParser import DefaultDocumentationParser
 from ._get_full_docstring import get_full_docstring
 from ._NumpyDocParser import NumpyDocParser
