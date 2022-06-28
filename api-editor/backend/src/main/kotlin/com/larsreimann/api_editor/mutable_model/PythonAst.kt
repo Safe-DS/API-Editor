@@ -271,10 +271,18 @@ class PythonMemberAccess(
 
 class PythonNamedSpread(argument: PythonExpression) : PythonExpression() {
     var argument by ContainmentReference(argument)
+
+    override fun children() = sequence {
+        argument?.let { yield(it) }
+    }
 }
 
 class PythonPositionalSpread(argument: PythonExpression) : PythonExpression() {
     var argument by ContainmentReference(argument)
+
+    override fun children() = sequence {
+        argument?.let { yield(it) }
+    }
 }
 
 class PythonReference(declaration: PythonDeclaration) : PythonExpression() {
