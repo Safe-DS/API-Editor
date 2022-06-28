@@ -56,7 +56,7 @@ private fun PythonParameter.processEnumAnnotations(module: PythonModule) {
             }
 
             // Update argument that references this parameter
-            val arguments = this.crossReferences()
+            val arguments = crossReferencesToThis()
                 .mapNotNull { (it.parent as? PythonReference)?.closest<PythonArgument>() }
                 .toList()
 
