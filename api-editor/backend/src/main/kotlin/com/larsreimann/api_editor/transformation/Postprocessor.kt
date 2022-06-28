@@ -44,7 +44,9 @@ private fun ModelNode.MutableContainmentList<PythonParameter>.reorderParameters(
     this.addAll(groups[PythonParameterAssignment.IMPLICIT].orEmpty())
     this.addAll(groups[PythonParameterAssignment.POSITION_ONLY].orEmpty())
     this.addAll(groups[PythonParameterAssignment.POSITION_OR_NAME].orEmpty())
+    this.addAll(groups[PythonParameterAssignment.POSITIONAL_VARARG].orEmpty())
     this.addAll(groups[PythonParameterAssignment.NAME_ONLY].orEmpty())
+    this.addAll(groups[PythonParameterAssignment.NAMED_VARARG].orEmpty())
 }
 
 /**

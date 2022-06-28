@@ -308,7 +308,7 @@ class PreprocessorTest {
         fun `should keep named variadic parameters unchanged`() {
             testPackage.updateParameterAssignment()
 
-            testOptionalParameter.assignedBy shouldBe PythonParameterAssignment.NAMED_VARARG
+            testNamedVarargParameter.assignedBy shouldBe PythonParameterAssignment.NAMED_VARARG
         }
     }
 

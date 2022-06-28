@@ -141,6 +141,10 @@ fun PythonPackage.updateParameterAssignment() {
 }
 
 private fun PythonParameter.updateParameterAssignment() {
+    if (isVariadic()) {
+        return
+    }
+
     this.assignedBy = when {
         this.isImplicit() -> PythonParameterAssignment.IMPLICIT
         this.isRequired() -> PythonParameterAssignment.POSITION_OR_NAME
