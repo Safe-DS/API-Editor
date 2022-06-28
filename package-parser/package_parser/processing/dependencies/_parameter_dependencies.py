@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Any, Dict
 
-from package_parser.model.api import Parameter
+from package_parser.processing.api.model import Parameter
 
 
 @dataclass

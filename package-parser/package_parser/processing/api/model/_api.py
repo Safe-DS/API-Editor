@@ -5,14 +5,14 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Optional
 
-from package_parser.model.api._types import (
-    AbstractType,
-    BoundaryType,
-    EnumType,
-    NamedType,
-    UnionType,
+from package_parser.processing.api.documentation import (
+    ClassDocumentation,
+    FunctionDocumentation,
+    ParameterDocumentation,
 )
 from package_parser.utils import parent_id
+
+from ._types import AbstractType, BoundaryType, EnumType, NamedType, UnionType
 
 API_SCHEMA_VERSION = 1
 
@@ -208,8 +208,10 @@ class Class:
             json.get("superclasses", []),
             json.get("is_public", True),
             json.get("reexported_by", []),
-            json.get("description", ""),
-            json.get("docstring", ""),
+            ClassDocumentation(
+                description=json.get("description", ""),
+                full_docstring=json.get("docstring", ""),
+            ),
         )
 
         for method_id in json["methods"]:
@@ -225,8 +227,7 @@ class Class:
         superclasses: list[str],
         is_public: bool,
         reexported_by: list[str],
-        description: str,
-        docstring: str,
+        documentation: ClassDocumentation,
     ) -> None:
         self.id: str = id_
         self.qname: str = qname
@@ -235,8 +236,7 @@ class Class:
         self.methods: list[str] = []
         self.is_public: bool = is_public
         self.reexported_by: list[str] = reexported_by
-        self.description: str = description
-        self.docstring: str = docstring
+        self.documentation: ClassDocumentation = documentation
 
     @property
     def name(self) -> str:
@@ -255,8 +255,8 @@ class Class:
             "methods": self.methods,
             "is_public": self.is_public,
             "reexported_by": self.reexported_by,
-            "description": self.description,
-            "docstring": self.docstring,
+            "description": self.documentation.description,
+            "docstring": self.documentation.full_docstring,
         }
 
 
@@ -269,8 +269,7 @@ class Function:
     results: list[Result]
     is_public: bool
     reexported_by: list[str]
-    description: str
-    docstring: str
+    documentation: FunctionDocumentation
 
     @staticmethod
     def from_json(json: Any) -> Function:
@@ -285,8 +284,10 @@ class Function:
             [Result.from_json(result_json) for result_json in json.get("results", [])],
             json.get("is_public", True),
             json.get("reexported_by", []),
-            json.get("description", ""),
-            json.get("docstring", ""),
+            FunctionDocumentation(
+                description=json.get("description", ""),
+                full_docstring=json.get("docstring", ""),
+            ),
         )
 
     @property
@@ -303,22 +304,20 @@ class Function:
             "results": [result.to_json() for result in self.results],
             "is_public": self.is_public,
             "reexported_by": self.reexported_by,
-            "description": self.description,
-            "docstring": self.docstring,
+            "description": self.documentation.description,
+            "docstring": self.documentation.full_docstring,
         }
 
 
 class Type:
     def __init__(
         self,
-        typestring: ParameterAndResultDocstring,
+        parameter_documentation: ParameterDocumentation,
     ) -> None:
-        self.type: Optional[AbstractType] = Type.create_type(typestring)
+        self.type: Optional[AbstractType] = Type.create_type(parameter_documentation)
 
     @classmethod
-    def create_type(
-        cls, docstring: ParameterAndResultDocstring
-    ) -> Optional[AbstractType]:
+    def create_type(cls, docstring: ParameterDocumentation) -> Optional[AbstractType]:
         type_string = docstring.type
         types: list[AbstractType] = list()
 
@@ -402,7 +401,7 @@ class Parameter:
             json.get("default_value", None),
             ParameterAssignment[json.get("assigned_by", "POSITION_OR_NAME")],
             json.get("is_public", True),
-            ParameterAndResultDocstring.from_json(json.get("docstring", {})),
+            ParameterDocumentation.from_dict(json.get("docstring", {})),
         )
 
     def __init__(
@@ -413,7 +412,7 @@ class Parameter:
         default_value: Optional[str],
         assigned_by: ParameterAssignment,
         is_public: bool,
-        docstring: ParameterAndResultDocstring,
+        documentation: ParameterDocumentation,
     ) -> None:
         self.id: str = id_
         self.name: str = name
@@ -421,8 +420,8 @@ class Parameter:
         self.default_value: Optional[str] = default_value
         self.assigned_by: ParameterAssignment = assigned_by
         self.is_public: bool = is_public
-        self.docstring = docstring
-        self.type: Type = Type(docstring)
+        self.documentation = documentation
+        self.type: Type = Type(documentation)
 
     def is_optional(self) -> bool:
         return self.default_value is not None
@@ -438,7 +437,7 @@ class Parameter:
             "default_value": self.default_value,
             "assigned_by": self.assigned_by.name,
             "is_public": self.is_public,
-            "docstring": self.docstring.to_json(),
+            "docstring": self.documentation.to_dict(),
             "type": self.type.to_json(),
         }
 
@@ -453,13 +452,13 @@ class ParameterAssignment(Enum):
 @dataclass
 class Result:
     name: str
-    docstring: ParameterAndResultDocstring
+    docstring: ResultDocstring
 
     @staticmethod
     def from_json(json: Any) -> Result:
         return Result(
             json["name"],
-            ParameterAndResultDocstring.from_json(json.get("docstring", {})),
+            ResultDocstring.from_json(json.get("docstring", {})),
         )
 
     def to_json(self) -> Any:
@@ -467,13 +466,13 @@ class Result:
 
 
 @dataclass
-class ParameterAndResultDocstring:
+class ResultDocstring:
     type: str
     description: str
 
     @staticmethod
     def from_json(json: Any):
-        return ParameterAndResultDocstring(
+        return ResultDocstring(
             json.get("type", ""),
             json.get("description", ""),
         )

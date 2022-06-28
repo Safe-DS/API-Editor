@@ -1,7 +1,10 @@
 from typing import Any
 
 import pytest
-from package_parser.model.usages import USAGES_SCHEMA_VERSION, UsageCountStore
+from package_parser.processing.usages.model import (
+    USAGES_SCHEMA_VERSION,
+    UsageCountStore,
+)
 
 
 @pytest.fixture

@@ -45,10 +45,10 @@ class EnumType(AbstractType):
             curr_quote = None
             for i, char in enumerate(enum_str):
                 if char in quotes and (i == 0 or (i > 0 and enum_str[i - 1] != "\\")):
-                    if inside_value == False:
+                    if not inside_value:
                         inside_value = True
                         curr_quote = char
-                    elif inside_value == True:
+                    elif inside_value:
                         if curr_quote == char:
                             inside_value = False
                             curr_quote = None
@@ -76,7 +76,7 @@ class BoundaryType(AbstractType):
     INFINITY: ClassVar = "Infinity"
 
     base_type: str
-    min: Union[float, int]
+    min: Union[float, int, str]
     max: Union[float, int, str]
     min_inclusive: bool
     max_inclusive: bool
@@ -92,6 +92,7 @@ class BoundaryType(AbstractType):
 
     @classmethod
     def from_string(cls, string: str) -> Optional[BoundaryType]:
+        # language=PythonRegExp
         pattern = r"""(?P<base_type>float|int)?[ ]  # optional base type of either float or int
                     (in|of)[ ](the[ ])?(range|interval)[ ](of[ ])?  # 'in' or 'of', optional 'the', 'range' or 'interval', optional 'of'
                     `?(?P<min_bracket>[\[(])(?P<min>[-+]?\d+(.\d*)?|negative_infinity),[ ]  # left side of the range
@@ -102,17 +103,22 @@ class BoundaryType(AbstractType):
             base_type = match.group("base_type")
             if base_type is None:
                 base_type = "float"
-            base_type = eval(base_type)
 
-            min_value = match.group("min")
+            min_value: Union[str, int, float] = match.group("min")
             if min_value != "negative_infinity":
-                min_value = base_type(min_value)
+                if base_type == "int":
+                    min_value = int(min_value)
+                else:
+                    min_value = float(min_value)
             else:
                 min_value = BoundaryType.NEGATIVE_INFINITY
 
-            max_value = match.group("max")
+            max_value: Union[str, int, float] = match.group("max")
             if max_value != "infinity":
-                max_value = base_type(max_value)
+                if base_type == "int":
+                    max_value = int(max_value)
+                else:
+                    max_value = float(max_value)
             else:
                 max_value = BoundaryType.INFINITY
 
@@ -122,7 +128,7 @@ class BoundaryType(AbstractType):
             max_inclusive = BoundaryType._is_inclusive(max_bracket)
 
             return BoundaryType(
-                base_type.__name__, min_value, max_value, min_inclusive, max_inclusive
+                base_type, min_value, max_value, min_inclusive, max_inclusive
             )
 
         return None

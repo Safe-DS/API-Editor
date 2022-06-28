@@ -1,13 +1,13 @@
 from typing import Any, Optional
 
-from package_parser.model.annotations import (
+from package_parser.processing.annotations.model import (
     AnnotationStore,
     ConstantAnnotation,
     OptionalAnnotation,
     RequiredAnnotation,
 )
-from package_parser.model.api import API, Parameter
-from package_parser.model.usages import UsageCountStore
+from package_parser.processing.api.model import API, Parameter
+from package_parser.processing.usages.model import UsageCountStore
 
 from ._constants import autogen_author
 

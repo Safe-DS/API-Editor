@@ -1,7 +1,11 @@
 import re
 
-from package_parser.model.annotations import AnnotationStore, EnumAnnotation, EnumPair
-from package_parser.model.api import API
+from package_parser.processing.annotations.model import (
+    AnnotationStore,
+    EnumAnnotation,
+    EnumPair,
+)
+from package_parser.processing.api.model import API
 
 from ._constants import autogen_author
 

@@ -1,7 +1,8 @@
 from typing import Any
 
 import pytest
-from package_parser.model.api import ParameterAndResultDocstring, Type
+from package_parser.processing.api.documentation import ParameterDocumentation
+from package_parser.processing.api.model import Type
 
 
 @pytest.mark.parametrize(
@@ -70,7 +71,7 @@ from package_parser.model.api import ParameterAndResultDocstring, Type
     ],
 )
 def test_union_from_string(docstring_type: str, expected: dict[str, Any]):
-    result = Type(ParameterAndResultDocstring(docstring_type, ""))
+    result = Type(ParameterDocumentation(docstring_type, "", ""))
     assert result.to_json() == expected
 
 
@@ -103,7 +104,7 @@ def test_union_from_string(docstring_type: str, expected: dict[str, Any]):
     ],
 )
 def test_boundary_from_string(docstring_type: str, expected: dict[str, Any]):
-    assert Type(ParameterAndResultDocstring("", docstring_type)).to_json() == expected
+    assert Type(ParameterDocumentation("", "", docstring_type)).to_json() == expected
 
 
 @pytest.mark.parametrize(
@@ -136,7 +137,9 @@ def test_boundary_and_union_from_string(
 ):
     assert (
         Type(
-            ParameterAndResultDocstring(docstring_type, docstring_description)
+            ParameterDocumentation(
+                type=docstring_type, default_value="", description=docstring_description
+            )
         ).to_json()
         == expected
     )

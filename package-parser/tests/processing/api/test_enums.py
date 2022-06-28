@@ -1,7 +1,7 @@
 from typing import Optional
 
 import pytest
-from package_parser.model.api._types import EnumType
+from package_parser.processing.api.model import EnumType
 
 
 @pytest.mark.parametrize(
