@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 from package_parser.processing.annotations.model import AnnotationStore
-from package_parser.processing.api.model.api import API
+from package_parser.processing.api.model import API
 from package_parser.processing.usages.model import UsageCountStore
 from package_parser.processing.annotations import generate_annotations
 from package_parser.utils import ensure_file_exists

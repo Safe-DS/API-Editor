@@ -3,7 +3,7 @@ from typing import Optional
 import astroid
 
 from package_parser.processing.api.documentation import AbstractDocumentationParser
-from package_parser.processing.api.model.api import Parameter, ParameterAssignment
+from package_parser.processing.api.model import Parameter, ParameterAssignment
 
 
 def _get_parameter_list(

@@ -1,9 +1,10 @@
 import inspect
+from typing import Union
 
 import astroid
 
 
-def get_full_docstring(declaration: astroid.ClassDef | astroid.FunctionDef) -> str:
+def get_full_docstring(declaration: Union[astroid.ClassDef, astroid.FunctionDef]) -> str:
     """
     Returns the full docstring of the given declaration or an empty string if no docstring is available. Indentation is
     cleaned up.

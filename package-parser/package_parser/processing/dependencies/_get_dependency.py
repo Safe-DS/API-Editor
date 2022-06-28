@@ -1,13 +1,15 @@
 from typing import Dict, List, Tuple, Union
 
 import spacy
-from package_parser.processing.api.model.api import (
+from package_parser.processing.api.model import (
     API,
+    Parameter,
+)
+from ._parameter_dependencies import (
     Action,
     APIDependencies,
     Condition,
     Dependency,
-    Parameter,
     ParameterHasValue,
     ParameterIsIgnored,
     ParameterIsIllegal,

@@ -7,7 +7,7 @@ from typing import Any, Optional
 
 from package_parser.processing.api.documentation import FunctionDocumentation, ClassDocumentation, \
     ParameterDocumentation
-from package_parser.processing.api.model.api._types import (
+from ._types import (
     AbstractType,
     BoundaryType,
     EnumType,

@@ -45,10 +45,10 @@ class EnumType(AbstractType):
             curr_quote = None
             for i, char in enumerate(enum_str):
                 if char in quotes and (i == 0 or (i > 0 and enum_str[i - 1] != "\\")):
-                    if inside_value == False:
+                    if not inside_value:
                         inside_value = True
                         curr_quote = char
-                    elif inside_value == True:
+                    elif inside_value:
                         if curr_quote == char:
                             inside_value = False
                             curr_quote = None
@@ -92,6 +92,7 @@ class BoundaryType(AbstractType):
 
     @classmethod
     def from_string(cls, string: str) -> Optional[BoundaryType]:
+        # language=PythonRegExp
         pattern = r"""(?P<base_type>float|int)?[ ]  # optional base type of either float or int
                     (in|of)[ ](the[ ])?(range|interval)[ ](of[ ])?  # 'in' or 'of', optional 'the', 'range' or 'interval', optional 'of'
                     `?(?P<min_bracket>[\[(])(?P<min>[-+]?\d+(.\d*)?|negative_infinity),[ ]  # left side of the range

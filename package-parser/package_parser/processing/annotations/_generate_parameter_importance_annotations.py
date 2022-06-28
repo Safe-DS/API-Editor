@@ -6,7 +6,7 @@ from package_parser.processing.annotations.model import (
     OptionalAnnotation,
     RequiredAnnotation,
 )
-from package_parser.processing.api.model.api import API, Parameter
+from package_parser.processing.api.model import API, Parameter
 from package_parser.processing.usages.model import UsageCountStore
 
 from ._constants import autogen_author

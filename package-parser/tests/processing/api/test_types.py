@@ -3,7 +3,7 @@ from typing import Any
 import pytest
 
 from package_parser.processing.api.documentation import ParameterDocumentation
-from package_parser.processing.api.model.api import Type
+from package_parser.processing.api.model import Type
 
 
 @pytest.mark.parametrize(

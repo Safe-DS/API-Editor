@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Optional
 
 import astroid
-from package_parser.processing.api.model.api import API
+from package_parser.processing.api.model import API
 from package_parser.utils import ASTWalker
 
 from ._ast_visitor import _AstVisitor

@@ -1,5 +1,5 @@
 from package_parser.processing.annotations.model import AnnotationStore
-from package_parser.processing.api.model.api import API
+from package_parser.processing.api.model import API
 from package_parser.processing.usages.model import UsageCountStore
 from package_parser.processing.annotations._generate_boundary_annotations import (
     _generate_boundary_annotations,

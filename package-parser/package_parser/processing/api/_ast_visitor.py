@@ -6,7 +6,7 @@ import astroid
 from astroid.context import InferenceContext
 from astroid.helpers import safe_infer
 
-from package_parser.processing.api.model.api import (
+from package_parser.processing.api.model import (
     API,
     Class,
     FromImport,

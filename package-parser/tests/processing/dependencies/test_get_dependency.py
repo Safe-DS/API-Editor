@@ -1,12 +1,14 @@
 import spacy
 
 from package_parser.processing.api.documentation import ParameterDocumentation
-from package_parser.processing.api.model.api import (
+from package_parser.processing.api.model import (
+    Parameter,
+    ParameterAssignment
+)
+from package_parser.processing.dependencies import (
     Action,
     Condition,
     Dependency,
-    Parameter,
-    ParameterAssignment,
     ParameterHasValue,
     ParameterIsIgnored,
     ParameterIsIllegal,

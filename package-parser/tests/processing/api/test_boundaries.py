@@ -1,5 +1,5 @@
 import pytest
-from package_parser.processing.api.model.api import BoundaryType
+from package_parser.processing.api.model import BoundaryType
 
 
 @pytest.mark.parametrize(
