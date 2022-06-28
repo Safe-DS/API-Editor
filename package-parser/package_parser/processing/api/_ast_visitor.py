@@ -1,4 +1,3 @@
-import inspect
 import logging
 import re
 from typing import Optional, Union
@@ -6,7 +5,6 @@ from typing import Optional, Union
 import astroid
 from astroid.context import InferenceContext
 from astroid.helpers import safe_infer
-from numpydoc.docscrape import NumpyDocString
 
 from package_parser.processing.api.model.api import (
     API,
@@ -23,7 +21,8 @@ from .documentation import AbstractDocumentationParser
 
 
 class _AstVisitor:
-    def __init__(self, api: API, documentation_parser: AbstractDocumentationParser) -> None:
+    def __init__(self, documentation_parser: AbstractDocumentationParser, api: API) -> None:
+        self.documentation_parser: AbstractDocumentationParser = documentation_parser
         self.reexported: dict[str, list[str]] = {}
         self.api: API = api
         self.__declaration_stack: list[Union[Module, Class, Function]] = []
@@ -139,18 +138,15 @@ class _AstVisitor:
         else:
             decorator_names = []
 
-        numpydoc = NumpyDocString(inspect.cleandoc(class_node.doc or ""))
-
         # Remember class, so we can later add methods
         class_ = Class(
-            self.__get_id(class_node.name),
-            qname,
-            decorator_names,
-            class_node.basenames,
-            self.is_public(class_node.name, qname),
-            self.reexported.get(qname, []),
-            _AstVisitor.__description(numpydoc),
-            class_node.doc,
+            id_=self.__get_id(class_node.name),
+            qname=qname,
+            decorators=decorator_names,
+            superclasses=class_node.basenames,
+            is_public=self.is_public(class_node.name, qname),
+            reexported_by=self.reexported.get(qname, []),
+            documentation=self.documentation_parser.get_class_documentation(class_node)
         )
         self.__declaration_stack.append(class_)
 
@@ -176,21 +172,23 @@ class _AstVisitor:
         else:
             decorator_names = []
 
-        numpydoc = NumpyDocString(inspect.cleandoc(function_node.doc or ""))
         is_public = self.is_public(function_node.name, qname)
 
         function = Function(
-            self.__get_function_id(function_node.name, decorator_names),
-            qname,
-            decorator_names,
-            _get_parameter_list(
-                function_node, self.__get_id(function_node.name), qname, is_public,
+            id=self.__get_function_id(function_node.name, decorator_names),
+            qname=qname,
+            decorators=decorator_names,
+            parameters=_get_parameter_list(
+                self.documentation_parser,
+                function_node,
+                self.__get_id(function_node.name),
+                qname,
+                is_public
             ),
-            [],  # TODO: results
-            is_public,
-            self.reexported.get(qname, []),
-            _AstVisitor.__description(numpydoc),
-            function_node.doc,
+            results=[],  # TODO: results
+            is_public=is_public,
+            reexported_by=self.reexported.get(qname, []),
+            documentation=self.documentation_parser.get_function_documentation(function_node)
         )
         self.__declaration_stack.append(function)
 
@@ -209,23 +207,6 @@ class _AstVisitor:
             elif isinstance(parent, Class):
                 self.api.add_function(function)
                 parent.add_method(function.id)
-
-    @staticmethod
-    def __description(numpydoc: NumpyDocString) -> str:
-        has_summary = "Summary" in numpydoc and len(numpydoc["Summary"]) > 0
-        has_extended_summary = (
-            "Extended Summary" in numpydoc and len(numpydoc["Extended Summary"]) > 0
-        )
-
-        result = ""
-        if has_summary:
-            result += "\n".join(numpydoc["Summary"])
-        if has_summary and has_extended_summary:
-            result += "\n\n"
-        if has_extended_summary:
-            result += "\n".join(numpydoc["Extended Summary"])
-        return result
-
 
     def is_public(self, name: str, qualified_name: str) -> bool:
         if name.startswith("_") and not name.endswith("__"):

@@ -4,15 +4,12 @@ from typing import Optional
 import astroid
 from numpydoc.docscrape import NumpyDocString
 
+from package_parser.processing.api.documentation import AbstractDocumentationParser
 from package_parser.processing.api.model.api import Parameter, ParameterAssignment, ParameterAndResultDocstring
 
 
-def _get_parameter_list(
-    node: astroid.FunctionDef,
-    function_id: str,
-    function_qname: str,
-    function_is_public: bool,
-) -> list[Parameter]:
+def _get_parameter_list(documentation_parser: AbstractDocumentationParser, node: astroid.FunctionDef, function_id: str,
+                        function_qname: str, function_is_public: bool) -> list[Parameter]:
     parameters = node.args
     n_implicit_parameters = node.implicit_parameters()
 
