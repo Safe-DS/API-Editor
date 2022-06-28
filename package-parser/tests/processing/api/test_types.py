@@ -1,8 +1,8 @@
 from typing import Any
 
 import pytest
-from package_parser.processing.api.documentation import ParameterDocumentation
-from package_parser.processing.api.model import Type
+
+from package_parser.processing.api.model import ParameterDocumentation, Type
 
 
 @pytest.mark.parametrize(
@@ -63,7 +63,7 @@ from package_parser.processing.api.model import Type
                     {
                         "kind": "NamedType",
                         "name": "shape (n_samples, n_classes) or (n_samples, 1) when "
-                        "binary.",
+                                "binary.",
                     },
                 ],
             },

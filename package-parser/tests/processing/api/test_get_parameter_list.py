@@ -2,11 +2,10 @@ import astroid
 import pytest
 
 from package_parser.processing.api import get_parameter_list
-from package_parser.processing.api.documentation import DefaultDocumentationParser, ParameterDocumentation
+from package_parser.processing.api.documentation_parsing import DefaultDocumentationParser
+from package_parser.processing.api.model import Parameter, ParameterAssignment, ParameterDocumentation
 
 # language=Python
-from package_parser.processing.api.model import Parameter, ParameterAssignment
-
 global_function_empty_parameter_list = """
 def f():
     pass

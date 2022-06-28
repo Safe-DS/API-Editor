@@ -6,10 +6,13 @@ from ._api import (
     Function,
     Import,
     Module,
-    Parameter,
-    ParameterAssignment,
     Result,
     ResultDocstring,
-    Type,
 )
-from ._types import AbstractType, BoundaryType, EnumType, NamedType, UnionType
+from ._documentation import (
+    ClassDocumentation,
+    FunctionDocumentation,
+    ParameterDocumentation,
+)
+from ._parameters import ParameterAssignment, Parameter
+from ._types import AbstractType, BoundaryType, EnumType, NamedType, UnionType, Type

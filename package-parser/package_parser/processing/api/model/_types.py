@@ -5,6 +5,8 @@ from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass, field
 from typing import Any, ClassVar, Optional, Union
 
+from ._documentation import ParameterDocumentation
+
 
 class AbstractType(metaclass=ABCMeta):
     @abstractmethod
@@ -172,3 +174,85 @@ class UnionType(AbstractType):
             type_list.append(t.to_json())
 
         return {"kind": self.__class__.__name__, "types": type_list}
+
+
+class Type:
+    def __init__(
+        self,
+        parameter_documentation: ParameterDocumentation,
+    ) -> None:
+        self.type: Optional[AbstractType] = Type.create_type(parameter_documentation)
+
+    @classmethod
+    def create_type(cls, docstring: ParameterDocumentation) -> Optional[AbstractType]:
+        type_string = docstring.type
+        types: list[AbstractType] = list()
+
+        # Collapse whitespaces
+        type_string = re.sub(r"\s+", " ", type_string)
+
+        # Get boundary from description
+        boundary = BoundaryType.from_string(docstring.description)
+        if boundary is not None:
+            types.append(boundary)
+
+        # Find all enums and remove them from doc_string
+        enum_array_matches = re.findall(r"\{.*?}", type_string)
+        type_string = re.sub(r"\{.*?}", " ", type_string)
+        for enum in enum_array_matches:
+            enum_type = EnumType.from_string(enum)
+            if enum_type is not None:
+                types.append(enum_type)
+
+        # Remove default value from doc_string
+        type_string = re.sub("default=.*", " ", type_string)
+
+        # Create a list with all values and types
+        # ") or (" must be replaced by a very unlikely string ("&%&") so that it is not removed when filtering out.
+        # The string will be replaced by ") or (" again after filtering out.
+        type_string = re.sub(r"\) or \(", "&%&", type_string)
+        type_string = re.sub(r" ?, ?or ", ", ", type_string)
+        type_string = re.sub(r" or ", ", ", type_string)
+        type_string = re.sub("&%&", ") or (", type_string)
+
+        brackets = 0
+        build_string = ""
+        for c in type_string:
+            if c == "(":
+                brackets += 1
+            elif c == ")":
+                brackets -= 1
+
+            if brackets > 0:
+                build_string += c
+                continue
+
+            if brackets == 0 and c != ",":
+                build_string += c
+            elif brackets == 0 and c == ",":
+                # remove leading and trailing whitespaces
+                build_string = build_string.strip()
+                if build_string != "":
+                    named = NamedType.from_string(build_string)
+                    types.append(named)
+                    build_string = ""
+
+        build_string = build_string.strip()
+
+        # Append the last remaining entry
+        if build_string != "":
+            named = NamedType.from_string(build_string)
+            types.append(named)
+
+        if len(types) == 1:
+            return types[0]
+        elif len(types) == 0:
+            return None
+        else:
+            return UnionType(types)
+
+    def to_json(self) -> dict[str, Any]:
+        if self.type is None:
+            return {}
+        else:
+            return self.type.to_json()

@@ -4,10 +4,11 @@ from abc import ABC, abstractmethod
 
 import astroid
 
-from ._APIElementDocumentation import (
+from package_parser.processing.api.model import (
     ClassDocumentation,
     FunctionDocumentation,
     ParameterDocumentation,
+    ParameterAssignment
 )
 
 
@@ -26,6 +27,9 @@ class AbstractDocumentationParser(ABC):
 
     @abstractmethod
     def get_parameter_documentation(
-        self, function_node: astroid.FunctionDef, parameter_name: str
+        self,
+        function_node: astroid.FunctionDef,
+        parameter_name: str,
+        parameter_assigned_by: ParameterAssignment
     ) -> ParameterDocumentation:
         pass

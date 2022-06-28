@@ -1,7 +1,7 @@
 from typing import Optional
 
 import astroid
-from package_parser.processing.api.documentation import AbstractDocumentationParser
+from package_parser.processing.api.documentation_parsing import AbstractDocumentationParser
 from package_parser.processing.api.model import Parameter, ParameterAssignment
 
 
@@ -16,17 +16,20 @@ def get_parameter_list(
     result = []
 
     for parameter_name in function_node.argnames():
+        parameter_assigned_by = parameters_assigned_by[parameter_name]
+
         result.append(
             Parameter(
                 id_=function_id + "/" + parameter_name,
                 name=parameter_name,
                 qname=function_qname + "." + parameter_name,
                 default_value=_get_stringified_default_value(function_node, parameter_name),
-                assigned_by=parameters_assigned_by[parameter_name],
+                assigned_by=parameter_assigned_by,
                 is_public=function_is_public,
                 documentation=documentation_parser.get_parameter_documentation(
                     function_node,
-                    parameter_name
+                    parameter_name,
+                    parameter_assigned_by
                 ),
             )
         )

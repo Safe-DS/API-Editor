@@ -17,7 +17,7 @@ from package_parser.utils import parent_qualified_name
 
 from ._file_filters import _is_init_file
 from ._get_parameter_list import get_parameter_list
-from .documentation import AbstractDocumentationParser
+from .documentation_parsing import AbstractDocumentationParser
 
 
 class _AstVisitor:

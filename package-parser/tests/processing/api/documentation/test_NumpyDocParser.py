@@ -1,10 +1,11 @@
 import astroid
 import pytest
-from package_parser.processing.api.documentation import (
+
+from package_parser.processing.api.documentation_parsing import NumpyDocParser
+from package_parser.processing.api.model import (
     ClassDocumentation,
     FunctionDocumentation,
-    NumpyDocParser,
-    ParameterDocumentation,
+    ParameterDocumentation, ParameterAssignment,
 )
 
 
@@ -21,9 +22,6 @@ class C:
 
     Dolor sit amet.
     """
-
-    def __init__(self):
-        pass
 '''
 
 # language=python
@@ -119,6 +117,7 @@ def test_get_function_documentation(
 
 # language=python
 class_with_parameters = '''
+# noinspection PyUnresolvedReferences,PyIncorrectDocstring
 class C:
     """
     Lorem ipsum.
@@ -131,22 +130,13 @@ class C:
         foo
     """
 
-    def __init__(self, p: int = 1):
-        pass
+    pass
 '''
 
 # language=python
 function_with_parameters = '''
-def f(
-    no_type_no_default,
-    type_no_default,
-    optional_unknown_default: int = 0,
-    with_default_syntax_1: int = 1,
-    with_default_syntax_2: int = 2,
-    with_default_syntax_3: int = 3,
-    grouped_parameter_1: int = 4,
-    grouped_parameter_2: int = 4
-):
+# noinspection PyUnresolvedReferences,PyIncorrectDocstring
+def f():
     """
     Lorem ipsum.
 
@@ -168,6 +158,10 @@ def f(
         foo: with_default_syntax_3
     grouped_parameter_1, grouped_parameter_2 : int, default=4
         foo: grouped_parameter_1 and grouped_parameter_2
+    *args: int
+        foo: *args
+    **kwargs : int
+        foo: **kwargs
     """
 
     pass
@@ -175,11 +169,12 @@ def f(
 
 
 @pytest.mark.parametrize(
-    "python_code, parameter_name, expected_parameter_documentation",
+    "python_code, parameter_name, parameter_assigned_by, expected_parameter_documentation",
     [
         (
             class_with_parameters,
             "p",
+            ParameterAssignment.POSITION_OR_NAME,
             ParameterDocumentation(
                 type="int",
                 default_value="1",
@@ -189,6 +184,7 @@ def f(
         (
             class_with_parameters,
             "missing",
+            ParameterAssignment.POSITION_OR_NAME,
             ParameterDocumentation(
                 type="",
                 default_value="",
@@ -198,6 +194,7 @@ def f(
         (
             function_with_parameters,
             "no_type_no_default",
+            ParameterAssignment.POSITION_OR_NAME,
             ParameterDocumentation(
                 type="",
                 default_value="",
@@ -207,6 +204,7 @@ def f(
         (
             function_with_parameters,
             "type_no_default",
+            ParameterAssignment.POSITION_OR_NAME,
             ParameterDocumentation(
                 type="int",
                 default_value="",
@@ -216,6 +214,7 @@ def f(
         (
             function_with_parameters,
             "optional_unknown_default",
+            ParameterAssignment.POSITION_OR_NAME,
             ParameterDocumentation(
                 type="int",
                 default_value="",
@@ -225,6 +224,7 @@ def f(
         (
             function_with_parameters,
             "with_default_syntax_1",
+            ParameterAssignment.POSITION_OR_NAME,
             ParameterDocumentation(
                 type="int",
                 default_value="1",
@@ -234,6 +234,7 @@ def f(
         (
             function_with_parameters,
             "with_default_syntax_2",
+            ParameterAssignment.POSITION_OR_NAME,
             ParameterDocumentation(
                 type="int", default_value="2", description="foo: with_default_syntax_2"
             ),
@@ -241,6 +242,7 @@ def f(
         (
             function_with_parameters,
             "with_default_syntax_3",
+            ParameterAssignment.POSITION_OR_NAME,
             ParameterDocumentation(
                 type="int", default_value="3", description="foo: with_default_syntax_3"
             ),
@@ -248,6 +250,7 @@ def f(
         (
             function_with_parameters,
             "grouped_parameter_1",
+            ParameterAssignment.POSITION_OR_NAME,
             ParameterDocumentation(
                 type="int",
                 default_value="4",
@@ -257,6 +260,27 @@ def f(
         (
             function_with_parameters,
             "grouped_parameter_2",
+            ParameterAssignment.POSITION_OR_NAME,
+            ParameterDocumentation(
+                type="int",
+                default_value="4",
+                description="foo: grouped_parameter_1 and grouped_parameter_2",
+            ),
+        ),
+        (
+            function_with_parameters,
+            "args",
+            ParameterAssignment.POSITIONAL_VARARG,
+            ParameterDocumentation(
+                type="int",
+                default_value="4",
+                description="foo: grouped_parameter_1 and grouped_parameter_2",
+            ),
+        ),
+        (
+            function_with_parameters,
+            "kwargs",
+            ParameterAssignment.NAMED_VARARG,
             ParameterDocumentation(
                 type="int",
                 default_value="4",
@@ -266,6 +290,7 @@ def f(
         (
             function_with_parameters,
             "missing",
+            ParameterAssignment.POSITION_OR_NAME,
             ParameterDocumentation(type="", default_value="", description=""),
         ),
     ],
@@ -280,6 +305,8 @@ def f(
         "function parameter with default syntax 3 (equals)",
         "function parameter with grouped parameters 1",
         "function parameter with grouped parameters 2",
+        "function parameter with positional vararg",
+        "function parameter with named vararg",
         "missing function parameter",
     ],
 )
@@ -287,6 +314,7 @@ def test_get_parameter_documentation(
     numpydoc_parser: NumpyDocParser,
     python_code: str,
     parameter_name: str,
+    parameter_assigned_by: ParameterAssignment,
     expected_parameter_documentation: ParameterDocumentation,
 ):
     node = astroid.extract_node(python_code)
@@ -300,6 +328,6 @@ def test_get_parameter_documentation(
 
     assert isinstance(node, astroid.FunctionDef)
     assert (
-        numpydoc_parser.get_parameter_documentation(node, parameter_name)
+        numpydoc_parser.get_parameter_documentation(node, parameter_name, parameter_assigned_by)
         == expected_parameter_documentation
     )

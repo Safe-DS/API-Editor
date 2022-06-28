@@ -1,5 +1,6 @@
 import pytest
-from package_parser.processing.api.documentation import (
+
+from package_parser.processing.api.model import (
     ClassDocumentation,
     FunctionDocumentation,
     ParameterDocumentation,
