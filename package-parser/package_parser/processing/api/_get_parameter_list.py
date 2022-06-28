@@ -56,7 +56,8 @@ def _get_parameters_assigned_by(
     if parameters.kwarg is not None:
         result[parameters.kwarg] = ParameterAssignment.NAMED_VARARG
 
-    # Overwrite assigned_by for implicit parameters
+    # Overwrite assigned_by for implicit parameters. If first parameter of instance of class method is variadic,
+    # n_implicit_parameters is 0.
     for arg in parameters.arguments[:n_implicit_parameters]:
         result[arg.name] = ParameterAssignment.IMPLICIT
 
@@ -71,3 +72,8 @@ def _get_stringified_default_value(function_node: astroid.FunctionDef, parameter
         return default_value.as_string()
     except astroid.exceptions.NoDefault:
         return None
+
+
+class C:
+    def f(*self):
+        pass

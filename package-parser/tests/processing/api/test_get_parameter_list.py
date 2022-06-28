@@ -143,6 +143,13 @@ class C:
         pass
 """
 
+# language=Python
+instance_method_with_variadic_first_parameter = """
+class C:
+    def f(*self):
+        pass
+"""
+
 
 @pytest.mark.parametrize(
     "python_code, expected_parameter_list",
@@ -198,11 +205,23 @@ class C:
                 documentation=ParameterDocumentation()
             ),
         ]),
+        (instance_method_with_variadic_first_parameter, [
+            Parameter(
+                id_="C/f/self",
+                name="self",
+                qname="C.f.self",
+                default_value=None,
+                assigned_by=ParameterAssignment.POSITIONAL_VARARG,
+                is_public=True,
+                documentation=ParameterDocumentation()
+            ),
+        ]),
     ],
     ids=[
         "instance method parameter list",
         "static method parameter list",
-        "class method parameter list"
+        "class method parameter list",
+        "instance method with variadic first parameter"
     ]
 )
 def test_get_parameter_list_on_method(python_code: str, expected_parameter_list: list):
