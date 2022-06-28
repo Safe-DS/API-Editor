@@ -10,11 +10,22 @@ from ._get_full_docstring import get_full_docstring
 
 
 class NumpyDocParser(AbstractDocumentationParser):
+    """
+    Parses documentation in the NumpyDoc format. See https://numpydoc.readthedocs.io/en/latest/format.html for more
+    information.
+
+    This class is not thread-safe. Each thread should create its own instance.
+    """
+
+    def __init__(self):
+        self.__cached_function_node: astroid.FunctionDef | None = None
+        self.__cached_numpydoc_string: NumpyDocString | None = None
+
     def get_class_documentation(self, class_node: astroid.ClassDef) -> ClassDocumentation:
         docstring = get_full_docstring(class_node)
 
         return ClassDocumentation(
-            description=_get_description(docstring),
+            description=_get_description(NumpyDocString(docstring)),
             full_docstring=docstring
         )
 
@@ -22,7 +33,12 @@ class NumpyDocParser(AbstractDocumentationParser):
         docstring = get_full_docstring(function_node)
 
         return FunctionDocumentation(
-            description=_get_description(docstring),
+            description=_get_description(
+                self.__get_cached_function_numpydoc_string(
+                    function_node,
+                    docstring
+                )
+            ),
             full_docstring=docstring
         )
 
@@ -40,7 +56,7 @@ class NumpyDocParser(AbstractDocumentationParser):
 
         # Find matching parameter docstrings. Numpydoc allows multiple parameters to be documented at once. See
         # https://numpydoc.readthedocs.io/en/latest/format.html#parameters for more information.
-        function_numpydoc = NumpyDocString(docstring)
+        function_numpydoc = self.__get_cached_function_numpydoc_string(function_node, docstring)
         all_parameters_numpydoc: list[numpydoc.docscrape.Parameter] = function_numpydoc.get("Parameters", [])
         matching_parameters_numpydoc = [
             it for it in all_parameters_numpydoc
@@ -55,23 +71,42 @@ class NumpyDocParser(AbstractDocumentationParser):
             )
 
         last_parameter_numpydoc = matching_parameters_numpydoc[-1]
-        type, default_value = _get_type_and_default_value(last_parameter_numpydoc)
+        type_, default_value = _get_type_and_default_value(last_parameter_numpydoc)
         return ParameterDocumentation(
-            type=type,
+            type=type_,
             default_value=default_value,
             description="\n".join([line.strip() for line in last_parameter_numpydoc.desc])
         )
 
+    def __get_cached_function_numpydoc_string(
+        self,
+        function_node: astroid.FunctionDef,
+        docstring: str
+    ) -> NumpyDocString:
+        """
+        Returns the NumpyDocString for the given function node. It is only recomputed when the function node differs
+        from the previous one that was passed to this function. This avoids reparsing the docstring for the function
+        itself and all of its parameters.
 
-def _get_description(docstring: str) -> str:
+        On Lars's system this caused a significant performance improvement: Previously, 8.382s were spent inside the
+        function get_parameter_documentation when parsing sklearn. Afterwards, it was only 2.113s.
+        """
+
+        if self.__cached_function_node is not function_node:
+            self.__cached_function_node = function_node
+            self.__cached_numpydoc_string = NumpyDocString(docstring)
+
+        return self.__cached_numpydoc_string
+
+
+def _get_description(numpydoc_string: NumpyDocString) -> str:
     """
     Returns the concatenated summary and extended summary parts of the given docstring or an empty string if these parts
     are blank.
     """
 
-    numpydoc_ = NumpyDocString(docstring)
-    summary: list[str] = numpydoc_.get("Summary", [])
-    extended_summary: list[str] = numpydoc_.get("Extended Summary", [])
+    summary: list[str] = numpydoc_string.get("Summary", [])
+    extended_summary: list[str] = numpydoc_string.get("Extended Summary", [])
 
     result = ""
     result += "\n".join([line.strip() for line in summary])
