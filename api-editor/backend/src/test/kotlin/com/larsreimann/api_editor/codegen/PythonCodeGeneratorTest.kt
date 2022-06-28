@@ -18,9 +18,11 @@ import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonInt
 import com.larsreimann.api_editor.mutable_model.PythonMemberAccess
 import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonNamedSpread
 import com.larsreimann.api_editor.mutable_model.PythonNamedType
 import com.larsreimann.api_editor.mutable_model.PythonNone
 import com.larsreimann.api_editor.mutable_model.PythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonPositionalSpread
 import com.larsreimann.api_editor.mutable_model.PythonReference
 import com.larsreimann.api_editor.mutable_model.PythonString
 import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
@@ -342,6 +344,48 @@ class PythonCodeGeneratorTest {
         }
 
         @Test
+        fun `should create code for positional variadic parameters`() {
+            val testConstructor = PythonConstructor(
+                parameters = listOf(
+                    PythonParameter(
+                        name = "self",
+                        assignedBy = PythonParameterAssignment.IMPLICIT
+                    ),
+                    PythonParameter(
+                        name = "args",
+                        assignedBy = PythonParameterAssignment.POSITIONAL_VARARG
+                    ),
+                )
+            )
+
+            testConstructor.toPythonCode() shouldBe """
+                |def __init__(self, *args):
+                |    pass
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should create code for named variadic parameters`() {
+            val testConstructor = PythonConstructor(
+                parameters = listOf(
+                    PythonParameter(
+                        name = "self",
+                        assignedBy = PythonParameterAssignment.IMPLICIT
+                    ),
+                    PythonParameter(
+                        name = "kwargs",
+                        assignedBy = PythonParameterAssignment.NAMED_VARARG
+                    ),
+                )
+            )
+
+            testConstructor.toPythonCode() shouldBe """
+                |def __init__(self, **kwargs):
+                |    pass
+            """.trimMargin()
+        }
+
+        @Test
         fun `should handle constructors (no boundaries, no attributes, no call)`() {
             val testConstructor = PythonConstructor()
 
@@ -636,6 +680,40 @@ class PythonCodeGeneratorTest {
 
             testFunction.toPythonCode() shouldBe """
                 |def testFunction(self, positionOnly, /, positionOrName, *, nameOnly):
+                |    pass
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should create code for positional variadic parameters`() {
+            val testConstructor = PythonConstructor(
+                parameters = listOf(
+                    PythonParameter(
+                        name = "args",
+                        assignedBy = PythonParameterAssignment.NAMED_VARARG
+                    ),
+                )
+            )
+
+            testConstructor.toPythonCode() shouldBe """
+                |def __init__(*args):
+                |    pass
+            """.trimMargin()
+        }
+
+        @Test
+        fun `should create code for named variadic parameters`() {
+            val testConstructor = PythonConstructor(
+                parameters = listOf(
+                    PythonParameter(
+                        name = "kwargs",
+                        assignedBy = PythonParameterAssignment.POSITIONAL_VARARG
+                    ),
+                )
+            )
+
+            testConstructor.toPythonCode() shouldBe """
+                |def __init__(**kwargs):
                 |    pass
             """.trimMargin()
         }
@@ -997,7 +1075,9 @@ class PythonCodeGeneratorTest {
         private lateinit var implicit: PythonParameter
         private lateinit var positionOnly: PythonParameter
         private lateinit var positionOrName: PythonParameter
+        private lateinit var positionalVararg: PythonParameter
         private lateinit var nameOnly: PythonParameter
+        private lateinit var namedVararg: PythonParameter
 
         @BeforeEach
         fun reset() {
@@ -1013,8 +1093,16 @@ class PythonCodeGeneratorTest {
                 name = "positionOrName",
                 assignedBy = PythonParameterAssignment.POSITION_OR_NAME
             )
+            positionalVararg = PythonParameter(
+                name = "positionalVararg",
+                assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+            )
             nameOnly = PythonParameter(
                 name = "nameOnly",
+                assignedBy = PythonParameterAssignment.NAME_ONLY
+            )
+            namedVararg = PythonParameter(
+                name = "namedVararg",
                 assignedBy = PythonParameterAssignment.NAME_ONLY
             )
         }
@@ -1130,6 +1218,13 @@ class PythonCodeGeneratorTest {
 
             parameters.toPythonCode() shouldBe "implicit, positionOnly, /, positionOrName, *, nameOnly"
         }
+
+        @Test
+        fun `should handle parameter lists (IMPLICIT, POSITION_ONLY, POSITION_OR_NAME, POSITIONAL_VARARG, NAME_ONLY, NAMED_VARARG)`() {
+            val parameters = listOf(implicit, positionOnly, positionOrName, positionalVararg, nameOnly, namedVararg)
+
+            parameters.toPythonCode() shouldBe "implicit, positionOnly, /, positionOrName, *positionalVararg, nameOnly, **namedVararg"
+        }
     }
 
     @Nested
@@ -1173,6 +1268,28 @@ class PythonCodeGeneratorTest {
             )
 
             testParameter.toPythonCode() shouldBe "param: int = 1"
+        }
+
+        @Test
+        fun `should handle positional variadic parameters`() {
+            val testParameter = PythonParameter(
+                name = "param",
+                type = PythonStringifiedType("int"),
+                assignedBy = PythonParameterAssignment.POSITIONAL_VARARG
+            )
+
+            testParameter.toPythonCode() shouldBe "*param: int"
+        }
+
+        @Test
+        fun `should handle named variadic parameters`() {
+            val testParameter = PythonParameter(
+                name = "param",
+                type = PythonStringifiedType("int"),
+                assignedBy = PythonParameterAssignment.NAMED_VARARG
+            )
+
+            testParameter.toPythonCode() shouldBe "**param: int"
         }
     }
 
@@ -1232,9 +1349,25 @@ class PythonCodeGeneratorTest {
         }
 
         @Test
+        fun `should handle named spread`() {
+            val expression = PythonNamedSpread(
+                argument = PythonNone()
+            )
+            expression.toPythonCode() shouldBe "**None"
+        }
+
+        @Test
         fun `should handle None`() {
             val expression = PythonNone()
             expression.toPythonCode() shouldBe "None"
+        }
+
+        @Test
+        fun `should handle positional spread`() {
+            val expression = PythonPositionalSpread(
+                argument = PythonNone()
+            )
+            expression.toPythonCode() shouldBe "*None"
         }
 
         @Test

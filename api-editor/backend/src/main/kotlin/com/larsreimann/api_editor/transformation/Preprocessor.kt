@@ -54,17 +54,17 @@ fun PythonPackage.addOriginalDeclarations() {
     this.descendants()
         .forEach {
             when (it) {
-                is PythonClass -> it.addOriginalDeclarations()
-                is PythonFunction -> it.addOriginalDeclarations()
+                is PythonClass -> it.addOriginalDeclaration()
+                is PythonFunction -> it.addOriginalDeclaration()
             }
         }
 }
 
-private fun PythonClass.addOriginalDeclarations() {
+private fun PythonClass.addOriginalDeclaration() {
     this.originalClass = OriginalPythonClass(this.qualifiedName())
 }
 
-private fun PythonFunction.addOriginalDeclarations() {
+private fun PythonFunction.addOriginalDeclaration() {
     val containingClass = closest<PythonClass>()
     this.callToOriginalAPI = PythonCall(
         receiver = PythonStringifiedExpression(

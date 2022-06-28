@@ -265,6 +265,14 @@ class PythonMemberAccess(
     }
 }
 
+class PythonNamedSpread(argument: PythonExpression) : PythonExpression() {
+    var argument by ContainmentReference(argument)
+}
+
+class PythonPositionalSpread(argument: PythonExpression) : PythonExpression() {
+    var argument by ContainmentReference(argument)
+}
+
 class PythonReference(declaration: PythonDeclaration) : PythonExpression() {
     var declaration by CrossReference(declaration)
 }

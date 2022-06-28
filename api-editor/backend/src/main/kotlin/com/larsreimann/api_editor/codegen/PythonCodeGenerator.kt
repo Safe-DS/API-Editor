@@ -23,9 +23,11 @@ import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonInt
 import com.larsreimann.api_editor.mutable_model.PythonMemberAccess
 import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonNamedSpread
 import com.larsreimann.api_editor.mutable_model.PythonNamedType
 import com.larsreimann.api_editor.mutable_model.PythonNone
 import com.larsreimann.api_editor.mutable_model.PythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonPositionalSpread
 import com.larsreimann.api_editor.mutable_model.PythonReference
 import com.larsreimann.api_editor.mutable_model.PythonString
 import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
@@ -309,7 +311,9 @@ fun PythonExpression.toPythonCode(): String {
         is PythonFloat -> value.toString()
         is PythonInt -> value.toString()
         is PythonMemberAccess -> "${receiver!!.toPythonCode()}.${member!!.toPythonCode()}"
+        is PythonNamedSpread -> "**${argument!!.toPythonCode()}"
         is PythonNone -> "None"
+        is PythonPositionalSpread -> "*${argument!!.toPythonCode()}"
         is PythonReference -> declaration!!.name
         is PythonString -> "'$value'"
         is PythonStringifiedExpression -> string
