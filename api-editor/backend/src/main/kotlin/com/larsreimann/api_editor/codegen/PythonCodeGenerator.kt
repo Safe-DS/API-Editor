@@ -266,7 +266,13 @@ fun List<PythonParameter>.toPythonCode(): String {
     val positionOrNameParametersString = assignedByToParameter[POSITION_OR_NAME]
         ?.joinToString { it.toPythonCode() }
         ?: ""
+    val positionalVarargParametersString = assignedByToParameter[POSITIONAL_VARARG]
+        ?.joinToString { it.toPythonCode() }
+        ?: ""
     var nameOnlyParametersString = assignedByToParameter[NAME_ONLY]
+        ?.joinToString { it.toPythonCode() }
+        ?: ""
+    val namedVarargsParametersString = assignedByToParameter[NAMED_VARARG]
         ?.joinToString { it.toPythonCode() }
         ?: ""
 
@@ -274,7 +280,9 @@ fun List<PythonParameter>.toPythonCode(): String {
         positionOnlyParametersString = "$positionOnlyParametersString, /"
     }
 
-    if (nameOnlyParametersString.isNotBlank()) {
+    // If there is already a positional vararg parameter, the star must not be added since the parameter already acts as
+    // the boundary.
+    if (positionalVarargParametersString.isBlank() && nameOnlyParametersString.isNotBlank()) {
         nameOnlyParametersString = "*, $nameOnlyParametersString"
     }
 
@@ -282,7 +290,9 @@ fun List<PythonParameter>.toPythonCode(): String {
         implicitParametersString,
         positionOnlyParametersString,
         positionOrNameParametersString,
-        nameOnlyParametersString
+        positionalVarargParametersString,
+        nameOnlyParametersString,
+        namedVarargsParametersString
     )
 
     return parameterStrings

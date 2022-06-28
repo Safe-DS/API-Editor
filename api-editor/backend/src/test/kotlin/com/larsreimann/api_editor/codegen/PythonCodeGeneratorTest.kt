@@ -690,7 +690,7 @@ class PythonCodeGeneratorTest {
                 parameters = listOf(
                     PythonParameter(
                         name = "args",
-                        assignedBy = PythonParameterAssignment.NAMED_VARARG
+                        assignedBy = PythonParameterAssignment.POSITIONAL_VARARG
                     ),
                 )
             )
@@ -707,7 +707,7 @@ class PythonCodeGeneratorTest {
                 parameters = listOf(
                     PythonParameter(
                         name = "kwargs",
-                        assignedBy = PythonParameterAssignment.POSITIONAL_VARARG
+                        assignedBy = PythonParameterAssignment.NAMED_VARARG
                     ),
                 )
             )
@@ -1095,7 +1095,7 @@ class PythonCodeGeneratorTest {
             )
             positionalVararg = PythonParameter(
                 name = "positionalVararg",
-                assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+                assignedBy = PythonParameterAssignment.POSITIONAL_VARARG
             )
             nameOnly = PythonParameter(
                 name = "nameOnly",
@@ -1103,7 +1103,7 @@ class PythonCodeGeneratorTest {
             )
             namedVararg = PythonParameter(
                 name = "namedVararg",
-                assignedBy = PythonParameterAssignment.NAME_ONLY
+                assignedBy = PythonParameterAssignment.NAMED_VARARG
             )
         }
 
