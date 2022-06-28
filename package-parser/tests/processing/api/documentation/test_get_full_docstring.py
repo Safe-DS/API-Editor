@@ -1,29 +1,56 @@
 import astroid
 import pytest
 
-# language=python
-from package_parser.processing.api.documentation._AbstractDocumentationParsingStrategy import get_full_docstring
+from package_parser.processing.api.documentation import get_full_docstring
 
-test_class_with_documentation = '''
+# language=python
+class_with_multi_line_documentation = '''
 class C:
-    """Lorem ipsum."""
+    """
+    Lorem ipsum.
+
+    Dolor sit amet.
+    """
+
     pass
 '''
 
 # language=python
-test_function_with_documentation = '''
+class_with_single_line_documentation = '''
+class C:
+    """Lorem ipsum."""
+
+    pass
+'''
+
+# language=python
+class_without_documentation = '''
+class C:
+    pass
+'''
+
+# language=python
+function_with_multi_line_documentation = '''
+def f():
+    """
+    Lorem ipsum.
+
+    Dolor sit amet.
+    """
+
+    pass
+'''
+
+# language=python
+function_with_single_line_documentation = '''
 def f():
     """Lorem ipsum."""
-    pass
-'''
 
-test_class_without_documentation = '''
-class C:
     pass
 '''
 
 # language=python
-test_function_without_documentation = '''
+function_without_documentation = '''
 def f():
     pass
 '''
@@ -32,10 +59,12 @@ def f():
 @pytest.mark.parametrize(
     "python_code, expected_docstring",
     [
-        (test_class_with_documentation, "Lorem ipsum."),
-        (test_function_with_documentation, "Lorem ipsum."),
-        (test_class_without_documentation, ""),
-        (test_function_without_documentation, ""),
+        (class_with_multi_line_documentation, "Lorem ipsum.\n\nDolor sit amet."),
+        (class_with_single_line_documentation, "Lorem ipsum."),
+        (class_without_documentation, ""),
+        (function_with_multi_line_documentation, "Lorem ipsum.\n\nDolor sit amet."),
+        (function_with_single_line_documentation, "Lorem ipsum."),
+        (function_without_documentation, ""),
     ]
 )
 def test_get_full_docstring(python_code: str, expected_docstring: str):

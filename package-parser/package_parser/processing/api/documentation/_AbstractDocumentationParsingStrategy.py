@@ -17,8 +17,11 @@ class AbstractDocumentationParsingStrategy(ABC):
         pass
 
     @abstractmethod
-    def get_parameter_documentation(self, function_node: astroid.FunctionDef,
-                                    parameter_name: str) -> ParameterDocumentation:
+    def get_parameter_documentation(
+        self,
+        function_node: astroid.FunctionDef,
+        parameter_name: str
+    ) -> ParameterDocumentation:
         pass
 
 
@@ -37,11 +40,5 @@ class FunctionDocumentation:
 @dataclass
 class ParameterDocumentation:
     type: str
+    default_value: str
     description: str
-
-
-def get_full_docstring(declaration: astroid.ClassDef | astroid.FunctionDef) -> str:
-    doc_node = declaration.doc_node
-    if doc_node is None:
-        return ""
-    return doc_node.value
