@@ -25,6 +25,9 @@ dist/
 htmlcov/
 .coverage
 
+# Test __init__.py files
+tests/**/__init__.py
+
 # Output of this tool
 out/
 tmp/
