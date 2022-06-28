@@ -71,15 +71,3 @@ def _get_stringified_default_value(function_node: astroid.FunctionDef, parameter
         return default_value.as_string()
     except astroid.exceptions.NoDefault:
         return None
-
-
-def _get_parameter_default(
-    defaults: list[astroid.NodeNG], default_index: int
-) -> Optional[str]:
-    if 0 <= default_index < len(defaults):
-        default = defaults[default_index]
-        if default is None:
-            return None
-        return default.as_string()
-    else:
-        return None
