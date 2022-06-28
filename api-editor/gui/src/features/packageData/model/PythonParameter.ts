@@ -7,7 +7,9 @@ export enum PythonParameterAssignment {
     IMPLICIT = 'IMPLICIT',
     POSITION_ONLY = 'POSITION_ONLY',
     POSITION_OR_NAME = 'POSITION_OR_NAME',
+    POSITIONAL_VARARG = 'POSITIONAL_VARARG',
     NAME_ONLY = 'NAME_ONLY',
+    NAMED_VARARG = 'NAMED_VARARG',
 }
 
 export class PythonParameter extends PythonDeclaration {

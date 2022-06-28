@@ -63,7 +63,7 @@ export interface PythonParameterJson {
     name: string;
     qname: string;
     default_value: Optional<string>;
-    assigned_by: 'IMPLICIT' | 'POSITION_ONLY' | 'POSITION_OR_NAME' | 'NAME_ONLY';
+    assigned_by: ParameterAssignment;
     is_public: boolean;
     docstring: {
         type: Optional<string>;
@@ -79,3 +79,11 @@ export interface PythonResultJson {
         description: Optional<string>;
     };
 }
+
+export type ParameterAssignment =
+    | 'IMPLICIT'
+    | 'POSITION_ONLY'
+    | 'POSITION_OR_NAME'
+    | 'POSITIONAL_VARARG'
+    | 'NAME_ONLY'
+    | 'NAMED_VARARG';
