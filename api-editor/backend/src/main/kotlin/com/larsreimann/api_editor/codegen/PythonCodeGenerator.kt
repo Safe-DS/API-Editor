@@ -5,7 +5,9 @@ import com.larsreimann.api_editor.model.ComparisonOperator.LESS_THAN
 import com.larsreimann.api_editor.model.ComparisonOperator.LESS_THAN_OR_EQUALS
 import com.larsreimann.api_editor.model.ComparisonOperator.UNRESTRICTED
 import com.larsreimann.api_editor.model.PythonParameterAssignment.IMPLICIT
+import com.larsreimann.api_editor.model.PythonParameterAssignment.NAMED_VARARG
 import com.larsreimann.api_editor.model.PythonParameterAssignment.NAME_ONLY
+import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITIONAL_VARARG
 import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITION_ONLY
 import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITION_OR_NAME
 import com.larsreimann.api_editor.mutable_model.PythonArgument
@@ -291,6 +293,11 @@ fun List<PythonParameter>.toPythonCode(): String {
 fun PythonParameter.toPythonCode() = buildString {
     val typeStringOrNull = type.toPythonCodeOrNull()
 
+    if (assignedBy == POSITIONAL_VARARG) {
+        append("*")
+    } else if (assignedBy == NAMED_VARARG) {
+        append("**")
+    }
     append(name)
     if (typeStringOrNull != null) {
         append(": $typeStringOrNull")
