@@ -4,8 +4,8 @@ import astroid
 import numpydoc.docscrape
 from numpydoc.docscrape import NumpyDocString
 
-from ._AbstractDocumentationParser import AbstractDocumentationParser, ParameterDocumentation, \
-    FunctionDocumentation, ClassDocumentation
+from ._AbstractDocumentationParser import AbstractDocumentationParser
+from ._APIElementDocumentation import ClassDocumentation, FunctionDocumentation, ParameterDocumentation
 from ._get_full_docstring import get_full_docstring
 
 
