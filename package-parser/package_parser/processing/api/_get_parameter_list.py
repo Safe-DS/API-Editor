@@ -96,7 +96,7 @@ def _get_parameters_assigned_by(
         result[arg.name] = ParameterAssignment.NAME_ONLY
 
     if parameters.kwarg is not None:
-        result[parameters.kwarg] = ParameterAssignment.KEYWORD_VARARG
+        result[parameters.kwarg] = ParameterAssignment.NAMED_VARARG
 
     # Overwrite assigned_by for implicit parameters
     for arg in parameters.arguments[:n_implicit_parameters]:
