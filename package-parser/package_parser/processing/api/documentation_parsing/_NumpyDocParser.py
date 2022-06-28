@@ -135,13 +135,12 @@ def _is_matching_parameter_numpydoc(
     Returns whether the given NumpyDoc applied to the parameter with the given name.
     """
 
-    match parameter_assigned_by:
-        case ParameterAssignment.POSITIONAL_VARARG:
-            lookup_name = f"*{parameter_name}"
-        case ParameterAssignment.NAMED_VARARG:
-            lookup_name = f"**{parameter_name}"
-        case _:
-            lookup_name = parameter_name
+    if parameter_assigned_by == ParameterAssignment.POSITIONAL_VARARG:
+        lookup_name = f"*{parameter_name}"
+    elif parameter_assigned_by == ParameterAssignment.NAMED_VARARG:
+        lookup_name = f"**{parameter_name}"
+    else:
+        lookup_name = parameter_name
 
     return any(
         name.strip() == lookup_name for name in parameter_numpydoc.name.split(",")

@@ -75,8 +75,3 @@ def _get_stringified_default_value(function_node: astroid.FunctionDef, parameter
         return default_value.as_string()
     except astroid.exceptions.NoDefault:
         return None
-
-
-class C:
-    def f(*self):
-        pass
