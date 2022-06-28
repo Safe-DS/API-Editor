@@ -103,17 +103,21 @@ class BoundaryType(AbstractType):
             base_type = match.group("base_type")
             if base_type is None:
                 base_type = "float"
-            base_type = eval(base_type)
+
+            if base_type == "int":
+                base_type_converter = int
+            else:
+                base_type_converter = float
 
             min_value = match.group("min")
             if min_value != "negative_infinity":
-                min_value = base_type(min_value)
+                min_value = base_type_converter(min_value)
             else:
                 min_value = BoundaryType.NEGATIVE_INFINITY
 
             max_value = match.group("max")
             if max_value != "infinity":
-                max_value = base_type(max_value)
+                max_value = base_type_converter(max_value)
             else:
                 max_value = BoundaryType.INFINITY
 
@@ -123,7 +127,7 @@ class BoundaryType(AbstractType):
             max_inclusive = BoundaryType._is_inclusive(max_bracket)
 
             return BoundaryType(
-                base_type.__name__, min_value, max_value, min_inclusive, max_inclusive
+                base_type, min_value, max_value, min_inclusive, max_inclusive
             )
 
         return None

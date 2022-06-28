@@ -1,4 +1,5 @@
 import re
+from typing import Optional
 
 import astroid
 import numpydoc.docscrape
@@ -18,8 +19,8 @@ class NumpyDocParser(AbstractDocumentationParser):
     """
 
     def __init__(self):
-        self.__cached_function_node: astroid.FunctionDef | None = None
-        self.__cached_numpydoc_string: NumpyDocString | None = None
+        self.__cached_function_node: Optional[astroid.FunctionDef] = None
+        self.__cached_numpydoc_string: Optional[NumpyDocString] = None
 
     def get_class_documentation(self, class_node: astroid.ClassDef) -> ClassDocumentation:
         docstring = get_full_docstring(class_node)
