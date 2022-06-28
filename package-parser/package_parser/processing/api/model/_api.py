@@ -4,8 +4,9 @@ from dataclasses import dataclass
 from typing import Any, Optional
 
 from package_parser.utils import parent_id
-from ._parameters import Parameter
+
 from ._documentation import ClassDocumentation, FunctionDocumentation
+from ._parameters import Parameter
 
 API_SCHEMA_VERSION = 1
 

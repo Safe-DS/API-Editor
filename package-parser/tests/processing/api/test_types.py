@@ -1,7 +1,6 @@
 from typing import Any
 
 import pytest
-
 from package_parser.processing.api.model import ParameterDocumentation, Type
 
 
@@ -63,7 +62,7 @@ from package_parser.processing.api.model import ParameterDocumentation, Type
                     {
                         "kind": "NamedType",
                         "name": "shape (n_samples, n_classes) or (n_samples, 1) when "
-                                "binary.",
+                        "binary.",
                     },
                 ],
             },

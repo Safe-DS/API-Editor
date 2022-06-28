@@ -3,8 +3,8 @@ from __future__ import annotations
 from enum import Enum
 from typing import Any, Optional
 
-from ._types import Type
 from ._documentation import ParameterDocumentation
+from ._types import Type
 
 
 class Parameter:
@@ -71,6 +71,6 @@ class ParameterAssignment(Enum):
     IMPLICIT = "IMPLICIT"
     POSITION_ONLY = "POSITION_ONLY"
     POSITION_OR_NAME = "POSITION_OR_NAME"
-    POSITIONAL_VARARG = "POSITIONAL_VARARG",
+    POSITIONAL_VARARG = ("POSITIONAL_VARARG",)
     NAME_ONLY = "NAME_ONLY"
     NAMED_VARARG = "NAMED_VARARG"

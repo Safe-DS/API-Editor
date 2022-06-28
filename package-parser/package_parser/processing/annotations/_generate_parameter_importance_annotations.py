@@ -18,7 +18,10 @@ def _generate_parameter_importance_annotations(
     for parameter in api.parameters().values():
 
         # Don't create annotations for variadic parameters
-        if parameter.assigned_by == ParameterAssignment.POSITIONAL_VARARG or parameter.assigned_by == ParameterAssignment.NAMED_VARARG:
+        if (
+            parameter.assigned_by == ParameterAssignment.POSITIONAL_VARARG
+            or parameter.assigned_by == ParameterAssignment.NAMED_VARARG
+        ):
             continue
 
         parameter_values = usages.most_common_parameter_values(parameter.id)

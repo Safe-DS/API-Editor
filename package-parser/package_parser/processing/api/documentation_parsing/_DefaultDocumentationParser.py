@@ -1,11 +1,11 @@
 import astroid
-
 from package_parser.processing.api.model import (
     ClassDocumentation,
     FunctionDocumentation,
+    ParameterAssignment,
     ParameterDocumentation,
-    ParameterAssignment
 )
+
 from ._AbstractDocumentationParser import AbstractDocumentationParser
 from ._get_full_docstring import get_full_docstring
 

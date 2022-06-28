@@ -3,12 +3,11 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 
 import astroid
-
 from package_parser.processing.api.model import (
     ClassDocumentation,
     FunctionDocumentation,
+    ParameterAssignment,
     ParameterDocumentation,
-    ParameterAssignment
 )
 
 
@@ -30,6 +29,6 @@ class AbstractDocumentationParser(ABC):
         self,
         function_node: astroid.FunctionDef,
         parameter_name: str,
-        parameter_assigned_by: ParameterAssignment
+        parameter_assigned_by: ParameterAssignment,
     ) -> ParameterDocumentation:
         pass

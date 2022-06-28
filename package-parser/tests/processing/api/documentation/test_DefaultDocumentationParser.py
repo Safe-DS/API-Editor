@@ -1,12 +1,13 @@
 import astroid
 import pytest
-
-from package_parser.processing.api.documentation_parsing import DefaultDocumentationParser
+from package_parser.processing.api.documentation_parsing import (
+    DefaultDocumentationParser,
+)
 from package_parser.processing.api.model import (
     ClassDocumentation,
     FunctionDocumentation,
-    ParameterDocumentation,
     ParameterAssignment,
+    ParameterDocumentation,
 )
 
 
@@ -63,7 +64,10 @@ def test_get_class_documentation(
     node = astroid.extract_node(python_code)
 
     assert isinstance(node, astroid.ClassDef)
-    assert default_documentation_parser.get_class_documentation(node) == expected_class_documentation
+    assert (
+        default_documentation_parser.get_class_documentation(node)
+        == expected_class_documentation
+    )
 
 
 # language=python
@@ -156,9 +160,7 @@ def test_get_parameter_documentation(
     assert isinstance(node, astroid.FunctionDef)
     assert (
         default_documentation_parser.get_parameter_documentation(
-            node,
-            parameter_name,
-            ParameterAssignment.POSITION_OR_NAME
+            node, parameter_name, ParameterAssignment.POSITION_OR_NAME
         )
         == expected_parameter_documentation
     )

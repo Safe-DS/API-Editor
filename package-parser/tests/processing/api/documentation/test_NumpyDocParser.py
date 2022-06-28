@@ -1,11 +1,11 @@
 import astroid
 import pytest
-
 from package_parser.processing.api.documentation_parsing import NumpyDocParser
 from package_parser.processing.api.model import (
     ClassDocumentation,
     FunctionDocumentation,
-    ParameterDocumentation, ParameterAssignment,
+    ParameterAssignment,
+    ParameterDocumentation,
 )
 
 
@@ -329,6 +329,8 @@ def test_get_parameter_documentation(
 
     assert isinstance(node, astroid.FunctionDef)
     assert (
-        numpydoc_parser.get_parameter_documentation(node, parameter_name, parameter_assigned_by)
+        numpydoc_parser.get_parameter_documentation(
+            node, parameter_name, parameter_assigned_by
+        )
         == expected_parameter_documentation
     )

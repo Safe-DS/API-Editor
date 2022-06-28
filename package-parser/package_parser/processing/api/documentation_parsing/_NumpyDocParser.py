@@ -4,13 +4,13 @@ from typing import Optional, Tuple
 import astroid
 import numpydoc.docscrape
 from numpydoc.docscrape import NumpyDocString
-
 from package_parser.processing.api.model import (
     ClassDocumentation,
     FunctionDocumentation,
+    ParameterAssignment,
     ParameterDocumentation,
-    ParameterAssignment
 )
+
 from ._AbstractDocumentationParser import AbstractDocumentationParser
 from ._get_full_docstring import get_full_docstring
 
@@ -53,7 +53,7 @@ class NumpyDocParser(AbstractDocumentationParser):
         self,
         function_node: astroid.FunctionDef,
         parameter_name: str,
-        parameter_assigned_by: ParameterAssignment
+        parameter_assigned_by: ParameterAssignment,
     ) -> ParameterDocumentation:
 
         # For constructors (__init__ functions) the parameters are described on the class
@@ -75,7 +75,9 @@ class NumpyDocParser(AbstractDocumentationParser):
         matching_parameters_numpydoc = [
             it
             for it in all_parameters_numpydoc
-            if _is_matching_parameter_numpydoc(it, parameter_name, parameter_assigned_by)
+            if _is_matching_parameter_numpydoc(
+                it, parameter_name, parameter_assigned_by
+            )
         ]
 
         if len(matching_parameters_numpydoc) == 0:
