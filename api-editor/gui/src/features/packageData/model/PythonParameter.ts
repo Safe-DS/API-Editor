@@ -63,7 +63,11 @@ export class PythonParameter extends PythonDeclaration {
     }
 
     isExplicitParameter(): boolean {
-        return this.assignedBy !== PythonParameterAssignment.IMPLICIT;
+        return (
+            this.assignedBy !== PythonParameterAssignment.IMPLICIT &&
+            this.assignedBy !== PythonParameterAssignment.POSITIONAL_VARARG &&
+            this.assignedBy !== PythonParameterAssignment.NAMED_VARARG
+        );
     }
 
     toString(): string {

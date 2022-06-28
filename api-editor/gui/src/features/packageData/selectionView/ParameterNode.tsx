@@ -18,7 +18,7 @@ export const ParameterNode: React.FC<ParameterNodeProps> = function ({ isTitle, 
     const id = pythonParameter.id;
 
     const isConstructorParameter = pythonParameter.parent()?.name === '__init__';
-    const isExplicitParameter = pythonParameter.isExplicitParameter();
+    const canBeAnnotated = pythonParameter.isPublic && pythonParameter.isExplicitParameter();
 
     return (
         <Stack spacing={4}>
@@ -35,7 +35,7 @@ export const ParameterNode: React.FC<ParameterNodeProps> = function ({ isTitle, 
                     </Heading>
                 )}
                 <Wrap>
-                    {pythonParameter.isPublic && isExplicitParameter && (
+                    {canBeAnnotated && (
                         <AnnotationDropdown
                             target={id}
                             showAttribute={isConstructorParameter}
@@ -51,7 +51,7 @@ export const ParameterNode: React.FC<ParameterNodeProps> = function ({ isTitle, 
                     )}
 
                     <CompleteButton target={id} />
-                    <MissingAnnotationButton target={id} />
+                    {canBeAnnotated && <MissingAnnotationButton target={id} />}
                     <DataCopyButtons target={id} />
                 </Wrap>
             </HStack>

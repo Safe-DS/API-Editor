@@ -52,7 +52,7 @@ export const FunctionView: React.FC<FunctionViewProps> = function ({ pythonFunct
                             />
                         )}
                         <CompleteButton target={id} />
-                        <MissingAnnotationButton target={id} />
+                        {pythonFunction.isPublic && <MissingAnnotationButton target={id} />}
                         <DataCopyButtons target={id} />
                     </Wrap>
                 </HStack>

@@ -28,7 +28,7 @@ export const ClassView: React.FC<ClassViewProps> = function ({ pythonClass }) {
                             <AnnotationDropdown target={id} showDescription showMove showRemove showRename showTodo />
                         )}
                         <CompleteButton target={id} />
-                        <MissingAnnotationButton target={id} />
+                        {pythonClass.isPublic && <MissingAnnotationButton target={id} />}
                         <DataCopyButtons target={id} />
                     </Wrap>
                 </HStack>
