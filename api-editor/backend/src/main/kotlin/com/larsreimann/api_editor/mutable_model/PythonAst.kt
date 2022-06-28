@@ -247,7 +247,9 @@ class PythonCall(
     }
 }
 
-sealed class PythonLiteral : PythonExpression()
+sealed class PythonLiteral : PythonExpression() {
+    override fun children() = emptySequence<ModelNode>()
+}
 
 data class PythonBoolean(val value: Boolean) : PythonLiteral()
 data class PythonFloat(val value: Double) : PythonLiteral()
@@ -287,9 +289,13 @@ class PythonPositionalSpread(argument: PythonExpression) : PythonExpression() {
 
 class PythonReference(declaration: PythonDeclaration) : PythonExpression() {
     var declaration by CrossReference(declaration)
+
+    override fun children() = emptySequence<ModelNode>()
 }
 
-data class PythonStringifiedExpression(val string: String) : PythonExpression()
+data class PythonStringifiedExpression(val string: String) : PythonExpression() {
+    override fun children() = emptySequence<ModelNode>()
+}
 
 /* ********************************************************************************************************************
  * Types
@@ -302,12 +308,16 @@ sealed class PythonType : PythonAstNode() {
 class PythonNamedType(declaration: PythonDeclaration?) : PythonType() {
     var declaration by CrossReference(declaration)
 
+    override fun children() = emptySequence<ModelNode>()
+
     override fun copy(): PythonNamedType {
         return PythonNamedType(declaration)
     }
 }
 
 data class PythonStringifiedType(val string: String) : PythonType() {
+    override fun children() = emptySequence<ModelNode>()
+
     override fun copy(): PythonStringifiedType {
         return PythonStringifiedType(string)
     }

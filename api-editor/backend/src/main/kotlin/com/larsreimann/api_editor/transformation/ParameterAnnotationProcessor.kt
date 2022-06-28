@@ -64,7 +64,7 @@ private fun PythonParameter.processAttributeAnnotation(annotation: AttributeAnno
     )
 
     // Update argument that references this parameter
-    val arguments = this.crossReferences()
+    val arguments = crossReferencesToThis()
         .mapNotNull { (it.parent as? PythonReference)?.closest<PythonArgument>() }
         .toList()
 
@@ -82,7 +82,7 @@ private fun PythonParameter.processAttributeAnnotation(annotation: AttributeAnno
 private fun PythonParameter.processConstantAnnotation(annotation: ConstantAnnotation) {
 
     // Update argument that references this parameter
-    val arguments = this.crossReferences()
+    val arguments = crossReferencesToThis()
         .mapNotNull { (it.parent as? PythonReference)?.closest<PythonArgument>() }
         .toList()
 
