@@ -130,7 +130,8 @@ class C:
         foo
     """
 
-    pass
+    def __init__(self):
+        pass
 '''
 
 # language=python
@@ -158,7 +159,7 @@ def f():
         foo: with_default_syntax_3
     grouped_parameter_1, grouped_parameter_2 : int, default=4
         foo: grouped_parameter_1 and grouped_parameter_2
-    *args: int
+    *args : int
         foo: *args
     **kwargs : int
         foo: **kwargs
@@ -273,8 +274,8 @@ def f():
             ParameterAssignment.POSITIONAL_VARARG,
             ParameterDocumentation(
                 type="int",
-                default_value="4",
-                description="foo: grouped_parameter_1 and grouped_parameter_2",
+                default_value="",
+                description="foo: *args",
             ),
         ),
         (
@@ -283,8 +284,8 @@ def f():
             ParameterAssignment.NAMED_VARARG,
             ParameterDocumentation(
                 type="int",
-                default_value="4",
-                description="foo: grouped_parameter_1 and grouped_parameter_2",
+                default_value="",
+                description="foo: **kwargs",
             ),
         ),
         (

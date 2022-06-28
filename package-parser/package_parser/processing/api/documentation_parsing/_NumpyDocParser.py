@@ -143,6 +143,9 @@ def _is_matching_parameter_numpydoc(
         case _:
             lookup_name = parameter_name
 
+    print(parameter_numpydoc.name.split(","))
+    print(lookup_name)
+
     return any(
         name.strip() == lookup_name for name in parameter_numpydoc.name.split(",")
     )
