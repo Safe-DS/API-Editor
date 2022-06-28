@@ -7,9 +7,9 @@ from ._api import (
     Import,
     Module,
     Parameter,
-    ResultDocstring,
     ParameterAssignment,
     Result,
+    ResultDocstring,
     Type,
 )
 from ._types import AbstractType, BoundaryType, EnumType, NamedType, UnionType

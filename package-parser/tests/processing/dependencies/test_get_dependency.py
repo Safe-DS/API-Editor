@@ -1,21 +1,15 @@
 import spacy
-
 from package_parser.processing.api.documentation import ParameterDocumentation
-from package_parser.processing.api.model import (
-    Parameter,
-    ParameterAssignment
-)
+from package_parser.processing.api.model import Parameter, ParameterAssignment
 from package_parser.processing.dependencies import (
     Action,
     Condition,
     Dependency,
+    DependencyExtractor,
     ParameterHasValue,
     ParameterIsIgnored,
     ParameterIsIllegal,
     ParameterIsNone,
-)
-from package_parser.processing.dependencies import (
-    DependencyExtractor,
     extract_action,
     extract_condition,
     extract_lefts_and_rights,
@@ -109,7 +103,7 @@ def test_extract_dependencies_from_docstring_pattern_adverbial_clause():
         documentation=ParameterDocumentation(
             type="param possible types",
             default_value="",
-            description=param_docstring_nlp.text
+            description=param_docstring_nlp.text,
         ),
     )
     dependee_param = Parameter(
@@ -122,7 +116,7 @@ def test_extract_dependencies_from_docstring_pattern_adverbial_clause():
         documentation=ParameterDocumentation(
             type="param possible types",
             default_value="",
-            description="param probability docstring"
+            description="param probability docstring",
         ),
     )
     func_params = [dependent_param, dependee_param]

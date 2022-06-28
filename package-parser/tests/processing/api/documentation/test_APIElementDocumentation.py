@@ -1,7 +1,9 @@
 import pytest
-
-from package_parser.processing.api.documentation import ClassDocumentation, FunctionDocumentation, \
-    ParameterDocumentation
+from package_parser.processing.api.documentation import (
+    ClassDocumentation,
+    FunctionDocumentation,
+    ParameterDocumentation,
+)
 
 
 @pytest.mark.parametrize(
@@ -9,10 +11,15 @@ from package_parser.processing.api.documentation import ClassDocumentation, Func
     [
         ClassDocumentation(),
         ClassDocumentation(description="foo", full_docstring="foo bar"),
-    ]
+    ],
 )
-def test_dict_conversion_for_class_documentation(class_documentation: ClassDocumentation):
-    assert ClassDocumentation.from_dict(class_documentation.to_dict()) == class_documentation
+def test_dict_conversion_for_class_documentation(
+    class_documentation: ClassDocumentation,
+):
+    assert (
+        ClassDocumentation.from_dict(class_documentation.to_dict())
+        == class_documentation
+    )
 
 
 @pytest.mark.parametrize(
@@ -20,10 +27,15 @@ def test_dict_conversion_for_class_documentation(class_documentation: ClassDocum
     [
         FunctionDocumentation(),
         FunctionDocumentation(description="foo", full_docstring="foo bar"),
-    ]
+    ],
 )
-def test_dict_conversion_for_function_documentation(function_documentation: FunctionDocumentation):
-    assert FunctionDocumentation.from_dict(function_documentation.to_dict()) == function_documentation
+def test_dict_conversion_for_function_documentation(
+    function_documentation: FunctionDocumentation,
+):
+    assert (
+        FunctionDocumentation.from_dict(function_documentation.to_dict())
+        == function_documentation
+    )
 
 
 @pytest.mark.parametrize(
@@ -31,7 +43,12 @@ def test_dict_conversion_for_function_documentation(function_documentation: Func
     [
         ParameterDocumentation(),
         ParameterDocumentation(type="int", default_value="1", description="foo bar"),
-    ]
+    ],
 )
-def test_dict_conversion_for_parameter_documentation(parameter_documentation: ParameterDocumentation):
-    assert ParameterDocumentation.from_dict(parameter_documentation.to_dict()) == parameter_documentation
+def test_dict_conversion_for_parameter_documentation(
+    parameter_documentation: ParameterDocumentation,
+):
+    assert (
+        ParameterDocumentation.from_dict(parameter_documentation.to_dict())
+        == parameter_documentation
+    )

@@ -1,6 +1,5 @@
 import astroid
 import pytest
-
 from package_parser.processing.api.documentation import get_full_docstring
 
 # language=python
@@ -24,10 +23,10 @@ class C:
 '''
 
 # language=python
-class_without_documentation = '''
+class_without_documentation = """
 class C:
     pass
-'''
+"""
 
 # language=python
 function_with_multi_line_documentation = '''
@@ -50,10 +49,10 @@ def f():
 '''
 
 # language=python
-function_without_documentation = '''
+function_without_documentation = """
 def f():
     pass
-'''
+"""
 
 
 @pytest.mark.parametrize(
@@ -73,7 +72,7 @@ def f():
         "function with multi line documentation",
         "function with single line documentation",
         "function without documentation",
-    ]
+    ],
 )
 def test_get_full_docstring(python_code: str, expected_docstring: str):
     node = astroid.extract_node(python_code)

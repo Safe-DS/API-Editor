@@ -1,7 +1,6 @@
 from typing import Any
 
 import pytest
-
 from package_parser.processing.api.documentation import ParameterDocumentation
 from package_parser.processing.api.model import Type
 
@@ -64,7 +63,7 @@ from package_parser.processing.api.model import Type
                     {
                         "kind": "NamedType",
                         "name": "shape (n_samples, n_classes) or (n_samples, 1) when "
-                                "binary.",
+                        "binary.",
                     },
                 ],
             },
@@ -137,11 +136,10 @@ def test_boundary_and_union_from_string(
     docstring_type: str, docstring_description: str, expected: dict[str, Any]
 ):
     assert (
-        Type(ParameterDocumentation(
-            type=docstring_type,
-            default_value="",
-            description=docstring_description
-        )
+        Type(
+            ParameterDocumentation(
+                type=docstring_type, default_value="", description=docstring_description
+            )
         ).to_json()
         == expected
     )

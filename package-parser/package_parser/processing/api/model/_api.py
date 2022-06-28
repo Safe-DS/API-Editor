@@ -5,16 +5,14 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Optional
 
-from package_parser.processing.api.documentation import FunctionDocumentation, ClassDocumentation, \
-    ParameterDocumentation
-from ._types import (
-    AbstractType,
-    BoundaryType,
-    EnumType,
-    NamedType,
-    UnionType,
+from package_parser.processing.api.documentation import (
+    ClassDocumentation,
+    FunctionDocumentation,
+    ParameterDocumentation,
 )
 from package_parser.utils import parent_id
+
+from ._types import AbstractType, BoundaryType, EnumType, NamedType, UnionType
 
 API_SCHEMA_VERSION = 1
 
@@ -213,7 +211,7 @@ class Class:
             ClassDocumentation(
                 description=json.get("description", ""),
                 full_docstring=json.get("docstring", ""),
-            )
+            ),
         )
 
         for method_id in json["methods"]:
@@ -229,7 +227,7 @@ class Class:
         superclasses: list[str],
         is_public: bool,
         reexported_by: list[str],
-        documentation: ClassDocumentation
+        documentation: ClassDocumentation,
     ) -> None:
         self.id: str = id_
         self.qname: str = qname
@@ -289,7 +287,7 @@ class Function:
             FunctionDocumentation(
                 description=json.get("description", ""),
                 full_docstring=json.get("docstring", ""),
-            )
+            ),
         )
 
     @property
@@ -319,9 +317,7 @@ class Type:
         self.type: Optional[AbstractType] = Type.create_type(parameter_documentation)
 
     @classmethod
-    def create_type(
-        cls, docstring: ParameterDocumentation
-    ) -> Optional[AbstractType]:
+    def create_type(cls, docstring: ParameterDocumentation) -> Optional[AbstractType]:
         type_string = docstring.type
         types: list[AbstractType] = list()
 

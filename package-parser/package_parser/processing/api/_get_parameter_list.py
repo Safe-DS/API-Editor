@@ -1,7 +1,6 @@
 from typing import Optional
 
 import astroid
-
 from package_parser.processing.api.documentation import AbstractDocumentationParser
 from package_parser.processing.api.model import Parameter, ParameterAssignment
 
@@ -11,7 +10,7 @@ def _get_parameter_list(
     function_node: astroid.FunctionDef,
     function_id: str,
     function_qname: str,
-    function_is_public: bool
+    function_is_public: bool,
 ) -> list[Parameter]:
     parameters = function_node.args
     n_implicit_parameters = function_node.implicit_parameters()
@@ -25,7 +24,9 @@ def _get_parameter_list(
             default_value=None,
             assigned_by=ParameterAssignment.POSITION_ONLY,
             is_public=function_is_public,
-            documentation=documentation_parser.get_parameter_documentation(function_node, it.name)
+            documentation=documentation_parser.get_parameter_documentation(
+                function_node, it.name
+            ),
         )
         for it in parameters.posonlyargs
     ]
@@ -42,7 +43,9 @@ def _get_parameter_list(
             ),
             assigned_by=ParameterAssignment.POSITION_OR_NAME,
             is_public=function_is_public,
-            documentation=documentation_parser.get_parameter_documentation(function_node, it.name)
+            documentation=documentation_parser.get_parameter_documentation(
+                function_node, it.name
+            ),
         )
         for index, it in enumerate(parameters.args)
     ]
@@ -59,7 +62,9 @@ def _get_parameter_list(
             ),
             assigned_by=ParameterAssignment.NAME_ONLY,
             is_public=function_is_public,
-            documentation=documentation_parser.get_parameter_documentation(function_node, it.name)
+            documentation=documentation_parser.get_parameter_documentation(
+                function_node, it.name
+            ),
         )
         for index, it in enumerate(parameters.kwonlyargs)
     ]
@@ -72,8 +77,7 @@ def _get_parameter_list(
 
 
 def _get_parameter_default(
-    defaults: list[astroid.NodeNG],
-    default_index: int
+    defaults: list[astroid.NodeNG], default_index: int
 ) -> Optional[str]:
     if 0 <= default_index < len(defaults):
         default = defaults[default_index]

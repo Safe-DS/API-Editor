@@ -5,7 +5,6 @@ from typing import Optional, Union
 import astroid
 from astroid.context import InferenceContext
 from astroid.helpers import safe_infer
-
 from package_parser.processing.api.model import (
     API,
     Class,
@@ -15,13 +14,16 @@ from package_parser.processing.api.model import (
     Module,
 )
 from package_parser.utils import parent_qualified_name
+
 from ._file_filters import _is_init_file
 from ._get_parameter_list import _get_parameter_list
 from .documentation import AbstractDocumentationParser
 
 
 class _AstVisitor:
-    def __init__(self, documentation_parser: AbstractDocumentationParser, api: API) -> None:
+    def __init__(
+        self, documentation_parser: AbstractDocumentationParser, api: API
+    ) -> None:
         self.documentation_parser: AbstractDocumentationParser = documentation_parser
         self.reexported: dict[str, list[str]] = {}
         self.api: API = api
@@ -146,7 +148,7 @@ class _AstVisitor:
             superclasses=class_node.basenames,
             is_public=self.is_public(class_node.name, qname),
             reexported_by=self.reexported.get(qname, []),
-            documentation=self.documentation_parser.get_class_documentation(class_node)
+            documentation=self.documentation_parser.get_class_documentation(class_node),
         )
         self.__declaration_stack.append(class_)
 
@@ -183,12 +185,14 @@ class _AstVisitor:
                 function_node,
                 self.__get_id(function_node.name),
                 qname,
-                is_public
+                is_public,
             ),
             results=[],  # TODO: results
             is_public=is_public,
             reexported_by=self.reexported.get(qname, []),
-            documentation=self.documentation_parser.get_function_documentation(function_node)
+            documentation=self.documentation_parser.get_function_documentation(
+                function_node
+            ),
         )
         self.__declaration_stack.append(function)
 
