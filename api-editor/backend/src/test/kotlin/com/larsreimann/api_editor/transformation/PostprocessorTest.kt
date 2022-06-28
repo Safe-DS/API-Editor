@@ -205,7 +205,8 @@ class PostprocessorTest {
 
             testClass.constructor
                 .shouldNotBeNull().asClue {
-                    it.parameters.shouldBeEmpty()
+                    it.parameters.shouldHaveSize(1)
+                    it.parameters[0].name.shouldBe("self")
 
                     val callToOriginalAPI = it.callToOriginalAPI.shouldNotBeNull()
                     callToOriginalAPI.receiver shouldBe PythonStringifiedExpression("testModule.TestClass")

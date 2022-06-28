@@ -98,7 +98,7 @@ class MethodPythonCodeGeneratorFullPipelineTest {
             |from __future__ import annotations
             |
             |class testClass:
-            |    def __init__():
+            |    def __init__(self):
             |        self.instance = testModule.testClass()
             |
             |    def testMethod(self, testGroup: TestGroup, testParameter3):
@@ -154,7 +154,7 @@ class MethodPythonCodeGeneratorFullPipelineTest {
             |from __future__ import annotations
             |
             |class testClass:
-            |    def __init__():
+            |    def __init__(self):
             |        self.instance = testModule.testClass()
             |
             |    def testMethod(self, testGroup: TestGroup, testParameter3):
@@ -209,7 +209,7 @@ class MethodPythonCodeGeneratorFullPipelineTest {
             |from __future__ import annotations
             |
             |class testClass:
-            |    def __init__():
+            |    def __init__(self):
             |        self.instance = testModule.testClass()
             |
             |    def testMethod(self, testParameter1, testGroup: TestGroup):
@@ -259,7 +259,7 @@ class MethodPythonCodeGeneratorFullPipelineTest {
             |from __future__ import annotations
             |
             |class testClass:
-            |    def __init__():
+            |    def __init__(self):
             |        self.instance = testModule.testClass()
             |
             |    def testMethod(self, testParameter2, testParameter3, *, testParameter1=0.5):
@@ -303,7 +303,7 @@ class MethodPythonCodeGeneratorFullPipelineTest {
             |from __future__ import annotations
             |
             |class testClass:
-            |    def __init__():
+            |    def __init__(self):
             |        self.instance = testModule.testClass()
             |
             |    def testMethod(self, testParameter1, testParameter2, testParameter3):
@@ -351,7 +351,7 @@ class MethodPythonCodeGeneratorFullPipelineTest {
             |from dataclasses import dataclass
             |
             |class testClass:
-            |    def __init__():
+            |    def __init__(self):
             |        self.instance = testModule.testClass()
             |
             |    def testMethod(self, testGroup: TestGroup, testParameter3):
@@ -415,7 +415,7 @@ class MethodPythonCodeGeneratorFullPipelineTest {
             |from dataclasses import dataclass
             |
             |class testClass:
-            |    def __init__():
+            |    def __init__(self):
             |        self.instance = testModule.testClass()
             |
             |    def testMethod(self, testGroup: TestGroup, testParameter3):
@@ -474,7 +474,7 @@ class MethodPythonCodeGeneratorFullPipelineTest {
             |from dataclasses import dataclass
             |
             |class testClass:
-            |    def __init__():
+            |    def __init__(self):
             |        self.instance = testModule.testClass()
             |
             |    def testMethod(self, testParameter1: TestEnum, testParameter2, testParameter3):
@@ -523,7 +523,7 @@ class MethodPythonCodeGeneratorFullPipelineTest {
             |from __future__ import annotations
             |
             |class testClass:
-            |    def __init__():
+            |    def __init__(self):
             |        self.instance = testModule.testClass()
             |
             |    def testMethod(self, testParameter1, testGroup: TestGroup):
@@ -565,7 +565,7 @@ class MethodPythonCodeGeneratorFullPipelineTest {
             |from __future__ import annotations
             |
             |class testClass:
-            |    def __init__():
+            |    def __init__(self):
             |        self.instance = testModule.testClass()
             |
             |    def testMethod(self, testParameter1, testGroup: TestGroup):
@@ -611,7 +611,7 @@ class MethodPythonCodeGeneratorFullPipelineTest {
             |from __future__ import annotations
             |
             |class testClass:
-            |    def __init__():
+            |    def __init__(self):
             |        self.instance = testModule.testClass()
             |
             |    def testMethod(self, testParameter1, testGroup: TestGroup):
@@ -651,7 +651,7 @@ class MethodPythonCodeGeneratorFullPipelineTest {
             |from __future__ import annotations
             |
             |class testClass:
-            |    def __init__():
+            |    def __init__(self):
             |        self.instance = testModule.testClass()
             |
             |    def testMethod(self, testGroup: TestGroup, testParameter3):
