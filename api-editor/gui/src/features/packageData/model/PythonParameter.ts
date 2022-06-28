@@ -43,6 +43,17 @@ export class PythonParameter extends PythonDeclaration {
         return [];
     }
 
+    getUniqueName(): string {
+        switch (this.assignedBy) {
+            case PythonParameterAssignment.POSITIONAL_VARARG:
+                return `*${this.name}`;
+            case PythonParameterAssignment.NAMED_VARARG:
+                return `**${this.name}`;
+            default:
+                return this.name;
+        }
+    }
+
     preferredQualifiedName(): string {
         if (this.containingFunction) {
             return `${this.containingFunction.preferredQualifiedName()}.${this.name}`;

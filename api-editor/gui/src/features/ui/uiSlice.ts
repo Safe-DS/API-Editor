@@ -152,8 +152,8 @@ export const initialState: UIState = {
 
     filterString: 'is:public',
     filterList: [
-        { filter: 'is:public', name: 'default' },
-        { filter: 'is:public usefulness:>0 !name:=X !name:=y', name: 'sklearn' },
+        { filter: 'is:public', name: 'public' },
+        { filter: 'is:public usefulness:>0', name: 'useful' },
     ],
 
     heatMapMode: HeatMapMode.None,

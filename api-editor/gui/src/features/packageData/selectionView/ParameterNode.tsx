@@ -25,12 +25,12 @@ export const ParameterNode: React.FC<ParameterNodeProps> = function ({ isTitle, 
             <HStack>
                 {isTitle ? (
                     <Heading as="h3" size="lg">
-                        {pythonParameter.name} {!pythonParameter.isPublic && '(private)'}
+                        {pythonParameter.getUniqueName()} {!pythonParameter.isPublic && '(private)'}
                     </Heading>
                 ) : (
                     <Heading as="h4" size="sm">
                         <ChakraLink as={Link} to={`/${id}`}>
-                            {pythonParameter.name} {!pythonParameter.isPublic && '(private)'}
+                            {pythonParameter.getUniqueName()} {!pythonParameter.isPublic && '(private)'}
                         </ChakraLink>
                     </Heading>
                 )}
