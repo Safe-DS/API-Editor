@@ -1,4 +1,4 @@
-import { Box, Heading, HStack, Stack, Text as ChakraText } from '@chakra-ui/react';
+import { Box, Heading, HStack, Stack, Text as ChakraText, Wrap } from '@chakra-ui/react';
 import React from 'react';
 import { isEmptyList } from '../../../common/util/listOperations';
 import { AnnotationDropdown } from '../../annotations/AnnotationDropdown';
@@ -33,26 +33,28 @@ export const FunctionView: React.FC<FunctionViewProps> = function ({ pythonFunct
     return (
         <Stack spacing={8}>
             <Stack spacing={4}>
-                <HStack>
+                <HStack alignItems="start">
                     <Heading as="h3" size="lg">
                         {pythonFunction.name} {!pythonFunction.isPublic && '(private)'}
                     </Heading>
-                    {pythonFunction.isPublic && (
-                        <AnnotationDropdown
-                            target={id}
-                            showCalledAfter={hasRemainingCalledAfters}
-                            showDescription
-                            showGroup={pythonFunction.explicitParameters().length >= 2}
-                            showMove={pythonFunction.containingModuleOrClass instanceof PythonModule}
-                            showPure
-                            showRemove
-                            showRename
-                            showTodo
-                        />
-                    )}
-                    <CompleteButton target={id} />
-                    <MissingAnnotationButton target={id} />
-                    <DataCopyButtons target={id} />
+                    <Wrap>
+                        {pythonFunction.isPublic && (
+                            <AnnotationDropdown
+                                target={id}
+                                showCalledAfter={hasRemainingCalledAfters}
+                                showDescription
+                                showGroup={pythonFunction.explicitParameters().length >= 2}
+                                showMove={pythonFunction.containingModuleOrClass instanceof PythonModule}
+                                showPure
+                                showRemove
+                                showRename
+                                showTodo
+                            />
+                        )}
+                        <CompleteButton target={id} />
+                        <MissingAnnotationButton target={id} />
+                        <DataCopyButtons target={id} />
+                    </Wrap>
                 </HStack>
 
                 <AnnotationView target={id} />

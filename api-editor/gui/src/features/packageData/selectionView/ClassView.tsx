@@ -1,4 +1,4 @@
-import { Box, Heading, HStack, Stack, Text as ChakraText } from '@chakra-ui/react';
+import { Box, Heading, HStack, Stack, Text as ChakraText, Wrap } from '@chakra-ui/react';
 import React from 'react';
 import { AnnotationDropdown } from '../../annotations/AnnotationDropdown';
 import { AnnotationView } from '../../annotations/AnnotationView';
@@ -19,16 +19,18 @@ export const ClassView: React.FC<ClassViewProps> = function ({ pythonClass }) {
     return (
         <Stack spacing={8}>
             <Stack spacing={4}>
-                <HStack>
+                <HStack alignItems="start">
                     <Heading as="h3" size="lg">
                         {pythonClass.name} {!pythonClass.isPublic && '(private)'}
                     </Heading>
-                    {pythonClass.isPublic && (
-                        <AnnotationDropdown target={id} showDescription showMove showRemove showRename showTodo />
-                    )}
-                    <CompleteButton target={id} />
-                    <MissingAnnotationButton target={id} />
-                    <DataCopyButtons target={id} />
+                    <Wrap>
+                        {pythonClass.isPublic && (
+                            <AnnotationDropdown target={id} showDescription showMove showRemove showRename showTodo />
+                        )}
+                        <CompleteButton target={id} />
+                        <MissingAnnotationButton target={id} />
+                        <DataCopyButtons target={id} />
+                    </Wrap>
                 </HStack>
 
                 <AnnotationView target={id} />

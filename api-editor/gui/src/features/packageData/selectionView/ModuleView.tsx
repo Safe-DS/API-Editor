@@ -1,4 +1,4 @@
-import { Box, Code, Heading, HStack, Stack, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Code, Heading, HStack, Stack, Text, useColorModeValue, Wrap } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -67,12 +67,14 @@ export const ModuleView: React.FC<ModuleViewProps> = function ({ pythonModule })
 
     return (
         <Stack spacing={8}>
-            <HStack>
+            <HStack alignItems="start">
                 <Heading as="h3" size="lg">
                     {pythonModule.name} {!pythonModule.isPublic && '(private)'}
                 </Heading>
-                <CompleteButton target={pythonModule.id} />
-                <DataCopyButtons target={pythonModule.id} />
+                <Wrap>
+                    <CompleteButton target={pythonModule.id} />
+                    <DataCopyButtons target={pythonModule.id} />
+                </Wrap>
             </HStack>
 
             <Stack spacing={4}>
