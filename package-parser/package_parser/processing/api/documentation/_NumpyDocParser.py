@@ -1,5 +1,5 @@
 import re
-from typing import Optional
+from typing import Optional, Tuple
 
 import astroid
 import numpydoc.docscrape
@@ -124,7 +124,7 @@ def _is_matching_parameter_numpydoc(parameter_numpydoc: numpydoc.docscrape.Param
     return any(name.strip() == parameter_name for name in parameter_numpydoc.name.split(","))
 
 
-def _get_type_and_default_value(parameter_numpydoc: numpydoc.docscrape.Parameter) -> (str, str):
+def _get_type_and_default_value(parameter_numpydoc: numpydoc.docscrape.Parameter) -> Tuple[str, str]:
     """
     Returns the type and default value for the given NumpyDoc.
     """

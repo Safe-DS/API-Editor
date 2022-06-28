@@ -76,7 +76,7 @@ class BoundaryType(AbstractType):
     INFINITY: ClassVar = "Infinity"
 
     base_type: str
-    min: Union[float, int]
+    min: Union[float, int, str]
     max: Union[float, int, str]
     min_inclusive: bool
     max_inclusive: bool
@@ -104,20 +104,21 @@ class BoundaryType(AbstractType):
             if base_type is None:
                 base_type = "float"
 
-            if base_type == "int":
-                base_type_converter = int
-            else:
-                base_type_converter = float
-
-            min_value = match.group("min")
+            min_value: Union[str, int, float] = match.group("min")
             if min_value != "negative_infinity":
-                min_value = base_type_converter(min_value)
+                if base_type == "int":
+                    min_value = int(min_value)
+                else:
+                    min_value = float(min_value)
             else:
                 min_value = BoundaryType.NEGATIVE_INFINITY
 
-            max_value = match.group("max")
+            max_value: Union[str, int, float] = match.group("max")
             if max_value != "infinity":
-                max_value = base_type_converter(max_value)
+                if base_type == "int":
+                    max_value = int(max_value)
+                else:
+                    max_value = float(max_value)
             else:
                 max_value = BoundaryType.INFINITY
 
