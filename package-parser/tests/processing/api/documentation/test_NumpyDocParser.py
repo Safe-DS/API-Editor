@@ -41,6 +41,10 @@ class C:
             description="",
             full_docstring=""
         )),
+    ],
+    ids=[
+        "class with documentation",
+        "class without documentation",
     ]
 )
 def test_get_class_documentation(
@@ -83,7 +87,12 @@ def f():
         (function_without_documentation, FunctionDocumentation(
             description="",
             full_docstring=""
-        )),
+        ))
+
+    ],
+    ids=[
+        "function with documentation",
+        "function without documentation",
     ]
 )
 def test_get_function_documentation(
@@ -213,6 +222,19 @@ def f(
             default_value="",
             description=""
         )),
+    ],
+    ids=[
+        "existing class parameter",
+        "missing class parameter",
+        "function parameter with no type and no default",
+        "function parameter with type and no default",
+        "function parameter with optional unknown default",
+        "function parameter with default syntax 1 (just space)",
+        "function parameter with default syntax 2 (colon)",
+        "function parameter with default syntax 3 (equals)",
+        "function parameter with grouped parameters 1",
+        "function parameter with grouped parameters 2",
+        "missing function parameter",
     ]
 )
 def test_get_parameter_documentation(

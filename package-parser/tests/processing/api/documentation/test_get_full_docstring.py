@@ -65,6 +65,14 @@ def f():
         (function_with_multi_line_documentation, "Lorem ipsum.\n\nDolor sit amet."),
         (function_with_single_line_documentation, "Lorem ipsum."),
         (function_without_documentation, ""),
+    ],
+    ids=[
+        "class with multi line documentation",
+        "class with single line documentation",
+        "class without documentation",
+        "function with multi line documentation",
+        "function with single line documentation",
+        "function without documentation",
     ]
 )
 def test_get_full_docstring(python_code: str, expected_docstring: str):

@@ -1,7 +1,9 @@
 from typing import Any
 
 import pytest
-from package_parser.processing.api.model.api import ParameterAndResultDocstring, Type
+
+from package_parser.processing.api.documentation import ParameterDocumentation
+from package_parser.processing.api.model.api import Type
 
 
 @pytest.mark.parametrize(
@@ -62,7 +64,7 @@ from package_parser.processing.api.model.api import ParameterAndResultDocstring,
                     {
                         "kind": "NamedType",
                         "name": "shape (n_samples, n_classes) or (n_samples, 1) when "
-                        "binary.",
+                                "binary.",
                     },
                 ],
             },
@@ -70,7 +72,7 @@ from package_parser.processing.api.model.api import ParameterAndResultDocstring,
     ],
 )
 def test_union_from_string(docstring_type: str, expected: dict[str, Any]):
-    result = Type(ParameterAndResultDocstring(docstring_type, ""))
+    result = Type(ParameterDocumentation(docstring_type, "", ""))
     assert result.to_json() == expected
 
 
@@ -103,7 +105,7 @@ def test_union_from_string(docstring_type: str, expected: dict[str, Any]):
     ],
 )
 def test_boundary_from_string(docstring_type: str, expected: dict[str, Any]):
-    assert Type(ParameterAndResultDocstring("", docstring_type)).to_json() == expected
+    assert Type(ParameterDocumentation("", "", docstring_type)).to_json() == expected
 
 
 @pytest.mark.parametrize(
@@ -135,8 +137,11 @@ def test_boundary_and_union_from_string(
     docstring_type: str, docstring_description: str, expected: dict[str, Any]
 ):
     assert (
-        Type(
-            ParameterAndResultDocstring(docstring_type, docstring_description)
+        Type(ParameterDocumentation(
+            type=docstring_type,
+            default_value="",
+            description=docstring_description
+        )
         ).to_json()
         == expected
     )

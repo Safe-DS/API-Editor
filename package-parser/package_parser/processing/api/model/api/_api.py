@@ -314,9 +314,9 @@ class Function:
 class Type:
     def __init__(
         self,
-        typestring: ParameterDocumentation,
+        parameter_documentation: ParameterDocumentation,
     ) -> None:
-        self.type: Optional[AbstractType] = Type.create_type(typestring)
+        self.type: Optional[AbstractType] = Type.create_type(parameter_documentation)
 
     @classmethod
     def create_type(
@@ -456,13 +456,13 @@ class ParameterAssignment(Enum):
 @dataclass
 class Result:
     name: str
-    docstring: ParameterAndResultDocstring
+    docstring: ResultDocstring
 
     @staticmethod
     def from_json(json: Any) -> Result:
         return Result(
             json["name"],
-            ParameterAndResultDocstring.from_json(json.get("docstring", {})),
+            ResultDocstring.from_json(json.get("docstring", {})),
         )
 
     def to_json(self) -> Any:
@@ -470,13 +470,13 @@ class Result:
 
 
 @dataclass
-class ParameterAndResultDocstring:
+class ResultDocstring:
     type: str
     description: str
 
     @staticmethod
     def from_json(json: Any):
-        return ParameterAndResultDocstring(
+        return ResultDocstring(
             json.get("type", ""),
             json.get("description", ""),
         )

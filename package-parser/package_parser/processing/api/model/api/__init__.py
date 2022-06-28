@@ -7,7 +7,7 @@ from ._api import (
     Import,
     Module,
     Parameter,
-    ParameterAndResultDocstring,
+    ResultDocstring,
     ParameterAssignment,
     Result,
     Type,
