@@ -7,8 +7,10 @@ import com.larsreimann.api_editor.mutable_model.PythonAttribute
 import com.larsreimann.api_editor.mutable_model.PythonCall
 import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonFunction
+import com.larsreimann.api_editor.mutable_model.PythonNamedSpread
 import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.api_editor.mutable_model.PythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonPositionalSpread
 import com.larsreimann.api_editor.mutable_model.PythonReference
 import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
 import com.larsreimann.modeling.closest
@@ -82,7 +84,11 @@ private fun PythonFunction.addOriginalDeclaration() {
                         PythonParameterAssignment.NAME_ONLY -> it.name
                         else -> null
                     },
-                    value = PythonReference(it)
+                    value = when (it.assignedBy) {
+                        PythonParameterAssignment.POSITIONAL_VARARG -> PythonPositionalSpread(PythonReference(it))
+                        PythonParameterAssignment.NAMED_VARARG -> PythonNamedSpread(PythonReference(it))
+                        else -> PythonReference(it)
+                    }
                 )
             }
     )

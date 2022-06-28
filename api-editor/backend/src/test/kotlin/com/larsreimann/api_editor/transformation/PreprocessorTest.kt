@@ -17,6 +17,7 @@ import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.collections.shouldNotContain
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
@@ -57,8 +58,7 @@ class PreprocessorTest {
         )
         testNamedVarargParameter = PythonParameter(
             name = "testNamedVarargParameter",
-            defaultValue = PythonStringifiedExpression("'value'"),
-            assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+            assignedBy = PythonParameterAssignment.NAMED_VARARG
         )
         testGlobalFunction = PythonFunction(
             name = "testGlobalFunction",
@@ -144,7 +144,7 @@ class PreprocessorTest {
             testGlobalFunction.isPublic = false
             testPackage.removePrivateDeclarations()
 
-            testModule.functions.shouldBeEmpty()
+            testModule.functions.shouldNotContain(testGlobalFunction)
         }
 
         @Test
