@@ -443,6 +443,15 @@ class Parameter:
 
 
 class ParameterAssignment(Enum):
+    """
+    How arguments are assigned to parameters. The parameters must appear exactly in this order in a parameter list.
+
+    IMPLICIT parameters appear on instance methods (usually called "self") and on class methods (usually called "cls").
+    POSITION_ONLY parameters precede the "/" in a parameter list. NAME_ONLY parameters follow the "*" or the
+    POSITIONAL_VARARGS parameter ("*args"). Between the "/" and the "*" the POSITION_OR_NAME parameters reside. Finally,
+    the parameter list might optionally include a NAMED_VARARG parameter ("**kwargs").
+    """
+
     IMPLICIT = "IMPLICIT"
     POSITION_ONLY = "POSITION_ONLY"
     POSITION_OR_NAME = "POSITION_OR_NAME"

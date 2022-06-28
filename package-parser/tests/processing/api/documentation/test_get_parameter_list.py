@@ -20,7 +20,7 @@ def f(position_only, /, position_or_name, *, name_only = 0):
 
 # language=Python
 global_function_parameter_list_with_positional_vararg = """
-def f(*args):
+def f(*args, name_only = 0):
     pass
 """
 
@@ -66,20 +66,29 @@ def f(**kwargs):
         ]),
         (global_function_parameter_list_with_positional_vararg, [
             Parameter(
-                id_="f/*args",
-                name="*args",
-                qname="f.*args",
+                id_="f/args",
+                name="args",
+                qname="f.args",
                 default_value=None,
                 assigned_by=ParameterAssignment.POSITIONAL_VARARG,
+                is_public=True,
+                documentation=ParameterDocumentation()
+            ),
+            Parameter(
+                id_="f/name_only",
+                name="name_only",
+                qname="f.name_only",
+                default_value="0",
+                assigned_by=ParameterAssignment.NAME_ONLY,
                 is_public=True,
                 documentation=ParameterDocumentation()
             )
         ]),
         (global_function_parameter_list_with_named_vararg, [
             Parameter(
-                id_="f/**kwargs",
-                name="**kwargs",
-                qname="f.**kwargs",
+                id_="f/kwargs",
+                name="kwargs",
+                qname="f.kwargs",
                 default_value=None,
                 assigned_by=ParameterAssignment.NAMED_VARARG,
                 is_public=True,
