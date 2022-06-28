@@ -296,6 +296,20 @@ class PreprocessorTest {
 
             testOptionalParameter.assignedBy shouldBe PythonParameterAssignment.NAME_ONLY
         }
+
+        @Test
+        fun `should keep positional variadic parameters unchanged`() {
+            testPackage.updateParameterAssignment()
+
+            testPositionalVarargParameter.assignedBy shouldBe PythonParameterAssignment.POSITIONAL_VARARG
+        }
+
+        @Test
+        fun `should keep named variadic parameters unchanged`() {
+            testPackage.updateParameterAssignment()
+
+            testOptionalParameter.assignedBy shouldBe PythonParameterAssignment.NAMED_VARARG
+        }
     }
 
     @Nested
