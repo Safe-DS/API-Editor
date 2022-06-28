@@ -5,7 +5,9 @@ import com.larsreimann.api_editor.model.ComparisonOperator.LESS_THAN
 import com.larsreimann.api_editor.model.ComparisonOperator.LESS_THAN_OR_EQUALS
 import com.larsreimann.api_editor.model.ComparisonOperator.UNRESTRICTED
 import com.larsreimann.api_editor.model.PythonParameterAssignment.IMPLICIT
+import com.larsreimann.api_editor.model.PythonParameterAssignment.NAMED_VARARG
 import com.larsreimann.api_editor.model.PythonParameterAssignment.NAME_ONLY
+import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITIONAL_VARARG
 import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITION_ONLY
 import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITION_OR_NAME
 import com.larsreimann.api_editor.mutable_model.PythonArgument
@@ -23,9 +25,11 @@ import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonInt
 import com.larsreimann.api_editor.mutable_model.PythonMemberAccess
 import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonNamedSpread
 import com.larsreimann.api_editor.mutable_model.PythonNamedType
 import com.larsreimann.api_editor.mutable_model.PythonNone
 import com.larsreimann.api_editor.mutable_model.PythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonPositionalSpread
 import com.larsreimann.api_editor.mutable_model.PythonReference
 import com.larsreimann.api_editor.mutable_model.PythonString
 import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
@@ -262,7 +266,13 @@ fun List<PythonParameter>.toPythonCode(): String {
     val positionOrNameParametersString = assignedByToParameter[POSITION_OR_NAME]
         ?.joinToString { it.toPythonCode() }
         ?: ""
+    val positionalVarargParametersString = assignedByToParameter[POSITIONAL_VARARG]
+        ?.joinToString { it.toPythonCode() }
+        ?: ""
     var nameOnlyParametersString = assignedByToParameter[NAME_ONLY]
+        ?.joinToString { it.toPythonCode() }
+        ?: ""
+    val namedVarargsParametersString = assignedByToParameter[NAMED_VARARG]
         ?.joinToString { it.toPythonCode() }
         ?: ""
 
@@ -270,7 +280,9 @@ fun List<PythonParameter>.toPythonCode(): String {
         positionOnlyParametersString = "$positionOnlyParametersString, /"
     }
 
-    if (nameOnlyParametersString.isNotBlank()) {
+    // If there is already a positional vararg parameter, the star must not be added since the parameter already acts as
+    // the boundary.
+    if (positionalVarargParametersString.isBlank() && nameOnlyParametersString.isNotBlank()) {
         nameOnlyParametersString = "*, $nameOnlyParametersString"
     }
 
@@ -278,7 +290,9 @@ fun List<PythonParameter>.toPythonCode(): String {
         implicitParametersString,
         positionOnlyParametersString,
         positionOrNameParametersString,
-        nameOnlyParametersString
+        positionalVarargParametersString,
+        nameOnlyParametersString,
+        namedVarargsParametersString
     )
 
     return parameterStrings
@@ -289,6 +303,11 @@ fun List<PythonParameter>.toPythonCode(): String {
 fun PythonParameter.toPythonCode() = buildString {
     val typeStringOrNull = type.toPythonCodeOrNull()
 
+    if (assignedBy == POSITIONAL_VARARG) {
+        append("*")
+    } else if (assignedBy == NAMED_VARARG) {
+        append("**")
+    }
     append(name)
     if (typeStringOrNull != null) {
         append(": $typeStringOrNull")
@@ -309,7 +328,9 @@ fun PythonExpression.toPythonCode(): String {
         is PythonFloat -> value.toString()
         is PythonInt -> value.toString()
         is PythonMemberAccess -> "${receiver!!.toPythonCode()}.${member!!.toPythonCode()}"
+        is PythonNamedSpread -> "**${argument!!.toPythonCode()}"
         is PythonNone -> "None"
+        is PythonPositionalSpread -> "*${argument!!.toPythonCode()}"
         is PythonReference -> declaration!!.name
         is PythonString -> "'$value'"
         is PythonStringifiedExpression -> string

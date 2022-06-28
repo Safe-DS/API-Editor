@@ -6,7 +6,7 @@ from package_parser.processing.annotations.model import (
     OptionalAnnotation,
     RequiredAnnotation,
 )
-from package_parser.processing.api.model import API, Parameter
+from package_parser.processing.api.model import API, Parameter, ParameterAssignment
 from package_parser.processing.usages.model import UsageCountStore
 
 from ._constants import autogen_author
@@ -16,6 +16,14 @@ def _generate_parameter_importance_annotations(
     api: API, usages: UsageCountStore, annotations: AnnotationStore
 ) -> None:
     for parameter in api.parameters().values():
+
+        # Don't create annotations for variadic parameters
+        if (
+            parameter.assigned_by == ParameterAssignment.POSITIONAL_VARARG
+            or parameter.assigned_by == ParameterAssignment.NAMED_VARARG
+        ):
+            continue
+
         parameter_values = usages.most_common_parameter_values(parameter.id)
 
         if len(parameter_values) == 1:

@@ -1,4 +1,4 @@
-import { Box, Heading, HStack, Link as ChakraLink, Stack, Text as ChakraText } from '@chakra-ui/react';
+import { Box, Heading, HStack, Link as ChakraLink, Stack, Text as ChakraText, Wrap } from '@chakra-ui/react';
 import React from 'react';
 import { AnnotationDropdown } from '../../annotations/AnnotationDropdown';
 import { AnnotationView } from '../../annotations/AnnotationView';
@@ -18,39 +18,42 @@ export const ParameterNode: React.FC<ParameterNodeProps> = function ({ isTitle, 
     const id = pythonParameter.id;
 
     const isConstructorParameter = pythonParameter.parent()?.name === '__init__';
-    const isExplicitParameter = pythonParameter.isExplicitParameter();
+    const canBeAnnotated = pythonParameter.isPublic && pythonParameter.isExplicitParameter();
 
     return (
         <Stack spacing={4}>
-            <HStack>
+            <HStack alignItems="start">
                 {isTitle ? (
                     <Heading as="h3" size="lg">
-                        {pythonParameter.name} {!pythonParameter.isPublic && '(private)'}
+                        {pythonParameter.getUniqueName()} {!pythonParameter.isPublic && '(private)'}
                     </Heading>
                 ) : (
                     <Heading as="h4" size="sm">
                         <ChakraLink as={Link} to={`/${id}`}>
-                            {pythonParameter.name} {!pythonParameter.isPublic && '(private)'}
+                            {pythonParameter.getUniqueName()} {!pythonParameter.isPublic && '(private)'}
                         </ChakraLink>
                     </Heading>
                 )}
-                {pythonParameter.isPublic && isExplicitParameter && (
-                    <AnnotationDropdown
-                        target={id}
-                        showAttribute={isConstructorParameter}
-                        showBoundary
-                        showConstant
-                        showDescription
-                        showEnum
-                        showOptional
-                        showRename
-                        showRequired
-                        showTodo
-                    />
-                )}
-                <CompleteButton target={id} />
-                <MissingAnnotationButton target={id} />
-                <DataCopyButtons target={id} />
+                <Wrap>
+                    {canBeAnnotated && (
+                        <AnnotationDropdown
+                            target={id}
+                            showAttribute={isConstructorParameter}
+                            showBoundary
+                            showConstant
+                            showDescription
+                            showEnum
+                            showOptional
+                            showRename
+                            showRequired
+                            showTodo
+                        />
+                    )}
+
+                    <CompleteButton target={id} />
+                    {canBeAnnotated && <MissingAnnotationButton target={id} />}
+                    <DataCopyButtons target={id} />
+                </Wrap>
             </HStack>
 
             <AnnotationView target={id} />

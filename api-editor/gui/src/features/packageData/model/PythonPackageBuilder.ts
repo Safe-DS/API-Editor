@@ -9,6 +9,7 @@ import { PythonResult } from './PythonResult';
 import { PythonDeclaration } from './PythonDeclaration';
 import {
     EXPECTED_API_SCHEMA_VERSION,
+    ParameterAssignmentJson,
     PythonClassJson,
     PythonFromImportJson,
     PythonFunctionJson,
@@ -163,9 +164,7 @@ const parsePythonParameterJson = function (
     return result;
 };
 
-const parsePythonParameterAssignment = function (
-    assignedBy: 'IMPLICIT' | 'POSITION_ONLY' | 'POSITION_OR_NAME' | 'NAME_ONLY',
-): PythonParameterAssignment {
+const parsePythonParameterAssignment = function (assignedBy: ParameterAssignmentJson): PythonParameterAssignment {
     switch (assignedBy) {
         case 'IMPLICIT':
             return PythonParameterAssignment.IMPLICIT;
@@ -173,8 +172,12 @@ const parsePythonParameterAssignment = function (
             return PythonParameterAssignment.POSITION_ONLY;
         case 'POSITION_OR_NAME':
             return PythonParameterAssignment.POSITION_OR_NAME;
+        case 'POSITIONAL_VARARG':
+            return PythonParameterAssignment.POSITIONAL_VARARG;
         case 'NAME_ONLY':
             return PythonParameterAssignment.NAME_ONLY;
+        case 'NAMED_VARARG':
+            return PythonParameterAssignment.NAMED_VARARG;
     }
 };
 

@@ -206,7 +206,9 @@ enum class PythonParameterAssignment {
     IMPLICIT,
     POSITION_ONLY,
     POSITION_OR_NAME,
+    POSITIONAL_VARARG,
     NAME_ONLY,
+    NAMED_VARARG,
 }
 
 @Serializable

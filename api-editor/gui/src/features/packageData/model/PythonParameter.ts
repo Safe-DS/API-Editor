@@ -7,7 +7,9 @@ export enum PythonParameterAssignment {
     IMPLICIT = 'IMPLICIT',
     POSITION_ONLY = 'POSITION_ONLY',
     POSITION_OR_NAME = 'POSITION_OR_NAME',
+    POSITIONAL_VARARG = 'POSITIONAL_VARARG',
     NAME_ONLY = 'NAME_ONLY',
+    NAMED_VARARG = 'NAMED_VARARG',
 }
 
 export class PythonParameter extends PythonDeclaration {
@@ -41,6 +43,17 @@ export class PythonParameter extends PythonDeclaration {
         return [];
     }
 
+    getUniqueName(): string {
+        switch (this.assignedBy) {
+            case PythonParameterAssignment.POSITIONAL_VARARG:
+                return `*${this.name}`;
+            case PythonParameterAssignment.NAMED_VARARG:
+                return `**${this.name}`;
+            default:
+                return this.name;
+        }
+    }
+
     preferredQualifiedName(): string {
         if (this.containingFunction) {
             return `${this.containingFunction.preferredQualifiedName()}.${this.name}`;
@@ -50,7 +63,11 @@ export class PythonParameter extends PythonDeclaration {
     }
 
     isExplicitParameter(): boolean {
-        return this.assignedBy !== PythonParameterAssignment.IMPLICIT;
+        return (
+            this.assignedBy !== PythonParameterAssignment.IMPLICIT &&
+            this.assignedBy !== PythonParameterAssignment.POSITIONAL_VARARG &&
+            this.assignedBy !== PythonParameterAssignment.NAMED_VARARG
+        );
     }
 
     toString(): string {

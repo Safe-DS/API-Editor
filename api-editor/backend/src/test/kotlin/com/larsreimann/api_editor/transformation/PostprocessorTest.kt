@@ -121,14 +121,24 @@ class PostprocessorTest {
                 name = "positionOrName",
                 assignedBy = PythonParameterAssignment.POSITION_OR_NAME
             )
+            val positionalVararg = PythonParameter(
+                name = "positionalVararg",
+                assignedBy = PythonParameterAssignment.POSITIONAL_VARARG
+            )
             val nameOnly = PythonParameter(
                 name = "nameOnly",
                 assignedBy = PythonParameterAssignment.NAME_ONLY
             )
+            val namedVararg = PythonParameter(
+                name = "namedVararg",
+                assignedBy = PythonParameterAssignment.NAMED_VARARG
+            )
 
             testConstructor.parameters.clear()
             testConstructor.parameters += listOf(
+                namedVararg,
                 nameOnly,
+                positionalVararg,
                 positionOrName,
                 positionOnly,
                 implicit
@@ -140,7 +150,9 @@ class PostprocessorTest {
                 implicit,
                 positionOnly,
                 positionOrName,
-                nameOnly
+                positionalVararg,
+                nameOnly,
+                namedVararg
             )
         }
 
@@ -193,7 +205,8 @@ class PostprocessorTest {
 
             testClass.constructor
                 .shouldNotBeNull().asClue {
-                    it.parameters.shouldBeEmpty()
+                    it.parameters.shouldHaveSize(1)
+                    it.parameters[0].name.shouldBe("self")
 
                     val callToOriginalAPI = it.callToOriginalAPI.shouldNotBeNull()
                     callToOriginalAPI.receiver shouldBe PythonStringifiedExpression("testModule.TestClass")

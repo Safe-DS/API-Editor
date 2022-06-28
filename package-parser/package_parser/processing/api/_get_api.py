@@ -14,7 +14,7 @@ from ._package_metadata import (
     package_files,
     package_root,
 )
-from .documentation import NumpyDocParser
+from .documentation_parsing import NumpyDocParser
 
 
 def get_api(package_name: str, root: Optional[Path] = None) -> API:

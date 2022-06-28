@@ -1,18 +1,12 @@
 from __future__ import annotations
 
-import re
 from dataclasses import dataclass
-from enum import Enum
 from typing import Any, Optional
 
-from package_parser.processing.api.documentation import (
-    ClassDocumentation,
-    FunctionDocumentation,
-    ParameterDocumentation,
-)
 from package_parser.utils import parent_id
 
-from ._types import AbstractType, BoundaryType, EnumType, NamedType, UnionType
+from ._documentation import ClassDocumentation, FunctionDocumentation
+from ._parameters import Parameter
 
 API_SCHEMA_VERSION = 1
 
@@ -307,146 +301,6 @@ class Function:
             "description": self.documentation.description,
             "docstring": self.documentation.full_docstring,
         }
-
-
-class Type:
-    def __init__(
-        self,
-        parameter_documentation: ParameterDocumentation,
-    ) -> None:
-        self.type: Optional[AbstractType] = Type.create_type(parameter_documentation)
-
-    @classmethod
-    def create_type(cls, docstring: ParameterDocumentation) -> Optional[AbstractType]:
-        type_string = docstring.type
-        types: list[AbstractType] = list()
-
-        # Collapse whitespaces
-        type_string = re.sub(r"\s+", " ", type_string)
-
-        # Get boundary from description
-        boundary = BoundaryType.from_string(docstring.description)
-        if boundary is not None:
-            types.append(boundary)
-
-        # Find all enums and remove them from doc_string
-        enum_array_matches = re.findall(r"\{.*?}", type_string)
-        type_string = re.sub(r"\{.*?}", " ", type_string)
-        for enum in enum_array_matches:
-            enum_type = EnumType.from_string(enum)
-            if enum_type is not None:
-                types.append(enum_type)
-
-        # Remove default value from doc_string
-        type_string = re.sub("default=.*", " ", type_string)
-
-        # Create a list with all values and types
-        # ") or (" must be replaced by a very unlikely string ("&%&") so that it is not removed when filtering out.
-        # The string will be replaced by ") or (" again after filtering out.
-        type_string = re.sub(r"\) or \(", "&%&", type_string)
-        type_string = re.sub(r" ?, ?or ", ", ", type_string)
-        type_string = re.sub(r" or ", ", ", type_string)
-        type_string = re.sub("&%&", ") or (", type_string)
-
-        brackets = 0
-        build_string = ""
-        for c in type_string:
-            if c == "(":
-                brackets += 1
-            elif c == ")":
-                brackets -= 1
-
-            if brackets > 0:
-                build_string += c
-                continue
-
-            if brackets == 0 and c != ",":
-                build_string += c
-            elif brackets == 0 and c == ",":
-                # remove leading and trailing whitespaces
-                build_string = build_string.strip()
-                if build_string != "":
-                    named = NamedType.from_string(build_string)
-                    types.append(named)
-                    build_string = ""
-
-        build_string = build_string.strip()
-
-        # Append the last remaining entry
-        if build_string != "":
-            named = NamedType.from_string(build_string)
-            types.append(named)
-
-        if len(types) == 1:
-            return types[0]
-        elif len(types) == 0:
-            return None
-        else:
-            return UnionType(types)
-
-    def to_json(self) -> dict[str, Any]:
-        if self.type is None:
-            return {}
-        else:
-            return self.type.to_json()
-
-
-class Parameter:
-    @staticmethod
-    def from_json(json: Any):
-        return Parameter(
-            json["id"],
-            json["name"],
-            json["qname"],
-            json.get("default_value", None),
-            ParameterAssignment[json.get("assigned_by", "POSITION_OR_NAME")],
-            json.get("is_public", True),
-            ParameterDocumentation.from_dict(json.get("docstring", {})),
-        )
-
-    def __init__(
-        self,
-        id_: str,
-        name: str,
-        qname: str,
-        default_value: Optional[str],
-        assigned_by: ParameterAssignment,
-        is_public: bool,
-        documentation: ParameterDocumentation,
-    ) -> None:
-        self.id: str = id_
-        self.name: str = name
-        self.qname: str = qname
-        self.default_value: Optional[str] = default_value
-        self.assigned_by: ParameterAssignment = assigned_by
-        self.is_public: bool = is_public
-        self.documentation = documentation
-        self.type: Type = Type(documentation)
-
-    def is_optional(self) -> bool:
-        return self.default_value is not None
-
-    def is_required(self) -> bool:
-        return self.default_value is None
-
-    def to_json(self) -> Any:
-        return {
-            "id": self.id,
-            "name": self.name,
-            "qname": self.qname,
-            "default_value": self.default_value,
-            "assigned_by": self.assigned_by.name,
-            "is_public": self.is_public,
-            "docstring": self.documentation.to_dict(),
-            "type": self.type.to_json(),
-        }
-
-
-class ParameterAssignment(Enum):
-    IMPLICIT = "IMPLICIT"
-    POSITION_ONLY = "POSITION_ONLY"
-    POSITION_OR_NAME = "POSITION_OR_NAME"
-    NAME_ONLY = "NAME_ONLY"
 
 
 @dataclass

@@ -76,7 +76,11 @@ export const FilterHelpButton = function () {
                                 </ChakraText>
                                 <ChakraText>
                                     Displays only parameters that are assigned in the given manner. Replace [assignedBy]
-                                    with one of <em>implicit, positionOnly, positionOrName, nameOnly</em>.
+                                    with one of{' '}
+                                    <em>
+                                        implicit, positionOnly, positionOrName, positionalVararg, nameOnly, namedVararg
+                                    </em>
+                                    .
                                 </ChakraText>
                             </ListItem>
                             <ListItem>

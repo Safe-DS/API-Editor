@@ -87,6 +87,20 @@
                     "name": "issue_715",
                     "qname": "test.test.some_global_function.issue_715",
                     "default_value": "None"
+                },
+                {
+                    "id": "test/test/some_global_function/args",
+                    "name": "args",
+                    "qname": "test.test.some_global_function.args",
+                    "default_value": "None",
+                    "assigned_by": "POSITIONAL_VARARG"
+                },
+                {
+                    "id": "test/test/some_global_function/kwargs",
+                    "name": "kwargs",
+                    "qname": "test.test.some_global_function.kwargs",
+                    "default_value": "None",
+                    "assigned_by": "NAMED_VARARG"
                 }
             ]
         }

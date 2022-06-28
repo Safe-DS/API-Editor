@@ -16,8 +16,8 @@ from package_parser.processing.api.model import (
 from package_parser.utils import parent_qualified_name
 
 from ._file_filters import _is_init_file
-from ._get_parameter_list import _get_parameter_list
-from .documentation import AbstractDocumentationParser
+from ._get_parameter_list import get_parameter_list
+from .documentation_parsing import AbstractDocumentationParser
 
 
 class _AstVisitor:
@@ -180,7 +180,7 @@ class _AstVisitor:
             id=self.__get_function_id(function_node.name, decorator_names),
             qname=qname,
             decorators=decorator_names,
-            parameters=_get_parameter_list(
+            parameters=get_parameter_list(
                 self.documentation_parser,
                 function_node,
                 self.__get_id(function_node.name),

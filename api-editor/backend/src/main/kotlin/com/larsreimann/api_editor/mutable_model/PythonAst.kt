@@ -7,6 +7,8 @@ import com.larsreimann.api_editor.model.EditorAnnotation
 import com.larsreimann.api_editor.model.PythonFromImport
 import com.larsreimann.api_editor.model.PythonImport
 import com.larsreimann.api_editor.model.PythonParameterAssignment
+import com.larsreimann.api_editor.model.PythonParameterAssignment.NAMED_VARARG
+import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITIONAL_VARARG
 import com.larsreimann.modeling.ModelNode
 import com.larsreimann.modeling.ancestorsOrSelf
 
@@ -204,6 +206,8 @@ class PythonParameter(
     fun isRequired() = defaultValue == null
 
     fun isOptional() = defaultValue != null
+
+    fun isVariadic() = assignedBy == POSITIONAL_VARARG || assignedBy == NAMED_VARARG
 }
 
 class PythonResult(
@@ -263,6 +267,14 @@ class PythonMemberAccess(
         receiver?.let { yield(it) }
         member?.let { yield(it) }
     }
+}
+
+class PythonNamedSpread(argument: PythonExpression) : PythonExpression() {
+    var argument by ContainmentReference(argument)
+}
+
+class PythonPositionalSpread(argument: PythonExpression) : PythonExpression() {
+    var argument by ContainmentReference(argument)
 }
 
 class PythonReference(declaration: PythonDeclaration) : PythonExpression() {
