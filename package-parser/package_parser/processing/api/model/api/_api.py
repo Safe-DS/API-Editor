@@ -5,7 +5,8 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Optional
 
-from package_parser.model.api._types import (
+from package_parser.processing.api.documentation import FunctionDocumentation
+from package_parser.processing.api.model.api._types import (
     AbstractType,
     BoundaryType,
     EnumType,
@@ -225,8 +226,7 @@ class Class:
         superclasses: list[str],
         is_public: bool,
         reexported_by: list[str],
-        description: str,
-        docstring: str,
+        documentation: FunctionDocumentation
     ) -> None:
         self.id: str = id_
         self.qname: str = qname
@@ -269,8 +269,7 @@ class Function:
     results: list[Result]
     is_public: bool
     reexported_by: list[str]
-    description: str
-    docstring: str
+    documentation: FunctionDocumentation
 
     @staticmethod
     def from_json(json: Any) -> Function:
@@ -413,7 +412,7 @@ class Parameter:
         default_value: Optional[str],
         assigned_by: ParameterAssignment,
         is_public: bool,
-        docstring: ParameterAndResultDocstring,
+        documentation: ParameterAndResultDocstring,
     ) -> None:
         self.id: str = id_
         self.name: str = name
@@ -421,8 +420,8 @@ class Parameter:
         self.default_value: Optional[str] = default_value
         self.assigned_by: ParameterAssignment = assigned_by
         self.is_public: bool = is_public
-        self.docstring = docstring
-        self.type: Type = Type(docstring)
+        self.docstring = documentation
+        self.type: Type = Type(documentation)
 
     def is_optional(self) -> bool:
         return self.default_value is not None

@@ -1,6 +1,6 @@
-from package_parser.model.annotations import AnnotationStore, RemoveAnnotation
-from package_parser.model.api import API
-from package_parser.model.usages import UsageCountStore
+from package_parser.processing.annotations.model import AnnotationStore, RemoveAnnotation
+from package_parser.processing.api.model.api import API
+from package_parser.processing.usages.model import UsageCountStore
 
 from ._constants import autogen_author
 

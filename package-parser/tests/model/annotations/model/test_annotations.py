@@ -1,4 +1,4 @@
-from package_parser.model.annotations import (
+from package_parser.processing.annotations.model import (
     ANNOTATION_SCHEMA_VERSION,
     AbstractAnnotation,
     AnnotationStore,

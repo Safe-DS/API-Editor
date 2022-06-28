@@ -4,7 +4,7 @@ from typing import Optional
 
 from package_parser.cli._json_encoder import CustomEncoder
 from package_parser.cli._shared_constants import _API_KEY
-from package_parser.model.api import API
+from package_parser.processing.api.model.api import API
 from package_parser.processing.api import get_api
 from package_parser.processing.dependencies import get_dependencies
 from package_parser.utils import ensure_file_exists

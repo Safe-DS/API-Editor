@@ -8,7 +8,7 @@ from astroid.context import InferenceContext
 from astroid.helpers import safe_infer
 from numpydoc.docscrape import NumpyDocString
 
-from package_parser.model.api import (
+from package_parser.processing.api.model.api import (
     API,
     Class,
     FromImport,
@@ -19,10 +19,11 @@ from package_parser.model.api import (
 from package_parser.utils import parent_qualified_name
 from ._file_filters import _is_init_file
 from ._get_parameter_list import _get_parameter_list
+from .documentation import AbstractDocumentationParser
 
 
 class _AstVisitor:
-    def __init__(self, api: API) -> None:
+    def __init__(self, api: API, documentation_parser: AbstractDocumentationParser) -> None:
         self.reexported: dict[str, list[str]] = {}
         self.api: API = api
         self.__declaration_stack: list[Union[Module, Class, Function]] = []

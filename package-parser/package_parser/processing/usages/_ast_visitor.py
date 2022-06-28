@@ -4,7 +4,7 @@ from typing import Optional, Union
 import astroid
 from astroid.arguments import CallSite
 from astroid.helpers import safe_infer
-from package_parser.model.usages import UsageCountStore
+from package_parser.processing.usages.model import UsageCountStore
 from package_parser.utils import parent_id
 
 

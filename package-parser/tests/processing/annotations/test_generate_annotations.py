@@ -2,8 +2,8 @@ import json
 import os
 
 import pytest
-from package_parser.model.api import API
-from package_parser.model.usages import UsageCountStore
+from package_parser.processing.api.model.api import API
+from package_parser.processing.usages.model import UsageCountStore
 from package_parser.processing.annotations import generate_annotations
 
 

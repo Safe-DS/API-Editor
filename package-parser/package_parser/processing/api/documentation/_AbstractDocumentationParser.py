@@ -6,7 +6,7 @@ from dataclasses import dataclass
 import astroid
 
 
-class AbstractDocumentationParsingStrategy(ABC):
+class AbstractDocumentationParser(ABC):
 
     @abstractmethod
     def get_class_documentation(self, class_node: astroid.ClassDef) -> ClassDocumentation:

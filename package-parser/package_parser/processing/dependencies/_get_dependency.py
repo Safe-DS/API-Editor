@@ -1,7 +1,7 @@
 from typing import Dict, List, Tuple, Union
 
 import spacy
-from package_parser.model.api import (
+from package_parser.processing.api.model.api import (
     API,
     Action,
     APIDependencies,

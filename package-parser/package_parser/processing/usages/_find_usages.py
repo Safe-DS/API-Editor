@@ -8,7 +8,7 @@ import astroid
 from astroid.builder import AstroidBuilder
 from package_parser.utils import ASTWalker, list_files, parse_python_code
 
-from ...model.usages import UsageCountStore
+from package_parser.processing.usages.model import UsageCountStore
 from ._ast_visitor import _UsageFinder
 
 

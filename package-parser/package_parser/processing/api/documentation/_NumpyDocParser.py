@@ -4,12 +4,12 @@ import astroid
 import numpydoc.docscrape
 from numpydoc.docscrape import NumpyDocString
 
-from ._AbstractDocumentationParsingStrategy import AbstractDocumentationParsingStrategy, ParameterDocumentation, \
+from ._AbstractDocumentationParser import AbstractDocumentationParser, ParameterDocumentation, \
     FunctionDocumentation, ClassDocumentation
 from ._get_full_docstring import get_full_docstring
 
 
-class NumpyDocParser(AbstractDocumentationParsingStrategy):
+class NumpyDocParser(AbstractDocumentationParser):
     def get_class_documentation(self, class_node: astroid.ClassDef) -> ClassDocumentation:
         docstring = get_full_docstring(class_node)
 

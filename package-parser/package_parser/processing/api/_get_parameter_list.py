@@ -4,7 +4,7 @@ from typing import Optional
 import astroid
 from numpydoc.docscrape import NumpyDocString
 
-from package_parser.model.api import Parameter, ParameterAssignment, ParameterAndResultDocstring
+from package_parser.processing.api.model.api import Parameter, ParameterAssignment, ParameterAndResultDocstring
 
 
 def _get_parameter_list(
