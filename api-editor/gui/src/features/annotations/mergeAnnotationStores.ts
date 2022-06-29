@@ -7,7 +7,6 @@ import {
     ConstantAnnotation,
     GroupAnnotation,
     OptionalAnnotation,
-    PureAnnotation,
     RequiredAnnotation,
 } from './annotationSlice';
 
@@ -44,20 +43,10 @@ const mergeCalledAfterAnnotations = function (
 ): { [target: string]: { [calledAfterName: string]: CalledAfterAnnotation } } {
     const result = { ...theirs.calledAfters };
     for (const target of Object.keys(mine.calledAfters)) {
-        for (const calledAfterName of Object.keys(mine.calledAfters[target])) {
-            if (!result[target]) {
-                result[target] = {};
-            }
-
-            const theirCalledAfterAnnotation: CalledAfterAnnotation | undefined = result[target][calledAfterName];
-            const myCalledAfterAnnotation: CalledAfterAnnotation = mine.calledAfters[target][calledAfterName];
-            if (
-                !(theirCalledAfterAnnotation && isReviewed(theirCalledAfterAnnotation)) ||
-                isReviewed(myCalledAfterAnnotation)
-            ) {
-                result[target][calledAfterName] = myCalledAfterAnnotation;
-            }
-        }
+        result[target] = defaultMergeOneAnnotationType(
+            mine.calledAfters[target],
+            theirs.calledAfters[target],
+        )
     }
     return result;
 };
