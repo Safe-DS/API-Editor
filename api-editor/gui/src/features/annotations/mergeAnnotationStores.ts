@@ -69,7 +69,10 @@ const mergeCompleteAnnotations = function (
     mine: AnnotationStore,
     theirs: AnnotationStore,
 ): { [target: string]: CompleteAnnotation } {
-    return mine.completes;
+    return {
+        ...theirs.completes,
+        ...mine.completes
+    }
 };
 
 const mergeConstantAnnotations = function (

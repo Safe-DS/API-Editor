@@ -103,6 +103,77 @@ describe('mergeCalledAfterAnnotations', () => {
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
     });
 });
+
+describe('mergeCompleteAnnotations', () => {
+    test('should keep non-conflicting annotations', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            completes: {
+                a: {
+                    target: 'a',
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            completes: {
+                b: {
+                    target: 'b',
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            completes: {
+                a: {
+                    target: 'a',
+                },
+                b: {
+                    target: 'b',
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+
+    test('should keep mine for conflicting annotations', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            completes: {
+                a: {
+                    target: 'a',
+                    authors: ['me'],
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            completes: {
+                a: {
+                    target: 'a',
+                    authors: ['them'],
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            completes: {
+                a: {
+                    target: 'a',
+                    authors: ['me'],
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+});
+
 describe('mergePureAnnotations', () => {
     test('should keep non-conflicting annotations', () => {
         const mine: AnnotationStore = {
