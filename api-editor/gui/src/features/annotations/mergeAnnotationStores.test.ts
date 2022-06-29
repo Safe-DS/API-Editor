@@ -1,11 +1,244 @@
 // noinspection DuplicatedCode
 
-import { AnnotationStore, initialAnnotationStore } from './annotationSlice';
-import { mergeAnnotationStores } from './mergeAnnotationStores';
+import {AnnotationStore, initialAnnotationStore} from './annotationSlice';
+import {mergeAnnotationStores} from './mergeAnnotationStores';
 
 // Attribute -------------------------------------------------------------------
 
 // Boundary --------------------------------------------------------------------
+
+describe('mergeBoundaryAnnotations', () => {
+    test('should keep non-conflicting annotations', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            boundaries: {
+                a: {
+                    target: 'a',
+                    interval: {
+                        isDiscrete: true,
+                        lowerIntervalLimit: 0,
+                        lowerLimitType: 0,
+                        upperIntervalLimit: 1,
+                        upperLimitType: 0,
+                    },
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            boundaries: {
+                b: {
+                    target: 'b',
+                    interval: {
+                        isDiscrete: false,
+                        lowerIntervalLimit: 0,
+                        lowerLimitType: 1,
+                        upperIntervalLimit: 100,
+                        upperLimitType: 1,
+                    },
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            boundaries: {
+                a: {
+                    target: 'a',
+                    interval: {
+                        isDiscrete: true,
+                        lowerIntervalLimit: 0,
+                        lowerLimitType: 0,
+                        upperIntervalLimit: 1,
+                        upperLimitType: 0,
+                    },
+                },
+                b: {
+                    target: 'b',
+                    interval: {
+                        isDiscrete: false,
+                        lowerIntervalLimit: 0,
+                        lowerLimitType: 1,
+                        upperIntervalLimit: 100,
+                        upperLimitType: 1,
+                    },
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+
+    test('should favor reviewed annotations in case of conflicts', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            boundaries: {
+                a: {
+                    target: 'a',
+                    interval: {
+                        isDiscrete: true,
+                        lowerIntervalLimit: 0,
+                        lowerLimitType: 0,
+                        upperIntervalLimit: 1,
+                        upperLimitType: 0,
+                    },
+                    authors: ['me'],
+                    reviewers: [],
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            boundaries: {
+                a: {
+                    target: 'a',
+                    interval: {
+                        isDiscrete: false,
+                        lowerIntervalLimit: 0,
+                        lowerLimitType: 1,
+                        upperIntervalLimit: 100,
+                        upperLimitType: 1,
+                    },
+                    authors: ['them'],
+                    reviewers: ['them'],
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            boundaries: {
+                a: {
+                    target: 'a',
+                    interval: {
+                        isDiscrete: false,
+                        lowerIntervalLimit: 0,
+                        lowerLimitType: 1,
+                        upperIntervalLimit: 100,
+                        upperLimitType: 1,
+                    },
+                    authors: ['them'],
+                    reviewers: ['them'],
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+
+    test('should favor manually created annotations in case of conflicts', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            boundaries: {
+                a: {
+                    target: 'a',
+                    interval: {
+                        isDiscrete: true,
+                        lowerIntervalLimit: 0,
+                        lowerLimitType: 0,
+                        upperIntervalLimit: 1,
+                        upperLimitType: 0,
+                    },
+                    authors: ['$autogen$'],
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            boundaries: {
+                a: {
+                    target: 'a',
+                    interval: {
+                        isDiscrete: false,
+                        lowerIntervalLimit: 0,
+                        lowerLimitType: 1,
+                        upperIntervalLimit: 100,
+                        upperLimitType: 1,
+                    },
+                    authors: ['them'],
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            boundaries: {
+                a: {
+                    target: 'a',
+                    interval: {
+                        isDiscrete: false,
+                        lowerIntervalLimit: 0,
+                        lowerLimitType: 1,
+                        upperIntervalLimit: 100,
+                        upperLimitType: 1,
+                    },
+                    authors: ['them'],
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+
+    test('should favor my annotations in case of conflicts', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            boundaries: {
+                a: {
+                    target: 'a',
+                    interval: {
+                        isDiscrete: true,
+                        lowerIntervalLimit: 0,
+                        lowerLimitType: 0,
+                        upperIntervalLimit: 1,
+                        upperLimitType: 0,
+                    },
+                    authors: ['me'],
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            boundaries: {
+                a: {
+                    target: 'a',
+                    interval: {
+                        isDiscrete: false,
+                        lowerIntervalLimit: 0,
+                        lowerLimitType: 1,
+                        upperIntervalLimit: 100,
+                        upperLimitType: 1,
+                    },
+                    authors: ['them'],
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            boundaries: {
+                a: {
+                    target: 'a',
+                    interval: {
+                        isDiscrete: true,
+                        lowerIntervalLimit: 0,
+                        lowerLimitType: 0,
+                        upperIntervalLimit: 1,
+                        upperLimitType: 0,
+                    },
+                    authors: ['me'],
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+});
+
 // Called After ----------------------------------------------------------------
 
 describe('mergeCalledAfterAnnotations', () => {
@@ -77,7 +310,7 @@ describe('mergeCalledAfterAnnotations', () => {
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
     });
 
-    test('should keep reviewed annotation for conflicting annotations if exactly one is reviewed', () => {
+    test('should favor reviewed annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             calledAfters: {
@@ -123,7 +356,7 @@ describe('mergeCalledAfterAnnotations', () => {
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
     });
 
-    test('should keep mine for conflicting annotations if both or neither are reviewed', () => {
+    test('should favor my annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             calledAfters: {
@@ -204,7 +437,7 @@ describe('mergeCompleteAnnotations', () => {
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
     });
 
-    test('should keep mine for conflicting annotations', () => {
+    test('should favor my annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             completes: {
@@ -241,9 +474,487 @@ describe('mergeCompleteAnnotations', () => {
 
 // Constant --------------------------------------------------------------------
 // Description -----------------------------------------------------------------
+
+describe('mergeDescriptionAnnotations', () => {
+    test('should keep non-conflicting annotations', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            descriptions: {
+                a: {
+                    target: 'a',
+                    newDescription: 'foo',
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            descriptions: {
+                b: {
+                    target: 'b',
+                    newDescription: 'bar',
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            descriptions: {
+                a: {
+                    target: 'a',
+                    newDescription: 'foo',
+                },
+                b: {
+                    target: 'b',
+                    newDescription: 'bar',
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+
+    test('should favor reviewed annotations in case of conflicts', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            descriptions: {
+                a: {
+                    target: 'a',
+                    newDescription: 'foo',
+                    authors: ['me'],
+                    reviewers: [],
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            descriptions: {
+                a: {
+                    target: 'a',
+                    newDescription: 'bar',
+                    authors: ['them'],
+                    reviewers: ['them'],
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            descriptions: {
+                a: {
+                    target: 'a',
+                    newDescription: 'bar',
+                    authors: ['them'],
+                    reviewers: ['them'],
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+
+    test('should favor manually created annotations in case of conflicts', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            descriptions: {
+                a: {
+                    target: 'a',
+                    newDescription: 'foo',
+                    authors: ['$autogen$'],
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            descriptions: {
+                a: {
+                    target: 'a',
+                    newDescription: 'bar',
+                    authors: ['them'],
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            descriptions: {
+                a: {
+                    target: 'a',
+                    newDescription: 'bar',
+                    authors: ['them'],
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+
+    test('should favor my annotations in case of conflicts', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            descriptions: {
+                a: {
+                    target: 'a',
+                    newDescription: 'foo',
+                    authors: ['me'],
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            descriptions: {
+                a: {
+                    target: 'a',
+                    newDescription: 'bar',
+                    authors: ['them'],
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            descriptions: {
+                a: {
+                    target: 'a',
+                    newDescription: 'foo',
+                    authors: ['me'],
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+});
+
 // Enum ------------------------------------------------------------------------
+
+describe('mergeEnumAnnotations', () => {
+    test('should keep non-conflicting annotations', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            enums: {
+                a: {
+                    target: 'a',
+                    enumName: 'foo',
+                    pairs: [],
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            enums: {
+                b: {
+                    target: 'b',
+                    enumName: 'bar',
+                    pairs: [],
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            enums: {
+                a: {
+                    target: 'a',
+                    enumName: 'foo',
+                    pairs: [],
+                },
+                b: {
+                    target: 'b',
+                    enumName: 'bar',
+                    pairs: [],
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+
+    test('should favor reviewed annotations in case of conflicts', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            enums: {
+                a: {
+                    target: 'a',
+                    enumName: 'foo',
+                    pairs: [],
+                    authors: ['me'],
+                    reviewers: [],
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            enums: {
+                a: {
+                    target: 'a',
+                    enumName: 'bar',
+                    pairs: [],
+                    authors: ['them'],
+                    reviewers: ['them'],
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            enums: {
+                a: {
+                    target: 'a',
+                    enumName: 'bar',
+                    pairs: [],
+                    authors: ['them'],
+                    reviewers: ['them'],
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+
+    test('should favor manually created annotations in case of conflicts', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            enums: {
+                a: {
+                    target: 'a',
+                    enumName: 'foo',
+                    pairs: [],
+                    authors: ['$autogen$'],
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            enums: {
+                a: {
+                    target: 'a',
+                    enumName: 'bar',
+                    pairs: [],
+                    authors: ['them'],
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            enums: {
+                a: {
+                    target: 'a',
+                    enumName: 'bar',
+                    pairs: [],
+                    authors: ['them'],
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+
+    test('should favor my annotations in case of conflicts', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            enums: {
+                a: {
+                    target: 'a',
+                    enumName: 'foo',
+                    pairs: [],
+                    authors: ['me'],
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            enums: {
+                a: {
+                    target: 'a',
+                    enumName: 'bar',
+                    pairs: [],
+                    authors: ['them'],
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            enums: {
+                a: {
+                    target: 'a',
+                    enumName: 'foo',
+                    pairs: [],
+                    authors: ['me'],
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+});
+
 // Group -----------------------------------------------------------------------
 // Move ------------------------------------------------------------------------
+
+describe('mergeMoveAnnotations', () => {
+    test('should keep non-conflicting annotations', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            moves: {
+                a: {
+                    target: 'a',
+                    destination: 'foo',
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            moves: {
+                b: {
+                    target: 'b',
+                    destination: 'bar',
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            moves: {
+                a: {
+                    target: 'a',
+                    destination: 'foo',
+                },
+                b: {
+                    target: 'b',
+                    destination: 'bar',
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+
+    test('should favor reviewed annotations in case of conflicts', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            moves: {
+                a: {
+                    target: 'a',
+                    destination: 'foo',
+                    authors: ['me'],
+                    reviewers: [],
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            moves: {
+                a: {
+                    target: 'a',
+                    destination: 'bar',
+                    authors: ['them'],
+                    reviewers: ['them'],
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            moves: {
+                a: {
+                    target: 'a',
+                    destination: 'bar',
+                    authors: ['them'],
+                    reviewers: ['them'],
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+
+    test('should favor manually created annotations in case of conflicts', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            moves: {
+                a: {
+                    target: 'a',
+                    destination: 'foo',
+                    authors: ['$autogen$'],
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            moves: {
+                a: {
+                    target: 'a',
+                    destination: 'bar',
+                    authors: ['them'],
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            moves: {
+                a: {
+                    target: 'a',
+                    destination: 'bar',
+                    authors: ['them'],
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+
+    test('should favor my annotations in case of conflicts', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            moves: {
+                a: {
+                    target: 'a',
+                    destination: 'foo',
+                    authors: ['me'],
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            moves: {
+                a: {
+                    target: 'a',
+                    destination: 'bar',
+                    authors: ['them'],
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            moves: {
+                a: {
+                    target: 'a',
+                    destination: 'foo',
+                    authors: ['me'],
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+});
+
 // Optional --------------------------------------------------------------------
 // Pure ------------------------------------------------------------------------
 
@@ -282,7 +993,7 @@ describe('mergePureAnnotations', () => {
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
     });
 
-    test('should keep reviewed annotation for conflicting annotations if exactly one is reviewed', () => {
+    test('should favor reviewed annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             pures: {
@@ -319,7 +1030,7 @@ describe('mergePureAnnotations', () => {
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
     });
 
-    test('should keep mine for conflicting annotations if both or neither are reviewed', () => {
+    test('should favor my annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             pures: {
@@ -355,9 +1066,6 @@ describe('mergePureAnnotations', () => {
 });
 
 // Remove ----------------------------------------------------------------------
-// Rename ----------------------------------------------------------------------
-// Required --------------------------------------------------------------------
-// Todo ------------------------------------------------------------------------
 
 describe('mergeRemoveAnnotations', () => {
     test('should keep non-conflicting annotations', () => {
@@ -394,14 +1102,14 @@ describe('mergeRemoveAnnotations', () => {
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
     });
 
-    test('should keep reviewed annotation for conflicting annotations if exactly one is reviewed', () => {
+    test('should favor reviewed annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             removes: {
                 a: {
                     target: 'a',
                     authors: ['me'],
-                    reviewers: []
+                    reviewers: [],
                 },
             },
         };
@@ -412,7 +1120,7 @@ describe('mergeRemoveAnnotations', () => {
                 a: {
                     target: 'a',
                     authors: ['them'],
-                    reviewers: ['them']
+                    reviewers: ['them'],
                 },
             },
         };
@@ -423,7 +1131,7 @@ describe('mergeRemoveAnnotations', () => {
                 a: {
                     target: 'a',
                     authors: ['them'],
-                    reviewers: ['them']
+                    reviewers: ['them'],
                 },
             },
         };
@@ -431,7 +1139,7 @@ describe('mergeRemoveAnnotations', () => {
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
     });
 
-    test('should keep mine for conflicting annotations if both or neither are reviewed', () => {
+    test('should favor my annotations in case of conflicts', () => {
         const mine: AnnotationStore = {
             ...initialAnnotationStore,
             removes: {
@@ -457,6 +1165,319 @@ describe('mergeRemoveAnnotations', () => {
             removes: {
                 a: {
                     target: 'a',
+                    authors: ['me'],
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+});
+
+// Rename ----------------------------------------------------------------------
+
+describe('mergeRenameAnnotations', () => {
+    test('should keep non-conflicting annotations', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            renamings: {
+                a: {
+                    target: 'a',
+                    newName: 'foo',
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            renamings: {
+                b: {
+                    target: 'b',
+                    newName: 'bar',
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            renamings: {
+                a: {
+                    target: 'a',
+                    newName: 'foo',
+                },
+                b: {
+                    target: 'b',
+                    newName: 'bar',
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+
+    test('should favor reviewed annotations in case of conflicts', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            renamings: {
+                a: {
+                    target: 'a',
+                    newName: 'foo',
+                    authors: ['me'],
+                    reviewers: [],
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            renamings: {
+                a: {
+                    target: 'a',
+                    newName: 'bar',
+                    authors: ['them'],
+                    reviewers: ['them'],
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            renamings: {
+                a: {
+                    target: 'a',
+                    newName: 'bar',
+                    authors: ['them'],
+                    reviewers: ['them'],
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+
+    test('should favor manually created annotations in case of conflicts', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            renamings: {
+                a: {
+                    target: 'a',
+                    newName: 'foo',
+                    authors: ['$autogen$'],
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            renamings: {
+                a: {
+                    target: 'a',
+                    newName: 'bar',
+                    authors: ['them'],
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            renamings: {
+                a: {
+                    target: 'a',
+                    newName: 'bar',
+                    authors: ['them'],
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+
+    test('should favor my annotations in case of conflicts', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            renamings: {
+                a: {
+                    target: 'a',
+                    newName: 'foo',
+                    authors: ['me'],
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            renamings: {
+                a: {
+                    target: 'a',
+                    newName: 'bar',
+                    authors: ['them'],
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            renamings: {
+                a: {
+                    target: 'a',
+                    newName: 'foo',
+                    authors: ['me'],
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+});
+
+// Required --------------------------------------------------------------------
+// Todo ------------------------------------------------------------------------
+
+describe('mergeTodoAnnotations', () => {
+    test('should keep non-conflicting annotations', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            todos: {
+                a: {
+                    target: 'a',
+                    newTodo: 'foo',
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            todos: {
+                b: {
+                    target: 'b',
+                    newTodo: 'bar',
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            todos: {
+                a: {
+                    target: 'a',
+                    newTodo: 'foo',
+                },
+                b: {
+                    target: 'b',
+                    newTodo: 'bar',
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+
+    test('should favor reviewed annotations in case of conflicts', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            todos: {
+                a: {
+                    target: 'a',
+                    newTodo: 'foo',
+                    authors: ['me'],
+                    reviewers: [],
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            todos: {
+                a: {
+                    target: 'a',
+                    newTodo: 'bar',
+                    authors: ['them'],
+                    reviewers: ['them'],
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            todos: {
+                a: {
+                    target: 'a',
+                    newTodo: 'bar',
+                    authors: ['them'],
+                    reviewers: ['them'],
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+
+    test('should favor manually created annotations in case of conflicts', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            todos: {
+                a: {
+                    target: 'a',
+                    newTodo: 'foo',
+                    authors: ['$autogen$'],
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            todos: {
+                a: {
+                    target: 'a',
+                    newTodo: 'bar',
+                    authors: ['them'],
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            todos: {
+                a: {
+                    target: 'a',
+                    newTodo: 'bar',
+                    authors: ['them'],
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+
+    test('should favor my annotations in case of conflicts', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            todos: {
+                a: {
+                    target: 'a',
+                    newTodo: 'foo',
+                    authors: ['me'],
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            todos: {
+                a: {
+                    target: 'a',
+                    newTodo: 'bar',
+                    authors: ['them'],
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            todos: {
+                a: {
+                    target: 'a',
+                    newTodo: 'foo',
                     authors: ['me'],
                 },
             },
