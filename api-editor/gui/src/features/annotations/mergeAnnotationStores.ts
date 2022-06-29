@@ -2,39 +2,32 @@ import {
     Annotation,
     AnnotationStore,
     AttributeAnnotation,
-    BoundaryAnnotation,
     CalledAfterAnnotation,
     CompleteAnnotation,
     ConstantAnnotation,
-    DescriptionAnnotation,
-    EnumAnnotation,
     GroupAnnotation,
-    MoveAnnotation,
     OptionalAnnotation,
     PureAnnotation,
-    RemoveAnnotation,
-    RenameAnnotation,
     RequiredAnnotation,
-    TodoAnnotation,
 } from './annotationSlice';
 
 export const mergeAnnotationStores = function (mine: AnnotationStore, theirs: AnnotationStore): AnnotationStore {
     return {
         attributes: mergeAttributeAnnotations(mine, theirs),
-        boundaries: mergeBoundaryAnnotations(mine, theirs),
+        boundaries: defaultMergeOneAnnotationType(mine.boundaries, theirs.boundaries),
         calledAfters: mergeCalledAfterAnnotations(mine, theirs),
         completes: mergeCompleteAnnotations(mine, theirs),
         constants: mergeConstantAnnotations(mine, theirs),
-        descriptions: mergeDescriptionAnnotations(mine, theirs),
-        enums: mergeEnumAnnotations(mine, theirs),
+        descriptions: defaultMergeOneAnnotationType(mine.descriptions, theirs.descriptions),
+        enums: defaultMergeOneAnnotationType(mine.enums, theirs.enums),
         groups: mergeGroupAnnotations(mine, theirs),
-        moves: mergeMoveAnnotations(mine, theirs),
+        moves: defaultMergeOneAnnotationType(mine.moves, theirs.moves),
         optionals: mergeOptionalAnnotations(mine, theirs),
-        pures: mergePureAnnotations(mine, theirs),
-        removes: mergeRemoveAnnotations(mine, theirs),
-        renamings: mergeRenamingAnnotations(mine, theirs),
+        pures: defaultMergeOneAnnotationType(mine.pures, theirs.pures),
+        removes: defaultMergeOneAnnotationType(mine.removes, theirs.removes),
+        renamings: defaultMergeOneAnnotationType(mine.renamings, theirs.renamings),
         requireds: mergeRequiredAnnotations(mine, theirs),
-        todos: mergeTodoAnnotations(mine, theirs),
+        todos: defaultMergeOneAnnotationType(mine.todos, theirs.todos),
     };
 };
 
@@ -43,13 +36,6 @@ const mergeAttributeAnnotations = function (
     theirs: AnnotationStore,
 ): { [target: string]: AttributeAnnotation } {
     return mine.attributes;
-};
-
-const mergeBoundaryAnnotations = function (
-    mine: AnnotationStore,
-    theirs: AnnotationStore,
-): { [target: string]: BoundaryAnnotation } {
-    return mine.boundaries;
 };
 
 const mergeCalledAfterAnnotations = function (
@@ -65,7 +51,10 @@ const mergeCalledAfterAnnotations = function (
 
             const theirCalledAfterAnnotation: CalledAfterAnnotation | undefined = result[target][calledAfterName];
             const myCalledAfterAnnotation: CalledAfterAnnotation = mine.calledAfters[target][calledAfterName];
-            if (!(theirCalledAfterAnnotation && isReviewed(theirCalledAfterAnnotation)) || isReviewed(myCalledAfterAnnotation)) {
+            if (
+                !(theirCalledAfterAnnotation && isReviewed(theirCalledAfterAnnotation)) ||
+                isReviewed(myCalledAfterAnnotation)
+            ) {
                 result[target][calledAfterName] = myCalledAfterAnnotation;
             }
         }
@@ -90,32 +79,11 @@ const mergeConstantAnnotations = function (
     return mine.constants;
 };
 
-const mergeDescriptionAnnotations = function (
-    mine: AnnotationStore,
-    theirs: AnnotationStore,
-): { [target: string]: DescriptionAnnotation } {
-    return mine.descriptions;
-};
-
-const mergeEnumAnnotations = function (
-    mine: AnnotationStore,
-    theirs: AnnotationStore,
-): { [target: string]: EnumAnnotation } {
-    return mine.enums;
-};
-
 const mergeGroupAnnotations = function (
     mine: AnnotationStore,
     theirs: AnnotationStore,
 ): { [target: string]: { [groupName: string]: GroupAnnotation } } {
     return mine.groups;
-};
-
-const mergeMoveAnnotations = function (
-    mine: AnnotationStore,
-    theirs: AnnotationStore,
-): { [target: string]: MoveAnnotation } {
-    return mine.moves;
 };
 
 const mergeOptionalAnnotations = function (
@@ -125,55 +93,11 @@ const mergeOptionalAnnotations = function (
     return mine.optionals;
 };
 
-const mergePureAnnotations = function (
-    mine: AnnotationStore,
-    theirs: AnnotationStore,
-): { [target: string]: PureAnnotation } {
-    const result = { ...theirs.pures };
-    for (const target of Object.keys(mine.pures)) {
-        const theirPureAnnotation: PureAnnotation | undefined = result[target];
-        const myPureAnnotation: PureAnnotation = mine.pures[target];
-        if (!(theirPureAnnotation && isReviewed(theirPureAnnotation)) || isReviewed(myPureAnnotation)) {
-            result[target] = myPureAnnotation;
-        }
-    }
-    return result;
-};
-
-const mergeRemoveAnnotations = function (
-    mine: AnnotationStore,
-    theirs: AnnotationStore,
-): { [target: string]: RemoveAnnotation } {
-    const result = { ...theirs.removes };
-    for (const target of Object.keys(mine.removes)) {
-        const theirRemoveAnnotation: RemoveAnnotation | undefined = result[target];
-        const myRemoveAnnotation: RemoveAnnotation = mine.removes[target];
-        if (!(theirRemoveAnnotation && isReviewed(theirRemoveAnnotation)) || isReviewed(myRemoveAnnotation)) {
-            result[target] = myRemoveAnnotation;
-        }
-    }
-    return result;
-};
-
-const mergeRenamingAnnotations = function (
-    mine: AnnotationStore,
-    theirs: AnnotationStore,
-): { [target: string]: RenameAnnotation } {
-    return mine.renamings;
-};
-
 const mergeRequiredAnnotations = function (
     mine: AnnotationStore,
     theirs: AnnotationStore,
 ): { [target: string]: RequiredAnnotation } {
     return mine.requireds;
-};
-
-const mergeTodoAnnotations = function (
-    mine: AnnotationStore,
-    theirs: AnnotationStore,
-): { [target: string]: TodoAnnotation } {
-    return mine.todos;
 };
 
 const isAutogenerated = function (annotation: Annotation) {
@@ -182,4 +106,41 @@ const isAutogenerated = function (annotation: Annotation) {
 
 const isReviewed = function (annotation: Annotation) {
     return (annotation.reviewers?.length ?? 0) > 0;
+};
+
+const defaultMergeOneAnnotationType = function <T extends Annotation>(
+    mine: { [target: string]: T },
+    theirs: { [target: string]: T },
+): { [target: string]: T } {
+    const result = { ...theirs };
+    for (const target of Object.keys(mine)) {
+        const theirBoundaryAnnotation: T | undefined = result[target];
+        const myBoundaryAnnotation: T = mine[target];
+
+        // No conflict
+        if (!theirBoundaryAnnotation) {
+            result[target] = myBoundaryAnnotation;
+            continue;
+        }
+
+        // Prefer reviewed annotations in case of conflicts
+        if (isReviewed(theirBoundaryAnnotation) && !isReviewed(myBoundaryAnnotation)) {
+            continue;
+        } else if (!isReviewed(theirBoundaryAnnotation) && isReviewed(myBoundaryAnnotation)) {
+            result[target] = myBoundaryAnnotation;
+            continue;
+        }
+
+        // Prefer manually created annotations in case of conflicts if value differ
+        if (!isAutogenerated(theirBoundaryAnnotation) && isAutogenerated(myBoundaryAnnotation)) {
+            continue;
+        } else if (isAutogenerated(theirBoundaryAnnotation) && !isAutogenerated(myBoundaryAnnotation)) {
+            result[target] = myBoundaryAnnotation;
+            continue;
+        }
+
+        // Prefer my annotations
+        result[target] = myBoundaryAnnotation;
+    }
+    return result;
 };
