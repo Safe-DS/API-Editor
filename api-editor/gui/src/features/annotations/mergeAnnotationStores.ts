@@ -6,9 +6,15 @@ import {
     CompleteAnnotation,
     ConstantAnnotation,
     DescriptionAnnotation,
-    EnumAnnotation, GroupAnnotation,
+    EnumAnnotation,
+    GroupAnnotation,
     MoveAnnotation,
-    OptionalAnnotation, PureAnnotation, RemoveAnnotation, RenameAnnotation, RequiredAnnotation, TodoAnnotation,
+    OptionalAnnotation,
+    PureAnnotation,
+    RemoveAnnotation,
+    RenameAnnotation,
+    RequiredAnnotation,
+    TodoAnnotation,
 } from './annotationSlice';
 
 export const mergeAnnotationStores = function (mine: AnnotationStore, theirs: AnnotationStore): AnnotationStore {
@@ -16,7 +22,7 @@ export const mergeAnnotationStores = function (mine: AnnotationStore, theirs: An
         attributes: mergeAttributeAnnotations(mine, theirs),
         boundaries: mergeBoundaryAnnotations(mine, theirs),
         calledAfters: mergeCalledAfterAnnotations(mine, theirs),
-        completes: mergeCompletesAnnotations(mine, theirs),
+        completes: mergeCompleteAnnotations(mine, theirs),
         constants: mergeConstantAnnotations(mine, theirs),
         descriptions: mergeDescriptionAnnotations(mine, theirs),
         enums: mergeEnumAnnotations(mine, theirs),
@@ -35,71 +41,78 @@ const mergeAttributeAnnotations = function (
     mine: AnnotationStore,
     theirs: AnnotationStore,
 ): { [target: string]: AttributeAnnotation } {
-    return mine.attributes
+    return mine.attributes;
 };
 
 const mergeBoundaryAnnotations = function (
     mine: AnnotationStore,
     theirs: AnnotationStore,
 ): { [target: string]: BoundaryAnnotation } {
-    return mine.boundaries
+    return mine.boundaries;
 };
 
 const mergeCalledAfterAnnotations = function (
     mine: AnnotationStore,
     theirs: AnnotationStore,
 ): { [target: string]: { [calledAfterName: string]: CalledAfterAnnotation } } {
-    return mine.calledAfters
+    const result = {...theirs.calledAfters};
+    for (const target of Object.keys(mine.calledAfters)) {
+        result[target] = {
+            ...(result[target] ?? {}),
+            ...mine.calledAfters[target],
+        };
+    }
+    return result;
 };
 
-const mergeCompletesAnnotations = function (
+const mergeCompleteAnnotations = function (
     mine: AnnotationStore,
     theirs: AnnotationStore,
 ): { [target: string]: CompleteAnnotation } {
-    return mine.completes
+    return mine.completes;
 };
 
 const mergeConstantAnnotations = function (
     mine: AnnotationStore,
     theirs: AnnotationStore,
 ): { [target: string]: ConstantAnnotation } {
-    return mine.constants
+    return mine.constants;
 };
 
 const mergeDescriptionAnnotations = function (
     mine: AnnotationStore,
     theirs: AnnotationStore,
 ): { [target: string]: DescriptionAnnotation } {
-    return mine.descriptions
+    return mine.descriptions;
 };
 
 const mergeEnumAnnotations = function (
     mine: AnnotationStore,
     theirs: AnnotationStore,
 ): { [target: string]: EnumAnnotation } {
-    return mine.enums
+    return mine.enums;
 };
 
 const mergeGroupAnnotations = function (
     mine: AnnotationStore,
     theirs: AnnotationStore,
 ): { [target: string]: { [groupName: string]: GroupAnnotation } } {
-    return mine.groups
-}
+    return mine.groups;
+};
 
 const mergeMoveAnnotations = function (
     mine: AnnotationStore,
     theirs: AnnotationStore,
 ): { [target: string]: MoveAnnotation } {
-    return mine.moves
-}
+    return mine.moves;
+};
 
 const mergeOptionalAnnotations = function (
-    mine : AnnotationStore,
+    mine: AnnotationStore,
     theirs: AnnotationStore,
 ): { [target: string]: OptionalAnnotation } {
-    return mine.optionals
-}
+    return mine.optionals;
+};
 
 const mergePureAnnotations = function (
     mine: AnnotationStore,
@@ -107,9 +120,9 @@ const mergePureAnnotations = function (
 ): { [target: string]: PureAnnotation } {
     return {
         ...theirs.pures,
-        ...mine.pures
-    }
-}
+        ...mine.pures,
+    };
+};
 
 const mergeRemoveAnnotations = function (
     mine: AnnotationStore,
@@ -117,27 +130,27 @@ const mergeRemoveAnnotations = function (
 ): { [target: string]: RemoveAnnotation } {
     return {
         ...theirs.removes,
-        ...mine.removes
-    }
-}
+        ...mine.removes,
+    };
+};
 
 const mergeRenamingAnnotations = function (
     mine: AnnotationStore,
     theirs: AnnotationStore,
 ): { [target: string]: RenameAnnotation } {
-    return mine.renamings
-}
+    return mine.renamings;
+};
 
 const mergeRequiredAnnotations = function (
     mine: AnnotationStore,
     theirs: AnnotationStore,
 ): { [target: string]: RequiredAnnotation } {
-    return mine.requireds
-}
+    return mine.requireds;
+};
 
 const mergeTodoAnnotations = function (
     mine: AnnotationStore,
     theirs: AnnotationStore,
 ): { [target: string]: TodoAnnotation } {
-    return mine.todos
-}
+    return mine.todos;
+};

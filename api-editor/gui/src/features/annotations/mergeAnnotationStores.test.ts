@@ -1,6 +1,108 @@
+// noinspection DuplicatedCode
+
 import { AnnotationStore, initialAnnotationStore } from './annotationSlice';
 import { mergeAnnotationStores } from './mergeAnnotationStores';
 
+describe('mergeCalledAfterAnnotations', () => {
+    test('should keep non-conflicting annotations', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            calledAfters: {
+                a: {
+                    c: {
+                        target: 'a',
+                        calledAfterName: 'c',
+                    },
+                },
+                b: {
+                    c: {
+                        target: 'b',
+                        calledAfterName: 'c',
+                    },
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            calledAfters: {
+                a: {
+                    b: {
+                        target: 'a',
+                        calledAfterName: 'b',
+                    },
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            calledAfters: {
+                a: {
+                    b: {
+                        target: 'a',
+                        calledAfterName: 'b',
+                    },
+                    c: {
+                        target: 'a',
+                        calledAfterName: 'c',
+                    },
+                },
+                b: {
+                    c: {
+                        target: 'b',
+                        calledAfterName: 'c',
+                    },
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+
+    test('should keep mine for conflicting annotations', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            calledAfters: {
+                a: {
+                    b: {
+                        target: 'a',
+                        calledAfterName: 'b',
+                        authors: ['me'],
+                    },
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            calledAfters: {
+                a: {
+                    b: {
+                        target: 'a',
+                        calledAfterName: 'b',
+                        authors: ['them'],
+                    },
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            calledAfters: {
+                a: {
+                    b: {
+                        target: 'a',
+                        calledAfterName: 'b',
+                        authors: ['me'],
+                    },
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+});
 describe('mergePureAnnotations', () => {
     test('should keep non-conflicting annotations', () => {
         const mine: AnnotationStore = {
@@ -42,9 +144,7 @@ describe('mergePureAnnotations', () => {
             pures: {
                 a: {
                     target: 'a',
-                    authors: [
-                        "me"
-                    ]
+                    authors: ['me'],
                 },
             },
         };
@@ -54,9 +154,7 @@ describe('mergePureAnnotations', () => {
             pures: {
                 a: {
                     target: 'a',
-                    authors: [
-                        "them"
-                    ]
+                    authors: ['them'],
                 },
             },
         };
@@ -66,9 +164,7 @@ describe('mergePureAnnotations', () => {
             pures: {
                 a: {
                     target: 'a',
-                    authors: [
-                        "me"
-                    ]
+                    authors: ['me'],
                 },
             },
         };
@@ -118,9 +214,7 @@ describe('mergeRemoveAnnotations', () => {
             removes: {
                 a: {
                     target: 'a',
-                    authors: [
-                        "me"
-                    ]
+                    authors: ['me'],
                 },
             },
         };
@@ -130,9 +224,7 @@ describe('mergeRemoveAnnotations', () => {
             removes: {
                 a: {
                     target: 'a',
-                    authors: [
-                        "them"
-                    ]
+                    authors: ['them'],
                 },
             },
         };
@@ -142,9 +234,7 @@ describe('mergeRemoveAnnotations', () => {
             removes: {
                 a: {
                     target: 'a',
-                    authors: [
-                        "me"
-                    ]
+                    authors: ['me'],
                 },
             },
         };
