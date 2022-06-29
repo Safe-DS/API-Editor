@@ -72,7 +72,14 @@ const mergeGroupAnnotations = function (
     mine: AnnotationStore,
     theirs: AnnotationStore,
 ): { [target: string]: { [groupName: string]: GroupAnnotation } } {
-    return mine.groups;
+    const result = { ...theirs.groups };
+    for (const target of Object.keys(mine.groups)) {
+        result[target] = defaultMergeOneAnnotationType(
+            mine.groups[target],
+            theirs.groups[target],
+        )
+    }
+    return result;
 };
 
 const mergeOptionalAnnotations = function (
