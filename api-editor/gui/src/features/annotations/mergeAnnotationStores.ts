@@ -115,7 +115,10 @@ const mergeRemoveAnnotations = function (
     mine: AnnotationStore,
     theirs: AnnotationStore,
 ): { [target: string]: RemoveAnnotation } {
-    return mine.removes
+    return {
+        ...theirs.removes,
+        ...mine.removes
+    }
 }
 
 const mergeRenamingAnnotations = function (
