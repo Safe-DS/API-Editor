@@ -79,7 +79,6 @@ export const PackageDataImportDialog: React.FC = function () {
             reader.onload = () => {
                 if (typeof reader.result === 'string') {
                     setNewPythonPackageString(reader.result);
-                    dispatch(resetAnnotationStore());
                 }
             };
             reader.readAsText(acceptedFiles[0]);
