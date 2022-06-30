@@ -420,10 +420,1206 @@
                 "upperIntervalLimit": 1,
                 "upperLimitType": 0
             }
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/l1_ratio": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/l1_ratio",
+            "interval": {
+                "isDiscrete": false,
+                "lowerIntervalLimit": 0,
+                "lowerLimitType": 0,
+                "upperIntervalLimit": 1,
+                "upperLimitType": 0
+            },
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/l1_ratio": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/l1_ratio",
+            "interval": {
+                "isDiscrete": false,
+                "lowerIntervalLimit": 0,
+                "lowerLimitType": 0,
+                "upperIntervalLimit": 1,
+                "upperLimitType": 0
+            },
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._glm.glm/GammaRegressor/__init__/tol": {
+            "target": "sklearn/sklearn.linear_model._glm.glm/GammaRegressor/__init__/tol",
+            "interval": {
+                "isDiscrete": false,
+                "lowerIntervalLimit": 0,
+                "lowerLimitType": 1,
+                "upperIntervalLimit": 0,
+                "upperLimitType": 2
+            },
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._glm.glm/GammaRegressor/__init__/alpha": {
+            "target": "sklearn/sklearn.linear_model._glm.glm/GammaRegressor/__init__/alpha",
+            "interval": {
+                "isDiscrete": false,
+                "lowerIntervalLimit": 0,
+                "lowerLimitType": 0,
+                "upperIntervalLimit": 0,
+                "upperLimitType": 2
+            },
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._glm.glm/GammaRegressor/__init__/max_iter": {
+            "target": "sklearn/sklearn.linear_model._glm.glm/GammaRegressor/__init__/max_iter",
+            "interval": {
+                "isDiscrete": false,
+                "lowerIntervalLimit": 1,
+                "lowerLimitType": 0,
+                "upperIntervalLimit": 0,
+                "upperLimitType": 2
+            },
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._glm.glm/GammaRegressor/__init__/verbose": {
+            "target": "sklearn/sklearn.linear_model._glm.glm/GammaRegressor/__init__/verbose",
+            "interval": {
+                "isDiscrete": false,
+                "lowerIntervalLimit": 0,
+                "lowerLimitType": 0,
+                "upperIntervalLimit": 0,
+                "upperLimitType": 2
+            },
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
         }
     },
     "calledAfters": {},
-    "completes": {},
+    "completes": {
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/fit": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/fit",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/fit/X": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/fit/X",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/fit/y": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/fit/y",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/n_iter": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/n_iter",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/tol": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/tol",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/alpha_1": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/alpha_1",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/alpha_2": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/alpha_2",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/lambda_1": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/lambda_1",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/lambda_2": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/lambda_2",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/compute_score": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/compute_score",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/threshold_lambda": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/threshold_lambda",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/fit_intercept": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/fit_intercept",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/normalize": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/normalize",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/copy_X": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/copy_X",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/verbose": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/verbose",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/predict/X": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/predict/X",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/predict/return_std": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/predict/return_std",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/predict": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/predict",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/ARDRegression": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/alpha_init": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/alpha_init",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/n_iter": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/n_iter",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/tol": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/tol",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/alpha_1": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/alpha_1",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/alpha_2": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/alpha_2",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/lambda_1": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/lambda_1",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/lambda_2": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/lambda_2",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/lambda_init": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/lambda_init",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/compute_score": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/compute_score",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/fit_intercept": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/fit_intercept",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/normalize": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/normalize",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/copy_X": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/copy_X",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/verbose": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/verbose",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/fit/y": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/fit/y",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/fit/X": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/fit/X",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/fit": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/fit",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/predict/return_std": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/predict/return_std",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/alpha": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/alpha",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/copy_X": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/copy_X",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/fit_intercept": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/fit_intercept",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/l1_ratio": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/l1_ratio",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/max_iter": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/max_iter",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/normalize": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/normalize",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/positive": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/positive",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/precompute": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/precompute",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/random_state": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/random_state",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/selection": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/selection",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/tol": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/tol",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/warm_start": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/warm_start",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/fit/X": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/fit/X",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/fit/y": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/fit/y",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/fit/sample_weight": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/fit/sample_weight",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/fit/check_input": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/fit/check_input",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/fit": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/fit",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/sparse_coef_@getter": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/sparse_coef_@getter",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/alphas": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/alphas",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/copy_X": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/copy_X",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/cv": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/cv",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/eps": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/eps",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/fit_intercept": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/fit_intercept",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/l1_ratio": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/l1_ratio",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/max_iter": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/max_iter",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/n_alphas": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/n_alphas",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/normalize": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/normalize",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/positive": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/positive",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/precompute": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/precompute",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/random_state": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/random_state",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/selection": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/selection",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/tol": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/tol",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/verbose": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/verbose",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/enet_path": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/enet_path",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/enet_path/X": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/enet_path/X",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/enet_path/y": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/enet_path/y",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/enet_path/l1_ratio": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/enet_path/l1_ratio",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/enet_path/eps": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/enet_path/eps",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/enet_path/n_alphas": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/enet_path/n_alphas",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/enet_path/alphas": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/enet_path/alphas",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/enet_path/precompute": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/enet_path/precompute",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/enet_path/Xy": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/enet_path/Xy",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/enet_path/copy_X": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/enet_path/copy_X",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/enet_path/coef_init": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/enet_path/coef_init",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/enet_path/verbose": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/enet_path/verbose",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/enet_path/return_n_iter": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/enet_path/return_n_iter",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/enet_path/positive": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/enet_path/positive",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/enet_path/check_input": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/enet_path/check_input",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._glm.glm/GammaRegressor/__init__/fit_intercept": {
+            "target": "sklearn/sklearn.linear_model._glm.glm/GammaRegressor/__init__/fit_intercept",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._glm.glm/GammaRegressor/__init__/tol": {
+            "target": "sklearn/sklearn.linear_model._glm.glm/GammaRegressor/__init__/tol",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._glm.glm/GammaRegressor/__init__/warm_start": {
+            "target": "sklearn/sklearn.linear_model._glm.glm/GammaRegressor/__init__/warm_start",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._glm.glm/GammaRegressor/__init__/max_iter": {
+            "target": "sklearn/sklearn.linear_model._glm.glm/GammaRegressor/__init__/max_iter",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._glm.glm/GammaRegressor/__init__/verbose": {
+            "target": "sklearn/sklearn.linear_model._glm.glm/GammaRegressor/__init__/verbose",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._glm.glm/GammaRegressor/__init__": {
+            "target": "sklearn/sklearn.linear_model._glm.glm/GammaRegressor/__init__",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._glm.glm/GammaRegressor/__init__/alpha": {
+            "target": "sklearn/sklearn.linear_model._glm.glm/GammaRegressor/__init__/alpha",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._huber/HuberRegressor/__init__/alpha": {
+            "target": "sklearn/sklearn.linear_model._huber/HuberRegressor/__init__/alpha",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._huber/HuberRegressor/__init__/epsilon": {
+            "target": "sklearn/sklearn.linear_model._huber/HuberRegressor/__init__/epsilon",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._huber/HuberRegressor/__init__/fit_intercept": {
+            "target": "sklearn/sklearn.linear_model._huber/HuberRegressor/__init__/fit_intercept",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._huber/HuberRegressor/__init__/max_iter": {
+            "target": "sklearn/sklearn.linear_model._huber/HuberRegressor/__init__/max_iter",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._huber/HuberRegressor/__init__/tol": {
+            "target": "sklearn/sklearn.linear_model._huber/HuberRegressor/__init__/tol",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._huber/HuberRegressor/__init__/warm_start": {
+            "target": "sklearn/sklearn.linear_model._huber/HuberRegressor/__init__/warm_start",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._huber/HuberRegressor/fit/sample_weight": {
+            "target": "sklearn/sklearn.linear_model._huber/HuberRegressor/fit/sample_weight",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._huber/HuberRegressor/fit/X": {
+            "target": "sklearn/sklearn.linear_model._huber/HuberRegressor/fit/X",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._huber/HuberRegressor/fit/y": {
+            "target": "sklearn/sklearn.linear_model._huber/HuberRegressor/fit/y",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._huber/HuberRegressor/fit": {
+            "target": "sklearn/sklearn.linear_model._huber/HuberRegressor/fit",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._huber/HuberRegressor": {
+            "target": "sklearn/sklearn.linear_model._huber/HuberRegressor",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/Lars/__init__/copy_X": {
+            "target": "sklearn/sklearn.linear_model._least_angle/Lars/__init__/copy_X",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/Lars/__init__/eps": {
+            "target": "sklearn/sklearn.linear_model._least_angle/Lars/__init__/eps",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/Lars/__init__/fit_intercept": {
+            "target": "sklearn/sklearn.linear_model._least_angle/Lars/__init__/fit_intercept",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/Lars/__init__/fit_path": {
+            "target": "sklearn/sklearn.linear_model._least_angle/Lars/__init__/fit_path",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/Lars/__init__/jitter": {
+            "target": "sklearn/sklearn.linear_model._least_angle/Lars/__init__/jitter",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/Lars/__init__/n_nonzero_coefs": {
+            "target": "sklearn/sklearn.linear_model._least_angle/Lars/__init__/n_nonzero_coefs",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/Lars/__init__/precompute": {
+            "target": "sklearn/sklearn.linear_model._least_angle/Lars/__init__/precompute",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/Lars/__init__/normalize": {
+            "target": "sklearn/sklearn.linear_model._least_angle/Lars/__init__/normalize",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/Lars/__init__/random_state": {
+            "target": "sklearn/sklearn.linear_model._least_angle/Lars/__init__/random_state",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/Lars/__init__/verbose": {
+            "target": "sklearn/sklearn.linear_model._least_angle/Lars/__init__/verbose",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/Lars/__init__": {
+            "target": "sklearn/sklearn.linear_model._least_angle/Lars/__init__",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/Lars/fit/X": {
+            "target": "sklearn/sklearn.linear_model._least_angle/Lars/fit/X",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/Lars/fit/Xy": {
+            "target": "sklearn/sklearn.linear_model._least_angle/Lars/fit/Xy",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/Lars/fit/y": {
+            "target": "sklearn/sklearn.linear_model._least_angle/Lars/fit/y",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/Lars/fit": {
+            "target": "sklearn/sklearn.linear_model._least_angle/Lars/fit",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/Lars": {
+            "target": "sklearn/sklearn.linear_model._least_angle/Lars",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path/X": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path/X",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path/y": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path/y",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path/Xy": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path/Xy",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path/Gram": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path/Gram",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path/max_iter": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path/max_iter",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path/alpha_min": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path/alpha_min",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path/method": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path/method",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path/positive": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path/positive",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path/return_n_iter": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path/return_n_iter",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path/return_path": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path/return_path",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path/verbose": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path/verbose",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path/copy_X": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path/copy_X",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path/eps": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path/eps",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path/copy_Gram": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path/copy_Gram",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path_gram/Xy": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path_gram/Xy",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path_gram/Gram": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path_gram/Gram",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path_gram/n_samples": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path_gram/n_samples",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path_gram/max_iter": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path_gram/max_iter",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path_gram/alpha_min": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path_gram/alpha_min",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path_gram/method": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path_gram/method",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path_gram/copy_X": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path_gram/copy_X",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path_gram/eps": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path_gram/eps",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path_gram/copy_Gram": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path_gram/copy_Gram",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path_gram/verbose": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path_gram/verbose",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path_gram/return_path": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path_gram/return_path",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path_gram/return_n_iter": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path_gram/return_n_iter",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path_gram/positive": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path_gram/positive",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/lars_path_gram": {
+            "target": "sklearn/sklearn.linear_model._least_angle/lars_path_gram",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/LarsCV/__init__/copy_X": {
+            "target": "sklearn/sklearn.linear_model._least_angle/LarsCV/__init__/copy_X",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/LarsCV/__init__/cv": {
+            "target": "sklearn/sklearn.linear_model._least_angle/LarsCV/__init__/cv",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/LarsCV/__init__/eps": {
+            "target": "sklearn/sklearn.linear_model._least_angle/LarsCV/__init__/eps",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/LarsCV/__init__/fit_intercept": {
+            "target": "sklearn/sklearn.linear_model._least_angle/LarsCV/__init__/fit_intercept",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        }
+    },
     "constants": {
         "sklearn/sklearn._config/set_config/assume_finite": {
             "target": "sklearn/sklearn._config/set_config/assume_finite",
@@ -4480,7 +5676,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "number",
             "defaultValue": 0.001
         },
@@ -4489,7 +5687,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "number",
             "defaultValue": 10000
         },
@@ -4498,7 +5698,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "boolean",
             "defaultValue": true
         },
@@ -4507,7 +5709,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "boolean",
             "defaultValue": true
         },
@@ -4516,7 +5720,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "none",
             "defaultValue": null
         },
@@ -4525,7 +5731,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "boolean",
             "defaultValue": true
         },
@@ -4534,7 +5742,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "boolean",
             "defaultValue": true
         },
@@ -4543,7 +5753,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "boolean",
             "defaultValue": true
         },
@@ -4552,7 +5764,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "boolean",
             "defaultValue": true
         },
@@ -4561,7 +5775,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "string",
             "defaultValue": "cyclic"
         },
@@ -4822,7 +6038,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "number",
             "defaultValue": 1
         },
@@ -4831,7 +6049,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "boolean",
             "defaultValue": true
         },
@@ -4840,7 +6060,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "number",
             "defaultValue": 100
         },
@@ -4849,7 +6071,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "number",
             "defaultValue": 0.0001
         },
@@ -4858,7 +6082,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "boolean",
             "defaultValue": false
         },
@@ -4867,7 +6093,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "number",
             "defaultValue": 0
         },
@@ -4957,7 +6185,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "boolean",
             "defaultValue": false
         },
@@ -4966,7 +6196,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "number",
             "defaultValue": 0.00001
         },
@@ -4975,7 +6207,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "none",
             "defaultValue": null
         },
@@ -4984,7 +6218,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "boolean",
             "defaultValue": false
         },
@@ -4993,7 +6229,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "string",
             "defaultValue": "deprecated"
         },
@@ -5002,7 +6240,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "string",
             "defaultValue": "auto"
         },
@@ -5011,7 +6251,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "boolean",
             "defaultValue": true
         },
@@ -5020,7 +6262,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "boolean",
             "defaultValue": true
         },
@@ -5029,7 +6273,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "none",
             "defaultValue": null
         },
@@ -5038,7 +6284,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "none",
             "defaultValue": null
         },
@@ -5047,7 +6295,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "none",
             "defaultValue": null
         },
@@ -5056,7 +6306,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "boolean",
             "defaultValue": true
         },
@@ -5101,7 +6353,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "none",
             "defaultValue": null
         },
@@ -5128,7 +6382,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "boolean",
             "defaultValue": true
         },
@@ -9766,6 +11022,26 @@
             "reviewers": [],
             "defaultType": "boolean",
             "defaultValue": true
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/alpha_init": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/alpha_init",
+            "defaultType": "none",
+            "defaultValue": null,
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/lambda_init": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/lambda_init",
+            "defaultType": "none",
+            "defaultValue": null,
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
         }
     },
     "descriptions": {},
@@ -12427,7 +13703,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "enumName": "Selection",
             "pairs": [
                 {
@@ -12644,10 +13922,6 @@
         },
         "sklearn/sklearn.linear_model._least_angle/lars_path/method": {
             "target": "sklearn/sklearn.linear_model._least_angle/lars_path/method",
-            "authors": [
-                "$autogen$"
-            ],
-            "reviewers": [],
             "enumName": "Method",
             "pairs": [
                 {
@@ -12658,6 +13932,13 @@
                     "stringValue": "lasso",
                     "instanceName": "Lasso"
                 }
+            ],
+            "authors": [
+                "$autogen$",
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
             ]
         },
         "sklearn/sklearn.linear_model._least_angle/lars_path_gram/method": {
@@ -12665,7 +13946,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "enumName": "Method",
             "pairs": [
                 {
@@ -16065,8 +17348,194 @@
             ]
         }
     },
-    "groups": {},
-    "moves": {},
+    "groups": {
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__": {
+            "ARDRegularization": {
+                "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__",
+                "groupName": "ARDRegularization",
+                "parameters": [
+                    "alpha_1",
+                    "alpha_2",
+                    "lambda_1",
+                    "lambda_2"
+                ],
+                "authors": [
+                    "Nils"
+                ],
+                "reviewers": []
+            }
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__": {
+            "BayesianRidgeRegularization": {
+                "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__",
+                "groupName": "BayesianRidgeRegularization",
+                "parameters": [
+                    "alpha_1",
+                    "alpha_2",
+                    "lambda_1",
+                    "lambda_2",
+                    "alpha_init",
+                    "lambda_init"
+                ],
+                "authors": [
+                    "Nils"
+                ],
+                "reviewers": []
+            }
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__": {
+            "ElasticNetCVOther": {
+                "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__",
+                "groupName": "ElasticNetCVOther",
+                "parameters": [
+                    "precompute",
+                    "n_jobs"
+                ],
+                "authors": [
+                    "Nils"
+                ],
+                "reviewers": []
+            },
+            "ElasticNetCVRegularization": {
+                "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__",
+                "groupName": "ElasticNetCVRegularization",
+                "parameters": [
+                    "l1_ratio",
+                    "n_alphas",
+                    "alphas",
+                    "precompute",
+                    "n_jobs"
+                ],
+                "authors": [
+                    "Nils"
+                ],
+                "reviewers": []
+            }
+        },
+        "sklearn/sklearn.linear_model._huber/HuberRegressor/__init__": {
+            "HuberRegularization": {
+                "target": "sklearn/sklearn.linear_model._huber/HuberRegressor/__init__",
+                "groupName": "HuberRegularization",
+                "parameters": [
+                    "epsilon",
+                    "alpha"
+                ],
+                "authors": [
+                    "Nils"
+                ],
+                "reviewers": []
+            }
+        },
+        "sklearn/sklearn.linear_model._least_angle/Lars/__init__": {
+            "LarsOther": {
+                "target": "sklearn/sklearn.linear_model._least_angle/Lars/__init__",
+                "groupName": "LarsOther",
+                "parameters": [
+                    "precompute",
+                    "copy_X",
+                    "fit_path"
+                ],
+                "authors": [
+                    "Nils"
+                ],
+                "reviewers": []
+            },
+            "LarsRegularization": {
+                "target": "sklearn/sklearn.linear_model._least_angle/Lars/__init__",
+                "groupName": "LarsRegularization",
+                "parameters": [
+                    "normalize",
+                    "jitter"
+                ],
+                "authors": [
+                    "Nils"
+                ],
+                "reviewers": []
+            }
+        }
+    },
+    "moves": {
+        "sklearn/sklearn.linear_model._bayes/ARDRegression": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression",
+            "destination": "sklearn.regression.metric",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge",
+            "destination": "sklearn.regression.model",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet",
+            "destination": "sklearn.regression.model",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV",
+            "destination": "sklearn.regression.model",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._glm.glm/GammaRegressor": {
+            "target": "sklearn/sklearn.linear_model._glm.glm/GammaRegressor",
+            "destination": "sklearn.regression.model",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._huber/HuberRegressor": {
+            "target": "sklearn/sklearn.linear_model._huber/HuberRegressor",
+            "destination": "sklearn.regression.model",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._least_angle/Lars": {
+            "target": "sklearn/sklearn.linear_model._least_angle/Lars",
+            "destination": "sklearn.regression.model",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._least_angle/LarsCV": {
+            "target": "sklearn/sklearn.linear_model._least_angle/LarsCV",
+            "destination": "sklearn.regression.model",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        }
+    },
     "optionals": {
         "sklearn/sklearn._config/set_config/display": {
             "target": "sklearn/sklearn._config/set_config/display",
@@ -16608,81 +18077,470 @@
             "defaultType": "number",
             "defaultValue": 2020
         },
-        "sklearn/sklearn.model_selection._split/check_cv/cv": {
-            "target": "sklearn/sklearn.model_selection._split/check_cv/cv",
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/alpha_1": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/alpha_1",
             "defaultType": "number",
-            "defaultValue": "5",
+            "defaultValue": "1e-06",
             "authors": [
-                "DavidTen1"
+                "Nils"
             ],
-            "reviewers": []
+            "reviewers": [
+                "Nils"
+            ]
         },
-        "sklearn/sklearn.model_selection._split/check_cv/classifier": {
-            "target": "sklearn/sklearn.model_selection._split/check_cv/classifier",
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/alpha_2": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/alpha_2",
+            "defaultType": "number",
+            "defaultValue": "1e-06",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/compute_score": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/compute_score",
             "defaultType": "boolean",
             "defaultValue": false,
             "authors": [
-                "DavidTen1"
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/fit_intercept": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/fit_intercept",
+            "defaultType": "boolean",
+            "defaultValue": true,
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/lambda_1": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/lambda_1",
+            "defaultType": "number",
+            "defaultValue": "1e-06",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/lambda_2": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/lambda_2",
+            "defaultType": "number",
+            "defaultValue": "1e-06",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/n_iter": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/n_iter",
+            "defaultType": "number",
+            "defaultValue": "300",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/normalize": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/normalize",
+            "defaultType": "string",
+            "defaultValue": "deprecated",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/verbose": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/__init__/verbose",
+            "defaultType": "boolean",
+            "defaultValue": false,
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/alpha_1": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/alpha_1",
+            "defaultType": "number",
+            "defaultValue": "1e-06",
+            "authors": [
+                "Nils"
             ],
             "reviewers": []
         },
-        "sklearn/sklearn.model_selection._split/BaseShuffleSplit/get_n_splits/groups": {
-            "target": "sklearn/sklearn.model_selection._split/BaseShuffleSplit/get_n_splits/groups",
-            "defaultType": "none",
-            "defaultValue": null,
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/alpha_2": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/alpha_2",
+            "defaultType": "number",
+            "defaultValue": "1e-6",
             "authors": [
-                "DavidTen1"
+                "Nils"
             ],
             "reviewers": []
         },
-        "sklearn/sklearn.model_selection._split/BaseShuffleSplit/split/groups": {
-            "target": "sklearn/sklearn.model_selection._split/BaseShuffleSplit/split/groups",
-            "defaultType": "none",
-            "defaultValue": null,
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/compute_score": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/compute_score",
+            "defaultType": "boolean",
+            "defaultValue": false,
             "authors": [
-                "DavidTen1"
+                "Nils"
             ],
             "reviewers": []
         },
-        "sklearn/sklearn.model_selection._split/BaseShuffleSplit/split/y": {
-            "target": "sklearn/sklearn.model_selection._split/BaseShuffleSplit/split/y",
-            "defaultType": "none",
-            "defaultValue": null,
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/fit_intercept": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/fit_intercept",
+            "defaultType": "boolean",
+            "defaultValue": true,
             "authors": [
-                "DavidTen1"
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/lambda_2": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/lambda_2",
+            "defaultType": "number",
+            "defaultValue": "1e-06",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/lambda_1": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/lambda_1",
+            "defaultType": "number",
+            "defaultValue": "1e-06",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/n_iter": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/n_iter",
+            "defaultType": "number",
+            "defaultValue": "300",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/normalize": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/normalize",
+            "defaultType": "string",
+            "defaultValue": "deprecated",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/tol": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/tol",
+            "defaultType": "number",
+            "defaultValue": "0.001",
+            "authors": [
+                "Nils"
             ],
             "reviewers": []
         },
-        "sklearn/sklearn.model_selection._validation/cross_val_predict/fit_params": {
-            "target": "sklearn/sklearn.model_selection._validation/cross_val_predict/fit_params",
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/verbose": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/__init__/verbose",
+            "defaultType": "boolean",
+            "defaultValue": false,
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/predict/return_std": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/predict/return_std",
+            "defaultType": "boolean",
+            "defaultValue": false,
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/alpha": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/alpha",
+            "defaultType": "number",
+            "defaultValue": "1.0",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/fit_intercept": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/fit_intercept",
+            "defaultType": "boolean",
+            "defaultValue": true,
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/l1_ratio": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/l1_ratio",
+            "defaultType": "number",
+            "defaultValue": "0.5",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/max_iter": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/max_iter",
+            "defaultType": "number",
+            "defaultValue": "1000",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/normalize": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/normalize",
+            "defaultType": "string",
+            "defaultValue": "deprecated",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/positive": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/positive",
+            "defaultType": "boolean",
+            "defaultValue": false,
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/precompute": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/precompute",
+            "defaultType": "boolean",
+            "defaultValue": false,
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/random_state": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/random_state",
             "defaultType": "none",
             "defaultValue": null,
             "authors": [
-                "DavidTen1"
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/tol": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/tol",
+            "defaultType": "number",
+            "defaultValue": "0.0001",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/warm_start": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/__init__/warm_start",
+            "defaultType": "boolean",
+            "defaultValue": true,
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/fit/sample_weight": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/fit/sample_weight",
+            "defaultType": "none",
+            "defaultValue": null,
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/alphas": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/alphas",
+            "defaultType": "none",
+            "defaultValue": null,
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/cv": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/cv",
+            "defaultType": "none",
+            "defaultValue": null,
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/eps": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/eps",
+            "defaultType": "number",
+            "defaultValue": "0.001",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/l1_ratio": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/l1_ratio",
+            "defaultType": "number",
+            "defaultValue": "0.5",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/max_iter": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/max_iter",
+            "defaultType": "number",
+            "defaultValue": "1000",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/n_alphas": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/n_alphas",
+            "defaultType": "number",
+            "defaultValue": "100",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/n_jobs": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/n_jobs",
+            "defaultType": "none",
+            "defaultValue": null,
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/normalize": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/normalize",
+            "defaultType": "string",
+            "defaultValue": "deprecated",
+            "authors": [
+                "Nils"
             ],
             "reviewers": []
         },
-        "sklearn/sklearn.model_selection._validation/cross_val_predict/groups": {
-            "target": "sklearn/sklearn.model_selection._validation/cross_val_predict/groups",
-            "defaultType": "none",
-            "defaultValue": null,
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/positive": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/positive",
+            "defaultType": "boolean",
+            "defaultValue": false,
             "authors": [
-                "DavidTen1"
+                "Nils"
             ],
-            "reviewers": []
-        },
-        "sklearn/sklearn.model_selection._validation/cross_val_predict/n_jobs": {
-            "target": "sklearn/sklearn.model_selection._validation/cross_val_predict/n_jobs",
-            "defaultType": "none",
-            "defaultValue": null,
-            "authors": [
-                "DavidTen1"
-            ],
-            "reviewers": []
+            "reviewers": [
+                "Nils"
+            ]
         }
     },
     "pures": {},
-    "renamings": {},
+    "renamings": {
+        "sklearn/sklearn.linear_model._bayes/ARDRegression": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression",
+            "newName": "ARD",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._glm.glm/GammaRegressor": {
+            "target": "sklearn/sklearn.linear_model._glm.glm/GammaRegressor",
+            "newName": "Gamma",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._huber/HuberRegressor": {
+            "target": "sklearn/sklearn.linear_model._huber/HuberRegressor",
+            "newName": "Huber",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        }
+    },
     "requireds": {
         "sklearn/sklearn.base/RegressorMixin/score/sample_weight": {
             "target": "sklearn/sklearn.base/RegressorMixin/score/sample_weight",
@@ -17858,21 +19716,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": []
-        },
-        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/fit/sample_weight": {
-            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/fit/sample_weight",
-            "authors": [
-                "$autogen$"
-            ],
-            "reviewers": []
-        },
-        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/alphas": {
-            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/__init__/alphas",
-            "authors": [
-                "$autogen$"
-            ],
-            "reviewers": []
+            "reviewers": [
+                "Nils"
+            ]
         },
         "sklearn/sklearn.linear_model._coordinate_descent/LassoCV/__init__/alphas": {
             "target": "sklearn/sklearn.linear_model._coordinate_descent/LassoCV/__init__/alphas",
@@ -17893,7 +19739,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": []
+            "reviewers": [
+                "Nils"
+            ]
         },
         "sklearn/sklearn.linear_model._least_angle/LassoLarsCV/__init__/normalize": {
             "target": "sklearn/sklearn.linear_model._least_angle/LassoLarsCV/__init__/normalize",
@@ -18581,6 +20429,27 @@
             ],
             "reviewers": []
         },
+        "sklearn/sklearn.model_selection._split/BaseShuffleSplit/get_n_splits/groups": {
+            "target": "sklearn/sklearn.model_selection._split/BaseShuffleSplit/get_n_splits/groups",
+            "authors": [
+                "$autogen$"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.model_selection._split/BaseShuffleSplit/split/y": {
+            "target": "sklearn/sklearn.model_selection._split/BaseShuffleSplit/split/y",
+            "authors": [
+                "$autogen$"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.model_selection._split/BaseShuffleSplit/split/groups": {
+            "target": "sklearn/sklearn.model_selection._split/BaseShuffleSplit/split/groups",
+            "authors": [
+                "$autogen$"
+            ],
+            "reviewers": []
+        },
         "sklearn/sklearn.model_selection._split/GroupKFold/split/y": {
             "target": "sklearn/sklearn.model_selection._split/GroupKFold/split/y",
             "authors": [
@@ -18798,6 +20667,13 @@
             ],
             "reviewers": []
         },
+        "sklearn/sklearn.model_selection._split/check_cv/classifier": {
+            "target": "sklearn/sklearn.model_selection._split/check_cv/classifier",
+            "authors": [
+                "$autogen$"
+            ],
+            "reviewers": []
+        },
         "sklearn/sklearn.model_selection._split/train_test_split/stratify": {
             "target": "sklearn/sklearn.model_selection._split/train_test_split/stratify",
             "authors": [
@@ -18812,8 +20688,22 @@
             ],
             "reviewers": []
         },
+        "sklearn/sklearn.model_selection._validation/cross_val_predict/groups": {
+            "target": "sklearn/sklearn.model_selection._validation/cross_val_predict/groups",
+            "authors": [
+                "$autogen$"
+            ],
+            "reviewers": []
+        },
         "sklearn/sklearn.model_selection._validation/cross_val_predict/cv": {
             "target": "sklearn/sklearn.model_selection._validation/cross_val_predict/cv",
+            "authors": [
+                "$autogen$"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.model_selection._validation/cross_val_predict/fit_params": {
+            "target": "sklearn/sklearn.model_selection._validation/cross_val_predict/fit_params",
             "authors": [
                 "$autogen$"
             ],
@@ -19505,19 +21395,111 @@
             ],
             "reviewers": []
         },
-        "sklearn/sklearn.model_selection._validation/cross_val_predict/estimator": {
-            "target": "sklearn/sklearn.model_selection._validation/cross_val_predict/estimator",
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/fit/X": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/fit/X",
             "authors": [
-                "DavidTen1"
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/fit/y": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/fit/y",
+            "authors": [
+                "Nils"
             ],
             "reviewers": []
         },
-        "sklearn/sklearn.model_selection._split/BaseShuffleSplit/split/X": {
-            "target": "sklearn/sklearn.model_selection._split/BaseShuffleSplit/split/X",
+        "sklearn/sklearn.linear_model._bayes/ARDRegression/predict/X": {
+            "target": "sklearn/sklearn.linear_model._bayes/ARDRegression/predict/X",
             "authors": [
-                "DavidTen1"
+                "Nils"
             ],
-            "reviewers": []
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/fit/X": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/fit/X",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/fit/y": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/fit/y",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._bayes/BayesianRidge/predict/X": {
+            "target": "sklearn/sklearn.linear_model._bayes/BayesianRidge/predict/X",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/fit/X": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/fit/X",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/fit/y": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNet/fit/y",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._huber/HuberRegressor/fit/X": {
+            "target": "sklearn/sklearn.linear_model._huber/HuberRegressor/fit/X",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._huber/HuberRegressor/fit/y": {
+            "target": "sklearn/sklearn.linear_model._huber/HuberRegressor/fit/y",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._least_angle/Lars/fit/X": {
+            "target": "sklearn/sklearn.linear_model._least_angle/Lars/fit/X",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._least_angle/Lars/fit/y": {
+            "target": "sklearn/sklearn.linear_model._least_angle/Lars/fit/y",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
         }
     },
     "removes": {
@@ -29130,7 +31112,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": []
+            "reviewers": [
+                "Nils"
+            ]
         },
         "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/_get_estimator": {
             "target": "sklearn/sklearn.linear_model._coordinate_descent/ElasticNetCV/_get_estimator",
@@ -29312,7 +31296,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": []
+            "reviewers": [
+                "Nils"
+            ]
         },
         "sklearn/sklearn.linear_model._coordinate_descent/lasso_path": {
             "target": "sklearn/sklearn.linear_model._coordinate_descent/lasso_path",
@@ -29466,14 +31452,18 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": []
+            "reviewers": [
+                "Nils"
+            ]
         },
         "sklearn/sklearn.linear_model._least_angle/lars_path_gram": {
             "target": "sklearn/sklearn.linear_model._least_angle/lars_path_gram",
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": []
+            "reviewers": [
+                "Nils"
+            ]
         },
         "sklearn/sklearn.linear_model._linear_loss/LinearModelLoss/__init__": {
             "target": "sklearn/sklearn.linear_model._linear_loss/LinearModelLoss/__init__",
@@ -31867,9 +33857,7 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [
-                "DavidTen1"
-            ]
+            "reviewers": []
         },
         "sklearn/sklearn.model_selection._split/BaseShuffleSplit/__repr__": {
             "target": "sklearn/sklearn.model_selection._split/BaseShuffleSplit/__repr__",
