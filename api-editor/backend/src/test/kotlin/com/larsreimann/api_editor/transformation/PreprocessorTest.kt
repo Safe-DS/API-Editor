@@ -6,8 +6,10 @@ import com.larsreimann.api_editor.mutable_model.PythonAttribute
 import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonNamedSpread
 import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.api_editor.mutable_model.PythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonPositionalSpread
 import com.larsreimann.api_editor.mutable_model.PythonReference
 import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
 import io.kotest.assertions.asClue
@@ -15,6 +17,7 @@ import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.collections.shouldNotContain
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
@@ -26,7 +29,10 @@ import org.junit.jupiter.api.Test
 class PreprocessorTest {
     private lateinit var testRequiredParameter: PythonParameter
     private lateinit var testOptionalParameter: PythonParameter
+    private lateinit var testPositionalVarargParameter: PythonParameter
+    private lateinit var testNamedVarargParameter: PythonParameter
     private lateinit var testGlobalFunction: PythonFunction
+    private lateinit var testGlobalFunctionWithVariadicParameters: PythonFunction
     private lateinit var testMethodParameter: PythonParameter
     private lateinit var testAttribute: PythonAttribute
     private lateinit var testMethod: PythonFunction
@@ -46,11 +52,26 @@ class PreprocessorTest {
             defaultValue = PythonStringifiedExpression("'value'"),
             assignedBy = PythonParameterAssignment.POSITION_OR_NAME
         )
+        testPositionalVarargParameter = PythonParameter(
+            name = "testPositionalVarargParameter",
+            assignedBy = PythonParameterAssignment.POSITIONAL_VARARG
+        )
+        testNamedVarargParameter = PythonParameter(
+            name = "testNamedVarargParameter",
+            assignedBy = PythonParameterAssignment.NAMED_VARARG
+        )
         testGlobalFunction = PythonFunction(
             name = "testGlobalFunction",
             parameters = listOf(
                 testRequiredParameter,
                 testOptionalParameter
+            )
+        )
+        testGlobalFunctionWithVariadicParameters = PythonFunction(
+            name = "testGlobalFunctionWithVariadicParameters",
+            parameters = listOf(
+                testPositionalVarargParameter,
+                testNamedVarargParameter
             )
         )
         testMethodParameter = PythonParameter(
@@ -70,7 +91,10 @@ class PreprocessorTest {
         testModule = PythonModule(
             "testModule",
             classes = listOf(testClass),
-            functions = listOf(testGlobalFunction)
+            functions = listOf(
+                testGlobalFunction,
+                testGlobalFunctionWithVariadicParameters
+            )
         )
         testPackage = PythonPackage(
             distribution = "testPackage",
@@ -120,7 +144,7 @@ class PreprocessorTest {
             testGlobalFunction.isPublic = false
             testPackage.removePrivateDeclarations()
 
-            testModule.functions.shouldBeEmpty()
+            testModule.functions.shouldNotContain(testGlobalFunction)
         }
 
         @Test
@@ -178,6 +202,33 @@ class PreprocessorTest {
             arguments[1].value.asClue {
                 it.shouldBeInstanceOf<PythonReference>()
                 it.declaration shouldBe testOptionalParameter
+            }
+        }
+
+        @Test
+        fun `should add original declaration to global functions with variadic parameters`() {
+            testPackage.addOriginalDeclarations()
+
+            val callToOriginalAPI = testGlobalFunctionWithVariadicParameters.callToOriginalAPI.shouldNotBeNull()
+            callToOriginalAPI.receiver shouldBe PythonStringifiedExpression("testModule.testGlobalFunctionWithVariadicParameters")
+
+            val arguments = callToOriginalAPI.arguments
+            arguments.shouldHaveSize(2)
+
+            arguments[0].name.shouldBeNull()
+            arguments[0].value.asClue {
+                it.shouldBeInstanceOf<PythonPositionalSpread>()
+                val spreadArgument = it.argument
+                spreadArgument.shouldBeInstanceOf<PythonReference>()
+                spreadArgument.declaration shouldBe testPositionalVarargParameter
+            }
+
+            arguments[1].name.shouldBeNull()
+            arguments[1].value.asClue {
+                it.shouldBeInstanceOf<PythonNamedSpread>()
+                val spreadArgument = it.argument
+                spreadArgument.shouldBeInstanceOf<PythonReference>()
+                spreadArgument.declaration shouldBe testNamedVarargParameter
             }
         }
 
@@ -244,6 +295,20 @@ class PreprocessorTest {
             testPackage.updateParameterAssignment()
 
             testOptionalParameter.assignedBy shouldBe PythonParameterAssignment.NAME_ONLY
+        }
+
+        @Test
+        fun `should keep positional variadic parameters unchanged`() {
+            testPackage.updateParameterAssignment()
+
+            testPositionalVarargParameter.assignedBy shouldBe PythonParameterAssignment.POSITIONAL_VARARG
+        }
+
+        @Test
+        fun `should keep named variadic parameters unchanged`() {
+            testPackage.updateParameterAssignment()
+
+            testNamedVarargParameter.assignedBy shouldBe PythonParameterAssignment.NAMED_VARARG
         }
     }
 

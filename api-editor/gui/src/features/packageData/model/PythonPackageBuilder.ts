@@ -1,4 +1,3 @@
-import { Optional } from '../../../common/util/types';
 import { PythonClass } from './PythonClass';
 import { PythonFromImport } from './PythonFromImport';
 import { PythonFunction } from './PythonFunction';
@@ -8,17 +7,24 @@ import { PythonPackage } from './PythonPackage';
 import { PythonParameter, PythonParameterAssignment } from './PythonParameter';
 import { PythonResult } from './PythonResult';
 import { PythonDeclaration } from './PythonDeclaration';
+import {
+    EXPECTED_API_SCHEMA_VERSION,
+    ParameterAssignmentJson,
+    PythonClassJson,
+    PythonFromImportJson,
+    PythonFunctionJson,
+    PythonImportJson,
+    PythonModuleJson,
+    PythonPackageJson,
+    PythonParameterJson,
+    PythonResultJson,
+} from './APIJsonData';
 
-export interface PythonPackageJson {
-    distribution: string;
-    package: string;
-    version: string;
-    modules: PythonModuleJson[];
-    classes: PythonClassJson[];
-    functions: PythonFunctionJson[];
-}
+export const parsePythonPackageJson = function (packageJson: PythonPackageJson): PythonPackage | null {
+    if ((packageJson.schemaVersion ?? 1) !== EXPECTED_API_SCHEMA_VERSION) {
+        return null;
+    }
 
-export const parsePythonPackageJson = function (packageJson: PythonPackageJson): PythonPackage {
     const idToDeclaration = new Map();
 
     // Functions
@@ -41,15 +47,6 @@ export const parsePythonPackageJson = function (packageJson: PythonPackageJson):
         idToDeclaration,
     );
 };
-
-interface PythonModuleJson {
-    id: string;
-    name: string;
-    imports: PythonImportJson[];
-    from_imports: PythonFromImportJson[];
-    classes: string[];
-    functions: string[];
-}
 
 const parsePythonModuleJson = function (
     moduleJson: PythonModuleJson,
@@ -94,37 +91,13 @@ const parsePythonModuleJson = function (
     return result;
 };
 
-interface PythonImportJson {
-    module: string;
-    alias: Optional<string>;
-}
-
 const parsePythonImportJson = function (importJson: PythonImportJson): PythonImport {
     return new PythonImport(importJson.module, importJson.alias);
 };
 
-interface PythonFromImportJson {
-    module: string;
-    declaration: string;
-    alias: Optional<string>;
-}
-
 const parsePythonFromImportJson = function (fromImportJson: PythonFromImportJson): PythonFromImport {
     return new PythonFromImport(fromImportJson.module, fromImportJson.declaration, fromImportJson.alias);
 };
-
-interface PythonClassJson {
-    id: string;
-    name: string;
-    qname: string;
-    decorators: string[];
-    superclasses: string[];
-    methods: string[];
-    is_public: boolean;
-    reexported_by: string[];
-    description: Optional<string>;
-    docstring: Optional<string>;
-}
 
 const parsePythonClassJson = function (
     classJson: PythonClassJson,
@@ -152,19 +125,6 @@ const parsePythonClassJson = function (
     return result;
 };
 
-interface PythonFunctionJson {
-    id: string;
-    name: string;
-    qname: string;
-    decorators: string[];
-    parameters: PythonParameterJson[];
-    results: PythonResultJson[];
-    is_public: boolean;
-    reexported_by: string[];
-    description: Optional<string>;
-    docstring: Optional<string>;
-}
-
 const parsePythonFunctionJson = function (
     functionJson: PythonFunctionJson,
     idToDeclaration: Map<string, PythonDeclaration>,
@@ -185,20 +145,6 @@ const parsePythonFunctionJson = function (
     return result;
 };
 
-interface PythonParameterJson {
-    id: string;
-    name: string;
-    qname: string;
-    default_value: Optional<string>;
-    assigned_by: 'IMPLICIT' | 'POSITION_ONLY' | 'POSITION_OR_NAME' | 'NAME_ONLY';
-    is_public: boolean;
-    docstring: {
-        type: Optional<string>;
-        description: Optional<string>;
-    };
-    type: object; // TODO parse type
-}
-
 const parsePythonParameterJson = function (
     parameterJson: PythonParameterJson,
     idToDeclaration: Map<string, PythonDeclaration>,
@@ -218,9 +164,7 @@ const parsePythonParameterJson = function (
     return result;
 };
 
-const parsePythonParameterAssignment = function (
-    assignedBy: 'IMPLICIT' | 'POSITION_ONLY' | 'POSITION_OR_NAME' | 'NAME_ONLY',
-): PythonParameterAssignment {
+const parsePythonParameterAssignment = function (assignedBy: ParameterAssignmentJson): PythonParameterAssignment {
     switch (assignedBy) {
         case 'IMPLICIT':
             return PythonParameterAssignment.IMPLICIT;
@@ -228,18 +172,14 @@ const parsePythonParameterAssignment = function (
             return PythonParameterAssignment.POSITION_ONLY;
         case 'POSITION_OR_NAME':
             return PythonParameterAssignment.POSITION_OR_NAME;
+        case 'POSITIONAL_VARARG':
+            return PythonParameterAssignment.POSITIONAL_VARARG;
         case 'NAME_ONLY':
             return PythonParameterAssignment.NAME_ONLY;
+        case 'NAMED_VARARG':
+            return PythonParameterAssignment.NAMED_VARARG;
     }
 };
-
-interface PythonResultJson {
-    name: string;
-    docstring: {
-        type: Optional<string>;
-        description: Optional<string>;
-    };
-}
 
 const parsePythonResultJson = function (resultJson: PythonResultJson): PythonResult {
     return new PythonResult(resultJson.name, resultJson.docstring.type ?? '', resultJson.docstring.description ?? '');

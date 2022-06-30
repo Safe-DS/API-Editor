@@ -32,12 +32,6 @@ export class ParameterAssignmentFilter extends AbstractPythonFilter {
         _annotations: AnnotationStore,
         _usages: UsageCountStore,
     ): boolean {
-        if (this.assignedBy === PythonParameterAssignment.IMPLICIT) {
-            return !pythonParameter.isExplicitParameter();
-        } else if (!pythonParameter.isExplicitParameter()) {
-            return false;
-        } else {
-            return pythonParameter.assignedBy === this.assignedBy;
-        }
+        return pythonParameter.assignedBy === this.assignedBy;
     }
 }

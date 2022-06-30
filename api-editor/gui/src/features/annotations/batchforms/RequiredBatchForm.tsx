@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAppDispatch } from '../../../app/hooks';
 import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
-import { RequiredAnnotation, upsertRequireds } from '../annotationSlice';
+import { RequiredAnnotation, addRequireds } from '../annotationSlice';
 import { PythonParameter } from '../../packageData/model/PythonParameter';
 import { EmptyBatchForm } from './EmptyBatchForm';
 
@@ -26,7 +26,7 @@ export const RequiredBatchForm: React.FC<RequiredBatchFormProps> = function ({ t
                 target: targetPath,
             });
         });
-        dispatch(upsertRequireds(all));
+        dispatch(addRequireds(all));
     };
 
     // Rendering -------------------------------------------------------------------------------------------------------
@@ -35,6 +35,7 @@ export const RequiredBatchForm: React.FC<RequiredBatchFormProps> = function ({ t
         <EmptyBatchForm
             targets={filteredTargets}
             annotationType="required"
+            description="Make matched parameters required."
             onUpsertAnnotation={handleUpsertAnnotation}
             targetLabel="This will annotate parameters."
         />

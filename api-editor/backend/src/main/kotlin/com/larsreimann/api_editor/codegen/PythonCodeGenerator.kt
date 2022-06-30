@@ -5,7 +5,9 @@ import com.larsreimann.api_editor.model.ComparisonOperator.LESS_THAN
 import com.larsreimann.api_editor.model.ComparisonOperator.LESS_THAN_OR_EQUALS
 import com.larsreimann.api_editor.model.ComparisonOperator.UNRESTRICTED
 import com.larsreimann.api_editor.model.PythonParameterAssignment.IMPLICIT
+import com.larsreimann.api_editor.model.PythonParameterAssignment.NAMED_VARARG
 import com.larsreimann.api_editor.model.PythonParameterAssignment.NAME_ONLY
+import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITIONAL_VARARG
 import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITION_ONLY
 import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITION_OR_NAME
 import com.larsreimann.api_editor.mutable_model.PythonArgument
@@ -23,9 +25,11 @@ import com.larsreimann.api_editor.mutable_model.PythonFunction
 import com.larsreimann.api_editor.mutable_model.PythonInt
 import com.larsreimann.api_editor.mutable_model.PythonMemberAccess
 import com.larsreimann.api_editor.mutable_model.PythonModule
+import com.larsreimann.api_editor.mutable_model.PythonNamedSpread
 import com.larsreimann.api_editor.mutable_model.PythonNamedType
 import com.larsreimann.api_editor.mutable_model.PythonNone
 import com.larsreimann.api_editor.mutable_model.PythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonPositionalSpread
 import com.larsreimann.api_editor.mutable_model.PythonReference
 import com.larsreimann.api_editor.mutable_model.PythonString
 import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
@@ -147,7 +151,7 @@ fun PythonClass.toPythonCode() = buildString {
 }
 
 fun PythonConstructor.toPythonCode() = buildString {
-    val todoComment = todoComment(todo)
+    val todoComments = listOf(todoComment(todo)) + parameters.map { todoComment(it.todo, "param:${it.name}") }
     val parametersString = parameters.toPythonCode()
     val boundariesString = parameters
         .mapNotNull { it.boundary?.toPythonCode(it.name) }
@@ -160,8 +164,10 @@ fun PythonConstructor.toPythonCode() = buildString {
         ?.let { "self.instance = ${it.toPythonCode()}" }
         ?: ""
 
-    if (todoComment.isNotBlank()) {
-        appendLine(todoComment)
+    todoComments.forEach {
+        if (it.isNotBlank()) {
+            appendLine(it)
+        }
     }
     appendLine("def __init__($parametersString):")
     if (boundariesString.isNotBlank()) {
@@ -210,7 +216,7 @@ fun PythonEnumInstance.toPythonCode(enumName: String): String {
 }
 
 fun PythonFunction.toPythonCode() = buildString {
-    val todoComment = todoComment(todo)
+    val todoComments = listOf(todoComment(todo)) + parameters.map { todoComment(it.todo, "param:${it.name}") }
     val parametersString = parameters.toPythonCode()
     val docstring = docstring()
     val boundariesString = parameters
@@ -220,8 +226,10 @@ fun PythonFunction.toPythonCode() = buildString {
         ?.let { "return ${it.toPythonCode()}" }
         ?: ""
 
-    if (todoComment.isNotBlank()) {
-        appendLine(todoComment)
+    todoComments.forEach {
+        if (it.isNotBlank()) {
+            appendLine(it)
+        }
     }
     if (isStaticMethod()) {
         appendLine("@staticmethod")
@@ -258,7 +266,13 @@ fun List<PythonParameter>.toPythonCode(): String {
     val positionOrNameParametersString = assignedByToParameter[POSITION_OR_NAME]
         ?.joinToString { it.toPythonCode() }
         ?: ""
+    val positionalVarargParametersString = assignedByToParameter[POSITIONAL_VARARG]
+        ?.joinToString { it.toPythonCode() }
+        ?: ""
     var nameOnlyParametersString = assignedByToParameter[NAME_ONLY]
+        ?.joinToString { it.toPythonCode() }
+        ?: ""
+    val namedVarargsParametersString = assignedByToParameter[NAMED_VARARG]
         ?.joinToString { it.toPythonCode() }
         ?: ""
 
@@ -266,7 +280,9 @@ fun List<PythonParameter>.toPythonCode(): String {
         positionOnlyParametersString = "$positionOnlyParametersString, /"
     }
 
-    if (nameOnlyParametersString.isNotBlank()) {
+    // If there is already a positional vararg parameter, the star must not be added since the parameter already acts as
+    // the boundary.
+    if (positionalVarargParametersString.isBlank() && nameOnlyParametersString.isNotBlank()) {
         nameOnlyParametersString = "*, $nameOnlyParametersString"
     }
 
@@ -274,7 +290,9 @@ fun List<PythonParameter>.toPythonCode(): String {
         implicitParametersString,
         positionOnlyParametersString,
         positionOrNameParametersString,
-        nameOnlyParametersString
+        positionalVarargParametersString,
+        nameOnlyParametersString,
+        namedVarargsParametersString
     )
 
     return parameterStrings
@@ -285,6 +303,11 @@ fun List<PythonParameter>.toPythonCode(): String {
 fun PythonParameter.toPythonCode() = buildString {
     val typeStringOrNull = type.toPythonCodeOrNull()
 
+    if (assignedBy == POSITIONAL_VARARG) {
+        append("*")
+    } else if (assignedBy == NAMED_VARARG) {
+        append("**")
+    }
     append(name)
     if (typeStringOrNull != null) {
         append(": $typeStringOrNull")
@@ -305,7 +328,9 @@ fun PythonExpression.toPythonCode(): String {
         is PythonFloat -> value.toString()
         is PythonInt -> value.toString()
         is PythonMemberAccess -> "${receiver!!.toPythonCode()}.${member!!.toPythonCode()}"
+        is PythonNamedSpread -> "**${argument!!.toPythonCode()}"
         is PythonNone -> "None"
+        is PythonPositionalSpread -> "*${argument!!.toPythonCode()}"
         is PythonReference -> declaration!!.name
         is PythonString -> "'$value'"
         is PythonStringifiedExpression -> string
@@ -328,6 +353,7 @@ fun PythonType?.toPythonCodeOrNull(): String? {
                 else -> null
             }
         }
+
         null -> null
     }
 }
@@ -370,7 +396,7 @@ fun Boundary.toPythonCode(parameterName: String) = buildString {
     }
 }
 
-fun todoComment(message: String) = buildString {
+fun todoComment(message: String, scope: String = "") = buildString {
     if (message.isBlank()) {
         return ""
     }
@@ -379,7 +405,12 @@ fun todoComment(message: String) = buildString {
     val firstLine = lines.first()
     val remainingLines = lines.drop(1)
 
-    appendLine("# TODO: ${firstLine.trim()}")
+    append("# TODO")
+    if (scope.isNotBlank()) {
+        append("($scope)")
+    }
+    appendLine(": ${firstLine.trim()}")
+
     remainingLines.forEachIndexed { index, line ->
         val indentedLine = "#       $line"
         append(indentedLine.trim())

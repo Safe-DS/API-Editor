@@ -4,6 +4,7 @@ import { Optional } from '../../../common/util/types';
 import { PythonClass } from './PythonClass';
 import { PythonFunction } from './PythonFunction';
 import { PythonParameter } from './PythonParameter';
+import { EXPECTED_API_SCHEMA_VERSION, PythonPackageJson } from './APIJsonData';
 
 interface PythonPackageShallowCopy {
     distribution?: string;
@@ -107,5 +108,17 @@ export class PythonPackage extends PythonDeclaration {
             }
         }
         return result;
+    }
+
+    toJson(): PythonPackageJson {
+        return {
+            schemaVersion: EXPECTED_API_SCHEMA_VERSION,
+            distribution: this.distribution,
+            package: this.name,
+            version: this.version,
+            modules: this.modules.map((it) => it.toJson()),
+            classes: this.getClasses().map((it) => it.toJson()),
+            functions: this.getFunctions().map((it) => it.toJson()),
+        };
     }
 }

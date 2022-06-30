@@ -3,9 +3,9 @@ import { Box, Flex, Heading } from '@chakra-ui/react';
 import { useAppSelector } from '../../app/hooks';
 import { selectRawPythonPackage } from '../packageData/apiSlice';
 import { selectUsages } from '../usages/usageSlice';
-import { createBarChart } from './ChartWrappers';
 import { PythonPackage } from '../packageData/model/PythonPackage';
 import { UsageCountStore } from '../usages/model/UsageCountStore';
+import { CustomBarChart } from './ChartWrappers';
 
 export const ApiSizeStatistics = function () {
     const rawPythonPackage = useAppSelector(selectRawPythonPackage);
@@ -15,15 +15,15 @@ export const ApiSizeStatistics = function () {
 
     const classLabels = ['full', 'public', 'used'];
     const classValues = getClassValues(rawPythonPackage, usages, usedThreshold);
-    const classBarChart = createBarChart(classLabels, classValues, 'Classes');
+    const classBarChart = <CustomBarChart labels={classLabels} values={classValues} title="Classes" />;
 
     const functionLabels = ['full', 'public', 'used'];
     const functionValues = getFunctionValues(rawPythonPackage, usages, usedThreshold);
-    const functionBarChart = createBarChart(functionLabels, functionValues, 'Functions');
+    const functionBarChart = <CustomBarChart labels={functionLabels} values={functionValues} title="Functions" />;
 
     const parameterLabels = ['full', 'public', 'used', 'useful'];
     const parameterValues = getParameterValues(rawPythonPackage, usages, usedThreshold);
-    const parameterBarChart = createBarChart(parameterLabels, parameterValues, 'Parameters');
+    const parameterBarChart = <CustomBarChart labels={parameterLabels} values={parameterValues} title={'Parameters'} />;
 
     return (
         <>

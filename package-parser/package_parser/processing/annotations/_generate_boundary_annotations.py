@@ -1,9 +1,9 @@
-from package_parser.model.annotations import (
+from package_parser.processing.annotations.model import (
     AnnotationStore,
     BoundaryAnnotation,
     Interval,
 )
-from package_parser.model.api import API
+from package_parser.processing.api.model import API
 
 from ._constants import autogen_author
 

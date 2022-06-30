@@ -40,6 +40,7 @@ export const RenameBatchForm: React.FC<RenameBatchFormProps> = function ({ targe
         <OldNewBatchForm
             targets={filteredTargets}
             annotationType="rename"
+            description="Substitute parts of the names of matched declarations."
             onUpsertAnnotation={handleUpsertAnnotation}
         />
     );

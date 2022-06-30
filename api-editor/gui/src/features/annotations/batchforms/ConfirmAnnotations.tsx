@@ -33,7 +33,13 @@ export const ConfirmAnnotations: React.FC<ConfirmAnnotationsProps> = function ({
     const useCancelRef = useRef(null);
 
     return (
-        <AlertDialog isOpen={true} leastDestructiveRef={useCancelRef} onClose={handleCancel} scrollBehavior={'inside'}>
+        <AlertDialog
+            isOpen={true}
+            leastDestructiveRef={useCancelRef}
+            onClose={handleCancel}
+            scrollBehavior="inside"
+            size="4xl"
+        >
             <AlertDialogOverlay>
                 <AlertDialogContent>
                     <AlertDialogHeader>

@@ -126,6 +126,7 @@ export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName
     return (
         <AnnotationForm
             heading={`${prevGroupAnnotation ? 'Edit' : 'Add'} @group Annotation`}
+            description="Replace multiple parameters of this function with a parameter object."
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
         >

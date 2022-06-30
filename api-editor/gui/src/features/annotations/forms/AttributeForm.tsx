@@ -34,6 +34,7 @@ export const AttributeForm: React.FC<AttributeFormProps> = function ({ target })
         <TypeValueForm
             target={target}
             annotationType="attribute"
+            description="Delete this constructor parameter (but keep the related attribute)."
             previousDefaultType={previousDefaultType}
             previousDefaultValue={previousDefaultValue}
             onUpsertAnnotation={handleUpsertAnnotation}

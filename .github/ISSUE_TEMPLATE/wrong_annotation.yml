@@ -31,7 +31,7 @@ body:
     id: actual-annotation-inputs
     attributes:
       label: Actual Annotation Inputs
-      description: Which inputs did the automatically generated annotation have?
+      description: Which inputs did the automatically generated annotation have? If possible, provide the JSON for the actual annotation.
     validations:
       required: true
 
@@ -55,9 +55,25 @@ body:
     id: expected-annotation-inputs
     attributes:
       label: Expected Annotation Inputs
-      description: Which inputs did you expect the annotation to have?
+      description: Which inputs did you expect the annotation to have? If possible, provide the JSON for the expected annotation.
     validations:
       required: true
+
+  - type: textarea
+    id: minimal-api-data
+    attributes:
+      label: Minimal API Data (optional)
+      description: If possible, provide the JSON for a minimal API with the element that should have been annotated, and its ancestors.
+    validations:
+      required: false
+
+  - type: textarea
+    id: minimal-usage-store
+    attributes:
+      label: Minimal Usage Store (optional)
+      description: If possible, provide the JSON for a minimal usage store with the element that should have been annotated, and its ancestors.
+    validations:
+      required: false
 
   - type: textarea
     id: suggested-solution

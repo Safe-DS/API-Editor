@@ -1,4 +1,4 @@
-import { Box, Heading, Stack, Text as ChakraText } from '@chakra-ui/react';
+import { Box, Heading, Stack, Text as ChakraText, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 import { PythonParameter } from '../model/PythonParameter';
 import { ParameterNode } from './ParameterNode';
@@ -54,7 +54,7 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({ pythonPar
                         Most Common Values
                     </Heading>
                     <Box w="30vw" maxWidth="640px">
-                        {createBarChart(parameterUsages)}
+                        <CustomBarChart parameterUsages={parameterUsages} />
                     </Box>
                 </Stack>
             )}
@@ -62,7 +62,14 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({ pythonPar
     );
 };
 
-const createBarChart = function (parameterUsages: Map<string, number>): React.ReactElement {
+interface CustomBarChartProps {
+    parameterUsages: Map<string, number>;
+}
+
+const CustomBarChart: React.FC<CustomBarChartProps> = function ({ parameterUsages }) {
+    const gridColor = useColorModeValue('#BBB', '#555');
+    const textColor = useColorModeValue('#000', '#FFF');
+
     const options = {
         indexAxis: 'y' as const,
         elements: {
@@ -73,7 +80,31 @@ const createBarChart = function (parameterUsages: Map<string, number>): React.Re
         responsive: true,
         plugins: {
             legend: {
-                display: false as const,
+                display: false,
+            },
+            tooltip: {
+                interaction: {
+                    axis: 'y',
+                },
+                intersect: false,
+            },
+        },
+        scales: {
+            x: {
+                grid: {
+                    color: gridColor,
+                },
+                ticks: {
+                    color: textColor,
+                },
+            },
+            y: {
+                grid: {
+                    color: gridColor,
+                },
+                ticks: {
+                    color: textColor,
+                },
             },
         },
     };
@@ -108,5 +139,5 @@ const isStringifiedLiteral = function (value: string): boolean {
     if (value === 'True' || value === 'False') {
         return true;
     }
-    return Boolean(value.match(/^[+-]?\d+(\.\d*)?$/u));
+    return !Number.isNaN(Number.parseFloat(value));
 };

@@ -29,9 +29,21 @@ const styles: Styles = {
     },
 };
 
+const breakpoints = {
+    sm: '320px',
+    md: '768px',
+    lg: '960px',
+    xl: '1200px',
+    '2xl': '1536px',
+    fullHD: '1920px',
+    wqhd: '2560px',
+    '4kuhd': '3840px',
+};
+
 const apiEditorTheme = extendTheme({
     config,
     styles,
+    breakpoints,
     layerStyles: {
         subtleBorder: {
             borderStyle: 'solid',

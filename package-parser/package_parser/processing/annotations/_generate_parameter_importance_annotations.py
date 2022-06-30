@@ -1,13 +1,13 @@
 from typing import Any, Optional
 
-from package_parser.model.annotations import (
+from package_parser.processing.annotations.model import (
     AnnotationStore,
     ConstantAnnotation,
     OptionalAnnotation,
     RequiredAnnotation,
 )
-from package_parser.model.api import API, Parameter
-from package_parser.model.usages import UsageCountStore
+from package_parser.processing.api.model import API, Parameter, ParameterAssignment
+from package_parser.processing.usages.model import UsageCountStore
 
 from ._constants import autogen_author
 
@@ -16,6 +16,14 @@ def _generate_parameter_importance_annotations(
     api: API, usages: UsageCountStore, annotations: AnnotationStore
 ) -> None:
     for parameter in api.parameters().values():
+
+        # Don't create annotations for variadic parameters
+        if (
+            parameter.assigned_by == ParameterAssignment.POSITIONAL_VARARG
+            or parameter.assigned_by == ParameterAssignment.NAMED_VARARG
+        ):
+            continue
+
         parameter_values = usages.most_common_parameter_values(parameter.id)
 
         if len(parameter_values) == 1:
@@ -58,12 +66,11 @@ def _generate_required_or_optional_annotation(
 
     # If the most common value is not a stringified literal, make parameter required
     if not _is_stringified_literal(most_common_values[0]):
-        if parameter.is_optional():
-            annotations.requireds.append(
-                RequiredAnnotation(
-                    target=parameter.id, authors=[autogen_author], reviewers=[]
-                )
+        annotations.requireds.append(
+            RequiredAnnotation(
+                target=parameter.id, authors=[autogen_author], reviewers=[]
             )
+        )
         return
 
     # Compute metrics
@@ -107,28 +114,26 @@ def _generate_required_or_optional_annotation(
         total_literal_value_count,
         n_different_literal_values,
     ):
-        if parameter.is_optional():
-            annotations.requireds.append(
-                RequiredAnnotation(
-                    target=parameter.id, authors=[autogen_author], reviewers=[]
+        annotations.requireds.append(
+            RequiredAnnotation(
+                target=parameter.id, authors=[autogen_author], reviewers=[]
+            )
+        )
+    else:
+        (
+            default_type,
+            default_value,
+        ) = _get_default_type_and_value_for_stringified_value(literal_values[0])
+        if default_type is not None:  # Just for mypy, always true
+            annotations.optionals.append(
+                OptionalAnnotation(
+                    target=parameter.id,
+                    authors=[autogen_author],
+                    reviewers=[],
+                    defaultType=default_type,
+                    defaultValue=default_value,
                 )
             )
-    else:
-        if parameter.is_required() or parameter.default_value != literal_values[0]:
-            (
-                default_type,
-                default_value,
-            ) = _get_default_type_and_value_for_stringified_value(literal_values[0])
-            if default_type is not None:  # Just for mypy, always true
-                annotations.optionals.append(
-                    OptionalAnnotation(
-                        target=parameter.id,
-                        authors=[autogen_author],
-                        reviewers=[],
-                        defaultType=default_type,
-                        defaultValue=default_value,
-                    )
-                )
 
 
 def _should_be_required(
@@ -145,6 +150,10 @@ def _should_be_required(
     :param n_different_literal_values: The number of different literal values that are used
     :return: True means the parameter should be required, False means it should be optional
     """
+
+    # Most common value is the only literal value
+    if n_different_literal_values == 1:
+        return False
 
     return (
         most_common_value_count - second_most_common_value_count

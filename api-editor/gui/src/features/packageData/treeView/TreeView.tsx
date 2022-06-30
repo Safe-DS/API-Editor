@@ -19,7 +19,7 @@ import { FunctionNode } from './FunctionNode';
 import { ModuleNode } from './ModuleNode';
 import { ParameterNode } from './ParameterNode';
 import { AutoSizer } from '../../../common/AutoSizer';
-import { selectFlatSortedDeclarationList } from '../apiSlice';
+import { selectFlatFilteredAndSortedDeclarationList } from '../apiSlice';
 import { selectUsages } from '../../usages/usageSlice';
 
 interface ScrollOffset {
@@ -36,7 +36,7 @@ export const TreeView: React.FC = memo(() => {
     const filter = useAppSelector(selectFilter);
     const usages = useAppSelector(selectUsages);
     const allExpanded = useAppSelector(selectAllExpandedInTreeView);
-    const flatSortedList = useAppSelector(selectFlatSortedDeclarationList);
+    const flatSortedList = useAppSelector(selectFlatFilteredAndSortedDeclarationList);
     const children = getNodes(allExpanded, flatSortedList);
     const previousScrollOffset = useAppSelector(selectTreeViewScrollOffset);
 

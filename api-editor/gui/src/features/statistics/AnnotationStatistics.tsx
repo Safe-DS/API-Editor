@@ -25,25 +25,35 @@ export const AnnotationStatistics = function () {
     const renamingsSize = countNonRepeatableAnnotation(annotations.renamings, matchedIds);
     const requiredsSize = countNonRepeatableAnnotation(annotations.requireds, matchedIds);
     const todoSize = countNonRepeatableAnnotation(annotations.todos, matchedIds);
+    const sum =
+        attributesSize +
+        boundariesSize +
+        calledAftersSize +
+        constantsSize +
+        descriptionSize +
+        enumsSize +
+        groupsSize +
+        optionalsSize +
+        movesSize +
+        puresSize +
+        removesSize +
+        renamingsSize +
+        requiredsSize +
+        todoSize;
 
     const filterString = useAppSelector(selectFilterString);
 
-    const filterAction = (annotation: string) => {
-        const annotationFilterPrefix = 'annotation:@';
-        const annotationFilterString = annotationFilterPrefix + annotation;
+    const filterAction = (newAnnotationFilterString: string) => {
+        const annotationFilterPrefix = 'annotation:';
 
-        //Remove existing annotation filter
-        const filterList = filterString.split(' ');
-        let newFilter = '';
-        for (const element of filterList) {
-            if (!element.startsWith(annotationFilterPrefix)) {
-                newFilter += element;
-                newFilter += ' ';
-            }
-        }
+        const newFilterString = [
+            ...filterString.split(' ').filter((it) => !it.startsWith(annotationFilterPrefix)),
+            newAnnotationFilterString,
+        ]
+            .filter((it) => it.length > 0)
+            .join(' ');
 
-        newFilter += annotationFilterString;
-        dispatch(setFilterString(newFilter));
+        dispatch(setFilterString(newFilterString));
     };
 
     return (
@@ -52,33 +62,35 @@ export const AnnotationStatistics = function () {
                 Annotations on Matched Elements
             </Heading>
             <SimpleGrid columns={2} spacing={2}>
-                <Button onClick={() => filterAction('attribute')} children={'Attributes: ' + attributesSize}></Button>
-                <Button onClick={() => filterAction('boundary')} children={'Boundaries: ' + boundariesSize}></Button>
-                <Button
-                    onClick={() => filterAction('calledAfter')}
-                    children={'CalledAfter: ' + calledAftersSize}
-                ></Button>
-                <Button onClick={() => filterAction('constant')} children={'Constants: ' + constantsSize}></Button>
-                <Button
-                    onClick={() => filterAction('description')}
-                    children={'Descriptions: ' + descriptionSize}
-                ></Button>
-                <Button onClick={() => filterAction('enum')} children={'Enums: ' + enumsSize}></Button>
-                <Button onClick={() => filterAction('group')} children={'Groups: ' + groupsSize}></Button>
-                <Button onClick={() => filterAction('move')} children={'Move: ' + movesSize}></Button>
-                <Button onClick={() => filterAction('optional')} children={'Optionals: ' + optionalsSize}></Button>
-                <Button onClick={() => filterAction('pure')} children={'Pures: ' + puresSize}></Button>
-                <Button onClick={() => filterAction('remove')} children={'Removes: ' + removesSize}></Button>
-                <Button onClick={() => filterAction('rename')} children={'Renaming: ' + renamingsSize}></Button>
-                <Button onClick={() => filterAction('required')} children={'Requireds: ' + requiredsSize}></Button>
-                <Button onClick={() => filterAction('todo')} children={'Todos: ' + todoSize}></Button>
+                <Button onClick={() => filterAction('')}>Clear Filter</Button>
+                <Button onClick={() => filterAction('annotation:any')}>{'Any: ' + sum}</Button>
+
+                <Button onClick={() => filterAction('annotation:@attribute')}>{'@Attribute: ' + attributesSize}</Button>
+                <Button onClick={() => filterAction('annotation:@boundary')}>{'@Boundary: ' + boundariesSize}</Button>
+                <Button onClick={() => filterAction('annotation:@calledAfter')}>
+                    {'@CalledAfter: ' + calledAftersSize}
+                </Button>
+                <Button onClick={() => filterAction('annotation:@constant')}>{'@Constant: ' + constantsSize}</Button>
+                <Button onClick={() => filterAction('annotation:@description')}>
+                    {'@Description: ' + descriptionSize}
+                </Button>
+                <Button onClick={() => filterAction('annotation:@enum')}>{'@Enum: ' + enumsSize}</Button>
+                <Button onClick={() => filterAction('annotation:@group')}>{'@Group: ' + groupsSize}</Button>
+                <Button onClick={() => filterAction('annotation:@move')}>{'@Move: ' + movesSize}</Button>
+                <Button onClick={() => filterAction('annotation:@optional')}>{'@Optional: ' + optionalsSize}</Button>
+                <Button onClick={() => filterAction('annotation:@pure')}>{'@Pure: ' + puresSize}</Button>
+                <Button onClick={() => filterAction('annotation:@remove')}>{'@Remove: ' + removesSize}</Button>
+                <Button onClick={() => filterAction('annotation:@rename')}>{'@Rename: ' + renamingsSize}</Button>
+                <Button onClick={() => filterAction('annotation:@required')}>{'@Required: ' + requiredsSize}</Button>
+                <Button onClick={() => filterAction('annotation:@todo')}>{'@Todo: ' + todoSize}</Button>
             </SimpleGrid>
         </>
     );
 };
 
 const countNonRepeatableAnnotation = (targetToAnnotation: { [target: string]: Annotation }, matchedIds: string[]) => {
-    return Object.keys(targetToAnnotation).filter((it) => matchedIds.includes(it)).length;
+    return Object.values(targetToAnnotation).filter((it) => it && !it.isRemoved && matchedIds.includes(it.target))
+        .length;
 };
 
 const countRepeatableAnnotation = (
@@ -87,7 +99,7 @@ const countRepeatableAnnotation = (
 ) => {
     return Object.entries(targetToNameToAnnotation).reduce((acc, [target, nameToAnnotations]) => {
         if (matchedIds.includes(target)) {
-            return acc + Object.keys(nameToAnnotations).length;
+            return acc + Object.values(nameToAnnotations).filter((it) => it && !it.isRemoved).length;
         } else {
             return acc;
         }
