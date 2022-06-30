@@ -500,9 +500,10 @@ const getPreviousElementPath = function (
     annotations: AnnotationStore,
     usages: UsageCountStore,
 ): { id: string; wrappedAround: boolean } {
-    let currentIndex = getPreviousIndex(declarations, getIndex(declarations, start));
+    const startIndex = getIndex(declarations, start)
+    let currentIndex = getPreviousIndex(declarations, startIndex);
     let current = getElementAtIndex(declarations, currentIndex);
-    let wrappedAround = false;
+    let wrappedAround = startIndex !== null && currentIndex !== null && currentIndex >= startIndex;
     while (current !== null && current !== start) {
         if (filter.shouldKeepDeclaration(current, annotations, usages)) {
             return { id: current.id, wrappedAround };
@@ -525,9 +526,10 @@ const getNextElementPath = function (
     annotations: AnnotationStore,
     usages: UsageCountStore,
 ): { id: string; wrappedAround: boolean } {
-    let currentIndex = getNextIndex(declarations, getIndex(declarations, start));
+    const startIndex = getIndex(declarations, start)
+    let currentIndex = getNextIndex(declarations, startIndex);
     let current = getElementAtIndex(declarations, currentIndex);
-    let wrappedAround = false;
+    let wrappedAround = startIndex !== null && currentIndex !== null && currentIndex <= startIndex;
     while (current !== null && current !== start) {
         if (filter.shouldKeepDeclaration(current, annotations, usages)) {
             return { id: current.id, wrappedAround };
