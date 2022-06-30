@@ -53,7 +53,7 @@ export const DeleteAllAnnotations = function () {
                                     <strong>Are you sure?</strong>
                                 </ChakraText>
                                 <ChakraText>
-                                    Hint: Consider exporting your work first selecting "File &gt; Export &gt;
+                                    Hint: Consider exporting your work first by selecting "File &gt; Export &gt;
                                     Annotations" in the menu bar.
                                 </ChakraText>
                             </VStack>
