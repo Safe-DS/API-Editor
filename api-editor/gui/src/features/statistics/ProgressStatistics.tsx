@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Heading, HStack, useColorModeValue } from '@chakra-ui/react';
+import { Box, Heading, SimpleGrid, useColorModeValue, VStack } from '@chakra-ui/react';
 import { useAppSelector } from '../../app/hooks';
 import { selectMatchedNodes } from '../packageData/apiSlice';
 import { selectAllAnnotationsOnTargets, selectAnnotationStore } from '../annotations/annotationSlice';
@@ -74,20 +74,20 @@ export const ProgressStatistics = function () {
     };
 
     return (
-        <>
+        <VStack spacing={2}>
             <Heading as="h3" size="md">
                 Progress on Matched Elements
             </Heading>
             <Box width="100%">
-                <HStack width="100%" justify="space-between">
-                    <Box width="40%">
+                <SimpleGrid columns={{ base: 1, fullHD: 2 }} width="100%">
+                    <Box>
                         <Pie data={completionData} options={completionOptions} />
                     </Box>
-                    <Box width="40%">
+                    <Box>
                         <Pie data={correctnessData} options={correctnessOptions} />
                     </Box>
-                </HStack>
+                </SimpleGrid>
             </Box>
-        </>
+        </VStack>
     );
 };
