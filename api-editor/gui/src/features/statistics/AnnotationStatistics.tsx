@@ -61,7 +61,7 @@ export const AnnotationStatistics = function () {
             <Heading as="h3" size="md">
                 Annotations on Matched Elements
             </Heading>
-            <SimpleGrid columns={2} spacing={2}>
+            <SimpleGrid columns={{ base: 1, fullHD: 2 }} spacing={2}>
                 <Button onClick={() => filterAction('')}>Clear Filter</Button>
                 <Button onClick={() => filterAction('annotation:any')}>{'Any: ' + sum}</Button>
 
