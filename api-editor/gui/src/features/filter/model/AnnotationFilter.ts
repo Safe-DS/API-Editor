@@ -3,7 +3,7 @@ import { PythonFunction } from '../../packageData/model/PythonFunction';
 import { PythonModule } from '../../packageData/model/PythonModule';
 import { PythonParameter } from '../../packageData/model/PythonParameter';
 import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
-import { AnnotationStore } from '../../annotations/annotationSlice';
+import { Annotation, AnnotationStore } from '../../annotations/annotationSlice';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { AbstractPythonFilter } from './AbstractPythonFilter';
 
@@ -49,57 +49,70 @@ export class AnnotationFilter extends AbstractPythonFilter {
         switch (this.type) {
             case AnnotationType.Any:
                 return (
-                    id in annotations.attributes ||
-                    id in annotations.boundaries ||
-                    id in annotations.calledAfters ||
+                    hasSingleUseAnnotation(id, annotations.attributes) ||
+                    hasSingleUseAnnotation(id, annotations.boundaries) ||
+                    hasMultiUseAnnotation(id, annotations.calledAfters) ||
                     // Deliberately not checking annotations.complete. It should be transparent it's an annotation.
-                    id in annotations.constants ||
-                    id in annotations.descriptions ||
-                    id in annotations.enums ||
-                    id in annotations.groups ||
-                    id in annotations.moves ||
-                    id in annotations.optionals ||
-                    id in annotations.pures ||
-                    id in annotations.removes ||
-                    id in annotations.renamings ||
-                    id in annotations.requireds ||
-                    id in annotations.todos
+                    hasSingleUseAnnotation(id, annotations.constants) ||
+                    hasSingleUseAnnotation(id, annotations.descriptions) ||
+                    hasSingleUseAnnotation(id, annotations.enums) ||
+                    hasMultiUseAnnotation(id, annotations.groups) ||
+                    hasSingleUseAnnotation(id, annotations.moves) ||
+                    hasSingleUseAnnotation(id, annotations.optionals) ||
+                    hasSingleUseAnnotation(id, annotations.pures) ||
+                    hasSingleUseAnnotation(id, annotations.removes) ||
+                    hasSingleUseAnnotation(id, annotations.renamings) ||
+                    hasSingleUseAnnotation(id, annotations.requireds) ||
+                    hasSingleUseAnnotation(id, annotations.todos)
                 );
             case AnnotationType.Attribute:
-                return id in annotations.attributes;
+                return hasSingleUseAnnotation(id, annotations.attributes);
             case AnnotationType.Boundary:
-                return id in annotations.boundaries;
+                return hasSingleUseAnnotation(id, annotations.boundaries);
             case AnnotationType.CalledAfter:
-                return id in annotations.calledAfters;
+                return hasMultiUseAnnotation(id, annotations.calledAfters);
             case AnnotationType.Complete:
-                return id in annotations.completes;
+                return hasSingleUseAnnotation(id, annotations.completes);
             case AnnotationType.Constant:
-                return id in annotations.constants;
+                return hasSingleUseAnnotation(id, annotations.constants);
             case AnnotationType.Description:
-                return id in annotations.descriptions;
+                return hasSingleUseAnnotation(id, annotations.descriptions);
             case AnnotationType.Enum:
-                return id in annotations.enums;
+                return hasSingleUseAnnotation(id, annotations.enums);
             case AnnotationType.Group:
-                return id in annotations.groups;
+                return hasMultiUseAnnotation(id, annotations.groups);
             case AnnotationType.Move:
-                return id in annotations.moves;
+                return hasSingleUseAnnotation(id, annotations.moves);
             case AnnotationType.Optional:
-                return id in annotations.optionals;
+                return hasSingleUseAnnotation(id, annotations.optionals);
             case AnnotationType.Pure:
-                return id in annotations.pures;
+                return hasSingleUseAnnotation(id, annotations.pures);
             case AnnotationType.Remove:
-                return id in annotations.removes;
+                return hasSingleUseAnnotation(id, annotations.removes);
             case AnnotationType.Rename:
-                return id in annotations.renamings;
+                return hasSingleUseAnnotation(id, annotations.renamings);
             case AnnotationType.Required:
-                return id in annotations.requireds;
+                return hasSingleUseAnnotation(id, annotations.requireds);
             case AnnotationType.Todo:
-                return id in annotations.todos;
+                return hasSingleUseAnnotation(id, annotations.todos);
             default:
                 return true;
         }
     }
 }
+
+const hasSingleUseAnnotation = function (target: string, annotations: { [target: string]: Annotation }): boolean {
+    const annotationOnTarget = annotations[target];
+    return annotationOnTarget && !annotationOnTarget.isRemoved;
+};
+
+const hasMultiUseAnnotation = function (
+    target: string,
+    annotations: { [target: string]: { [key: string]: Annotation } },
+): boolean {
+    const annotationsOnTarget = Object.values(annotations[target] ?? {});
+    return annotationsOnTarget.some((annotation) => !annotation.isRemoved);
+};
 
 export enum AnnotationType {
     Any,
