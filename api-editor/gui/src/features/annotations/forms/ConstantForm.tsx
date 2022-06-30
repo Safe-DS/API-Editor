@@ -34,6 +34,7 @@ export const ConstantForm: React.FC<ConstantFormProps> = function ({ target }) {
         <TypeValueForm
             target={target}
             annotationType="constant"
+            description="Delete this parameter and replace references to it with a constant value."
             previousDefaultType={previousDefaultType}
             previousDefaultValue={previousDefaultValue}
             onUpsertAnnotation={handleUpsertAnnotation}

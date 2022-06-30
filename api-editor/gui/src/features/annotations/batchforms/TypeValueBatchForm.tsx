@@ -13,6 +13,7 @@ import {
     RadioGroup,
     Select,
     Stack,
+    Text as ChakraText,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -27,6 +28,7 @@ import { ConfirmAnnotations } from './ConfirmAnnotations';
 interface TypeValueBatchFormProps {
     targets: PythonDeclaration[];
     annotationType: string;
+    description: string;
     onUpsertAnnotation: (data: TypeValueBatchFormState) => void;
 }
 
@@ -38,6 +40,7 @@ export interface TypeValueBatchFormState {
 export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
     targets,
     annotationType,
+    description,
     onUpsertAnnotation,
 }) {
     const dispatch = useAppDispatch();
@@ -98,6 +101,7 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
         <>
             <AnnotationBatchForm
                 heading={`Add @${annotationType} Annotations`}
+                description={description}
                 onConfirm={handleSubmit(handleConfirm)}
                 onCancel={handleCancel}
             >
@@ -152,7 +156,7 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
                     </FormControl>
                 )}
 
-                <FormLabel>This will annotate parameters.</FormLabel>
+                <ChakraText>This will annotate parameters.</ChakraText>
             </AnnotationBatchForm>
             {confirmWindowVisible && (
                 <ConfirmAnnotations

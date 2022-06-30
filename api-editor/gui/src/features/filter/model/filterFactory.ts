@@ -89,8 +89,12 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
             return new ParameterAssignmentFilter(PythonParameterAssignment.POSITION_ONLY);
         case 'is:positionorname':
             return new ParameterAssignmentFilter(PythonParameterAssignment.POSITION_OR_NAME);
+        case 'is:positionalvararg':
+            return new ParameterAssignmentFilter(PythonParameterAssignment.POSITIONAL_VARARG);
         case 'is:nameonly':
             return new ParameterAssignmentFilter(PythonParameterAssignment.NAME_ONLY);
+        case 'is:namedvararg':
+            return new ParameterAssignmentFilter(PythonParameterAssignment.NAMED_VARARG);
 
         // Done
         case 'is:done':

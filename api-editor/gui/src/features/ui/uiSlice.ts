@@ -4,6 +4,11 @@ import { RootState } from '../../app/store';
 import { CalledAfterTarget, GroupTarget } from '../annotations/annotationSlice';
 import { AbstractPythonFilter } from '../filter/model/AbstractPythonFilter';
 import { createFilterFromString, isValidFilterToken } from '../filter/model/filterFactory';
+import { PythonDeclaration } from '../packageData/model/PythonDeclaration';
+import { UsageCountStore } from '../usages/model/UsageCountStore';
+import { selectUsages } from '../usages/usageSlice';
+
+const EXPECTED_UI_SCHEMA_VERSION = 1;
 
 export interface Filter {
     filter: string;
@@ -11,6 +16,7 @@ export interface Filter {
 }
 
 export interface UIState {
+    schemaVersion?: number;
     showAnnotationImportDialog: boolean;
     showAPIImportDialog: boolean;
     showUsageImportDialog: boolean;
@@ -27,6 +33,10 @@ export interface UIState {
     sortingMode: SortingMode;
     batchMode: BatchMode;
     showStatistics: boolean;
+    expandDocumentationByDefault: boolean;
+
+    celebratedTitles: string[];
+    isLoaded: boolean;
 }
 
 type UserAction =
@@ -112,6 +122,7 @@ export enum HeatMapMode {
 }
 
 export enum SortingMode {
+    Default = 'default',
     Alphabetical = 'alphabetical',
     Usages = 'usages',
 }
@@ -141,14 +152,18 @@ export const initialState: UIState = {
 
     filterString: 'is:public',
     filterList: [
-        { filter: 'is:public', name: 'default' },
-        { filter: 'is:public usefulness:>0 !name:=X !name:=y', name: 'sklearn' },
+        { filter: 'is:public', name: 'public' },
+        { filter: 'is:public usefulness:>0', name: 'useful' },
     ],
 
     heatMapMode: HeatMapMode.None,
-    sortingMode: SortingMode.Alphabetical,
+    sortingMode: SortingMode.Default,
     batchMode: BatchMode.None,
     showStatistics: true,
+    expandDocumentationByDefault: false,
+
+    celebratedTitles: [],
+    isLoaded: false,
 };
 
 // Thunks --------------------------------------------------------------------------------------------------------------
@@ -156,12 +171,23 @@ export const initialState: UIState = {
 export const initializeUI = createAsyncThunk('ui/initialize', async () => {
     try {
         const storedState = (await idb.get('ui')) as UIState;
+        if ((storedState.schemaVersion ?? 1) !== EXPECTED_UI_SCHEMA_VERSION) {
+            return {
+                ...initialState,
+                isLoaded: true,
+            };
+        }
+
         return {
             ...initialState,
             ...storedState,
+            isLoaded: true,
         };
     } catch {
-        return initialState;
+        return {
+            ...initialState,
+            isLoaded: true,
+        };
     }
 });
 
@@ -320,8 +346,11 @@ const uiSlice = createSlice({
         setFilterString(state, action: PayloadAction<string>) {
             state.filterString = action.payload;
         },
-        addFilter(state, action: PayloadAction<Filter>) {
-            state.filterList.push(action.payload);
+        upsertFilter(state, action: PayloadAction<Filter>) {
+            state.filterList = [
+                ...state.filterList.filter((filter) => filter.name !== action.payload.name),
+                action.payload,
+            ];
         },
         removeFilter(state, action: PayloadAction<string>) {
             state.filterList = state.filterList.filter((filter) => filter.filter !== action.payload);
@@ -334,6 +363,13 @@ const uiSlice = createSlice({
         },
         toggleStatisticsView(state) {
             state.showStatistics = !state.showStatistics;
+        },
+        toggleExpandDocumentationByDefault(state) {
+            state.expandDocumentationByDefault = !state.expandDocumentationByDefault;
+        },
+
+        rememberTitle(state, action: PayloadAction<string>) {
+            state.celebratedTitles.push(action.payload);
         },
     },
     extraReducers(builder) {
@@ -372,11 +408,13 @@ export const {
     setTreeViewScrollOffset,
     setHeatMapMode,
     setFilterString,
-    addFilter,
+    upsertFilter,
     removeFilter,
     setSortingMode,
     setBatchMode,
     toggleStatisticsView,
+    toggleExpandDocumentationByDefault,
+    rememberTitle,
 } = actions;
 export const uiReducer = reducer;
 
@@ -411,5 +449,34 @@ export const selectFilter = createSelector(
     },
 );
 export const selectSortingMode = (state: RootState): SortingMode => selectUI(state).sortingMode;
+export const selectSorter = (state: RootState): ((a: PythonDeclaration, b: PythonDeclaration) => number) => {
+    const sortingMode = selectSortingMode(state);
+    const usages = selectUsages(state);
+    switch (sortingMode) {
+        case SortingMode.Default:
+            return sortInSameOrder;
+        case SortingMode.Alphabetical:
+            return sortAlphabetically;
+        case SortingMode.Usages: // Descending
+            return sortByUsages(usages);
+    }
+};
 export const selectBatchMode = (state: RootState): BatchMode => selectUI(state).batchMode;
 export const selectShowStatistics = (state: RootState): boolean => selectUI(state).showStatistics;
+export const selectExpandDocumentationByDefault = (state: RootState): boolean =>
+    selectUI(state).expandDocumentationByDefault;
+
+const sortInSameOrder = (_a: PythonDeclaration, _b: PythonDeclaration) => {
+    return 1;
+};
+
+const sortAlphabetically = (a: PythonDeclaration, b: PythonDeclaration) => {
+    return a.name.localeCompare(b.name);
+};
+
+const sortByUsages = (usages: UsageCountStore) => (a: PythonDeclaration, b: PythonDeclaration) => {
+    return usages.getUsageCount(b) - usages.getUsageCount(a);
+};
+
+export const selectCelebratedTitles = (state: RootState): string[] => selectUI(state).celebratedTitles;
+export const selectUIIsLoaded = (state: RootState): boolean => selectUI(state).isLoaded;

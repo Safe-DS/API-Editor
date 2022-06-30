@@ -35,8 +35,14 @@ export class AnnotatedPythonParameter {
             case PythonParameterAssignment.POSITION_ONLY:
                 this.assignedBy = 'POSITION_ONLY';
                 break;
+            case PythonParameterAssignment.POSITIONAL_VARARG:
+                this.assignedBy = 'POSITION_ONLY';
+                break;
             case PythonParameterAssignment.POSITION_OR_NAME:
                 this.assignedBy = 'POSITION_OR_NAME';
+                break;
+            case PythonParameterAssignment.NAMED_VARARG:
+                this.assignedBy = 'NAMED_VARARG';
                 break;
         }
         this.isPublic = isPublic;

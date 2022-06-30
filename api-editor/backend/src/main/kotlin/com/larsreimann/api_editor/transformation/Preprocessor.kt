@@ -7,8 +7,10 @@ import com.larsreimann.api_editor.mutable_model.PythonAttribute
 import com.larsreimann.api_editor.mutable_model.PythonCall
 import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonFunction
+import com.larsreimann.api_editor.mutable_model.PythonNamedSpread
 import com.larsreimann.api_editor.mutable_model.PythonPackage
 import com.larsreimann.api_editor.mutable_model.PythonParameter
+import com.larsreimann.api_editor.mutable_model.PythonPositionalSpread
 import com.larsreimann.api_editor.mutable_model.PythonReference
 import com.larsreimann.api_editor.mutable_model.PythonStringifiedExpression
 import com.larsreimann.modeling.closest
@@ -54,17 +56,17 @@ fun PythonPackage.addOriginalDeclarations() {
     this.descendants()
         .forEach {
             when (it) {
-                is PythonClass -> it.addOriginalDeclarations()
-                is PythonFunction -> it.addOriginalDeclarations()
+                is PythonClass -> it.addOriginalDeclaration()
+                is PythonFunction -> it.addOriginalDeclaration()
             }
         }
 }
 
-private fun PythonClass.addOriginalDeclarations() {
+private fun PythonClass.addOriginalDeclaration() {
     this.originalClass = OriginalPythonClass(this.qualifiedName())
 }
 
-private fun PythonFunction.addOriginalDeclarations() {
+private fun PythonFunction.addOriginalDeclaration() {
     val containingClass = closest<PythonClass>()
     this.callToOriginalAPI = PythonCall(
         receiver = PythonStringifiedExpression(
@@ -82,7 +84,11 @@ private fun PythonFunction.addOriginalDeclarations() {
                         PythonParameterAssignment.NAME_ONLY -> it.name
                         else -> null
                     },
-                    value = PythonReference(it)
+                    value = when (it.assignedBy) {
+                        PythonParameterAssignment.POSITIONAL_VARARG -> PythonPositionalSpread(PythonReference(it))
+                        PythonParameterAssignment.NAMED_VARARG -> PythonNamedSpread(PythonReference(it))
+                        else -> PythonReference(it)
+                    }
                 )
             }
     )
@@ -135,6 +141,10 @@ fun PythonPackage.updateParameterAssignment() {
 }
 
 private fun PythonParameter.updateParameterAssignment() {
+    if (isVariadic()) {
+        return
+    }
+
     this.assignedBy = when {
         this.isImplicit() -> PythonParameterAssignment.IMPLICIT
         this.isRequired() -> PythonParameterAssignment.POSITION_OR_NAME

@@ -12,7 +12,7 @@ import {
     UnorderedList,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { MenuBar } from '../common/MenuBar';
+import { MenuBar } from '../features/menuBar/MenuBar';
 import { AnnotationImportDialog } from '../features/annotations/AnnotationImportDialog';
 import {
     AnnotationStore,
@@ -47,20 +47,19 @@ import {
     selectBatchMode,
     selectCurrentUserAction,
     selectFilter,
+    selectShowAddFilterDialog,
     selectShowAnnotationImportDialog,
     selectShowAPIImportDialog,
+    selectShowStatistics,
     selectShowUsageImportDialog,
     selectUI,
-    selectShowAddFilterDialog,
-    selectShowStatistics,
 } from '../features/ui/uiSlice';
 import { initializeUsages, persistUsages, selectUsages } from '../features/usages/usageSlice';
 import { initializePythonPackage, selectRawPythonPackage } from '../features/packageData/apiSlice';
 import { PythonClass } from '../features/packageData/model/PythonClass';
 import { PythonParameter } from '../features/packageData/model/PythonParameter';
 import { ConstantBatchForm } from '../features/annotations/batchforms/ConstantBatchForm';
-import { ActionBar } from '../features/actionBar/ActionBar';
-import { useLocation } from 'react-router-dom';
+import { Footer } from '../features/footer/Footer';
 import { RenameBatchForm } from '../features/annotations/batchforms/RenameBatchForm';
 import { RequiredBatchForm } from '../features/annotations/batchforms/RequiredBatchForm';
 import { OptionalBatchForm } from '../features/annotations/batchforms/OptionalBatchForm';
@@ -72,6 +71,7 @@ import { UsageCountStore } from '../features/usages/model/UsageCountStore';
 import { PythonDeclaration } from '../features/packageData/model/PythonDeclaration';
 import { SaveFilterDialog } from '../features/filter/SaveFilterDialog';
 import { StatisticsView } from '../features/statistics/StatisticsView';
+import { useAnnotationToasts } from '../features/achievements/AnnotationToast';
 
 export const App: React.FC = function () {
     useIndexedDB();
@@ -88,7 +88,6 @@ export const App: React.FC = function () {
         setShowInferErrorDialog(true);
     };
 
-    const declaration = rawPythonPackage.getDeclarationById(useLocation().pathname.split('/').splice(1).join('/'));
     const currentUserAction = useAppSelector(selectCurrentUserAction);
     const userActionTarget = rawPythonPackage.getDeclarationById(currentUserAction.target);
     const showAnnotationImportDialog = useAppSelector(selectShowAnnotationImportDialog);
@@ -98,6 +97,8 @@ export const App: React.FC = function () {
     const showAddFilterDialog = useAppSelector(selectShowAddFilterDialog);
     const showStatistics = useAppSelector(selectShowStatistics);
     const isValidUsername = useAppSelector(selectUsernameIsValid);
+
+    useAnnotationToasts();
 
     return (
         <>
@@ -160,7 +161,7 @@ export const App: React.FC = function () {
                     )}
                     {currentUserAction.type === 'todo' && <TodoForm target={userActionTarget || rawPythonPackage} />}
                 </GridItem>
-                <GridItem gridArea="middlePane" overflow="auto">
+                <GridItem gridArea="middlePane" overflow="auto" display="flex">
                     <Box flexGrow={1} overflowY="auto" width="100%">
                         {(batchMode === BatchMode.None || !isValidUsername) && <SelectionView />}
 
@@ -216,7 +217,7 @@ export const App: React.FC = function () {
                     </GridItem>
                 )}
                 <GridItem gridArea="footer" colSpan={3}>
-                    {currentUserAction.type === 'none' && <ActionBar declaration={declaration} />}
+                    <Footer />
                 </GridItem>
 
                 {showAnnotationImportDialog && <AnnotationImportDialog />}

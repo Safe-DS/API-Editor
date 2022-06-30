@@ -7,6 +7,8 @@ import com.larsreimann.api_editor.model.EditorAnnotation
 import com.larsreimann.api_editor.model.PythonFromImport
 import com.larsreimann.api_editor.model.PythonImport
 import com.larsreimann.api_editor.model.PythonParameterAssignment
+import com.larsreimann.api_editor.model.PythonParameterAssignment.NAMED_VARARG
+import com.larsreimann.api_editor.model.PythonParameterAssignment.POSITIONAL_VARARG
 import com.larsreimann.modeling.ModelNode
 import com.larsreimann.modeling.ancestorsOrSelf
 
@@ -188,6 +190,7 @@ class PythonParameter(
     defaultValue: PythonExpression? = null,
     var assignedBy: PythonParameterAssignment = PythonParameterAssignment.POSITION_OR_NAME,
     var description: String = "",
+    var todo: String = "",
     var boundary: Boundary? = null,
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
 ) : PythonDeclaration() {
@@ -203,6 +206,8 @@ class PythonParameter(
     fun isRequired() = defaultValue == null
 
     fun isOptional() = defaultValue != null
+
+    fun isVariadic() = assignedBy == POSITIONAL_VARARG || assignedBy == NAMED_VARARG
 }
 
 class PythonResult(
@@ -242,7 +247,9 @@ class PythonCall(
     }
 }
 
-sealed class PythonLiteral : PythonExpression()
+sealed class PythonLiteral : PythonExpression() {
+    override fun children() = emptySequence<ModelNode>()
+}
 
 data class PythonBoolean(val value: Boolean) : PythonLiteral()
 data class PythonFloat(val value: Double) : PythonLiteral()
@@ -264,11 +271,31 @@ class PythonMemberAccess(
     }
 }
 
-class PythonReference(declaration: PythonDeclaration) : PythonExpression() {
-    var declaration by CrossReference(declaration)
+class PythonNamedSpread(argument: PythonExpression) : PythonExpression() {
+    var argument by ContainmentReference(argument)
+
+    override fun children() = sequence {
+        argument?.let { yield(it) }
+    }
 }
 
-data class PythonStringifiedExpression(val string: String) : PythonExpression()
+class PythonPositionalSpread(argument: PythonExpression) : PythonExpression() {
+    var argument by ContainmentReference(argument)
+
+    override fun children() = sequence {
+        argument?.let { yield(it) }
+    }
+}
+
+class PythonReference(declaration: PythonDeclaration) : PythonExpression() {
+    var declaration by CrossReference(declaration)
+
+    override fun children() = emptySequence<ModelNode>()
+}
+
+data class PythonStringifiedExpression(val string: String) : PythonExpression() {
+    override fun children() = emptySequence<ModelNode>()
+}
 
 /* ********************************************************************************************************************
  * Types
@@ -281,12 +308,16 @@ sealed class PythonType : PythonAstNode() {
 class PythonNamedType(declaration: PythonDeclaration?) : PythonType() {
     var declaration by CrossReference(declaration)
 
+    override fun children() = emptySequence<ModelNode>()
+
     override fun copy(): PythonNamedType {
         return PythonNamedType(declaration)
     }
 }
 
 data class PythonStringifiedType(val string: String) : PythonType() {
+    override fun children() = emptySequence<ModelNode>()
+
     override fun copy(): PythonStringifiedType {
         return PythonStringifiedType(string)
     }

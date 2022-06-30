@@ -140,6 +140,20 @@
                     "name": "should_not_be_constant_six",
                     "qname": "test.UsedClass.used_method.should_not_be_constant_six",
                     "default_value": "'test'"
+                },
+                {
+                    "id": "test/test/some_global_function/args",
+                    "name": "args",
+                    "qname": "test.test.some_global_function.args",
+                    "default_value": "None",
+                    "assigned_by": "POSITIONAL_VARARG"
+                },
+                {
+                    "id": "test/test/some_global_function/kwargs",
+                    "name": "kwargs",
+                    "qname": "test.test.some_global_function.kwargs",
+                    "default_value": "None",
+                    "assigned_by": "NAMED_VARARG"
                 }
             ]
         }

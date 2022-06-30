@@ -1,4 +1,4 @@
-import { Box, Code, Heading, Stack, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Code, Heading, HStack, Stack, Text, useColorModeValue, Wrap } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -8,6 +8,8 @@ import remarkGfm from 'remark-gfm';
 import { groupBy, isEmptyList } from '../../../common/util/listOperations';
 import { PythonModule } from '../model/PythonModule';
 import { CodeComponent } from 'react-markdown/lib/ast-to-react';
+import { CompleteButton } from '../../annotations/CompleteButton';
+import { DataCopyButtons } from '../../annotations/DataCopyButtons';
 
 // See https://github.com/remarkjs/react-markdown#use-custom-components-syntax-highlight
 const CustomCode: CodeComponent = function ({
@@ -65,9 +67,16 @@ export const ModuleView: React.FC<ModuleViewProps> = function ({ pythonModule })
 
     return (
         <Stack spacing={8}>
-            <Heading as="h3" size="lg">
-                {pythonModule.name}
-            </Heading>
+            <HStack alignItems="start">
+                <Heading as="h3" size="lg">
+                    {pythonModule.name} {!pythonModule.isPublic && '(private)'}
+                </Heading>
+                <Wrap>
+                    <CompleteButton target={pythonModule.id} />
+                    <DataCopyButtons target={pythonModule.id} />
+                </Wrap>
+            </HStack>
+
             <Stack spacing={4}>
                 <Heading as="h4" size="md">
                     Imports

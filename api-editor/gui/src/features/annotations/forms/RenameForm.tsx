@@ -71,6 +71,7 @@ export const RenameForm: React.FC<RenameFormProps> = function ({ target }) {
     return (
         <AnnotationForm
             heading={`${prevNewName ? 'Edit' : 'Add'} @rename Annotation`}
+            description="Change the name of this declaration."
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
         >

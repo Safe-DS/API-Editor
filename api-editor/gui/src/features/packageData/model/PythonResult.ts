@@ -1,6 +1,7 @@
 import { Optional } from '../../../common/util/types';
 import { PythonDeclaration } from './PythonDeclaration';
 import { PythonFunction } from './PythonFunction';
+import { PythonResultJson } from './APIJsonData';
 
 export class PythonResult extends PythonDeclaration {
     readonly id: string;
@@ -37,7 +38,19 @@ export class PythonResult extends PythonDeclaration {
         return `Result "${this.name}"`;
     }
 
+    toJson(): PythonResultJson {
+        return {
+            name: this.name,
+            docstring: {
+                type: this.typeInDocs,
+                description: this.description,
+            },
+        };
+    }
+
     clone(): PythonResult {
-        return new PythonResult(this.name, this.typeInDocs, this.description);
+        const result = new PythonResult(this.name, this.typeInDocs, this.description);
+        result.containingFunction = this.containingFunction;
+        return result;
     }
 }

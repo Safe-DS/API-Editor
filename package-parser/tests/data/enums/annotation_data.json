@@ -6,15 +6,15 @@
         "enumName": "EnumParameter",
         "pairs": [
             {
-                "instanceName": "Auto",
+                "instanceName": "AUTO",
                 "stringValue": "auto"
             },
             {
-                "instanceName": "Kdmeans",
+                "instanceName": "KD_MEANS",
                 "stringValue": "kd-means++"
             },
             {
-                "instanceName": "KdTree",
+                "instanceName": "KD_TREE",
                 "stringValue": "kd_tree"
             }
         ]
@@ -26,16 +26,32 @@
         "enumName": "EnumParameterWithUnion",
         "pairs": [
             {
-                "instanceName": "Auto",
+                "instanceName": "AUTO",
                 "stringValue": "auto"
             },
             {
-                "instanceName": "Kdmeans",
+                "instanceName": "KD_MEANS",
                 "stringValue": "kd-means++"
             },
             {
-                "instanceName": "KdTree",
+                "instanceName": "KD_TREE",
                 "stringValue": "kd_tree"
+            }
+        ]
+    },
+    "test/test/some_global_function/issue_760": {
+        "target": "test/test/some_global_function/issue_760",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "enumName": "Issue760",
+        "pairs": [
+            {
+                "instanceName": "L1",
+                "stringValue": "l1"
+            },
+            {
+                "instanceName": "L2",
+                "stringValue": "l2"
             }
         ]
     }

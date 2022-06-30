@@ -34,6 +34,7 @@ export const OptionalForm: React.FC<OptionalFormProps> = function ({ target }) {
         <TypeValueForm
             target={target}
             annotationType="optional"
+            description="Make this parameter optional and set its default value."
             previousDefaultType={previousDefaultType}
             previousDefaultValue={previousDefaultValue}
             onUpsertAnnotation={handleUpsertAnnotation}

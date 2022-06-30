@@ -4,6 +4,7 @@ import { PythonDeclaration } from './PythonDeclaration';
 import { PythonModule } from './PythonModule';
 import { PythonParameter, PythonParameterAssignment } from './PythonParameter';
 import { PythonResult } from './PythonResult';
+import { PythonFunctionJson } from './APIJsonData';
 
 interface PythonFunctionShallowCopy {
     id?: string;
@@ -107,7 +108,7 @@ export class PythonFunction extends PythonDeclaration {
         description = this.description,
         fullDocstring = this.fullDocstring,
     }: PythonFunctionShallowCopy = {}): PythonFunction {
-        return new PythonFunction(
+        const result = new PythonFunction(
             id,
             name,
             qualifiedName,
@@ -119,6 +120,8 @@ export class PythonFunction extends PythonDeclaration {
             description,
             fullDocstring,
         );
+        result.containingModuleOrClass = this.containingModuleOrClass;
+        return result;
     }
 
     toString(): string {
@@ -132,5 +135,20 @@ export class PythonFunction extends PythonDeclaration {
         result += `def ${this.name}(${this.parameters.map((it) => it.name).join(', ')})`;
 
         return result;
+    }
+
+    toJson(): PythonFunctionJson {
+        return {
+            id: this.id,
+            name: this.name,
+            qname: this.qualifiedName,
+            decorators: this.decorators,
+            parameters: this.parameters.map((it) => it.toJson()),
+            results: this.results.map((it) => it.toJson()),
+            is_public: this.isPublic,
+            reexported_by: this.reexportedBy,
+            description: this.description,
+            docstring: this.fullDocstring,
+        };
     }
 }

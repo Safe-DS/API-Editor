@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Heading, HStack } from '@chakra-ui/react';
+import { Box, Heading, HStack, useColorModeValue } from '@chakra-ui/react';
 import { useAppSelector } from '../../app/hooks';
 import { selectMatchedNodes } from '../packageData/apiSlice';
 import { selectAllAnnotationsOnTargets, selectAnnotationStore } from '../annotations/annotationSlice';
@@ -10,6 +10,14 @@ import { ArcElement, Chart as ChartJS, Title, Tooltip } from 'chart.js';
 ChartJS.register(ArcElement, Title, Tooltip);
 
 export const ProgressStatistics = function () {
+    const completeOrCorrectBg = useColorModeValue('#38a169', '#68d391');
+    const completeOrCorrectBorder = useColorModeValue('#2f855a', '#99e6b3');
+
+    const uncheckedBg = useColorModeValue('#CCC', '#888');
+    const uncheckedBorder = useColorModeValue('#AAA', '#AAA');
+
+    const textColor = useColorModeValue('#000', '#FFF');
+
     // Completion Progress
     const completed = useAppSelector(selectAnnotationStore).completes;
     const matchedNodes = useAppSelector(selectMatchedNodes);
@@ -17,12 +25,12 @@ export const ProgressStatistics = function () {
     const numberOfCompleteMatchedNodes = matchedNodes.filter((it) => it.id in completed).length;
 
     const completionData = {
-        labels: ['Complete', 'Incomplete?'],
+        labels: ['Complete', 'Unchecked'],
         datasets: [
             {
                 data: [numberOfCompleteMatchedNodes, numberOfMatchedNodes - numberOfCompleteMatchedNodes],
-                backgroundColor: ['rgba(164,255,99,0.2)', 'rgba(162,162,162,0.2)'],
-                borderColor: ['rgba(92,154,45,0.2)', 'rgba(115,115,115,0.2)'],
+                backgroundColor: [completeOrCorrectBg, uncheckedBg],
+                borderColor: [completeOrCorrectBorder, uncheckedBorder],
                 borderWidth: 1,
             },
         ],
@@ -33,6 +41,7 @@ export const ProgressStatistics = function () {
             title: {
                 display: true,
                 text: 'Completion Progress',
+                color: textColor,
             },
         },
     };
@@ -43,12 +52,12 @@ export const ProgressStatistics = function () {
     const numberOfReviewedAnnotations = allAnnotations.filter((it) => (it.reviewers?.length ?? 0) > 0).length;
 
     const correctnessData = {
-        labels: ['Correct', 'Incorrect?'],
+        labels: ['Correct', 'Unchecked'],
         datasets: [
             {
                 data: [numberOfReviewedAnnotations, numberOfAnnotations - numberOfReviewedAnnotations],
-                backgroundColor: ['rgba(164,255,99,0.2)', 'rgba(162,162,162,0.2)'],
-                borderColor: ['rgba(92,154,45,0.2)', 'rgba(115,115,115,0.2)'],
+                backgroundColor: [completeOrCorrectBg, uncheckedBg],
+                borderColor: [completeOrCorrectBorder, uncheckedBorder],
                 borderWidth: 1,
             },
         ],
@@ -59,6 +68,7 @@ export const ProgressStatistics = function () {
             title: {
                 display: true,
                 text: 'Review Progress',
+                color: textColor,
             },
         },
     };

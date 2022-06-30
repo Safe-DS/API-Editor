@@ -1,4 +1,4 @@
-import { FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react';
+import { FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Input, Text as ChakraText } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch } from '../../../app/hooks';
@@ -10,6 +10,7 @@ import { ConfirmAnnotations } from './ConfirmAnnotations';
 interface DestinationBatchFormProps {
     targets: PythonDeclaration[];
     annotationType: string;
+    description: string;
     onUpsertAnnotation: (data: DestinationBatchFormState) => void;
 }
 
@@ -20,6 +21,7 @@ export interface DestinationBatchFormState {
 export const DestinationBatchForm: React.FC<DestinationBatchFormProps> = function ({
     targets,
     annotationType,
+    description,
     onUpsertAnnotation,
 }) {
     const dispatch = useAppDispatch();
@@ -60,6 +62,7 @@ export const DestinationBatchForm: React.FC<DestinationBatchFormProps> = functio
         <>
             <AnnotationBatchForm
                 heading={`Add @${annotationType} Annotations`}
+                description={description}
                 onConfirm={handleSubmit(handleConfirm)}
                 onCancel={handleCancel}
             >
@@ -75,7 +78,7 @@ export const DestinationBatchForm: React.FC<DestinationBatchFormProps> = functio
                     </FormErrorMessage>
                 </FormControl>
 
-                <FormLabel>This will annotate classes and global functions.</FormLabel>
+                <ChakraText>This will annotate classes and global functions.</ChakraText>
             </AnnotationBatchForm>
             {confirmWindowVisible && (
                 <ConfirmAnnotations

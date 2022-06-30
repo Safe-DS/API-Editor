@@ -1,6 +1,7 @@
 package com.larsreimann.api_editor.transformation
 
 import com.larsreimann.api_editor.model.PythonParameterAssignment
+import com.larsreimann.api_editor.model.PythonParameterAssignment.IMPLICIT
 import com.larsreimann.api_editor.mutable_model.PythonAttribute
 import com.larsreimann.api_editor.mutable_model.PythonCall
 import com.larsreimann.api_editor.mutable_model.PythonClass
@@ -41,14 +42,16 @@ fun PythonPackage.reorderParameters() {
 
 private fun ModelNode.MutableContainmentList<PythonParameter>.reorderParameters() {
     val groups = this.groupBy { it.assignedBy }
-    this.addAll(groups[PythonParameterAssignment.IMPLICIT].orEmpty())
+    this.addAll(groups[IMPLICIT].orEmpty())
     this.addAll(groups[PythonParameterAssignment.POSITION_ONLY].orEmpty())
     this.addAll(groups[PythonParameterAssignment.POSITION_OR_NAME].orEmpty())
+    this.addAll(groups[PythonParameterAssignment.POSITIONAL_VARARG].orEmpty())
     this.addAll(groups[PythonParameterAssignment.NAME_ONLY].orEmpty())
+    this.addAll(groups[PythonParameterAssignment.NAMED_VARARG].orEmpty())
 }
 
 /**
- * Converts `__init__` methods to constructors or adds a constructor without parameters if none exists.
+ * Converts `__init__` methods to constructors or adds a constructor without explicit parameters if none exists.
  */
 fun PythonPackage.extractConstructors() {
     this.descendants { it is PythonFunction }
@@ -62,19 +65,26 @@ private fun PythonClass.createConstructor() {
         null -> {
             if (this.originalClass != null) {
                 this.constructor = PythonConstructor(
-                    parameters = emptyList(),
+                    parameters = listOf(
+                        PythonParameter(
+                            name = "self",
+                            assignedBy = IMPLICIT
+                        )
+                    ),
                     callToOriginalAPI = PythonCall(
                         receiver = PythonStringifiedExpression(this.originalClass!!.qualifiedName)
                     )
                 )
             }
         }
+
         else -> {
             constructorMethod.callToOriginalAPI?.let { callToOriginalAPI ->
                 val newReceiver = when (val receiver = callToOriginalAPI.receiver) {
                     is PythonStringifiedExpression -> PythonStringifiedExpression(
                         receiver.string.removeSuffix(".__init__")
                     )
+
                     null -> throw IllegalStateException("Receiver of call is null: $callToOriginalAPI")
                     else -> receiver
                 }
@@ -105,7 +115,7 @@ fun PythonPackage.createAttributesForParametersOfConstructor() {
 private fun PythonClass.createAttributesForParametersOfConstructor() {
     this.constructor
         ?.parameters
-        ?.filter { it.assignedBy != PythonParameterAssignment.IMPLICIT }
+        ?.filter { it.assignedBy != IMPLICIT && !it.isVariadic() }
         ?.forEach {
             this.attributes += PythonAttribute(
                 name = it.name,

@@ -1,13 +1,13 @@
 import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { PythonPackage } from './model/PythonPackage';
-import { parsePythonPackageJson, PythonPackageJson } from './model/PythonPackageBuilder';
+import { parsePythonPackageJson } from './model/PythonPackageBuilder';
 import * as idb from 'idb-keyval';
-import { selectFilter, selectSortingMode, SortingMode } from '../ui/uiSlice';
+import { selectFilter, selectSorter } from '../ui/uiSlice';
 import { selectUsages } from '../usages/usageSlice';
 import { selectAnnotationStore } from '../annotations/annotationSlice';
 import { PythonDeclaration } from './model/PythonDeclaration';
-import { UsageCountStore } from '../usages/model/UsageCountStore';
+import { EXPECTED_API_SCHEMA_VERSION, PythonPackageJson } from './model/APIJsonData';
 
 export interface APIState {
     pythonPackage: PythonPackage;
@@ -15,8 +15,20 @@ export interface APIState {
 
 // Initial state -------------------------------------------------------------------------------------------------------
 
+const initialPythonPackageJson: PythonPackageJson = {
+    schemaVersion: EXPECTED_API_SCHEMA_VERSION,
+    distribution: 'empty',
+    package: 'empty',
+    version: '0.0.1',
+    modules: [],
+    classes: [],
+    functions: [],
+};
+
+const initialPythonPackage = new PythonPackage('empty', 'empty', '0.0.1');
+
 const initialState: APIState = {
-    pythonPackage: new PythonPackage('empty', 'empty', '0.0.1'),
+    pythonPackage: initialPythonPackage,
 };
 
 // Thunks --------------------------------------------------------------------------------------------------------------
@@ -24,8 +36,14 @@ const initialState: APIState = {
 export const initializePythonPackage = createAsyncThunk('api/initialize', async () => {
     try {
         const storedPythonPackageJson = (await idb.get('api')) as PythonPackageJson;
+        const pythonPackage = parsePythonPackageJson(storedPythonPackageJson);
+        if (!pythonPackage) {
+            await idb.set('api', initialPythonPackageJson);
+            return initialState;
+        }
+
         return {
-            pythonPackage: parsePythonPackageJson(storedPythonPackageJson),
+            pythonPackage,
         };
     } catch {
         return initialState;
@@ -64,6 +82,12 @@ export const apiReducer = reducer;
 
 const selectAPI = (state: RootState) => state.api;
 export const selectRawPythonPackage = (state: RootState) => selectAPI(state).pythonPackage;
+export const selectFlatSortedDeclarationList = createSelector(
+    [selectRawPythonPackage, selectSorter],
+    (pythonPackage, sorter) => {
+        return walkChildrenInPreorder(pythonPackage, sorter);
+    },
+);
 export const selectFilteredPythonPackage = createSelector(
     [selectRawPythonPackage, selectAnnotationStore, selectUsages, selectFilter],
     (pythonPackage, annotations, usages, filter) => {
@@ -88,15 +112,10 @@ export const selectMatchedNodes = createSelector(
 export const selectNumberOfMatchedNodes = createSelector([selectMatchedNodes], (matchedNodes) => {
     return matchedNodes.length;
 });
-export const selectFlatSortedDeclarationList = createSelector(
-    [selectFilteredPythonPackage, selectSortingMode, selectUsages],
-    (pythonPackage, sortingMode, usages) => {
-        switch (sortingMode) {
-            case SortingMode.Alphabetical:
-                return walkChildrenInPreorder(pythonPackage, sortAlphabetically);
-            case SortingMode.Usages: // Descending
-                return walkChildrenInPreorder(pythonPackage, sortByUsages(usages));
-        }
+export const selectFlatFilteredAndSortedDeclarationList = createSelector(
+    [selectFilteredPythonPackage, selectSorter],
+    (pythonPackage, sorter) => {
+        return walkChildrenInPreorder(pythonPackage, sorter);
     },
 );
 
@@ -107,12 +126,4 @@ const walkChildrenInPreorder = function (
     return [...declaration.children()].sort(sorter).flatMap((it) => {
         return [it, ...walkChildrenInPreorder(it, sorter)];
     });
-};
-
-const sortAlphabetically = (a: PythonDeclaration, b: PythonDeclaration) => {
-    return a.name.localeCompare(b.name);
-};
-
-const sortByUsages = (usages: UsageCountStore) => (a: PythonDeclaration, b: PythonDeclaration) => {
-    return usages.getUsageCount(b) - usages.getUsageCount(a);
 };
