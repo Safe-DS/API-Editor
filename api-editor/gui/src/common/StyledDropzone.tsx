@@ -18,6 +18,8 @@ export const StyledDropzone: React.FC<StyledDropzoneProps> = function ({ onDrop,
             borderColor={borderColor}
             backgroundColor={backgroundColor}
             textAlign="center"
+            cursor="pointer"
+            userSelect="none"
         >
             <Dropzone onDrop={onDrop}>
                 {({ getRootProps, getInputProps }) => (
