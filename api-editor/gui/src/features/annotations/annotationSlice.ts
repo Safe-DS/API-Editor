@@ -384,7 +384,10 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         mergeAnnotationStore(state, action: PayloadAction<AnnotationStore>) {
-            state.annotations = mergeAnnotationStores(state.annotations, action.payload);
+            state.annotations = mergeAnnotationStores(state.annotations, {
+                ...initialAnnotationStore,
+                ...action.payload,
+            });
 
             updateQueue(state);
         },
