@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import * as idb from 'idb-keyval';
 import { RootState } from '../../app/store';
 import { isValidUsername } from '../../common/util/validation';
+import { mergeAnnotationStores } from './mergeAnnotationStores';
 
 export const EXPECTED_ANNOTATION_STORE_SCHEMA_VERSION = 1;
 export const EXPECTED_ANNOTATION_SLICE_SCHEMA_VERSION = 1;
@@ -383,27 +384,7 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         mergeAnnotationStore(state, action: PayloadAction<AnnotationStore>) {
-            for (const annotationType of Object.keys(action.payload)) {
-                if (annotationType === 'calledAfters' || annotationType === 'groups') {
-                    for (const target of Object.keys(action.payload[annotationType])) {
-                        // @ts-ignore
-                        state.annotations[annotationType][target] = {
-                            // @ts-ignore
-                            ...(state.annotations[annotationType][target] ?? {}),
-                            // @ts-ignore
-                            ...action.payload[annotationType][target],
-                        };
-                    }
-                } else {
-                    // @ts-ignore
-                    state.annotations[annotationType] = {
-                        // @ts-ignore
-                        ...state.annotations[annotationType],
-                        // @ts-ignore
-                        ...action.payload[annotationType],
-                    };
-                }
-            }
+            state.annotations = mergeAnnotationStores(state.annotations, action.payload);
 
             updateQueue(state);
         },
