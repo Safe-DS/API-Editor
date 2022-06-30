@@ -121,6 +121,15 @@ describe('mergeAttributeAnnotations', () => {
         const expected: AnnotationStore = {
             ...initialAnnotationStore,
             attributes: {},
+            constants: {
+                a: {
+                    target: 'a',
+                    defaultType: 'number',
+                    defaultValue: 0,
+                    authors: ['them'],
+                    reviewers: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -156,6 +165,15 @@ describe('mergeAttributeAnnotations', () => {
         const expected: AnnotationStore = {
             ...initialAnnotationStore,
             attributes: {},
+            optionals: {
+                a: {
+                    target: 'a',
+                    defaultType: 'number',
+                    defaultValue: 0,
+                    authors: ['them'],
+                    reviewers: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -189,6 +207,13 @@ describe('mergeAttributeAnnotations', () => {
         const expected: AnnotationStore = {
             ...initialAnnotationStore,
             attributes: {},
+            requireds: {
+                a: {
+                    target: 'a',
+                    authors: ['them'],
+                    reviewers: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -262,6 +287,14 @@ describe('mergeAttributeAnnotations', () => {
         const expected: AnnotationStore = {
             ...initialAnnotationStore,
             attributes: {},
+            constants: {
+                a: {
+                    target: 'a',
+                    defaultType: 'number',
+                    defaultValue: 0,
+                    authors: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -295,6 +328,14 @@ describe('mergeAttributeAnnotations', () => {
         const expected: AnnotationStore = {
             ...initialAnnotationStore,
             attributes: {},
+            optionals: {
+                a: {
+                    target: 'a',
+                    defaultType: 'number',
+                    defaultValue: 0,
+                    authors: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -326,6 +367,12 @@ describe('mergeAttributeAnnotations', () => {
         const expected: AnnotationStore = {
             ...initialAnnotationStore,
             attributes: {},
+            requireds: {
+                a: {
+                    target: 'a',
+                    authors: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -1075,6 +1122,15 @@ describe('mergeConstantAnnotations', () => {
         const expected: AnnotationStore = {
             ...initialAnnotationStore,
             constants: {},
+            attributes: {
+                a: {
+                    target: 'a',
+                    defaultType: 'number',
+                    defaultValue: 0,
+                    authors: ['them'],
+                    reviewers: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -1153,6 +1209,15 @@ describe('mergeConstantAnnotations', () => {
         const expected: AnnotationStore = {
             ...initialAnnotationStore,
             constants: {},
+            optionals: {
+                a: {
+                    target: 'a',
+                    defaultType: 'number',
+                    defaultValue: 0,
+                    authors: ['them'],
+                    reviewers: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -1186,6 +1251,13 @@ describe('mergeConstantAnnotations', () => {
         const expected: AnnotationStore = {
             ...initialAnnotationStore,
             constants: {},
+            requireds: {
+                a: {
+                    target: 'a',
+                    authors: ['them'],
+                    reviewers: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -1219,6 +1291,14 @@ describe('mergeConstantAnnotations', () => {
         const expected: AnnotationStore = {
             ...initialAnnotationStore,
             constants: {},
+            attributes: {
+                a: {
+                    target: 'a',
+                    defaultType: 'number',
+                    defaultValue: 0,
+                    authors: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -1292,6 +1372,14 @@ describe('mergeConstantAnnotations', () => {
         const expected: AnnotationStore = {
             ...initialAnnotationStore,
             constants: {},
+            optionals: {
+                a: {
+                    target: 'a',
+                    defaultType: 'number',
+                    defaultValue: 0,
+                    authors: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -1323,6 +1411,12 @@ describe('mergeConstantAnnotations', () => {
         const expected: AnnotationStore = {
             ...initialAnnotationStore,
             constants: {},
+            requireds: {
+                a: {
+                    target: 'a',
+                    authors: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -2264,6 +2358,15 @@ describe('mergeOptionalAnnotations', () => {
         const expected: AnnotationStore = {
             ...initialAnnotationStore,
             optionals: {},
+            attributes: {
+                a: {
+                    target: 'a',
+                    defaultType: 'number',
+                    defaultValue: 0,
+                    authors: ['them'],
+                    reviewers: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -2299,6 +2402,15 @@ describe('mergeOptionalAnnotations', () => {
         const expected: AnnotationStore = {
             ...initialAnnotationStore,
             optionals: {},
+            constants: {
+                a: {
+                    target: 'a',
+                    defaultType: 'number',
+                    defaultValue: 0,
+                    authors: ['them'],
+                    reviewers: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -2375,6 +2487,13 @@ describe('mergeOptionalAnnotations', () => {
         const expected: AnnotationStore = {
             ...initialAnnotationStore,
             optionals: {},
+            requireds: {
+                a: {
+                    target: 'a',
+                    authors: ['them'],
+                    reviewers: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -2408,6 +2527,14 @@ describe('mergeOptionalAnnotations', () => {
         const expected: AnnotationStore = {
             ...initialAnnotationStore,
             optionals: {},
+            attributes: {
+                a: {
+                    target: 'a',
+                    defaultType: 'number',
+                    defaultValue: 0,
+                    authors: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -2441,6 +2568,14 @@ describe('mergeOptionalAnnotations', () => {
         const expected: AnnotationStore = {
             ...initialAnnotationStore,
             optionals: {},
+            constants: {
+                a: {
+                    target: 'a',
+                    defaultType: 'number',
+                    defaultValue: 0,
+                    authors: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -2512,6 +2647,12 @@ describe('mergeOptionalAnnotations', () => {
         const expected: AnnotationStore = {
             ...initialAnnotationStore,
             optionals: {},
+            requireds: {
+                a: {
+                    target: 'a',
+                    authors: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -3183,6 +3324,15 @@ describe('mergeRequiredAnnotations', () => {
         const expected: AnnotationStore = {
             ...initialAnnotationStore,
             requireds: {},
+            attributes: {
+                a: {
+                    target: 'a',
+                    defaultType: 'number',
+                    defaultValue: 0,
+                    authors: ['them'],
+                    reviewers: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -3216,6 +3366,15 @@ describe('mergeRequiredAnnotations', () => {
         const expected: AnnotationStore = {
             ...initialAnnotationStore,
             requireds: {},
+            constants: {
+                a: {
+                    target: 'a',
+                    defaultType: 'number',
+                    defaultValue: 0,
+                    authors: ['them'],
+                    reviewers: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -3249,6 +3408,15 @@ describe('mergeRequiredAnnotations', () => {
         const expected: AnnotationStore = {
             ...initialAnnotationStore,
             requireds: {},
+            optionals: {
+                a: {
+                    target: 'a',
+                    defaultType: 'number',
+                    defaultValue: 0,
+                    authors: ['them'],
+                    reviewers: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -3317,6 +3485,14 @@ describe('mergeRequiredAnnotations', () => {
         const expected: AnnotationStore = {
             ...initialAnnotationStore,
             requireds: {},
+            attributes: {
+                a: {
+                    target: 'a',
+                    defaultType: 'number',
+                    defaultValue: 0,
+                    authors: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -3348,6 +3524,14 @@ describe('mergeRequiredAnnotations', () => {
         const expected: AnnotationStore = {
             ...initialAnnotationStore,
             requireds: {},
+            constants: {
+                a: {
+                    target: 'a',
+                    defaultType: 'number',
+                    defaultValue: 0,
+                    authors: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -3378,9 +3562,12 @@ describe('mergeRequiredAnnotations', () => {
 
         const expected: AnnotationStore = {
             ...initialAnnotationStore,
-            requireds: {
+            requireds: {},
+            optionals: {
                 a: {
                     target: 'a',
+                    defaultType: 'number',
+                    defaultValue: 0,
                     authors: ['them'],
                 },
             },
