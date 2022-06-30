@@ -1,11 +1,11 @@
-import {PythonClass} from '../../packageData/model/PythonClass';
-import {PythonFunction} from '../../packageData/model/PythonFunction';
-import {PythonModule} from '../../packageData/model/PythonModule';
-import {PythonParameter} from '../../packageData/model/PythonParameter';
-import {PythonDeclaration} from '../../packageData/model/PythonDeclaration';
-import {Annotation, AnnotationStore} from '../../annotations/annotationSlice';
-import {UsageCountStore} from '../../usages/model/UsageCountStore';
-import {AbstractPythonFilter} from './AbstractPythonFilter';
+import { PythonClass } from '../../packageData/model/PythonClass';
+import { PythonFunction } from '../../packageData/model/PythonFunction';
+import { PythonModule } from '../../packageData/model/PythonModule';
+import { PythonParameter } from '../../packageData/model/PythonParameter';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
+import { Annotation, AnnotationStore } from '../../annotations/annotationSlice';
+import { UsageCountStore } from '../../usages/model/UsageCountStore';
+import { AbstractPythonFilter } from './AbstractPythonFilter';
 
 /**
  * Keeps only declarations with either an arbitrary or a specific annotation.
@@ -103,29 +103,32 @@ export class AnnotationFilter extends AbstractPythonFilter {
 
 const hasSingleUseAnnotation = function (target: string, annotations: { [target: string]: Annotation }): boolean {
     const annotationOnTarget = annotations[target];
-    return annotationOnTarget && !annotationOnTarget.isRemoved
-}
+    return annotationOnTarget && !annotationOnTarget.isRemoved;
+};
 
-const hasMultiUseAnnotation = function (target: string, annotations: { [target: string]: { [key: string]: Annotation } }): boolean {
+const hasMultiUseAnnotation = function (
+    target: string,
+    annotations: { [target: string]: { [key: string]: Annotation } },
+): boolean {
     const annotationsOnTarget = Object.values(annotations[target] ?? {});
-    return annotationsOnTarget.some(annotation => !annotation.isRemoved);
-}
+    return annotationsOnTarget.some((annotation) => !annotation.isRemoved);
+};
 
-    export enum AnnotationType {
-        Any,
-        Attribute,
-        Boundary,
-        CalledAfter,
-        Complete,
-        Constant,
-        Description,
-        Enum,
-        Group,
-        Move,
-        Optional,
-        Pure,
-        Remove,
-        Rename,
-        Required,
-        Todo,
-    }
+export enum AnnotationType {
+    Any,
+    Attribute,
+    Boundary,
+    CalledAfter,
+    Complete,
+    Constant,
+    Description,
+    Enum,
+    Group,
+    Move,
+    Optional,
+    Pure,
+    Remove,
+    Rename,
+    Required,
+    Todo,
+}
