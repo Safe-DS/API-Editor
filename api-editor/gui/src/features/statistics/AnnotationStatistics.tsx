@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Heading, SimpleGrid } from '@chakra-ui/react';
+import { Button, Heading, SimpleGrid, VStack } from '@chakra-ui/react';
 import { Annotation, selectAnnotationStore } from '../annotations/annotationSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectFilterString, setFilterString } from '../ui/uiSlice';
@@ -57,7 +57,7 @@ export const AnnotationStatistics = function () {
     };
 
     return (
-        <>
+        <VStack spacing={4}>
             <Heading as="h3" size="md">
                 Annotations on Matched Elements
             </Heading>
@@ -84,7 +84,7 @@ export const AnnotationStatistics = function () {
                 <Button onClick={() => filterAction('annotation:@required')}>{'@Required: ' + requiredsSize}</Button>
                 <Button onClick={() => filterAction('annotation:@todo')}>{'@Todo: ' + todoSize}</Button>
             </SimpleGrid>
-        </>
+        </VStack>
     );
 };
 

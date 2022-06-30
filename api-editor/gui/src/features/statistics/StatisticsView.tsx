@@ -9,7 +9,7 @@ import { QualityStatistics } from './QualityStatistics';
 
 export const StatisticsView: React.FC = function () {
     return (
-        <VStack spacing={4}>
+        <VStack spacing={8}>
             <ProgressStatistics />
             <AnnotationStatistics />
             <ApiSizeStatistics />
