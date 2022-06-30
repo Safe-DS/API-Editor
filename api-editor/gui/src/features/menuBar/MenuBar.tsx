@@ -500,7 +500,7 @@ const getPreviousElementPath = function (
     annotations: AnnotationStore,
     usages: UsageCountStore,
 ): { id: string; wrappedAround: boolean } {
-    const startIndex = getIndex(declarations, start)
+    const startIndex = getIndex(declarations, start);
     let currentIndex = getPreviousIndex(declarations, startIndex);
     let current = getElementAtIndex(declarations, currentIndex);
     let wrappedAround = startIndex !== null && currentIndex !== null && currentIndex >= startIndex;
@@ -526,7 +526,7 @@ const getNextElementPath = function (
     annotations: AnnotationStore,
     usages: UsageCountStore,
 ): { id: string; wrappedAround: boolean } {
-    const startIndex = getIndex(declarations, start)
+    const startIndex = getIndex(declarations, start);
     let currentIndex = getNextIndex(declarations, startIndex);
     let current = getElementAtIndex(declarations, currentIndex);
     let wrappedAround = startIndex !== null && currentIndex !== null && currentIndex <= startIndex;
