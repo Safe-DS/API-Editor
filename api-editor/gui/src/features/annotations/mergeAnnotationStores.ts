@@ -204,6 +204,10 @@ const mergeParameterValueAnnotations = function <T extends Annotation>(
                 result[target] = theirAnnotation;
                 continue;
             }
+        } else {
+            if (!isDefinitelyReviewed(theirAnnotation) && !isDefinitelyReviewed(myAnnotation)) {
+                continue;
+            }
         }
 
         // Prefer manually created annotations in case of conflicts if value differ
@@ -215,9 +219,14 @@ const mergeParameterValueAnnotations = function <T extends Annotation>(
                 result[target] = theirAnnotation;
                 continue;
             }
+        } else {
+            if (!isDefinitelyManuallyCreated(theirAnnotation) && !isDefinitelyManuallyCreated(myAnnotation)) {
+                continue;
+            }
         }
 
         // Prefer my annotations
+        result[target] = myAnnotation ?? theirAnnotation;
     }
 
     return result;

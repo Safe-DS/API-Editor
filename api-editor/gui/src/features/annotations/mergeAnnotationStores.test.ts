@@ -453,6 +453,14 @@ describe('mergeAttributeAnnotations', () => {
                     authors: ['me'],
                 },
             },
+            constants: {
+                a: {
+                    target: 'a',
+                    defaultType: 'number',
+                    defaultValue: 0,
+                    authors: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -493,6 +501,14 @@ describe('mergeAttributeAnnotations', () => {
                     authors: ['me'],
                 },
             },
+            optionals: {
+                a: {
+                    target: 'a',
+                    defaultType: 'number',
+                    defaultValue: 0,
+                    authors: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -529,6 +545,12 @@ describe('mergeAttributeAnnotations', () => {
                     defaultType: 'string',
                     defaultValue: 'a',
                     authors: ['me'],
+                },
+            },
+            requireds: {
+                a: {
+                    target: 'a',
+                    authors: ['them'],
                 },
             },
         };
@@ -1457,6 +1479,14 @@ describe('mergeConstantAnnotations', () => {
                     authors: ['me'],
                 },
             },
+            attributes: {
+                a: {
+                    target: 'a',
+                    defaultType: 'number',
+                    defaultValue: 0,
+                    authors: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -1537,6 +1567,14 @@ describe('mergeConstantAnnotations', () => {
                     authors: ['me'],
                 },
             },
+            optionals: {
+                a: {
+                    target: 'a',
+                    defaultType: 'number',
+                    defaultValue: 0,
+                    authors: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -1573,6 +1611,12 @@ describe('mergeConstantAnnotations', () => {
                     defaultType: 'string',
                     defaultValue: 'a',
                     authors: ['me'],
+                },
+            },
+            requireds: {
+                a: {
+                    target: 'a',
+                    authors: ['them'],
                 },
             },
         };
@@ -2693,6 +2737,14 @@ describe('mergeOptionalAnnotations', () => {
                     authors: ['me'],
                 },
             },
+            attributes: {
+                a: {
+                    target: 'a',
+                    defaultType: 'number',
+                    defaultValue: 0,
+                    authors: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -2731,6 +2783,14 @@ describe('mergeOptionalAnnotations', () => {
                     defaultType: 'string',
                     defaultValue: 'a',
                     authors: ['me'],
+                },
+            },
+            constants: {
+                a: {
+                    target: 'a',
+                    defaultType: 'number',
+                    defaultValue: 0,
+                    authors: ['them'],
                 },
             },
         };
@@ -2809,6 +2869,12 @@ describe('mergeOptionalAnnotations', () => {
                     defaultType: 'string',
                     defaultValue: 'a',
                     authors: ['me'],
+                },
+            },
+            requireds: {
+                a: {
+                    target: 'a',
+                    authors: ['them'],
                 },
             },
         };
@@ -3267,7 +3333,7 @@ describe('mergeRequiredAnnotations', () => {
             ...initialAnnotationStore,
             requireds: {
                 a: {
-                    target: 'a'
+                    target: 'a',
                 },
             },
         };
@@ -3276,7 +3342,7 @@ describe('mergeRequiredAnnotations', () => {
             ...initialAnnotationStore,
             requireds: {
                 b: {
-                    target: 'b'
+                    target: 'b',
                 },
             },
         };
@@ -3285,10 +3351,10 @@ describe('mergeRequiredAnnotations', () => {
             ...initialAnnotationStore,
             requireds: {
                 a: {
-                    target: 'a'
+                    target: 'a',
                 },
                 b: {
-                    target: 'b'
+                    target: 'b',
                 },
             },
         };
@@ -3641,6 +3707,14 @@ describe('mergeRequiredAnnotations', () => {
                     authors: ['me'],
                 },
             },
+            attributes: {
+                a: {
+                    target: 'a',
+                    defaultType: 'number',
+                    defaultValue: 0,
+                    authors: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -3677,6 +3751,14 @@ describe('mergeRequiredAnnotations', () => {
                     authors: ['me'],
                 },
             },
+            constants: {
+                a: {
+                    target: 'a',
+                    defaultType: 'number',
+                    defaultValue: 0,
+                    authors: ['them'],
+                },
+            },
         };
 
         expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
@@ -3711,6 +3793,14 @@ describe('mergeRequiredAnnotations', () => {
                 a: {
                     target: 'a',
                     authors: ['me'],
+                },
+            },
+            optionals: {
+                a: {
+                    target: 'a',
+                    defaultType: 'number',
+                    defaultValue: 0,
+                    authors: ['them'],
                 },
             },
         };
