@@ -39,7 +39,7 @@ export class DoneFilter extends AbstractPythonFilter {
         return (
             pythonDeclaration.id in annotations.completes &&
             this.getAnnotationsForTarget(pythonDeclaration.id, annotations).every(
-                (annotation) => (annotation.reviewers?.length ?? 0) > 0,
+                (annotation) => annotation.isRemoved || (annotation.reviewers?.length ?? 0) > 0,
             )
         );
     }
