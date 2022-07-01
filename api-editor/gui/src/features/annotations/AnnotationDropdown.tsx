@@ -4,6 +4,8 @@ import { FaChevronDown } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { addPure, addRemove, addRequired, selectComplete, selectUsernameIsValid } from './annotationSlice';
 import {
+    hideAnnotationForm,
+    selectCurrentUserAction,
     showAttributeAnnotationForm,
     showBoundaryAnnotationForm,
     showCalledAfterAnnotationForm,
@@ -56,7 +58,22 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
     const isComplete = Boolean(useAppSelector(selectComplete(target)));
     const isValidUsername = Boolean(useAppSelector(selectUsernameIsValid));
     const isDisabled = isComplete || !isValidUsername;
+    const currentUserAction = useAppSelector(selectCurrentUserAction);
 
+    // Event Handlers --------------------------------------------------------------------------------------------------
+    const onSelectRequired = () => {
+        if (
+            currentUserAction.target === target &&
+            (currentUserAction.type === 'attribute' ||
+                currentUserAction.type === 'constant' ||
+                currentUserAction.type === 'optional')
+        ) {
+            dispatch(hideAnnotationForm());
+        }
+        dispatch(addRequired({ target }));
+    };
+
+    // Render ----------------------------------------------------------------------------------------------------------
     return (
         // Box gets rid of popper.js warning "CSS margin styles cannot be used"
         <Box>
@@ -104,7 +121,7 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                                 </MenuItem>
                             )}
                             {showRequired && (
-                                <MenuItem onClick={() => dispatch(addRequired({ target }))} paddingLeft={8}>
+                                <MenuItem onClick={onSelectRequired} paddingLeft={8}>
                                     @required
                                 </MenuItem>
                             )}
