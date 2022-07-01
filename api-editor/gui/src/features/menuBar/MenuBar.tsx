@@ -121,7 +121,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
         dispatch(toggleComplete(declaration.id));
     };
     const goToPreviousMatch = () => {
-        if (!declaration || currentUserAction !== NoUserAction) {
+        if (!declaration || currentUserAction.type !== NoUserAction.type) {
             return;
         }
 
@@ -152,7 +152,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
         }
     };
     const goToNextMatch = () => {
-        if (!declaration || currentUserAction !== NoUserAction) {
+        if (!declaration || currentUserAction.type !== NoUserAction.type) {
             return;
         }
 
@@ -183,7 +183,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
         }
     };
     const goToParent = () => {
-        if (!declaration || currentUserAction !== NoUserAction) {
+        if (!declaration || currentUserAction.type !== NoUserAction.type) {
             return;
         }
 
@@ -193,22 +193,22 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
         }
     };
     const expandAll = () => {
-        if (currentUserAction === NoUserAction) {
+        if (currentUserAction.type === NoUserAction.type) {
             dispatch(setAllExpandedInTreeView(getDescendantsOrSelf(pythonPackage)));
         }
     };
     const collapseAll = () => {
-        if (currentUserAction === NoUserAction) {
+        if (currentUserAction.type === NoUserAction.type) {
             dispatch(setAllCollapsedInTreeView(getDescendantsOrSelf(pythonPackage)));
         }
     };
     const expandSelected = () => {
-        if (declaration && currentUserAction === NoUserAction) {
+        if (declaration && currentUserAction.type === NoUserAction.type) {
             dispatch(setAllExpandedInTreeView(getDescendantsOrSelf(declaration)));
         }
     };
     const collapseSelected = () => {
-        if (declaration && currentUserAction === NoUserAction) {
+        if (declaration && currentUserAction.type === NoUserAction.type) {
             dispatch(setAllCollapsedInTreeView(getDescendantsOrSelf(declaration)));
         }
     };
@@ -345,7 +345,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                         <MenuButton
                             as={Button}
                             rightIcon={<Icon as={FaChevronDown} />}
-                            disabled={currentUserAction !== NoUserAction}
+                            disabled={currentUserAction.type !== NoUserAction.type}
                         >
                             Navigate
                         </MenuButton>
