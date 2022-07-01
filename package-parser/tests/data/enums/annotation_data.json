@@ -54,5 +54,17 @@
                 "stringValue": "l2"
             }
         ]
+    },
+    "test/test/some_global_function/issue_858": {
+        "target": "test/test/some_global_function/issue_858",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "enumName": "Issue858",
+        "pairs": [
+            {
+                "instanceName": "SAMME_R",
+                "stringValue": "SAMME.R"
+            }
+        ]
     }
 }
