@@ -345,7 +345,7 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
     if (authors.length > 1) {
         authorText += ` Later changed by ${authors.slice(1).join(', ')}.`;
     }
-    authorText += ' '
+    authorText += ' ';
 
     return (
         <ButtonGroup size="sm" variant="outline" isAttached>
