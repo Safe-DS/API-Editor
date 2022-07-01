@@ -30,6 +30,8 @@ import {
 import {
     BatchMode,
     HeatMapMode,
+    NoUserAction,
+    selectCurrentUserAction,
     selectExpandDocumentationByDefault,
     selectFilter,
     selectHeatMapMode,
@@ -87,6 +89,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
     const annotations = useAppSelector(selectAnnotationStore);
     const usages = useAppSelector(selectUsages);
     const declaration = rawPythonPackage.getDeclarationById(useLocation().pathname.split('/').splice(1).join('/'));
+    const currentUserAction = useAppSelector(selectCurrentUserAction);
 
     const exportAnnotations = () => {
         const a = document.createElement('a');
@@ -118,11 +121,11 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
         dispatch(toggleComplete(declaration.id));
     };
     const goToPreviousMatch = () => {
-        if (!declaration) {
+        if (!declaration || currentUserAction !== NoUserAction) {
             return;
         }
 
-        let { id: navStr, wrappedAround } = getPreviousElementPath(
+        const { id: navStr, wrappedAround } = getPreviousElementPath(
             allDeclarations,
             declaration,
             pythonFilter,
@@ -149,11 +152,11 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
         }
     };
     const goToNextMatch = () => {
-        if (!declaration) {
+        if (!declaration || currentUserAction !== NoUserAction) {
             return;
         }
 
-        let { id: navStr, wrappedAround } = getNextElementPath(
+        const { id: navStr, wrappedAround } = getNextElementPath(
             allDeclarations,
             declaration,
             pythonFilter,
@@ -180,24 +183,32 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
         }
     };
     const goToParent = () => {
+        if (!declaration || currentUserAction !== NoUserAction) {
+            return;
+        }
+
         const parent = declaration?.parent();
         if (parent && !(parent instanceof PythonPackage)) {
             navigate(`/${parent.id}`);
         }
     };
     const expandAll = () => {
-        dispatch(setAllExpandedInTreeView(getDescendantsOrSelf(pythonPackage)));
+        if (currentUserAction === NoUserAction) {
+            dispatch(setAllExpandedInTreeView(getDescendantsOrSelf(pythonPackage)));
+        }
     };
     const collapseAll = () => {
-        dispatch(setAllCollapsedInTreeView(getDescendantsOrSelf(pythonPackage)));
+        if (currentUserAction === NoUserAction) {
+            dispatch(setAllCollapsedInTreeView(getDescendantsOrSelf(pythonPackage)));
+        }
     };
     const expandSelected = () => {
-        if (declaration) {
+        if (declaration && currentUserAction === NoUserAction) {
             dispatch(setAllExpandedInTreeView(getDescendantsOrSelf(declaration)));
         }
     };
     const collapseSelected = () => {
-        if (declaration) {
+        if (declaration && currentUserAction === NoUserAction) {
             dispatch(setAllCollapsedInTreeView(getDescendantsOrSelf(declaration)));
         }
     };
@@ -331,7 +342,11 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
 
                 <Box>
                     <Menu>
-                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
+                        <MenuButton
+                            as={Button}
+                            rightIcon={<Icon as={FaChevronDown} />}
+                            disabled={currentUserAction !== NoUserAction}
+                        >
                             Navigate
                         </MenuButton>
                         <MenuList>
