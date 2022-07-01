@@ -1,11 +1,12 @@
-import { Button, Heading, HStack, Stack, Text as ChakraText } from '@chakra-ui/react';
+import { Button, Heading, HStack, Stack, Text as ChakraText, Tooltip } from '@chakra-ui/react';
 import React from 'react';
+import {useKeyboardShortcut} from "../../../app/hooks";
 
 interface AnnotationFormProps {
     heading: string;
     description: string;
-    onConfirm: React.MouseEventHandler<HTMLButtonElement>;
-    onCancel: React.MouseEventHandler<HTMLButtonElement>;
+    onConfirm: () => void;
+    onCancel: () => void;
     children: React.ReactNode;
 }
 
@@ -16,6 +17,9 @@ export const AnnotationBatchForm: React.FC<AnnotationFormProps> = function ({
     onConfirm,
     children,
 }) {
+    useKeyboardShortcut(false, true, false, "Enter", onConfirm)
+    useKeyboardShortcut(false, false, false, "Escape", onCancel)
+
     return (
         <Stack spacing={8} p={4}>
             <Stack spacing={4}>
@@ -29,12 +33,16 @@ export const AnnotationBatchForm: React.FC<AnnotationFormProps> = function ({
             <Stack spacing={4}>{children}</Stack>
 
             <HStack>
-                <Button colorScheme="blue" onClick={onConfirm}>
-                    Confirm
-                </Button>
-                <Button colorScheme="red" onClick={onCancel}>
-                    Cancel
-                </Button>
+                <Tooltip label="Preview the elements changed by this batch operation. (Ctrl+Enter)">
+                    <Button colorScheme="blue" onClick={onConfirm}>
+                        Start Dry Run
+                    </Button>
+                </Tooltip>
+                <Tooltip label="Stop the batch operation. (Esc)">
+                    <Button colorScheme="red" onClick={onCancel}>
+                        Cancel
+                    </Button>
+                </Tooltip>
             </HStack>
         </Stack>
     );
