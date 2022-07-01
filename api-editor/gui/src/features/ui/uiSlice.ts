@@ -52,7 +52,7 @@ type UserAction =
     | OptionalUserAction
     | TodoUserAction;
 
-const NoUserAction = {
+export const NoUserAction = {
     type: 'none',
     target: '',
 };
