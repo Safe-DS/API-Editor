@@ -41,13 +41,13 @@ type ParagraphComponent = FunctionComponent<
 type LinkComponent = ComponentType<ComponentPropsWithoutRef<'a'> & ReactMarkdownProps>;
 
 const CustomLink: LinkComponent = function ({ className, children, href }) {
-    const to = href ?? "#"
-    if (to.startsWith("http")) {
+    const to = href ?? '#';
+    if (to.startsWith('http')) {
         return (
             <ChakraLink href={to} isExternal>
                 {children} <Icon as={FaExternalLinkAlt} />
             </ChakraLink>
-        )
+        );
     } else {
         return (
             <ChakraLink as={RouterLink} to={to} className={className} textDecoration="underline">
@@ -55,7 +55,6 @@ const CustomLink: LinkComponent = function ({ className, children, href }) {
             </ChakraLink>
         );
     }
-
 };
 
 const CustomCode: CodeComponent = function ({ className, children }) {
