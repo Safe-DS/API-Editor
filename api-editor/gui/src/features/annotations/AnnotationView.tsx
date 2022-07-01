@@ -53,6 +53,8 @@ import {
     selectUsernameIsValid,
 } from './annotationSlice';
 import {
+    hideAnnotationForm,
+    selectCurrentUserAction,
     showAttributeAnnotationForm,
     showBoundaryAnnotationForm,
     showConstantAnnotationForm,
@@ -328,25 +330,25 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
     onReview,
     reportable = false,
 }) {
+    const dispatch = useAppDispatch()
     const isValidUsername = useAppSelector(selectUsernameIsValid);
+    const currentUserAction = useAppSelector(selectCurrentUserAction)
     const reviewer = (annotation.reviewers ?? [])[0];
     const isCorrect = reviewer !== undefined;
     const authors = annotation.authors ?? [];
     const isReportable = reportable && authors.length === 1 && authors.includes('$autogen$');
+    const authorText = createAuthorText(authors);
 
-    let authorText = '';
-    if (authors.length > 0) {
-        if (authors[0] === '$autogen$') {
-            authorText += `Created automatically.`;
-        } else {
-            authorText += `Created manually by ${authors[0]}.`;
+    // Event Handler
+    const onMarkAsCorrect = () => {
+        onReview()
+
+        if (annotation.target === currentUserAction.target && type === currentUserAction.type) {
+            dispatch(hideAnnotationForm())
         }
     }
-    if (authors.length > 1) {
-        authorText += ` Later changed by ${authors.slice(1).join(', ')}.`;
-    }
-    authorText += ' ';
 
+    // Render
     return (
         <ButtonGroup size="sm" variant="outline" isAttached>
             <Tooltip label={`${authorText}Click to delete.`}>
@@ -390,7 +392,7 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
                 </Tooltip>
             ) : (
                 <Tooltip label={`${authorText}Click to mark as correct.`}>
-                    <Button size="sm" variant="outline" disabled={!isValidUsername} onClick={onReview}>
+                    <Button size="sm" variant="outline" disabled={!isValidUsername} onClick={onMarkAsCorrect}>
                         Mark as Correct
                     </Button>
                 </Tooltip>
@@ -411,3 +413,19 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
         </ButtonGroup>
     );
 };
+
+const createAuthorText = function (authors: string[]): string {
+    let authorText = '';
+    if (authors.length > 0) {
+        if (authors[0] === '$autogen$') {
+            authorText += `Created automatically.`;
+        } else {
+            authorText += `Created manually by ${authors[0]}.`;
+        }
+    }
+    if (authors.length > 1) {
+        authorText += ` Later changed by ${authors.slice(1).join(', ')}.`;
+    }
+    authorText += ' ';
+    return authorText;
+}
