@@ -1,6 +1,6 @@
 import { Button, Heading, HStack, Stack, Text as ChakraText, Tooltip } from '@chakra-ui/react';
 import React from 'react';
-import {useKeyboardShortcut} from "../../../app/hooks";
+import { useKeyboardShortcut } from '../../../app/hooks';
 
 interface AnnotationFormProps {
     heading: string;
@@ -17,8 +17,8 @@ export const AnnotationBatchForm: React.FC<AnnotationFormProps> = function ({
     onConfirm,
     children,
 }) {
-    useKeyboardShortcut(false, true, false, "Enter", onConfirm)
-    useKeyboardShortcut(false, false, false, "Escape", onCancel)
+    useKeyboardShortcut(false, true, false, 'Enter', onConfirm);
+    useKeyboardShortcut(false, false, false, 'Escape', onCancel);
 
     return (
         <Stack spacing={8} p={4}>

@@ -17,8 +17,8 @@ export const AnnotationForm: React.FC<AnnotationFormProps> = function ({
     onSave,
     children,
 }) {
-    useKeyboardShortcut(false, true, false, "Enter", onSave)
-    useKeyboardShortcut(false, false, false, "Escape", onCancel)
+    useKeyboardShortcut(false, true, false, 'Enter', onSave);
+    useKeyboardShortcut(false, false, false, 'Escape', onCancel);
 
     return (
         <Stack spacing={8} p={4}>
