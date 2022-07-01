@@ -330,9 +330,9 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
     onReview,
     reportable = false,
 }) {
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
     const isValidUsername = useAppSelector(selectUsernameIsValid);
-    const currentUserAction = useAppSelector(selectCurrentUserAction)
+    const currentUserAction = useAppSelector(selectCurrentUserAction);
     const reviewer = (annotation.reviewers ?? [])[0];
     const isCorrect = reviewer !== undefined;
     const authors = annotation.authors ?? [];
@@ -341,12 +341,12 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
 
     // Event Handler
     const onMarkAsCorrect = () => {
-        onReview()
+        onReview();
 
         if (annotation.target === currentUserAction.target && type === currentUserAction.type) {
-            dispatch(hideAnnotationForm())
+            dispatch(hideAnnotationForm());
         }
-    }
+    };
 
     // Render
     return (
@@ -428,4 +428,4 @@ const createAuthorText = function (authors: string[]): string {
     }
     authorText += ' ';
     return authorText;
-}
+};
