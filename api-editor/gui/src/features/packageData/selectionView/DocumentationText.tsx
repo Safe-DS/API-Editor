@@ -2,6 +2,7 @@ import {
     Code,
     Flex,
     HStack,
+    Icon,
     IconButton,
     Link as ChakraLink,
     Stack,
@@ -10,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import 'katex/dist/katex.min.css';
 import React, { ClassAttributes, FunctionComponent, HTMLAttributes, useState } from 'react';
-import { FaChevronDown, FaChevronRight } from 'react-icons/fa';
+import { FaChevronDown, FaChevronRight, FaExternalLinkAlt } from 'react-icons/fa';
 import ReactMarkdown from 'react-markdown';
 import {
     CodeComponent,
@@ -40,11 +41,21 @@ type ParagraphComponent = FunctionComponent<
 type LinkComponent = ComponentType<ComponentPropsWithoutRef<'a'> & ReactMarkdownProps>;
 
 const CustomLink: LinkComponent = function ({ className, children, href }) {
-    return (
-        <ChakraLink as={RouterLink} to={href ?? '#'} className={className} textDecoration="underline">
-            {children}
-        </ChakraLink>
-    );
+    const to = href ?? "#"
+    if (to.startsWith("http")) {
+        return (
+            <ChakraLink href={to} isExternal>
+                {children} <Icon as={FaExternalLinkAlt} />
+            </ChakraLink>
+        )
+    } else {
+        return (
+            <ChakraLink as={RouterLink} to={to} className={className} textDecoration="underline">
+                {children}
+            </ChakraLink>
+        );
+    }
+
 };
 
 const CustomCode: CodeComponent = function ({ className, children }) {
