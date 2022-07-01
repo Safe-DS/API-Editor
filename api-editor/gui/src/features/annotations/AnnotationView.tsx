@@ -329,7 +329,8 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
     reportable = false,
 }) {
     const isValidUsername = useAppSelector(selectUsernameIsValid);
-    const isCorrect = (annotation.reviewers?.length ?? 0) > 0;
+    const reviewer = (annotation.reviewers ?? [])[0]
+    const isCorrect = reviewer !== undefined;
     const authors = annotation.authors ?? [];
     const isReportable = reportable && authors.length === 1 && authors.includes('$autogen$');
 
@@ -358,16 +359,18 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
                 )}
             </Button>
             {isCorrect ? (
-                <Button
-                    size="sm"
-                    variant="solid"
-                    colorScheme="green"
-                    rightIcon={<Icon as={FaCheck} />}
-                    disabled={!isValidUsername}
-                    onClick={onReview}
-                >
-                    Correct
-                </Button>
+                <Tooltip label={`Marked as correct by ${reviewer}. Click to undo.`}>
+                    <Button
+                        size="sm"
+                        variant="solid"
+                        colorScheme="green"
+                        rightIcon={<Icon as={FaCheck} />}
+                        disabled={!isValidUsername}
+                        onClick={onReview}
+                    >
+                        Correct
+                    </Button>
+                </Tooltip>
             ) : (
                 <Button size="sm" variant="outline" disabled={!isValidUsername} onClick={onReview}>
                     Mark as Correct
