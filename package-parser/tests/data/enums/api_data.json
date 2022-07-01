@@ -52,11 +52,22 @@
                     }
                 },
                 {
+                    "issue": "https://github.com/lars-reimann/api-editor/issues/760",
                     "id": "test/test/some_global_function/issue_760",
                     "name": "issue_760",
                     "qname": "test.some_global_function.issue_760",
                     "docstring": {
                         "type": "{'l1', 'l2'}, default=None",
+                        "description": ""
+                    }
+                },
+                {
+                    "issue": "https://github.com/lars-reimann/api-editor/issues/858",
+                    "id": "test/test/some_global_function/issue_858",
+                    "name": "issue_858",
+                    "qname": "test.some_global_function.issue_858",
+                    "docstring": {
+                        "type": "{'SAMME.R'}",
                         "description": ""
                     }
                 }

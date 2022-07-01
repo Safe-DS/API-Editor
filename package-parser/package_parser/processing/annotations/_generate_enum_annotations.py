@@ -65,7 +65,7 @@ def _enum_name(parameter_name: str) -> str:
 
 
 def _enum_instance_name(string_value: str) -> str:
-    segments = re.split(r"[_-]", string_value)
+    segments = re.split(r"[_\-.]", string_value)
 
     result = "_".join(
         re.sub(r"\W", "", segment).upper()
