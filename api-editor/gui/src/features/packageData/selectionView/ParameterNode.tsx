@@ -16,8 +16,7 @@ interface ParameterNodeProps {
 
 export const ParameterNode: React.FC<ParameterNodeProps> = function ({ isTitle, pythonParameter }) {
     const id = pythonParameter.id;
-
-    const isConstructorParameter = pythonParameter.parent()?.name === '__init__';
+    pythonParameter.parent()?.name === '__init__';
     const canBeAnnotated = pythonParameter.isPublic && pythonParameter.isExplicitParameter();
 
     return (

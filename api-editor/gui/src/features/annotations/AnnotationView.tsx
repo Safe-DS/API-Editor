@@ -48,15 +48,11 @@ import {
     showMoveAnnotationForm,
     showRenameAnnotationForm,
     showTodoAnnotationForm,
+    showValueAnnotationForm,
 } from '../ui/uiSlice';
 import { truncate } from '../../common/util/stringOperations';
 import { wrongAnnotationURL } from '../externalLinks/urlBuilder';
-import {
-    Annotation,
-    BoundaryAnnotation,
-    ComparisonOperator,
-    ValueAnnotation,
-} from './versioning/AnnotationStoreV2';
+import { Annotation, BoundaryAnnotation, ComparisonOperator, ValueAnnotation } from './versioning/AnnotationStoreV2';
 
 interface AnnotationViewProps {
     target: string;
@@ -210,6 +206,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     type="value"
                     name={valueAnnotationToString(valueAnnotation)}
                     annotation={valueAnnotation}
+                    onEdit={() => dispatch(showValueAnnotationForm(target))}
                     onDelete={() => dispatch(removeValue(target))}
                     onReview={() => dispatch(reviewValue(target))}
                     reportable
@@ -222,14 +219,16 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
 const valueAnnotationToString = (valueAnnotation: ValueAnnotation): string => {
     let result = valueAnnotation.variant;
 
-    if (valueAnnotation.defaultValueType === 'string') {
-        result += ` "${valueAnnotation.defaultValue}"`;
-    } else if (valueAnnotation.defaultValueType === 'number') {
-        result += '' + String(valueAnnotation.defaultValue);
-    } else if (valueAnnotation.defaultValueType === 'boolean') {
-        result += valueAnnotation.defaultValue === true ? ' True' : ' False';
-    } else if (valueAnnotation.defaultValueType === 'none') {
-        result += ' None';
+    if (valueAnnotation.variant !== 'required') {
+        if (valueAnnotation.defaultValueType === 'string') {
+            result += ` "${valueAnnotation.defaultValue}"`;
+        } else if (valueAnnotation.defaultValueType === 'number') {
+            result += '' + String(valueAnnotation.defaultValue);
+        } else if (valueAnnotation.defaultValueType === 'boolean') {
+            result += valueAnnotation.defaultValue === true ? ' True' : ' False';
+        } else if (valueAnnotation.defaultValueType === 'none') {
+            result += ' None';
+        }
     }
 
     return result;

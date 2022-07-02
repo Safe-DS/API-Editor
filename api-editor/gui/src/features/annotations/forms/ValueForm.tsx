@@ -110,9 +110,9 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
 
     useEffect(() => {
         reset({
-            variant: previousVariant || 'optional',
-            defaultValueType: previousDefaultType || 'string',
-            defaultValue: previousDefaultValue || '',
+            variant: previousVariant ?? 'optional',
+            defaultValueType: previousDefaultType ?? 'string',
+            defaultValue: previousDefaultValue ?? '',
         });
     }, [reset, previousVariant, previousDefaultType, previousDefaultValue]);
 
@@ -120,14 +120,22 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
 
     const handleVariantChange = (newVariant: ValueAnnotationVariant) => {
         setValue('variant', newVariant);
-    }
+    };
 
     const handleTypeChange = (newType: DefaultValueType) => {
         setValue('defaultValueType', newType);
-        reset({
-            defaultValueType: newType,
-            defaultValue: '',
-        });
+
+        switch (newType) {
+            case 'boolean':
+                setValue('defaultValue', 'true');
+                break;
+            case 'number':
+                setValue('defaultValue', 0);
+                break;
+            default:
+                setValue('defaultValue', '');
+                break;
+        }
     };
 
     const handleSave = (data: TypeValueFormState) => {
