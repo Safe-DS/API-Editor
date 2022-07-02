@@ -1,3 +1,8 @@
+import React, { useState } from 'react';
+import { useAppDispatch } from '../../../app/hooks';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
+import { PythonParameter } from '../../packageData/model/PythonParameter';
+import { DefaultValue, DefaultValueType, ValueAnnotation } from '../versioning/AnnotationStoreV2';
 import {
     FormControl,
     FormErrorIcon,
@@ -15,15 +20,50 @@ import {
     Stack,
     Text as ChakraText,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useAppDispatch } from '../../../app/hooks';
 import { booleanPattern, numberPattern } from '../../../common/validation';
-import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
-import { DefaultType, DefaultValue } from '../annotationSlice';
 import { AnnotationBatchForm } from './AnnotationBatchForm';
 import { hideAnnotationForm } from '../../ui/uiSlice';
 import { ConfirmAnnotations } from './ConfirmAnnotations';
+import {upsertValues} from "../annotationSlice";
+
+interface ValueBatchFormProps {
+    targets: PythonDeclaration[];
+}
+
+export const ValueBatchForm: React.FC<ValueBatchFormProps> = function ({ targets }) {
+    //only parameters can have optional annotations
+    const filteredTargets = targets.filter((t) => t instanceof PythonParameter);
+    const targetPaths = filteredTargets.map((t) => t.id);
+
+    // Hooks -----------------------------------------------------------------------------------------------------------
+    const dispatch = useAppDispatch();
+
+    // Event handlers --------------------------------------------------------------------------------------------------
+
+    const handleUpsertAnnotation = (data: TypeValueBatchFormState) => {
+        const all: ValueAnnotation[] = [];
+        targetPaths.forEach((targetPath) => {
+            all.push({
+                target: targetPath,
+                defaultValueType: data.defaultValueType,
+                defaultValue: data.defaultValue,
+            });
+        });
+        dispatch(upsertValues(all));
+    };
+
+    // Rendering -------------------------------------------------------------------------------------------------------
+
+    return (
+        <TypeValueBatchForm
+            targets={filteredTargets}
+            annotationType="optional"
+            description="Make matched parameters optional and set their default value."
+            onUpsertAnnotation={handleUpsertAnnotation}
+        />
+    );
+};
 
 interface TypeValueBatchFormProps {
     targets: PythonDeclaration[];
@@ -33,7 +73,7 @@ interface TypeValueBatchFormProps {
 }
 
 export interface TypeValueBatchFormState {
-    defaultType: DefaultType;
+    defaultValueType: DefaultValueType;
     defaultValue: DefaultValue;
 }
 
@@ -54,31 +94,31 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
         formState: { errors },
     } = useForm<TypeValueBatchFormState>({
         defaultValues: {
-            defaultType: 'string',
+            defaultValueType: 'string',
             defaultValue: '',
         },
     });
 
-    const watchDefaultType = watch('defaultType');
+    const watchDefaultValueType = watch('defaultValueType');
 
     let [confirmWindowVisible, setConfirmWindowVisible] = useState(false);
-    let [data, setData] = useState<TypeValueBatchFormState>({ defaultType: 'string', defaultValue: '' });
+    let [data, setData] = useState<TypeValueBatchFormState>({ defaultValueType: 'string', defaultValue: '' });
 
     // Event handlers ----------------------------------------------------------
 
-    const handleTypeChange = (newType: DefaultType) => {
-        setValue('defaultType', newType);
+    const handleTypeChange = (newType: DefaultValueType) => {
+        setValue('defaultValueType', newType);
         reset({
-            defaultType: newType,
+            defaultValueType: newType,
             defaultValue: '',
         });
     };
 
     const handleSave = (annotationData: TypeValueBatchFormState) => {
         let toUpsert = { ...annotationData };
-        if (annotationData.defaultType === 'boolean') {
+        if (annotationData.defaultValueType === 'boolean') {
             toUpsert = { ...annotationData, defaultValue: annotationData.defaultValue === 'true' };
-        } else if (annotationData.defaultType === 'none') {
+        } else if (annotationData.defaultValueType === 'none') {
             toUpsert = { ...annotationData, defaultValue: null };
         }
         onUpsertAnnotation(toUpsert);
@@ -115,17 +155,17 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
                     </Stack>
                 </RadioGroup>
 
-                {watchDefaultType !== 'none' && (
+                {watchDefaultValueType !== 'none' && (
                     <FormControl isInvalid={Boolean(errors?.defaultValue)}>
                         <FormLabel>Default value for selected elements:</FormLabel>
-                        {watchDefaultType === 'string' && (
+                        {watchDefaultValueType === 'string' && (
                             <Input
                                 {...register('defaultValue', {
                                     required: 'This is required.',
                                 })}
                             />
                         )}
-                        {watchDefaultType === 'number' && (
+                        {watchDefaultValueType === 'number' && (
                             <NumberInput>
                                 <NumberInputField
                                     {...register('defaultValue', {
@@ -139,7 +179,7 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
                                 </NumberInputStepper>
                             </NumberInput>
                         )}
-                        {watchDefaultType === 'boolean' && (
+                        {watchDefaultValueType === 'boolean' && (
                             <Select
                                 {...register('defaultValue', {
                                     required: 'This is required.',

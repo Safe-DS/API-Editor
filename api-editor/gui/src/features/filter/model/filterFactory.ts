@@ -103,16 +103,12 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
         // Annotations
         case 'annotation:any':
             return new AnnotationFilter(AnnotationType.Any);
-        case 'annotation:@attribute':
-            return new AnnotationFilter(AnnotationType.Attribute);
         case 'annotation:@boundary':
             return new AnnotationFilter(AnnotationType.Boundary);
         case 'annotation:@calledafter':
             return new AnnotationFilter(AnnotationType.CalledAfter);
         case 'is:complete': // Deliberate special case. It should be transparent to users it's an annotation.
             return new AnnotationFilter(AnnotationType.Complete);
-        case 'annotation:@constant':
-            return new AnnotationFilter(AnnotationType.Constant);
         case 'annotation:@description':
             return new AnnotationFilter(AnnotationType.Description);
         case 'annotation:@enum':
@@ -121,18 +117,16 @@ const parsePositiveToken = function (token: string): Optional<AbstractPythonFilt
             return new AnnotationFilter(AnnotationType.Group);
         case 'annotation:@move':
             return new AnnotationFilter(AnnotationType.Move);
-        case 'annotation:@optional':
-            return new AnnotationFilter(AnnotationType.Optional);
         case 'annotation:@pure':
             return new AnnotationFilter(AnnotationType.Pure);
         case 'annotation:@remove':
             return new AnnotationFilter(AnnotationType.Remove);
         case 'annotation:@rename':
             return new AnnotationFilter(AnnotationType.Rename);
-        case 'annotation:@required':
-            return new AnnotationFilter(AnnotationType.Required);
         case 'annotation:@todo':
             return new AnnotationFilter(AnnotationType.Todo);
+        case 'annotation:@value':
+            return new AnnotationFilter(AnnotationType.Value);
     }
 
     // Name

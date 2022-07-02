@@ -1,10 +1,11 @@
 import React from 'react';
 import { Box, Heading, SimpleGrid, useColorModeValue, VStack } from '@chakra-ui/react';
 import { useAppSelector } from '../../app/hooks';
-import { Annotation, selectAnnotationStore } from '../annotations/annotationSlice';
 import { Pie } from 'react-chartjs-2';
 
 import { ArcElement, Chart as ChartJS, Title, Tooltip } from 'chart.js';
+import {selectAnnotationStore} from "../annotations/annotationSlice";
+import {Annotation} from "../annotations/versioning/AnnotationStoreV2";
 
 ChartJS.register(ArcElement, Title, Tooltip);
 
@@ -19,22 +20,14 @@ export const QualityStatistics = function () {
             <Box width="100%">
                 <SimpleGrid columns={{ base: 1, fullHD: 2 }} width="100%">
                     <QualityPieChart
-                        annotationType="Boundaries"
-                        annotations={Object.values(annotationStore.boundaries)}
+                        annotationType="Boundary"
+                        annotations={Object.values(annotationStore.boundaryAnnotations ?? {})}
                     />
+                    <QualityPieChart annotationType="Enum" annotations={Object.values(annotationStore.enumAnnotations ?? {})} />
+                    <QualityPieChart annotationType="Remove" annotations={Object.values(annotationStore.removeAnnotations ?? {})} />
                     <QualityPieChart
-                        annotationType="Constants"
-                        annotations={Object.values(annotationStore.constants)}
-                    />
-                    <QualityPieChart annotationType="Enums" annotations={Object.values(annotationStore.enums)} />
-                    <QualityPieChart
-                        annotationType="Optionals"
-                        annotations={Object.values(annotationStore.optionals)}
-                    />
-                    <QualityPieChart annotationType="Removes" annotations={Object.values(annotationStore.removes)} />
-                    <QualityPieChart
-                        annotationType="Requireds"
-                        annotations={Object.values(annotationStore.requireds)}
+                        annotationType="Value"
+                        annotations={Object.values(annotationStore.valueAnnotations ?? {})}
                     />
                 </SimpleGrid>
             </Box>

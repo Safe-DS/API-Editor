@@ -1,5 +1,8 @@
 import {VersionedAnnotationStore} from "./VersionedAnnotationStore";
 
+/*
+ * @deprecated
+ */
 export interface AnnotationStore extends VersionedAnnotationStore {
     schemaVersion: 1;
     attributes?: {
@@ -49,6 +52,9 @@ export interface AnnotationStore extends VersionedAnnotationStore {
     };
 }
 
+/*
+ * @deprecated
+ */
 export interface Annotation {
     /**
      * ID of the annotated Python declaration.
@@ -71,6 +77,9 @@ export interface Annotation {
     readonly isRemoved?: boolean;
 }
 
+/*
+ * @deprecated
+ */
 export interface AttributeAnnotation extends Annotation {
     /**
      * Type of default value
@@ -83,9 +92,19 @@ export interface AttributeAnnotation extends Annotation {
     readonly defaultValue: DefaultValue;
 }
 
+/*
+ * @deprecated
+ */
 export type DefaultType = 'string' | 'number' | 'boolean' | 'none';
+
+/*
+ * @deprecated
+ */
 export type DefaultValue = string | number | boolean | null;
 
+/*
+ * @deprecated
+ */
 export interface BoundaryAnnotation extends Annotation {
     /**
      * The interval specifying possible numeric values
@@ -93,6 +112,9 @@ export interface BoundaryAnnotation extends Annotation {
     readonly interval: Interval;
 }
 
+/*
+ * @deprecated
+ */
 export interface Interval {
     /**
      * Whether the type of the interval is discrete or continuous
@@ -120,12 +142,18 @@ export interface Interval {
     readonly upperLimitType: ComparisonOperator;
 }
 
+/*
+ * @deprecated
+ */
 export enum ComparisonOperator {
     LESS_THAN_OR_EQUALS,
     LESS_THAN,
     UNRESTRICTED,
 }
 
+/*
+ * @deprecated
+ */
 export interface CalledAfterAnnotation extends Annotation {
     /**
      * Name of the callable to be called first
@@ -133,6 +161,9 @@ export interface CalledAfterAnnotation extends Annotation {
     readonly calledAfterName: string;
 }
 
+/*
+ * @deprecated
+ */
 export interface CalledAfterTarget {
     /**
      * ID of the annotated Python declaration.
@@ -145,14 +176,14 @@ export interface CalledAfterTarget {
     readonly calledAfterName: string;
 }
 
-/**
- * The element is fully annotated and all annotations are checked.
- *
- * **Important:** While this is implemented as an annotation it should **not** be counted in the heat map or the
- * statistics.
+/*
+ * @deprecated
  */
 export interface CompleteAnnotation extends Annotation {}
 
+/*
+ * @deprecated
+ */
 export interface ConstantAnnotation extends Annotation {
     /**
      * Type of default value
@@ -165,6 +196,9 @@ export interface ConstantAnnotation extends Annotation {
     readonly defaultValue: DefaultValue;
 }
 
+/*
+ * @deprecated
+ */
 export interface DescriptionAnnotation extends Annotation {
     /**
      * Description for the declaration.
@@ -172,6 +206,9 @@ export interface DescriptionAnnotation extends Annotation {
     readonly newDescription: string;
 }
 
+/*
+ * @deprecated
+ */
 export interface EnumAnnotation extends Annotation {
     /**
      * Name of the enum class that should be created.
@@ -180,11 +217,17 @@ export interface EnumAnnotation extends Annotation {
     readonly pairs: EnumPair[];
 }
 
+/*
+ * @deprecated
+ */
 export interface EnumPair {
     readonly stringValue: string;
     readonly instanceName: string;
 }
 
+/*
+ * @deprecated
+ */
 export interface GroupAnnotation extends Annotation {
     /**
      * Name of the grouped object
@@ -197,6 +240,9 @@ export interface GroupAnnotation extends Annotation {
     readonly parameters: string[];
 }
 
+/*
+ * @deprecated
+ */
 export interface GroupTarget {
     /**
      * ID of the annotated Python declaration.
@@ -209,6 +255,9 @@ export interface GroupTarget {
     readonly groupName: string;
 }
 
+/*
+ * @deprecated
+ */
 export interface MoveAnnotation extends Annotation {
     /**
      * Qualified path to the destination
@@ -216,6 +265,9 @@ export interface MoveAnnotation extends Annotation {
     readonly destination: string;
 }
 
+/*
+ * @deprecated
+ */
 export interface OptionalAnnotation extends Annotation {
     /**
      * Type of default value
@@ -228,8 +280,14 @@ export interface OptionalAnnotation extends Annotation {
     readonly defaultValue: DefaultValue;
 }
 
+/*
+ * @deprecated
+ */
 export interface PureAnnotation extends Annotation {}
 
+/*
+ * @deprecated
+ */
 export interface RenameAnnotation extends Annotation {
     /**
      * New name for the declaration.
@@ -237,10 +295,19 @@ export interface RenameAnnotation extends Annotation {
     readonly newName: string;
 }
 
+/*
+ * @deprecated
+ */
 export interface RequiredAnnotation extends Annotation {}
 
+/*
+ * @deprecated
+ */
 export interface RemoveAnnotation extends Annotation {}
 
+/*
+ * @deprecated
+ */
 export interface TodoAnnotation extends Annotation {
     /**
      * A Todo for the declaration.

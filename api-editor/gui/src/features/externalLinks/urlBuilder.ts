@@ -1,5 +1,5 @@
-import { Annotation } from '../annotations/annotationSlice';
 import { jsonCode } from '../../common/util/stringOperations';
+import {Annotation} from "../annotations/versioning/AnnotationStoreV2";
 
 const baseURL = 'https://github.com/lars-reimann/api-editor';
 

@@ -20,7 +20,6 @@ import React from 'react';
 import { FaArrowLeft, FaArrowRight, FaArrowUp, FaChevronDown, FaRedo, FaUndo } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector, useKeyboardShortcut } from '../../app/hooks';
 import {
-    AnnotationStore,
     redo,
     selectAnnotationStore,
     selectUsernameIsValid,
@@ -64,6 +63,7 @@ import { selectUsages } from '../usages/usageSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { SelectionBreadcrumbs } from './SelectionBreadcrumbs';
 import { HelpMenu } from './HelpMenu';
+import {AnnotationStore} from "../annotations/versioning/AnnotationStoreV2";
 
 interface MenuBarProps {
     displayInferErrors: (errors: string[]) => void;
@@ -293,24 +293,10 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                             <MenuGroup title="Batch Annotate">
                                 <MenuItem
                                     paddingLeft={8}
-                                    onClick={() => dispatch(setBatchMode(BatchMode.Constant))}
-                                    isDisabled={!usernameIsValid}
-                                >
-                                    Constant
-                                </MenuItem>
-                                <MenuItem
-                                    paddingLeft={8}
                                     onClick={() => dispatch(setBatchMode(BatchMode.Move))}
                                     isDisabled={!usernameIsValid}
                                 >
                                     Move
-                                </MenuItem>
-                                <MenuItem
-                                    paddingLeft={8}
-                                    onClick={() => dispatch(setBatchMode(BatchMode.Optional))}
-                                    isDisabled={!usernameIsValid}
-                                >
-                                    Optional
                                 </MenuItem>
                                 <MenuItem
                                     paddingLeft={8}
@@ -328,10 +314,10 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                                 </MenuItem>
                                 <MenuItem
                                     paddingLeft={8}
-                                    onClick={() => dispatch(setBatchMode(BatchMode.Required))}
+                                    onClick={() => dispatch(setBatchMode(BatchMode.Value))}
                                     isDisabled={!usernameIsValid}
                                 >
-                                    Required
+                                    Value
                                 </MenuItem>
                             </MenuGroup>
                             <MenuDivider />

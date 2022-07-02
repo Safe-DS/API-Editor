@@ -18,15 +18,11 @@ import React, { useState } from 'react';
 import { useAppDispatch } from '../../app/hooks';
 import { StyledDropzone } from '../../common/StyledDropzone';
 import { isValidJsonFile } from '../../common/util/validation';
-import {
-    AnnotationStore,
-    EXPECTED_ANNOTATION_STORE_SCHEMA_VERSION,
-    initialAnnotationStore,
-    mergeAnnotationStore,
-    setAnnotationStore,
-    VersionedAnnotationStore,
-} from './annotationSlice';
+import { initialAnnotationStore, mergeAnnotationStore, setAnnotationStore } from './annotationSlice';
+import { supportedAnnotationStoreSchemaVersions } from './versioning/expectedVersions';
+import { AnnotationStore } from './versioning/AnnotationStoreV2';
 import { hideAnnotationImportDialog, toggleAnnotationImportDialog } from '../ui/uiSlice';
+import { VersionedAnnotationStore } from './versioning/VersionedAnnotationStore';
 
 export const AnnotationImportDialog: React.FC = function () {
     const toast = useToast();
@@ -45,9 +41,9 @@ export const AnnotationImportDialog: React.FC = function () {
             return false;
         }
 
-        if ((newAnnotationStore.schemaVersion ?? 1) !== EXPECTED_ANNOTATION_STORE_SCHEMA_VERSION) {
+        if (!supportedAnnotationStoreSchemaVersions.includes(newAnnotationStore.schemaVersion)) {
             toast({
-                title: 'Old Annotation File',
+                title: 'Incompatible Annotation File',
                 description: 'This file is not compatible with the current version of the API Editor.',
                 status: 'error',
                 duration: 4000,
@@ -59,15 +55,13 @@ export const AnnotationImportDialog: React.FC = function () {
     };
     const merge = () => {
         if (validate()) {
-            delete newAnnotationStore.schemaVersion;
-            dispatch(mergeAnnotationStore(newAnnotationStore));
+            dispatch(mergeAnnotationStore(newAnnotationStore as AnnotationStore));
             dispatch(hideAnnotationImportDialog());
         }
     };
     const replace = () => {
         if (validate()) {
-            delete newAnnotationStore.schemaVersion;
-            dispatch(setAnnotationStore(newAnnotationStore));
+            dispatch(setAnnotationStore(newAnnotationStore as AnnotationStore));
             dispatch(hideAnnotationImportDialog());
         }
     };

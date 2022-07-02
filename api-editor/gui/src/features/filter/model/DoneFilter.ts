@@ -3,9 +3,9 @@ import { PythonFunction } from '../../packageData/model/PythonFunction';
 import { PythonModule } from '../../packageData/model/PythonModule';
 import { PythonParameter } from '../../packageData/model/PythonParameter';
 import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
-import { Annotation, AnnotationStore } from '../../annotations/annotationSlice';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { AbstractPythonFilter } from './AbstractPythonFilter';
+import {Annotation, AnnotationStore} from "../../annotations/versioning/AnnotationStoreV2";
 
 /**
  * Keeps only declarations that are marked as complete and all annotations as correct.
@@ -37,7 +37,7 @@ export class DoneFilter extends AbstractPythonFilter {
         _usages: UsageCountStore,
     ): boolean {
         return (
-            pythonDeclaration.id in annotations.completes &&
+            pythonDeclaration.id in (annotations.completeAnnotations ?? {}) &&
             this.getAnnotationsForTarget(pythonDeclaration.id, annotations).every(
                 (annotation) => annotation.isRemoved || (annotation.reviewers?.length ?? 0) > 0,
             )

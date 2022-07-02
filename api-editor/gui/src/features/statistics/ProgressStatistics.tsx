@@ -19,7 +19,7 @@ export const ProgressStatistics = function () {
     const textColor = useColorModeValue('#000', '#FFF');
 
     // Completion Progress
-    const completed = useAppSelector(selectAnnotationStore).completes;
+    const completed = useAppSelector(selectAnnotationStore).completeAnnotations ?? {};
     const matchedNodes = useAppSelector(selectMatchedNodes);
     const numberOfMatchedNodes = matchedNodes.length;
     const numberOfCompleteMatchedNodes = matchedNodes.filter((it) => it.id in completed).length;

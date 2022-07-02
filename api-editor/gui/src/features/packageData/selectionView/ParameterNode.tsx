@@ -38,15 +38,12 @@ export const ParameterNode: React.FC<ParameterNodeProps> = function ({ isTitle, 
                     {canBeAnnotated && (
                         <AnnotationDropdown
                             target={id}
-                            showAttribute={isConstructorParameter}
                             showBoundary
-                            showConstant
                             showDescription
                             showEnum
-                            showOptional
                             showRename
-                            showRequired
                             showTodo
+                            showValue
                         />
                     )}
 

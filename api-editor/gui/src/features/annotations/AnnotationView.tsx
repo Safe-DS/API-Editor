@@ -3,71 +3,60 @@ import React from 'react';
 import { FaCheck, FaFlag, FaTrash, FaWrench } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
-    Annotation,
-    BoundaryAnnotation,
-    ComparisonOperator,
-    DefaultType,
-    DefaultValue,
-    removeAttribute,
     removeBoundary,
     removeCalledAfter,
-    removeConstant,
     removeDescription,
     removeEnum,
     removeGroup,
     removeMove,
-    removeOptional,
     removePure,
     removeRemove,
     removeRenaming,
-    removeRequired,
     removeTodo,
-    reviewAttribute,
+    removeValue,
     reviewBoundary,
     reviewCalledAfter,
-    reviewConstant,
     reviewDescription,
     reviewEnum,
     reviewGroup,
     reviewMove,
-    reviewOptional,
     reviewPure,
     reviewRemove,
     reviewRenaming,
-    reviewRequired,
     reviewTodo,
-    selectAttribute,
+    reviewValue,
     selectBoundaryAnnotation,
     selectCalledAfterAnnotations,
-    selectConstant,
     selectDescriptionAnnotation,
     selectEnumAnnotation,
     selectGroupAnnotations,
     selectMoveAnnotation,
-    selectOptional,
     selectPureAnnotation,
     selectRemoveAnnotation,
     selectRenameAnnotation,
-    selectRequired,
     selectTodoAnnotation,
     selectUsernameIsValid,
+    selectValueAnnotation,
 } from './annotationSlice';
 import {
     hideAnnotationForm,
     selectCurrentUserAction,
-    showAttributeAnnotationForm,
     showBoundaryAnnotationForm,
-    showConstantAnnotationForm,
     showDescriptionAnnotationForm,
     showEnumAnnotationForm,
     showGroupAnnotationForm,
     showMoveAnnotationForm,
-    showOptionalAnnotationForm,
     showRenameAnnotationForm,
     showTodoAnnotationForm,
 } from '../ui/uiSlice';
 import { truncate } from '../../common/util/stringOperations';
 import { wrongAnnotationURL } from '../externalLinks/urlBuilder';
+import {
+    Annotation,
+    BoundaryAnnotation,
+    ComparisonOperator,
+    ValueAnnotation,
+} from './versioning/AnnotationStoreV2';
 
 interface AnnotationViewProps {
     target: string;
@@ -76,36 +65,30 @@ interface AnnotationViewProps {
 export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
     const dispatch = useAppDispatch();
 
-    const attributeAnnotation = useAppSelector(selectAttribute(target));
     const boundaryAnnotation = useAppSelector(selectBoundaryAnnotation(target));
     const calledAfterAnnotation = useAppSelector(selectCalledAfterAnnotations(target));
-    const constantAnnotation = useAppSelector(selectConstant(target));
     const descriptionAnnotation = useAppSelector(selectDescriptionAnnotation(target));
     const enumAnnotation = useAppSelector(selectEnumAnnotation(target));
     const groupAnnotations = useAppSelector(selectGroupAnnotations(target));
     const moveAnnotation = useAppSelector(selectMoveAnnotation(target));
-    const optionalAnnotation = useAppSelector(selectOptional(target));
     const pureAnnotation = useAppSelector(selectPureAnnotation(target));
     const removeAnnotation = useAppSelector(selectRemoveAnnotation(target));
     const renameAnnotation = useAppSelector(selectRenameAnnotation(target));
-    const requiredAnnotation = useAppSelector(selectRequired(target));
     const todoAnnotation = useAppSelector(selectTodoAnnotation(target));
+    const valueAnnotation = useAppSelector(selectValueAnnotation(target));
 
     if (
-        !attributeAnnotation &&
         !boundaryAnnotation &&
         !calledAfterAnnotation &&
-        !constantAnnotation &&
         !descriptionAnnotation &&
         !enumAnnotation &&
         !groupAnnotations &&
         !moveAnnotation &&
-        !optionalAnnotation &&
         !pureAnnotation &&
         !removeAnnotation &&
         !renameAnnotation &&
-        !requiredAnnotation &&
-        !todoAnnotation
+        !todoAnnotation &&
+        !valueAnnotation
     ) {
         // eslint-disable-next-line react/jsx-no-useless-fragment
         return <></>;
@@ -113,18 +96,6 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
 
     return (
         <Stack maxW="fit-content">
-            {attributeAnnotation && (
-                <AnnotationTag
-                    type="attribute"
-                    name={valueToString(attributeAnnotation.defaultValue, attributeAnnotation.defaultType)}
-                    annotation={attributeAnnotation}
-                    onEdit={() => dispatch(showAttributeAnnotationForm(target))}
-                    onDelete={() => dispatch(removeAttribute(target))}
-                    onReview={() => {
-                        dispatch(reviewAttribute(target));
-                    }}
-                />
-            )}
             {boundaryAnnotation && (
                 <AnnotationTag
                     type="boundary"
@@ -148,19 +119,6 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     onReview={() => dispatch(reviewCalledAfter({ target, calledAfterName }))}
                 />
             ))}
-            {constantAnnotation && (
-                <AnnotationTag
-                    type="constant"
-                    name={valueToString(constantAnnotation.defaultValue, constantAnnotation.defaultType)}
-                    annotation={constantAnnotation}
-                    onEdit={() => dispatch(showConstantAnnotationForm(target))}
-                    onDelete={() => dispatch(removeConstant(target))}
-                    onReview={() => {
-                        dispatch(reviewConstant(target));
-                    }}
-                    reportable
-                />
-            )}
             {descriptionAnnotation && (
                 <AnnotationTag
                     type="description"
@@ -208,19 +166,6 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     }}
                 />
             )}
-            {optionalAnnotation && (
-                <AnnotationTag
-                    type="optional"
-                    name={valueToString(optionalAnnotation.defaultValue, optionalAnnotation.defaultType)}
-                    annotation={optionalAnnotation}
-                    onEdit={() => dispatch(showOptionalAnnotationForm(target))}
-                    onDelete={() => dispatch(removeOptional(target))}
-                    onReview={() => {
-                        dispatch(reviewOptional(target));
-                    }}
-                    reportable
-                />
-            )}
             {pureAnnotation && (
                 <AnnotationTag
                     type="pure"
@@ -250,15 +195,6 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     }}
                 />
             )}
-            {requiredAnnotation && (
-                <AnnotationTag
-                    type="required"
-                    annotation={requiredAnnotation}
-                    onDelete={() => dispatch(removeRequired(target))}
-                    onReview={() => dispatch(reviewRequired(target))}
-                    reportable
-                />
-            )}
             {todoAnnotation && (
                 <AnnotationTag
                     type="todo"
@@ -269,21 +205,34 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     onReview={() => dispatch(reviewTodo(target))}
                 />
             )}
+            {valueAnnotation && (
+                <AnnotationTag
+                    type="value"
+                    name={valueAnnotationToString(valueAnnotation)}
+                    annotation={valueAnnotation}
+                    onDelete={() => dispatch(removeValue(target))}
+                    onReview={() => dispatch(reviewValue(target))}
+                    reportable
+                />
+            )}
         </Stack>
     );
 };
 
-const valueToString = (value: DefaultValue, type: DefaultType): string => {
-    switch (type) {
-        case 'string':
-            return `"${value}"`;
-        case 'number':
-            return String(value);
-        case 'boolean':
-            return value === true ? 'True' : 'False';
-        case 'none':
-            return 'None';
+const valueAnnotationToString = (valueAnnotation: ValueAnnotation): string => {
+    let result = valueAnnotation.variant;
+
+    if (valueAnnotation.defaultValueType === 'string') {
+        result += ` "${valueAnnotation.defaultValue}"`;
+    } else if (valueAnnotation.defaultValueType === 'number') {
+        result += '' + String(valueAnnotation.defaultValue);
+    } else if (valueAnnotation.defaultValueType === 'boolean') {
+        result += valueAnnotation.defaultValue === true ? ' True' : ' False';
+    } else if (valueAnnotation.defaultValueType === 'none') {
+        result += ' None';
     }
+
+    return result;
 };
 
 const boundaryToString = (boundary: BoundaryAnnotation) => {

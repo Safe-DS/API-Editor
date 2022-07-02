@@ -2,10 +2,10 @@ import { PythonClass } from '../../packageData/model/PythonClass';
 import { PythonFunction } from '../../packageData/model/PythonFunction';
 import { PythonModule } from '../../packageData/model/PythonModule';
 import { PythonParameter } from '../../packageData/model/PythonParameter';
-import { AnnotationStore } from '../../annotations/annotationSlice';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { AbstractPythonFilter } from './AbstractPythonFilter';
 import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
+import {AnnotationStore} from "../../annotations/versioning/AnnotationStoreV2";
 
 /**
  * Keeps only declarations that have a qualified name matching the given regex.

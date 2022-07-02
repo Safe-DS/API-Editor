@@ -6,9 +6,10 @@ import { pythonIdentifierPattern } from '../../../common/validation';
 import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
 import { PythonFunction } from '../../packageData/model/PythonFunction';
 import { PythonParameter } from '../../packageData/model/PythonParameter';
-import { GroupAnnotation, selectGroupAnnotations, upsertGroup } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
 import { hideAnnotationForm } from '../../ui/uiSlice';
+import { selectGroupAnnotations, upsertGroup } from '../annotationSlice';
+import { GroupAnnotation } from '../versioning/AnnotationStoreV2';
 
 interface GroupFormProps {
     readonly target: PythonDeclaration;

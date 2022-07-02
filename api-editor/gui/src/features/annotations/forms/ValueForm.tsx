@@ -1,3 +1,7 @@
+import React, { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
+import { selectValueAnnotation, upsertValue } from '../annotationSlice';
 import {
     FormControl,
     FormErrorIcon,
@@ -14,31 +18,64 @@ import {
     Select,
     Stack,
 } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useAppDispatch } from '../../../app/hooks';
 import { Optional } from '../../../common/util/types';
 import { booleanPattern, numberPattern } from '../../../common/validation';
-import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
-import { DefaultType, DefaultValue } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
 import { hideAnnotationForm } from '../../ui/uiSlice';
+import {DefaultValue, DefaultValueType} from "../versioning/AnnotationStoreV2";
+
+interface ValueFormProps {
+    target: PythonDeclaration;
+}
+
+export const ValueForm: React.FC<ValueFormProps> = function ({ target }) {
+    // Hooks -----------------------------------------------------------------------------------------------------------
+    const valueAnnotation = useAppSelector(selectValueAnnotation(target.id));
+    const previousDefaultType = valueAnnotation?.defaultValueType;
+    const previousDefaultValue = valueAnnotation?.defaultValue;
+    const dispatch = useAppDispatch();
+
+    // Event handlers --------------------------------------------------------------------------------------------------
+
+    const handleUpsertAnnotation = (data: TypeValueFormState) => {
+        dispatch(
+            upsertValue({
+                target: target.id,
+                ...data,
+            }),
+        );
+    };
+
+    // Rendering -------------------------------------------------------------------------------------------------------
+
+    return (
+        <TypeValueForm
+            target={target}
+            annotationType="optional"
+            description="Make this parameter optional and set its default value."
+            previousDefaultType={previousDefaultType}
+            previousDefaultValue={previousDefaultValue}
+            onUpsertAnnotation={handleUpsertAnnotation}
+        />
+    );
+};
 
 interface TypeValueFormProps {
     target: PythonDeclaration;
     annotationType: string;
     description: string;
-    previousDefaultType: Optional<DefaultType>;
+    previousDefaultType: Optional<DefaultValueType>;
     previousDefaultValue: Optional<DefaultValue>;
     onUpsertAnnotation: (data: TypeValueFormState) => void;
 }
 
 export interface TypeValueFormState {
-    defaultType: DefaultType;
+    defaultValueType: DefaultValueType;
     defaultValue: DefaultValue;
 }
 
-export const TypeValueForm: React.FC<TypeValueFormProps> = function ({
+const TypeValueForm: React.FC<TypeValueFormProps> = function ({
     target,
     annotationType,
     description,
@@ -57,35 +94,35 @@ export const TypeValueForm: React.FC<TypeValueFormProps> = function ({
         formState: { errors },
     } = useForm<TypeValueFormState>({
         defaultValues: {
-            defaultType: 'string',
+            defaultValueType: 'string',
             defaultValue: '',
         },
     });
 
-    const watchDefaultType = watch('defaultType');
+    const watchDefaultType = watch('defaultValueType');
 
     useEffect(() => {
         reset({
-            defaultType: previousDefaultType || 'string',
+            defaultValueType: previousDefaultType || 'string',
             defaultValue: previousDefaultValue || '',
         });
     }, [reset, previousDefaultType, previousDefaultValue]);
 
     // Event handlers ----------------------------------------------------------
 
-    const handleTypeChange = (newType: DefaultType) => {
-        setValue('defaultType', newType);
+    const handleTypeChange = (newType: DefaultValueType) => {
+        setValue('defaultValueType', newType);
         reset({
-            defaultType: newType,
+            defaultValueType: newType,
             defaultValue: '',
         });
     };
 
     const handleSave = (data: TypeValueFormState) => {
         let toUpsert = { ...data };
-        if (data.defaultType === 'boolean') {
+        if (data.defaultValueType === 'boolean') {
             toUpsert = { ...data, defaultValue: data.defaultValue === 'true' };
-        } else if (data.defaultType === 'none') {
+        } else if (data.defaultValueType === 'none') {
             toUpsert = { ...data, defaultValue: null };
         }
         onUpsertAnnotation(toUpsert);
