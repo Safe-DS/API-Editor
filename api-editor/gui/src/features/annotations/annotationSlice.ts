@@ -398,7 +398,7 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        upsertMovesAnnotation(state, action: PayloadAction<MoveAnnotation[]>) {
+        upsertMoveAnnotations(state, action: PayloadAction<MoveAnnotation[]>) {
             action.payload.forEach((annotation) => {
                 updateCreationOrChangedCount(state, state.annotations.moveAnnotations[annotation.target]);
 
@@ -694,7 +694,7 @@ export const {
     removeGroupAnnotation,
     reviewGroupAnnotation,
     upsertMoveAnnotation,
-    upsertMovesAnnotation,
+    upsertMoveAnnotations,
     removeMoveAnnotation,
     reviewMoveAnnotation,
     addPureAnnotation,
