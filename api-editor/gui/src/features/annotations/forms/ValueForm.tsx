@@ -165,15 +165,16 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
             <FormLabel>Choose the variant of this annotation:</FormLabel>
             <RadioGroup defaultValue={previousVariant ?? 'optional'} onChange={handleVariantChange}>
                 <Stack direction="column">
-                    <Radio value="required">Required (parameter must always be set)</Radio>
-                    <Radio value="optional">Optional (parameter has default value that can be overwritten)</Radio>
-                    <Radio value="constant">Constant (parameter has a constant value that cannot be overwritten)</Radio>
+                    <Radio value="required">Required (parameter must always be set explicitly)</Radio>
+                    <Radio value="optional">Optional (parameter has a default value that can be overwritten)</Radio>
+                    <Radio value="constant">Constant (parameter is replaced by a constant value)</Radio>
                 </Stack>
             </RadioGroup>
 
             {watchVariant !== 'required' && (
                 <>
-                    <FormLabel>Type of default value of &quot;{target.name}&quot;:</FormLabel>
+                {watchVariant === 'optional' && <FormLabel>Type of default value of &quot;{target.name}&quot;:</FormLabel>}
+                {watchVariant === 'constant' && <FormLabel>Type of constant value of &quot;{target.name}&quot;:</FormLabel>}
                     <RadioGroup defaultValue={previousDefaultType ?? 'string'} onChange={handleTypeChange}>
                         <Stack direction="column">
                             <Radio value="string">String</Radio>
@@ -187,7 +188,9 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
 
             {watchVariant !== 'required' && watchDefaultType !== 'none' && (
                 <FormControl isInvalid={Boolean(errors?.defaultValue)}>
-                    <FormLabel>Default value for &quot;{target.name}&quot;:</FormLabel>
+                    {watchVariant === 'optional' && <FormLabel>Default value for &quot;{target.name}&quot;:</FormLabel>}
+                    {watchVariant === 'constant' && <FormLabel>Constant value for &quot;{target.name}&quot;:</FormLabel>}
+
                     {watchDefaultType === 'string' && <Input {...register('defaultValue', {})} />}
                     {watchDefaultType === 'number' && (
                         <NumberInput>
