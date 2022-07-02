@@ -4,7 +4,6 @@ import { FaChevronDown } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { addPure, addRemove, selectComplete, selectUsernameIsValid } from './annotationSlice';
 import {
-    selectCurrentUserAction,
     showBoundaryAnnotationForm,
     showCalledAfterAnnotationForm,
     showDescriptionAnnotationForm,
@@ -80,14 +79,6 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                         </MenuGroup>
                     )}
 
-                    {showValue && (
-                        <MenuGroup title="Value">
-                            <MenuItem onClick={() => dispatch(showValueAnnotationForm(target))} paddingLeft={8}>
-                                @value
-                            </MenuItem>
-                        </MenuGroup>
-                    )}
-
                     {(showCalledAfter ||
                         showDescription ||
                         showGroup ||
@@ -95,7 +86,8 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                         showPure ||
                         showRemove ||
                         showRename ||
-                        showTodo) && (
+                        showTodo ||
+                        showValue) && (
                         <MenuGroup title="Uncategorized">
                             {showCalledAfter && (
                                 <MenuItem
@@ -158,6 +150,11 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                             {showTodo && (
                                 <MenuItem onClick={() => dispatch(showTodoAnnotationForm(target))} paddingLeft={8}>
                                     @todo
+                                </MenuItem>
+                            )}
+                            {showValue && (
+                                <MenuItem onClick={() => dispatch(showValueAnnotationForm(target))} paddingLeft={8}>
+                                    @value
                                 </MenuItem>
                             )}
                         </MenuGroup>
