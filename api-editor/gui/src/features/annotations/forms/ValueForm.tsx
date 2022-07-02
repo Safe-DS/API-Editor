@@ -163,19 +163,18 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
             onCancel={handleCancel}
         >
             <FormLabel>Choose the variant of this annotation:</FormLabel>
-            <RadioGroup defaultValue={'optional'} onChange={handleVariantChange}>
+            <RadioGroup defaultValue={previousVariant ?? 'optional'} onChange={handleVariantChange}>
                 <Stack direction="column">
                     <Radio value="required">Required (parameter must always be set)</Radio>
                     <Radio value="optional">Optional (parameter has default value that can be overwritten)</Radio>
-                    <Radio value="constant">Constant (parameter has a constant value and cannot be overwritten)</Radio>
-                    <Radio value="attribute">Attribute (parameter can only be set via a corresponding attribute)</Radio>
+                    <Radio value="constant">Constant (parameter has a constant value that cannot be overwritten)</Radio>
                 </Stack>
             </RadioGroup>
 
             {watchVariant !== 'required' && (
                 <>
                     <FormLabel>Type of default value of &quot;{target.name}&quot;:</FormLabel>
-                    <RadioGroup defaultValue={previousDefaultType || 'string'} onChange={handleTypeChange}>
+                    <RadioGroup defaultValue={previousDefaultType ?? 'string'} onChange={handleTypeChange}>
                         <Stack direction="column">
                             <Radio value="string">String</Radio>
                             <Radio value="number">Number</Radio>
@@ -192,7 +191,6 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
                     {watchDefaultType === 'string' && (
                         <Input
                             {...register('defaultValue', {
-                                required: 'This is required.',
                             })}
                         />
                     )}
@@ -213,7 +211,6 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
                     {watchDefaultType === 'boolean' && (
                         <Select
                             {...register('defaultValue', {
-                                required: 'This is required.',
                                 pattern: booleanPattern,
                             })}
                         >
