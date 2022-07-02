@@ -23,6 +23,7 @@ import { supportedAnnotationStoreSchemaVersions } from './versioning/expectedVer
 import { AnnotationStore } from './versioning/AnnotationStoreV2';
 import { hideAnnotationImportDialog, toggleAnnotationImportDialog } from '../ui/uiSlice';
 import { VersionedAnnotationStore } from './versioning/VersionedAnnotationStore';
+import {migrateAnnotationStoreToCurrentVersion} from "./versioning/migrations";
 
 export const AnnotationImportDialog: React.FC = function () {
     const toast = useToast();
@@ -55,13 +56,15 @@ export const AnnotationImportDialog: React.FC = function () {
     };
     const merge = () => {
         if (validate()) {
-            dispatch(mergeAnnotationStore(newAnnotationStore as AnnotationStore));
+            const migratedAnnotationStore = migrateAnnotationStoreToCurrentVersion(newAnnotationStore);
+            dispatch(mergeAnnotationStore(migratedAnnotationStore));
             dispatch(hideAnnotationImportDialog());
         }
     };
     const replace = () => {
         if (validate()) {
-            dispatch(setAnnotationStore(newAnnotationStore as AnnotationStore));
+            const migratedAnnotationStore = migrateAnnotationStoreToCurrentVersion(newAnnotationStore);
+            dispatch(setAnnotationStore(migratedAnnotationStore));
             dispatch(hideAnnotationImportDialog());
         }
     };

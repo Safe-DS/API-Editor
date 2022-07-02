@@ -21,8 +21,8 @@ import {
     TodoAnnotation,
     ValueAnnotation,
 } from './versioning/AnnotationStoreV2';
+import { migrateAnnotationStoreToCurrentVersion } from './versioning/migrations';
 
-export const EXPECTED_ANNOTATION_STORE_SCHEMA_VERSION = 1;
 export const EXPECTED_ANNOTATION_SLICE_SCHEMA_VERSION = 1;
 
 /**
@@ -100,6 +100,7 @@ export const initializeAnnotations = createAsyncThunk('annotations/initialize', 
         return {
             ...initialAnnotationSlice,
             ...storedAnnotations,
+            annotations: migrateAnnotationStoreToCurrentVersion(storedAnnotations.annotations),
         };
     } catch {
         return initialAnnotationSlice;
@@ -852,7 +853,7 @@ const selectAllAnnotationsOnTarget =
         const groupAnnotations = selectGroupAnnotations(target)(state);
         const moveAnnotation = selectMoveAnnotation(target)(state);
         const pureAnnotation = selectPureAnnotation(target)(state);
-        const removeAnnotation_ = selectRemoveAnnotation(target)(state);
+        const removeAnnotation1 = selectRemoveAnnotation(target)(state);
         const renameAnnotation = selectRenameAnnotation(target)(state);
         const todoAnnotation = selectTodoAnnotation(target)(state);
         const valueAnnotation = selectValueAnnotation(target)(state);
@@ -875,8 +876,8 @@ const selectAllAnnotationsOnTarget =
         if (pureAnnotation) {
             result.push(pureAnnotation);
         }
-        if (removeAnnotation_) {
-            result.push(removeAnnotation_);
+        if (removeAnnotation1) {
+            result.push(removeAnnotation1);
         }
         if (renameAnnotation) {
             result.push(renameAnnotation);
