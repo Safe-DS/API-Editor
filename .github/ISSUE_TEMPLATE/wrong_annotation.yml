@@ -19,11 +19,9 @@ body:
       description: Which annotation was generated automatically?
       options:
         - '`@boundary`'
-        - '`@constant`'
         - '`@enum`'
-        - '`@optional`'
         - '`@remove`'
-        - '`@required`'
+        - '`@value`'
     validations:
       required: true
 
@@ -42,11 +40,9 @@ body:
       description: Which annotation, if any, did you expect to be generated automatically?
       options:
         - '`@boundary`'
-        - '`@constant`'
         - '`@enum`'
-        - '`@optional`'
         - '`@remove`'
-        - '`@required`'
+        - '`@value`'
         - 'No annotation'
     validations:
       required: true
@@ -80,6 +76,14 @@ body:
     attributes:
       label: Suggested Solution (optional)
       description: Do you already have an idea how this problem could be fixed?
+    validations:
+      required: false
+      
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots (optional)
+      description: You can attach images by clicking this area to highlight it and then dragging files in.
     validations:
       required: false
 
