@@ -3,28 +3,28 @@ import React from 'react';
 import { FaCheck, FaFlag, FaTrash, FaWrench } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
-    removeBoundary,
-    removeCalledAfter,
-    removeDescription,
-    removeEnum,
-    removeGroup,
-    removeMove,
-    removePure,
-    removeRemove,
-    removeRenaming,
-    removeTodo,
-    removeValue,
-    reviewBoundary,
-    reviewCalledAfter,
-    reviewDescription,
-    reviewEnum,
-    reviewGroup,
-    reviewMove,
-    reviewPure,
-    reviewRemove,
-    reviewRenaming,
-    reviewTodo,
-    reviewValue,
+    removeBoundaryAnnotation,
+    removeCalledAfterAnnotation,
+    removeDescriptionAnnotation,
+    removeEnumAnnotation,
+    removeGroupAnnotation,
+    removeMoveAnnotation,
+    removePureAnnotation,
+    removeRemoveAnnotation,
+    removeRenameAnnotation,
+    removeTodoAnnotation,
+    removeValueAnnotation,
+    reviewBoundaryAnnotation,
+    reviewCalledAfterAnnotation,
+    reviewDescriptionAnnotation,
+    reviewEnumAnnotation,
+    reviewGroupAnnotation,
+    reviewMoveAnnotation,
+    reviewPureAnnotation,
+    reviewRemoveAnnotation,
+    reviewRenameAnnotation,
+    reviewTodoAnnotation,
+    reviewValueAnnotation,
     selectBoundaryAnnotation,
     selectCalledAfterAnnotations,
     selectDescriptionAnnotation,
@@ -98,9 +98,9 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     name={boundaryToString(boundaryAnnotation)}
                     annotation={boundaryAnnotation}
                     onEdit={() => dispatch(showBoundaryAnnotationForm(target))}
-                    onDelete={() => dispatch(removeBoundary(target))}
+                    onDelete={() => dispatch(removeBoundaryAnnotation(target))}
                     onReview={() => {
-                        dispatch(reviewBoundary(target));
+                        dispatch(reviewBoundaryAnnotation(target));
                     }}
                     reportable
                 />
@@ -111,8 +111,8 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     name={calledAfterName}
                     key={calledAfterName}
                     annotation={calledAfterAnnotation[calledAfterName]}
-                    onDelete={() => dispatch(removeCalledAfter({ target, calledAfterName }))}
-                    onReview={() => dispatch(reviewCalledAfter({ target, calledAfterName }))}
+                    onDelete={() => dispatch(removeCalledAfterAnnotation({ target, calledAfterName }))}
+                    onReview={() => dispatch(reviewCalledAfterAnnotation({ target, calledAfterName }))}
                 />
             ))}
             {descriptionAnnotation && (
@@ -120,9 +120,9 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     type="description"
                     annotation={descriptionAnnotation}
                     onEdit={() => dispatch(showDescriptionAnnotationForm(target))}
-                    onDelete={() => dispatch(removeDescription(target))}
+                    onDelete={() => dispatch(removeDescriptionAnnotation(target))}
                     onReview={() => {
-                        dispatch(reviewDescription(target));
+                        dispatch(reviewDescriptionAnnotation(target));
                     }}
                 />
             )}
@@ -132,9 +132,9 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     name={enumAnnotation.enumName}
                     annotation={enumAnnotation}
                     onEdit={() => dispatch(showEnumAnnotationForm(target))}
-                    onDelete={() => dispatch(removeEnum(target))}
+                    onDelete={() => dispatch(removeEnumAnnotation(target))}
                     onReview={() => {
-                        dispatch(reviewEnum(target));
+                        dispatch(reviewEnumAnnotation(target));
                     }}
                     reportable
                 />
@@ -146,8 +146,8 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     name={groupName}
                     annotation={groupAnnotations[groupName]}
                     onEdit={() => dispatch(showGroupAnnotationForm({ target, groupName }))}
-                    onDelete={() => dispatch(removeGroup({ target, groupName }))}
-                    onReview={() => dispatch(reviewGroup({ target, groupName }))}
+                    onDelete={() => dispatch(removeGroupAnnotation({ target, groupName }))}
+                    onReview={() => dispatch(reviewGroupAnnotation({ target, groupName }))}
                 />
             ))}
             {moveAnnotation && (
@@ -156,9 +156,9 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     name={moveAnnotation.destination}
                     annotation={moveAnnotation}
                     onEdit={() => dispatch(showMoveAnnotationForm(target))}
-                    onDelete={() => dispatch(removeMove(target))}
+                    onDelete={() => dispatch(removeMoveAnnotation(target))}
                     onReview={() => {
-                        dispatch(reviewMove(target));
+                        dispatch(reviewMoveAnnotation(target));
                     }}
                 />
             )}
@@ -166,16 +166,16 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                 <AnnotationTag
                     type="pure"
                     annotation={pureAnnotation}
-                    onDelete={() => dispatch(removePure(target))}
-                    onReview={() => dispatch(reviewPure(target))}
+                    onDelete={() => dispatch(removePureAnnotation(target))}
+                    onReview={() => dispatch(reviewPureAnnotation(target))}
                 />
             )}
             {removeAnnotation && (
                 <AnnotationTag
                     type="remove"
                     annotation={removeAnnotation}
-                    onDelete={() => dispatch(removeRemove(target))}
-                    onReview={() => dispatch(reviewRemove(target))}
+                    onDelete={() => dispatch(removeRemoveAnnotation(target))}
+                    onReview={() => dispatch(reviewRemoveAnnotation(target))}
                     reportable
                 />
             )}
@@ -185,9 +185,9 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     name={renameAnnotation.newName}
                     annotation={renameAnnotation}
                     onEdit={() => dispatch(showRenameAnnotationForm(target))}
-                    onDelete={() => dispatch(removeRenaming(target))}
+                    onDelete={() => dispatch(removeRenameAnnotation(target))}
                     onReview={() => {
-                        dispatch(reviewRenaming(target));
+                        dispatch(reviewRenameAnnotation(target));
                     }}
                 />
             )}
@@ -197,8 +197,8 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     name={truncate(todoAnnotation.newTodo, 50)}
                     annotation={todoAnnotation}
                     onEdit={() => dispatch(showTodoAnnotationForm(target))}
-                    onDelete={() => dispatch(removeTodo(target))}
-                    onReview={() => dispatch(reviewTodo(target))}
+                    onDelete={() => dispatch(removeTodoAnnotation(target))}
+                    onReview={() => dispatch(reviewTodoAnnotation(target))}
                 />
             )}
             {valueAnnotation && (
@@ -207,8 +207,8 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     name={valueAnnotationToString(valueAnnotation)}
                     annotation={valueAnnotation}
                     onEdit={() => dispatch(showValueAnnotationForm(target))}
-                    onDelete={() => dispatch(removeValue(target))}
-                    onReview={() => dispatch(reviewValue(target))}
+                    onDelete={() => dispatch(removeValueAnnotation(target))}
+                    onReview={() => dispatch(reviewValueAnnotation(target))}
                     reportable
                 />
             )}

@@ -37,7 +37,7 @@ export class DoneFilter extends AbstractPythonFilter {
         _usages: UsageCountStore,
     ): boolean {
         return (
-            pythonDeclaration.id in (annotations.completeAnnotations ?? {}) &&
+            pythonDeclaration.id in annotations.completeAnnotations &&
             this.getAnnotationsForTarget(pythonDeclaration.id, annotations).every(
                 (annotation) => annotation.isRemoved || (annotation.reviewers?.length ?? 0) > 0,
             )

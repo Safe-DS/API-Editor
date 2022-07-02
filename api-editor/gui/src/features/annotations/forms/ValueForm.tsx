@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
-import { selectValueAnnotation, upsertValue } from '../annotationSlice';
+import { selectValueAnnotation, upsertValueAnnotation } from '../annotationSlice';
 import {
     FormControl,
     FormErrorIcon,
@@ -41,7 +41,7 @@ export const ValueForm: React.FC<ValueFormProps> = function ({ target }) {
 
     const handleUpsertAnnotation = (data: TypeValueFormState) => {
         dispatch(
-            upsertValue({
+            upsertValueAnnotation({
                 target: target.id,
                 ...data,
             }),

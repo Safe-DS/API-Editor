@@ -30,7 +30,7 @@ import { booleanPattern, numberPattern } from '../../../common/validation';
 import { AnnotationBatchForm } from './AnnotationBatchForm';
 import { hideAnnotationForm } from '../../ui/uiSlice';
 import { ConfirmAnnotations } from './ConfirmAnnotations';
-import { upsertValues } from '../annotationSlice';
+import { upsertValueAnnotations } from '../annotationSlice';
 
 interface ValueBatchFormProps {
     targets: PythonDeclaration[];
@@ -56,7 +56,7 @@ export const ValueBatchForm: React.FC<ValueBatchFormProps> = function ({ targets
                 defaultValue: data.defaultValue,
             });
         });
-        dispatch(upsertValues(all));
+        dispatch(upsertValueAnnotations(all));
     };
 
     // Rendering -------------------------------------------------------------------------------------------------------

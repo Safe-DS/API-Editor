@@ -94,17 +94,17 @@ export class AnnotationFilter extends AbstractPythonFilter {
 
 const hasSingleUseAnnotation = function (
     target: string,
-    annotations: { [target: string]: Annotation } | void,
+    annotations: { [target: string]: Annotation },
 ): boolean {
-    const annotationOnTarget = (annotations || {})[target];
+    const annotationOnTarget = annotations[target];
     return annotationOnTarget && !annotationOnTarget.isRemoved;
 };
 
 const hasMultiUseAnnotation = function (
     target: string,
-    annotations: { [target: string]: { [key: string]: Annotation } } | void,
+    annotations: { [target: string]: { [key: string]: Annotation } },
 ): boolean {
-    const annotationsOnTarget = Object.values((annotations ?? {})[target] ?? {});
+    const annotationsOnTarget = Object.values(annotations[target] ?? {});
     return annotationsOnTarget.some((annotation) => !annotation.isRemoved);
 };
 

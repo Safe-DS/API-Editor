@@ -2,7 +2,7 @@ import { Box, Button, Icon, Menu, MenuButton, MenuGroup, MenuItem, MenuList } fr
 import React from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { addPure, addRemove, selectComplete, selectUsernameIsValid } from './annotationSlice';
+import { addPureAnnotation, addRemoveAnnotation, selectComplete, selectUsernameIsValid } from './annotationSlice';
 import {
     showBoundaryAnnotationForm,
     showCalledAfterAnnotationForm,
@@ -133,12 +133,12 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                                 </MenuItem>
                             )}
                             {showPure && (
-                                <MenuItem onClick={() => dispatch(addPure({ target }))} paddingLeft={8}>
+                                <MenuItem onClick={() => dispatch(addPureAnnotation({ target }))} paddingLeft={8}>
                                     @pure
                                 </MenuItem>
                             )}
                             {showRemove && (
-                                <MenuItem onClick={() => dispatch(addRemove({ target }))} paddingLeft={8}>
+                                <MenuItem onClick={() => dispatch(addRemoveAnnotation({ target }))} paddingLeft={8}>
                                     @remove
                                 </MenuItem>
                             )}

@@ -2,7 +2,7 @@ import { FormControl, FormLabel, Textarea } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectDescriptionAnnotation, upsertDescription } from '../annotationSlice';
+import { selectDescriptionAnnotation, upsertDescriptionAnnotation } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
 import { hideAnnotationForm } from '../../ui/uiSlice';
 import { PythonClass } from '../../packageData/model/PythonClass';
@@ -49,7 +49,7 @@ export const DescriptionForm: React.FC<DescriptionFormProps> = function ({ targe
 
     const onSave = (data: DescriptionFormState) => {
         dispatch(
-            upsertDescription({
+            upsertDescriptionAnnotation({
                 target: targetPath,
                 ...data,
             }),

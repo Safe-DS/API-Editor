@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
-import { selectTodoAnnotation, upsertTodo } from '../annotationSlice';
+import { selectTodoAnnotation, upsertTodoAnnotation } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
 import { hideAnnotationForm } from '../../ui/uiSlice';
 
@@ -52,7 +52,7 @@ export const TodoForm: React.FC<TodoFormProps> = function ({ target }) {
 
     const onSave = (data: TodoFormState) => {
         dispatch(
-            upsertTodo({
+            upsertTodoAnnotation({
                 target: targetPath,
                 ...data,
             }),

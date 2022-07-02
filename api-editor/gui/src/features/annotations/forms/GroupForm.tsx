@@ -8,7 +8,7 @@ import { PythonFunction } from '../../packageData/model/PythonFunction';
 import { PythonParameter } from '../../packageData/model/PythonParameter';
 import { AnnotationForm } from './AnnotationForm';
 import { hideAnnotationForm } from '../../ui/uiSlice';
-import { selectGroupAnnotations, upsertGroup } from '../annotationSlice';
+import { selectGroupAnnotations, upsertGroupAnnotation } from '../annotationSlice';
 import { GroupAnnotation } from '../versioning/AnnotationStoreV2';
 
 interface GroupFormProps {
@@ -109,7 +109,7 @@ export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName
 
     const onSave = (data: GroupFormState) => {
         dispatch(
-            upsertGroup({
+            upsertGroupAnnotation({
                 target: targetPath,
                 groupName: data.groupName,
                 parameters: getSelectedParameters(),

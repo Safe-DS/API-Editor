@@ -32,10 +32,10 @@ const mergeCalledAfterAnnotations = function (
     theirs: AnnotationStore,
 ): { [target: string]: { [calledAfterName: string]: CalledAfterAnnotation } } {
     const result = { ...theirs.calledAfterAnnotations };
-    for (const target of Object.keys(mine.calledAfterAnnotations ?? {})) {
+    for (const target of Object.keys(mine.calledAfterAnnotations)) {
         result[target] = defaultMergeOneAnnotationType(
-            (mine.calledAfterAnnotations ?? {})[target],
-            (theirs.calledAfterAnnotations ?? {})[target] ?? {},
+            mine.calledAfterAnnotations[target],
+            theirs.calledAfterAnnotations[target],
         );
     }
     return result;
@@ -46,8 +46,8 @@ const mergeCompleteAnnotations = function (
     theirs: AnnotationStore,
 ): { [target: string]: CompleteAnnotation } {
     return {
-        ...(theirs.completeAnnotations ?? {}),
-        ...(mine.completeAnnotations ?? {}),
+        ...theirs.completeAnnotations,
+        ...mine.completeAnnotations,
     };
 };
 
@@ -56,10 +56,10 @@ const mergeGroupAnnotations = function (
     theirs: AnnotationStore,
 ): { [target: string]: { [groupName: string]: GroupAnnotation } } {
     const result = { ...theirs.groupAnnotations };
-    for (const target of Object.keys(mine.groupAnnotations ?? {})) {
+    for (const target of Object.keys(mine.groupAnnotations)) {
         result[target] = defaultMergeOneAnnotationType(
-            (mine.groupAnnotations ?? {})[target],
-            (theirs.groupAnnotations ?? {})[target] ?? {},
+            mine.groupAnnotations[target],
+            theirs.groupAnnotations[target] ?? {},
         );
     }
     return result;
@@ -80,14 +80,14 @@ const isDefinitelyReviewed = function (annotation: Annotation | undefined) {
 };
 
 const defaultMergeOneAnnotationType = function <T extends Annotation>(
-    mine: { [target: string]: T } | void,
-    theirs: { [target: string]: T } | void,
+    mine: { [target: string]: T },
+    theirs: { [target: string]: T },
 ): { [target: string]: T } {
-    const result = { ...(theirs ?? {}) };
+    const result = { ...theirs };
 
-    for (const target of Object.keys(mine ?? {})) {
-        const myAnnotation: T = (mine ?? {})[target];
-        const theirAnnotation: T | undefined = (theirs ?? {})[target];
+    for (const target of Object.keys(mine)) {
+        const myAnnotation: T = mine[target];
+        const theirAnnotation: T | undefined = theirs[target];
 
         // No conflict
         if (!theirAnnotation) {

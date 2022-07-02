@@ -5,7 +5,7 @@ import { PythonClass } from '../../packageData/model/PythonClass';
 import { DestinationBatchForm, DestinationBatchFormState } from './DestinationBatchForm';
 import { PythonFunction } from '../../packageData/model/PythonFunction';
 import { MoveAnnotation } from '../versioning/AnnotationStoreV2';
-import { upsertMoves } from '../annotationSlice';
+import { upsertMovesAnnotation } from '../annotationSlice';
 
 interface MoveBatchFormProps {
     targets: PythonDeclaration[];
@@ -30,7 +30,7 @@ export const MoveBatchForm: React.FC<MoveBatchFormProps> = function ({ targets }
                 destination: data.destination,
             });
         });
-        dispatch(upsertMoves(all));
+        dispatch(upsertMovesAnnotation(all));
     };
 
     // Rendering -------------------------------------------------------------------------------------------------------

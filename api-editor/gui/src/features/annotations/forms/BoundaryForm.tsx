@@ -24,7 +24,7 @@ import { AnnotationForm } from './AnnotationForm';
 import { Optional } from '../../../common/util/types';
 import { hideAnnotationForm } from '../../ui/uiSlice';
 import { ComparisonOperator, Interval } from '../versioning/AnnotationStoreV2';
-import { selectBoundaryAnnotation, upsertBoundary } from '../annotationSlice';
+import { selectBoundaryAnnotation, upsertBoundaryAnnotation } from '../annotationSlice';
 
 interface BoundaryFormProps {
     readonly target: PythonDeclaration;
@@ -84,7 +84,7 @@ export const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
 
     const onSave = (data: BoundaryFormState) => {
         dispatch(
-            upsertBoundary({
+            upsertBoundaryAnnotation({
                 target: targetPath,
                 interval: {
                     isDiscrete: data.interval.isDiscrete,

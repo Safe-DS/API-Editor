@@ -165,7 +165,7 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        upsertBoundary(state, action: PayloadAction<BoundaryAnnotation>) {
+        upsertBoundaryAnnotation(state, action: PayloadAction<BoundaryAnnotation>) {
             updateCreationOrChangedCount(state, state.annotations.boundaryAnnotations[action.payload.target]);
 
             state.annotations.boundaryAnnotations[action.payload.target] = withAuthorAndReviewers(
@@ -176,11 +176,11 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        removeBoundary(state, action: PayloadAction<string>) {
+        removeBoundaryAnnotation(state, action: PayloadAction<string>) {
             removeAnnotation(state, state.annotations.boundaryAnnotations, action.payload);
             updateQueue(state);
         },
-        reviewBoundary(state, action: PayloadAction<string>) {
+        reviewBoundaryAnnotation(state, action: PayloadAction<string>) {
             state.annotations.boundaryAnnotations[action.payload] = withToggledReviewer(
                 state,
                 state.annotations.boundaryAnnotations[action.payload],
@@ -189,7 +189,7 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        upsertCalledAfter(state, action: PayloadAction<CalledAfterAnnotation>) {
+        upsertCalledAfterAnnotation(state, action: PayloadAction<CalledAfterAnnotation>) {
             if (!state.annotations.calledAfterAnnotations[action.payload.target]) {
                 state.annotations.calledAfterAnnotations[action.payload.target] = {};
             }
@@ -207,7 +207,7 @@ const annotationsSlice = createSlice({
                 );
             updateQueue(state);
         },
-        removeCalledAfter(state, action: PayloadAction<CalledAfterTarget>) {
+        removeCalledAfterAnnotation(state, action: PayloadAction<CalledAfterTarget>) {
             removeAnnotation(
                 state,
                 state.annotations.calledAfterAnnotations[action.payload.target],
@@ -221,7 +221,7 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        reviewCalledAfter(state, action: PayloadAction<CalledAfterTarget>) {
+        reviewCalledAfterAnnotation(state, action: PayloadAction<CalledAfterTarget>) {
             state.annotations.calledAfterAnnotations[action.payload.target][action.payload.calledAfterName] =
                 withToggledReviewer(
                     state,
@@ -262,7 +262,7 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         // Cannot review complete annotations
-        upsertDescription(state, action: PayloadAction<DescriptionAnnotation>) {
+        upsertDescriptionAnnotation(state, action: PayloadAction<DescriptionAnnotation>) {
             updateCreationOrChangedCount(state, state.annotations.descriptionAnnotations[action.payload.target]);
 
             state.annotations.descriptionAnnotations[action.payload.target] = withAuthorAndReviewers(
@@ -273,11 +273,11 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        removeDescription(state, action: PayloadAction<string>) {
+        removeDescriptionAnnotation(state, action: PayloadAction<string>) {
             removeAnnotation(state, state.annotations.descriptionAnnotations, action.payload);
             updateQueue(state);
         },
-        reviewDescription(state, action: PayloadAction<string>) {
+        reviewDescriptionAnnotation(state, action: PayloadAction<string>) {
             state.annotations.descriptionAnnotations[action.payload] = withToggledReviewer(
                 state,
                 state.annotations.descriptionAnnotations[action.payload],
@@ -286,7 +286,7 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        upsertEnum(state, action: PayloadAction<EnumAnnotation>) {
+        upsertEnumAnnotation(state, action: PayloadAction<EnumAnnotation>) {
             updateCreationOrChangedCount(state, state.annotations.enumAnnotations[action.payload.target]);
 
             state.annotations.enumAnnotations[action.payload.target] = withAuthorAndReviewers(
@@ -297,11 +297,11 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        removeEnum(state, action: PayloadAction<string>) {
+        removeEnumAnnotation(state, action: PayloadAction<string>) {
             removeAnnotation(state, state.annotations.enumAnnotations, action.payload);
             updateQueue(state);
         },
-        reviewEnum(state, action: PayloadAction<string>) {
+        reviewEnumAnnotation(state, action: PayloadAction<string>) {
             state.annotations.enumAnnotations[action.payload] = withToggledReviewer(
                 state,
                 state.annotations.enumAnnotations[action.payload],
@@ -310,7 +310,7 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        upsertGroup(state, action: PayloadAction<GroupAnnotation>) {
+        upsertGroupAnnotation(state, action: PayloadAction<GroupAnnotation>) {
             if (!state.annotations.groupAnnotations[action.payload.target]) {
                 state.annotations.groupAnnotations[action.payload.target] = {};
             } else {
@@ -332,7 +332,7 @@ const annotationsSlice = createSlice({
                         }
                     }
                     if (currentGroupParameter.length < 1) {
-                        removeGroup({
+                        removeGroupAnnotation({
                             target: action.payload.target,
                             groupName: group.groupName,
                         });
@@ -364,7 +364,7 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        removeGroup(state, action: PayloadAction<GroupTarget>) {
+        removeGroupAnnotation(state, action: PayloadAction<GroupTarget>) {
             removeAnnotation(
                 state,
                 state.annotations.groupAnnotations[action.payload.target],
@@ -378,7 +378,7 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        reviewGroup(state, action: PayloadAction<GroupTarget>) {
+        reviewGroupAnnotation(state, action: PayloadAction<GroupTarget>) {
             state.annotations.groupAnnotations[action.payload.target][action.payload.groupName] = withToggledReviewer(
                 state,
                 state.annotations.groupAnnotations[action.payload.target][action.payload.groupName],
@@ -387,7 +387,7 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        upsertMove(state, action: PayloadAction<MoveAnnotation>) {
+        upsertMoveAnnotation(state, action: PayloadAction<MoveAnnotation>) {
             updateCreationOrChangedCount(state, state.annotations.moveAnnotations[action.payload.target]);
 
             state.annotations.moveAnnotations[action.payload.target] = withAuthorAndReviewers(
@@ -398,7 +398,7 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        upsertMoves(state, action: PayloadAction<MoveAnnotation[]>) {
+        upsertMovesAnnotation(state, action: PayloadAction<MoveAnnotation[]>) {
             action.payload.forEach((annotation) => {
                 updateCreationOrChangedCount(state, state.annotations.moveAnnotations[annotation.target]);
 
@@ -411,11 +411,11 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        removeMove(state, action: PayloadAction<string>) {
+        removeMoveAnnotation(state, action: PayloadAction<string>) {
             removeAnnotation(state, state.annotations.moveAnnotations, action.payload);
             updateQueue(state);
         },
-        reviewMove(state, action: PayloadAction<string>) {
+        reviewMoveAnnotation(state, action: PayloadAction<string>) {
             state.annotations.moveAnnotations[action.payload] = withToggledReviewer(
                 state,
                 state.annotations.moveAnnotations[action.payload],
@@ -424,7 +424,7 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        addPure(state, action: PayloadAction<PureAnnotation>) {
+        addPureAnnotation(state, action: PayloadAction<PureAnnotation>) {
             updateCreationOrChangedCount(state, state.annotations.pureAnnotations[action.payload.target]);
 
             state.annotations.pureAnnotations[action.payload.target] = withAuthorAndReviewers(
@@ -435,11 +435,11 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        removePure(state, action: PayloadAction<string>) {
+        removePureAnnotation(state, action: PayloadAction<string>) {
             removeAnnotation(state, state.annotations.pureAnnotations, action.payload);
             updateQueue(state);
         },
-        reviewPure(state, action: PayloadAction<string>) {
+        reviewPureAnnotation(state, action: PayloadAction<string>) {
             state.annotations.pureAnnotations[action.payload] = withToggledReviewer(
                 state,
                 state.annotations.pureAnnotations[action.payload],
@@ -448,44 +448,7 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        upsertRenaming(state, action: PayloadAction<RenameAnnotation>) {
-            updateCreationOrChangedCount(state, state.annotations.renameAnnotations[action.payload.target]);
-
-            state.annotations.renameAnnotations[action.payload.target] = withAuthorAndReviewers(
-                state.annotations.renameAnnotations[action.payload.target],
-                action.payload,
-                state.username,
-            );
-
-            updateQueue(state);
-        },
-        upsertRenamings(state, action: PayloadAction<RenameAnnotation[]>) {
-            action.payload.forEach((annotation) => {
-                updateCreationOrChangedCount(state, state.annotations.renameAnnotations[annotation.target]);
-
-                state.annotations.renameAnnotations[annotation.target] = withAuthorAndReviewers(
-                    state.annotations.renameAnnotations[annotation.target],
-                    annotation,
-                    state.username,
-                );
-            });
-
-            updateQueue(state);
-        },
-        removeRenaming(state, action: PayloadAction<string>) {
-            removeAnnotation(state, state.annotations.renameAnnotations, action.payload);
-            updateQueue(state);
-        },
-        reviewRenaming(state, action: PayloadAction<string>) {
-            state.annotations.renameAnnotations[action.payload] = withToggledReviewer(
-                state,
-                state.annotations.renameAnnotations[action.payload],
-                state.username,
-            );
-
-            updateQueue(state);
-        },
-        addRemove(state, action: PayloadAction<RemoveAnnotation>) {
+        addRemoveAnnotation(state, action: PayloadAction<RemoveAnnotation>) {
             updateCreationOrChangedCount(state, state.annotations.removeAnnotations[action.payload.target]);
 
             state.annotations.removeAnnotations[action.payload.target] = withAuthorAndReviewers(
@@ -496,7 +459,7 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        upsertRemoves(state, action: PayloadAction<RemoveAnnotation[]>) {
+        addRemoveAnnotations(state, action: PayloadAction<RemoveAnnotation[]>) {
             action.payload.forEach((annotation) => {
                 updateCreationOrChangedCount(state, state.annotations.removeAnnotations[annotation.target]);
 
@@ -509,11 +472,11 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        removeRemove(state, action: PayloadAction<string>) {
+        removeRemoveAnnotation(state, action: PayloadAction<string>) {
             removeAnnotation(state, state.annotations.removeAnnotations, action.payload);
             updateQueue(state);
         },
-        reviewRemove(state, action: PayloadAction<string>) {
+        reviewRemoveAnnotation(state, action: PayloadAction<string>) {
             state.annotations.removeAnnotations[action.payload] = withToggledReviewer(
                 state,
                 state.annotations.removeAnnotations[action.payload],
@@ -522,7 +485,44 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        upsertTodo(state, action: PayloadAction<TodoAnnotation>) {
+        upsertRenameAnnotation(state, action: PayloadAction<RenameAnnotation>) {
+            updateCreationOrChangedCount(state, state.annotations.renameAnnotations[action.payload.target]);
+
+            state.annotations.renameAnnotations[action.payload.target] = withAuthorAndReviewers(
+                state.annotations.renameAnnotations[action.payload.target],
+                action.payload,
+                state.username,
+            );
+
+            updateQueue(state);
+        },
+        upsertRenameAnnotations(state, action: PayloadAction<RenameAnnotation[]>) {
+            action.payload.forEach((annotation) => {
+                updateCreationOrChangedCount(state, state.annotations.renameAnnotations[annotation.target]);
+
+                state.annotations.renameAnnotations[annotation.target] = withAuthorAndReviewers(
+                    state.annotations.renameAnnotations[annotation.target],
+                    annotation,
+                    state.username,
+                );
+            });
+
+            updateQueue(state);
+        },
+        removeRenameAnnotation(state, action: PayloadAction<string>) {
+            removeAnnotation(state, state.annotations.renameAnnotations, action.payload);
+            updateQueue(state);
+        },
+        reviewRenameAnnotation(state, action: PayloadAction<string>) {
+            state.annotations.renameAnnotations[action.payload] = withToggledReviewer(
+                state,
+                state.annotations.renameAnnotations[action.payload],
+                state.username,
+            );
+
+            updateQueue(state);
+        },
+        upsertTodoAnnotation(state, action: PayloadAction<TodoAnnotation>) {
             updateCreationOrChangedCount(state, state.annotations.todoAnnotations[action.payload.target]);
 
             state.annotations.todoAnnotations[action.payload.target] = withAuthorAndReviewers(
@@ -533,11 +533,11 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        removeTodo(state, action: PayloadAction<string>) {
+        removeTodoAnnotation(state, action: PayloadAction<string>) {
             removeAnnotation(state, state.annotations.todoAnnotations, action.payload);
             updateQueue(state);
         },
-        reviewTodo(state, action: PayloadAction<string>) {
+        reviewTodoAnnotation(state, action: PayloadAction<string>) {
             state.annotations.todoAnnotations[action.payload] = withToggledReviewer(
                 state,
                 state.annotations.todoAnnotations[action.payload],
@@ -546,7 +546,7 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        upsertValue(state, action: PayloadAction<ValueAnnotation>) {
+        upsertValueAnnotation(state, action: PayloadAction<ValueAnnotation>) {
             updateCreationOrChangedCount(state, state.annotations.valueAnnotations[action.payload.target]);
 
             state.annotations.valueAnnotations[action.payload.target] = withAuthorAndReviewers(
@@ -557,7 +557,7 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        upsertValues(state, action: PayloadAction<ValueAnnotation[]>) {
+        upsertValueAnnotations(state, action: PayloadAction<ValueAnnotation[]>) {
             action.payload.forEach((annotation) => {
                 updateCreationOrChangedCount(state, state.annotations.valueAnnotations[annotation.target]);
 
@@ -570,11 +570,11 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        removeValue(state, action: PayloadAction<string>) {
+        removeValueAnnotation(state, action: PayloadAction<string>) {
             removeAnnotation(state, state.annotations.valueAnnotations, action.payload);
             updateQueue(state);
         },
-        reviewValue(state, action: PayloadAction<string>) {
+        reviewValueAnnotation(state, action: PayloadAction<string>) {
             state.annotations.valueAnnotations[action.payload] = withToggledReviewer(
                 state,
                 state.annotations.valueAnnotations[action.payload],
@@ -675,46 +675,46 @@ export const {
     mergeAnnotationStore,
     resetAnnotationStore,
 
-    upsertBoundary,
-    removeBoundary,
-    reviewBoundary,
-    upsertCalledAfter,
-    removeCalledAfter,
-    reviewCalledAfter,
+    upsertBoundaryAnnotation,
+    removeBoundaryAnnotation,
+    reviewBoundaryAnnotation,
+    upsertCalledAfterAnnotation,
+    removeCalledAfterAnnotation,
+    reviewCalledAfterAnnotation,
     addComplete,
     removeComplete,
     toggleComplete,
-    upsertDescription,
-    removeDescription,
-    reviewDescription,
-    upsertEnum,
-    removeEnum,
-    reviewEnum,
-    upsertGroup,
-    removeGroup,
-    reviewGroup,
-    upsertMove,
-    upsertMoves,
-    removeMove,
-    reviewMove,
-    addPure,
-    removePure,
-    reviewPure,
-    upsertRenaming,
-    upsertRenamings,
-    removeRenaming,
-    reviewRenaming,
-    upsertTodo,
-    removeTodo,
-    reviewTodo,
-    addRemove,
-    upsertRemoves,
-    removeRemove,
-    reviewRemove,
-    upsertValue,
-    upsertValues,
-    removeValue,
-    reviewValue,
+    upsertDescriptionAnnotation,
+    removeDescriptionAnnotation,
+    reviewDescriptionAnnotation,
+    upsertEnumAnnotation,
+    removeEnumAnnotation,
+    reviewEnumAnnotation,
+    upsertGroupAnnotation,
+    removeGroupAnnotation,
+    reviewGroupAnnotation,
+    upsertMoveAnnotation,
+    upsertMovesAnnotation,
+    removeMoveAnnotation,
+    reviewMoveAnnotation,
+    addPureAnnotation,
+    removePureAnnotation,
+    reviewPureAnnotation,
+    addRemoveAnnotation,
+    addRemoveAnnotations,
+    removeRemoveAnnotation,
+    reviewRemoveAnnotation,
+    upsertRenameAnnotation,
+    upsertRenameAnnotations,
+    removeRenameAnnotation,
+    reviewRenameAnnotation,
+    upsertTodoAnnotation,
+    removeTodoAnnotation,
+    reviewTodoAnnotation,
+    upsertValueAnnotation,
+    upsertValueAnnotations,
+    removeValueAnnotation,
+    reviewValueAnnotation,
 
     undo,
     redo,

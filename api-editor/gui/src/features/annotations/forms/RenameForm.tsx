@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { pythonIdentifierPattern } from '../../../common/validation';
 import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
-import { selectRenameAnnotation, upsertRenaming } from '../annotationSlice';
+import { selectRenameAnnotation, upsertRenameAnnotation } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
 import { hideAnnotationForm } from '../../ui/uiSlice';
 
@@ -54,7 +54,7 @@ export const RenameForm: React.FC<RenameFormProps> = function ({ target }) {
 
     const onSave = (data: RenameFormState) => {
         dispatch(
-            upsertRenaming({
+            upsertRenameAnnotation({
                 target: targetPath,
                 ...data,
             }),

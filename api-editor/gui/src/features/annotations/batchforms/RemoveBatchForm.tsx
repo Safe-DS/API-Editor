@@ -5,7 +5,7 @@ import { EmptyBatchForm } from './EmptyBatchForm';
 import { PythonClass } from '../../packageData/model/PythonClass';
 import { PythonFunction } from '../../packageData/model/PythonFunction';
 import { RemoveAnnotation } from '../versioning/AnnotationStoreV2';
-import { upsertRemoves } from '../annotationSlice';
+import { addRemoveAnnotations } from '../annotationSlice';
 
 interface RemoveBatchFormProps {
     targets: PythonDeclaration[];
@@ -27,7 +27,7 @@ export const RemoveBatchForm: React.FC<RemoveBatchFormProps> = function ({ targe
                 target: targetPath,
             });
         });
-        dispatch(upsertRemoves(all));
+        dispatch(addRemoveAnnotations(all));
     };
 
     // Rendering -------------------------------------------------------------------------------------------------------

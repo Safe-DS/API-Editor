@@ -83,18 +83,18 @@ export const AnnotationStatistics = function () {
 };
 
 const countNonRepeatableAnnotation = (
-    targetToAnnotation: { [target: string]: Annotation } | void,
+    targetToAnnotation: { [target: string]: Annotation },
     matchedIds: string[],
 ) => {
-    return Object.values(targetToAnnotation ?? {}).filter((it) => it && !it.isRemoved && matchedIds.includes(it.target))
+    return Object.values(targetToAnnotation ).filter((it) => it && !it.isRemoved && matchedIds.includes(it.target))
         .length;
 };
 
 const countRepeatableAnnotation = (
-    targetToNameToAnnotation: { [target: string]: { [name: string]: Annotation } } | void,
+    targetToNameToAnnotation: { [target: string]: { [name: string]: Annotation } },
     matchedIds: string[],
 ) => {
-    return Object.entries(targetToNameToAnnotation ?? {}).reduce((acc, [target, nameToAnnotations]) => {
+    return Object.entries(targetToNameToAnnotation).reduce((acc, [target, nameToAnnotations]) => {
         if (matchedIds.includes(target)) {
             return acc + Object.values(nameToAnnotations).filter((it) => it && !it.isRemoved).length;
         } else {

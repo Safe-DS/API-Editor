@@ -21,19 +21,19 @@ export const QualityStatistics = function () {
                 <SimpleGrid columns={{ base: 1, fullHD: 2 }} width="100%">
                     <QualityPieChart
                         annotationType="Boundary"
-                        annotations={Object.values(annotationStore.boundaryAnnotations ?? {})}
+                        annotations={Object.values(annotationStore.boundaryAnnotations)}
                     />
                     <QualityPieChart
                         annotationType="Enum"
-                        annotations={Object.values(annotationStore.enumAnnotations ?? {})}
+                        annotations={Object.values(annotationStore.enumAnnotations)}
                     />
                     <QualityPieChart
                         annotationType="Remove"
-                        annotations={Object.values(annotationStore.removeAnnotations ?? {})}
+                        annotations={Object.values(annotationStore.removeAnnotations)}
                     />
                     <QualityPieChart
                         annotationType="Value"
-                        annotations={Object.values(annotationStore.valueAnnotations ?? {})}
+                        annotations={Object.values(annotationStore.valueAnnotations)}
                     />
                 </SimpleGrid>
             </Box>

@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { moduleNamePattern } from '../../../common/validation';
 import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
-import { selectMoveAnnotation, upsertMove } from '../annotationSlice';
+import { selectMoveAnnotation, upsertMoveAnnotation } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
 import { hideAnnotationForm } from '../../ui/uiSlice';
 
@@ -54,7 +54,7 @@ export const MoveForm: React.FC<MoveFormProps> = function ({ target }) {
 
     const onSave = (data: MoveFormState) => {
         dispatch(
-            upsertMove({
+            upsertMoveAnnotation({
                 target: targetPath,
                 ...data,
             }),

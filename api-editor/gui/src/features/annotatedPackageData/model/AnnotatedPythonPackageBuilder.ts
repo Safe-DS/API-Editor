@@ -170,13 +170,13 @@ export class AnnotatedPythonPackageBuilder {
     ): InferableAnnotation[] | InferableAnnotation | undefined {
         switch (annotationType) {
             case 'Boundary':
-                const boundaryAnnotation = (this.annotationStore.boundaryAnnotations ?? {})[target];
+                const boundaryAnnotation = this.annotationStore.boundaryAnnotations[target];
                 if (boundaryAnnotation && !boundaryAnnotation.isRemoved) {
                     return new InferableBoundaryAnnotation(boundaryAnnotation);
                 }
                 break;
             case 'CalledAfters':
-                const calledAfterAnnotations = (this.annotationStore.calledAfterAnnotations ?? {})[target];
+                const calledAfterAnnotations = this.annotationStore.calledAfterAnnotations[target];
                 if (!calledAfterAnnotations) {
                     break;
                 }
@@ -184,19 +184,19 @@ export class AnnotatedPythonPackageBuilder {
                     .filter((it) => !it.isRemoved)
                     .map((calledAfterAnnotation) => new InferableCalledAfterAnnotation(calledAfterAnnotation));
             case 'Constant':
-                const valueAnnotation1 = (this.annotationStore.valueAnnotations ?? {})[target];
+                const valueAnnotation1 = this.annotationStore.valueAnnotations[target];
                 if (valueAnnotation1 && !valueAnnotation1.isRemoved && valueAnnotation1.variant === 'constant') {
                     return new InferableConstantAnnotation(valueAnnotation1);
                 }
                 break;
             case 'Description':
-                const descriptionAnnotation = (this.annotationStore.descriptionAnnotations ?? {})[target];
+                const descriptionAnnotation = this.annotationStore.descriptionAnnotations[target];
                 if (descriptionAnnotation && !descriptionAnnotation.isRemoved) {
                     return new InferableDescriptionAnnotation(descriptionAnnotation);
                 }
                 break;
             case 'Groups':
-                const groupAnnotations = (this.annotationStore.groupAnnotations ?? {})[target];
+                const groupAnnotations = this.annotationStore.groupAnnotations[target];
                 if (!groupAnnotations) {
                     break;
                 }
@@ -204,49 +204,49 @@ export class AnnotatedPythonPackageBuilder {
                     .filter((it) => !it.isRemoved)
                     .map((groupAnnotation) => new InferableGroupAnnotation(groupAnnotation));
             case 'Enum':
-                const enumAnnotation = (this.annotationStore.enumAnnotations ?? {})[target];
+                const enumAnnotation = this.annotationStore.enumAnnotations[target];
                 if (enumAnnotation && !enumAnnotation.isRemoved) {
                     return new InferableEnumAnnotation(enumAnnotation);
                 }
                 break;
             case 'Move':
-                const moveAnnotation = (this.annotationStore.moveAnnotations ?? {})[target];
+                const moveAnnotation = this.annotationStore.moveAnnotations[target];
                 if (moveAnnotation && !moveAnnotation.isRemoved) {
                     return new InferableMoveAnnotation(moveAnnotation);
                 }
                 break;
             case 'Optional':
-                const valueAnnotation2 = (this.annotationStore.valueAnnotations ?? {})[target];
+                const valueAnnotation2 = this.annotationStore.valueAnnotations[target];
                 if (valueAnnotation2 && !valueAnnotation2.isRemoved && valueAnnotation2.variant === 'optional') {
                     return new InferableOptionalAnnotation(valueAnnotation2);
                 }
                 break;
             case 'Pure':
-                const pureAnnotation = (this.annotationStore.pureAnnotations ?? {})[target];
+                const pureAnnotation = this.annotationStore.pureAnnotations[target];
                 if (pureAnnotation && !pureAnnotation.isRemoved) {
                     return new InferablePureAnnotation();
                 }
                 break;
             case 'Remove':
-                const removeAnnotation = (this.annotationStore.removeAnnotations ?? {})[target];
+                const removeAnnotation = this.annotationStore.removeAnnotations[target];
                 if (removeAnnotation && !removeAnnotation.isRemoved) {
                     return new InferableRemoveAnnotation();
                 }
                 break;
             case 'Rename':
-                const renameAnnotation = (this.annotationStore.renameAnnotations ?? {})[target];
+                const renameAnnotation = this.annotationStore.renameAnnotations[target];
                 if (renameAnnotation && !renameAnnotation.isRemoved) {
                     return new InferableRenameAnnotation(renameAnnotation);
                 }
                 break;
             case 'Required':
-                const valueAnnotation3 = (this.annotationStore.valueAnnotations ?? {})[target];
+                const valueAnnotation3 = this.annotationStore.valueAnnotations[target];
                 if (valueAnnotation3 && !valueAnnotation3.isRemoved && valueAnnotation3.variant === 'required') {
                     return new InferableRequiredAnnotation();
                 }
                 break;
             case 'Todo':
-                const todoAnnotation = (this.annotationStore.todoAnnotations ?? {})[target];
+                const todoAnnotation = this.annotationStore.todoAnnotations[target];
                 if (todoAnnotation && !todoAnnotation.isRemoved) {
                     return new InferableTodoAnnotation(todoAnnotation);
                 }
