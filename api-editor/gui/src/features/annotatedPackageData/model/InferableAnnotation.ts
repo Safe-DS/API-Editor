@@ -12,7 +12,7 @@ import {
     TodoAnnotation, DefaultValueType, ValueAnnotation,
 } from '../../annotations/versioning/AnnotationStoreV2';
 
-const dataPathPrefix = 'com.larsreimann.api_editor.model.';
+const dataPathPrefix = 'com.larsreimann.apiEditor.model.';
 
 const convertDefaultValue = (type: DefaultValueType, value: DefaultValue) => {
     switch (type) {
