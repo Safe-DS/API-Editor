@@ -1,10 +1,10 @@
 package com.larsreimann.apiEditor.transformation
 
 import com.larsreimann.apiEditor.model.RemoveAnnotation
-import com.larsreimann.apiEditor.mutable_model.PythonClass
-import com.larsreimann.apiEditor.mutable_model.PythonFunction
-import com.larsreimann.apiEditor.mutable_model.PythonModule
-import com.larsreimann.apiEditor.mutable_model.PythonPackage
+import com.larsreimann.apiEditor.mutableModel.PythonClass
+import com.larsreimann.apiEditor.mutableModel.PythonFunction
+import com.larsreimann.apiEditor.mutableModel.PythonModule
+import com.larsreimann.apiEditor.mutableModel.PythonPackage
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldHaveSize
 import org.junit.jupiter.api.BeforeEach

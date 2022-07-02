@@ -1,11 +1,11 @@
 package com.larsreimann.apiEditor.transformation
 
 import com.larsreimann.apiEditor.model.TodoAnnotation
-import com.larsreimann.apiEditor.mutable_model.PythonClass
-import com.larsreimann.apiEditor.mutable_model.PythonDeclaration
-import com.larsreimann.apiEditor.mutable_model.PythonFunction
-import com.larsreimann.apiEditor.mutable_model.PythonPackage
-import com.larsreimann.apiEditor.mutable_model.PythonParameter
+import com.larsreimann.apiEditor.mutableModel.PythonClass
+import com.larsreimann.apiEditor.mutableModel.PythonDeclaration
+import com.larsreimann.apiEditor.mutableModel.PythonFunction
+import com.larsreimann.apiEditor.mutableModel.PythonPackage
+import com.larsreimann.apiEditor.mutableModel.PythonParameter
 import com.larsreimann.modeling.descendants
 
 /**

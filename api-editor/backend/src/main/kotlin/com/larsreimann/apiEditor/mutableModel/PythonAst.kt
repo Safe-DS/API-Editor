@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.larsreimann.apiEditor.mutable_model
+package com.larsreimann.apiEditor.mutableModel
 
 import com.larsreimann.apiEditor.model.Boundary
 import com.larsreimann.apiEditor.model.EditorAnnotation

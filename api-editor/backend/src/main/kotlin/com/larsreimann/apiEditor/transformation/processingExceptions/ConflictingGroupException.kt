@@ -1,4 +1,4 @@
-package com.larsreimann.apiEditor.transformation.processing_exceptions
+package com.larsreimann.apiEditor.transformation.processingExceptions
 
 class ConflictingGroupException(groupName: String, moduleName: String, qualifiedFunctionName: String) :
     Exception(

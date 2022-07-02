@@ -1,10 +1,10 @@
 package com.larsreimann.apiEditor.codegen
 
 import com.larsreimann.apiEditor.model.PythonParameterAssignment
-import com.larsreimann.apiEditor.mutable_model.PythonAttribute
-import com.larsreimann.apiEditor.mutable_model.PythonClass
-import com.larsreimann.apiEditor.mutable_model.PythonFunction
-import com.larsreimann.apiEditor.mutable_model.PythonParameter
+import com.larsreimann.apiEditor.mutableModel.PythonAttribute
+import com.larsreimann.apiEditor.mutableModel.PythonClass
+import com.larsreimann.apiEditor.mutableModel.PythonFunction
+import com.larsreimann.apiEditor.mutableModel.PythonParameter
 
 private fun attributesDocstring(attributes: List<PythonAttribute>) = buildString {
     if (attributes.all { it.description.isBlank() }) {

@@ -1,18 +1,18 @@
 package com.larsreimann.apiEditor.transformation
 
 import com.larsreimann.apiEditor.model.EnumAnnotation
-import com.larsreimann.apiEditor.mutable_model.PythonArgument
-import com.larsreimann.apiEditor.mutable_model.PythonAttribute
-import com.larsreimann.apiEditor.mutable_model.PythonEnum
-import com.larsreimann.apiEditor.mutable_model.PythonEnumInstance
-import com.larsreimann.apiEditor.mutable_model.PythonMemberAccess
-import com.larsreimann.apiEditor.mutable_model.PythonModule
-import com.larsreimann.apiEditor.mutable_model.PythonNamedType
-import com.larsreimann.apiEditor.mutable_model.PythonPackage
-import com.larsreimann.apiEditor.mutable_model.PythonParameter
-import com.larsreimann.apiEditor.mutable_model.PythonReference
-import com.larsreimann.apiEditor.mutable_model.PythonString
-import com.larsreimann.apiEditor.transformation.processing_exceptions.ConflictingEnumException
+import com.larsreimann.apiEditor.mutableModel.PythonArgument
+import com.larsreimann.apiEditor.mutableModel.PythonAttribute
+import com.larsreimann.apiEditor.mutableModel.PythonEnum
+import com.larsreimann.apiEditor.mutableModel.PythonEnumInstance
+import com.larsreimann.apiEditor.mutableModel.PythonMemberAccess
+import com.larsreimann.apiEditor.mutableModel.PythonModule
+import com.larsreimann.apiEditor.mutableModel.PythonNamedType
+import com.larsreimann.apiEditor.mutableModel.PythonPackage
+import com.larsreimann.apiEditor.mutableModel.PythonParameter
+import com.larsreimann.apiEditor.mutableModel.PythonReference
+import com.larsreimann.apiEditor.mutableModel.PythonString
+import com.larsreimann.apiEditor.transformation.processingExceptions.ConflictingEnumException
 import com.larsreimann.modeling.closest
 import com.larsreimann.modeling.descendants
 

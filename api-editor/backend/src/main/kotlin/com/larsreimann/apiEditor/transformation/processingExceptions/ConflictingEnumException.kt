@@ -1,4 +1,4 @@
-package com.larsreimann.apiEditor.transformation.processing_exceptions
+package com.larsreimann.apiEditor.transformation.processingExceptions
 
 class ConflictingEnumException(enumName: String, moduleName: String, qualifiedParameterName: String) :
     Exception(

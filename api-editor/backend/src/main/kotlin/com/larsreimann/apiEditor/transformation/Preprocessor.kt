@@ -1,18 +1,18 @@
 package com.larsreimann.apiEditor.transformation
 
 import com.larsreimann.apiEditor.model.PythonParameterAssignment
-import com.larsreimann.apiEditor.mutable_model.OriginalPythonClass
-import com.larsreimann.apiEditor.mutable_model.PythonArgument
-import com.larsreimann.apiEditor.mutable_model.PythonAttribute
-import com.larsreimann.apiEditor.mutable_model.PythonCall
-import com.larsreimann.apiEditor.mutable_model.PythonClass
-import com.larsreimann.apiEditor.mutable_model.PythonFunction
-import com.larsreimann.apiEditor.mutable_model.PythonNamedSpread
-import com.larsreimann.apiEditor.mutable_model.PythonPackage
-import com.larsreimann.apiEditor.mutable_model.PythonParameter
-import com.larsreimann.apiEditor.mutable_model.PythonPositionalSpread
-import com.larsreimann.apiEditor.mutable_model.PythonReference
-import com.larsreimann.apiEditor.mutable_model.PythonStringifiedExpression
+import com.larsreimann.apiEditor.mutableModel.OriginalPythonClass
+import com.larsreimann.apiEditor.mutableModel.PythonArgument
+import com.larsreimann.apiEditor.mutableModel.PythonAttribute
+import com.larsreimann.apiEditor.mutableModel.PythonCall
+import com.larsreimann.apiEditor.mutableModel.PythonClass
+import com.larsreimann.apiEditor.mutableModel.PythonFunction
+import com.larsreimann.apiEditor.mutableModel.PythonNamedSpread
+import com.larsreimann.apiEditor.mutableModel.PythonPackage
+import com.larsreimann.apiEditor.mutableModel.PythonParameter
+import com.larsreimann.apiEditor.mutableModel.PythonPositionalSpread
+import com.larsreimann.apiEditor.mutableModel.PythonReference
+import com.larsreimann.apiEditor.mutableModel.PythonStringifiedExpression
 import com.larsreimann.modeling.closest
 import com.larsreimann.modeling.descendants
 

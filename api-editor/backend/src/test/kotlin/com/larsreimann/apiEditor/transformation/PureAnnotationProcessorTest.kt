@@ -1,9 +1,9 @@
 package com.larsreimann.apiEditor.transformation
 
 import com.larsreimann.apiEditor.model.PureAnnotation
-import com.larsreimann.apiEditor.mutable_model.PythonFunction
-import com.larsreimann.apiEditor.mutable_model.PythonModule
-import com.larsreimann.apiEditor.mutable_model.PythonPackage
+import com.larsreimann.apiEditor.mutableModel.PythonFunction
+import com.larsreimann.apiEditor.mutableModel.PythonModule
+import com.larsreimann.apiEditor.mutableModel.PythonPackage
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach

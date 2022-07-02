@@ -2,14 +2,14 @@ package com.larsreimann.apiEditor.transformation
 
 import com.larsreimann.apiEditor.model.PythonParameterAssignment
 import com.larsreimann.apiEditor.model.PythonParameterAssignment.IMPLICIT
-import com.larsreimann.apiEditor.mutable_model.PythonAttribute
-import com.larsreimann.apiEditor.mutable_model.PythonCall
-import com.larsreimann.apiEditor.mutable_model.PythonClass
-import com.larsreimann.apiEditor.mutable_model.PythonConstructor
-import com.larsreimann.apiEditor.mutable_model.PythonFunction
-import com.larsreimann.apiEditor.mutable_model.PythonPackage
-import com.larsreimann.apiEditor.mutable_model.PythonParameter
-import com.larsreimann.apiEditor.mutable_model.PythonStringifiedExpression
+import com.larsreimann.apiEditor.mutableModel.PythonAttribute
+import com.larsreimann.apiEditor.mutableModel.PythonCall
+import com.larsreimann.apiEditor.mutableModel.PythonClass
+import com.larsreimann.apiEditor.mutableModel.PythonConstructor
+import com.larsreimann.apiEditor.mutableModel.PythonFunction
+import com.larsreimann.apiEditor.mutableModel.PythonPackage
+import com.larsreimann.apiEditor.mutableModel.PythonParameter
+import com.larsreimann.apiEditor.mutableModel.PythonStringifiedExpression
 import com.larsreimann.modeling.ModelNode
 import com.larsreimann.modeling.descendants
 import java.lang.IllegalStateException

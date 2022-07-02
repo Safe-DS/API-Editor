@@ -1,4 +1,4 @@
-package com.larsreimann.apiEditor.mutable_model
+package com.larsreimann.apiEditor.mutableModel
 
 import com.larsreimann.apiEditor.model.SerializablePythonAttribute
 import com.larsreimann.apiEditor.model.SerializablePythonClass

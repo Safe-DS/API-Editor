@@ -1,6 +1,6 @@
 package com.larsreimann.apiEditor.transformation
 
-import com.larsreimann.apiEditor.mutable_model.PythonPackage
+import com.larsreimann.apiEditor.mutableModel.PythonPackage
 
 /**
  * Processes all annotations and updates the AST to create adapters.

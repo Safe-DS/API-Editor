@@ -1,7 +1,7 @@
 package com.larsreimann.apiEditor.codegen
 
-import com.larsreimann.apiEditor.mutable_model.PythonModule
-import com.larsreimann.apiEditor.mutable_model.PythonPackage
+import com.larsreimann.apiEditor.mutableModel.PythonModule
+import com.larsreimann.apiEditor.mutableModel.PythonPackage
 import com.larsreimann.safeds.constant.SdsFileExtension
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream

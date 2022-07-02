@@ -1,13 +1,13 @@
 package com.larsreimann.apiEditor.codegen
 
 import com.larsreimann.apiEditor.model.PythonParameterAssignment
-import com.larsreimann.apiEditor.mutable_model.PythonAttribute
-import com.larsreimann.apiEditor.mutable_model.PythonClass
-import com.larsreimann.apiEditor.mutable_model.PythonConstructor
-import com.larsreimann.apiEditor.mutable_model.PythonFunction
-import com.larsreimann.apiEditor.mutable_model.PythonInt
-import com.larsreimann.apiEditor.mutable_model.PythonParameter
-import com.larsreimann.apiEditor.mutable_model.PythonStringifiedType
+import com.larsreimann.apiEditor.mutableModel.PythonAttribute
+import com.larsreimann.apiEditor.mutableModel.PythonClass
+import com.larsreimann.apiEditor.mutableModel.PythonConstructor
+import com.larsreimann.apiEditor.mutableModel.PythonFunction
+import com.larsreimann.apiEditor.mutableModel.PythonInt
+import com.larsreimann.apiEditor.mutableModel.PythonParameter
+import com.larsreimann.apiEditor.mutableModel.PythonStringifiedType
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested

@@ -1,8 +1,8 @@
 package com.larsreimann.apiEditor.transformation
 
 import com.larsreimann.apiEditor.model.PureAnnotation
-import com.larsreimann.apiEditor.mutable_model.PythonFunction
-import com.larsreimann.apiEditor.mutable_model.PythonPackage
+import com.larsreimann.apiEditor.mutableModel.PythonFunction
+import com.larsreimann.apiEditor.mutableModel.PythonPackage
 import com.larsreimann.modeling.descendants
 
 /**

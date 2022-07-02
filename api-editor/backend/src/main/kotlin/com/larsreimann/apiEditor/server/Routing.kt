@@ -2,9 +2,9 @@ package com.larsreimann.apiEditor.server
 
 import com.larsreimann.apiEditor.codegen.generateCode
 import com.larsreimann.apiEditor.model.SerializablePythonPackage
-import com.larsreimann.apiEditor.mutable_model.convertPackage
-import com.larsreimann.apiEditor.transformation.processing_exceptions.ConflictingEnumException
-import com.larsreimann.apiEditor.transformation.processing_exceptions.ConflictingGroupException
+import com.larsreimann.apiEditor.mutableModel.convertPackage
+import com.larsreimann.apiEditor.transformation.processingExceptions.ConflictingEnumException
+import com.larsreimann.apiEditor.transformation.processingExceptions.ConflictingGroupException
 import com.larsreimann.apiEditor.transformation.transform
 import com.larsreimann.apiEditor.validation.AnnotationValidator
 import io.ktor.http.ContentDisposition

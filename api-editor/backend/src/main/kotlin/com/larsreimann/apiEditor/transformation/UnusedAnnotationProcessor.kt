@@ -1,8 +1,8 @@
 package com.larsreimann.apiEditor.transformation
 
 import com.larsreimann.apiEditor.model.RemoveAnnotation
-import com.larsreimann.apiEditor.mutable_model.PythonDeclaration
-import com.larsreimann.apiEditor.mutable_model.PythonPackage
+import com.larsreimann.apiEditor.mutableModel.PythonDeclaration
+import com.larsreimann.apiEditor.mutableModel.PythonPackage
 import com.larsreimann.modeling.descendants
 
 /**
