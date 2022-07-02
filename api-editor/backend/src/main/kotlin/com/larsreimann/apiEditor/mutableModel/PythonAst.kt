@@ -43,7 +43,7 @@ class PythonAttribute(
     var isPublic: Boolean = true,
     var description: String = "",
     var boundary: Boundary? = null,
-    override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
+    override val annotations: MutableList<EditorAnnotation> = mutableListOf()
 ) : PythonDeclaration() {
 
     var type by ContainmentReference(type)
@@ -192,7 +192,7 @@ class PythonParameter(
     var description: String = "",
     var todo: String = "",
     var boundary: Boundary? = null,
-    override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
+    override val annotations: MutableList<EditorAnnotation> = mutableListOf()
 ) : PythonDeclaration() {
 
     var type by ContainmentReference(type)
@@ -215,7 +215,7 @@ class PythonResult(
     type: PythonType? = null,
     var description: String = "",
     var boundary: Boundary? = null,
-    override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
+    override val annotations: MutableList<EditorAnnotation> = mutableListOf()
 ) : PythonDeclaration() {
 
     var type by ContainmentReference(type)

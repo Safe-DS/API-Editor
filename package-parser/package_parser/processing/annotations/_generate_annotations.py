@@ -4,11 +4,11 @@ from package_parser.processing.annotations._generate_boundary_annotations import
 from package_parser.processing.annotations._generate_enum_annotations import (
     _generate_enum_annotations,
 )
-from package_parser.processing.annotations._generate_value_annotations import (
-    _generate_value_annotations,
-)
 from package_parser.processing.annotations._generate_remove_annotations import (
     _generate_remove_annotations,
+)
+from package_parser.processing.annotations._generate_value_annotations import (
+    _generate_value_annotations,
 )
 from package_parser.processing.annotations._usages_preprocessor import (
     _preprocess_usages,

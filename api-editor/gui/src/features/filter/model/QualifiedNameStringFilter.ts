@@ -5,7 +5,7 @@ import { PythonParameter } from '../../packageData/model/PythonParameter';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { AbstractPythonFilter } from './AbstractPythonFilter';
 import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
-import {AnnotationStore} from "../../annotations/versioning/AnnotationStoreV2";
+import { AnnotationStore } from '../../annotations/versioning/AnnotationStoreV2';
 
 /**
  * Keeps only declarations that have a given string in their qualified name.

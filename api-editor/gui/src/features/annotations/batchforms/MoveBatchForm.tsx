@@ -4,8 +4,8 @@ import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
 import { PythonClass } from '../../packageData/model/PythonClass';
 import { DestinationBatchForm, DestinationBatchFormState } from './DestinationBatchForm';
 import { PythonFunction } from '../../packageData/model/PythonFunction';
-import {MoveAnnotation} from "../versioning/AnnotationStoreV2";
-import {upsertMoves} from "../annotationSlice";
+import { MoveAnnotation } from '../versioning/AnnotationStoreV2';
+import { upsertMoves } from '../annotationSlice';
 
 interface MoveBatchFormProps {
     targets: PythonDeclaration[];

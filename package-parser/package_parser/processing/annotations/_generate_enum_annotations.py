@@ -7,6 +7,7 @@ from package_parser.processing.annotations.model import (
     ValueAnnotation,
 )
 from package_parser.processing.api.model import API
+
 from ._constants import autogen_author
 
 

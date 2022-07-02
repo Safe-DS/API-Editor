@@ -5,8 +5,8 @@ import { OldNewBatchForm, OldNewBatchFormState } from './OldNewBatchForm';
 import { PythonClass } from '../../packageData/model/PythonClass';
 import { PythonFunction } from '../../packageData/model/PythonFunction';
 import { PythonParameter } from '../../packageData/model/PythonParameter';
-import {RenameAnnotation} from "../versioning/AnnotationStoreV2";
-import {upsertRenamings} from "../annotationSlice";
+import { RenameAnnotation } from '../versioning/AnnotationStoreV2';
+import { upsertRenamings } from '../annotationSlice';
 
 interface RenameBatchFormProps {
     targets: PythonDeclaration[];

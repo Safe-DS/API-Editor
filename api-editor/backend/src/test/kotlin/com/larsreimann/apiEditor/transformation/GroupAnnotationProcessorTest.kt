@@ -58,7 +58,7 @@ class GroupAnnotationProcessorTest {
                 arguments = listOf(
                     PythonArgument(value = PythonReference(testParameter1)),
                     PythonArgument(value = PythonReference(testParameter2)),
-                    PythonArgument(value = PythonReference(testParameter3)),
+                    PythonArgument(value = PythonReference(testParameter3))
                 )
             )
         )

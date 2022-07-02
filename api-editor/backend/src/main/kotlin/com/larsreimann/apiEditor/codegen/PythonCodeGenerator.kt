@@ -59,7 +59,6 @@ fun PythonModule.toPythonCode(): String {
 
 private fun PythonModule.importsToPythonCode() = buildString {
     val imports = buildSet<String> {
-
         // Functions
         this += descendants { it !is PythonDeclaration }
             .filterIsInstance<PythonFunction>()

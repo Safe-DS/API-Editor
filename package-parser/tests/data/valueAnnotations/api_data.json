@@ -6,9 +6,7 @@
         {
             "id": "test/test",
             "name": "test",
-            "classes": [
-                "test/test/UsedClass"
-            ],
+            "classes": ["test/test/UsedClass"],
             "functions": [
                 "test/test/unused_global_function",
                 "test/test/used_global_function",
@@ -21,10 +19,7 @@
             "id": "test/test/UsedClass",
             "name": "UsedClass",
             "qname": "test.UsedClass",
-            "methods": [
-                "test/test/UsedClass/unused_method",
-                "test/test/UsedClass/used_method"
-            ]
+            "methods": ["test/test/UsedClass/unused_method", "test/test/UsedClass/used_method"]
         }
     ],
     "functions": [

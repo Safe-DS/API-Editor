@@ -124,7 +124,8 @@ internal class AnnotationValidatorTest {
                                     "test-result",
                                     "str",
                                     "str",
-                                    "Lorem ipsum", mutableListOf()
+                                    "Lorem ipsum",
+                                    mutableListOf()
                                 )
                             ),
                             true,
@@ -163,7 +164,7 @@ internal class AnnotationValidatorTest {
                 "test-module.test-function",
                 "Optional",
                 AnnotationTarget.GLOBAL_FUNCTION
-            ),
+            )
         )
 
         annotationErrors.shouldContainExactlyInAnyOrder(expectedErrors)
@@ -279,7 +280,8 @@ internal class AnnotationValidatorTest {
                                     "test-result",
                                     "str",
                                     "str",
-                                    "Lorem ipsum", mutableListOf()
+                                    "Lorem ipsum",
+                                    mutableListOf()
                                 )
                             ),
                             true,
@@ -409,7 +411,8 @@ internal class AnnotationValidatorTest {
                                     "test-result",
                                     "str",
                                     "str",
-                                    "Lorem ipsum", mutableListOf()
+                                    "Lorem ipsum",
+                                    mutableListOf()
                                 )
                             ),
                             true,

@@ -188,12 +188,7 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
             {watchVariant !== 'required' && watchDefaultType !== 'none' && (
                 <FormControl isInvalid={Boolean(errors?.defaultValue)}>
                     <FormLabel>Default value for &quot;{target.name}&quot;:</FormLabel>
-                    {watchDefaultType === 'string' && (
-                        <Input
-                            {...register('defaultValue', {
-                            })}
-                        />
-                    )}
+                    {watchDefaultType === 'string' && <Input {...register('defaultValue', {})} />}
                     {watchDefaultType === 'number' && (
                         <NumberInput>
                             <NumberInputField

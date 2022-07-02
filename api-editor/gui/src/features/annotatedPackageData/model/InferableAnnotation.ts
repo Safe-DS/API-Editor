@@ -9,7 +9,9 @@ import {
     GroupAnnotation,
     MoveAnnotation,
     RenameAnnotation,
-    TodoAnnotation, DefaultValueType, ValueAnnotation,
+    TodoAnnotation,
+    DefaultValueType,
+    ValueAnnotation,
 } from '../../annotations/versioning/AnnotationStoreV2';
 
 const dataPathPrefix = 'com.larsreimann.apiEditor.model.';

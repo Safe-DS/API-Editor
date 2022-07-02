@@ -210,7 +210,7 @@ class PythonCodeGeneratorTest {
                         type = PythonStringifiedType("int"),
                         value = PythonInt(2),
                         description = "Test attribute 2"
-                    ),
+                    )
                 ),
                 description = "Lorem ipsum"
             )
@@ -354,7 +354,7 @@ class PythonCodeGeneratorTest {
                     PythonParameter(
                         name = "args",
                         assignedBy = PythonParameterAssignment.POSITIONAL_VARARG
-                    ),
+                    )
                 )
             )
 
@@ -375,7 +375,7 @@ class PythonCodeGeneratorTest {
                     PythonParameter(
                         name = "kwargs",
                         assignedBy = PythonParameterAssignment.NAMED_VARARG
-                    ),
+                    )
                 )
             )
 
@@ -514,8 +514,8 @@ class PythonCodeGeneratorTest {
                     ),
                     PythonParameter(
                         name = "unfinished",
-                        todo = "    Lorem ipsum\n\n    Dolor sit\namet\n",
-                    ),
+                        todo = "    Lorem ipsum\n\n    Dolor sit\namet\n"
+                    )
                 )
             )
 
@@ -691,7 +691,7 @@ class PythonCodeGeneratorTest {
                     PythonParameter(
                         name = "args",
                         assignedBy = PythonParameterAssignment.POSITIONAL_VARARG
-                    ),
+                    )
                 )
             )
 
@@ -708,7 +708,7 @@ class PythonCodeGeneratorTest {
                     PythonParameter(
                         name = "kwargs",
                         assignedBy = PythonParameterAssignment.NAMED_VARARG
-                    ),
+                    )
                 )
             )
 
@@ -821,8 +821,8 @@ class PythonCodeGeneratorTest {
                 parameters = listOf(
                     PythonParameter(
                         name = "unfinished",
-                        todo = "    Lorem ipsum\n\n    Dolor sit\namet\n",
-                    ),
+                        todo = "    Lorem ipsum\n\n    Dolor sit\namet\n"
+                    )
                 )
             )
 

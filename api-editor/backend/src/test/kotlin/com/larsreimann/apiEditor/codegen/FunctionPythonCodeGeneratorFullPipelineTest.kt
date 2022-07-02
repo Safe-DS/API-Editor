@@ -33,13 +33,13 @@ class FunctionPythonCodeGeneratorFullPipelineTest {
     @BeforeEach
     fun reset() {
         testParameter1 = PythonParameter(
-            name = "testParameter1",
+            name = "testParameter1"
         )
         testParameter2 = PythonParameter(
-            name = "testParameter2",
+            name = "testParameter2"
         )
         testParameter3 = PythonParameter(
-            name = "testParameter3",
+            name = "testParameter3"
         )
         testFunction = PythonFunction(
             name = "testFunction",

@@ -24,12 +24,15 @@ class AnnotationStore:
                 for annotation in self.boundaryAnnotations
             },
             "enumAnnotations": {
-                annotation.target: annotation.to_json() for annotation in self.enumAnnotations
+                annotation.target: annotation.to_json()
+                for annotation in self.enumAnnotations
             },
             "removeAnnotations": {
-                annotation.target: annotation.to_json() for annotation in self.removeAnnotations
+                annotation.target: annotation.to_json()
+                for annotation in self.removeAnnotations
             },
             "valueAnnotations": {
-                annotation.target: annotation.to_json() for annotation in self.valueAnnotations
-            }
+                annotation.target: annotation.to_json()
+                for annotation in self.valueAnnotations
+            },
         }

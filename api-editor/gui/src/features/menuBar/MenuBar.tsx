@@ -63,7 +63,7 @@ import { selectUsages } from '../usages/usageSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { SelectionBreadcrumbs } from './SelectionBreadcrumbs';
 import { HelpMenu } from './HelpMenu';
-import {AnnotationStore} from "../annotations/versioning/AnnotationStoreV2";
+import { AnnotationStore } from '../annotations/versioning/AnnotationStoreV2';
 
 interface MenuBarProps {
     displayInferErrors: (errors: string[]) => void;

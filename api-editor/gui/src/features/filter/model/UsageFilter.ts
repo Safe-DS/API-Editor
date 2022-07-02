@@ -4,7 +4,7 @@ import { PythonModule } from '../../packageData/model/PythonModule';
 import { PythonParameter } from '../../packageData/model/PythonParameter';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 import { AbstractPythonFilter } from './AbstractPythonFilter';
-import {AnnotationStore} from "../../annotations/versioning/AnnotationStoreV2";
+import { AnnotationStore } from '../../annotations/versioning/AnnotationStoreV2';
 
 /**
  * Keeps only declarations are used a certain number of times.

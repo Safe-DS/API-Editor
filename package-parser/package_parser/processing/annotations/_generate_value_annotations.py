@@ -2,10 +2,14 @@ from typing import Any, Optional
 
 from package_parser.processing.annotations.model import (
     AnnotationStore,
-    RequiredAnnotation, ConstantAnnotation, ValueAnnotation, OptionalAnnotation,
+    ConstantAnnotation,
+    OptionalAnnotation,
+    RequiredAnnotation,
+    ValueAnnotation,
 )
 from package_parser.processing.api.model import API, Parameter, ParameterAssignment
 from package_parser.processing.usages.model import UsageCountStore
+
 from ._constants import autogen_author
 
 
@@ -167,9 +171,7 @@ def _should_be_required(
 
 
 def _is_stringified_literal(stringified_value: str) -> bool:
-    default_type, _ = _get_type_and_value_for_stringified_value(
-        stringified_value
-    )
+    default_type, _ = _get_type_and_value_for_stringified_value(stringified_value)
     return default_type is not None
 
 

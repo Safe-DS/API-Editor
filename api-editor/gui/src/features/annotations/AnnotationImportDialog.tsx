@@ -23,7 +23,7 @@ import { supportedAnnotationStoreSchemaVersions } from './versioning/expectedVer
 import { AnnotationStore } from './versioning/AnnotationStoreV2';
 import { hideAnnotationImportDialog, toggleAnnotationImportDialog } from '../ui/uiSlice';
 import { VersionedAnnotationStore } from './versioning/VersionedAnnotationStore';
-import {migrateAnnotationStoreToCurrentVersion} from "./versioning/migrations";
+import { migrateAnnotationStoreToCurrentVersion } from './versioning/migrations';
 
 export const AnnotationImportDialog: React.FC = function () {
     const toast = useToast();

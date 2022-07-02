@@ -86,7 +86,7 @@ class PreprocessorTest {
         testClass = PythonClass(
             name = "testClass",
             attributes = listOf(testAttribute),
-            methods = listOf(testMethod),
+            methods = listOf(testMethod)
         )
         testModule = PythonModule(
             "testModule",

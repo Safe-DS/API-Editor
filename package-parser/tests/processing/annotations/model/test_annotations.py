@@ -3,11 +3,14 @@ from package_parser.processing.annotations.model import (
     AbstractAnnotation,
     AnnotationStore,
     BoundaryAnnotation,
+    ConstantAnnotation,
     EnumAnnotation,
     EnumPair,
     Interval,
+    OptionalAnnotation,
     RemoveAnnotation,
-    ConstantAnnotation, ValueAnnotation, OptionalAnnotation, RequiredAnnotation,
+    RequiredAnnotation,
+    ValueAnnotation,
 )
 
 
@@ -224,6 +227,6 @@ def test_annotation_store():
                 "authors": ["$autogen$"],
                 "reviewers": [],
                 "variant": "required",
-            }
+            },
         },
     }

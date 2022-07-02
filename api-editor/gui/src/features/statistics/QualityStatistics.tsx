@@ -4,8 +4,8 @@ import { useAppSelector } from '../../app/hooks';
 import { Pie } from 'react-chartjs-2';
 
 import { ArcElement, Chart as ChartJS, Title, Tooltip } from 'chart.js';
-import {selectAnnotationStore} from "../annotations/annotationSlice";
-import {Annotation} from "../annotations/versioning/AnnotationStoreV2";
+import { selectAnnotationStore } from '../annotations/annotationSlice';
+import { Annotation } from '../annotations/versioning/AnnotationStoreV2';
 
 ChartJS.register(ArcElement, Title, Tooltip);
 
@@ -23,8 +23,14 @@ export const QualityStatistics = function () {
                         annotationType="Boundary"
                         annotations={Object.values(annotationStore.boundaryAnnotations ?? {})}
                     />
-                    <QualityPieChart annotationType="Enum" annotations={Object.values(annotationStore.enumAnnotations ?? {})} />
-                    <QualityPieChart annotationType="Remove" annotations={Object.values(annotationStore.removeAnnotations ?? {})} />
+                    <QualityPieChart
+                        annotationType="Enum"
+                        annotations={Object.values(annotationStore.enumAnnotations ?? {})}
+                    />
+                    <QualityPieChart
+                        annotationType="Remove"
+                        annotations={Object.values(annotationStore.removeAnnotations ?? {})}
+                    />
                     <QualityPieChart
                         annotationType="Value"
                         annotations={Object.values(annotationStore.valueAnnotations ?? {})}

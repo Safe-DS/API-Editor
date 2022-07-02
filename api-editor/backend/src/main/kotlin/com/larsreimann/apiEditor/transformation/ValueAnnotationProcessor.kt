@@ -47,7 +47,6 @@ private fun PythonParameter.processValueAnnotations() {
 }
 
 private fun PythonParameter.processConstantAnnotation(annotation: ConstantAnnotation) {
-
     // Update argument that references this parameter
     val arguments = crossReferencesToThis()
         .mapNotNull { (it.parent as? PythonReference)?.closest<PythonArgument>() }

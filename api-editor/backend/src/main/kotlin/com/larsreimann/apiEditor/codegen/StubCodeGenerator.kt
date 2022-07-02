@@ -221,7 +221,7 @@ fun PythonEnum.toSdsEnum(): SdsEnum {
                 add(createSdsDescriptionAnnotationUse(description))
             }
         },
-        variants = instances.map { it.toSdsEnumVariant() },
+        variants = instances.map { it.toSdsEnumVariant() }
     )
 }
 

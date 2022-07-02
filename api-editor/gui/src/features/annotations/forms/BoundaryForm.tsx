@@ -23,8 +23,8 @@ import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
 import { AnnotationForm } from './AnnotationForm';
 import { Optional } from '../../../common/util/types';
 import { hideAnnotationForm } from '../../ui/uiSlice';
-import {ComparisonOperator, Interval} from "../versioning/AnnotationStoreV2";
-import {selectBoundaryAnnotation, upsertBoundary} from "../annotationSlice";
+import { ComparisonOperator, Interval } from '../versioning/AnnotationStoreV2';
+import { selectBoundaryAnnotation, upsertBoundary } from '../annotationSlice';
 
 interface BoundaryFormProps {
     readonly target: PythonDeclaration;

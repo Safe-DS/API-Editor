@@ -60,7 +60,9 @@ export const AnnotationStatistics = function () {
                 <Button onClick={() => filterAction('')}>Clear Filter</Button>
                 <Button onClick={() => filterAction('annotation:any')}>{'Any: ' + sum}</Button>
 
-                <Button onClick={() => filterAction('annotation:@boundary')}>{'@Boundary: ' + nBoundaryAnnotations}</Button>
+                <Button onClick={() => filterAction('annotation:@boundary')}>
+                    {'@Boundary: ' + nBoundaryAnnotations}
+                </Button>
                 <Button onClick={() => filterAction('annotation:@calledAfter')}>
                     {'@CalledAfter: ' + nCalledAfterAnnotations}
                 </Button>

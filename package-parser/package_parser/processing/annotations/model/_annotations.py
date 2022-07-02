@@ -84,6 +84,7 @@ class ConstantAnnotation(ValueAnnotation):
             "defaultValue": self.defaultValue,
         }
 
+
 @dataclass
 class OptionalAnnotation(ValueAnnotation):
     variant = ValueAnnotation.Variant.OPTIONAL

@@ -71,7 +71,7 @@ fun convertFunction(pythonFunction: SerializablePythonFunction): PythonFunction 
         isPublic = pythonFunction.isPublic,
         description = pythonFunction.description,
         isPure = pythonFunction.isPure,
-        annotations = pythonFunction.annotations,
+        annotations = pythonFunction.annotations
     )
 }
 
@@ -83,7 +83,7 @@ fun convertAttribute(pythonAttribute: SerializablePythonAttribute): PythonAttrib
         isPublic = pythonAttribute.isPublic,
         description = pythonAttribute.description,
         boundary = pythonAttribute.boundary,
-        annotations = pythonAttribute.annotations,
+        annotations = pythonAttribute.annotations
     )
 }
 
@@ -95,7 +95,7 @@ fun convertParameter(pythonParameter: SerializablePythonParameter): PythonParame
         assignedBy = pythonParameter.assignedBy,
         description = pythonParameter.description,
         boundary = pythonParameter.boundary,
-        annotations = pythonParameter.annotations,
+        annotations = pythonParameter.annotations
     )
 }
 
@@ -105,6 +105,6 @@ fun convertResult(pythonResult: SerializablePythonResult): PythonResult {
         type = PythonStringifiedType(pythonResult.type),
         description = pythonResult.description,
         boundary = pythonResult.boundary,
-        annotations = pythonResult.annotations,
+        annotations = pythonResult.annotations
     )
 }

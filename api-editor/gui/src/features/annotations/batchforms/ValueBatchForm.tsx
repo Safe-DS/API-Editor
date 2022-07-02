@@ -118,7 +118,7 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
 
     const handleVariantChange = (newVariant: ValueAnnotationVariant) => {
         setValue('variant', newVariant);
-    }
+    };
 
     const handleTypeChange = (newType: DefaultValueType) => {
         setValue('defaultValueType', newType);
@@ -165,7 +165,9 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
                     <Stack direction="column">
                         <Radio value="required">Required (parameter must always be set)</Radio>
                         <Radio value="optional">Optional (parameter has default value that can be overwritten)</Radio>
-                        <Radio value="constant">Constant (parameter has a constant value and cannot be overwritten)</Radio>
+                        <Radio value="constant">
+                            Constant (parameter has a constant value and cannot be overwritten)
+                        </Radio>
                     </Stack>
                 </RadioGroup>
 

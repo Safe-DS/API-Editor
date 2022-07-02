@@ -10,7 +10,7 @@ export const migrateAnnotationStoreToCurrentVersion = function <OldAnnotationSto
             return migrateAnnotationStoreV1ToV2(oldAnnotationStore as unknown as AnnotationStoreV1);
         case 2:
             return oldAnnotationStore as unknown as AnnotationStoreV2;
-            default:
-                throw new Error(`Unsupported annotation store schema version: ${oldAnnotationStore.schemaVersion}`);
+        default:
+            throw new Error(`Unsupported annotation store schema version: ${oldAnnotationStore.schemaVersion}`);
     }
 };

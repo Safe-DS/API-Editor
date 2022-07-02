@@ -1,4 +1,4 @@
-import {VersionedAnnotationStore} from "./VersionedAnnotationStore";
+import { VersionedAnnotationStore } from './VersionedAnnotationStore';
 
 /*
  * @deprecated

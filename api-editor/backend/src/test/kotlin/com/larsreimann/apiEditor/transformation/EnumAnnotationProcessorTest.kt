@@ -38,7 +38,7 @@ class EnumAnnotationProcessorTest {
     fun reset() {
         val enumPairs: List<EnumPair> = listOf(
             EnumPair("value1", "name1"),
-            EnumPair("value2", "name2"),
+            EnumPair("value2", "name2")
         )
         testParameter = PythonParameter(
             name = "testParameter",

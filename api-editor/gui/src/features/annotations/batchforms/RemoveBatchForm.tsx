@@ -5,7 +5,7 @@ import { EmptyBatchForm } from './EmptyBatchForm';
 import { PythonClass } from '../../packageData/model/PythonClass';
 import { PythonFunction } from '../../packageData/model/PythonFunction';
 import { RemoveAnnotation } from '../versioning/AnnotationStoreV2';
-import {upsertRemoves} from "../annotationSlice";
+import { upsertRemoves } from '../annotationSlice';
 
 interface RemoveBatchFormProps {
     targets: PythonDeclaration[];

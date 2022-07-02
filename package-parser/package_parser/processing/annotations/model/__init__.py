@@ -11,6 +11,6 @@ from ._annotations import (
     ParameterType,
     RemoveAnnotation,
     RequiredAnnotation,
-    ValueAnnotation
+    ValueAnnotation,
 )
 from ._AnnotationStore import AnnotationStore
