@@ -11,7 +11,6 @@ parse-package = "package_parser.main:main"
 [tool.poetry.dependencies]
 python = "^3.10"
 astroid = "^2.11.6"
-importlib-metadata = "^4.10.1"
 numpydoc = "^1.4"
 spacy = "^3.2.1"
 
