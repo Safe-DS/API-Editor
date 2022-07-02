@@ -11,12 +11,12 @@ const v1: AnnotationStoreV1 = {
             defaultValue: "test",
             authors: [],
             reviewers: [],
-            isRemoved: false,
+            isRemoved: true,
         }
     },
     constants: {
-        "test": {
-            target: "test",
+        "test2": {
+            target: "test2",
             defaultType: "string",
             defaultValue: "test",
             authors: [],
@@ -63,8 +63,8 @@ const v2: AnnotationStoreV2 = {
             target: "test",
             authors: [],
             reviewers: [],
-            isRemoved: false,
-            variant: "attribute",
+            isRemoved: true,
+            variant: "optional",
             defaultValueType: "string",
             defaultValue: "test",
         },

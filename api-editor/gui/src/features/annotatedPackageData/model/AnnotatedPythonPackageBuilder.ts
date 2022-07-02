@@ -13,7 +13,6 @@ import { AnnotatedPythonParameter } from './AnnotatedPythonParameter';
 import { AnnotatedPythonResult } from './AnnotatedPythonResult';
 import {
     InferableAnnotation,
-    InferableAttributeAnnotation,
     InferableBoundaryAnnotation,
     InferableCalledAfterAnnotation,
     InferableConstantAnnotation,
@@ -170,12 +169,6 @@ export class AnnotatedPythonPackageBuilder {
         annotationType: string,
     ): InferableAnnotation[] | InferableAnnotation | undefined {
         switch (annotationType) {
-            case 'Attribute':
-                const valueAnnotation = (this.annotationStore.valueAnnotations ?? {})[target];
-                if (valueAnnotation && !valueAnnotation.isRemoved && valueAnnotation.variant === 'attribute') {
-                    return new InferableAttributeAnnotation(valueAnnotation);
-                }
-                break;
             case 'Boundary':
                 const boundaryAnnotation = (this.annotationStore.boundaryAnnotations ?? {})[target];
                 if (boundaryAnnotation && !boundaryAnnotation.isRemoved) {

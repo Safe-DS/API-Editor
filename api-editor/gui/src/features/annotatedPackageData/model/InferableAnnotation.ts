@@ -46,15 +46,6 @@ export class InferableAnnotation {
     }
 }
 
-export class InferableAttributeAnnotation extends InferableAnnotation {
-    readonly defaultValue: { type: string; value?: DefaultValue };
-
-    constructor(attributeAnnotation: ValueAnnotation) {
-        super(dataPathPrefix + 'AttributeAnnotation');
-        this.defaultValue = convertDefaultValue(attributeAnnotation.defaultValueType!, attributeAnnotation.defaultValue!);
-    }
-}
-
 export class InferableBoundaryAnnotation extends InferableAnnotation {
     readonly isDiscrete: boolean;
     readonly lowerIntervalLimit: number;

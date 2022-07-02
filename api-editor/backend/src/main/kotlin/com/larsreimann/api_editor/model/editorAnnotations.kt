@@ -21,13 +21,6 @@ sealed class EditorAnnotation {
 }
 
 @Serializable
-data class AttributeAnnotation(val defaultValue: DefaultValue) : EditorAnnotation() {
-
-    @Transient
-    override val validTargets = setOf(CONSTRUCTOR_PARAMETER)
-}
-
-@Serializable
 data class BoundaryAnnotation(
     val isDiscrete: Boolean,
     val lowerIntervalLimit: Double,

@@ -1,11 +1,9 @@
-package com.larsreimann.api_editor.backend
+package com.larsreimann.api_editor.server
 
-import com.larsreimann.api_editor.model.AttributeAnnotation
 import com.larsreimann.api_editor.model.BoundaryAnnotation
 import com.larsreimann.api_editor.model.CalledAfterAnnotation
 import com.larsreimann.api_editor.model.ComparisonOperator
 import com.larsreimann.api_editor.model.ConstantAnnotation
-import com.larsreimann.api_editor.model.DefaultBoolean
 import com.larsreimann.api_editor.model.DefaultNumber
 import com.larsreimann.api_editor.model.DefaultString
 import com.larsreimann.api_editor.model.EnumAnnotation
@@ -112,7 +110,6 @@ class ApplicationTest {
                     )
                 ),
                 annotations = mutableListOf(
-                    AttributeAnnotation(DefaultBoolean(false)),
                     BoundaryAnnotation(
                         isDiscrete = false,
                         lowerIntervalLimit = 0.0,

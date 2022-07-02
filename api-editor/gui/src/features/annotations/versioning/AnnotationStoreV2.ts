@@ -211,7 +211,7 @@ export interface ValueAnnotation extends Annotation {
     readonly defaultValue?: DefaultValue;
 }
 
-export type ValueAnnotationVariant = 'attribute' | 'constant' | 'optional' | 'required';
+export type ValueAnnotationVariant = 'constant' | 'optional' | 'required';
 export type DefaultValueType = 'string' | 'number' | 'boolean' | 'none';
 export type DefaultValue = string | number | boolean | null;
 
@@ -270,7 +270,7 @@ const migrateAttributeAnnotationV1ToV2 = function (oldAttributeAnnotation: Attri
         authors: oldAttributeAnnotation.authors,
         reviewers: oldAttributeAnnotation.reviewers,
         isRemoved: oldAttributeAnnotation.isRemoved,
-        variant: 'attribute',
+        variant: 'optional',
         defaultValueType: oldAttributeAnnotation.defaultType,
         defaultValue: oldAttributeAnnotation.defaultValue,
     };

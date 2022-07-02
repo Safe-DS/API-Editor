@@ -1,6 +1,5 @@
 package com.larsreimann.api_editor.transformation
 
-import com.larsreimann.api_editor.model.AttributeAnnotation
 import com.larsreimann.api_editor.model.ConstantAnnotation
 import com.larsreimann.api_editor.model.DefaultBoolean
 import com.larsreimann.api_editor.model.DefaultNone
@@ -11,9 +10,7 @@ import com.larsreimann.api_editor.model.OptionalAnnotation
 import com.larsreimann.api_editor.model.PythonParameterAssignment
 import com.larsreimann.api_editor.model.RequiredAnnotation
 import com.larsreimann.api_editor.mutable_model.PythonArgument
-import com.larsreimann.api_editor.mutable_model.PythonAttribute
 import com.larsreimann.api_editor.mutable_model.PythonBoolean
-import com.larsreimann.api_editor.mutable_model.PythonClass
 import com.larsreimann.api_editor.mutable_model.PythonFloat
 import com.larsreimann.api_editor.mutable_model.PythonInt
 import com.larsreimann.api_editor.mutable_model.PythonLiteral
@@ -27,7 +24,7 @@ import com.larsreimann.modeling.closest
 import com.larsreimann.modeling.descendants
 
 /**
- * Processes and removes `@attribute`, `@constant`, `@optional`, and `@required` annotations.
+ * Processes and removes `@constant`, `@optional`, and `@required` annotations.
  */
 fun PythonPackage.processParameterAnnotations() {
     this.descendants()
@@ -41,42 +38,12 @@ private fun PythonParameter.processParameterAnnotations() {
         .toList()
         .forEach {
             when (it) {
-                is AttributeAnnotation -> processAttributeAnnotation(it)
                 is ConstantAnnotation -> processConstantAnnotation(it)
                 is OptionalAnnotation -> processOptionalAnnotation(it)
                 is RequiredAnnotation -> processRequiredAnnotation(it)
                 else -> {}
             }
         }
-}
-
-private fun PythonParameter.processAttributeAnnotation(annotation: AttributeAnnotation) {
-
-    // Add attribute to class
-    val containingClass = this.closest<PythonClass>()!!
-    containingClass.attributes += PythonAttribute(
-        name = name,
-        type = type,
-        value = PythonStringifiedExpression(annotation.defaultValue.toString()),
-        isPublic = true,
-        description = description,
-        boundary = boundary
-    )
-
-    // Update argument that references this parameter
-    val arguments = crossReferencesToThis()
-        .mapNotNull { (it.parent as? PythonReference)?.closest<PythonArgument>() }
-        .toList()
-
-    require(arguments.size == 1) {
-        "Expected parameter to be referenced in exactly one argument but was used in $arguments."
-    }
-
-    val argument = arguments[0]
-    argument.value = annotation.defaultValue.toPythonLiteral()
-
-    // Remove parameter
-    this.release()
 }
 
 private fun PythonParameter.processConstantAnnotation(annotation: ConstantAnnotation) {

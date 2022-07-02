@@ -1,7 +1,6 @@
 package com.larsreimann.api_editor.validation
 
 import com.larsreimann.api_editor.model.AnnotationTarget
-import com.larsreimann.api_editor.model.AttributeAnnotation
 import com.larsreimann.api_editor.model.BoundaryAnnotation
 import com.larsreimann.api_editor.model.CalledAfterAnnotation
 import com.larsreimann.api_editor.model.ComparisonOperator
@@ -29,7 +28,7 @@ import org.junit.jupiter.api.Test
 
 internal class AnnotationValidatorTest {
     @Test
-    fun returnAnnotationTargetErrorsForIncorrectlyPlacedAttributeAnnotations() {
+    fun returnAnnotationTargetErrorsForIncorrectlyPlacedOptionalAnnotations() {
         // given
         val testPythonPackage = SerializablePythonPackage(
             "test-distribution",
@@ -72,7 +71,7 @@ internal class AnnotationValidatorTest {
                                             "typeInDocs",
                                             "description",
                                             mutableListOf(
-                                                AttributeAnnotation(
+                                                OptionalAnnotation(
                                                     DefaultString("test")
                                                 )
                                             )
@@ -83,7 +82,7 @@ internal class AnnotationValidatorTest {
                                     "description",
                                     "fullDocstring",
                                     mutableListOf(
-                                        AttributeAnnotation(
+                                        OptionalAnnotation(
                                             DefaultString("test")
                                         )
                                     )
@@ -93,7 +92,7 @@ internal class AnnotationValidatorTest {
                             "Lorem ipsum",
                             "Lorem ipsum",
                             mutableListOf(
-                                AttributeAnnotation(
+                                OptionalAnnotation(
                                     DefaultString("test")
                                 )
                             )
@@ -114,7 +113,7 @@ internal class AnnotationValidatorTest {
                                     "str",
                                     "Lorem ipsum",
                                     mutableListOf(
-                                        AttributeAnnotation(
+                                        OptionalAnnotation(
                                             DefaultString("test")
                                         )
                                     )
@@ -132,7 +131,7 @@ internal class AnnotationValidatorTest {
                             "Lorem ipsum",
                             "Lorem ipsum",
                             mutableListOf(
-                                AttributeAnnotation(
+                                OptionalAnnotation(
                                     DefaultString("test")
                                 )
                             )
@@ -368,7 +367,7 @@ internal class AnnotationValidatorTest {
                                             "typeInDocs",
                                             "description",
                                             mutableListOf(
-                                                AttributeAnnotation(
+                                                OptionalAnnotation(
                                                     DefaultString("test")
                                                 ),
                                                 ConstantAnnotation(
@@ -509,7 +508,7 @@ internal class AnnotationValidatorTest {
                                             "typeInDocs",
                                             "description",
                                             mutableListOf(
-                                                AttributeAnnotation(
+                                                OptionalAnnotation(
                                                     DefaultString("test")
                                                 )
                                             )

@@ -1,6 +1,5 @@
 package com.larsreimann.api_editor.transformation
 
-import com.larsreimann.api_editor.model.AttributeAnnotation
 import com.larsreimann.api_editor.model.ConstantAnnotation
 import com.larsreimann.api_editor.model.DefaultBoolean
 import com.larsreimann.api_editor.model.DefaultNone
@@ -28,7 +27,7 @@ import io.kotest.matchers.types.shouldBeInstanceOf
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class ParameterAnnotationProcessorTest {
+class ValueAnnotationProcessorTest {
     private lateinit var testParameter: PythonParameter
     private lateinit var testClass: PythonClass
     private lateinit var testMethod: PythonFunction
@@ -64,57 +63,6 @@ class ParameterAnnotationProcessorTest {
                 )
             )
         )
-    }
-
-    @Test
-    fun `should update the function call when processing AttributeAnnotations`() {
-        testParameter.annotations += AttributeAnnotation(DefaultBoolean(true))
-
-        testPackage.processParameterAnnotations()
-
-        val callToOriginalAPI = testMethod.callToOriginalAPI.shouldNotBeNull()
-        callToOriginalAPI.arguments.shouldHaveSize(1)
-
-        val argument = callToOriginalAPI.arguments[0]
-        argument.name.shouldBeNull()
-        argument.value.asClue {
-            it.shouldBeInstanceOf<PythonBoolean>()
-            it.value shouldBe true
-        }
-    }
-
-    @Test
-    fun `should add attributes to the containing class`() {
-        testParameter.annotations += AttributeAnnotation(DefaultBoolean(true))
-
-        testPackage.processParameterAnnotations()
-
-        val attributes = testClass.attributes
-        attributes.shouldHaveSize(1)
-        attributes[0].asClue {
-            it.name shouldBe "testParameter"
-            it.value shouldBe PythonStringifiedExpression("True")
-        }
-    }
-
-    @Test
-    fun `should remove parameters marked with AttributeAnnotation`() {
-        testParameter.annotations += AttributeAnnotation(DefaultBoolean(true))
-
-        testPackage.processParameterAnnotations()
-
-        testMethod.parameters.shouldBeEmpty()
-    }
-
-    @Test
-    fun `should remove AttributeAnnotations`() {
-        testParameter.annotations += AttributeAnnotation(DefaultBoolean(true))
-
-        testPackage.processParameterAnnotations()
-
-        testPackage.annotations
-            .filterIsInstance<AttributeAnnotation>()
-            .shouldBeEmpty()
     }
 
     @Test
