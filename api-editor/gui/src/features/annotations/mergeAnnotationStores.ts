@@ -80,8 +80,8 @@ const isDefinitelyReviewed = function (annotation: Annotation | undefined) {
 };
 
 const defaultMergeOneAnnotationType = function <T extends Annotation>(
-    mine: { [target: string]: T },
-    theirs: { [target: string]: T },
+    mine: { [target: string]: T } = {},
+    theirs: { [target: string]: T } = {},
 ): { [target: string]: T } {
     const result = { ...theirs };
 
