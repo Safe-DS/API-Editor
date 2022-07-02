@@ -197,14 +197,8 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
                 {watchVariant !== 'required' && watchDefaultValueType !== 'none' && (
                     <FormControl isInvalid={Boolean(errors?.defaultValue)}>
                         {watchVariant === 'optional' && <FormLabel>Default value for matched elements:</FormLabel>}
-                        {watchVariant === 'constant' && (
-                            <FormLabel>Constant value for matched elements:</FormLabel>
-                        )}
-                        {watchDefaultValueType === 'string' && (
-                            <Input
-                                {...register('defaultValue')}
-                            />
-                        )}
+                        {watchVariant === 'constant' && <FormLabel>Constant value for matched elements:</FormLabel>}
+                        {watchDefaultValueType === 'string' && <Input {...register('defaultValue')} />}
                         {watchDefaultValueType === 'number' && (
                             <NumberInput>
                                 <NumberInputField
