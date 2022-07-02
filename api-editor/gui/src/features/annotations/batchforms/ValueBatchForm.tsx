@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import { useAppDispatch } from '../../../app/hooks';
 import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
 import { PythonParameter } from '../../packageData/model/PythonParameter';
-import { DefaultValue, DefaultValueType, ValueAnnotation } from '../versioning/AnnotationStoreV2';
+import {
+    DefaultValue,
+    DefaultValueType,
+    ValueAnnotation,
+    ValueAnnotationVariant,
+} from '../versioning/AnnotationStoreV2';
 import {
     FormControl,
     FormErrorIcon,
@@ -25,7 +30,7 @@ import { booleanPattern, numberPattern } from '../../../common/validation';
 import { AnnotationBatchForm } from './AnnotationBatchForm';
 import { hideAnnotationForm } from '../../ui/uiSlice';
 import { ConfirmAnnotations } from './ConfirmAnnotations';
-import {upsertValues} from "../annotationSlice";
+import { upsertValues } from '../annotationSlice';
 
 interface ValueBatchFormProps {
     targets: PythonDeclaration[];
@@ -46,6 +51,7 @@ export const ValueBatchForm: React.FC<ValueBatchFormProps> = function ({ targets
         targetPaths.forEach((targetPath) => {
             all.push({
                 target: targetPath,
+                variant: data.variant,
                 defaultValueType: data.defaultValueType,
                 defaultValue: data.defaultValue,
             });
@@ -58,8 +64,7 @@ export const ValueBatchForm: React.FC<ValueBatchFormProps> = function ({ targets
     return (
         <TypeValueBatchForm
             targets={filteredTargets}
-            annotationType="optional"
-            description="Make matched parameters optional and set their default value."
+            description="Change how the value of matched parameters is set."
             onUpsertAnnotation={handleUpsertAnnotation}
         />
     );
@@ -67,19 +72,18 @@ export const ValueBatchForm: React.FC<ValueBatchFormProps> = function ({ targets
 
 interface TypeValueBatchFormProps {
     targets: PythonDeclaration[];
-    annotationType: string;
     description: string;
     onUpsertAnnotation: (data: TypeValueBatchFormState) => void;
 }
 
 export interface TypeValueBatchFormState {
+    variant: ValueAnnotationVariant;
     defaultValueType: DefaultValueType;
     defaultValue: DefaultValue;
 }
 
 export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
     targets,
-    annotationType,
     description,
     onUpsertAnnotation,
 }) {
@@ -94,21 +98,32 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
         formState: { errors },
     } = useForm<TypeValueBatchFormState>({
         defaultValues: {
+            variant: 'optional',
             defaultValueType: 'string',
             defaultValue: '',
         },
     });
 
+    const watchVariant = watch('variant');
     const watchDefaultValueType = watch('defaultValueType');
 
     let [confirmWindowVisible, setConfirmWindowVisible] = useState(false);
-    let [data, setData] = useState<TypeValueBatchFormState>({ defaultValueType: 'string', defaultValue: '' });
+    let [data, setData] = useState<TypeValueBatchFormState>({
+        variant: 'optional',
+        defaultValueType: 'string',
+        defaultValue: '',
+    });
 
     // Event handlers ----------------------------------------------------------
+
+    const handleVariantChange = (newVariant: ValueAnnotationVariant) => {
+        setValue('variant', newVariant);
+    }
 
     const handleTypeChange = (newType: DefaultValueType) => {
         setValue('defaultValueType', newType);
         reset({
+            variant: 'optional',
             defaultValueType: newType,
             defaultValue: '',
         });
@@ -140,22 +155,35 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
     return (
         <>
             <AnnotationBatchForm
-                heading={`Add @${annotationType} Annotations`}
+                heading={`Add @value Annotations`}
                 description={description}
                 onConfirm={handleSubmit(handleConfirm)}
                 onCancel={handleCancel}
             >
-                <FormLabel>Type of default value of selected elements:</FormLabel>
-                <RadioGroup defaultValue={'string'} onChange={handleTypeChange}>
+                <FormLabel>Choose the variant of this annotation:</FormLabel>
+                <RadioGroup defaultValue={'optional'} onChange={handleVariantChange}>
                     <Stack direction="column">
-                        <Radio value="string">String</Radio>
-                        <Radio value="number">Number</Radio>
-                        <Radio value="boolean">Boolean</Radio>
-                        <Radio value="none">None</Radio>
+                        <Radio value="required">Required (parameter must always be set)</Radio>
+                        <Radio value="optional">Optional (parameter has default value that can be overwritten)</Radio>
+                        <Radio value="constant">Constant (parameter has a constant value and cannot be overwritten)</Radio>
                     </Stack>
                 </RadioGroup>
 
-                {watchDefaultValueType !== 'none' && (
+                {watchVariant !== 'required' && (
+                    <>
+                        <FormLabel>Type of default value of selected elements:</FormLabel>
+                        <RadioGroup defaultValue={'string'} onChange={handleTypeChange}>
+                            <Stack direction="column">
+                                <Radio value="string">String</Radio>
+                                <Radio value="number">Number</Radio>
+                                <Radio value="boolean">Boolean</Radio>
+                                <Radio value="none">None</Radio>
+                            </Stack>
+                        </RadioGroup>
+                    </>
+                )}
+
+                {watchVariant !== 'required' && watchDefaultValueType !== 'none' && (
                     <FormControl isInvalid={Boolean(errors?.defaultValue)}>
                         <FormLabel>Default value for selected elements:</FormLabel>
                         {watchDefaultValueType === 'string' && (
