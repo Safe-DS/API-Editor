@@ -217,13 +217,21 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
 };
 
 const valueAnnotationToString = (valueAnnotation: ValueAnnotation): string => {
-    let result = valueAnnotation.variant;
+    let result = "";
+
+    if (valueAnnotation.variant ===  'constant') {
+        result += "constant"
+    } else if (valueAnnotation.variant === 'optional') {
+        result += "optional with default"
+    } else if (valueAnnotation.variant === 'required') {
+        result += "required"
+    }
 
     if (valueAnnotation.variant !== 'required') {
         if (valueAnnotation.defaultValueType === 'string') {
             result += ` "${valueAnnotation.defaultValue}"`;
         } else if (valueAnnotation.defaultValueType === 'number') {
-            result += '' + String(valueAnnotation.defaultValue);
+            result += ' ' + String(valueAnnotation.defaultValue);
         } else if (valueAnnotation.defaultValueType === 'boolean') {
             result += valueAnnotation.defaultValue === true ? ' True' : ' False';
         } else if (valueAnnotation.defaultValueType === 'none') {
