@@ -106,7 +106,7 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
     });
 
     const watchVariant = watch('variant');
-    const watchDefaultType = watch('defaultValueType');
+    const watchDefaultValueType = watch('defaultValueType');
 
     useEffect(() => {
         const defaultValueType = previousDefaultType ?? 'string';
@@ -203,15 +203,15 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
                 </>
             )}
 
-            {watchVariant !== 'required' && watchDefaultType !== 'none' && (
+            {watchVariant !== 'required' && watchDefaultValueType !== 'none' && (
                 <FormControl isInvalid={Boolean(errors?.defaultValue)}>
                     {watchVariant === 'optional' && <FormLabel>Default value for &quot;{target.name}&quot;:</FormLabel>}
                     {watchVariant === 'constant' && (
                         <FormLabel>Constant value for &quot;{target.name}&quot;:</FormLabel>
                     )}
 
-                    {watchDefaultType === 'string' && <Input {...register('defaultValue', {})} />}
-                    {watchDefaultType === 'number' && (
+                    {watchDefaultValueType === 'string' && <Input {...register('defaultValue')} />}
+                    {watchDefaultValueType === 'number' && (
                         <NumberInput>
                             <NumberInputField
                                 {...register('defaultValue', {
@@ -225,7 +225,7 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
                             </NumberInputStepper>
                         </NumberInput>
                     )}
-                    {watchDefaultType === 'boolean' && (
+                    {watchDefaultValueType === 'boolean' && (
                         <Select
                             {...register('defaultValue', {
                                 required: 'This is required.',

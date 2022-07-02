@@ -92,7 +92,6 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
     const {
         handleSubmit,
         register,
-        reset,
         setValue,
         watch,
         formState: { errors },
@@ -122,11 +121,18 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
 
     const handleTypeChange = (newType: DefaultValueType) => {
         setValue('defaultValueType', newType);
-        reset({
-            variant: 'optional',
-            defaultValueType: newType,
-            defaultValue: '',
-        });
+
+        switch (newType) {
+            case 'boolean':
+                setValue('defaultValue', 'true');
+                break;
+            case 'number':
+                setValue('defaultValue', 0);
+                break;
+            default:
+                setValue('defaultValue', '');
+                break;
+        }
     };
 
     const handleSave = (annotationData: TypeValueBatchFormState) => {
@@ -163,17 +169,20 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
                 <FormLabel>Choose the variant of this annotation:</FormLabel>
                 <RadioGroup defaultValue={'optional'} onChange={handleVariantChange}>
                     <Stack direction="column">
-                        <Radio value="required">Required (parameter must always be set)</Radio>
-                        <Radio value="optional">Optional (parameter has default value that can be overwritten)</Radio>
-                        <Radio value="constant">
-                            Constant (parameter has a constant value and cannot be overwritten)
-                        </Radio>
+                        <Radio value="required">Required (parameter must always be set explicitly)</Radio>
+                        <Radio value="optional">Optional (parameter has a default value that can be overwritten)</Radio>
+                        <Radio value="constant">Constant (parameter is replaced by a constant value)</Radio>
                     </Stack>
                 </RadioGroup>
 
                 {watchVariant !== 'required' && (
                     <>
-                        <FormLabel>Type of default value of selected elements:</FormLabel>
+                        {watchVariant === 'optional' && (
+                            <FormLabel>Type of default value of matched elements:</FormLabel>
+                        )}
+                        {watchVariant === 'constant' && (
+                            <FormLabel>Type of constant value of matched elements:</FormLabel>
+                        )}
                         <RadioGroup defaultValue={'string'} onChange={handleTypeChange}>
                             <Stack direction="column">
                                 <Radio value="string">String</Radio>
@@ -187,12 +196,13 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
 
                 {watchVariant !== 'required' && watchDefaultValueType !== 'none' && (
                     <FormControl isInvalid={Boolean(errors?.defaultValue)}>
-                        <FormLabel>Default value for selected elements:</FormLabel>
+                        {watchVariant === 'optional' && <FormLabel>Default value for matched elements:</FormLabel>}
+                        {watchVariant === 'constant' && (
+                            <FormLabel>Constant value for matched elements:</FormLabel>
+                        )}
                         {watchDefaultValueType === 'string' && (
                             <Input
-                                {...register('defaultValue', {
-                                    required: 'This is required.',
-                                })}
+                                {...register('defaultValue')}
                             />
                         )}
                         {watchDefaultValueType === 'number' && (
