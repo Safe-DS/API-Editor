@@ -52,12 +52,22 @@ const v1: AnnotationStoreV1 = {
 
 const v2: AnnotationStoreV2 = {
     schemaVersion: 2,
+    boundaryAnnotations: {},
+    calledAfterAnnotations: {},
+    completeAnnotations: {},
+    descriptionAnnotations: {},
+    enumAnnotations: {},
+    groupAnnotations: {},
+    moveAnnotations: {},
+    pureAnnotations: {},
     removeAnnotations: {
         test4: {
             target: 'test4',
             authors: [],
         },
     },
+    renameAnnotations: {},
+    todoAnnotations: {},
     valueAnnotations: {
         test: {
             target: 'test',

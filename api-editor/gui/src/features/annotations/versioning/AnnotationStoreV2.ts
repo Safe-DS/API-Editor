@@ -9,40 +9,40 @@ import { VersionedAnnotationStore } from './VersionedAnnotationStore';
 
 export interface AnnotationStore extends VersionedAnnotationStore {
     schemaVersion: 2;
-    boundaryAnnotations?: {
+    boundaryAnnotations: {
         [target: string]: BoundaryAnnotation;
     };
-    calledAfterAnnotations?: {
+    calledAfterAnnotations: {
         [target: string]: { [calledAfterName: string]: CalledAfterAnnotation };
     };
-    completeAnnotations?: {
+    completeAnnotations: {
         [target: string]: CompleteAnnotation;
     };
-    descriptionAnnotations?: {
+    descriptionAnnotations: {
         [target: string]: DescriptionAnnotation;
     };
-    enumAnnotations?: {
+    enumAnnotations: {
         [target: string]: EnumAnnotation;
     };
-    groupAnnotations?: {
+    groupAnnotations: {
         [target: string]: { [groupName: string]: GroupAnnotation };
     };
-    moveAnnotations?: {
+    moveAnnotations: {
         [target: string]: MoveAnnotation;
     };
-    pureAnnotations?: {
+    pureAnnotations: {
         [target: string]: PureAnnotation;
     };
-    renameAnnotations?: {
+    renameAnnotations: {
         [target: string]: RenameAnnotation;
     };
-    removeAnnotations?: {
+    removeAnnotations: {
         [target: string]: RemoveAnnotation;
     };
-    todoAnnotations?: {
+    todoAnnotations: {
         [target: string]: TodoAnnotation;
     };
-    valueAnnotations?: {
+    valueAnnotations: {
         [target: string]: ValueAnnotation;
     };
 }
@@ -218,17 +218,17 @@ export type DefaultValue = string | number | boolean | null;
 export const migrateAnnotationStoreV1ToV2 = function (oldAnnotationStore: AnnotationStoreV1): AnnotationStore {
     return {
         schemaVersion: 2,
-        boundaryAnnotations: oldAnnotationStore.boundaries,
-        calledAfterAnnotations: oldAnnotationStore.calledAfters,
-        completeAnnotations: oldAnnotationStore.completes,
-        descriptionAnnotations: oldAnnotationStore.descriptions,
-        enumAnnotations: oldAnnotationStore.enums,
-        groupAnnotations: oldAnnotationStore.groups,
-        moveAnnotations: oldAnnotationStore.moves,
-        pureAnnotations: oldAnnotationStore.pures,
-        removeAnnotations: oldAnnotationStore.removes,
-        renameAnnotations: oldAnnotationStore.renamings,
-        todoAnnotations: oldAnnotationStore.todos,
+        boundaryAnnotations: oldAnnotationStore.boundaries ?? {},
+        calledAfterAnnotations: oldAnnotationStore.calledAfters ?? {},
+        completeAnnotations: oldAnnotationStore.completes ?? {},
+        descriptionAnnotations: oldAnnotationStore.descriptions ?? {},
+        enumAnnotations: oldAnnotationStore.enums ?? {},
+        groupAnnotations: oldAnnotationStore.groups ?? {},
+        moveAnnotations: oldAnnotationStore.moves ?? {},
+        pureAnnotations: oldAnnotationStore.pures ?? {},
+        removeAnnotations: oldAnnotationStore.removes ?? {},
+        renameAnnotations: oldAnnotationStore.renamings ?? {},
+        todoAnnotations: oldAnnotationStore.todos ?? {},
         valueAnnotations: Object.fromEntries([
             ...Object.entries(oldAnnotationStore.attributes ?? {}).map(([target, oldAnnotation]) => [
                 target,
