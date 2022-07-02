@@ -151,29 +151,19 @@ internal class AnnotationValidatorTest {
         val expectedErrors = listOf<AnnotationError>(
             AnnotationTargetError(
                 "test-module.test-class",
-                "Attribute",
+                "Optional",
                 AnnotationTarget.CLASS
             ),
             AnnotationTargetError(
                 "test-module.test-class.test-class-function",
-                "Attribute",
+                "Optional",
                 AnnotationTarget.METHOD
             ),
             AnnotationTargetError(
                 "test-module.test-function",
-                "Attribute",
+                "Optional",
                 AnnotationTarget.GLOBAL_FUNCTION
             ),
-            AnnotationTargetError(
-                "test-module.test-function.test-parameter",
-                "Attribute",
-                AnnotationTarget.FUNCTION_PARAMETER
-            ),
-            AnnotationTargetError(
-                "test-module.test-class.test-class-function.only-param",
-                "Attribute",
-                AnnotationTarget.FUNCTION_PARAMETER
-            )
         )
 
         annotationErrors.shouldContainExactlyInAnyOrder(expectedErrors)
@@ -441,7 +431,7 @@ internal class AnnotationValidatorTest {
         val expectedErrors = listOf<AnnotationError>(
             AnnotationCombinationError(
                 "test-module.test-class.__init__.only-param",
-                "Attribute",
+                "Optional",
                 "Constant"
             ),
             AnnotationCombinationError(
@@ -657,10 +647,6 @@ internal class AnnotationValidatorTest {
 
         // then
         val expectedErrors = listOf<AnnotationError>(
-            GroupAnnotationCombinationError(
-                "test-module.test-class.__init__.first-param",
-                "Attribute"
-            ),
             GroupAnnotationCombinationError(
                 "test-module.test-class.__init__.second-param",
                 "Constant"
