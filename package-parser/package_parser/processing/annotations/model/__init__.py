@@ -1,7 +1,6 @@
 from ._annotations import (
     ANNOTATION_SCHEMA_VERSION,
     AbstractAnnotation,
-    AnnotationStore,
     BoundaryAnnotation,
     ConstantAnnotation,
     EnumAnnotation,
@@ -12,4 +11,6 @@ from ._annotations import (
     ParameterType,
     RemoveAnnotation,
     RequiredAnnotation,
+    ValueAnnotation,
 )
+from ._AnnotationStore import AnnotationStore

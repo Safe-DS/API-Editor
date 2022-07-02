@@ -6,9 +6,10 @@ import { pythonIdentifierPattern } from '../../../common/validation';
 import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
 import { PythonFunction } from '../../packageData/model/PythonFunction';
 import { PythonParameter } from '../../packageData/model/PythonParameter';
-import { GroupAnnotation, selectGroups, upsertGroup } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
 import { hideAnnotationForm } from '../../ui/uiSlice';
+import { selectGroupAnnotations, upsertGroupAnnotation } from '../annotationSlice';
+import { GroupAnnotation } from '../versioning/AnnotationStoreV2';
 
 interface GroupFormProps {
     readonly target: PythonDeclaration;
@@ -23,7 +24,7 @@ interface GroupFormState {
 
 export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName }) {
     const targetPath = target.id;
-    const currentGroups = useAppSelector(selectGroups(targetPath));
+    const currentGroups = useAppSelector(selectGroupAnnotations(targetPath));
     let prevGroupAnnotation: GroupAnnotation | undefined;
     if (groupName && currentGroups) {
         prevGroupAnnotation = currentGroups[groupName];
@@ -108,7 +109,7 @@ export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName
 
     const onSave = (data: GroupFormState) => {
         dispatch(
-            upsertGroup({
+            upsertGroupAnnotation({
                 target: targetPath,
                 groupName: data.groupName,
                 parameters: getSelectedParameters(),

@@ -2,7 +2,7 @@ import { FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Select } from 
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectCalledAfters, upsertCalledAfter } from '../annotationSlice';
+import { selectCalledAfterAnnotations, upsertCalledAfterAnnotation } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
 import { PythonFunction } from '../../packageData/model/PythonFunction';
 import { hideAnnotationForm } from '../../ui/uiSlice';
@@ -17,7 +17,7 @@ interface CalledAfterFormState {
 
 export const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ target }) {
     const targetPath = target.id;
-    const currentCalledAfters = Object.keys(useAppSelector(selectCalledAfters(targetPath)));
+    const currentCalledAfters = Object.keys(useAppSelector(selectCalledAfterAnnotations(targetPath)));
 
     const remainingCalledAfters = target
         .siblingFunctions()
@@ -57,7 +57,7 @@ export const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ targe
 
     const onSave = (data: CalledAfterFormState) => {
         dispatch(
-            upsertCalledAfter({
+            upsertCalledAfterAnnotation({
                 target: targetPath,
                 ...data,
             }),

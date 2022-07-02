@@ -19,7 +19,7 @@ def _generate_remove_annotations(
     """
     for class_ in api.classes.values():
         if usages.n_class_usages(class_.id) == 0:
-            annotations.removes.append(
+            annotations.removeAnnotations.append(
                 RemoveAnnotation(
                     target=class_.id, authors=[autogen_author], reviewers=[]
                 )
@@ -27,7 +27,7 @@ def _generate_remove_annotations(
 
     for function in api.functions.values():
         if usages.n_function_usages(function.id) == 0:
-            annotations.removes.append(
+            annotations.removeAnnotations.append(
                 RemoveAnnotation(
                     target=function.id, authors=[autogen_author], reviewers=[]
                 )

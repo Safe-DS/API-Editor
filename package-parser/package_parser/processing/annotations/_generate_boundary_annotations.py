@@ -2,6 +2,7 @@ from package_parser.processing.annotations.model import (
     AnnotationStore,
     BoundaryAnnotation,
     Interval,
+    ValueAnnotation,
 )
 from package_parser.processing.api.model import API
 
@@ -18,7 +19,9 @@ def _generate_boundary_annotations(api: API, annotations: AnnotationStore) -> No
 
         # Don't add boundary annotation to constant parameters
         if parameter.id in set(
-            annotation.target for annotation in annotations.constants
+            annotation.target
+            for annotation in annotations.valueAnnotations
+            if annotation.variant == ValueAnnotation.Variant.CONSTANT
         ):
             continue
 
@@ -60,4 +63,4 @@ def _generate_boundary_annotations(api: API, annotations: AnnotationStore) -> No
                 reviewers=[],
                 interval=interval,
             )
-            annotations.boundaries.append(boundary)
+            annotations.boundaryAnnotations.append(boundary)

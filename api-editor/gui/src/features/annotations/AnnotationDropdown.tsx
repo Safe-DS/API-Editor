@@ -2,76 +2,52 @@ import { Box, Button, Icon, Menu, MenuButton, MenuGroup, MenuItem, MenuList } fr
 import React from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { addPure, addRemove, addRequired, selectComplete, selectUsernameIsValid } from './annotationSlice';
+import { addPureAnnotation, addRemoveAnnotation, selectComplete, selectUsernameIsValid } from './annotationSlice';
 import {
-    hideAnnotationForm,
-    selectCurrentUserAction,
-    showAttributeAnnotationForm,
     showBoundaryAnnotationForm,
     showCalledAfterAnnotationForm,
-    showConstantAnnotationForm,
     showDescriptionAnnotationForm,
     showEnumAnnotationForm,
     showGroupAnnotationForm,
     showMoveAnnotationForm,
-    showOptionalAnnotationForm,
     showRenameAnnotationForm,
     showTodoAnnotationForm,
+    showValueAnnotationForm,
 } from '../ui/uiSlice';
 
 interface AnnotationDropdownProps {
-    showAttribute?: boolean;
     showBoundary?: boolean;
     showCalledAfter?: boolean;
-    showConstant?: boolean;
     showDescription?: boolean;
     showEnum?: boolean;
     showGroup?: boolean;
     showMove?: boolean;
-    showOptional?: boolean;
     showPure?: boolean;
     showRename?: boolean;
-    showRequired?: boolean;
     showRemove?: boolean;
     showTodo?: boolean;
+    showValue?: boolean;
     target: string;
 }
 
 export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
-    showAttribute = false,
     showBoundary = false,
     showCalledAfter = false,
-    showConstant = false,
     showDescription = false,
     showGroup = false,
     showEnum = false,
     showMove = false,
     showPure = false,
-    showOptional = false,
     showRename = false,
-    showRequired = false,
     showRemove = false,
     showTodo = false,
+    showValue = false,
     target,
 }) {
     const dispatch = useAppDispatch();
     const isComplete = Boolean(useAppSelector(selectComplete(target)));
     const isValidUsername = Boolean(useAppSelector(selectUsernameIsValid));
     const isDisabled = isComplete || !isValidUsername;
-    const currentUserAction = useAppSelector(selectCurrentUserAction);
-
-    // Event Handlers --------------------------------------------------------------------------------------------------
-    const onSelectRequired = () => {
-        if (
-            currentUserAction.target === target &&
-            (currentUserAction.type === 'attribute' ||
-                currentUserAction.type === 'constant' ||
-                currentUserAction.type === 'optional')
-        ) {
-            dispatch(hideAnnotationForm());
-        }
-        dispatch(addRequired({ target }));
-    };
 
     // Render ----------------------------------------------------------------------------------------------------------
     return (
@@ -103,31 +79,6 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                         </MenuGroup>
                     )}
 
-                    {(showAttribute || showConstant || showOptional || showRequired) && (
-                        <MenuGroup title="Value">
-                            {showAttribute && (
-                                <MenuItem onClick={() => dispatch(showAttributeAnnotationForm(target))} paddingLeft={8}>
-                                    @attribute
-                                </MenuItem>
-                            )}
-                            {showConstant && (
-                                <MenuItem onClick={() => dispatch(showConstantAnnotationForm(target))} paddingLeft={8}>
-                                    @constant
-                                </MenuItem>
-                            )}
-                            {showOptional && (
-                                <MenuItem onClick={() => dispatch(showOptionalAnnotationForm(target))} paddingLeft={8}>
-                                    @optional
-                                </MenuItem>
-                            )}
-                            {showRequired && (
-                                <MenuItem onClick={onSelectRequired} paddingLeft={8}>
-                                    @required
-                                </MenuItem>
-                            )}
-                        </MenuGroup>
-                    )}
-
                     {(showCalledAfter ||
                         showDescription ||
                         showGroup ||
@@ -135,7 +86,8 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                         showPure ||
                         showRemove ||
                         showRename ||
-                        showTodo) && (
+                        showTodo ||
+                        showValue) && (
                         <MenuGroup title="Uncategorized">
                             {showCalledAfter && (
                                 <MenuItem
@@ -181,12 +133,12 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                                 </MenuItem>
                             )}
                             {showPure && (
-                                <MenuItem onClick={() => dispatch(addPure({ target }))} paddingLeft={8}>
+                                <MenuItem onClick={() => dispatch(addPureAnnotation({ target }))} paddingLeft={8}>
                                     @pure
                                 </MenuItem>
                             )}
                             {showRemove && (
-                                <MenuItem onClick={() => dispatch(addRemove({ target }))} paddingLeft={8}>
+                                <MenuItem onClick={() => dispatch(addRemoveAnnotation({ target }))} paddingLeft={8}>
                                     @remove
                                 </MenuItem>
                             )}
@@ -198,6 +150,11 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                             {showTodo && (
                                 <MenuItem onClick={() => dispatch(showTodoAnnotationForm(target))} paddingLeft={8}>
                                     @todo
+                                </MenuItem>
+                            )}
+                            {showValue && (
+                                <MenuItem onClick={() => dispatch(showValueAnnotationForm(target))} paddingLeft={8}>
+                                    @value
                                 </MenuItem>
                             )}
                         </MenuGroup>

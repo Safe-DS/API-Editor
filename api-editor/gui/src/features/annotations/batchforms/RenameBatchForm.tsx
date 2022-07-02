@@ -1,11 +1,12 @@
 import React from 'react';
 import { useAppDispatch } from '../../../app/hooks';
 import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
-import { RenameAnnotation, upsertRenamings } from '../annotationSlice';
 import { OldNewBatchForm, OldNewBatchFormState } from './OldNewBatchForm';
 import { PythonClass } from '../../packageData/model/PythonClass';
 import { PythonFunction } from '../../packageData/model/PythonFunction';
 import { PythonParameter } from '../../packageData/model/PythonParameter';
+import { RenameAnnotation } from '../versioning/AnnotationStoreV2';
+import { upsertRenameAnnotations } from '../annotationSlice';
 
 interface RenameBatchFormProps {
     targets: PythonDeclaration[];
@@ -31,7 +32,7 @@ export const RenameBatchForm: React.FC<RenameBatchFormProps> = function ({ targe
                 });
             }
         });
-        dispatch(upsertRenamings(all));
+        dispatch(upsertRenameAnnotations(all));
     };
 
     // Rendering -------------------------------------------------------------------------------------------------------

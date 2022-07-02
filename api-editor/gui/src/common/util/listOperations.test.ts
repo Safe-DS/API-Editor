@@ -1,16 +1,16 @@
 import { groupBy, isEmptyList } from './listOperations';
 
 test('isEmptyList returns true for empty lists', () => {
-    expect(isEmptyList([])).toEqual(true);
+    expect(isEmptyList([])).toBe(true);
 });
 
 test('isEmptyLists returns false for non-empty lists', () => {
-    expect(isEmptyList([1])).toEqual(false);
+    expect(isEmptyList([1])).toBe(false);
 });
 
 test('groupBy with empty list', () => {
     const grouping = groupBy([], (it) => it);
-    expect(grouping.size).toEqual(0);
+    expect(grouping.size).toBe(0);
 });
 
 test('groupBy with non-empty list', () => {
