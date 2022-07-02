@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { moduleNamePattern } from '../../../common/validation';
 import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
-import { selectMove, upsertMove } from '../annotationSlice';
+import { selectMoveAnnotation, upsertMove } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
 import { hideAnnotationForm } from '../../ui/uiSlice';
 
@@ -18,7 +18,7 @@ interface MoveFormState {
 
 export const MoveForm: React.FC<MoveFormProps> = function ({ target }) {
     const targetPath = target.id;
-    const prevDestination = useAppSelector(selectMove(targetPath))?.destination;
+    const prevDestination = useAppSelector(selectMoveAnnotation(targetPath))?.destination;
     const oldModulePath = target?.parent()?.name;
 
     // Hooks -----------------------------------------------------------------------------------------------------------

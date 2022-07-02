@@ -20,7 +20,7 @@ import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { numberPattern } from '../../../common/validation';
 import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
-import { ComparisonOperator, Interval, selectBoundary, upsertBoundary } from '../annotationSlice';
+import { ComparisonOperator, Interval, selectBoundaryAnnotation, upsertBoundary } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
 import { Optional } from '../../../common/util/types';
 import { hideAnnotationForm } from '../../ui/uiSlice';
@@ -53,7 +53,7 @@ const initialFormState = function (previousInterval: Optional<Interval>): Bounda
 
 export const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
     const targetPath = target.id;
-    const prevInterval = useAppSelector(selectBoundary(targetPath))?.interval;
+    const prevInterval = useAppSelector(selectBoundaryAnnotation(targetPath))?.interval;
 
     // Hooks -----------------------------------------------------------------------------------------------------------
 

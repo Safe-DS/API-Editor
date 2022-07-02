@@ -6,7 +6,7 @@ import { pythonIdentifierPattern } from '../../../common/validation';
 import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
 import { PythonFunction } from '../../packageData/model/PythonFunction';
 import { PythonParameter } from '../../packageData/model/PythonParameter';
-import { GroupAnnotation, selectGroups, upsertGroup } from '../annotationSlice';
+import { GroupAnnotation, selectGroupAnnotations, upsertGroup } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
 import { hideAnnotationForm } from '../../ui/uiSlice';
 
@@ -23,7 +23,7 @@ interface GroupFormState {
 
 export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName }) {
     const targetPath = target.id;
-    const currentGroups = useAppSelector(selectGroups(targetPath));
+    const currentGroups = useAppSelector(selectGroupAnnotations(targetPath));
     let prevGroupAnnotation: GroupAnnotation | undefined;
     if (groupName && currentGroups) {
         prevGroupAnnotation = currentGroups[groupName];

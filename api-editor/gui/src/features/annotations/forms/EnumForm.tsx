@@ -14,7 +14,7 @@ import { FaPlus, FaTrash } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { pythonIdentifierPattern } from '../../../common/validation';
 import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
-import { selectEnum, upsertEnum } from '../annotationSlice';
+import { selectEnumAnnotation, upsertEnum } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
 import { hideAnnotationForm } from '../../ui/uiSlice';
 
@@ -34,7 +34,7 @@ export const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
     const targetPath = target.id;
 
     // Hooks -----------------------------------------------------------------------------------------------------------
-    const enumDefinition = useAppSelector(selectEnum(target.id));
+    const enumDefinition = useAppSelector(selectEnumAnnotation(target.id));
     const dispatch = useAppDispatch();
 
     const {

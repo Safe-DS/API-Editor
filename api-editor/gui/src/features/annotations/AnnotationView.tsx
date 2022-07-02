@@ -37,19 +37,19 @@ import {
     reviewRequired,
     reviewTodo,
     selectAttribute,
-    selectBoundary,
-    selectCalledAfters,
+    selectBoundaryAnnotation,
+    selectCalledAfterAnnotations,
     selectConstant,
-    selectDescription,
-    selectEnum,
-    selectGroups,
-    selectMove,
+    selectDescriptionAnnotation,
+    selectEnumAnnotation,
+    selectGroupAnnotations,
+    selectMoveAnnotation,
     selectOptional,
-    selectPure,
-    selectRemove,
-    selectRenaming,
+    selectPureAnnotation,
+    selectRemoveAnnotation,
+    selectRenameAnnotation,
     selectRequired,
-    selectTodo,
+    selectTodoAnnotation,
     selectUsernameIsValid,
 } from './annotationSlice';
 import {
@@ -77,19 +77,19 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
     const dispatch = useAppDispatch();
 
     const attributeAnnotation = useAppSelector(selectAttribute(target));
-    const boundaryAnnotation = useAppSelector(selectBoundary(target));
-    const calledAfterAnnotation = useAppSelector(selectCalledAfters(target));
+    const boundaryAnnotation = useAppSelector(selectBoundaryAnnotation(target));
+    const calledAfterAnnotation = useAppSelector(selectCalledAfterAnnotations(target));
     const constantAnnotation = useAppSelector(selectConstant(target));
-    const descriptionAnnotation = useAppSelector(selectDescription(target));
-    const enumAnnotation = useAppSelector(selectEnum(target));
-    const groupAnnotations = useAppSelector(selectGroups(target));
-    const moveAnnotation = useAppSelector(selectMove(target));
+    const descriptionAnnotation = useAppSelector(selectDescriptionAnnotation(target));
+    const enumAnnotation = useAppSelector(selectEnumAnnotation(target));
+    const groupAnnotations = useAppSelector(selectGroupAnnotations(target));
+    const moveAnnotation = useAppSelector(selectMoveAnnotation(target));
     const optionalAnnotation = useAppSelector(selectOptional(target));
-    const pureAnnotation = useAppSelector(selectPure(target));
-    const removeAnnotation = useAppSelector(selectRemove(target));
-    const renameAnnotation = useAppSelector(selectRenaming(target));
+    const pureAnnotation = useAppSelector(selectPureAnnotation(target));
+    const removeAnnotation = useAppSelector(selectRemoveAnnotation(target));
+    const renameAnnotation = useAppSelector(selectRenameAnnotation(target));
     const requiredAnnotation = useAppSelector(selectRequired(target));
-    const todoAnnotation = useAppSelector(selectTodo(target));
+    const todoAnnotation = useAppSelector(selectTodoAnnotation(target));
 
     if (
         !attributeAnnotation &&

@@ -2,7 +2,7 @@ import { FormControl, FormLabel, Textarea } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectDescription, upsertDescription } from '../annotationSlice';
+import { selectDescriptionAnnotation, upsertDescription } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
 import { hideAnnotationForm } from '../../ui/uiSlice';
 import { PythonClass } from '../../packageData/model/PythonClass';
@@ -19,7 +19,7 @@ interface DescriptionFormState {
 
 export const DescriptionForm: React.FC<DescriptionFormProps> = function ({ target }) {
     const targetPath = target.id;
-    const prevNewDescription = useAppSelector(selectDescription(targetPath))?.newDescription;
+    const prevNewDescription = useAppSelector(selectDescriptionAnnotation(targetPath))?.newDescription;
     const oldDescription = target.description;
 
     // Hooks -----------------------------------------------------------------------------------------------------------
