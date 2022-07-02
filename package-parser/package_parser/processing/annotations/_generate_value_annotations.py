@@ -52,6 +52,14 @@ def _generate_constant_annotation(
                 defaultValue=default_value,
             )
         )
+    else:
+        annotations.valueAnnotations.append(
+            RequiredAnnotation(
+                target=parameter.id,
+                authors=[autogen_author],
+                reviewers=[],
+            )
+        )
 
 
 def _generate_required_or_optional_annotation(
