@@ -109,10 +109,23 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
     const watchDefaultType = watch('defaultValueType');
 
     useEffect(() => {
+        const defaultValueType = previousDefaultType ?? 'string';
+
+        let defaultValue: string;
+        if (previousDefaultValue === undefined) {
+            defaultValue = '';
+        } else {
+            if (defaultValueType === 'boolean') {
+                defaultValue = previousDefaultValue ? 'true' : 'false';
+            } else {
+                defaultValue = String(previousDefaultValue);
+            }
+        }
+
         reset({
             variant: previousVariant ?? 'optional',
-            defaultValueType: previousDefaultType ?? 'string',
-            defaultValue: previousDefaultValue ?? '',
+            defaultValueType,
+            defaultValue,
         });
     }, [reset, previousVariant, previousDefaultType, previousDefaultValue]);
 
@@ -173,8 +186,12 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
 
             {watchVariant !== 'required' && (
                 <>
-                {watchVariant === 'optional' && <FormLabel>Type of default value of &quot;{target.name}&quot;:</FormLabel>}
-                {watchVariant === 'constant' && <FormLabel>Type of constant value of &quot;{target.name}&quot;:</FormLabel>}
+                    {watchVariant === 'optional' && (
+                        <FormLabel>Type of default value of &quot;{target.name}&quot;:</FormLabel>
+                    )}
+                    {watchVariant === 'constant' && (
+                        <FormLabel>Type of constant value of &quot;{target.name}&quot;:</FormLabel>
+                    )}
                     <RadioGroup defaultValue={previousDefaultType ?? 'string'} onChange={handleTypeChange}>
                         <Stack direction="column">
                             <Radio value="string">String</Radio>
@@ -189,7 +206,9 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
             {watchVariant !== 'required' && watchDefaultType !== 'none' && (
                 <FormControl isInvalid={Boolean(errors?.defaultValue)}>
                     {watchVariant === 'optional' && <FormLabel>Default value for &quot;{target.name}&quot;:</FormLabel>}
-                    {watchVariant === 'constant' && <FormLabel>Constant value for &quot;{target.name}&quot;:</FormLabel>}
+                    {watchVariant === 'constant' && (
+                        <FormLabel>Constant value for &quot;{target.name}&quot;:</FormLabel>
+                    )}
 
                     {watchDefaultType === 'string' && <Input {...register('defaultValue', {})} />}
                     {watchDefaultType === 'number' && (
@@ -209,6 +228,7 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
                     {watchDefaultType === 'boolean' && (
                         <Select
                             {...register('defaultValue', {
+                                required: 'This is required.',
                                 pattern: booleanPattern,
                             })}
                         >
