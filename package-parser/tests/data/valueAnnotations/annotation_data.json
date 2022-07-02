@@ -1,0 +1,182 @@
+{
+    "test/test/used_global_function/constant_required_parameter": {
+        "target": "test/test/used_global_function/constant_required_parameter",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "constant",
+        "defaultValueType": "string",
+        "defaultValue": "test"
+    },
+    "test/test/used_global_function/constant_optional_parameter": {
+        "target": "test/test/used_global_function/constant_optional_parameter",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "constant",
+        "defaultValueType": "string",
+        "defaultValue": "test2()"
+    },
+    "test/test/UsedClass/used_method/constant_required_parameter": {
+        "target": "test/test/UsedClass/used_method/constant_required_parameter",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "constant",
+        "defaultValueType": "string",
+        "defaultValue": "test"
+    },
+    "test/test/UsedClass/used_method/constant_optional_parameter": {
+        "target": "test/test/UsedClass/used_method/constant_optional_parameter",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "constant",
+        "defaultValueType": "number",
+        "defaultValue": 0.5
+    },
+    "test/test/some_global_function/optional_parameter_that_should_be_constant": {
+        "target": "test/test/some_global_function/optional_parameter_that_should_be_constant",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "constant",
+        "defaultValueType": "string",
+        "defaultValue": "test"
+    },
+    "test/test/some_global_function/required_parameter_that_should_be_constant": {
+        "target": "test/test/some_global_function/required_parameter_that_should_be_constant",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "constant",
+        "defaultValueType": "string",
+        "defaultValue": "test"
+    },
+    "test/test/some_global_function/required_parameter_that_should_be_optional": {
+        "target": "test/test/some_global_function/required_parameter_that_should_be_optional",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "optional",
+        "defaultValueType": "string",
+        "defaultValue": "test2"
+    },
+    "test/test/some_global_function/required_parameter_that_should_be_optional_with_non_string": {
+        "target": "test/test/some_global_function/required_parameter_that_should_be_optional_with_non_string",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "optional",
+        "defaultValueType": "string",
+        "defaultValue": "test2"
+    },
+    "test/test/some_global_function/optional_parameter_that_should_be_optional_with_same_default": {
+        "target": "test/test/some_global_function/optional_parameter_that_should_be_optional_with_same_default",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "optional",
+        "defaultValueType": "string",
+        "defaultValue": "test"
+    },
+    "test/test/some_global_function/optional_parameter_that_should_be_optional_with_different_default": {
+        "target": "test/test/some_global_function/optional_parameter_that_should_be_optional_with_different_default",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "optional",
+        "defaultValueType": "string",
+        "defaultValue": "test2"
+    },
+    "test/test/some_global_function/optional_parameter_that_should_be_optional_with_non_string": {
+        "target": "test/test/some_global_function/optional_parameter_that_should_be_optional_with_non_string",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "optional",
+        "defaultValueType": "string",
+        "defaultValue": "test2"
+    },
+    "test/test/some_global_function/issue_715": {
+        "target": "test/test/some_global_function/issue_715",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "optional",
+        "defaultValueType": "number",
+        "defaultValue": 1.0
+    },
+    "test/test/some_global_function/required_parameter_that_should_be_required": {
+        "target": "test/test/some_global_function/required_parameter_that_should_be_required",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "required"
+    },
+    "test/test/some_global_function/required_parameter_that_should_be_required_with_non_string": {
+        "target": "test/test/some_global_function/required_parameter_that_should_be_required_with_non_string",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "required"
+    },
+    "test/test/some_global_function/optional_parameter_that_should_be_required": {
+        "target": "test/test/some_global_function/optional_parameter_that_should_be_required",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "required"
+    },
+    "test/test/some_global_function/optional_parameter_that_should_be_required_with_non_string": {
+        "target": "test/test/some_global_function/optional_parameter_that_should_be_required_with_non_string",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "required"
+    },
+    "test/test/UsedClass/used_method/should_not_be_constant_one": {
+        "target": "test/test/UsedClass/used_method/should_not_be_constant_one",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "required"
+    },
+    "test/test/UsedClass/used_method/should_not_be_constant_two": {
+        "target": "test/test/UsedClass/used_method/should_not_be_constant_two",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "required"
+    },
+    "test/test/UsedClass/used_method/should_not_be_constant_three": {
+        "target": "test/test/UsedClass/used_method/should_not_be_constant_three",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "required"
+    },
+    "test/test/UsedClass/used_method/should_not_be_constant_four": {
+        "target": "test/test/UsedClass/used_method/should_not_be_constant_four",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "required"
+    },
+    "test/test/UsedClass/used_method/should_not_be_constant_five": {
+        "target": "test/test/UsedClass/used_method/should_not_be_constant_five",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "required"
+    },
+    "test/test/UsedClass/used_method/should_not_be_constant_six": {
+        "target": "test/test/UsedClass/used_method/should_not_be_constant_six",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "required"
+    },
+    "test/test/used_global_function/variable_required_parameter": {
+        "target": "test/test/used_global_function/variable_required_parameter",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "required"
+    },
+    "test/test/used_global_function/variable_optional_parameter": {
+        "target": "test/test/used_global_function/variable_optional_parameter",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "required"
+    },
+    "test/test/UsedClass/used_method/variable_required_parameter": {
+        "target": "test/test/UsedClass/used_method/variable_required_parameter",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "required"
+    },
+    "test/test/UsedClass/used_method/variable_optional_parameter": {
+        "target": "test/test/UsedClass/used_method/variable_optional_parameter",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "required"
+    }
+}
