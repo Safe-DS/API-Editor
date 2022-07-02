@@ -2,17 +2,14 @@ from typing import Any, Optional
 
 from package_parser.processing.annotations.model import (
     AnnotationStore,
-    ConstantAnnotation,
-    OptionalAnnotation,
-    RequiredAnnotation,
+    RequiredAnnotation, ConstantAnnotation, ValueAnnotation, OptionalAnnotation,
 )
 from package_parser.processing.api.model import API, Parameter, ParameterAssignment
 from package_parser.processing.usages.model import UsageCountStore
-
 from ._constants import autogen_author
 
 
-def _generate_parameter_importance_annotations(
+def _generate_value_annotations(
     api: API, usages: UsageCountStore, annotations: AnnotationStore
 ) -> None:
     for parameter in api.parameters().values():
@@ -42,16 +39,16 @@ def _generate_constant_annotation(
     :param annotations: AnnotationStore object
     """
 
-    default_type, default_value = _get_default_type_and_value_for_stringified_value(
+    default_value_type, default_value = _get_type_and_value_for_stringified_value(
         sole_stringified_value
     )
-    if default_type is not None:
-        annotations.constants.append(
+    if default_value_type is not None:
+        annotations.valueAnnotations.append(
             ConstantAnnotation(
                 target=parameter.id,
                 authors=[autogen_author],
                 reviewers=[],
-                defaultType=default_type,
+                defaultValueType=default_value_type,
                 defaultValue=default_value,
             )
         )
@@ -66,7 +63,7 @@ def _generate_required_or_optional_annotation(
 
     # If the most common value is not a stringified literal, make parameter required
     if not _is_stringified_literal(most_common_values[0]):
-        annotations.requireds.append(
+        annotations.valueAnnotations.append(
             RequiredAnnotation(
                 target=parameter.id, authors=[autogen_author], reviewers=[]
             )
@@ -114,23 +111,23 @@ def _generate_required_or_optional_annotation(
         total_literal_value_count,
         n_different_literal_values,
     ):
-        annotations.requireds.append(
+        annotations.valueAnnotations.append(
             RequiredAnnotation(
                 target=parameter.id, authors=[autogen_author], reviewers=[]
             )
         )
     else:
         (
-            default_type,
+            default_value_type,
             default_value,
-        ) = _get_default_type_and_value_for_stringified_value(literal_values[0])
-        if default_type is not None:  # Just for mypy, always true
-            annotations.optionals.append(
+        ) = _get_type_and_value_for_stringified_value(literal_values[0])
+        if default_value_type is not None:  # Just for mypy, always true
+            annotations.valueAnnotations.append(
                 OptionalAnnotation(
                     target=parameter.id,
                     authors=[autogen_author],
                     reviewers=[],
-                    defaultType=default_type,
+                    defaultValueType=default_value_type,
                     defaultValue=default_value,
                 )
             )
@@ -162,23 +159,23 @@ def _should_be_required(
 
 
 def _is_stringified_literal(stringified_value: str) -> bool:
-    default_type, _ = _get_default_type_and_value_for_stringified_value(
+    default_type, _ = _get_type_and_value_for_stringified_value(
         stringified_value
     )
     return default_type is not None
 
 
-def _get_default_type_and_value_for_stringified_value(
+def _get_type_and_value_for_stringified_value(
     stringified_value: str,
-) -> tuple[Optional[str], Any]:
+) -> tuple[Optional[ValueAnnotation.DefaultValueType], Any]:
     if stringified_value == "None":
-        return "none", None
+        return ValueAnnotation.DefaultValueType.NONE, None
     elif stringified_value == "True" or stringified_value == "False":
-        return "boolean", stringified_value == "True"
+        return ValueAnnotation.DefaultValueType.BOOLEAN, stringified_value == "True"
     elif _is_float(stringified_value):
-        return "number", float(stringified_value)
+        return ValueAnnotation.DefaultValueType.NUMBER, float(stringified_value)
     elif stringified_value[0] == "'" and stringified_value[-1] == "'":
-        return "string", stringified_value[1:-1]
+        return ValueAnnotation.DefaultValueType.STRING, stringified_value[1:-1]
     else:
         return None, None
 

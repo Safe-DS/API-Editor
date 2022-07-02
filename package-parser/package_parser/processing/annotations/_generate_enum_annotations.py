@@ -4,9 +4,9 @@ from package_parser.processing.annotations.model import (
     AnnotationStore,
     EnumAnnotation,
     EnumPair,
+    ValueAnnotation,
 )
 from package_parser.processing.api.model import API
-
 from ._constants import autogen_author
 
 
@@ -20,7 +20,9 @@ def _generate_enum_annotations(api: API, annotations: AnnotationStore) -> None:
 
         # Don't add enum annotation to constant parameters
         if parameter.id in set(
-            annotation.target for annotation in annotations.constants
+            annotation.target
+            for annotation in annotations.valueAnnotations
+            if annotation.variant == ValueAnnotation.Variant.CONSTANT
         ):
             continue
 
@@ -47,7 +49,7 @@ def _generate_enum_annotations(api: API, annotations: AnnotationStore) -> None:
 
         if len(pairs) > 0:
             enum_name = _enum_name(parameter.name)
-            annotations.enums.append(
+            annotations.enumAnnotations.append(
                 EnumAnnotation(
                     target=parameter.id,
                     authors=[autogen_author],
