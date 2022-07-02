@@ -82,11 +82,8 @@ export const AnnotationStatistics = function () {
     );
 };
 
-const countNonRepeatableAnnotation = (
-    targetToAnnotation: { [target: string]: Annotation },
-    matchedIds: string[],
-) => {
-    return Object.values(targetToAnnotation ).filter((it) => it && !it.isRemoved && matchedIds.includes(it.target))
+const countNonRepeatableAnnotation = (targetToAnnotation: { [target: string]: Annotation }, matchedIds: string[]) => {
+    return Object.values(targetToAnnotation).filter((it) => it && !it.isRemoved && matchedIds.includes(it.target))
         .length;
 };
 

@@ -92,10 +92,7 @@ export class AnnotationFilter extends AbstractPythonFilter {
     }
 }
 
-const hasSingleUseAnnotation = function (
-    target: string,
-    annotations: { [target: string]: Annotation },
-): boolean {
+const hasSingleUseAnnotation = function (target: string, annotations: { [target: string]: Annotation }): boolean {
     const annotationOnTarget = annotations[target];
     return annotationOnTarget && !annotationOnTarget.isRemoved;
 };
