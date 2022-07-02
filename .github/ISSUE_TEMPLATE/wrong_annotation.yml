@@ -78,7 +78,7 @@ body:
       description: Do you already have an idea how this problem could be fixed?
     validations:
       required: false
-      
+
   - type: textarea
     id: screenshots
     attributes:
