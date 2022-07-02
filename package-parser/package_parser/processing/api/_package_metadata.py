@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Optional
 
 # pylint: disable=no-name-in-module
-from importlib.metadata import packages_distributions, version
+from importlib.metadata import packages_distributions, version  # type: ignore
 from package_parser.utils import list_files
 
 from ._file_filters import _is_init_file
