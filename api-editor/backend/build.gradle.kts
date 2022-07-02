@@ -14,7 +14,7 @@ plugins {
 }
 
 application {
-    mainClass.set("com.larsreimann.api_editor.server.ApplicationKt")
+    mainClass.set("com.larsreimann.apiEditor.server.ApplicationKt")
 }
 
 java {
