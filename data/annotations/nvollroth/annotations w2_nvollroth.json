@@ -867,7 +867,25 @@
             "authors": [
                 "Nils"
             ],
-            "reviewers": []
+            "reviewers": [
+                "Nils"
+            ]
+        },
+        "sklearn/sklearn.linear_model._glm.glm/TweedieRegressor/__init__/max_iter": {
+            "target": "sklearn/sklearn.linear_model._glm.glm/TweedieRegressor/__init__/max_iter",
+            "interval": {
+                "isDiscrete": true,
+                "lowerIntervalLimit": 1,
+                "lowerLimitType": 0,
+                "upperIntervalLimit": 0,
+                "upperLimitType": 2
+            },
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": [
+                "Nils"
+            ]
         }
     },
     "calledAfters": {},
@@ -8784,6 +8802,111 @@
         },
         "sklearn/sklearn.linear_model._glm.glm/TweedieRegressor": {
             "target": "sklearn/sklearn.linear_model._glm.glm/TweedieRegressor",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._glm.glm/TweedieRegressor/__init__/alpha": {
+            "target": "sklearn/sklearn.linear_model._glm.glm/TweedieRegressor/__init__/alpha",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._glm.glm/TweedieRegressor/__init__/link": {
+            "target": "sklearn/sklearn.linear_model._glm.glm/TweedieRegressor/__init__/link",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._glm.glm/TweedieRegressor/__init__/power": {
+            "target": "sklearn/sklearn.linear_model._glm.glm/TweedieRegressor/__init__/power",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._glm.glm/TweedieRegressor/__init__/warm_start": {
+            "target": "sklearn/sklearn.linear_model._glm.glm/TweedieRegressor/__init__/warm_start",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._glm.glm/TweedieRegressor/__init__/max_iter": {
+            "target": "sklearn/sklearn.linear_model._glm.glm/TweedieRegressor/__init__/max_iter",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._glm.glm/TweedieRegressor/__init__": {
+            "target": "sklearn/sklearn.linear_model._glm.glm/TweedieRegressor/__init__",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._ransac/RANSACRegressor/fit": {
+            "target": "sklearn/sklearn.linear_model._ransac/RANSACRegressor/fit",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._ransac/RANSACRegressor/predict": {
+            "target": "sklearn/sklearn.linear_model._ransac/RANSACRegressor/predict",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._ransac/RANSACRegressor/score": {
+            "target": "sklearn/sklearn.linear_model._ransac/RANSACRegressor/score",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._logistic/LogisticRegressionCV/__init__": {
+            "target": "sklearn/sklearn.linear_model._logistic/LogisticRegressionCV/__init__",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/LassoLars": {
+            "target": "sklearn/sklearn.linear_model._least_angle/LassoLars",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/LassoCV": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/LassoCV",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._coordinate_descent/Lasso": {
+            "target": "sklearn/sklearn.linear_model._coordinate_descent/Lasso",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model._least_angle/LarsCV": {
+            "target": "sklearn/sklearn.linear_model._least_angle/LarsCV",
+            "authors": [
+                "Nils"
+            ],
+            "reviewers": []
+        },
+        "sklearn/sklearn.linear_model": {
+            "target": "sklearn/sklearn.linear_model",
             "authors": [
                 "Nils"
             ],
@@ -21207,7 +21330,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "enumName": "Link",
             "pairs": [
                 {
@@ -25630,7 +25755,9 @@
             "authors": [
                 "Nils"
             ],
-            "reviewers": []
+            "reviewers": [
+                "Nils"
+            ]
         },
         "sklearn/sklearn.linear_model._least_angle/LassoLars": {
             "target": "sklearn/sklearn.linear_model._least_angle/LassoLars",
@@ -25638,7 +25765,9 @@
             "authors": [
                 "Nils"
             ],
-            "reviewers": []
+            "reviewers": [
+                "Nils"
+            ]
         },
         "sklearn/sklearn.linear_model._least_angle/LassoLarsCV": {
             "target": "sklearn/sklearn.linear_model._least_angle/LassoLarsCV",
@@ -30760,7 +30889,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "number",
             "defaultValue": 0
         },
@@ -30780,7 +30911,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "number",
             "defaultValue": 100
         },
@@ -30789,7 +30922,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": [],
+            "reviewers": [
+                "Nils"
+            ],
             "defaultType": "boolean",
             "defaultValue": false
         },
@@ -40020,7 +40155,9 @@
             "authors": [
                 "$autogen$"
             ],
-            "reviewers": []
+            "reviewers": [
+                "Nils"
+            ]
         },
         "sklearn/sklearn.linear_model._huber/HuberRegressor/fit/X": {
             "target": "sklearn/sklearn.linear_model._huber/HuberRegressor/fit/X",
