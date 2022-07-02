@@ -8,5 +8,5 @@ class ConflictingEnumException(enumName: String, moduleName: String, qualifiedPa
             qualifiedParameterName +
             "' already exists in module '" +
             moduleName +
-            "' with conflicting instances."
+            "' with conflicting instances.",
     )

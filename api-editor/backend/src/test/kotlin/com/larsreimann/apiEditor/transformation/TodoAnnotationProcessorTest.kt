@@ -19,11 +19,11 @@ class TodoAnnotationProcessorTest {
     fun reset() {
         testClass = PythonClass(
             name = "TestClass",
-            annotations = mutableListOf(TodoAnnotation("Refactor class"))
+            annotations = mutableListOf(TodoAnnotation("Refactor class")),
         )
         testFunction = PythonFunction(
             name = "testFunction",
-            annotations = mutableListOf(TodoAnnotation("Refactor function"))
+            annotations = mutableListOf(TodoAnnotation("Refactor function")),
         )
         testPackage = PythonPackage(
             distribution = "testPackage",
@@ -33,9 +33,9 @@ class TodoAnnotationProcessorTest {
                 PythonModule(
                     name = "testModule",
                     classes = listOf(testClass),
-                    functions = listOf(testFunction)
-                )
-            )
+                    functions = listOf(testFunction),
+                ),
+            ),
         )
     }
 

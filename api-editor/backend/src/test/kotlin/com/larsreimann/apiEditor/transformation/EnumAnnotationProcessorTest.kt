@@ -38,16 +38,16 @@ class EnumAnnotationProcessorTest {
     fun reset() {
         val enumPairs: List<EnumPair> = listOf(
             EnumPair("value1", "name1"),
-            EnumPair("value2", "name2")
+            EnumPair("value2", "name2"),
         )
         testParameter = PythonParameter(
             name = "testParameter",
             annotations = mutableListOf(
                 EnumAnnotation(
                     "TestEnum",
-                    enumPairs
-                )
-            )
+                    enumPairs,
+                ),
+            ),
         )
         testFunction = PythonFunction(
             name = "testFunction",
@@ -56,20 +56,20 @@ class EnumAnnotationProcessorTest {
                 receiver = PythonStringifiedExpression("testModule.testFunction"),
                 arguments = listOf(
                     PythonArgument(
-                        value = PythonReference(testParameter)
-                    )
-                )
-            )
+                        value = PythonReference(testParameter),
+                    ),
+                ),
+            ),
         )
         testModule = PythonModule(
             name = "testModule",
-            functions = listOf(testFunction)
+            functions = listOf(testFunction),
         )
         testPackage = PythonPackage(
             distribution = "testPackage",
             name = "testPackage",
             version = "1.0.0",
-            modules = listOf(testModule)
+            modules = listOf(testModule),
         )
     }
 
@@ -134,13 +134,13 @@ class EnumAnnotationProcessorTest {
             mutableListOf(
                 PythonEnumInstance(
                     name = "name1",
-                    value = PythonString("value1")
+                    value = PythonString("value1"),
                 ),
                 PythonEnumInstance(
                     name = "name2",
-                    value = PythonString("value2")
-                )
-            )
+                    value = PythonString("value2"),
+                ),
+            ),
         )
         testModule.enums += mutableEnum
         testPackage.processEnumAnnotations()
@@ -160,13 +160,13 @@ class EnumAnnotationProcessorTest {
             mutableListOf(
                 PythonEnumInstance(
                     name = "name1",
-                    value = PythonString("value1")
+                    value = PythonString("value1"),
                 ),
                 PythonEnumInstance(
                     name = "name2",
-                    value = PythonString("value2")
-                )
-            )
+                    value = PythonString("value2"),
+                ),
+            ),
         )
         testModule.enums.add(mutableEnum)
         testPackage.processEnumAnnotations()
@@ -196,13 +196,13 @@ class EnumAnnotationProcessorTest {
             mutableListOf(
                 PythonEnumInstance(
                     name = "name1",
-                    value = PythonString("value1")
+                    value = PythonString("value1"),
                 ),
                 PythonEnumInstance(
                     name = "name2",
-                    value = PythonString("value2")
-                )
-            )
+                    value = PythonString("value2"),
+                ),
+            ),
         )
         testModule.enums.add(mutableEnum)
         testPackage.processEnumAnnotations()
@@ -236,13 +236,13 @@ class EnumAnnotationProcessorTest {
             mutableListOf(
                 PythonEnumInstance(
                     name = "name1",
-                    value = PythonString("value1")
+                    value = PythonString("value1"),
                 ),
                 PythonEnumInstance(
                     name = "name3",
-                    value = PythonString("value3")
-                )
-            )
+                    value = PythonString("value3"),
+                ),
+            ),
         )
         testModule.enums += mutableEnum
 

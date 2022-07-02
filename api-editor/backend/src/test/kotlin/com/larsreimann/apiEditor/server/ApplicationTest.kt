@@ -51,15 +51,15 @@ class ApplicationTest {
                         imports = mutableListOf(
                             PythonImport(
                                 module = "test-import",
-                                alias = "test-alias"
-                            )
+                                alias = "test-alias",
+                            ),
                         ),
                         fromImports = mutableListOf(
                             PythonFromImport(
                                 module = "test-from-import",
                                 declaration = "test-declaration",
-                                alias = null
-                            )
+                                alias = null,
+                            ),
                         ),
                         classes = mutableListOf(
                             SerializablePythonClass(
@@ -71,8 +71,8 @@ class ApplicationTest {
                                 isPublic = true,
                                 description = "Lorem ipsum",
                                 fullDocstring = "Lorem ipsum",
-                                annotations = mutableListOf()
-                            )
+                                annotations = mutableListOf(),
+                            ),
                         ),
                         functions = mutableListOf(
                             SerializablePythonFunction(
@@ -88,8 +88,8 @@ class ApplicationTest {
                                         isPublic = true,
                                         typeInDocs = "str",
                                         description = "Lorem ipsum",
-                                        annotations = mutableListOf()
-                                    )
+                                        annotations = mutableListOf(),
+                                    ),
                                 ),
                                 results = mutableListOf(
                                     SerializablePythonResult(
@@ -97,17 +97,17 @@ class ApplicationTest {
                                         type = "str",
                                         typeInDocs = "str",
                                         description = "Lorem ipsum",
-                                        annotations = mutableListOf()
-                                    )
+                                        annotations = mutableListOf(),
+                                    ),
                                 ),
                                 isPublic = true,
                                 description = "Lorem ipsum",
                                 fullDocstring = "Lorem ipsum",
-                                annotations = mutableListOf()
-                            )
+                                annotations = mutableListOf(),
+                            ),
                         ),
-                        annotations = mutableListOf()
-                    )
+                        annotations = mutableListOf(),
+                    ),
                 ),
                 annotations = mutableListOf(
                     BoundaryAnnotation(
@@ -115,29 +115,29 @@ class ApplicationTest {
                         lowerIntervalLimit = 0.0,
                         lowerLimitType = ComparisonOperator.LESS_THAN_OR_EQUALS,
                         upperIntervalLimit = 1.0,
-                        upperLimitType = ComparisonOperator.LESS_THAN
+                        upperLimitType = ComparisonOperator.LESS_THAN,
                     ),
                     CalledAfterAnnotation("test-other-function"),
                     ConstantAnnotation(DefaultNumber(0.1)),
                     EnumAnnotation(
                         enumName = "test-enum",
                         pairs = listOf(
-                            EnumPair("test-value", "TEST_VALUE")
-                        )
+                            EnumPair("test-value", "TEST_VALUE"),
+                        ),
                     ),
                     GroupAnnotation(
                         groupName = "test-group",
                         parameters = mutableListOf(
-                            "test-parameter"
-                        )
+                            "test-parameter",
+                        ),
                     ),
                     MoveAnnotation("test-destination-module"),
                     OptionalAnnotation(DefaultString("bla")),
                     PureAnnotation,
                     RenameAnnotation("test-new-name"),
                     RequiredAnnotation,
-                    RemoveAnnotation
-                )
+                    RemoveAnnotation,
+                ),
             )
 
             val requestBody = Json.encodeToString(testPythonPackage)

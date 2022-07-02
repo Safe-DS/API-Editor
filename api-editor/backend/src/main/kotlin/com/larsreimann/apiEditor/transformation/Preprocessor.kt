@@ -74,7 +74,7 @@ private fun PythonFunction.addOriginalDeclaration() {
                 name == "__init__" && containingClass != null -> containingClass.originalClass!!.qualifiedName
                 isMethod() -> "self.instance.$name"
                 else -> qualifiedName()
-            }
+            },
         ),
         arguments = this.parameters
             .filter { !it.isImplicit() }
@@ -88,9 +88,9 @@ private fun PythonFunction.addOriginalDeclaration() {
                         PythonParameterAssignment.POSITIONAL_VARARG -> PythonPositionalSpread(PythonReference(it))
                         PythonParameterAssignment.NAMED_VARARG -> PythonNamedSpread(PythonReference(it))
                         else -> PythonReference(it)
-                    }
+                    },
                 )
-            }
+            },
     )
 }
 

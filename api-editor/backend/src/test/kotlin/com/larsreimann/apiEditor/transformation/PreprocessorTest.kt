@@ -45,62 +45,62 @@ class PreprocessorTest {
         testRequiredParameter = PythonParameter(
             name = "testRequiredParameter",
             defaultValue = null,
-            assignedBy = PythonParameterAssignment.POSITION_ONLY
+            assignedBy = PythonParameterAssignment.POSITION_ONLY,
         )
         testOptionalParameter = PythonParameter(
             name = "testOptionalParameter",
             defaultValue = PythonStringifiedExpression("'value'"),
-            assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+            assignedBy = PythonParameterAssignment.POSITION_OR_NAME,
         )
         testPositionalVarargParameter = PythonParameter(
             name = "testPositionalVarargParameter",
-            assignedBy = PythonParameterAssignment.POSITIONAL_VARARG
+            assignedBy = PythonParameterAssignment.POSITIONAL_VARARG,
         )
         testNamedVarargParameter = PythonParameter(
             name = "testNamedVarargParameter",
-            assignedBy = PythonParameterAssignment.NAMED_VARARG
+            assignedBy = PythonParameterAssignment.NAMED_VARARG,
         )
         testGlobalFunction = PythonFunction(
             name = "testGlobalFunction",
             parameters = listOf(
                 testRequiredParameter,
-                testOptionalParameter
-            )
+                testOptionalParameter,
+            ),
         )
         testGlobalFunctionWithVariadicParameters = PythonFunction(
             name = "testGlobalFunctionWithVariadicParameters",
             parameters = listOf(
                 testPositionalVarargParameter,
-                testNamedVarargParameter
-            )
+                testNamedVarargParameter,
+            ),
         )
         testMethodParameter = PythonParameter(
             name = "testMethodParameter",
-            assignedBy = PythonParameterAssignment.POSITION_ONLY
+            assignedBy = PythonParameterAssignment.POSITION_ONLY,
         )
         testAttribute = PythonAttribute(name = "testAttribute")
         testMethod = PythonFunction(
             name = "testMethod",
-            parameters = listOf(testMethodParameter)
+            parameters = listOf(testMethodParameter),
         )
         testClass = PythonClass(
             name = "testClass",
             attributes = listOf(testAttribute),
-            methods = listOf(testMethod)
+            methods = listOf(testMethod),
         )
         testModule = PythonModule(
             "testModule",
             classes = listOf(testClass),
             functions = listOf(
                 testGlobalFunction,
-                testGlobalFunctionWithVariadicParameters
-            )
+                testGlobalFunctionWithVariadicParameters,
+            ),
         )
         testPackage = PythonPackage(
             distribution = "testPackage",
             name = "testPackage",
             version = "1.0.0",
-            modules = listOf(testModule)
+            modules = listOf(testModule),
         )
     }
 

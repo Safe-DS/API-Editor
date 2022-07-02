@@ -22,7 +22,7 @@ class RemoveAnnotationProcessorTest {
         testGlobalFunction = PythonFunction(name = "testGlobalFunction")
         testClass = PythonClass(
             name = "TestClass",
-            methods = listOf(testMethod)
+            methods = listOf(testMethod),
         )
         testPackage = PythonPackage(
             distribution = "testPackage",
@@ -32,9 +32,9 @@ class RemoveAnnotationProcessorTest {
                 PythonModule(
                     name = "testModule",
                     classes = listOf(testClass),
-                    functions = listOf(testGlobalFunction)
-                )
-            )
+                    functions = listOf(testGlobalFunction),
+                ),
+            ),
         )
     }
 

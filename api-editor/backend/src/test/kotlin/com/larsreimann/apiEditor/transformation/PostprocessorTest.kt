@@ -44,13 +44,13 @@ class PostprocessorTest {
             parameters = listOf(
                 PythonParameter(
                     name = "self",
-                    assignedBy = PythonParameterAssignment.IMPLICIT
+                    assignedBy = PythonParameterAssignment.IMPLICIT,
                 ),
                 PythonParameter(
                     name = "positionOrName",
-                    assignedBy = PythonParameterAssignment.POSITION_OR_NAME
-                )
-            )
+                    assignedBy = PythonParameterAssignment.POSITION_OR_NAME,
+                ),
+            ),
         )
         testConstructorParameter = PythonParameter(name = "constructorParameter")
         testClass = PythonClass(
@@ -63,23 +63,23 @@ class PostprocessorTest {
                     callToOriginalAPI = PythonCall(
                         receiver = PythonStringifiedExpression("testModule.TestClass.__init__"),
                         arguments = listOf(
-                            PythonArgument(value = PythonReference(testConstructorParameter))
-                        )
-                    )
-                )
+                            PythonArgument(value = PythonReference(testConstructorParameter)),
+                        ),
+                    ),
+                ),
             ),
-            originalClass = OriginalPythonClass(qualifiedName = "testModule.TestClass")
+            originalClass = OriginalPythonClass(qualifiedName = "testModule.TestClass"),
         )
         testModule = PythonModule(
             name = "testModule",
             classes = listOf(testClass),
-            functions = listOf(testFunction)
+            functions = listOf(testFunction),
         )
         testPackage = PythonPackage(
             distribution = "testPackage",
             name = "testPackage",
             version = "1.0.0",
-            modules = listOf(testModule)
+            modules = listOf(testModule),
         )
     }
 
@@ -111,27 +111,27 @@ class PostprocessorTest {
         fun `should reorder parameters of constructors`() {
             val implicit = PythonParameter(
                 name = "implicit",
-                assignedBy = PythonParameterAssignment.IMPLICIT
+                assignedBy = PythonParameterAssignment.IMPLICIT,
             )
             val positionOnly = PythonParameter(
                 name = "positionOnly",
-                assignedBy = PythonParameterAssignment.POSITION_ONLY
+                assignedBy = PythonParameterAssignment.POSITION_ONLY,
             )
             val positionOrName = PythonParameter(
                 name = "positionOrName",
-                assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+                assignedBy = PythonParameterAssignment.POSITION_OR_NAME,
             )
             val positionalVararg = PythonParameter(
                 name = "positionalVararg",
-                assignedBy = PythonParameterAssignment.POSITIONAL_VARARG
+                assignedBy = PythonParameterAssignment.POSITIONAL_VARARG,
             )
             val nameOnly = PythonParameter(
                 name = "nameOnly",
-                assignedBy = PythonParameterAssignment.NAME_ONLY
+                assignedBy = PythonParameterAssignment.NAME_ONLY,
             )
             val namedVararg = PythonParameter(
                 name = "namedVararg",
-                assignedBy = PythonParameterAssignment.NAMED_VARARG
+                assignedBy = PythonParameterAssignment.NAMED_VARARG,
             )
 
             testConstructor.parameters.clear()
@@ -141,7 +141,7 @@ class PostprocessorTest {
                 positionalVararg,
                 positionOrName,
                 positionOnly,
-                implicit
+                implicit,
             )
 
             testPackage.reorderParameters()
@@ -152,7 +152,7 @@ class PostprocessorTest {
                 positionOrName,
                 positionalVararg,
                 nameOnly,
-                namedVararg
+                namedVararg,
             )
         }
 
@@ -160,26 +160,26 @@ class PostprocessorTest {
         fun `should reorder parameters of functions`() {
             val implicit = PythonParameter(
                 name = "implicit",
-                assignedBy = PythonParameterAssignment.IMPLICIT
+                assignedBy = PythonParameterAssignment.IMPLICIT,
             )
             val positionOnly = PythonParameter(
                 name = "positionOnly",
-                assignedBy = PythonParameterAssignment.POSITION_ONLY
+                assignedBy = PythonParameterAssignment.POSITION_ONLY,
             )
             val positionOrName = PythonParameter(
                 name = "positionOrName",
-                assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+                assignedBy = PythonParameterAssignment.POSITION_OR_NAME,
             )
             val nameOnly = PythonParameter(
                 name = "nameOnly",
-                assignedBy = PythonParameterAssignment.NAME_ONLY
+                assignedBy = PythonParameterAssignment.NAME_ONLY,
             )
 
             testFunction.parameters += listOf(
                 nameOnly,
                 positionOrName,
                 positionOnly,
-                implicit
+                implicit,
             )
 
             testPackage.reorderParameters()
@@ -188,7 +188,7 @@ class PostprocessorTest {
                 implicit,
                 positionOnly,
                 positionOrName,
-                nameOnly
+                nameOnly,
             )
         }
     }

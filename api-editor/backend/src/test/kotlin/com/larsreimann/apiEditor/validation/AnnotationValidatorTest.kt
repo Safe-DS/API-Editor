@@ -40,15 +40,15 @@ internal class AnnotationValidatorTest {
                     listOf(
                         PythonImport(
                             "test-import",
-                            "test-alias"
-                        )
+                            "test-alias",
+                        ),
                     ),
                     listOf(
                         PythonFromImport(
                             "test-from-import",
                             "test-declaration",
-                            null
-                        )
+                            null,
+                        ),
                     ),
                     mutableListOf(
                         SerializablePythonClass(
@@ -72,10 +72,10 @@ internal class AnnotationValidatorTest {
                                             "description",
                                             mutableListOf(
                                                 OptionalAnnotation(
-                                                    DefaultString("test")
-                                                )
-                                            )
-                                        )
+                                                    DefaultString("test"),
+                                                ),
+                                            ),
+                                        ),
                                     ),
                                     mutableListOf(),
                                     true,
@@ -83,20 +83,20 @@ internal class AnnotationValidatorTest {
                                     "fullDocstring",
                                     mutableListOf(
                                         OptionalAnnotation(
-                                            DefaultString("test")
-                                        )
-                                    )
-                                )
+                                            DefaultString("test"),
+                                        ),
+                                    ),
+                                ),
                             ),
                             true,
                             "Lorem ipsum",
                             "Lorem ipsum",
                             mutableListOf(
                                 OptionalAnnotation(
-                                    DefaultString("test")
-                                )
-                            )
-                        )
+                                    DefaultString("test"),
+                                ),
+                            ),
+                        ),
                     ),
                     mutableListOf(
                         SerializablePythonFunction(
@@ -114,10 +114,10 @@ internal class AnnotationValidatorTest {
                                     "Lorem ipsum",
                                     mutableListOf(
                                         OptionalAnnotation(
-                                            DefaultString("test")
-                                        )
-                                    )
-                                )
+                                            DefaultString("test"),
+                                        ),
+                                    ),
+                                ),
                             ),
                             mutableListOf(
                                 SerializablePythonResult(
@@ -125,23 +125,23 @@ internal class AnnotationValidatorTest {
                                     "str",
                                     "str",
                                     "Lorem ipsum",
-                                    mutableListOf()
-                                )
+                                    mutableListOf(),
+                                ),
                             ),
                             true,
                             "Lorem ipsum",
                             "Lorem ipsum",
                             mutableListOf(
                                 OptionalAnnotation(
-                                    DefaultString("test")
-                                )
-                            )
-                        )
+                                    DefaultString("test"),
+                                ),
+                            ),
+                        ),
                     ),
-                    mutableListOf()
-                )
+                    mutableListOf(),
+                ),
             ),
-            mutableListOf()
+            mutableListOf(),
         )
 
         // when
@@ -153,18 +153,18 @@ internal class AnnotationValidatorTest {
             AnnotationTargetError(
                 "test-module.test-class",
                 "Optional",
-                AnnotationTarget.CLASS
+                AnnotationTarget.CLASS,
             ),
             AnnotationTargetError(
                 "test-module.test-class.test-class-function",
                 "Optional",
-                AnnotationTarget.METHOD
+                AnnotationTarget.METHOD,
             ),
             AnnotationTargetError(
                 "test-module.test-function",
                 "Optional",
-                AnnotationTarget.GLOBAL_FUNCTION
-            )
+                AnnotationTarget.GLOBAL_FUNCTION,
+            ),
         )
 
         annotationErrors.shouldContainExactlyInAnyOrder(expectedErrors)
@@ -183,15 +183,15 @@ internal class AnnotationValidatorTest {
                     listOf(
                         PythonImport(
                             "test-import",
-                            "test-alias"
-                        )
+                            "test-alias",
+                        ),
                     ),
                     listOf(
                         PythonFromImport(
                             "test-from-import",
                             "test-declaration",
-                            null
-                        )
+                            null,
+                        ),
                     ),
                     mutableListOf(
                         SerializablePythonClass(
@@ -221,10 +221,10 @@ internal class AnnotationValidatorTest {
                                                     1.0,
                                                     ComparisonOperator.LESS_THAN,
                                                     4.0,
-                                                    ComparisonOperator.LESS_THAN
-                                                )
-                                            )
-                                        )
+                                                    ComparisonOperator.LESS_THAN,
+                                                ),
+                                            ),
+                                        ),
                                     ),
                                     mutableListOf(),
                                     true,
@@ -233,18 +233,18 @@ internal class AnnotationValidatorTest {
                                     mutableListOf(
                                         CalledAfterAnnotation("calledAfterName1"),
                                         CalledAfterAnnotation("calledAfterName2"),
-                                        RenameAnnotation("newName")
-                                    )
-                                )
+                                        RenameAnnotation("newName"),
+                                    ),
+                                ),
                             ),
                             true,
                             "Lorem ipsum",
                             "Lorem ipsum",
                             mutableListOf(
                                 MoveAnnotation("destination"),
-                                RenameAnnotation("rename")
-                            )
-                        )
+                                RenameAnnotation("rename"),
+                            ),
+                        ),
                     ),
                     mutableListOf(
                         SerializablePythonFunction(
@@ -262,7 +262,7 @@ internal class AnnotationValidatorTest {
                                     "Lorem ipsum",
                                     mutableListOf(
                                         OptionalAnnotation(
-                                            DefaultString("test")
+                                            DefaultString("test"),
                                         ),
                                         RenameAnnotation("newName"),
                                         BoundaryAnnotation(
@@ -270,10 +270,10 @@ internal class AnnotationValidatorTest {
                                             1.0,
                                             ComparisonOperator.LESS_THAN,
                                             4.0,
-                                            ComparisonOperator.LESS_THAN
-                                        )
-                                    )
-                                )
+                                            ComparisonOperator.LESS_THAN,
+                                        ),
+                                    ),
+                                ),
                             ),
                             mutableListOf(
                                 SerializablePythonResult(
@@ -281,8 +281,8 @@ internal class AnnotationValidatorTest {
                                     "str",
                                     "str",
                                     "Lorem ipsum",
-                                    mutableListOf()
-                                )
+                                    mutableListOf(),
+                                ),
                             ),
                             true,
                             "Lorem ipsum",
@@ -292,19 +292,19 @@ internal class AnnotationValidatorTest {
                                 CalledAfterAnnotation("calledAfterName2"),
                                 GroupAnnotation(
                                     "groupName",
-                                    mutableListOf("test-module.test-function.test-parameter")
+                                    mutableListOf("test-module.test-function.test-parameter"),
                                 ),
-                                RenameAnnotation("newName")
-                            )
-                        )
+                                RenameAnnotation("newName"),
+                            ),
+                        ),
                     ),
                     mutableListOf(
                         MoveAnnotation("destination"),
-                        RenameAnnotation("rename")
-                    )
-                )
+                        RenameAnnotation("rename"),
+                    ),
+                ),
             ),
-            mutableListOf()
+            mutableListOf(),
         )
 
         // when
@@ -328,15 +328,15 @@ internal class AnnotationValidatorTest {
                     listOf(
                         PythonImport(
                             "test-import",
-                            "test-alias"
-                        )
+                            "test-alias",
+                        ),
                     ),
                     listOf(
                         PythonFromImport(
                             "test-from-import",
                             "test-declaration",
-                            null
-                        )
+                            null,
+                        ),
                     ),
                     mutableListOf(
                         SerializablePythonClass(
@@ -360,24 +360,24 @@ internal class AnnotationValidatorTest {
                                             "description",
                                             mutableListOf(
                                                 OptionalAnnotation(
-                                                    DefaultString("test")
+                                                    DefaultString("test"),
                                                 ),
                                                 ConstantAnnotation(
-                                                    DefaultString("test")
-                                                )
-                                            )
-                                        )
+                                                    DefaultString("test"),
+                                                ),
+                                            ),
+                                        ),
                                     ),
                                     mutableListOf(),
                                     true,
                                     "description",
-                                    "fullDocstring", mutableListOf()
-                                )
+                                    "fullDocstring", mutableListOf(),
+                                ),
                             ),
                             true,
                             "Lorem ipsum",
-                            "Lorem ipsum", mutableListOf()
-                        )
+                            "Lorem ipsum", mutableListOf(),
+                        ),
                     ),
                     mutableListOf(
                         SerializablePythonFunction(
@@ -395,16 +395,16 @@ internal class AnnotationValidatorTest {
                                     "Lorem ipsum",
                                     mutableListOf(
                                         OptionalAnnotation(
-                                            DefaultString("test1")
+                                            DefaultString("test1"),
                                         ),
                                         OptionalAnnotation(
-                                            DefaultString("test2")
+                                            DefaultString("test2"),
                                         ),
                                         ConstantAnnotation(
-                                            DefaultString("test3")
-                                        )
-                                    )
-                                )
+                                            DefaultString("test3"),
+                                        ),
+                                    ),
+                                ),
                             ),
                             mutableListOf(
                                 SerializablePythonResult(
@@ -412,18 +412,18 @@ internal class AnnotationValidatorTest {
                                     "str",
                                     "str",
                                     "Lorem ipsum",
-                                    mutableListOf()
-                                )
+                                    mutableListOf(),
+                                ),
                             ),
                             true,
                             "Lorem ipsum",
-                            "Lorem ipsum", mutableListOf()
-                        )
+                            "Lorem ipsum", mutableListOf(),
+                        ),
                     ),
-                    mutableListOf()
-                )
+                    mutableListOf(),
+                ),
             ),
-            mutableListOf()
+            mutableListOf(),
         )
 
         // when
@@ -435,23 +435,23 @@ internal class AnnotationValidatorTest {
             AnnotationCombinationError(
                 "test-module.test-class.__init__.only-param",
                 "Optional",
-                "Constant"
+                "Constant",
             ),
             AnnotationCombinationError(
                 "test-module.test-function.test-parameter",
                 "Optional",
-                "Optional"
+                "Optional",
             ),
             AnnotationCombinationError(
                 "test-module.test-function.test-parameter",
                 "Optional",
-                "Constant"
+                "Constant",
             ),
             AnnotationCombinationError(
                 "test-module.test-function.test-parameter",
                 "Optional",
-                "Constant"
-            )
+                "Constant",
+            ),
         )
 
         annotationErrors.shouldContainExactlyInAnyOrder(expectedErrors)
@@ -470,15 +470,15 @@ internal class AnnotationValidatorTest {
                     listOf(
                         PythonImport(
                             "test-import",
-                            "test-alias"
-                        )
+                            "test-alias",
+                        ),
                     ),
                     listOf(
                         PythonFromImport(
                             "test-from-import",
                             "test-declaration",
-                            null
-                        )
+                            null,
+                        ),
                     ),
                     mutableListOf(
                         SerializablePythonClass(
@@ -502,9 +502,9 @@ internal class AnnotationValidatorTest {
                                             "description",
                                             mutableListOf(
                                                 OptionalAnnotation(
-                                                    DefaultString("test")
-                                                )
-                                            )
+                                                    DefaultString("test"),
+                                                ),
+                                            ),
                                         ),
                                         SerializablePythonParameter(
                                             "second-param",
@@ -516,9 +516,9 @@ internal class AnnotationValidatorTest {
                                             "description",
                                             mutableListOf(
                                                 ConstantAnnotation(
-                                                    DefaultString("test")
-                                                )
-                                            )
+                                                    DefaultString("test"),
+                                                ),
+                                            ),
                                         ),
                                         SerializablePythonParameter(
                                             "third-param",
@@ -529,9 +529,9 @@ internal class AnnotationValidatorTest {
                                             "typeInDocs",
                                             "description",
                                             mutableListOf(
-                                                RenameAnnotation("newName")
-                                            )
-                                        )
+                                                RenameAnnotation("newName"),
+                                            ),
+                                        ),
                                     ),
                                     mutableListOf(),
                                     true,
@@ -540,9 +540,9 @@ internal class AnnotationValidatorTest {
                                     mutableListOf(
                                         GroupAnnotation(
                                             "paramGroup",
-                                            mutableListOf("first-param", "second-param")
-                                        )
-                                    )
+                                            mutableListOf("first-param", "second-param"),
+                                        ),
+                                    ),
                                 ),
                                 SerializablePythonFunction(
                                     "class-function",
@@ -558,8 +558,8 @@ internal class AnnotationValidatorTest {
                                             "typeInDocs",
                                             "description",
                                             mutableListOf(
-                                                RenameAnnotation("newName")
-                                            )
+                                                RenameAnnotation("newName"),
+                                            ),
                                         ),
                                         SerializablePythonParameter(
                                             "second-param",
@@ -571,10 +571,10 @@ internal class AnnotationValidatorTest {
                                             "description",
                                             mutableListOf(
                                                 ConstantAnnotation(
-                                                    DefaultString("test")
-                                                )
-                                            )
-                                        )
+                                                    DefaultString("test"),
+                                                ),
+                                            ),
+                                        ),
                                     ),
                                     mutableListOf(),
                                     true,
@@ -583,15 +583,15 @@ internal class AnnotationValidatorTest {
                                     mutableListOf(
                                         GroupAnnotation(
                                             "paramGroup",
-                                            mutableListOf("second-param")
-                                        )
-                                    )
-                                )
+                                            mutableListOf("second-param"),
+                                        ),
+                                    ),
+                                ),
                             ),
                             true,
                             "Lorem ipsum",
-                            "Lorem ipsum", mutableListOf()
-                        )
+                            "Lorem ipsum", mutableListOf(),
+                        ),
                     ),
                     mutableListOf(
                         SerializablePythonFunction(
@@ -608,8 +608,8 @@ internal class AnnotationValidatorTest {
                                     "typeInDocs",
                                     "description",
                                     mutableListOf(
-                                        RenameAnnotation("newName")
-                                    )
+                                        RenameAnnotation("newName"),
+                                    ),
                                 ),
                                 SerializablePythonParameter(
                                     "second-param",
@@ -621,10 +621,10 @@ internal class AnnotationValidatorTest {
                                     "description",
                                     mutableListOf(
                                         ConstantAnnotation(
-                                            DefaultString("test")
-                                        )
-                                    )
-                                )
+                                            DefaultString("test"),
+                                        ),
+                                    ),
+                                ),
                             ),
                             mutableListOf(),
                             true,
@@ -633,15 +633,15 @@ internal class AnnotationValidatorTest {
                             mutableListOf(
                                 GroupAnnotation(
                                     "paramGroup",
-                                    mutableListOf("second-param")
-                                )
-                            )
-                        )
+                                    mutableListOf("second-param"),
+                                ),
+                            ),
+                        ),
                     ),
-                    mutableListOf()
-                )
+                    mutableListOf(),
+                ),
             ),
-            mutableListOf()
+            mutableListOf(),
         )
 
         // when
@@ -652,16 +652,16 @@ internal class AnnotationValidatorTest {
         val expectedErrors = listOf<AnnotationError>(
             GroupAnnotationCombinationError(
                 "test-module.test-class.__init__.second-param",
-                "Constant"
+                "Constant",
             ),
             GroupAnnotationCombinationError(
                 "test-module.test-class.class-function.second-param",
-                "Constant"
+                "Constant",
             ),
             GroupAnnotationCombinationError(
                 "test-module.module-function.second-param",
-                "Constant"
-            )
+                "Constant",
+            ),
         )
 
         annotationErrors.shouldContainExactlyInAnyOrder(expectedErrors)

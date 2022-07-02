@@ -40,15 +40,15 @@ private fun PythonParameter.processEnumAnnotations(module: PythonModule) {
                 annotation.pairs.map { enumPair ->
                     PythonEnumInstance(
                         enumPair.instanceName,
-                        PythonString(enumPair.stringValue)
+                        PythonString(enumPair.stringValue),
                     )
-                }
+                },
             )
             if (hasConflictingEnums(module.enums, enumToAdd)) {
                 throw ConflictingEnumException(
                     enumToAdd.name,
                     module.name,
-                    this.qualifiedName()
+                    this.qualifiedName(),
                 )
             }
             if (!isAlreadyDefinedInModule(module.enums, enumToAdd)) {
@@ -67,7 +67,7 @@ private fun PythonParameter.processEnumAnnotations(module: PythonModule) {
             val argument = arguments[0]
             argument.value = PythonMemberAccess(
                 receiver = PythonReference(declaration = this),
-                member = PythonReference(PythonAttribute(name = "value"))
+                member = PythonReference(PythonAttribute(name = "value")),
             )
 
             this.type = PythonNamedType(enumToAdd)
@@ -77,7 +77,7 @@ private fun PythonParameter.processEnumAnnotations(module: PythonModule) {
 
 private fun hasConflictingEnums(
     moduleEnums: List<PythonEnum>,
-    enumToCheck: PythonEnum
+    enumToCheck: PythonEnum,
 ): Boolean {
     return moduleEnums.any { enum ->
         (enumToCheck.name == enum.name) &&
@@ -91,7 +91,7 @@ private fun hasConflictingEnums(
 
 private fun isAlreadyDefinedInModule(
     moduleEnums: List<PythonEnum>,
-    enumToCheck: PythonEnum
+    enumToCheck: PythonEnum,
 ): Boolean {
     return moduleEnums.any {
         enumToCheck.name == it.name

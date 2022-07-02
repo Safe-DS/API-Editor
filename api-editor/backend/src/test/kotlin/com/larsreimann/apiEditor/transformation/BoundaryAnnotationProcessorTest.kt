@@ -26,9 +26,9 @@ class BoundaryAnnotationProcessorTest {
                     lowerIntervalLimit = 0.0,
                     lowerLimitType = ComparisonOperator.LESS_THAN_OR_EQUALS,
                     upperIntervalLimit = 1.0,
-                    upperLimitType = ComparisonOperator.LESS_THAN_OR_EQUALS
-                )
-            )
+                    upperLimitType = ComparisonOperator.LESS_THAN_OR_EQUALS,
+                ),
+            ),
         )
         testPackage = PythonPackage(
             distribution = "testPackage",
@@ -40,11 +40,11 @@ class BoundaryAnnotationProcessorTest {
                     functions = listOf(
                         PythonFunction(
                             name = "testFunction",
-                            parameters = listOf(testParameter)
-                        )
-                    )
-                )
-            )
+                            parameters = listOf(testParameter),
+                        ),
+                    ),
+                ),
+            ),
         )
     }
 
@@ -57,7 +57,7 @@ class BoundaryAnnotationProcessorTest {
             lowerIntervalLimit = 0.0,
             lowerLimitType = ComparisonOperator.LESS_THAN_OR_EQUALS,
             upperIntervalLimit = 1.0,
-            upperLimitType = ComparisonOperator.LESS_THAN_OR_EQUALS
+            upperLimitType = ComparisonOperator.LESS_THAN_OR_EQUALS,
         )
     }
 

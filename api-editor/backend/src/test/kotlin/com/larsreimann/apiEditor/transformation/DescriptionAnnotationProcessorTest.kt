@@ -22,18 +22,18 @@ class DescriptionAnnotationProcessorTest {
         testClass = PythonClass(
             name = "TestClass",
             description = "Lorem ipsum",
-            annotations = mutableListOf(DescriptionAnnotation("Important class"))
+            annotations = mutableListOf(DescriptionAnnotation("Important class")),
         )
         testParameter = PythonParameter(
             name = "testParameter",
             description = "Lorem ipsum",
-            annotations = mutableListOf(DescriptionAnnotation("Important parameter"))
+            annotations = mutableListOf(DescriptionAnnotation("Important parameter")),
         )
         testFunction = PythonFunction(
             name = "testFunction",
             description = "Lorem ipsum",
             annotations = mutableListOf(DescriptionAnnotation("Important function")),
-            parameters = mutableListOf(testParameter)
+            parameters = mutableListOf(testParameter),
         )
         testPackage = PythonPackage(
             distribution = "testPackage",
@@ -43,9 +43,9 @@ class DescriptionAnnotationProcessorTest {
                 PythonModule(
                     name = "testModule",
                     classes = listOf(testClass),
-                    functions = listOf(testFunction)
-                )
-            )
+                    functions = listOf(testFunction),
+                ),
+            ),
         )
     }
 

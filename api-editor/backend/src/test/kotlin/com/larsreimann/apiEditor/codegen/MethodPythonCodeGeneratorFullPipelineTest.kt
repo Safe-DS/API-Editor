@@ -35,16 +35,16 @@ class MethodPythonCodeGeneratorFullPipelineTest {
     @BeforeEach
     fun reset() {
         testParameterSelf = PythonParameter(
-            name = "self"
+            name = "self",
         )
         testParameter1 = PythonParameter(
-            name = "testParameter1"
+            name = "testParameter1",
         )
         testParameter2 = PythonParameter(
-            name = "testParameter2"
+            name = "testParameter2",
         )
         testParameter3 = PythonParameter(
-            name = "testParameter3"
+            name = "testParameter3",
         )
         testFunction = PythonFunction(
             name = "testMethod",
@@ -52,19 +52,19 @@ class MethodPythonCodeGeneratorFullPipelineTest {
                 testParameterSelf,
                 testParameter1,
                 testParameter2,
-                testParameter3
-            )
+                testParameter3,
+            ),
         )
         testClass = PythonClass(name = "testClass", methods = mutableListOf(testFunction))
         testModule = PythonModule(
             name = "testModule",
-            classes = mutableListOf(testClass)
+            classes = mutableListOf(testClass),
         )
         testPackage = PythonPackage(
             distribution = "testPackage",
             name = "testPackage",
             version = "1.0.0",
-            modules = mutableListOf(testModule)
+            modules = mutableListOf(testModule),
         )
     }
 
@@ -77,14 +77,14 @@ class MethodPythonCodeGeneratorFullPipelineTest {
                 lowerIntervalLimit = 0.0,
                 lowerLimitType = ComparisonOperator.LESS_THAN_OR_EQUALS,
                 upperIntervalLimit = 1.0,
-                upperLimitType = ComparisonOperator.LESS_THAN_OR_EQUALS
-            )
+                upperLimitType = ComparisonOperator.LESS_THAN_OR_EQUALS,
+            ),
         )
         testFunction.annotations.add(
             GroupAnnotation(
                 groupName = "TestGroup",
-                parameters = mutableListOf("testParameter1", "testParameter2")
-            )
+                parameters = mutableListOf("testParameter1", "testParameter2"),
+            ),
         )
         // when
         testPackage.transform()
@@ -128,19 +128,19 @@ class MethodPythonCodeGeneratorFullPipelineTest {
                 lowerIntervalLimit = 0.0,
                 lowerLimitType = ComparisonOperator.UNRESTRICTED,
                 upperIntervalLimit = 1.0,
-                upperLimitType = ComparisonOperator.LESS_THAN
-            )
+                upperLimitType = ComparisonOperator.LESS_THAN,
+            ),
         )
         testParameter2.annotations.add(
             OptionalAnnotation(
-                DefaultNumber(0.5)
-            )
+                DefaultNumber(0.5),
+            ),
         )
         testFunction.annotations.add(
             GroupAnnotation(
                 groupName = "TestGroup",
-                parameters = mutableListOf("testParameter1", "testParameter2")
-            )
+                parameters = mutableListOf("testParameter1", "testParameter2"),
+            ),
         )
         // when
         testPackage.transform()
@@ -184,18 +184,18 @@ class MethodPythonCodeGeneratorFullPipelineTest {
                 lowerIntervalLimit = 0.0,
                 lowerLimitType = ComparisonOperator.LESS_THAN_OR_EQUALS,
                 upperIntervalLimit = 1.0,
-                upperLimitType = ComparisonOperator.LESS_THAN_OR_EQUALS
-            )
+                upperLimitType = ComparisonOperator.LESS_THAN_OR_EQUALS,
+            ),
         )
         testParameter2.annotations.add(
-            RequiredAnnotation
+            RequiredAnnotation,
         )
         testParameter2.defaultValue = PythonInt(0)
         testFunction.annotations.add(
             GroupAnnotation(
                 groupName = "TestGroup",
-                parameters = mutableListOf("testParameter2", "testParameter3")
-            )
+                parameters = mutableListOf("testParameter2", "testParameter3"),
+            ),
         )
         // when
         testPackage.transform()
@@ -239,13 +239,13 @@ class MethodPythonCodeGeneratorFullPipelineTest {
                 lowerIntervalLimit = 0.0,
                 lowerLimitType = ComparisonOperator.LESS_THAN_OR_EQUALS,
                 upperIntervalLimit = 1.0,
-                upperLimitType = ComparisonOperator.LESS_THAN_OR_EQUALS
-            )
+                upperLimitType = ComparisonOperator.LESS_THAN_OR_EQUALS,
+            ),
         )
         testParameter1.annotations.add(
             OptionalAnnotation(
-                DefaultNumber(0.5)
-            )
+                DefaultNumber(0.5),
+            ),
         )
         // when
         testPackage.transform()
@@ -284,11 +284,11 @@ class MethodPythonCodeGeneratorFullPipelineTest {
                 lowerIntervalLimit = 0.0,
                 lowerLimitType = ComparisonOperator.LESS_THAN,
                 upperIntervalLimit = 1.0,
-                upperLimitType = ComparisonOperator.UNRESTRICTED
-            )
+                upperLimitType = ComparisonOperator.UNRESTRICTED,
+            ),
         )
         testParameter1.annotations.add(
-            RequiredAnnotation
+            RequiredAnnotation,
         )
         testParameter1.defaultValue = PythonStringifiedExpression("toRemove")
         // when
@@ -327,15 +327,15 @@ class MethodPythonCodeGeneratorFullPipelineTest {
                 "TestEnum",
                 listOf(
                     EnumPair("testValue1", "testName1"),
-                    EnumPair("testValue2", "testName2")
-                )
-            )
+                    EnumPair("testValue2", "testName2"),
+                ),
+            ),
         )
         testFunction.annotations.add(
             GroupAnnotation(
                 groupName = "TestGroup",
-                parameters = mutableListOf("testParameter1", "testParameter2")
-            )
+                parameters = mutableListOf("testParameter1", "testParameter2"),
+            ),
         )
         // when
         testPackage.transform()
@@ -388,18 +388,18 @@ class MethodPythonCodeGeneratorFullPipelineTest {
                 enumName = "TestEnum",
                 pairs = listOf(
                     EnumPair("testValue1", "testName1"),
-                    EnumPair("testValue2", "testName2")
-                )
-            )
+                    EnumPair("testValue2", "testName2"),
+                ),
+            ),
         )
         testParameter1.annotations.add(
-            RequiredAnnotation
+            RequiredAnnotation,
         )
         testFunction.annotations.add(
             GroupAnnotation(
                 groupName = "TestGroup",
-                parameters = mutableListOf("testParameter1", "testParameter2")
-            )
+                parameters = mutableListOf("testParameter1", "testParameter2"),
+            ),
         )
         // when
         testPackage.transform()
@@ -452,12 +452,12 @@ class MethodPythonCodeGeneratorFullPipelineTest {
                 enumName = "TestEnum",
                 pairs = listOf(
                     EnumPair("testValue1", "testName1"),
-                    EnumPair("testValue2", "testName2")
-                )
-            )
+                    EnumPair("testValue2", "testName2"),
+                ),
+            ),
         )
         testParameter1.annotations.add(
-            RequiredAnnotation
+            RequiredAnnotation,
         )
         testParameter1.defaultValue = PythonStringifiedExpression("toRemove")
         // when
@@ -502,14 +502,14 @@ class MethodPythonCodeGeneratorFullPipelineTest {
     fun `should process Group- and RequiredAnnotation on class method level`() {
         // given
         testParameter2.annotations.add(
-            RequiredAnnotation
+            RequiredAnnotation,
         )
         testParameter2.defaultValue = PythonStringifiedExpression("toRemove")
         testFunction.annotations.add(
             GroupAnnotation(
                 groupName = "TestGroup",
-                parameters = mutableListOf("testParameter2", "testParameter3")
-            )
+                parameters = mutableListOf("testParameter2", "testParameter3"),
+            ),
         )
         // when
         testPackage.transform()
@@ -544,14 +544,14 @@ class MethodPythonCodeGeneratorFullPipelineTest {
         // given
         testParameter2.annotations.add(
             OptionalAnnotation(
-                DefaultBoolean(false)
-            )
+                DefaultBoolean(false),
+            ),
         )
         testFunction.annotations.add(
             GroupAnnotation(
                 groupName = "TestGroup",
-                parameters = mutableListOf("testParameter2", "testParameter3")
-            )
+                parameters = mutableListOf("testParameter2", "testParameter3"),
+            ),
         )
         // when
         testPackage.transform()
@@ -586,18 +586,18 @@ class MethodPythonCodeGeneratorFullPipelineTest {
         // given
         testParameter2.annotations.add(
             OptionalAnnotation(
-                DefaultBoolean(false)
-            )
+                DefaultBoolean(false),
+            ),
         )
         testParameter3.annotations.add(
-            RequiredAnnotation
+            RequiredAnnotation,
         )
         testParameter3.defaultValue = PythonStringifiedExpression("toRemove")
         testFunction.annotations.add(
             GroupAnnotation(
                 groupName = "TestGroup",
-                parameters = mutableListOf("testParameter2", "testParameter3")
-            )
+                parameters = mutableListOf("testParameter2", "testParameter3"),
+            ),
         )
         // when
         testPackage.transform()
@@ -633,11 +633,11 @@ class MethodPythonCodeGeneratorFullPipelineTest {
         testFunction.annotations.add(
             GroupAnnotation(
                 groupName = "TestGroup",
-                parameters = mutableListOf("testParameter1", "testParameter2")
-            )
+                parameters = mutableListOf("testParameter1", "testParameter2"),
+            ),
         )
         testParameter1.annotations.add(
-            RenameAnnotation("renamedTestParameter1")
+            RenameAnnotation("renamedTestParameter1"),
         )
         // when
         testPackage.transform()

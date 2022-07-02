@@ -39,11 +39,11 @@ class AnnotationValidator(private val annotatedPythonPackage: SerializablePython
         validateAnnotationsValidOnTarget(
             annotatedPythonClass.annotations,
             AnnotationTarget.CLASS,
-            annotatedPythonClass.qualifiedName
+            annotatedPythonClass.qualifiedName,
         )
         validateAnnotationCombinations(
             annotatedPythonClass.annotations,
-            annotatedPythonClass.qualifiedName
+            annotatedPythonClass.qualifiedName,
         )
     }
 
@@ -62,11 +62,11 @@ class AnnotationValidator(private val annotatedPythonPackage: SerializablePython
         validateAnnotationsValidOnTarget(
             annotatedPythonFunction.annotations,
             AnnotationTarget.METHOD,
-            annotatedPythonFunction.qualifiedName
+            annotatedPythonFunction.qualifiedName,
         )
         validateAnnotationCombinations(
             annotatedPythonFunction.annotations,
-            annotatedPythonFunction.qualifiedName
+            annotatedPythonFunction.qualifiedName,
         )
     }
 
@@ -79,54 +79,54 @@ class AnnotationValidator(private val annotatedPythonPackage: SerializablePython
         validateAnnotationsValidOnTarget(
             annotatedPythonFunction.annotations,
             AnnotationTarget.GLOBAL_FUNCTION,
-            annotatedPythonFunction.qualifiedName
+            annotatedPythonFunction.qualifiedName,
         )
         validateAnnotationCombinations(
             annotatedPythonFunction.annotations,
-            annotatedPythonFunction.qualifiedName
+            annotatedPythonFunction.qualifiedName,
         )
     }
 
     private fun validateFunctionParameter(
         annotatedPythonParameter: SerializablePythonParameter,
-        parameterInGroup: Boolean
+        parameterInGroup: Boolean,
     ) {
         validateAnnotationsValidOnTarget(
             annotatedPythonParameter.annotations,
             AnnotationTarget.FUNCTION_PARAMETER,
-            annotatedPythonParameter.qualifiedName
+            annotatedPythonParameter.qualifiedName,
         )
         validateAnnotationCombinations(
             annotatedPythonParameter.annotations,
-            annotatedPythonParameter.qualifiedName
+            annotatedPythonParameter.qualifiedName,
         )
 
         if (parameterInGroup) {
             validateGroupCombinations(
                 annotatedPythonParameter.qualifiedName,
-                annotatedPythonParameter.annotations
+                annotatedPythonParameter.annotations,
             )
         }
     }
 
     private fun validateConstructorParameter(
         annotatedPythonParameter: SerializablePythonParameter,
-        parameterInGroup: Boolean
+        parameterInGroup: Boolean,
     ) {
         validateAnnotationsValidOnTarget(
             annotatedPythonParameter.annotations,
             AnnotationTarget.CONSTRUCTOR_PARAMETER,
-            annotatedPythonParameter.qualifiedName
+            annotatedPythonParameter.qualifiedName,
         )
         validateAnnotationCombinations(
             annotatedPythonParameter.annotations,
-            annotatedPythonParameter.qualifiedName
+            annotatedPythonParameter.qualifiedName,
         )
 
         if (parameterInGroup) {
             validateGroupCombinations(
                 annotatedPythonParameter.qualifiedName,
-                annotatedPythonParameter.annotations
+                annotatedPythonParameter.annotations,
             )
         }
     }
@@ -134,7 +134,7 @@ class AnnotationValidator(private val annotatedPythonPackage: SerializablePython
     private fun validateAnnotationsValidOnTarget(
         editorAnnotations: Iterable<EditorAnnotation>,
         target: AnnotationTarget,
-        qualifiedName: String
+        qualifiedName: String,
     ) {
         for (editorAnnotation in editorAnnotations) {
             if (!editorAnnotation.isApplicableTo(target)) {
@@ -161,7 +161,7 @@ class AnnotationValidator(private val annotatedPythonPackage: SerializablePython
     private fun validateAnnotationCombination(
         qualifiedName: String,
         firstAnnotation: EditorAnnotation,
-        secondAnnotation: EditorAnnotation
+        secondAnnotation: EditorAnnotation,
     ) {
         val firstAnnotationName = firstAnnotation.type
         val secondAnnotationName = secondAnnotation.type
@@ -194,7 +194,7 @@ class AnnotationValidator(private val annotatedPythonPackage: SerializablePython
                 "Pure",
                 "Rename",
                 "Required",
-                "Todo"
+                "Todo",
             )
             this["Enum"] = mutableSetOf("Description", "Group", "Rename", "Required", "Todo")
             this["Group"] =
@@ -209,7 +209,7 @@ class AnnotationValidator(private val annotatedPythonPackage: SerializablePython
                     "Pure",
                     "Rename",
                     "Required",
-                    "Todo"
+                    "Todo",
                 )
             this["Move"] = mutableSetOf("CalledAfter", "Description", "Group", "Pure", "Rename")
             this["Optional"] = mutableSetOf("Boundary", "Description", "Group", "Rename", "Todo")
@@ -224,7 +224,7 @@ class AnnotationValidator(private val annotatedPythonPackage: SerializablePython
                 "Move",
                 "Optional",
                 "Pure",
-                "Required", "Todo"
+                "Required", "Todo",
             )
             this["Required"] = mutableSetOf("Boundary", "Description", "Enum", "Group", "Rename", "Todo")
             this["Todo"] = mutableSetOf(
@@ -234,7 +234,7 @@ class AnnotationValidator(private val annotatedPythonPackage: SerializablePython
                 "Group",
                 "Optional",
                 "Rename",
-                "Required"
+                "Required",
             )
         }
     }

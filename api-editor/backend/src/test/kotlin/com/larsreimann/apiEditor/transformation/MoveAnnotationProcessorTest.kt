@@ -28,9 +28,9 @@ class MoveAnnotationProcessorTest {
                 PythonModule(
                     name = "testModule",
                     classes = listOf(testClass),
-                    functions = listOf(testFunction)
-                )
-            )
+                    functions = listOf(testFunction),
+                ),
+            ),
         )
     }
 

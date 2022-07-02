@@ -43,14 +43,14 @@ class ValueAnnotationProcessorTest {
                 receiver = PythonStringifiedExpression("testModule.TestClass.testMethod"),
                 arguments = listOf(
                     PythonArgument(
-                        value = PythonReference(testParameter)
-                    )
-                )
-            )
+                        value = PythonReference(testParameter),
+                    ),
+                ),
+            ),
         )
         testClass = PythonClass(
             name = "TestClass",
-            methods = listOf(testMethod)
+            methods = listOf(testMethod),
         )
         testPackage = PythonPackage(
             distribution = "testPackage",
@@ -59,9 +59,9 @@ class ValueAnnotationProcessorTest {
             modules = listOf(
                 PythonModule(
                     name = "testModule",
-                    classes = listOf(testClass)
-                )
-            )
+                    classes = listOf(testClass),
+                ),
+            ),
         )
     }
 
@@ -153,7 +153,7 @@ class ValueAnnotationProcessorTest {
         val testParameter2 = PythonParameter(name = "testParameter2")
         testMethod.parameters += testParameter2
         callToOriginalAPI.arguments += PythonArgument(
-            value = PythonReference(testParameter2)
+            value = PythonReference(testParameter2),
         )
 
         testParameter.annotations += ConstantAnnotation(DefaultNone)

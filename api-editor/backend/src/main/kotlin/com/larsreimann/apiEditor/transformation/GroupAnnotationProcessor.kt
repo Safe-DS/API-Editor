@@ -41,21 +41,21 @@ private fun PythonFunction.processGroupAnnotations(module: PythonModule) {
             val constructorParameters = mutableListOf(
                 PythonParameter(
                     name = "self",
-                    assignedBy = PythonParameterAssignment.IMPLICIT
-                )
+                    assignedBy = PythonParameterAssignment.IMPLICIT,
+                ),
             )
             constructorParameters += this.parameters.filter { it.name in annotation.parameters }
             val groupedParameterClass = PythonClass(
                 name = annotation.groupName.replaceFirstChar { it.uppercase() },
                 constructor = PythonConstructor(
-                    parameters = constructorParameters
-                )
+                    parameters = constructorParameters,
+                ),
             )
 
             // Update parameters
             val groupedParameter = PythonParameter(
                 name = annotation.groupName.replaceFirstChar { it.lowercase() },
-                type = PythonNamedType(groupedParameterClass)
+                type = PythonNamedType(groupedParameterClass),
             )
             this.parameters.removeIf { it.name in annotation.parameters }
             this.parameters.add(firstOccurrence, groupedParameter)
@@ -64,7 +64,7 @@ private fun PythonFunction.processGroupAnnotations(module: PythonModule) {
                 throw ConflictingGroupException(
                     groupedParameterClass.name,
                     module.name,
-                    this.qualifiedName()
+                    this.qualifiedName(),
                 )
             }
             if (!isAlreadyDefinedInModule(module.classes, groupedParameterClass)) {
@@ -77,7 +77,7 @@ private fun PythonFunction.processGroupAnnotations(module: PythonModule) {
                 if (value is PythonReference && value.declaration?.name in annotation.parameters) {
                     it.value = PythonMemberAccess(
                         receiver = PythonReference(declaration = groupedParameter),
-                        member = PythonReference(PythonAttribute(name = value.declaration!!.name))
+                        member = PythonReference(PythonAttribute(name = value.declaration!!.name)),
                     )
                 } else if (value is PythonMemberAccess) {
                     val receiver = value.receiver
@@ -90,9 +90,9 @@ private fun PythonFunction.processGroupAnnotations(module: PythonModule) {
                             it.value = PythonMemberAccess(
                                 receiver = PythonMemberAccess(
                                     receiver = PythonReference(declaration = groupedParameter),
-                                    member = receiver
+                                    member = receiver,
                                 ),
-                                member = member
+                                member = member,
                             )
                         }
                     }
@@ -105,7 +105,7 @@ private fun PythonFunction.processGroupAnnotations(module: PythonModule) {
 
 private fun hasConflictingGroups(
     moduleClasses: List<PythonClass>,
-    groupToCheck: PythonClass
+    groupToCheck: PythonClass,
 ): Boolean {
     return moduleClasses.any { `class` ->
         (groupToCheck.name == `class`.name) &&
@@ -118,7 +118,7 @@ private fun hasConflictingGroups(
 
 private fun isAlreadyDefinedInModule(
     moduleClasses: List<PythonClass>,
-    groupToCheck: PythonClass
+    groupToCheck: PythonClass,
 ): Boolean {
     return moduleClasses.any { groupToCheck.name == it.name }
 }

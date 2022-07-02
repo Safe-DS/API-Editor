@@ -24,7 +24,7 @@ private fun PythonParameter.processBoundaryAnnotations() {
                 it.lowerIntervalLimit,
                 it.lowerLimitType,
                 it.upperIntervalLimit,
-                it.upperLimitType
+                it.upperLimitType,
             )
             this.annotations.remove(it)
         }

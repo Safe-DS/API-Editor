@@ -71,46 +71,46 @@ class StubCodeGeneratorTest {
                     PythonClass(
                         name = "Test_Class",
                         attributes = listOf(
-                            PythonAttribute(name = "testAttribute")
+                            PythonAttribute(name = "testAttribute"),
                         ),
                         methods = listOf(
                             PythonFunction(
                                 name = "testMethod",
-                                isPure = true
-                            )
+                                isPure = true,
+                            ),
                         ),
-                        description = "Lorem ipsum"
-                    )
+                        description = "Lorem ipsum",
+                    ),
                 ),
                 functions = listOf(
                     PythonFunction(
                         name = "testFunction",
                         parameters = listOf(
                             PythonParameter(
-                                name = "testParameter"
+                                name = "testParameter",
                             ),
                             PythonParameter(
                                 name = "testParameter",
                                 type = PythonStringifiedType("int"),
-                                defaultValue = PythonStringifiedExpression("10")
-                            )
+                                defaultValue = PythonStringifiedExpression("10"),
+                            ),
                         ),
                         results = listOf(
                             PythonResult(
                                 name = "testParameter",
-                                type = PythonStringifiedType("str")
-                            )
-                        )
-                    )
+                                type = PythonStringifiedType("str"),
+                            ),
+                        ),
+                    ),
                 ),
                 enums = listOf(
                     PythonEnum(
                         name = "TestEnum",
                         instances = listOf(
-                            PythonEnumInstance(name = "TestEnumInstance")
-                        )
-                    )
-                )
+                            PythonEnumInstance(name = "TestEnumInstance"),
+                        ),
+                    ),
+                ),
             )
 
             pythonModule.toStubCode() shouldBe """
@@ -156,8 +156,8 @@ class StubCodeGeneratorTest {
             val pythonModule = PythonModule(
                 name = "testModule",
                 classes = listOf(
-                    PythonClass(name = "TestClass")
-                )
+                    PythonClass(name = "TestClass"),
+                ),
             )
 
             val SdsCompilationUnit = pythonModule.toSdsCompilationUnit()
@@ -174,8 +174,8 @@ class StubCodeGeneratorTest {
             val pythonModule = PythonModule(
                 name = "testModule",
                 functions = listOf(
-                    PythonFunction(name = "testFunction")
-                )
+                    PythonFunction(name = "testFunction"),
+                ),
             )
 
             val SdsCompilationUnit = pythonModule.toSdsCompilationUnit()
@@ -192,8 +192,8 @@ class StubCodeGeneratorTest {
             val pythonModule = PythonModule(
                 name = "testModule",
                 enums = listOf(
-                    PythonEnum(name = "TestEnum")
-                )
+                    PythonEnum(name = "TestEnum"),
+                ),
             )
 
             val SdsCompilationUnit = pythonModule.toSdsCompilationUnit()
@@ -264,7 +264,7 @@ class StubCodeGeneratorTest {
         fun `should store description if it is not blank`() {
             val pythonClass = PythonClass(
                 name = "TestClass",
-                description = "Lorem ipsum"
+                description = "Lorem ipsum",
             )
 
             val SdsClass = pythonClass.toSdsClass()
@@ -284,7 +284,7 @@ class StubCodeGeneratorTest {
         fun `should not store description if it is blank`() {
             val pythonClass = PythonClass(
                 name = "TestClass",
-                description = ""
+                description = "",
             )
 
             val SdsClass = pythonClass.toSdsClass()
@@ -301,22 +301,22 @@ class StubCodeGeneratorTest {
                     parameters = listOf(
                         PythonParameter(
                             name = "self",
-                            assignedBy = PythonParameterAssignment.IMPLICIT
+                            assignedBy = PythonParameterAssignment.IMPLICIT,
                         ),
                         PythonParameter(
                             name = "positionOnly",
-                            assignedBy = PythonParameterAssignment.POSITION_ONLY
+                            assignedBy = PythonParameterAssignment.POSITION_ONLY,
                         ),
                         PythonParameter(
                             name = "positionOrName",
-                            assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+                            assignedBy = PythonParameterAssignment.POSITION_OR_NAME,
                         ),
                         PythonParameter(
                             name = "nameOnly",
-                            assignedBy = PythonParameterAssignment.NAME_ONLY
-                        )
-                    )
-                )
+                            assignedBy = PythonParameterAssignment.NAME_ONLY,
+                        ),
+                    ),
+                ),
             )
 
             val SdsClass = pythonClass.toSdsClass()
@@ -325,7 +325,7 @@ class StubCodeGeneratorTest {
             constructorParameterNames.shouldContainExactly(
                 "positionOnly",
                 "positionOrName",
-                "nameOnly"
+                "nameOnly",
             )
         }
 
@@ -334,8 +334,8 @@ class StubCodeGeneratorTest {
             val pythonClass = PythonClass(
                 name = "TestClass",
                 attributes = listOf(
-                    PythonAttribute(name = "testAttribute")
-                )
+                    PythonAttribute(name = "testAttribute"),
+                ),
             )
 
             val SdsClass = pythonClass.toSdsClass()
@@ -350,8 +350,8 @@ class StubCodeGeneratorTest {
             val pythonClass = PythonClass(
                 name = "TestClass",
                 methods = listOf(
-                    PythonFunction(name = "testMethod")
-                )
+                    PythonFunction(name = "testMethod"),
+                ),
             )
 
             val SdsClass = pythonClass.toSdsClass()
@@ -415,7 +415,7 @@ class StubCodeGeneratorTest {
         fun `should store description if it is not blank`() {
             val pythonAttribute = PythonAttribute(
                 name = "testAttribute",
-                description = "Lorem ipsum"
+                description = "Lorem ipsum",
             )
 
             val arguments = pythonAttribute
@@ -434,7 +434,7 @@ class StubCodeGeneratorTest {
         fun `should not store description if it is blank`() {
             val pythonAttribute = PythonAttribute(
                 name = "testAttribute",
-                description = ""
+                description = "",
             )
 
             pythonAttribute
@@ -447,7 +447,7 @@ class StubCodeGeneratorTest {
         fun `should store type`() {
             val pythonAttribute = PythonAttribute(
                 name = "testAttribute",
-                type = PythonStringifiedType("str")
+                type = PythonStringifiedType("str"),
             )
 
             pythonAttribute
@@ -483,11 +483,11 @@ class StubCodeGeneratorTest {
         fun `should mark static methods with modifier`() {
             val pythonFunction = PythonFunction(
                 name = "testFunction",
-                decorators = mutableListOf("staticmethod")
+                decorators = mutableListOf("staticmethod"),
             )
             PythonClass(
                 name = "TestClass",
-                methods = listOf(pythonFunction)
+                methods = listOf(pythonFunction),
             )
 
             pythonFunction.toSdsFunction().asClue {
@@ -499,7 +499,7 @@ class StubCodeGeneratorTest {
         fun `should mark pure functions with annotation`() {
             val pythonFunction = PythonFunction(
                 name = "testFunction",
-                isPure = true
+                isPure = true,
             )
 
             pythonFunction
@@ -549,7 +549,7 @@ class StubCodeGeneratorTest {
         fun `should store description if it is not blank`() {
             val pythonFunction = PythonFunction(
                 name = "testFunction",
-                description = "Lorem ipsum"
+                description = "Lorem ipsum",
             )
 
             val SdsFunction = pythonFunction.toSdsFunction()
@@ -570,7 +570,7 @@ class StubCodeGeneratorTest {
         fun `should not store description if it is blank`() {
             val pythonFunction = PythonFunction(
                 name = "testFunction",
-                description = ""
+                description = "",
             )
 
             val SdsFunction = pythonFunction.toSdsFunction()
@@ -586,21 +586,21 @@ class StubCodeGeneratorTest {
                 parameters = listOf(
                     PythonParameter(
                         name = "self",
-                        assignedBy = PythonParameterAssignment.IMPLICIT
+                        assignedBy = PythonParameterAssignment.IMPLICIT,
                     ),
                     PythonParameter(
                         name = "positionOnly",
-                        assignedBy = PythonParameterAssignment.POSITION_ONLY
+                        assignedBy = PythonParameterAssignment.POSITION_ONLY,
                     ),
                     PythonParameter(
                         name = "positionOrName",
-                        assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+                        assignedBy = PythonParameterAssignment.POSITION_OR_NAME,
                     ),
                     PythonParameter(
                         name = "nameOnly",
-                        assignedBy = PythonParameterAssignment.NAME_ONLY
-                    )
-                )
+                        assignedBy = PythonParameterAssignment.NAME_ONLY,
+                    ),
+                ),
             )
 
             pythonFunction.toSdsFunction()
@@ -608,7 +608,7 @@ class StubCodeGeneratorTest {
                 .shouldContainExactly(
                     "positionOnly",
                     "positionOrName",
-                    "nameOnly"
+                    "nameOnly",
                 )
         }
 
@@ -617,14 +617,14 @@ class StubCodeGeneratorTest {
             val pythonFunction = PythonFunction(
                 name = "testFunction",
                 results = listOf(
-                    PythonResult(name = "testResult")
-                )
+                    PythonResult(name = "testResult"),
+                ),
             )
 
             pythonFunction.toSdsFunction()
                 .resultsOrEmpty().map { it.name }
                 .shouldContainExactly(
-                    "testResult"
+                    "testResult",
                 )
         }
     }
@@ -636,7 +636,7 @@ class StubCodeGeneratorTest {
         fun `should return null for implicit parameters`() {
             val pythonParameter = PythonParameter(
                 name = "testParameter",
-                assignedBy = PythonParameterAssignment.IMPLICIT
+                assignedBy = PythonParameterAssignment.IMPLICIT,
             )
 
             pythonParameter.toSdsParameterOrNull().shouldBeNull()
@@ -701,7 +701,7 @@ class StubCodeGeneratorTest {
         fun `should store description if it is not blank`() {
             val pythonParameter = PythonParameter(
                 name = "testParameter",
-                description = "Lorem ipsum"
+                description = "Lorem ipsum",
             )
 
             val arguments = pythonParameter
@@ -721,7 +721,7 @@ class StubCodeGeneratorTest {
         fun `should not store description if it is blank`() {
             val pythonParameter = PythonParameter(
                 name = "testParameter",
-                description = ""
+                description = "",
             )
 
             pythonParameter
@@ -735,7 +735,7 @@ class StubCodeGeneratorTest {
         fun `should store type`() {
             val pythonParameter = PythonParameter(
                 name = "testParameter",
-                type = PythonStringifiedType("str")
+                type = PythonStringifiedType("str"),
             )
 
             pythonParameter
@@ -753,7 +753,7 @@ class StubCodeGeneratorTest {
         fun `should store default value`() {
             val pythonParameter = PythonParameter(
                 name = "testParameter",
-                defaultValue = PythonStringifiedExpression("None")
+                defaultValue = PythonStringifiedExpression("None"),
             )
 
             pythonParameter
@@ -821,7 +821,7 @@ class StubCodeGeneratorTest {
         fun `should store description if it is not blank`() {
             val pythonResult = PythonResult(
                 name = "testResult",
-                description = "Lorem ipsum"
+                description = "Lorem ipsum",
             )
 
             val SdsResult = pythonResult.toSdsResult()
@@ -841,7 +841,7 @@ class StubCodeGeneratorTest {
         fun `should not store description if it is blank`() {
             val pythonResult = PythonResult(
                 name = "testResult",
-                description = ""
+                description = "",
             )
 
             val SdsFunction = pythonResult.toSdsResult()
@@ -854,7 +854,7 @@ class StubCodeGeneratorTest {
         fun `should store type`() {
             val pythonResult = PythonResult(
                 name = "testResult",
-                type = PythonStringifiedType("str")
+                type = PythonStringifiedType("str"),
             )
 
             val type = pythonResult.toSdsResult().type.shouldBeInstanceOf<SdsNamedType>()
@@ -916,7 +916,7 @@ class StubCodeGeneratorTest {
         fun `should store description if it is not blank`() {
             val pythonEnum = PythonEnum(
                 name = "TestEnum",
-                description = "Lorem ipsum"
+                description = "Lorem ipsum",
             )
 
             val arguments = pythonEnum.toSdsEnum()
@@ -933,7 +933,7 @@ class StubCodeGeneratorTest {
         fun `should not store description if it is blank`() {
             val pythonEnum = PythonEnum(
                 name = "TestEnum",
-                description = ""
+                description = "",
             )
 
             pythonEnum
@@ -947,8 +947,8 @@ class StubCodeGeneratorTest {
             val pythonEnum = PythonEnum(
                 name = "TestEnum",
                 instances = listOf(
-                    PythonEnumInstance(name = "TestEnumInstance")
-                )
+                    PythonEnumInstance(name = "TestEnumInstance"),
+                ),
             )
 
             pythonEnum.toSdsEnum()
@@ -1010,7 +1010,7 @@ class StubCodeGeneratorTest {
         fun `should store description if it is not blank`() {
             val pythonEnumInstance = PythonEnumInstance(
                 name = "TestEnumInstance",
-                description = "Lorem ipsum"
+                description = "Lorem ipsum",
             )
 
             val arguments = pythonEnumInstance.toSdsEnumVariant()
@@ -1028,7 +1028,7 @@ class StubCodeGeneratorTest {
         fun `should not store description if it is blank`() {
             val pythonEnumInstance = PythonEnumInstance(
                 name = "TestEnumInstance",
-                description = ""
+                description = "",
             )
 
             pythonEnumInstance.toSdsEnumVariant()
@@ -1050,7 +1050,7 @@ class StubCodeGeneratorTest {
             _name     | name
             _Name     | name
             two_words | twoWords
-            Two_words | twoWords"""
+            Two_words | twoWords""",
         )
         fun `snakeCaseToLowerCamelCase should convert snake case to lower camel case`(input: String, expected: String) {
             input.snakeCaseToLowerCamelCase() shouldBe expected
@@ -1066,7 +1066,7 @@ class StubCodeGeneratorTest {
             _name     | Name
             _Name     | Name
             two_words | TwoWords
-            Two_words | TwoWords"""
+            Two_words | TwoWords""",
         )
         fun `snakeCaseToUpperCamelCase should convert snake case to upper camel case`(input: String, expected: String) {
             input.snakeCaseToUpperCamelCase() shouldBe expected

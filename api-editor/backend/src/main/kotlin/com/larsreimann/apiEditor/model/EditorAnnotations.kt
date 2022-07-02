@@ -26,7 +26,7 @@ data class BoundaryAnnotation(
     val lowerIntervalLimit: Double,
     val lowerLimitType: ComparisonOperator,
     val upperIntervalLimit: Double,
-    val upperLimitType: ComparisonOperator
+    val upperLimitType: ComparisonOperator,
 ) : EditorAnnotation() {
 
     @Transient
@@ -105,7 +105,7 @@ object RemoveAnnotation : EditorAnnotation() {
     override val validTargets = setOf(
         CLASS,
         GLOBAL_FUNCTION,
-        METHOD
+        METHOD,
     )
 }
 
@@ -175,11 +175,11 @@ val ANY_DECLARATION = setOf(
     GLOBAL_FUNCTION,
     METHOD,
     CONSTRUCTOR_PARAMETER,
-    FUNCTION_PARAMETER
+    FUNCTION_PARAMETER,
 )
 val GLOBAL_DECLARATIONS = setOf(CLASS, GLOBAL_FUNCTION)
 val FUNCTIONS = setOf(GLOBAL_FUNCTION, METHOD)
 val PARAMETERS = setOf(
     CONSTRUCTOR_PARAMETER,
-    FUNCTION_PARAMETER
+    FUNCTION_PARAMETER,
 )

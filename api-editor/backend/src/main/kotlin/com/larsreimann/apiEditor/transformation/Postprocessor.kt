@@ -68,12 +68,12 @@ private fun PythonClass.createConstructor() {
                     parameters = listOf(
                         PythonParameter(
                             name = "self",
-                            assignedBy = IMPLICIT
-                        )
+                            assignedBy = IMPLICIT,
+                        ),
                     ),
                     callToOriginalAPI = PythonCall(
-                        receiver = PythonStringifiedExpression(this.originalClass!!.qualifiedName)
-                    )
+                        receiver = PythonStringifiedExpression(this.originalClass!!.qualifiedName),
+                    ),
                 )
             }
         }
@@ -82,7 +82,7 @@ private fun PythonClass.createConstructor() {
             constructorMethod.callToOriginalAPI?.let { callToOriginalAPI ->
                 val newReceiver = when (val receiver = callToOriginalAPI.receiver) {
                     is PythonStringifiedExpression -> PythonStringifiedExpression(
-                        receiver.string.removeSuffix(".__init__")
+                        receiver.string.removeSuffix(".__init__"),
                     )
 
                     null -> throw IllegalStateException("Receiver of call is null: $callToOriginalAPI")
@@ -93,8 +93,8 @@ private fun PythonClass.createConstructor() {
                     parameters = constructorMethod.parameters.toList(),
                     callToOriginalAPI = PythonCall(
                         receiver = newReceiver,
-                        arguments = callToOriginalAPI.arguments.toList()
-                    )
+                        arguments = callToOriginalAPI.arguments.toList(),
+                    ),
                 )
             }
 
@@ -123,7 +123,7 @@ private fun PythonClass.createAttributesForParametersOfConstructor() {
                 value = PythonStringifiedExpression(it.name),
                 isPublic = true,
                 description = it.description,
-                boundary = it.boundary
+                boundary = it.boundary,
             )
         }
 }

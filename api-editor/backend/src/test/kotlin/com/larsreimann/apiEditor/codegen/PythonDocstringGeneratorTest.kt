@@ -27,45 +27,45 @@ class PythonDocstringGeneratorTest {
                     parameters = listOf(
                         PythonParameter(
                             name = "testParameter1",
-                            description = "Test parameter 1"
+                            description = "Test parameter 1",
                         ),
                         PythonParameter(
                             name = "testParameter2",
                             type = PythonStringifiedType("int"),
-                            description = "Test parameter 2"
+                            description = "Test parameter 2",
                         ),
                         PythonParameter(
-                            name = "testParameter3"
+                            name = "testParameter3",
                         ),
                         PythonParameter(
                             name = "testParameter4",
-                            type = PythonStringifiedType("str")
-                        )
-                    )
+                            type = PythonStringifiedType("str"),
+                        ),
+                    ),
                 ),
                 attributes = listOf(
                     PythonAttribute(
                         name = "testAttribute1",
                         value = PythonInt(1),
-                        description = "Test attribute 1"
+                        description = "Test attribute 1",
                     ),
                     PythonAttribute(
                         name = "testAttribute2",
                         type = PythonStringifiedType("int"),
                         value = PythonInt(2),
-                        description = "Test attribute 2"
+                        description = "Test attribute 2",
                     ),
                     PythonAttribute(
                         name = "testAttribute3",
-                        value = PythonInt(3)
+                        value = PythonInt(3),
                     ),
                     PythonAttribute(
                         name = "testAttribute4",
                         type = PythonStringifiedType("str"),
-                        value = PythonInt(4)
-                    )
+                        value = PythonInt(4),
+                    ),
                 ),
-                description = "Lorem ipsum"
+                description = "Lorem ipsum",
             )
         }
 
@@ -215,9 +215,9 @@ class PythonDocstringGeneratorTest {
                 constructor = PythonConstructor(
                     parameters = listOf(
                         PythonParameter(name = "self", assignedBy = PythonParameterAssignment.IMPLICIT),
-                        PythonParameter(name = "testParameter1", description = "Test parameter 1")
-                    )
-                )
+                        PythonParameter(name = "testParameter1", description = "Test parameter 1"),
+                    ),
+                ),
             )
 
             testClass.docstring() shouldBe """
@@ -241,22 +241,22 @@ class PythonDocstringGeneratorTest {
                 parameters = listOf(
                     PythonParameter(
                         name = "testParameter1",
-                        description = "Test parameter 1"
+                        description = "Test parameter 1",
                     ),
                     PythonParameter(
                         name = "testParameter2",
                         type = PythonStringifiedType("int"),
-                        description = "Test parameter 2"
+                        description = "Test parameter 2",
                     ),
                     PythonParameter(
-                        name = "testParameter3"
+                        name = "testParameter3",
                     ),
                     PythonParameter(
                         name = "testParameter4",
-                        type = PythonStringifiedType("str")
-                    )
+                        type = PythonStringifiedType("str"),
+                    ),
                 ),
-                description = "Lorem ipsum"
+                description = "Lorem ipsum",
             )
         }
 
@@ -315,8 +315,8 @@ class PythonDocstringGeneratorTest {
                 name = "testFunction",
                 parameters = listOf(
                     PythonParameter(name = "self", assignedBy = PythonParameterAssignment.IMPLICIT),
-                    PythonParameter(name = "testParameter1", description = "Test parameter 1")
-                )
+                    PythonParameter(name = "testParameter1", description = "Test parameter 1"),
+                ),
             )
 
             testFunction.docstring() shouldBe """

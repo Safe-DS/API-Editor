@@ -56,7 +56,7 @@ fun PythonModule.toStubCode(): String {
     createSdsDummyResource(
         "compilationUnitStub",
         SdsFileExtension.Stub,
-        compilationUnit
+        compilationUnit,
     )
 
     return when (val result = compilationUnit.serializeToFormattedString()) {
@@ -75,7 +75,7 @@ fun PythonModule.toSdsCompilationUnit(): SdsCompilationUnit {
 
     return createSdsCompilationUnit(
         packageName = name,
-        members = classes + functions + enums
+        members = classes + functions + enums,
     )
 }
 
@@ -99,7 +99,7 @@ fun PythonClass.toSdsClass(): SdsClass {
             }
         },
         parameters = buildConstructor(),
-        members = attributes + methods
+        members = attributes + methods,
     )
 }
 
@@ -126,7 +126,7 @@ fun PythonAttribute.toSdsAttribute(): SdsAttribute {
                 add(createSdsDescriptionAnnotationUse(description))
             }
         },
-        type = type.toSdsType()
+        type = type.toSdsType(),
     )
 }
 
@@ -148,21 +148,21 @@ fun PythonFunction.toSdsFunction(): SdsFunction {
             }
         },
         parameters = parameters.mapNotNull { it.toSdsParameterOrNull() },
-        results = results.map { it.toSdsResult() }
+        results = results.map { it.toSdsResult() },
     )
 }
 
 private fun createSdsDescriptionAnnotationUse(description: String): SdsAnnotationCall {
     return createSdsAnnotationCall(
         "Description",
-        listOf(createSdsArgument(createSdsString(description)))
+        listOf(createSdsArgument(createSdsString(description))),
     )
 }
 
 private fun createSdsPythonNameAnnotationUse(name: String): SdsAnnotationCall {
     return createSdsAnnotationCall(
         "PythonName",
-        listOf(createSdsArgument(createSdsString(name)))
+        listOf(createSdsArgument(createSdsString(name))),
     )
 }
 
@@ -184,7 +184,7 @@ fun PythonParameter.toSdsParameterOrNull(): SdsParameter? {
             }
         },
         type = type.toSdsType(),
-        defaultValue = defaultValue?.toSdsExpression()
+        defaultValue = defaultValue?.toSdsExpression(),
     )
 }
 
@@ -201,7 +201,7 @@ fun PythonResult.toSdsResult(): SdsResult {
                 add(createSdsDescriptionAnnotationUse(description))
             }
         },
-        type = type.toSdsType()
+        type = type.toSdsType(),
     )
 }
 
@@ -221,7 +221,7 @@ fun PythonEnum.toSdsEnum(): SdsEnum {
                 add(createSdsDescriptionAnnotationUse(description))
             }
         },
-        variants = instances.map { it.toSdsEnumVariant() }
+        variants = instances.map { it.toSdsEnumVariant() },
     )
 }
 
@@ -240,7 +240,7 @@ fun PythonEnumInstance.toSdsEnumVariant(): SdsEnumVariant {
             if (description.isNotBlank()) {
                 add(createSdsDescriptionAnnotationUse(description))
             }
-        }
+        },
     )
 }
 
@@ -264,32 +264,32 @@ fun PythonType?.toSdsType(): SdsAbstractType {
     return when (this) {
         is PythonNamedType -> {
             createSdsNamedType(
-                declaration = createSdsClass(this.declaration!!.name)
+                declaration = createSdsClass(this.declaration!!.name),
             )
         }
         is PythonStringifiedType -> {
             when (this.string) {
                 "bool" -> createSdsNamedType(
-                    declaration = createSdsClass("Boolean")
+                    declaration = createSdsClass("Boolean"),
                 )
                 "float" -> createSdsNamedType(
-                    declaration = createSdsClass("Float")
+                    declaration = createSdsClass("Float"),
                 )
                 "int" -> createSdsNamedType(
-                    declaration = createSdsClass("Int")
+                    declaration = createSdsClass("Int"),
                 )
                 "str" -> createSdsNamedType(
-                    declaration = createSdsClass("String")
+                    declaration = createSdsClass("String"),
                 )
                 else -> createSdsNamedType(
                     declaration = createSdsClass("Any"),
-                    isNullable = true
+                    isNullable = true,
                 )
             }
         }
         null -> createSdsNamedType(
             declaration = createSdsClass("Any"),
-            isNullable = true
+            isNullable = true,
         )
     }
 }

@@ -27,7 +27,7 @@ data class SerializablePythonPackage(
     override val name: String,
     val version: String,
     val modules: MutableList<SerializablePythonModule>,
-    override val annotations: MutableList<EditorAnnotation>
+    override val annotations: MutableList<EditorAnnotation>,
 ) : SerializablePythonDeclaration() {
 
     override fun children() = sequence {
@@ -42,7 +42,7 @@ data class SerializablePythonModule(
     val fromImports: List<PythonFromImport>,
     val classes: MutableList<SerializablePythonClass>,
     val functions: MutableList<SerializablePythonFunction>,
-    override val annotations: MutableList<EditorAnnotation>
+    override val annotations: MutableList<EditorAnnotation>,
 ) : SerializablePythonDeclaration() {
 
     @Transient
@@ -58,14 +58,14 @@ data class SerializablePythonModule(
 @Serializable
 data class PythonImport(
     val module: String,
-    val alias: String?
+    val alias: String?,
 )
 
 @Serializable
 data class PythonFromImport(
     val module: String,
     val declaration: String,
-    val alias: String?
+    val alias: String?,
 )
 
 @Serializable
@@ -78,7 +78,7 @@ data class SerializablePythonClass(
     val isPublic: Boolean,
     val description: String,
     val fullDocstring: String,
-    override val annotations: MutableList<EditorAnnotation>
+    override val annotations: MutableList<EditorAnnotation>,
 ) : SerializablePythonDeclaration() {
 
     @Transient
@@ -105,7 +105,7 @@ data class SerializablePythonAttribute(
     val isPublic: Boolean,
     val typeInDocs: String,
     val description: String,
-    override val annotations: MutableList<EditorAnnotation>
+    override val annotations: MutableList<EditorAnnotation>,
 ) : SerializablePythonDeclaration() {
 
     @Transient
@@ -119,7 +119,7 @@ data class Boundary(
     val lowerIntervalLimit: Double,
     val lowerLimitType: ComparisonOperator,
     val upperIntervalLimit: Double,
-    val upperLimitType: ComparisonOperator
+    val upperLimitType: ComparisonOperator,
 ) {
     fun asInterval() = buildString {
         when (lowerLimitType) {
@@ -139,7 +139,7 @@ data class Boundary(
 data class SerializablePythonEnum(
     override val name: String,
     val instances: List<SerializablePythonEnumInstance>,
-    override val annotations: MutableList<EditorAnnotation>
+    override val annotations: MutableList<EditorAnnotation>,
 ) : SerializablePythonDeclaration() {
 
     override fun children() = emptySequence<SerializablePythonDeclaration>()
@@ -147,7 +147,7 @@ data class SerializablePythonEnum(
 
 data class SerializablePythonEnumInstance(
     val name: String,
-    val value: String
+    val value: String,
 ) {
     @Transient
     var description: String = ""
@@ -163,7 +163,7 @@ data class SerializablePythonFunction(
     val isPublic: Boolean,
     val description: String,
     val fullDocstring: String,
-    override val annotations: MutableList<EditorAnnotation>
+    override val annotations: MutableList<EditorAnnotation>,
 ) : SerializablePythonDeclaration() {
 
     @Transient
@@ -189,7 +189,7 @@ data class SerializablePythonParameter(
     val isPublic: Boolean,
     val typeInDocs: String,
     val description: String,
-    override val annotations: MutableList<EditorAnnotation>
+    override val annotations: MutableList<EditorAnnotation>,
 ) : SerializablePythonDeclaration() {
 
     @Transient
@@ -217,7 +217,7 @@ data class SerializablePythonResult(
     val type: String,
     val typeInDocs: String,
     val description: String,
-    override val annotations: MutableList<EditorAnnotation>
+    override val annotations: MutableList<EditorAnnotation>,
 ) : SerializablePythonDeclaration() {
 
     @Transient

@@ -43,7 +43,7 @@ class PythonAttribute(
     var isPublic: Boolean = true,
     var description: String = "",
     var boundary: Boundary? = null,
-    override val annotations: MutableList<EditorAnnotation> = mutableListOf()
+    override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
 ) : PythonDeclaration() {
 
     var type by ContainmentReference(type)
@@ -66,7 +66,7 @@ class PythonClass(
     var description: String = "",
     var todo: String = "",
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
-    var originalClass: OriginalPythonClass? = null
+    var originalClass: OriginalPythonClass? = null,
 ) : PythonDeclaration() {
 
     val superclasses = MutableContainmentList(superclasses)
@@ -85,7 +85,7 @@ class PythonClass(
 class PythonConstructor(
     parameters: List<PythonParameter> = emptyList(),
     val callToOriginalAPI: PythonCall? = null,
-    var todo: String = ""
+    var todo: String = "",
 ) : PythonAstNode() {
 
     val parameters = MutableContainmentList(parameters)
@@ -99,7 +99,7 @@ class PythonEnum(
     override var name: String,
     instances: List<PythonEnumInstance> = emptyList(),
     var description: String = "",
-    override val annotations: MutableList<EditorAnnotation> = mutableListOf()
+    override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
 ) : PythonDeclaration() {
 
     val instances = MutableContainmentList(instances)
@@ -113,7 +113,7 @@ class PythonEnumInstance(
     override var name: String,
     value: PythonExpression = PythonString(name),
     var description: String = "",
-    override val annotations: MutableList<EditorAnnotation> = mutableListOf()
+    override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
 ) : PythonDeclaration() {
 
     var value by ContainmentReference(value)
@@ -133,7 +133,7 @@ class PythonFunction(
     var todo: String = "",
     var isPure: Boolean = false,
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
-    var callToOriginalAPI: PythonCall? = null
+    var callToOriginalAPI: PythonCall? = null,
 ) : PythonDeclaration() {
 
     val parameters = MutableContainmentList(parameters)
@@ -155,7 +155,7 @@ class PythonModule(
     classes: List<PythonClass> = emptyList(),
     enums: List<PythonEnum> = emptyList(),
     functions: List<PythonFunction> = emptyList(),
-    override val annotations: MutableList<EditorAnnotation> = mutableListOf()
+    override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
 ) : PythonDeclaration() {
 
     val classes = MutableContainmentList(classes)
@@ -174,7 +174,7 @@ class PythonPackage(
     override var name: String,
     var version: String,
     modules: List<PythonModule> = emptyList(),
-    override val annotations: MutableList<EditorAnnotation> = mutableListOf()
+    override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
 ) : PythonDeclaration() {
 
     val modules = MutableContainmentList(modules)
@@ -192,7 +192,7 @@ class PythonParameter(
     var description: String = "",
     var todo: String = "",
     var boundary: Boundary? = null,
-    override val annotations: MutableList<EditorAnnotation> = mutableListOf()
+    override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
 ) : PythonDeclaration() {
 
     var type by ContainmentReference(type)
@@ -215,7 +215,7 @@ class PythonResult(
     type: PythonType? = null,
     var description: String = "",
     var boundary: Boundary? = null,
-    override val annotations: MutableList<EditorAnnotation> = mutableListOf()
+    override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
 ) : PythonDeclaration() {
 
     var type by ContainmentReference(type)
@@ -235,7 +235,7 @@ sealed class PythonExpression : PythonAstNode()
 
 class PythonCall(
     receiver: PythonExpression,
-    arguments: List<PythonArgument> = emptyList()
+    arguments: List<PythonArgument> = emptyList(),
 ) : PythonExpression() {
 
     var receiver by ContainmentReference(receiver)
@@ -259,7 +259,7 @@ class PythonNone : PythonLiteral() // Cannot use object because each instance ne
 
 class PythonMemberAccess(
     receiver: PythonExpression,
-    member: PythonReference
+    member: PythonReference,
 ) : PythonExpression() {
 
     var receiver by ContainmentReference(receiver)

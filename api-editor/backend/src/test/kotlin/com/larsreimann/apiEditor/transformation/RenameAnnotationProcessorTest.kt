@@ -24,21 +24,21 @@ class RenameAnnotationProcessorTest {
     fun reset() {
         testClass = PythonClass(
             name = "TestClass",
-            annotations = mutableListOf(RenameAnnotation("NewTestClass"))
+            annotations = mutableListOf(RenameAnnotation("NewTestClass")),
         )
         testFunction = PythonFunction(
             name = "testFunction",
             annotations = mutableListOf(
-                RenameAnnotation("newTestFunction")
-            )
+                RenameAnnotation("newTestFunction"),
+            ),
         )
         testParameter = PythonParameter(
             name = "testParameter",
-            annotations = mutableListOf(RenameAnnotation("newTestParameter"))
+            annotations = mutableListOf(RenameAnnotation("newTestParameter")),
         )
         testGroupAnnotation = GroupAnnotation(
             groupName = "TestGroup",
-            parameters = mutableListOf("testParameter")
+            parameters = mutableListOf("testParameter"),
         )
         testPackage = PythonPackage(
             distribution = "testPackage",
@@ -53,11 +53,11 @@ class RenameAnnotationProcessorTest {
                         PythonFunction(
                             name = "testFunction",
                             parameters = listOf(testParameter),
-                            annotations = mutableListOf(testGroupAnnotation)
-                        )
-                    )
-                )
-            )
+                            annotations = mutableListOf(testGroupAnnotation),
+                        ),
+                    ),
+                ),
+            ),
         )
     }
 

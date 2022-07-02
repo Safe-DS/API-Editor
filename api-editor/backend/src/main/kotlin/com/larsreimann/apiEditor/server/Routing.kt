@@ -72,8 +72,8 @@ fun Route.infer() {
                         HttpHeaders.ContentDisposition,
                         ContentDisposition.Attachment.withParameter(
                             ContentDisposition.Parameters.FileName,
-                            zipFile.toString()
-                        ).toString()
+                            zipFile.toString(),
+                        ).toString(),
                     )
                     call.respondFile(zipFile)
 

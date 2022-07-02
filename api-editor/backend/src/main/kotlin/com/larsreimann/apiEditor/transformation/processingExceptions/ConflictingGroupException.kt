@@ -8,5 +8,5 @@ class ConflictingGroupException(groupName: String, moduleName: String, qualified
             qualifiedFunctionName +
             "' already exists in module '" +
             moduleName +
-            "' with conflicting instances."
+            "' with conflicting instances.",
     )

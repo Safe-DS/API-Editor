@@ -45,7 +45,7 @@ class PythonCodeGeneratorTest {
         @Test
         fun `should handle attributes without type and default value`() {
             val testAttribute = PythonAttribute(
-                name = "attr"
+                name = "attr",
             )
 
             testAttribute.toPythonCode() shouldBe "self.attr"
@@ -55,7 +55,7 @@ class PythonCodeGeneratorTest {
         fun `should handle attributes with type but without default value`() {
             val testAttribute = PythonAttribute(
                 name = "attr",
-                type = PythonStringifiedType("int")
+                type = PythonStringifiedType("int"),
             )
 
             testAttribute.toPythonCode() shouldBe "self.attr: int"
@@ -65,7 +65,7 @@ class PythonCodeGeneratorTest {
         fun `should handle attributes without type but with default value`() {
             val testAttribute = PythonAttribute(
                 name = "attr",
-                value = PythonStringifiedExpression("1")
+                value = PythonStringifiedExpression("1"),
             )
 
             testAttribute.toPythonCode() shouldBe "self.attr = 1"
@@ -76,7 +76,7 @@ class PythonCodeGeneratorTest {
             val testAttribute = PythonAttribute(
                 name = "attr",
                 type = PythonStringifiedType("int"),
-                value = PythonStringifiedExpression("1")
+                value = PythonStringifiedExpression("1"),
             )
 
             testAttribute.toPythonCode() shouldBe "self.attr: int = 1"
@@ -89,7 +89,7 @@ class PythonCodeGeneratorTest {
         @Test
         fun `should create valid code for classes without constructor and methods`() {
             val testClass = PythonClass(
-                name = "TestClass"
+                name = "TestClass",
             )
 
             testClass.toPythonCode() shouldBe """
@@ -104,8 +104,8 @@ class PythonCodeGeneratorTest {
                 name = "TestClass",
                 methods = listOf(
                     PythonFunction(name = "testFunction1"),
-                    PythonFunction(name = "testFunction2")
-                )
+                    PythonFunction(name = "testFunction2"),
+                ),
             )
 
             testClass.toPythonCode() shouldBe """
@@ -122,7 +122,7 @@ class PythonCodeGeneratorTest {
         fun `should create valid code for classes with constructor but without methods`() {
             val testClass = PythonClass(
                 name = "TestClass",
-                constructor = PythonConstructor()
+                constructor = PythonConstructor(),
             )
 
             testClass.toPythonCode() shouldBe """
@@ -139,8 +139,8 @@ class PythonCodeGeneratorTest {
                 constructor = PythonConstructor(),
                 methods = listOf(
                     PythonFunction(name = "testFunction1"),
-                    PythonFunction(name = "testFunction2")
-                )
+                    PythonFunction(name = "testFunction2"),
+                ),
             )
 
             testClass.toPythonCode() shouldBe """
@@ -162,15 +162,15 @@ class PythonCodeGeneratorTest {
                 name = "TestClass",
                 constructor = PythonConstructor(
                     callToOriginalAPI = PythonCall(
-                        receiver = PythonStringifiedExpression("testModule.TestClass")
-                    )
+                        receiver = PythonStringifiedExpression("testModule.TestClass"),
+                    ),
                 ),
                 attributes = listOf(
                     PythonAttribute(
                         name = "testAttribute",
-                        value = PythonInt(1)
-                    )
-                )
+                        value = PythonInt(1),
+                    ),
+                ),
             )
 
             testClass.toPythonCode() shouldBe """
@@ -190,29 +190,29 @@ class PythonCodeGeneratorTest {
                     parameters = listOf(
                         PythonParameter(
                             name = "testParameter1",
-                            description = "Test parameter 1"
+                            description = "Test parameter 1",
                         ),
                         PythonParameter(
                             name = "testParameter2",
                             type = PythonStringifiedType("int"),
-                            description = "Test parameter 2"
-                        )
-                    )
+                            description = "Test parameter 2",
+                        ),
+                    ),
                 ),
                 attributes = listOf(
                     PythonAttribute(
                         name = "testAttribute1",
                         value = PythonInt(1),
-                        description = "Test attribute 1"
+                        description = "Test attribute 1",
                     ),
                     PythonAttribute(
                         name = "testAttribute2",
                         type = PythonStringifiedType("int"),
                         value = PythonInt(2),
-                        description = "Test attribute 2"
-                    )
+                        description = "Test attribute 2",
+                    ),
                 ),
-                description = "Lorem ipsum"
+                description = "Lorem ipsum",
             )
 
             testClass.toPythonCode() shouldBe """
@@ -245,7 +245,7 @@ class PythonCodeGeneratorTest {
         fun `should store todo if it is not blank`() {
             val testClass = PythonClass(
                 name = "TestClass",
-                todo = "    Lorem ipsum\n\n    Dolor sit\namet\n"
+                todo = "    Lorem ipsum\n\n    Dolor sit\namet\n",
             )
 
             testClass.toPythonCode() shouldBe """
@@ -270,26 +270,26 @@ class PythonCodeGeneratorTest {
         fun reset() {
             callToOriginalAPI = PythonCall(
                 PythonReference(
-                    PythonClass(name = "OriginalClass")
-                )
+                    PythonClass(name = "OriginalClass"),
+                ),
             )
             testClass = PythonClass(
                 name = "TestClass",
                 attributes = listOf(
                     PythonAttribute(
                         name = "testAttribute1",
-                        value = PythonInt(1)
+                        value = PythonInt(1),
                     ),
                     PythonAttribute(
                         name = "testAttribute2",
-                        value = PythonInt(2)
-                    )
-                )
+                        value = PythonInt(2),
+                    ),
+                ),
             )
             parametersWithBoundaries = listOf(
                 PythonParameter(
                     name = "self",
-                    assignedBy = PythonParameterAssignment.IMPLICIT
+                    assignedBy = PythonParameterAssignment.IMPLICIT,
                 ),
                 PythonParameter(
                     name = "testParameter1",
@@ -298,8 +298,8 @@ class PythonCodeGeneratorTest {
                         lowerIntervalLimit = 0.0,
                         lowerLimitType = LESS_THAN_OR_EQUALS,
                         upperIntervalLimit = 1.0,
-                        upperLimitType = LESS_THAN_OR_EQUALS
-                    )
+                        upperLimitType = LESS_THAN_OR_EQUALS,
+                    ),
                 ),
                 PythonParameter(
                     name = "testParameter2",
@@ -308,9 +308,9 @@ class PythonCodeGeneratorTest {
                         lowerIntervalLimit = 0.0,
                         lowerLimitType = LESS_THAN,
                         upperIntervalLimit = 1.0,
-                        upperLimitType = UNRESTRICTED
-                    )
-                )
+                        upperLimitType = UNRESTRICTED,
+                    ),
+                ),
             )
         }
 
@@ -320,21 +320,21 @@ class PythonCodeGeneratorTest {
                 parameters = listOf(
                     PythonParameter(
                         name = "self",
-                        assignedBy = PythonParameterAssignment.IMPLICIT
+                        assignedBy = PythonParameterAssignment.IMPLICIT,
                     ),
                     PythonParameter(
                         name = "positionOnly",
-                        assignedBy = PythonParameterAssignment.POSITION_ONLY
+                        assignedBy = PythonParameterAssignment.POSITION_ONLY,
                     ),
                     PythonParameter(
                         name = "positionOrName",
-                        assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+                        assignedBy = PythonParameterAssignment.POSITION_OR_NAME,
                     ),
                     PythonParameter(
                         name = "nameOnly",
-                        assignedBy = PythonParameterAssignment.NAME_ONLY
-                    )
-                )
+                        assignedBy = PythonParameterAssignment.NAME_ONLY,
+                    ),
+                ),
             )
 
             testConstructor.toPythonCode() shouldBe """
@@ -349,13 +349,13 @@ class PythonCodeGeneratorTest {
                 parameters = listOf(
                     PythonParameter(
                         name = "self",
-                        assignedBy = PythonParameterAssignment.IMPLICIT
+                        assignedBy = PythonParameterAssignment.IMPLICIT,
                     ),
                     PythonParameter(
                         name = "args",
-                        assignedBy = PythonParameterAssignment.POSITIONAL_VARARG
-                    )
-                )
+                        assignedBy = PythonParameterAssignment.POSITIONAL_VARARG,
+                    ),
+                ),
             )
 
             testConstructor.toPythonCode() shouldBe """
@@ -370,13 +370,13 @@ class PythonCodeGeneratorTest {
                 parameters = listOf(
                     PythonParameter(
                         name = "self",
-                        assignedBy = PythonParameterAssignment.IMPLICIT
+                        assignedBy = PythonParameterAssignment.IMPLICIT,
                     ),
                     PythonParameter(
                         name = "kwargs",
-                        assignedBy = PythonParameterAssignment.NAMED_VARARG
-                    )
-                )
+                        assignedBy = PythonParameterAssignment.NAMED_VARARG,
+                    ),
+                ),
             )
 
             testConstructor.toPythonCode() shouldBe """
@@ -448,7 +448,7 @@ class PythonCodeGeneratorTest {
         fun `should handle constructors (boundaries, no attributes, call)`() {
             val testConstructor = PythonConstructor(
                 callToOriginalAPI = callToOriginalAPI,
-                parameters = parametersWithBoundaries
+                parameters = parametersWithBoundaries,
             )
 
             testConstructor.toPythonCode() shouldBe """
@@ -465,7 +465,7 @@ class PythonCodeGeneratorTest {
         @Test
         fun `should handle constructors (boundaries, attributes, no call)`() {
             val testConstructor = PythonConstructor(
-                parameters = parametersWithBoundaries
+                parameters = parametersWithBoundaries,
             )
             testClass.constructor = testConstructor
 
@@ -485,7 +485,7 @@ class PythonCodeGeneratorTest {
         fun `should handle constructors (boundaries, attributes, call)`() {
             val testConstructor = PythonConstructor(
                 callToOriginalAPI = callToOriginalAPI,
-                parameters = parametersWithBoundaries
+                parameters = parametersWithBoundaries,
             )
             testClass.constructor = testConstructor
 
@@ -510,13 +510,13 @@ class PythonCodeGeneratorTest {
                 parameters = listOf(
                     PythonParameter(
                         name = "self",
-                        assignedBy = PythonParameterAssignment.IMPLICIT
+                        assignedBy = PythonParameterAssignment.IMPLICIT,
                     ),
                     PythonParameter(
                         name = "unfinished",
-                        todo = "    Lorem ipsum\n\n    Dolor sit\namet\n"
-                    )
-                )
+                        todo = "    Lorem ipsum\n\n    Dolor sit\namet\n",
+                    ),
+                ),
             )
 
             testConstructor.toPythonCode() shouldBe """
@@ -554,13 +554,13 @@ class PythonCodeGeneratorTest {
                 instances = listOf(
                     PythonEnumInstance(
                         name = "TestEnumInstance1",
-                        value = PythonString("inst1")
+                        value = PythonString("inst1"),
                     ),
                     PythonEnumInstance(
                         name = "TestEnumInstance2",
-                        value = PythonString("inst2")
-                    )
-                )
+                        value = PythonString("inst2"),
+                    ),
+                ),
             )
 
             testEnum.toPythonCode() shouldBe """
@@ -587,7 +587,7 @@ class PythonCodeGeneratorTest {
         fun `should create Python code`() {
             val testEnumInstance = PythonEnumInstance(
                 name = "TestEnumInstance1",
-                value = PythonString("inst1")
+                value = PythonString("inst1"),
             )
 
             testEnumInstance.toPythonCode("TestEnum") shouldBe """
@@ -609,8 +609,8 @@ class PythonCodeGeneratorTest {
         fun reset() {
             callToOriginalAPI = PythonCall(
                 PythonReference(
-                    PythonFunction(name = "testModule.testFunction")
-                )
+                    PythonFunction(name = "testModule.testFunction"),
+                ),
             )
             parametersWithBoundaries = listOf(
                 PythonParameter(
@@ -620,8 +620,8 @@ class PythonCodeGeneratorTest {
                         lowerIntervalLimit = 0.0,
                         lowerLimitType = LESS_THAN_OR_EQUALS,
                         upperIntervalLimit = 1.0,
-                        upperLimitType = LESS_THAN_OR_EQUALS
-                    )
+                        upperLimitType = LESS_THAN_OR_EQUALS,
+                    ),
                 ),
                 PythonParameter(
                     name = "testParameter2",
@@ -630,9 +630,9 @@ class PythonCodeGeneratorTest {
                         lowerIntervalLimit = 0.0,
                         lowerLimitType = LESS_THAN,
                         upperIntervalLimit = 1.0,
-                        upperLimitType = UNRESTRICTED
-                    )
-                )
+                        upperLimitType = UNRESTRICTED,
+                    ),
+                ),
             )
         }
 
@@ -640,11 +640,11 @@ class PythonCodeGeneratorTest {
         fun `should add staticmethod decorator to static methods`() {
             val testFunction = PythonFunction(
                 name = "testFunction",
-                decorators = mutableListOf("staticmethod")
+                decorators = mutableListOf("staticmethod"),
             )
             PythonClass(
                 name = "TestClass",
-                methods = listOf(testFunction)
+                methods = listOf(testFunction),
             )
 
             testFunction.toPythonCode() shouldBe """
@@ -661,21 +661,21 @@ class PythonCodeGeneratorTest {
                 parameters = listOf(
                     PythonParameter(
                         name = "self",
-                        assignedBy = PythonParameterAssignment.IMPLICIT
+                        assignedBy = PythonParameterAssignment.IMPLICIT,
                     ),
                     PythonParameter(
                         name = "positionOnly",
-                        assignedBy = PythonParameterAssignment.POSITION_ONLY
+                        assignedBy = PythonParameterAssignment.POSITION_ONLY,
                     ),
                     PythonParameter(
                         name = "positionOrName",
-                        assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+                        assignedBy = PythonParameterAssignment.POSITION_OR_NAME,
                     ),
                     PythonParameter(
                         name = "nameOnly",
-                        assignedBy = PythonParameterAssignment.NAME_ONLY
-                    )
-                )
+                        assignedBy = PythonParameterAssignment.NAME_ONLY,
+                    ),
+                ),
             )
 
             testFunction.toPythonCode() shouldBe """
@@ -690,9 +690,9 @@ class PythonCodeGeneratorTest {
                 parameters = listOf(
                     PythonParameter(
                         name = "args",
-                        assignedBy = PythonParameterAssignment.POSITIONAL_VARARG
-                    )
-                )
+                        assignedBy = PythonParameterAssignment.POSITIONAL_VARARG,
+                    ),
+                ),
             )
 
             testConstructor.toPythonCode() shouldBe """
@@ -707,9 +707,9 @@ class PythonCodeGeneratorTest {
                 parameters = listOf(
                     PythonParameter(
                         name = "kwargs",
-                        assignedBy = PythonParameterAssignment.NAMED_VARARG
-                    )
-                )
+                        assignedBy = PythonParameterAssignment.NAMED_VARARG,
+                    ),
+                ),
             )
 
             testConstructor.toPythonCode() shouldBe """
@@ -721,7 +721,7 @@ class PythonCodeGeneratorTest {
         @Test
         fun `should handle functions (no boundaries, no call)`() {
             val testFunction = PythonFunction(
-                name = "testFunction"
+                name = "testFunction",
             )
 
             testFunction.toPythonCode() shouldBe """
@@ -734,7 +734,7 @@ class PythonCodeGeneratorTest {
         fun `should handle functions (no boundaries, call)`() {
             val testFunction = PythonFunction(
                 name = "testFunction",
-                callToOriginalAPI = callToOriginalAPI
+                callToOriginalAPI = callToOriginalAPI,
             )
 
             testFunction.toPythonCode() shouldBe """
@@ -747,7 +747,7 @@ class PythonCodeGeneratorTest {
         fun `should handle functions (boundaries, no call)`() {
             val testFunction = PythonFunction(
                 name = "testFunction",
-                parameters = parametersWithBoundaries
+                parameters = parametersWithBoundaries,
             )
 
             testFunction.toPythonCode() shouldBe """
@@ -764,7 +764,7 @@ class PythonCodeGeneratorTest {
             val testFunction = PythonFunction(
                 name = "testFunction",
                 callToOriginalAPI = callToOriginalAPI,
-                parameters = parametersWithBoundaries
+                parameters = parametersWithBoundaries,
             )
 
             testFunction.toPythonCode() shouldBe """
@@ -785,15 +785,15 @@ class PythonCodeGeneratorTest {
                 parameters = listOf(
                     PythonParameter(
                         name = "testParameter1",
-                        description = "Test parameter 1"
+                        description = "Test parameter 1",
                     ),
                     PythonParameter(
                         name = "testParameter2",
                         type = PythonStringifiedType("int"),
-                        description = "Test parameter 2"
-                    )
+                        description = "Test parameter 2",
+                    ),
                 ),
-                description = "Lorem ipsum"
+                description = "Lorem ipsum",
             )
 
             testFunction.toPythonCode() shouldBe """
@@ -821,9 +821,9 @@ class PythonCodeGeneratorTest {
                 parameters = listOf(
                     PythonParameter(
                         name = "unfinished",
-                        todo = "    Lorem ipsum\n\n    Dolor sit\namet\n"
-                    )
-                )
+                        todo = "    Lorem ipsum\n\n    Dolor sit\namet\n",
+                    ),
+                ),
             )
 
             testFunction.toPythonCode() shouldBe """
@@ -860,28 +860,28 @@ class PythonCodeGeneratorTest {
                             name = "testMethodWithOriginalMethod",
                             decorators = mutableListOf("staticmethod"),
                             callToOriginalAPI = PythonCall(
-                                receiver = PythonStringifiedExpression("originalModule.testMethod")
-                            )
-                        )
-                    )
+                                receiver = PythonStringifiedExpression("originalModule.testMethod"),
+                            ),
+                        ),
+                    ),
                 ),
                 PythonClass(
                     name = "TestClassWithConstructor",
                     constructor = PythonConstructor(
                         callToOriginalAPI = PythonCall(
-                            receiver = PythonStringifiedExpression("originalModule.TestClass")
-                        )
-                    )
-                )
+                            receiver = PythonStringifiedExpression("originalModule.TestClass"),
+                        ),
+                    ),
+                ),
             )
             testFunctions = listOf(
                 PythonFunction(name = "testFunction"),
                 PythonFunction(
                     name = "testFunctionWithOriginalFunction",
                     callToOriginalAPI = PythonCall(
-                        receiver = PythonStringifiedExpression("originalModule2.testFunction")
-                    )
-                )
+                        receiver = PythonStringifiedExpression("originalModule2.testFunction"),
+                    ),
+                ),
             )
             testEnum = PythonEnum(name = "TestEnum")
         }
@@ -1083,27 +1083,27 @@ class PythonCodeGeneratorTest {
         fun reset() {
             implicit = PythonParameter(
                 name = "implicit",
-                assignedBy = PythonParameterAssignment.IMPLICIT
+                assignedBy = PythonParameterAssignment.IMPLICIT,
             )
             positionOnly = PythonParameter(
                 name = "positionOnly",
-                assignedBy = PythonParameterAssignment.POSITION_ONLY
+                assignedBy = PythonParameterAssignment.POSITION_ONLY,
             )
             positionOrName = PythonParameter(
                 name = "positionOrName",
-                assignedBy = PythonParameterAssignment.POSITION_OR_NAME
+                assignedBy = PythonParameterAssignment.POSITION_OR_NAME,
             )
             positionalVararg = PythonParameter(
                 name = "positionalVararg",
-                assignedBy = PythonParameterAssignment.POSITIONAL_VARARG
+                assignedBy = PythonParameterAssignment.POSITIONAL_VARARG,
             )
             nameOnly = PythonParameter(
                 name = "nameOnly",
-                assignedBy = PythonParameterAssignment.NAME_ONLY
+                assignedBy = PythonParameterAssignment.NAME_ONLY,
             )
             namedVararg = PythonParameter(
                 name = "namedVararg",
-                assignedBy = PythonParameterAssignment.NAMED_VARARG
+                assignedBy = PythonParameterAssignment.NAMED_VARARG,
             )
         }
 
@@ -1233,7 +1233,7 @@ class PythonCodeGeneratorTest {
         @Test
         fun `should handle parameters without type and default value`() {
             val testParameter = PythonParameter(
-                name = "param"
+                name = "param",
             )
 
             testParameter.toPythonCode() shouldBe "param"
@@ -1243,7 +1243,7 @@ class PythonCodeGeneratorTest {
         fun `should handle parameters with type but without default value`() {
             val testParameter = PythonParameter(
                 name = "param",
-                type = PythonStringifiedType("int")
+                type = PythonStringifiedType("int"),
             )
 
             testParameter.toPythonCode() shouldBe "param: int"
@@ -1253,7 +1253,7 @@ class PythonCodeGeneratorTest {
         fun `should handle parameters without type but with default value`() {
             val testParameter = PythonParameter(
                 name = "param",
-                defaultValue = PythonStringifiedExpression("1")
+                defaultValue = PythonStringifiedExpression("1"),
             )
 
             testParameter.toPythonCode() shouldBe "param=1"
@@ -1264,7 +1264,7 @@ class PythonCodeGeneratorTest {
             val testParameter = PythonParameter(
                 name = "param",
                 type = PythonStringifiedType("int"),
-                defaultValue = PythonStringifiedExpression("1")
+                defaultValue = PythonStringifiedExpression("1"),
             )
 
             testParameter.toPythonCode() shouldBe "param: int = 1"
@@ -1275,7 +1275,7 @@ class PythonCodeGeneratorTest {
             val testParameter = PythonParameter(
                 name = "param",
                 type = PythonStringifiedType("int"),
-                assignedBy = PythonParameterAssignment.POSITIONAL_VARARG
+                assignedBy = PythonParameterAssignment.POSITIONAL_VARARG,
             )
 
             testParameter.toPythonCode() shouldBe "*param: int"
@@ -1286,7 +1286,7 @@ class PythonCodeGeneratorTest {
             val testParameter = PythonParameter(
                 name = "param",
                 type = PythonStringifiedType("int"),
-                assignedBy = PythonParameterAssignment.NAMED_VARARG
+                assignedBy = PythonParameterAssignment.NAMED_VARARG,
             )
 
             testParameter.toPythonCode() shouldBe "**param: int"
@@ -1320,9 +1320,9 @@ class PythonCodeGeneratorTest {
                     PythonArgument(value = PythonInt(1)),
                     PythonArgument(
                         name = "param",
-                        value = PythonInt(1)
-                    )
-                )
+                        value = PythonInt(1),
+                    ),
+                ),
             )
             expression.toPythonCode() shouldBe "function(1, param=1)"
         }
@@ -1343,7 +1343,7 @@ class PythonCodeGeneratorTest {
         fun `should handle member accesses`() {
             val expression = PythonMemberAccess(
                 receiver = PythonReference(PythonParameter(name = "param")),
-                member = PythonReference(PythonAttribute(name = "value"))
+                member = PythonReference(PythonAttribute(name = "value")),
             )
             expression.toPythonCode() shouldBe "param.value"
         }
@@ -1351,7 +1351,7 @@ class PythonCodeGeneratorTest {
         @Test
         fun `should handle named spread`() {
             val expression = PythonNamedSpread(
-                argument = PythonNone()
+                argument = PythonNone(),
             )
             expression.toPythonCode() shouldBe "**None"
         }
@@ -1365,7 +1365,7 @@ class PythonCodeGeneratorTest {
         @Test
         fun `should handle positional spread`() {
             val expression = PythonPositionalSpread(
-                argument = PythonNone()
+                argument = PythonNone(),
             )
             expression.toPythonCode() shouldBe "*None"
         }
@@ -1451,7 +1451,7 @@ class PythonCodeGeneratorTest {
         fun `should handle named arguments`() {
             val testArgument = PythonArgument(
                 name = "arg",
-                value = PythonInt(1)
+                value = PythonInt(1),
             )
 
             testArgument.toPythonCode() shouldBe "arg=1"
@@ -1468,7 +1468,7 @@ class PythonCodeGeneratorTest {
                 lowerIntervalLimit = 0.0,
                 lowerLimitType = UNRESTRICTED,
                 upperIntervalLimit = 1.0,
-                upperLimitType = UNRESTRICTED
+                upperLimitType = UNRESTRICTED,
             )
 
             boundary.toPythonCode("testParameter") shouldBe """
@@ -1484,7 +1484,7 @@ class PythonCodeGeneratorTest {
                 lowerIntervalLimit = 0.0,
                 lowerLimitType = UNRESTRICTED,
                 upperIntervalLimit = 1.0,
-                upperLimitType = UNRESTRICTED
+                upperLimitType = UNRESTRICTED,
             )
 
             boundary.toPythonCode("testParameter") shouldBe ""
@@ -1497,7 +1497,7 @@ class PythonCodeGeneratorTest {
                 lowerIntervalLimit = 0.0,
                 lowerLimitType = UNRESTRICTED,
                 upperIntervalLimit = 1.0,
-                upperLimitType = LESS_THAN
+                upperLimitType = LESS_THAN,
             )
 
             boundary.toPythonCode("testParameter") shouldBe """
@@ -1513,7 +1513,7 @@ class PythonCodeGeneratorTest {
                 lowerIntervalLimit = 0.0,
                 lowerLimitType = UNRESTRICTED,
                 upperIntervalLimit = 1.0,
-                upperLimitType = LESS_THAN_OR_EQUALS
+                upperLimitType = LESS_THAN_OR_EQUALS,
             )
 
             boundary.toPythonCode("testParameter") shouldBe """
@@ -1529,7 +1529,7 @@ class PythonCodeGeneratorTest {
                 lowerIntervalLimit = 0.0,
                 lowerLimitType = LESS_THAN,
                 upperIntervalLimit = 1.0,
-                upperLimitType = UNRESTRICTED
+                upperLimitType = UNRESTRICTED,
             )
 
             boundary.toPythonCode("testParameter") shouldBe """
@@ -1545,7 +1545,7 @@ class PythonCodeGeneratorTest {
                 lowerIntervalLimit = 0.0,
                 lowerLimitType = LESS_THAN,
                 upperIntervalLimit = 1.0,
-                upperLimitType = LESS_THAN
+                upperLimitType = LESS_THAN,
             )
 
             boundary.toPythonCode("testParameter") shouldBe """
@@ -1561,7 +1561,7 @@ class PythonCodeGeneratorTest {
                 lowerIntervalLimit = 0.0,
                 lowerLimitType = LESS_THAN,
                 upperIntervalLimit = 1.0,
-                upperLimitType = LESS_THAN_OR_EQUALS
+                upperLimitType = LESS_THAN_OR_EQUALS,
             )
 
             boundary.toPythonCode("testParameter") shouldBe """
@@ -1577,7 +1577,7 @@ class PythonCodeGeneratorTest {
                 lowerIntervalLimit = 0.0,
                 lowerLimitType = LESS_THAN_OR_EQUALS,
                 upperIntervalLimit = 1.0,
-                upperLimitType = UNRESTRICTED
+                upperLimitType = UNRESTRICTED,
             )
 
             boundary.toPythonCode("testParameter") shouldBe """
@@ -1593,7 +1593,7 @@ class PythonCodeGeneratorTest {
                 lowerIntervalLimit = 0.0,
                 lowerLimitType = LESS_THAN_OR_EQUALS,
                 upperIntervalLimit = 1.0,
-                upperLimitType = LESS_THAN
+                upperLimitType = LESS_THAN,
             )
 
             boundary.toPythonCode("testParameter") shouldBe """
@@ -1609,7 +1609,7 @@ class PythonCodeGeneratorTest {
                 lowerIntervalLimit = 0.0,
                 lowerLimitType = LESS_THAN_OR_EQUALS,
                 upperIntervalLimit = 1.0,
-                upperLimitType = LESS_THAN_OR_EQUALS
+                upperLimitType = LESS_THAN_OR_EQUALS,
             )
 
             boundary.toPythonCode("testParameter") shouldBe """

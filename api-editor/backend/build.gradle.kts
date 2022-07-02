@@ -81,7 +81,7 @@ tasks {
             val winFileText = winScriptFile.readText()
                 .replace(
                     Regex("set CLASSPATH=.*"),
-                    "rem original CLASSPATH declaration replaced by:\nset CLASSPATH=%APP_HOME%\\\\lib\\\\*"
+                    "rem original CLASSPATH declaration replaced by:\nset CLASSPATH=%APP_HOME%\\\\lib\\\\*",
                 )
 
             winScriptFile.writeText(winFileText)

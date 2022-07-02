@@ -45,32 +45,32 @@ class GroupAnnotationProcessorTest {
             parameters = mutableListOf(
                 testParameter1,
                 testParameter2,
-                testParameter3
+                testParameter3,
             ),
             annotations = mutableListOf(
                 GroupAnnotation(
                     groupName = "TestGroup",
-                    parameters = mutableListOf("testParameter2", "testParameter3")
-                )
+                    parameters = mutableListOf("testParameter2", "testParameter3"),
+                ),
             ),
             callToOriginalAPI = PythonCall(
                 receiver = PythonStringifiedExpression("testModule.testFunction"),
                 arguments = listOf(
                     PythonArgument(value = PythonReference(testParameter1)),
                     PythonArgument(value = PythonReference(testParameter2)),
-                    PythonArgument(value = PythonReference(testParameter3))
-                )
-            )
+                    PythonArgument(value = PythonReference(testParameter3)),
+                ),
+            ),
         )
         testModule = PythonModule(
             name = "testModule",
-            functions = mutableListOf(testFunction)
+            functions = mutableListOf(testFunction),
         )
         testPackage = PythonPackage(
             distribution = "testPackage",
             name = "testPackage",
             version = "1.0.0",
-            modules = mutableListOf(testModule)
+            modules = mutableListOf(testModule),
         )
     }
 
@@ -151,12 +151,12 @@ class GroupAnnotationProcessorTest {
                 mutableListOf(
                     PythonParameter(
                         name = "self",
-                        assignedBy = PythonParameterAssignment.IMPLICIT
+                        assignedBy = PythonParameterAssignment.IMPLICIT,
                     ),
                     PythonParameter(name = "testParameter2"),
-                    PythonParameter(name = "testParameter3")
-                )
-            )
+                    PythonParameter(name = "testParameter3"),
+                ),
+            ),
         )
 
         testPackage.processGroupAnnotations()
@@ -181,12 +181,12 @@ class GroupAnnotationProcessorTest {
                 mutableListOf(
                     PythonParameter(
                         name = "self",
-                        assignedBy = PythonParameterAssignment.IMPLICIT
+                        assignedBy = PythonParameterAssignment.IMPLICIT,
                     ),
                     PythonParameter(name = "testParameter2"),
-                    PythonParameter(name = "testParameter3")
-                )
-            )
+                    PythonParameter(name = "testParameter3"),
+                ),
+            ),
         )
 
         testPackage.processGroupAnnotations()
@@ -209,12 +209,12 @@ class GroupAnnotationProcessorTest {
                 mutableListOf(
                     PythonParameter(
                         name = "self",
-                        assignedBy = PythonParameterAssignment.IMPLICIT
+                        assignedBy = PythonParameterAssignment.IMPLICIT,
                     ),
                     PythonParameter(name = "testParameter2"),
-                    PythonParameter(name = "testParameter3")
-                )
-            )
+                    PythonParameter(name = "testParameter3"),
+                ),
+            ),
         )
 
         testPackage.processGroupAnnotations()
@@ -239,11 +239,11 @@ class GroupAnnotationProcessorTest {
                 mutableListOf(
                     PythonParameter(
                         name = "self",
-                        assignedBy = PythonParameterAssignment.IMPLICIT
+                        assignedBy = PythonParameterAssignment.IMPLICIT,
                     ),
-                    PythonParameter(name = "otherParameter")
-                )
-            )
+                    PythonParameter(name = "otherParameter"),
+                ),
+            ),
         )
 
         shouldThrowExactly<ConflictingGroupException> {

@@ -16,7 +16,7 @@ fun convertPackage(pythonPackage: SerializablePythonPackage): PythonPackage {
         name = pythonPackage.name,
         version = pythonPackage.version,
         modules = pythonPackage.modules.map { convertModule(it) },
-        annotations = pythonPackage.annotations
+        annotations = pythonPackage.annotations,
     )
 }
 
@@ -28,7 +28,7 @@ fun convertModule(pythonModule: SerializablePythonModule): PythonModule {
         classes = pythonModule.classes.map { convertClass(it) },
         enums = pythonModule.enums.map { convertEnum(it) },
         functions = pythonModule.functions.map { convertFunction(it) },
-        annotations = pythonModule.annotations
+        annotations = pythonModule.annotations,
     )
 }
 
@@ -41,7 +41,7 @@ fun convertClass(pythonClass: SerializablePythonClass): PythonClass {
         methods = pythonClass.methods.map { convertFunction(it) },
         isPublic = pythonClass.isPublic,
         description = pythonClass.description,
-        annotations = pythonClass.annotations
+        annotations = pythonClass.annotations,
     )
 }
 
@@ -49,7 +49,7 @@ fun convertEnum(pythonEnum: SerializablePythonEnum): PythonEnum {
     return PythonEnum(
         name = pythonEnum.name,
         instances = pythonEnum.instances.map { convertEnumInstance(it) }.toMutableList(),
-        annotations = pythonEnum.annotations
+        annotations = pythonEnum.annotations,
     )
 }
 
@@ -58,7 +58,7 @@ fun convertEnumInstance(pythonEnumInstance: SerializablePythonEnumInstance): Pyt
         name = pythonEnumInstance.name,
         value = PythonStringifiedExpression(pythonEnumInstance.value),
         description = pythonEnumInstance.description,
-        annotations = mutableListOf()
+        annotations = mutableListOf(),
     )
 }
 
@@ -71,7 +71,7 @@ fun convertFunction(pythonFunction: SerializablePythonFunction): PythonFunction 
         isPublic = pythonFunction.isPublic,
         description = pythonFunction.description,
         isPure = pythonFunction.isPure,
-        annotations = pythonFunction.annotations
+        annotations = pythonFunction.annotations,
     )
 }
 
@@ -83,7 +83,7 @@ fun convertAttribute(pythonAttribute: SerializablePythonAttribute): PythonAttrib
         isPublic = pythonAttribute.isPublic,
         description = pythonAttribute.description,
         boundary = pythonAttribute.boundary,
-        annotations = pythonAttribute.annotations
+        annotations = pythonAttribute.annotations,
     )
 }
 
@@ -95,7 +95,7 @@ fun convertParameter(pythonParameter: SerializablePythonParameter): PythonParame
         assignedBy = pythonParameter.assignedBy,
         description = pythonParameter.description,
         boundary = pythonParameter.boundary,
-        annotations = pythonParameter.annotations
+        annotations = pythonParameter.annotations,
     )
 }
 
@@ -105,6 +105,6 @@ fun convertResult(pythonResult: SerializablePythonResult): PythonResult {
         type = PythonStringifiedType(pythonResult.type),
         description = pythonResult.description,
         boundary = pythonResult.boundary,
-        annotations = pythonResult.annotations
+        annotations = pythonResult.annotations,
     )
 }

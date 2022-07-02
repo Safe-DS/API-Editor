@@ -15,7 +15,7 @@ sealed interface AnnotationError {
 data class AnnotationCombinationError(
     val qualifiedName: String,
     val firstAnnotationName: String,
-    val secondAnnotationName: String
+    val secondAnnotationName: String,
 ) : AnnotationError {
 
     /**
@@ -31,7 +31,7 @@ data class AnnotationCombinationError(
 data class AnnotationTargetError(
     val qualifiedName: String,
     val annotationName: String,
-    val target: AnnotationTarget
+    val target: AnnotationTarget,
 ) : AnnotationError {
 
     /**
@@ -46,7 +46,7 @@ data class AnnotationTargetError(
 
 data class GroupAnnotationCombinationError(
     val qualifiedName: String,
-    val annotationName: String
+    val annotationName: String,
 ) : AnnotationError {
 
     /**

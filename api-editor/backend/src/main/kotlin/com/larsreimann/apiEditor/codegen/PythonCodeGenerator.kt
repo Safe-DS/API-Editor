@@ -47,7 +47,7 @@ fun PythonModule.toPythonCode(): String {
         importsToPythonCode(),
         classes.joinToString("\n\n") { it.toPythonCode() },
         functions.joinToString("\n\n") { it.toPythonCode() },
-        enums.joinToString("\n\n") { it.toPythonCode() }
+        enums.joinToString("\n\n") { it.toPythonCode() },
     )
 
     val joinedStrings = strings
@@ -291,7 +291,7 @@ fun List<PythonParameter>.toPythonCode(): String {
         positionOrNameParametersString,
         positionalVarargParametersString,
         nameOnlyParametersString,
-        namedVarargsParametersString
+        namedVarargsParametersString,
     )
 
     return parameterStrings

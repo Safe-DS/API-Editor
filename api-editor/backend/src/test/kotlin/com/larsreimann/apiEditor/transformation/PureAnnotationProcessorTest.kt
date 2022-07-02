@@ -17,7 +17,7 @@ class PureAnnotationProcessorTest {
     fun reset() {
         testFunction = PythonFunction(
             name = "testFunction",
-            annotations = mutableListOf(PureAnnotation)
+            annotations = mutableListOf(PureAnnotation),
         )
         testPackage = PythonPackage(
             "testPackage",
@@ -26,9 +26,9 @@ class PureAnnotationProcessorTest {
             modules = listOf(
                 PythonModule(
                     "testModule",
-                    functions = listOf(testFunction)
-                )
-            )
+                    functions = listOf(testFunction),
+                ),
+            ),
         )
     }
 
