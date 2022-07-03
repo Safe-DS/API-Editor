@@ -80,7 +80,7 @@ export const DescriptionForm: React.FC<DescriptionFormProps> = function ({ targe
 
             <FormControl>
                 <FormLabel>Comment:</FormLabel>
-                <Textarea {...register('comment')}/>
+                <Textarea {...register('comment')} />
             </FormControl>
         </AnnotationForm>
     );

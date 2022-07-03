@@ -69,10 +69,7 @@ export const EmptyBatchForm: React.FC<EmptyBatchFormProps> = function ({
 }) {
     const dispatch = useAppDispatch();
 
-    const {
-        handleSubmit,
-        register,
-    } = useForm<EmptyBatchFormState>({
+    const { handleSubmit, register } = useForm<EmptyBatchFormState>({
         defaultValues: {
             comment: '',
         },

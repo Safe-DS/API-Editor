@@ -270,7 +270,7 @@ export const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
 
             <FormControl>
                 <FormLabel>Comment:</FormLabel>
-                <Textarea {...register('comment')}/>
+                <Textarea {...register('comment')} />
             </FormControl>
         </AnnotationForm>
     );

@@ -71,11 +71,11 @@ export interface DestinationBatchFormState {
 }
 
 export const DestinationBatchForm: React.FC<DestinationBatchFormProps> = function ({
-                                                                                       targets,
-                                                                                       annotationType,
-                                                                                       description,
-                                                                                       onUpsertAnnotation,
-                                                                                   }) {
+    targets,
+    annotationType,
+    description,
+    onUpsertAnnotation,
+}) {
     const dispatch = useAppDispatch();
 
     const {
@@ -133,7 +133,7 @@ export const DestinationBatchForm: React.FC<DestinationBatchFormProps> = functio
 
                 <FormControl>
                     <FormLabel>Comment:</FormLabel>
-                    <Textarea {...register('comment')}/>
+                    <Textarea {...register('comment')} />
                 </FormControl>
 
                 <ChakraText>This will annotate classes and global functions.</ChakraText>

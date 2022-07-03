@@ -93,7 +93,7 @@ export const RenameForm: React.FC<RenameFormProps> = function ({ target }) {
 
             <FormControl>
                 <FormLabel>Comment:</FormLabel>
-                <Textarea {...register('comment')}/>
+                <Textarea {...register('comment')} />
             </FormControl>
         </AnnotationForm>
     );

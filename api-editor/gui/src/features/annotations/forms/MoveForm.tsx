@@ -50,7 +50,6 @@ export const MoveForm: React.FC<MoveFormProps> = function ({ target }) {
         reset({
             destination: previousAnnotation?.destination ?? oldModulePath,
             comment: previousAnnotation?.comment ?? '',
-
         });
     }, [reset, previousAnnotation, oldModulePath]);
 
@@ -94,7 +93,7 @@ export const MoveForm: React.FC<MoveFormProps> = function ({ target }) {
 
             <FormControl>
                 <FormLabel>Comment:</FormLabel>
-                <Textarea {...register('comment')}/>
+                <Textarea {...register('comment')} />
             </FormControl>
         </AnnotationForm>
     );
