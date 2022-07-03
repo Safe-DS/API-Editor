@@ -42,6 +42,7 @@ import {
     hideAnnotationForm,
     selectCurrentUserAction,
     showBoundaryAnnotationForm,
+    showCalledAfterAnnotationForm,
     showDescriptionAnnotationForm,
     showEnumAnnotationForm,
     showGroupAnnotationForm,
@@ -113,6 +114,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     name={calledAfterName}
                     key={calledAfterName}
                     annotation={calledAfterAnnotation[calledAfterName]}
+                    onEdit={() => dispatch(showCalledAfterAnnotationForm({ target, calledAfterName }))}
                     onDelete={() => dispatch(removeCalledAfterAnnotation({ target, calledAfterName }))}
                     onReview={() => dispatch(reviewCalledAfterAnnotation({ target, calledAfterName }))}
                 />
@@ -275,7 +277,7 @@ interface AnnotationTagProps {
     type: string;
     name?: string;
     annotation: Annotation;
-    onEdit?: () => void;
+    onEdit: () => void;
     onDelete: () => void;
     onReview: () => void;
     reportable?: boolean;

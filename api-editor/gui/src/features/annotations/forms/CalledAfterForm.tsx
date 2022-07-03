@@ -9,6 +9,7 @@ import { hideAnnotationForm } from '../../ui/uiSlice';
 
 interface CalledAfterFormProps {
     readonly target: PythonFunction;
+    readonly calledAfterName: string;
 }
 
 interface CalledAfterFormState {
@@ -16,14 +17,14 @@ interface CalledAfterFormState {
     comment: string;
 }
 
-export const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ target }) {
-    const targetPath = target.id;
-    const currentCalledAfters = Object.keys(useAppSelector(selectCalledAfterAnnotations(targetPath)));
+export const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ target, calledAfterName }) {
+    const currentCalledAfters = Object.keys(useAppSelector(selectCalledAfterAnnotations(target.id)));
+    const previousAnnotation = useAppSelector(selectCalledAfterAnnotations(target.id))[calledAfterName];
 
     const remainingCalledAfters = target
         .siblingFunctions()
         .map((it) => it.name)
-        .filter((it) => !currentCalledAfters.includes(it));
+        .filter((it) => it === previousAnnotation?.calledAfterName || !currentCalledAfters.includes(it));
 
     // Hooks -----------------------------------------------------------------------------------------------------------
 
@@ -51,17 +52,17 @@ export const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ targe
 
     useEffect(() => {
         reset({
-            calledAfterName: '',
-            comment: '',
+            calledAfterName: previousAnnotation?.calledAfterName ?? '',
+            comment: previousAnnotation?.comment ?? '',
         });
-    }, [reset]);
+    }, [reset, previousAnnotation?.calledAfterName, previousAnnotation?.comment]);
 
     // Event handlers --------------------------------------------------------------------------------------------------
 
     const onSave = (data: CalledAfterFormState) => {
         dispatch(
             upsertCalledAfterAnnotation({
-                target: targetPath,
+                target: target.id,
                 ...data,
             }),
         );
@@ -76,7 +77,7 @@ export const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ targe
 
     return (
         <AnnotationForm
-            heading="@calledAfter Annotation"
+            heading={`${previousAnnotation ? 'Edit' : 'Add'} @calledAfter Annotation`}
             description="Specify that this function must be called after another function."
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
@@ -101,7 +102,7 @@ export const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ targe
 
             <FormControl>
                 <FormLabel>Comment:</FormLabel>
-                <Textarea {...register('comment')}/>
+                <Textarea {...register('comment')} />
             </FormControl>
         </AnnotationForm>
     );
