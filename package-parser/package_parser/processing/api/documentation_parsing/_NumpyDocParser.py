@@ -64,8 +64,7 @@ class NumpyDocParser(AbstractDocumentationParser):
         else:
             docstring = get_full_docstring(function_node)
 
-        # Find matching parameter docstrings. Numpydoc allows multiple parameters to be documented at once. See
-        # https://numpydoc.readthedocs.io/en/latest/format.html#parameters for more information.
+        # Find matching parameter docstrings
         function_numpydoc = self.__get_cached_function_numpydoc_string(
             function_node, docstring
         )
@@ -89,7 +88,7 @@ class NumpyDocParser(AbstractDocumentationParser):
             type=type_,
             default_value=default_value,
             description="\n".join(
-                [line.strip() for line in last_parameter_numpydoc.desc]
+                [line.rstrip() for line in last_parameter_numpydoc.desc]
             ),
         )
 
@@ -122,9 +121,9 @@ def _get_description(numpydoc_string: NumpyDocString) -> str:
     extended_summary: list[str] = numpydoc_string.get("Extended Summary", [])
 
     result = ""
-    result += "\n".join([line.strip() for line in summary])
+    result += "\n".join([line.rstrip() for line in summary])
     result += "\n\n"
-    result += "\n".join([line.strip() for line in extended_summary])
+    result += "\n".join([line.rstrip() for line in extended_summary])
     return result.strip()
 
 
@@ -144,6 +143,8 @@ def _is_matching_parameter_numpydoc(
     else:
         lookup_name = parameter_name
 
+    # Numpydoc allows multiple parameters to be documented at once. See
+    # https://numpydoc.readthedocs.io/en/latest/format.html#parameters for more information.
     return any(
         name.strip() == lookup_name for name in parameter_numpydoc.name.split(",")
     )
