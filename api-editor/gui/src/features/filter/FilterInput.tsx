@@ -72,8 +72,8 @@ const InvalidFilterToken: React.FC<InvalidFilterTokenProps> = function ({ token 
     const dispatch = useAppDispatch();
 
     const alternatives = getFixedFilterNames();
-    const closestAlternative = closest(token, alternatives);
-    const closestDistance = distance(token, closestAlternative);
+    const closestAlternative = closest(token.toLowerCase(), alternatives);
+    const closestDistance = distance(token.toLowerCase(), closestAlternative);
 
     const filterString = useAppSelector(selectFilterString);
 
