@@ -202,4 +202,4 @@ export const isValidFilterToken = function (token: string): boolean {
  */
 export const getFixedFilterNames = function (): string[] {
     return Object.keys(fixedFilters);
-}
+};
