@@ -62,8 +62,11 @@ export const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ targe
     const onSave = (data: CalledAfterFormState) => {
         dispatch(
             upsertCalledAfterAnnotation({
-                target: target.id,
-                ...data,
+                previousCalledAfterName: previousAnnotation?.calledAfterName,
+                annotation: {
+                    target: target.id,
+                    ...data,
+                },
             }),
         );
         dispatch(hideAnnotationForm());

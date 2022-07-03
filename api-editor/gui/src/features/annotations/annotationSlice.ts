@@ -189,22 +189,32 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        upsertCalledAfterAnnotation(state, action: PayloadAction<CalledAfterAnnotation>) {
-            if (!state.annotations.calledAfterAnnotations[action.payload.target]) {
-                state.annotations.calledAfterAnnotations[action.payload.target] = {};
+        upsertCalledAfterAnnotation(
+            state,
+            action: PayloadAction<{ annotation: CalledAfterAnnotation; previousCalledAfterName?: string }>,
+        ) {
+            const oldAnnotation =
+                state.annotations.calledAfterAnnotations[action.payload.annotation.target][
+                    action.payload.previousCalledAfterName ?? ''
+                ];
+
+            if (!state.annotations.calledAfterAnnotations[action.payload.annotation.target]) {
+                state.annotations.calledAfterAnnotations[action.payload.annotation.target] = {};
             }
 
-            updateCreationOrChangedCount(
-                state,
-                state.annotations.calledAfterAnnotations[action.payload.target][action.payload.calledAfterName],
-            );
+            updateCreationOrChangedCount(state, oldAnnotation);
 
-            state.annotations.calledAfterAnnotations[action.payload.target][action.payload.calledAfterName] =
-                withAuthorAndReviewers(
-                    state.annotations.calledAfterAnnotations[action.payload.target][action.payload.calledAfterName],
-                    action.payload,
-                    state.username,
-                );
+            state.annotations.calledAfterAnnotations[action.payload.annotation.target][
+                action.payload.annotation.calledAfterName
+            ] = withAuthorAndReviewers(oldAnnotation, action.payload.annotation, state.username);
+
+            // Delete old annotation
+            if (action.payload.previousCalledAfterName !== action.payload.annotation.calledAfterName) {
+                delete state.annotations.calledAfterAnnotations[action.payload.annotation.target][
+                    action.payload.previousCalledAfterName ?? ''
+                ];
+            }
+
             updateQueue(state);
         },
         removeCalledAfterAnnotation(state, action: PayloadAction<CalledAfterTarget>) {

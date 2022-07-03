@@ -122,10 +122,13 @@ export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName
     const onSave = (data: GroupFormState) => {
         dispatch(
             upsertGroupAnnotation({
-                target: targetPath,
-                groupName: data.groupName,
-                parameters: getSelectedParameters(),
-                comment: data.comment,
+                targetToOverride: previousAnnotation,
+                annotation: {
+                    target: targetPath,
+                    groupName: data.groupName,
+                    parameters: getSelectedParameters(),
+                    comment: data.comment,
+                },
             }),
         );
         dispatch(hideAnnotationForm());
@@ -183,7 +186,7 @@ export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName
 
             <FormControl>
                 <FormLabel>Comment:</FormLabel>
-                <Textarea {...register('comment')}/>
+                <Textarea {...register('comment')} />
             </FormControl>
         </AnnotationForm>
     );
