@@ -122,7 +122,7 @@ export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName
     const onSave = (data: GroupFormState) => {
         dispatch(
             upsertGroupAnnotation({
-                targetToOverride: previousAnnotation,
+                previousGroupName: previousAnnotation?.groupName,
                 annotation: {
                     target: targetPath,
                     groupName: data.groupName,
