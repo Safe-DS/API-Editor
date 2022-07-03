@@ -42,10 +42,13 @@ import {
     hideAnnotationForm,
     selectCurrentUserAction,
     showBoundaryAnnotationForm,
+    showCalledAfterAnnotationForm,
     showDescriptionAnnotationForm,
     showEnumAnnotationForm,
     showGroupAnnotationForm,
     showMoveAnnotationForm,
+    showPureAnnotationForm,
+    showRemoveAnnotationForm,
     showRenameAnnotationForm,
     showTodoAnnotationForm,
     showValueAnnotationForm,
@@ -111,6 +114,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     name={calledAfterName}
                     key={calledAfterName}
                     annotation={calledAfterAnnotation[calledAfterName]}
+                    onEdit={() => dispatch(showCalledAfterAnnotationForm({ target, calledAfterName }))}
                     onDelete={() => dispatch(removeCalledAfterAnnotation({ target, calledAfterName }))}
                     onReview={() => dispatch(reviewCalledAfterAnnotation({ target, calledAfterName }))}
                 />
@@ -166,6 +170,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                 <AnnotationTag
                     type="pure"
                     annotation={pureAnnotation}
+                    onEdit={() => dispatch(showPureAnnotationForm(target))}
                     onDelete={() => dispatch(removePureAnnotation(target))}
                     onReview={() => dispatch(reviewPureAnnotation(target))}
                 />
@@ -174,6 +179,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                 <AnnotationTag
                     type="remove"
                     annotation={removeAnnotation}
+                    onEdit={() => dispatch(showRemoveAnnotationForm(target))}
                     onDelete={() => dispatch(removeRemoveAnnotation(target))}
                     onReview={() => dispatch(reviewRemoveAnnotation(target))}
                     reportable
@@ -271,7 +277,7 @@ interface AnnotationTagProps {
     type: string;
     name?: string;
     annotation: Annotation;
-    onEdit?: () => void;
+    onEdit: () => void;
     onDelete: () => void;
     onReview: () => void;
     reportable?: boolean;

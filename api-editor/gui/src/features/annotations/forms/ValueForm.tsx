@@ -17,13 +17,19 @@ import {
     RadioGroup,
     Select,
     Stack,
+    Textarea,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { Optional } from '../../../common/util/types';
 import { booleanPattern, numberPattern } from '../../../common/validation';
 import { AnnotationForm } from './AnnotationForm';
 import { hideAnnotationForm } from '../../ui/uiSlice';
-import { DefaultValue, DefaultValueType, ValueAnnotationVariant } from '../versioning/AnnotationStoreV2';
+import {
+    DefaultValue,
+    DefaultValueType,
+    ValueAnnotation,
+    ValueAnnotationVariant,
+} from '../versioning/AnnotationStoreV2';
 
 interface ValueFormProps {
     target: PythonDeclaration;
@@ -31,10 +37,7 @@ interface ValueFormProps {
 
 export const ValueForm: React.FC<ValueFormProps> = function ({ target }) {
     // Hooks -----------------------------------------------------------------------------------------------------------
-    const valueAnnotation = useAppSelector(selectValueAnnotation(target.id));
-    const previousVariant = valueAnnotation?.variant;
-    const previousDefaultType = valueAnnotation?.defaultValueType;
-    const previousDefaultValue = valueAnnotation?.defaultValue;
+    const previousAnnotation = useAppSelector(selectValueAnnotation(target.id));
     const dispatch = useAppDispatch();
 
     // Event handlers --------------------------------------------------------------------------------------------------
@@ -55,9 +58,7 @@ export const ValueForm: React.FC<ValueFormProps> = function ({ target }) {
             target={target}
             annotationType="value"
             description="Change how the value of this parameter is set."
-            previousVariant={previousVariant}
-            previousDefaultType={previousDefaultType}
-            previousDefaultValue={previousDefaultValue}
+            previousAnnotation={previousAnnotation}
             onUpsertAnnotation={handleUpsertAnnotation}
         />
     );
@@ -67,9 +68,7 @@ interface TypeValueFormProps {
     target: PythonDeclaration;
     annotationType: string;
     description: string;
-    previousVariant: Optional<ValueAnnotationVariant>;
-    previousDefaultType: Optional<DefaultValueType>;
-    previousDefaultValue: Optional<DefaultValue>;
+    previousAnnotation: Optional<ValueAnnotation>;
     onUpsertAnnotation: (data: TypeValueFormState) => void;
 }
 
@@ -77,15 +76,14 @@ export interface TypeValueFormState {
     variant: ValueAnnotationVariant;
     defaultValueType: DefaultValueType;
     defaultValue: DefaultValue;
+    comment: string;
 }
 
 const TypeValueForm: React.FC<TypeValueFormProps> = function ({
     target,
     annotationType,
     description,
-    previousVariant,
-    previousDefaultType,
-    previousDefaultValue,
+    previousAnnotation,
     onUpsertAnnotation,
 }) {
     const dispatch = useAppDispatch();
@@ -102,6 +100,7 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
             variant: 'optional',
             defaultValueType: 'string',
             defaultValue: '',
+            comment: '',
         },
     });
 
@@ -109,25 +108,32 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
     const watchDefaultValueType = watch('defaultValueType');
 
     useEffect(() => {
-        const defaultValueType = previousDefaultType ?? 'string';
+        const defaultValueType = previousAnnotation?.defaultValueType ?? 'string';
 
         let defaultValue: string;
-        if (previousDefaultValue === undefined) {
+        if (previousAnnotation?.defaultValue === undefined) {
             defaultValue = '';
         } else {
             if (defaultValueType === 'boolean') {
-                defaultValue = previousDefaultValue ? 'true' : 'false';
+                defaultValue = previousAnnotation?.defaultValue ? 'true' : 'false';
             } else {
-                defaultValue = String(previousDefaultValue);
+                defaultValue = String(previousAnnotation?.defaultValue);
             }
         }
 
         reset({
-            variant: previousVariant ?? 'optional',
+            variant: previousAnnotation?.variant ?? 'optional',
             defaultValueType,
             defaultValue,
+            comment: previousAnnotation?.comment ?? '',
         });
-    }, [reset, previousVariant, previousDefaultType, previousDefaultValue]);
+    }, [
+        reset,
+        previousAnnotation?.variant,
+        previousAnnotation?.defaultValueType,
+        previousAnnotation?.defaultValue,
+        previousAnnotation?.comment,
+    ]);
 
     // Event handlers ----------------------------------------------------------
 
@@ -170,13 +176,13 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
 
     return (
         <AnnotationForm
-            heading={`${previousDefaultType ? 'Edit' : 'Add'} @${annotationType} Annotation`}
+            heading={`${previousAnnotation?.defaultValueType ? 'Edit' : 'Add'} @${annotationType} Annotation`}
             description={description}
             onSave={handleSubmit(handleSave)}
             onCancel={handleCancel}
         >
             <FormLabel>Choose the variant of this annotation:</FormLabel>
-            <RadioGroup defaultValue={previousVariant ?? 'optional'} onChange={handleVariantChange}>
+            <RadioGroup defaultValue={previousAnnotation?.variant ?? 'optional'} onChange={handleVariantChange}>
                 <Stack direction="column">
                     <Radio value="required">Required (parameter must always be set explicitly)</Radio>
                     <Radio value="optional">Optional (parameter has a default value that can be overwritten)</Radio>
@@ -192,7 +198,10 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
                     {watchVariant === 'constant' && (
                         <FormLabel>Type of constant value of &quot;{target.name}&quot;:</FormLabel>
                     )}
-                    <RadioGroup defaultValue={previousDefaultType ?? 'string'} onChange={handleTypeChange}>
+                    <RadioGroup
+                        defaultValue={previousAnnotation?.defaultValueType ?? 'string'}
+                        onChange={handleTypeChange}
+                    >
                         <Stack direction="column">
                             <Radio value="string">String</Radio>
                             <Radio value="number">Number</Radio>
@@ -241,6 +250,11 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
                     </FormErrorMessage>
                 </FormControl>
             )}
+
+            <FormControl>
+                <FormLabel>Comment:</FormLabel>
+                <Textarea {...register('comment')} />
+            </FormControl>
         </AnnotationForm>
     );
 };

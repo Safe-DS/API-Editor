@@ -13,11 +13,12 @@ interface TodoFormProps {
 
 interface TodoFormState {
     newTodo: string;
+    comment: string;
 }
 
 export const TodoForm: React.FC<TodoFormProps> = function ({ target }) {
     const targetPath = target.id;
-    const prevNewTodo = useAppSelector(selectTodoAnnotation(targetPath))?.newTodo;
+    const previousAnnotation = useAppSelector(selectTodoAnnotation(targetPath));
 
     // Hooks -----------------------------------------------------------------------------------------------------------
 
@@ -31,6 +32,7 @@ export const TodoForm: React.FC<TodoFormProps> = function ({ target }) {
     } = useForm<TodoFormState>({
         defaultValues: {
             newTodo: '',
+            comment: '',
         },
     });
 
@@ -44,9 +46,10 @@ export const TodoForm: React.FC<TodoFormProps> = function ({ target }) {
 
     useEffect(() => {
         reset({
-            newTodo: prevNewTodo ?? '',
+            newTodo: previousAnnotation?.newTodo ?? '',
+            comment: previousAnnotation?.comment ?? '',
         });
-    }, [reset, prevNewTodo]);
+    }, [reset, previousAnnotation]);
 
     // Event handlers --------------------------------------------------------------------------------------------------
 
@@ -68,7 +71,7 @@ export const TodoForm: React.FC<TodoFormProps> = function ({ target }) {
 
     return (
         <AnnotationForm
-            heading={`${prevNewTodo ? 'Edit' : 'Add'} @todo Annotation`}
+            heading={`${previousAnnotation ? 'Edit' : 'Add'} @todo Annotation`}
             description="Note additional (manual) changes you need to make to this declaration."
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
@@ -83,6 +86,11 @@ export const TodoForm: React.FC<TodoFormProps> = function ({ target }) {
                 <FormErrorMessage>
                     <FormErrorIcon /> {errors.newTodo?.message}
                 </FormErrorMessage>
+            </FormControl>
+
+            <FormControl>
+                <FormLabel>Comment:</FormLabel>
+                <Textarea {...register('comment')} />
             </FormControl>
         </AnnotationForm>
     );

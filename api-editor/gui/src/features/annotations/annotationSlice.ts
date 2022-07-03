@@ -189,22 +189,32 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        upsertCalledAfterAnnotation(state, action: PayloadAction<CalledAfterAnnotation>) {
-            if (!state.annotations.calledAfterAnnotations[action.payload.target]) {
-                state.annotations.calledAfterAnnotations[action.payload.target] = {};
+        upsertCalledAfterAnnotation(
+            state,
+            action: PayloadAction<{ annotation: CalledAfterAnnotation; previousCalledAfterName?: string }>,
+        ) {
+            const oldAnnotation =
+                state.annotations.calledAfterAnnotations[action.payload.annotation.target][
+                    action.payload.previousCalledAfterName ?? ''
+                ];
+
+            if (!state.annotations.calledAfterAnnotations[action.payload.annotation.target]) {
+                state.annotations.calledAfterAnnotations[action.payload.annotation.target] = {};
             }
 
-            updateCreationOrChangedCount(
-                state,
-                state.annotations.calledAfterAnnotations[action.payload.target][action.payload.calledAfterName],
-            );
+            updateCreationOrChangedCount(state, oldAnnotation);
 
-            state.annotations.calledAfterAnnotations[action.payload.target][action.payload.calledAfterName] =
-                withAuthorAndReviewers(
-                    state.annotations.calledAfterAnnotations[action.payload.target][action.payload.calledAfterName],
-                    action.payload,
-                    state.username,
-                );
+            state.annotations.calledAfterAnnotations[action.payload.annotation.target][
+                action.payload.annotation.calledAfterName
+            ] = withAuthorAndReviewers(oldAnnotation, action.payload.annotation, state.username);
+
+            // Delete old annotation
+            if (action.payload.previousCalledAfterName !== action.payload.annotation.calledAfterName) {
+                delete state.annotations.calledAfterAnnotations[action.payload.annotation.target][
+                    action.payload.previousCalledAfterName ?? ''
+                ];
+            }
+
             updateQueue(state);
         },
         removeCalledAfterAnnotation(state, action: PayloadAction<CalledAfterTarget>) {
@@ -310,19 +320,27 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        upsertGroupAnnotation(state, action: PayloadAction<GroupAnnotation>) {
-            if (!state.annotations.groupAnnotations[action.payload.target]) {
-                state.annotations.groupAnnotations[action.payload.target] = {};
+        upsertGroupAnnotation(
+            state,
+            action: PayloadAction<{ previousGroupName?: string; annotation: GroupAnnotation }>,
+        ) {
+            const oldAnnotation =
+                state.annotations.groupAnnotations[action.payload.annotation.target][
+                    action.payload.previousGroupName ?? ''
+                ];
+
+            if (!state.annotations.groupAnnotations[action.payload.annotation.target]) {
+                state.annotations.groupAnnotations[action.payload.annotation.target] = {};
             } else {
-                const targetGroups = state.annotations.groupAnnotations[action.payload.target];
+                const targetGroups = state.annotations.groupAnnotations[action.payload.annotation.target];
                 const otherGroupNames = Object.values(targetGroups)
-                    .filter((group) => group.groupName !== action.payload.groupName)
+                    .filter((group) => group.groupName !== action.payload.annotation.groupName)
                     .map((group) => group.groupName);
 
                 for (const nameOfGroup of otherGroupNames) {
                     let needsChange = false;
                     const group = targetGroups[nameOfGroup];
-                    const currentAnnotationParameter = action.payload.parameters;
+                    const currentAnnotationParameter = action.payload.annotation.parameters;
                     const currentGroupParameter = [...group.parameters];
                     for (const parameter of currentAnnotationParameter) {
                         const index = currentGroupParameter.indexOf(parameter);
@@ -333,7 +351,7 @@ const annotationsSlice = createSlice({
                     }
                     if (currentGroupParameter.length < 1) {
                         removeGroupAnnotation({
-                            target: action.payload.target,
+                            target: action.payload.annotation.target,
                             groupName: group.groupName,
                         });
                     } else if (needsChange) {
@@ -350,17 +368,17 @@ const annotationsSlice = createSlice({
                 }
             }
 
-            updateCreationOrChangedCount(
-                state,
-                state.annotations.groupAnnotations[action.payload.target][action.payload.groupName],
-            );
+            updateCreationOrChangedCount(state, oldAnnotation);
 
-            state.annotations.groupAnnotations[action.payload.target][action.payload.groupName] =
-                withAuthorAndReviewers(
-                    state.annotations.groupAnnotations[action.payload.target][action.payload.groupName],
-                    action.payload,
-                    state.username,
-                );
+            state.annotations.groupAnnotations[action.payload.annotation.target][action.payload.annotation.groupName] =
+                withAuthorAndReviewers(oldAnnotation, action.payload.annotation, state.username);
+
+            // Delete old annotation
+            if (action.payload.previousGroupName !== action.payload.annotation.groupName) {
+                delete state.annotations.groupAnnotations[action.payload.annotation.target][
+                    action.payload.previousGroupName ?? ''
+                ];
+            }
 
             updateQueue(state);
         },
@@ -424,7 +442,7 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        addPureAnnotation(state, action: PayloadAction<PureAnnotation>) {
+        upsertPureAnnotation(state, action: PayloadAction<PureAnnotation>) {
             updateCreationOrChangedCount(state, state.annotations.pureAnnotations[action.payload.target]);
 
             state.annotations.pureAnnotations[action.payload.target] = withAuthorAndReviewers(
@@ -448,7 +466,7 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        addRemoveAnnotation(state, action: PayloadAction<RemoveAnnotation>) {
+        upsertRemoveAnnotation(state, action: PayloadAction<RemoveAnnotation>) {
             updateCreationOrChangedCount(state, state.annotations.removeAnnotations[action.payload.target]);
 
             state.annotations.removeAnnotations[action.payload.target] = withAuthorAndReviewers(
@@ -459,7 +477,7 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        addRemoveAnnotations(state, action: PayloadAction<RemoveAnnotation[]>) {
+        upsertRemoveAnnotations(state, action: PayloadAction<RemoveAnnotation[]>) {
             action.payload.forEach((annotation) => {
                 updateCreationOrChangedCount(state, state.annotations.removeAnnotations[annotation.target]);
 
@@ -697,11 +715,11 @@ export const {
     upsertMoveAnnotations,
     removeMoveAnnotation,
     reviewMoveAnnotation,
-    addPureAnnotation,
+    upsertPureAnnotation,
     removePureAnnotation,
     reviewPureAnnotation,
-    addRemoveAnnotation,
-    addRemoveAnnotations,
+    upsertRemoveAnnotation,
+    upsertRemoveAnnotations,
     removeRemoveAnnotation,
     reviewRemoveAnnotation,
     upsertRenameAnnotation,

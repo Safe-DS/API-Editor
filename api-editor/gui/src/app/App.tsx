@@ -67,7 +67,9 @@ import { SaveFilterDialog } from '../features/filter/SaveFilterDialog';
 import { StatisticsView } from '../features/statistics/StatisticsView';
 import { useAnnotationToasts } from '../features/achievements/AnnotationToast';
 import { ValueForm } from '../features/annotations/forms/ValueForm';
-import { AnnotationStore } from '../features/annotations/versioning/AnnotationStoreV2';
+import { AnnotationStore, CalledAfterTarget } from '../features/annotations/versioning/AnnotationStoreV2';
+import { RemoveForm } from '../features/annotations/forms/RemoveForm';
+import { PureForm } from '../features/annotations/forms/PureForm';
 
 export const App: React.FC = function () {
     useIndexedDB();
@@ -122,7 +124,14 @@ export const App: React.FC = function () {
                         <BoundaryForm target={userActionTarget || rawPythonPackage} />
                     )}
                     {currentUserAction.type === 'calledAfter' && userActionTarget instanceof PythonFunction && (
-                        <CalledAfterForm target={userActionTarget} />
+                        <CalledAfterForm
+                            target={userActionTarget}
+                            calledAfterName={
+                                (currentUserAction as CalledAfterTarget)?.calledAfterName
+                                    ? (currentUserAction as CalledAfterTarget)?.calledAfterName
+                                    : ''
+                            }
+                        />
                     )}
                     {currentUserAction.type === 'description' &&
                         (userActionTarget instanceof PythonClass ||
@@ -143,6 +152,10 @@ export const App: React.FC = function () {
                     )}
                     {currentUserAction.type === 'move' && <MoveForm target={userActionTarget || rawPythonPackage} />}
                     {currentUserAction.type === 'none' && <TreeView />}
+                    {currentUserAction.type === 'pure' && <PureForm target={userActionTarget || rawPythonPackage} />}
+                    {currentUserAction.type === 'remove' && (
+                        <RemoveForm target={userActionTarget || rawPythonPackage} />
+                    )}
                     {currentUserAction.type === 'rename' && (
                         <RenameForm target={userActionTarget || rawPythonPackage} />
                     )}

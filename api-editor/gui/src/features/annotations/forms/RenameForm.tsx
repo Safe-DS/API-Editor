@@ -1,4 +1,4 @@
-import { FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react';
+import { FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Input, Textarea } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
@@ -14,11 +14,12 @@ interface RenameFormProps {
 
 interface RenameFormState {
     newName: string;
+    comment: string;
 }
 
 export const RenameForm: React.FC<RenameFormProps> = function ({ target }) {
     const targetPath = target.id;
-    const prevNewName = useAppSelector(selectRenameAnnotation(targetPath))?.newName;
+    const previousAnnotation = useAppSelector(selectRenameAnnotation(targetPath));
     const oldName = target.name;
 
     // Hooks -----------------------------------------------------------------------------------------------------------
@@ -33,6 +34,7 @@ export const RenameForm: React.FC<RenameFormProps> = function ({ target }) {
     } = useForm<RenameFormState>({
         defaultValues: {
             newName: '',
+            comment: '',
         },
     });
 
@@ -46,9 +48,10 @@ export const RenameForm: React.FC<RenameFormProps> = function ({ target }) {
 
     useEffect(() => {
         reset({
-            newName: prevNewName || oldName,
+            newName: previousAnnotation?.newName ?? oldName,
+            comment: previousAnnotation?.comment ?? '',
         });
-    }, [reset, prevNewName, oldName]);
+    }, [reset, previousAnnotation, oldName]);
 
     // Event handlers --------------------------------------------------------------------------------------------------
 
@@ -70,7 +73,7 @@ export const RenameForm: React.FC<RenameFormProps> = function ({ target }) {
 
     return (
         <AnnotationForm
-            heading={`${prevNewName ? 'Edit' : 'Add'} @rename Annotation`}
+            heading={`${previousAnnotation ? 'Edit' : 'Add'} @rename Annotation`}
             description="Change the name of this declaration."
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
@@ -86,6 +89,11 @@ export const RenameForm: React.FC<RenameFormProps> = function ({ target }) {
                 <FormErrorMessage>
                     <FormErrorIcon /> {errors.newName?.message}
                 </FormErrorMessage>
+            </FormControl>
+
+            <FormControl>
+                <FormLabel>Comment:</FormLabel>
+                <Textarea {...register('comment')} />
             </FormControl>
         </AnnotationForm>
     );
