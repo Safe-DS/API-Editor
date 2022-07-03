@@ -9,12 +9,14 @@ import {
     PopoverContent,
     PopoverHeader,
     PopoverTrigger,
+    Text as ChakraText,
     UnorderedList,
 } from '@chakra-ui/react';
+import { closest, distance } from 'fastest-levenshtein';
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectFilterString, setFilterString } from '../ui/uiSlice';
-import { isValidFilterToken } from './model/filterFactory';
+import { getFixedFilterNames, isValidFilterToken } from './model/filterFactory';
 
 export const FilterInput: React.FC = function () {
     const dispatch = useAppDispatch();
@@ -51,7 +53,7 @@ export const FilterInput: React.FC = function () {
                         <PopoverBody>
                             <UnorderedList spacing={2}>
                                 {invalidTokens.map((token) => (
-                                    <ListItem key={token}>{token}</ListItem>
+                                    <InvalidFilterToken key={token} token={token} />
                                 ))}
                             </UnorderedList>
                         </PopoverBody>
@@ -59,5 +61,43 @@ export const FilterInput: React.FC = function () {
                 )}
             </Popover>
         </Box>
+    );
+};
+
+interface InvalidFilterTokenProps {
+    token: string;
+}
+
+const InvalidFilterToken: React.FC<InvalidFilterTokenProps> = function ({ token }) {
+    const dispatch = useAppDispatch();
+
+    const alternatives = getFixedFilterNames();
+    const closestAlternative = closest(token, alternatives);
+    const closestDistance = distance(token, closestAlternative);
+
+    const filterString = useAppSelector(selectFilterString);
+
+    const onClick = () => {
+        dispatch(setFilterString(filterString.replace(token, closestAlternative)));
+    };
+
+    return (
+        <ListItem>
+            <ChakraText>
+                <ChakraText display="inline" fontWeight="bold">
+                    {token}
+                </ChakraText>
+                {closestDistance <= 3 && (
+                    <>
+                        {'. '}
+                        Did you mean{' '}
+                        <ChakraText display="inline" textDecoration="underline" cursor="pointer" onClick={onClick}>
+                            {closestAlternative}
+                        </ChakraText>
+                        ?
+                    </>
+                )}
+            </ChakraText>
+        </ListItem>
     );
 };
