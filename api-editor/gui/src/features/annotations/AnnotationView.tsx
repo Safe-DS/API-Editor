@@ -46,6 +46,8 @@ import {
     showEnumAnnotationForm,
     showGroupAnnotationForm,
     showMoveAnnotationForm,
+    showPureAnnotationForm,
+    showRemoveAnnotationForm,
     showRenameAnnotationForm,
     showTodoAnnotationForm,
     showValueAnnotationForm,
@@ -166,6 +168,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                 <AnnotationTag
                     type="pure"
                     annotation={pureAnnotation}
+                    onEdit={() => dispatch(showPureAnnotationForm(target))}
                     onDelete={() => dispatch(removePureAnnotation(target))}
                     onReview={() => dispatch(reviewPureAnnotation(target))}
                 />
@@ -174,6 +177,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                 <AnnotationTag
                     type="remove"
                     annotation={removeAnnotation}
+                    onEdit={() => dispatch(showRemoveAnnotationForm(target))}
                     onDelete={() => dispatch(removeRemoveAnnotation(target))}
                     onReview={() => dispatch(reviewRemoveAnnotation(target))}
                     reportable

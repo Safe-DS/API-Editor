@@ -68,6 +68,8 @@ import { StatisticsView } from '../features/statistics/StatisticsView';
 import { useAnnotationToasts } from '../features/achievements/AnnotationToast';
 import { ValueForm } from '../features/annotations/forms/ValueForm';
 import { AnnotationStore } from '../features/annotations/versioning/AnnotationStoreV2';
+import {RemoveForm} from "../features/annotations/forms/RemoveForm";
+import {PureForm} from "../features/annotations/forms/PureForm";
 
 export const App: React.FC = function () {
     useIndexedDB();
@@ -143,6 +145,8 @@ export const App: React.FC = function () {
                     )}
                     {currentUserAction.type === 'move' && <MoveForm target={userActionTarget || rawPythonPackage} />}
                     {currentUserAction.type === 'none' && <TreeView />}
+                    {currentUserAction.type === 'pure' && <PureForm target={userActionTarget || rawPythonPackage} />}
+                    {currentUserAction.type === 'remove' && <RemoveForm target={userActionTarget || rawPythonPackage} />}
                     {currentUserAction.type === 'rename' && (
                         <RenameForm target={userActionTarget || rawPythonPackage} />
                     )}

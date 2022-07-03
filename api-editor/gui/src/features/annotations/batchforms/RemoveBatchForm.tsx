@@ -4,7 +4,7 @@ import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
 import { PythonClass } from '../../packageData/model/PythonClass';
 import { PythonFunction } from '../../packageData/model/PythonFunction';
 import { RemoveAnnotation } from '../versioning/AnnotationStoreV2';
-import { addRemoveAnnotations } from '../annotationSlice';
+import { upsertRemoveAnnotations } from '../annotationSlice';
 import { FormControl, FormLabel, Textarea } from '@chakra-ui/react';
 import { AnnotationBatchForm } from './AnnotationBatchForm';
 import { hideAnnotationForm } from '../../ui/uiSlice';
@@ -32,7 +32,7 @@ export const RemoveBatchForm: React.FC<RemoveBatchFormProps> = function ({ targe
                 comment: data.comment,
             });
         });
-        dispatch(addRemoveAnnotations(all));
+        dispatch(upsertRemoveAnnotations(all));
     };
 
     // Rendering -------------------------------------------------------------------------------------------------------

@@ -424,7 +424,7 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        addPureAnnotation(state, action: PayloadAction<PureAnnotation>) {
+        upsertPureAnnotation(state, action: PayloadAction<PureAnnotation>) {
             updateCreationOrChangedCount(state, state.annotations.pureAnnotations[action.payload.target]);
 
             state.annotations.pureAnnotations[action.payload.target] = withAuthorAndReviewers(
@@ -448,7 +448,7 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        addRemoveAnnotation(state, action: PayloadAction<RemoveAnnotation>) {
+        upsertRemoveAnnotation(state, action: PayloadAction<RemoveAnnotation>) {
             updateCreationOrChangedCount(state, state.annotations.removeAnnotations[action.payload.target]);
 
             state.annotations.removeAnnotations[action.payload.target] = withAuthorAndReviewers(
@@ -459,7 +459,7 @@ const annotationsSlice = createSlice({
 
             updateQueue(state);
         },
-        addRemoveAnnotations(state, action: PayloadAction<RemoveAnnotation[]>) {
+        upsertRemoveAnnotations(state, action: PayloadAction<RemoveAnnotation[]>) {
             action.payload.forEach((annotation) => {
                 updateCreationOrChangedCount(state, state.annotations.removeAnnotations[annotation.target]);
 
@@ -697,11 +697,11 @@ export const {
     upsertMoveAnnotations,
     removeMoveAnnotation,
     reviewMoveAnnotation,
-    addPureAnnotation,
+    upsertPureAnnotation,
     removePureAnnotation,
     reviewPureAnnotation,
-    addRemoveAnnotation,
-    addRemoveAnnotations,
+    upsertRemoveAnnotation,
+    upsertRemoveAnnotations,
     removeRemoveAnnotation,
     reviewRemoveAnnotation,
     upsertRenameAnnotation,

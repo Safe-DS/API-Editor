@@ -44,8 +44,11 @@ type UserAction =
     | BoundaryUserAction
     | CalledAfterUserAction
     | DescriptionUserAction
-    | GroupUserAction
     | EnumUserAction
+    | GroupUserAction
+    | MoveUserAction
+    | PureUserAction
+    | RemoveUserAction
     | RenameUserAction
     | TodoUserAction
     | ValueUserAction;
@@ -80,6 +83,21 @@ export interface GroupUserAction {
     readonly type: 'group';
     readonly target: string;
     readonly groupName: string;
+}
+
+interface MoveUserAction {
+    readonly type: 'move';
+    readonly target: string;
+}
+
+interface PureUserAction {
+    readonly type: 'pure';
+    readonly target: string;
+}
+
+interface RemoveUserAction {
+    readonly type: 'remove';
+    readonly target: string;
 }
 
 interface RenameUserAction {
@@ -265,6 +283,18 @@ const uiSlice = createSlice({
                 target: action.payload,
             };
         },
+        showPureAnnotationForm(state, action: PayloadAction<string>) {
+            state.currentUserAction = {
+                type: 'pure',
+                target: action.payload,
+            };
+        },
+        showRemoveAnnotationForm(state, action: PayloadAction<string>) {
+            state.currentUserAction = {
+                type: 'remove',
+                target: action.payload,
+            };
+        },
         showRenameAnnotationForm(state, action: PayloadAction<string>) {
             state.currentUserAction = {
                 type: 'rename',
@@ -364,6 +394,8 @@ export const {
     showEnumAnnotationForm,
     showGroupAnnotationForm,
     showMoveAnnotationForm,
+    showPureAnnotationForm,
+    showRemoveAnnotationForm,
     showRenameAnnotationForm,
     showTodoAnnotationForm,
     showValueAnnotationForm,
