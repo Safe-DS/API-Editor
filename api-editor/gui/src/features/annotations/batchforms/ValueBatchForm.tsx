@@ -24,6 +24,7 @@ import {
     Select,
     Stack,
     Text as ChakraText,
+    Textarea,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { booleanPattern, numberPattern } from '../../../common/validation';
@@ -54,6 +55,7 @@ export const ValueBatchForm: React.FC<ValueBatchFormProps> = function ({ targets
                 variant: data.variant,
                 defaultValueType: data.defaultValueType,
                 defaultValue: data.defaultValue,
+                comment: data.comment,
             });
         });
         dispatch(upsertValueAnnotations(all));
@@ -80,6 +82,7 @@ export interface TypeValueBatchFormState {
     variant: ValueAnnotationVariant;
     defaultValueType: DefaultValueType;
     defaultValue: DefaultValue;
+    comment: string;
 }
 
 export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
@@ -100,6 +103,7 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
             variant: 'optional',
             defaultValueType: 'string',
             defaultValue: '',
+            comment: '',
         },
     });
 
@@ -111,6 +115,7 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
         variant: 'optional',
         defaultValueType: 'string',
         defaultValue: '',
+        comment: '',
     });
 
     // Event handlers ----------------------------------------------------------
@@ -229,6 +234,11 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
                         </FormErrorMessage>
                     </FormControl>
                 )}
+
+                <FormControl>
+                    <FormLabel>Comment:</FormLabel>
+                    <Textarea {...register('comment')} />
+                </FormControl>
 
                 <ChakraText>This will annotate parameters.</ChakraText>
             </AnnotationBatchForm>

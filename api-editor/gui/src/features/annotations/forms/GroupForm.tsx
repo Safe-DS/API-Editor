@@ -1,4 +1,13 @@
-import { Checkbox, FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Input, VStack } from '@chakra-ui/react';
+import {
+    Checkbox,
+    FormControl,
+    FormErrorIcon,
+    FormErrorMessage,
+    FormLabel,
+    Input,
+    Textarea,
+    VStack,
+} from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
@@ -20,19 +29,20 @@ interface GroupFormState {
     groupName: string;
     parameters: { [name: string]: boolean };
     dummy: string;
+    comment: string;
 }
 
 export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName }) {
     const targetPath = target.id;
     const currentGroups = useAppSelector(selectGroupAnnotations(targetPath));
-    let prevGroupAnnotation: GroupAnnotation | undefined;
+    let previousAnnotation: GroupAnnotation | undefined;
     if (groupName && currentGroups) {
-        prevGroupAnnotation = currentGroups[groupName];
+        previousAnnotation = currentGroups[groupName];
     }
     let otherGroupNames: string[] = [];
     if (currentGroups) {
         otherGroupNames = Object.values(currentGroups)
-            .filter((group) => group.groupName !== prevGroupAnnotation?.groupName)
+            .filter((group) => group.groupName !== previousAnnotation?.groupName)
             .map((group) => group.groupName);
     }
 
@@ -59,7 +69,7 @@ export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName
     };
 
     const isCurrentGroup = (key: string) =>
-        prevGroupAnnotation && (!currentGroups || currentGroups[key]?.groupName === prevGroupAnnotation.groupName);
+        previousAnnotation && (!currentGroups || currentGroups[key]?.groupName === previousAnnotation.groupName);
 
     const getSelectedParameters = (): string[] =>
         Object.entries(getValues('parameters'))
@@ -82,6 +92,7 @@ export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName
         defaultValues: {
             groupName: '',
             parameters: {},
+            comment: '',
         },
     });
 
@@ -95,15 +106,16 @@ export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName
 
     useEffect(() => {
         const prevParameters: { [name: string]: boolean } = {};
-        prevGroupAnnotation?.parameters?.forEach((name) => {
+        previousAnnotation?.parameters?.forEach((name) => {
             prevParameters[name] = true;
         });
 
         reset({
-            groupName: prevGroupAnnotation?.groupName || '',
+            groupName: previousAnnotation?.groupName || '',
             parameters: prevParameters,
+            comment: previousAnnotation?.comment || '',
         });
-    }, [reset, prevGroupAnnotation]);
+    }, [reset, previousAnnotation]);
 
     // Event handlers --------------------------------------------------------------------------------------------------
 
@@ -113,6 +125,7 @@ export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName
                 target: targetPath,
                 groupName: data.groupName,
                 parameters: getSelectedParameters(),
+                comment: data.comment,
             }),
         );
         dispatch(hideAnnotationForm());
@@ -126,7 +139,7 @@ export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName
 
     return (
         <AnnotationForm
-            heading={`${prevGroupAnnotation ? 'Edit' : 'Add'} @group Annotation`}
+            heading={`${previousAnnotation ? 'Edit' : 'Add'} @group Annotation`}
             description="Replace multiple parameters of this function with a parameter object."
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
@@ -166,6 +179,11 @@ export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName
                     <FormErrorIcon />
                     {errors.dummy && 'At least one parameter needs to be selected.'}
                 </FormErrorMessage>
+            </FormControl>
+
+            <FormControl>
+                <FormLabel>Comment:</FormLabel>
+                <Textarea {...register('comment')}/>
             </FormControl>
         </AnnotationForm>
     );

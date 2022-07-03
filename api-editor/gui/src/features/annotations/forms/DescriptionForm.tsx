@@ -15,11 +15,12 @@ interface DescriptionFormProps {
 
 interface DescriptionFormState {
     newDescription: string;
+    comment: string;
 }
 
 export const DescriptionForm: React.FC<DescriptionFormProps> = function ({ target }) {
     const targetPath = target.id;
-    const prevNewDescription = useAppSelector(selectDescriptionAnnotation(targetPath))?.newDescription;
+    const previousAnnotation = useAppSelector(selectDescriptionAnnotation(targetPath));
     const oldDescription = target.description;
 
     // Hooks -----------------------------------------------------------------------------------------------------------
@@ -28,6 +29,7 @@ export const DescriptionForm: React.FC<DescriptionFormProps> = function ({ targe
     const { register, handleSubmit, setFocus, reset } = useForm<DescriptionFormState>({
         defaultValues: {
             newDescription: '',
+            comment: '',
         },
     });
 
@@ -41,9 +43,10 @@ export const DescriptionForm: React.FC<DescriptionFormProps> = function ({ targe
 
     useEffect(() => {
         reset({
-            newDescription: prevNewDescription ?? oldDescription,
+            newDescription: previousAnnotation?.newDescription ?? oldDescription,
+            comment: previousAnnotation?.comment ?? '',
         });
-    }, [reset, prevNewDescription, oldDescription]);
+    }, [reset, previousAnnotation, oldDescription]);
 
     // Event handlers --------------------------------------------------------------------------------------------------
 
@@ -65,7 +68,7 @@ export const DescriptionForm: React.FC<DescriptionFormProps> = function ({ targe
 
     return (
         <AnnotationForm
-            heading={`${prevNewDescription ? 'Edit' : 'Add'} @description Annotation`}
+            heading={`${previousAnnotation ? 'Edit' : 'Add'} @description Annotation`}
             description="Change the description of this declaration."
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
@@ -73,6 +76,11 @@ export const DescriptionForm: React.FC<DescriptionFormProps> = function ({ targe
             <FormControl>
                 <FormLabel>New description for "{target.name}":</FormLabel>
                 <Textarea {...register('newDescription')} />
+            </FormControl>
+
+            <FormControl>
+                <FormLabel>Comment:</FormLabel>
+                <Textarea {...register('comment')}/>
             </FormControl>
         </AnnotationForm>
     );

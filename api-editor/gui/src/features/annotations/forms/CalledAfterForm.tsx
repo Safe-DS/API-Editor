@@ -1,4 +1,4 @@
-import { FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Select } from '@chakra-ui/react';
+import { FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Select, Textarea } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
@@ -13,6 +13,7 @@ interface CalledAfterFormProps {
 
 interface CalledAfterFormState {
     calledAfterName: string;
+    comment: string;
 }
 
 export const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ target }) {
@@ -36,6 +37,7 @@ export const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ targe
     } = useForm<CalledAfterFormState>({
         defaultValues: {
             calledAfterName: '',
+            comment: '',
         },
     });
 
@@ -50,6 +52,7 @@ export const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ targe
     useEffect(() => {
         reset({
             calledAfterName: '',
+            comment: '',
         });
     }, [reset]);
 
@@ -94,6 +97,11 @@ export const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ targe
                 <FormErrorMessage>
                     <FormErrorIcon /> {errors?.calledAfterName?.message}
                 </FormErrorMessage>
+            </FormControl>
+
+            <FormControl>
+                <FormLabel>Comment:</FormLabel>
+                <Textarea {...register('comment')}/>
             </FormControl>
         </AnnotationForm>
     );

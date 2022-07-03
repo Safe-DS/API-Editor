@@ -1,4 +1,4 @@
-import { FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react';
+import { FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Input, Textarea } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
@@ -14,11 +14,12 @@ interface MoveFormProps {
 
 interface MoveFormState {
     destination: string;
+    comment: string;
 }
 
 export const MoveForm: React.FC<MoveFormProps> = function ({ target }) {
     const targetPath = target.id;
-    const prevDestination = useAppSelector(selectMoveAnnotation(targetPath))?.destination;
+    const previousAnnotation = useAppSelector(selectMoveAnnotation(targetPath));
     const oldModulePath = target?.parent()?.name;
 
     // Hooks -----------------------------------------------------------------------------------------------------------
@@ -33,6 +34,7 @@ export const MoveForm: React.FC<MoveFormProps> = function ({ target }) {
     } = useForm<MoveFormState>({
         defaultValues: {
             destination: '',
+            comment: '',
         },
     });
 
@@ -46,9 +48,11 @@ export const MoveForm: React.FC<MoveFormProps> = function ({ target }) {
 
     useEffect(() => {
         reset({
-            destination: prevDestination || oldModulePath,
+            destination: previousAnnotation?.destination ?? oldModulePath,
+            comment: previousAnnotation?.comment ?? '',
+
         });
-    }, [reset, prevDestination, oldModulePath]);
+    }, [reset, previousAnnotation, oldModulePath]);
 
     // Event handlers --------------------------------------------------------------------------------------------------
 
@@ -70,7 +74,7 @@ export const MoveForm: React.FC<MoveFormProps> = function ({ target }) {
 
     return (
         <AnnotationForm
-            heading={`${prevDestination ? 'Edit' : 'Add'} @move Annotation`}
+            heading={`${previousAnnotation ? 'Edit' : 'Add'} @move Annotation`}
             description="Move this global declaration to another module."
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
@@ -86,6 +90,11 @@ export const MoveForm: React.FC<MoveFormProps> = function ({ target }) {
                 <FormErrorMessage>
                     <FormErrorIcon /> {errors.destination?.message}
                 </FormErrorMessage>
+            </FormControl>
+
+            <FormControl>
+                <FormLabel>Comment:</FormLabel>
+                <Textarea {...register('comment')}/>
             </FormControl>
         </AnnotationForm>
     );
