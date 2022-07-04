@@ -29,6 +29,7 @@ class NamedType(AbstractType):
 @dataclass
 class EnumType(AbstractType):
     values: set[str] = field(default_factory=set)
+    match: str = ""
 
     @classmethod
     def from_string(cls, string: str) -> Optional[EnumType]:
@@ -61,7 +62,7 @@ class EnumType(AbstractType):
                 elif inside_value:
                     value += char
 
-            return EnumType(values)
+            return EnumType(values, enum_match.group(0))
 
         return None
 
