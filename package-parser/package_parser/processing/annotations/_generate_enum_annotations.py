@@ -50,7 +50,7 @@ def _generate_enum_annotations(api: API, annotations: AnnotationStore) -> None:
                     target=parameter.id,
                     authors=[autogen_author],
                     reviewers=[],
-                    comment=f"I turned this into an enum because the type in the documentation contained `{full_match}`.",
+                    comment=f"I turned this into an enum because the type in the documentation contained {full_match}.",
                     enumName=enum_name,
                     pairs=pairs,
                 )

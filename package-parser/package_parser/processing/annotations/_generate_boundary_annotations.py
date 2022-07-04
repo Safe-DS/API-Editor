@@ -71,7 +71,7 @@ def _generate_boundary_annotations(api: API, annotations: AnnotationStore) -> No
                 target=parameter.id,
                 authors=[autogen_author],
                 reviewers=[],
-                comment=f"I turned this into a bounded number because the description contained `{boundary_type.full_match}`.",
+                comment=f"I turned this into a bounded number because the description contained {boundary_type.full_match}.",
                 interval=interval,
             )
             annotations.boundaryAnnotations.append(boundary)
