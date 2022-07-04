@@ -1,7 +1,5 @@
 from typing import Any, Optional
 
-from scipy.stats import binom
-
 from package_parser.processing.annotations.model import (
     AnnotationStore,
     ConstantAnnotation,
@@ -11,6 +9,7 @@ from package_parser.processing.annotations.model import (
 )
 from package_parser.processing.api.model import API, Parameter, ParameterAssignment
 from package_parser.processing.usages.model import UsageCountStore
+from scipy.stats import binom
 
 from ._constants import autogen_author
 
@@ -86,7 +85,9 @@ def _generate_required_or_optional_annotation(
 
     # Compute metrics
     most_common_value_count = usages.n_value_usages(parameter.id, most_common_values[0])
-    second_most_common_value_count = usages.n_value_usages(parameter.id, most_common_values[1])
+    second_most_common_value_count = usages.n_value_usages(
+        parameter.id, most_common_values[1]
+    )
 
     # Add appropriate annotation
     if _should_be_required(most_common_value_count, second_most_common_value_count):
@@ -113,8 +114,7 @@ def _generate_required_or_optional_annotation(
 
 
 def _should_be_required(
-    most_common_value_count: int,
-    second_most_common_value_count: int
+    most_common_value_count: int, second_most_common_value_count: int
 ) -> bool:
     """
     This function determines how to differentiate between an optional and a required parameter
@@ -131,7 +131,7 @@ def _should_be_required(
     if second_most_common_value_count > most_common_value_count:
         most_common_value_count, second_most_common_value_count = (
             second_most_common_value_count,
-            most_common_value_count
+            most_common_value_count,
         )
 
     total = most_common_value_count + second_most_common_value_count
@@ -140,7 +140,13 @@ def _should_be_required(
     # toss. Unless this hypothesis is rejected, we make the parameter required. We reject the hypothesis if the p-value
     # is less than or equal to 5%. The p-value is the probability that we observe results that are at least as extreme
     # as the values we observed, assuming the null hypothesis is true.
-    return 2 * sum(binom.pmf(i, total, 0.5) for i in range(most_common_value_count, total + 1)) > 0.05
+    return (
+        2
+        * sum(
+            binom.pmf(i, total, 0.5) for i in range(most_common_value_count, total + 1)
+        )
+        > 0.05
+    )
 
 
 def _is_stringified_literal(stringified_value: str) -> bool:
