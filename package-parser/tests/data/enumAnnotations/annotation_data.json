@@ -1,11 +1,9 @@
 {
     "test/test/some_global_function/enum_parameter": {
         "target": "test/test/some_global_function/enum_parameter",
-        "authors": [
-            "$autogen$"
-        ],
+        "authors": ["$autogen$"],
         "reviewers": [],
-        "comment": "I turned this into an enum because the type in the documentation contained {'auto', 'kd_tree', 'kd-means++'}.",
+        "comment": "I turned this into an enum because the type in the documentation contained `{'auto', 'kd_tree', 'kd-means++'}`.",
         "enumName": "EnumParameter",
         "pairs": [
             {
@@ -24,11 +22,9 @@
     },
     "test/test/some_global_function/enum_parameter_with_union": {
         "target": "test/test/some_global_function/enum_parameter_with_union",
-        "authors": [
-            "$autogen$"
-        ],
+        "authors": ["$autogen$"],
         "reviewers": [],
-        "comment": "I turned this into an enum because the type in the documentation contained {'auto', 'kd_tree', 'kd-means++'}.",
+        "comment": "I turned this into an enum because the type in the documentation contained `{'auto', 'kd_tree', 'kd-means++'}`.",
         "enumName": "EnumParameterWithUnion",
         "pairs": [
             {
@@ -47,11 +43,9 @@
     },
     "test/test/some_global_function/issue_760": {
         "target": "test/test/some_global_function/issue_760",
-        "authors": [
-            "$autogen$"
-        ],
+        "authors": ["$autogen$"],
         "reviewers": [],
-        "comment": "I turned this into an enum because the type in the documentation contained {'l1', 'l2'}.",
+        "comment": "I turned this into an enum because the type in the documentation contained `{'l1', 'l2'}`.",
         "enumName": "Issue760",
         "pairs": [
             {
@@ -66,11 +60,9 @@
     },
     "test/test/some_global_function/issue_858": {
         "target": "test/test/some_global_function/issue_858",
-        "authors": [
-            "$autogen$"
-        ],
+        "authors": ["$autogen$"],
         "reviewers": [],
-        "comment": "I turned this into an enum because the type in the documentation contained {'SAMME.R'}.",
+        "comment": "I turned this into an enum because the type in the documentation contained `{'SAMME.R'}`.",
         "enumName": "Issue858",
         "pairs": [
             {

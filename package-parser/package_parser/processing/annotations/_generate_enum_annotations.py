@@ -33,10 +33,8 @@ def _generate_enum_annotations(api: API, annotations: AnnotationStore) -> None:
 
         pairs = []
         full_match = ""
-        print(parameter_type.to_json())
         if isinstance(parameter_type, UnionType):
             for type_in_union in parameter_type.types:
-                print(type_in_union.to_json())
                 if isinstance(type_in_union, EnumType):
                     pairs = _enum_pairs(type_in_union)
                     full_match = type_in_union.full_match
@@ -45,9 +43,6 @@ def _generate_enum_annotations(api: API, annotations: AnnotationStore) -> None:
             pairs = _enum_pairs(parameter_type)
             full_match = parameter_type.full_match
 
-        print(pairs)
-        print(full_match)
-
         if len(pairs) > 0:
             enum_name = _enum_name(parameter.name)
             annotations.enumAnnotations.append(
@@ -55,7 +50,7 @@ def _generate_enum_annotations(api: API, annotations: AnnotationStore) -> None:
                     target=parameter.id,
                     authors=[autogen_author],
                     reviewers=[],
-                    comment=f"I turned this into an enum because the type in the documentation contained {full_match}.",
+                    comment=f"I turned this into an enum because the type in the documentation contained `{full_match}`.",
                     enumName=enum_name,
                     pairs=pairs,
                 )
