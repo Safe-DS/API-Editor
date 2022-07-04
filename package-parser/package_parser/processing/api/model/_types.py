@@ -84,6 +84,8 @@ class BoundaryType(AbstractType):
     min_inclusive: bool
     max_inclusive: bool
 
+    match: str = ""
+
     @classmethod
     def _is_inclusive(cls, bracket: str) -> bool:
         if bracket == "(" or bracket == ")":
@@ -131,7 +133,12 @@ class BoundaryType(AbstractType):
             max_inclusive = BoundaryType._is_inclusive(max_bracket)
 
             return BoundaryType(
-                base_type, min_value, max_value, min_inclusive, max_inclusive
+                base_type=base_type,
+                min=min_value,
+                max=max_value,
+                min_inclusive=min_inclusive,
+                max_inclusive=max_inclusive,
+                match=match.group(0)
             )
 
         return None
