@@ -1,7 +1,7 @@
 from abc import ABC
 from dataclasses import asdict, dataclass
 from enum import Enum
-from typing import Any
+from typing import Any, Union
 
 ANNOTATION_SCHEMA_VERSION = 2
 
@@ -25,9 +25,9 @@ class RemoveAnnotation(AbstractAnnotation):
 @dataclass
 class Interval:
     isDiscrete: bool
-    lowerIntervalLimit: int | float | str
+    lowerIntervalLimit: Union[int, float, str]
     lowerLimitType: int
-    upperIntervalLimit: int | float | str
+    upperIntervalLimit: Union[int, float, str]
     upperLimitType: int
 
     def to_json(self) -> dict:
