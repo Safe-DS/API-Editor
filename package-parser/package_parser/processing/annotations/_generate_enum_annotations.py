@@ -6,7 +6,7 @@ from package_parser.processing.annotations.model import (
     EnumPair,
     ValueAnnotation,
 )
-from package_parser.processing.api.model import API
+from package_parser.processing.api.model import API, UnionType, EnumType
 
 from ._constants import autogen_author
 
@@ -27,26 +27,26 @@ def _generate_enum_annotations(api: API, annotations: AnnotationStore) -> None:
         ):
             continue
 
-        enum_type = parameter.type.to_json()
+        parameter_type = parameter.type.type
+        if parameter_type is None:
+            continue
+
         pairs = []
-        if "kind" in enum_type and enum_type["kind"] == "UnionType":
-            for type_in_union in enum_type["types"]:
-                if type_in_union["kind"] == "EnumType":
-                    values = sorted(list(type_in_union["values"]))
-                    for string_value in values:
-                        instance_name = _enum_instance_name(string_value)
-                        pairs.append(
-                            EnumPair(
-                                stringValue=string_value, instanceName=instance_name
-                            )
-                        )
-        elif "kind" in enum_type and enum_type["kind"] == "EnumType":
-            values = sorted(list(enum_type["values"]))
-            for string_value in values:
-                instance_name = _enum_instance_name(string_value)
-                pairs.append(
-                    EnumPair(stringValue=string_value, instanceName=instance_name)
-                )
+        full_match = ""
+        print(parameter_type.to_json())
+        if isinstance(parameter_type, UnionType):
+            for type_in_union in parameter_type.types:
+                print(type_in_union.to_json())
+                if isinstance(type_in_union, EnumType):
+                    pairs = _enum_pairs(type_in_union)
+                    full_match = type_in_union.full_match
+
+        elif isinstance(parameter_type, EnumType):
+            pairs = _enum_pairs(parameter_type)
+            full_match = parameter_type.full_match
+
+        print(pairs)
+        print(full_match)
 
         if len(pairs) > 0:
             enum_name = _enum_name(parameter.name)
@@ -55,7 +55,7 @@ def _generate_enum_annotations(api: API, annotations: AnnotationStore) -> None:
                     target=parameter.id,
                     authors=[autogen_author],
                     reviewers=[],
-                    comment="",  # TODO
+                    comment=f"I turned this into an enum because the type in the documentation contained {full_match}.",
                     enumName=enum_name,
                     pairs=pairs,
                 )
@@ -66,6 +66,22 @@ def _enum_name(parameter_name: str) -> str:
     segments = re.split(r"_", parameter_name)
 
     return "".join([segment.capitalize() for segment in segments if segment != ""])
+
+
+def _enum_pairs(enum_type: EnumType) -> list[EnumPair]:
+    result = []
+
+    sorted_values = sorted(list(enum_type.values))
+    for string_value in sorted_values:
+        instance_name = _enum_instance_name(string_value)
+        result.append(
+            EnumPair(
+                stringValue=string_value,
+                instanceName=instance_name
+            )
+        )
+
+    return result
 
 
 def _enum_instance_name(string_value: str) -> str:

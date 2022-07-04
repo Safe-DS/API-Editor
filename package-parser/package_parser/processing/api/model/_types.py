@@ -29,7 +29,7 @@ class NamedType(AbstractType):
 @dataclass
 class EnumType(AbstractType):
     values: set[str] = field(default_factory=set)
-    match: str = ""
+    full_match: str = ""
 
     @classmethod
     def from_string(cls, string: str) -> Optional[EnumType]:
