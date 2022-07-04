@@ -141,11 +141,15 @@ def test_boundary_from_string(description: str, expected: dict[str, Any]):
 def test_boundary_and_union_from_string(
     docstring_type: str, docstring_description: str, expected: dict[str, Any]
 ):
-    assert (
-        create_type(
-            ParameterDocumentation(
-                type=docstring_type, default_value="", description=docstring_description
-            )
-        ).to_json()
-        == expected
+    result = create_type(
+        ParameterDocumentation(
+            type=docstring_type,
+            default_value="",
+            description=docstring_description
+        )
     )
+
+    if result is None:
+        assert expected == {}
+    else:
+        assert result.to_json() == expected
