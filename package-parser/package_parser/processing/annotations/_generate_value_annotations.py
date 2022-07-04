@@ -140,13 +140,12 @@ def _should_be_required(
     # toss. Unless this hypothesis is rejected, we make the parameter required. We reject the hypothesis if the p-value
     # is less than or equal to 5%. The p-value is the probability that we observe results that are at least as extreme
     # as the values we observed, assuming the null hypothesis is true.
-    return (
-        2
-        * sum(
-            binom.pmf(i, total, 0.5) for i in range(most_common_value_count, total + 1)
-        )
-        > 0.05
+    p_value = 2 * sum(
+        binom.pmf(i, total, 0.5)
+        for i in range(most_common_value_count, total + 1)
     )
+    significance_level = 0.05
+    return p_value > significance_level
 
 
 def _is_stringified_literal(stringified_value: str) -> bool:
