@@ -50,14 +50,14 @@ const QualityPieChart: React.FC<QualityPieChartProps> = function ({ annotationTy
     const correctBg = useColorModeValue('#38a169', '#68d391');
     const correctBorder = useColorModeValue('#2f855a', '#99e6b3');
 
-    const changedBg = useColorModeValue('#a19038', '#d3ba68');
-    const changedBorder = useColorModeValue('#857a2f', '#e6d799');
+    const changedBg = useColorModeValue('#a16e38', '#d39568');
+    const changedBorder = useColorModeValue('#855d2f', '#e6c099');
 
     const wrongOrRemovedBg = useColorModeValue('#a13838', '#d36868');
     const wrongOrRemovedBorder = useColorModeValue('#852f2f', '#e69999');
 
-    const unsureBg = useColorModeValue('#AAA', '#AAA');
-    const unsureBorder = useColorModeValue('#888', '#CCC');
+    const unsureBg = useColorModeValue('#a19038', '#d3ba68');
+    const unsureBorder = useColorModeValue('#857a2f', '#e6d799');
 
     const uncheckedBg = useColorModeValue('#CCC', '#888');
     const uncheckedBorder = useColorModeValue('#AAA', '#AAA');
