@@ -27,7 +27,7 @@ def _generate_boundary_annotations(api: API, annotations: AnnotationStore) -> No
         ):
             continue
 
-        parameter_type = parameter.type.type
+        parameter_type = parameter.type
         if parameter_type is None:
             continue
 

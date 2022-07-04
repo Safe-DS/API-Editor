@@ -27,7 +27,7 @@ def _generate_enum_annotations(api: API, annotations: AnnotationStore) -> None:
         ):
             continue
 
-        parameter_type = parameter.type.type
+        parameter_type = parameter.type
         if parameter_type is None:
             continue
 
