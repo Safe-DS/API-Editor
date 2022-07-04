@@ -2,21 +2,25 @@
     "test/test/UnusedClass": {
         "target": "test/test/UnusedClass",
         "authors": ["$autogen$"],
-        "reviewers": []
+        "reviewers": [],
+        "comment": "I removed this class because it has no known usages."
     },
     "test/test/unused_global_function": {
         "target": "test/test/unused_global_function",
         "authors": ["$autogen$"],
-        "reviewers": []
+        "reviewers": [],
+        "comment": "I removed this function because it has no known usages."
     },
     "test/test/UnusedClass/unused_method": {
         "target": "test/test/UnusedClass/unused_method",
         "authors": ["$autogen$"],
-        "reviewers": []
+        "reviewers": [],
+        "comment": "I removed this function because it has no known usages."
     },
     "test/test/UsedClass/unused_method": {
         "target": "test/test/UsedClass/unused_method",
         "authors": ["$autogen$"],
-        "reviewers": []
+        "reviewers": [],
+        "comment": "I removed this function because it has no known usages."
     }
 }

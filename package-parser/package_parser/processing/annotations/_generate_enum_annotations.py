@@ -55,6 +55,7 @@ def _generate_enum_annotations(api: API, annotations: AnnotationStore) -> None:
                     target=parameter.id,
                     authors=[autogen_author],
                     reviewers=[],
+                    comment="",  # TODO
                     enumName=enum_name,
                     pairs=pairs,
                 )

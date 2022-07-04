@@ -53,6 +53,7 @@ def _generate_constant_annotation(
                 target=parameter.id,
                 authors=[autogen_author],
                 reviewers=[],
+                comment="",  # TODO
                 defaultValueType=default_value_type,
                 defaultValue=default_value,
             )
@@ -63,6 +64,7 @@ def _generate_constant_annotation(
                 target=parameter.id,
                 authors=[autogen_author],
                 reviewers=[],
+                comment="",  # TODO
             )
         )
 
@@ -78,7 +80,10 @@ def _generate_required_or_optional_annotation(
     if not _is_stringified_literal(most_common_values[0]):
         annotations.valueAnnotations.append(
             RequiredAnnotation(
-                target=parameter.id, authors=[autogen_author], reviewers=[]
+                target=parameter.id,
+                authors=[autogen_author],
+                reviewers=[],
+                comment="",  # TODO
             )
         )
         return
@@ -93,7 +98,10 @@ def _generate_required_or_optional_annotation(
     if _should_be_required(most_common_value_count, second_most_common_value_count):
         annotations.valueAnnotations.append(
             RequiredAnnotation(
-                target=parameter.id, authors=[autogen_author], reviewers=[]
+                target=parameter.id,
+                authors=[autogen_author],
+                reviewers=[],
+                comment="",  # TODO
             )
         )
     else:
@@ -107,6 +115,7 @@ def _generate_required_or_optional_annotation(
                     target=parameter.id,
                     authors=[autogen_author],
                     reviewers=[],
+                    comment="",  # TODO
                     defaultValueType=default_value_type,
                     defaultValue=default_value,
                 )

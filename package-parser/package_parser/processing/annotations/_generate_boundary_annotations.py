@@ -61,6 +61,7 @@ def _generate_boundary_annotations(api: API, annotations: AnnotationStore) -> No
                 target=parameter.id,
                 authors=[autogen_author],
                 reviewers=[],
+                comment="",  # TODO
                 interval=interval,
             )
             annotations.boundaryAnnotations.append(boundary)

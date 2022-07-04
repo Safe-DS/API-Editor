@@ -11,6 +11,7 @@ class AbstractAnnotation(ABC):
     target: str
     authors: list[str]
     reviewers: list[str]
+    comment: str
 
     def to_json(self) -> dict:
         return asdict(self)
@@ -79,6 +80,7 @@ class ConstantAnnotation(ValueAnnotation):
             "target": self.target,
             "authors": self.authors,
             "reviewers": self.reviewers,
+            "comment": self.comment,
             "variant": self.variant.value,
             "defaultValueType": self.defaultValueType.value,
             "defaultValue": self.defaultValue,
@@ -96,6 +98,7 @@ class OptionalAnnotation(ValueAnnotation):
             "target": self.target,
             "authors": self.authors,
             "reviewers": self.reviewers,
+            "comment": self.comment,
             "variant": self.variant.value,
             "defaultValueType": self.defaultValueType.value,
             "defaultValue": self.defaultValue,
@@ -111,6 +114,7 @@ class RequiredAnnotation(ValueAnnotation):
             "target": self.target,
             "authors": self.authors,
             "reviewers": self.reviewers,
+            "comment": self.comment,
             "variant": self.variant.value,
         }
 
