@@ -25,7 +25,7 @@ def _generate_remove_annotations(
                     target=class_.id,
                     authors=[autogen_author],
                     reviewers=[],
-                    comment=_create_comment("class", n_class_usages),
+                    comment=_create_explanation("class", n_class_usages),
                 )
             )
 
@@ -37,12 +37,12 @@ def _generate_remove_annotations(
                     target=function.id,
                     authors=[autogen_author],
                     reviewers=[],
-                    comment=_create_comment("function", n_function_usages),
+                    comment=_create_explanation("function", n_function_usages),
                 )
             )
 
 
-def _create_comment(declaration_type: str, n_usages: int) -> str:
+def _create_explanation(declaration_type: str, n_usages: int) -> str:
     result = f"I removed this {declaration_type} because it has"
 
     if n_usages == 0:

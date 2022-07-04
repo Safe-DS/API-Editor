@@ -22,6 +22,8 @@ def test_generate_annotations(
     usages, api, expected_annotations = read_test_data(subfolder)
     annotations = generate_annotations(api, usages)
 
+    print(json.dumps(annotations.to_json()[subfolder], indent=4))
+
     assert annotations.to_json()[subfolder] == expected_annotations
 
 
