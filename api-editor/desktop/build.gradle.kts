@@ -40,6 +40,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
     implementation(compose.desktop.currentOs)
     implementation("org.jetbrains.compose.components:components-splitpane:1.1.1")
+    implementation("org.jetbrains.compose.material3:material3:1.2.0-alpha01-dev731")
 
     testImplementation(kotlin("test"))
     testImplementation("io.kotest:kotest-assertions-core-jvm:5.3.2")
