@@ -95,6 +95,22 @@
         "defaultValueType": "number",
         "defaultValue": 1.0
     },
+    "sklearn/sklearn.utils.validation/check_array/dtype": {
+        "target": "sklearn/sklearn.utils.validation/check_array/dtype",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "optional",
+        "defaultValueType": "string",
+        "defaultValue": "numeric"
+    },
+    "sklearn/sklearn.tree._export/export_graphviz/special_characters": {
+        "target": "sklearn/sklearn.tree._export/export_graphviz/special_characters",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "optional",
+        "defaultValueType": "boolean",
+        "defaultValue": false
+    },
     "test/test/some_global_function/required_parameter_that_should_be_required": {
         "target": "test/test/some_global_function/required_parameter_that_should_be_required",
         "authors": ["$autogen$"],
@@ -175,6 +191,12 @@
     },
     "test/test/UsedClass/used_method/variable_optional_parameter": {
         "target": "test/test/UsedClass/used_method/variable_optional_parameter",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "variant": "required"
+    },
+    "sklearn/sklearn.metrics.cluster._supervised/mutual_info_score/labels_pred": {
+        "target": "sklearn/sklearn.metrics.cluster._supervised/mutual_info_score/labels_pred",
         "authors": ["$autogen$"],
         "reviewers": [],
         "variant": "required"

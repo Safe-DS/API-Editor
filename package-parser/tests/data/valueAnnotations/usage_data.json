@@ -5,7 +5,10 @@
     "function_counts": {
         "test/test/used_global_function": 5,
         "test/test/UsedClass/used_method": 5,
-        "test/test/some_global_function": 10
+        "test/test/some_global_function": 10,
+        "sklearn/sklearn.utils.validation/check_array": 59,
+        "sklearn/sklearn.metrics.cluster._supervised/mutual_info_score": 8,
+        "sklearn/sklearn.tree._export/export_graphviz": 202
     },
     "parameter_counts": {
         "test/test/used_global_function/constant_required_parameter": 5,
@@ -33,7 +36,10 @@
         "test/test/some_global_function/optional_parameter_that_should_be_optional_with_same_default": 2,
         "test/test/some_global_function/optional_parameter_that_should_be_optional_with_different_default": 8,
         "test/test/some_global_function/optional_parameter_that_should_be_optional_with_non_string": 8,
-        "test/test/some_global_function/issue_715": 10
+        "test/test/some_global_function/issue_715": 10,
+        "sklearn/sklearn.utils.validation/check_array/dtype": 59,
+        "sklearn/sklearn.metrics.cluster._supervised/mutual_info_score/labels_pred": 8,
+        "sklearn/sklearn.tree._export/export_graphviz/special_characters": 202
     },
     "value_counts": {
         "test/test/used_global_function/constant_required_parameter": {
@@ -122,6 +128,26 @@
             "1": 8,
             "non_string": 1,
             "non_string_2": 1
+        },
+        "sklearn/sklearn.utils.validation/check_array/dtype": {
+            "None": 13,
+            "'numeric'": 37,
+            "FLOAT_DTYPES": 7,
+            "np.object": 2
+        },
+        "sklearn/sklearn.metrics.cluster._supervised/mutual_info_score/labels_pred": {
+            "None": 1,
+            "verySimpleLearner.predict_proba(trainInputFeature)[:, 1]": 1,
+            "verySimpleLearner.predict_proba(validInputFeature)[:, 1]": 1,
+            "verySimpleLearner.predict_proba(trainInputFeatures)[:, 1]": 1,
+            "verySimpleLearner.predict_proba(validInputFeatures)[:, 1]": 1,
+            "test['lee_a_coref']": 1,
+            "test['lee_b_coref']": 1,
+            "col_corr": 1
+        },
+        "sklearn/sklearn.tree._export/export_graphviz/special_characters": {
+            "True": 52,
+            "False": 150
         }
     }
 }
