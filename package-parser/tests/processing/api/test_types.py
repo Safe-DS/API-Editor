@@ -62,7 +62,7 @@ from package_parser.processing.api.model import ParameterDocumentation, create_t
                     {
                         "kind": "NamedType",
                         "name": "shape (n_samples, n_classes) or (n_samples, 1) when "
-                                "binary.",
+                        "binary.",
                     },
                 ],
             },
@@ -143,9 +143,7 @@ def test_boundary_and_union_from_string(
 ):
     result = create_type(
         ParameterDocumentation(
-            type=docstring_type,
-            default_value="",
-            description=docstring_description
+            type=docstring_type, default_value="", description=docstring_description
         )
     )
 

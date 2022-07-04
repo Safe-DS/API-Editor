@@ -11,8 +11,8 @@ from package_parser.processing.api.model import API, Parameter, ParameterAssignm
 from package_parser.processing.usages.model import UsageCountStore
 from scipy.stats import binom
 
-from ._constants import autogen_author
 from ...utils import pluralize
+from ._constants import autogen_author
 
 
 def _generate_value_annotations(
@@ -133,7 +133,7 @@ def _should_be_required(
     most_common_value: str,
     most_common_value_count: int,
     second_most_common_value: str,
-    second_most_common_value_count: int
+    second_most_common_value_count: int,
 ) -> tuple[bool, str]:
     """
     This function determines how to differentiate between an optional and a required parameter
@@ -147,7 +147,7 @@ def _should_be_required(
     if most_common_value_count == second_most_common_value_count:
         return (
             True,
-            f"I made this parameter required because there is no single most common value ({most_common_value} and {second_most_common_value} are both used {pluralize(most_common_value_count, 'time')})."
+            f"I made this parameter required because there is no single most common value ({most_common_value} and {second_most_common_value} are both used {pluralize(most_common_value_count, 'time')}).",
         )
 
     # Precaution to ensure proper order of most_common_value_count and second_most_common_value_count
@@ -164,20 +164,19 @@ def _should_be_required(
     # is less than or equal to 5%. The p-value is the probability that we observe results that are at least as extreme
     # as the values we observed, assuming the null hypothesis is true.
     p_value = 2 * sum(
-        binom.pmf(i, total, 0.5)
-        for i in range(most_common_value_count, total + 1)
+        binom.pmf(i, total, 0.5) for i in range(most_common_value_count, total + 1)
     )
     significance_level = 0.05
 
     if p_value <= significance_level:
         return (
             False,
-            f"I made this parameter optional because there is a statistically significant most common value (p-value {p_value:.2%} <= significance level {significance_level:.0%})."
+            f"I made this parameter optional because there is a statistically significant most common value (p-value {p_value:.2%} <= significance level {significance_level:.0%}).",
         )
     else:
         return (
             True,
-            f"I made this parameter required because there is no statistically significant most common value (p-value ({p_value:.2%}) > significance level ({significance_level:.0%})."
+            f"I made this parameter required because there is no statistically significant most common value (p-value ({p_value:.2%}) > significance level ({significance_level:.0%}).",
         )
 
 

@@ -6,7 +6,7 @@ from package_parser.processing.annotations.model import (
     EnumPair,
     ValueAnnotation,
 )
-from package_parser.processing.api.model import API, UnionType, EnumType
+from package_parser.processing.api.model import API, EnumType, UnionType
 
 from ._constants import autogen_author
 
@@ -69,12 +69,7 @@ def _enum_pairs(enum_type: EnumType) -> list[EnumPair]:
     sorted_values = sorted(list(enum_type.values))
     for string_value in sorted_values:
         instance_name = _enum_instance_name(string_value)
-        result.append(
-            EnumPair(
-                stringValue=string_value,
-                instanceName=instance_name
-            )
-        )
+        result.append(EnumPair(stringValue=string_value, instanceName=instance_name))
 
     return result
 

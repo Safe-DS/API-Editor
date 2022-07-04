@@ -138,7 +138,7 @@ class BoundaryType(AbstractType):
                 max=max_value,
                 min_inclusive=min_inclusive,
                 max_inclusive=max_inclusive,
-                full_match=match.group(0)
+                full_match=match.group(0),
             )
 
         return None
@@ -184,7 +184,9 @@ class UnionType(AbstractType):
         return {"kind": self.__class__.__name__, "types": type_list}
 
 
-def create_type(parameter_documentation: ParameterDocumentation) -> Optional[AbstractType]:
+def create_type(
+    parameter_documentation: ParameterDocumentation,
+) -> Optional[AbstractType]:
     type_string = parameter_documentation.type
     types: list[AbstractType] = list()
 
