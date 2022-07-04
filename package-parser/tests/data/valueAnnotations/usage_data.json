@@ -5,7 +5,10 @@
     "function_counts": {
         "test/test/used_global_function": 5,
         "test/test/UsedClass/used_method": 5,
-        "test/test/some_global_function": 10
+        "test/test/some_global_function": 20,
+        "sklearn/sklearn.utils.validation/check_array": 59,
+        "sklearn/sklearn.metrics.cluster._supervised/mutual_info_score": 8,
+        "sklearn/sklearn.tree._export/export_graphviz": 202
     },
     "parameter_counts": {
         "test/test/used_global_function/constant_required_parameter": 5,
@@ -22,18 +25,21 @@
         "test/test/UsedClass/used_method/should_not_be_constant_four": 5,
         "test/test/UsedClass/used_method/should_not_be_constant_five": 5,
         "test/test/UsedClass/used_method/should_not_be_constant_six": 5,
-        "test/test/some_global_function/required_parameter_that_should_be_constant": 10,
-        "test/test/some_global_function/required_parameter_that_should_be_required": 10,
-        "test/test/some_global_function/required_parameter_that_should_be_required_with_non_string": 10,
-        "test/test/some_global_function/required_parameter_that_should_be_optional": 10,
-        "test/test/some_global_function/required_parameter_that_should_be_optional_with_non_string": 10,
+        "test/test/some_global_function/required_parameter_that_should_be_constant": 20,
+        "test/test/some_global_function/required_parameter_that_should_be_required": 20,
+        "test/test/some_global_function/required_parameter_that_should_be_required_with_non_string": 20,
+        "test/test/some_global_function/required_parameter_that_should_be_optional": 20,
+        "test/test/some_global_function/required_parameter_that_should_be_optional_with_non_string": 20,
         "test/test/some_global_function/optional_parameter_that_should_be_constant": 0,
-        "test/test/some_global_function/optional_parameter_that_should_be_required": 4,
-        "test/test/some_global_function/optional_parameter_that_should_be_required_with_non_string": 9,
-        "test/test/some_global_function/optional_parameter_that_should_be_optional_with_same_default": 2,
-        "test/test/some_global_function/optional_parameter_that_should_be_optional_with_different_default": 8,
-        "test/test/some_global_function/optional_parameter_that_should_be_optional_with_non_string": 8,
-        "test/test/some_global_function/issue_715": 10
+        "test/test/some_global_function/optional_parameter_that_should_be_required": 8,
+        "test/test/some_global_function/optional_parameter_that_should_be_required_with_non_string": 18,
+        "test/test/some_global_function/optional_parameter_that_should_be_optional_with_same_default": 4,
+        "test/test/some_global_function/optional_parameter_that_should_be_optional_with_different_default": 16,
+        "test/test/some_global_function/optional_parameter_that_should_be_optional_with_non_string": 16,
+        "test/test/some_global_function/issue_715": 20,
+        "sklearn/sklearn.utils.validation/check_array/dtype": 59,
+        "sklearn/sklearn.metrics.cluster._supervised/mutual_info_score/labels_pred": 8,
+        "sklearn/sklearn.tree._export/export_graphviz/special_characters": 202
     },
     "value_counts": {
         "test/test/used_global_function/constant_required_parameter": {
@@ -80,48 +86,68 @@
             "'test": 5
         },
         "test/test/some_global_function/required_parameter_that_should_be_constant": {
-            "'test'": 10
+            "'test'": 20
         },
         "test/test/some_global_function/required_parameter_that_should_be_required": {
-            "'test'": 4,
-            "'test2'": 6
+            "'test'": 8,
+            "'test2'": 12
         },
         "test/test/some_global_function/required_parameter_that_should_be_required_with_non_string": {
-            "'test'": 1,
-            "'test2'": 4,
-            "non_string": 5
+            "'test'": 2,
+            "'test2'": 8,
+            "non_string": 10
         },
         "test/test/some_global_function/required_parameter_that_should_be_optional": {
-            "'test'": 2,
-            "'test2'": 8
+            "'test'": 4,
+            "'test2'": 16
         },
         "test/test/some_global_function/required_parameter_that_should_be_optional_with_non_string": {
-            "'test'": 2,
-            "non_string": 2,
-            "'test2'": 6
+            "'test'": 3,
+            "non_string": 4,
+            "'test2'": 13
         },
         "test/test/some_global_function/optional_parameter_that_should_be_constant": {},
         "test/test/some_global_function/optional_parameter_that_should_be_required": {
-            "'test2'": 4
-        },
-        "test/test/some_global_function/optional_parameter_that_should_be_required_with_non_string": {
-            "'test2'": 4,
-            "non_string": 5
-        },
-        "test/test/some_global_function/optional_parameter_that_should_be_optional_with_same_default": {
-            "'test2'": 2
-        },
-        "test/test/some_global_function/optional_parameter_that_should_be_optional_with_different_default": {
             "'test2'": 8
         },
+        "test/test/some_global_function/optional_parameter_that_should_be_required_with_non_string": {
+            "'test2'": 8,
+            "non_string": 10
+        },
+        "test/test/some_global_function/optional_parameter_that_should_be_optional_with_same_default": {
+            "'test2'": 4
+        },
+        "test/test/some_global_function/optional_parameter_that_should_be_optional_with_different_default": {
+            "'test2'": 16
+        },
         "test/test/some_global_function/optional_parameter_that_should_be_optional_with_non_string": {
-            "non_string": 2,
-            "'test2'": 6
+            "non_string": 4,
+            "'test2'": 13
         },
         "test/test/some_global_function/issue_715": {
-            "1": 8,
-            "non_string": 1,
-            "non_string_2": 1
+            "1": 16,
+            "non_string": 2,
+            "non_string_2": 2
+        },
+        "sklearn/sklearn.utils.validation/check_array/dtype": {
+            "None": 13,
+            "'numeric'": 37,
+            "FLOAT_DTYPES": 7,
+            "np.object": 2
+        },
+        "sklearn/sklearn.metrics.cluster._supervised/mutual_info_score/labels_pred": {
+            "None": 1,
+            "verySimpleLearner.predict_proba(trainInputFeature)[:, 1]": 1,
+            "verySimpleLearner.predict_proba(validInputFeature)[:, 1]": 1,
+            "verySimpleLearner.predict_proba(trainInputFeatures)[:, 1]": 1,
+            "verySimpleLearner.predict_proba(validInputFeatures)[:, 1]": 1,
+            "test['lee_a_coref']": 1,
+            "test['lee_b_coref']": 1,
+            "col_corr": 1
+        },
+        "sklearn/sklearn.tree._export/export_graphviz/special_characters": {
+            "True": 52,
+            "False": 150
         }
     }
 }

@@ -19132,9 +19132,7 @@
             "target": "sklearn/sklearn.cluster._affinity_propagation/AffinityPropagation/__init__/damping",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 0.5
+            "variant": "required"
         },
         "sklearn/sklearn.cluster._affinity_propagation/AffinityPropagation/__init__/max_iter": {
             "target": "sklearn/sklearn.cluster._affinity_propagation/AffinityPropagation/__init__/max_iter",
@@ -19398,9 +19396,7 @@
             "target": "sklearn/sklearn.cluster._agglomerative/FeatureAgglomeration/__init__/connectivity",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.cluster._agglomerative/FeatureAgglomeration/__init__/compute_full_tree": {
             "target": "sklearn/sklearn.cluster._agglomerative/FeatureAgglomeration/__init__/compute_full_tree",
@@ -19520,9 +19516,7 @@
             "target": "sklearn/sklearn.cluster._dbscan/DBSCAN/__init__/min_samples",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 5.0
+            "variant": "required"
         },
         "sklearn/sklearn.cluster._dbscan/DBSCAN/__init__/metric": {
             "target": "sklearn/sklearn.cluster._dbscan/DBSCAN/__init__/metric",
@@ -19826,9 +19820,7 @@
             "target": "sklearn/sklearn.cluster._kmeans/MiniBatchKMeans/__init__/batch_size",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 10000.0
+            "variant": "required"
         },
         "sklearn/sklearn.cluster._kmeans/MiniBatchKMeans/__init__/verbose": {
             "target": "sklearn/sklearn.cluster._kmeans/MiniBatchKMeans/__init__/verbose",
@@ -20130,9 +20122,7 @@
             "target": "sklearn/sklearn.cluster._mean_shift/MeanShift/__init__/bin_seeding",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "boolean",
-            "defaultValue": true
+            "variant": "required"
         },
         "sklearn/sklearn.cluster._mean_shift/MeanShift/__init__/min_bin_freq": {
             "target": "sklearn/sklearn.cluster._mean_shift/MeanShift/__init__/min_bin_freq",
@@ -20286,9 +20276,7 @@
             "target": "sklearn/sklearn.cluster._optics/OPTICS/__init__/min_cluster_size",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.cluster._optics/OPTICS/__init__/algorithm": {
             "target": "sklearn/sklearn.cluster._optics/OPTICS/__init__/algorithm",
@@ -20346,9 +20334,7 @@
             "target": "sklearn/sklearn.cluster._spectral/SpectralClustering/__init__/eigen_solver",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.cluster._spectral/SpectralClustering/__init__/n_components": {
             "target": "sklearn/sklearn.cluster._spectral/SpectralClustering/__init__/n_components",
@@ -20362,9 +20348,7 @@
             "target": "sklearn/sklearn.cluster._spectral/SpectralClustering/__init__/random_state",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.cluster._spectral/SpectralClustering/__init__/n_init": {
             "target": "sklearn/sklearn.cluster._spectral/SpectralClustering/__init__/n_init",
@@ -20386,9 +20370,7 @@
             "target": "sklearn/sklearn.cluster._spectral/SpectralClustering/__init__/affinity",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "string",
-            "defaultValue": "nearest_neighbors"
+            "variant": "required"
         },
         "sklearn/sklearn.cluster._spectral/SpectralClustering/__init__/n_neighbors": {
             "target": "sklearn/sklearn.cluster._spectral/SpectralClustering/__init__/n_neighbors",
@@ -20410,9 +20392,7 @@
             "target": "sklearn/sklearn.cluster._spectral/SpectralClustering/__init__/assign_labels",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "string",
-            "defaultValue": "kmeans"
+            "variant": "required"
         },
         "sklearn/sklearn.cluster._spectral/SpectralClustering/__init__/degree": {
             "target": "sklearn/sklearn.cluster._spectral/SpectralClustering/__init__/degree",
@@ -20492,7 +20472,9 @@
             "target": "sklearn/sklearn.compose._column_transformer/ColumnTransformer/__init__/remainder",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "required"
+            "variant": "optional",
+            "defaultValueType": "string",
+            "defaultValue": "drop"
         },
         "sklearn/sklearn.compose._column_transformer/ColumnTransformer/__init__/sparse_threshold": {
             "target": "sklearn/sklearn.compose._column_transformer/ColumnTransformer/__init__/sparse_threshold",
@@ -20660,17 +20642,13 @@
             "target": "sklearn/sklearn.compose._target/TransformedTargetRegressor/__init__/func",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.compose._target/TransformedTargetRegressor/__init__/inverse_func": {
             "target": "sklearn/sklearn.compose._target/TransformedTargetRegressor/__init__/inverse_func",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.compose._target/TransformedTargetRegressor/__init__/check_inverse": {
             "target": "sklearn/sklearn.compose._target/TransformedTargetRegressor/__init__/check_inverse",
@@ -20968,9 +20946,7 @@
             "target": "sklearn/sklearn.covariance._robust_covariance/MinCovDet/__init__/support_fraction",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.covariance._robust_covariance/MinCovDet/__init__/random_state": {
             "target": "sklearn/sklearn.covariance._robust_covariance/MinCovDet/__init__/random_state",
@@ -21066,9 +21042,7 @@
             "target": "sklearn/sklearn.covariance._shrunk_covariance/ShrunkCovariance/__init__/shrinkage",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 0.1
+            "variant": "required"
         },
         "sklearn/sklearn.covariance._shrunk_covariance/ShrunkCovariance/fit/X": {
             "target": "sklearn/sklearn.covariance._shrunk_covariance/ShrunkCovariance/fit/X",
@@ -21172,9 +21146,7 @@
             "target": "sklearn/sklearn.cross_decomposition._pls/PLSRegression/__init__/tol",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 1e-6
+            "variant": "required"
         },
         "sklearn/sklearn.cross_decomposition._pls/PLSRegression/__init__/copy": {
             "target": "sklearn/sklearn.cross_decomposition._pls/PLSRegression/__init__/copy",
@@ -21540,9 +21512,7 @@
             "target": "sklearn/sklearn.datasets._samples_generator/make_blobs/n_features",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 2.0
+            "variant": "required"
         },
         "sklearn/sklearn.datasets._samples_generator/make_blobs/centers": {
             "target": "sklearn/sklearn.datasets._samples_generator/make_blobs/centers",
@@ -21620,9 +21590,7 @@
             "target": "sklearn/sklearn.datasets._samples_generator/make_classification/n_samples",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 100.0
+            "variant": "required"
         },
         "sklearn/sklearn.datasets._samples_generator/make_classification/n_features": {
             "target": "sklearn/sklearn.datasets._samples_generator/make_classification/n_features",
@@ -21666,7 +21634,9 @@
             "target": "sklearn/sklearn.datasets._samples_generator/make_classification/n_clusters_per_class",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "required"
+            "variant": "optional",
+            "defaultValueType": "number",
+            "defaultValue": 2.0
         },
         "sklearn/sklearn.datasets._samples_generator/make_classification/weights": {
             "target": "sklearn/sklearn.datasets._samples_generator/make_classification/weights",
@@ -21728,9 +21698,7 @@
             "target": "sklearn/sklearn.datasets._samples_generator/make_classification/random_state",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.datasets._samples_generator/make_moons/n_samples": {
             "target": "sklearn/sklearn.datasets._samples_generator/make_moons/n_samples",
@@ -21756,9 +21724,7 @@
             "target": "sklearn/sklearn.datasets._samples_generator/make_moons/random_state",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.datasets._samples_generator/make_multilabel_classification/n_samples": {
             "target": "sklearn/sklearn.datasets._samples_generator/make_multilabel_classification/n_samples",
@@ -22486,9 +22452,7 @@
             "target": "sklearn/sklearn.decomposition._incremental_pca/IncrementalPCA/__init__/n_components",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 5.0
+            "variant": "required"
         },
         "sklearn/sklearn.decomposition._incremental_pca/IncrementalPCA/__init__/whiten": {
             "target": "sklearn/sklearn.decomposition._incremental_pca/IncrementalPCA/__init__/whiten",
@@ -22510,9 +22474,7 @@
             "target": "sklearn/sklearn.decomposition._incremental_pca/IncrementalPCA/__init__/batch_size",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.decomposition._incremental_pca/IncrementalPCA/fit/X": {
             "target": "sklearn/sklearn.decomposition._incremental_pca/IncrementalPCA/fit/X",
@@ -22720,9 +22682,7 @@
             "target": "sklearn/sklearn.decomposition._lda/LatentDirichletAllocation/__init__/n_components",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 10.0
+            "variant": "required"
         },
         "sklearn/sklearn.decomposition._lda/LatentDirichletAllocation/__init__/doc_topic_prior": {
             "target": "sklearn/sklearn.decomposition._lda/LatentDirichletAllocation/__init__/doc_topic_prior",
@@ -22744,7 +22704,9 @@
             "target": "sklearn/sklearn.decomposition._lda/LatentDirichletAllocation/__init__/learning_method",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "required"
+            "variant": "optional",
+            "defaultValueType": "string",
+            "defaultValue": "online"
         },
         "sklearn/sklearn.decomposition._lda/LatentDirichletAllocation/__init__/learning_decay": {
             "target": "sklearn/sklearn.decomposition._lda/LatentDirichletAllocation/__init__/learning_decay",
@@ -22758,7 +22720,9 @@
             "target": "sklearn/sklearn.decomposition._lda/LatentDirichletAllocation/__init__/learning_offset",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "required"
+            "variant": "optional",
+            "defaultValueType": "number",
+            "defaultValue": 10.0
         },
         "sklearn/sklearn.decomposition._lda/LatentDirichletAllocation/__init__/max_iter": {
             "target": "sklearn/sklearn.decomposition._lda/LatentDirichletAllocation/__init__/max_iter",
@@ -23148,9 +23112,7 @@
             "target": "sklearn/sklearn.decomposition._sparse_pca/SparsePCA/__init__/n_components",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 2.0
+            "variant": "required"
         },
         "sklearn/sklearn.decomposition._sparse_pca/SparsePCA/__init__/alpha": {
             "target": "sklearn/sklearn.decomposition._sparse_pca/SparsePCA/__init__/alpha",
@@ -23228,9 +23190,7 @@
             "target": "sklearn/sklearn.decomposition._sparse_pca/SparsePCA/__init__/random_state",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 42.0
+            "variant": "required"
         },
         "sklearn/sklearn.decomposition._sparse_pca/SparsePCA/transform/X": {
             "target": "sklearn/sklearn.decomposition._sparse_pca/SparsePCA/transform/X",
@@ -23546,7 +23506,9 @@
             "target": "sklearn/sklearn.dummy/DummyRegressor/__init__/strategy",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "required"
+            "variant": "optional",
+            "defaultValueType": "string",
+            "defaultValue": "median"
         },
         "sklearn/sklearn.dummy/DummyRegressor/__init__/constant": {
             "target": "sklearn/sklearn.dummy/DummyRegressor/__init__/constant",
@@ -24494,9 +24456,7 @@
             "target": "sklearn/sklearn.ensemble._forest/RandomTreesEmbedding/__init__/sparse_output",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "boolean",
-            "defaultValue": true
+            "variant": "required"
         },
         "sklearn/sklearn.ensemble._forest/RandomTreesEmbedding/__init__/n_jobs": {
             "target": "sklearn/sklearn.ensemble._forest/RandomTreesEmbedding/__init__/n_jobs",
@@ -24514,9 +24474,7 @@
             "target": "sklearn/sklearn.ensemble._forest/RandomTreesEmbedding/__init__/verbose",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 0.0
+            "variant": "required"
         },
         "sklearn/sklearn.ensemble._forest/RandomTreesEmbedding/__init__/warm_start": {
             "target": "sklearn/sklearn.ensemble._forest/RandomTreesEmbedding/__init__/warm_start",
@@ -25092,9 +25050,7 @@
             "target": "sklearn/sklearn.ensemble._hist_gradient_boosting.gradient_boosting/HistGradientBoostingClassifier/__init__/validation_fraction",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 0.1
+            "variant": "required"
         },
         "sklearn/sklearn.ensemble._hist_gradient_boosting.gradient_boosting/HistGradientBoostingClassifier/__init__/n_iter_no_change": {
             "target": "sklearn/sklearn.ensemble._hist_gradient_boosting.gradient_boosting/HistGradientBoostingClassifier/__init__/n_iter_no_change",
@@ -25350,9 +25306,7 @@
             "target": "sklearn/sklearn.ensemble._iforest/IsolationForest/__init__/random_state",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.ensemble._iforest/IsolationForest/__init__/verbose": {
             "target": "sklearn/sklearn.ensemble._iforest/IsolationForest/__init__/verbose",
@@ -25420,9 +25374,7 @@
             "target": "sklearn/sklearn.ensemble._stacking/StackingClassifier/__init__/final_estimator",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.ensemble._stacking/StackingClassifier/__init__/cv": {
             "target": "sklearn/sklearn.ensemble._stacking/StackingClassifier/__init__/cv",
@@ -25578,7 +25530,9 @@
             "target": "sklearn/sklearn.ensemble._voting/VotingClassifier/__init__/voting",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "required"
+            "variant": "optional",
+            "defaultValueType": "string",
+            "defaultValue": "soft"
         },
         "sklearn/sklearn.ensemble._voting/VotingClassifier/__init__/weights": {
             "target": "sklearn/sklearn.ensemble._voting/VotingClassifier/__init__/weights",
@@ -26004,17 +25958,13 @@
             "target": "sklearn/sklearn.feature_extraction.image/extract_patches_2d/max_patches",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.feature_extraction.image/extract_patches_2d/random_state": {
             "target": "sklearn/sklearn.feature_extraction.image/extract_patches_2d/random_state",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.feature_extraction.text/CountVectorizer/__init__/input": {
             "target": "sklearn/sklearn.feature_extraction.text/CountVectorizer/__init__/input",
@@ -26468,7 +26418,9 @@
             "target": "sklearn/sklearn.feature_extraction.text/TfidfVectorizer/__init__/stop_words",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "required"
+            "variant": "optional",
+            "defaultValueType": "none",
+            "defaultValue": null
         },
         "sklearn/sklearn.feature_extraction.text/TfidfVectorizer/__init__/token_pattern": {
             "target": "sklearn/sklearn.feature_extraction.text/TfidfVectorizer/__init__/token_pattern",
@@ -26742,9 +26694,7 @@
             "target": "sklearn/sklearn.feature_selection._mutual_info/mutual_info_classif/random_state",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 0.0
+            "variant": "required"
         },
         "sklearn/sklearn.feature_selection._mutual_info/mutual_info_regression/X": {
             "target": "sklearn/sklearn.feature_selection._mutual_info/mutual_info_regression/X",
@@ -27016,17 +26966,13 @@
             "target": "sklearn/sklearn.feature_selection._univariate_selection/GenericUnivariateSelect/__init__/mode",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "string",
-            "defaultValue": "fwe"
+            "variant": "required"
         },
         "sklearn/sklearn.feature_selection._univariate_selection/GenericUnivariateSelect/__init__/param": {
             "target": "sklearn/sklearn.feature_selection._univariate_selection/GenericUnivariateSelect/__init__/param",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 0.001
+            "variant": "required"
         },
         "sklearn/sklearn.feature_selection._univariate_selection/SelectFdr/__init__/score_func": {
             "target": "sklearn/sklearn.feature_selection._univariate_selection/SelectFdr/__init__/score_func",
@@ -27272,9 +27218,7 @@
             "target": "sklearn/sklearn.gaussian_process._gpr/GaussianProcessRegressor/__init__/kernel",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.gaussian_process._gpr/GaussianProcessRegressor/__init__/alpha": {
             "target": "sklearn/sklearn.gaussian_process._gpr/GaussianProcessRegressor/__init__/alpha",
@@ -27436,9 +27380,7 @@
             "target": "sklearn/sklearn.gaussian_process.kernels/RBF/__init__/length_scale",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 1.0
+            "variant": "required"
         },
         "sklearn/sklearn.gaussian_process.kernels/RBF/__init__/length_scale_bounds": {
             "target": "sklearn/sklearn.gaussian_process.kernels/RBF/__init__/length_scale_bounds",
@@ -27558,7 +27500,9 @@
             "target": "sklearn/sklearn.impute._base/SimpleImputer/__init__/strategy",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "required"
+            "variant": "optional",
+            "defaultValueType": "string",
+            "defaultValue": "mean"
         },
         "sklearn/sklearn.impute._base/SimpleImputer/__init__/fill_value": {
             "target": "sklearn/sklearn.impute._base/SimpleImputer/__init__/fill_value",
@@ -27706,9 +27650,7 @@
             "target": "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/random_state",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/add_indicator": {
             "target": "sklearn/sklearn.impute._iterative/IterativeImputer/__init__/add_indicator",
@@ -27902,9 +27844,7 @@
             "target": "sklearn/sklearn.inspection._permutation_importance/permutation_importance/n_repeats",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 5.0
+            "variant": "required"
         },
         "sklearn/sklearn.inspection._permutation_importance/permutation_importance/n_jobs": {
             "target": "sklearn/sklearn.inspection._permutation_importance/permutation_importance/n_jobs",
@@ -27968,9 +27908,7 @@
             "target": "sklearn/sklearn.inspection._plot.partial_dependence/plot_partial_dependence/target",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.inspection._plot.partial_dependence/plot_partial_dependence/response_method": {
             "target": "sklearn/sklearn.inspection._plot.partial_dependence/plot_partial_dependence/response_method",
@@ -28098,17 +28036,13 @@
             "target": "sklearn/sklearn.isotonic/IsotonicRegression/__init__/y_min",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.isotonic/IsotonicRegression/__init__/y_max": {
             "target": "sklearn/sklearn.isotonic/IsotonicRegression/__init__/y_max",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.isotonic/IsotonicRegression/__init__/increasing": {
             "target": "sklearn/sklearn.isotonic/IsotonicRegression/__init__/increasing",
@@ -29442,9 +29376,7 @@
             "target": "sklearn/sklearn.linear_model._glm.glm/TweedieRegressor/__init__/power",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 0.0
+            "variant": "required"
         },
         "sklearn/sklearn.linear_model._glm.glm/TweedieRegressor/__init__/alpha": {
             "target": "sklearn/sklearn.linear_model._glm.glm/TweedieRegressor/__init__/alpha",
@@ -29602,9 +29534,7 @@
             "target": "sklearn/sklearn.linear_model._least_angle/Lars/__init__/n_nonzero_coefs",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 500.0
+            "variant": "required"
         },
         "sklearn/sklearn.linear_model._least_angle/Lars/__init__/eps": {
             "target": "sklearn/sklearn.linear_model._least_angle/Lars/__init__/eps",
@@ -30356,9 +30286,7 @@
             "target": "sklearn/sklearn.linear_model._omp/OrthogonalMatchingPursuit/__init__/n_nonzero_coefs",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.linear_model._omp/OrthogonalMatchingPursuit/__init__/tol": {
             "target": "sklearn/sklearn.linear_model._omp/OrthogonalMatchingPursuit/__init__/tol",
@@ -30380,17 +30308,13 @@
             "target": "sklearn/sklearn.linear_model._omp/OrthogonalMatchingPursuit/__init__/normalize",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "string",
-            "defaultValue": "deprecated"
+            "variant": "required"
         },
         "sklearn/sklearn.linear_model._omp/OrthogonalMatchingPursuit/__init__/precompute": {
             "target": "sklearn/sklearn.linear_model._omp/OrthogonalMatchingPursuit/__init__/precompute",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "string",
-            "defaultValue": "auto"
+            "variant": "required"
         },
         "sklearn/sklearn.linear_model._omp/OrthogonalMatchingPursuit/fit/X": {
             "target": "sklearn/sklearn.linear_model._omp/OrthogonalMatchingPursuit/fit/X",
@@ -30684,9 +30608,7 @@
             "target": "sklearn/sklearn.linear_model._passive_aggressive/PassiveAggressiveRegressor/__init__/loss",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "string",
-            "defaultValue": "epsilon_insensitive"
+            "variant": "required"
         },
         "sklearn/sklearn.linear_model._passive_aggressive/PassiveAggressiveRegressor/__init__/epsilon": {
             "target": "sklearn/sklearn.linear_model._passive_aggressive/PassiveAggressiveRegressor/__init__/epsilon",
@@ -30698,9 +30620,7 @@
             "target": "sklearn/sklearn.linear_model._passive_aggressive/PassiveAggressiveRegressor/__init__/random_state",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.linear_model._passive_aggressive/PassiveAggressiveRegressor/__init__/warm_start": {
             "target": "sklearn/sklearn.linear_model._passive_aggressive/PassiveAggressiveRegressor/__init__/warm_start",
@@ -31470,7 +31390,9 @@
             "target": "sklearn/sklearn.linear_model._stochastic_gradient/SGDClassifier/__init__/loss",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "required"
+            "variant": "optional",
+            "defaultValueType": "string",
+            "defaultValue": "log"
         },
         "sklearn/sklearn.linear_model._stochastic_gradient/SGDClassifier/__init__/penalty": {
             "target": "sklearn/sklearn.linear_model._stochastic_gradient/SGDClassifier/__init__/penalty",
@@ -31610,7 +31532,9 @@
             "target": "sklearn/sklearn.linear_model._stochastic_gradient/SGDClassifier/__init__/class_weight",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "required"
+            "variant": "optional",
+            "defaultValueType": "none",
+            "defaultValue": null
         },
         "sklearn/sklearn.linear_model._stochastic_gradient/SGDClassifier/__init__/warm_start": {
             "target": "sklearn/sklearn.linear_model._stochastic_gradient/SGDClassifier/__init__/warm_start",
@@ -31894,9 +31818,7 @@
             "target": "sklearn/sklearn.manifold._isomap/Isomap/__init__/n_components",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 2.0
+            "variant": "required"
         },
         "sklearn/sklearn.manifold._isomap/Isomap/__init__/eigen_solver": {
             "target": "sklearn/sklearn.manifold._isomap/Isomap/__init__/eigen_solver",
@@ -32014,9 +31936,7 @@
             "target": "sklearn/sklearn.manifold._locally_linear/LocallyLinearEmbedding/__init__/n_components",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 2.0
+            "variant": "required"
         },
         "sklearn/sklearn.manifold._locally_linear/LocallyLinearEmbedding/__init__/reg": {
             "target": "sklearn/sklearn.manifold._locally_linear/LocallyLinearEmbedding/__init__/reg",
@@ -32030,9 +31950,7 @@
             "target": "sklearn/sklearn.manifold._locally_linear/LocallyLinearEmbedding/__init__/eigen_solver",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "string",
-            "defaultValue": "auto"
+            "variant": "required"
         },
         "sklearn/sklearn.manifold._locally_linear/LocallyLinearEmbedding/__init__/tol": {
             "target": "sklearn/sklearn.manifold._locally_linear/LocallyLinearEmbedding/__init__/tol",
@@ -32054,9 +31972,7 @@
             "target": "sklearn/sklearn.manifold._locally_linear/LocallyLinearEmbedding/__init__/method",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "string",
-            "defaultValue": "standard"
+            "variant": "required"
         },
         "sklearn/sklearn.manifold._locally_linear/LocallyLinearEmbedding/__init__/hessian_tol": {
             "target": "sklearn/sklearn.manifold._locally_linear/LocallyLinearEmbedding/__init__/hessian_tol",
@@ -32120,9 +32036,7 @@
             "target": "sklearn/sklearn.manifold._mds/MDS/__init__/n_components",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 2.0
+            "variant": "required"
         },
         "sklearn/sklearn.manifold._mds/MDS/__init__/metric": {
             "target": "sklearn/sklearn.manifold._mds/MDS/__init__/metric",
@@ -32172,9 +32086,7 @@
             "target": "sklearn/sklearn.manifold._mds/MDS/__init__/random_state",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.manifold._mds/MDS/__init__/dissimilarity": {
             "target": "sklearn/sklearn.manifold._mds/MDS/__init__/dissimilarity",
@@ -32578,9 +32490,7 @@
             "target": "sklearn/sklearn.metrics._classification/brier_score_loss/pos_label",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.metrics._classification/classification_report/y_true": {
             "target": "sklearn/sklearn.metrics._classification/classification_report/y_true",
@@ -32746,7 +32656,9 @@
             "target": "sklearn/sklearn.metrics._classification/f1_score/average",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "required"
+            "variant": "optional",
+            "defaultValueType": "string",
+            "defaultValue": "binary"
         },
         "sklearn/sklearn.metrics._classification/f1_score/sample_weight": {
             "target": "sklearn/sklearn.metrics._classification/f1_score/sample_weight",
@@ -33008,9 +32920,7 @@
             "target": "sklearn/sklearn.metrics._classification/multilabel_confusion_matrix/labels",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.metrics._classification/multilabel_confusion_matrix/samplewise": {
             "target": "sklearn/sklearn.metrics._classification/multilabel_confusion_matrix/samplewise",
@@ -33116,7 +33026,9 @@
             "target": "sklearn/sklearn.metrics._classification/precision_score/average",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "required"
+            "variant": "optional",
+            "defaultValueType": "string",
+            "defaultValue": "binary"
         },
         "sklearn/sklearn.metrics._classification/precision_score/sample_weight": {
             "target": "sklearn/sklearn.metrics._classification/precision_score/sample_weight",
@@ -33478,9 +33390,7 @@
             "target": "sklearn/sklearn.metrics._plot.precision_recall_curve/plot_precision_recall_curve/ax",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.metrics._plot.precision_recall_curve/plot_precision_recall_curve/pos_label": {
             "target": "sklearn/sklearn.metrics._plot.precision_recall_curve/plot_precision_recall_curve/pos_label",
@@ -33672,9 +33582,7 @@
             "target": "sklearn/sklearn.metrics._ranking/label_ranking_average_precision_score/sample_weight",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.metrics._ranking/ndcg_score/y_true": {
             "target": "sklearn/sklearn.metrics._ranking/ndcg_score/y_true",
@@ -34098,9 +34006,7 @@
             "target": "sklearn/sklearn.metrics._scorer/get_scorer/scoring",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "string",
-            "defaultValue": "f1_macro"
+            "variant": "required"
         },
         "sklearn/sklearn.metrics._scorer/make_scorer/score_func": {
             "target": "sklearn/sklearn.metrics._scorer/make_scorer/score_func",
@@ -34196,17 +34102,13 @@
             "target": "sklearn/sklearn.metrics.cluster._supervised/mutual_info_score/labels_pred",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.metrics.cluster._supervised/mutual_info_score/contingency": {
             "target": "sklearn/sklearn.metrics.cluster._supervised/mutual_info_score/contingency",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.metrics.cluster._supervised/normalized_mutual_info_score/labels_true": {
             "target": "sklearn/sklearn.metrics.cluster._supervised/normalized_mutual_info_score/labels_true",
@@ -34362,9 +34264,7 @@
             "target": "sklearn/sklearn.metrics.pairwise/euclidean_distances/Y",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.metrics.pairwise/euclidean_distances/Y_norm_squared": {
             "target": "sklearn/sklearn.metrics.pairwise/euclidean_distances/Y_norm_squared",
@@ -35588,7 +35488,9 @@
             "target": "sklearn/sklearn.model_selection._split/KFold/__init__/shuffle",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "required"
+            "variant": "optional",
+            "defaultValueType": "boolean",
+            "defaultValue": true
         },
         "sklearn/sklearn.model_selection._split/KFold/__init__/random_state": {
             "target": "sklearn/sklearn.model_selection._split/KFold/__init__/random_state",
@@ -35746,9 +35648,7 @@
             "target": "sklearn/sklearn.model_selection._split/RepeatedStratifiedKFold/__init__/random_state",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 42.0
+            "variant": "required"
         },
         "sklearn/sklearn.model_selection._split/ShuffleSplit/__init__/n_splits": {
             "target": "sklearn/sklearn.model_selection._split/ShuffleSplit/__init__/n_splits",
@@ -35792,15 +35692,15 @@
             "target": "sklearn/sklearn.model_selection._split/StratifiedKFold/__init__/shuffle",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "required"
+            "variant": "optional",
+            "defaultValueType": "boolean",
+            "defaultValue": true
         },
         "sklearn/sklearn.model_selection._split/StratifiedKFold/__init__/random_state": {
             "target": "sklearn/sklearn.model_selection._split/StratifiedKFold/__init__/random_state",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 42.0
+            "variant": "required"
         },
         "sklearn/sklearn.model_selection._split/StratifiedKFold/split/X": {
             "target": "sklearn/sklearn.model_selection._split/StratifiedKFold/split/X",
@@ -35850,9 +35750,7 @@
             "target": "sklearn/sklearn.model_selection._split/StratifiedShuffleSplit/__init__/random_state",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 42.0
+            "variant": "required"
         },
         "sklearn/sklearn.model_selection._split/StratifiedShuffleSplit/split/X": {
             "target": "sklearn/sklearn.model_selection._split/StratifiedShuffleSplit/split/X",
@@ -36000,9 +35898,7 @@
             "target": "sklearn/sklearn.model_selection._split/_RepeatedSplits/split/y",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.model_selection._split/_RepeatedSplits/split/groups": {
             "target": "sklearn/sklearn.model_selection._split/_RepeatedSplits/split/groups",
@@ -36076,9 +35972,7 @@
             "target": "sklearn/sklearn.model_selection._split/train_test_split/random_state",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 42.0
+            "variant": "required"
         },
         "sklearn/sklearn.model_selection._split/train_test_split/shuffle": {
             "target": "sklearn/sklearn.model_selection._split/train_test_split/shuffle",
@@ -36238,7 +36132,9 @@
             "target": "sklearn/sklearn.model_selection._validation/cross_val_score/cv",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "required"
+            "variant": "optional",
+            "defaultValueType": "number",
+            "defaultValue": 5.0
         },
         "sklearn/sklearn.model_selection._validation/cross_val_score/n_jobs": {
             "target": "sklearn/sklearn.model_selection._validation/cross_val_score/n_jobs",
@@ -36356,7 +36252,9 @@
             "target": "sklearn/sklearn.model_selection._validation/cross_validate/return_train_score",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "required"
+            "variant": "optional",
+            "defaultValueType": "boolean",
+            "defaultValue": false
         },
         "sklearn/sklearn.model_selection._validation/cross_validate/return_estimator": {
             "target": "sklearn/sklearn.model_selection._validation/cross_validate/return_estimator",
@@ -36414,9 +36312,7 @@
             "target": "sklearn/sklearn.model_selection._validation/learning_curve/scoring",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.model_selection._validation/learning_curve/exploit_incremental_learning": {
             "target": "sklearn/sklearn.model_selection._validation/learning_curve/exploit_incremental_learning",
@@ -36508,9 +36404,7 @@
             "target": "sklearn/sklearn.model_selection._validation/validation_curve/param_name",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "string",
-            "defaultValue": "max_depth"
+            "variant": "required"
         },
         "sklearn/sklearn.model_selection._validation/validation_curve/param_range": {
             "target": "sklearn/sklearn.model_selection._validation/validation_curve/param_range",
@@ -36768,9 +36662,7 @@
             "target": "sklearn/sklearn.multioutput/_BaseChain/__init__/random_state",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.multioutput/_BaseChain/predict/X": {
             "target": "sklearn/sklearn.multioutput/_BaseChain/predict/X",
@@ -37038,9 +36930,7 @@
             "target": "sklearn/sklearn.naive_bayes/_BaseDiscreteNB/partial_fit/classes",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.naive_bayes/_BaseDiscreteNB/partial_fit/sample_weight": {
             "target": "sklearn/sklearn.naive_bayes/_BaseDiscreteNB/partial_fit/sample_weight",
@@ -37100,9 +36990,7 @@
             "target": "sklearn/sklearn.neighbors._base/RadiusNeighborsMixin/radius_neighbors/radius",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.neighbors._base/RadiusNeighborsMixin/radius_neighbors/return_distance": {
             "target": "sklearn/sklearn.neighbors._base/RadiusNeighborsMixin/radius_neighbors/return_distance",
@@ -37330,9 +37218,7 @@
             "target": "sklearn/sklearn.neighbors._distance_metric/DistanceMetric/get_metric/metric",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "string",
-            "defaultValue": "minkowski"
+            "variant": "required"
         },
         "sklearn/sklearn.neighbors._graph/kneighbors_graph/X": {
             "target": "sklearn/sklearn.neighbors._graph/kneighbors_graph/X",
@@ -37398,9 +37284,7 @@
             "target": "sklearn/sklearn.neighbors._kde/KernelDensity/__init__/bandwidth",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 0.02
+            "variant": "required"
         },
         "sklearn/sklearn.neighbors._kde/KernelDensity/__init__/algorithm": {
             "target": "sklearn/sklearn.neighbors._kde/KernelDensity/__init__/algorithm",
@@ -37514,9 +37398,7 @@
             "target": "sklearn/sklearn.neighbors._lof/LocalOutlierFactor/__init__/n_neighbors",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 20.0
+            "variant": "required"
         },
         "sklearn/sklearn.neighbors._lof/LocalOutlierFactor/__init__/algorithm": {
             "target": "sklearn/sklearn.neighbors._lof/LocalOutlierFactor/__init__/algorithm",
@@ -37798,9 +37680,7 @@
             "target": "sklearn/sklearn.neighbors._regression/RadiusNeighborsRegressor/__init__/weights",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "string",
-            "defaultValue": "uniform"
+            "variant": "required"
         },
         "sklearn/sklearn.neighbors._regression/RadiusNeighborsRegressor/__init__/algorithm": {
             "target": "sklearn/sklearn.neighbors._regression/RadiusNeighborsRegressor/__init__/algorithm",
@@ -37822,17 +37702,13 @@
             "target": "sklearn/sklearn.neighbors._regression/RadiusNeighborsRegressor/__init__/p",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 2.0
+            "variant": "required"
         },
         "sklearn/sklearn.neighbors._regression/RadiusNeighborsRegressor/__init__/metric": {
             "target": "sklearn/sklearn.neighbors._regression/RadiusNeighborsRegressor/__init__/metric",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "string",
-            "defaultValue": "minkowski"
+            "variant": "required"
         },
         "sklearn/sklearn.neighbors._regression/RadiusNeighborsRegressor/__init__/metric_params": {
             "target": "sklearn/sklearn.neighbors._regression/RadiusNeighborsRegressor/__init__/metric_params",
@@ -38428,7 +38304,9 @@
             "target": "sklearn/sklearn.pipeline/FeatureUnion/__init__/n_jobs",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "required"
+            "variant": "optional",
+            "defaultValueType": "none",
+            "defaultValue": null
         },
         "sklearn/sklearn.pipeline/FeatureUnion/__init__/transformer_weights": {
             "target": "sklearn/sklearn.pipeline/FeatureUnion/__init__/transformer_weights",
@@ -39256,7 +39134,9 @@
             "target": "sklearn/sklearn.preprocessing._data/normalize/axis",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "required"
+            "variant": "optional",
+            "defaultValueType": "number",
+            "defaultValue": 1.0
         },
         "sklearn/sklearn.preprocessing._data/normalize/copy": {
             "target": "sklearn/sklearn.preprocessing._data/normalize/copy",
@@ -39328,9 +39208,7 @@
             "target": "sklearn/sklearn.preprocessing._data/quantile_transform/output_distribution",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "string",
-            "defaultValue": "uniform"
+            "variant": "required"
         },
         "sklearn/sklearn.preprocessing._data/quantile_transform/ignore_implicit_zeros": {
             "target": "sklearn/sklearn.preprocessing._data/quantile_transform/ignore_implicit_zeros",
@@ -39602,9 +39480,7 @@
             "target": "sklearn/sklearn.preprocessing._encoders/OneHotEncoder/get_feature_names/input_features",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.preprocessing._encoders/OneHotEncoder/inverse_transform/X": {
             "target": "sklearn/sklearn.preprocessing._encoders/OneHotEncoder/inverse_transform/X",
@@ -40150,41 +40026,31 @@
             "target": "sklearn/sklearn.semi_supervised._label_propagation/LabelSpreading/__init__/kernel",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "string",
-            "defaultValue": "rbf"
+            "variant": "required"
         },
         "sklearn/sklearn.semi_supervised._label_propagation/LabelSpreading/__init__/gamma": {
             "target": "sklearn/sklearn.semi_supervised._label_propagation/LabelSpreading/__init__/gamma",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 0.01
+            "variant": "required"
         },
         "sklearn/sklearn.semi_supervised._label_propagation/LabelSpreading/__init__/n_neighbors": {
             "target": "sklearn/sklearn.semi_supervised._label_propagation/LabelSpreading/__init__/n_neighbors",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 7.0
+            "variant": "required"
         },
         "sklearn/sklearn.semi_supervised._label_propagation/LabelSpreading/__init__/alpha": {
             "target": "sklearn/sklearn.semi_supervised._label_propagation/LabelSpreading/__init__/alpha",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 0.2
+            "variant": "required"
         },
         "sklearn/sklearn.semi_supervised._label_propagation/LabelSpreading/__init__/max_iter": {
             "target": "sklearn/sklearn.semi_supervised._label_propagation/LabelSpreading/__init__/max_iter",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "number",
-            "defaultValue": 10.0
+            "variant": "required"
         },
         "sklearn/sklearn.semi_supervised._label_propagation/LabelSpreading/__init__/tol": {
             "target": "sklearn/sklearn.semi_supervised._label_propagation/LabelSpreading/__init__/tol",
@@ -41388,9 +41254,7 @@
             "target": "sklearn/sklearn.tree._classes/ExtraTreeRegressor/__init__/splitter",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "string",
-            "defaultValue": "random"
+            "variant": "required"
         },
         "sklearn/sklearn.tree._classes/ExtraTreeRegressor/__init__/max_depth": {
             "target": "sklearn/sklearn.tree._classes/ExtraTreeRegressor/__init__/max_depth",
@@ -41436,9 +41300,7 @@
             "target": "sklearn/sklearn.tree._classes/ExtraTreeRegressor/__init__/random_state",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.tree._classes/ExtraTreeRegressor/__init__/min_impurity_decrease": {
             "target": "sklearn/sklearn.tree._classes/ExtraTreeRegressor/__init__/min_impurity_decrease",
@@ -41490,9 +41352,7 @@
             "target": "sklearn/sklearn.tree._export/export_graphviz/feature_names",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.tree._export/export_graphviz/class_names": {
             "target": "sklearn/sklearn.tree._export/export_graphviz/class_names",
@@ -41514,7 +41374,9 @@
             "target": "sklearn/sklearn.tree._export/export_graphviz/filled",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "required"
+            "variant": "optional",
+            "defaultValueType": "boolean",
+            "defaultValue": true
         },
         "sklearn/sklearn.tree._export/export_graphviz/leaves_parallel": {
             "target": "sklearn/sklearn.tree._export/export_graphviz/leaves_parallel",
@@ -41566,7 +41428,9 @@
             "target": "sklearn/sklearn.tree._export/export_graphviz/special_characters",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "required"
+            "variant": "optional",
+            "defaultValueType": "boolean",
+            "defaultValue": false
         },
         "sklearn/sklearn.tree._export/export_graphviz/precision": {
             "target": "sklearn/sklearn.tree._export/export_graphviz/precision",
@@ -41594,9 +41458,7 @@
             "target": "sklearn/sklearn.tree._export/export_text/feature_names",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.tree._export/export_text/max_depth": {
             "target": "sklearn/sklearn.tree._export/export_text/max_depth",
@@ -41648,9 +41510,7 @@
             "target": "sklearn/sklearn.tree._export/plot_tree/feature_names",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "optional",
-            "defaultValueType": "none",
-            "defaultValue": null
+            "variant": "required"
         },
         "sklearn/sklearn.tree._export/plot_tree/class_names": {
             "target": "sklearn/sklearn.tree._export/plot_tree/class_names",
@@ -41704,7 +41564,9 @@
             "target": "sklearn/sklearn.tree._export/plot_tree/rounded",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "required"
+            "variant": "optional",
+            "defaultValueType": "boolean",
+            "defaultValue": false
         },
         "sklearn/sklearn.tree._export/plot_tree/precision": {
             "target": "sklearn/sklearn.tree._export/plot_tree/precision",
@@ -42074,7 +41936,9 @@
             "target": "sklearn/sklearn.utils.validation/check_array/dtype",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "required"
+            "variant": "optional",
+            "defaultValueType": "string",
+            "defaultValue": "numeric"
         },
         "sklearn/sklearn.utils.validation/check_array/order": {
             "target": "sklearn/sklearn.utils.validation/check_array/order",
@@ -42204,7 +42068,9 @@
             "target": "sklearn/sklearn.utils/resample/replace",
             "authors": ["$autogen$"],
             "reviewers": [],
-            "variant": "required"
+            "variant": "optional",
+            "defaultValueType": "boolean",
+            "defaultValue": true
         },
         "sklearn/sklearn.utils/resample/n_samples": {
             "target": "sklearn/sklearn.utils/resample/n_samples",

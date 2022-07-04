@@ -12,6 +12,30 @@
                 "test/test/used_global_function",
                 "test/test/some_global_function"
             ]
+        },
+        {
+            "id": "sklearn/sklearn.utils",
+            "name": "sklearn.utils",
+            "imports": [],
+            "from_imports": [],
+            "classes": [],
+            "functions": ["sklearn/sklearn.utils.validation/check_array"]
+        },
+        {
+            "id": "sklearn/sklearn.metrics",
+            "name": "sklearn.metrics",
+            "imports": [],
+            "from_imports": [],
+            "classes": [],
+            "functions": ["sklearn/sklearn.metrics.cluster._supervised/mutual_info_score"]
+        },
+        {
+            "id": "sklearn/sklearn.tree",
+            "name": "sklearn.tree",
+            "imports": [],
+            "from_imports": [],
+            "classes": [],
+            "functions": ["sklearn/sklearn.tree._export/export_graphviz"]
         }
     ],
     "classes": [
@@ -250,6 +274,51 @@
                     "name": "kwargs",
                     "qname": "test.test.some_global_function.kwargs",
                     "assigned_by": "NAMED_VARARG"
+                }
+            ]
+        },
+        {
+            "issue": "https://github.com/lars-reimann/api-editor/issues/842",
+            "id": "sklearn/sklearn.utils.validation/check_array",
+            "name": "check_array",
+            "qname": "sklearn.utils.validation.check_array",
+            "parameters": [
+                {
+                    "id": "sklearn/sklearn.utils.validation/check_array/dtype",
+                    "name": "dtype",
+                    "qname": "sklearn.utils.validation.check_array.dtype",
+                    "default_value": "'numeric'",
+                    "assigned_by": "NAME_ONLY"
+                }
+            ]
+        },
+        {
+            "issue": "https://github.com/lars-reimann/api-editor/issues/828",
+            "id": "sklearn/sklearn.metrics.cluster._supervised/mutual_info_score",
+            "name": "mutual_info_score",
+            "qname": "sklearn.metrics.cluster._supervised.mutual_info_score",
+            "parameters": [
+                {
+                    "id": "sklearn/sklearn.metrics.cluster._supervised/mutual_info_score/labels_pred",
+                    "name": "labels_pred",
+                    "qname": "sklearn.metrics.cluster._supervised.mutual_info_score.labels_pred",
+                    "default_value": null,
+                    "assigned_by": "POSITION_OR_NAME"
+                }
+            ]
+        },
+        {
+            "issue": "https://github.com/lars-reimann/api-editor/issues/822",
+            "id": "sklearn/sklearn.tree._export/export_graphviz",
+            "name": "export_graphviz",
+            "qname": "sklearn.tree._export.export_graphviz",
+            "parameters": [
+                {
+                    "id": "sklearn/sklearn.tree._export/export_graphviz/special_characters",
+                    "name": "special_characters",
+                    "qname": "sklearn.tree._export.export_graphviz.special_characters",
+                    "default_value": "False",
+                    "assigned_by": "NAME_ONLY"
                 }
             ]
         }

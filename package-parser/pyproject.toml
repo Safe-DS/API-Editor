@@ -9,10 +9,11 @@ license = "MIT"
 parse-package = "package_parser.main:main"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.10,<3.11"
 astroid = "^2.11.6"
 numpydoc = "^1.4"
 spacy = "^3.2.1"
+scipy = "^1.8.1"
 
 [tool.poetry.dependencies.en_core_web_sm]
 url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.2.0/en_core_web_sm-3.2.0-py3-none-any.whl"

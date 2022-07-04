@@ -9,6 +9,7 @@ from package_parser.processing.annotations.model import (
 )
 from package_parser.processing.api.model import API, Parameter, ParameterAssignment
 from package_parser.processing.usages.model import UsageCountStore
+from scipy.stats import binom
 
 from ._constants import autogen_author
 
@@ -84,45 +85,12 @@ def _generate_required_or_optional_annotation(
 
     # Compute metrics
     most_common_value_count = usages.n_value_usages(parameter.id, most_common_values[0])
-
-    # We deliberately don't ensure this is a literal. Otherwise, we might make a parameter optional even though there is
-    # a tie between the most common value and the second most common value if the latter is not a literal. This would
-    # also mean different annotations would be generated depending on the order the values were inserted into the
-    # UsageCountStore since the counts are identical.
-    #
-    # Example:
-    #   Values: "1" used 5 times, "call()" used 5 times
-    #
-    #   If we now treat "1" as the most common value, we would make the parameter optional:
-    #     - most_common_value_count = 5
-    #     - second_most_common_value_count = 0 ("call()" is not a literal, so we would skip it and default to 0)
-    #     - total_literal_value_count = 5
-    #     - n_different_literal_values = 1
-    #     - (5 - 0) >= (5 / 1)
-    #
-    #   However, if we treat "call()" as the most common value, we would make the parameter required since it is not a
-    #   literal.
     second_most_common_value_count = usages.n_value_usages(
         parameter.id, most_common_values[1]
     )
 
-    literal_values = [
-        stringified_value
-        for stringified_value in most_common_values
-        if _is_stringified_literal(stringified_value)
-    ]
-    total_literal_value_count = sum(
-        [usages.n_value_usages(parameter.id, value) for value in literal_values]
-    )
-    n_different_literal_values = len(literal_values)
-
     # Add appropriate annotation
-    if _should_be_required(
-        most_common_value_count,
-        second_most_common_value_count,
-        total_literal_value_count,
-        n_different_literal_values,
-    ):
+    if _should_be_required(most_common_value_count, second_most_common_value_count):
         annotations.valueAnnotations.append(
             RequiredAnnotation(
                 target=parameter.id, authors=[autogen_author], reviewers=[]
@@ -132,7 +100,7 @@ def _generate_required_or_optional_annotation(
         (
             default_value_type,
             default_value,
-        ) = _get_type_and_value_for_stringified_value(literal_values[0])
+        ) = _get_type_and_value_for_stringified_value(most_common_values[0])
         if default_value_type is not None:  # Just for mypy, always true
             annotations.valueAnnotations.append(
                 OptionalAnnotation(
@@ -146,27 +114,38 @@ def _generate_required_or_optional_annotation(
 
 
 def _should_be_required(
-    most_common_value_count: int,
-    second_most_common_value_count: int,
-    total_literal_value_count: int,
-    n_different_literal_values: int,
+    most_common_value_count: int, second_most_common_value_count: int
 ) -> bool:
     """
     This function determines how to differentiate between an optional and a required parameter
-    :param most_common_value_count: The number of times the most common value is used
-    :param second_most_common_value_count: The number of times the second most common value is used
-    :param total_literal_value_count: The total number of times the parameter is set to a literal value
-    :param n_different_literal_values: The number of different literal values that are used
+    :param most_common_value_count: How often the most common value is used
+    :param second_most_common_value_count: How often the second most common value is used
     :return: True means the parameter should be required, False means it should be optional
     """
 
-    # Most common value is the only literal value
-    if n_different_literal_values == 1:
-        return False
+    # Shortcut to speed up the check
+    if most_common_value_count == second_most_common_value_count:
+        return True
 
+    # Precaution to ensure proper order of most_common_value_count and second_most_common_value_count
+    if second_most_common_value_count > most_common_value_count:
+        most_common_value_count, second_most_common_value_count = (
+            second_most_common_value_count,
+            most_common_value_count,
+        )
+
+    total = most_common_value_count + second_most_common_value_count
+
+    # Our null hypothesis is that the user chooses between the most common and second most common value by a fair coin
+    # toss. Unless this hypothesis is rejected, we make the parameter required. We reject the hypothesis if the p-value
+    # is less than or equal to 5%. The p-value is the probability that we observe results that are at least as extreme
+    # as the values we observed, assuming the null hypothesis is true.
     return (
-        most_common_value_count - second_most_common_value_count
-        < total_literal_value_count / n_different_literal_values
+        2
+        * sum(
+            binom.pmf(i, total, 0.5) for i in range(most_common_value_count, total + 1)
+        )
+        > 0.05
     )
 
 
