@@ -1,10 +1,12 @@
+from typing import Optional
+
 from package_parser.processing.annotations.model import (
     AnnotationStore,
     BoundaryAnnotation,
     Interval,
     ValueAnnotation,
 )
-from package_parser.processing.api.model import API
+from package_parser.processing.api.model import API, BoundaryType, UnionType
 
 from ._constants import autogen_author
 
@@ -25,23 +27,31 @@ def _generate_boundary_annotations(api: API, annotations: AnnotationStore) -> No
         ):
             continue
 
-        boundary_type = parameter.type.to_json()
-        if "kind" in boundary_type and boundary_type["kind"] == "UnionType":
-            union_type = boundary_type
-            for type_in_union in union_type["types"]:
-                if type_in_union["kind"] == "BoundaryType":
-                    boundary_type = type_in_union
-        if "kind" in boundary_type and boundary_type["kind"] == "BoundaryType":
-            min_value = boundary_type["min"]
-            max_value = boundary_type["max"]
+        parameter_type = parameter.type
+        if parameter_type is None:
+            continue
 
-            is_discrete = boundary_type["base_type"] == "int"
+        boundary_type: Optional[BoundaryType] = None
+
+        if isinstance(parameter_type, UnionType):
+            for type_in_union in parameter_type.types:
+                if isinstance(type_in_union, BoundaryType):
+                    boundary_type = type_in_union
+
+        if isinstance(parameter_type, BoundaryType):
+            boundary_type = parameter_type
+
+        if boundary_type is not None:
+            min_value = boundary_type.min
+            max_value = boundary_type.max
+
+            is_discrete = boundary_type.base_type == "int"
 
             min_limit_type = 0
             max_limit_type = 0
-            if not boundary_type["min_inclusive"]:
+            if not boundary_type.min_inclusive:
                 min_limit_type = 1
-            if not boundary_type["max_inclusive"]:
+            if not boundary_type.max_inclusive:
                 max_limit_type = 1
             if min_value == "NegativeInfinity":
                 min_value = 0
@@ -61,6 +71,7 @@ def _generate_boundary_annotations(api: API, annotations: AnnotationStore) -> No
                 target=parameter.id,
                 authors=[autogen_author],
                 reviewers=[],
+                comment=f"I turned this into a bounded number because the description contained {boundary_type.full_match}.",
                 interval=interval,
             )
             annotations.boundaryAnnotations.append(boundary)

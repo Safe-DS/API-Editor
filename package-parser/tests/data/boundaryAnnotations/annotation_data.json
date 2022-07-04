@@ -3,6 +3,7 @@
         "target": "test/test/some_global_function/parameter_with_lower_bound",
         "authors": ["$autogen$"],
         "reviewers": [],
+        "comment": "I turned this into a bounded number because the description contained int in range (0, infinity).",
         "interval": {
             "isDiscrete": true,
             "lowerIntervalLimit": 0,
@@ -15,6 +16,7 @@
         "target": "test/test/some_global_function/parameter_with_upper_bound_and_union",
         "authors": ["$autogen$"],
         "reviewers": [],
+        "comment": "I turned this into a bounded number because the description contained float in range (negative_infinity, 1).",
         "interval": {
             "isDiscrete": false,
             "lowerIntervalLimit": 0,
@@ -27,6 +29,7 @@
         "target": "test/test/some_global_function/parameter_with_interval",
         "authors": ["$autogen$"],
         "reviewers": [],
+        "comment": "I turned this into a bounded number because the description contained float in range [0, 1].",
         "interval": {
             "isDiscrete": false,
             "lowerIntervalLimit": 0.0,

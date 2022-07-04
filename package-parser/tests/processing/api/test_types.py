@@ -1,7 +1,7 @@
 from typing import Any
 
 import pytest
-from package_parser.processing.api.model import ParameterDocumentation, Type
+from package_parser.processing.api.model import ParameterDocumentation, create_type
 
 
 @pytest.mark.parametrize(
@@ -70,12 +70,15 @@ from package_parser.processing.api.model import ParameterDocumentation, Type
     ],
 )
 def test_union_from_string(docstring_type: str, expected: dict[str, Any]):
-    result = Type(ParameterDocumentation(docstring_type, "", ""))
-    assert result.to_json() == expected
+    result = create_type(ParameterDocumentation(docstring_type, "", ""))
+    if result is None:
+        assert expected == {}
+    else:
+        assert result.to_json() == expected
 
 
 @pytest.mark.parametrize(
-    "docstring_type,expected",
+    "description,expected",
     [
         (
             "Scale factor between inner and outer circle in the range `[0, 1)`",
@@ -102,8 +105,12 @@ def test_union_from_string(docstring_type: str, expected: dict[str, Any]):
         ("", {}),
     ],
 )
-def test_boundary_from_string(docstring_type: str, expected: dict[str, Any]):
-    assert Type(ParameterDocumentation("", "", docstring_type)).to_json() == expected
+def test_boundary_from_string(description: str, expected: dict[str, Any]):
+    result = create_type(ParameterDocumentation("", "", description))
+    if result is None:
+        assert expected == {}
+    else:
+        assert result.to_json() == expected
 
 
 @pytest.mark.parametrize(
@@ -134,11 +141,13 @@ def test_boundary_from_string(docstring_type: str, expected: dict[str, Any]):
 def test_boundary_and_union_from_string(
     docstring_type: str, docstring_description: str, expected: dict[str, Any]
 ):
-    assert (
-        Type(
-            ParameterDocumentation(
-                type=docstring_type, default_value="", description=docstring_description
-            )
-        ).to_json()
-        == expected
+    result = create_type(
+        ParameterDocumentation(
+            type=docstring_type, default_value="", description=docstring_description
+        )
     )
+
+    if result is None:
+        assert expected == {}
+    else:
+        assert result.to_json() == expected

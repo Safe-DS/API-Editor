@@ -15,4 +15,11 @@ from ._documentation import (
     ParameterDocumentation,
 )
 from ._parameters import Parameter, ParameterAssignment
-from ._types import AbstractType, BoundaryType, EnumType, NamedType, Type, UnionType
+from ._types import (
+    AbstractType,
+    BoundaryType,
+    EnumType,
+    NamedType,
+    UnionType,
+    create_type,
+)

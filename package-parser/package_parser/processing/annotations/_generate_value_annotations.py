@@ -11,6 +11,7 @@ from package_parser.processing.api.model import API, Parameter, ParameterAssignm
 from package_parser.processing.usages.model import UsageCountStore
 from scipy.stats import binom
 
+from ...utils import pluralize
 from ._constants import autogen_author
 
 
@@ -53,6 +54,7 @@ def _generate_constant_annotation(
                 target=parameter.id,
                 authors=[autogen_author],
                 reviewers=[],
+                comment=f"I replaced this parameter with a constant because it is always set to the same literal value ({sole_stringified_value}).",
                 defaultValueType=default_value_type,
                 defaultValue=default_value,
             )
@@ -63,6 +65,7 @@ def _generate_constant_annotation(
                 target=parameter.id,
                 authors=[autogen_author],
                 reviewers=[],
+                comment=f"I made this parameter required because, even though it is always set to the same value ({sole_stringified_value}), that value is not a literal.",
             )
         )
 
@@ -78,7 +81,10 @@ def _generate_required_or_optional_annotation(
     if not _is_stringified_literal(most_common_values[0]):
         annotations.valueAnnotations.append(
             RequiredAnnotation(
-                target=parameter.id, authors=[autogen_author], reviewers=[]
+                target=parameter.id,
+                authors=[autogen_author],
+                reviewers=[],
+                comment=f"I made this parameter required because the most common value ({most_common_values[0]}) is not a literal.",
             )
         )
         return
@@ -90,10 +96,19 @@ def _generate_required_or_optional_annotation(
     )
 
     # Add appropriate annotation
-    if _should_be_required(most_common_value_count, second_most_common_value_count):
+    should_be_required, comment = _should_be_required(
+        most_common_values[0],
+        most_common_value_count,
+        most_common_values[1],
+        second_most_common_value_count,
+    )
+    if should_be_required:
         annotations.valueAnnotations.append(
             RequiredAnnotation(
-                target=parameter.id, authors=[autogen_author], reviewers=[]
+                target=parameter.id,
+                authors=[autogen_author],
+                reviewers=[],
+                comment=comment,
             )
         )
     else:
@@ -107,6 +122,7 @@ def _generate_required_or_optional_annotation(
                     target=parameter.id,
                     authors=[autogen_author],
                     reviewers=[],
+                    comment=comment,
                     defaultValueType=default_value_type,
                     defaultValue=default_value,
                 )
@@ -114,18 +130,25 @@ def _generate_required_or_optional_annotation(
 
 
 def _should_be_required(
-    most_common_value_count: int, second_most_common_value_count: int
-) -> bool:
+    most_common_value: str,
+    most_common_value_count: int,
+    second_most_common_value: str,
+    second_most_common_value_count: int,
+) -> tuple[bool, str]:
     """
     This function determines how to differentiate between an optional and a required parameter
     :param most_common_value_count: How often the most common value is used
     :param second_most_common_value_count: How often the second most common value is used
-    :return: True means the parameter should be required, False means it should be optional
+    :return: True means the parameter should be required, False means it should be optional. The second result is an
+    explanation.
     """
 
     # Shortcut to speed up the check
     if most_common_value_count == second_most_common_value_count:
-        return True
+        return (
+            True,
+            f"I made this parameter required because there is no single most common value ({most_common_value} and {second_most_common_value} are both used {pluralize(most_common_value_count, 'time')}).",
+        )
 
     # Precaution to ensure proper order of most_common_value_count and second_most_common_value_count
     if second_most_common_value_count > most_common_value_count:
@@ -140,13 +163,21 @@ def _should_be_required(
     # toss. Unless this hypothesis is rejected, we make the parameter required. We reject the hypothesis if the p-value
     # is less than or equal to 5%. The p-value is the probability that we observe results that are at least as extreme
     # as the values we observed, assuming the null hypothesis is true.
-    return (
-        2
-        * sum(
-            binom.pmf(i, total, 0.5) for i in range(most_common_value_count, total + 1)
-        )
-        > 0.05
+    p_value = 2 * sum(
+        binom.pmf(i, total, 0.5) for i in range(most_common_value_count, total + 1)
     )
+    significance_level = 0.05
+
+    if p_value <= significance_level:
+        return (
+            False,
+            f"I made this parameter optional because there is a statistically significant most common value (p-value {p_value:.2%} <= significance level {significance_level:.0%}).",
+        )
+    else:
+        return (
+            True,
+            f"I made this parameter required because there is no statistically significant most common value (p-value ({p_value:.2%}) > significance level ({significance_level:.0%}).",
+        )
 
 
 def _is_stringified_literal(stringified_value: str) -> bool:

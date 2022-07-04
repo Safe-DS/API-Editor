@@ -3,19 +3,20 @@
         "target": "test/test/some_global_function/enum_parameter",
         "authors": ["$autogen$"],
         "reviewers": [],
+        "comment": "I turned this into an enum because the type in the documentation contained {'auto', 'kd_tree', 'kd-means++'}.",
         "enumName": "EnumParameter",
         "pairs": [
             {
-                "instanceName": "AUTO",
-                "stringValue": "auto"
+                "stringValue": "auto",
+                "instanceName": "AUTO"
             },
             {
-                "instanceName": "KD_MEANS",
-                "stringValue": "kd-means++"
+                "stringValue": "kd-means++",
+                "instanceName": "KD_MEANS"
             },
             {
-                "instanceName": "KD_TREE",
-                "stringValue": "kd_tree"
+                "stringValue": "kd_tree",
+                "instanceName": "KD_TREE"
             }
         ]
     },
@@ -23,19 +24,20 @@
         "target": "test/test/some_global_function/enum_parameter_with_union",
         "authors": ["$autogen$"],
         "reviewers": [],
+        "comment": "I turned this into an enum because the type in the documentation contained {'auto', 'kd_tree', 'kd-means++'}.",
         "enumName": "EnumParameterWithUnion",
         "pairs": [
             {
-                "instanceName": "AUTO",
-                "stringValue": "auto"
+                "stringValue": "auto",
+                "instanceName": "AUTO"
             },
             {
-                "instanceName": "KD_MEANS",
-                "stringValue": "kd-means++"
+                "stringValue": "kd-means++",
+                "instanceName": "KD_MEANS"
             },
             {
-                "instanceName": "KD_TREE",
-                "stringValue": "kd_tree"
+                "stringValue": "kd_tree",
+                "instanceName": "KD_TREE"
             }
         ]
     },
@@ -43,15 +45,16 @@
         "target": "test/test/some_global_function/issue_760",
         "authors": ["$autogen$"],
         "reviewers": [],
+        "comment": "I turned this into an enum because the type in the documentation contained {'l1', 'l2'}.",
         "enumName": "Issue760",
         "pairs": [
             {
-                "instanceName": "L1",
-                "stringValue": "l1"
+                "stringValue": "l1",
+                "instanceName": "L1"
             },
             {
-                "instanceName": "L2",
-                "stringValue": "l2"
+                "stringValue": "l2",
+                "instanceName": "L2"
             }
         ]
     },
@@ -59,11 +62,12 @@
         "target": "test/test/some_global_function/issue_858",
         "authors": ["$autogen$"],
         "reviewers": [],
+        "comment": "I turned this into an enum because the type in the documentation contained {'SAMME.R'}.",
         "enumName": "Issue858",
         "pairs": [
             {
-                "instanceName": "SAMME_R",
-                "stringValue": "SAMME.R"
+                "stringValue": "SAMME.R",
+                "instanceName": "SAMME_R"
             }
         ]
     }

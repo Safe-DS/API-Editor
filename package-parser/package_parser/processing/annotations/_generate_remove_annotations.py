@@ -18,17 +18,38 @@ def _generate_remove_annotations(
     :param annotations: AnnotationStore object
     """
     for class_ in api.classes.values():
-        if usages.n_class_usages(class_.id) == 0:
+        n_class_usages = usages.n_class_usages(class_.id)
+        if n_class_usages == 0:
             annotations.removeAnnotations.append(
                 RemoveAnnotation(
-                    target=class_.id, authors=[autogen_author], reviewers=[]
+                    target=class_.id,
+                    authors=[autogen_author],
+                    reviewers=[],
+                    comment=_create_explanation("class", n_class_usages),
                 )
             )
 
     for function in api.functions.values():
-        if usages.n_function_usages(function.id) == 0:
+        n_function_usages = usages.n_function_usages(function.id)
+        if n_function_usages == 0:
             annotations.removeAnnotations.append(
                 RemoveAnnotation(
-                    target=function.id, authors=[autogen_author], reviewers=[]
+                    target=function.id,
+                    authors=[autogen_author],
+                    reviewers=[],
+                    comment=_create_explanation("function", n_function_usages),
                 )
             )
+
+
+def _create_explanation(declaration_type: str, n_usages: int) -> str:
+    result = f"I removed this {declaration_type} because it has"
+
+    if n_usages == 0:
+        result += " no known usages."
+    elif n_usages == 1:
+        result += " only one known usage."
+    else:
+        result += f" only {n_usages} known usages."
+
+    return result
