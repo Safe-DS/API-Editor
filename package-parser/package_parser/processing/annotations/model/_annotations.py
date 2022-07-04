@@ -25,9 +25,9 @@ class RemoveAnnotation(AbstractAnnotation):
 @dataclass
 class Interval:
     isDiscrete: bool
-    lowerIntervalLimit: int
+    lowerIntervalLimit: int | float | str
     lowerLimitType: int
-    upperIntervalLimit: int
+    upperIntervalLimit: int | float | str
     upperLimitType: int
 
     def to_json(self) -> dict:

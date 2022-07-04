@@ -134,7 +134,7 @@ def _should_be_required(
     most_common_value_count: int,
     second_most_common_value: str,
     second_most_common_value_count: int
-) -> (bool, str):
+) -> tuple[bool, str]:
     """
     This function determines how to differentiate between an optional and a required parameter
     :param most_common_value_count: How often the most common value is used
