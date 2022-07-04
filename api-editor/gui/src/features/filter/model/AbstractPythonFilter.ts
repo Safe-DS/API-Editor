@@ -5,7 +5,7 @@ import { PythonParameter } from '../../packageData/model/PythonParameter';
 import { PythonPackage } from '../../packageData/model/PythonPackage';
 import { isEmptyList } from '../../../common/util/listOperations';
 import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
-import { AnnotationStore } from '../../annotations/annotationSlice';
+import { AnnotationStore } from '../../annotations/versioning/AnnotationStoreV2';
 import { UsageCountStore } from '../../usages/model/UsageCountStore';
 
 /**

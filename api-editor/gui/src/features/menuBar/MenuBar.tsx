@@ -20,7 +20,6 @@ import React from 'react';
 import { FaArrowLeft, FaArrowRight, FaArrowUp, FaChevronDown, FaRedo, FaUndo } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector, useKeyboardShortcut } from '../../app/hooks';
 import {
-    AnnotationStore,
     redo,
     selectAnnotationStore,
     selectUsernameIsValid,
@@ -30,6 +29,8 @@ import {
 import {
     BatchMode,
     HeatMapMode,
+    NoUserAction,
+    selectCurrentUserAction,
     selectExpandDocumentationByDefault,
     selectFilter,
     selectHeatMapMode,
@@ -62,6 +63,7 @@ import { selectUsages } from '../usages/usageSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { SelectionBreadcrumbs } from './SelectionBreadcrumbs';
 import { HelpMenu } from './HelpMenu';
+import { AnnotationStore } from '../annotations/versioning/AnnotationStoreV2';
 
 interface MenuBarProps {
     displayInferErrors: (errors: string[]) => void;
@@ -87,6 +89,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
     const annotations = useAppSelector(selectAnnotationStore);
     const usages = useAppSelector(selectUsages);
     const declaration = rawPythonPackage.getDeclarationById(useLocation().pathname.split('/').splice(1).join('/'));
+    const currentUserAction = useAppSelector(selectCurrentUserAction);
 
     const exportAnnotations = () => {
         const a = document.createElement('a');
@@ -118,11 +121,11 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
         dispatch(toggleComplete(declaration.id));
     };
     const goToPreviousMatch = () => {
-        if (!declaration) {
+        if (!declaration || currentUserAction.type !== NoUserAction.type) {
             return;
         }
 
-        let { id: navStr, wrappedAround } = getPreviousElementPath(
+        const { id: navStr, wrappedAround } = getPreviousElementPath(
             allDeclarations,
             declaration,
             pythonFilter,
@@ -149,11 +152,11 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
         }
     };
     const goToNextMatch = () => {
-        if (!declaration) {
+        if (!declaration || currentUserAction.type !== NoUserAction.type) {
             return;
         }
 
-        let { id: navStr, wrappedAround } = getNextElementPath(
+        const { id: navStr, wrappedAround } = getNextElementPath(
             allDeclarations,
             declaration,
             pythonFilter,
@@ -180,24 +183,32 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
         }
     };
     const goToParent = () => {
+        if (!declaration || currentUserAction.type !== NoUserAction.type) {
+            return;
+        }
+
         const parent = declaration?.parent();
         if (parent && !(parent instanceof PythonPackage)) {
             navigate(`/${parent.id}`);
         }
     };
     const expandAll = () => {
-        dispatch(setAllExpandedInTreeView(getDescendantsOrSelf(pythonPackage)));
+        if (currentUserAction.type === NoUserAction.type) {
+            dispatch(setAllExpandedInTreeView(getDescendantsOrSelf(pythonPackage)));
+        }
     };
     const collapseAll = () => {
-        dispatch(setAllCollapsedInTreeView(getDescendantsOrSelf(pythonPackage)));
+        if (currentUserAction.type === NoUserAction.type) {
+            dispatch(setAllCollapsedInTreeView(getDescendantsOrSelf(pythonPackage)));
+        }
     };
     const expandSelected = () => {
-        if (declaration) {
+        if (declaration && currentUserAction.type === NoUserAction.type) {
             dispatch(setAllExpandedInTreeView(getDescendantsOrSelf(declaration)));
         }
     };
     const collapseSelected = () => {
-        if (declaration) {
+        if (declaration && currentUserAction.type === NoUserAction.type) {
             dispatch(setAllCollapsedInTreeView(getDescendantsOrSelf(declaration)));
         }
     };
@@ -282,24 +293,10 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                             <MenuGroup title="Batch Annotate">
                                 <MenuItem
                                     paddingLeft={8}
-                                    onClick={() => dispatch(setBatchMode(BatchMode.Constant))}
-                                    isDisabled={!usernameIsValid}
-                                >
-                                    Constant
-                                </MenuItem>
-                                <MenuItem
-                                    paddingLeft={8}
                                     onClick={() => dispatch(setBatchMode(BatchMode.Move))}
                                     isDisabled={!usernameIsValid}
                                 >
                                     Move
-                                </MenuItem>
-                                <MenuItem
-                                    paddingLeft={8}
-                                    onClick={() => dispatch(setBatchMode(BatchMode.Optional))}
-                                    isDisabled={!usernameIsValid}
-                                >
-                                    Optional
                                 </MenuItem>
                                 <MenuItem
                                     paddingLeft={8}
@@ -317,10 +314,10 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                                 </MenuItem>
                                 <MenuItem
                                     paddingLeft={8}
-                                    onClick={() => dispatch(setBatchMode(BatchMode.Required))}
+                                    onClick={() => dispatch(setBatchMode(BatchMode.Value))}
                                     isDisabled={!usernameIsValid}
                                 >
-                                    Required
+                                    Value
                                 </MenuItem>
                             </MenuGroup>
                             <MenuDivider />
@@ -331,7 +328,11 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
 
                 <Box>
                     <Menu>
-                        <MenuButton as={Button} rightIcon={<Icon as={FaChevronDown} />}>
+                        <MenuButton
+                            as={Button}
+                            rightIcon={<Icon as={FaChevronDown} />}
+                            disabled={currentUserAction.type !== NoUserAction.type}
+                        >
                             Navigate
                         </MenuButton>
                         <MenuList>
@@ -500,9 +501,10 @@ const getPreviousElementPath = function (
     annotations: AnnotationStore,
     usages: UsageCountStore,
 ): { id: string; wrappedAround: boolean } {
-    let currentIndex = getPreviousIndex(declarations, getIndex(declarations, start));
+    const startIndex = getIndex(declarations, start);
+    let currentIndex = getPreviousIndex(declarations, startIndex);
     let current = getElementAtIndex(declarations, currentIndex);
-    let wrappedAround = false;
+    let wrappedAround = startIndex !== null && currentIndex !== null && currentIndex >= startIndex;
     while (current !== null && current !== start) {
         if (filter.shouldKeepDeclaration(current, annotations, usages)) {
             return { id: current.id, wrappedAround };
@@ -525,9 +527,10 @@ const getNextElementPath = function (
     annotations: AnnotationStore,
     usages: UsageCountStore,
 ): { id: string; wrappedAround: boolean } {
-    let currentIndex = getNextIndex(declarations, getIndex(declarations, start));
+    const startIndex = getIndex(declarations, start);
+    let currentIndex = getNextIndex(declarations, startIndex);
     let current = getElementAtIndex(declarations, currentIndex);
-    let wrappedAround = false;
+    let wrappedAround = startIndex !== null && currentIndex !== null && currentIndex <= startIndex;
     while (current !== null && current !== start) {
         if (filter.shouldKeepDeclaration(current, annotations, usages)) {
             return { id: current.id, wrappedAround };

@@ -14,16 +14,18 @@ import {
     Select,
     Stack,
     Text as ChakraText,
+    Textarea,
 } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { numberPattern } from '../../../common/validation';
 import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
-import { ComparisonOperator, Interval, selectBoundary, upsertBoundary } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
 import { Optional } from '../../../common/util/types';
 import { hideAnnotationForm } from '../../ui/uiSlice';
+import { BoundaryAnnotation, ComparisonOperator } from '../versioning/AnnotationStoreV2';
+import { selectBoundaryAnnotation, upsertBoundaryAnnotation } from '../annotationSlice';
 
 interface BoundaryFormProps {
     readonly target: PythonDeclaration;
@@ -37,23 +39,25 @@ interface BoundaryFormState {
         upperIntervalLimit: Optional<number>;
         upperLimitType: ComparisonOperator;
     };
+    comment: string;
 }
 
-const initialFormState = function (previousInterval: Optional<Interval>): BoundaryFormState {
+const initialFormState = function (previousAnnotation: BoundaryAnnotation | void): BoundaryFormState {
     return {
         interval: {
-            isDiscrete: previousInterval?.isDiscrete ?? false,
-            lowerIntervalLimit: previousInterval?.lowerIntervalLimit ?? 0,
-            lowerLimitType: previousInterval?.lowerLimitType ?? ComparisonOperator.LESS_THAN_OR_EQUALS,
-            upperIntervalLimit: previousInterval?.upperIntervalLimit ?? 1,
-            upperLimitType: previousInterval?.upperLimitType ?? ComparisonOperator.LESS_THAN_OR_EQUALS,
+            isDiscrete: previousAnnotation?.interval?.isDiscrete ?? false,
+            lowerIntervalLimit: previousAnnotation?.interval?.lowerIntervalLimit ?? 0,
+            lowerLimitType: previousAnnotation?.interval?.lowerLimitType ?? ComparisonOperator.LESS_THAN_OR_EQUALS,
+            upperIntervalLimit: previousAnnotation?.interval?.upperIntervalLimit ?? 1,
+            upperLimitType: previousAnnotation?.interval?.upperLimitType ?? ComparisonOperator.LESS_THAN_OR_EQUALS,
         },
+        comment: previousAnnotation?.comment ?? '',
     };
 };
 
 export const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
     const targetPath = target.id;
-    const prevInterval = useAppSelector(selectBoundary(targetPath))?.interval;
+    const previousAnnotation = useAppSelector(selectBoundaryAnnotation(targetPath));
 
     // Hooks -----------------------------------------------------------------------------------------------------------
 
@@ -67,13 +71,13 @@ export const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
         setValue,
         formState: { errors },
     } = useForm<BoundaryFormState>({
-        defaultValues: initialFormState(prevInterval),
+        defaultValues: initialFormState(previousAnnotation),
         shouldFocusError: false,
     });
 
     useEffect(() => {
-        reset(initialFormState(prevInterval));
-    }, [reset, prevInterval]);
+        reset(initialFormState(previousAnnotation));
+    }, [reset, previousAnnotation]);
 
     // Event handlers --------------------------------------------------------------------------------------------------
 
@@ -83,7 +87,7 @@ export const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
 
     const onSave = (data: BoundaryFormState) => {
         dispatch(
-            upsertBoundary({
+            upsertBoundaryAnnotation({
                 target: targetPath,
                 interval: {
                     isDiscrete: data.interval.isDiscrete,
@@ -92,6 +96,7 @@ export const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
                     upperIntervalLimit: data.interval.upperIntervalLimit ?? 0,
                     upperLimitType: data.interval.upperLimitType,
                 },
+                comment: data.comment,
             }),
         );
         dispatch(hideAnnotationForm());
@@ -141,18 +146,23 @@ export const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
 
     return (
         <AnnotationForm
-            heading={`${prevInterval ? 'Edit' : 'Add'} @boundary Annotation`}
+            heading={`${previousAnnotation ? 'Edit' : 'Add'} @boundary Annotation`}
             description="Specify the interval of valid values of this numeric parameter."
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
         >
-            <FormLabel>Type of boundary of &quot;{target.name}&quot;:</FormLabel>
-            <RadioGroup defaultValue={prevInterval?.isDiscrete.toString() || 'false'} onChange={handleIsDiscreteChange}>
-                <Stack direction="column">
-                    <Radio value="false">Continuous</Radio>
-                    <Radio value="true">Discrete</Radio>
-                </Stack>
-            </RadioGroup>
+            <FormControl>
+                <FormLabel>Type of boundary of &quot;{target.name}&quot;:</FormLabel>
+                <RadioGroup
+                    defaultValue={previousAnnotation?.interval?.isDiscrete.toString() || 'false'}
+                    onChange={handleIsDiscreteChange}
+                >
+                    <Stack direction="column">
+                        <Radio value="false">Continuous</Radio>
+                        <Radio value="true">Discrete</Radio>
+                    </Stack>
+                </RadioGroup>
+            </FormControl>
 
             <HStack spacing="10px" alignItems="flexStart">
                 <FormControl isInvalid={Boolean(errors?.interval?.lowerIntervalLimit)}>
@@ -257,6 +267,11 @@ export const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
                     </FormErrorMessage>
                 </FormControl>
             </HStack>
+
+            <FormControl>
+                <FormLabel>Comment:</FormLabel>
+                <Textarea {...register('comment')} />
+            </FormControl>
         </AnnotationForm>
     );
 };

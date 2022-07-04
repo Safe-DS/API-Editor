@@ -8,7 +8,7 @@ import { PythonModule } from '../model/PythonModule';
 import { DocumentationText } from './DocumentationText';
 import { ParameterNode } from './ParameterNode';
 import { useAppSelector } from '../../../app/hooks';
-import { selectAnnotationStore, selectCalledAfters } from '../../annotations/annotationSlice';
+import { selectAnnotationStore, selectCalledAfterAnnotations } from '../../annotations/annotationSlice';
 import { CompleteButton } from '../../annotations/CompleteButton';
 import { PythonParameter } from '../model/PythonParameter';
 import { selectFilter, selectSorter } from '../../ui/uiSlice';
@@ -25,7 +25,7 @@ export const FunctionView: React.FC<FunctionViewProps> = function ({ pythonFunct
     const parameters = useSortedAndFilteredParameters(pythonFunction);
 
     // Whether more @calledAfter annotations can be added
-    const currentCalledAfters = Object.keys(useAppSelector(selectCalledAfters(id)));
+    const currentCalledAfters = Object.keys(useAppSelector(selectCalledAfterAnnotations(id)));
     const hasRemainingCalledAfters = pythonFunction
         .siblingFunctions()
         .some((it) => !currentCalledAfters.includes(it.name));

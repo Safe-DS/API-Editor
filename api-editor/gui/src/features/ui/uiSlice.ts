@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import * as idb from 'idb-keyval';
 import { RootState } from '../../app/store';
-import { CalledAfterTarget, GroupTarget } from '../annotations/annotationSlice';
 import { AbstractPythonFilter } from '../filter/model/AbstractPythonFilter';
 import { createFilterFromString, isValidFilterToken } from '../filter/model/filterFactory';
 import { PythonDeclaration } from '../packageData/model/PythonDeclaration';
 import { UsageCountStore } from '../usages/model/UsageCountStore';
 import { selectUsages } from '../usages/usageSlice';
+import { CalledAfterTarget, GroupTarget } from '../annotations/versioning/AnnotationStoreV2';
 
 const EXPECTED_UI_SCHEMA_VERSION = 1;
 
@@ -41,26 +41,22 @@ export interface UIState {
 
 type UserAction =
     | typeof NoUserAction
-    | AttributeUserAction
     | BoundaryUserAction
     | CalledAfterUserAction
-    | ConstantUserAction
     | DescriptionUserAction
-    | GroupUserAction
     | EnumUserAction
+    | GroupUserAction
+    | MoveUserAction
+    | PureUserAction
+    | RemoveUserAction
     | RenameUserAction
-    | OptionalUserAction
-    | TodoUserAction;
+    | TodoUserAction
+    | ValueUserAction;
 
-const NoUserAction = {
+export const NoUserAction = {
     type: 'none',
     target: '',
 };
-
-interface AttributeUserAction {
-    readonly type: 'attribute';
-    readonly target: string;
-}
 
 interface BoundaryUserAction {
     readonly type: 'boundary';
@@ -71,11 +67,6 @@ interface CalledAfterUserAction {
     readonly type: 'calledAfter';
     readonly target: string;
     readonly calledAfterName: string;
-}
-
-interface ConstantUserAction {
-    readonly type: 'constant';
-    readonly target: string;
 }
 
 interface DescriptionUserAction {
@@ -94,8 +85,18 @@ export interface GroupUserAction {
     readonly groupName: string;
 }
 
-interface OptionalUserAction {
-    readonly type: 'optional';
+interface MoveUserAction {
+    readonly type: 'move';
+    readonly target: string;
+}
+
+interface PureUserAction {
+    readonly type: 'pure';
+    readonly target: string;
+}
+
+interface RemoveUserAction {
+    readonly type: 'remove';
     readonly target: string;
 }
 
@@ -104,13 +105,13 @@ interface RenameUserAction {
     readonly target: string;
 }
 
-interface DescriptionUserAction {
-    readonly type: 'description';
+interface TodoUserAction {
+    readonly type: 'todo';
     readonly target: string;
 }
 
-interface TodoUserAction {
-    readonly type: 'todo';
+interface ValueUserAction {
+    readonly type: 'value';
     readonly target: string;
 }
 
@@ -132,9 +133,7 @@ export enum BatchMode {
     Rename,
     Move,
     Remove,
-    Constant,
-    Optional,
-    Required,
+    Value,
 }
 
 // Initial state -------------------------------------------------------------------------------------------------------
@@ -246,12 +245,6 @@ const uiSlice = createSlice({
         toggleAddFilterDialog(state) {
             state.showAddFilterDialog = !state.showAddFilterDialog;
         },
-        showAttributeAnnotationForm(state, action: PayloadAction<string>) {
-            state.currentUserAction = {
-                type: 'attribute',
-                target: action.payload,
-            };
-        },
         showBoundaryAnnotationForm(state, action: PayloadAction<string>) {
             state.currentUserAction = {
                 type: 'boundary',
@@ -263,12 +256,6 @@ const uiSlice = createSlice({
                 type: 'calledAfter',
                 target: action.payload.target,
                 calledAfterName: action.payload.calledAfterName,
-            };
-        },
-        showConstantAnnotationForm(state, action: PayloadAction<string>) {
-            state.currentUserAction = {
-                type: 'constant',
-                target: action.payload,
             };
         },
         showDescriptionAnnotationForm(state, action: PayloadAction<string>) {
@@ -296,9 +283,15 @@ const uiSlice = createSlice({
                 target: action.payload,
             };
         },
-        showOptionalAnnotationForm(state, action: PayloadAction<string>) {
+        showPureAnnotationForm(state, action: PayloadAction<string>) {
             state.currentUserAction = {
-                type: 'optional',
+                type: 'pure',
+                target: action.payload,
+            };
+        },
+        showRemoveAnnotationForm(state, action: PayloadAction<string>) {
+            state.currentUserAction = {
+                type: 'remove',
                 target: action.payload,
             };
         },
@@ -311,6 +304,12 @@ const uiSlice = createSlice({
         showTodoAnnotationForm(state, action: PayloadAction<string>) {
             state.currentUserAction = {
                 type: 'todo',
+                target: action.payload,
+            };
+        },
+        showValueAnnotationForm(state, action: PayloadAction<string>) {
+            state.currentUserAction = {
+                type: 'value',
                 target: action.payload,
             };
         },
@@ -389,17 +388,17 @@ export const {
     toggleUsageImportDialog,
     toggleAddFilterDialog,
 
-    showAttributeAnnotationForm,
     showBoundaryAnnotationForm,
     showCalledAfterAnnotationForm,
-    showConstantAnnotationForm,
     showDescriptionAnnotationForm,
     showEnumAnnotationForm,
     showGroupAnnotationForm,
     showMoveAnnotationForm,
-    showOptionalAnnotationForm,
+    showPureAnnotationForm,
+    showRemoveAnnotationForm,
     showRenameAnnotationForm,
     showTodoAnnotationForm,
+    showValueAnnotationForm,
     hideAnnotationForm,
 
     toggleIsExpandedInTreeView,

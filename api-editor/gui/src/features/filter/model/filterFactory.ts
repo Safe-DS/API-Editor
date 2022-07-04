@@ -52,87 +52,58 @@ const parsePotentiallyNegatedToken = function (token: string): Optional<Abstract
     }
 };
 
+const fixedFilters: { [name: string]: AbstractPythonFilter } = {
+    // Declaration type
+    'is:module': new DeclarationTypeFilter(DeclarationType.Module),
+    'is:class': new DeclarationTypeFilter(DeclarationType.Class),
+    'is:function': new DeclarationTypeFilter(DeclarationType.Function),
+    'is:parameter': new DeclarationTypeFilter(DeclarationType.Parameter),
+
+    // Visibility
+    'is:public': new VisibilityFilter(Visibility.Public),
+    'is:internal': new VisibilityFilter(Visibility.Internal),
+
+    // Parameter required or optional
+    'is:required': new RequiredOrOptionalFilter(RequiredOrOptional.Required),
+    'is:optional': new RequiredOrOptionalFilter(RequiredOrOptional.Optional),
+
+    // Parameter assignment
+    'is:implicit': new ParameterAssignmentFilter(PythonParameterAssignment.IMPLICIT),
+    'is:positiononly': new ParameterAssignmentFilter(PythonParameterAssignment.POSITION_ONLY),
+    'is:positionorname': new ParameterAssignmentFilter(PythonParameterAssignment.POSITION_OR_NAME),
+    'is:positionalvararg': new ParameterAssignmentFilter(PythonParameterAssignment.POSITIONAL_VARARG),
+    'is:nameonly': new ParameterAssignmentFilter(PythonParameterAssignment.NAME_ONLY),
+    'is:namedvararg': new ParameterAssignmentFilter(PythonParameterAssignment.NAMED_VARARG),
+
+    // Done
+    'is:done': new DoneFilter(),
+
+    // Annotations
+    'annotation:any': new AnnotationFilter(AnnotationType.Any),
+    'annotation:@boundary': new AnnotationFilter(AnnotationType.Boundary),
+    'annotation:@calledafter': new AnnotationFilter(AnnotationType.CalledAfter),
+    'is:complete': new AnnotationFilter(AnnotationType.Complete), // Deliberate special case. It should be transparent to users it's an annotation.
+    'annotation:@description': new AnnotationFilter(AnnotationType.Description),
+    'annotation:@enum': new AnnotationFilter(AnnotationType.Enum),
+    'annotation:@group': new AnnotationFilter(AnnotationType.Group),
+    'annotation:@move': new AnnotationFilter(AnnotationType.Move),
+    'annotation:@pure': new AnnotationFilter(AnnotationType.Pure),
+    'annotation:@remove': new AnnotationFilter(AnnotationType.Remove),
+    'annotation:@rename': new AnnotationFilter(AnnotationType.Rename),
+    'annotation:@todo': new AnnotationFilter(AnnotationType.Todo),
+    'annotation:@value': new AnnotationFilter(AnnotationType.Value),
+};
+
 /**
  * Handles a singe non-negated token.
  *
  * @param token The text that describes the filter.
  */
 const parsePositiveToken = function (token: string): Optional<AbstractPythonFilter> {
-    // Filters with fixed text
-    switch (token.toLowerCase()) {
-        // Declaration type
-        case 'is:module':
-            return new DeclarationTypeFilter(DeclarationType.Module);
-        case 'is:class':
-            return new DeclarationTypeFilter(DeclarationType.Class);
-        case 'is:function':
-            return new DeclarationTypeFilter(DeclarationType.Function);
-        case 'is:parameter':
-            return new DeclarationTypeFilter(DeclarationType.Parameter);
-
-        // Visibility
-        case 'is:public':
-            return new VisibilityFilter(Visibility.Public);
-        case 'is:internal':
-            return new VisibilityFilter(Visibility.Internal);
-
-        // Parameter required or optional
-        case 'is:required':
-            return new RequiredOrOptionalFilter(RequiredOrOptional.Required);
-        case 'is:optional':
-            return new RequiredOrOptionalFilter(RequiredOrOptional.Optional);
-
-        // Parameter assignment
-        case 'is:implicit':
-            return new ParameterAssignmentFilter(PythonParameterAssignment.IMPLICIT);
-        case 'is:positiononly':
-            return new ParameterAssignmentFilter(PythonParameterAssignment.POSITION_ONLY);
-        case 'is:positionorname':
-            return new ParameterAssignmentFilter(PythonParameterAssignment.POSITION_OR_NAME);
-        case 'is:positionalvararg':
-            return new ParameterAssignmentFilter(PythonParameterAssignment.POSITIONAL_VARARG);
-        case 'is:nameonly':
-            return new ParameterAssignmentFilter(PythonParameterAssignment.NAME_ONLY);
-        case 'is:namedvararg':
-            return new ParameterAssignmentFilter(PythonParameterAssignment.NAMED_VARARG);
-
-        // Done
-        case 'is:done':
-            return new DoneFilter();
-
-        // Annotations
-        case 'annotation:any':
-            return new AnnotationFilter(AnnotationType.Any);
-        case 'annotation:@attribute':
-            return new AnnotationFilter(AnnotationType.Attribute);
-        case 'annotation:@boundary':
-            return new AnnotationFilter(AnnotationType.Boundary);
-        case 'annotation:@calledafter':
-            return new AnnotationFilter(AnnotationType.CalledAfter);
-        case 'is:complete': // Deliberate special case. It should be transparent to users it's an annotation.
-            return new AnnotationFilter(AnnotationType.Complete);
-        case 'annotation:@constant':
-            return new AnnotationFilter(AnnotationType.Constant);
-        case 'annotation:@description':
-            return new AnnotationFilter(AnnotationType.Description);
-        case 'annotation:@enum':
-            return new AnnotationFilter(AnnotationType.Enum);
-        case 'annotation:@group':
-            return new AnnotationFilter(AnnotationType.Group);
-        case 'annotation:@move':
-            return new AnnotationFilter(AnnotationType.Move);
-        case 'annotation:@optional':
-            return new AnnotationFilter(AnnotationType.Optional);
-        case 'annotation:@pure':
-            return new AnnotationFilter(AnnotationType.Pure);
-        case 'annotation:@remove':
-            return new AnnotationFilter(AnnotationType.Remove);
-        case 'annotation:@rename':
-            return new AnnotationFilter(AnnotationType.Rename);
-        case 'annotation:@required':
-            return new AnnotationFilter(AnnotationType.Required);
-        case 'annotation:@todo':
-            return new AnnotationFilter(AnnotationType.Todo);
+    // Fixed filters
+    const fixedFilter = fixedFilters[token.toLowerCase()];
+    if (fixedFilter) {
+        return fixedFilter;
     }
 
     // Name
@@ -224,4 +195,11 @@ const comparisonFunction = function (comparisonOperator: string): ((a: number, b
  */
 export const isValidFilterToken = function (token: string): boolean {
     return Boolean(parsePotentiallyNegatedToken(token));
+};
+
+/**
+ * Returns the names of all fixed filter like "annotation:any".
+ */
+export const getFixedFilterNames = function (): string[] {
+    return Object.keys(fixedFilters);
 };

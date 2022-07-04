@@ -10,12 +10,10 @@ from package_parser.processing.usages.model import UsageCountStore
 @pytest.mark.parametrize(
     "subfolder",
     [
-        "removes",
-        "constants",
-        "requireds",
-        "optionals",
-        "enums",
-        "boundaries",
+        "boundaryAnnotations",
+        "enumAnnotations",
+        "removeAnnotations",
+        "valueAnnotations",
     ],
 )
 def test_generate_annotations(

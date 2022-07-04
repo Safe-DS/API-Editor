@@ -2,54 +2,48 @@ import { Box, Button, Icon, Menu, MenuButton, MenuGroup, MenuItem, MenuList } fr
 import React from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { addPure, addRemove, addRequired, selectComplete, selectUsernameIsValid } from './annotationSlice';
+import { selectComplete, selectUsernameIsValid } from './annotationSlice';
 import {
-    showAttributeAnnotationForm,
     showBoundaryAnnotationForm,
     showCalledAfterAnnotationForm,
-    showConstantAnnotationForm,
     showDescriptionAnnotationForm,
     showEnumAnnotationForm,
     showGroupAnnotationForm,
     showMoveAnnotationForm,
-    showOptionalAnnotationForm,
+    showPureAnnotationForm,
+    showRemoveAnnotationForm,
     showRenameAnnotationForm,
     showTodoAnnotationForm,
+    showValueAnnotationForm,
 } from '../ui/uiSlice';
 
 interface AnnotationDropdownProps {
-    showAttribute?: boolean;
     showBoundary?: boolean;
     showCalledAfter?: boolean;
-    showConstant?: boolean;
     showDescription?: boolean;
     showEnum?: boolean;
     showGroup?: boolean;
     showMove?: boolean;
-    showOptional?: boolean;
     showPure?: boolean;
     showRename?: boolean;
-    showRequired?: boolean;
     showRemove?: boolean;
     showTodo?: boolean;
+    showValue?: boolean;
     target: string;
 }
 
 export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
-    showAttribute = false,
     showBoundary = false,
     showCalledAfter = false,
-    showConstant = false,
     showDescription = false,
     showGroup = false,
     showEnum = false,
     showMove = false,
     showPure = false,
-    showOptional = false,
     showRename = false,
-    showRequired = false,
     showRemove = false,
     showTodo = false,
+    showValue = false,
     target,
 }) {
     const dispatch = useAppDispatch();
@@ -57,6 +51,7 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
     const isValidUsername = Boolean(useAppSelector(selectUsernameIsValid));
     const isDisabled = isComplete || !isValidUsername;
 
+    // Render ----------------------------------------------------------------------------------------------------------
     return (
         // Box gets rid of popper.js warning "CSS margin styles cannot be used"
         <Box>
@@ -86,31 +81,6 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                         </MenuGroup>
                     )}
 
-                    {(showAttribute || showConstant || showOptional || showRequired) && (
-                        <MenuGroup title="Value">
-                            {showAttribute && (
-                                <MenuItem onClick={() => dispatch(showAttributeAnnotationForm(target))} paddingLeft={8}>
-                                    @attribute
-                                </MenuItem>
-                            )}
-                            {showConstant && (
-                                <MenuItem onClick={() => dispatch(showConstantAnnotationForm(target))} paddingLeft={8}>
-                                    @constant
-                                </MenuItem>
-                            )}
-                            {showOptional && (
-                                <MenuItem onClick={() => dispatch(showOptionalAnnotationForm(target))} paddingLeft={8}>
-                                    @optional
-                                </MenuItem>
-                            )}
-                            {showRequired && (
-                                <MenuItem onClick={() => dispatch(addRequired({ target }))} paddingLeft={8}>
-                                    @required
-                                </MenuItem>
-                            )}
-                        </MenuGroup>
-                    )}
-
                     {(showCalledAfter ||
                         showDescription ||
                         showGroup ||
@@ -118,7 +88,8 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                         showPure ||
                         showRemove ||
                         showRename ||
-                        showTodo) && (
+                        showTodo ||
+                        showValue) && (
                         <MenuGroup title="Uncategorized">
                             {showCalledAfter && (
                                 <MenuItem
@@ -164,12 +135,12 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                                 </MenuItem>
                             )}
                             {showPure && (
-                                <MenuItem onClick={() => dispatch(addPure({ target }))} paddingLeft={8}>
+                                <MenuItem onClick={() => dispatch(showPureAnnotationForm(target))} paddingLeft={8}>
                                     @pure
                                 </MenuItem>
                             )}
                             {showRemove && (
-                                <MenuItem onClick={() => dispatch(addRemove({ target }))} paddingLeft={8}>
+                                <MenuItem onClick={() => dispatch(showRemoveAnnotationForm(target))} paddingLeft={8}>
                                     @remove
                                 </MenuItem>
                             )}
@@ -181,6 +152,11 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                             {showTodo && (
                                 <MenuItem onClick={() => dispatch(showTodoAnnotationForm(target))} paddingLeft={8}>
                                     @todo
+                                </MenuItem>
+                            )}
+                            {showValue && (
+                                <MenuItem onClick={() => dispatch(showValueAnnotationForm(target))} paddingLeft={8}>
+                                    @value
                                 </MenuItem>
                             )}
                         </MenuGroup>

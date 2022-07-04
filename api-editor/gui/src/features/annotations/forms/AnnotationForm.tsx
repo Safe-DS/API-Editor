@@ -1,11 +1,12 @@
-import { Button, Heading, HStack, Stack, Text as ChakraText } from '@chakra-ui/react';
+import { Button, Heading, HStack, Stack, Text as ChakraText, Tooltip } from '@chakra-ui/react';
 import React from 'react';
+import { useKeyboardShortcut } from '../../../app/hooks';
 
 interface AnnotationFormProps {
     heading: string;
     description: string;
-    onSave: React.MouseEventHandler<HTMLButtonElement>;
-    onCancel: React.MouseEventHandler<HTMLButtonElement>;
+    onSave: () => void;
+    onCancel: () => void;
     children: React.ReactNode;
 }
 
@@ -16,6 +17,9 @@ export const AnnotationForm: React.FC<AnnotationFormProps> = function ({
     onSave,
     children,
 }) {
+    useKeyboardShortcut(false, true, false, 'Enter', onSave);
+    useKeyboardShortcut(false, false, false, 'Escape', onCancel);
+
     return (
         <Stack spacing={8} p={4}>
             <Stack spacing={4}>
@@ -29,12 +33,16 @@ export const AnnotationForm: React.FC<AnnotationFormProps> = function ({
             <Stack spacing={4}>{children}</Stack>
 
             <HStack>
-                <Button colorScheme="blue" onClick={onSave}>
-                    Save
-                </Button>
-                <Button colorScheme="red" onClick={onCancel}>
-                    Cancel
-                </Button>
+                <Tooltip label="Confirm the change. (Ctrl+Enter)">
+                    <Button colorScheme="blue" onClick={onSave}>
+                        Save
+                    </Button>
+                </Tooltip>
+                <Tooltip label="Drop the change. (Esc)">
+                    <Button colorScheme="red" onClick={onCancel}>
+                        Cancel
+                    </Button>
+                </Tooltip>
             </HStack>
         </Stack>
     );

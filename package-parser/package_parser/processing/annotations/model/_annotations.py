@@ -1,24 +1,20 @@
+from abc import ABC
 from dataclasses import asdict, dataclass
 from enum import Enum
-from typing import Any
+from typing import Any, Union
 
-ANNOTATION_SCHEMA_VERSION = 1
+ANNOTATION_SCHEMA_VERSION = 2
 
 
 @dataclass
-class AbstractAnnotation:
+class AbstractAnnotation(ABC):
     target: str
     authors: list[str]
     reviewers: list[str]
+    comment: str
 
     def to_json(self) -> dict:
         return asdict(self)
-
-
-@dataclass
-class ConstantAnnotation(AbstractAnnotation):
-    defaultType: str
-    defaultValue: Any
 
 
 @dataclass
@@ -27,22 +23,11 @@ class RemoveAnnotation(AbstractAnnotation):
 
 
 @dataclass
-class RequiredAnnotation(AbstractAnnotation):
-    pass
-
-
-@dataclass
-class OptionalAnnotation(AbstractAnnotation):
-    defaultType: str
-    defaultValue: Any
-
-
-@dataclass
 class Interval:
     isDiscrete: bool
-    lowerIntervalLimit: int
+    lowerIntervalLimit: Union[int, float, str]
     lowerLimitType: int
-    upperIntervalLimit: int
+    upperIntervalLimit: Union[int, float, str]
     upperLimitType: int
 
     def to_json(self) -> dict:
@@ -69,45 +54,68 @@ class EnumAnnotation(AbstractAnnotation):
     pairs: list[EnumPair]
 
 
-@dataclass
-class AnnotationStore:
-    boundaries: list[BoundaryAnnotation]
-    constants: list[ConstantAnnotation]
-    enums: list[EnumAnnotation]
-    optionals: list[OptionalAnnotation]
-    removes: list[RemoveAnnotation]
-    requireds: list[RequiredAnnotation]
+class ValueAnnotation(AbstractAnnotation, ABC):
+    class Variant(Enum):
+        CONSTANT = "constant"
+        OPTIONAL = "optional"
+        REQUIRED = "required"
 
-    def __init__(self):
-        self.constants = []
-        self.removes = []
-        self.requireds = []
-        self.optionals = []
-        self.boundaries = []
-        self.enums = []
+    class DefaultValueType(Enum):
+        BOOLEAN = "boolean"
+        NONE = "none"
+        NUMBER = "number"
+        STRING = "string"
+
+    variant: Variant
+
+
+@dataclass
+class ConstantAnnotation(ValueAnnotation):
+    variant = ValueAnnotation.Variant.CONSTANT
+    defaultValueType: ValueAnnotation.DefaultValueType
+    defaultValue: Any
 
     def to_json(self) -> dict:
         return {
-            "schemaVersion": ANNOTATION_SCHEMA_VERSION,
-            "constants": {
-                annotation.target: annotation.to_json() for annotation in self.constants
-            },
-            "removes": {
-                annotation.target: annotation.to_json() for annotation in self.removes
-            },
-            "requireds": {
-                annotation.target: annotation.to_json() for annotation in self.requireds
-            },
-            "optionals": {
-                annotation.target: annotation.to_json() for annotation in self.optionals
-            },
-            "boundaries": {
-                annotation.target: annotation.to_json()
-                for annotation in self.boundaries
-            },
-            "enums": {
-                annotation.target: annotation.to_json() for annotation in self.enums
-            },
+            "target": self.target,
+            "authors": self.authors,
+            "reviewers": self.reviewers,
+            "comment": self.comment,
+            "variant": self.variant.value,
+            "defaultValueType": self.defaultValueType.value,
+            "defaultValue": self.defaultValue,
+        }
+
+
+@dataclass
+class OptionalAnnotation(ValueAnnotation):
+    variant = ValueAnnotation.Variant.OPTIONAL
+    defaultValueType: ValueAnnotation.DefaultValueType
+    defaultValue: Any
+
+    def to_json(self) -> dict:
+        return {
+            "target": self.target,
+            "authors": self.authors,
+            "reviewers": self.reviewers,
+            "comment": self.comment,
+            "variant": self.variant.value,
+            "defaultValueType": self.defaultValueType.value,
+            "defaultValue": self.defaultValue,
+        }
+
+
+@dataclass
+class RequiredAnnotation(ValueAnnotation):
+    variant = ValueAnnotation.Variant.REQUIRED
+
+    def to_json(self) -> dict:
+        return {
+            "target": self.target,
+            "authors": self.authors,
+            "reviewers": self.reviewers,
+            "comment": self.comment,
+            "variant": self.variant.value,
         }
 
 

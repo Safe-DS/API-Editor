@@ -1,28 +1,30 @@
-import { FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Select } from '@chakra-ui/react';
+import { FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Select, Textarea } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectCalledAfters, upsertCalledAfter } from '../annotationSlice';
+import { selectCalledAfterAnnotations, upsertCalledAfterAnnotation } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
 import { PythonFunction } from '../../packageData/model/PythonFunction';
 import { hideAnnotationForm } from '../../ui/uiSlice';
 
 interface CalledAfterFormProps {
     readonly target: PythonFunction;
+    readonly calledAfterName: string;
 }
 
 interface CalledAfterFormState {
     calledAfterName: string;
+    comment: string;
 }
 
-export const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ target }) {
-    const targetPath = target.id;
-    const currentCalledAfters = Object.keys(useAppSelector(selectCalledAfters(targetPath)));
+export const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ target, calledAfterName }) {
+    const currentCalledAfters = Object.keys(useAppSelector(selectCalledAfterAnnotations(target.id)));
+    const previousAnnotation = useAppSelector(selectCalledAfterAnnotations(target.id))[calledAfterName];
 
     const remainingCalledAfters = target
         .siblingFunctions()
         .map((it) => it.name)
-        .filter((it) => !currentCalledAfters.includes(it));
+        .filter((it) => it === previousAnnotation?.calledAfterName || !currentCalledAfters.includes(it));
 
     // Hooks -----------------------------------------------------------------------------------------------------------
 
@@ -36,6 +38,7 @@ export const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ targe
     } = useForm<CalledAfterFormState>({
         defaultValues: {
             calledAfterName: '',
+            comment: '',
         },
     });
 
@@ -49,17 +52,21 @@ export const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ targe
 
     useEffect(() => {
         reset({
-            calledAfterName: '',
+            calledAfterName: previousAnnotation?.calledAfterName ?? '',
+            comment: previousAnnotation?.comment ?? '',
         });
-    }, [reset]);
+    }, [reset, previousAnnotation?.calledAfterName, previousAnnotation?.comment]);
 
     // Event handlers --------------------------------------------------------------------------------------------------
 
     const onSave = (data: CalledAfterFormState) => {
         dispatch(
-            upsertCalledAfter({
-                target: targetPath,
-                ...data,
+            upsertCalledAfterAnnotation({
+                previousCalledAfterName: previousAnnotation?.calledAfterName,
+                annotation: {
+                    target: target.id,
+                    ...data,
+                },
             }),
         );
         dispatch(hideAnnotationForm());
@@ -73,7 +80,7 @@ export const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ targe
 
     return (
         <AnnotationForm
-            heading="@calledAfter Annotation"
+            heading={`${previousAnnotation ? 'Edit' : 'Add'} @calledAfter Annotation`}
             description="Specify that this function must be called after another function."
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
@@ -94,6 +101,11 @@ export const CalledAfterForm: React.FC<CalledAfterFormProps> = function ({ targe
                 <FormErrorMessage>
                     <FormErrorIcon /> {errors?.calledAfterName?.message}
                 </FormErrorMessage>
+            </FormControl>
+
+            <FormControl>
+                <FormLabel>Comment:</FormLabel>
+                <Textarea {...register('comment')} />
             </FormControl>
         </AnnotationForm>
     );

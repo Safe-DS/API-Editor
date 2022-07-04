@@ -1,71 +1,67 @@
 import { Button, ButtonGroup, Icon, IconButton, Stack, Text as ChakraText, Tooltip } from '@chakra-ui/react';
 import React from 'react';
-import { FaCheck, FaFlag, FaTrash, FaWrench } from 'react-icons/fa';
+import { FaCheck, FaFlag, FaQuestion, FaTimes, FaTrash, FaWrench } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
-    Annotation,
-    BoundaryAnnotation,
-    ComparisonOperator,
-    DefaultType,
-    DefaultValue,
-    removeAttribute,
-    removeBoundary,
-    removeCalledAfter,
-    removeConstant,
-    removeDescription,
-    removeEnum,
-    removeGroup,
-    removeMove,
-    removeOptional,
-    removePure,
-    removeRemove,
-    removeRenaming,
-    removeRequired,
-    removeTodo,
-    reviewAttribute,
-    reviewBoundary,
-    reviewCalledAfter,
-    reviewConstant,
-    reviewDescription,
-    reviewEnum,
-    reviewGroup,
-    reviewMove,
-    reviewOptional,
-    reviewPure,
-    reviewRemove,
-    reviewRenaming,
-    reviewRequired,
-    reviewTodo,
-    selectAttribute,
-    selectBoundary,
-    selectCalledAfters,
-    selectConstant,
-    selectDescription,
-    selectEnum,
-    selectGroups,
-    selectMove,
-    selectOptional,
-    selectPure,
-    selectRemove,
-    selectRenaming,
-    selectRequired,
-    selectTodo,
+    removeBoundaryAnnotation,
+    removeCalledAfterAnnotation,
+    removeDescriptionAnnotation,
+    removeEnumAnnotation,
+    removeGroupAnnotation,
+    removeMoveAnnotation,
+    removePureAnnotation,
+    removeRemoveAnnotation,
+    removeRenameAnnotation,
+    removeTodoAnnotation,
+    removeValueAnnotation,
+    reviewBoundaryAnnotation,
+    reviewCalledAfterAnnotation,
+    reviewDescriptionAnnotation,
+    reviewEnumAnnotation,
+    reviewGroupAnnotation,
+    reviewMoveAnnotation,
+    reviewPureAnnotation,
+    reviewRemoveAnnotation,
+    reviewRenameAnnotation,
+    reviewTodoAnnotation,
+    reviewValueAnnotation,
+    selectBoundaryAnnotation,
+    selectCalledAfterAnnotations,
+    selectDescriptionAnnotation,
+    selectEnumAnnotation,
+    selectGroupAnnotations,
+    selectMoveAnnotation,
+    selectPureAnnotation,
+    selectRemoveAnnotation,
+    selectRenameAnnotation,
+    selectTodoAnnotation,
     selectUsernameIsValid,
+    selectValueAnnotation,
 } from './annotationSlice';
 import {
-    showAttributeAnnotationForm,
+    hideAnnotationForm,
+    selectCurrentUserAction,
     showBoundaryAnnotationForm,
-    showConstantAnnotationForm,
+    showCalledAfterAnnotationForm,
     showDescriptionAnnotationForm,
     showEnumAnnotationForm,
     showGroupAnnotationForm,
     showMoveAnnotationForm,
-    showOptionalAnnotationForm,
+    showPureAnnotationForm,
+    showRemoveAnnotationForm,
     showRenameAnnotationForm,
     showTodoAnnotationForm,
+    showValueAnnotationForm,
 } from '../ui/uiSlice';
 import { truncate } from '../../common/util/stringOperations';
 import { wrongAnnotationURL } from '../externalLinks/urlBuilder';
+import {
+    Annotation,
+    BoundaryAnnotation,
+    ComparisonOperator,
+    ReviewResult,
+    ValueAnnotation,
+} from './versioning/AnnotationStoreV2';
 
 interface AnnotationViewProps {
     target: string;
@@ -74,36 +70,30 @@ interface AnnotationViewProps {
 export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target }) {
     const dispatch = useAppDispatch();
 
-    const attributeAnnotation = useAppSelector(selectAttribute(target));
-    const boundaryAnnotation = useAppSelector(selectBoundary(target));
-    const calledAfterAnnotation = useAppSelector(selectCalledAfters(target));
-    const constantAnnotation = useAppSelector(selectConstant(target));
-    const descriptionAnnotation = useAppSelector(selectDescription(target));
-    const enumAnnotation = useAppSelector(selectEnum(target));
-    const groupAnnotations = useAppSelector(selectGroups(target));
-    const moveAnnotation = useAppSelector(selectMove(target));
-    const optionalAnnotation = useAppSelector(selectOptional(target));
-    const pureAnnotation = useAppSelector(selectPure(target));
-    const removeAnnotation = useAppSelector(selectRemove(target));
-    const renameAnnotation = useAppSelector(selectRenaming(target));
-    const requiredAnnotation = useAppSelector(selectRequired(target));
-    const todoAnnotation = useAppSelector(selectTodo(target));
+    const boundaryAnnotation = useAppSelector(selectBoundaryAnnotation(target));
+    const calledAfterAnnotation = useAppSelector(selectCalledAfterAnnotations(target));
+    const descriptionAnnotation = useAppSelector(selectDescriptionAnnotation(target));
+    const enumAnnotation = useAppSelector(selectEnumAnnotation(target));
+    const groupAnnotations = useAppSelector(selectGroupAnnotations(target));
+    const moveAnnotation = useAppSelector(selectMoveAnnotation(target));
+    const pureAnnotation = useAppSelector(selectPureAnnotation(target));
+    const removeAnnotation = useAppSelector(selectRemoveAnnotation(target));
+    const renameAnnotation = useAppSelector(selectRenameAnnotation(target));
+    const todoAnnotation = useAppSelector(selectTodoAnnotation(target));
+    const valueAnnotation = useAppSelector(selectValueAnnotation(target));
 
     if (
-        !attributeAnnotation &&
         !boundaryAnnotation &&
         !calledAfterAnnotation &&
-        !constantAnnotation &&
         !descriptionAnnotation &&
         !enumAnnotation &&
         !groupAnnotations &&
         !moveAnnotation &&
-        !optionalAnnotation &&
         !pureAnnotation &&
         !removeAnnotation &&
         !renameAnnotation &&
-        !requiredAnnotation &&
-        !todoAnnotation
+        !todoAnnotation &&
+        !valueAnnotation
     ) {
         // eslint-disable-next-line react/jsx-no-useless-fragment
         return <></>;
@@ -111,27 +101,15 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
 
     return (
         <Stack maxW="fit-content">
-            {attributeAnnotation && (
-                <AnnotationTag
-                    type="attribute"
-                    name={valueToString(attributeAnnotation.defaultValue, attributeAnnotation.defaultType)}
-                    annotation={attributeAnnotation}
-                    onEdit={() => dispatch(showAttributeAnnotationForm(target))}
-                    onDelete={() => dispatch(removeAttribute(target))}
-                    onReview={() => {
-                        dispatch(reviewAttribute(target));
-                    }}
-                />
-            )}
             {boundaryAnnotation && (
                 <AnnotationTag
                     type="boundary"
                     name={boundaryToString(boundaryAnnotation)}
                     annotation={boundaryAnnotation}
                     onEdit={() => dispatch(showBoundaryAnnotationForm(target))}
-                    onDelete={() => dispatch(removeBoundary(target))}
-                    onReview={() => {
-                        dispatch(reviewBoundary(target));
+                    onDelete={() => dispatch(removeBoundaryAnnotation(target))}
+                    onReview={(reviewResult: ReviewResult) => {
+                        dispatch(reviewBoundaryAnnotation({ target, reviewResult }));
                     }}
                     reportable
                 />
@@ -142,31 +120,29 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     name={calledAfterName}
                     key={calledAfterName}
                     annotation={calledAfterAnnotation[calledAfterName]}
-                    onDelete={() => dispatch(removeCalledAfter({ target, calledAfterName }))}
-                    onReview={() => dispatch(reviewCalledAfter({ target, calledAfterName }))}
+                    onEdit={() => dispatch(showCalledAfterAnnotationForm({ target, calledAfterName }))}
+                    onDelete={() => dispatch(removeCalledAfterAnnotation({ target, calledAfterName }))}
+                    onReview={(reviewResult: ReviewResult) =>
+                        dispatch(
+                            reviewCalledAfterAnnotation({
+                                target: {
+                                    target,
+                                    calledAfterName,
+                                },
+                                reviewResult,
+                            }),
+                        )
+                    }
                 />
             ))}
-            {constantAnnotation && (
-                <AnnotationTag
-                    type="constant"
-                    name={valueToString(constantAnnotation.defaultValue, constantAnnotation.defaultType)}
-                    annotation={constantAnnotation}
-                    onEdit={() => dispatch(showConstantAnnotationForm(target))}
-                    onDelete={() => dispatch(removeConstant(target))}
-                    onReview={() => {
-                        dispatch(reviewConstant(target));
-                    }}
-                    reportable
-                />
-            )}
             {descriptionAnnotation && (
                 <AnnotationTag
                     type="description"
                     annotation={descriptionAnnotation}
                     onEdit={() => dispatch(showDescriptionAnnotationForm(target))}
-                    onDelete={() => dispatch(removeDescription(target))}
-                    onReview={() => {
-                        dispatch(reviewDescription(target));
+                    onDelete={() => dispatch(removeDescriptionAnnotation(target))}
+                    onReview={(reviewResult: ReviewResult) => {
+                        dispatch(reviewDescriptionAnnotation({ target, reviewResult }));
                     }}
                 />
             )}
@@ -176,9 +152,9 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     name={enumAnnotation.enumName}
                     annotation={enumAnnotation}
                     onEdit={() => dispatch(showEnumAnnotationForm(target))}
-                    onDelete={() => dispatch(removeEnum(target))}
-                    onReview={() => {
-                        dispatch(reviewEnum(target));
+                    onDelete={() => dispatch(removeEnumAnnotation(target))}
+                    onReview={(reviewResult: ReviewResult) => {
+                        dispatch(reviewEnumAnnotation({ target, reviewResult }));
                     }}
                     reportable
                 />
@@ -190,8 +166,18 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     name={groupName}
                     annotation={groupAnnotations[groupName]}
                     onEdit={() => dispatch(showGroupAnnotationForm({ target, groupName }))}
-                    onDelete={() => dispatch(removeGroup({ target, groupName }))}
-                    onReview={() => dispatch(reviewGroup({ target, groupName }))}
+                    onDelete={() => dispatch(removeGroupAnnotation({ target, groupName }))}
+                    onReview={(reviewResult: ReviewResult) =>
+                        dispatch(
+                            reviewGroupAnnotation({
+                                target: {
+                                    target,
+                                    groupName,
+                                },
+                                reviewResult,
+                            }),
+                        )
+                    }
                 />
             ))}
             {moveAnnotation && (
@@ -200,39 +186,30 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     name={moveAnnotation.destination}
                     annotation={moveAnnotation}
                     onEdit={() => dispatch(showMoveAnnotationForm(target))}
-                    onDelete={() => dispatch(removeMove(target))}
-                    onReview={() => {
-                        dispatch(reviewMove(target));
+                    onDelete={() => dispatch(removeMoveAnnotation(target))}
+                    onReview={(reviewResult: ReviewResult) => {
+                        dispatch(reviewMoveAnnotation({ target, reviewResult }));
                     }}
-                />
-            )}
-            {optionalAnnotation && (
-                <AnnotationTag
-                    type="optional"
-                    name={valueToString(optionalAnnotation.defaultValue, optionalAnnotation.defaultType)}
-                    annotation={optionalAnnotation}
-                    onEdit={() => dispatch(showOptionalAnnotationForm(target))}
-                    onDelete={() => dispatch(removeOptional(target))}
-                    onReview={() => {
-                        dispatch(reviewOptional(target));
-                    }}
-                    reportable
                 />
             )}
             {pureAnnotation && (
                 <AnnotationTag
                     type="pure"
                     annotation={pureAnnotation}
-                    onDelete={() => dispatch(removePure(target))}
-                    onReview={() => dispatch(reviewPure(target))}
+                    onEdit={() => dispatch(showPureAnnotationForm(target))}
+                    onDelete={() => dispatch(removePureAnnotation(target))}
+                    onReview={(reviewResult: ReviewResult) => dispatch(reviewPureAnnotation({ target, reviewResult }))}
                 />
             )}
             {removeAnnotation && (
                 <AnnotationTag
                     type="remove"
                     annotation={removeAnnotation}
-                    onDelete={() => dispatch(removeRemove(target))}
-                    onReview={() => dispatch(reviewRemove(target))}
+                    onEdit={() => dispatch(showRemoveAnnotationForm(target))}
+                    onDelete={() => dispatch(removeRemoveAnnotation(target))}
+                    onReview={(reviewResult: ReviewResult) =>
+                        dispatch(reviewRemoveAnnotation({ target, reviewResult }))
+                    }
                     reportable
                 />
             )}
@@ -242,19 +219,10 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     name={renameAnnotation.newName}
                     annotation={renameAnnotation}
                     onEdit={() => dispatch(showRenameAnnotationForm(target))}
-                    onDelete={() => dispatch(removeRenaming(target))}
-                    onReview={() => {
-                        dispatch(reviewRenaming(target));
+                    onDelete={() => dispatch(removeRenameAnnotation(target))}
+                    onReview={(reviewResult: ReviewResult) => {
+                        dispatch(reviewRenameAnnotation({ target, reviewResult }));
                     }}
-                />
-            )}
-            {requiredAnnotation && (
-                <AnnotationTag
-                    type="required"
-                    annotation={requiredAnnotation}
-                    onDelete={() => dispatch(removeRequired(target))}
-                    onReview={() => dispatch(reviewRequired(target))}
-                    reportable
                 />
             )}
             {todoAnnotation && (
@@ -263,25 +231,49 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     name={truncate(todoAnnotation.newTodo, 50)}
                     annotation={todoAnnotation}
                     onEdit={() => dispatch(showTodoAnnotationForm(target))}
-                    onDelete={() => dispatch(removeTodo(target))}
-                    onReview={() => dispatch(reviewTodo(target))}
+                    onDelete={() => dispatch(removeTodoAnnotation(target))}
+                    onReview={(reviewResult: ReviewResult) => dispatch(reviewTodoAnnotation({ target, reviewResult }))}
+                />
+            )}
+            {valueAnnotation && (
+                <AnnotationTag
+                    type="value"
+                    name={valueAnnotationToString(valueAnnotation)}
+                    annotation={valueAnnotation}
+                    onEdit={() => dispatch(showValueAnnotationForm(target))}
+                    onDelete={() => dispatch(removeValueAnnotation(target))}
+                    onReview={(reviewResult: ReviewResult) => dispatch(reviewValueAnnotation({ target, reviewResult }))}
+                    reportable
                 />
             )}
         </Stack>
     );
 };
 
-const valueToString = (value: DefaultValue, type: DefaultType): string => {
-    switch (type) {
-        case 'string':
-            return `"${value}"`;
-        case 'number':
-            return String(value);
-        case 'boolean':
-            return value === true ? 'True' : 'False';
-        case 'none':
-            return 'None';
+const valueAnnotationToString = (valueAnnotation: ValueAnnotation): string => {
+    let result = '';
+
+    if (valueAnnotation.variant === 'constant') {
+        result += 'constant';
+    } else if (valueAnnotation.variant === 'optional') {
+        result += 'optional with default';
+    } else if (valueAnnotation.variant === 'required') {
+        result += 'required';
     }
+
+    if (valueAnnotation.variant !== 'required') {
+        if (valueAnnotation.defaultValueType === 'string') {
+            result += ` "${valueAnnotation.defaultValue}"`;
+        } else if (valueAnnotation.defaultValueType === 'number') {
+            result += ' ' + String(valueAnnotation.defaultValue);
+        } else if (valueAnnotation.defaultValueType === 'boolean') {
+            result += valueAnnotation.defaultValue === true ? ' True' : ' False';
+        } else if (valueAnnotation.defaultValueType === 'none') {
+            result += ' None';
+        }
+    }
+
+    return result;
 };
 
 const boundaryToString = (boundary: BoundaryAnnotation) => {
@@ -313,9 +305,9 @@ interface AnnotationTagProps {
     type: string;
     name?: string;
     annotation: Annotation;
-    onEdit?: () => void;
+    onEdit: () => void;
     onDelete: () => void;
-    onReview: () => void;
+    onReview: (reviewResult: ReviewResult) => void;
     reportable?: boolean;
 }
 
@@ -328,50 +320,133 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
     onReview,
     reportable = false,
 }) {
+    const dispatch = useAppDispatch();
     const isValidUsername = useAppSelector(selectUsernameIsValid);
-    const isCorrect = (annotation.reviewers?.length ?? 0) > 0;
+    const currentUserAction = useAppSelector(selectCurrentUserAction);
+
+    const reviewer = (annotation.reviewers ?? [])[0];
+    const reviewResult = annotation.reviewResult;
+    const isReviewed = reviewer !== undefined;
+
     const authors = annotation.authors ?? [];
+    const authorText = createAuthorText(authors);
+
     const isReportable = reportable && authors.length === 1 && authors.includes('$autogen$');
 
+    // Event Handler
+    const onMarkAsCorrect = () => {
+        onReview(ReviewResult.Correct);
+
+        if (annotation.target === currentUserAction.target && type === currentUserAction.type) {
+            dispatch(hideAnnotationForm());
+        }
+    };
+
+    const onMarkAsUnsure = () => {
+        onReview(ReviewResult.Unsure);
+
+        if (annotation.target === currentUserAction.target && type === currentUserAction.type) {
+            dispatch(hideAnnotationForm());
+        }
+    };
+
+    const onMarkAsWrong = () => {
+        onReview(ReviewResult.Wrong);
+
+        if (annotation.target === currentUserAction.target && type === currentUserAction.type) {
+            dispatch(hideAnnotationForm());
+        }
+    };
+
+    // Render
     return (
         <ButtonGroup size="sm" variant="outline" isAttached>
-            <IconButton
-                icon={<FaTrash />}
-                aria-label="Delete annotation"
-                colorScheme="red"
-                disabled={!isValidUsername || isCorrect}
-                onClick={onDelete}
-            />
-            <Button
-                leftIcon={<FaWrench />}
-                flexGrow={1}
-                borderLeft="none"
-                justifyContent="flex-start"
-                disabled={!onEdit || !isValidUsername || isCorrect}
-                onClick={onEdit}
-            >
-                @{type}
-                {name && (
-                    <ChakraText as="span" fontWeight="normal" justifySelf="flex-end">
-                        : {name} {annotation.isRemoved}
-                    </ChakraText>
-                )}
-            </Button>
-            {isCorrect ? (
+            <Tooltip label={`${authorText}Click to delete.`}>
+                <IconButton
+                    icon={<FaTrash />}
+                    aria-label="Delete annotation"
+                    colorScheme="red"
+                    disabled={!isValidUsername || isReviewed}
+                    onClick={onDelete}
+                />
+            </Tooltip>
+            <Tooltip label={`${authorText}Click to change.`}>
                 <Button
-                    size="sm"
-                    variant="solid"
-                    colorScheme="green"
-                    rightIcon={<Icon as={FaCheck} />}
-                    disabled={!isValidUsername}
-                    onClick={onReview}
+                    leftIcon={<FaWrench />}
+                    flexGrow={1}
+                    borderLeft="none"
+                    justifyContent="flex-start"
+                    disabled={!onEdit || !isValidUsername || isReviewed}
+                    onClick={onEdit}
                 >
-                    Correct
+                    @{type}
+                    {name && (
+                        <ChakraText as="span" fontWeight="normal" justifySelf="flex-end">
+                            : {name} {annotation.isRemoved}
+                        </ChakraText>
+                    )}
                 </Button>
-            ) : (
-                <Button size="sm" variant="outline" disabled={!isValidUsername} onClick={onReview}>
-                    Mark as Correct
-                </Button>
+            </Tooltip>
+            {reviewResult === ReviewResult.Correct && (
+                <Tooltip label={`Marked as correct by ${reviewer}. Click to undo.`}>
+                    <Button
+                        size="sm"
+                        variant="solid"
+                        colorScheme="green"
+                        rightIcon={<Icon as={FaCheck} />}
+                        disabled={!isValidUsername}
+                        onClick={() => onReview(ReviewResult.Correct)}
+                    >
+                        Correct
+                    </Button>
+                </Tooltip>
+            )}
+            {reviewResult === ReviewResult.Unsure && (
+                <Tooltip label={`Marked as unsure by ${reviewer}. Click to undo.`}>
+                    <Button
+                        size="sm"
+                        variant="solid"
+                        colorScheme="yellow"
+                        rightIcon={<Icon as={FaQuestion} />}
+                        disabled={!isValidUsername}
+                        onClick={() => onReview(ReviewResult.Unsure)}
+                    >
+                        Unsure
+                    </Button>
+                </Tooltip>
+            )}
+            {reviewResult === ReviewResult.Wrong && (
+                <Tooltip label={`Marked as wrong by ${reviewer}. Click to undo.`}>
+                    <Button
+                        size="sm"
+                        variant="solid"
+                        colorScheme="red"
+                        rightIcon={<Icon as={FaTimes} />}
+                        disabled={!isValidUsername}
+                        onClick={() => onReview(ReviewResult.Wrong)}
+                    >
+                        Wrong
+                    </Button>
+                </Tooltip>
+            )}
+            {!isReviewed && (
+                <>
+                    <Tooltip label={`${authorText}Click to mark as correct.`}>
+                        <Button size="sm" variant="outline" disabled={!isValidUsername} onClick={onMarkAsCorrect}>
+                            Mark as Correct
+                        </Button>
+                    </Tooltip>
+                    <Tooltip label={`${authorText}Click to mark as unsure.`}>
+                        <Button size="sm" variant="outline" disabled={!isValidUsername} onClick={onMarkAsUnsure}>
+                            Mark as Unsure
+                        </Button>
+                    </Tooltip>
+                    <Tooltip label={`${authorText}Click to mark as wrong.`}>
+                        <Button size="sm" variant="outline" disabled={!isValidUsername} onClick={onMarkAsWrong}>
+                            Mark as Wrong
+                        </Button>
+                    </Tooltip>
+                </>
             )}
             {isReportable && (
                 <Tooltip label="Report a wrong autogenerated annotation.">
@@ -379,7 +454,7 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
                         icon={<FaFlag />}
                         aria-label="Report Wrong Annotation"
                         colorScheme="orange"
-                        disabled={isCorrect || !isValidUsername}
+                        disabled={reviewResult === ReviewResult.Correct || !isValidUsername}
                         onClick={() => {
                             window.open(wrongAnnotationURL(type, annotation), '_blank');
                         }}
@@ -388,4 +463,20 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
             )}
         </ButtonGroup>
     );
+};
+
+const createAuthorText = function (authors: string[]): string {
+    let authorText = '';
+    if (authors.length > 0) {
+        if (authors[0] === '$autogen$') {
+            authorText += `Created automatically.`;
+        } else {
+            authorText += `Created manually by ${authors[0]}.`;
+        }
+    }
+    if (authors.length > 1) {
+        authorText += ` Later changed by ${authors.slice(1).join(', ')}.`;
+    }
+    authorText += ' ';
+    return authorText;
 };

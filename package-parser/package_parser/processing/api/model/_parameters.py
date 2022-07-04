@@ -4,7 +4,7 @@ from enum import Enum
 from typing import Any, Optional
 
 from ._documentation import ParameterDocumentation
-from ._types import Type
+from ._types import AbstractType, create_type
 
 
 class Parameter:
@@ -37,7 +37,7 @@ class Parameter:
         self.assigned_by: ParameterAssignment = assigned_by
         self.is_public: bool = is_public
         self.documentation = documentation
-        self.type: Type = Type(documentation)
+        self.type: Optional[AbstractType] = create_type(documentation)
 
     def is_optional(self) -> bool:
         return self.default_value is not None
@@ -54,7 +54,7 @@ class Parameter:
             "assigned_by": self.assigned_by.name,
             "is_public": self.is_public,
             "docstring": self.documentation.to_dict(),
-            "type": self.type.to_json(),
+            "type": self.type.to_json() if self.type is not None else {},
         }
 
 

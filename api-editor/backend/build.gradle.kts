@@ -14,7 +14,7 @@ plugins {
 }
 
 application {
-    mainClass.set("com.larsreimann.api_editor.server.ApplicationKt")
+    mainClass.set("com.larsreimann.apiEditor.server.ApplicationKt")
 }
 
 java {
@@ -33,7 +33,7 @@ tasks.withType<ShadowJar> {
 
 // Dependencies --------------------------------------------------------------------------------------------------------
 
-val ktorVersion = "2.0.2"
+val ktorVersion = "2.0.3"
 
 dependencies {
     implementation("ch.qos.logback:logback-classic:1.2.11")
@@ -47,7 +47,7 @@ dependencies {
     implementation("org.eclipse.xtext:org.eclipse.xtext:2.27.0")
 
     testImplementation(kotlin("test"))
-    testImplementation("io.kotest:kotest-assertions-core-jvm:5.3.1")
+    testImplementation("io.kotest:kotest-assertions-core-jvm:5.3.2")
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
     testImplementation("io.mockk:mockk:1.12.4")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
@@ -81,7 +81,7 @@ tasks {
             val winFileText = winScriptFile.readText()
                 .replace(
                     Regex("set CLASSPATH=.*"),
-                    "rem original CLASSPATH declaration replaced by:\nset CLASSPATH=%APP_HOME%\\\\lib\\\\*"
+                    "rem original CLASSPATH declaration replaced by:\nset CLASSPATH=%APP_HOME%\\\\lib\\\\*",
                 )
 
             winScriptFile.writeText(winFileText)

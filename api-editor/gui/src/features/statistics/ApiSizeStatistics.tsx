@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Flex, Heading } from '@chakra-ui/react';
+import { Box, Flex, Heading, VStack } from '@chakra-ui/react';
 import { useAppSelector } from '../../app/hooks';
 import { selectRawPythonPackage } from '../packageData/apiSlice';
 import { selectUsages } from '../usages/usageSlice';
@@ -26,7 +26,7 @@ export const ApiSizeStatistics = function () {
     const parameterBarChart = <CustomBarChart labels={parameterLabels} values={parameterValues} title={'Parameters'} />;
 
     return (
-        <>
+        <VStack spacing={2}>
             <Heading as="h3" size="md">
                 API Size
             </Heading>
@@ -43,7 +43,7 @@ export const ApiSizeStatistics = function () {
                     </Box>
                 </Flex>
             </Box>
-        </>
+        </VStack>
     );
 };
 

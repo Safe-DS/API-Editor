@@ -7,6 +7,7 @@ import {
     IconButton,
     Input,
     Text,
+    Textarea,
 } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
@@ -14,7 +15,7 @@ import { FaPlus, FaTrash } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { pythonIdentifierPattern } from '../../../common/validation';
 import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
-import { selectEnum, upsertEnum } from '../annotationSlice';
+import { selectEnumAnnotation, upsertEnumAnnotation } from '../annotationSlice';
 import { AnnotationForm } from './AnnotationForm';
 import { hideAnnotationForm } from '../../ui/uiSlice';
 
@@ -28,13 +29,14 @@ interface EnumFormState {
         stringValue: string;
         instanceName: string;
     }[];
+    comment: string;
 }
 
 export const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
     const targetPath = target.id;
 
     // Hooks -----------------------------------------------------------------------------------------------------------
-    const enumDefinition = useAppSelector(selectEnum(target.id));
+    const previousAnnotation = useAppSelector(selectEnumAnnotation(target.id));
     const dispatch = useAppDispatch();
 
     const {
@@ -53,6 +55,7 @@ export const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
                     instanceName: '',
                 },
             ],
+            comment: '',
         },
     });
     const { fields, append, remove } = useFieldArray({
@@ -70,15 +73,16 @@ export const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
 
     useEffect(() => {
         reset({
-            enumName: enumDefinition?.enumName ?? '',
-            pairs: enumDefinition?.pairs ?? [
+            enumName: previousAnnotation?.enumName ?? '',
+            pairs: previousAnnotation?.pairs ?? [
                 {
                     stringValue: '',
                     instanceName: '',
                 },
             ],
+            comment: previousAnnotation?.comment ?? '',
         });
-    }, [reset, enumDefinition, targetPath]);
+    }, [reset, previousAnnotation, targetPath]);
 
     // Event handlers --------------------------------------------------------------------------------------------------
 
@@ -97,7 +101,7 @@ export const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
 
     const onSave = (data: EnumFormState) => {
         dispatch(
-            upsertEnum({
+            upsertEnumAnnotation({
                 target: targetPath,
                 ...data,
             }),
@@ -113,7 +117,7 @@ export const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
 
     return (
         <AnnotationForm
-            heading={`${enumDefinition ? 'Edit' : 'Add'} @enum Annotation`}
+            heading={`${previousAnnotation ? 'Edit' : 'Add'} @enum Annotation`}
             description="Replace this string parameter with an enum parameter."
             onSave={handleSubmit(onSave)}
             onCancel={onCancel}
@@ -177,6 +181,11 @@ export const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
                     />
                 </HStack>
             ))}
+
+            <FormControl>
+                <FormLabel>Comment:</FormLabel>
+                <Textarea {...register('comment')} />
+            </FormControl>
         </AnnotationForm>
     );
 };

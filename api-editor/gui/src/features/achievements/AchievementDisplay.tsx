@@ -1,4 +1,4 @@
-import { Box, Heading, SimpleGrid } from '@chakra-ui/react';
+import { Box, Heading, SimpleGrid, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { useAppSelector } from '../../app/hooks';
 import {
@@ -36,7 +36,7 @@ export const AchievementDisplay: React.FC = function () {
     }
 
     return (
-        <>
+        <VStack spacing={4}>
             <Heading as="h3" size="md">
                 Achievements
             </Heading>
@@ -69,6 +69,6 @@ export const AchievementDisplay: React.FC = function () {
                     />
                 </SimpleGrid>
             </Box>
-        </>
+        </VStack>
     );
 };

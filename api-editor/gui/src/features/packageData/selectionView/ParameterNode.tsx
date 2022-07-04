@@ -16,8 +16,6 @@ interface ParameterNodeProps {
 
 export const ParameterNode: React.FC<ParameterNodeProps> = function ({ isTitle, pythonParameter }) {
     const id = pythonParameter.id;
-
-    const isConstructorParameter = pythonParameter.parent()?.name === '__init__';
     const canBeAnnotated = pythonParameter.isPublic && pythonParameter.isExplicitParameter();
 
     return (
@@ -38,15 +36,12 @@ export const ParameterNode: React.FC<ParameterNodeProps> = function ({ isTitle, 
                     {canBeAnnotated && (
                         <AnnotationDropdown
                             target={id}
-                            showAttribute={isConstructorParameter}
                             showBoundary
-                            showConstant
                             showDescription
                             showEnum
-                            showOptional
                             showRename
-                            showRequired
                             showTodo
+                            showValue
                         />
                     )}
 

@@ -18,7 +18,9 @@ def numpydoc_parser() -> NumpyDocParser:
 class_with_documentation = '''
 class C:
     """
-    Lorem ipsum.
+    Lorem ipsum. Code::
+
+        pass
 
     Dolor sit amet.
     """
@@ -37,8 +39,8 @@ class C:
         (
             class_with_documentation,
             ClassDocumentation(
-                description="Lorem ipsum.\n\nDolor sit amet.",
-                full_docstring="Lorem ipsum.\n\nDolor sit amet.",
+                description="Lorem ipsum. Code::\n\n    pass\n\nDolor sit amet.",
+                full_docstring="Lorem ipsum. Code::\n\n    pass\n\nDolor sit amet.",
             ),
         ),
         (
@@ -66,7 +68,9 @@ def test_get_class_documentation(
 function_with_documentation = '''
 def f():
     """
-    Lorem ipsum.
+    Lorem ipsum. Code::
+
+        pass
 
     Dolor sit amet.
     """
@@ -87,8 +91,8 @@ def f():
         (
             function_with_documentation,
             FunctionDocumentation(
-                description="Lorem ipsum.\n\nDolor sit amet.",
-                full_docstring="Lorem ipsum.\n\nDolor sit amet.",
+                description="Lorem ipsum. Code::\n\n    pass\n\nDolor sit amet.",
+                full_docstring="Lorem ipsum. Code::\n\n    pass\n\nDolor sit amet.",
             ),
         ),
         (
@@ -146,7 +150,9 @@ def f():
     Parameters
     ----------
     no_type_no_default
-        foo: no_type_no_default
+        foo: no_type_no_default. Code::
+
+            pass
     type_no_default : int
         foo: type_no_default
     optional_unknown_default : int, optional
@@ -199,7 +205,7 @@ def f():
             ParameterDocumentation(
                 type="",
                 default_value="",
-                description="foo: no_type_no_default",
+                description="foo: no_type_no_default. Code::\n\n    pass",
             ),
         ),
         (
