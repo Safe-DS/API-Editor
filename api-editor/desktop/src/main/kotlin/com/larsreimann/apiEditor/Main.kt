@@ -8,20 +8,20 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import com.larsreimann.apiEditor.app.Content
 import com.larsreimann.apiEditor.app.MenuBar
-import com.larsreimann.apiEditor.features.settings.model.SettingsSlice
+import com.larsreimann.apiEditor.app.model.AppSlice
 import java.util.ResourceBundle
 
 private val labels = ResourceBundle.getBundle("i18n.labels")
 
 fun main() = application {
-    val settings by remember { mutableStateOf(SettingsSlice()) }
+    val appSlice by remember { mutableStateOf(AppSlice()) }
 
     Window(
         onCloseRequest = ::exitApplication,
         title = labels.getString("App.Window.Title"),
         icon = painterResource("img/icon.svg")
     ) {
-        MenuBar(settings)
-        Content(settings)
+        MenuBar(appSlice.settingsSlice)
+        Content(appSlice)
     }
 }

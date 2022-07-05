@@ -1,6 +1,5 @@
 package com.larsreimann.apiEditor.app
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,7 +15,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
-import com.larsreimann.apiEditor.features.settings.model.SettingsSlice
+import com.larsreimann.apiEditor.app.model.AppSlice
 import com.larsreimann.apiEditor.theme.PythonApiEditorTheme
 import org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi
 import org.jetbrains.compose.splitpane.HorizontalSplitPane
@@ -28,9 +27,8 @@ private fun Modifier.cursorForHorizontalResize(): Modifier =
 
 @OptIn(ExperimentalSplitPaneApi::class)
 @Composable
-@Preview
-fun Content(settings: SettingsSlice) {
-    PythonApiEditorTheme(darkTheme = settings.darkMode) {
+fun Content(appSlice: AppSlice) {
+    PythonApiEditorTheme(darkTheme = appSlice.settingsSlice.darkMode) {
         val splitterState = rememberSplitPaneState(initialPositionPercentage = 0.4f)
         HorizontalSplitPane(
             splitPaneState = splitterState,
