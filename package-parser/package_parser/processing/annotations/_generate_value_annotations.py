@@ -1,7 +1,5 @@
 from typing import Any, Optional
 
-from scipy.stats import binom
-
 from package_parser.processing.annotations.model import (
     AnnotationStore,
     ConstantAnnotation,
@@ -12,8 +10,10 @@ from package_parser.processing.annotations.model import (
 )
 from package_parser.processing.api.model import API, Parameter, ParameterAssignment
 from package_parser.processing.usages.model import UsageCountStore
-from ._constants import autogen_author
+from scipy.stats import binom
+
 from ...utils import pluralize
+from ._constants import autogen_author
 
 
 def _generate_value_annotations(
@@ -37,9 +37,7 @@ def _generate_value_annotations(
 
 
 def _generate_constant_annotation(
-    parameter: Parameter,
-    sole_stringified_value: str,
-    annotations: AnnotationStore
+    parameter: Parameter, sole_stringified_value: str, annotations: AnnotationStore
 ) -> None:
     """
     Collect all parameters that are only ever assigned a single value.

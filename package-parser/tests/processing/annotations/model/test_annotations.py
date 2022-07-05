@@ -7,10 +7,11 @@ from package_parser.processing.annotations.model import (
     EnumAnnotation,
     EnumPair,
     Interval,
+    OmittedAnnotation,
     OptionalAnnotation,
     RemoveAnnotation,
     RequiredAnnotation,
-    ValueAnnotation, OmittedAnnotation,
+    ValueAnnotation,
 )
 
 
