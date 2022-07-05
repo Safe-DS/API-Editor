@@ -123,6 +123,12 @@ export class InferableMoveAnnotation extends InferableAnnotation {
     }
 }
 
+export class InferableOmittedAnnotation extends InferableAnnotation {
+    constructor() {
+        super(dataPathPrefix + 'OmittedAnnotation');
+    }
+}
+
 export class InferableOptionalAnnotation extends InferableAnnotation {
     readonly defaultValue: { type: string; value?: DefaultValue };
 
