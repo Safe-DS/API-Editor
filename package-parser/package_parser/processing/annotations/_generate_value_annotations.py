@@ -1,18 +1,19 @@
 from typing import Any, Optional
 
+from scipy.stats import binom
+
 from package_parser.processing.annotations.model import (
     AnnotationStore,
     ConstantAnnotation,
+    OmittedAnnotation,
     OptionalAnnotation,
     RequiredAnnotation,
     ValueAnnotation,
 )
 from package_parser.processing.api.model import API, Parameter, ParameterAssignment
 from package_parser.processing.usages.model import UsageCountStore
-from scipy.stats import binom
-
-from ...utils import pluralize
 from ._constants import autogen_author
+from ...utils import pluralize
 
 
 def _generate_value_annotations(
@@ -36,7 +37,9 @@ def _generate_value_annotations(
 
 
 def _generate_constant_annotation(
-    parameter: Parameter, sole_stringified_value: str, annotations: AnnotationStore
+    parameter: Parameter,
+    sole_stringified_value: str,
+    annotations: AnnotationStore
 ) -> None:
     """
     Collect all parameters that are only ever assigned a single value.
@@ -44,6 +47,18 @@ def _generate_constant_annotation(
     :param sole_stringified_value: The sole value that is assigned to the parameter
     :param annotations: AnnotationStore object
     """
+
+    # Always set to original default value
+    if sole_stringified_value == parameter.default_value:
+        annotations.valueAnnotations.append(
+            OmittedAnnotation(
+                target=parameter.id,
+                authors=[autogen_author],
+                reviewers=[],
+                comment=f"I omitted this parameter because it is always set to the original default value ({parameter.default_value}).",
+            )
+        )
+        return
 
     default_value_type, default_value = _get_type_and_value_for_stringified_value(
         sole_stringified_value

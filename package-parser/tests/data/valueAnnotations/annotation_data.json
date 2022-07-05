@@ -26,23 +26,14 @@
         "defaultValueType": "string",
         "defaultValue": "test"
     },
-    "test/test/UsedClass/used_method/constant_optional_parameter": {
-        "target": "test/test/UsedClass/used_method/constant_optional_parameter",
-        "authors": ["$autogen$"],
-        "reviewers": [],
-        "comment": "I replaced this parameter with a constant because it is always set to the same literal value (0.5).",
-        "variant": "constant",
-        "defaultValueType": "number",
-        "defaultValue": 0.5
-    },
     "test/test/some_global_function/optional_parameter_that_should_be_constant": {
         "target": "test/test/some_global_function/optional_parameter_that_should_be_constant",
         "authors": ["$autogen$"],
         "reviewers": [],
-        "comment": "I replaced this parameter with a constant because it is always set to the same literal value ('test').",
+        "comment": "I replaced this parameter with a constant because it is always set to the same literal value ('test2').",
         "variant": "constant",
         "defaultValueType": "string",
-        "defaultValue": "test"
+        "defaultValue": "test2"
     },
     "test/test/some_global_function/required_parameter_that_should_be_constant": {
         "target": "test/test/some_global_function/required_parameter_that_should_be_constant",
@@ -52,6 +43,20 @@
         "variant": "constant",
         "defaultValueType": "string",
         "defaultValue": "test"
+    },
+    "test/test/UsedClass/used_method/constant_optional_parameter": {
+        "target": "test/test/UsedClass/used_method/constant_optional_parameter",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "comment": "I omitted this parameter because it is always set to the original default value (0.5).",
+        "variant": "omitted"
+    },
+    "test/test/some_global_function/optional_parameter_that_should_be_omitted": {
+        "target": "test/test/some_global_function/optional_parameter_that_should_be_omitted",
+        "authors": ["$autogen$"],
+        "reviewers": [],
+        "comment": "I omitted this parameter because it is always set to the original default value (np.nan).",
+        "variant": "omitted"
     },
     "test/test/some_global_function/required_parameter_that_should_be_optional": {
         "target": "test/test/some_global_function/required_parameter_that_should_be_optional",

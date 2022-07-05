@@ -227,6 +227,12 @@
                     "default_value": "'test'"
                 },
                 {
+                    "id": "test/test/some_global_function/optional_parameter_that_should_be_omitted",
+                    "name": "optional_parameter_that_should_be_omitted",
+                    "qname": "test.some_global_function.optional_parameter_that_should_be_omitted",
+                    "default_value": "np.nan"
+                },
+                {
                     "id": "test/test/some_global_function/optional_parameter_that_should_be_required",
                     "name": "optional_parameter_that_should_be_required",
                     "qname": "test.some_global_function.optional_parameter_that_should_be_required",

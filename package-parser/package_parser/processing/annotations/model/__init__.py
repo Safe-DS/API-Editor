@@ -6,6 +6,7 @@ from ._annotations import (
     EnumAnnotation,
     EnumPair,
     Interval,
+    OmittedAnnotation,
     OptionalAnnotation,
     ParameterInfo,
     ParameterType,
