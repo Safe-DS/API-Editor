@@ -7,6 +7,7 @@ val javaVersion: String by project
 // Plugins -------------------------------------------------------------------------------------------------------------
 
 plugins {
+    `java-test-fixtures`
     kotlin("jvm")
     kotlin("plugin.serialization")
     id("org.jetbrains.compose")
@@ -41,6 +42,8 @@ dependencies {
     implementation(compose.desktop.currentOs)
     implementation("org.jetbrains.compose.components:components-splitpane:1.1.1")
     implementation("org.jetbrains.compose.material3:material3:1.2.0-alpha01-dev731")
+
+    testFixturesImplementation(compose.desktop.currentOs)
 
     testImplementation(kotlin("test"))
     testImplementation("io.kotest:kotest-assertions-core-jvm:5.3.2")
