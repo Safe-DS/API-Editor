@@ -1,4 +1,4 @@
-package com.larsreimann.apiEditor.features.usages
+package com.larsreimann.apiEditor.features.usages.model
 
 import com.larsreimann.apiEditor.features.api.ClassId
 import com.larsreimann.apiEditor.features.api.FunctionId

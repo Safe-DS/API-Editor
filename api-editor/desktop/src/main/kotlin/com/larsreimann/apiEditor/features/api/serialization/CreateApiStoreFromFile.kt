@@ -1,6 +1,6 @@
-package com.larsreimann.apiEditor.features.usages.serialization
+package com.larsreimann.apiEditor.features.api.serialization
 
-import com.larsreimann.apiEditor.features.usages.UsageStore
+import com.larsreimann.apiEditor.features.api.model.ApiStore
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
@@ -10,8 +10,8 @@ import kotlin.io.path.inputStream
 private val json = Json { classDiscriminator = "\$discriminator" }
 
 @OptIn(ExperimentalSerializationApi::class)
-fun decodeUsageStore(path: Path): UsageStore {
+fun createApiStoreFromFile(path: Path): ApiStore {
     return json
-        .decodeFromStream<SerializableUsageStore>(path.inputStream())
-        .toUsageStore()
+        .decodeFromStream<SerializableApiStore>(path.inputStream())
+        .toApiStore()
 }

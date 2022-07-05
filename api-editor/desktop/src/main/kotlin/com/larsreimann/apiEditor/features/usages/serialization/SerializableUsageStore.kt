@@ -4,7 +4,7 @@ import com.larsreimann.apiEditor.features.api.ClassId
 import com.larsreimann.apiEditor.features.api.FunctionId
 import com.larsreimann.apiEditor.features.api.ModuleId
 import com.larsreimann.apiEditor.features.api.ParameterId
-import com.larsreimann.apiEditor.features.usages.UsageStore
+import com.larsreimann.apiEditor.features.usages.model.UsageStore
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
