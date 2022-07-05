@@ -14,7 +14,7 @@ sealed class SerializableUsageStore {
 }
 
 @Serializable
-@SerialName("2")
+@SerialName("v2")
 class SerializableUsageStoreV2(
     private val moduleCounts: Map<String, Int> = emptyMap(),
     private val classCounts: Map<String, Int> = emptyMap(),

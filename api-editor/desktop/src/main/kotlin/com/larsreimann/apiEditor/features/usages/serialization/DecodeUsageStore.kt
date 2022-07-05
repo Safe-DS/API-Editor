@@ -7,7 +7,7 @@ import kotlinx.serialization.json.decodeFromStream
 import java.nio.file.Path
 import kotlin.io.path.inputStream
 
-private val json = Json { classDiscriminator = "schemaVersion" }
+private val json = Json { classDiscriminator = "\$discriminator" }
 
 @OptIn(ExperimentalSerializationApi::class)
 fun decodeUsageStore(path: Path): UsageStore {
