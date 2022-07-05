@@ -3,6 +3,7 @@ package com.larsreimann.apiEditor.transformation
 import com.larsreimann.apiEditor.model.ConstantAnnotation
 import com.larsreimann.apiEditor.model.DefaultBoolean
 import com.larsreimann.apiEditor.model.DefaultNone
+import com.larsreimann.apiEditor.model.OmittedAnnotation
 import com.larsreimann.apiEditor.model.OptionalAnnotation
 import com.larsreimann.apiEditor.model.PythonParameterAssignment
 import com.larsreimann.apiEditor.model.RequiredAnnotation
@@ -97,8 +98,29 @@ class ValueAnnotationProcessorTest {
 
         testPackage.processValueAnnotations()
 
-        testPackage.annotations
+        testParameter.annotations
             .filterIsInstance<ConstantAnnotation>()
+            .shouldBeEmpty()
+    }
+
+    @Test
+    fun `should process OmittedAnnotations`() {
+        testParameter.annotations += OmittedAnnotation
+
+        testPackage.processValueAnnotations()
+
+        testMethod.parameters.shouldBeEmpty()
+        testMethod.callToOriginalAPI?.arguments.shouldBeEmpty()
+    }
+
+    @Test
+    fun `should remove OmittedAnnotations`() {
+        testParameter.annotations += OmittedAnnotation
+
+        testPackage.processValueAnnotations()
+
+        testParameter.annotations
+            .filterIsInstance<OmittedAnnotation>()
             .shouldBeEmpty()
     }
 
@@ -118,7 +140,7 @@ class ValueAnnotationProcessorTest {
 
         testPackage.processValueAnnotations()
 
-        testPackage.annotations
+        testParameter.annotations
             .filterIsInstance<OptionalAnnotation>()
             .shouldBeEmpty()
     }
@@ -141,7 +163,7 @@ class ValueAnnotationProcessorTest {
 
         testPackage.processValueAnnotations()
 
-        testPackage.annotations
+        testParameter.annotations
             .filterIsInstance<RequiredAnnotation>()
             .shouldBeEmpty()
     }

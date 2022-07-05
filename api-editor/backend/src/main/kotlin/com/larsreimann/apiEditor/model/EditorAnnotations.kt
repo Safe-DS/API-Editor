@@ -85,6 +85,12 @@ data class MoveAnnotation(val destination: String) : EditorAnnotation() {
 }
 
 @Serializable
+object OmittedAnnotation : EditorAnnotation() {
+    @Transient
+    override val validTargets = PARAMETERS
+}
+
+@Serializable
 data class OptionalAnnotation(val defaultValue: DefaultValue) : EditorAnnotation() {
 
     @Transient

@@ -6,6 +6,7 @@ import com.larsreimann.apiEditor.model.DefaultNone
 import com.larsreimann.apiEditor.model.DefaultNumber
 import com.larsreimann.apiEditor.model.DefaultString
 import com.larsreimann.apiEditor.model.DefaultValue
+import com.larsreimann.apiEditor.model.OmittedAnnotation
 import com.larsreimann.apiEditor.model.OptionalAnnotation
 import com.larsreimann.apiEditor.model.PythonParameterAssignment
 import com.larsreimann.apiEditor.model.RequiredAnnotation
@@ -39,6 +40,7 @@ private fun PythonParameter.processValueAnnotations() {
         .forEach {
             when (it) {
                 is ConstantAnnotation -> processConstantAnnotation(it)
+                is OmittedAnnotation -> processOmittedAnnotation(it)
                 is OptionalAnnotation -> processOptionalAnnotation(it)
                 is RequiredAnnotation -> processRequiredAnnotation(it)
                 else -> {}
@@ -61,6 +63,30 @@ private fun PythonParameter.processConstantAnnotation(annotation: ConstantAnnota
 
     // Remove parameter
     this.release()
+
+    // Remove annotation
+    this.annotations.remove(annotation)
+}
+
+private fun PythonParameter.processOmittedAnnotation(annotation: OmittedAnnotation) {
+    // Update argument that references this parameter
+    val arguments = crossReferencesToThis()
+        .mapNotNull { (it.parent as? PythonReference)?.closest<PythonArgument>() }
+        .toList()
+
+    require(arguments.size == 1) {
+        "Expected parameter to be referenced in exactly one argument but was used in $arguments."
+    }
+
+    // Remove argument
+    val argument = arguments[0]
+    argument.release()
+
+    // Remove parameter
+    this.release()
+
+    // Remove annotation
+    this.annotations.remove(annotation)
 }
 
 private fun PythonParameter.processOptionalAnnotation(annotation: OptionalAnnotation) {

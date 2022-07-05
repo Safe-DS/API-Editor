@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
 import { selectValueAnnotation, upsertValueAnnotation } from '../annotationSlice';
 import {
     FormControl,
@@ -18,6 +17,7 @@ import {
     Select,
     Stack,
     Textarea,
+    Tooltip,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { Optional } from '../../../common/util/types';
@@ -30,9 +30,10 @@ import {
     ValueAnnotation,
     ValueAnnotationVariant,
 } from '../versioning/AnnotationStoreV2';
+import { PythonParameter } from '../../packageData/model/PythonParameter';
 
 interface ValueFormProps {
-    target: PythonDeclaration;
+    target: PythonParameter;
 }
 
 export const ValueForm: React.FC<ValueFormProps> = function ({ target }) {
@@ -65,7 +66,7 @@ export const ValueForm: React.FC<ValueFormProps> = function ({ target }) {
 };
 
 interface TypeValueFormProps {
-    target: PythonDeclaration;
+    target: PythonParameter;
     annotationType: string;
     description: string;
     previousAnnotation: Optional<ValueAnnotation>;
@@ -184,19 +185,49 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
             <FormLabel>Choose the variant of this annotation:</FormLabel>
             <RadioGroup defaultValue={previousAnnotation?.variant ?? 'optional'} onChange={handleVariantChange}>
                 <Stack direction="column">
-                    <Radio value="required">Required (parameter must always be set explicitly)</Radio>
-                    <Radio value="optional">Optional (parameter has a default value that can be overwritten)</Radio>
-                    <Radio value="constant">Constant (parameter is replaced by a constant value)</Radio>
+                    <Radio value="required">
+                        <Tooltip
+                            label="Users of the wrapper must set this parameter explicitly. This value is passed to the
+                            original API."
+                        >
+                            Required
+                        </Tooltip>
+                    </Radio>
+                    <Radio value="optional">
+                        <Tooltip
+                            label="Users of the wrapper can set this parameter explicitly. If they do, this value is
+                            passed to the original API. Otherwise, a default value is used."
+                        >
+                            Optional
+                        </Tooltip>
+                    </Radio>
+                    <Radio value="constant">
+                        <Tooltip
+                            label="This parameter no longer appears in the wrapper. Instead, a constant value is passed
+                            to the original API."
+                        >
+                            Constant
+                        </Tooltip>
+                    </Radio>
+                    <Radio value="omitted">
+                        <Tooltip
+                            label="This parameter no longer appears in the wrapper. Moreover, no value is passed to the
+                            original API, so the original default value is used. This option is only available for
+                            parameters that are optional in the original API."
+                        >
+                            Omitted
+                        </Tooltip>
+                    </Radio>
                 </Stack>
             </RadioGroup>
 
-            {watchVariant !== 'required' && (
+            {watchVariant !== 'required' && watchVariant !== 'omitted' && (
                 <>
                     {watchVariant === 'optional' && (
-                        <FormLabel>Type of default value of &quot;{target.name}&quot;:</FormLabel>
+                        <FormLabel>Type of the default value for &quot;{target.name}&quot;:</FormLabel>
                     )}
                     {watchVariant === 'constant' && (
-                        <FormLabel>Type of constant value of &quot;{target.name}&quot;:</FormLabel>
+                        <FormLabel>Type of the constant value for &quot;{target.name}&quot;:</FormLabel>
                     )}
                     <RadioGroup
                         defaultValue={previousAnnotation?.defaultValueType ?? 'string'}
@@ -212,7 +243,7 @@ const TypeValueForm: React.FC<TypeValueFormProps> = function ({
                 </>
             )}
 
-            {watchVariant !== 'required' && watchDefaultValueType !== 'none' && (
+            {watchVariant !== 'required' && watchVariant !== 'omitted' && watchDefaultValueType !== 'none' && (
                 <FormControl isInvalid={Boolean(errors?.defaultValue)}>
                     {watchVariant === 'optional' && <FormLabel>Default value for &quot;{target.name}&quot;:</FormLabel>}
                     {watchVariant === 'constant' && (
