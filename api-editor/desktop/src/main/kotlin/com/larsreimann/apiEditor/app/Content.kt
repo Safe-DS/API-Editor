@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
-import com.larsreimann.apiEditor.features.settings.Settings
+import com.larsreimann.apiEditor.features.settings.model.SettingsSlice
 import com.larsreimann.apiEditor.theme.PythonApiEditorTheme
 import org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi
 import org.jetbrains.compose.splitpane.HorizontalSplitPane
@@ -29,17 +29,17 @@ private fun Modifier.cursorForHorizontalResize(): Modifier =
 @OptIn(ExperimentalSplitPaneApi::class)
 @Composable
 @Preview
-fun Content(settings: Settings) {
+fun Content(settings: SettingsSlice) {
     PythonApiEditorTheme(darkTheme = settings.darkMode) {
         val splitterState = rememberSplitPaneState(initialPositionPercentage = 0.4f)
         HorizontalSplitPane(
-            splitPaneState = splitterState
+            splitPaneState = splitterState,
         ) {
             first(160.dp) {
                 Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
                 ) {
 
 //                    Column(modifier = Modifier.padding(5.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
@@ -61,7 +61,7 @@ fun Content(settings: Settings) {
                 Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
                 ) {
 //                    Column(modifier = Modifier.padding(5.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
 //                        HeatmapTag(0, 10000)
@@ -79,7 +79,7 @@ fun Content(settings: Settings) {
                         Modifier
                             .width(1.dp)
                             .fillMaxHeight()
-                            .background(SolidColor(Color.Gray), alpha = 0.50f)
+                            .background(SolidColor(Color.Gray), alpha = 0.50f),
                     )
                 }
                 handle {
@@ -88,7 +88,7 @@ fun Content(settings: Settings) {
                             .markAsHandle()
                             .cursorForHorizontalResize()
                             .width(9.dp)
-                            .fillMaxHeight()
+                            .fillMaxHeight(),
                     )
                 }
             }

@@ -2,15 +2,15 @@ package com.larsreimann.apiEditor.app
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.FrameWindowScope
-import com.larsreimann.apiEditor.features.settings.HeatmapMode
-import com.larsreimann.apiEditor.features.settings.Settings
+import com.larsreimann.apiEditor.features.settings.model.HeatmapMode
+import com.larsreimann.apiEditor.features.settings.model.SettingsSlice
 import java.util.ResourceBundle
 import androidx.compose.ui.window.MenuBar as ComposeMenuBar
 
 private val labels: ResourceBundle = ResourceBundle.getBundle("i18n.labels")
 
 @Composable
-fun FrameWindowScope.MenuBar(settings: Settings) {
+fun FrameWindowScope.MenuBar(settings: SettingsSlice) {
     ComposeMenuBar {
         Menu(labels.getString("MenuBar.File"), mnemonic = 'F') {
             Menu(labels.getString("MenuBar.File.Import"), mnemonic = 'I') {

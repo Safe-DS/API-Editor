@@ -8,13 +8,13 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import com.larsreimann.apiEditor.app.Content
 import com.larsreimann.apiEditor.app.MenuBar
-import com.larsreimann.apiEditor.features.settings.Settings
+import com.larsreimann.apiEditor.features.settings.model.SettingsSlice
 import java.util.ResourceBundle
 
 private val labels = ResourceBundle.getBundle("i18n.labels")
 
 fun main() = application {
-    val settings by remember { mutableStateOf(Settings()) }
+    val settings by remember { mutableStateOf(SettingsSlice()) }
 
     Window(
         onCloseRequest = ::exitApplication,
