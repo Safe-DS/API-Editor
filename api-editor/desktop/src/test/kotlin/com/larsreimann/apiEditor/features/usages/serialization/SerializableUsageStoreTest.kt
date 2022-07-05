@@ -5,7 +5,6 @@ import com.larsreimann.apiEditor.testUtils.walkResourceDirectory
 import io.kotest.assertions.throwables.shouldNotThrow
 import kotlinx.serialization.SerializationException
 import org.junit.jupiter.api.Named
-import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -13,7 +12,6 @@ import java.nio.file.Path
 import java.util.stream.Stream
 import kotlin.streams.asStream
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SerializableUsageStoreTest {
 
     @ParameterizedTest
