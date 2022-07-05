@@ -1,4 +1,4 @@
-package com.larsreimann.apiEditor.features.annotations.serialization
+package com.larsreimann.apiEditor.features.api.serialization
 
 import com.larsreimann.apiEditor.testUtils.resourcePathOrNull
 import com.larsreimann.apiEditor.testUtils.walkResourceDirectory
@@ -14,13 +14,13 @@ import java.util.stream.Stream
 import kotlin.streams.asStream
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class SerializableAnnotationStoreTest {
+class SerializableApiStoreTest {
 
     @ParameterizedTest
     @MethodSource("serializationTestPaths")
     fun `should be able to decode usage count JSON files`(path: Path) {
         shouldNotThrow<SerializationException> {
-            createAnnotationStoreFromFile(path)
+            createApiStoreFromFile(path)
         }
     }
 

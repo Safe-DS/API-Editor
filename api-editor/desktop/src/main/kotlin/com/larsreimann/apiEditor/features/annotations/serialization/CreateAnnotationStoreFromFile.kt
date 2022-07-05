@@ -10,8 +10,8 @@ import kotlin.io.path.inputStream
 private val json = Json { classDiscriminator = "\$discriminator" }
 
 @OptIn(ExperimentalSerializationApi::class)
-fun createAnnotationSliceFromFile(path: Path): AnnotationSlice {
+fun createAnnotationStoreFromFile(path: Path): AnnotationSlice {
     return json
         .decodeFromStream<SerializableAnnotationStore>(path.inputStream())
-        .toAnnotationSlice()
+        .toAnnotationStore()
 }

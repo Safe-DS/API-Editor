@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 sealed class SerializableAnnotationStore {
-    abstract fun toAnnotationSlice(): AnnotationSlice
+    abstract fun toAnnotationStore(): AnnotationSlice
 }
