@@ -1,9 +1,9 @@
 package com.larsreimann.apiEditor.features.usages.serialization
 
-import com.larsreimann.apiEditor.features.api.model.ClassId
-import com.larsreimann.apiEditor.features.api.model.FunctionId
-import com.larsreimann.apiEditor.features.api.model.ModuleId
-import com.larsreimann.apiEditor.features.api.model.ParameterId
+import com.larsreimann.apiEditor.features.ast.model.ClassId
+import com.larsreimann.apiEditor.features.ast.model.FunctionId
+import com.larsreimann.apiEditor.features.ast.model.ModuleId
+import com.larsreimann.apiEditor.features.ast.model.ParameterId
 import com.larsreimann.apiEditor.testUtils.relativeResourcePathOrNull
 import com.larsreimann.apiEditor.testUtils.resourcePathOrNull
 import com.larsreimann.apiEditor.testUtils.walkResourceDirectory
