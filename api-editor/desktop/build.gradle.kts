@@ -9,6 +9,7 @@ val javaVersion: String by project
 plugins {
     `java-test-fixtures`
     kotlin("jvm")
+    kotlin("plugin.serialization")
     id("org.jetbrains.compose")
 }
 
@@ -38,6 +39,7 @@ compose.desktop {
 dependencies {
     implementation(compose.desktop.currentOs)
     implementation("org.jetbrains.compose.components:components-splitpane:1.1.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
 
     testFixturesImplementation(compose.desktop.currentOs)
 
