@@ -45,7 +45,7 @@ export const AchievementDisplay: React.FC = function () {
                     <AchievementCard
                         currentCount={auditorCount}
                         achievement={auditorAchievement}
-                        description={`${pluralize(auditorCount, 'annotation')} marked as correct`}
+                        description={`${pluralize(auditorCount, 'annotation')} reviewed`}
                     />
                     <AchievementCard
                         currentCount={authorCount}

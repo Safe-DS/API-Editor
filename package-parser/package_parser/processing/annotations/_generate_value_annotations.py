@@ -3,6 +3,7 @@ from typing import Any, Optional
 from package_parser.processing.annotations.model import (
     AnnotationStore,
     ConstantAnnotation,
+    OmittedAnnotation,
     OptionalAnnotation,
     RequiredAnnotation,
     ValueAnnotation,
@@ -44,6 +45,18 @@ def _generate_constant_annotation(
     :param sole_stringified_value: The sole value that is assigned to the parameter
     :param annotations: AnnotationStore object
     """
+
+    # Always set to original default value
+    if sole_stringified_value == parameter.default_value:
+        annotations.valueAnnotations.append(
+            OmittedAnnotation(
+                target=parameter.id,
+                authors=[autogen_author],
+                reviewers=[],
+                comment=f"I omitted this parameter because it is always set to the original default value ({parameter.default_value}).",
+            )
+        )
+        return
 
     default_value_type, default_value = _get_type_and_value_for_stringified_value(
         sole_stringified_value

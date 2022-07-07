@@ -145,6 +145,7 @@ export class AnnotatedPythonPackageBuilder {
         'Enum',
         'Groups',
         'Move',
+        'Omitted',
         'Optional',
         'Pure',
         'Remove',
@@ -215,10 +216,16 @@ export class AnnotatedPythonPackageBuilder {
                     return new InferableMoveAnnotation(moveAnnotation);
                 }
                 break;
-            case 'Optional':
+            case 'Omitted':
                 const valueAnnotation2 = this.annotationStore.valueAnnotations[target];
-                if (annotationShouldBeProcessed(valueAnnotation2) && valueAnnotation2.variant === 'optional') {
-                    return new InferableOptionalAnnotation(valueAnnotation2);
+                if (annotationShouldBeProcessed(valueAnnotation2) && valueAnnotation2.variant === 'omitted') {
+                    return new InferableRequiredAnnotation();
+                }
+                break;
+            case 'Optional':
+                const valueAnnotation3 = this.annotationStore.valueAnnotations[target];
+                if (annotationShouldBeProcessed(valueAnnotation3) && valueAnnotation3.variant === 'optional') {
+                    return new InferableOptionalAnnotation(valueAnnotation3);
                 }
                 break;
             case 'Pure':
@@ -240,8 +247,8 @@ export class AnnotatedPythonPackageBuilder {
                 }
                 break;
             case 'Required':
-                const valueAnnotation3 = this.annotationStore.valueAnnotations[target];
-                if (annotationShouldBeProcessed(valueAnnotation3) && valueAnnotation3.variant === 'required') {
+                const valueAnnotation4 = this.annotationStore.valueAnnotations[target];
+                if (annotationShouldBeProcessed(valueAnnotation4) && valueAnnotation4.variant === 'required') {
                     return new InferableRequiredAnnotation();
                 }
                 break;
@@ -257,5 +264,5 @@ export class AnnotatedPythonPackageBuilder {
 }
 
 const annotationShouldBeProcessed = function (annotation: Annotation): boolean {
-    return annotation && !annotation.isRemoved && annotation.reviewResult === ReviewResult.Wrong;
+    return annotation && !annotation.isRemoved && annotation.reviewResult !== ReviewResult.Wrong;
 };

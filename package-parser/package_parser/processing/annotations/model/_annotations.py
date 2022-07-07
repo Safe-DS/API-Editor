@@ -57,6 +57,7 @@ class EnumAnnotation(AbstractAnnotation):
 class ValueAnnotation(AbstractAnnotation, ABC):
     class Variant(Enum):
         CONSTANT = "constant"
+        OMITTED = "omitted"
         OPTIONAL = "optional"
         REQUIRED = "required"
 
@@ -84,6 +85,20 @@ class ConstantAnnotation(ValueAnnotation):
             "variant": self.variant.value,
             "defaultValueType": self.defaultValueType.value,
             "defaultValue": self.defaultValue,
+        }
+
+
+@dataclass
+class OmittedAnnotation(ValueAnnotation):
+    variant = ValueAnnotation.Variant.OMITTED
+
+    def to_json(self) -> dict:
+        return {
+            "target": self.target,
+            "authors": self.authors,
+            "reviewers": self.reviewers,
+            "comment": self.comment,
+            "variant": self.variant.value,
         }
 
 

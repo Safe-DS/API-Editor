@@ -160,7 +160,9 @@ export const App: React.FC = function () {
                         <RenameForm target={userActionTarget || rawPythonPackage} />
                     )}
                     {currentUserAction.type === 'todo' && <TodoForm target={userActionTarget || rawPythonPackage} />}
-                    {currentUserAction.type === 'value' && <ValueForm target={userActionTarget || rawPythonPackage} />}
+                    {currentUserAction.type === 'value' && userActionTarget instanceof PythonParameter && (
+                        <ValueForm target={userActionTarget} />
+                    )}
                 </GridItem>
                 <GridItem gridArea="middlePane" overflow="auto" display="flex">
                     <Box flexGrow={1} overflowY="auto" width="100%">

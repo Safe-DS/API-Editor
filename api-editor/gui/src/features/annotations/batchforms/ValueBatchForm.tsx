@@ -25,6 +25,7 @@ import {
     Stack,
     Text as ChakraText,
     Textarea,
+    Tooltip,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { booleanPattern, numberPattern } from '../../../common/validation';
@@ -39,7 +40,7 @@ interface ValueBatchFormProps {
 
 export const ValueBatchForm: React.FC<ValueBatchFormProps> = function ({ targets }) {
     //only parameters can have optional annotations
-    const filteredTargets = targets.filter((t) => t instanceof PythonParameter);
+    const filteredTargets = targets.filter((t) => t instanceof PythonParameter) as PythonParameter[];
     const targetPaths = filteredTargets.map((t) => t.id);
 
     // Hooks -----------------------------------------------------------------------------------------------------------
@@ -73,7 +74,7 @@ export const ValueBatchForm: React.FC<ValueBatchFormProps> = function ({ targets
 };
 
 interface TypeValueBatchFormProps {
-    targets: PythonDeclaration[];
+    targets: PythonParameter[];
     description: string;
     onUpsertAnnotation: (data: TypeValueBatchFormState) => void;
 }
@@ -174,19 +175,49 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
                 <FormLabel>Choose the variant of this annotation:</FormLabel>
                 <RadioGroup defaultValue={'optional'} onChange={handleVariantChange}>
                     <Stack direction="column">
-                        <Radio value="required">Required (parameter must always be set explicitly)</Radio>
-                        <Radio value="optional">Optional (parameter has a default value that can be overwritten)</Radio>
-                        <Radio value="constant">Constant (parameter is replaced by a constant value)</Radio>
+                        <Radio value="required">
+                            <Tooltip
+                                label="Users of the wrapper must set this parameter explicitly. This value is passed to
+                                the original API."
+                            >
+                                Required
+                            </Tooltip>
+                        </Radio>
+                        <Radio value="optional">
+                            <Tooltip
+                                label="Users of the wrapper can set this parameter explicitly. If they do, this value is
+                                passed to the original API. Otherwise, a default value is used."
+                            >
+                                Optional
+                            </Tooltip>
+                        </Radio>
+                        <Radio value="constant">
+                            <Tooltip
+                                label="This parameter no longer appears in the wrapper. Instead, a constant value is passed
+                                to the original API."
+                            >
+                                Constant
+                            </Tooltip>
+                        </Radio>
+                        <Radio value="omitted">
+                            <Tooltip
+                                label="This parameter no longer appears in the wrapper. Moreover, no value is passed to the
+                                original API, so the original default value is used. This option is only available for
+                                parameters that are optional in the original API."
+                            >
+                                Omitted
+                            </Tooltip>
+                        </Radio>
                     </Stack>
                 </RadioGroup>
 
-                {watchVariant !== 'required' && (
+                {watchVariant !== 'required' && watchVariant !== 'omitted' && (
                     <>
                         {watchVariant === 'optional' && (
-                            <FormLabel>Type of default value of matched elements:</FormLabel>
+                            <FormLabel>Type of the default value for matched elements:</FormLabel>
                         )}
                         {watchVariant === 'constant' && (
-                            <FormLabel>Type of constant value of matched elements:</FormLabel>
+                            <FormLabel>Type of the constant value for matched elements:</FormLabel>
                         )}
                         <RadioGroup defaultValue={'string'} onChange={handleTypeChange}>
                             <Stack direction="column">
@@ -199,7 +230,7 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
                     </>
                 )}
 
-                {watchVariant !== 'required' && watchDefaultValueType !== 'none' && (
+                {watchVariant !== 'required' && watchVariant !== 'omitted' && watchDefaultValueType !== 'none' && (
                     <FormControl isInvalid={Boolean(errors?.defaultValue)}>
                         {watchVariant === 'optional' && <FormLabel>Default value for matched elements:</FormLabel>}
                         {watchVariant === 'constant' && <FormLabel>Constant value for matched elements:</FormLabel>}
@@ -244,7 +275,7 @@ export const TypeValueBatchForm: React.FC<TypeValueBatchFormProps> = function ({
             </AnnotationBatchForm>
             {confirmWindowVisible && (
                 <ConfirmAnnotations
-                    targets={targets}
+                    targets={watchVariant === 'omitted' ? targets.filter((it) => it.defaultValue !== null) : targets}
                     handleSave={() => handleSave(data)}
                     setConfirmVisible={setConfirmWindowVisible}
                 />
