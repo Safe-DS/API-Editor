@@ -23,10 +23,10 @@ tasks.withType<KotlinCompile> {
 
 compose.desktop {
     application {
-        mainClass = "com.larsreimann.python_api_editor.MainKt"
+        mainClass = "com.larsreimann.apiEditor.MainKt"
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "python-api-editor"
+            packageName = "api-editor"
             packageVersion = "1.0.0"
         }
     }

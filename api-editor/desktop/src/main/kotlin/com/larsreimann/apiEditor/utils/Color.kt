@@ -1,4 +1,4 @@
-package com.larsreimann.python_api_editor.utils
+package com.larsreimann.apiEditor.utils
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance

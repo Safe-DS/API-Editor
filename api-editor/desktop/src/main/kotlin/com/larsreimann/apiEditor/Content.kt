@@ -1,4 +1,4 @@
-package com.larsreimann.python_api_editor
+package com.larsreimann.apiEditor
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
@@ -16,8 +16,8 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
-import com.larsreimann.python_api_editor.data.Settings
-import com.larsreimann.python_api_editor.theme.PythonApiEditorTheme
+import com.larsreimann.apiEditor.data.Settings
+import com.larsreimann.apiEditor.theme.PythonApiEditorTheme
 import org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi
 import org.jetbrains.compose.splitpane.HorizontalSplitPane
 import org.jetbrains.compose.splitpane.rememberSplitPaneState

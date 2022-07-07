@@ -1,9 +1,9 @@
-package com.larsreimann.python_api_editor
+package com.larsreimann.apiEditor
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.FrameWindowScope
-import com.larsreimann.python_api_editor.data.HeatmapMode
-import com.larsreimann.python_api_editor.data.Settings
+import com.larsreimann.apiEditor.data.HeatmapMode
+import com.larsreimann.apiEditor.data.Settings
 import java.util.ResourceBundle
 import androidx.compose.ui.window.MenuBar as ComposeMenuBar
 

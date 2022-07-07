@@ -1,4 +1,4 @@
-package com.larsreimann.python_api_editor
+package com.larsreimann.apiEditor
 
 import androidx.compose.material.Badge
 import androidx.compose.material.Text
@@ -6,8 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.em
-import com.larsreimann.python_api_editor.utils.contentColorForBackgroundColor
-import com.larsreimann.python_api_editor.utils.interpolateColor
+import com.larsreimann.apiEditor.utils.contentColorForBackgroundColor
+import com.larsreimann.apiEditor.utils.interpolateColor
 import kotlin.math.log
 
 @Composable

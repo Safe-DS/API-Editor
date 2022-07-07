@@ -1,4 +1,4 @@
-package com.larsreimann.python_api_editor.theme
+package com.larsreimann.apiEditor.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes
