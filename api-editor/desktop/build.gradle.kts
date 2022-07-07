@@ -38,6 +38,7 @@ compose.desktop {
 
 dependencies {
     implementation(compose.desktop.currentOs)
+    implementation("com.larsreimann:modeling-core:3.1.1")
     implementation("org.jetbrains.compose.components:components-splitpane:1.1.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
 
