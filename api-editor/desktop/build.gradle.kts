@@ -7,6 +7,7 @@ val javaVersion: String by project
 // Plugins -------------------------------------------------------------------------------------------------------------
 
 plugins {
+    `java-test-fixtures`
     kotlin("jvm")
     id("org.jetbrains.compose")
 }
@@ -37,6 +38,8 @@ compose.desktop {
 dependencies {
     implementation(compose.desktop.currentOs)
     implementation("org.jetbrains.compose.components:components-splitpane:1.1.1")
+
+    testFixturesImplementation(compose.desktop.currentOs)
 
     testImplementation(kotlin("test"))
     testImplementation("io.kotest:kotest-assertions-core-jvm:5.3.2")
