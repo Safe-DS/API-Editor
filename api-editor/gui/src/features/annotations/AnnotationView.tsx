@@ -371,7 +371,7 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
 
     // Render
     return (
-        <ButtonGroup size="sm" variant="outline" isAttached>
+        <ButtonGroup size="sm" variant="outline" isAttached minWidth="650">
             <Tooltip label={`${authorText}Click to delete.`}>
                 <IconButton
                     icon={<FaTrash />}
