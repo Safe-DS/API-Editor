@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Flex, Heading, VStack } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { useAppSelector } from '../../app/hooks';
 import { selectRawPythonPackage } from '../packageData/apiSlice';
 import { selectUsages } from '../usages/usageSlice';
@@ -43,23 +43,18 @@ export const ApiSizeVsUsefulnessStatistics = function () {
     );
 
     return (
-        <VStack spacing={2}>
-            <Heading as="h3" size="md">
-                API Size per Minimum Usefulness Threshold
-            </Heading>
-            <Box width="100%">
-                <Flex wrap="wrap">
-                    <Box minWidth="350px" flex="1 1 33%">
-                        {classLineChart}
-                    </Box>
-                    <Box minWidth="350px" flex="1 1 33%">
-                        {functionLineChart}
-                    </Box>
-                    <Box minWidth="350px" flex="1 1 33%">
-                        {parameterLineChart}
-                    </Box>
-                </Flex>
-            </Box>
-        </VStack>
+        <Box width="100%">
+            <Flex wrap="wrap">
+                <Box minWidth="350px" flex="1 1 33%">
+                    {classLineChart}
+                </Box>
+                <Box minWidth="350px" flex="1 1 33%">
+                    {functionLineChart}
+                </Box>
+                <Box minWidth="350px" flex="1 1 33%">
+                    {parameterLineChart}
+                </Box>
+            </Flex>
+        </Box>
     );
 };
