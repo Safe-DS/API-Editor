@@ -1,11 +1,11 @@
 import React from 'react';
-import {Box, Heading, SimpleGrid, useColorModeValue, VStack} from '@chakra-ui/react';
-import {useAppSelector} from '../../app/hooks';
-import {selectMatchedNodes} from '../packageData/apiSlice';
-import {selectAllAnnotationsOnTargets, selectAnnotationStore} from '../annotations/annotationSlice';
-import {Pie} from 'react-chartjs-2';
+import { Box, Heading, SimpleGrid, useColorModeValue, VStack } from '@chakra-ui/react';
+import { useAppSelector } from '../../app/hooks';
+import { selectMatchedNodes } from '../packageData/apiSlice';
+import { selectAllAnnotationsOnTargets, selectAnnotationStore } from '../annotations/annotationSlice';
+import { Pie } from 'react-chartjs-2';
 
-import {ArcElement, Chart as ChartJS, Title, Tooltip} from 'chart.js';
+import { ArcElement, Chart as ChartJS, Title, Tooltip } from 'chart.js';
 
 ChartJS.register(ArcElement, Title, Tooltip);
 
@@ -79,12 +79,12 @@ export const ProgressStatistics = function () {
                 Progress on Matched Elements
             </Heading>
             <Box width="100%">
-                <SimpleGrid columns={{base: 1, fullHD: 2}} width="100%">
+                <SimpleGrid columns={{ base: 1, fullHD: 2 }} width="100%">
                     <Box>
-                        <Pie data={completionData} options={completionOptions}/>
+                        <Pie data={completionData} options={completionOptions} />
                     </Box>
                     <Box>
-                        <Pie data={correctnessData} options={correctnessOptions}/>
+                        <Pie data={correctnessData} options={correctnessOptions} />
                     </Box>
                 </SimpleGrid>
             </Box>

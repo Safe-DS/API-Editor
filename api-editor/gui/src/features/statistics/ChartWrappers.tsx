@@ -1,7 +1,7 @@
-import {UsageCountStore} from '../usages/model/UsageCountStore';
-import {PythonPackage} from '../packageData/model/PythonPackage';
+import { UsageCountStore } from '../usages/model/UsageCountStore';
+import { PythonPackage } from '../packageData/model/PythonPackage';
 import React from 'react';
-import {Bar, Line} from 'react-chartjs-2';
+import { Bar, Line } from 'react-chartjs-2';
 import {
     ArcElement,
     BarElement,
@@ -13,7 +13,7 @@ import {
     Title,
     Tooltip,
 } from 'chart.js';
-import {useColorModeValue} from '@chakra-ui/react';
+import { useColorModeValue } from '@chakra-ui/react';
 
 ChartJS.register(ArcElement, CategoryScale, PointElement, LineElement, LinearScale, BarElement, Title, Tooltip);
 
@@ -23,7 +23,7 @@ interface CustomBarChartProps {
     title: string;
 }
 
-export const CustomBarChart: React.FC<CustomBarChartProps> = function ({labels, values, title}) {
+export const CustomBarChart: React.FC<CustomBarChartProps> = function ({ labels, values, title }) {
     const gridColor = useColorModeValue('#BBB', '#555');
     const textColor = useColorModeValue('#000', '#FFF');
 
@@ -87,7 +87,7 @@ export const CustomBarChart: React.FC<CustomBarChartProps> = function ({labels, 
         ],
     };
 
-    return <Bar options={options} data={data}/>;
+    return <Bar options={options} data={data} />;
 };
 
 interface CustomLineChartProps {
@@ -100,13 +100,13 @@ interface CustomLineChartProps {
 }
 
 export const CustomLineChart: React.FC<CustomLineChartProps> = function ({
-                                                                             usages,
-                                                                             pythonPackage,
-                                                                             labels,
-                                                                             getValue,
-                                                                             title,
-                                                                             xAxisLabel,
-                                                                         }) {
+    usages,
+    pythonPackage,
+    labels,
+    getValue,
+    title,
+    xAxisLabel,
+}) {
     const gridColor = useColorModeValue('#BBB', '#555');
     const textColor = useColorModeValue('#000', '#FFF');
 
@@ -163,5 +163,5 @@ export const CustomLineChart: React.FC<CustomLineChartProps> = function ({
         ],
     };
 
-    return <Line options={options} data={data}/>;
+    return <Line options={options} data={data} />;
 };
