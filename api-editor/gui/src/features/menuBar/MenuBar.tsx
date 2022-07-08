@@ -411,7 +411,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                                 icon={<FaAngleDoubleRight />}
                                 command="Ctrl+Alt+Right"
                             >
-                                Go to Next Element of Same Type
+                                Go to Next Match of Same Type
                             </MenuItem>
                             <MenuItem
                                 paddingLeft={8}
