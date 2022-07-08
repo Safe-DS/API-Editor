@@ -143,14 +143,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
         dispatch(toggleComplete(declaration.id));
     };
 
-    const goToPreviousMatchSameType = () => {
-        goToPreviousMatch(true);
-    };
-    const goToPreviousMatchJumper = () => {
-        goToPreviousMatch(false);
-    };
-
-    const goToPreviousMatch = (onlySameType: boolean) => {
+    const goToPreviousMatch = ({ onSameLevel }: { onSameLevel: boolean }) => {
         if (!declaration || currentUserAction.type !== NoUserAction.type) {
             return;
         }
@@ -161,7 +154,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
             pythonFilter,
             annotations,
             usages,
-            onlySameType,
+            onSameLevel,
         );
         if (navStr !== null) {
             if (wrappedAround) {
@@ -183,13 +176,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
         }
     };
 
-    const goToNextMatchSameType = () => {
-        goToNextMatch(true);
-    };
-    const goToNextMatchJumper = () => {
-        goToNextMatch(false);
-    };
-    const goToNextMatch = (onlySameType: boolean) => {
+    const goToNextMatch = ({ onSameLevel }: { onSameLevel: boolean }) => {
         if (!declaration || currentUserAction.type !== NoUserAction.type) {
             return;
         }
@@ -200,7 +187,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
             pythonFilter,
             annotations,
             usages,
-            onlySameType,
+            onSameLevel,
         );
         if (navStr !== null) {
             if (wrappedAround) {
@@ -256,11 +243,11 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
     useKeyboardShortcut(false, true, false, 'z', () => dispatch(undo()));
     useKeyboardShortcut(false, true, false, 'y', () => dispatch(redo()));
     useKeyboardShortcut(false, true, true, 'c', markSelectedElementAsComplete);
-    useKeyboardShortcut(false, true, false, 'ArrowLeft', goToPreviousMatchJumper);
-    useKeyboardShortcut(false, true, false, 'ArrowRight', goToNextMatchJumper);
-    useKeyboardShortcut(false, true, true, 'ArrowLeft', goToPreviousMatchSameType);
-    useKeyboardShortcut(false, true, true, 'ArrowRight', goToNextMatchSameType);
     useKeyboardShortcut(false, true, false, 'ArrowUp', goToParent);
+    useKeyboardShortcut(false, true, false, 'ArrowLeft', () => goToPreviousMatch({ onSameLevel: false }));
+    useKeyboardShortcut(false, true, false, 'ArrowRight', () => goToNextMatch({ onSameLevel: false }));
+    useKeyboardShortcut(false, true, true, 'ArrowLeft', () => goToPreviousMatch({ onSameLevel: true }));
+    useKeyboardShortcut(false, true, true, 'ArrowRight', () => goToNextMatch({ onSameLevel: true }));
     useKeyboardShortcut(false, true, false, ',', expandAll);
     useKeyboardShortcut(false, true, false, '.', collapseAll);
     useKeyboardShortcut(false, true, true, ',', expandSelected);
@@ -379,7 +366,16 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                         <MenuList>
                             <MenuItem
                                 paddingLeft={8}
-                                onClick={goToPreviousMatchJumper}
+                                onClick={goToParent}
+                                isDisabled={!declaration}
+                                icon={<FaArrowUp />}
+                                command="Ctrl+Up"
+                            >
+                                Go to Parent
+                            </MenuItem>
+                            <MenuItem
+                                paddingLeft={8}
+                                onClick={() => goToPreviousMatch({ onSameLevel: false })}
                                 isDisabled={!declaration}
                                 icon={<FaArrowLeft />}
                                 command="Ctrl+Left"
@@ -388,7 +384,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                             </MenuItem>
                             <MenuItem
                                 paddingLeft={8}
-                                onClick={goToNextMatchJumper}
+                                onClick={() => goToNextMatch({ onSameLevel: false })}
                                 isDisabled={!declaration}
                                 icon={<FaArrowRight />}
                                 command="Ctrl+Right"
@@ -397,30 +393,21 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                             </MenuItem>
                             <MenuItem
                                 paddingLeft={8}
-                                onClick={goToPreviousMatchSameType}
+                                onClick={() => goToPreviousMatch({ onSameLevel: true })}
                                 isDisabled={!declaration}
                                 icon={<FaAngleDoubleLeft />}
                                 command="Ctrl+Alt+Left"
                             >
-                                Go to Previous Match of Same Type
+                                Go to Previous Match on Same Level
                             </MenuItem>
                             <MenuItem
                                 paddingLeft={8}
-                                onClick={goToNextMatchSameType}
+                                onClick={() => goToNextMatch({ onSameLevel: true })}
                                 isDisabled={!declaration}
                                 icon={<FaAngleDoubleRight />}
                                 command="Ctrl+Alt+Right"
                             >
-                                Go to Next Match of Same Type
-                            </MenuItem>
-                            <MenuItem
-                                paddingLeft={8}
-                                onClick={goToParent}
-                                isDisabled={!declaration}
-                                icon={<FaArrowUp />}
-                                command="Ctrl+Up"
-                            >
-                                Go to Parent
+                                Go to Next Match on Same Level
                             </MenuItem>
 
                             <MenuDivider />
@@ -559,7 +546,7 @@ const getPreviousElementPath = function (
     filter: AbstractPythonFilter,
     annotations: AnnotationStore,
     usages: UsageCountStore,
-    onlySameType: boolean,
+    onSameLevel: boolean,
 ): { id: string; wrappedAround: boolean } {
     const startIndex = getIndex(declarations, start);
     let currentIndex = getPreviousIndex(declarations, startIndex);
@@ -567,7 +554,7 @@ const getPreviousElementPath = function (
     let wrappedAround = startIndex !== null && currentIndex !== null && currentIndex >= startIndex;
     while (current !== null && current !== start) {
         if (
-            (current.constructor === start.constructor || !onlySameType) &&
+            (current.constructor === start.constructor || !onSameLevel) &&
             filter.shouldKeepDeclaration(current, annotations, usages)
         ) {
             return { id: current.id, wrappedAround };
@@ -589,7 +576,7 @@ const getNextElementPath = function (
     filter: AbstractPythonFilter,
     annotations: AnnotationStore,
     usages: UsageCountStore,
-    onlySameType: boolean,
+    onSameLevel: boolean,
 ): { id: string; wrappedAround: boolean } {
     const startIndex = getIndex(declarations, start);
     let currentIndex = getNextIndex(declarations, startIndex);
@@ -597,7 +584,7 @@ const getNextElementPath = function (
     let wrappedAround = startIndex !== null && currentIndex !== null && currentIndex <= startIndex;
     while (current !== null && current !== start) {
         if (
-            (current.constructor === start.constructor || !onlySameType) &&
+            (current.constructor === start.constructor || !onSameLevel) &&
             filter.shouldKeepDeclaration(current, annotations, usages)
         ) {
             return { id: current.id, wrappedAround };
