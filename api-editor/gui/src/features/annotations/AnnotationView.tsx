@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Icon, IconButton, Stack, Text as ChakraText, Tooltip } from '@chakra-ui/react';
+import { Button, ButtonGroup, Icon, IconButton, SimpleGrid, Text as ChakraText, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 import { FaCheck, FaFlag, FaQuestion, FaRobot, FaTimes, FaTrash, FaUser, FaWrench } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -101,7 +101,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
     }
 
     return (
-        <Stack maxW="fit-content">
+        <SimpleGrid spacing={2} columns={3} templateColumns="max-content max-content max-content">
             {boundaryAnnotation && (
                 <AnnotationTag
                     type="boundary"
@@ -247,7 +247,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     reportable
                 />
             )}
-        </Stack>
+        </SimpleGrid>
     );
 };
 
@@ -371,101 +371,107 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
 
     // Render
     return (
-        <ButtonGroup size="sm" variant="outline" isAttached>
-            <Tooltip label={`${authorText}Click to delete.`}>
-                <IconButton
-                    icon={<FaTrash />}
-                    aria-label="Delete annotation"
-                    colorScheme="red"
-                    disabled={!isValidUsername || isReviewed}
-                    onClick={onDelete}
-                />
-            </Tooltip>
-            <Tooltip label={`${authorText}Click to change.`}>
-                <Button
-                    leftIcon={<FaWrench />}
-                    rightIcon={rightIcon}
-                    flexGrow={1}
-                    borderLeft="none"
-                    justifyContent="flex-start"
-                    disabled={!onEdit || !isValidUsername || isReviewed}
-                    onClick={onEdit}
-                >
-                    @{type}
-                    {name && (
-                        <ChakraText as="span" fontWeight="normal" justifySelf="flex-end">
-                            : {name} {annotation.isRemoved}
-                        </ChakraText>
-                    )}
-                </Button>
-            </Tooltip>
-            {(reviewResult === ReviewResult.Correct || (isReviewed && !reviewResult)) && (
-                <Tooltip label={`Marked as correct by ${reviewer}. Click to undo.`}>
-                    <Button
-                        size="sm"
-                        variant="solid"
-                        colorScheme="green"
-                        rightIcon={<Icon as={FaCheck} />}
-                        disabled={!isValidUsername}
-                        onClick={() => onReview(ReviewResult.Correct)}
-                    >
-                        Correct
-                    </Button>
-                </Tooltip>
-            )}
-            {reviewResult === ReviewResult.Unsure && (
-                <Tooltip label={`Marked as unsure by ${reviewer}. Click to undo.`}>
-                    <Button
-                        size="sm"
-                        variant="solid"
-                        colorScheme="yellow"
-                        rightIcon={<Icon as={FaQuestion} />}
-                        disabled={!isValidUsername}
-                        onClick={() => onReview(ReviewResult.Unsure)}
-                    >
-                        Unsure
-                    </Button>
-                </Tooltip>
-            )}
-            {reviewResult === ReviewResult.Wrong && (
-                <Tooltip label={`Marked as wrong by ${reviewer}. Click to undo.`}>
-                    <Button
-                        size="sm"
-                        variant="solid"
+        <>
+            <ButtonGroup size="sm" variant="outline" isAttached>
+                <Tooltip label={`${authorText}Click to delete.`}>
+                    <IconButton
+                        icon={<FaTrash />}
+                        aria-label="Delete annotation"
                         colorScheme="red"
-                        rightIcon={<Icon as={FaTimes} />}
-                        disabled={!isValidUsername}
-                        onClick={() => onReview(ReviewResult.Wrong)}
+                        disabled={!isValidUsername || isReviewed}
+                        onClick={onDelete}
+                    />
+                </Tooltip>
+                <Tooltip label={`${authorText}Click to change.`}>
+                    <Button
+                        leftIcon={<FaWrench />}
+                        rightIcon={rightIcon}
+                        flexGrow={1}
+                        borderLeft="none"
+                        justifyContent="flex-start"
+                        disabled={!onEdit || !isValidUsername || isReviewed}
+                        onClick={onEdit}
                     >
-                        Wrong
+                        @{type}
+                        {name && (
+                            <ChakraText as="span" fontWeight="normal" justifySelf="flex-end">
+                                : {name} {annotation.isRemoved}
+                            </ChakraText>
+                        )}
                     </Button>
                 </Tooltip>
-            )}
-            {!isReviewed && (
-                <>
-                    <Tooltip label={`${authorText}Click to mark as correct.`}>
-                        <Button size="sm" variant="outline" disabled={!isValidUsername} onClick={onMarkAsCorrect}>
-                            Mark as Correct
+            </ButtonGroup>
+            <ButtonGroup size="sm" variant="outline" isAttached>
+                {(reviewResult === ReviewResult.Correct || (isReviewed && !reviewResult)) && (
+                    <Tooltip label={`Marked as correct by ${reviewer}. Click to undo.`}>
+                        <Button
+                            size="sm"
+                            variant="solid"
+                            colorScheme="green"
+                            rightIcon={<Icon as={FaCheck} />}
+                            disabled={!isValidUsername}
+                            onClick={() => onReview(ReviewResult.Correct)}
+                        >
+                            Correct
                         </Button>
                     </Tooltip>
-                    <Tooltip label={`${authorText}Click to mark as unsure.`}>
-                        <Button size="sm" variant="outline" disabled={!isValidUsername} onClick={onMarkAsUnsure}>
-                            Mark as Unsure
+                )}
+                {reviewResult === ReviewResult.Unsure && (
+                    <Tooltip label={`Marked as unsure by ${reviewer}. Click to undo.`}>
+                        <Button
+                            size="sm"
+                            variant="solid"
+                            colorScheme="yellow"
+                            rightIcon={<Icon as={FaQuestion} />}
+                            disabled={!isValidUsername}
+                            onClick={() => onReview(ReviewResult.Unsure)}
+                        >
+                            Unsure
                         </Button>
                     </Tooltip>
-                    <Tooltip label={`${authorText}Click to mark as wrong.`}>
-                        <Button size="sm" variant="outline" disabled={!isValidUsername} onClick={onMarkAsWrong}>
-                            Mark as Wrong
+                )}
+                {reviewResult === ReviewResult.Wrong && (
+                    <Tooltip label={`Marked as wrong by ${reviewer}. Click to undo.`}>
+                        <Button
+                            size="sm"
+                            variant="solid"
+                            colorScheme="red"
+                            rightIcon={<Icon as={FaTimes} />}
+                            disabled={!isValidUsername}
+                            onClick={() => onReview(ReviewResult.Wrong)}
+                        >
+                            Wrong
                         </Button>
                     </Tooltip>
-                </>
-            )}
+                )}
+                {!isReviewed && (
+                    <>
+                        <Tooltip label={`${authorText}Click to mark as correct.`}>
+                            <Button size="sm" variant="outline" disabled={!isValidUsername} onClick={onMarkAsCorrect}>
+                                Mark as Correct
+                            </Button>
+                        </Tooltip>
+                        <Tooltip label={`${authorText}Click to mark as unsure.`}>
+                            <Button size="sm" variant="outline" disabled={!isValidUsername} onClick={onMarkAsUnsure}>
+                                Mark as Unsure
+                            </Button>
+                        </Tooltip>
+                        <Tooltip label={`${authorText}Click to mark as wrong.`}>
+                            <Button size="sm" variant="outline" disabled={!isValidUsername} onClick={onMarkAsWrong}>
+                                Mark as Wrong
+                            </Button>
+                        </Tooltip>
+                    </>
+                )}
+            </ButtonGroup>
             {isReportable && (
                 <Tooltip label="Report a wrong autogenerated annotation.">
                     <IconButton
                         icon={<FaFlag />}
                         aria-label="Report Wrong Annotation"
                         colorScheme="orange"
+                        size="sm"
+                        variant="outline"
                         disabled={reviewResult === ReviewResult.Correct || !isValidUsername}
                         onClick={() => {
                             window.open(wrongAnnotationURL(type, annotation), '_blank');
@@ -473,7 +479,7 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
                     />
                 </Tooltip>
             )}
-        </ButtonGroup>
+        </>
     );
 };
 
