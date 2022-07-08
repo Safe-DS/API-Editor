@@ -42,7 +42,7 @@ export const AnnotationImportDialog: React.FC = function () {
             return false;
         }
 
-        if (!supportedAnnotationStoreSchemaVersions.includes(newAnnotationStore.schemaVersion)) {
+        if (!supportedAnnotationStoreSchemaVersions.includes(newAnnotationStore.schemaVersion ?? 1)) {
             toast({
                 title: 'Incompatible Annotation File',
                 description: 'This file is not compatible with the current version of the API Editor.',
