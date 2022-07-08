@@ -337,9 +337,9 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
 
     let rightIcon;
     if (authors.includes(username)) {
-        rightIcon = <FaUser />
+        rightIcon = <FaUser />;
     } else if (authors.length === 1 && authors[0] === '$autogen$') {
-        rightIcon = <FaRobot />
+        rightIcon = <FaRobot />;
     }
 
     const isReportable = reportable && authors.length === 1 && authors.includes('$autogen$');
