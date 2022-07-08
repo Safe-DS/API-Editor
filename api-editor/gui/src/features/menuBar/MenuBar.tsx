@@ -64,7 +64,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { SelectionBreadcrumbs } from './SelectionBreadcrumbs';
 import { HelpMenu } from './HelpMenu';
 import { AnnotationStore } from '../annotations/versioning/AnnotationStoreV2';
-import { supportedAnnotationStoreSchemaVersions } from '../annotations/versioning/expectedVersions';
+import { EXPECTED_ANNOTATION_STORE_SCHEMA_VERSION } from '../annotations/versioning/expectedVersions';
 
 interface MenuBarProps {
     displayInferErrors: (errors: string[]) => void;
@@ -99,8 +99,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                 JSON.stringify(
                     {
                         ...annotationStore,
-                        schemaVersion:
-                            supportedAnnotationStoreSchemaVersions[supportedAnnotationStoreSchemaVersions.length - 1],
+                        schemaVersion: EXPECTED_ANNOTATION_STORE_SCHEMA_VERSION
                     },
                     null,
                     4,
