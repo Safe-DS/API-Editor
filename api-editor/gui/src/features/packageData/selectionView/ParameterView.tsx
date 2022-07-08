@@ -24,7 +24,7 @@ interface ParameterViewProps {
 
 export const ParameterView: React.FC<ParameterViewProps> = function ({ pythonParameter }) {
     const usages = useAppSelector(selectUsages);
-    const nValueUsages = usages.valueUsages.get(pythonParameter.id);
+    const nValueUsages = usages.getValueCountsOrNull(pythonParameter)
 
     return (
         <Stack spacing={8}>
@@ -82,14 +82,7 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({ pythonPar
                 </Stack>
             )}
 
-            {nValueUsages && (
-                <Stack spacing={4}>
-                    <Heading as="h4" size="md">
-                        Usages
-                    </Heading>
-                    <UsageSum parameterUsages={parameterUsages} />
-                </Stack>
-            )}
+            {nValueUsages && <UsageCounts parameter={pythonParameter} />}
 
             {nValueUsages && (
                 <Stack spacing={4}>
@@ -189,12 +182,46 @@ const isStringifiedLiteral = function (value: string): boolean {
     return !Number.isNaN(Number.parseFloat(value));
 };
 
-const UsageSum: React.FC<CustomBarChartProps> = function ({ parameterUsages }) {
-    let usage = 0;
+interface UsageCountsProps {
+    parameter: PythonParameter;
+}
 
-    parameterUsages.forEach((value) => {
-        usage += value;
-    });
+const UsageCounts: React.FC<UsageCountsProps> = function ({ parameter }) {
+    const usageStore = useAppSelector(selectUsages);
 
-    return <ChakraText paddingLeft={4}>{usage}</ChakraText>;
+    const nExplicitUsages = usageStore.getUsageCount(parameter);
+    const nImplicitUsages = usageStore.getNumberOfImplicitUsagesOfDefaultValue(parameter);
+
+    return (
+        <Stack spacing={4}>
+            <Heading as="h4" size="md">
+                Usages
+            </Heading>
+
+            <Stack>
+                <ChakraText paddingLeft={4}>
+                    <Box as="span" fontWeight="bold">
+                        Total:
+                    </Box>{' '}
+                    {nExplicitUsages + nImplicitUsages}
+                </ChakraText>
+                {parameter.isOptional() && (
+                    <ChakraText paddingLeft={4}>
+                        <Box as="span" fontWeight="bold">
+                            Explicit:
+                        </Box>{' '}
+                        {nExplicitUsages}
+                    </ChakraText>
+                )}
+                {parameter.isOptional() && (
+                    <ChakraText paddingLeft={4}>
+                        <Box as="span" fontWeight="bold">
+                            Implicit usages of default value:
+                        </Box>{' '}
+                        {nImplicitUsages}
+                    </ChakraText>
+                )}
+            </Stack>
+        </Stack>
+    );
 };
