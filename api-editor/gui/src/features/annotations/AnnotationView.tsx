@@ -327,7 +327,7 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
     const currentUserAction = useAppSelector(selectCurrentUserAction);
 
     const reviewer = (annotation.reviewers ?? [])[0];
-    const reviewResult = annotation.reviewResult ?? ReviewResult.Correct;
+    const reviewResult = annotation.reviewResult;
     const isReviewed = reviewer !== undefined;
 
     const authors = annotation.authors ?? [];
@@ -389,7 +389,7 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
                     )}
                 </Button>
             </Tooltip>
-            {reviewResult === ReviewResult.Correct && (
+            {(reviewResult === ReviewResult.Correct || (isReviewed && !reviewResult)) && (
                 <Tooltip label={`Marked as correct by ${reviewer}. Click to undo.`}>
                     <Button
                         size="sm"
