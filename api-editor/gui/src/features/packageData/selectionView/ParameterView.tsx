@@ -1,4 +1,4 @@
-import { Box, Heading, Stack, Text as ChakraText, useColorModeValue } from '@chakra-ui/react';
+import {Box, ComponentWithAs, Heading, Stack, Text as ChakraText, TextProps, useColorModeValue} from '@chakra-ui/react';
 import React from 'react';
 import { PythonParameter } from '../model/PythonParameter';
 import { ParameterNode } from './ParameterNode';
@@ -51,6 +51,15 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({ pythonPar
             {parameterUsages && (
                 <Stack spacing={4}>
                     <Heading as="h4" size="md">
+                        Usages
+                    </Heading>
+                    <UsageSum parameterUsages={parameterUsages}/>
+                </Stack>
+            )}
+
+            {parameterUsages && (
+                <Stack spacing={4}>
+                    <Heading as="h4" size="md">
                         Most Common Values
                     </Heading>
                     <Box w="30vw" maxWidth="640px">
@@ -65,6 +74,7 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({ pythonPar
 interface CustomBarChartProps {
     parameterUsages: Map<string, number>;
 }
+
 
 const CustomBarChart: React.FC<CustomBarChartProps> = function ({ parameterUsages }) {
     const gridColor = useColorModeValue('#BBB', '#555');
@@ -141,3 +151,13 @@ const isStringifiedLiteral = function (value: string): boolean {
     }
     return !Number.isNaN(Number.parseFloat(value));
 };
+
+const UsageSum: React.FC<CustomBarChartProps>  = function ({ parameterUsages }) {
+    let usage = 0;
+
+    parameterUsages.forEach(value => {
+        usage += value;
+    })
+
+    return <ChakraText paddingLeft={4}>{usage}</ChakraText>
+}
