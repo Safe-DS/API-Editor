@@ -17,7 +17,7 @@ import {
     useToast,
 } from '@chakra-ui/react';
 import React from 'react';
-import { FaArrowLeft, FaArrowRight, FaArrowUp, FaChevronDown, FaRedo, FaUndo } from 'react-icons/fa';
+import { FaAngleDoubleLeft, FaAngleDoubleRight, FaArrowLeft, FaArrowRight, FaArrowUp, FaChevronDown, FaRedo, FaUndo } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector, useKeyboardShortcut } from '../../app/hooks';
 import {
     redo,
@@ -133,7 +133,15 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
 
         dispatch(toggleComplete(declaration.id));
     };
-    const goToPreviousMatch = () => {
+
+    const goToPreviousMatchSameType = () => {
+        goToPreviousMatch(true)
+    };
+    const goToPreviousMatchJumper = () => {
+        goToPreviousMatch(false)
+    };
+
+    const goToPreviousMatch = (onlySameType: boolean) => {
         if (!declaration || currentUserAction.type !== NoUserAction.type) {
             return;
         }
@@ -144,6 +152,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
             pythonFilter,
             annotations,
             usages,
+            onlySameType
         );
         if (navStr !== null) {
             if (wrappedAround) {
@@ -164,7 +173,14 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
             dispatch(setAllExpandedInTreeView(parents));
         }
     };
-    const goToNextMatch = () => {
+
+    const goToNextMatchSameType = () => {
+        goToNextMatch(true)
+    };
+    const goToNextMatchJumper = () => {
+        goToNextMatch(false)
+    };
+    const goToNextMatch = (onlySameType: boolean) => {
         if (!declaration || currentUserAction.type !== NoUserAction.type) {
             return;
         }
@@ -175,6 +191,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
             pythonFilter,
             annotations,
             usages,
+            onlySameType
         );
         if (navStr !== null) {
             if (wrappedAround) {
@@ -230,8 +247,10 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
     useKeyboardShortcut(false, true, false, 'z', () => dispatch(undo()));
     useKeyboardShortcut(false, true, false, 'y', () => dispatch(redo()));
     useKeyboardShortcut(false, true, true, 'c', markSelectedElementAsComplete);
-    useKeyboardShortcut(false, true, false, 'ArrowLeft', goToPreviousMatch);
-    useKeyboardShortcut(false, true, false, 'ArrowRight', goToNextMatch);
+    useKeyboardShortcut(false, true, false, 'ArrowLeft', goToPreviousMatchJumper);
+    useKeyboardShortcut(false, true, false, 'ArrowRight', goToNextMatchJumper);
+    useKeyboardShortcut(false, true, true, 'ArrowLeft', goToPreviousMatchSameType);
+    useKeyboardShortcut(false, true, true, 'ArrowRight', goToNextMatchSameType);
     useKeyboardShortcut(false, true, false, 'ArrowUp', goToParent);
     useKeyboardShortcut(false, true, false, ',', expandAll);
     useKeyboardShortcut(false, true, false, '.', collapseAll);
@@ -351,7 +370,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                         <MenuList>
                             <MenuItem
                                 paddingLeft={8}
-                                onClick={goToPreviousMatch}
+                                onClick={goToPreviousMatchJumper}
                                 isDisabled={!declaration}
                                 icon={<FaArrowLeft />}
                                 command="Ctrl+Left"
@@ -360,12 +379,30 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                             </MenuItem>
                             <MenuItem
                                 paddingLeft={8}
-                                onClick={goToNextMatch}
+                                onClick={goToNextMatchJumper}
                                 isDisabled={!declaration}
                                 icon={<FaArrowRight />}
                                 command="Ctrl+Right"
                             >
                                 Go to Next Match
+                            </MenuItem>
+                            <MenuItem
+                                paddingLeft={8}
+                                onClick={goToPreviousMatchSameType}
+                                isDisabled={!declaration}
+                                icon={<FaAngleDoubleLeft />}
+                                command="Ctrl+Alt+Left"
+                            >
+                                Go to Previous Element of same Type
+                            </MenuItem>
+                            <MenuItem
+                                paddingLeft={8}
+                                onClick={goToNextMatchSameType}
+                                isDisabled={!declaration}
+                                icon={<FaAngleDoubleRight />}
+                                command="Ctrl+Alt+Right"
+                            >
+                                Go to Next Element of same Type
                             </MenuItem>
                             <MenuItem
                                 paddingLeft={8}
@@ -513,13 +550,15 @@ const getPreviousElementPath = function (
     filter: AbstractPythonFilter,
     annotations: AnnotationStore,
     usages: UsageCountStore,
+    onlySameType: boolean
 ): { id: string; wrappedAround: boolean } {
     const startIndex = getIndex(declarations, start);
     let currentIndex = getPreviousIndex(declarations, startIndex);
     let current = getElementAtIndex(declarations, currentIndex);
     let wrappedAround = startIndex !== null && currentIndex !== null && currentIndex >= startIndex;
     while (current !== null && current !== start) {
-        if (filter.shouldKeepDeclaration(current, annotations, usages)) {
+        if ((current.constructor == start.constructor && filter.shouldKeepDeclaration(current, annotations, usages)) ||
+            (!onlySameType && filter.shouldKeepDeclaration(current, annotations, usages))) {
             return { id: current.id, wrappedAround };
         }
 
@@ -539,13 +578,15 @@ const getNextElementPath = function (
     filter: AbstractPythonFilter,
     annotations: AnnotationStore,
     usages: UsageCountStore,
+    onlySameType: boolean
 ): { id: string; wrappedAround: boolean } {
     const startIndex = getIndex(declarations, start);
     let currentIndex = getNextIndex(declarations, startIndex);
     let current = getElementAtIndex(declarations, currentIndex);
     let wrappedAround = startIndex !== null && currentIndex !== null && currentIndex <= startIndex;
     while (current !== null && current !== start) {
-        if (filter.shouldKeepDeclaration(current, annotations, usages)) {
+        if ((current.constructor == start.constructor && filter.shouldKeepDeclaration(current, annotations, usages)) ||
+            (!onlySameType && filter.shouldKeepDeclaration(current, annotations, usages))) {
             return { id: current.id, wrappedAround };
         }
 
