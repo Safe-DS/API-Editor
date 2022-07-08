@@ -51,6 +51,15 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({ pythonPar
             {parameterUsages && (
                 <Stack spacing={4}>
                     <Heading as="h4" size="md">
+                        Usages
+                    </Heading>
+                    <UsageSum parameterUsages={parameterUsages} />
+                </Stack>
+            )}
+
+            {parameterUsages && (
+                <Stack spacing={4}>
+                    <Heading as="h4" size="md">
                         Most Common Values
                     </Heading>
                     <Box w="30vw" maxWidth="640px">
@@ -117,8 +126,12 @@ const CustomBarChart: React.FC<CustomBarChartProps> = function ({ parameterUsage
         datasets: [
             {
                 data: labels.map((key) => sortedParameterUsages.get(key)),
-                borderColor: labels.map((key) => (isStringifiedLiteral(key) ? '#871F78' : '#888888')),
-                backgroundColor: labels.map((key) => (isStringifiedLiteral(key) ? '#871F78' : '#888888')),
+                borderColor: labels.map((key) =>
+                    isStringifiedLiteral(key) ? 'rgba(137, 87, 229, 1)' : 'rgba(136, 136, 136, 1)',
+                ),
+                backgroundColor: labels.map((key) =>
+                    isStringifiedLiteral(key) ? 'rgba(137, 87, 229, 0.2)' : 'rgba(136, 136, 136, 0.2)',
+                ),
             },
         ],
     };
@@ -140,4 +153,14 @@ const isStringifiedLiteral = function (value: string): boolean {
         return true;
     }
     return !Number.isNaN(Number.parseFloat(value));
+};
+
+const UsageSum: React.FC<CustomBarChartProps> = function ({ parameterUsages }) {
+    let usage = 0;
+
+    parameterUsages.forEach((value) => {
+        usage += value;
+    });
+
+    return <ChakraText paddingLeft={4}>{usage}</ChakraText>;
 };
