@@ -132,13 +132,12 @@ export class UsageCountStore {
      */
     private addUnusedParameters(api: PythonPackage) {
         for (const parameter of api.getParameters()) {
-
-                const parameterUsage = this.parameterUsages.get(parameter.id);
+            const parameterUsage = this.parameterUsages.get(parameter.id);
             if (parameterUsage) {
                 continue;
             }
 
-            this.parameterUsages.set(parameter.id, 0)
+            this.parameterUsages.set(parameter.id, 0);
         }
     }
 
