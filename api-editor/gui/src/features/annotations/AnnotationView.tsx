@@ -1,6 +1,6 @@
 import { Button, ButtonGroup, Icon, IconButton, Stack, Text as ChakraText, Tooltip } from '@chakra-ui/react';
 import React from 'react';
-import { FaCheck, FaFlag, FaQuestion, FaTimes, FaTrash, FaWrench } from 'react-icons/fa';
+import {FaCheck, FaFlag, FaQuestion, FaTimes, FaTrash, FaUser, FaWrench} from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
     removeBoundaryAnnotation,
@@ -35,6 +35,7 @@ import {
     selectRemoveAnnotation,
     selectRenameAnnotation,
     selectTodoAnnotation,
+    selectUsername,
     selectUsernameIsValid,
     selectValueAnnotation,
 } from './annotationSlice';
@@ -332,6 +333,7 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
 
     const authors = annotation.authors ?? [];
     const authorText = createAuthorText(authors);
+    const username = useAppSelector(selectUsername);
 
     const isReportable = reportable && authors.length === 1 && authors.includes('$autogen$');
 
@@ -375,6 +377,7 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
             <Tooltip label={`${authorText}Click to change.`}>
                 <Button
                     leftIcon={<FaWrench />}
+                    rightIcon={authors.includes(username) && <FaUser />}
                     flexGrow={1}
                     borderLeft="none"
                     justifyContent="flex-start"
