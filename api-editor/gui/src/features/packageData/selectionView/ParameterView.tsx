@@ -1,7 +1,7 @@
-import {Box, Heading, Stack, Text as ChakraText, useColorModeValue} from '@chakra-ui/react';
+import { Box, Heading, Stack, Text as ChakraText, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
-import {PythonParameter} from '../model/PythonParameter';
-import {ParameterNode} from './ParameterNode';
+import { PythonParameter } from '../model/PythonParameter';
+import { ParameterNode } from './ParameterNode';
 import {
     BarElement,
     CategoryScale,
@@ -12,9 +12,9 @@ import {
     Title,
     Tooltip,
 } from 'chart.js';
-import {Bar} from 'react-chartjs-2';
-import {useAppSelector} from '../../../app/hooks';
-import {selectUsages} from '../../usages/usageSlice';
+import { Bar } from 'react-chartjs-2';
+import { useAppSelector } from '../../../app/hooks';
+import { selectUsages } from '../../usages/usageSlice';
 
 ChartJS.register(CategoryScale, PointElement, LineElement, LinearScale, BarElement, Title, Tooltip);
 
@@ -22,13 +22,13 @@ interface ParameterViewProps {
     pythonParameter: PythonParameter;
 }
 
-export const ParameterView: React.FC<ParameterViewProps> = function ({pythonParameter}) {
+export const ParameterView: React.FC<ParameterViewProps> = function ({ pythonParameter }) {
     const usages = useAppSelector(selectUsages);
     const parameterUsages = usages.valueUsages.get(pythonParameter.id);
 
     return (
         <Stack spacing={8}>
-            <ParameterNode isTitle pythonParameter={pythonParameter}/>
+            <ParameterNode isTitle pythonParameter={pythonParameter} />
 
             {pythonParameter.typeInDocs && (
                 <Stack spacing={4}>
@@ -63,7 +63,7 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({pythonPara
                         Most Common Values
                     </Heading>
                     <Box w="30vw" maxWidth="640px">
-                        <CustomBarChart parameterUsages={parameterUsages}/>
+                        <CustomBarChart parameterUsages={parameterUsages} />
                     </Box>
                 </Stack>
             )}
@@ -75,7 +75,7 @@ interface CustomBarChartProps {
     parameterUsages: Map<string, number>;
 }
 
-const CustomBarChart: React.FC<CustomBarChartProps> = function ({parameterUsages}) {
+const CustomBarChart: React.FC<CustomBarChartProps> = function ({ parameterUsages }) {
     const gridColor = useColorModeValue('#BBB', '#555');
     const textColor = useColorModeValue('#000', '#FFF');
 
@@ -126,7 +126,9 @@ const CustomBarChart: React.FC<CustomBarChartProps> = function ({parameterUsages
         datasets: [
             {
                 data: labels.map((key) => sortedParameterUsages.get(key)),
-                borderColor: labels.map((key) => (isStringifiedLiteral(key) ? 'rgba(137, 87, 229, 1)' : 'rgba(136, 136, 136, 1)')),
+                borderColor: labels.map((key) =>
+                    isStringifiedLiteral(key) ? 'rgba(137, 87, 229, 1)' : 'rgba(136, 136, 136, 1)',
+                ),
                 backgroundColor: labels.map((key) =>
                     isStringifiedLiteral(key) ? 'rgba(137, 87, 229, 0.2)' : 'rgba(136, 136, 136, 0.2)',
                 ),
@@ -134,7 +136,7 @@ const CustomBarChart: React.FC<CustomBarChartProps> = function ({parameterUsages
         ],
     };
 
-    return <Bar options={options} data={data}/>;
+    return <Bar options={options} data={data} />;
 };
 
 const isStringifiedLiteral = function (value: string): boolean {
