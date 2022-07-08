@@ -159,6 +159,7 @@ const parsePythonParameterJson = function (
         parameterJson.docstring.type ?? '',
         parameterJson.docstring.description ?? '',
         parameterJson.type,
+        parameterJson.docstring.default_value ?? '',
     );
     idToDeclaration.set(parameterJson.id, result);
     return result;
