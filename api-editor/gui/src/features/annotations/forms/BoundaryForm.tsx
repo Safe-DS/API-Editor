@@ -16,16 +16,16 @@ import {
     Text as ChakraText,
     Textarea,
 } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { numberPattern } from '../../../common/validation';
-import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
-import { AnnotationForm } from './AnnotationForm';
-import { Optional } from '../../../common/util/types';
-import { hideAnnotationForm } from '../../ui/uiSlice';
-import { BoundaryAnnotation, ComparisonOperator } from '../versioning/AnnotationStoreV2';
-import { selectBoundaryAnnotation, upsertBoundaryAnnotation } from '../annotationSlice';
+import React, {useEffect} from 'react';
+import {useForm} from 'react-hook-form';
+import {useAppDispatch, useAppSelector} from '../../../app/hooks';
+import {numberPattern} from '../../../common/validation';
+import {PythonDeclaration} from '../../packageData/model/PythonDeclaration';
+import {AnnotationForm} from './AnnotationForm';
+import {Optional} from '../../../common/util/types';
+import {hideAnnotationForm} from '../../ui/uiSlice';
+import {BoundaryAnnotation, ComparisonOperator} from '../versioning/AnnotationStoreV2';
+import {selectBoundaryAnnotation, upsertBoundaryAnnotation} from '../annotationSlice';
 
 interface BoundaryFormProps {
     readonly target: PythonDeclaration;
@@ -49,13 +49,13 @@ const initialFormState = function (previousAnnotation: BoundaryAnnotation | void
             lowerIntervalLimit: previousAnnotation?.interval?.lowerIntervalLimit ?? 0,
             lowerLimitType: previousAnnotation?.interval?.lowerLimitType ?? ComparisonOperator.LESS_THAN_OR_EQUALS,
             upperIntervalLimit: previousAnnotation?.interval?.upperIntervalLimit ?? 1,
-            upperLimitType: previousAnnotation?.interval?.upperLimitType ?? ComparisonOperator.LESS_THAN_OR_EQUALS,
+            upperLimitType: previousAnnotation?.interval?.upperLimitType ?? ComparisonOperator.UNRESTRICTED,
         },
         comment: previousAnnotation?.comment ?? '',
     };
 };
 
-export const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
+export const BoundaryForm: React.FC<BoundaryFormProps> = function ({target}) {
     const targetPath = target.id;
     const previousAnnotation = useAppSelector(selectBoundaryAnnotation(targetPath));
 
@@ -69,7 +69,7 @@ export const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
         getValues,
         watch,
         setValue,
-        formState: { errors },
+        formState: {errors},
     } = useForm<BoundaryFormState>({
         defaultValues: initialFormState(previousAnnotation),
         shouldFocusError: false,
@@ -180,14 +180,14 @@ export const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
                         max={undefined}
                         onChange={(_, valueAsNumber) => setValue('interval.lowerIntervalLimit', valueAsNumber)}
                     >
-                        <NumberInputField />
+                        <NumberInputField/>
                         <NumberInputStepper>
-                            <NumberIncrementStepper />
-                            <NumberDecrementStepper />
+                            <NumberIncrementStepper/>
+                            <NumberDecrementStepper/>
                         </NumberInputStepper>
                     </NumberInput>
                     <FormErrorMessage>
-                        <FormErrorIcon />
+                        <FormErrorIcon/>
                         {errors?.interval?.lowerIntervalLimit?.message ||
                             (errors?.interval?.lowerIntervalLimit?.type === 'nonEmptyInterval' && 'Interval is empty.')}
                     </FormErrorMessage>
@@ -207,7 +207,7 @@ export const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
                         <option value={ComparisonOperator.UNRESTRICTED}>no lower limit</option>
                     </Select>
                     <FormErrorMessage>
-                        <FormErrorIcon />
+                        <FormErrorIcon/>
                         {errors?.interval?.lowerLimitType?.message ||
                             (errors?.interval?.lowerLimitType?.type === 'unrestrictedInterval' &&
                                 'Interval is unrestricted.')}
@@ -233,7 +233,7 @@ export const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
                         <option value={ComparisonOperator.UNRESTRICTED}>no upper limit</option>
                     </Select>
                     <FormErrorMessage>
-                        <FormErrorIcon />
+                        <FormErrorIcon/>
                         {errors?.interval?.upperLimitType?.message ||
                             (errors?.interval?.upperLimitType?.type === 'unrestrictedInterval' &&
                                 'Interval is unrestricted.')}
@@ -254,14 +254,14 @@ export const BoundaryForm: React.FC<BoundaryFormProps> = function ({ target }) {
                         max={undefined}
                         onChange={(_, valueAsNumber) => setValue('interval.upperIntervalLimit', valueAsNumber)}
                     >
-                        <NumberInputField />
+                        <NumberInputField/>
                         <NumberInputStepper>
-                            <NumberIncrementStepper />
-                            <NumberDecrementStepper />
+                            <NumberIncrementStepper/>
+                            <NumberDecrementStepper/>
                         </NumberInputStepper>
                     </NumberInput>
                     <FormErrorMessage>
-                        <FormErrorIcon />
+                        <FormErrorIcon/>
                         {errors?.interval?.upperIntervalLimit?.message ||
                             (errors?.interval?.upperIntervalLimit?.type === 'nonEmptyInterval' && 'Interval is empty.')}
                     </FormErrorMessage>
