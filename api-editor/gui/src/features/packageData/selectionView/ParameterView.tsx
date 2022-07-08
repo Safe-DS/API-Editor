@@ -1,4 +1,4 @@
-import { Box, Heading, Stack, Text as ChakraText, useColorModeValue } from '@chakra-ui/react';
+import { Box, Heading, HStack, Stack, Text as ChakraText, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 import { PythonParameter } from '../model/PythonParameter';
 import { ParameterNode } from './ParameterNode';
@@ -39,12 +39,36 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({ pythonPar
                 </Stack>
             )}
 
-            {pythonParameter.defaultValue && (
+            {pythonParameter && (
                 <Stack spacing={4}>
                     <Heading as="h4" size="md">
                         Default Value
                     </Heading>
-                    <ChakraText paddingLeft={4}>{pythonParameter.defaultValue}</ChakraText>
+
+                    {pythonParameter.defaultValue ? (
+                        <Stack>
+                            <ChakraText paddingLeft={4}>Code: {pythonParameter.defaultValue}</ChakraText>
+
+                            {pythonParameter.defaultValueInDocs ? (
+                                <ChakraText paddingLeft={4}>
+                                    Documentation: {pythonParameter.defaultValueInDocs}
+                                </ChakraText>
+                            ) : (
+                                <HStack>
+                                    <ChakraText paddingLeft={4}>
+                                        Documentation:{' '}
+                                        <Box as="span" color="gray.500">
+                                            The documentation does not specify a default value.
+                                        </Box>
+                                    </ChakraText>
+                                </HStack>
+                            )}
+                        </Stack>
+                    ) : (
+                        <ChakraText paddingLeft={4} color="gray.500">
+                            The parameter is required.
+                        </ChakraText>
+                    )}
                 </Stack>
             )}
 
@@ -126,12 +150,8 @@ const CustomBarChart: React.FC<CustomBarChartProps> = function ({ parameterUsage
         datasets: [
             {
                 data: labels.map((key) => sortedParameterUsages.get(key)),
-                borderColor: labels.map((key) =>
-                    isStringifiedLiteral(key) ? 'rgba(137, 87, 229, 1)' : 'rgba(136, 136, 136, 1)',
-                ),
-                backgroundColor: labels.map((key) =>
-                    isStringifiedLiteral(key) ? 'rgba(137, 87, 229, 0.2)' : 'rgba(136, 136, 136, 0.2)',
-                ),
+                borderColor: labels.map((key) => (isStringifiedLiteral(key) ? '#871F78' : '#888888')),
+                backgroundColor: labels.map((key) => (isStringifiedLiteral(key) ? '#871F78' : '#888888')),
             },
         ],
     };

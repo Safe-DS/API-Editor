@@ -68,6 +68,7 @@ export interface PythonParameterJson {
     docstring: {
         type: Optional<string>;
         description: Optional<string>;
+        default_value: Optional<string>;
     };
     type: object; // TODO parse type
 }
