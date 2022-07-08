@@ -28,6 +28,11 @@ import { selectExpandDocumentationByDefault } from '../../ui/uiSlice';
 import { Link as RouterLink } from 'react-router-dom';
 import { PythonDeclaration } from '../model/PythonDeclaration';
 import { PythonPackage } from '../model/PythonPackage';
+import {Optional} from "../../../common/util/types";
+import {PythonFunction} from "../model/PythonFunction";
+import {PythonClass} from "../model/PythonClass";
+import {PythonParameter} from "../model/PythonParameter";
+import {PythonModule} from "../model/PythonModule";
 
 interface DocumentationTextProps {
     declaration: PythonDeclaration;
@@ -87,9 +92,10 @@ export const DocumentationText: React.FC<DocumentationTextProps> = function ({ d
         // replace block math elements
         .replaceAll(/\.\. math::\s*(\S.*)\n\n/gu, '$$\n$1\n$$\n\n')
         // replace relative links to classes
-        .replaceAll(/:class:`(\w*)`/gu, (_match, name) => resolveRelativeLink(declaration, name))
+        .replaceAll(/:class:`(\w*)`/gu, (_match, name) => resolveRelativeLink(declaration, name, DeclarationLevel.CLASS))
         // replace relative links to functions
-        .replaceAll(/:func:`(\w*)`/gu, (_match, name) => resolveRelativeLink(declaration, name))
+        .replaceAll(/:func:`(\w*)`/gu, (_match, name) => resolveRelativeLink(declaration, name, DeclarationLevel.FUNCTION))
+        .replaceAll(/:meth:`(\w*)`/gu, (_match, name) => resolveRelativeLink(declaration, name, DeclarationLevel.FUNCTION))
         // replace absolute links to modules
         .replaceAll(/:mod:`([\w.]*)`/gu, (_match, qualifiedName) => resolveAbsoluteLink(declaration, qualifiedName, 1))
         // replace absolute links to classes
@@ -147,10 +153,29 @@ export const DocumentationText: React.FC<DocumentationTextProps> = function ({ d
     );
 };
 
-const resolveRelativeLink = function (currentDeclaration: PythonDeclaration, linkedDeclarationName: string): string {
-    const parent = currentDeclaration.parent();
+const resolveRelativeLink = function (
+    currentDeclaration: PythonDeclaration,
+    linkedDeclarationName: string,
+    targetLevel: DeclarationLevel
+): string {
+
+    let parent: Optional<PythonDeclaration>  = currentDeclaration;
+    do {
+        parent = parent.parent();
+    } while (parent && Object.keys(DeclarationLevel)[getDeclarationLevel(parent)] >= Object.keys(DeclarationLevel)[targetLevel])
+
     if (!parent) {
         return linkedDeclarationName;
+    }
+
+    if (targetLevel === DeclarationLevel.FUNCTION) {
+        const grandparent = parent.parent();
+        if (grandparent) {
+            const sibling = grandparent.children().find((it) => it.name === linkedDeclarationName);
+            if (sibling) {
+                return `[${sibling.preferredQualifiedName()}](${sibling.id})`;
+            }
+        }
     }
 
     const sibling = parent.children().find((it) => it.name === linkedDeclarationName);
@@ -192,3 +217,29 @@ const resolveAbsoluteLink = function (
 
     return `[${current.preferredQualifiedName()}](${current.id})`;
 };
+
+const getDeclarationLevel = function (element: PythonDeclaration): DeclarationLevel {
+    if (element instanceof PythonPackage) {
+        return DeclarationLevel.PACKAGE
+    } else if (element instanceof PythonModule) {
+        return DeclarationLevel.MODULE
+    } else if (element instanceof PythonClass) {
+        return DeclarationLevel.CLASS
+    } else if (element instanceof PythonFunction) {
+        return DeclarationLevel.FUNCTION
+    } else if (element instanceof PythonParameter) {
+        return DeclarationLevel.PARAMETER
+    } else {
+        return DeclarationLevel.DEFAULT
+    }
+}
+
+
+enum DeclarationLevel {
+    DEFAULT,
+    PACKAGE,
+    MODULE,
+    CLASS,
+    FUNCTION,
+    PARAMETER
+}
