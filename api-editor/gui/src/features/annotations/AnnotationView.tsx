@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Icon, IconButton, Stack, Text as ChakraText, Tooltip, Wrap } from '@chakra-ui/react';
+import { Button, ButtonGroup, Icon, IconButton, SimpleGrid, Text as ChakraText, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 import { FaCheck, FaFlag, FaQuestion, FaRobot, FaTimes, FaTrash, FaUser, FaWrench } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -101,7 +101,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
     }
 
     return (
-        <Stack maxW="fit-content">
+        <SimpleGrid spacing={2} columns={3} templateColumns="max-content max-content max-content">
             {boundaryAnnotation && (
                 <AnnotationTag
                     type="boundary"
@@ -247,7 +247,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                     reportable
                 />
             )}
-        </Stack>
+        </SimpleGrid>
     );
 };
 
@@ -371,7 +371,7 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
 
     // Render
     return (
-        <Wrap>
+        <>
             <ButtonGroup size="sm" variant="outline" isAttached>
                 <Tooltip label={`${authorText}Click to delete.`}>
                     <IconButton
@@ -479,7 +479,7 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
                     />
                 </Tooltip>
             )}
-        </Wrap>
+        </>
     );
 };
 
