@@ -109,6 +109,18 @@ export class UsageCountStore {
         return this.valueUsages.get(parameter.id) ?? null;
     }
 
+    getNumberOfImplicitUsagesOfDefaultValue(parameter: PythonParameter): number {
+        const containingFunction = parameter.containingFunction;
+        if (!containingFunction) {
+            return 0;
+        }
+
+        const parameterUsageCount = this.getUsageCount(parameter);
+        const functionUsageCount = this.getUsageCount(containingFunction);
+
+        return functionUsageCount - parameterUsageCount;
+    }
+
     toJson(): UsageCountJson {
         return {
             schemaVersion: EXPECTED_USAGES_SCHEMA_VERSION,
@@ -127,41 +139,22 @@ export class UsageCountStore {
      * its default value, that usage of a value is not part of the UsageStore, so  we need to add it.
      *
      * @param api Description of the API
-     * @private
      */
     private addImplicitUsagesOfDefaultValues(api: PythonPackage) {
-        for (const [parameterId, parameterUsageCount] of this.parameterUsages.entries()) {
-            const parameter = api.getDeclarationById(parameterId);
-            if (!(parameter instanceof PythonParameter)) {
-                continue;
-            }
-
+        for (const parameter of api.getParameters()) {
             const defaultValue = parameter.defaultValue;
             if (defaultValue === undefined || defaultValue === null) {
                 // defaultValue could be an empty string
                 continue;
             }
 
-            const containingFunction = parameter.containingFunction;
-            if (!containingFunction) {
-                continue;
-            }
+            const nImplicitUsages = this.getNumberOfImplicitUsagesOfDefaultValue(parameter);
+            const nExplicitUsages = this.valueUsages.get(parameter.id)?.get(defaultValue) ?? 0;
 
-            const functionUsageCount = this.functionUsages.get(containingFunction.id) ?? 0;
-            const nImplicitUsages = functionUsageCount - parameterUsageCount;
-            if (nImplicitUsages === 0) {
-                continue;
+            if (!this.valueUsages.has(parameter.id)) {
+                this.valueUsages.set(parameter.id, new Map());
             }
-
-            const nExplicitUsage = this.valueUsages.get(parameterId)?.get(defaultValue) ?? 0;
-
-            if (!this.valueUsages.has(parameterId)) {
-                this.valueUsages.set(parameterId, new Map());
-            }
-            if (!this.valueUsages.get(parameterId)!.has(defaultValue)) {
-                this.valueUsages.get(parameterId)!.set(defaultValue, 0);
-            }
-            this.valueUsages.get(parameterId)!.set(defaultValue, nImplicitUsages + nExplicitUsage);
+            this.valueUsages.get(parameter.id)!.set(defaultValue, nImplicitUsages + nExplicitUsages);
         }
     }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Heading, SimpleGrid, VStack } from '@chakra-ui/react';
+import { Button, SimpleGrid } from '@chakra-ui/react';
 import { selectAnnotationStore } from '../annotations/annotationSlice';
 import { Annotation } from '../annotations/versioning/AnnotationStoreV2';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -52,33 +52,26 @@ export const AnnotationStatistics = function () {
     };
 
     return (
-        <VStack spacing={4}>
-            <Heading as="h3" size="md">
-                Annotations on Matched Elements
-            </Heading>
-            <SimpleGrid columns={{ base: 1, fullHD: 2 }} spacing={2}>
-                <Button onClick={() => filterAction('')}>Clear Filter</Button>
-                <Button onClick={() => filterAction('annotation:any')}>{'Any: ' + sum}</Button>
+        <SimpleGrid columns={{ base: 1, fullHD: 2 }} spacing={2}>
+            <Button onClick={() => filterAction('')}>Clear Filter</Button>
+            <Button onClick={() => filterAction('annotation:any')}>{'Any: ' + sum}</Button>
 
-                <Button onClick={() => filterAction('annotation:@boundary')}>
-                    {'@Boundary: ' + nBoundaryAnnotations}
-                </Button>
-                <Button onClick={() => filterAction('annotation:@calledAfter')}>
-                    {'@CalledAfter: ' + nCalledAfterAnnotations}
-                </Button>
-                <Button onClick={() => filterAction('annotation:@description')}>
-                    {'@Description: ' + nDescriptionAnnotations}
-                </Button>
-                <Button onClick={() => filterAction('annotation:@enum')}>{'@Enum: ' + nEnumAnnotations}</Button>
-                <Button onClick={() => filterAction('annotation:@group')}>{'@Group: ' + nGroupAnnotations}</Button>
-                <Button onClick={() => filterAction('annotation:@move')}>{'@Move: ' + nMoveAnnotations}</Button>
-                <Button onClick={() => filterAction('annotation:@pure')}>{'@Pure: ' + nPureAnnotations}</Button>
-                <Button onClick={() => filterAction('annotation:@remove')}>{'@Remove: ' + nRemoveAnnotations}</Button>
-                <Button onClick={() => filterAction('annotation:@rename')}>{'@Rename: ' + nRenameAnnotations}</Button>
-                <Button onClick={() => filterAction('annotation:@todo')}>{'@Todo: ' + nTodoAnnotations}</Button>
-                <Button onClick={() => filterAction('annotation:@value')}>{'@Value: ' + nValueAnnotations}</Button>
-            </SimpleGrid>
-        </VStack>
+            <Button onClick={() => filterAction('annotation:@boundary')}>{'@Boundary: ' + nBoundaryAnnotations}</Button>
+            <Button onClick={() => filterAction('annotation:@calledAfter')}>
+                {'@CalledAfter: ' + nCalledAfterAnnotations}
+            </Button>
+            <Button onClick={() => filterAction('annotation:@description')}>
+                {'@Description: ' + nDescriptionAnnotations}
+            </Button>
+            <Button onClick={() => filterAction('annotation:@enum')}>{'@Enum: ' + nEnumAnnotations}</Button>
+            <Button onClick={() => filterAction('annotation:@group')}>{'@Group: ' + nGroupAnnotations}</Button>
+            <Button onClick={() => filterAction('annotation:@move')}>{'@Move: ' + nMoveAnnotations}</Button>
+            <Button onClick={() => filterAction('annotation:@pure')}>{'@Pure: ' + nPureAnnotations}</Button>
+            <Button onClick={() => filterAction('annotation:@remove')}>{'@Remove: ' + nRemoveAnnotations}</Button>
+            <Button onClick={() => filterAction('annotation:@rename')}>{'@Rename: ' + nRenameAnnotations}</Button>
+            <Button onClick={() => filterAction('annotation:@todo')}>{'@Todo: ' + nTodoAnnotations}</Button>
+            <Button onClick={() => filterAction('annotation:@value')}>{'@Value: ' + nValueAnnotations}</Button>
+        </SimpleGrid>
     );
 };
 

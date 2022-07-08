@@ -15,6 +15,7 @@ import {
 import { Bar } from 'react-chartjs-2';
 import { useAppSelector } from '../../../app/hooks';
 import { selectUsages } from '../../usages/usageSlice';
+import { ParameterUsageCounts } from './UsageCounts';
 
 ChartJS.register(CategoryScale, PointElement, LineElement, LinearScale, BarElement, Title, Tooltip);
 
@@ -24,7 +25,7 @@ interface ParameterViewProps {
 
 export const ParameterView: React.FC<ParameterViewProps> = function ({ pythonParameter }) {
     const usages = useAppSelector(selectUsages);
-    const parameterUsages = usages.valueUsages.get(pythonParameter.id);
+    const nValueUsages = usages.getValueCountsOrNull(pythonParameter);
 
     return (
         <Stack spacing={8}>
@@ -39,24 +40,34 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({ pythonPar
                 </Stack>
             )}
 
-            {pythonParameter && (
+            {pythonParameter && pythonParameter.isExplicitParameter() && (
                 <Stack spacing={4}>
                     <Heading as="h4" size="md">
                         Default Value
                     </Heading>
 
-                    {pythonParameter.defaultValue ? (
+                    {pythonParameter.isOptional() ? (
                         <Stack>
-                            <ChakraText paddingLeft={4}>Code: {pythonParameter.defaultValue}</ChakraText>
+                            <ChakraText paddingLeft={4}>
+                                <Box as="span" fontWeight="bold">
+                                    Code:
+                                </Box>{' '}
+                                {pythonParameter.defaultValue}
+                            </ChakraText>
 
                             {pythonParameter.defaultValueInDocs ? (
                                 <ChakraText paddingLeft={4}>
-                                    Documentation: {pythonParameter.defaultValueInDocs}
+                                    <Box as="span" fontWeight="bold">
+                                        Documentation:
+                                    </Box>{' '}
+                                    {pythonParameter.defaultValueInDocs}
                                 </ChakraText>
                             ) : (
                                 <HStack>
                                     <ChakraText paddingLeft={4}>
-                                        Documentation:{' '}
+                                        <Box as="span" fontWeight="bold">
+                                            Documentation:
+                                        </Box>{' '}
                                         <Box as="span" color="gray.500">
                                             The documentation does not specify a default value.
                                         </Box>
@@ -72,22 +83,15 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({ pythonPar
                 </Stack>
             )}
 
-            {parameterUsages && (
-                <Stack spacing={4}>
-                    <Heading as="h4" size="md">
-                        Usages
-                    </Heading>
-                    <UsageSum parameterUsages={parameterUsages} />
-                </Stack>
-            )}
+            {nValueUsages && <ParameterUsageCounts parameter={pythonParameter} />}
 
-            {parameterUsages && (
+            {nValueUsages && (
                 <Stack spacing={4}>
                     <Heading as="h4" size="md">
                         Most Common Values
                     </Heading>
                     <Box w="30vw" maxWidth="640px">
-                        <CustomBarChart parameterUsages={parameterUsages} />
+                        <CustomBarChart parameterUsages={nValueUsages} />
                     </Box>
                 </Stack>
             )}
@@ -150,8 +154,12 @@ const CustomBarChart: React.FC<CustomBarChartProps> = function ({ parameterUsage
         datasets: [
             {
                 data: labels.map((key) => sortedParameterUsages.get(key)),
-                borderColor: labels.map((key) => (isStringifiedLiteral(key) ? '#871F78' : '#888888')),
-                backgroundColor: labels.map((key) => (isStringifiedLiteral(key) ? '#871F78' : '#888888')),
+                borderColor: labels.map((key) =>
+                    isStringifiedLiteral(key) ? 'rgba(137, 87, 229, 1)' : 'rgba(136, 136, 136, 1)',
+                ),
+                backgroundColor: labels.map((key) =>
+                    isStringifiedLiteral(key) ? 'rgba(137, 87, 229, 0.2)' : 'rgba(136, 136, 136, 0.2)',
+                ),
             },
         ],
     };
@@ -173,14 +181,4 @@ const isStringifiedLiteral = function (value: string): boolean {
         return true;
     }
     return !Number.isNaN(Number.parseFloat(value));
-};
-
-const UsageSum: React.FC<CustomBarChartProps> = function ({ parameterUsages }) {
-    let usage = 0;
-
-    parameterUsages.forEach((value) => {
-        usage += value;
-    });
-
-    return <ChakraText paddingLeft={4}>{usage}</ChakraText>;
 };
