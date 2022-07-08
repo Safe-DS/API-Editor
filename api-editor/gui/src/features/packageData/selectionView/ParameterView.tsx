@@ -39,13 +39,13 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({ pythonPar
                 </Stack>
             )}
 
-            {pythonParameter && (
+            {pythonParameter && pythonParameter.isExplicitParameter() && (
                 <Stack spacing={4}>
                     <Heading as="h4" size="md">
                         Default Value
                     </Heading>
 
-                    {pythonParameter.defaultValue ? (
+                    {pythonParameter.isOptional() ? (
                         <Stack>
                             <ChakraText paddingLeft={4}>
                                 <Box as="span" fontWeight="bold">
