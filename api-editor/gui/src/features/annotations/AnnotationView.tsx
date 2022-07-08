@@ -389,7 +389,7 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
                     )}
                 </Button>
             </Tooltip>
-            {reviewResult === ReviewResult.Correct && (
+            {(reviewResult === ReviewResult.Correct || (isReviewed && !reviewResult)) && (
                 <Tooltip label={`Marked as correct by ${reviewer}. Click to undo.`}>
                     <Button
                         size="sm"
