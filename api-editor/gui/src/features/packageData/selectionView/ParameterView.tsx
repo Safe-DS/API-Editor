@@ -1,7 +1,7 @@
-import {Box, Heading, HStack, Stack, Text as ChakraText, useColorModeValue} from '@chakra-ui/react';
+import { Box, Heading, HStack, Stack, Text as ChakraText, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
-import {PythonParameter} from '../model/PythonParameter';
-import {ParameterNode} from './ParameterNode';
+import { PythonParameter } from '../model/PythonParameter';
+import { ParameterNode } from './ParameterNode';
 import {
     BarElement,
     CategoryScale,
@@ -12,9 +12,9 @@ import {
     Title,
     Tooltip,
 } from 'chart.js';
-import {Bar} from 'react-chartjs-2';
-import {useAppSelector} from '../../../app/hooks';
-import {selectUsages} from '../../usages/usageSlice';
+import { Bar } from 'react-chartjs-2';
+import { useAppSelector } from '../../../app/hooks';
+import { selectUsages } from '../../usages/usageSlice';
 
 ChartJS.register(CategoryScale, PointElement, LineElement, LinearScale, BarElement, Title, Tooltip);
 
@@ -22,13 +22,13 @@ interface ParameterViewProps {
     pythonParameter: PythonParameter;
 }
 
-export const ParameterView: React.FC<ParameterViewProps> = function ({pythonParameter}) {
+export const ParameterView: React.FC<ParameterViewProps> = function ({ pythonParameter }) {
     const usages = useAppSelector(selectUsages);
     const parameterUsages = usages.valueUsages.get(pythonParameter.id);
 
     return (
         <Stack spacing={8}>
-            <ParameterNode isTitle pythonParameter={pythonParameter}/>
+            <ParameterNode isTitle pythonParameter={pythonParameter} />
 
             {pythonParameter.typeInDocs && (
                 <Stack spacing={4}>
@@ -45,32 +45,28 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({pythonPara
                         Default Value
                     </Heading>
 
-                    {pythonParameter.defaultValue ?
-                        (
-                            <Stack>
-                                <ChakraText paddingLeft={4}>Code: {pythonParameter.defaultValue}</ChakraText>
+                    {pythonParameter.defaultValue ? (
+                        <Stack>
+                            <ChakraText paddingLeft={4}>Code: {pythonParameter.defaultValue}</ChakraText>
 
-                                {pythonParameter.defaultValueInDocs ?
-                                    (
-                                        <ChakraText
-                                            paddingLeft={4}>Documentation: {pythonParameter.defaultValueInDocs}</ChakraText>
-                                    )
-                                    :
-                                    (
-                                        <HStack>
-                                            <ChakraText paddingLeft={4}>Documentation: </ChakraText>
-                                            <ChakraText color="gray.500">The documentation does not specify a default
-                                                value.</ChakraText>
-                                        </HStack>
-                                    )}
-
-                            </Stack>
-                        )
-                        :
-                        (
-                            <ChakraText paddingLeft={4} color="gray.500">The parameter is required.</ChakraText>
-                        )}
-
+                            {pythonParameter.defaultValueInDocs ? (
+                                <ChakraText paddingLeft={4}>
+                                    Documentation: {pythonParameter.defaultValueInDocs}
+                                </ChakraText>
+                            ) : (
+                                <HStack>
+                                    <ChakraText paddingLeft={4}>Documentation: </ChakraText>
+                                    <ChakraText color="gray.500">
+                                        The documentation does not specify a default value.
+                                    </ChakraText>
+                                </HStack>
+                            )}
+                        </Stack>
+                    ) : (
+                        <ChakraText paddingLeft={4} color="gray.500">
+                            The parameter is required.
+                        </ChakraText>
+                    )}
                 </Stack>
             )}
 
@@ -79,7 +75,7 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({pythonPara
                     <Heading as="h4" size="md">
                         Usages
                     </Heading>
-                    <UsageSum parameterUsages={parameterUsages}/>
+                    <UsageSum parameterUsages={parameterUsages} />
                 </Stack>
             )}
 
@@ -89,7 +85,7 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({pythonPara
                         Most Common Values
                     </Heading>
                     <Box w="30vw" maxWidth="640px">
-                        <CustomBarChart parameterUsages={parameterUsages}/>
+                        <CustomBarChart parameterUsages={parameterUsages} />
                     </Box>
                 </Stack>
             )}
@@ -101,7 +97,7 @@ interface CustomBarChartProps {
     parameterUsages: Map<string, number>;
 }
 
-const CustomBarChart: React.FC<CustomBarChartProps> = function ({parameterUsages}) {
+const CustomBarChart: React.FC<CustomBarChartProps> = function ({ parameterUsages }) {
     const gridColor = useColorModeValue('#BBB', '#555');
     const textColor = useColorModeValue('#000', '#FFF');
 
@@ -158,7 +154,7 @@ const CustomBarChart: React.FC<CustomBarChartProps> = function ({parameterUsages
         ],
     };
 
-    return <Bar options={options} data={data}/>;
+    return <Bar options={options} data={data} />;
 };
 
 const isStringifiedLiteral = function (value: string): boolean {
@@ -177,7 +173,7 @@ const isStringifiedLiteral = function (value: string): boolean {
     return !Number.isNaN(Number.parseFloat(value));
 };
 
-const UsageSum: React.FC<CustomBarChartProps> = function ({parameterUsages}) {
+const UsageSum: React.FC<CustomBarChartProps> = function ({ parameterUsages }) {
     let usage = 0;
 
     parameterUsages.forEach((value) => {
@@ -186,5 +182,3 @@ const UsageSum: React.FC<CustomBarChartProps> = function ({parameterUsages}) {
 
     return <ChakraText paddingLeft={4}>{usage}</ChakraText>;
 };
-
-
