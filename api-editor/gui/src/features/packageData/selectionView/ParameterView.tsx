@@ -15,6 +15,7 @@ import {
 import { Bar } from 'react-chartjs-2';
 import { useAppSelector } from '../../../app/hooks';
 import { selectUsages } from '../../usages/usageSlice';
+import { ParameterUsageCounts } from './UsageCounts';
 
 ChartJS.register(CategoryScale, PointElement, LineElement, LinearScale, BarElement, Title, Tooltip);
 
@@ -82,7 +83,7 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({ pythonPar
                 </Stack>
             )}
 
-            {nValueUsages && <UsageCounts parameter={pythonParameter} />}
+            {nValueUsages && <ParameterUsageCounts parameter={pythonParameter} />}
 
             {nValueUsages && (
                 <Stack spacing={4}>
@@ -180,48 +181,4 @@ const isStringifiedLiteral = function (value: string): boolean {
         return true;
     }
     return !Number.isNaN(Number.parseFloat(value));
-};
-
-interface UsageCountsProps {
-    parameter: PythonParameter;
-}
-
-const UsageCounts: React.FC<UsageCountsProps> = function ({ parameter }) {
-    const usageStore = useAppSelector(selectUsages);
-
-    const nExplicitUsages = usageStore.getUsageCount(parameter);
-    const nImplicitUsages = usageStore.getNumberOfImplicitUsagesOfDefaultValue(parameter);
-
-    return (
-        <Stack spacing={4}>
-            <Heading as="h4" size="md">
-                Usages
-            </Heading>
-
-            <Stack>
-                <ChakraText paddingLeft={4}>
-                    <Box as="span" fontWeight="bold">
-                        Total:
-                    </Box>{' '}
-                    {nExplicitUsages + nImplicitUsages}
-                </ChakraText>
-                {parameter.isOptional() && (
-                    <ChakraText paddingLeft={4}>
-                        <Box as="span" fontWeight="bold">
-                            Explicit:
-                        </Box>{' '}
-                        {nExplicitUsages}
-                    </ChakraText>
-                )}
-                {parameter.isOptional() && (
-                    <ChakraText paddingLeft={4}>
-                        <Box as="span" fontWeight="bold">
-                            Implicit usages of default value:
-                        </Box>{' '}
-                        {nImplicitUsages}
-                    </ChakraText>
-                )}
-            </Stack>
-        </Stack>
-    );
 };
