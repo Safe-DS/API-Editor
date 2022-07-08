@@ -47,16 +47,26 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({ pythonPar
 
                     {pythonParameter.defaultValue ? (
                         <Stack>
-                            <ChakraText paddingLeft={4}>Code: {pythonParameter.defaultValue}</ChakraText>
+                            <ChakraText paddingLeft={4}>
+                                <Box as="span" fontWeight="bold">
+                                    Code:
+                                </Box>{' '}
+                                {pythonParameter.defaultValue}
+                            </ChakraText>
 
                             {pythonParameter.defaultValueInDocs ? (
                                 <ChakraText paddingLeft={4}>
-                                    Documentation: {pythonParameter.defaultValueInDocs}
+                                    <Box as="span" fontWeight="bold">
+                                        Documentation:
+                                    </Box>{' '}
+                                    {pythonParameter.defaultValueInDocs}
                                 </ChakraText>
                             ) : (
                                 <HStack>
                                     <ChakraText paddingLeft={4}>
-                                        Documentation:{' '}
+                                        <Box as="span" fontWeight="bold">
+                                            Documentation:
+                                        </Box>{' '}
                                         <Box as="span" color="gray.500">
                                             The documentation does not specify a default value.
                                         </Box>
