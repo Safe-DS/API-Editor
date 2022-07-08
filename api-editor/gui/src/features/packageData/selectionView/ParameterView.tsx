@@ -24,7 +24,7 @@ interface ParameterViewProps {
 
 export const ParameterView: React.FC<ParameterViewProps> = function ({ pythonParameter }) {
     const usages = useAppSelector(selectUsages);
-    const nValueUsages = usages.getValueCountsOrNull(pythonParameter)
+    const nValueUsages = usages.getValueCountsOrNull(pythonParameter);
 
     return (
         <Stack spacing={8}>
