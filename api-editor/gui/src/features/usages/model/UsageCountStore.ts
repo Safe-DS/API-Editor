@@ -61,6 +61,7 @@ export class UsageCountStore {
         api?: PythonPackage,
     ) {
         if (api) {
+            this.addUnusedParameters(api);
             this.addImplicitUsagesOfDefaultValues(api);
             this.computeModuleUsages(api);
         }
@@ -120,6 +121,25 @@ export class UsageCountStore {
                 [...this.valueUsages.entries()].map((entry) => [entry[0], Object.fromEntries(entry[1])]),
             ),
         };
+    }
+
+    /**
+     * Adds the implicit usages of a parameters default value. When a function is called and a parameter is used with
+     * its default value, that usage of a value is not part of the UsageStore, so  we need to add it.
+     *
+     * @param api Description of the API
+     * @private
+     */
+    private addUnusedParameters(api: PythonPackage) {
+        for (const parameter of api.getParameters()) {
+
+                const parameterUsage = this.parameterUsages.get(parameter.id);
+            if (parameterUsage) {
+                continue;
+            }
+
+            this.parameterUsages.set(parameter.id, 0)
+        }
     }
 
     /**
