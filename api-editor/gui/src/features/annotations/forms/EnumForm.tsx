@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
-import { FaPlus, FaTrash } from 'react-icons/fa';
+import { FaAngleDoubleRight, FaAngleRight, FaPlus, FaTrash } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { pythonIdentifierPattern } from '../../../common/validation';
 import { PythonDeclaration } from '../../packageData/model/PythonDeclaration';
@@ -45,6 +45,8 @@ export const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
         handleSubmit,
         setFocus,
         reset,
+        watch,
+        setValue,
         formState: { errors },
     } = useForm<EnumFormState>({
         defaultValues: {
@@ -62,6 +64,8 @@ export const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
         control,
         name: 'pairs',
     });
+
+    const watchPairs = watch('pairs');
 
     useEffect(() => {
         try {
@@ -113,6 +117,21 @@ export const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
         dispatch(hideAnnotationForm());
     };
 
+    const onGenerate = (index: number) => () => {
+        generateEnumName(index);
+    };
+
+    const onGenerateAll = () => {
+        for (let i = 0; i < watchPairs.length; i++) {
+            generateEnumName(i);
+        }
+    };
+
+    const generateEnumName = (index: number) => {
+        const instanceName = formatEnumName(watchPairs[index].stringValue.toUpperCase());
+        setValue(`pairs.${index}.instanceName`, instanceName);
+    };
+
     // Rendering -------------------------------------------------------------------------------------------------------
 
     return (
@@ -141,6 +160,12 @@ export const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
                 <Text fontSize="md" fontWeight="medium" w="100%">
                     String value:
                 </Text>
+                <IconButton
+                    icon={<FaAngleDoubleRight />}
+                    aria-label="Generate all instance names"
+                    colorScheme="blue"
+                    onClick={onGenerateAll}
+                />
                 <Text fontSize="md" fontWeight="medium" w="100%">
                     Instance name:
                 </Text>
@@ -154,11 +179,26 @@ export const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
                             {...register(`pairs.${index}.stringValue`, {
                                 required: 'This is required.',
                             })}
+                            onBlur={() => {
+                                if (
+                                    watchPairs[index].stringValue.length !== 0 &&
+                                    watchPairs[index].instanceName.length === 0
+                                ) {
+                                    generateEnumName(index);
+                                }
+                            }}
                         />
                         <FormErrorMessage>
                             <FormErrorIcon /> {errors?.pairs?.[index]?.stringValue?.message}
                         </FormErrorMessage>
                     </FormControl>
+
+                    <IconButton
+                        icon={<FaAngleRight />}
+                        aria-label="Generate instance name"
+                        colorScheme="blue"
+                        onClick={onGenerate(index)}
+                    />
 
                     <FormControl isInvalid={Boolean(errors?.pairs?.[index]?.instanceName)}>
                         <Input
@@ -188,4 +228,17 @@ export const EnumForm: React.FC<EnumFormProps> = function ({ target }) {
             </FormControl>
         </AnnotationForm>
     );
+};
+
+const formatEnumName = (stringValue: string) => {
+    const segments = stringValue.split(/[_\-.]/u);
+    const formattedString = segments
+        .map((segment) => segment.replaceAll(/\W/gu, '').toUpperCase())
+        .filter((segment) => segment.length > 0)
+        .join('_');
+
+    if (formattedString.length === 0 || formattedString.charAt(0).match(/\d/u)) {
+        return '_' + formattedString;
+    }
+    return formattedString;
 };
