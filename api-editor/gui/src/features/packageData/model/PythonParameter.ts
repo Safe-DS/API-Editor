@@ -71,6 +71,14 @@ export class PythonParameter extends PythonDeclaration {
         );
     }
 
+    isOptional(): boolean {
+        return this.defaultValue !== null && this.defaultValue !== undefined && this.isExplicitParameter();
+    }
+
+    isRequired(): boolean {
+        return (this.defaultValue === null || this.defaultValue === undefined) && this.isExplicitParameter();
+    }
+
     toString(): string {
         return `Parameter "${this.name}"`;
     }

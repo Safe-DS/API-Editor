@@ -109,6 +109,18 @@ export class UsageCountStore {
         return this.valueUsages.get(parameter.id) ?? null;
     }
 
+    getNumberOfImplicitUsagesOfDefaultValue(parameter: PythonParameter): number {
+        const containingFunction = parameter.containingFunction;
+        if (!containingFunction) {
+            return 0;
+        }
+
+        const parameterUsageCount = this.getUsageCount(parameter);
+        const functionUsageCount = this.getUsageCount(containingFunction);
+
+        return functionUsageCount - parameterUsageCount;
+    }
+
     toJson(): UsageCountJson {
         return {
             schemaVersion: EXPECTED_USAGES_SCHEMA_VERSION,
@@ -136,18 +148,7 @@ export class UsageCountStore {
                 continue;
             }
 
-            const containingFunction = parameter.containingFunction;
-            if (!containingFunction) {
-                continue;
-            }
-
-            const parameterUsageCount = this.getUsageCount(parameter);
-            const functionUsageCount = this.getUsageCount(containingFunction);
-            const nImplicitUsages = functionUsageCount - parameterUsageCount;
-            if (nImplicitUsages === 0) {
-                continue;
-            }
-
+            const nImplicitUsages = this.getNumberOfImplicitUsagesOfDefaultValue(parameter);
             const nExplicitUsages = this.valueUsages.get(parameter.id)?.get(defaultValue) ?? 0;
 
             if (!this.valueUsages.has(parameter.id)) {
