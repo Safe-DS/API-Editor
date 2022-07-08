@@ -327,7 +327,7 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
     const currentUserAction = useAppSelector(selectCurrentUserAction);
 
     const reviewer = (annotation.reviewers ?? [])[0];
-    const reviewResult = annotation.reviewResult;
+    const reviewResult = annotation.reviewResult ?? ReviewResult.Correct;
     const isReviewed = reviewer !== undefined;
 
     const authors = annotation.authors ?? [];
