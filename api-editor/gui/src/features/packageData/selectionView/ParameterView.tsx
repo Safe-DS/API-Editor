@@ -130,8 +130,12 @@ const CustomBarChart: React.FC<CustomBarChartProps> = function ({ parameterUsage
         datasets: [
             {
                 data: labels.map((key) => sortedParameterUsages.get(key)),
-                borderColor: labels.map((key) => (isStringifiedLiteral(key) ? '#871F78' : '#888888')),
-                backgroundColor: labels.map((key) => (isStringifiedLiteral(key) ? '#871F78' : '#888888')),
+                borderColor: labels.map((key) =>
+                    isStringifiedLiteral(key) ? 'rgba(137, 87, 229, 1)' : 'rgba(136, 136, 136, 1)',
+                ),
+                backgroundColor: labels.map((key) =>
+                    isStringifiedLiteral(key) ? 'rgba(137, 87, 229, 0.2)' : 'rgba(136, 136, 136, 0.2)',
+                ),
             },
         ],
     };
