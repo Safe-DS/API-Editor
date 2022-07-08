@@ -1,6 +1,6 @@
 import { Button, ButtonGroup, Icon, IconButton, Stack, Text as ChakraText, Tooltip } from '@chakra-ui/react';
 import React from 'react';
-import {FaCheck, FaFlag, FaQuestion, FaTimes, FaTrash, FaUser, FaWrench} from 'react-icons/fa';
+import {FaCheck, FaFlag, FaQuestion, FaRobot, FaTimes, FaTrash, FaUser, FaWrench} from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
     removeBoundaryAnnotation,
@@ -377,7 +377,7 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
             <Tooltip label={`${authorText}Click to change.`}>
                 <Button
                     leftIcon={<FaWrench />}
-                    rightIcon={authors.includes(username) && <FaUser />}
+                    rightIcon={(authors.includes(username) && <FaUser />) || (authors.length === 1 && authors[0] === '$autogen$' && <FaRobot />)}
                     flexGrow={1}
                     borderLeft="none"
                     justifyContent="flex-start"
