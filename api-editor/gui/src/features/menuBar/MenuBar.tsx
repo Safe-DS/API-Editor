@@ -557,7 +557,7 @@ const getPreviousElementPath = function (
     let current = getElementAtIndex(declarations, currentIndex);
     let wrappedAround = startIndex !== null && currentIndex !== null && currentIndex >= startIndex;
     while (current !== null && current !== start) {
-        if ((current.constructor == start.constructor && filter.shouldKeepDeclaration(current, annotations, usages)) ||
+        if ((current.constructor === start.constructor && filter.shouldKeepDeclaration(current, annotations, usages)) ||
             (!onlySameType && filter.shouldKeepDeclaration(current, annotations, usages))) {
             return { id: current.id, wrappedAround };
         }
@@ -585,7 +585,7 @@ const getNextElementPath = function (
     let current = getElementAtIndex(declarations, currentIndex);
     let wrappedAround = startIndex !== null && currentIndex !== null && currentIndex <= startIndex;
     while (current !== null && current !== start) {
-        if ((current.constructor == start.constructor && filter.shouldKeepDeclaration(current, annotations, usages)) ||
+        if ((current.constructor === start.constructor && filter.shouldKeepDeclaration(current, annotations, usages)) ||
             (!onlySameType && filter.shouldKeepDeclaration(current, annotations, usages))) {
             return { id: current.id, wrappedAround };
         }
