@@ -84,7 +84,7 @@ export const DocumentationText: React.FC<DocumentationTextProps> = function ({ d
         .replaceAll(/:math:`([^`]*)`/gu, '$$1$')
         // replace block math elements
         .replaceAll(/\.\. math::\s*(\S.*)\n\n/gu, '$$\n$1\n$$\n\n')
-        // replace duplicated colums and formate code
+        // replace double colons with single colon
         .replaceAll(/::/gu, ':')
         // replace relative links to classes
         .replaceAll(/:class:`(\w*)`/gu, (_match, name) => resolveRelativeLink(declaration, name))
