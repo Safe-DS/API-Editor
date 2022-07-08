@@ -200,7 +200,6 @@ export const App: React.FC = function () {
                         w="20vw"
                         borderLeft={1}
                         layerStyle="subtleBorder"
-                        resize="horizontal"
                     >
                         <Box padding={4}>
                             <StatisticsView />
