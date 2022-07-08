@@ -1,4 +1,4 @@
-import {Box, ComponentWithAs, Heading, Stack, Text as ChakraText, TextProps, useColorModeValue} from '@chakra-ui/react';
+import {Box, Heading, Stack, Text as ChakraText, useColorModeValue} from '@chakra-ui/react';
 import React from 'react';
 import { PythonParameter } from '../model/PythonParameter';
 import { ParameterNode } from './ParameterNode';
