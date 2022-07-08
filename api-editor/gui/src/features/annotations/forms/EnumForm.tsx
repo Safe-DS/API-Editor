@@ -160,11 +160,11 @@ export const EnumForm: React.FC<EnumFormProps> = function ({target}) {
                 <Text fontSize="md" fontWeight="medium" w="100%">
                     String value:
                 </Text>
+                <IconButton icon={<FaAngleDoubleRight/>} aria-label="Generate all instance names" colorScheme="blue"
+                            onClick={onGenerateAll}/>
                 <Text fontSize="md" fontWeight="medium" w="100%">
                     Instance name:
                 </Text>
-                <IconButton icon={<FaAngleDoubleRight/>} aria-label="Generate all instance names" colorScheme="blue"
-                            onClick={onGenerateAll}/>
                 <IconButton icon={<FaPlus/>} aria-label="Add enum pair" colorScheme="green" onClick={onAppend}/>
             </HStack>
 
