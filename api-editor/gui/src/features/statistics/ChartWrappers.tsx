@@ -81,8 +81,8 @@ export const CustomBarChart: React.FC<CustomBarChartProps> = function ({ labels,
         datasets: [
             {
                 data: labels.map((key) => dataValues.get(key)),
-                borderColor: ['#9A1D1D', '#7768AE', '#FFCC00', '#1BA25A'],
-                backgroundColor: ['#9A1D1D', '#7768AE', '#FFCC00', '#1BA25A'],
+                borderColor: ['rgba(137, 87, 229, 1)'],
+                backgroundColor: ['rgba(137, 87, 229, 0.2)'],
             },
         ],
     };
@@ -157,8 +157,8 @@ export const CustomLineChart: React.FC<CustomLineChartProps> = function ({
         datasets: [
             {
                 data: labels.map((key) => dataValues.get(key)),
-                borderColor: 'rgb(255, 99, 132)',
-                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                borderColor: 'rgba(137, 87, 229, 1)',
+                backgroundColor: 'rgba(137, 87, 229, 0.2)',
             },
         ],
     };
