@@ -24,7 +24,7 @@ interface ParameterViewProps {
 
 export const ParameterView: React.FC<ParameterViewProps> = function ({ pythonParameter }) {
     const usages = useAppSelector(selectUsages);
-    const parameterUsages = usages.valueUsages.get(pythonParameter.id);
+    const nValueUsages = usages.valueUsages.get(pythonParameter.id);
 
     return (
         <Stack spacing={8}>
@@ -82,7 +82,7 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({ pythonPar
                 </Stack>
             )}
 
-            {parameterUsages && (
+            {nValueUsages && (
                 <Stack spacing={4}>
                     <Heading as="h4" size="md">
                         Usages
@@ -91,13 +91,13 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({ pythonPar
                 </Stack>
             )}
 
-            {parameterUsages && (
+            {nValueUsages && (
                 <Stack spacing={4}>
                     <Heading as="h4" size="md">
                         Most Common Values
                     </Heading>
                     <Box w="30vw" maxWidth="640px">
-                        <CustomBarChart parameterUsages={parameterUsages} />
+                        <CustomBarChart parameterUsages={nValueUsages} />
                     </Box>
                 </Stack>
             )}
