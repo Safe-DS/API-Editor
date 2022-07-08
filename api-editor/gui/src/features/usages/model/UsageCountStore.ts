@@ -153,9 +153,6 @@ export class UsageCountStore {
             if (!this.valueUsages.has(parameter.id)) {
                 this.valueUsages.set(parameter.id, new Map());
             }
-            if (!this.valueUsages.get(parameter.id)!.has(defaultValue)) {
-                this.valueUsages.get(parameter.id)!.set(defaultValue, 0);
-            }
             this.valueUsages.get(parameter.id)!.set(defaultValue, nImplicitUsages + nExplicitUsages);
         }
     }
