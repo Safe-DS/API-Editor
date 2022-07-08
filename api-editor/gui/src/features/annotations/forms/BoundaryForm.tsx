@@ -49,7 +49,7 @@ const initialFormState = function (previousAnnotation: BoundaryAnnotation | void
             lowerIntervalLimit: previousAnnotation?.interval?.lowerIntervalLimit ?? 0,
             lowerLimitType: previousAnnotation?.interval?.lowerLimitType ?? ComparisonOperator.LESS_THAN_OR_EQUALS,
             upperIntervalLimit: previousAnnotation?.interval?.upperIntervalLimit ?? 1,
-            upperLimitType: previousAnnotation?.interval?.upperLimitType ?? ComparisonOperator.LESS_THAN_OR_EQUALS,
+            upperLimitType: previousAnnotation?.interval?.upperLimitType ?? ComparisonOperator.UNRESTRICTED,
         },
         comment: previousAnnotation?.comment ?? '',
     };
