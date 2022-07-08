@@ -5,7 +5,7 @@ import { VersionedAnnotationStore } from './VersionedAnnotationStore';
 export const migrateAnnotationStoreToCurrentVersion = function <OldAnnotationStore extends VersionedAnnotationStore>(
     oldAnnotationStore: OldAnnotationStore,
 ): AnnotationStoreV2 {
-    switch (oldAnnotationStore.schemaVersion) {
+    switch (oldAnnotationStore.schemaVersion ?? 1) {
         case 1:
             return migrateAnnotationStoreV1ToV2(oldAnnotationStore as unknown as AnnotationStoreV1);
         case 2:
