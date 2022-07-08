@@ -335,6 +335,13 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
     const authorText = createAuthorText(authors);
     const username = useAppSelector(selectUsername);
 
+    let rightIcon;
+    if (authors.includes(username)) {
+        rightIcon = <FaUser />
+    } else if (authors.length === 1 && authors[0] === '$autogen$') {
+        rightIcon = <FaRobot />
+    }
+
     const isReportable = reportable && authors.length === 1 && authors.includes('$autogen$');
 
     // Event Handler
@@ -377,10 +384,7 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
             <Tooltip label={`${authorText}Click to change.`}>
                 <Button
                     leftIcon={<FaWrench />}
-                    rightIcon={
-                        (authors.includes(username) && <FaUser />) ||
-                        (authors.length === 1 && authors[0] === '$autogen$' && <FaRobot />)
-                    }
+                    rightIcon={rightIcon}
                     flexGrow={1}
                     borderLeft="none"
                     justifyContent="flex-start"
