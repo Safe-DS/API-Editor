@@ -224,12 +224,12 @@ export const EnumForm: React.FC<EnumFormProps> = function ({target}) {
 };
 
 const formatEnumName = (stringValue: string) => {
-    const segments = stringValue.split(/[_\-.]/);
-    const formattedString = segments.map(segment => segment.replaceAll(/\W/g, "").toUpperCase())
+    const segments = stringValue.split(/[_\-.]/u);
+    const formattedString = segments.map(segment => segment.replaceAll(/\W/ug, "").toUpperCase())
         .filter(segment => segment.length > 0)
         .join("_");
 
-    if (formattedString.length === 0 || formattedString.charAt(0).match(/\d/)) {
+    if (formattedString.length === 0 || formattedString.charAt(0).match(/\d/u)) {
         return "_" + formattedString;
     }
     return formattedString;
