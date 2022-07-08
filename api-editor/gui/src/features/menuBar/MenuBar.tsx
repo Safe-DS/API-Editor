@@ -596,8 +596,7 @@ const getNextElementPath = function (
     let wrappedAround = startIndex !== null && currentIndex !== null && currentIndex <= startIndex;
     while (current !== null && current !== start) {
         if (
-            (current.constructor === start.constructor && filter.shouldKeepDeclaration(current, annotations, usages)) ||
-            (!onlySameType && filter.shouldKeepDeclaration(current, annotations, usages))
+            (current.constructor === start.constructor || !onlySameType) && filter.shouldKeepDeclaration(current, annotations, usages)
         ) {
             return { id: current.id, wrappedAround };
         }
