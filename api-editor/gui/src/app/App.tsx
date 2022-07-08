@@ -194,13 +194,7 @@ export const App: React.FC = function () {
                     </Box>
                 </GridItem>
                 {showStatistics && (
-                    <GridItem
-                        gridArea="rightPane"
-                        overflow="auto"
-                        w="20vw"
-                        borderLeft={1}
-                        layerStyle="subtleBorder"
-                    >
+                    <GridItem gridArea="rightPane" overflow="auto" w="20vw" borderLeft={1} layerStyle="subtleBorder">
                         <Box padding={4}>
                             <StatisticsView />
                         </Box>
