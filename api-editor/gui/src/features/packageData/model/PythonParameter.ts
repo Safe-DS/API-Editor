@@ -102,7 +102,7 @@ export class PythonParameter extends PythonDeclaration {
             this.isPublic,
             this.typeInDocs,
             this.description,
-            undefined,
+            this.type,
             this.defaultValueInDocs,
         );
         result.containingFunction = this.containingFunction;
