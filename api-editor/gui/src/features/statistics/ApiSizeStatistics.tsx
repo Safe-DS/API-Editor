@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Flex, Heading, VStack } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { useAppSelector } from '../../app/hooks';
 import { selectRawPythonPackage } from '../packageData/apiSlice';
 import { selectUsages } from '../usages/usageSlice';
@@ -26,24 +26,19 @@ export const ApiSizeStatistics = function () {
     const parameterBarChart = <CustomBarChart labels={parameterLabels} values={parameterValues} title={'Parameters'} />;
 
     return (
-        <VStack spacing={2}>
-            <Heading as="h3" size="md">
-                API Size
-            </Heading>
-            <Box width="100%">
-                <Flex wrap="wrap">
-                    <Box minWidth="350px" flex="1 1 33%">
-                        {classBarChart}
-                    </Box>
-                    <Box minWidth="350px" flex="1 1 33%">
-                        {functionBarChart}
-                    </Box>
-                    <Box minWidth="350px" flex="1 33%">
-                        {parameterBarChart}
-                    </Box>
-                </Flex>
-            </Box>
-        </VStack>
+        <Box width="100%">
+            <Flex wrap="wrap">
+                <Box minWidth="350px" flex="1 1 33%">
+                    {classBarChart}
+                </Box>
+                <Box minWidth="350px" flex="1 1 33%">
+                    {functionBarChart}
+                </Box>
+                <Box minWidth="350px" flex="1 33%">
+                    {parameterBarChart}
+                </Box>
+            </Flex>
+        </Box>
     );
 };
 
