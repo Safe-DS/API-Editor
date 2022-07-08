@@ -55,9 +55,11 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({ pythonPar
                                 </ChakraText>
                             ) : (
                                 <HStack>
-                                    <ChakraText paddingLeft={4}>Documentation: </ChakraText>
-                                    <ChakraText color="gray.500">
-                                        The documentation does not specify a default value.
+                                    <ChakraText paddingLeft={4}>
+                                        Documentation:{' '}
+                                        <Box as="span" color="gray.500">
+                                            The documentation does not specify a default value.
+                                        </Box>
                                     </ChakraText>
                                 </HStack>
                             )}
