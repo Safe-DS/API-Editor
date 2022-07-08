@@ -69,6 +69,8 @@ export const FunctionView: React.FC<FunctionViewProps> = function ({ pythonFunct
                 </Box>
             </Stack>
 
+            <NonParameterUsageCounts declaration={pythonFunction} />
+
             <Stack spacing={4}>
                 <Heading as="h4" size="md">
                     Sorted & Filtered Parameters
@@ -83,8 +85,6 @@ export const FunctionView: React.FC<FunctionViewProps> = function ({ pythonFunct
                     )}
                 </Stack>
             </Stack>
-
-            <NonParameterUsageCounts declaration={pythonFunction} />
         </Stack>
     );
 };
