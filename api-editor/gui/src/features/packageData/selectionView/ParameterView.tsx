@@ -51,6 +51,15 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({pythonPara
             {parameterUsages && (
                 <Stack spacing={4}>
                     <Heading as="h4" size="md">
+                        Usages
+                    </Heading>
+                    <UsageSum parameterUsages={parameterUsages} />
+                </Stack>
+            )}
+
+            {parameterUsages && (
+                <Stack spacing={4}>
+                    <Heading as="h4" size="md">
                         Most Common Values
                     </Heading>
                     <Box w="30vw" maxWidth="640px">
@@ -142,4 +151,14 @@ const isStringifiedLiteral = function (value: string): boolean {
         return true;
     }
     return !Number.isNaN(Number.parseFloat(value));
+};
+
+const UsageSum: React.FC<CustomBarChartProps> = function ({ parameterUsages }) {
+    let usage = 0;
+
+    parameterUsages.forEach((value) => {
+        usage += value;
+    });
+
+    return <ChakraText paddingLeft={4}>{usage}</ChakraText>;
 };

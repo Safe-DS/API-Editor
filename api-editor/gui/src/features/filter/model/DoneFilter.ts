@@ -46,13 +46,17 @@ export class DoneFilter extends AbstractPythonFilter {
 
     private getAnnotationsForTarget(target: string, annotationStore: AnnotationStore): Annotation[] {
         return Object.entries(annotationStore).flatMap(([key, value]) => {
+            if (typeof value !== 'object') {
+                return [];
+            }
+
             if (!(target in value)) {
                 return [];
             }
 
-            if (key === 'calledAfters' || key === 'groups') {
+            if (key === 'calledAfterAnnotations' || key === 'groupAnnotations') {
                 return Object.values(value[target]);
-            } else if (key === 'completes') {
+            } else if (key === 'completeAnnotations') {
                 return [];
             } else {
                 return [value[target]];

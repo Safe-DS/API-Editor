@@ -84,16 +84,16 @@ const InvalidFilterToken: React.FC<InvalidFilterTokenProps> = function ({ token 
     return (
         <ListItem>
             <ChakraText>
-                <ChakraText display="inline" fontWeight="bold">
+                <Box as="span" fontWeight="bold">
                     {token}
-                </ChakraText>
+                </Box>
                 {closestDistance <= 3 && (
                     <>
                         {'. '}
                         Did you mean{' '}
-                        <ChakraText display="inline" textDecoration="underline" cursor="pointer" onClick={onClick}>
+                        <Box as="span" textDecoration="underline" cursor="pointer" onClick={onClick}>
                             {closestAlternative}
-                        </ChakraText>
+                        </Box>
                         ?
                     </>
                 )}

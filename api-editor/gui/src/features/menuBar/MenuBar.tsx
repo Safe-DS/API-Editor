@@ -64,6 +64,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { SelectionBreadcrumbs } from './SelectionBreadcrumbs';
 import { HelpMenu } from './HelpMenu';
 import { AnnotationStore } from '../annotations/versioning/AnnotationStoreV2';
+import { EXPECTED_ANNOTATION_STORE_SCHEMA_VERSION } from '../annotations/versioning/expectedVersions';
 
 interface MenuBarProps {
     displayInferErrors: (errors: string[]) => void;
@@ -93,9 +94,21 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
 
     const exportAnnotations = () => {
         const a = document.createElement('a');
-        const file = new Blob([JSON.stringify(annotationStore, null, 4)], {
-            type: 'application/json',
-        });
+        const file = new Blob(
+            [
+                JSON.stringify(
+                    {
+                        ...annotationStore,
+                        schemaVersion: EXPECTED_ANNOTATION_STORE_SCHEMA_VERSION,
+                    },
+                    null,
+                    4,
+                ),
+            ],
+            {
+                type: 'application/json',
+            },
+        );
         a.href = URL.createObjectURL(file);
         a.download = 'annotations.json';
         a.click();
