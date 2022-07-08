@@ -48,7 +48,6 @@ export const ParameterView: React.FC<ParameterViewProps> = function ({ pythonPar
                         <ChakraText paddingLeft={4}>Code: {pythonParameter.defaultValue}</ChakraText>
                         <ChakraText paddingLeft={4}>Documentation: {pythonParameter.defaultValueInDocs} </ChakraText>
                     </Stack>
-
                 </Stack>
             )}
 
