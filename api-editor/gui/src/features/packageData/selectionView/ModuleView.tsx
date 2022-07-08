@@ -10,7 +10,7 @@ import { PythonModule } from '../model/PythonModule';
 import { CodeComponent } from 'react-markdown/lib/ast-to-react';
 import { CompleteButton } from '../../annotations/CompleteButton';
 import { DataCopyButtons } from '../../annotations/DataCopyButtons';
-import {NonParameterUsageCounts} from "./UsageCounts";
+import { NonParameterUsageCounts } from './UsageCounts';
 
 // See https://github.com/remarkjs/react-markdown#use-custom-components-syntax-highlight
 const CustomCode: CodeComponent = function ({

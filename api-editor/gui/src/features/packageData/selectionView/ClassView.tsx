@@ -8,7 +8,7 @@ import { SectionListViewItem } from './SectionListViewItem';
 import { CompleteButton } from '../../annotations/CompleteButton';
 import { MissingAnnotationButton } from '../../annotations/MissingAnnotationButton';
 import { DataCopyButtons } from '../../annotations/DataCopyButtons';
-import {NonParameterUsageCounts} from "./UsageCounts";
+import { NonParameterUsageCounts } from './UsageCounts';
 
 interface ClassViewProps {
     pythonClass: PythonClass;

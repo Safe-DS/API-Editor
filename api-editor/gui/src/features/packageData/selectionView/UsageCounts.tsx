@@ -3,9 +3,9 @@ import React from 'react';
 import { PythonParameter } from '../model/PythonParameter';
 import { useAppSelector } from '../../../app/hooks';
 import { selectUsages } from '../../usages/usageSlice';
-import {PythonModule} from "../model/PythonModule";
-import {PythonClass} from "../model/PythonClass";
-import {PythonFunction} from "../model/PythonFunction";
+import { PythonModule } from '../model/PythonModule';
+import { PythonClass } from '../model/PythonClass';
+import { PythonFunction } from '../model/PythonFunction';
 
 interface NonParameterUsageCountsProps {
     declaration: PythonModule | PythonClass | PythonFunction;
@@ -22,9 +22,7 @@ export const NonParameterUsageCounts: React.FC<NonParameterUsageCountsProps> = f
             </Heading>
 
             <Stack>
-                <ChakraText paddingLeft={4}>
-                    {nUsages}
-                </ChakraText>
+                <ChakraText paddingLeft={4}>{nUsages}</ChakraText>
             </Stack>
         </Stack>
     );
