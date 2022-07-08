@@ -61,7 +61,6 @@ export class UsageCountStore {
         api?: PythonPackage,
     ) {
         if (api) {
-            this.addUnusedParameters(api);
             this.addImplicitUsagesOfDefaultValues(api);
             this.computeModuleUsages(api);
         }
@@ -128,33 +127,9 @@ export class UsageCountStore {
      * its default value, that usage of a value is not part of the UsageStore, so  we need to add it.
      *
      * @param api Description of the API
-     * @private
-     */
-    private addUnusedParameters(api: PythonPackage) {
-        for (const parameter of api.getParameters()) {
-            const parameterUsage = this.parameterUsages.get(parameter.id);
-            if (parameterUsage) {
-                continue;
-            }
-
-            this.parameterUsages.set(parameter.id, 0);
-        }
-    }
-
-    /**
-     * Adds the implicit usages of a parameters default value. When a function is called and a parameter is used with
-     * its default value, that usage of a value is not part of the UsageStore, so  we need to add it.
-     *
-     * @param api Description of the API
-     * @private
      */
     private addImplicitUsagesOfDefaultValues(api: PythonPackage) {
-        for (const [parameterId, parameterUsageCount] of this.parameterUsages.entries()) {
-            const parameter = api.getDeclarationById(parameterId);
-            if (!(parameter instanceof PythonParameter)) {
-                continue;
-            }
-
+        for (const parameter of api.getParameters()) {
             const defaultValue = parameter.defaultValue;
             if (defaultValue === undefined || defaultValue === null) {
                 // defaultValue could be an empty string
@@ -166,21 +141,22 @@ export class UsageCountStore {
                 continue;
             }
 
-            const functionUsageCount = this.functionUsages.get(containingFunction.id) ?? 0;
+            const parameterUsageCount = this.getUsageCount(parameter);
+            const functionUsageCount = this.getUsageCount(containingFunction);
             const nImplicitUsages = functionUsageCount - parameterUsageCount;
             if (nImplicitUsages === 0) {
                 continue;
             }
 
-            const nExplicitUsage = this.valueUsages.get(parameterId)?.get(defaultValue) ?? 0;
+            const nExplicitUsages = this.valueUsages.get(parameter.id)?.get(defaultValue) ?? 0;
 
-            if (!this.valueUsages.has(parameterId)) {
-                this.valueUsages.set(parameterId, new Map());
+            if (!this.valueUsages.has(parameter.id)) {
+                this.valueUsages.set(parameter.id, new Map());
             }
-            if (!this.valueUsages.get(parameterId)!.has(defaultValue)) {
-                this.valueUsages.get(parameterId)!.set(defaultValue, 0);
+            if (!this.valueUsages.get(parameter.id)!.has(defaultValue)) {
+                this.valueUsages.get(parameter.id)!.set(defaultValue, 0);
             }
-            this.valueUsages.get(parameterId)!.set(defaultValue, nImplicitUsages + nExplicitUsage);
+            this.valueUsages.get(parameter.id)!.set(defaultValue, nImplicitUsages + nExplicitUsages);
         }
     }
 
