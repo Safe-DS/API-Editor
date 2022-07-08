@@ -99,7 +99,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                 JSON.stringify(
                     {
                         ...annotationStore,
-                        schemaVersion: EXPECTED_ANNOTATION_STORE_SCHEMA_VERSION
+                        schemaVersion: EXPECTED_ANNOTATION_STORE_SCHEMA_VERSION,
                     },
                     null,
                     4,
