@@ -17,7 +17,16 @@ import {
     useToast,
 } from '@chakra-ui/react';
 import React from 'react';
-import { FaAngleDoubleLeft, FaAngleDoubleRight, FaArrowLeft, FaArrowRight, FaArrowUp, FaChevronDown, FaRedo, FaUndo } from 'react-icons/fa';
+import {
+    FaAngleDoubleLeft,
+    FaAngleDoubleRight,
+    FaArrowLeft,
+    FaArrowRight,
+    FaArrowUp,
+    FaChevronDown,
+    FaRedo,
+    FaUndo,
+} from 'react-icons/fa';
 import { useAppDispatch, useAppSelector, useKeyboardShortcut } from '../../app/hooks';
 import {
     redo,
@@ -135,10 +144,10 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
     };
 
     const goToPreviousMatchSameType = () => {
-        goToPreviousMatch(true)
+        goToPreviousMatch(true);
     };
     const goToPreviousMatchJumper = () => {
-        goToPreviousMatch(false)
+        goToPreviousMatch(false);
     };
 
     const goToPreviousMatch = (onlySameType: boolean) => {
@@ -152,7 +161,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
             pythonFilter,
             annotations,
             usages,
-            onlySameType
+            onlySameType,
         );
         if (navStr !== null) {
             if (wrappedAround) {
@@ -175,10 +184,10 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
     };
 
     const goToNextMatchSameType = () => {
-        goToNextMatch(true)
+        goToNextMatch(true);
     };
     const goToNextMatchJumper = () => {
-        goToNextMatch(false)
+        goToNextMatch(false);
     };
     const goToNextMatch = (onlySameType: boolean) => {
         if (!declaration || currentUserAction.type !== NoUserAction.type) {
@@ -191,7 +200,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
             pythonFilter,
             annotations,
             usages,
-            onlySameType
+            onlySameType,
         );
         if (navStr !== null) {
             if (wrappedAround) {
@@ -550,15 +559,17 @@ const getPreviousElementPath = function (
     filter: AbstractPythonFilter,
     annotations: AnnotationStore,
     usages: UsageCountStore,
-    onlySameType: boolean
+    onlySameType: boolean,
 ): { id: string; wrappedAround: boolean } {
     const startIndex = getIndex(declarations, start);
     let currentIndex = getPreviousIndex(declarations, startIndex);
     let current = getElementAtIndex(declarations, currentIndex);
     let wrappedAround = startIndex !== null && currentIndex !== null && currentIndex >= startIndex;
     while (current !== null && current !== start) {
-        if ((current.constructor === start.constructor && filter.shouldKeepDeclaration(current, annotations, usages)) ||
-            (!onlySameType && filter.shouldKeepDeclaration(current, annotations, usages))) {
+        if (
+            (current.constructor === start.constructor && filter.shouldKeepDeclaration(current, annotations, usages)) ||
+            (!onlySameType && filter.shouldKeepDeclaration(current, annotations, usages))
+        ) {
             return { id: current.id, wrappedAround };
         }
 
@@ -578,15 +589,17 @@ const getNextElementPath = function (
     filter: AbstractPythonFilter,
     annotations: AnnotationStore,
     usages: UsageCountStore,
-    onlySameType: boolean
+    onlySameType: boolean,
 ): { id: string; wrappedAround: boolean } {
     const startIndex = getIndex(declarations, start);
     let currentIndex = getNextIndex(declarations, startIndex);
     let current = getElementAtIndex(declarations, currentIndex);
     let wrappedAround = startIndex !== null && currentIndex !== null && currentIndex <= startIndex;
     while (current !== null && current !== start) {
-        if ((current.constructor === start.constructor && filter.shouldKeepDeclaration(current, annotations, usages)) ||
-            (!onlySameType && filter.shouldKeepDeclaration(current, annotations, usages))) {
+        if (
+            (current.constructor === start.constructor && filter.shouldKeepDeclaration(current, annotations, usages)) ||
+            (!onlySameType && filter.shouldKeepDeclaration(current, annotations, usages))
+        ) {
             return { id: current.id, wrappedAround };
         }
 
