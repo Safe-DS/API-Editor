@@ -16,20 +16,22 @@ import { closest, distance } from 'fastest-levenshtein';
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectFilterString, setFilterString } from '../ui/uiSlice';
-import { getFixedFilterNames, isValidFilterToken } from './model/filterFactory';
+import { getFixedFilterNames } from './model/filterFactory';
 
 interface FilterInputProps {
     localFilterString: string;
     setLocalFilterString: (newLocalFilterString: string) => void;
+    invalidTokens: string[];
 }
 
-export const FilterInput: React.FC<FilterInputProps> = function ({localFilterString, setLocalFilterString}) {
+export const FilterInput: React.FC<FilterInputProps> = function ({
+    localFilterString,
+    setLocalFilterString,
+    invalidTokens,
+}) {
     const dispatch = useAppDispatch();
-
-    const invalidTokens = localFilterString.split(' ').filter((token) => token !== '' && !isValidFilterToken(token));
-    const filterIsValid = invalidTokens.length === 0;
-
     const [timeoutId, setTimeoutId] = React.useState<NodeJS.Timeout>();
+    const filterIsValid = invalidTokens.length === 0;
 
     const onChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         setLocalFilterString(event.target.value);

@@ -3,19 +3,19 @@ import { Box, Button, Icon, Menu, MenuButton, MenuGroup, MenuItem, MenuList } fr
 import { FaChevronUp } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { removeFilter, selectFilterList, setFilterString, toggleAddFilterDialog } from '../ui/uiSlice';
-import { isValidFilterToken } from './model/filterFactory';
 import { isEmptyList } from '../../common/util/listOperations';
 
 interface FilterPersistenceProps {
     localFilterString: string;
+    invalidTokens: string[];
 }
 
-export const FilterPersistence: React.FC<FilterPersistenceProps> = function ({localFilterString}) {
+export const FilterPersistence: React.FC<FilterPersistenceProps> = function ({localFilterString, invalidTokens}) {
     const dispatch = useAppDispatch();
 
-    const savedFilters = useAppSelector(selectFilterList);
+    const filterIsValid = invalidTokens.length === 0;
 
-    const filterIsValid = localFilterString.split(' ').every((token) => token === '' || isValidFilterToken(token));
+    const savedFilters = useAppSelector(selectFilterList);
     const alreadyIncluded = savedFilters.some((it) => {
         return it.filter === localFilterString;
     });
