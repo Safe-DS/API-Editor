@@ -616,12 +616,6 @@ const annotationsSlice = createSlice({
             updateQueue(state);
         },
         upsertValueAnnotation(state, action: PayloadAction<ValueAnnotation>) {
-            updateCreationOrChangedCount(
-                state,
-                state.annotations.valueAnnotations[action.payload.target],
-                action.payload,
-            );
-
             if (action.payload.variant === 'required' || action.payload.variant === 'omitted') {
                 // @ts-ignore
                 delete action.payload.defaultValue;
@@ -634,6 +628,12 @@ const annotationsSlice = createSlice({
                 action.payload.defaultValue = parseFloat(action.payload.defaultValue);
             }
 
+            updateCreationOrChangedCount(
+                state,
+                state.annotations.valueAnnotations[action.payload.target],
+                action.payload,
+            );
+
             state.annotations.valueAnnotations[action.payload.target] = withAuthorAndReviewers(
                 state.annotations.valueAnnotations[action.payload.target],
                 action.payload,
@@ -644,8 +644,6 @@ const annotationsSlice = createSlice({
         },
         upsertValueAnnotations(state, action: PayloadAction<ValueAnnotation[]>) {
             action.payload.forEach((annotation) => {
-                updateCreationOrChangedCount(state, state.annotations.valueAnnotations[annotation.target], annotation);
-
                 if (annotation.variant === 'required' || annotation.variant === 'omitted') {
                     // @ts-ignore
                     delete annotation.defaultValue;
@@ -657,6 +655,8 @@ const annotationsSlice = createSlice({
                     // @ts-ignore
                     annotation.defaultValue = parseFloat(annotation.defaultValue);
                 }
+
+                updateCreationOrChangedCount(state, state.annotations.valueAnnotations[annotation.target], annotation);
 
                 state.annotations.valueAnnotations[annotation.target] = withAuthorAndReviewers(
                     state.annotations.valueAnnotations[annotation.target],
