@@ -23,6 +23,7 @@ import {
     ValueAnnotation,
 } from './versioning/AnnotationStoreV2';
 import { migrateAnnotationStoreToCurrentVersion } from './versioning/migrations';
+import { isEqual } from 'lodash/fp';
 
 export const EXPECTED_ANNOTATION_SLICE_SCHEMA_VERSION = 1;
 
@@ -585,6 +586,18 @@ const annotationsSlice = createSlice({
         upsertValueAnnotation(state, action: PayloadAction<ValueAnnotation>) {
             updateCreationOrChangedCount(state, state.annotations.valueAnnotations[action.payload.target]);
 
+            if (action.payload.variant === 'required' || action.payload.variant === 'omitted') {
+                // @ts-ignore
+                delete action.payload.defaultValue;
+                // @ts-ignore
+                delete action.payload.defaultValueType;
+            }
+
+            if (action.payload.defaultValueType === 'number' && typeof action.payload.defaultValue === 'string') {
+                // @ts-ignore
+                action.payload.defaultValue = parseFloat(action.payload.defaultValue);
+            }
+
             state.annotations.valueAnnotations[action.payload.target] = withAuthorAndReviewers(
                 state.annotations.valueAnnotations[action.payload.target],
                 action.payload,
@@ -596,6 +609,18 @@ const annotationsSlice = createSlice({
         upsertValueAnnotations(state, action: PayloadAction<ValueAnnotation[]>) {
             action.payload.forEach((annotation) => {
                 updateCreationOrChangedCount(state, state.annotations.valueAnnotations[annotation.target]);
+
+                if (annotation.variant === 'required' || annotation.variant === 'omitted') {
+                    // @ts-ignore
+                    delete annotation.defaultValue;
+                    // @ts-ignore
+                    delete annotation.defaultValueType;
+                }
+
+                if (annotation.defaultValueType === 'number' && typeof annotation.defaultValue === 'string') {
+                    // @ts-ignore
+                    annotation.defaultValue = parseFloat(annotation.defaultValue);
+                }
 
                 state.annotations.valueAnnotations[annotation.target] = withAuthorAndReviewers(
                     state.annotations.valueAnnotations[annotation.target],
@@ -678,12 +703,36 @@ const withAuthorAndReviewers = function <T extends Annotation>(
     let authors = oldAnnotation?.authors ?? [];
     const reviewers = oldAnnotation?.reviewers ?? [];
 
-    authors = [...authors.filter((it) => it !== author), author];
+    if (shouldUpdateAuthor(oldAnnotation, newAnnotation)) {
+        authors = [...authors.filter((it) => it !== author), author];
+    }
 
     return {
         ...newAnnotation,
         authors,
         reviewers,
+    };
+};
+
+const shouldUpdateAuthor = function <T extends Annotation>(oldAnnotation: T | void, newAnnotation: T): boolean {
+    // A new annotation was created
+    if (!oldAnnotation) {
+        return true;
+    }
+
+    // Unify the metadata, so we only compare the actual annotation data
+    const oldAnnotationWithoutMetadata = annotationWithoutMetadata(oldAnnotation);
+    const newAnnotationWithoutMetadata = annotationWithoutMetadata(newAnnotation);
+    return !isEqual(oldAnnotationWithoutMetadata, newAnnotationWithoutMetadata);
+};
+
+const annotationWithoutMetadata = function <T extends Annotation>(annotation: T): T {
+    return {
+        ...annotation,
+        authors: undefined,
+        reviewers: undefined,
+        reviewResult: undefined,
+        comment: undefined,
     };
 };
 
