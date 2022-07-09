@@ -139,6 +139,15 @@ export const FilterHelpButton = function () {
                             </ListItem>
                             <ListItem>
                                 <ChakraText>
+                                    <strong>is:removed</strong>
+                                </ChakraText>
+                                <ChakraText>
+                                    Displays only elements that will be removed. These are either annotated with @remove
+                                    directly or have an ancestors with this annotation.
+                                </ChakraText>
+                            </ListItem>
+                            <ListItem>
+                                <ChakraText>
                                     <strong>usages:[operator][expected]</strong>
                                 </ChakraText>
                                 <ChakraText>
