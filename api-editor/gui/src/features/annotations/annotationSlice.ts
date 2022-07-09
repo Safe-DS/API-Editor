@@ -745,7 +745,7 @@ const withAuthorAndReviewers = function <T extends Annotation>(
     let authors = oldAnnotation?.authors ?? [];
     const reviewers = oldAnnotation?.reviewers ?? [];
 
-    if (annotationWasChanged(oldAnnotation, newAnnotation)) {
+    if (!oldAnnotation || annotationWasChanged(oldAnnotation, newAnnotation)) {
         authors = [...authors.filter((it) => it !== author), author];
     }
 
@@ -756,15 +756,12 @@ const withAuthorAndReviewers = function <T extends Annotation>(
     };
 };
 
-const annotationWasChanged = function <T extends Annotation>(oldAnnotation: T | void, newAnnotation: T): boolean {
-    // A new annotation was created
-    if (!oldAnnotation) {
-        return true;
-    }
+const annotationWasChanged = function <T extends Annotation>(oldAnnotation: T, newAnnotation: T): boolean {
 
     // Unify the metadata, so we only compare the actual annotation data
     const oldAnnotationWithoutMetadata = annotationWithoutMetadata(oldAnnotation);
     const newAnnotationWithoutMetadata = annotationWithoutMetadata(newAnnotation);
+
     return !isEqual(oldAnnotationWithoutMetadata, newAnnotationWithoutMetadata);
 };
 
