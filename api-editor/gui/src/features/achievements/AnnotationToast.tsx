@@ -5,14 +5,16 @@ import {
     selectNumberOfAnnotationsChanged,
     selectNumberOfAnnotationsCreated,
     selectNumberOfAnnotationsDeleted,
-    selectNumberOfAnnotationsMarkedAsCorrect, selectNumberOfCommentsTouched,
+    selectNumberOfAnnotationsMarkedAsCorrect,
+    selectNumberOfCommentsTouched,
     selectNumberOfElementsMarkedAsComplete,
 } from '../annotations/annotationSlice';
 import {
     Achievement,
     auditorAchievement,
     authorAchievement,
-    cleanerAchievement, commentatorAchievement,
+    cleanerAchievement,
+    commentatorAchievement,
     completionistAchievement,
     editorAchievement,
 } from './achievements';
