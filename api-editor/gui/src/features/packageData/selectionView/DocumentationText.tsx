@@ -37,6 +37,7 @@ import { PythonModule } from '../model/PythonModule';
 interface DocumentationTextProps {
     declaration: PythonDeclaration;
     inputText: string;
+    alwaysExpanded?: boolean;
 }
 
 type ParagraphComponent = FunctionComponent<
@@ -71,7 +72,11 @@ const CustomText: ParagraphComponent = function ({ className, children }) {
 };
 
 const CustomUnorderedList: UnorderedListComponent = function ({ className, children }) {
-    return <UnorderedList className={className}>{children}</UnorderedList>;
+    return (
+        <UnorderedList className={className} pl={2}>
+            {children}
+        </UnorderedList>
+    );
 };
 
 const components = {
@@ -81,7 +86,11 @@ const components = {
     ul: CustomUnorderedList,
 };
 
-export const DocumentationText: React.FC<DocumentationTextProps> = function ({ declaration, inputText = '' }) {
+export const DocumentationText: React.FC<DocumentationTextProps> = function ({
+    declaration,
+    inputText = '',
+    alwaysExpanded = false,
+}) {
     const expandDocumentationByDefault = useAppSelector(selectExpandDocumentationByDefault);
 
     const preprocessedText = inputText
@@ -113,7 +122,12 @@ export const DocumentationText: React.FC<DocumentationTextProps> = function ({ d
             resolveAbsoluteLink(declaration, qualifiedName, 2),
         );
 
-    const shortenedText = preprocessedText.split('\n\n')[0];
+    let shortenedText;
+    if (alwaysExpanded) {
+        shortenedText = preprocessedText;
+    } else {
+        shortenedText = preprocessedText.split('\n\n')[0];
+    }
     const hasMultipleLines = shortenedText !== preprocessedText;
     const [readMore, setReadMore] = useState(expandDocumentationByDefault);
 
