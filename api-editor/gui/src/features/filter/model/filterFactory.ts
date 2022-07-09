@@ -16,7 +16,7 @@ import { DoneFilter } from './DoneFilter';
 import { PythonParameterAssignment } from '../../packageData/model/PythonParameter';
 import { QualifiedNameStringFilter } from './QualifiedNameStringFilter';
 import { QualifiedNameRegexFilter } from './QualifiedNameRegexFilter';
-import {RemovedFilter} from "./RemovedFilter";
+import { RemovedFilter } from './RemovedFilter';
 
 /**
  * Creates a filter from the given string. This method handles conjunctions, negations, and non-negated tokens.
