@@ -65,6 +65,14 @@ export const completionistAchievement = new Achievement('Completionist', [
     new AchievementLevel('Expert', 500, '4 Stars Completionist'),
     new AchievementLevel('Master', 1000, '5 Stars Completionist'),
 ]);
+export const commentatorAchievement = new Achievement('Commentator', [
+    new AchievementLevel('Rookie', 1, '0 Stars Commentator'),
+    new AchievementLevel('Beginner', 10, '1 Star Commentator'),
+    new AchievementLevel('Senior', 100, '2 Stars Commentator'),
+    new AchievementLevel('Pro', 250, '3 Stars Commentator'),
+    new AchievementLevel('Expert', 500, '4 Stars Commentator'),
+    new AchievementLevel('Master', 1000, '5 Stars Commentator'),
+]);
 export const editorAchievement = new Achievement('Editor', [
     new AchievementLevel('Rookie', 1, '0 Stars Editor'),
     new AchievementLevel('Beginner', 10, '1 Star Editor'),

@@ -6,6 +6,7 @@ import {
     selectNumberOfAnnotationsCreated,
     selectNumberOfAnnotationsDeleted,
     selectNumberOfAnnotationsMarkedAsCorrect,
+    selectNumberOfCommentsTouched,
     selectNumberOfElementsMarkedAsComplete,
 } from '../annotations/annotationSlice';
 import {
@@ -13,6 +14,7 @@ import {
     auditorAchievement,
     authorAchievement,
     cleanerAchievement,
+    commentatorAchievement,
     completionistAchievement,
     editorAchievement,
 } from './achievements';
@@ -23,6 +25,7 @@ export const useAnnotationToasts = () => {
     useAnnotationToast(authorAchievement, useAppSelector(selectNumberOfAnnotationsCreated));
     useAnnotationToast(cleanerAchievement, useAppSelector(selectNumberOfAnnotationsDeleted));
     useAnnotationToast(completionistAchievement, useAppSelector(selectNumberOfElementsMarkedAsComplete));
+    useAnnotationToast(commentatorAchievement, useAppSelector(selectNumberOfCommentsTouched));
     useAnnotationToast(editorAchievement, useAppSelector(selectNumberOfAnnotationsChanged));
 };
 
