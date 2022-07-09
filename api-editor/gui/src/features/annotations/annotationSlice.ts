@@ -693,7 +693,7 @@ const withToggledReviewer = function <T extends Annotation>(
     reviewer: string,
     reviewResult: ReviewResult,
 ): T {
-    if (oldAnnotation.reviewers?.includes(reviewer) ?? false) {
+    if ((oldAnnotation.reviewers?.length ?? 0) > 0 || oldAnnotation.reviewResult) {
         return {
             ...oldAnnotation,
             reviewers: [],
