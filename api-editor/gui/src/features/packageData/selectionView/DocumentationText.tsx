@@ -72,7 +72,11 @@ const CustomText: ParagraphComponent = function ({ className, children }) {
 };
 
 const CustomUnorderedList: UnorderedListComponent = function ({ className, children }) {
-    return <UnorderedList className={className} pl={2}>{children}</UnorderedList>;
+    return (
+        <UnorderedList className={className} pl={2}>
+            {children}
+        </UnorderedList>
+    );
 };
 
 const components = {
