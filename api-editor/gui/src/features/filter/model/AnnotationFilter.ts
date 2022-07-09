@@ -54,6 +54,7 @@ export class AnnotationFilter extends AbstractPythonFilter {
                     // Deliberately not checking annotations.complete. It should be transparent it's an annotation.
                     hasSingleUseAnnotation(id, annotations.descriptionAnnotations) ||
                     hasSingleUseAnnotation(id, annotations.enumAnnotations) ||
+                    hasSingleUseAnnotation(id, annotations.expertAnnotations) ||
                     hasMultiUseAnnotation(id, annotations.groupAnnotations) ||
                     hasSingleUseAnnotation(id, annotations.moveAnnotations) ||
                     hasSingleUseAnnotation(id, annotations.pureAnnotations) ||
@@ -72,6 +73,8 @@ export class AnnotationFilter extends AbstractPythonFilter {
                 return hasSingleUseAnnotation(id, annotations.descriptionAnnotations);
             case AnnotationType.Enum:
                 return hasSingleUseAnnotation(id, annotations.enumAnnotations);
+            case AnnotationType.Expert:
+                return hasSingleUseAnnotation(id, annotations.expertAnnotations);
             case AnnotationType.Group:
                 return hasMultiUseAnnotation(id, annotations.groupAnnotations);
             case AnnotationType.Move:
@@ -112,6 +115,7 @@ export enum AnnotationType {
     Complete,
     Description,
     Enum,
+    Expert,
     Group,
     Move,
     Pure,

@@ -16,6 +16,7 @@ export const AnnotationStatistics = function () {
     const nCalledAfterAnnotations = countRepeatableAnnotation(annotations.calledAfterAnnotations, matchedIds);
     const nDescriptionAnnotations = countNonRepeatableAnnotation(annotations.descriptionAnnotations, matchedIds);
     const nEnumAnnotations = countNonRepeatableAnnotation(annotations.enumAnnotations, matchedIds);
+    const nExpertAnnotations = countNonRepeatableAnnotation(annotations.expertAnnotations, matchedIds);
     const nGroupAnnotations = countRepeatableAnnotation(annotations.groupAnnotations, matchedIds);
     const nMoveAnnotations = countNonRepeatableAnnotation(annotations.moveAnnotations, matchedIds);
     const nPureAnnotations = countNonRepeatableAnnotation(annotations.pureAnnotations, matchedIds);
@@ -28,6 +29,7 @@ export const AnnotationStatistics = function () {
         nCalledAfterAnnotations +
         nDescriptionAnnotations +
         nEnumAnnotations +
+        nExpertAnnotations +
         nGroupAnnotations +
         nMoveAnnotations +
         nPureAnnotations +
@@ -64,6 +66,7 @@ export const AnnotationStatistics = function () {
                 {'@Description: ' + nDescriptionAnnotations}
             </Button>
             <Button onClick={() => filterAction('annotation:@enum')}>{'@Enum: ' + nEnumAnnotations}</Button>
+            <Button onClick={() => filterAction('annotation:@expert')}>{'@Expert: ' + nExpertAnnotations}</Button>
             <Button onClick={() => filterAction('annotation:@group')}>{'@Group: ' + nGroupAnnotations}</Button>
             <Button onClick={() => filterAction('annotation:@move')}>{'@Move: ' + nMoveAnnotations}</Button>
             <Button onClick={() => filterAction('annotation:@pure')}>{'@Pure: ' + nPureAnnotations}</Button>

@@ -18,8 +18,10 @@ import {
     InferableConstantAnnotation,
     InferableDescriptionAnnotation,
     InferableEnumAnnotation,
+    InferableExpertAnnotation,
     InferableGroupAnnotation,
     InferableMoveAnnotation,
+    InferableOmittedAnnotation,
     InferableOptionalAnnotation,
     InferablePureAnnotation,
     InferableRemoveAnnotation,
@@ -143,6 +145,7 @@ export class AnnotatedPythonPackageBuilder {
         'Constant',
         'Description',
         'Enum',
+        'Expert',
         'Groups',
         'Move',
         'Omitted',
@@ -210,6 +213,12 @@ export class AnnotatedPythonPackageBuilder {
                     return new InferableEnumAnnotation(enumAnnotation);
                 }
                 break;
+            case 'Expert':
+                const expertAnnotation = this.annotationStore.expertAnnotations[target];
+                if (annotationShouldBeProcessed(expertAnnotation)) {
+                    return new InferableExpertAnnotation();
+                }
+                break;
             case 'Move':
                 const moveAnnotation = this.annotationStore.moveAnnotations[target];
                 if (annotationShouldBeProcessed(moveAnnotation)) {
@@ -219,7 +228,7 @@ export class AnnotatedPythonPackageBuilder {
             case 'Omitted':
                 const valueAnnotation2 = this.annotationStore.valueAnnotations[target];
                 if (annotationShouldBeProcessed(valueAnnotation2) && valueAnnotation2.variant === 'omitted') {
-                    return new InferableRequiredAnnotation();
+                    return new InferableOmittedAnnotation();
                 }
                 break;
             case 'Optional':

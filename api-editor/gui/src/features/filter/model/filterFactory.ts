@@ -86,6 +86,7 @@ const fixedFilters: { [name: string]: AbstractPythonFilter } = {
     'is:complete': new AnnotationFilter(AnnotationType.Complete), // Deliberate special case. It should be transparent to users it's an annotation.
     'annotation:@description': new AnnotationFilter(AnnotationType.Description),
     'annotation:@enum': new AnnotationFilter(AnnotationType.Enum),
+    'annotation:@expert': new AnnotationFilter(AnnotationType.Expert),
     'annotation:@group': new AnnotationFilter(AnnotationType.Group),
     'annotation:@move': new AnnotationFilter(AnnotationType.Move),
     'annotation:@pure': new AnnotationFilter(AnnotationType.Pure),

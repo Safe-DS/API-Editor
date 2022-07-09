@@ -7,6 +7,7 @@ import {
     removeCalledAfterAnnotation,
     removeDescriptionAnnotation,
     removeEnumAnnotation,
+    removeExpertAnnotation,
     removeGroupAnnotation,
     removeMoveAnnotation,
     removePureAnnotation,
@@ -18,6 +19,7 @@ import {
     reviewCalledAfterAnnotation,
     reviewDescriptionAnnotation,
     reviewEnumAnnotation,
+    reviewExpertAnnotation,
     reviewGroupAnnotation,
     reviewMoveAnnotation,
     reviewPureAnnotation,
@@ -29,6 +31,7 @@ import {
     selectCalledAfterAnnotations,
     selectDescriptionAnnotation,
     selectEnumAnnotation,
+    selectExpertAnnotation,
     selectGroupAnnotations,
     selectMoveAnnotation,
     selectPureAnnotation,
@@ -46,6 +49,7 @@ import {
     showCalledAfterAnnotationForm,
     showDescriptionAnnotationForm,
     showEnumAnnotationForm,
+    showExpertAnnotationForm,
     showGroupAnnotationForm,
     showMoveAnnotationForm,
     showPureAnnotationForm,
@@ -75,6 +79,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
     const calledAfterAnnotation = useAppSelector(selectCalledAfterAnnotations(target));
     const descriptionAnnotation = useAppSelector(selectDescriptionAnnotation(target));
     const enumAnnotation = useAppSelector(selectEnumAnnotation(target));
+    const expertAnnotation = useAppSelector(selectExpertAnnotation(target));
     const groupAnnotations = useAppSelector(selectGroupAnnotations(target));
     const moveAnnotation = useAppSelector(selectMoveAnnotation(target));
     const pureAnnotation = useAppSelector(selectPureAnnotation(target));
@@ -88,6 +93,7 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
         !calledAfterAnnotation &&
         !descriptionAnnotation &&
         !enumAnnotation &&
+        !expertAnnotation &&
         !groupAnnotations &&
         !moveAnnotation &&
         !pureAnnotation &&
@@ -158,6 +164,17 @@ export const AnnotationView: React.FC<AnnotationViewProps> = function ({ target 
                         dispatch(reviewEnumAnnotation({ target, reviewResult }));
                     }}
                     reportable
+                />
+            )}
+            {expertAnnotation && (
+                <AnnotationTag
+                    type="expert"
+                    annotation={expertAnnotation}
+                    onEdit={() => dispatch(showExpertAnnotationForm(target))}
+                    onDelete={() => dispatch(removeExpertAnnotation(target))}
+                    onReview={(reviewResult: ReviewResult) =>
+                        dispatch(reviewExpertAnnotation({ target, reviewResult }))
+                    }
                 />
             )}
             {Object.keys(groupAnnotations).map((groupName) => (

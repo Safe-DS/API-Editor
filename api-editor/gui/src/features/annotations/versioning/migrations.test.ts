@@ -57,6 +57,7 @@ const v2: AnnotationStoreV2 = {
     completeAnnotations: {},
     descriptionAnnotations: {},
     enumAnnotations: {},
+    expertAnnotations: {},
     groupAnnotations: {},
     moveAnnotations: {},
     pureAnnotations: {},

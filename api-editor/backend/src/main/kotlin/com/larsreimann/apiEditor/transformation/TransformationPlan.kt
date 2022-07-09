@@ -34,6 +34,7 @@ private fun PythonPackage.processAnnotations() {
     processMoveAnnotations()
     processBoundaryAnnotations()
     processValueAnnotations()
+    processExpertAnnotations()
     processPureAnnotations()
     processEnumAnnotations()
     processGroupAnnotations()

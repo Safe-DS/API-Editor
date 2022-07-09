@@ -839,6 +839,149 @@ describe('mergeEnumAnnotations', () => {
     });
 });
 
+// Pure ------------------------------------------------------------------------
+
+describe('mergeExpertAnnotations', () => {
+    test('should keep non-conflicting annotations', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            expertAnnotations: {
+                a: {
+                    target: 'a',
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            expertAnnotations: {
+                b: {
+                    target: 'b',
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            expertAnnotations: {
+                a: {
+                    target: 'a',
+                },
+                b: {
+                    target: 'b',
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+
+    test('should favor reviewed annotations in case of conflicts', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            expertAnnotations: {
+                a: {
+                    target: 'a',
+                    authors: ['me'],
+                    reviewers: [],
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            expertAnnotations: {
+                a: {
+                    target: 'a',
+                    authors: ['them'],
+                    reviewers: ['them'],
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            expertAnnotations: {
+                a: {
+                    target: 'a',
+                    authors: ['them'],
+                    reviewers: ['them'],
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+
+    test('should favor manually created annotations in case of conflicts', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            expertAnnotations: {
+                a: {
+                    target: 'a',
+                    authors: ['$autogen$'],
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            expertAnnotations: {
+                a: {
+                    target: 'a',
+                    authors: ['them'],
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            expertAnnotations: {
+                a: {
+                    target: 'a',
+                    authors: ['them'],
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+
+    test('should favor my annotations in case of conflicts', () => {
+        const mine: AnnotationStore = {
+            ...initialAnnotationStore,
+            expertAnnotations: {
+                a: {
+                    target: 'a',
+                    authors: ['me'],
+                },
+            },
+        };
+
+        const theirs: AnnotationStore = {
+            ...initialAnnotationStore,
+            expertAnnotations: {
+                a: {
+                    target: 'a',
+                    authors: ['them'],
+                },
+            },
+        };
+
+        const expected: AnnotationStore = {
+            ...initialAnnotationStore,
+            expertAnnotations: {
+                a: {
+                    target: 'a',
+                    authors: ['me'],
+                },
+            },
+        };
+
+        expect(mergeAnnotationStores(mine, theirs)).toEqual(expected);
+    });
+});
+
 // Group -----------------------------------------------------------------------
 
 describe('mergeGroupAnnotations', () => {

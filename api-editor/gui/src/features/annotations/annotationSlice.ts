@@ -12,6 +12,7 @@ import {
     CompleteAnnotation,
     DescriptionAnnotation,
     EnumAnnotation,
+    ExpertAnnotation,
     GroupAnnotation,
     GroupTarget,
     MoveAnnotation,
@@ -69,6 +70,7 @@ export const initialAnnotationStore: AnnotationStore = {
     completeAnnotations: {},
     descriptionAnnotations: {},
     enumAnnotations: {},
+    expertAnnotations: {},
     groupAnnotations: {},
     moveAnnotations: {},
     pureAnnotations: {},
@@ -340,6 +342,35 @@ const annotationsSlice = createSlice({
             state.annotations.enumAnnotations[action.payload.target] = withToggledReviewer(
                 state,
                 state.annotations.enumAnnotations[action.payload.target],
+                state.username,
+                action.payload.reviewResult,
+            );
+
+            updateQueue(state);
+        },
+        upsertExpertAnnotation(state, action: PayloadAction<ExpertAnnotation>) {
+            updateCreationOrChangedCount(
+                state,
+                state.annotations.expertAnnotations[action.payload.target],
+                action.payload,
+            );
+
+            state.annotations.expertAnnotations[action.payload.target] = withAuthorAndReviewers(
+                state.annotations.expertAnnotations[action.payload.target],
+                action.payload,
+                state.username,
+            );
+
+            updateQueue(state);
+        },
+        removeExpertAnnotation(state, action: PayloadAction<string>) {
+            removeAnnotation(state, state.annotations.expertAnnotations, action.payload);
+            updateQueue(state);
+        },
+        reviewExpertAnnotation(state, action: PayloadAction<{ target: string; reviewResult: ReviewResult }>) {
+            state.annotations.expertAnnotations[action.payload.target] = withToggledReviewer(
+                state,
+                state.annotations.expertAnnotations[action.payload.target],
                 state.username,
                 action.payload.reviewResult,
             );
@@ -823,6 +854,9 @@ export const {
     upsertEnumAnnotation,
     removeEnumAnnotation,
     reviewEnumAnnotation,
+    upsertExpertAnnotation,
+    removeExpertAnnotation,
+    reviewExpertAnnotation,
     upsertGroupAnnotation,
     removeGroupAnnotation,
     reviewGroupAnnotation,
@@ -886,6 +920,10 @@ export const selectEnumAnnotation =
     (target: string) =>
     (state: RootState): EnumAnnotation | undefined =>
         validAnnotation(selectAnnotationStore(state).enumAnnotations[target]);
+export const selectExpertAnnotation =
+    (target: string) =>
+    (state: RootState): ExpertAnnotation | undefined =>
+        validAnnotation(selectAnnotationStore(state).expertAnnotations[target]);
 export const selectGroupAnnotations =
     (target: string) =>
     (state: RootState): { [groupName: string]: GroupAnnotation } => {
@@ -944,6 +982,9 @@ export const selectNumberOfAnnotationsOnTarget =
         if (selectEnumAnnotation(target)(state)) {
             result++;
         }
+        if (selectExpertAnnotation(target)(state)) {
+            result++;
+        }
         result += Object.keys(selectGroupAnnotations(target)(state)).length;
         if (selectMoveAnnotation(target)(state)) {
             result++;
@@ -976,6 +1017,7 @@ const selectAllAnnotationsOnTarget =
         const boundaryAnnotation = selectBoundaryAnnotation(target)(state);
         const calledAfterAnnotations = selectCalledAfterAnnotations(target)(state);
         const descriptionAnnotation = selectDescriptionAnnotation(target)(state);
+        const expertAnnotation = selectExpertAnnotation(target)(state);
         const enumAnnotation = selectEnumAnnotation(target)(state);
         const groupAnnotations = selectGroupAnnotations(target)(state);
         const moveAnnotation = selectMoveAnnotation(target)(state);
@@ -995,6 +1037,9 @@ const selectAllAnnotationsOnTarget =
         }
         if (enumAnnotation) {
             result.push(enumAnnotation);
+        }
+        if (expertAnnotation) {
+            result.push(expertAnnotation);
         }
         result.push(...Object.values(groupAnnotations));
         if (moveAnnotation) {

@@ -52,7 +52,7 @@ export const ProgressStatistics = function () {
     const numberOfReviewedAnnotations = allAnnotations.filter((it) => (it.reviewers?.length ?? 0) > 0).length;
 
     const correctnessData = {
-        labels: ['Correct', 'Unchecked'],
+        labels: ['Reviewed', 'Unchecked'],
         datasets: [
             {
                 data: [numberOfReviewedAnnotations, numberOfAnnotations - numberOfReviewedAnnotations],
