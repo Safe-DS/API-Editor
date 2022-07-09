@@ -20,27 +20,6 @@
             }
         ]
     },
-    "test/test/some_global_function/enum_parameter_with_union": {
-        "target": "test/test/some_global_function/enum_parameter_with_union",
-        "authors": ["$autogen$"],
-        "reviewers": [],
-        "comment": "I turned this into an enum because the type in the documentation contained {'auto', 'kd_tree', 'kd-means++'}.",
-        "enumName": "EnumParameterWithUnion",
-        "pairs": [
-            {
-                "stringValue": "auto",
-                "instanceName": "AUTO"
-            },
-            {
-                "stringValue": "kd-means++",
-                "instanceName": "KD_MEANS"
-            },
-            {
-                "stringValue": "kd_tree",
-                "instanceName": "KD_TREE"
-            }
-        ]
-    },
     "test/test/some_global_function/issue_760": {
         "target": "test/test/some_global_function/issue_760",
         "authors": ["$autogen$"],
