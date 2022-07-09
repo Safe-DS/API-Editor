@@ -47,7 +47,7 @@ import com.larsreimann.safeds.serializer.SerializationResult
 import com.larsreimann.safeds.serializer.serializeToFormattedString
 
 /**
- * Create Simple-ML stub code for the Python module.
+ * Create Safe-DS stub code for the Python module.
  */
 fun PythonModule.toStubCode(): String {
     val compilationUnit = toSdsCompilationUnit()
@@ -66,7 +66,7 @@ fun PythonModule.toStubCode(): String {
 }
 
 /**
- * Creates a Simple-ML compilation unit that corresponds to the Python module.
+ * Creates a Safe-DS compilation unit that corresponds to the Python module.
  */
 fun PythonModule.toSdsCompilationUnit(): SdsCompilationUnit {
     val classes = classes.map { it.toSdsClass() }
@@ -80,7 +80,7 @@ fun PythonModule.toSdsCompilationUnit(): SdsCompilationUnit {
 }
 
 /**
- * Creates a Simple-ML class that corresponds to the Python class.
+ * Creates a Safe-DS class that corresponds to the Python class.
  */
 fun PythonClass.toSdsClass(): SdsClass {
     val stubName = name.snakeCaseToUpperCamelCase()
@@ -91,6 +91,9 @@ fun PythonClass.toSdsClass(): SdsClass {
     return createSdsClass(
         name = stubName,
         annotationCalls = buildList {
+            if (isExpert) {
+                add(createSdsAnnotationCall("Expert"))
+            }
             if (name != stubName) {
                 add(createSdsPythonNameAnnotationUse(name))
             }
@@ -111,7 +114,7 @@ private fun PythonClass.buildConstructor(): List<SdsParameter> {
 }
 
 /**
- * Creates a Simple-ML attribute that corresponds to the Python attribute.
+ * Creates a Safe-DS attribute that corresponds to the Python attribute.
  */
 fun PythonAttribute.toSdsAttribute(): SdsAttribute {
     val stubName = name.snakeCaseToLowerCamelCase()
@@ -137,6 +140,9 @@ fun PythonFunction.toSdsFunction(): SdsFunction {
         name = stubName,
         isStatic = isStaticMethod(),
         annotationCalls = buildList {
+            if (isExpert) {
+                add(createSdsAnnotationCall("Expert"))
+            }
             if (isPure) {
                 add(createSdsAnnotationCall("Pure"))
             }
@@ -176,6 +182,9 @@ fun PythonParameter.toSdsParameterOrNull(): SdsParameter? {
     return createSdsParameter(
         name = stubName,
         annotationCalls = buildList {
+            if (isExpert) {
+                add(createSdsAnnotationCall("Expert"))
+            }
             if (name != stubName) {
                 add(createSdsPythonNameAnnotationUse(name))
             }
@@ -206,7 +215,7 @@ fun PythonResult.toSdsResult(): SdsResult {
 }
 
 /**
- * Creates a Simple-ML enum that corresponds to the Python enum.
+ * Creates a Safe-DS enum that corresponds to the Python enum.
  */
 fun PythonEnum.toSdsEnum(): SdsEnum {
     val stubName = name.snakeCaseToUpperCamelCase()
@@ -226,7 +235,7 @@ fun PythonEnum.toSdsEnum(): SdsEnum {
 }
 
 /**
- * Creates a Simple-ML enum variant that corresponds to the Python enum instance.
+ * Creates a Safe-DS enum variant that corresponds to the Python enum instance.
  */
 fun PythonEnumInstance.toSdsEnumVariant(): SdsEnumVariant {
     val stubName = name.snakeCaseToUpperCamelCase()
