@@ -26,7 +26,7 @@ export interface AnnotationStore extends VersionedAnnotationStore {
     };
     expertAnnotations: {
         [target: string]: ExpertAnnotation;
-    }
+    };
     groupAnnotations: {
         [target: string]: { [groupName: string]: GroupAnnotation };
     };

@@ -78,12 +78,11 @@ data class GroupAnnotation(val groupName: String, val parameters: MutableList<St
 }
 
 @Serializable
-object ExpertAnnotation: EditorAnnotation() {
+object ExpertAnnotation : EditorAnnotation() {
 
     @Transient
     override val validTargets = ANY_DECLARATION
 }
-
 
 @Serializable
 data class MoveAnnotation(val destination: String) : EditorAnnotation() {

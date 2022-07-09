@@ -30,7 +30,7 @@ class ExpertAnnotationProcessorTest {
                 PythonModule(
                     "testModule",
                     functions = listOf(testFunction),
-                    classes = listOf(testClass)
+                    classes = listOf(testClass),
                 ),
             ),
         )
