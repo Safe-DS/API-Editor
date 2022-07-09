@@ -2,32 +2,29 @@ import React from 'react';
 import { Box, Button, Icon, Menu, MenuButton, MenuGroup, MenuItem, MenuList } from '@chakra-ui/react';
 import { FaChevronUp } from 'react-icons/fa';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import {
-    removeFilter,
-    selectFilterList,
-    selectFilterString,
-    setFilterString,
-    toggleAddFilterDialog,
-} from '../ui/uiSlice';
+import { removeFilter, selectFilterList, setFilterString, toggleAddFilterDialog } from '../ui/uiSlice';
 import { isValidFilterToken } from './model/filterFactory';
 import { isEmptyList } from '../../common/util/listOperations';
 
-export const FilterPersistence = function () {
+interface FilterPersistenceProps {
+    localFilterString: string;
+}
+
+export const FilterPersistence: React.FC<FilterPersistenceProps> = function ({localFilterString}) {
     const dispatch = useAppDispatch();
 
-    const currentFilterString = useAppSelector(selectFilterString);
     const savedFilters = useAppSelector(selectFilterList);
 
-    const filterIsValid = currentFilterString.split(' ').every((token) => token === '' || isValidFilterToken(token));
+    const filterIsValid = localFilterString.split(' ').every((token) => token === '' || isValidFilterToken(token));
     const alreadyIncluded = savedFilters.some((it) => {
-        return it.filter === currentFilterString;
+        return it.filter === localFilterString;
     });
 
     return (
         <>
             {alreadyIncluded ? (
                 <Button
-                    onClick={() => dispatch(removeFilter(currentFilterString))}
+                    onClick={() => dispatch(removeFilter(localFilterString))}
                     isDisabled={!filterIsValid || !alreadyIncluded}
                 >
                     Remove Filter

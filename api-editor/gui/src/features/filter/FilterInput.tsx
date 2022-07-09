@@ -13,25 +13,23 @@ import {
     UnorderedList,
 } from '@chakra-ui/react';
 import { closest, distance } from 'fastest-levenshtein';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectFilterString, setFilterString } from '../ui/uiSlice';
 import { getFixedFilterNames, isValidFilterToken } from './model/filterFactory';
 
-export const FilterInput: React.FC = function () {
+interface FilterInputProps {
+    localFilterString: string;
+    setLocalFilterString: (newLocalFilterString: string) => void;
+}
+
+export const FilterInput: React.FC<FilterInputProps> = function ({localFilterString, setLocalFilterString}) {
     const dispatch = useAppDispatch();
 
-    const filterString = useAppSelector(selectFilterString);
-    const [localFilterString, setLocalFilterString] = React.useState(filterString);
-    const [timeoutId, setTimeoutId] = React.useState<NodeJS.Timeout>();
-
-    const invalidTokens = filterString.split(' ').filter((token) => token !== '' && !isValidFilterToken(token));
+    const invalidTokens = localFilterString.split(' ').filter((token) => token !== '' && !isValidFilterToken(token));
     const filterIsValid = invalidTokens.length === 0;
 
-    // The filter can be changed via by other means as well and the local filter needs to reflect this
-    useEffect(() => {
-        setLocalFilterString(filterString);
-    }, [filterString]);
+    const [timeoutId, setTimeoutId] = React.useState<NodeJS.Timeout>();
 
     const onChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         setLocalFilterString(event.target.value);
