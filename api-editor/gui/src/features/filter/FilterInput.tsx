@@ -37,8 +37,8 @@ export const FilterInput: React.FC = function () {
         }
 
         const newTimeoutId = setTimeout(() => {
-            dispatch(setFilterString(event.target.value))
-        }, 1000)
+            dispatch(setFilterString(event.target.value));
+        }, 1000);
 
         setTimeoutId(newTimeoutId);
     };
