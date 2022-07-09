@@ -65,6 +65,7 @@ class PythonClass(
     var isPublic: Boolean = true,
     var description: String = "",
     var todo: String = "",
+    var isExpert: Boolean = false,
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
     var originalClass: OriginalPythonClass? = null,
 ) : PythonDeclaration() {
@@ -132,6 +133,7 @@ class PythonFunction(
     var description: String = "",
     var todo: String = "",
     var isPure: Boolean = false,
+    var isExpert: Boolean = false,
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
     var callToOriginalAPI: PythonCall? = null,
 ) : PythonDeclaration() {
@@ -192,6 +194,7 @@ class PythonParameter(
     var description: String = "",
     var todo: String = "",
     var boundary: Boundary? = null,
+    var isExpert: Boolean = false,
     override val annotations: MutableList<EditorAnnotation> = mutableListOf(),
 ) : PythonDeclaration() {
 
