@@ -45,6 +45,7 @@ type UserAction =
     | CalledAfterUserAction
     | DescriptionUserAction
     | EnumUserAction
+    | ExpertUserAction
     | GroupUserAction
     | MoveUserAction
     | PureUserAction
@@ -76,6 +77,11 @@ interface DescriptionUserAction {
 
 interface EnumUserAction {
     readonly type: 'enum';
+    readonly target: string;
+}
+
+interface ExpertUserAction {
+    readonly type: 'expert';
     readonly target: string;
 }
 
@@ -264,17 +270,23 @@ const uiSlice = createSlice({
                 target: action.payload,
             };
         },
+        showEnumAnnotationForm(state, action: PayloadAction<string>) {
+            state.currentUserAction = {
+                type: 'enum',
+                target: action.payload,
+            };
+        },
+        showExpertAnnotationForm(state, action: PayloadAction<string>) {
+            state.currentUserAction = {
+                type: 'expert',
+                target: action.payload,
+            };
+        },
         showGroupAnnotationForm(state, action: PayloadAction<GroupTarget>) {
             state.currentUserAction = {
                 type: 'group',
                 target: action.payload.target,
                 groupName: action.payload.groupName,
-            };
-        },
-        showEnumAnnotationForm(state, action: PayloadAction<string>) {
-            state.currentUserAction = {
-                type: 'enum',
-                target: action.payload,
             };
         },
         showMoveAnnotationForm(state, action: PayloadAction<string>) {
@@ -392,6 +404,7 @@ export const {
     showCalledAfterAnnotationForm,
     showDescriptionAnnotationForm,
     showEnumAnnotationForm,
+    showExpertAnnotationForm,
     showGroupAnnotationForm,
     showMoveAnnotationForm,
     showPureAnnotationForm,

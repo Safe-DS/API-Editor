@@ -24,6 +24,9 @@ export interface AnnotationStore extends VersionedAnnotationStore {
     enumAnnotations: {
         [target: string]: EnumAnnotation;
     };
+    expertAnnotations: {
+        [target: string]: ExpertAnnotation;
+    }
     groupAnnotations: {
         [target: string]: { [groupName: string]: GroupAnnotation };
     };
@@ -172,6 +175,8 @@ export interface EnumPair {
     readonly instanceName: string;
 }
 
+export interface ExpertAnnotation extends Annotation {}
+
 export interface GroupAnnotation extends Annotation {
     /**
      * Name of the grouped object
@@ -239,6 +244,7 @@ export const migrateAnnotationStoreV1ToV2 = function (oldAnnotationStore: Annota
         completeAnnotations: oldAnnotationStore.completes ?? {},
         descriptionAnnotations: oldAnnotationStore.descriptions ?? {},
         enumAnnotations: oldAnnotationStore.enums ?? {},
+        expertAnnotations: {},
         groupAnnotations: oldAnnotationStore.groups ?? {},
         moveAnnotations: oldAnnotationStore.moves ?? {},
         pureAnnotations: oldAnnotationStore.pures ?? {},

@@ -44,6 +44,7 @@ export const FunctionView: React.FC<FunctionViewProps> = function ({ pythonFunct
                                 target={id}
                                 showCalledAfter={hasRemainingCalledAfters}
                                 showDescription
+                                showExpert
                                 showGroup={pythonFunction.explicitParameters().length >= 2}
                                 showMove={pythonFunction.containingModuleOrClass instanceof PythonModule}
                                 showPure

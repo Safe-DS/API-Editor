@@ -39,6 +39,7 @@ export const ParameterNode: React.FC<ParameterNodeProps> = function ({ isTitle, 
                             showBoundary
                             showDescription
                             showEnum
+                            showExpert
                             showRename
                             showTodo
                             showValue

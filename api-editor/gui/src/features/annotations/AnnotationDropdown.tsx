@@ -8,6 +8,7 @@ import {
     showCalledAfterAnnotationForm,
     showDescriptionAnnotationForm,
     showEnumAnnotationForm,
+    showExpertAnnotationForm,
     showGroupAnnotationForm,
     showMoveAnnotationForm,
     showPureAnnotationForm,
@@ -22,6 +23,7 @@ interface AnnotationDropdownProps {
     showCalledAfter?: boolean;
     showDescription?: boolean;
     showEnum?: boolean;
+    showExpert?: boolean;
     showGroup?: boolean;
     showMove?: boolean;
     showPure?: boolean;
@@ -38,6 +40,7 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
     showDescription = false,
     showGroup = false,
     showEnum = false,
+    showExpert = false,
     showMove = false,
     showPure = false,
     showRename = false,
@@ -83,6 +86,7 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
 
                     {(showCalledAfter ||
                         showDescription ||
+                        showExpert ||
                         showGroup ||
                         showMove ||
                         showPure ||
@@ -112,6 +116,11 @@ export const AnnotationDropdown: React.FC<AnnotationDropdownProps> = function ({
                                     paddingLeft={8}
                                 >
                                     @description
+                                </MenuItem>
+                            )}
+                            {showExpert && (
+                                <MenuItem onClick={() => dispatch(showExpertAnnotationForm(target))} paddingLeft={8}>
+                                    @expert
                                 </MenuItem>
                             )}
                             {showGroup && (

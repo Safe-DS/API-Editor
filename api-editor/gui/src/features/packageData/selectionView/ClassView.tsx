@@ -26,7 +26,7 @@ export const ClassView: React.FC<ClassViewProps> = function ({ pythonClass }) {
                     </Heading>
                     <Wrap>
                         {pythonClass.isPublic && (
-                            <AnnotationDropdown target={id} showDescription showMove showRemove showRename showTodo />
+                            <AnnotationDropdown target={id} showDescription showExpert showMove showRemove showRename showTodo />
                         )}
                         <CompleteButton target={id} />
                         {pythonClass.isPublic && <MissingAnnotationButton target={id} />}
