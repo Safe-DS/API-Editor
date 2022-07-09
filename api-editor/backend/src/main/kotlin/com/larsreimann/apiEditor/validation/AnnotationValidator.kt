@@ -165,77 +165,45 @@ class AnnotationValidator(private val annotatedPythonPackage: SerializablePython
     ) {
         val firstAnnotationName = firstAnnotation.type
         val secondAnnotationName = secondAnnotation.type
-        if (firstAnnotationName !in possibleCombinations || secondAnnotationName !in possibleCombinations[firstAnnotationName]!!) {
+        val annotationPair = createAnnotationPair(firstAnnotationName, secondAnnotationName)
+
+        if (annotationPair in forbiddenCombinations) {
             validationErrors.add(AnnotationCombinationError(qualifiedName, firstAnnotationName, secondAnnotationName))
         }
     }
 
     private fun validateGroupCombinations(qualifiedName: String, editorAnnotations: List<EditorAnnotation>) {
         editorAnnotations.forEach {
-            val annotationName = it.type
-            if (annotationName !in possibleCombinations[groupAnnotationName]!!) {
-                validationErrors.add(GroupAnnotationCombinationError(qualifiedName, annotationName))
+            val firstAnnotationName = it.type
+            val secondAnnotationName = groupAnnotationName
+            val annotationPair = createAnnotationPair(firstAnnotationName, secondAnnotationName)
+
+            if (annotationPair in forbiddenCombinations) {
+                validationErrors.add(GroupAnnotationCombinationError(qualifiedName, firstAnnotationName))
             }
         }
     }
 
-    companion object {
-        private var possibleCombinations = buildMap<String, Set<String>> {
-            this["Boundary"] = mutableSetOf("Description", "Group", "Optional", "Rename", "Required", "Todo")
-            this["CalledAfter"] = mutableSetOf("CalledAfter", "Description", "Group", "Move", "Pure", "Rename")
-            this["Constant"] = mutableSetOf()
-            this["Description"] = mutableSetOf(
-                "Boundary",
-                "CalledAfter",
-                "Enum",
-                "Group",
-                "Move",
-                "Optional",
-                "Pure",
-                "Rename",
-                "Required",
-                "Todo",
-            )
-            this["Enum"] = mutableSetOf("Description", "Group", "Rename", "Required", "Todo")
-            this["Group"] =
-                mutableSetOf(
-                    "Boundary",
-                    "CalledAfter",
-                    "Description",
-                    "Enum",
-                    "Group",
-                    "Move",
-                    "Optional",
-                    "Pure",
-                    "Rename",
-                    "Required",
-                    "Todo",
-                )
-            this["Move"] = mutableSetOf("CalledAfter", "Description", "Group", "Pure", "Rename")
-            this["Optional"] = mutableSetOf("Boundary", "Description", "Group", "Rename", "Todo")
-            this["Pure"] = mutableSetOf("CalledAfter", "Description", "Group", "Move", "Rename")
-            this["Remove"] = mutableSetOf()
-            this["Rename"] = mutableSetOf(
-                "Boundary",
-                "CalledAfter",
-                "Description",
-                "Enum",
-                "Group",
-                "Move",
-                "Optional",
-                "Pure",
-                "Required", "Todo",
-            )
-            this["Required"] = mutableSetOf("Boundary", "Description", "Enum", "Group", "Rename", "Todo")
-            this["Todo"] = mutableSetOf(
-                "Boundary",
-                "Description",
-                "Enum",
-                "Group",
-                "Optional",
-                "Rename",
-                "Required",
-            )
+    private fun createAnnotationPair(firstAnnotationName: String, secondAnnotationName: String): Pair<String, String> {
+        return if (firstAnnotationName < secondAnnotationName) {
+            firstAnnotationName to secondAnnotationName
+        } else {
+            secondAnnotationName to firstAnnotationName
         }
+    }
+
+    companion object {
+        private val forbiddenCombinations = setOf(
+            "Constant" to "Constant",
+            "Constant" to "Enum",
+            "Constant" to "Group",
+            "Constant" to "Omitted",
+            "Constant" to "Optional",
+            "Constant" to "Required",
+            "Enum" to "Optional",
+            "Omitted" to "Omitted",
+            "Optional" to "Optional",
+            "Required" to "Required",
+        )
     }
 }
