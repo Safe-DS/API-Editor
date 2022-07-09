@@ -757,7 +757,6 @@ const withAuthorAndReviewers = function <T extends Annotation>(
 };
 
 const annotationWasChanged = function <T extends Annotation>(oldAnnotation: T, newAnnotation: T): boolean {
-
     // Unify the metadata, so we only compare the actual annotation data
     const oldAnnotationWithoutMetadata = annotationWithoutMetadata(oldAnnotation);
     const newAnnotationWithoutMetadata = annotationWithoutMetadata(newAnnotation);
