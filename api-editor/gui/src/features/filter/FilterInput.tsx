@@ -22,8 +22,26 @@ export const FilterInput: React.FC = function () {
     const dispatch = useAppDispatch();
 
     const filterString = useAppSelector(selectFilterString);
+    const [localFilterString, setLocalFilterString] = React.useState(filterString);
+    const [timeoutId, setTimeoutId] = React.useState<NodeJS.Timeout>();
+
     const invalidTokens = filterString.split(' ').filter((token) => token !== '' && !isValidFilterToken(token));
     const filterIsValid = invalidTokens.length === 0;
+
+    const onChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+        setLocalFilterString(event.target.value);
+
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+            setTimeoutId(undefined);
+        }
+
+        const newTimeoutId = setTimeout(() => {
+            dispatch(setFilterString(event.target.value))
+        }, 1000)
+
+        setTimeoutId(newTimeoutId);
+    };
 
     return (
         <Box zIndex={50}>
@@ -39,8 +57,8 @@ export const FilterInput: React.FC = function () {
                         <Input
                             type="text"
                             placeholder="Filter..."
-                            value={useAppSelector(selectFilterString)}
-                            onChange={(event) => dispatch(setFilterString(event.target.value))}
+                            value={localFilterString}
+                            onChange={onChange}
                             spellCheck={false}
                             minWidth="400px"
                         />
