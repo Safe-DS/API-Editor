@@ -38,7 +38,6 @@ export const FilterInput: React.FC<FilterInputProps> = function ({
 
         if (timeoutId) {
             clearTimeout(timeoutId);
-            setTimeoutId(undefined);
         }
 
         const newTimeoutId = setTimeout(() => {
