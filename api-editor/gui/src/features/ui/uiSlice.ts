@@ -149,10 +149,11 @@ export const initialState: UIState = {
     expandedInTreeView: {},
     treeViewScrollOffset: 0,
 
-    filterString: 'is:public',
+    filterString: 'is:public !is:removed',
     filterList: [
-        { filter: 'is:public', name: 'public' },
-        { filter: 'is:public usefulness:>0', name: 'useful' },
+        { filter: 'is:public !is:removed', name: 'Default' },
+        { filter: 'is:public', name: 'Any Public Declaration' },
+        { filter: 'is:public usefulness:>0', name: 'Public & Useful Declarations' },
     ],
 
     heatMapMode: HeatMapMode.None,
