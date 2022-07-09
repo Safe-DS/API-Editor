@@ -10,7 +10,7 @@ interface FilterPersistenceProps {
     invalidTokens: string[];
 }
 
-export const FilterPersistence: React.FC<FilterPersistenceProps> = function ({localFilterString, invalidTokens}) {
+export const FilterPersistence: React.FC<FilterPersistenceProps> = function ({ localFilterString, invalidTokens }) {
     const dispatch = useAppDispatch();
 
     const filterIsValid = invalidTokens.length === 0;
