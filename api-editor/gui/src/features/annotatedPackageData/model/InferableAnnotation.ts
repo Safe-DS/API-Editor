@@ -114,6 +114,12 @@ export class InferableEnumAnnotation extends InferableAnnotation {
     }
 }
 
+export class InferableExpertAnnotation extends InferableAnnotation {
+    constructor() {
+        super(dataPathPrefix + 'ExpertAnnotation');
+    }
+}
+
 export class InferableMoveAnnotation extends InferableAnnotation {
     readonly destination: string;
 
