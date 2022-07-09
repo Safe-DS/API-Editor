@@ -57,6 +57,7 @@ export interface AnnotationSlice {
     numberOfAnnotationsCreated: number;
     numberOfAnnotationsChanged: number;
     numberOfAnnotationsDeleted: number;
+    numberOfCommentsTouched: number;
 }
 
 // Initial state -------------------------------------------------------------------------------------------------------
@@ -88,6 +89,7 @@ export const initialAnnotationSlice: AnnotationSlice = {
     numberOfAnnotationsCreated: 0,
     numberOfAnnotationsChanged: 0,
     numberOfAnnotationsDeleted: 0,
+    numberOfCommentsTouched: 0,
 };
 
 // Thunks --------------------------------------------------------------------------------------------------------------
@@ -735,6 +737,10 @@ const updateCreationOrChangedCount = function (
     } else {
         state.numberOfAnnotationsCreated++;
     }
+
+    if ((oldAnnotation?.comment ?? '') !== newAnnotation.comment) {
+        state.numberOfCommentsTouched++;
+    }
 };
 
 const withAuthorAndReviewers = function <T extends Annotation>(
@@ -1025,3 +1031,5 @@ export const selectNumberOfAnnotationsChanged = (state: RootState): number =>
     selectAnnotationSlice(state).numberOfAnnotationsChanged;
 export const selectNumberOfAnnotationsDeleted = (state: RootState): number =>
     selectAnnotationSlice(state).numberOfAnnotationsDeleted;
+export const selectNumberOfCommentsTouched = (state: RootState): number =>
+    selectAnnotationSlice(state).numberOfCommentsTouched;
