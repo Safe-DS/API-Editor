@@ -193,6 +193,9 @@ class AnnotationValidator(private val annotatedPythonPackage: SerializablePython
     }
 
     companion object {
+
+        // We assume that the lookup function sorts the annotation names. The right one should either be identical to
+        // the left or come after it alphabetically.
         private val forbiddenCombinations = setOf(
             "Constant" to "Constant",
             "Constant" to "Enum",
