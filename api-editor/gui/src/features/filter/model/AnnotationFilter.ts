@@ -54,6 +54,7 @@ export class AnnotationFilter extends AbstractPythonFilter {
                     // Deliberately not checking annotations.complete. It should be transparent it's an annotation.
                     hasSingleUseAnnotation(id, annotations.descriptionAnnotations) ||
                     hasSingleUseAnnotation(id, annotations.enumAnnotations) ||
+                    hasSingleUseAnnotation(id, annotations.expertAnnotations) ||
                     hasMultiUseAnnotation(id, annotations.groupAnnotations) ||
                     hasSingleUseAnnotation(id, annotations.moveAnnotations) ||
                     hasSingleUseAnnotation(id, annotations.pureAnnotations) ||
