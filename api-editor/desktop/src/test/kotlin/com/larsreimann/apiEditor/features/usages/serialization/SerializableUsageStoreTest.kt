@@ -1,9 +1,9 @@
 package com.larsreimann.apiEditor.features.usages.serialization
 
-import com.larsreimann.apiEditor.features.ast.model.ClassId
-import com.larsreimann.apiEditor.features.ast.model.FunctionId
-import com.larsreimann.apiEditor.features.ast.model.ModuleId
-import com.larsreimann.apiEditor.features.ast.model.ParameterId
+import com.larsreimann.apiEditor.features.ast.model.PythonClassId
+import com.larsreimann.apiEditor.features.ast.model.PythonFunctionId
+import com.larsreimann.apiEditor.features.ast.model.PythonModuleId
+import com.larsreimann.apiEditor.features.ast.model.PythonParameterId
 import com.larsreimann.apiEditor.testUtils.relativeResourcePathOrNull
 import com.larsreimann.apiEditor.testUtils.resourcePathOrNull
 import com.larsreimann.apiEditor.testUtils.walkResourceDirectory
@@ -51,7 +51,7 @@ class SerializableUsageStoreTest : FunSpec(
                     ModuleCountTest("test/test_module", 2),
                     ModuleCountTest("test/unknown_module", 0),
                 ) { (id, expectedCount) ->
-                    usageStore.getModuleCount(ModuleId(id)) shouldBe expectedCount
+                    usageStore.getModuleCount(PythonModuleId(id)) shouldBe expectedCount
                 }
 
                 // Check class counts
@@ -59,7 +59,7 @@ class SerializableUsageStoreTest : FunSpec(
                     ClassCountTest("test/test_module/TestClass", 1),
                     ClassCountTest("test/test_module/UnknownClass", 0),
                 ) { (id, expectedCount) ->
-                    usageStore.getClassCount(ClassId(id)) shouldBe expectedCount
+                    usageStore.getClassCount(PythonClassId(id)) shouldBe expectedCount
                 }
 
                 // Check function counts
@@ -67,7 +67,7 @@ class SerializableUsageStoreTest : FunSpec(
                     FunctionCountTest("test/test_module/test_function", 1),
                     FunctionCountTest("test/test_module/unknown_function", 0),
                 ) { (id, expectedCount) ->
-                    usageStore.getFunctionCount(FunctionId(id)) shouldBe expectedCount
+                    usageStore.getFunctionCount(PythonFunctionId(id)) shouldBe expectedCount
                 }
 
                 // Check parameter counts
@@ -75,7 +75,7 @@ class SerializableUsageStoreTest : FunSpec(
                     ParameterCountTest("test/test_module/test_function/test_parameter", 1),
                     ParameterCountTest("test/test_module/test_function/unknown_parameter", 0),
                 ) { (id, expectedCount) ->
-                    usageStore.getParameterCount(ParameterId(id)) shouldBe expectedCount
+                    usageStore.getParameterCount(PythonParameterId(id)) shouldBe expectedCount
                 }
 
                 // Check value counts
@@ -84,7 +84,7 @@ class SerializableUsageStoreTest : FunSpec(
                     ValueCountTest("test/test_module/test_function/test_parameter", "unknown_value", 0),
                     ValueCountTest("test/test_module/test_function/unknown_parameter", "unknown_value", 0),
                 ) { (id, value, expectedCount) ->
-                    usageStore.getValueCount(ParameterId(id), value) shouldBe expectedCount
+                    usageStore.getValueCount(PythonParameterId(id), value) shouldBe expectedCount
                 }
             }
         }

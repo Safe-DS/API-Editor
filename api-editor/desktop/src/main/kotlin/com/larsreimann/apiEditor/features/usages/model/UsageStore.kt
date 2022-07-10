@@ -1,9 +1,9 @@
 package com.larsreimann.apiEditor.features.usages.model
 
-import com.larsreimann.apiEditor.features.ast.model.ClassId
-import com.larsreimann.apiEditor.features.ast.model.FunctionId
-import com.larsreimann.apiEditor.features.ast.model.ModuleId
-import com.larsreimann.apiEditor.features.ast.model.ParameterId
+import com.larsreimann.apiEditor.features.ast.model.PythonClassId
+import com.larsreimann.apiEditor.features.ast.model.PythonFunctionId
+import com.larsreimann.apiEditor.features.ast.model.PythonModuleId
+import com.larsreimann.apiEditor.features.ast.model.PythonParameterId
 
 /**
  * @param moduleCounts
@@ -23,15 +23,15 @@ import com.larsreimann.apiEditor.features.ast.model.ParameterId
  * set explicitly by the user, so its default value is used implicitly.
  */
 class UsageStore(
-    private val moduleCounts: Map<ModuleId, Int> = emptyMap(),
-    private val classCounts: Map<ClassId, Int> = emptyMap(),
-    private val functionCounts: Map<FunctionId, Int> = emptyMap(),
-    private val parameterCounts: Map<ParameterId, Int> = emptyMap(),
-    private val valueCounts: Map<ParameterId, Map<String, Int>> = emptyMap(),
+    private val moduleCounts: Map<PythonModuleId, Int> = emptyMap(),
+    private val classCounts: Map<PythonClassId, Int> = emptyMap(),
+    private val functionCounts: Map<PythonFunctionId, Int> = emptyMap(),
+    private val parameterCounts: Map<PythonParameterId, Int> = emptyMap(),
+    private val valueCounts: Map<PythonParameterId, Map<String, Int>> = emptyMap(),
 ) {
-    fun getModuleCount(moduleId: ModuleId): Int = moduleCounts[moduleId] ?: 0
-    fun getClassCount(classId: ClassId): Int = classCounts[classId] ?: 0
-    fun getFunctionCount(functionId: FunctionId): Int = functionCounts[functionId] ?: 0
-    fun getParameterCount(parameterId: ParameterId): Int = parameterCounts[parameterId] ?: 0
-    fun getValueCount(parameterId: ParameterId, value: String): Int = valueCounts[parameterId]?.get(value) ?: 0
+    fun getModuleCount(moduleId: PythonModuleId): Int = moduleCounts[moduleId] ?: 0
+    fun getClassCount(classId: PythonClassId): Int = classCounts[classId] ?: 0
+    fun getFunctionCount(functionId: PythonFunctionId): Int = functionCounts[functionId] ?: 0
+    fun getParameterCount(parameterId: PythonParameterId): Int = parameterCounts[parameterId] ?: 0
+    fun getValueCount(parameterId: PythonParameterId, value: String): Int = valueCounts[parameterId]?.get(value) ?: 0
 }

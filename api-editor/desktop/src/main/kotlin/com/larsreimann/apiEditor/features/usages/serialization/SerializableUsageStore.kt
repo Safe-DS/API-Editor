@@ -1,9 +1,9 @@
 package com.larsreimann.apiEditor.features.usages.serialization
 
-import com.larsreimann.apiEditor.features.ast.model.ClassId
-import com.larsreimann.apiEditor.features.ast.model.FunctionId
-import com.larsreimann.apiEditor.features.ast.model.ModuleId
-import com.larsreimann.apiEditor.features.ast.model.ParameterId
+import com.larsreimann.apiEditor.features.ast.model.PythonClassId
+import com.larsreimann.apiEditor.features.ast.model.PythonFunctionId
+import com.larsreimann.apiEditor.features.ast.model.PythonModuleId
+import com.larsreimann.apiEditor.features.ast.model.PythonParameterId
 import com.larsreimann.apiEditor.features.usages.model.UsageStore
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -16,20 +16,20 @@ sealed class SerializableUsageStore {
 @Serializable
 @SerialName("Usages@v2")
 class SerializableUsageStoreV2(
-    private val moduleCounts: Map<String, Int> = emptyMap(),
-    private val classCounts: Map<String, Int> = emptyMap(),
-    private val functionCounts: Map<String, Int> = emptyMap(),
-    private val parameterCounts: Map<String, Int> = emptyMap(),
-    private val valueCounts: Map<String, Map<String, Int>> = emptyMap(),
+    private val moduleCounts: Map<PythonModuleId, Int> = emptyMap(),
+    private val classCounts: Map<PythonClassId, Int> = emptyMap(),
+    private val functionCounts: Map<PythonFunctionId, Int> = emptyMap(),
+    private val parameterCounts: Map<PythonParameterId, Int> = emptyMap(),
+    private val valueCounts: Map<PythonParameterId, Map<String, Int>> = emptyMap(),
 ) : SerializableUsageStore() {
 
     override fun toUsageStore(): UsageStore {
         return UsageStore(
-            moduleCounts.mapKeys { (id, _) -> ModuleId(id) },
-            classCounts.mapKeys { (id, _) -> ClassId(id) },
-            functionCounts.mapKeys { (id, _) -> FunctionId(id) },
-            parameterCounts.mapKeys { (id, _) -> ParameterId(id) },
-            valueCounts.mapKeys { (id, _) -> ParameterId(id) },
+            moduleCounts,
+            classCounts,
+            functionCounts,
+            parameterCounts,
+            valueCounts,
         )
     }
 }
