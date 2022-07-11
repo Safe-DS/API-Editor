@@ -69,11 +69,20 @@ export const TreeNode: React.FC<TreeNodeProps> = function ({
         }
     };
 
+    const [timeoutId, setTimeoutId] = React.useState<NodeJS.Timeout>();
     const handleNodeClick = (event: MouseEvent) => {
-        if (event.shiftKey) {
+        if (event.detail === 1) {
+            // Handle single click
+            const newTimeoutId = setTimeout(() => {
+                navigate(`/${declaration.id}`);
+            }, 200);
+            setTimeoutId(newTimeoutId);
+        } else if (event.detail === 2) {
+            // Handle double click
+            if (timeoutId) {
+                clearTimeout(timeoutId);
+            }
             toggleExpanded();
-        } else {
-            navigate(`/${declaration.id}`);
         }
     };
 
