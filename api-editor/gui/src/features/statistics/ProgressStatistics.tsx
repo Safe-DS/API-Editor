@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Heading, SimpleGrid, useColorModeValue, VStack } from '@chakra-ui/react';
+import { Box, SimpleGrid, useColorModeValue } from '@chakra-ui/react';
 import { useAppSelector } from '../../app/hooks';
 import { selectMatchedNodes } from '../packageData/apiSlice';
 import { selectAllAnnotationsOnTargets, selectAnnotationStore } from '../annotations/annotationSlice';
@@ -10,11 +10,11 @@ import { ArcElement, Chart as ChartJS, Title, Tooltip } from 'chart.js';
 ChartJS.register(ArcElement, Title, Tooltip);
 
 export const ProgressStatistics = function () {
-    const completeOrCorrectBg = useColorModeValue('#38a169', '#68d391');
-    const completeOrCorrectBorder = useColorModeValue('#2f855a', '#99e6b3');
+    const completeOrCorrectBg = useColorModeValue('rgba(56, 161, 105, 0.2)', 'rgba(104, 211, 145, 0.2)');
+    const completeOrCorrectBorder = useColorModeValue('rgba(47, 133, 90, 1)', 'rgba(153, 230, 179, 1)');
 
-    const uncheckedBg = useColorModeValue('#CCC', '#888');
-    const uncheckedBorder = useColorModeValue('#AAA', '#AAA');
+    const uncheckedBg = useColorModeValue('rgba(204, 204, 204, 0.2)', 'rgba(136, 136, 136, 0.2)');
+    const uncheckedBorder = useColorModeValue('rgba(170, 170, 170, 1)', 'rgba(170, 170, 170, 1)');
 
     const textColor = useColorModeValue('#000', '#FFF');
 
@@ -52,7 +52,7 @@ export const ProgressStatistics = function () {
     const numberOfReviewedAnnotations = allAnnotations.filter((it) => (it.reviewers?.length ?? 0) > 0).length;
 
     const correctnessData = {
-        labels: ['Correct', 'Unchecked'],
+        labels: ['Reviewed', 'Unchecked'],
         datasets: [
             {
                 data: [numberOfReviewedAnnotations, numberOfAnnotations - numberOfReviewedAnnotations],
@@ -74,20 +74,15 @@ export const ProgressStatistics = function () {
     };
 
     return (
-        <VStack spacing={2}>
-            <Heading as="h3" size="md">
-                Progress on Matched Elements
-            </Heading>
-            <Box width="100%">
-                <SimpleGrid columns={{ base: 1, fullHD: 2 }} width="100%">
-                    <Box>
-                        <Pie data={completionData} options={completionOptions} />
-                    </Box>
-                    <Box>
-                        <Pie data={correctnessData} options={correctnessOptions} />
-                    </Box>
-                </SimpleGrid>
-            </Box>
-        </VStack>
+        <Box width="100%">
+            <SimpleGrid columns={{ base: 1, fullHD: 2 }} width="100%">
+                <Box>
+                    <Pie data={completionData} options={completionOptions} />
+                </Box>
+                <Box>
+                    <Pie data={correctnessData} options={correctnessOptions} />
+                </Box>
+            </SimpleGrid>
+        </Box>
     );
 };

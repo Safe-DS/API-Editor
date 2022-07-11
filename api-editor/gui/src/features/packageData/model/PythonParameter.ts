@@ -29,6 +29,7 @@ export class PythonParameter extends PythonDeclaration {
         readonly typeInDocs: string = '',
         readonly description: string = '',
         readonly type: object = {},
+        readonly defaultValueInDocs: Optional<string> = null,
     ) {
         super();
 
@@ -70,6 +71,14 @@ export class PythonParameter extends PythonDeclaration {
         );
     }
 
+    isOptional(): boolean {
+        return this.defaultValue !== null && this.defaultValue !== undefined && this.isExplicitParameter();
+    }
+
+    isRequired(): boolean {
+        return (this.defaultValue === null || this.defaultValue === undefined) && this.isExplicitParameter();
+    }
+
     toString(): string {
         return `Parameter "${this.name}"`;
     }
@@ -85,6 +94,7 @@ export class PythonParameter extends PythonDeclaration {
             docstring: {
                 type: this.typeInDocs,
                 description: this.description,
+                default_value: this.defaultValueInDocs,
             },
             type: this.type,
         };
@@ -100,6 +110,8 @@ export class PythonParameter extends PythonDeclaration {
             this.isPublic,
             this.typeInDocs,
             this.description,
+            this.type,
+            this.defaultValueInDocs,
         );
         result.containingFunction = this.containingFunction;
         return result;

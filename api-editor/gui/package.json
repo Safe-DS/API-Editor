@@ -25,6 +25,7 @@
         "framer-motion": "^6.3.16",
         "idb-keyval": "^6.2.0",
         "katex": "^0.16.0",
+        "lodash": "^4.17.21",
         "react": "^18.2.0",
         "react-chartjs-2": "^4.2.0",
         "react-dom": "^18.2.0",

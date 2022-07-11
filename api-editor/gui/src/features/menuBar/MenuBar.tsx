@@ -17,7 +17,16 @@ import {
     useToast,
 } from '@chakra-ui/react';
 import React from 'react';
-import { FaArrowLeft, FaArrowRight, FaArrowUp, FaChevronDown, FaRedo, FaUndo } from 'react-icons/fa';
+import {
+    FaAngleDoubleLeft,
+    FaAngleDoubleRight,
+    FaArrowLeft,
+    FaArrowRight,
+    FaArrowUp,
+    FaChevronDown,
+    FaRedo,
+    FaUndo,
+} from 'react-icons/fa';
 import { useAppDispatch, useAppSelector, useKeyboardShortcut } from '../../app/hooks';
 import {
     redo,
@@ -64,6 +73,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { SelectionBreadcrumbs } from './SelectionBreadcrumbs';
 import { HelpMenu } from './HelpMenu';
 import { AnnotationStore } from '../annotations/versioning/AnnotationStoreV2';
+import { EXPECTED_ANNOTATION_STORE_SCHEMA_VERSION } from '../annotations/versioning/expectedVersions';
 
 interface MenuBarProps {
     displayInferErrors: (errors: string[]) => void;
@@ -93,9 +103,21 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
 
     const exportAnnotations = () => {
         const a = document.createElement('a');
-        const file = new Blob([JSON.stringify(annotationStore, null, 4)], {
-            type: 'application/json',
-        });
+        const file = new Blob(
+            [
+                JSON.stringify(
+                    {
+                        ...annotationStore,
+                        schemaVersion: EXPECTED_ANNOTATION_STORE_SCHEMA_VERSION,
+                    },
+                    null,
+                    4,
+                ),
+            ],
+            {
+                type: 'application/json',
+            },
+        );
         a.href = URL.createObjectURL(file);
         a.download = 'annotations.json';
         a.click();
@@ -120,7 +142,8 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
 
         dispatch(toggleComplete(declaration.id));
     };
-    const goToPreviousMatch = () => {
+
+    const goToPreviousMatch = ({ onSameLevel }: { onSameLevel: boolean }) => {
         if (!declaration || currentUserAction.type !== NoUserAction.type) {
             return;
         }
@@ -131,6 +154,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
             pythonFilter,
             annotations,
             usages,
+            onSameLevel,
         );
         if (navStr !== null) {
             if (wrappedAround) {
@@ -151,7 +175,8 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
             dispatch(setAllExpandedInTreeView(parents));
         }
     };
-    const goToNextMatch = () => {
+
+    const goToNextMatch = ({ onSameLevel }: { onSameLevel: boolean }) => {
         if (!declaration || currentUserAction.type !== NoUserAction.type) {
             return;
         }
@@ -162,6 +187,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
             pythonFilter,
             annotations,
             usages,
+            onSameLevel,
         );
         if (navStr !== null) {
             if (wrappedAround) {
@@ -217,9 +243,11 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
     useKeyboardShortcut(false, true, false, 'z', () => dispatch(undo()));
     useKeyboardShortcut(false, true, false, 'y', () => dispatch(redo()));
     useKeyboardShortcut(false, true, true, 'c', markSelectedElementAsComplete);
-    useKeyboardShortcut(false, true, false, 'ArrowLeft', goToPreviousMatch);
-    useKeyboardShortcut(false, true, false, 'ArrowRight', goToNextMatch);
     useKeyboardShortcut(false, true, false, 'ArrowUp', goToParent);
+    useKeyboardShortcut(false, true, false, 'ArrowLeft', () => goToPreviousMatch({ onSameLevel: false }));
+    useKeyboardShortcut(false, true, false, 'ArrowRight', () => goToNextMatch({ onSameLevel: false }));
+    useKeyboardShortcut(false, true, true, 'ArrowLeft', () => goToPreviousMatch({ onSameLevel: true }));
+    useKeyboardShortcut(false, true, true, 'ArrowRight', () => goToNextMatch({ onSameLevel: true }));
     useKeyboardShortcut(false, true, false, ',', expandAll);
     useKeyboardShortcut(false, true, false, '.', collapseAll);
     useKeyboardShortcut(false, true, true, ',', expandSelected);
@@ -338,7 +366,16 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                         <MenuList>
                             <MenuItem
                                 paddingLeft={8}
-                                onClick={goToPreviousMatch}
+                                onClick={goToParent}
+                                isDisabled={!declaration}
+                                icon={<FaArrowUp />}
+                                command="Ctrl+Up"
+                            >
+                                Go to Parent
+                            </MenuItem>
+                            <MenuItem
+                                paddingLeft={8}
+                                onClick={() => goToPreviousMatch({ onSameLevel: false })}
                                 isDisabled={!declaration}
                                 icon={<FaArrowLeft />}
                                 command="Ctrl+Left"
@@ -347,7 +384,7 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                             </MenuItem>
                             <MenuItem
                                 paddingLeft={8}
-                                onClick={goToNextMatch}
+                                onClick={() => goToNextMatch({ onSameLevel: false })}
                                 isDisabled={!declaration}
                                 icon={<FaArrowRight />}
                                 command="Ctrl+Right"
@@ -356,12 +393,21 @@ export const MenuBar: React.FC<MenuBarProps> = function ({ displayInferErrors })
                             </MenuItem>
                             <MenuItem
                                 paddingLeft={8}
-                                onClick={goToParent}
+                                onClick={() => goToPreviousMatch({ onSameLevel: true })}
                                 isDisabled={!declaration}
-                                icon={<FaArrowUp />}
-                                command="Ctrl+Up"
+                                icon={<FaAngleDoubleLeft />}
+                                command="Ctrl+Alt+Left"
                             >
-                                Go to Parent
+                                Go to Previous Match on Same Level
+                            </MenuItem>
+                            <MenuItem
+                                paddingLeft={8}
+                                onClick={() => goToNextMatch({ onSameLevel: true })}
+                                isDisabled={!declaration}
+                                icon={<FaAngleDoubleRight />}
+                                command="Ctrl+Alt+Right"
+                            >
+                                Go to Next Match on Same Level
                             </MenuItem>
 
                             <MenuDivider />
@@ -500,13 +546,17 @@ const getPreviousElementPath = function (
     filter: AbstractPythonFilter,
     annotations: AnnotationStore,
     usages: UsageCountStore,
+    onSameLevel: boolean,
 ): { id: string; wrappedAround: boolean } {
     const startIndex = getIndex(declarations, start);
     let currentIndex = getPreviousIndex(declarations, startIndex);
     let current = getElementAtIndex(declarations, currentIndex);
     let wrappedAround = startIndex !== null && currentIndex !== null && currentIndex >= startIndex;
     while (current !== null && current !== start) {
-        if (filter.shouldKeepDeclaration(current, annotations, usages)) {
+        if (
+            (current.constructor === start.constructor || !onSameLevel) &&
+            filter.shouldKeepDeclaration(current, annotations, usages)
+        ) {
             return { id: current.id, wrappedAround };
         }
 
@@ -526,13 +576,17 @@ const getNextElementPath = function (
     filter: AbstractPythonFilter,
     annotations: AnnotationStore,
     usages: UsageCountStore,
+    onSameLevel: boolean,
 ): { id: string; wrappedAround: boolean } {
     const startIndex = getIndex(declarations, start);
     let currentIndex = getNextIndex(declarations, startIndex);
     let current = getElementAtIndex(declarations, currentIndex);
     let wrappedAround = startIndex !== null && currentIndex !== null && currentIndex <= startIndex;
     while (current !== null && current !== start) {
-        if (filter.shouldKeepDeclaration(current, annotations, usages)) {
+        if (
+            (current.constructor === start.constructor || !onSameLevel) &&
+            filter.shouldKeepDeclaration(current, annotations, usages)
+        ) {
             return { id: current.id, wrappedAround };
         }
 

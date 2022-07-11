@@ -17,6 +17,7 @@ export const mergeAnnotationStores = function (mine: AnnotationStore, theirs: An
             theirs.descriptionAnnotations,
         ),
         enumAnnotations: defaultMergeOneAnnotationType(mine.enumAnnotations, theirs.enumAnnotations),
+        expertAnnotations: defaultMergeOneAnnotationType(mine.expertAnnotations, theirs.expertAnnotations),
         groupAnnotations: mergeGroupAnnotations(mine, theirs),
         moveAnnotations: defaultMergeOneAnnotationType(mine.moveAnnotations, theirs.moveAnnotations),
         pureAnnotations: defaultMergeOneAnnotationType(mine.pureAnnotations, theirs.pureAnnotations),

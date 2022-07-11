@@ -360,6 +360,19 @@ class StubCodeGeneratorTest {
                 .map { it.name }
                 .shouldContainExactly("testMethod")
         }
+
+        @Test
+        fun `should mark expert classes with annotation`() {
+            val pythonClass = PythonClass(
+                name = "testClass",
+                isExpert = true,
+            )
+
+            pythonClass
+                .toSdsClass()
+                .uniqueAnnotationCallOrNull(QualifiedName.create("Expert"))
+                .shouldNotBeNull()
+        }
     }
 
     @Nested
@@ -493,6 +506,19 @@ class StubCodeGeneratorTest {
             pythonFunction.toSdsFunction().asClue {
                 it.isStatic.shouldBeTrue()
             }
+        }
+
+        @Test
+        fun `should mark expert functions with annotation`() {
+            val pythonFunction = PythonFunction(
+                name = "testFunction",
+                isExpert = true,
+            )
+
+            pythonFunction
+                .toSdsFunction()
+                .uniqueAnnotationCallOrNull(QualifiedName.create("Expert"))
+                .shouldNotBeNull()
         }
 
         @Test
@@ -761,6 +787,20 @@ class StubCodeGeneratorTest {
                 .shouldNotBeNull()
                 .defaultValue
                 .shouldBeInstanceOf<SdsNull>()
+        }
+
+        @Test
+        fun `should mark expert parameters with annotation`() {
+            val pythonParameter = PythonParameter(
+                name = "testParameter",
+                isExpert = true,
+            )
+
+            pythonParameter
+                .toSdsParameterOrNull()
+                .shouldNotBeNull()
+                .uniqueAnnotationCallOrNull(QualifiedName.create("Expert"))
+                .shouldNotBeNull()
         }
     }
 

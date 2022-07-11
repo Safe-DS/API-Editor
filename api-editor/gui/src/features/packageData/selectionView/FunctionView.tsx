@@ -15,6 +15,7 @@ import { selectFilter, selectSorter } from '../../ui/uiSlice';
 import { selectUsages } from '../../usages/usageSlice';
 import { MissingAnnotationButton } from '../../annotations/MissingAnnotationButton';
 import { DataCopyButtons } from '../../annotations/DataCopyButtons';
+import { NonParameterUsageCounts } from './UsageCounts';
 
 interface FunctionViewProps {
     pythonFunction: PythonFunction;
@@ -43,6 +44,7 @@ export const FunctionView: React.FC<FunctionViewProps> = function ({ pythonFunct
                                 target={id}
                                 showCalledAfter={hasRemainingCalledAfters}
                                 showDescription
+                                showExpert
                                 showGroup={pythonFunction.explicitParameters().length >= 2}
                                 showMove={pythonFunction.containingModuleOrClass instanceof PythonModule}
                                 showPure
@@ -67,6 +69,8 @@ export const FunctionView: React.FC<FunctionViewProps> = function ({ pythonFunct
                     )}
                 </Box>
             </Stack>
+
+            <NonParameterUsageCounts declaration={pythonFunction} />
 
             <Stack spacing={4}>
                 <Heading as="h4" size="md">

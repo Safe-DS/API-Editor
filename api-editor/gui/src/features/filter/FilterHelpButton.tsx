@@ -131,10 +131,19 @@ export const FilterHelpButton = function () {
                                     Displays only elements that are annotated with the given type xy. Replace [type]
                                     with one of{' '}
                                     <em>
-                                        @boundary, @calledAfter, @description, @enum, @group, @move, @pure, @remove,
-                                        @renaming, @todo, @value
+                                        @boundary, @calledAfter, @description, @enum, @expert, @group, @move, @pure,
+                                        @remove, @renaming, @todo, @value
                                     </em>
                                     .
+                                </ChakraText>
+                            </ListItem>
+                            <ListItem>
+                                <ChakraText>
+                                    <strong>is:removed</strong>
+                                </ChakraText>
+                                <ChakraText>
+                                    Displays only elements that will be removed. These are either annotated with @remove
+                                    directly or have an ancestors with this annotation.
                                 </ChakraText>
                             </ListItem>
                             <ListItem>

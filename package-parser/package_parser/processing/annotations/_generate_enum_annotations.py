@@ -6,7 +6,7 @@ from package_parser.processing.annotations.model import (
     EnumPair,
     ValueAnnotation,
 )
-from package_parser.processing.api.model import API, EnumType, UnionType
+from package_parser.processing.api.model import API, EnumType
 
 from ._constants import autogen_author
 
@@ -33,13 +33,7 @@ def _generate_enum_annotations(api: API, annotations: AnnotationStore) -> None:
 
         pairs = []
         full_match = ""
-        if isinstance(parameter_type, UnionType):
-            for type_in_union in parameter_type.types:
-                if isinstance(type_in_union, EnumType):
-                    pairs = _enum_pairs(type_in_union)
-                    full_match = type_in_union.full_match
-
-        elif isinstance(parameter_type, EnumType):
+        if isinstance(parameter_type, EnumType):
             pairs = _enum_pairs(parameter_type)
             full_match = parameter_type.full_match
 

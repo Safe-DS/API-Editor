@@ -16,6 +16,7 @@ import { DoneFilter } from './DoneFilter';
 import { PythonParameterAssignment } from '../../packageData/model/PythonParameter';
 import { QualifiedNameStringFilter } from './QualifiedNameStringFilter';
 import { QualifiedNameRegexFilter } from './QualifiedNameRegexFilter';
+import { RemovedFilter } from './RemovedFilter';
 
 /**
  * Creates a filter from the given string. This method handles conjunctions, negations, and non-negated tokens.
@@ -85,6 +86,7 @@ const fixedFilters: { [name: string]: AbstractPythonFilter } = {
     'is:complete': new AnnotationFilter(AnnotationType.Complete), // Deliberate special case. It should be transparent to users it's an annotation.
     'annotation:@description': new AnnotationFilter(AnnotationType.Description),
     'annotation:@enum': new AnnotationFilter(AnnotationType.Enum),
+    'annotation:@expert': new AnnotationFilter(AnnotationType.Expert),
     'annotation:@group': new AnnotationFilter(AnnotationType.Group),
     'annotation:@move': new AnnotationFilter(AnnotationType.Move),
     'annotation:@pure': new AnnotationFilter(AnnotationType.Pure),
@@ -92,6 +94,9 @@ const fixedFilters: { [name: string]: AbstractPythonFilter } = {
     'annotation:@rename': new AnnotationFilter(AnnotationType.Rename),
     'annotation:@todo': new AnnotationFilter(AnnotationType.Todo),
     'annotation:@value': new AnnotationFilter(AnnotationType.Value),
+
+    // Removed
+    'is:removed': new RemovedFilter(),
 };
 
 /**

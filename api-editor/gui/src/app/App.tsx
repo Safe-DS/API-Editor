@@ -70,6 +70,7 @@ import { ValueForm } from '../features/annotations/forms/ValueForm';
 import { AnnotationStore, CalledAfterTarget } from '../features/annotations/versioning/AnnotationStoreV2';
 import { RemoveForm } from '../features/annotations/forms/RemoveForm';
 import { PureForm } from '../features/annotations/forms/PureForm';
+import { ExpertForm } from '../features/annotations/forms/ExpertForm';
 
 export const App: React.FC = function () {
     useIndexedDB();
@@ -140,6 +141,9 @@ export const App: React.FC = function () {
                             <DescriptionForm target={userActionTarget} />
                         )}
                     {currentUserAction.type === 'enum' && <EnumForm target={userActionTarget || rawPythonPackage} />}
+                    {currentUserAction.type === 'expert' && (
+                        <ExpertForm target={userActionTarget || rawPythonPackage} />
+                    )}
                     {currentUserAction.type === 'group' && (
                         <GroupForm
                             target={userActionTarget || rawPythonPackage}
@@ -194,14 +198,7 @@ export const App: React.FC = function () {
                     </Box>
                 </GridItem>
                 {showStatistics && (
-                    <GridItem
-                        gridArea="rightPane"
-                        overflow="auto"
-                        w="20vw"
-                        borderLeft={1}
-                        layerStyle="subtleBorder"
-                        resize="horizontal"
-                    >
+                    <GridItem gridArea="rightPane" overflow="auto" w="20vw" borderLeft={1} layerStyle="subtleBorder">
                         <Box padding={4}>
                             <StatisticsView />
                         </Box>

@@ -758,23 +758,6 @@
                 }
             ]
         },
-        "sklearn/sklearn.cluster._bicluster/SpectralBiclustering/__init__/init": {
-            "target": "sklearn/sklearn.cluster._bicluster/SpectralBiclustering/__init__/init",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'k-means++', 'random'}.",
-            "enumName": "Init",
-            "pairs": [
-                {
-                    "stringValue": "k-means++",
-                    "instanceName": "K_MEANS"
-                },
-                {
-                    "stringValue": "random",
-                    "instanceName": "RANDOM"
-                }
-            ]
-        },
         "sklearn/sklearn.cluster._bicluster/SpectralCoclustering/__init__/svd_method": {
             "target": "sklearn/sklearn.cluster._bicluster/SpectralCoclustering/__init__/svd_method",
             "authors": ["$autogen$"],
@@ -789,23 +772,6 @@
                 {
                     "stringValue": "randomized",
                     "instanceName": "RANDOMIZED"
-                }
-            ]
-        },
-        "sklearn/sklearn.cluster._bisect_k_means/BisectingKMeans/__init__/init": {
-            "target": "sklearn/sklearn.cluster._bisect_k_means/BisectingKMeans/__init__/init",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'k-means++', 'random'}.",
-            "enumName": "Init",
-            "pairs": [
-                {
-                    "stringValue": "k-means++",
-                    "instanceName": "K_MEANS"
-                },
-                {
-                    "stringValue": "random",
-                    "instanceName": "RANDOM"
                 }
             ]
         },
@@ -893,23 +859,6 @@
                 }
             ]
         },
-        "sklearn/sklearn.cluster._kmeans/KMeans/__init__/init": {
-            "target": "sklearn/sklearn.cluster._kmeans/KMeans/__init__/init",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'k-means++', 'random'}.",
-            "enumName": "Init",
-            "pairs": [
-                {
-                    "stringValue": "k-means++",
-                    "instanceName": "K_MEANS"
-                },
-                {
-                    "stringValue": "random",
-                    "instanceName": "RANDOM"
-                }
-            ]
-        },
         "sklearn/sklearn.cluster._kmeans/KMeans/__init__/algorithm": {
             "target": "sklearn/sklearn.cluster._kmeans/KMeans/__init__/algorithm",
             "authors": ["$autogen$"],
@@ -932,57 +881,6 @@
                 {
                     "stringValue": "lloyd",
                     "instanceName": "LLOYD"
-                }
-            ]
-        },
-        "sklearn/sklearn.cluster._kmeans/MiniBatchKMeans/__init__/init": {
-            "target": "sklearn/sklearn.cluster._kmeans/MiniBatchKMeans/__init__/init",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'k-means++', 'random'}.",
-            "enumName": "Init",
-            "pairs": [
-                {
-                    "stringValue": "k-means++",
-                    "instanceName": "K_MEANS"
-                },
-                {
-                    "stringValue": "random",
-                    "instanceName": "RANDOM"
-                }
-            ]
-        },
-        "sklearn/sklearn.cluster._kmeans/_BaseKMeans/_init_centroids/init": {
-            "target": "sklearn/sklearn.cluster._kmeans/_BaseKMeans/_init_centroids/init",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'k-means++', 'random'}.",
-            "enumName": "Init",
-            "pairs": [
-                {
-                    "stringValue": "k-means++",
-                    "instanceName": "K_MEANS"
-                },
-                {
-                    "stringValue": "random",
-                    "instanceName": "RANDOM"
-                }
-            ]
-        },
-        "sklearn/sklearn.cluster._kmeans/k_means/init": {
-            "target": "sklearn/sklearn.cluster._kmeans/k_means/init",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'k-means++', 'random'}.",
-            "enumName": "Init",
-            "pairs": [
-                {
-                    "stringValue": "k-means++",
-                    "instanceName": "K_MEANS"
-                },
-                {
-                    "stringValue": "random",
-                    "instanceName": "RANDOM"
                 }
             ]
         },
@@ -1142,40 +1040,6 @@
                 {
                     "stringValue": "kmeans",
                     "instanceName": "KMEANS"
-                }
-            ]
-        },
-        "sklearn/sklearn.compose._column_transformer/ColumnTransformer/__init__/remainder": {
-            "target": "sklearn/sklearn.compose._column_transformer/ColumnTransformer/__init__/remainder",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'drop', 'passthrough'}.",
-            "enumName": "Remainder",
-            "pairs": [
-                {
-                    "stringValue": "drop",
-                    "instanceName": "DROP"
-                },
-                {
-                    "stringValue": "passthrough",
-                    "instanceName": "PASSTHROUGH"
-                }
-            ]
-        },
-        "sklearn/sklearn.compose._column_transformer/make_column_transformer/remainder": {
-            "target": "sklearn/sklearn.compose._column_transformer/make_column_transformer/remainder",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'drop', 'passthrough'}.",
-            "enumName": "Remainder",
-            "pairs": [
-                {
-                    "stringValue": "drop",
-                    "instanceName": "DROP"
-                },
-                {
-                    "stringValue": "passthrough",
-                    "instanceName": "PASSTHROUGH"
                 }
             ]
         },
@@ -1366,23 +1230,6 @@
                 {
                     "stringValue": "train",
                     "instanceName": "TRAIN"
-                }
-            ]
-        },
-        "sklearn/sklearn.datasets._samples_generator/make_multilabel_classification/return_indicator": {
-            "target": "sklearn/sklearn.datasets._samples_generator/make_multilabel_classification/return_indicator",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'dense', 'sparse'}.",
-            "enumName": "ReturnIndicator",
-            "pairs": [
-                {
-                    "stringValue": "dense",
-                    "instanceName": "DENSE"
-                },
-                {
-                    "stringValue": "sparse",
-                    "instanceName": "SPARSE"
                 }
             ]
         },
@@ -1692,27 +1539,6 @@
                 }
             ]
         },
-        "sklearn/sklearn.decomposition._fastica/FastICA/__init__/fun": {
-            "target": "sklearn/sklearn.decomposition._fastica/FastICA/__init__/fun",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'logcosh', 'exp', 'cube'}.",
-            "enumName": "Fun",
-            "pairs": [
-                {
-                    "stringValue": "cube",
-                    "instanceName": "CUBE"
-                },
-                {
-                    "stringValue": "exp",
-                    "instanceName": "EXP"
-                },
-                {
-                    "stringValue": "logcosh",
-                    "instanceName": "LOGCOSH"
-                }
-            ]
-        },
         "sklearn/sklearn.decomposition._fastica/fastica/algorithm": {
             "target": "sklearn/sklearn.decomposition._fastica/fastica/algorithm",
             "authors": ["$autogen$"],
@@ -1727,27 +1553,6 @@
                 {
                     "stringValue": "parallel",
                     "instanceName": "PARALLEL"
-                }
-            ]
-        },
-        "sklearn/sklearn.decomposition._fastica/fastica/fun": {
-            "target": "sklearn/sklearn.decomposition._fastica/fastica/fun",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'logcosh', 'exp', 'cube'}.",
-            "enumName": "Fun",
-            "pairs": [
-                {
-                    "stringValue": "cube",
-                    "instanceName": "CUBE"
-                },
-                {
-                    "stringValue": "exp",
-                    "instanceName": "EXP"
-                },
-                {
-                    "stringValue": "logcosh",
-                    "instanceName": "LOGCOSH"
                 }
             ]
         },
@@ -1855,27 +1660,6 @@
                 }
             ]
         },
-        "sklearn/sklearn.decomposition._nmf/MiniBatchNMF/__init__/beta_loss": {
-            "target": "sklearn/sklearn.decomposition._nmf/MiniBatchNMF/__init__/beta_loss",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'frobenius', 'kullback-leibler', 'itakura-saito'}.",
-            "enumName": "BetaLoss",
-            "pairs": [
-                {
-                    "stringValue": "frobenius",
-                    "instanceName": "FROBENIUS"
-                },
-                {
-                    "stringValue": "itakura-saito",
-                    "instanceName": "ITAKURA_SAITO"
-                },
-                {
-                    "stringValue": "kullback-leibler",
-                    "instanceName": "KULLBACK_LEIBLER"
-                }
-            ]
-        },
         "sklearn/sklearn.decomposition._nmf/NMF/__init__/init": {
             "target": "sklearn/sklearn.decomposition._nmf/NMF/__init__/init",
             "authors": ["$autogen$"],
@@ -1922,27 +1706,6 @@
                 }
             ]
         },
-        "sklearn/sklearn.decomposition._nmf/NMF/__init__/beta_loss": {
-            "target": "sklearn/sklearn.decomposition._nmf/NMF/__init__/beta_loss",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'frobenius', 'kullback-leibler', 'itakura-saito'}.",
-            "enumName": "BetaLoss",
-            "pairs": [
-                {
-                    "stringValue": "frobenius",
-                    "instanceName": "FROBENIUS"
-                },
-                {
-                    "stringValue": "itakura-saito",
-                    "instanceName": "ITAKURA_SAITO"
-                },
-                {
-                    "stringValue": "kullback-leibler",
-                    "instanceName": "KULLBACK_LEIBLER"
-                }
-            ]
-        },
         "sklearn/sklearn.decomposition._nmf/NMF/__init__/regularization": {
             "target": "sklearn/sklearn.decomposition._nmf/NMF/__init__/regularization",
             "authors": ["$autogen$"],
@@ -1961,48 +1724,6 @@
                 {
                     "stringValue": "transformation",
                     "instanceName": "TRANSFORMATION"
-                }
-            ]
-        },
-        "sklearn/sklearn.decomposition._nmf/_beta_divergence/beta": {
-            "target": "sklearn/sklearn.decomposition._nmf/_beta_divergence/beta",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'frobenius', 'kullback-leibler', 'itakura-saito'}.",
-            "enumName": "Beta",
-            "pairs": [
-                {
-                    "stringValue": "frobenius",
-                    "instanceName": "FROBENIUS"
-                },
-                {
-                    "stringValue": "itakura-saito",
-                    "instanceName": "ITAKURA_SAITO"
-                },
-                {
-                    "stringValue": "kullback-leibler",
-                    "instanceName": "KULLBACK_LEIBLER"
-                }
-            ]
-        },
-        "sklearn/sklearn.decomposition._nmf/_fit_multiplicative_update/beta_loss": {
-            "target": "sklearn/sklearn.decomposition._nmf/_fit_multiplicative_update/beta_loss",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'frobenius', 'kullback-leibler', 'itakura-saito'}.",
-            "enumName": "BetaLoss",
-            "pairs": [
-                {
-                    "stringValue": "frobenius",
-                    "instanceName": "FROBENIUS"
-                },
-                {
-                    "stringValue": "itakura-saito",
-                    "instanceName": "ITAKURA_SAITO"
-                },
-                {
-                    "stringValue": "kullback-leibler",
-                    "instanceName": "KULLBACK_LEIBLER"
                 }
             ]
         },
@@ -2074,27 +1795,6 @@
                 {
                     "stringValue": "mu",
                     "instanceName": "MU"
-                }
-            ]
-        },
-        "sklearn/sklearn.decomposition._nmf/non_negative_factorization/beta_loss": {
-            "target": "sklearn/sklearn.decomposition._nmf/non_negative_factorization/beta_loss",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'frobenius', 'kullback-leibler', 'itakura-saito'}.",
-            "enumName": "BetaLoss",
-            "pairs": [
-                {
-                    "stringValue": "frobenius",
-                    "instanceName": "FROBENIUS"
-                },
-                {
-                    "stringValue": "itakura-saito",
-                    "instanceName": "ITAKURA_SAITO"
-                },
-                {
-                    "stringValue": "kullback-leibler",
-                    "instanceName": "KULLBACK_LEIBLER"
                 }
             ]
         },
@@ -2291,40 +1991,6 @@
                 }
             ]
         },
-        "sklearn/sklearn.ensemble._forest/ExtraTreesClassifier/__init__/max_features": {
-            "target": "sklearn/sklearn.ensemble._forest/ExtraTreesClassifier/__init__/max_features",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {\"sqrt\", \"log2\", None}.",
-            "enumName": "MaxFeatures",
-            "pairs": [
-                {
-                    "stringValue": "log2",
-                    "instanceName": "LOG2"
-                },
-                {
-                    "stringValue": "sqrt",
-                    "instanceName": "SQRT"
-                }
-            ]
-        },
-        "sklearn/sklearn.ensemble._forest/ExtraTreesClassifier/__init__/class_weight": {
-            "target": "sklearn/sklearn.ensemble._forest/ExtraTreesClassifier/__init__/class_weight",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {\"balanced\", \"balanced_subsample\"}.",
-            "enumName": "ClassWeight",
-            "pairs": [
-                {
-                    "stringValue": "balanced",
-                    "instanceName": "BALANCED"
-                },
-                {
-                    "stringValue": "balanced_subsample",
-                    "instanceName": "BALANCED_SUBSAMPLE"
-                }
-            ]
-        },
         "sklearn/sklearn.ensemble._forest/ExtraTreesRegressor/__init__/criterion": {
             "target": "sklearn/sklearn.ensemble._forest/ExtraTreesRegressor/__init__/criterion",
             "authors": ["$autogen$"],
@@ -2339,23 +2005,6 @@
                 {
                     "stringValue": "squared_error",
                     "instanceName": "SQUARED_ERROR"
-                }
-            ]
-        },
-        "sklearn/sklearn.ensemble._forest/ExtraTreesRegressor/__init__/max_features": {
-            "target": "sklearn/sklearn.ensemble._forest/ExtraTreesRegressor/__init__/max_features",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {\"sqrt\", \"log2\", None}.",
-            "enumName": "MaxFeatures",
-            "pairs": [
-                {
-                    "stringValue": "log2",
-                    "instanceName": "LOG2"
-                },
-                {
-                    "stringValue": "sqrt",
-                    "instanceName": "SQRT"
                 }
             ]
         },
@@ -2380,40 +2029,6 @@
                 }
             ]
         },
-        "sklearn/sklearn.ensemble._forest/RandomForestClassifier/__init__/max_features": {
-            "target": "sklearn/sklearn.ensemble._forest/RandomForestClassifier/__init__/max_features",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {\"sqrt\", \"log2\", None}.",
-            "enumName": "MaxFeatures",
-            "pairs": [
-                {
-                    "stringValue": "log2",
-                    "instanceName": "LOG2"
-                },
-                {
-                    "stringValue": "sqrt",
-                    "instanceName": "SQRT"
-                }
-            ]
-        },
-        "sklearn/sklearn.ensemble._forest/RandomForestClassifier/__init__/class_weight": {
-            "target": "sklearn/sklearn.ensemble._forest/RandomForestClassifier/__init__/class_weight",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {\"balanced\", \"balanced_subsample\"}.",
-            "enumName": "ClassWeight",
-            "pairs": [
-                {
-                    "stringValue": "balanced",
-                    "instanceName": "BALANCED"
-                },
-                {
-                    "stringValue": "balanced_subsample",
-                    "instanceName": "BALANCED_SUBSAMPLE"
-                }
-            ]
-        },
         "sklearn/sklearn.ensemble._forest/RandomForestRegressor/__init__/criterion": {
             "target": "sklearn/sklearn.ensemble._forest/RandomForestRegressor/__init__/criterion",
             "authors": ["$autogen$"],
@@ -2432,23 +2047,6 @@
                 {
                     "stringValue": "squared_error",
                     "instanceName": "SQUARED_ERROR"
-                }
-            ]
-        },
-        "sklearn/sklearn.ensemble._forest/RandomForestRegressor/__init__/max_features": {
-            "target": "sklearn/sklearn.ensemble._forest/RandomForestRegressor/__init__/max_features",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {\"sqrt\", \"log2\", None}.",
-            "enumName": "MaxFeatures",
-            "pairs": [
-                {
-                    "stringValue": "log2",
-                    "instanceName": "LOG2"
-                },
-                {
-                    "stringValue": "sqrt",
-                    "instanceName": "SQRT"
                 }
             ]
         },
@@ -2491,27 +2089,6 @@
                 {
                     "stringValue": "squared_error",
                     "instanceName": "SQUARED_ERROR"
-                }
-            ]
-        },
-        "sklearn/sklearn.ensemble._gb/GradientBoostingClassifier/__init__/max_features": {
-            "target": "sklearn/sklearn.ensemble._gb/GradientBoostingClassifier/__init__/max_features",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'auto', 'sqrt', 'log2'}.",
-            "enumName": "MaxFeatures",
-            "pairs": [
-                {
-                    "stringValue": "auto",
-                    "instanceName": "AUTO"
-                },
-                {
-                    "stringValue": "log2",
-                    "instanceName": "LOG2"
-                },
-                {
-                    "stringValue": "sqrt",
-                    "instanceName": "SQRT"
                 }
             ]
         },
@@ -2558,27 +2135,6 @@
                 {
                     "stringValue": "squared_error",
                     "instanceName": "SQUARED_ERROR"
-                }
-            ]
-        },
-        "sklearn/sklearn.ensemble._gb/GradientBoostingRegressor/__init__/max_features": {
-            "target": "sklearn/sklearn.ensemble._gb/GradientBoostingRegressor/__init__/max_features",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'auto', 'sqrt', 'log2'}.",
-            "enumName": "MaxFeatures",
-            "pairs": [
-                {
-                    "stringValue": "auto",
-                    "instanceName": "AUTO"
-                },
-                {
-                    "stringValue": "log2",
-                    "instanceName": "LOG2"
-                },
-                {
-                    "stringValue": "sqrt",
-                    "instanceName": "SQRT"
                 }
             ]
         },
@@ -2771,40 +2327,6 @@
                 }
             ]
         },
-        "sklearn/sklearn.feature_extraction.text/CountVectorizer/__init__/stop_words": {
-            "target": "sklearn/sklearn.feature_extraction.text/CountVectorizer/__init__/stop_words",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'english'}.",
-            "enumName": "StopWords",
-            "pairs": [
-                {
-                    "stringValue": "english",
-                    "instanceName": "ENGLISH"
-                }
-            ]
-        },
-        "sklearn/sklearn.feature_extraction.text/CountVectorizer/__init__/analyzer": {
-            "target": "sklearn/sklearn.feature_extraction.text/CountVectorizer/__init__/analyzer",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'word', 'char', 'char_wb'}.",
-            "enumName": "Analyzer",
-            "pairs": [
-                {
-                    "stringValue": "char",
-                    "instanceName": "CHAR"
-                },
-                {
-                    "stringValue": "char_wb",
-                    "instanceName": "CHAR_WB"
-                },
-                {
-                    "stringValue": "word",
-                    "instanceName": "WORD"
-                }
-            ]
-        },
         "sklearn/sklearn.feature_extraction.text/HashingVectorizer/__init__/input": {
             "target": "sklearn/sklearn.feature_extraction.text/HashingVectorizer/__init__/input",
             "authors": ["$autogen$"],
@@ -2861,40 +2383,6 @@
                 {
                     "stringValue": "unicode",
                     "instanceName": "UNICODE"
-                }
-            ]
-        },
-        "sklearn/sklearn.feature_extraction.text/HashingVectorizer/__init__/stop_words": {
-            "target": "sklearn/sklearn.feature_extraction.text/HashingVectorizer/__init__/stop_words",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'english'}.",
-            "enumName": "StopWords",
-            "pairs": [
-                {
-                    "stringValue": "english",
-                    "instanceName": "ENGLISH"
-                }
-            ]
-        },
-        "sklearn/sklearn.feature_extraction.text/HashingVectorizer/__init__/analyzer": {
-            "target": "sklearn/sklearn.feature_extraction.text/HashingVectorizer/__init__/analyzer",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'word', 'char', 'char_wb'}.",
-            "enumName": "Analyzer",
-            "pairs": [
-                {
-                    "stringValue": "char",
-                    "instanceName": "CHAR"
-                },
-                {
-                    "stringValue": "char_wb",
-                    "instanceName": "CHAR_WB"
-                },
-                {
-                    "stringValue": "word",
-                    "instanceName": "WORD"
                 }
             ]
         },
@@ -2988,40 +2476,6 @@
                 {
                     "stringValue": "unicode",
                     "instanceName": "UNICODE"
-                }
-            ]
-        },
-        "sklearn/sklearn.feature_extraction.text/TfidfVectorizer/__init__/analyzer": {
-            "target": "sklearn/sklearn.feature_extraction.text/TfidfVectorizer/__init__/analyzer",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'word', 'char', 'char_wb'}.",
-            "enumName": "Analyzer",
-            "pairs": [
-                {
-                    "stringValue": "char",
-                    "instanceName": "CHAR"
-                },
-                {
-                    "stringValue": "char_wb",
-                    "instanceName": "CHAR_WB"
-                },
-                {
-                    "stringValue": "word",
-                    "instanceName": "WORD"
-                }
-            ]
-        },
-        "sklearn/sklearn.feature_extraction.text/TfidfVectorizer/__init__/stop_words": {
-            "target": "sklearn/sklearn.feature_extraction.text/TfidfVectorizer/__init__/stop_words",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'english'}.",
-            "enumName": "StopWords",
-            "pairs": [
-                {
-                    "stringValue": "english",
-                    "instanceName": "ENGLISH"
                 }
             ]
         },
@@ -3144,51 +2598,6 @@
                 }
             ]
         },
-        "sklearn/sklearn.gaussian_process.kernels/PairwiseKernel/__init__/metric": {
-            "target": "sklearn/sklearn.gaussian_process.kernels/PairwiseKernel/__init__/metric",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {\"linear\", \"additive_chi2\", \"chi2\", \"poly\", \"polynomial\", \"rbf\", \"laplacian\", \"sigmoid\", \"cosine\"}.",
-            "enumName": "Metric",
-            "pairs": [
-                {
-                    "stringValue": "additive_chi2",
-                    "instanceName": "ADDITIVE_CHI2"
-                },
-                {
-                    "stringValue": "chi2",
-                    "instanceName": "CHI2"
-                },
-                {
-                    "stringValue": "cosine",
-                    "instanceName": "COSINE"
-                },
-                {
-                    "stringValue": "laplacian",
-                    "instanceName": "LAPLACIAN"
-                },
-                {
-                    "stringValue": "linear",
-                    "instanceName": "LINEAR"
-                },
-                {
-                    "stringValue": "poly",
-                    "instanceName": "POLY"
-                },
-                {
-                    "stringValue": "polynomial",
-                    "instanceName": "POLYNOMIAL"
-                },
-                {
-                    "stringValue": "rbf",
-                    "instanceName": "RBF"
-                },
-                {
-                    "stringValue": "sigmoid",
-                    "instanceName": "SIGMOID"
-                }
-            ]
-        },
         "sklearn/sklearn.impute._base/MissingIndicator/__init__/features": {
             "target": "sklearn/sklearn.impute._base/MissingIndicator/__init__/features",
             "authors": ["$autogen$"],
@@ -3257,36 +2666,6 @@
                 {
                     "stringValue": "roman",
                     "instanceName": "ROMAN"
-                }
-            ]
-        },
-        "sklearn/sklearn.impute._knn/KNNImputer/__init__/weights": {
-            "target": "sklearn/sklearn.impute._knn/KNNImputer/__init__/weights",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'uniform', 'distance'}.",
-            "enumName": "Weights",
-            "pairs": [
-                {
-                    "stringValue": "distance",
-                    "instanceName": "DISTANCE"
-                },
-                {
-                    "stringValue": "uniform",
-                    "instanceName": "UNIFORM"
-                }
-            ]
-        },
-        "sklearn/sklearn.impute._knn/KNNImputer/__init__/metric": {
-            "target": "sklearn/sklearn.impute._knn/KNNImputer/__init__/metric",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'nan_euclidean'}.",
-            "enumName": "Metric",
-            "pairs": [
-                {
-                    "stringValue": "nan_euclidean",
-                    "instanceName": "NAN_EUCLIDEAN"
                 }
             ]
         },
@@ -3445,27 +2824,6 @@
                 }
             ]
         },
-        "sklearn/sklearn.inspection._plot.partial_dependence/PartialDependenceDisplay/__init__/kind": {
-            "target": "sklearn/sklearn.inspection._plot.partial_dependence/PartialDependenceDisplay/__init__/kind",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'average', 'individual', 'both'}.",
-            "enumName": "Kind",
-            "pairs": [
-                {
-                    "stringValue": "average",
-                    "instanceName": "AVERAGE"
-                },
-                {
-                    "stringValue": "both",
-                    "instanceName": "BOTH"
-                },
-                {
-                    "stringValue": "individual",
-                    "instanceName": "INDIVIDUAL"
-                }
-            ]
-        },
         "sklearn/sklearn.inspection._plot.partial_dependence/PartialDependenceDisplay/from_estimator/response_method": {
             "target": "sklearn/sklearn.inspection._plot.partial_dependence/PartialDependenceDisplay/from_estimator/response_method",
             "authors": ["$autogen$"],
@@ -3526,27 +2884,6 @@
                 {
                     "stringValue": "predict_proba",
                     "instanceName": "PREDICT_PROBA"
-                }
-            ]
-        },
-        "sklearn/sklearn.inspection._plot.partial_dependence/plot_partial_dependence/kind": {
-            "target": "sklearn/sklearn.inspection._plot.partial_dependence/plot_partial_dependence/kind",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'average', 'individual', 'both'}.",
-            "enumName": "Kind",
-            "pairs": [
-                {
-                    "stringValue": "average",
-                    "instanceName": "AVERAGE"
-                },
-                {
-                    "stringValue": "both",
-                    "instanceName": "BOTH"
-                },
-                {
-                    "stringValue": "individual",
-                    "instanceName": "INDIVIDUAL"
                 }
             ]
         },
@@ -4684,31 +4021,6 @@
                 }
             ]
         },
-        "sklearn/sklearn.manifold._spectral_embedding/SpectralEmbedding/__init__/affinity": {
-            "target": "sklearn/sklearn.manifold._spectral_embedding/SpectralEmbedding/__init__/affinity",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'nearest_neighbors', 'rbf', 'precomputed', 'precomputed_nearest_neighbors'}.",
-            "enumName": "Affinity",
-            "pairs": [
-                {
-                    "stringValue": "nearest_neighbors",
-                    "instanceName": "NEAREST_NEIGHBORS"
-                },
-                {
-                    "stringValue": "precomputed",
-                    "instanceName": "PRECOMPUTED"
-                },
-                {
-                    "stringValue": "precomputed_nearest_neighbors",
-                    "instanceName": "PRECOMPUTED_NEAREST_NEIGHBORS"
-                },
-                {
-                    "stringValue": "rbf",
-                    "instanceName": "RBF"
-                }
-            ]
-        },
         "sklearn/sklearn.manifold._spectral_embedding/SpectralEmbedding/__init__/eigen_solver": {
             "target": "sklearn/sklearn.manifold._spectral_embedding/SpectralEmbedding/__init__/eigen_solver",
             "authors": ["$autogen$"],
@@ -4748,23 +4060,6 @@
                 {
                     "stringValue": "lobpcg",
                     "instanceName": "LOBPCG"
-                }
-            ]
-        },
-        "sklearn/sklearn.manifold._t_sne/TSNE/__init__/init": {
-            "target": "sklearn/sklearn.manifold._t_sne/TSNE/__init__/init",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'random', 'pca'}.",
-            "enumName": "Init",
-            "pairs": [
-                {
-                    "stringValue": "pca",
-                    "instanceName": "PCA"
-                },
-                {
-                    "stringValue": "random",
-                    "instanceName": "RANDOM"
                 }
             ]
         },
@@ -4848,156 +4143,11 @@
                 }
             ]
         },
-        "sklearn/sklearn.metrics._classification/f1_score/average": {
-            "target": "sklearn/sklearn.metrics._classification/f1_score/average",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'micro', 'macro', 'samples', 'weighted', 'binary'}.",
-            "enumName": "Average",
-            "pairs": [
-                {
-                    "stringValue": "binary",
-                    "instanceName": "BINARY"
-                },
-                {
-                    "stringValue": "macro",
-                    "instanceName": "MACRO"
-                },
-                {
-                    "stringValue": "micro",
-                    "instanceName": "MICRO"
-                },
-                {
-                    "stringValue": "samples",
-                    "instanceName": "SAMPLES"
-                },
-                {
-                    "stringValue": "weighted",
-                    "instanceName": "WEIGHTED"
-                }
-            ]
-        },
-        "sklearn/sklearn.metrics._classification/fbeta_score/average": {
-            "target": "sklearn/sklearn.metrics._classification/fbeta_score/average",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'micro', 'macro', 'samples', 'weighted', 'binary'}.",
-            "enumName": "Average",
-            "pairs": [
-                {
-                    "stringValue": "binary",
-                    "instanceName": "BINARY"
-                },
-                {
-                    "stringValue": "macro",
-                    "instanceName": "MACRO"
-                },
-                {
-                    "stringValue": "micro",
-                    "instanceName": "MICRO"
-                },
-                {
-                    "stringValue": "samples",
-                    "instanceName": "SAMPLES"
-                },
-                {
-                    "stringValue": "weighted",
-                    "instanceName": "WEIGHTED"
-                }
-            ]
-        },
-        "sklearn/sklearn.metrics._classification/jaccard_score/average": {
-            "target": "sklearn/sklearn.metrics._classification/jaccard_score/average",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'micro', 'macro', 'samples', 'weighted', 'binary'}.",
-            "enumName": "Average",
-            "pairs": [
-                {
-                    "stringValue": "binary",
-                    "instanceName": "BINARY"
-                },
-                {
-                    "stringValue": "macro",
-                    "instanceName": "MACRO"
-                },
-                {
-                    "stringValue": "micro",
-                    "instanceName": "MICRO"
-                },
-                {
-                    "stringValue": "samples",
-                    "instanceName": "SAMPLES"
-                },
-                {
-                    "stringValue": "weighted",
-                    "instanceName": "WEIGHTED"
-                }
-            ]
-        },
         "sklearn/sklearn.metrics._classification/precision_recall_fscore_support/average": {
             "target": "sklearn/sklearn.metrics._classification/precision_recall_fscore_support/average",
             "authors": ["$autogen$"],
             "reviewers": [],
             "comment": "I turned this into an enum because the type in the documentation contained {'binary', 'micro', 'macro', 'samples', 'weighted'}.",
-            "enumName": "Average",
-            "pairs": [
-                {
-                    "stringValue": "binary",
-                    "instanceName": "BINARY"
-                },
-                {
-                    "stringValue": "macro",
-                    "instanceName": "MACRO"
-                },
-                {
-                    "stringValue": "micro",
-                    "instanceName": "MICRO"
-                },
-                {
-                    "stringValue": "samples",
-                    "instanceName": "SAMPLES"
-                },
-                {
-                    "stringValue": "weighted",
-                    "instanceName": "WEIGHTED"
-                }
-            ]
-        },
-        "sklearn/sklearn.metrics._classification/precision_score/average": {
-            "target": "sklearn/sklearn.metrics._classification/precision_score/average",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'micro', 'macro', 'samples', 'weighted', 'binary'}.",
-            "enumName": "Average",
-            "pairs": [
-                {
-                    "stringValue": "binary",
-                    "instanceName": "BINARY"
-                },
-                {
-                    "stringValue": "macro",
-                    "instanceName": "MACRO"
-                },
-                {
-                    "stringValue": "micro",
-                    "instanceName": "MICRO"
-                },
-                {
-                    "stringValue": "samples",
-                    "instanceName": "SAMPLES"
-                },
-                {
-                    "stringValue": "weighted",
-                    "instanceName": "WEIGHTED"
-                }
-            ]
-        },
-        "sklearn/sklearn.metrics._classification/recall_score/average": {
-            "target": "sklearn/sklearn.metrics._classification/recall_score/average",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'micro', 'macro', 'samples', 'weighted', 'binary'}.",
             "enumName": "Average",
             "pairs": [
                 {
@@ -5043,23 +4193,6 @@
                 }
             ]
         },
-        "sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/from_estimator/xticks_rotation": {
-            "target": "sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/from_estimator/xticks_rotation",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'vertical', 'horizontal'}.",
-            "enumName": "XticksRotation",
-            "pairs": [
-                {
-                    "stringValue": "horizontal",
-                    "instanceName": "HORIZONTAL"
-                },
-                {
-                    "stringValue": "vertical",
-                    "instanceName": "VERTICAL"
-                }
-            ]
-        },
         "sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/from_predictions/normalize": {
             "target": "sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/from_predictions/normalize",
             "authors": ["$autogen$"],
@@ -5081,40 +4214,6 @@
                 }
             ]
         },
-        "sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/from_predictions/xticks_rotation": {
-            "target": "sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/from_predictions/xticks_rotation",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'vertical', 'horizontal'}.",
-            "enumName": "XticksRotation",
-            "pairs": [
-                {
-                    "stringValue": "horizontal",
-                    "instanceName": "HORIZONTAL"
-                },
-                {
-                    "stringValue": "vertical",
-                    "instanceName": "VERTICAL"
-                }
-            ]
-        },
-        "sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/plot/xticks_rotation": {
-            "target": "sklearn/sklearn.metrics._plot.confusion_matrix/ConfusionMatrixDisplay/plot/xticks_rotation",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'vertical', 'horizontal'}.",
-            "enumName": "XticksRotation",
-            "pairs": [
-                {
-                    "stringValue": "horizontal",
-                    "instanceName": "HORIZONTAL"
-                },
-                {
-                    "stringValue": "vertical",
-                    "instanceName": "VERTICAL"
-                }
-            ]
-        },
         "sklearn/sklearn.metrics._plot.confusion_matrix/plot_confusion_matrix/normalize": {
             "target": "sklearn/sklearn.metrics._plot.confusion_matrix/plot_confusion_matrix/normalize",
             "authors": ["$autogen$"],
@@ -5133,23 +4232,6 @@
                 {
                     "stringValue": "true",
                     "instanceName": "TRUE"
-                }
-            ]
-        },
-        "sklearn/sklearn.metrics._plot.confusion_matrix/plot_confusion_matrix/xticks_rotation": {
-            "target": "sklearn/sklearn.metrics._plot.confusion_matrix/plot_confusion_matrix/xticks_rotation",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'vertical', 'horizontal'}.",
-            "enumName": "XticksRotation",
-            "pairs": [
-                {
-                    "stringValue": "horizontal",
-                    "instanceName": "HORIZONTAL"
-                },
-                {
-                    "stringValue": "vertical",
-                    "instanceName": "VERTICAL"
                 }
             ]
         },
@@ -5313,56 +4395,6 @@
                 }
             ]
         },
-        "sklearn/sklearn.metrics._ranking/average_precision_score/average": {
-            "target": "sklearn/sklearn.metrics._ranking/average_precision_score/average",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'micro', 'samples', 'weighted', 'macro'}.",
-            "enumName": "Average",
-            "pairs": [
-                {
-                    "stringValue": "macro",
-                    "instanceName": "MACRO"
-                },
-                {
-                    "stringValue": "micro",
-                    "instanceName": "MICRO"
-                },
-                {
-                    "stringValue": "samples",
-                    "instanceName": "SAMPLES"
-                },
-                {
-                    "stringValue": "weighted",
-                    "instanceName": "WEIGHTED"
-                }
-            ]
-        },
-        "sklearn/sklearn.metrics._ranking/roc_auc_score/average": {
-            "target": "sklearn/sklearn.metrics._ranking/roc_auc_score/average",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'micro', 'macro', 'samples', 'weighted'}.",
-            "enumName": "Average",
-            "pairs": [
-                {
-                    "stringValue": "macro",
-                    "instanceName": "MACRO"
-                },
-                {
-                    "stringValue": "micro",
-                    "instanceName": "MICRO"
-                },
-                {
-                    "stringValue": "samples",
-                    "instanceName": "SAMPLES"
-                },
-                {
-                    "stringValue": "weighted",
-                    "instanceName": "WEIGHTED"
-                }
-            ]
-        },
         "sklearn/sklearn.metrics._ranking/roc_auc_score/multi_class": {
             "target": "sklearn/sklearn.metrics._ranking/roc_auc_score/multi_class",
             "authors": ["$autogen$"],
@@ -5381,184 +4413,6 @@
                 {
                     "stringValue": "raise",
                     "instanceName": "RAISE"
-                }
-            ]
-        },
-        "sklearn/sklearn.metrics._regression/d2_absolute_error_score/multioutput": {
-            "target": "sklearn/sklearn.metrics._regression/d2_absolute_error_score/multioutput",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'raw_values', 'uniform_average'}.",
-            "enumName": "Multioutput",
-            "pairs": [
-                {
-                    "stringValue": "raw_values",
-                    "instanceName": "RAW_VALUES"
-                },
-                {
-                    "stringValue": "uniform_average",
-                    "instanceName": "UNIFORM_AVERAGE"
-                }
-            ]
-        },
-        "sklearn/sklearn.metrics._regression/d2_pinball_score/multioutput": {
-            "target": "sklearn/sklearn.metrics._regression/d2_pinball_score/multioutput",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'raw_values', 'uniform_average'}.",
-            "enumName": "Multioutput",
-            "pairs": [
-                {
-                    "stringValue": "raw_values",
-                    "instanceName": "RAW_VALUES"
-                },
-                {
-                    "stringValue": "uniform_average",
-                    "instanceName": "UNIFORM_AVERAGE"
-                }
-            ]
-        },
-        "sklearn/sklearn.metrics._regression/explained_variance_score/multioutput": {
-            "target": "sklearn/sklearn.metrics._regression/explained_variance_score/multioutput",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'raw_values', 'uniform_average', 'variance_weighted'}.",
-            "enumName": "Multioutput",
-            "pairs": [
-                {
-                    "stringValue": "raw_values",
-                    "instanceName": "RAW_VALUES"
-                },
-                {
-                    "stringValue": "uniform_average",
-                    "instanceName": "UNIFORM_AVERAGE"
-                },
-                {
-                    "stringValue": "variance_weighted",
-                    "instanceName": "VARIANCE_WEIGHTED"
-                }
-            ]
-        },
-        "sklearn/sklearn.metrics._regression/mean_absolute_error/multioutput": {
-            "target": "sklearn/sklearn.metrics._regression/mean_absolute_error/multioutput",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'raw_values', 'uniform_average'}.",
-            "enumName": "Multioutput",
-            "pairs": [
-                {
-                    "stringValue": "raw_values",
-                    "instanceName": "RAW_VALUES"
-                },
-                {
-                    "stringValue": "uniform_average",
-                    "instanceName": "UNIFORM_AVERAGE"
-                }
-            ]
-        },
-        "sklearn/sklearn.metrics._regression/mean_absolute_percentage_error/multioutput": {
-            "target": "sklearn/sklearn.metrics._regression/mean_absolute_percentage_error/multioutput",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'raw_values', 'uniform_average'}.",
-            "enumName": "Multioutput",
-            "pairs": [
-                {
-                    "stringValue": "raw_values",
-                    "instanceName": "RAW_VALUES"
-                },
-                {
-                    "stringValue": "uniform_average",
-                    "instanceName": "UNIFORM_AVERAGE"
-                }
-            ]
-        },
-        "sklearn/sklearn.metrics._regression/mean_pinball_loss/multioutput": {
-            "target": "sklearn/sklearn.metrics._regression/mean_pinball_loss/multioutput",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'raw_values', 'uniform_average'}.",
-            "enumName": "Multioutput",
-            "pairs": [
-                {
-                    "stringValue": "raw_values",
-                    "instanceName": "RAW_VALUES"
-                },
-                {
-                    "stringValue": "uniform_average",
-                    "instanceName": "UNIFORM_AVERAGE"
-                }
-            ]
-        },
-        "sklearn/sklearn.metrics._regression/mean_squared_error/multioutput": {
-            "target": "sklearn/sklearn.metrics._regression/mean_squared_error/multioutput",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'raw_values', 'uniform_average'}.",
-            "enumName": "Multioutput",
-            "pairs": [
-                {
-                    "stringValue": "raw_values",
-                    "instanceName": "RAW_VALUES"
-                },
-                {
-                    "stringValue": "uniform_average",
-                    "instanceName": "UNIFORM_AVERAGE"
-                }
-            ]
-        },
-        "sklearn/sklearn.metrics._regression/mean_squared_log_error/multioutput": {
-            "target": "sklearn/sklearn.metrics._regression/mean_squared_log_error/multioutput",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'raw_values', 'uniform_average'}.",
-            "enumName": "Multioutput",
-            "pairs": [
-                {
-                    "stringValue": "raw_values",
-                    "instanceName": "RAW_VALUES"
-                },
-                {
-                    "stringValue": "uniform_average",
-                    "instanceName": "UNIFORM_AVERAGE"
-                }
-            ]
-        },
-        "sklearn/sklearn.metrics._regression/median_absolute_error/multioutput": {
-            "target": "sklearn/sklearn.metrics._regression/median_absolute_error/multioutput",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'raw_values', 'uniform_average'}.",
-            "enumName": "Multioutput",
-            "pairs": [
-                {
-                    "stringValue": "raw_values",
-                    "instanceName": "RAW_VALUES"
-                },
-                {
-                    "stringValue": "uniform_average",
-                    "instanceName": "UNIFORM_AVERAGE"
-                }
-            ]
-        },
-        "sklearn/sklearn.metrics._regression/r2_score/multioutput": {
-            "target": "sklearn/sklearn.metrics._regression/r2_score/multioutput",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'raw_values', 'uniform_average', 'variance_weighted'}.",
-            "enumName": "Multioutput",
-            "pairs": [
-                {
-                    "stringValue": "raw_values",
-                    "instanceName": "RAW_VALUES"
-                },
-                {
-                    "stringValue": "uniform_average",
-                    "instanceName": "UNIFORM_AVERAGE"
-                },
-                {
-                    "stringValue": "variance_weighted",
-                    "instanceName": "VARIANCE_WEIGHTED"
                 }
             ]
         },
@@ -5762,40 +4616,6 @@
                 }
             ]
         },
-        "sklearn/sklearn.model_selection._search_successive_halving/HalvingGridSearchCV/__init__/min_resources": {
-            "target": "sklearn/sklearn.model_selection._search_successive_halving/HalvingGridSearchCV/__init__/min_resources",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'exhaust', 'smallest'}.",
-            "enumName": "MinResources",
-            "pairs": [
-                {
-                    "stringValue": "exhaust",
-                    "instanceName": "EXHAUST"
-                },
-                {
-                    "stringValue": "smallest",
-                    "instanceName": "SMALLEST"
-                }
-            ]
-        },
-        "sklearn/sklearn.model_selection._search_successive_halving/HalvingRandomSearchCV/__init__/min_resources": {
-            "target": "sklearn/sklearn.model_selection._search_successive_halving/HalvingRandomSearchCV/__init__/min_resources",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'exhaust', 'smallest'}.",
-            "enumName": "MinResources",
-            "pairs": [
-                {
-                    "stringValue": "exhaust",
-                    "instanceName": "EXHAUST"
-                },
-                {
-                    "stringValue": "smallest",
-                    "instanceName": "SMALLEST"
-                }
-            ]
-        },
         "sklearn/sklearn.model_selection._validation/cross_val_predict/method": {
             "target": "sklearn/sklearn.model_selection._validation/cross_val_predict/method",
             "authors": ["$autogen$"],
@@ -5872,23 +4692,6 @@
                 }
             ]
         },
-        "sklearn/sklearn.neighbors._classification/KNeighborsClassifier/__init__/weights": {
-            "target": "sklearn/sklearn.neighbors._classification/KNeighborsClassifier/__init__/weights",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'uniform', 'distance'}.",
-            "enumName": "Weights",
-            "pairs": [
-                {
-                    "stringValue": "distance",
-                    "instanceName": "DISTANCE"
-                },
-                {
-                    "stringValue": "uniform",
-                    "instanceName": "UNIFORM"
-                }
-            ]
-        },
         "sklearn/sklearn.neighbors._classification/KNeighborsClassifier/__init__/algorithm": {
             "target": "sklearn/sklearn.neighbors._classification/KNeighborsClassifier/__init__/algorithm",
             "authors": ["$autogen$"],
@@ -5911,23 +4714,6 @@
                 {
                     "stringValue": "kd_tree",
                     "instanceName": "KD_TREE"
-                }
-            ]
-        },
-        "sklearn/sklearn.neighbors._classification/RadiusNeighborsClassifier/__init__/weights": {
-            "target": "sklearn/sklearn.neighbors._classification/RadiusNeighborsClassifier/__init__/weights",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'uniform', 'distance'}.",
-            "enumName": "Weights",
-            "pairs": [
-                {
-                    "stringValue": "distance",
-                    "instanceName": "DISTANCE"
-                },
-                {
-                    "stringValue": "uniform",
-                    "instanceName": "UNIFORM"
                 }
             ]
         },
@@ -6166,52 +4952,6 @@
                 }
             ]
         },
-        "sklearn/sklearn.neighbors._nca/NeighborhoodComponentsAnalysis/__init__/init": {
-            "target": "sklearn/sklearn.neighbors._nca/NeighborhoodComponentsAnalysis/__init__/init",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'auto', 'pca', 'lda', 'identity', 'random'}.",
-            "enumName": "Init",
-            "pairs": [
-                {
-                    "stringValue": "auto",
-                    "instanceName": "AUTO"
-                },
-                {
-                    "stringValue": "identity",
-                    "instanceName": "IDENTITY"
-                },
-                {
-                    "stringValue": "lda",
-                    "instanceName": "LDA"
-                },
-                {
-                    "stringValue": "pca",
-                    "instanceName": "PCA"
-                },
-                {
-                    "stringValue": "random",
-                    "instanceName": "RANDOM"
-                }
-            ]
-        },
-        "sklearn/sklearn.neighbors._regression/KNeighborsRegressor/__init__/weights": {
-            "target": "sklearn/sklearn.neighbors._regression/KNeighborsRegressor/__init__/weights",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'uniform', 'distance'}.",
-            "enumName": "Weights",
-            "pairs": [
-                {
-                    "stringValue": "distance",
-                    "instanceName": "DISTANCE"
-                },
-                {
-                    "stringValue": "uniform",
-                    "instanceName": "UNIFORM"
-                }
-            ]
-        },
         "sklearn/sklearn.neighbors._regression/KNeighborsRegressor/__init__/algorithm": {
             "target": "sklearn/sklearn.neighbors._regression/KNeighborsRegressor/__init__/algorithm",
             "authors": ["$autogen$"],
@@ -6234,23 +4974,6 @@
                 {
                     "stringValue": "kd_tree",
                     "instanceName": "KD_TREE"
-                }
-            ]
-        },
-        "sklearn/sklearn.neighbors._regression/RadiusNeighborsRegressor/__init__/weights": {
-            "target": "sklearn/sklearn.neighbors._regression/RadiusNeighborsRegressor/__init__/weights",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'uniform', 'distance'}.",
-            "enumName": "Weights",
-            "pairs": [
-                {
-                    "stringValue": "distance",
-                    "instanceName": "DISTANCE"
-                },
-                {
-                    "stringValue": "uniform",
-                    "instanceName": "UNIFORM"
                 }
             ]
         },
@@ -6611,23 +5334,6 @@
                 }
             ]
         },
-        "sklearn/sklearn.preprocessing._encoders/OneHotEncoder/__init__/drop": {
-            "target": "sklearn/sklearn.preprocessing._encoders/OneHotEncoder/__init__/drop",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'first', 'if_binary'}.",
-            "enumName": "Drop",
-            "pairs": [
-                {
-                    "stringValue": "first",
-                    "instanceName": "FIRST"
-                },
-                {
-                    "stringValue": "if_binary",
-                    "instanceName": "IF_BINARY"
-                }
-            ]
-        },
         "sklearn/sklearn.preprocessing._encoders/OneHotEncoder/__init__/handle_unknown": {
             "target": "sklearn/sklearn.preprocessing._encoders/OneHotEncoder/__init__/handle_unknown",
             "authors": ["$autogen$"],
@@ -6683,23 +5389,6 @@
                 }
             ]
         },
-        "sklearn/sklearn.preprocessing._polynomial/SplineTransformer/__init__/knots": {
-            "target": "sklearn/sklearn.preprocessing._polynomial/SplineTransformer/__init__/knots",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'uniform', 'quantile'}.",
-            "enumName": "Knots",
-            "pairs": [
-                {
-                    "stringValue": "quantile",
-                    "instanceName": "QUANTILE"
-                },
-                {
-                    "stringValue": "uniform",
-                    "instanceName": "UNIFORM"
-                }
-            ]
-        },
         "sklearn/sklearn.preprocessing._polynomial/SplineTransformer/__init__/extrapolation": {
             "target": "sklearn/sklearn.preprocessing._polynomial/SplineTransformer/__init__/extrapolation",
             "authors": ["$autogen$"],
@@ -6743,57 +5432,6 @@
                 {
                     "stringValue": "F",
                     "instanceName": "F"
-                }
-            ]
-        },
-        "sklearn/sklearn.semi_supervised._label_propagation/BaseLabelPropagation/__init__/kernel": {
-            "target": "sklearn/sklearn.semi_supervised._label_propagation/BaseLabelPropagation/__init__/kernel",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'knn', 'rbf'}.",
-            "enumName": "Kernel",
-            "pairs": [
-                {
-                    "stringValue": "knn",
-                    "instanceName": "KNN"
-                },
-                {
-                    "stringValue": "rbf",
-                    "instanceName": "RBF"
-                }
-            ]
-        },
-        "sklearn/sklearn.semi_supervised._label_propagation/LabelPropagation/__init__/kernel": {
-            "target": "sklearn/sklearn.semi_supervised._label_propagation/LabelPropagation/__init__/kernel",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'knn', 'rbf'}.",
-            "enumName": "Kernel",
-            "pairs": [
-                {
-                    "stringValue": "knn",
-                    "instanceName": "KNN"
-                },
-                {
-                    "stringValue": "rbf",
-                    "instanceName": "RBF"
-                }
-            ]
-        },
-        "sklearn/sklearn.semi_supervised._label_propagation/LabelSpreading/__init__/kernel": {
-            "target": "sklearn/sklearn.semi_supervised._label_propagation/LabelSpreading/__init__/kernel",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'knn', 'rbf'}.",
-            "enumName": "Kernel",
-            "pairs": [
-                {
-                    "stringValue": "knn",
-                    "instanceName": "KNN"
-                },
-                {
-                    "stringValue": "rbf",
-                    "instanceName": "RBF"
                 }
             ]
         },
@@ -6958,52 +5596,6 @@
                 }
             ]
         },
-        "sklearn/sklearn.svm._classes/NuSVC/__init__/kernel": {
-            "target": "sklearn/sklearn.svm._classes/NuSVC/__init__/kernel",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'linear', 'poly', 'rbf', 'sigmoid', 'precomputed'}.",
-            "enumName": "Kernel",
-            "pairs": [
-                {
-                    "stringValue": "linear",
-                    "instanceName": "LINEAR"
-                },
-                {
-                    "stringValue": "poly",
-                    "instanceName": "POLY"
-                },
-                {
-                    "stringValue": "precomputed",
-                    "instanceName": "PRECOMPUTED"
-                },
-                {
-                    "stringValue": "rbf",
-                    "instanceName": "RBF"
-                },
-                {
-                    "stringValue": "sigmoid",
-                    "instanceName": "SIGMOID"
-                }
-            ]
-        },
-        "sklearn/sklearn.svm._classes/NuSVC/__init__/gamma": {
-            "target": "sklearn/sklearn.svm._classes/NuSVC/__init__/gamma",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'scale', 'auto'}.",
-            "enumName": "Gamma",
-            "pairs": [
-                {
-                    "stringValue": "auto",
-                    "instanceName": "AUTO"
-                },
-                {
-                    "stringValue": "scale",
-                    "instanceName": "SCALE"
-                }
-            ]
-        },
         "sklearn/sklearn.svm._classes/NuSVC/__init__/class_weight": {
             "target": "sklearn/sklearn.svm._classes/NuSVC/__init__/class_weight",
             "authors": ["$autogen$"],
@@ -7034,144 +5626,6 @@
                 }
             ]
         },
-        "sklearn/sklearn.svm._classes/NuSVR/__init__/kernel": {
-            "target": "sklearn/sklearn.svm._classes/NuSVR/__init__/kernel",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'linear', 'poly', 'rbf', 'sigmoid', 'precomputed'}.",
-            "enumName": "Kernel",
-            "pairs": [
-                {
-                    "stringValue": "linear",
-                    "instanceName": "LINEAR"
-                },
-                {
-                    "stringValue": "poly",
-                    "instanceName": "POLY"
-                },
-                {
-                    "stringValue": "precomputed",
-                    "instanceName": "PRECOMPUTED"
-                },
-                {
-                    "stringValue": "rbf",
-                    "instanceName": "RBF"
-                },
-                {
-                    "stringValue": "sigmoid",
-                    "instanceName": "SIGMOID"
-                }
-            ]
-        },
-        "sklearn/sklearn.svm._classes/NuSVR/__init__/gamma": {
-            "target": "sklearn/sklearn.svm._classes/NuSVR/__init__/gamma",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'scale', 'auto'}.",
-            "enumName": "Gamma",
-            "pairs": [
-                {
-                    "stringValue": "auto",
-                    "instanceName": "AUTO"
-                },
-                {
-                    "stringValue": "scale",
-                    "instanceName": "SCALE"
-                }
-            ]
-        },
-        "sklearn/sklearn.svm._classes/OneClassSVM/__init__/kernel": {
-            "target": "sklearn/sklearn.svm._classes/OneClassSVM/__init__/kernel",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'linear', 'poly', 'rbf', 'sigmoid', 'precomputed'}.",
-            "enumName": "Kernel",
-            "pairs": [
-                {
-                    "stringValue": "linear",
-                    "instanceName": "LINEAR"
-                },
-                {
-                    "stringValue": "poly",
-                    "instanceName": "POLY"
-                },
-                {
-                    "stringValue": "precomputed",
-                    "instanceName": "PRECOMPUTED"
-                },
-                {
-                    "stringValue": "rbf",
-                    "instanceName": "RBF"
-                },
-                {
-                    "stringValue": "sigmoid",
-                    "instanceName": "SIGMOID"
-                }
-            ]
-        },
-        "sklearn/sklearn.svm._classes/OneClassSVM/__init__/gamma": {
-            "target": "sklearn/sklearn.svm._classes/OneClassSVM/__init__/gamma",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'scale', 'auto'}.",
-            "enumName": "Gamma",
-            "pairs": [
-                {
-                    "stringValue": "auto",
-                    "instanceName": "AUTO"
-                },
-                {
-                    "stringValue": "scale",
-                    "instanceName": "SCALE"
-                }
-            ]
-        },
-        "sklearn/sklearn.svm._classes/SVC/__init__/kernel": {
-            "target": "sklearn/sklearn.svm._classes/SVC/__init__/kernel",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'linear', 'poly', 'rbf', 'sigmoid', 'precomputed'}.",
-            "enumName": "Kernel",
-            "pairs": [
-                {
-                    "stringValue": "linear",
-                    "instanceName": "LINEAR"
-                },
-                {
-                    "stringValue": "poly",
-                    "instanceName": "POLY"
-                },
-                {
-                    "stringValue": "precomputed",
-                    "instanceName": "PRECOMPUTED"
-                },
-                {
-                    "stringValue": "rbf",
-                    "instanceName": "RBF"
-                },
-                {
-                    "stringValue": "sigmoid",
-                    "instanceName": "SIGMOID"
-                }
-            ]
-        },
-        "sklearn/sklearn.svm._classes/SVC/__init__/gamma": {
-            "target": "sklearn/sklearn.svm._classes/SVC/__init__/gamma",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'scale', 'auto'}.",
-            "enumName": "Gamma",
-            "pairs": [
-                {
-                    "stringValue": "auto",
-                    "instanceName": "AUTO"
-                },
-                {
-                    "stringValue": "scale",
-                    "instanceName": "SCALE"
-                }
-            ]
-        },
         "sklearn/sklearn.svm._classes/SVC/__init__/decision_function_shape": {
             "target": "sklearn/sklearn.svm._classes/SVC/__init__/decision_function_shape",
             "authors": ["$autogen$"],
@@ -7186,52 +5640,6 @@
                 {
                     "stringValue": "ovr",
                     "instanceName": "OVR"
-                }
-            ]
-        },
-        "sklearn/sklearn.svm._classes/SVR/__init__/kernel": {
-            "target": "sklearn/sklearn.svm._classes/SVR/__init__/kernel",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'linear', 'poly', 'rbf', 'sigmoid', 'precomputed'}.",
-            "enumName": "Kernel",
-            "pairs": [
-                {
-                    "stringValue": "linear",
-                    "instanceName": "LINEAR"
-                },
-                {
-                    "stringValue": "poly",
-                    "instanceName": "POLY"
-                },
-                {
-                    "stringValue": "precomputed",
-                    "instanceName": "PRECOMPUTED"
-                },
-                {
-                    "stringValue": "rbf",
-                    "instanceName": "RBF"
-                },
-                {
-                    "stringValue": "sigmoid",
-                    "instanceName": "SIGMOID"
-                }
-            ]
-        },
-        "sklearn/sklearn.svm._classes/SVR/__init__/gamma": {
-            "target": "sklearn/sklearn.svm._classes/SVR/__init__/gamma",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'scale', 'auto'}.",
-            "enumName": "Gamma",
-            "pairs": [
-                {
-                    "stringValue": "auto",
-                    "instanceName": "AUTO"
-                },
-                {
-                    "stringValue": "scale",
-                    "instanceName": "SCALE"
                 }
             ]
         },
@@ -7270,27 +5678,6 @@
                 {
                     "stringValue": "random",
                     "instanceName": "RANDOM"
-                }
-            ]
-        },
-        "sklearn/sklearn.tree._classes/DecisionTreeClassifier/__init__/max_features": {
-            "target": "sklearn/sklearn.tree._classes/DecisionTreeClassifier/__init__/max_features",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {\"auto\", \"sqrt\", \"log2\"}.",
-            "enumName": "MaxFeatures",
-            "pairs": [
-                {
-                    "stringValue": "auto",
-                    "instanceName": "AUTO"
-                },
-                {
-                    "stringValue": "log2",
-                    "instanceName": "LOG2"
-                },
-                {
-                    "stringValue": "sqrt",
-                    "instanceName": "SQRT"
                 }
             ]
         },
@@ -7336,27 +5723,6 @@
                 }
             ]
         },
-        "sklearn/sklearn.tree._classes/DecisionTreeRegressor/__init__/max_features": {
-            "target": "sklearn/sklearn.tree._classes/DecisionTreeRegressor/__init__/max_features",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {\"auto\", \"sqrt\", \"log2\"}.",
-            "enumName": "MaxFeatures",
-            "pairs": [
-                {
-                    "stringValue": "auto",
-                    "instanceName": "AUTO"
-                },
-                {
-                    "stringValue": "log2",
-                    "instanceName": "LOG2"
-                },
-                {
-                    "stringValue": "sqrt",
-                    "instanceName": "SQRT"
-                }
-            ]
-        },
         "sklearn/sklearn.tree._classes/ExtraTreeClassifier/__init__/criterion": {
             "target": "sklearn/sklearn.tree._classes/ExtraTreeClassifier/__init__/criterion",
             "authors": ["$autogen$"],
@@ -7395,27 +5761,6 @@
                 }
             ]
         },
-        "sklearn/sklearn.tree._classes/ExtraTreeClassifier/__init__/max_features": {
-            "target": "sklearn/sklearn.tree._classes/ExtraTreeClassifier/__init__/max_features",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {\"auto\", \"sqrt\", \"log2\"}.",
-            "enumName": "MaxFeatures",
-            "pairs": [
-                {
-                    "stringValue": "auto",
-                    "instanceName": "AUTO"
-                },
-                {
-                    "stringValue": "log2",
-                    "instanceName": "LOG2"
-                },
-                {
-                    "stringValue": "sqrt",
-                    "instanceName": "SQRT"
-                }
-            ]
-        },
         "sklearn/sklearn.tree._classes/ExtraTreeRegressor/__init__/criterion": {
             "target": "sklearn/sklearn.tree._classes/ExtraTreeRegressor/__init__/criterion",
             "authors": ["$autogen$"],
@@ -7447,27 +5792,6 @@
                 {
                     "stringValue": "random",
                     "instanceName": "RANDOM"
-                }
-            ]
-        },
-        "sklearn/sklearn.tree._classes/ExtraTreeRegressor/__init__/max_features": {
-            "target": "sklearn/sklearn.tree._classes/ExtraTreeRegressor/__init__/max_features",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {\"auto\", \"sqrt\", \"log2\"}.",
-            "enumName": "MaxFeatures",
-            "pairs": [
-                {
-                    "stringValue": "auto",
-                    "instanceName": "AUTO"
-                },
-                {
-                    "stringValue": "log2",
-                    "instanceName": "LOG2"
-                },
-                {
-                    "stringValue": "sqrt",
-                    "instanceName": "SQRT"
                 }
             ]
         },
@@ -7730,23 +6054,6 @@
                 }
             ]
         },
-        "sklearn/sklearn.utils.validation/check_array/order": {
-            "target": "sklearn/sklearn.utils.validation/check_array/order",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {'F', 'C'}.",
-            "enumName": "Order",
-            "pairs": [
-                {
-                    "stringValue": "C",
-                    "instanceName": "C"
-                },
-                {
-                    "stringValue": "F",
-                    "instanceName": "F"
-                }
-            ]
-        },
         "sklearn/sklearn.utils.validation/check_scalar/include_boundaries": {
             "target": "sklearn/sklearn.utils.validation/check_scalar/include_boundaries",
             "authors": ["$autogen$"],
@@ -7769,31 +6076,6 @@
                 {
                     "stringValue": "right",
                     "instanceName": "RIGHT"
-                }
-            ]
-        },
-        "sklearn/sklearn.utils/all_estimators/type_filter": {
-            "target": "sklearn/sklearn.utils/all_estimators/type_filter",
-            "authors": ["$autogen$"],
-            "reviewers": [],
-            "comment": "I turned this into an enum because the type in the documentation contained {\"classifier\", \"regressor\", \"cluster\", \"transformer\"}.",
-            "enumName": "TypeFilter",
-            "pairs": [
-                {
-                    "stringValue": "classifier",
-                    "instanceName": "CLASSIFIER"
-                },
-                {
-                    "stringValue": "cluster",
-                    "instanceName": "CLUSTER"
-                },
-                {
-                    "stringValue": "regressor",
-                    "instanceName": "REGRESSOR"
-                },
-                {
-                    "stringValue": "transformer",
-                    "instanceName": "TRANSFORMER"
                 }
             ]
         }

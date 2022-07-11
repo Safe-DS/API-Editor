@@ -6,6 +6,7 @@ import {
     selectNumberOfAnnotationsCreated,
     selectNumberOfAnnotationsDeleted,
     selectNumberOfAnnotationsMarkedAsCorrect,
+    selectNumberOfCommentsTouched,
     selectNumberOfElementsMarkedAsComplete,
 } from '../annotations/annotationSlice';
 import { pluralize } from '../../common/util/stringOperations';
@@ -13,6 +14,7 @@ import {
     auditorAchievement,
     authorAchievement,
     cleanerAchievement,
+    commentatorAchievement,
     completionistAchievement,
     editorAchievement,
 } from './achievements';
@@ -23,6 +25,7 @@ export const AchievementDisplay: React.FC = function () {
     const authorCount = useAppSelector(selectNumberOfAnnotationsCreated);
     const cleanerCount = useAppSelector(selectNumberOfAnnotationsDeleted);
     const completionistCount = useAppSelector(selectNumberOfElementsMarkedAsComplete);
+    const commentatorCount = useAppSelector(selectNumberOfCommentsTouched);
     const editorCount = useAppSelector(selectNumberOfAnnotationsChanged);
 
     if (
@@ -30,6 +33,7 @@ export const AchievementDisplay: React.FC = function () {
         authorCount === 0 &&
         cleanerCount === 0 &&
         completionistCount === 0 &&
+        commentatorCount === 0 &&
         editorCount === 0
     ) {
         return null;
@@ -61,6 +65,11 @@ export const AchievementDisplay: React.FC = function () {
                         currentCount={completionistCount}
                         achievement={completionistAchievement}
                         description={`${pluralize(completionistCount, 'API element')} marked as complete`}
+                    />
+                    <AchievementCard
+                        currentCount={commentatorCount}
+                        achievement={commentatorAchievement}
+                        description={`${pluralize(commentatorCount, 'comment')} touched`}
                     />
                     <AchievementCard
                         currentCount={editorCount}

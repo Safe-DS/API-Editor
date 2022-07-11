@@ -45,6 +45,7 @@ type UserAction =
     | CalledAfterUserAction
     | DescriptionUserAction
     | EnumUserAction
+    | ExpertUserAction
     | GroupUserAction
     | MoveUserAction
     | PureUserAction
@@ -76,6 +77,11 @@ interface DescriptionUserAction {
 
 interface EnumUserAction {
     readonly type: 'enum';
+    readonly target: string;
+}
+
+interface ExpertUserAction {
+    readonly type: 'expert';
     readonly target: string;
 }
 
@@ -149,10 +155,11 @@ export const initialState: UIState = {
     expandedInTreeView: {},
     treeViewScrollOffset: 0,
 
-    filterString: 'is:public',
+    filterString: 'is:public !is:removed',
     filterList: [
-        { filter: 'is:public', name: 'public' },
-        { filter: 'is:public usefulness:>0', name: 'useful' },
+        { filter: 'is:public !is:removed', name: 'Default' },
+        { filter: 'is:public', name: 'Any Public Declaration' },
+        { filter: 'is:public usefulness:>0', name: 'Public & Useful Declarations' },
     ],
 
     heatMapMode: HeatMapMode.None,
@@ -264,17 +271,23 @@ const uiSlice = createSlice({
                 target: action.payload,
             };
         },
+        showEnumAnnotationForm(state, action: PayloadAction<string>) {
+            state.currentUserAction = {
+                type: 'enum',
+                target: action.payload,
+            };
+        },
+        showExpertAnnotationForm(state, action: PayloadAction<string>) {
+            state.currentUserAction = {
+                type: 'expert',
+                target: action.payload,
+            };
+        },
         showGroupAnnotationForm(state, action: PayloadAction<GroupTarget>) {
             state.currentUserAction = {
                 type: 'group',
                 target: action.payload.target,
                 groupName: action.payload.groupName,
-            };
-        },
-        showEnumAnnotationForm(state, action: PayloadAction<string>) {
-            state.currentUserAction = {
-                type: 'enum',
-                target: action.payload,
             };
         },
         showMoveAnnotationForm(state, action: PayloadAction<string>) {
@@ -392,6 +405,7 @@ export const {
     showCalledAfterAnnotationForm,
     showDescriptionAnnotationForm,
     showEnumAnnotationForm,
+    showExpertAnnotationForm,
     showGroupAnnotationForm,
     showMoveAnnotationForm,
     showPureAnnotationForm,

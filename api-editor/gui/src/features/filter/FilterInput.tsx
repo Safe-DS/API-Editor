@@ -16,14 +16,36 @@ import { closest, distance } from 'fastest-levenshtein';
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectFilterString, setFilterString } from '../ui/uiSlice';
-import { getFixedFilterNames, isValidFilterToken } from './model/filterFactory';
+import { getFixedFilterNames } from './model/filterFactory';
 
-export const FilterInput: React.FC = function () {
+interface FilterInputProps {
+    localFilterString: string;
+    setLocalFilterString: (newLocalFilterString: string) => void;
+    invalidTokens: string[];
+}
+
+export const FilterInput: React.FC<FilterInputProps> = function ({
+    localFilterString,
+    setLocalFilterString,
+    invalidTokens,
+}) {
     const dispatch = useAppDispatch();
-
-    const filterString = useAppSelector(selectFilterString);
-    const invalidTokens = filterString.split(' ').filter((token) => token !== '' && !isValidFilterToken(token));
+    const [timeoutId, setTimeoutId] = React.useState<NodeJS.Timeout>();
     const filterIsValid = invalidTokens.length === 0;
+
+    const onChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+        setLocalFilterString(event.target.value);
+
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+
+        const newTimeoutId = setTimeout(() => {
+            dispatch(setFilterString(event.target.value));
+        }, 1000);
+
+        setTimeoutId(newTimeoutId);
+    };
 
     return (
         <Box zIndex={50}>
@@ -39,8 +61,8 @@ export const FilterInput: React.FC = function () {
                         <Input
                             type="text"
                             placeholder="Filter..."
-                            value={useAppSelector(selectFilterString)}
-                            onChange={(event) => dispatch(setFilterString(event.target.value))}
+                            value={localFilterString}
+                            onChange={onChange}
                             spellCheck={false}
                             minWidth="400px"
                         />
@@ -84,16 +106,16 @@ const InvalidFilterToken: React.FC<InvalidFilterTokenProps> = function ({ token 
     return (
         <ListItem>
             <ChakraText>
-                <ChakraText display="inline" fontWeight="bold">
+                <Box as="span" fontWeight="bold">
                     {token}
-                </ChakraText>
+                </Box>
                 {closestDistance <= 3 && (
                     <>
                         {'. '}
                         Did you mean{' '}
-                        <ChakraText display="inline" textDecoration="underline" cursor="pointer" onClick={onClick}>
+                        <Box as="span" textDecoration="underline" cursor="pointer" onClick={onClick}>
                             {closestAlternative}
-                        </ChakraText>
+                        </Box>
                         ?
                     </>
                 )}

@@ -1,4 +1,5 @@
 import {
+    Box,
     Checkbox,
     FormControl,
     FormErrorIcon,
@@ -19,6 +20,7 @@ import { AnnotationForm } from './AnnotationForm';
 import { hideAnnotationForm } from '../../ui/uiSlice';
 import { selectGroupAnnotations, upsertGroupAnnotation } from '../annotationSlice';
 import { GroupAnnotation } from '../versioning/AnnotationStoreV2';
+import { DocumentationText } from '../../packageData/selectionView/DocumentationText';
 
 interface GroupFormProps {
     readonly target: PythonDeclaration;
@@ -163,9 +165,20 @@ export const GroupForm: React.FC<GroupFormProps> = function ({ target, groupName
             <FormControl isInvalid={Boolean(errors?.parameters)}>
                 <VStack alignItems="left">
                     {allParameters.map((parameter) => (
-                        <Checkbox key={parameter.name} {...register(`parameters.${parameter.name}`)}>
-                            {getParameterLabel(parameter.name)}
-                        </Checkbox>
+                        <Box key={parameter.name}>
+                            <Checkbox {...register(`parameters.${parameter.name}`)}>
+                                {getParameterLabel(parameter.name)}
+                            </Checkbox>
+                            {parameter.description && (
+                                <Box m={4}>
+                                    <DocumentationText
+                                        declaration={parameter}
+                                        inputText={parameter.description}
+                                        alwaysExpanded
+                                    ></DocumentationText>
+                                </Box>
+                            )}
+                        </Box>
                     ))}
                 </VStack>
             </FormControl>

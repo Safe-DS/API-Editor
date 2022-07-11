@@ -8,6 +8,7 @@ import { SectionListViewItem } from './SectionListViewItem';
 import { CompleteButton } from '../../annotations/CompleteButton';
 import { MissingAnnotationButton } from '../../annotations/MissingAnnotationButton';
 import { DataCopyButtons } from '../../annotations/DataCopyButtons';
+import { NonParameterUsageCounts } from './UsageCounts';
 
 interface ClassViewProps {
     pythonClass: PythonClass;
@@ -25,7 +26,15 @@ export const ClassView: React.FC<ClassViewProps> = function ({ pythonClass }) {
                     </Heading>
                     <Wrap>
                         {pythonClass.isPublic && (
-                            <AnnotationDropdown target={id} showDescription showMove showRemove showRename showTodo />
+                            <AnnotationDropdown
+                                target={id}
+                                showDescription
+                                showExpert
+                                showMove
+                                showRemove
+                                showRename
+                                showTodo
+                            />
                         )}
                         <CompleteButton target={id} />
                         {pythonClass.isPublic && <MissingAnnotationButton target={id} />}
@@ -45,6 +54,7 @@ export const ClassView: React.FC<ClassViewProps> = function ({ pythonClass }) {
             </Stack>
             <SectionListViewItem title="Superclasses" inputElements={pythonClass.superclasses} />
             <SectionListViewItem title="Decorators" inputElements={pythonClass.decorators} />
+            <NonParameterUsageCounts declaration={pythonClass} />
         </Stack>
     );
 };
