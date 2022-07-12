@@ -41,6 +41,7 @@ dependencies {
     implementation("com.larsreimann:modeling-core:3.1.1")
     implementation("org.jetbrains.compose.components:components-splitpane:1.1.1")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.10")
+    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
 
     testFixturesImplementation(compose.desktop.currentOs)
