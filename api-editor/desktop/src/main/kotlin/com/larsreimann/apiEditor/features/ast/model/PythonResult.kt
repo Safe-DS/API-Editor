@@ -13,7 +13,7 @@ interface PythonResult : PythonDeclaration {
         id = id,
         name = name,
         type = type,
-        documentation = documentation
+        documentation = documentation,
     )
 }
 

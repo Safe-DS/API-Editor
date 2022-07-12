@@ -1,12 +1,12 @@
 package com.larsreimann.apiEditor.features.api.model
 
-import com.larsreimann.apiEditor.features.ast.model.PythonDeclaration
-import com.larsreimann.apiEditor.features.ast.model.PythonDeclarationId
 import com.larsreimann.apiEditor.features.ast.model.MutablePythonClass
 import com.larsreimann.apiEditor.features.ast.model.MutablePythonFunction
 import com.larsreimann.apiEditor.features.ast.model.MutablePythonModule
 import com.larsreimann.apiEditor.features.ast.model.MutablePythonPackage
 import com.larsreimann.apiEditor.features.ast.model.MutablePythonParameter
+import com.larsreimann.apiEditor.features.ast.model.PythonDeclaration
+import com.larsreimann.apiEditor.features.ast.model.PythonDeclarationId
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.datatest.WithDataTestName
 import io.kotest.datatest.withData
@@ -53,7 +53,7 @@ class ApiStoreTest : FunSpec(
                 TestCase(testClass.id, testClass),
                 TestCase(testModule.id, testModule),
                 TestCase(testPackage.id, testPackage),
-                TestCase(PythonDeclarationId(""), null)
+                TestCase(PythonDeclarationId(""), null),
             ) { (id, expectedDeclaration) ->
                 apiStore.getDeclarationByIdOrNull(id) shouldBe expectedDeclaration
             }

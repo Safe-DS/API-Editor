@@ -132,11 +132,11 @@ data class ParameterCountTest(
 data class ValueCountTest(val parameterId: String, val value: String, val expectedCount: Int) : WithDataTestName {
     override fun dataTestName(): String {
         return "parameter `$parameterId` should have the value `$value` ${
-            pluralize(
-                expectedCount,
-                "time",
-                "times",
-            )
+        pluralize(
+            expectedCount,
+            "time",
+            "times",
+        )
         }"
     }
 }

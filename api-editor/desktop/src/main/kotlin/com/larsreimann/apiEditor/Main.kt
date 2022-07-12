@@ -17,7 +17,7 @@ fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
         title = labels.getString("App.Window.Title"),
-        icon = painterResource("img/icon.svg")
+        icon = painterResource("img/icon.svg"),
     ) {
         MenuBar(settings)
         Content(settings)

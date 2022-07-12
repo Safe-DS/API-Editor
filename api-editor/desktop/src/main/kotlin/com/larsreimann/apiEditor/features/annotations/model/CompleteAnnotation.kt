@@ -9,5 +9,5 @@ import kotlinx.serialization.Serializable
 data class CompleteAnnotation(
     override val target: PythonDeclarationId<*>,
     override val changelog: List<AnnotationChange> = emptyList(),
-    override val review: AnnotationReview? = null
+    override val review: AnnotationReview? = null,
 ) : Annotation()

@@ -17,7 +17,7 @@ interface PythonModule : PythonDeclaration {
         imports = imports,
         fromImports = fromImports,
         classes = classes.map { it.toMutablePythonClass() },
-        functions = functions.map { it.toMutablePythonFunction() }
+        functions = functions.map { it.toMutablePythonFunction() },
     )
 }
 
@@ -27,7 +27,7 @@ class MutablePythonModule(
     imports: List<PythonImport> = emptyList(),
     fromImports: List<PythonFromImport> = emptyList(),
     classes: List<MutablePythonClass> = emptyList(),
-    functions: List<MutablePythonFunction> = emptyList()
+    functions: List<MutablePythonFunction> = emptyList(),
 ) : MutablePythonDeclaration(), PythonModule {
 
     override val imports = imports.toMutableList()

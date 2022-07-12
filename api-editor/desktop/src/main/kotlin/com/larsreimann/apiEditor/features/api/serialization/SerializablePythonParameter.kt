@@ -22,6 +22,6 @@ class SerializablePythonParameter(
         type = type,
         defaultValue = defaultValue?.toPythonExpression(),
         assignment = assignment,
-        documentation = documentation
+        documentation = documentation,
     )
 }

@@ -16,12 +16,12 @@ class ImportsTest : FunSpec(
                 withData(
                     TestCase(
                         PythonFromImport(moduleName = "test_module", declarationName = "TestClass"),
-                        "from test_module import TestClass"
+                        "from test_module import TestClass",
                     ),
                     TestCase(
                         PythonFromImport(moduleName = "test_module", declarationName = "TestClass", alias = "TestClassAlias"),
-                        "from test_module import TestClass as TestClassAlias"
-                    )
+                        "from test_module import TestClass as TestClassAlias",
+                    ),
                 ) { (fromImport, expectedString) ->
                     fromImport.toString() shouldBe expectedString
                 }
@@ -38,12 +38,12 @@ class ImportsTest : FunSpec(
                 withData(
                     TestCase(
                         PythonImport(moduleName = "test_module"),
-                        "import test_module"
+                        "import test_module",
                     ),
                     TestCase(
                         PythonImport(moduleName = "test_module", alias = "tm"),
-                        "import test_module as tm"
-                    )
+                        "import test_module as tm",
+                    ),
                 ) { (`import`, expectedString) ->
                     `import`.toString() shouldBe expectedString
                 }

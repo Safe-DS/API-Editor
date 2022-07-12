@@ -20,7 +20,7 @@ interface PythonFunction : PythonDeclaration {
         decorators = decorators,
         documentation = documentation,
         parameters = parameters.map { it.toMutablePythonParameter() },
-        results = results.map { it.toMutablePythonResult() }
+        results = results.map { it.toMutablePythonResult() },
     )
 }
 

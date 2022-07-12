@@ -1,10 +1,10 @@
 package com.larsreimann.apiEditor.features.api.serialization
 
-import com.larsreimann.apiEditor.features.ast.model.PythonDecorator
-import com.larsreimann.apiEditor.features.ast.model.PythonFunctionDocumentation
 import com.larsreimann.apiEditor.features.ast.model.MutablePythonFunction
 import com.larsreimann.apiEditor.features.ast.model.MutablePythonParameter
 import com.larsreimann.apiEditor.features.ast.model.MutablePythonResult
+import com.larsreimann.apiEditor.features.ast.model.PythonDecorator
+import com.larsreimann.apiEditor.features.ast.model.PythonFunctionDocumentation
 import com.larsreimann.apiEditor.features.ast.model.PythonFunctionId
 import com.larsreimann.apiEditor.features.ast.model.PythonParameterId
 import com.larsreimann.apiEditor.features.ast.model.PythonResultId
