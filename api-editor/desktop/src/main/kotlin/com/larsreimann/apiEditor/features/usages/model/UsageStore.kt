@@ -22,7 +22,7 @@ import com.larsreimann.apiEditor.features.ast.model.PythonParameterId
  * How often each parameter is set to a specific value. This also includes the cases where an optional parameter is not
  * set explicitly by the user, so its default value is used implicitly.
  */
-class UsageStore(
+data class UsageStore(
     private val moduleCounts: Map<PythonModuleId, Int> = emptyMap(),
     private val classCounts: Map<PythonClassId, Int> = emptyMap(),
     private val functionCounts: Map<PythonFunctionId, Int> = emptyMap(),
