@@ -390,22 +390,32 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
     return (
         <>
             <ButtonGroup size="sm" variant="outline" isAttached>
-                <Tooltip label={`${authorText}Click to delete.`}>
+                <Tooltip
+                    label={!isValidUsername || isReviewed ? authorText : `${authorText}Click to delete.`}
+                    shouldWrapChildren
+                    mt="3"
+                >
                     <IconButton
                         icon={<FaTrash />}
                         aria-label="Delete annotation"
                         colorScheme="red"
+                        borderRadius="var(--chakra-radii-md) 0 0 var(--chakra-radii-md)"
                         disabled={!isValidUsername || isReviewed}
                         onClick={onDelete}
                     />
                 </Tooltip>
-                <Tooltip label={`${authorText}Click to change.`}>
+                <Tooltip
+                    label={!onEdit || !isValidUsername || isReviewed ? authorText : `${authorText}Click to change.`}
+                    shouldWrapChildren
+                    mt="3"
+                >
                     <Button
                         leftIcon={<FaWrench />}
                         rightIcon={rightIcon}
                         flexGrow={1}
                         borderLeft="none"
                         justifyContent="flex-start"
+                        borderRadius="0 var(--chakra-radii-md) var(--chakra-radii-md) 0"
                         disabled={!onEdit || !isValidUsername || isReviewed}
                         onClick={onEdit}
                     >
@@ -420,7 +430,11 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
             </ButtonGroup>
             <ButtonGroup size="sm" variant="outline" isAttached>
                 {(reviewResult === ReviewResult.Correct || (isReviewed && !reviewResult)) && (
-                    <Tooltip label={`Marked as correct by ${reviewer}. Click to undo.`}>
+                    <Tooltip
+                        label={`Marked as correct by ${reviewer}.${!isValidUsername ? '' : ' Click to undo.'}`}
+                        shouldWrapChildren
+                        mt="3"
+                    >
                         <Button
                             size="sm"
                             variant="solid"
@@ -434,7 +448,11 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
                     </Tooltip>
                 )}
                 {reviewResult === ReviewResult.Unsure && (
-                    <Tooltip label={`Marked as unsure by ${reviewer}. Click to undo.`}>
+                    <Tooltip
+                        label={`Marked as unsure by ${reviewer}.${!isValidUsername ? '' : ' Click to undo.'}`}
+                        shouldWrapChildren
+                        mt="3"
+                    >
                         <Button
                             size="sm"
                             variant="solid"
@@ -448,7 +466,11 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
                     </Tooltip>
                 )}
                 {reviewResult === ReviewResult.Wrong && (
-                    <Tooltip label={`Marked as wrong by ${reviewer}. Click to undo.`}>
+                    <Tooltip
+                        label={`Marked as wrong by ${reviewer}.${!isValidUsername ? '' : ' Click to undo.'}`}
+                        shouldWrapChildren
+                        mt="3"
+                    >
                         <Button
                             size="sm"
                             variant="solid"
@@ -463,18 +485,50 @@ const AnnotationTag: React.FC<AnnotationTagProps> = function ({
                 )}
                 {!isReviewed && (
                     <>
-                        <Tooltip label={`${authorText}Click to mark as correct.`}>
-                            <Button size="sm" variant="outline" disabled={!isValidUsername} onClick={onMarkAsCorrect}>
+                        <Tooltip
+                            label={`${authorText}${!isValidUsername ? '' : ' Click to mark as correct.'}`}
+                            shouldWrapChildren
+                            mt="3"
+                        >
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                borderRadius="var(--chakra-radii-md) 0 0 var(--chakra-radii-md)"
+                                disabled={!isValidUsername}
+                                onClick={onMarkAsCorrect}
+                            >
                                 Mark as Correct
                             </Button>
                         </Tooltip>
-                        <Tooltip label={`${authorText}Click to mark as unsure.`}>
-                            <Button size="sm" variant="outline" disabled={!isValidUsername} onClick={onMarkAsUnsure}>
+                        <Tooltip
+                            label={`${authorText}${!isValidUsername ? '' : ' Click to mark as unsure.'}`}
+                            shouldWrapChildren
+                            mt="3"
+                        >
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                borderRadius="0"
+                                borderLeft="none"
+                                borderRight="none"
+                                disabled={!isValidUsername}
+                                onClick={onMarkAsUnsure}
+                            >
                                 Mark as Unsure
                             </Button>
                         </Tooltip>
-                        <Tooltip label={`${authorText}Click to mark as wrong.`}>
-                            <Button size="sm" variant="outline" disabled={!isValidUsername} onClick={onMarkAsWrong}>
+                        <Tooltip
+                            label={`${authorText}${!isValidUsername ? '' : ' Click to mark as wrong.'}`}
+                            shouldWrapChildren
+                            mt="3"
+                        >
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                borderRadius="0 var(--chakra-radii-md) var(--chakra-radii-md) 0"
+                                disabled={!isValidUsername}
+                                onClick={onMarkAsWrong}
+                            >
                                 Mark as Wrong
                             </Button>
                         </Tooltip>
