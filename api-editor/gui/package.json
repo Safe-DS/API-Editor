@@ -13,7 +13,7 @@
     },
     "prettier": "@lars-reimann/prettier-config",
     "dependencies": {
-        "@chakra-ui/react": "^2.2.1",
+        "@chakra-ui/react": "^2.2.4",
         "@chakra-ui/styled-system": "^2.2.0",
         "@chakra-ui/system": "^2.1.1",
         "@chakra-ui/theme-tools": "^2.0.2",
