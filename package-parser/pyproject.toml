@@ -10,7 +10,7 @@ parse-package = "package_parser.main:main"
 
 [tool.poetry.dependencies]
 python = "^3.10,<3.11"
-astroid = "^2.11.6"
+astroid = "^2.12.2"
 numpydoc = "^1.4"
 spacy = "^3.2.1"
 scipy = "^1.8.1"
