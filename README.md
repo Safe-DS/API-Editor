@@ -37,7 +37,7 @@ The automation described above relies on structured information about the existi
     cd gui
     npm run dev
     ```
-3. Open [localhost:3000](http://localhost:3000) in your browser.
+3. Open [localhost:5173](http://localhost:5173) in your browser.
 
 [package-parser]: ./package-parser
 
