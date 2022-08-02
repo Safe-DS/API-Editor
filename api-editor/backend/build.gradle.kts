@@ -40,7 +40,7 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
     implementation("io.ktor:ktor-server:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
-    implementation("com.larsreimann:modeling-core:3.1.0")
+    implementation("com.larsreimann:modeling-core:3.1.1")
     implementation("com.larsreimann.safe-ds:safe-ds-core:1.0.0")
 
     // Required, otherwise serializeToFormattedString does not compile
