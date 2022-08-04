@@ -8,8 +8,14 @@ message: >-
 type: software
 title: API-Editor
 repository-code: https://github.com/lars-reimann/api-editor
+license: MIT
 preferred-citation:
   type: conference-paper
+  conference:
+    name: >-
+      2022 IEEE/ACM 44th International Conference on
+      Software Engineering: New Ideas and Emerging Results
+  year: 2022
   title: >-
     Improving the Learnability of Machine Learning APIs
     by Semi-Automated API Wrapping
@@ -20,19 +26,12 @@ preferred-citation:
       affiliation: >-
         Institute for Computer Science III, University
         of Bonn, Germany
-      orcid: 'https://orcid.org/0000-0002-5129-3902'
+      orcid: "https://orcid.org/0000-0002-5129-3902"
     - affiliation: >-
         Institute for Computer Science III, University
         of Bonn, Germany
       given-names: Günter
       family-names: Kniesel-Wünsche
-  identifiers:
-    - type: doi
-      value: 10.1109/ICSE-NIER55298.2022.9793507
-      description: IEEE Xplore
-    - type: doi
-      value: 10.48550/arXiv.2203.15491
-      description: arXiv (preprint)
   abstract: >-
     A major hurdle for students and professional
     software developers who want to enter the world of
@@ -53,6 +52,9 @@ preferred-citation:
     implemented by semi-automated wrapping of the
     existing third-party API.
   keywords:
-    - >-
-      APIs , libraries , usability , learnability ,
-      machine learning
+    - APIs
+    - libraries
+    - usability
+    - learnability
+    - machine learning
+  doi: "10.1109/ICSE-NIER55298.2022.9793507"
