@@ -1,0 +1,54 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: >-
+  Improving the Learnability of Machine Learning APIs
+  by Semi-Automated API Wrapping
+message: Please cite this software using these metadata.
+type: software
+authors:
+  - given-names: Lars
+    family-names: Reimann
+    email: reimann@cs.uni-bonn.de
+    affiliation: >-
+      Institute for Computer Science III, University
+      of Bonn, Germany
+    orcid: 'https://orcid.org/0000-0002-5129-3902'
+  - affiliation: >-
+      Institute for Computer Science III, University
+      of Bonn, Germany
+    given-names: Günter
+    family-names: Kniesel-Wünsche
+identifiers:
+  - type: doi
+    value: 10.1109/ICSE-NIER55298.2022.9793507
+    description: IEEE Xplore
+  - type: doi
+    value: 10.48550/arXiv.2203.15491
+    description: arXiv (preprint)
+repository-code: 'https://github.com/lars-reimann/api-editor'
+abstract: >-
+  A major hurdle for students and professional
+  software developers who want to enter the world of
+  machine learning (ML), is mastering not just the
+  scientific background but also the available ML
+  APIs, Therefore, we address the challenge of
+  creating APIs that are easy to learn and use,
+  especially by novices. However, it is not clear how
+  this can be achieved without compromising
+  expressiveness. We investigate this problem for
+  scikit-learn, a widely used ML API. In this paper,
+  we analyze its use by the Kaggle community,
+  identifying unused and apparently useless parts of
+  the API that can be eliminated without affecting
+  client programs. In addition, we discuss usability
+  issues in the remaining parts, propose related
+  design improvements and show how they can be
+  implemented by semi-automated wrapping of the
+  existing third-party API.
+keywords:
+  - >-
+    APIs , libraries , usability , learnability ,
+    machine learning
+license: MIT
