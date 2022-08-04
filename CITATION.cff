@@ -6,7 +6,7 @@ title: >-
   Improving the Learnability of Machine Learning APIs
   by Semi-Automated API Wrapping
 message: Please cite this software using these metadata.
-type: inproceedings
+type: conference-paper
 authors:
   - given-names: Lars
     family-names: Reimann
