@@ -11,18 +11,21 @@ repository-code: https://github.com/lars-reimann/api-editor
 license: MIT
 preferred-citation:
   type: conference-paper
+  year: 2022
   conference:
     name: >-
       2022 IEEE/ACM 44th International Conference on
       Software Engineering: New Ideas and Emerging Results
-  year: 2022
+  collection-title: >-
+    2022 IEEE/ACM 44th International Conference on
+    Software Engineering: New Ideas and Emerging Results
   title: >-
     Improving the Learnability of Machine Learning APIs
     by Semi-Automated API Wrapping
   authors:
     - given-names: Lars
       family-names: Reimann
-      email: reimann@cs.uni-bonn.de
+      email: "reimann@cs.uni-bonn.de"
       affiliation: >-
         Institute for Computer Science III, University
         of Bonn, Germany
@@ -56,5 +59,12 @@ preferred-citation:
     - libraries
     - usability
     - learnability
-    - machine learning
+    - "machine learning"
   doi: "10.1109/ICSE-NIER55298.2022.9793507"
+  identifiers:
+    - type: doi
+      value: "10.1109/ICSE-NIER55298.2022.9793507"
+      description: "IEEE Xplore"
+    - type: doi
+      value: "10.48550/arXiv.2203.15491"
+      description: "arXiv (preprint)""
