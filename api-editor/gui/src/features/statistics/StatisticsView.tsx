@@ -14,6 +14,7 @@ import { ApiSizeVsUsefulnessStatistics } from './ApiSizeVsUsefulnessStatistics';
 import { ProgressStatistics } from './ProgressStatistics';
 import { AchievementDisplay } from '../achievements/AchievementDisplay';
 import { QualityStatistics } from './QualityStatistics';
+import { PaperStatistics } from './PaperStatistics';
 
 export const StatisticsView: React.FC = function () {
     return (
@@ -103,6 +104,21 @@ export const StatisticsView: React.FC = function () {
                 <AccordionPanel pb={4}>
                     <VStack spacing={8}>
                         <AchievementDisplay />
+                    </VStack>
+                </AccordionPanel>
+            </AccordionItem>
+            <AccordionItem>
+                <h2>
+                    <AccordionButton>
+                        <Box flex="1" textAlign="left">
+                            Paper
+                        </Box>
+                        <AccordionIcon />
+                    </AccordionButton>
+                </h2>
+                <AccordionPanel pb={4}>
+                    <VStack spacing={8}>
+                        <PaperStatistics />
                     </VStack>
                 </AccordionPanel>
             </AccordionItem>
