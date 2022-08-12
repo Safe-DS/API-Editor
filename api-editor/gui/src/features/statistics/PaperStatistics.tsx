@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import { PythonPackage } from '../packageData/model/PythonPackage';
 import { UsageCountStore } from '../usages/model/UsageCountStore';
-import {AnnotationStore, DefaultValue, DefaultValueType} from '../annotations/versioning/AnnotationStoreV2';
+import { AnnotationStore, DefaultValue, DefaultValueType } from '../annotations/versioning/AnnotationStoreV2';
 import { useAppSelector } from '../../app/hooks';
 import { selectRawPythonPackage } from '../packageData/apiSlice';
 import { selectUsages } from '../usages/usageSlice';
 import { selectAnnotationStore } from '../annotations/annotationSlice';
 import { createFilterFromString } from '../filter/model/filterFactory';
 import { AbstractPythonFilter } from '../filter/model/AbstractPythonFilter';
-import {PythonParameterAssignment} from "../packageData/model/PythonParameter";
+import { PythonParameterAssignment } from '../packageData/model/PythonParameter';
 
 export const PaperStatistics = function () {
     const pythonPackage = useAppSelector(selectRawPythonPackage);
@@ -17,7 +17,8 @@ export const PaperStatistics = function () {
 
     useEffect(() => {
         apiSize(pythonPackage, usages, annotations);
-        optionalAndRequired(pythonPackage, usages, annotations);
+        optionalAndRequired(pythonPackage, usages, annotations, 1);
+        optionalAndRequired(pythonPackage, usages, annotations, 10);
     }, [pythonPackage, usages, annotations]);
 
     return <>Test</>;
@@ -76,10 +77,13 @@ const optionalAndRequired = function (
     pythonPackage: PythonPackage,
     usages: UsageCountStore,
     annotations: AnnotationStore,
+    threshold: number,
 ) {
-    const publicParameters = pythonPackage
-        .getParameters()
-        .filter((parameter) => parameter.assignedBy !== PythonParameterAssignment.IMPLICIT && parameter.isPublic);
+    const parametersUsefulFilter = createFilterFromString(
+        `is:parameter is:public !is:implicit usefulness:>=${threshold}`,
+    );
+
+    const publicParameters = parametersUsefulFilter.applyToPackage(pythonPackage, annotations, usages).getParameters();
     const requiredParameters = publicParameters.filter((parameter) => parameter.defaultValue === null);
     const optionalParameters = publicParameters.filter((parameter) => parameter.defaultValue !== null);
 
@@ -109,33 +113,45 @@ const optionalAndRequired = function (
             return true;
         }
 
-        return annotation?.variant === 'optional' && parameter.defaultValue === stringifiedValue(annotation.defaultValueType, annotation.defaultValue);
+        return (
+            annotation?.variant === 'optional' &&
+            parameter.defaultValue === stringifiedValue(annotation.defaultValueType, annotation.defaultValue)
+        );
     }).length;
     const optionalToOptionalWithDifferentDefault = optionalParameters.filter((parameter) => {
         const annotation = annotations.valueAnnotations[parameter.id];
-        return annotation?.variant === 'optional' && parameter.defaultValue !== stringifiedValue(annotation.defaultValueType, annotation.defaultValue);
+        return (
+            annotation?.variant === 'optional' &&
+            parameter.defaultValue !== stringifiedValue(annotation.defaultValueType, annotation.defaultValue)
+        );
     }).length;
     const optionalToConstantWithSameDefault = optionalParameters.filter((parameter) => {
         const annotation = annotations.valueAnnotations[parameter.id];
         if (!annotation) {
-            return false
+            return false;
         }
 
         if (annotation.variant === 'omitted') {
             return true;
         }
 
-        return annotation.variant === "constant" && parameter.defaultValue === stringifiedValue(annotation.defaultValueType, annotation.defaultValue);
+        return (
+            annotation.variant === 'constant' &&
+            parameter.defaultValue === stringifiedValue(annotation.defaultValueType, annotation.defaultValue)
+        );
     }).length;
     const optionalToConstantWithDifferentDefault = optionalParameters.filter((parameter) => {
         const annotation = annotations.valueAnnotations[parameter.id];
-        return annotation?.variant === 'constant' && parameter.defaultValue !== stringifiedValue(annotation.defaultValueType, annotation.defaultValue);
+        return (
+            annotation?.variant === 'constant' &&
+            parameter.defaultValue !== stringifiedValue(annotation.defaultValueType, annotation.defaultValue)
+        );
     }).length;
 
     console.log(`
-originalPublic: ${publicParameters.length};
-originalRequired: ${requiredParameters.length};
-originalOptional: ${optionalParameters.length};
+originalPublic: ${publicParameters.length}
+originalRequired: ${requiredParameters.length}
+originalOptional: ${optionalParameters.length}
 
 requiredToRequired: ${requiredToRequired}
 requiredToOptional: ${requiredToOptional}
@@ -149,7 +165,10 @@ optionalToConstantWithDifferentDefault: ${optionalToConstantWithDifferentDefault
 `);
 };
 
-const stringifiedValue = function (defaultValueType: DefaultValueType | undefined, defaultValue: DefaultValue | undefined): string {
+const stringifiedValue = function (
+    defaultValueType: DefaultValueType | undefined,
+    defaultValue: DefaultValue | undefined,
+): string {
     switch (defaultValueType) {
         case 'string':
             return `'${defaultValue}'`;
@@ -162,4 +181,4 @@ const stringifiedValue = function (defaultValueType: DefaultValueType | undefine
         default:
             return '???';
     }
-}
+};
