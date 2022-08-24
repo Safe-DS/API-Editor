@@ -115,14 +115,15 @@ const optionalAndRequired = function (
 
         return (
             annotation?.variant === 'optional' &&
-            parameter.defaultValue === stringifiedValue(annotation.defaultValueType, annotation.defaultValue)
+            parameter.defaultValue!.replace(/\.0$/u, "") === stringifiedValue(annotation.defaultValueType, annotation.defaultValue)
         );
     }).length;
     const optionalToOptionalWithDifferentDefault = optionalParameters.filter((parameter) => {
         const annotation = annotations.valueAnnotations[parameter.id];
+
         return (
             annotation?.variant === 'optional' &&
-            parameter.defaultValue !== stringifiedValue(annotation.defaultValueType, annotation.defaultValue)
+            parameter.defaultValue!.replace(/\.0$/u, "") !== stringifiedValue(annotation.defaultValueType, annotation.defaultValue)
         );
     }).length;
     const optionalToConstantWithSameDefault = optionalParameters.filter((parameter) => {
@@ -137,14 +138,14 @@ const optionalAndRequired = function (
 
         return (
             annotation.variant === 'constant' &&
-            parameter.defaultValue === stringifiedValue(annotation.defaultValueType, annotation.defaultValue)
+            parameter.defaultValue!.replace(/\.0$/u, "") === stringifiedValue(annotation.defaultValueType, annotation.defaultValue)
         );
     }).length;
     const optionalToConstantWithDifferentDefault = optionalParameters.filter((parameter) => {
         const annotation = annotations.valueAnnotations[parameter.id];
         return (
             annotation?.variant === 'constant' &&
-            parameter.defaultValue !== stringifiedValue(annotation.defaultValueType, annotation.defaultValue)
+            parameter.defaultValue!.replace(/\.0$/u, "") !== stringifiedValue(annotation.defaultValueType, annotation.defaultValue)
         );
     }).length;
 
