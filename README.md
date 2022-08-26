@@ -14,6 +14,7 @@ The automation described above relies on structured information about the existi
     ```shell
     java -jar api-editor-<version>.jar
     ```
+4. Open [localhost:4280](http://localhost:4280) in your browser.
 
 ## For Developers
 
