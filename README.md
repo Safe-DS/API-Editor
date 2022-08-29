@@ -2,7 +2,7 @@
 
 [![Main](https://github.com/lars-reimann/api-editor/actions/workflows/main.yml/badge.svg)](https://github.com/lars-reimann/api-editor/actions/workflows/main.yml)
 
-The `api-editor` is a tool to improve the API of a Python library in a semi-automated manner. Several improvements are suggested automatically and the user can add further improvements manually in a user-friendly GUI. These improvements are implemented automatically by the tool as [_wrappers_][adapter-pattern] that provide the desired API while internally using the existing Python library. Moreover, stubs for the [_Safe-DS_][safe-ds] DSL can be created automatically, as well. This allows users to call the created wrappers in a type-safe manner from that DSL.
+The `api-editor` is a tool to improve the API of a Python library in a semi-automated manner. Several improvements are suggested automatically and the user can add further improvements manually in a user-friendly GUI. These improvements are implemented automatically by the tool as [_wrappers_][adapter-pattern] that provide the desired API while internally using the existing Python library.
 
 The automation described above relies on structured information about the existing Python library. This information can be computed automatically by the [package-parser][package-parser].
 
@@ -15,6 +15,13 @@ The automation described above relies on structured information about the existi
     java -jar api-editor-<version>.jar
     ```
 4. Open [localhost:4280](http://localhost:4280) in your browser.
+5. In the window that opens, enter your username in the bottom right field. 
+6. Download the contents of the [`data`](data) folder of this project. Alternatively, compute the required data for another Python API using the [package-parser][package-parser].
+7. Open `File > Import > API Data` and upload the API data that you stored locally.
+8. Open `File > Import > Usages` and upload the usage data that you stored locally.
+9. Open `File > Import > Annotations` and upload the annotation data that you stored locally (from the repository or your own prior usages of the tool).
+
+Now you are ready to explore the API and review existing annotations.  
 
 ## For Developers
 
