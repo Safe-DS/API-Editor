@@ -1,6 +1,7 @@
 <img src="img/logo_with_text.svg" alt="logo" height="75">
 
 [![Main](https://github.com/lars-reimann/api-editor/actions/workflows/main.yml/badge.svg)](https://github.com/lars-reimann/api-editor/actions/workflows/main.yml)
+[![DOI](https://zenodo.org/badge/365253624.svg)](https://zenodo.org/badge/latestdoi/365253624)
 
 The `api-editor` is a tool to improve the API of a Python library in a semi-automated manner. Several improvements are suggested automatically and the user can add further improvements manually in a user-friendly GUI. These improvements are implemented automatically by the tool as [_wrappers_][adapter-pattern] that provide the desired API while internally using the existing Python library.
 
