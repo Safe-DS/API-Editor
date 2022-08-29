@@ -6,18 +6,17 @@ import com.larsreimann.apiEditor.mutableModel.PythonPackage
  * Processes all annotations and updates the AST to create adapters.
  */
 fun PythonPackage.transform(newPackageName: String = "new_package") {
-    preprocess(newPackageName)
+    preprocess()
     processAnnotations()
-    postprocess()
+    postprocess(newPackageName)
 }
 
 /**
  * Transformation steps that have to be run before annotations can be processed.
  */
-private fun PythonPackage.preprocess(newPackageName: String) {
+private fun PythonPackage.preprocess() {
     removePrivateDeclarations()
     addOriginalDeclarations()
-    changeModulePrefix(newPackageName)
     replaceClassMethodsWithStaticMethods()
     updateParameterAssignment()
     normalizeNamesOfImplicitParameters()
@@ -43,8 +42,9 @@ private fun PythonPackage.processAnnotations() {
 /**
  * Transformation steps that have to be run after annotations were processed.
  */
-private fun PythonPackage.postprocess() {
+private fun PythonPackage.postprocess(newPackageName: String) {
     removeEmptyModules()
+    changeModulePrefix(newPackageName)
     reorderParameters()
     extractConstructors()
     createAttributesForParametersOfConstructor()

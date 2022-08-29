@@ -710,10 +710,10 @@ class ConstructorPythonCodeGeneratorFullPipelineTest {
             RenameAnnotation("renamedTestClass"),
         )
         testClass.annotations.add(
-            MoveAnnotation("movedTestModule"),
+            MoveAnnotation("testModule.movedTestModule"),
         )
         // when
-        testPackage.transform()
+        testPackage.transform("newTestModule")
         val moduleContent = testPackage.modules[0].toPythonCode()
 
         // then
@@ -753,6 +753,6 @@ class ConstructorPythonCodeGeneratorFullPipelineTest {
             """.trimMargin()
 
         moduleContent shouldBe expectedModuleContent
-        testPackage.modules[0].name shouldBe "movedTestModule"
+        testPackage.modules[0].name shouldBe "newTestModule.movedTestModule"
     }
 }
