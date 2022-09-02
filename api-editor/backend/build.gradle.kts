@@ -47,7 +47,7 @@ dependencies {
     implementation("org.eclipse.xtext:org.eclipse.xtext:2.27.0")
 
     testImplementation(kotlin("test"))
-    testImplementation("io.kotest:kotest-assertions-core-jvm:5.4.1")
+    testImplementation("io.kotest:kotest-assertions-core-jvm:5.4.2")
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
     testImplementation("io.mockk:mockk:1.12.7")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.0")
