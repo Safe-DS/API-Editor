@@ -44,7 +44,7 @@ dependencies {
     implementation("com.larsreimann.safe-ds:safe-ds-core:1.0.0")
 
     // Required, otherwise serializeToFormattedString does not compile
-    implementation("org.eclipse.xtext:org.eclipse.xtext:2.27.0")
+    implementation("org.eclipse.xtext:org.eclipse.xtext:2.28.0")
 
     testImplementation(kotlin("test"))
     testImplementation("io.kotest:kotest-assertions-core-jvm:5.4.2")
