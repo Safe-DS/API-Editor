@@ -4,6 +4,7 @@ import { mode, Styles } from '@chakra-ui/theme-tools';
 const config: ThemeConfig = {};
 
 const styles: Styles = {
+    // @ts-ignore
     global(props) {
         const controlStyle = {
             border: '1px solid',
