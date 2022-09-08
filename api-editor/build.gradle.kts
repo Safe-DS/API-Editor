@@ -14,7 +14,7 @@ plugins {
 
 repositories {
     mavenCentral()
-    // Can be removed once compose-jb supports Kotlin 1.7.0
+    // Can be removed once compose-jb is out of alpha
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     google()
 }
@@ -38,18 +38,18 @@ subprojects {
 
     repositories {
         mavenCentral()
-        // Can be removed once compose-jb supports Kotlin 1.7.0
+        // Can be removed once compose-jb is out of alpha
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
         google()
     }
 }
 
-// Can be removed once compose-jb supports Kotlin 1.7.0
+// Can be removed once compose-jb is out of alpha
 allprojects {
     configurations.all {
         resolutionStrategy.dependencySubstitution {
             substitute(module("org.jetbrains.compose.compiler:compiler")).apply {
-                using(module("androidx.compose.compiler:compiler:1.2.0"))
+                using(module("androidx.compose.compiler:compiler:1.3.1"))
             }
         }
     }
