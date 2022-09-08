@@ -11,5 +11,5 @@ pluginManagement {
 include(
     "backend",
     "desktop",
-    "gui"
+    "gui",
 )
