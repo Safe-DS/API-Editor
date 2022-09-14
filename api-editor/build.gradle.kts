@@ -1,8 +1,8 @@
 // Plugins -------------------------------------------------------------------------------------------------------------
 
 plugins {
-    id("org.jetbrains.kotlinx.kover") version "0.5.1"
     idea
+    id("org.jetbrains.kotlinx.kover") version "0.6.0"
 
     // Pin versions for subprojects
     kotlin("jvm") version "1.7.10" apply false
@@ -27,7 +27,14 @@ idea {
 }
 
 kover {
-    coverageEngine.set(kotlinx.kover.api.CoverageEngine.INTELLIJ)
+    koverMerged {
+        enable()
+        filters {
+            projects {
+                excludes.add("gui")
+            }
+        }
+    }
 }
 
 // Subprojects ---------------------------------------------------------------------------------------------------------

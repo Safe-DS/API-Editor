@@ -43,7 +43,7 @@ jobs:
         uses: gradle/wrapper-validation-action@v1
 
       - name: Build with Gradle
-        run: ./gradlew check koverMergedHtmlReport
+        run: ./gradlew build backend:koverHtmlReport
 
       - name: Upload test report
         if: ${{ failure() }}
@@ -58,7 +58,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: backend test coverage
-          path: api-editor/build/reports/kover/html/
+          path: api-editor/backend/build/reports/kover/html/
 
   gui-test-coverage:
     runs-on: ubuntu-latest
