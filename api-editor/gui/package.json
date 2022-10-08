@@ -46,7 +46,7 @@
         "@chakra-ui/cli": "^2.1.2",
         "@hookform/devtools": "^4.2.2",
         "@lars-reimann/prettier-config": "^5.0.0",
-        "@testing-library/jest-dom": "^5.16.4",
+        "@testing-library/jest-dom": "^5.16.5",
         "@testing-library/react": "^13.3.0",
         "@types/jest": "^28.1.6",
         "@types/node-fetch": "^2.6.2",
