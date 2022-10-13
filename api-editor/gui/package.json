@@ -47,7 +47,7 @@
         "@hookform/devtools": "^4.2.2",
         "@lars-reimann/prettier-config": "^5.0.0",
         "@testing-library/jest-dom": "^5.16.5",
-        "@testing-library/react": "^13.3.0",
+        "@testing-library/react": "^13.4.0",
         "@types/jest": "^28.1.6",
         "@types/node-fetch": "^2.6.2",
         "@types/react": "^18.0.21",
