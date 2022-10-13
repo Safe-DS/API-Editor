@@ -56,7 +56,7 @@ allprojects {
     configurations.all {
         resolutionStrategy.dependencySubstitution {
             substitute(module("org.jetbrains.compose.compiler:compiler")).apply {
-                using(module("androidx.compose.compiler:compiler:1.3.1"))
+                using(module("androidx.compose.compiler:compiler:1.3.2"))
             }
         }
     }
