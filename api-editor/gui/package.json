@@ -14,9 +14,9 @@
     "prettier": "@lars-reimann/prettier-config",
     "dependencies": {
         "@chakra-ui/react": "^2.2.4",
-        "@chakra-ui/styled-system": "^2.2.0",
-        "@chakra-ui/system": "^2.2.9",
-        "@chakra-ui/theme-tools": "^2.0.11",
+        "@chakra-ui/styled-system": "^2.3.4",
+        "@chakra-ui/system": "^2.2.12",
+        "@chakra-ui/theme-tools": "^2.0.12",
         "@emotion/react": "^11.10.4",
         "@emotion/styled": "^11.10.4",
         "@reduxjs/toolkit": "^1.8.6",
@@ -43,7 +43,7 @@
         "remark-math": "^5.1.0"
     },
     "devDependencies": {
-        "@chakra-ui/cli": "^2.1.2",
+        "@chakra-ui/cli": "^2.1.8",
         "@hookform/devtools": "^4.2.2",
         "@lars-reimann/prettier-config": "^5.0.0",
         "@testing-library/jest-dom": "^5.16.5",
