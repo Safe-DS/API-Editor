@@ -13,7 +13,7 @@ python = "^3.10,<3.11"
 astroid = "^2.12.12"
 numpydoc = "^1.5"
 spacy = "^3.2.1"
-scipy = "^1.9.1"
+scipy = "^1.9.3"
 
 [tool.poetry.dependencies.en_core_web_sm]
 url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.2.0/en_core_web_sm-3.2.0-py3-none-any.whl"
