@@ -5,7 +5,10 @@ from package_parser.processing.api.model import API
 
 
 def _run_migrate_command(
-    apiv1_file_path: Path, annotations_file_path: Path, apiv2_file_path: Path, out_dir_path: Path
+    apiv1_file_path: Path,
+    annotations_file_path: Path,
+    apiv2_file_path: Path,
+    out_dir_path: Path,
 ) -> None:
     pass
 

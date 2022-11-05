@@ -8,8 +8,8 @@ from pathlib import Path
 from package_parser.cli._run_all import _run_all_command
 from package_parser.cli._run_annotations import _run_annotations
 from package_parser.cli._run_api import _run_api_command
-from package_parser.cli._run_usages import _run_usages_command
 from package_parser.cli._run_migrate import _run_migrate_command
+from package_parser.cli._run_usages import _run_usages_command
 
 _API_COMMAND = "api"
 _USAGES_COMMAND = "usages"
@@ -41,12 +41,7 @@ def cli() -> None:
             args.batchsize,
         )
     elif args.command == _MIGRATE_COMMAND:
-        _run_migrate_command(
-            args.apiv1,
-            args.annotations,
-            args.apiv2,
-            args.out
-        )
+        _run_migrate_command(args.apiv1, args.annotations, args.apiv2, args.out)
 
 
 def _get_args() -> argparse.Namespace:
@@ -198,7 +193,8 @@ def _add_all_subparser(subparsers: _SubParsersAction) -> None:
 
 def _add_migrate_subparser(subparsers) -> None:
     generate_parser = subparsers.add_parser(
-        _MIGRATE_COMMAND, help="Migrate Annotations for the new version based on the previous version."
+        _MIGRATE_COMMAND,
+        help="Migrate Annotations for the new version based on the previous version.",
     )
     generate_parser.add_argument(
         "-a1",
@@ -222,9 +218,5 @@ def _add_migrate_subparser(subparsers) -> None:
         required=True,
     )
     generate_parser.add_argument(
-        "-o",
-        "--out",
-        help="Output directory.",
-        type=Path,
-        required=True
+        "-o", "--out", help="Output directory.", type=Path, required=True
     )
