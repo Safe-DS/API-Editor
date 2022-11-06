@@ -21,16 +21,12 @@ from ._get_parameter_list import get_parameter_list
 from .documentation_parsing import AbstractDocumentationParser
 
 
-def prunning_file(file, fromlineno, tolineno, col_offset):
-    if file is None:
+def trim_code(code, fromlineno, tolineno, encoding):
+    if code is None:
         return None
-    if isinstance(file, bytes):
-        file = file.decode()
-    lines = file.split("\n")
-
-    # TODO check if previous line starts with # (for documentation)
-
-    print(lines[(fromlineno-1):tolineno])
+    if isinstance(code, bytes):
+        code = code.decode(encoding)
+    lines = code.split("\n")
     return lines[fromlineno-1:tolineno]
 
 
@@ -155,6 +151,14 @@ class _AstVisitor:
         else:
             decorator_names = []
 
+        node: NodeNG = class_node
+        code = None
+        while node.parent is not None:
+            node = node.parent
+            if isinstance(node, astroid.Module):
+                code = trim_code(node.file_bytes, class_node.fromlineno, class_node.tolineno, node.file_encoding)
+                break
+
         # Remember class, so we can later add methods
         class_ = Class(
             id_=self.__get_id(class_node.name),
@@ -193,14 +197,12 @@ class _AstVisitor:
         is_public = self.is_public(function_node.name, qname)
 
         node: NodeNG = function_node
-        file = None
-        while (node.parent is not None):
+        code = None
+        while node.parent is not None:
             node = node.parent
             if isinstance(node, astroid.Module):
-                file = node.file_bytes
+                code = trim_code(node.file_bytes, function_node.fromlineno, function_node.tolineno, node.file_encoding)
                 break
-
-        code = prunning_file(file, function_node.fromlineno, function_node.tolineno, function_node.col_offset)
 
         function = Function(
             id=self.__get_function_id(function_node.name, decorator_names),
