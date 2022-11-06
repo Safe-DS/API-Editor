@@ -3,6 +3,7 @@ import re
 from typing import Optional, Union
 
 import astroid
+from astroid import NodeNG
 from astroid.context import InferenceContext
 from astroid.helpers import safe_infer
 from package_parser.processing.api.model import (
@@ -18,6 +19,19 @@ from package_parser.utils import parent_qualified_name
 from ._file_filters import _is_init_file
 from ._get_parameter_list import get_parameter_list
 from .documentation_parsing import AbstractDocumentationParser
+
+
+def prunning_file(file, fromlineno, tolineno, col_offset):
+    if file is None:
+        return None
+    if isinstance(file, bytes):
+        file = file.decode()
+    lines = file.split("\n")
+
+    # TODO check if previous line starts with # (for documentation)
+
+    print(lines[(fromlineno-1):tolineno])
+    return lines[fromlineno-1:tolineno]
 
 
 class _AstVisitor:
@@ -177,6 +191,16 @@ class _AstVisitor:
             decorator_names = []
 
         is_public = self.is_public(function_node.name, qname)
+
+        node: NodeNG = function_node
+        file = None
+        while (node.parent is not None):
+            node = node.parent
+            if isinstance(node, astroid.Module):
+                file = node.file_bytes
+                break
+
+        code = prunning_file(file, function_node.fromlineno, function_node.tolineno, function_node.col_offset)
 
         function = Function(
             id=self.__get_function_id(function_node.name, decorator_names),
