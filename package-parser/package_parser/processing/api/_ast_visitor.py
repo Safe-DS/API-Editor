@@ -21,15 +21,6 @@ from ._get_parameter_list import get_parameter_list
 from .documentation_parsing import AbstractDocumentationParser
 
 
-def trim_code(code, fromlineno, tolineno, encoding):
-    if code is None:
-        return None
-    if isinstance(code, bytes):
-        code = code.decode(encoding)
-    lines = code.split("\n")
-    return lines[fromlineno-1:tolineno]
-
-
 class _AstVisitor:
     def __init__(
         self, documentation_parser: AbstractDocumentationParser, api: API
@@ -151,8 +142,8 @@ class _AstVisitor:
         else:
             decorator_names = []
 
+        code = ""
         node: NodeNG = class_node
-        code = None
         while node.parent is not None:
             node = node.parent
             if isinstance(node, astroid.Module):
@@ -168,6 +159,7 @@ class _AstVisitor:
             is_public=self.is_public(class_node.name, qname),
             reexported_by=self.reexported.get(qname, []),
             documentation=self.documentation_parser.get_class_documentation(class_node),
+            code=code,
             instance_attributes=instance_attributes,
         )
         self.__declaration_stack.append(class_)
@@ -196,8 +188,8 @@ class _AstVisitor:
 
         is_public = self.is_public(function_node.name, qname)
 
+        code = ""
         node: NodeNG = function_node
-        code = None
         while node.parent is not None:
             node = node.parent
             if isinstance(node, astroid.Module):
@@ -221,6 +213,7 @@ class _AstVisitor:
             documentation=self.documentation_parser.get_function_documentation(
                 function_node
             ),
+            code=code,
         )
         self.__declaration_stack.append(function)
 
@@ -260,3 +253,12 @@ class _AstVisitor:
 
 def is_public_module(module_name: str) -> bool:
     return all(not it.startswith("_") for it in module_name.split("."))
+
+
+def trim_code(code, from_line_no, to_line_no, encoding):
+    if code is None:
+        return None
+    if isinstance(code, bytes):
+        code = code.decode(encoding)
+    lines = code.split("\n")
+    return lines[from_line_no-1:to_line_no]

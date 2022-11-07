@@ -206,6 +206,7 @@ class Class:
                 description=json.get("description", ""),
                 full_docstring=json.get("docstring", ""),
             ),
+            json.get("code", ""),
             json.get("instance_attributes", []),
         )
 
@@ -223,6 +224,7 @@ class Class:
         is_public: bool,
         reexported_by: list[str],
         documentation: ClassDocumentation,
+        code: str,
         instance_attributes: list[str],
     ) -> None:
         self.id: str = id_
@@ -233,6 +235,7 @@ class Class:
         self.is_public: bool = is_public
         self.reexported_by: list[str] = reexported_by
         self.documentation: ClassDocumentation = documentation
+        self.code: str = code
         self.instance_attributes = instance_attributes
 
     @property
@@ -254,6 +257,7 @@ class Class:
             "reexported_by": self.reexported_by,
             "description": self.documentation.description,
             "docstring": self.documentation.full_docstring,
+            "code": self.code,
             "instance_attributes": self.instance_attributes,
         }
 
@@ -268,6 +272,7 @@ class Function:
     is_public: bool
     reexported_by: list[str]
     documentation: FunctionDocumentation
+    code: str
 
     @staticmethod
     def from_json(json: Any) -> Function:
@@ -286,6 +291,7 @@ class Function:
                 description=json.get("description", ""),
                 full_docstring=json.get("docstring", ""),
             ),
+            json.get("code", "")
         )
 
     @property
@@ -304,6 +310,7 @@ class Function:
             "reexported_by": self.reexported_by,
             "description": self.documentation.description,
             "docstring": self.documentation.full_docstring,
+            "code": self.code,
         }
 
 
