@@ -291,7 +291,7 @@ class Function:
                 description=json.get("description", ""),
                 full_docstring=json.get("docstring", ""),
             ),
-            json.get("code", "")
+            json.get("code", ""),
         )
 
     @property

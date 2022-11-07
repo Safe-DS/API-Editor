@@ -147,7 +147,12 @@ class _AstVisitor:
         while node.parent is not None:
             node = node.parent
             if isinstance(node, astroid.Module):
-                code = trim_code(node.file_bytes, class_node.fromlineno, class_node.tolineno, node.file_encoding)
+                code = trim_code(
+                    node.file_bytes,
+                    class_node.fromlineno,
+                    class_node.tolineno,
+                    node.file_encoding,
+                )
                 break
 
         # Remember class, so we can later add methods
@@ -193,7 +198,12 @@ class _AstVisitor:
         while node.parent is not None:
             node = node.parent
             if isinstance(node, astroid.Module):
-                code = trim_code(node.file_bytes, function_node.fromlineno, function_node.tolineno, node.file_encoding)
+                code = trim_code(
+                    node.file_bytes,
+                    function_node.fromlineno,
+                    function_node.tolineno,
+                    node.file_encoding,
+                )
                 break
 
         function = Function(
@@ -261,4 +271,4 @@ def trim_code(code, from_line_no, to_line_no, encoding):
     if isinstance(code, bytes):
         code = code.decode(encoding)
     lines = code.split("\n")
-    return lines[from_line_no-1:to_line_no]
+    return lines[from_line_no - 1 : to_line_no]
