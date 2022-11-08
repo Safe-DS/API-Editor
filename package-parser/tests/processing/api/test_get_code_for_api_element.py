@@ -57,7 +57,7 @@ from package_parser.processing.api._ast_visitor import trim_code
         pass
     def test2() -> int:
         return 42""",
-        )
+        ),
     ],
 )
 def test_trim_code(code_to_pare: str, expected_code: str):
