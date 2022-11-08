@@ -21,6 +21,15 @@ from ._get_parameter_list import get_parameter_list
 from .documentation_parsing import AbstractDocumentationParser
 
 
+def trim_code(code, from_line_no, to_line_no, encoding):
+    if code is None:
+        return None
+    if isinstance(code, bytes):
+        code = code.decode(encoding)
+    lines = code.split("\n")
+    return '\n'.join(lines[from_line_no - 1 : to_line_no])
+
+
 class _AstVisitor:
     def __init__(
         self, documentation_parser: AbstractDocumentationParser, api: API
@@ -149,7 +158,7 @@ class _AstVisitor:
             if isinstance(node, astroid.Module):
                 code = trim_code(
                     node.file_bytes,
-                    class_node.fromlineno,
+                    class_node.lineno,
                     class_node.tolineno,
                     node.file_encoding,
                 )
@@ -200,7 +209,7 @@ class _AstVisitor:
             if isinstance(node, astroid.Module):
                 code = trim_code(
                     node.file_bytes,
-                    function_node.fromlineno,
+                    function_node.lineno,
                     function_node.tolineno,
                     node.file_encoding,
                 )
@@ -263,12 +272,3 @@ class _AstVisitor:
 
 def is_public_module(module_name: str) -> bool:
     return all(not it.startswith("_") for it in module_name.split("."))
-
-
-def trim_code(code, from_line_no, to_line_no, encoding):
-    if code is None:
-        return None
-    if isinstance(code, bytes):
-        code = code.decode(encoding)
-    lines = code.split("\n")
-    return lines[from_line_no - 1 : to_line_no]
