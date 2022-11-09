@@ -206,6 +206,7 @@ class Class:
                 description=json.get("description", ""),
                 full_docstring=json.get("docstring", ""),
             ),
+            json.get("instance_attributes", []),
         )
 
         for method_id in json["methods"]:
@@ -222,6 +223,7 @@ class Class:
         is_public: bool,
         reexported_by: list[str],
         documentation: ClassDocumentation,
+        instance_attributes: list[str],
     ) -> None:
         self.id: str = id_
         self.qname: str = qname
@@ -231,6 +233,7 @@ class Class:
         self.is_public: bool = is_public
         self.reexported_by: list[str] = reexported_by
         self.documentation: ClassDocumentation = documentation
+        self.instance_attributes = instance_attributes
 
     @property
     def name(self) -> str:
@@ -251,6 +254,7 @@ class Class:
             "reexported_by": self.reexported_by,
             "description": self.documentation.description,
             "docstring": self.documentation.full_docstring,
+            "instance_attributes": self.instance_attributes,
         }
 
 

@@ -133,6 +133,7 @@ class _AstVisitor:
 
     def enter_classdef(self, class_node: astroid.ClassDef) -> None:
         qname = class_node.qname()
+        instance_attributes = list(class_node.instance_attrs)
 
         decorators: Optional[astroid.Decorators] = class_node.decorators
         if decorators is not None:
@@ -149,6 +150,7 @@ class _AstVisitor:
             is_public=self.is_public(class_node.name, qname),
             reexported_by=self.reexported.get(qname, []),
             documentation=self.documentation_parser.get_class_documentation(class_node),
+            instance_attributes=instance_attributes,
         )
         self.__declaration_stack.append(class_)
 
