@@ -8,12 +8,14 @@ from pathlib import Path
 from package_parser.cli._run_all import _run_all_command
 from package_parser.cli._run_annotations import _run_annotations
 from package_parser.cli._run_api import _run_api_command
+from package_parser.cli._run_migrate import _run_migrate_command
 from package_parser.cli._run_usages import _run_usages_command
 
 _API_COMMAND = "api"
 _USAGES_COMMAND = "usages"
 _ANNOTATIONS_COMMAND = "annotations"
 _ALL_COMMAND = "all"
+_MIGRATE_COMMAND = "migrate"
 
 
 def cli() -> None:
@@ -38,6 +40,8 @@ def cli() -> None:
             args.processes,
             args.batchsize,
         )
+    elif args.command == _MIGRATE_COMMAND:
+        _run_migrate_command(args.apiv1, args.annotations, args.apiv2, args.out)
 
 
 def _get_args() -> argparse.Namespace:
@@ -52,6 +56,7 @@ def _get_args() -> argparse.Namespace:
     _add_usages_subparser(subparsers)
     _add_annotations_subparser(subparsers)
     _add_all_subparser(subparsers)
+    _add_migrate_subparser(subparsers)
 
     return parser.parse_args()
 
@@ -183,4 +188,35 @@ def _add_all_subparser(subparsers: _SubParsersAction) -> None:
         type=int,
         required=False,
         default=100,
+    )
+
+
+def _add_migrate_subparser(subparsers) -> None:
+    generate_parser = subparsers.add_parser(
+        _MIGRATE_COMMAND,
+        help="Migrate Annotations for the new version based on the previous version.",
+    )
+    generate_parser.add_argument(
+        "-a1",
+        "--apiv1",
+        help="File created with the 'api' command from the previous version.",
+        type=Path,
+        required=True,
+    )
+    generate_parser.add_argument(
+        "-a2",
+        "--apiv2",
+        help="File created by the 'api' command from the new version.",
+        type=Path,
+        required=True,
+    )
+    generate_parser.add_argument(
+        "-a",
+        "--annotations",
+        help="File that includes all annotations of the previous version.",
+        type=Path,
+        required=True,
+    )
+    generate_parser.add_argument(
+        "-o", "--out", help="Output directory.", type=Path, required=True
     )
