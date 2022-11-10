@@ -1,4 +1,13 @@
 [MESSAGES CONTROL]
 
 disable=
+    # Defaults
+    attribute-defined-outside-init,
+    fixme,
+    format,
+    invalid-name,
+    missing-docstring,
+    protected-access,
+    too-few-public-methods,
+    # New
     import-error
