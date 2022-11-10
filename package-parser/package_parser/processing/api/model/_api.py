@@ -296,7 +296,7 @@ class Function:
 
     @property
     def name(self) -> str:
-        return self.qname.rsplit('.', maxsplit=1)[-1]
+        return self.qname.rsplit(".", maxsplit=1)[-1]
 
     def to_json(self) -> Any:
         return {

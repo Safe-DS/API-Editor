@@ -1,6 +1,5 @@
 import astroid
 import pytest
-
 from package_parser.processing.api._ast_visitor import trim_code
 
 
@@ -21,7 +20,7 @@ from package_parser.processing.api._ast_visitor import trim_code
     i = 0
     if i == 0:
         i = i + 1
-    pass"""
+    pass""",
         ),
         (
             """
@@ -63,5 +62,12 @@ from package_parser.processing.api._ast_visitor import trim_code
 def test_trim_code(code_to_pare: str, expected_code: str):
     module = astroid.parse(code_to_pare)
     assert len(module.body) != 0
-    assert trim_code(module.file_bytes, module.body[0].fromlineno, module.body[0].tolineno,
-                     module.file_encoding) == expected_code
+    assert (
+        trim_code(
+            module.file_bytes,
+            module.body[0].fromlineno,
+            module.body[0].tolineno,
+            module.file_encoding,
+        )
+        == expected_code
+    )
