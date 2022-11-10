@@ -11,21 +11,21 @@
 # --disable=W".
 disable=
     # Default generated
-    raw-checker-failed,
     bad-inline-option,
-    locally-disabled,
+    deprecated-pragma,
     file-ignored,
+    locally-disabled,
+    raw-checker-failed,
     suppressed-message,
     useless-suppression,
-    deprecated-pragma,
     use-symbolic-message-instead,
     # Disabled in pylint repo
     attribute-defined-outside-init,
+    fixme,
     invalid-name,
     missing-docstring,
     protected-access,
     too-few-public-methods,
-    fixme,
     # Handled by black
     format,
     # Handled by isort
@@ -33,4 +33,6 @@ disable=
     # False positives
     import-error,
     # Unwanted
+    design,
     metrics,
+    logging-fstring-interpolation,
