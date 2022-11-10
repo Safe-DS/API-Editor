@@ -18,13 +18,15 @@ from package_parser.processing.api._ast_visitor import trim_code
                 pass
 
             """,
-            cleandoc("""
+            cleandoc(
+                """
             def test():
                 i = 0
                 if i == 0:
                     i = i + 1
                 pass
-            """),
+            """
+            ),
         ),
         (
             """
@@ -36,11 +38,13 @@ from package_parser.processing.api._ast_visitor import trim_code
                 pass
 
             """,
-            cleandoc("""
+            cleandoc(
+                """
             def test():
                 # do nothing
                 pass
-            """)
+            """
+            ),
         ),
         (
             """
@@ -56,14 +60,16 @@ from package_parser.processing.api._ast_visitor import trim_code
                 pass
 
             """,
-            cleandoc("""
+            cleandoc(
+                """
             class Test:
                 def test():
                     # do nothing
                     pass
                 def test2() -> int:
                     return 42
-            """)
+            """
+            ),
         ),
     ],
 )
