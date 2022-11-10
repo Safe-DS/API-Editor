@@ -36,3 +36,4 @@ disable=
     design,
     metrics,
     logging-fstring-interpolation,
+    too-many-nested-blocks
