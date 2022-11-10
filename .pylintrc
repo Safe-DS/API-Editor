@@ -10,7 +10,7 @@
 # no Warning level messages displayed, use "--disable=all --enable=classes
 # --disable=W".
 disable=
-    # Default
+    # Default generated
     raw-checker-failed,
     bad-inline-option,
     locally-disabled,
@@ -19,9 +19,18 @@ disable=
     useless-suppression,
     deprecated-pragma,
     use-symbolic-message-instead,
+    # Disabled in pylint repo
+    attribute-defined-outside-init,
+    invalid-name,
+    missing-docstring,
+    protected-access,
+    too-few-public-methods,
+    fixme,
     # Handled by black
     format,
     # Handled by isort
     wrong-import-order,
     # False positives
-    import-error
+    import-error,
+    # Unwanted
+    metrics,
