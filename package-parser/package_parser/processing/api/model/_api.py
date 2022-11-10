@@ -31,9 +31,9 @@ class API:
         self.distribution: str = distribution
         self.package: str = package
         self.version: str = version
-        self.modules: dict[str, Module] = dict()
-        self.classes: dict[str, Class] = dict()
-        self.functions: dict[str, Function] = dict()
+        self.modules: dict[str, Module] = {}
+        self.classes: dict[str, Class] = {}
+        self.functions: dict[str, Function] = {}
 
     def add_module(self, module: Module) -> None:
         self.modules[module.id] = module
@@ -296,7 +296,7 @@ class Function:
 
     @property
     def name(self) -> str:
-        return self.qname.split(".")[-1]
+        return self.qname.rsplit('.', maxsplit=1)[-1]
 
     def to_json(self) -> Any:
         return {
