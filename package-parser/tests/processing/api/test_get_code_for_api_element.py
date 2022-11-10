@@ -1,3 +1,5 @@
+from inspect import cleandoc
+
 import astroid
 import pytest
 from package_parser.processing.api._ast_visitor import trim_code
@@ -16,11 +18,13 @@ from package_parser.processing.api._ast_visitor import trim_code
                 pass
 
             """,
-            """def test():
-    i = 0
-    if i == 0:
-        i = i + 1
-    pass""",
+            cleandoc("""
+            def test():
+                i = 0
+                if i == 0:
+                    i = i + 1
+                pass
+            """),
         ),
         (
             """
@@ -32,9 +36,11 @@ from package_parser.processing.api._ast_visitor import trim_code
                 pass
 
             """,
-            """def test():
-    # do nothing
-    pass""",
+            cleandoc("""
+            def test():
+                # do nothing
+                pass
+            """)
         ),
         (
             """
@@ -50,12 +56,14 @@ from package_parser.processing.api._ast_visitor import trim_code
                 pass
 
             """,
-            """class Test:
-    def test():
-        # do nothing
-        pass
-    def test2() -> int:
-        return 42""",
+            cleandoc("""
+            class Test:
+                def test():
+                    # do nothing
+                    pass
+                def test2() -> int:
+                    return 42
+            """)
         ),
     ],
 )
