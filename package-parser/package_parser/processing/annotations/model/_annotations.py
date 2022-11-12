@@ -1,3 +1,4 @@
+from __future__ import annotations
 from abc import ABC
 from dataclasses import asdict, dataclass
 from enum import Enum
@@ -16,10 +17,18 @@ class AbstractAnnotation(ABC):
     def to_json(self) -> dict:
         return asdict(self)
 
+    @staticmethod
+    def from_json(json: Any) -> (str, list[str], list[str], str):
+        return json["target"], json["authors"], json["reviewers"], json["comment"]
+
 
 @dataclass
 class RemoveAnnotation(AbstractAnnotation):
-    pass
+
+    @staticmethod
+    def from_json(json: Any) -> RemoveAnnotation:
+        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
+        return RemoveAnnotation(target, authors, reviewers, comment)
 
 
 @dataclass
@@ -33,10 +42,30 @@ class Interval:
     def to_json(self) -> dict:
         return asdict(self)
 
+    @staticmethod
+    def from_json(json: Any) -> Interval:
+        return Interval(json["isDiscrete"], json["lowerIntervalLimit"],
+                        json["lowerLimitTye"], json["upperIntervalLimit"],
+                        json["upperLimitTye"])
+
 
 @dataclass
 class BoundaryAnnotation(AbstractAnnotation):
     interval: Interval
+
+    def to_json(self) -> dict:
+        return {
+            "target": self.target,
+            "authors": self.authors,
+            "reviewers": self.reviewers,
+            "comment": self.comment,
+            "interval": self.interval.to_json(),
+        }
+
+    @staticmethod
+    def from_json(json: Any) -> BoundaryAnnotation:
+        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
+        return BoundaryAnnotation(target, authors, reviewers, comment, json["interval"])
 
 
 @dataclass
@@ -47,11 +76,31 @@ class EnumPair:
     def to_json(self) -> dict:
         return asdict(self)
 
+    @staticmethod
+    def from_json(json: Any) -> EnumPair:
+        return EnumPair(json["stringValue"], json["instanceName"])
+
 
 @dataclass
 class EnumAnnotation(AbstractAnnotation):
     enumName: str
     pairs: list[EnumPair]
+
+    def to_json(self) -> dict:
+        return {
+            "target": self.target,
+            "authors": self.authors,
+            "reviewers": self.reviewers,
+            "comment": self.comment,
+            "enumName": self.enumName,
+            "pairs": [pair.to_json() for pair in self.pairs],
+        }
+
+    @staticmethod
+    def from_json(json: Any) -> EnumAnnotation:
+        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
+        pairs = [EnumPair.from_json(enum_pair) for enum_pair in json["pairs"]]
+        return EnumAnnotation(target, authors, reviewers, comment, json["enumName"], pairs)
 
 
 class ValueAnnotation(AbstractAnnotation, ABC):
@@ -68,6 +117,16 @@ class ValueAnnotation(AbstractAnnotation, ABC):
         STRING = "string"
 
     variant: Variant
+
+    @staticmethod
+    def from_json(json: Any) -> ValueAnnotation:
+        switcher = {
+            ValueAnnotation.Variant.CONSTANT: ConstantAnnotation.from_json(json),
+            ValueAnnotation.Variant.OMITTED: OmittedAnnotation.from_json(json),
+            ValueAnnotation.Variant.OPTIONAL: OptionalAnnotation.from_json(json),
+            ValueAnnotation.Variant.REQUIRED: RequiredAnnotation.from_json(json),
+        }
+        return switcher.get(json["variant"])
 
 
 @dataclass
@@ -87,6 +146,12 @@ class ConstantAnnotation(ValueAnnotation):
             "defaultValue": self.defaultValue,
         }
 
+    @staticmethod
+    def from_json(json: Any) -> ConstantAnnotation:
+        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
+        return ConstantAnnotation(target, authors, reviewers, comment,
+                                  ValueAnnotation.DefaultValueType(json["defaultValueType"]), json["defaultValue"])
+
 
 @dataclass
 class OmittedAnnotation(ValueAnnotation):
@@ -100,6 +165,11 @@ class OmittedAnnotation(ValueAnnotation):
             "comment": self.comment,
             "variant": self.variant.value,
         }
+
+    @staticmethod
+    def from_json(json: Any) -> OmittedAnnotation:
+        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
+        return OmittedAnnotation(target, authors, reviewers, comment)
 
 
 @dataclass
@@ -119,6 +189,12 @@ class OptionalAnnotation(ValueAnnotation):
             "defaultValue": self.defaultValue,
         }
 
+    @staticmethod
+    def from_json(json: Any) -> OptionalAnnotation:
+        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
+        return OptionalAnnotation(target, authors, reviewers, comment,
+                                  ValueAnnotation.DefaultValueType(json["defaultValueType"]), json["defaultValue"])
+
 
 @dataclass
 class RequiredAnnotation(ValueAnnotation):
@@ -132,6 +208,11 @@ class RequiredAnnotation(ValueAnnotation):
             "comment": self.comment,
             "variant": self.variant.value,
         }
+
+    @staticmethod
+    def from_json(json: Any) -> RequiredAnnotation:
+        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
+        return RequiredAnnotation(target, authors, reviewers, comment)
 
 
 class ParameterType(Enum):
@@ -150,3 +231,86 @@ class ParameterInfo:
         self.type = parameter_type
         self.value = value
         self.value_type = value_type
+
+
+@dataclass
+class CalledAfterAnnotation(AbstractAnnotation):
+    calledAfterName: str
+
+    @staticmethod
+    def from_json(json: Any) -> CalledAfterAnnotation:
+        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
+        return CalledAfterAnnotation(target, authors, reviewers, comment, json["calledAfterName"])
+
+
+class CompleteAnnotation(AbstractAnnotation):
+
+    @staticmethod
+    def from_json(json: Any) -> CompleteAnnotation:
+        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
+        return CompleteAnnotation(target, authors, reviewers, comment)
+
+
+@dataclass
+class DescriptionAnnotation(AbstractAnnotation):
+    newDescription: str
+
+    @staticmethod
+    def from_json(json: Any) -> DescriptionAnnotation:
+        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
+        return DescriptionAnnotation(target, authors, reviewers, comment, json["newDescription"])
+
+
+@dataclass
+class GroupAnnotation(AbstractAnnotation):
+    groupName: str
+    parameters: list[str]
+
+    @staticmethod
+    def from_json(json: Any) -> GroupAnnotation:
+        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
+        return GroupAnnotation(target, authors, reviewers, comment, json["groupName"], json["parameters"])
+
+
+@dataclass
+class MoveAnnotation(AbstractAnnotation):
+    destination: str
+
+    @staticmethod
+    def from_json(json: Any) -> MoveAnnotation:
+        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
+        return MoveAnnotation(target, authors, reviewers, comment, json["destination"])
+
+
+class PureAnnotation(AbstractAnnotation):
+
+    @staticmethod
+    def from_json(json: Any) -> PureAnnotation:
+        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
+        return PureAnnotation(target, authors, reviewers, comment)
+
+
+@dataclass
+class RenameAnnotation(AbstractAnnotation):
+    newName: str
+
+    @staticmethod
+    def from_json(json: Any) -> RenameAnnotation:
+        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
+        return RenameAnnotation(target, authors, reviewers, comment, json["newName"])
+
+
+@dataclass
+class TodoAnnotation(AbstractAnnotation):
+    newTodo: str
+
+    @staticmethod
+    def from_json(json: Any) -> TodoAnnotation:
+        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
+        return TodoAnnotation(target, authors, reviewers, comment, json["newTodo"])
+
+
+if __name__ == '__main__':
+    x = EnumAnnotation("a", ["b"], ["c"], "d", "e", [EnumPair("f", "g"), EnumPair("h", "i")])
+    print(x.to_json())
+    print(EnumAnnotation.from_json(x.to_json()))
