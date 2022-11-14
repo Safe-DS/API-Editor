@@ -45,8 +45,8 @@ class Interval:
     @staticmethod
     def from_json(json: Any) -> Interval:
         return Interval(json["isDiscrete"], json["lowerIntervalLimit"],
-                        json["lowerLimitTye"], json["upperIntervalLimit"],
-                        json["upperLimitTye"])
+                        json["lowerLimitType"], json["upperIntervalLimit"],
+                        json["upperLimitType"])
 
 
 @dataclass
@@ -65,7 +65,7 @@ class BoundaryAnnotation(AbstractAnnotation):
     @staticmethod
     def from_json(json: Any) -> BoundaryAnnotation:
         target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
-        return BoundaryAnnotation(target, authors, reviewers, comment, json["interval"])
+        return BoundaryAnnotation(target, authors, reviewers, comment, Interval.from_json(json["interval"]))
 
 
 @dataclass
