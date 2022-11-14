@@ -18,8 +18,8 @@ class AbstractAnnotation(ABC):
         return asdict(self)
 
     @staticmethod
-    def from_json(json: Any) -> Tuple[str, list[str], list[str], str]:
-        return json["target"], json["authors"], json["reviewers"], json.get("comment", "")
+    def from_json(json: Any) -> AbstractAnnotation:
+        return AbstractAnnotation(json["target"], json["authors"], json["reviewers"], json.get("comment", ""))
 
 
 @dataclass
@@ -27,8 +27,8 @@ class RemoveAnnotation(AbstractAnnotation):
 
     @staticmethod
     def from_json(json: Any) -> RemoveAnnotation:
-        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
-        return RemoveAnnotation(target, authors, reviewers, comment)
+        annotation = AbstractAnnotation.from_json(json)
+        return RemoveAnnotation(annotation.target, annotation.authors, annotation.reviewers, annotation.comment)
 
 
 @dataclass
@@ -64,8 +64,8 @@ class BoundaryAnnotation(AbstractAnnotation):
 
     @staticmethod
     def from_json(json: Any) -> BoundaryAnnotation:
-        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
-        return BoundaryAnnotation(target, authors, reviewers, comment, Interval.from_json(json["interval"]))
+        annotation = AbstractAnnotation.from_json(json)
+        return BoundaryAnnotation(annotation.target, annotation.authors, annotation.reviewers, annotation.comment, Interval.from_json(json["interval"]))
 
 
 @dataclass
@@ -98,9 +98,9 @@ class EnumAnnotation(AbstractAnnotation):
 
     @staticmethod
     def from_json(json: Any) -> EnumAnnotation:
-        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
+        annotation = AbstractAnnotation.from_json(json)
         pairs = [EnumPair.from_json(enum_pair) for enum_pair in json["pairs"]]
-        return EnumAnnotation(target, authors, reviewers, comment, json["enumName"], pairs)
+        return EnumAnnotation(annotation.target, annotation.authors, annotation.reviewers, annotation.comment, json["enumName"], pairs)
 
 
 class ValueAnnotation(AbstractAnnotation, ABC):
@@ -152,8 +152,8 @@ class ConstantAnnotation(ValueAnnotation):
 
     @staticmethod
     def from_json(json: Any) -> ConstantAnnotation:
-        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
-        return ConstantAnnotation(target, authors, reviewers, comment,
+        annotation = AbstractAnnotation.from_json(json)
+        return ConstantAnnotation(annotation.target, annotation.authors, annotation.reviewers, annotation.comment,
                                   ValueAnnotation.DefaultValueType(json["defaultValueType"]), json["defaultValue"])
 
 
@@ -172,8 +172,8 @@ class OmittedAnnotation(ValueAnnotation):
 
     @staticmethod
     def from_json(json: Any) -> OmittedAnnotation:
-        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
-        return OmittedAnnotation(target, authors, reviewers, comment)
+        annotation = AbstractAnnotation.from_json(json)
+        return OmittedAnnotation(annotation.target, annotation.authors, annotation.reviewers, annotation.comment)
 
 
 @dataclass
@@ -195,8 +195,8 @@ class OptionalAnnotation(ValueAnnotation):
 
     @staticmethod
     def from_json(json: Any) -> OptionalAnnotation:
-        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
-        return OptionalAnnotation(target, authors, reviewers, comment,
+        annotation = AbstractAnnotation.from_json(json)
+        return OptionalAnnotation(annotation.target, annotation.authors, annotation.reviewers, annotation.comment,
                                   ValueAnnotation.DefaultValueType(json["defaultValueType"]), json["defaultValue"])
 
 
@@ -215,8 +215,8 @@ class RequiredAnnotation(ValueAnnotation):
 
     @staticmethod
     def from_json(json: Any) -> RequiredAnnotation:
-        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
-        return RequiredAnnotation(target, authors, reviewers, comment)
+        annotation = AbstractAnnotation.from_json(json)
+        return RequiredAnnotation(annotation.target, annotation.authors, annotation.reviewers, annotation.comment)
 
 
 class ParameterType(Enum):
@@ -243,16 +243,16 @@ class CalledAfterAnnotation(AbstractAnnotation):
 
     @staticmethod
     def from_json(json: Any) -> CalledAfterAnnotation:
-        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
-        return CalledAfterAnnotation(target, authors, reviewers, comment, json["calledAfterName"])
+        annotation = AbstractAnnotation.from_json(json)
+        return CalledAfterAnnotation(annotation.target, annotation.authors, annotation.reviewers, annotation.comment, json["calledAfterName"])
 
 
 class CompleteAnnotation(AbstractAnnotation):
 
     @staticmethod
     def from_json(json: Any) -> CompleteAnnotation:
-        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
-        return CompleteAnnotation(target, authors, reviewers, comment)
+        annotation = AbstractAnnotation.from_json(json)
+        return CompleteAnnotation(annotation.target, annotation.authors, annotation.reviewers, annotation.comment)
 
 
 @dataclass
@@ -261,8 +261,8 @@ class DescriptionAnnotation(AbstractAnnotation):
 
     @staticmethod
     def from_json(json: Any) -> DescriptionAnnotation:
-        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
-        return DescriptionAnnotation(target, authors, reviewers, comment, json["newDescription"])
+        annotation = AbstractAnnotation.from_json(json)
+        return DescriptionAnnotation(annotation.target, annotation.authors, annotation.reviewers, annotation.comment, json["newDescription"])
 
 
 @dataclass
@@ -270,8 +270,8 @@ class ExpertAnnotation(AbstractAnnotation):
 
     @staticmethod
     def from_json(json: Any) -> ExpertAnnotation:
-        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
-        return ExpertAnnotation(target, authors, reviewers, comment)
+        annotation = AbstractAnnotation.from_json(json)
+        return ExpertAnnotation(annotation.target, annotation.authors, annotation.reviewers, annotation.comment)
 
 
 @dataclass
@@ -281,8 +281,8 @@ class GroupAnnotation(AbstractAnnotation):
 
     @staticmethod
     def from_json(json: Any) -> GroupAnnotation:
-        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
-        return GroupAnnotation(target, authors, reviewers, comment, json["groupName"], json["parameters"])
+        annotation = AbstractAnnotation.from_json(json)
+        return GroupAnnotation(annotation.target, annotation.authors, annotation.reviewers, annotation.comment, json["groupName"], json["parameters"])
 
 
 @dataclass
@@ -291,16 +291,16 @@ class MoveAnnotation(AbstractAnnotation):
 
     @staticmethod
     def from_json(json: Any) -> MoveAnnotation:
-        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
-        return MoveAnnotation(target, authors, reviewers, comment, json["destination"])
+        annotation = AbstractAnnotation.from_json(json)
+        return MoveAnnotation(annotation.target, annotation.authors, annotation.reviewers, annotation.comment, json["destination"])
 
 
 class PureAnnotation(AbstractAnnotation):
 
     @staticmethod
     def from_json(json: Any) -> PureAnnotation:
-        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
-        return PureAnnotation(target, authors, reviewers, comment)
+        annotation = AbstractAnnotation.from_json(json)
+        return PureAnnotation(annotation.target, annotation.authors, annotation.reviewers, annotation.comment)
 
 
 @dataclass
@@ -309,8 +309,8 @@ class RenameAnnotation(AbstractAnnotation):
 
     @staticmethod
     def from_json(json: Any) -> RenameAnnotation:
-        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
-        return RenameAnnotation(target, authors, reviewers, comment, json["newName"])
+        annotation = AbstractAnnotation.from_json(json)
+        return RenameAnnotation(annotation.target, annotation.authors, annotation.reviewers, annotation.comment, json["newName"])
 
 
 @dataclass
@@ -319,5 +319,5 @@ class TodoAnnotation(AbstractAnnotation):
 
     @staticmethod
     def from_json(json: Any) -> TodoAnnotation:
-        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
-        return TodoAnnotation(target, authors, reviewers, comment, json["newTodo"])
+        annotation = AbstractAnnotation.from_json(json)
+        return TodoAnnotation(annotation.target, annotation.authors, annotation.reviewers, annotation.comment, json["newTodo"])
