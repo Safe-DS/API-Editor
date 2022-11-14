@@ -2,7 +2,7 @@ from __future__ import annotations
 from abc import ABC
 from dataclasses import asdict, dataclass
 from enum import Enum
-from typing import Any, Union, Tuple
+from typing import Any, Union
 
 ANNOTATION_SCHEMA_VERSION = 2
 
