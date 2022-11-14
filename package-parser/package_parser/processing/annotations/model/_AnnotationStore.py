@@ -1,4 +1,6 @@
+from __future__ import annotations
 from dataclasses import dataclass, field
+from typing import Any
 
 from package_parser.processing.annotations.model import (
     ANNOTATION_SCHEMA_VERSION,
@@ -31,6 +33,72 @@ class AnnotationStore:
     renameAnnotations: list[RenameAnnotation] = field(default_factory=list)
     todoAnnotations: list[TodoAnnotation] = field(default_factory=list)
     valueAnnotations: list[ValueAnnotation] = field(default_factory=list)
+
+    @staticmethod
+    def from_json(json: Any) -> AnnotationStore:
+        if json["schemaVersion"] == 1:
+            raise Exception("Incompatible Annotation File: This file is not compatible with the current version.")
+
+        boundaryAnnotations = []
+        for annotation in json["boundaryAnnotations"].values():
+            boundaryAnnotations.append(BoundaryAnnotation.from_json(annotation))
+
+        calledAfterAnnotations = []
+        for annotation in json["calledAfterAnnotations"].values():
+            calledAfterAnnotations.append(CalledAfterAnnotation.from_json(annotation))
+
+        completeAnnotations = []
+        for annotation in json["completeAnnotations"].values():
+            completeAnnotations.append(CompleteAnnotation.from_json(annotation))
+
+        descriptionAnnotations = []
+        for annotation in json["descriptionAnnotations"].values():
+            descriptionAnnotations.append(DescriptionAnnotation.from_json(annotation))
+
+        enumAnnotations = []
+        for annotation in json["enumAnnotations"].values():
+            enumAnnotations.append(EnumAnnotation.from_json(annotation))
+
+        groupAnnotations = []
+        for annotation in json["groupAnnotations"].values():
+            groupAnnotations.append(GroupAnnotation.from_json(annotation))
+
+        moveAnnotations = []
+        for annotation in json["moveAnnotations"].values():
+            moveAnnotations.append(MoveAnnotation.from_json(annotation))
+
+        pureAnnotations = []
+        for annotation in json["pureAnnotations"].values():
+            pureAnnotations.append(PureAnnotation.from_json(annotation))
+
+        removeAnnotations = []
+        for annotation in json["removeAnnotations"].values():
+            removeAnnotations.append(RemoveAnnotation.from_json(annotation))
+
+        renameAnnotations = []
+        for annotation in json["renameAnnotations"].values():
+            renameAnnotations.append(RenameAnnotation.from_json(annotation))
+
+        todoAnnotations = []
+        for annotation in json["todoAnnotations"].values():
+            todoAnnotations.append(TodoAnnotation.from_json(annotation))
+
+        valueAnnotations = []
+        for annotation in json["valueAnnotations"].values():
+            valueAnnotations.append(ValueAnnotation.from_json(annotation))
+
+        return AnnotationStore(boundaryAnnotations,
+                               calledAfterAnnotations,
+                               completeAnnotations,
+                               descriptionAnnotations,
+                               enumAnnotations,
+                               groupAnnotations,
+                               moveAnnotations,
+                               pureAnnotations,
+                               removeAnnotations,
+                               renameAnnotations,
+                               todoAnnotations,
+                               valueAnnotations,)
 
     def to_json(self) -> dict:
         return {

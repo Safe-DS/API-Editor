@@ -19,7 +19,7 @@ class AbstractAnnotation(ABC):
 
     @staticmethod
     def from_json(json: Any) -> (str, list[str], list[str], str):
-        return json["target"], json["authors"], json["reviewers"], json["comment"]
+        return json["target"], json["authors"], json["reviewers"], json.get("comment", "")
 
 
 @dataclass
@@ -120,13 +120,15 @@ class ValueAnnotation(AbstractAnnotation, ABC):
 
     @staticmethod
     def from_json(json: Any) -> ValueAnnotation:
-        switcher = {
-            ValueAnnotation.Variant.CONSTANT: ConstantAnnotation.from_json(json),
-            ValueAnnotation.Variant.OMITTED: OmittedAnnotation.from_json(json),
-            ValueAnnotation.Variant.OPTIONAL: OptionalAnnotation.from_json(json),
-            ValueAnnotation.Variant.REQUIRED: RequiredAnnotation.from_json(json),
-        }
-        return switcher.get(json["variant"])
+        variant = json["variant"]
+        if ValueAnnotation.Variant.CONSTANT.value == variant:
+            return ConstantAnnotation.from_json(json)
+        elif ValueAnnotation.Variant.OMITTED.value == variant:
+            return OmittedAnnotation.from_json(json)
+        elif ValueAnnotation.Variant.OPTIONAL.value == variant:
+            return OptionalAnnotation.from_json(json)
+        elif ValueAnnotation.Variant.REQUIRED.value == variant:
+            return RequiredAnnotation.from_json(json)
 
 
 @dataclass
