@@ -2,7 +2,7 @@ from __future__ import annotations
 from abc import ABC
 from dataclasses import asdict, dataclass
 from enum import Enum
-from typing import Any, Union
+from typing import Any, Union, Tuple
 
 ANNOTATION_SCHEMA_VERSION = 2
 
@@ -18,7 +18,7 @@ class AbstractAnnotation(ABC):
         return asdict(self)
 
     @staticmethod
-    def from_json(json: Any) -> (str, list[str], list[str], str):
+    def from_json(json: Any) -> Tuple[str, list[str], list[str], str]:
         return json["target"], json["authors"], json["reviewers"], json.get("comment", "")
 
 
@@ -129,6 +129,8 @@ class ValueAnnotation(AbstractAnnotation, ABC):
             return OptionalAnnotation.from_json(json)
         elif ValueAnnotation.Variant.REQUIRED.value == variant:
             return RequiredAnnotation.from_json(json)
+        else:
+            raise Exception("unkonwn variant found")
 
 
 @dataclass

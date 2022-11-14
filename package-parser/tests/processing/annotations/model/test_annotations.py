@@ -1,5 +1,3 @@
-import pytest
-
 from package_parser.processing.annotations.model import (
     ANNOTATION_SCHEMA_VERSION,
     AbstractAnnotation,
@@ -24,6 +22,8 @@ from package_parser.processing.annotations.model import (
     TodoAnnotation,
     ValueAnnotation,
 )
+
+import pytest
 
 
 def test_base_annotation_to_json():
