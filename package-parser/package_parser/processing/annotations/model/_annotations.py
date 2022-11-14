@@ -262,6 +262,15 @@ class DescriptionAnnotation(AbstractAnnotation):
 
 
 @dataclass
+class ExpertAnnotation(AbstractAnnotation):
+
+    @staticmethod
+    def from_json(json: Any) -> ExpertAnnotation:
+        target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
+        return ExpertAnnotation(target, authors, reviewers, comment)
+
+
+@dataclass
 class GroupAnnotation(AbstractAnnotation):
     groupName: str
     parameters: list[str]
@@ -308,9 +317,3 @@ class TodoAnnotation(AbstractAnnotation):
     def from_json(json: Any) -> TodoAnnotation:
         target, authors, reviewers, comment = AbstractAnnotation.from_json(json)
         return TodoAnnotation(target, authors, reviewers, comment, json["newTodo"])
-
-
-if __name__ == '__main__':
-    x = EnumAnnotation("a", ["b"], ["c"], "d", "e", [EnumPair("f", "g"), EnumPair("h", "i")])
-    print(x.to_json())
-    print(EnumAnnotation.from_json(x.to_json()))

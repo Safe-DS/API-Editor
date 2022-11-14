@@ -10,8 +10,8 @@ from package_parser.processing.annotations.model import (
     GroupAnnotation,
     MoveAnnotation,
     PureAnnotation,
-    RemoveAnnotation,
     RenameAnnotation,
+    RemoveAnnotation,
     TodoAnnotation,
     ValueAnnotation,
 )
@@ -39,13 +39,45 @@ class AnnotationStore:
                 annotation.target: annotation.to_json()
                 for annotation in self.boundaryAnnotations
             },
+            "calledAfterAnnotations": {
+                annotation.target: annotation.to_json()
+                for annotation in self.calledAfterAnnotations
+            },
+            "completeAnnotations": {
+                annotation.target: annotation.to_json()
+                for annotation in self.completeAnnotations
+            },
+            "descriptionAnnotations": {
+                annotation.target: annotation.to_json()
+                for annotation in self.descriptionAnnotations
+            },
             "enumAnnotations": {
                 annotation.target: annotation.to_json()
                 for annotation in self.enumAnnotations
             },
+            "groupAnnotations": {
+                annotation.target: annotation.to_json()
+                for annotation in self.groupAnnotations
+            },
+            "moveAnnotations": {
+                annotation.target: annotation.to_json()
+                for annotation in self.moveAnnotations
+            },
+            "pureAnnotations": {
+                annotation.target: annotation.to_json()
+                for annotation in self.pureAnnotations
+            },
+            "renameAnnotations": {
+                annotation.target: annotation.to_json()
+                for annotation in self.renameAnnotations
+            },
             "removeAnnotations": {
                 annotation.target: annotation.to_json()
                 for annotation in self.removeAnnotations
+            },
+            "todoAnnotations": {
+                annotation.target: annotation.to_json()
+                for annotation in self.todoAnnotations
             },
             "valueAnnotations": {
                 annotation.target: annotation.to_json()
