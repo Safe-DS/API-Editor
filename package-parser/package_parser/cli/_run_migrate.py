@@ -1,8 +1,8 @@
 import json
 from pathlib import Path
 
-from package_parser.processing.api.model import API
 from package_parser.processing.annotations.model import AnnotationStore
+from package_parser.processing.api.model import API
 
 
 def _run_migrate_command(

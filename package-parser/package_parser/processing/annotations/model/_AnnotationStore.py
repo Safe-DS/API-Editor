@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -12,8 +13,8 @@ from package_parser.processing.annotations.model import (
     GroupAnnotation,
     MoveAnnotation,
     PureAnnotation,
-    RenameAnnotation,
     RemoveAnnotation,
+    RenameAnnotation,
     TodoAnnotation,
     ValueAnnotation,
 )
@@ -37,7 +38,9 @@ class AnnotationStore:
     @staticmethod
     def from_json(json: Any) -> AnnotationStore:
         if json["schemaVersion"] == 1:
-            raise Exception("Incompatible Annotation File: This file is not compatible with the current version.")
+            raise Exception(
+                "Incompatible Annotation File: This file is not compatible with the current version."
+            )
 
         boundaryAnnotations = []
         for annotation in json["boundaryAnnotations"].values():
@@ -87,18 +90,20 @@ class AnnotationStore:
         for annotation in json["valueAnnotations"].values():
             valueAnnotations.append(ValueAnnotation.from_json(annotation))
 
-        return AnnotationStore(boundaryAnnotations,
-                               calledAfterAnnotations,
-                               completeAnnotations,
-                               descriptionAnnotations,
-                               enumAnnotations,
-                               groupAnnotations,
-                               moveAnnotations,
-                               pureAnnotations,
-                               removeAnnotations,
-                               renameAnnotations,
-                               todoAnnotations,
-                               valueAnnotations,)
+        return AnnotationStore(
+            boundaryAnnotations,
+            calledAfterAnnotations,
+            completeAnnotations,
+            descriptionAnnotations,
+            enumAnnotations,
+            groupAnnotations,
+            moveAnnotations,
+            pureAnnotations,
+            removeAnnotations,
+            renameAnnotations,
+            todoAnnotations,
+            valueAnnotations,
+        )
 
     def to_json(self) -> dict:
         return {
