@@ -19,7 +19,6 @@ class AbstractDiffer(ABC):
     @staticmethod
     @abstractmethod
     def diff_attributes(
-        self,
         attributes_a: list[str],
         attributes_b: list[str],
     ) -> float:
