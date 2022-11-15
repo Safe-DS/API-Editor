@@ -10,7 +10,7 @@ from package_parser.processing.api.model import (
 
 class AbstractDiffer(ABC):
     @abstractmethod
-    def diff_classes(self, class_a: Class, class_b: Class) -> int:
+    def diff_classes(self, class_a: Class, class_b: Class) -> float:
         pass
 
     @abstractmethod
@@ -18,19 +18,19 @@ class AbstractDiffer(ABC):
         self,
         attributes_a: list[str],
         attributes_b: list[str],
-    ) -> int:
+    ) -> float:
         pass
 
     @abstractmethod
-    def diff_functions(self, function_a: Function, function_b: Function) -> int:
+    def diff_functions(self, function_a: Function, function_b: Function) -> float:
         pass
 
     @abstractmethod
     def diff_parameters(
         self, parameter_a: list[Parameter], parameter_b: list[Parameter]
-    ) -> int:
+    ) -> float:
         pass
 
     @abstractmethod
-    def diff_return_types(self, result_a: Result, result_b: Result) -> int:
+    def diff_return_types(self, result_a: Result, result_b: Result) -> float:
         pass
