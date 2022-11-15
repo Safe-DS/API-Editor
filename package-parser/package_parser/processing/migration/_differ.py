@@ -1,11 +1,6 @@
 from abc import ABC, abstractmethod
 
-from package_parser.processing.api.model import (
-    Class,
-    Function,
-    Parameter,
-    Result,
-)
+from package_parser.processing.api.model import Class, Function, Parameter, Result
 
 
 class AbstractDiffer(ABC):
