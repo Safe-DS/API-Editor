@@ -4,42 +4,28 @@ from package_parser.processing.api.model import Class, Function, Parameter, Resu
 
 
 class AbstractDiffer(ABC):
-    @staticmethod
     @abstractmethod
-    def diff_attributes(
-        attributes_a: list[str],
-        attributes_b: list[str],
+    def compute_attribute_similarity(
+        self,
+        attributes_a: str,
+        attributes_b: str,
     ) -> float:
         pass
 
-    @staticmethod
     @abstractmethod
-    def diff_classes(class_a: Class, class_b: Class) -> float:
+    def compute_class_similarity(self, class_a: Class, class_b: Class) -> float:
         pass
 
-    @staticmethod
     @abstractmethod
-    def diff_codes(code_a: str, code_b: str) -> float:
+    def compute_function_similarity(self, function_a: Function, function_b: Function) -> float:
         pass
 
-    @staticmethod
     @abstractmethod
-    def diff_functions(function_a: Function, function_b: Function) -> float:
-        pass
-
-    @staticmethod
-    @abstractmethod
-    def diff_names(name_a: str, name_b: str) -> float:
-        pass
-
-    @staticmethod
-    @abstractmethod
-    def diff_parameters(
-        parameter_a: list[Parameter], parameter_b: list[Parameter]
+    def compute_parameter_similarity(
+        self, parameter_a: Parameter, parameter_b: Parameter
     ) -> float:
         pass
 
-    @staticmethod
     @abstractmethod
-    def diff_return_types(result_a: Result, result_b: Result) -> float:
+    def compute_result_similarity(self, result_a: Result, result_b: Result) -> float:
         pass
