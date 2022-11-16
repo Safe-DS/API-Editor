@@ -32,11 +32,8 @@ disable=
     wrong-import-order,
     # False positives
     import-error,
-    cyclic-import,
     # Unwanted
     design,
     metrics,
     logging-fstring-interpolation,
-    too-many-nested-blocks,
-    unused-argument,
-    unspecified-encoding
+    too-many-nested-blocks
