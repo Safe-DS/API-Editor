@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
-from package_parser.processing.annotations.model import (
+from ._annotations import (
     ANNOTATION_SCHEMA_VERSION,
     BoundaryAnnotation,
     CalledAfterAnnotation,
