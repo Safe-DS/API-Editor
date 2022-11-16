@@ -68,7 +68,7 @@ def distance_elements(
     )
 
 
-class SimpleDiffer(ABC):
+class SimpleDiffer(AbstractDiffer):
     @staticmethod
     def diff_classes(class_a: Class, class_b: Class) -> float:
         name_diff = SimpleDiffer.diff_names(class_a.name, class_b.name)
@@ -92,7 +92,7 @@ class SimpleDiffer(ABC):
 
     @staticmethod
     def diff_functions(function_a: Function, function_b: Function) -> float:
-        diff_code = SimpleDiffer.diff_codes(function_a, function_b)
+        diff_code = SimpleDiffer.diff_codes(function_a.code, function_b.code)
         diff_name = SimpleDiffer.diff_names(function_a.name, function_b.name)
         diff_param = SimpleDiffer.diff_parameters(
             function_a.parameters, function_b.parameters
@@ -100,9 +100,9 @@ class SimpleDiffer(ABC):
         return (diff_code + diff_name + diff_param) / 3
 
     @staticmethod
-    def diff_codes(function_a: Function, function_b: Function) -> float:
+    def diff_codes(code_a: str, code_b: str) -> float:
         diff_code = distance_elements(
-            function_a.code.split("\n"), function_b.code.split("\n")
+            code_a.split("\n"), code_b.split("\n")
         )
         return diff_code
 
