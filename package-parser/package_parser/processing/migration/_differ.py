@@ -92,14 +92,19 @@ class SimpleDiffer(ABC):
 
     @staticmethod
     def diff_functions(function_a: Function, function_b: Function) -> float:
-        diff_code = distance_elements(
-            function_a.code.split("\n"), function_b.code.split("\n")
-        )
+        diff_code = SimpleDiffer.diff_codes(function_a, function_b)
         diff_name = SimpleDiffer.diff_names(function_a.name, function_b.name)
         diff_param = SimpleDiffer.diff_parameters(
             function_a.parameters, function_b.parameters
         )
         return (diff_code + diff_name + diff_param) / 3
+
+    @staticmethod
+    def diff_codes(function_a: Function, function_b: Function) -> float:
+        diff_code = distance_elements(
+            function_a.code.split("\n"), function_b.code.split("\n")
+        )
+        return diff_code
 
     @staticmethod
     def diff_parameters(
@@ -111,14 +116,14 @@ class SimpleDiffer(ABC):
             both_a,
             positional_vararg_a,
             named_vararg_a,
-        ) = SimpleDiffer.get_parameter_divided_by_assignment(parameter_a)
+        ) = SimpleDiffer._get_parameter_divided_by_assignment(parameter_a)
         (
             by_position_b,
             by_name_b,
             both_b,
             positional_vararg_b,
             named_vararg_b,
-        ) = SimpleDiffer.get_parameter_divided_by_assignment(parameter_b)
+        ) = SimpleDiffer._get_parameter_divided_by_assignment(parameter_b)
 
         def name_and_type_only(p: Parameter):
             parameter_type = ""
@@ -160,7 +165,7 @@ class SimpleDiffer(ABC):
         ) / total
 
     @staticmethod
-    def get_parameter_divided_by_assignment(
+    def _get_parameter_divided_by_assignment(
         parameter_list: list[Parameter],
     ) -> Tuple[
         list[Parameter],
