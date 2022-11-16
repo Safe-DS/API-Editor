@@ -101,9 +101,7 @@ class SimpleDiffer(AbstractDiffer):
 
     @staticmethod
     def diff_codes(code_a: str, code_b: str) -> float:
-        diff_code = distance_elements(
-            code_a.split("\n"), code_b.split("\n")
-        )
+        diff_code = distance_elements(code_a.split("\n"), code_b.split("\n"))
         return diff_code
 
     @staticmethod
