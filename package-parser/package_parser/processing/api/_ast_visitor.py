@@ -3,6 +3,7 @@ import re
 from typing import Optional, Union
 
 import astroid
+from astroid import NodeNG
 from astroid.context import InferenceContext
 from astroid.helpers import safe_infer
 from package_parser.processing.api.model import (
@@ -18,6 +19,15 @@ from package_parser.utils import parent_qualified_name
 from ._file_filters import _is_init_file
 from ._get_parameter_list import get_parameter_list
 from .documentation_parsing import AbstractDocumentationParser
+
+
+def trim_code(code, from_line_no, to_line_no, encoding):
+    if code is None:
+        return None
+    if isinstance(code, bytes):
+        code = code.decode(encoding)
+    lines = code.split("\n")
+    return "\n".join(lines[from_line_no - 1 : to_line_no])
 
 
 class _AstVisitor:
@@ -141,6 +151,8 @@ class _AstVisitor:
         else:
             decorator_names = []
 
+        code = self.get_code(class_node)
+
         # Remember class, so we can later add methods
         class_ = Class(
             id_=self.__get_id(class_node.name),
@@ -150,6 +162,7 @@ class _AstVisitor:
             is_public=self.is_public(class_node.name, qname),
             reexported_by=self.reexported.get(qname, []),
             documentation=self.documentation_parser.get_class_documentation(class_node),
+            code=code,
             instance_attributes=instance_attributes,
         )
         self.__declaration_stack.append(class_)
@@ -178,6 +191,8 @@ class _AstVisitor:
 
         is_public = self.is_public(function_node.name, qname)
 
+        code = self.get_code(function_node)
+
         function = Function(
             id=self.__get_function_id(function_node.name, decorator_names),
             qname=qname,
@@ -195,8 +210,24 @@ class _AstVisitor:
             documentation=self.documentation_parser.get_function_documentation(
                 function_node
             ),
+            code=code,
         )
         self.__declaration_stack.append(function)
+
+    def get_code(self, function_node: Union[astroid.FunctionDef, astroid.ClassDef]):
+        code = ""
+        node: NodeNG = function_node
+        while node.parent is not None:
+            node = node.parent
+            if isinstance(node, astroid.Module):
+                code = trim_code(
+                    node.file_bytes,
+                    function_node.lineno,
+                    function_node.tolineno,
+                    node.file_encoding,
+                )
+                break
+        return code
 
     def leave_functiondef(self, _: astroid.FunctionDef) -> None:
         function = self.__declaration_stack.pop()
