@@ -1,12 +1,14 @@
 from abc import ABC, abstractmethod
-from typing import Any, Optional, Tuple
+from typing import Any, Optional
 
 from package_parser.processing.api.model import (
+    AbstractType,
     Class,
     Function,
     Parameter,
     ParameterAssignment,
     Result,
+    UnionType,
 )
 
 
@@ -39,13 +41,13 @@ class AbstractDiffer(ABC):
 
 
 def distance_elements(
-    list_a: list[Any], list_b: list[Any], filter_function=lambda x: x
+    list_a: list[Any], list_b: list[Any], are_similar=lambda x, y: x == y
 ) -> float:
     if len(list_a) == 0:
         return len(list_b)
     if len(list_b) == 0:
         return len(list_a)
-    if filter_function(list_a[0]) == filter_function(list_b[0]):
+    if are_similar(list_a[0], list_b[0]):
         return distance_elements(list_a[1:], list_b[1:])
     return 1 + min(
         distance_elements(list_a[1:], list_b),
@@ -55,136 +57,67 @@ def distance_elements(
 
 
 class SimpleDiffer(AbstractDiffer):
-    @staticmethod
-    def diff_classes(class_a: Class, class_b: Class) -> float:
-        name_diff = SimpleDiffer.diff_names(class_a.name, class_b.name)
-        attribute_diff = SimpleDiffer.diff_attributes(
-            class_a.instance_attributes, class_b.instance_attributes
-        )
-        return (name_diff + attribute_diff) / 2
+    def compute_class_similarity(self, class_a: Class, class_b: Class) -> float:
+        name_similarity = self._compute_name_similarity(class_a.name, class_b.name)
+        attributes_similarity = distance_elements(class_a.instance_attributes, class_b.instance_attributes)
+        attributes_similarity = attributes_similarity / (max(len(class_a.instance_attributes), len(class_b.instance_attributes)))
+        code_similarity = self._compute_code_similarity(class_a.code, class_b.code)
+        return (name_similarity + attributes_similarity + code_similarity) / 3
 
-    @staticmethod
-    def diff_names(name_a: str, name_b: str) -> float:
-        name_diff = distance_elements([*name_a], [*name_b])
-        return name_diff / max(len(name_a), len(name_b))
+    def _compute_name_similarity(self, name_a: str, name_b: str) -> float:
+        name_similarity = distance_elements([*name_a], [*name_b])
+        return name_similarity / max(len(name_a), len(name_b))
 
-    @staticmethod
-    def diff_attributes(
-        attributes_a: list[str],
-        attributes_b: list[str],
+    def compute_attribute_similarity(
+        self,
+        attributes_a: str,
+        attributes_b: str,
     ) -> float:
-        attributes_diff = distance_elements(attributes_a, attributes_b)
-        return attributes_diff / (max(len(attributes_a), len(attributes_b)))
+        return self._compute_name_similarity(attributes_a, attributes_b)
 
-    @staticmethod
-    def diff_functions(function_a: Function, function_b: Function) -> float:
-        diff_code = SimpleDiffer.diff_codes(function_a.code, function_b.code)
-        diff_name = SimpleDiffer.diff_names(function_a.name, function_b.name)
-        diff_param = SimpleDiffer.diff_parameters(
-            function_a.parameters, function_b.parameters
-        )
-        return (diff_code + diff_name + diff_param) / 3
+    def compute_function_similarity(self, function_a: Function, function_b: Function) -> float:
+        code_similarity = self._compute_code_similarity(function_a.code, function_b.code)
+        name_similarity = self._compute_name_similarity(function_a.name, function_b.name)
 
-    @staticmethod
-    def diff_codes(code_a: str, code_b: str) -> float:
+        def are_parameters_similar(parameter_a: Parameter, parameter_b: Parameter):
+            return self.compute_parameter_similarity(parameter_a, parameter_b) == 1
+        parameter_similarity = distance_elements(function_a.parameters, function_b.parameters, are_similar=are_parameters_similar)
+        return (code_similarity + name_similarity + parameter_similarity) / 3
+
+    def _compute_code_similarity(self, code_a: str, code_b: str) -> float:
         diff_code = distance_elements(code_a.split("\n"), code_b.split("\n"))
         return diff_code
 
-    @staticmethod
-    def diff_parameters(
-        parameter_a: list[Parameter], parameter_b: list[Parameter]
+    def compute_parameter_similarity(
+        self, parameter_a: Parameter, parameter_b: Parameter
     ) -> float:
-        (
-            by_position_a,
-            by_name_a,
-            both_a,
-            positional_vararg_a,
-            named_vararg_a,
-        ) = SimpleDiffer._get_parameter_divided_by_assignment(parameter_a)
-        (
-            by_position_b,
-            by_name_b,
-            both_b,
-            positional_vararg_b,
-            named_vararg_b,
-        ) = SimpleDiffer._get_parameter_divided_by_assignment(parameter_b)
+        parameter_name_similarity = self._compute_name_similarity(parameter_a.name, parameter_b.name)
+        parameter_type_similarity = self._compute_type_similarity(parameter_a.type, parameter_b.type)
+        parameter_assignment_similarity = self._compute_assignment_similarity(parameter_a.assigned_by, parameter_b.assigned_by)
+        return (parameter_name_similarity + parameter_type_similarity + parameter_assignment_similarity) / 3
 
-        def name_and_type_only(p: Parameter):
-            parameter_type = ""
-            if p.type is not None:
-                parameter_type = "|" + str(p.type.to_json())
-            return p.name + parameter_type
+    def _compute_type_similarity(self, type_a: Optional[AbstractType], type_b: Optional[AbstractType]) -> float:
+        if type_a is None and type_b is None:
+            return 0
+        if type_a is None and type_b is not None:
+            return 1
+        if type_b is None and type_a is not None:
+            return 0
 
-        position_diff = distance_elements(
-            by_position_a, by_position_b, filter_function=name_and_type_only
-        )
-        name_diff = distance_elements(
-            by_name_a, by_name_b, filter_function=name_and_type_only
-        )
-        both_diff = distance_elements(
-            both_a, both_b, filter_function=name_and_type_only
-        )
+        def are_types_similar(abstract_type_a: AbstractType, abstract_type_b: AbstractType):
+            return abstract_type_a.to_json() == abstract_type_b.to_json()
 
-        total = 4
-        position_vararg_diff = 0.0
-        named_vararg_diff = 0.0
-        if positional_vararg_a is not None or positional_vararg_b is not None:
-            total = total + 1
-            position_vararg_diff = distance_elements(
-                [positional_vararg_a],
-                [positional_vararg_b],
-                filter_function=name_and_type_only,
-            )
-        if named_vararg_a is not None or named_vararg_b is not None:
-            total = total + 1
-            named_vararg_diff = distance_elements(
-                [named_vararg_a], [named_vararg_b], filter_function=name_and_type_only
-            )
-        return (
-            position_diff
-            + name_diff
-            + both_diff
-            + position_vararg_diff
-            + named_vararg_diff
-        ) / total
+        return distance_elements(self._create_list_from_type(type_a), self._create_list_from_type(type_b), are_similar=are_types_similar)
 
-    @staticmethod
-    def _get_parameter_divided_by_assignment(
-        parameter_list: list[Parameter],
-    ) -> Tuple[
-        list[Parameter],
-        list[Parameter],
-        list[Parameter],
-        Optional[Parameter],
-        Optional[Parameter],
-    ]:
-        by_position = []
-        by_name = []
-        by_name_and_position = []
-        positional_vararg = None
-        named_vararg = None
+    def _create_list_from_type(self, abstract_type: AbstractType):
+        if isinstance(abstract_type, UnionType):
+            return abstract_type.types
+        return [abstract_type]
 
-        for parameter in parameter_list:
-            if parameter.assigned_by == ParameterAssignment.IMPLICIT:
-                continue
-            if parameter.assigned_by == ParameterAssignment.NAME_ONLY:
-                by_name.append(parameter)
-            if parameter.assigned_by == ParameterAssignment.POSITION_ONLY:
-                by_position.append(parameter)
-            if parameter.assigned_by == ParameterAssignment.POSITION_OR_NAME:
-                by_name_and_position.append(parameter)
-            if parameter.assigned_by == ParameterAssignment.POSITIONAL_VARARG:
-                positional_vararg = parameter
-            if parameter.assigned_by == ParameterAssignment.NAMED_VARARG:
-                named_vararg = parameter
-        return (
-            by_position,
-            by_name,
-            by_name_and_position,
-            positional_vararg,
-            named_vararg,
-        )
+    def _compute_assignment_similarity(self, assigned_by_a: ParameterAssignment, assigned_by_b: ParameterAssignment) -> float:
+        if assigned_by_a == assigned_by_b:
+            return 1
+        return 0
 
-    @staticmethod
-    def diff_return_types(result_a: Result, result_b: Result) -> float:
-        return SimpleDiffer.diff_names(result_a.name, result_b.name)
+    def compute_result_similarity(self, result_a: Result, result_b: Result) -> float:
+        return self._compute_name_similarity(result_a.name, result_b.name)
