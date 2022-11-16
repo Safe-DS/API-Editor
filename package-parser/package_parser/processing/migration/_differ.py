@@ -17,7 +17,9 @@ class AbstractDiffer(ABC):
         pass
 
     @abstractmethod
-    def compute_function_similarity(self, function_a: Function, function_b: Function) -> float:
+    def compute_function_similarity(
+        self, function_a: Function, function_b: Function
+    ) -> float:
         pass
 
     @abstractmethod
