@@ -26,7 +26,9 @@ class AbstractDiffer(ABC):
         pass
 
     @abstractmethod
-    def compute_function_similarity(self, function_a: Function, function_b: Function) -> float:
+    def compute_function_similarity(
+        self, function_a: Function, function_b: Function
+    ) -> float:
         pass
 
     @abstractmethod
@@ -59,8 +61,12 @@ def distance_elements(
 class SimpleDiffer(AbstractDiffer):
     def compute_class_similarity(self, class_a: Class, class_b: Class) -> float:
         name_similarity = self._compute_name_similarity(class_a.name, class_b.name)
-        attributes_similarity = distance_elements(class_a.instance_attributes, class_b.instance_attributes)
-        attributes_similarity = attributes_similarity / (max(len(class_a.instance_attributes), len(class_b.instance_attributes)))
+        attributes_similarity = distance_elements(
+            class_a.instance_attributes, class_b.instance_attributes
+        )
+        attributes_similarity = attributes_similarity / (
+            max(len(class_a.instance_attributes), len(class_b.instance_attributes))
+        )
         code_similarity = self._compute_code_similarity(class_a.code, class_b.code)
         return (name_similarity + attributes_similarity + code_similarity) / 3
 
@@ -75,13 +81,24 @@ class SimpleDiffer(AbstractDiffer):
     ) -> float:
         return self._compute_name_similarity(attributes_a, attributes_b)
 
-    def compute_function_similarity(self, function_a: Function, function_b: Function) -> float:
-        code_similarity = self._compute_code_similarity(function_a.code, function_b.code)
-        name_similarity = self._compute_name_similarity(function_a.name, function_b.name)
+    def compute_function_similarity(
+        self, function_a: Function, function_b: Function
+    ) -> float:
+        code_similarity = self._compute_code_similarity(
+            function_a.code, function_b.code
+        )
+        name_similarity = self._compute_name_similarity(
+            function_a.name, function_b.name
+        )
 
         def are_parameters_similar(parameter_a: Parameter, parameter_b: Parameter):
             return self.compute_parameter_similarity(parameter_a, parameter_b) == 1
-        parameter_similarity = distance_elements(function_a.parameters, function_b.parameters, are_similar=are_parameters_similar)
+
+        parameter_similarity = distance_elements(
+            function_a.parameters,
+            function_b.parameters,
+            are_similar=are_parameters_similar,
+        )
         return (code_similarity + name_similarity + parameter_similarity) / 3
 
     def _compute_code_similarity(self, code_a: str, code_b: str) -> float:
@@ -91,12 +108,24 @@ class SimpleDiffer(AbstractDiffer):
     def compute_parameter_similarity(
         self, parameter_a: Parameter, parameter_b: Parameter
     ) -> float:
-        parameter_name_similarity = self._compute_name_similarity(parameter_a.name, parameter_b.name)
-        parameter_type_similarity = self._compute_type_similarity(parameter_a.type, parameter_b.type)
-        parameter_assignment_similarity = self._compute_assignment_similarity(parameter_a.assigned_by, parameter_b.assigned_by)
-        return (parameter_name_similarity + parameter_type_similarity + parameter_assignment_similarity) / 3
+        parameter_name_similarity = self._compute_name_similarity(
+            parameter_a.name, parameter_b.name
+        )
+        parameter_type_similarity = self._compute_type_similarity(
+            parameter_a.type, parameter_b.type
+        )
+        parameter_assignment_similarity = self._compute_assignment_similarity(
+            parameter_a.assigned_by, parameter_b.assigned_by
+        )
+        return (
+            parameter_name_similarity
+            + parameter_type_similarity
+            + parameter_assignment_similarity
+        ) / 3
 
-    def _compute_type_similarity(self, type_a: Optional[AbstractType], type_b: Optional[AbstractType]) -> float:
+    def _compute_type_similarity(
+        self, type_a: Optional[AbstractType], type_b: Optional[AbstractType]
+    ) -> float:
         if type_a is None and type_b is None:
             return 0
         if type_a is None and type_b is not None:
@@ -104,17 +133,25 @@ class SimpleDiffer(AbstractDiffer):
         if type_b is None and type_a is not None:
             return 0
 
-        def are_types_similar(abstract_type_a: AbstractType, abstract_type_b: AbstractType):
+        def are_types_similar(
+            abstract_type_a: AbstractType, abstract_type_b: AbstractType
+        ):
             return abstract_type_a.to_json() == abstract_type_b.to_json()
 
-        return distance_elements(self._create_list_from_type(type_a), self._create_list_from_type(type_b), are_similar=are_types_similar)
+        return distance_elements(
+            self._create_list_from_type(type_a),
+            self._create_list_from_type(type_b),
+            are_similar=are_types_similar,
+        )
 
     def _create_list_from_type(self, abstract_type: AbstractType):
         if isinstance(abstract_type, UnionType):
             return abstract_type.types
         return [abstract_type]
 
-    def _compute_assignment_similarity(self, assigned_by_a: ParameterAssignment, assigned_by_b: ParameterAssignment) -> float:
+    def _compute_assignment_similarity(
+        self, assigned_by_a: ParameterAssignment, assigned_by_b: ParameterAssignment
+    ) -> float:
         if assigned_by_a == assigned_by_b:
             return 1
         return 0
