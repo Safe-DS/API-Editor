@@ -207,7 +207,10 @@ class Class:
                 full_docstring=json.get("docstring", ""),
             ),
             json.get("code", ""),
-            [InstanceAttribute.from_json(instance_attribute) for instance_attribute in json.get("instance_attributes", [])],
+            [
+                InstanceAttribute.from_json(instance_attribute)
+                for instance_attribute in json.get("instance_attributes", [])
+            ],
         )
 
         for method_id in json["methods"]:
@@ -258,7 +261,9 @@ class Class:
             "description": self.documentation.description,
             "docstring": self.documentation.full_docstring,
             "code": self.code,
-            "instance_attributes": [attribute.to_json() for attribute in self.instance_attributes],
+            "instance_attributes": [
+                attribute.to_json() for attribute in self.instance_attributes
+            ],
         }
 
 

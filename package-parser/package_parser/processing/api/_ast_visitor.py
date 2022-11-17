@@ -143,12 +143,16 @@ class _AstVisitor:
         self.api.add_module(module)
 
     @staticmethod
-    def get_instance_attributes(instance_attributes: dict[str, Any]) -> list[InstanceAttribute]:
+    def get_instance_attributes(
+        instance_attributes: dict[str, Any]
+    ) -> list[InstanceAttribute]:
         attributes = []
         for name, assignments in instance_attributes.items():
             types = set()
             for assignment in assignments:
-                if isinstance(assignment, astroid.AssignAttr) and isinstance(assignment.parent, astroid.Assign):
+                if isinstance(assignment, astroid.AssignAttr) and isinstance(
+                    assignment.parent, astroid.Assign
+                ):
                     value = assignment.parent.value
                     if isinstance(value, astroid.Call):
                         if isinstance(value.func, astroid.Name):
@@ -285,4 +289,3 @@ class _AstVisitor:
 
 def is_public_module(module_name: str) -> bool:
     return all(not it.startswith("_") for it in module_name.split("."))
-
