@@ -267,7 +267,7 @@ class InstanceAttribute:
     name: str
     types: list[str]
 
-    def to_json(self) -> dict[Any]:
+    def to_json(self) -> dict[str, Any]:
         return {"name": self.name, "types": self.types}
 
     @staticmethod

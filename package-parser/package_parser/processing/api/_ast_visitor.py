@@ -143,7 +143,7 @@ class _AstVisitor:
         self.api.add_module(module)
 
     @staticmethod
-    def get_instance_attributes(instance_attributes: dict[Any]) -> list[InstanceAttribute]:
+    def get_instance_attributes(instance_attributes: dict[str, Any]) -> list[InstanceAttribute]:
         attributes = []
         for name, assignments in instance_attributes.items():
             types = set()
