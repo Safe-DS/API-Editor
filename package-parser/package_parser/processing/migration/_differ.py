@@ -188,11 +188,11 @@ class SimpleDiffer(AbstractDiffer):
     def _compute_type_similarity(
         self, type_a: Optional[AbstractType], type_b: Optional[AbstractType]
     ) -> float:
-        if type_a is None and type_b is None:
+        if type_a is None:
+            if type_b is None:
+                return 1
             return 0
-        if type_a is None and type_b is not None:
-            return 1
-        if type_b is None and type_a is not None:
+        if type_b is None:
             return 0
 
         def are_types_similar(
