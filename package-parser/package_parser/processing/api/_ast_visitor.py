@@ -1,6 +1,6 @@
 import logging
 import re
-from typing import Optional, Union
+from typing import Any, Optional, Union
 
 import astroid
 from astroid import NodeNG
@@ -19,6 +19,7 @@ from package_parser.utils import parent_qualified_name
 from ._file_filters import _is_init_file
 from ._get_parameter_list import get_parameter_list
 from .documentation_parsing import AbstractDocumentationParser
+from .model._api import InstanceAttribute
 
 
 def trim_code(code, from_line_no, to_line_no, encoding):
@@ -141,9 +142,28 @@ class _AstVisitor:
 
         self.api.add_module(module)
 
+    @staticmethod
+    def get_instance_attributes(instance_attributes: dict[Any]) -> list[InstanceAttribute]:
+        attributes = []
+        for name, assignments in instance_attributes.items():
+            types = set()
+            for assignment in assignments:
+                if isinstance(assignment, astroid.AssignAttr) and isinstance(assignment.parent, astroid.Assign):
+                    value = assignment.parent.value
+                    if isinstance(value, astroid.Call):
+                        if isinstance(value.func, astroid.Name):
+                            called_value = value.func.name
+                            # check if called_value is a class and not a function
+                            if called_value[0].isupper():
+                                types.add(called_value)
+                    elif isinstance(value, astroid.Const) and value.value is not None:
+                        types.add(value.value.__class__.__name__)
+            attributes.append(InstanceAttribute(name, list(types)))
+        return attributes
+
     def enter_classdef(self, class_node: astroid.ClassDef) -> None:
         qname = class_node.qname()
-        instance_attributes = list(class_node.instance_attrs)
+        instance_attributes = self.get_instance_attributes(class_node.instance_attrs)
 
         decorators: Optional[astroid.Decorators] = class_node.decorators
         if decorators is not None:
@@ -265,3 +285,4 @@ class _AstVisitor:
 
 def is_public_module(module_name: str) -> bool:
     return all(not it.startswith("_") for it in module_name.split("."))
+

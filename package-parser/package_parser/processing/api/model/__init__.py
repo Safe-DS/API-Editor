@@ -5,6 +5,7 @@ from ._api import (
     FromImport,
     Function,
     Import,
+    InstanceAttribute,
     Module,
     Result,
     ResultDocstring,
