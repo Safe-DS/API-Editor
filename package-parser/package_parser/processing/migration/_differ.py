@@ -60,9 +60,68 @@ def distance_elements(
 
 
 class SimpleDiffer(AbstractDiffer):
+    assigned_by_look_up_similarity: dict[ParameterAssignment, dict[ParameterAssignment, float]]
+
+    def __init__(self):
+        distance_between_implicit_and_explicit = 0.3
+        distance_between_vararg_and_normal = 0.3
+        distance_between_position_and_named = 0.3
+        distance_between_both_to_one = 0.15
+        distance_between_one_to_both = 0.15
+        self.assigned_by_look_up_similarity = {
+            ParameterAssignment.IMPLICIT: {
+                ParameterAssignment.IMPLICIT: 1,
+                ParameterAssignment.NAMED_VARARG: 1 - distance_between_implicit_and_explicit - distance_between_vararg_and_normal - distance_between_position_and_named,
+                ParameterAssignment.POSITIONAL_VARARG: 1 - distance_between_implicit_and_explicit - distance_between_vararg_and_normal,
+                ParameterAssignment.POSITION_OR_NAME: 1 - distance_between_implicit_and_explicit,
+                ParameterAssignment.NAME_ONLY: 1 - distance_between_implicit_and_explicit,
+                ParameterAssignment.POSITION_ONLY: 1 - distance_between_implicit_and_explicit,
+            },
+            ParameterAssignment.NAMED_VARARG: {
+                ParameterAssignment.IMPLICIT: 1 - distance_between_implicit_and_explicit - distance_between_vararg_and_normal - distance_between_position_and_named,
+                ParameterAssignment.NAMED_VARARG: 1,
+                ParameterAssignment.POSITIONAL_VARARG: 1 - distance_between_position_and_named,
+                ParameterAssignment.POSITION_OR_NAME: 1 - distance_between_vararg_and_normal - distance_between_one_to_both,
+                ParameterAssignment.NAME_ONLY: 1 - distance_between_vararg_and_normal,
+                ParameterAssignment.POSITION_ONLY: 1 - distance_between_vararg_and_normal - distance_between_position_and_named,
+            },
+            ParameterAssignment.POSITIONAL_VARARG: {
+                ParameterAssignment.IMPLICIT: 1 - distance_between_implicit_and_explicit - distance_between_vararg_and_normal,
+                ParameterAssignment.NAMED_VARARG: 1 - distance_between_position_and_named,
+                ParameterAssignment.POSITIONAL_VARARG: 1,
+                ParameterAssignment.POSITION_OR_NAME: 1 - distance_between_vararg_and_normal - distance_between_one_to_both,
+                ParameterAssignment.NAME_ONLY: 1 - distance_between_vararg_and_normal - distance_between_position_and_named,
+                ParameterAssignment.POSITION_ONLY: 1 - distance_between_vararg_and_normal,
+            },
+            ParameterAssignment.POSITION_OR_NAME: {
+                ParameterAssignment.IMPLICIT: 1 - distance_between_implicit_and_explicit,
+                ParameterAssignment.NAMED_VARARG: 1 - distance_between_vararg_and_normal - distance_between_both_to_one,
+                ParameterAssignment.POSITIONAL_VARARG: 1 - distance_between_vararg_and_normal - distance_between_both_to_one,
+                ParameterAssignment.POSITION_OR_NAME: 1,
+                ParameterAssignment.NAME_ONLY: 1 - distance_between_both_to_one,
+                ParameterAssignment.POSITION_ONLY: 1 - distance_between_both_to_one,
+            },
+            ParameterAssignment.NAME_ONLY: {
+                ParameterAssignment.IMPLICIT: 1 - distance_between_implicit_and_explicit,
+                ParameterAssignment.NAMED_VARARG: 1 - distance_between_vararg_and_normal,
+                ParameterAssignment.POSITIONAL_VARARG: 1 - distance_between_vararg_and_normal - distance_between_position_and_named,
+                ParameterAssignment.POSITION_OR_NAME: 1 - distance_between_one_to_both,
+                ParameterAssignment.NAME_ONLY: 1,
+                ParameterAssignment.POSITION_ONLY: 1 - distance_between_position_and_named,
+            },
+            ParameterAssignment.POSITION_ONLY: {
+                ParameterAssignment.IMPLICIT: 1 - distance_between_implicit_and_explicit,
+                ParameterAssignment.NAMED_VARARG: 1 - distance_between_vararg_and_normal - distance_between_position_and_named,
+                ParameterAssignment.POSITIONAL_VARARG: 1 - distance_between_vararg_and_normal,
+                ParameterAssignment.POSITION_OR_NAME: 1 - distance_between_one_to_both,
+                ParameterAssignment.NAME_ONLY: 1 - distance_between_position_and_named,
+                ParameterAssignment.POSITION_ONLY: 1,
+            },
+        }
+
     def compute_class_similarity(self, class_a: Class, class_b: Class) -> float:
         name_similarity = self._compute_name_similarity(class_a.name, class_b.name)
-        attributes_similarity = distance_elements(
+        attributes_similarity = 1 - distance_elements(
             class_a.instance_attributes, class_b.instance_attributes
         )
         attributes_similarity = attributes_similarity / (
@@ -72,15 +131,17 @@ class SimpleDiffer(AbstractDiffer):
         return (name_similarity + attributes_similarity + code_similarity) / 3
 
     def _compute_name_similarity(self, name_a: str, name_b: str) -> float:
-        name_similarity = distance_elements([*name_a], [*name_b])
+        name_similarity = 1 - distance_elements([*name_a], [*name_b])
         return name_similarity / max(len(name_a), len(name_b))
 
     def compute_attribute_similarity(
         self,
-        attributes_a: str,
-        attributes_b: str,
+        attributes_a: InstanceAttribute,
+        attributes_b: InstanceAttribute,
     ) -> float:
-        return self._compute_name_similarity(attributes_a, attributes_b)
+        name_similarity = self._compute_name_similarity(attributes_a.name, attributes_b.name)
+        type_similarity = 1 - distance_elements(attributes_a.types, attributes_b.types)
+        return (name_similarity + type_similarity) / 2
 
     def compute_function_similarity(
         self, function_a: Function, function_b: Function
@@ -95,7 +156,7 @@ class SimpleDiffer(AbstractDiffer):
         def are_parameters_similar(parameter_a: Parameter, parameter_b: Parameter):
             return self.compute_parameter_similarity(parameter_a, parameter_b) == 1
 
-        parameter_similarity = distance_elements(
+        parameter_similarity = 1 - distance_elements(
             function_a.parameters,
             function_b.parameters,
             are_similar=are_parameters_similar,
@@ -103,7 +164,7 @@ class SimpleDiffer(AbstractDiffer):
         return (code_similarity + name_similarity + parameter_similarity) / 3
 
     def _compute_code_similarity(self, code_a: str, code_b: str) -> float:
-        diff_code = distance_elements(code_a.split("\n"), code_b.split("\n"))
+        diff_code = 1 - distance_elements(code_a.split("\n"), code_b.split("\n"))
         return diff_code
 
     def compute_parameter_similarity(
@@ -139,7 +200,7 @@ class SimpleDiffer(AbstractDiffer):
         ):
             return abstract_type_a.to_json() == abstract_type_b.to_json()
 
-        return distance_elements(
+        return 1 - distance_elements(
             self._create_list_from_type(type_a),
             self._create_list_from_type(type_b),
             are_similar=are_types_similar,
@@ -153,9 +214,7 @@ class SimpleDiffer(AbstractDiffer):
     def _compute_assignment_similarity(
         self, assigned_by_a: ParameterAssignment, assigned_by_b: ParameterAssignment
     ) -> float:
-        if assigned_by_a == assigned_by_b:
-            return 1
-        return 0
+        return self.assigned_by_look_up_similarity[assigned_by_a][assigned_by_b]
 
     def compute_result_similarity(self, result_a: Result, result_b: Result) -> float:
         return self._compute_name_similarity(result_a.name, result_b.name)
