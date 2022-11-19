@@ -161,18 +161,22 @@ class SimpleDiffer(AbstractDiffer):
 
     def compute_class_similarity(self, class_a: Class, class_b: Class) -> float:
         name_similarity = self._compute_name_similarity(class_a.name, class_b.name)
-        attributes_similarity = 1 - distance_elements(
+        attributes_similarity = distance_elements(
             class_a.instance_attributes, class_b.instance_attributes
         )
         attributes_similarity = attributes_similarity / (
-            max(len(class_a.instance_attributes), len(class_b.instance_attributes))
+            max(len(class_a.instance_attributes), len(class_b.instance_attributes), 1)
         )
+        attributes_similarity = 1 - attributes_similarity
+
         code_similarity = self._compute_code_similarity(class_a.code, class_b.code)
         return (name_similarity + attributes_similarity + code_similarity) / 3
 
     def _compute_name_similarity(self, name_a: str, name_b: str) -> float:
-        name_similarity = 1 - distance_elements([*name_a], [*name_b])
-        return name_similarity / max(len(name_a), len(name_b))
+        name_similarity = distance_elements([*name_a], [*name_b]) / max(
+            len(name_a), len(name_b), 1
+        )
+        return 1 - name_similarity
 
     def compute_attribute_similarity(
         self,
@@ -182,7 +186,10 @@ class SimpleDiffer(AbstractDiffer):
         name_similarity = self._compute_name_similarity(
             attributes_a.name, attributes_b.name
         )
-        type_similarity = 1 - distance_elements(attributes_a.types, attributes_b.types)
+        type_similarity = distance_elements(
+            attributes_a.types, attributes_b.types
+        ) / max(len(attributes_a.types), len(attributes_b.types), 1)
+        type_similarity = 1 - type_similarity
         return (name_similarity + type_similarity) / 2
 
     def compute_function_similarity(
@@ -198,16 +205,22 @@ class SimpleDiffer(AbstractDiffer):
         def are_parameters_similar(parameter_a: Parameter, parameter_b: Parameter):
             return self.compute_parameter_similarity(parameter_a, parameter_b) == 1
 
-        parameter_similarity = 1 - distance_elements(
+        parameter_similarity = distance_elements(
             function_a.parameters,
             function_b.parameters,
             are_similar=are_parameters_similar,
-        )
+        ) / max(len(function_a.parameters), len(function_b.parameters), 1)
+        parameter_similarity = 1 - parameter_similarity
+
         return (code_similarity + name_similarity + parameter_similarity) / 3
 
     def _compute_code_similarity(self, code_a: str, code_b: str) -> float:
-        diff_code = 1 - distance_elements(code_a.split("\n"), code_b.split("\n"))
-        return diff_code
+        split_a = code_a.split("\n")
+        split_b = code_b.split("\n")
+        diff_code = distance_elements(split_a, split_b) / max(
+            len(split_a), len(split_b), 1
+        )
+        return 1 - diff_code
 
     def compute_parameter_similarity(
         self, parameter_a: Parameter, parameter_b: Parameter
@@ -242,11 +255,12 @@ class SimpleDiffer(AbstractDiffer):
         ):
             return abstract_type_a.to_json() == abstract_type_b.to_json()
 
-        return 1 - distance_elements(
-            self._create_list_from_type(type_a),
-            self._create_list_from_type(type_b),
-            are_similar=are_types_similar,
-        )
+        type_list_a = self._create_list_from_type(type_a)
+        type_list_b = self._create_list_from_type(type_b)
+        diff_elements = distance_elements(
+            type_list_a, type_list_b, are_similar=are_types_similar
+        ) / max(len(type_list_a), len(type_list_b), 1)
+        return 1 - diff_elements
 
     def _create_list_from_type(self, abstract_type: AbstractType):
         if isinstance(abstract_type, UnionType):
