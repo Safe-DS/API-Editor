@@ -185,38 +185,18 @@ def map_api(apiv1: API, apiv2: API, differ: AbstractDiffer) -> list[Mapping]:
         )
     )
 
-    list_of_attributes_v1 = []
-    for attribute_list in map(
-        lambda class_: class_.instance_attributes, apiv1.classes.values()
-    ):
-        list_of_attributes_v1.extend(attribute_list)
-    list_of_attributes_v2 = []
-    for attribute_list in map(
-        lambda class_: class_.instance_attributes, apiv2.classes.values()
-    ):
-        list_of_attributes_v2.extend(attribute_list)
     all_mappings.extend(
         get_mappings_for_api_elements(
-            list_of_attributes_v1,
-            list_of_attributes_v2,
+            [attribute for class_ in apiv1.classes.values() for attribute in class_.instance_attributes],
+            [attribute for class_ in apiv2.classes.values() for attribute in class_.instance_attributes],
             differ.compute_attribute_similarity,
         )
     )
 
-    list_of_results_v1 = []
-    for results_list in map(
-        lambda functions: functions.results, apiv1.functions.values()
-    ):
-        list_of_results_v1.extend(results_list)
-    list_of_results_v2 = []
-    for results_list in map(
-        lambda functions: functions.results, apiv2.functions.values()
-    ):
-        list_of_results_v2.extend(results_list)
     all_mappings.extend(
         get_mappings_for_api_elements(
-            list_of_results_v1,
-            list_of_results_v2,
+            [result for function in apiv1.functions.values() for result in function.results],
+            [result for function in apiv2.functions.values() for result in function.results],
             differ.compute_result_similarity,
         )
     )
