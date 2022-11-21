@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Callable, Optional, Union, Sequence, List, TypeVar
+from typing import Callable, List, Optional, Sequence, TypeVar, Union
 
 from package_parser.processing.api.model import (
     API,
@@ -37,7 +37,12 @@ class OneToOneMapping(Mapping):
     apiv1_elements: api_element
     apiv2_elements: api_element
 
-    def __init__(self, apiv1_elements: api_element, apiv2_elements: api_element, similarity: float):
+    def __init__(
+        self,
+        apiv1_elements: api_element,
+        apiv2_elements: api_element,
+        similarity: float,
+    ):
         super().__init__(similarity)
         self.apiv1_elements = apiv1_elements
         self.apiv2_elements = apiv2_elements
@@ -53,8 +58,12 @@ class OneToManyMapping(Mapping):
     apiv1_elements: api_element
     apiv2_elements: list[api_element]
 
-    def __init__(self, apiv1_elements: api_element,
-                 apiv2_elements: list[api_element], similarity: float):
+    def __init__(
+        self,
+        apiv1_elements: api_element,
+        apiv2_elements: list[api_element],
+        similarity: float,
+    ):
         super().__init__(similarity)
         self.apiv1_elements = apiv1_elements
         self.apiv2_elements = apiv2_elements
@@ -70,8 +79,12 @@ class ManyToOneMapping(Mapping):
     apiv1_elements: list[api_element]
     apiv2_elements: api_element
 
-    def __init__(self, apiv1_elements: list[api_element],
-                 apiv2_elements: api_element, similarity: float):
+    def __init__(
+        self,
+        apiv1_elements: list[api_element],
+        apiv2_elements: api_element,
+        similarity: float,
+    ):
         super().__init__(similarity)
         self.apiv1_elements = apiv1_elements
         self.apiv2_elements = apiv2_elements
@@ -91,7 +104,7 @@ class ManyToManyMapping(Mapping):
         self,
         apiv1_elements: list[api_element],
         apiv2_elements: list[api_element],
-        similarity: float
+        similarity: float,
     ):
         super().__init__(similarity)
         self.apiv1_elements = apiv1_elements
@@ -106,8 +119,12 @@ class ManyToManyMapping(Mapping):
 
 def merge(mapping_a: Mapping, mapping_b: Mapping) -> Mapping:
     similarity = (mapping_a.similarity + mapping_b.similarity) / 2
-    codomain: list[api_element] = list(set(*mapping_a.get_apiv2_elements(), *mapping_b.get_apiv2_elements()))
-    domain: list[api_element] = list(set(*mapping_a.get_apiv1_elements(), *mapping_b.get_apiv1_elements()))
+    codomain: list[api_element] = list(
+        set(*mapping_a.get_apiv2_elements(), *mapping_b.get_apiv2_elements())
+    )
+    domain: list[api_element] = list(
+        set(*mapping_a.get_apiv1_elements(), *mapping_b.get_apiv1_elements())
+    )
     if len(domain) == 1 and len(codomain) == 1:
         return OneToOneMapping(domain[0], codomain[0], similarity)
     if len(domain) == 1:
@@ -117,7 +134,9 @@ def merge(mapping_a: Mapping, mapping_b: Mapping) -> Mapping:
     return ManyToManyMapping(domain, codomain, similarity)
 
 
-API_ELEMENTS = TypeVar("API_ELEMENTS", InstanceAttribute, Result, Parameter, Function, Class)
+API_ELEMENTS = TypeVar(
+    "API_ELEMENTS", InstanceAttribute, Result, Parameter, Function, Class
+)
 
 
 def get_mappings_for_api_elements(
@@ -167,10 +186,14 @@ def map_api(apiv1: API, apiv2: API, differ: AbstractDiffer) -> list[Mapping]:
     )
 
     list_of_attributes_v1 = []
-    for attribute_list in map(lambda class_: class_.instance_attributes, apiv1.classes.values()):
+    for attribute_list in map(
+        lambda class_: class_.instance_attributes, apiv1.classes.values()
+    ):
         list_of_attributes_v1.extend(attribute_list)
     list_of_attributes_v2 = []
-    for attribute_list in map(lambda class_: class_.instance_attributes, apiv2.classes.values()):
+    for attribute_list in map(
+        lambda class_: class_.instance_attributes, apiv2.classes.values()
+    ):
         list_of_attributes_v2.extend(attribute_list)
     all_mappings.extend(
         get_mappings_for_api_elements(
@@ -181,10 +204,14 @@ def map_api(apiv1: API, apiv2: API, differ: AbstractDiffer) -> list[Mapping]:
     )
 
     list_of_results_v1 = []
-    for results_list in map(lambda functions: functions.results, apiv1.functions.values()):
+    for results_list in map(
+        lambda functions: functions.results, apiv1.functions.values()
+    ):
         list_of_results_v1.extend(results_list)
     list_of_results_v2 = []
-    for results_list in map(lambda functions: functions.results, apiv2.functions.values()):
+    for results_list in map(
+        lambda functions: functions.results, apiv2.functions.values()
+    ):
         list_of_results_v2.extend(results_list)
     all_mappings.extend(
         get_mappings_for_api_elements(
