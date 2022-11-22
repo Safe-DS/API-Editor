@@ -1,7 +1,7 @@
 import pytest
 
-from package_parser.processing.api.model import API, Class, ClassDocumentation, Function, Parameter, InstanceAttribute
-from package_parser.processing.migration import AbstractDiffer, Mapping, OneToOneMapping, OneToManyMapping, \
+from package_parser.processing.api.model import API, Class, ClassDocumentation
+from package_parser.processing.migration import AbstractDiffer, OneToOneMapping, OneToManyMapping, \
     ManyToOneMapping, ManyToManyMapping, map_api
 from test_differ import differ_list
 
@@ -33,6 +33,7 @@ def test_one_to_one_mapping(differ: AbstractDiffer):
     assert mappings[0].get_apiv1_elements() == mappings[0].get_apiv2_elements()
     assert mappings[0].get_apiv1_elements() == [class_1]
 
+
 @pytest.mark.parametrize(
     "differ",
     differ_list,
@@ -47,7 +48,8 @@ def test_one_to_many_and_many_to_one_mappings(differ: AbstractDiffer):
     assert len(mappings[0].get_apiv2_elements()) == 2
     assert set(mappings[0].get_apiv2_elements()) == {class_2, class_3}
 
-    mappings = map_api(apiv2, apiv1, differ)
+    apiv1, apiv2 = apiv2, apiv1
+    mappings = map_api(apiv1, apiv2, differ)
     assert len(mappings) == 1
     assert isinstance(mappings[0], ManyToOneMapping)
     assert len(mappings[0].get_apiv1_elements()) == 2
