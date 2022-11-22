@@ -1,8 +1,13 @@
 import pytest
-
 from package_parser.processing.api.model import API, Class, ClassDocumentation
-from package_parser.processing.migration import AbstractDiffer, OneToOneMapping, OneToManyMapping, \
-    ManyToOneMapping, ManyToManyMapping, map_api
+from package_parser.processing.migration import (
+    AbstractDiffer,
+    ManyToManyMapping,
+    ManyToOneMapping,
+    OneToManyMapping,
+    OneToOneMapping,
+    map_api,
+)
 from test_differ import differ_list
 
 

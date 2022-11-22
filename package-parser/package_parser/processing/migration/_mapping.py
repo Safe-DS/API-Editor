@@ -9,6 +9,7 @@ from package_parser.processing.api.model import (
     Parameter,
     Result,
 )
+
 from ._differ import AbstractDiffer
 
 api_element = Union[Parameter, Function, Class, InstanceAttribute, Result]
