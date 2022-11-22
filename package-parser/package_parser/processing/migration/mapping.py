@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Callable, List, Optional, Sequence, TypeVar, Union
+from typing import Callable, List, Optional, TypeVar, Union
 
 from package_parser.processing.api.model import (
     API,
@@ -222,7 +222,7 @@ def map_api(apiv1: API, apiv2: API, differ: AbstractDiffer) -> list[Mapping]:
 
 
 def reduce(
-    sorted_mapping: List[Mapping], all_mappings: Sequence[Mapping]
+    sorted_mapping: List[Mapping], all_mappings: List[Mapping]
 ) -> Optional[Mapping]:
     if len(sorted_mapping) == 0:
         return None
