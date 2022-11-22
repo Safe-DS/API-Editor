@@ -9,10 +9,11 @@ from package_parser.processing.api.model import (
     Parameter,
     Result,
 )
-from package_parser.processing.migration import AbstractDiffer
+from ._differ import AbstractDiffer
 
 api_element = Union[Parameter, Function, Class, InstanceAttribute, Result]
 THRESHOLD_OF_SIMILARITY_BETWEEN_MAPPINGS = 0.05
+THRESHOLD_OF_SIMILARITY_FOR_CREATION_OF_MAPPINGS = 0.5
 
 
 class Mapping(ABC):
@@ -120,10 +121,10 @@ class ManyToManyMapping(Mapping):
 def merge(mapping_a: Mapping, mapping_b: Mapping) -> Mapping:
     similarity = (mapping_a.similarity + mapping_b.similarity) / 2
     codomain: list[api_element] = list(
-        set(*mapping_a.get_apiv2_elements(), *mapping_b.get_apiv2_elements())
+        set(mapping_a.get_apiv2_elements()) | set(mapping_b.get_apiv2_elements())
     )
     domain: list[api_element] = list(
-        set(*mapping_a.get_apiv1_elements(), *mapping_b.get_apiv1_elements())
+        set(mapping_a.get_apiv1_elements()) | set(mapping_b.get_apiv1_elements())
     )
     if len(domain) == 1 and len(codomain) == 1:
         return OneToOneMapping(domain[0], codomain[0], similarity)
@@ -149,7 +150,7 @@ def get_mappings_for_api_elements(
         mapping_for_class_1: list[Mapping] = []
         for api_elementv2 in api_elementv2_list:
             similarity = compute_similarity(api_elementv1, api_elementv2)
-            if similarity >= 0.5:
+            if similarity >= THRESHOLD_OF_SIMILARITY_FOR_CREATION_OF_MAPPINGS:
                 mapping_for_class_1.append(
                     OneToOneMapping(api_elementv1, api_elementv2, similarity)
                 )
@@ -232,10 +233,8 @@ def reduce(
         sorted_mapping[0].similarity - sorted_mapping[1].similarity
         < THRESHOLD_OF_SIMILARITY_BETWEEN_MAPPINGS
     ):
-        sorted_mapping.remove(sorted_mapping[0])
-        sorted_mapping.remove(sorted_mapping[1])
-        sorted_mapping.pop(0)
         sorted_mapping[0] = merge(sorted_mapping[0], sorted_mapping[1])
+        sorted_mapping.pop(1)
         return reduce(sorted_mapping, all_mappings)
     return sorted_mapping[0]
 
@@ -243,16 +242,18 @@ def reduce(
 def combine(mapping_to_be_appended: Mapping, all_mappings: list[Mapping]):
     duplicated: list[Mapping] = []
     for mapping in all_mappings:
-        duplicated_elements = []
-        for element in mapping.get_apiv1_elements():
-            for element_2 in mapping_to_be_appended.get_apiv1_elements():
+        duplicated_element = False
+        for element in mapping.get_apiv2_elements():
+            for element_2 in mapping_to_be_appended.get_apiv2_elements():
                 if element == element_2:
-                    duplicated_elements.append((element, element_2))
-        if len(duplicated) > 0:
+                    duplicated_element = True
+                    break
+        if duplicated_element:
             duplicated.append(mapping)
 
     if len(duplicated) == 0:
         all_mappings.append(mapping_to_be_appended)
+        return
 
     for conflicted_mapping in duplicated:
         mapping_to_be_appended = merge(mapping_to_be_appended, conflicted_mapping)
