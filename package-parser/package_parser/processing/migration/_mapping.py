@@ -119,7 +119,7 @@ class ManyToManyMapping(Mapping):
         return self.apiv2_elements
 
 
-def merge(mapping_a: Mapping, mapping_b: Mapping) -> Mapping:
+def merge_mappings(mapping_a: Mapping, mapping_b: Mapping) -> Mapping:
     similarity = (mapping_a.similarity + mapping_b.similarity) / 2
     codomain: list[api_element] = list(
         set(mapping_a.get_apiv2_elements()) | set(mapping_b.get_apiv2_elements())
@@ -141,7 +141,7 @@ API_ELEMENTS = TypeVar(
 )
 
 
-def get_mappings_for_api_elements(
+def _get_mappings_for_api_elements(
     api_elementv1_list: List[API_ELEMENTS],
     api_elementv2_list: List[API_ELEMENTS],
     compute_similarity: Callable[[API_ELEMENTS, API_ELEMENTS], float],
@@ -156,9 +156,9 @@ def get_mappings_for_api_elements(
                     OneToOneMapping(api_elementv1, api_elementv2, similarity)
                 )
         mapping_for_class_1.sort(key=Mapping.get_similarity, reverse=True)
-        new_mapping = reduce(mapping_for_class_1, element_mappings)
+        new_mapping = _merge_similar_mappings(mapping_for_class_1)
         if new_mapping is not None:
-            combine(new_mapping, element_mappings)
+            _merge_mappings_with_same_elements(new_mapping, element_mappings)
     return element_mappings
 
 
@@ -166,21 +166,21 @@ def map_api(apiv1: API, apiv2: API, differ: AbstractDiffer) -> list[Mapping]:
     all_mappings: list[Mapping] = []
 
     all_mappings.extend(
-        get_mappings_for_api_elements(
+        _get_mappings_for_api_elements(
             list(apiv1.classes.values()),
             list(apiv2.classes.values()),
             differ.compute_class_similarity,
         )
     )
     all_mappings.extend(
-        get_mappings_for_api_elements(
+        _get_mappings_for_api_elements(
             list(apiv1.functions.values()),
             list(apiv2.functions.values()),
             differ.compute_function_similarity,
         )
     )
     all_mappings.extend(
-        get_mappings_for_api_elements(
+        _get_mappings_for_api_elements(
             list(apiv1.parameters().values()),
             list(apiv2.parameters().values()),
             differ.compute_parameter_similarity,
@@ -188,7 +188,7 @@ def map_api(apiv1: API, apiv2: API, differ: AbstractDiffer) -> list[Mapping]:
     )
 
     all_mappings.extend(
-        get_mappings_for_api_elements(
+        _get_mappings_for_api_elements(
             [
                 attribute
                 for class_ in apiv1.classes.values()
@@ -204,7 +204,7 @@ def map_api(apiv1: API, apiv2: API, differ: AbstractDiffer) -> list[Mapping]:
     )
 
     all_mappings.extend(
-        get_mappings_for_api_elements(
+        _get_mappings_for_api_elements(
             [
                 result
                 for function in apiv1.functions.values()
@@ -223,26 +223,42 @@ def map_api(apiv1: API, apiv2: API, differ: AbstractDiffer) -> list[Mapping]:
     return all_mappings
 
 
-def reduce(
-    sorted_mapping: List[Mapping], all_mappings: List[Mapping]
+def _merge_similar_mappings(
+    mappings: List[Mapping]
 ) -> Optional[Mapping]:
-    if len(sorted_mapping) == 0:
+    """
+    Given a list of OneToOne(Many)Mappings which apiv1 element is the same, this method returns the best mapping
+    from this apiv1 element to apiv2 elements by merging the first and second elements recursively,
+    if the difference in similarity is smaller than THRESHOLD_OF_SIMILARITY_BETWEEN_MAPPINGS.
+
+    :param mappings: mappings sorted by decreasing similarity, which apiv1 element is the same
+    :return: the first element of the sorted list that could be a result of merged similar mappings
+    """
+    if len(mappings) == 0:
         return None
-    if len(sorted_mapping) == 1:
-        return sorted_mapping[0]
+    if len(mappings) == 1:
+        return mappings[0]
     if (
-        sorted_mapping[0].similarity - sorted_mapping[1].similarity
+        mappings[0].similarity - mappings[1].similarity
         < THRESHOLD_OF_SIMILARITY_BETWEEN_MAPPINGS
     ):
-        sorted_mapping[0] = merge(sorted_mapping[0], sorted_mapping[1])
-        sorted_mapping.pop(1)
-        return reduce(sorted_mapping, all_mappings)
-    return sorted_mapping[0]
+        mappings[0] = merge_mappings(mappings[0], mappings[1])
+        mappings.pop(1)
+        return _merge_similar_mappings(mappings)
+    return mappings[0]
 
 
-def combine(mapping_to_be_appended: Mapping, all_mappings: list[Mapping]):
+def _merge_mappings_with_same_elements(mapping_to_be_appended: Mapping, mappings: list[Mapping]):
+    """
+    This method prevents that an element in a mapping appears multiple times in a list of mappings
+    by merging the affected mappings and include the result in the list. If there is no such element,
+    the mapping will be included without any merge.
+
+    :param mapping_to_be_appended: the mapping that should be included in mappings
+    :param mappings: the list, in wich mapping_to_be_appended should be appended
+    """
     duplicated: list[Mapping] = []
-    for mapping in all_mappings:
+    for mapping in mappings:
         duplicated_element = False
         for element in mapping.get_apiv2_elements():
             for element_2 in mapping_to_be_appended.get_apiv2_elements():
@@ -253,11 +269,11 @@ def combine(mapping_to_be_appended: Mapping, all_mappings: list[Mapping]):
             duplicated.append(mapping)
 
     if len(duplicated) == 0:
-        all_mappings.append(mapping_to_be_appended)
+        mappings.append(mapping_to_be_appended)
         return
 
     for conflicted_mapping in duplicated:
-        mapping_to_be_appended = merge(mapping_to_be_appended, conflicted_mapping)
-        all_mappings.remove(conflicted_mapping)
+        mapping_to_be_appended = merge_mappings(mapping_to_be_appended, conflicted_mapping)
+        mappings.remove(conflicted_mapping)
 
-    all_mappings.append(mapping_to_be_appended)
+    mappings.append(mapping_to_be_appended)
