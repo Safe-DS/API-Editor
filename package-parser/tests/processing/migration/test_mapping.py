@@ -1,15 +1,15 @@
-import pytest
 from inspect import cleandoc
 
+import pytest
 from package_parser.processing.api.model import API, Class, ClassDocumentation
 from package_parser.processing.migration import (
+    THRESHOLD_OF_SIMILARITY_FOR_CREATION_OF_MAPPINGS,
     AbstractDiffer,
     ManyToManyMapping,
     ManyToOneMapping,
     OneToManyMapping,
     OneToOneMapping,
     map_api,
-    THRESHOLD_OF_SIMILARITY_FOR_CREATION_OF_MAPPINGS,
 )
 from test_differ import differ_list
 
@@ -118,16 +118,23 @@ def test_too_different_mapping(differ: AbstractDiffer):
         [],
         True,
         [],
-        ClassDocumentation("not similar to the other class", "not similar to the other class"),
-        cleandoc("""
+        ClassDocumentation(
+            "not similar to the other class", "not similar to the other class"
+        ),
+        cleandoc(
+            """
         class NotSimilar:
             pass
-        """),
+        """
+        ),
         [],
     )
     apiv2.add_class(class_2)
     mappings = map_api(apiv1, apiv2, differ)
-    assert differ.compute_class_similarity(class_1, class_2) < THRESHOLD_OF_SIMILARITY_FOR_CREATION_OF_MAPPINGS
+    assert (
+        differ.compute_class_similarity(class_1, class_2)
+        < THRESHOLD_OF_SIMILARITY_FOR_CREATION_OF_MAPPINGS
+    )
     assert len(mappings) == 0
 
 

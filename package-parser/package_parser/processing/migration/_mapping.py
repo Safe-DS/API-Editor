@@ -223,9 +223,7 @@ def map_api(apiv1: API, apiv2: API, differ: AbstractDiffer) -> list[Mapping]:
     return all_mappings
 
 
-def _merge_similar_mappings(
-    mappings: List[Mapping]
-) -> Optional[Mapping]:
+def _merge_similar_mappings(mappings: List[Mapping]) -> Optional[Mapping]:
     """
     Given a list of OneToOne(Many)Mappings which apiv1 element is the same, this method returns the best mapping
     from this apiv1 element to apiv2 elements by merging the first and second elements recursively,
@@ -248,7 +246,9 @@ def _merge_similar_mappings(
     return mappings[0]
 
 
-def _merge_mappings_with_same_elements(mapping_to_be_appended: Mapping, mappings: list[Mapping]):
+def _merge_mappings_with_same_elements(
+    mapping_to_be_appended: Mapping, mappings: list[Mapping]
+):
     """
     This method prevents that an element in a mapping appears multiple times in a list of mappings
     by merging the affected mappings and include the result in the list. If there is no such element,
@@ -273,7 +273,9 @@ def _merge_mappings_with_same_elements(mapping_to_be_appended: Mapping, mappings
         return
 
     for conflicted_mapping in duplicated:
-        mapping_to_be_appended = merge_mappings(mapping_to_be_appended, conflicted_mapping)
+        mapping_to_be_appended = merge_mappings(
+            mapping_to_be_appended, conflicted_mapping
+        )
         mappings.remove(conflicted_mapping)
 
     mappings.append(mapping_to_be_appended)
