@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from typing import Any, Optional
 
 from package_parser.utils import parent_id
+from ._types import AbstractType
 
 from ._documentation import ClassDocumentation, FunctionDocumentation
 from ._parameters import Parameter
@@ -208,7 +209,7 @@ class Class:
             ),
             json.get("code", ""),
             [
-                InstanceAttribute.from_json(instance_attribute)
+                Attribute.from_json(instance_attribute)
                 for instance_attribute in json.get("instance_attributes", [])
             ],
         )
@@ -228,7 +229,7 @@ class Class:
         reexported_by: list[str],
         documentation: ClassDocumentation,
         code: str,
-        instance_attributes: list[InstanceAttribute],
+        instance_attributes: list[Attribute],
     ) -> None:
         self.id: str = id_
         self.qname: str = qname
@@ -268,16 +269,20 @@ class Class:
 
 
 @dataclass
-class InstanceAttribute:
+class Attribute:
     name: str
-    types: list[str]
+    types: Optional[AbstractType]
 
     def to_json(self) -> dict[str, Any]:
-        return {"name": self.name, "types": self.types}
+        types_json = self.types.to_json() if self.types is not None else ""
+        return {"name": self.name, "types": types_json}
 
     @staticmethod
-    def from_json(json: Any) -> InstanceAttribute:
-        return InstanceAttribute(json["name"], json["types"])
+    def from_json(json: Any) -> Attribute:
+        return Attribute(
+            json["name"],
+            AbstractType.from_json(json["types"])
+        )
 
 
 @dataclass
