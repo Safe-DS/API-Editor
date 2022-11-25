@@ -180,8 +180,8 @@ class SimpleDiffer(AbstractDiffer):
 
     def compute_attribute_similarity(
         self,
-        attributes_a: InstanceAttribute,
-        attributes_b: InstanceAttribute,
+        attributes_a: Attribute,
+        attributes_b: Attribute,
     ) -> float:
         name_similarity = self._compute_name_similarity(
             attributes_a.name, attributes_b.name
