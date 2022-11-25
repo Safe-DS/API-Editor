@@ -11,7 +11,7 @@ from package_parser.processing.api.model import (
     ParameterAssignment,
     ParameterDocumentation,
     Result,
-    ResultDocstring,
+    ResultDocstring, NamedType, UnionType,
 )
 from package_parser.processing.migration import AbstractDiffer, SimpleDiffer
 
@@ -25,14 +25,14 @@ differ_list = [
     differ_list,
 )
 def test_attribute_similarity(differ: AbstractDiffer):
-    attribute_a = Attribute("test_string", ["str"])
+    attribute_a = Attribute("test_string", NamedType("str"))
     assert differ.compute_attribute_similarity(attribute_a, attribute_a) == 1
 
-    attribute_b = Attribute("new_test_string", ["str"])
+    attribute_b = Attribute("new_test_string", NamedType("str"))
     assert differ.compute_attribute_similarity(attribute_a, attribute_b) >= 0.5
 
-    attribute_a = Attribute("value", ["str", "int"])
-    attribute_b = Attribute("value", ["str", "bool"])
+    attribute_a = Attribute("value", UnionType([NamedType("str"), NamedType("int")]))
+    attribute_b = Attribute("value", UnionType([NamedType("str"), NamedType("bool")]))
     assert differ.compute_attribute_similarity(attribute_a, attribute_b) >= 0.5
 
 

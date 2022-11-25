@@ -186,9 +186,15 @@ class SimpleDiffer(AbstractDiffer):
         name_similarity = self._compute_name_similarity(
             attributes_a.name, attributes_b.name
         )
+        type_list_a = [attributes_a.types]
+        if attributes_a.types is not None and isinstance(attributes_a, UnionType):
+            type_list_a = [attributes_a.types]
+        type_list_b = [attributes_b.types]
+        if attributes_b.types is not None and isinstance(attributes_b, UnionType):
+            type_list_b = [attributes_a.types]
         type_similarity = distance_elements(
-            attributes_a.types, attributes_b.types
-        ) / max(len(attributes_a.types), len(attributes_b.types), 1)
+            type_list_a, type_list_b
+        ) / max(len(type_list_a), len(type_list_b), 1)
         type_similarity = 1 - type_similarity
         return (name_similarity + type_similarity) / 2
 
