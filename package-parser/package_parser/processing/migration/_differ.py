@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 
 from package_parser.processing.api.model import (
+    Attribute,
     Class,
     Function,
-    Attribute,
     Parameter,
     Result,
 )
