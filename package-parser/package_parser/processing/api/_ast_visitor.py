@@ -12,7 +12,9 @@ from package_parser.processing.api.model import (
     FromImport,
     Function,
     Import,
-    Module, NamedType, UnionType,
+    Module,
+    NamedType,
+    UnionType,
 )
 from package_parser.utils import parent_qualified_name
 
@@ -165,9 +167,7 @@ class _AstVisitor:
         return None
 
     @staticmethod
-    def get_instance_attributes(
-        instance_attributes: dict[str, Any]
-    ) -> list[Attribute]:
+    def get_instance_attributes(instance_attributes: dict[str, Any]) -> list[Attribute]:
         attributes = []
         for name, assignments in instance_attributes.items():
             types = set()
@@ -175,13 +175,17 @@ class _AstVisitor:
                 if isinstance(assignment, astroid.AssignAttr) and isinstance(
                     assignment.parent, astroid.Assign
                 ):
-                    attribute_type = _AstVisitor.get_type_of_attribute(next(astroid.inference.infer_attribute(self=assignment)))
+                    attribute_type = _AstVisitor.get_type_of_attribute(
+                        next(astroid.inference.infer_attribute(self=assignment))
+                    )
                     if attribute_type is not None:
                         types.add(attribute_type)
             if len(types) == 1:
                 attributes.append(Attribute(name, NamedType(types.pop())))
             if len(types) > 1:
-                attributes.append(Attribute(name, UnionType([NamedType(type_) for type_ in types])))
+                attributes.append(
+                    Attribute(name, UnionType([NamedType(type_) for type_ in types]))
+                )
         return attributes
 
     def enter_classdef(self, class_node: astroid.ClassDef) -> None:

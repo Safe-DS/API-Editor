@@ -4,10 +4,10 @@ from dataclasses import dataclass
 from typing import Any, Optional
 
 from package_parser.utils import parent_id
-from ._types import AbstractType
 
 from ._documentation import ClassDocumentation, FunctionDocumentation
 from ._parameters import Parameter
+from ._types import AbstractType
 
 API_SCHEMA_VERSION = 1
 
@@ -279,10 +279,7 @@ class Attribute:
 
     @staticmethod
     def from_json(json: Any) -> Attribute:
-        return Attribute(
-            json["name"],
-            AbstractType.from_json(json["types"])
-        )
+        return Attribute(json["name"], AbstractType.from_json(json["types"]))
 
 
 @dataclass

@@ -2,16 +2,18 @@ from inspect import cleandoc
 
 import pytest
 from package_parser.processing.api.model import (
+    Attribute,
     Class,
     ClassDocumentation,
     Function,
     FunctionDocumentation,
-    Attribute,
+    NamedType,
     Parameter,
     ParameterAssignment,
     ParameterDocumentation,
     Result,
-    ResultDocstring, NamedType, UnionType,
+    ResultDocstring,
+    UnionType,
 )
 from package_parser.processing.migration import AbstractDiffer, SimpleDiffer
 

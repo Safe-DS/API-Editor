@@ -119,16 +119,22 @@ class BoundaryType(AbstractType):
 
     @classmethod
     def _is_inclusive(cls, bracket: str) -> bool:
-        if bracket in ('(', ')'):
+        if bracket in ("(", ")"):
             return False
-        if bracket in ('[', ']'):
+        if bracket in ("[", "]"):
             return True
         raise Exception(f"{bracket} is not one of []()")
 
     @classmethod
     def from_json(cls, json: Any) -> Optional[BoundaryType]:
         if json["kind"] == cls.__class__.__name__:
-            return BoundaryType(json["base_type"], json["min"], json["max"], json["min_inclusive"], json["max_inclusive"])
+            return BoundaryType(
+                json["base_type"],
+                json["min"],
+                json["max"],
+                json["min_inclusive"],
+                json["max_inclusive"],
+            )
         return None
 
     @classmethod

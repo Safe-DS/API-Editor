@@ -3,9 +3,9 @@ from typing import Any, Optional
 
 from package_parser.processing.api.model import (
     AbstractType,
+    Attribute,
     Class,
     Function,
-    Attribute,
     Parameter,
     ParameterAssignment,
     Result,
@@ -192,9 +192,9 @@ class SimpleDiffer(AbstractDiffer):
         type_list_b = [attributes_b.types]
         if attributes_b.types is not None and isinstance(attributes_b, UnionType):
             type_list_b = [attributes_a.types]
-        type_similarity = distance_elements(
-            type_list_a, type_list_b
-        ) / max(len(type_list_a), len(type_list_b), 1)
+        type_similarity = distance_elements(type_list_a, type_list_b) / max(
+            len(type_list_a), len(type_list_b), 1
+        )
         type_similarity = 1 - type_similarity
         return (name_similarity + type_similarity) / 2
 
