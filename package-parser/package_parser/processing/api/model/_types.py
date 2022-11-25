@@ -114,12 +114,11 @@ class BoundaryType(AbstractType):
 
     @classmethod
     def _is_inclusive(cls, bracket: str) -> bool:
-        if bracket == "(" or bracket == ")":
+        if bracket in ('(', ')'):
             return False
-        elif bracket == "[" or bracket == "]":
+        if bracket in ('[', ']'):
             return True
-        else:
-            raise Exception(f"{bracket} is not one of []()")
+        raise Exception(f"{bracket} is not one of []()")
 
     @classmethod
     def from_json(cls, json: Any) -> Optional[BoundaryType]:
@@ -186,12 +185,8 @@ class BoundaryType(AbstractType):
             if eq:
                 if self.max == BoundaryType.INFINITY:
                     return True
-                else:
-                    return self.max_inclusive == __o.max_inclusive
-            else:
-                return False
-        else:
-            return False
+                return self.max_inclusive == __o.max_inclusive
+        return False
 
     def to_json(self) -> dict[str, Any]:
         return {
@@ -231,7 +226,7 @@ def create_type(
     parameter_documentation: ParameterDocumentation,
 ) -> Optional[AbstractType]:
     type_string = parameter_documentation.type
-    types: list[AbstractType] = list()
+    types: list[AbstractType] = []
 
     # Collapse whitespaces
     type_string = re.sub(r"\s+", " ", type_string)
@@ -291,7 +286,6 @@ def create_type(
 
     if len(types) == 1:
         return types[0]
-    elif len(types) == 0:
+    if len(types) == 0:
         return None
-    else:
-        return UnionType(types)
+    return UnionType(types)
