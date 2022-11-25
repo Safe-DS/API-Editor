@@ -3,16 +3,16 @@ from typing import Callable, List, Optional, TypeVar, Union
 
 from package_parser.processing.api.model import (
     API,
+    Attribute,
     Class,
     Function,
-    InstanceAttribute,
     Parameter,
     Result,
 )
 
 from ._differ import AbstractDiffer
 
-api_element = Union[Parameter, Function, Class, InstanceAttribute, Result]
+api_element = Union[Attribute, Parameter, Function, Class, Result]
 THRESHOLD_OF_SIMILARITY_BETWEEN_MAPPINGS = 0.05
 THRESHOLD_OF_SIMILARITY_FOR_CREATION_OF_MAPPINGS = 0.5
 
@@ -137,7 +137,7 @@ def merge_mappings(mapping_a: Mapping, mapping_b: Mapping) -> Mapping:
 
 
 API_ELEMENTS = TypeVar(
-    "API_ELEMENTS", InstanceAttribute, Result, Parameter, Function, Class
+    "API_ELEMENTS", Attribute, Result, Parameter, Function, Class
 )
 
 

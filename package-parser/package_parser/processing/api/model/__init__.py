@@ -1,11 +1,11 @@
 from ._api import (
     API,
     API_SCHEMA_VERSION,
+    Attribute,
     Class,
     FromImport,
     Function,
     Import,
-    InstanceAttribute,
     Module,
     Result,
     ResultDocstring,

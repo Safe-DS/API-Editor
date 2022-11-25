@@ -13,13 +13,15 @@ from package_parser.processing.api.model import (
     Function,
     Import,
     Module,
+    NamedType,
+    UnionType,
 )
 from package_parser.utils import parent_qualified_name
 
 from ._file_filters import _is_init_file
 from ._get_parameter_list import get_parameter_list
 from .documentation_parsing import AbstractDocumentationParser
-from .model._api import InstanceAttribute
+from .model._api import Attribute
 
 
 def trim_code(code, from_line_no, to_line_no, encoding):
@@ -143,9 +145,29 @@ class _AstVisitor:
         self.api.add_module(module)
 
     @staticmethod
-    def get_instance_attributes(
-        instance_attributes: dict[str, Any]
-    ) -> list[InstanceAttribute]:
+    def get_type_of_attribute(infered_value: Any) -> Optional[str]:
+        if infered_value == astroid.Uninferable:
+            return None
+        if isinstance(infered_value, astroid.Const) and infered_value.value is None:
+            return None
+        if isinstance(infered_value, astroid.List):
+            return "list"
+        if isinstance(infered_value, astroid.Dict):
+            return "dict"
+        if isinstance(infered_value, astroid.ClassDef):
+            return "type"
+        if isinstance(infered_value, astroid.Tuple):
+            return "tuple"
+        if isinstance(infered_value, (astroid.FunctionDef, astroid.Lambda)):
+            return "Callable"
+        if isinstance(infered_value, astroid.Const):
+            return infered_value.value.__class__.__name__
+        if isinstance(infered_value, astroid.Instance):
+            return infered_value.name
+        return None
+
+    @staticmethod
+    def get_instance_attributes(instance_attributes: dict[str, Any]) -> list[Attribute]:
         attributes = []
         for name, assignments in instance_attributes.items():
             types = set()
@@ -153,16 +175,17 @@ class _AstVisitor:
                 if isinstance(assignment, astroid.AssignAttr) and isinstance(
                     assignment.parent, astroid.Assign
                 ):
-                    value = assignment.parent.value
-                    if isinstance(value, astroid.Call):
-                        if isinstance(value.func, astroid.Name):
-                            called_value = value.func.name
-                            # check if called_value is a class and not a function
-                            if called_value[0].isupper():
-                                types.add(called_value)
-                    elif isinstance(value, astroid.Const) and value.value is not None:
-                        types.add(value.value.__class__.__name__)
-            attributes.append(InstanceAttribute(name, list(types)))
+                    attribute_type = _AstVisitor.get_type_of_attribute(
+                        next(astroid.inference.infer_attribute(self=assignment))
+                    )
+                    if attribute_type is not None:
+                        types.add(attribute_type)
+            if len(types) == 1:
+                attributes.append(Attribute(name, NamedType(types.pop())))
+            if len(types) > 1:
+                attributes.append(
+                    Attribute(name, UnionType([NamedType(type_) for type_ in types]))
+                )
         return attributes
 
     def enter_classdef(self, class_node: astroid.ClassDef) -> None:
