@@ -5,7 +5,7 @@ from package_parser.processing.api.model import (
     AbstractType,
     Class,
     Function,
-    InstanceAttribute,
+    Attribute,
     Parameter,
     ParameterAssignment,
     Result,
@@ -17,8 +17,8 @@ class AbstractDiffer(ABC):
     @abstractmethod
     def compute_attribute_similarity(
         self,
-        attributes_a: InstanceAttribute,
-        attributes_b: InstanceAttribute,
+        attributes_a: Attribute,
+        attributes_b: Attribute,
     ) -> float:
         pass
 
