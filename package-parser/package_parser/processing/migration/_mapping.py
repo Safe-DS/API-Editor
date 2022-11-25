@@ -136,9 +136,7 @@ def merge_mappings(mapping_a: Mapping, mapping_b: Mapping) -> Mapping:
     return ManyToManyMapping(domain, codomain, similarity)
 
 
-API_ELEMENTS = TypeVar(
-    "API_ELEMENTS", Attribute, Result, Parameter, Function, Class
-)
+API_ELEMENTS = TypeVar("API_ELEMENTS", Attribute, Result, Parameter, Function, Class)
 
 
 def _get_mappings_for_api_elements(
