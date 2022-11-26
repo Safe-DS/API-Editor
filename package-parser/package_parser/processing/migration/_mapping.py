@@ -142,12 +142,23 @@ class APIMapping:
     apiv2: API
     differ: AbstractDiffer
 
-    def __init__(self, apiv1: API, apiv2: API, differ: AbstractDiffer, threshold_of_similarity_for_creation_of_mappings=0.5, threshold_of_similarity_between_mappings=0.05):
+    def __init__(
+        self,
+        apiv1: API,
+        apiv2: API,
+        differ: AbstractDiffer,
+        threshold_of_similarity_for_creation_of_mappings=0.5,
+        threshold_of_similarity_between_mappings=0.05,
+    ):
         self.apiv1 = apiv1
         self.apiv2 = apiv2
         self.differ = differ
-        self.threshold_of_similarity_for_creation_of_mappings = threshold_of_similarity_for_creation_of_mappings
-        self.threshold_of_similarity_between_mappings = threshold_of_similarity_between_mappings
+        self.threshold_of_similarity_for_creation_of_mappings = (
+            threshold_of_similarity_for_creation_of_mappings
+        )
+        self.threshold_of_similarity_between_mappings = (
+            threshold_of_similarity_between_mappings
+        )
 
     def _get_mappings_for_api_elements(
         self,
