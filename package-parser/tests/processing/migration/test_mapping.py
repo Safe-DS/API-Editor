@@ -33,7 +33,7 @@ def test_one_to_one_mapping(differ: AbstractDiffer):
     )
     apiv1.add_class(class_1)
     apiv2.add_class(class_1)
-    mappings = APIMapping(apiv1, apiv2, differ).get_mappings()
+    mappings = APIMapping(apiv1, apiv2, differ).map_api()
 
     assert len(mappings) == 1
     assert isinstance(mappings[0], OneToOneMapping)
@@ -48,7 +48,7 @@ def test_one_to_one_mapping(differ: AbstractDiffer):
 def test_one_to_many_and_many_to_one_mappings(differ: AbstractDiffer):
     apiv1, apiv2, class_1, class_2, class_3 = create_apis()
 
-    mappings = APIMapping(apiv1, apiv2, differ).get_mappings()
+    mappings = APIMapping(apiv1, apiv2, differ).map_api()
     assert len(mappings) == 1
     assert isinstance(mappings[0], OneToManyMapping)
     assert mappings[0].get_apiv1_elements()[0] == class_1
@@ -56,7 +56,7 @@ def test_one_to_many_and_many_to_one_mappings(differ: AbstractDiffer):
     assert set(mappings[0].get_apiv2_elements()) == {class_2, class_3}
 
     apiv1, apiv2 = apiv2, apiv1
-    mappings = APIMapping(apiv1, apiv2, differ).get_mappings()
+    mappings = APIMapping(apiv1, apiv2, differ).map_api()
     assert len(mappings) == 1
     assert isinstance(mappings[0], ManyToOneMapping)
     assert len(mappings[0].get_apiv1_elements()) == 2
@@ -82,7 +82,7 @@ def test_many_to_many_mapping(differ: AbstractDiffer):
         [],
     )
     apiv1.add_class(class_4)
-    mappings = APIMapping(apiv1, apiv2, differ).get_mappings()
+    mappings = APIMapping(apiv1, apiv2, differ).map_api()
     assert len(mappings) == 1
     assert isinstance(mappings[0], ManyToManyMapping)
     assert len(mappings[0].get_apiv1_elements()) == 2
@@ -130,7 +130,7 @@ def test_too_different_mapping(differ: AbstractDiffer):
     )
     apiv2.add_class(class_2)
     api_mapping = APIMapping(apiv1, apiv2, differ)
-    mappings = api_mapping.get_mappings()
+    mappings = api_mapping.map_api()
     assert (
         differ.compute_class_similarity(class_1, class_2)
         < api_mapping.threshold_of_similarity_for_creation_of_mappings

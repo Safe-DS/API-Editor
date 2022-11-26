@@ -141,7 +141,6 @@ class APIMapping:
     apiv1: API
     apiv2: API
     differ: AbstractDiffer
-    mappings: Optional[List[Mapping]]
 
     def __init__(self, apiv1: API, apiv2: API, differ: AbstractDiffer, threshold_of_similarity_for_creation_of_mappings=0.5, threshold_of_similarity_between_mappings=0.05):
         self.apiv1 = apiv1
@@ -149,7 +148,6 @@ class APIMapping:
         self.differ = differ
         self.threshold_of_similarity_for_creation_of_mappings = threshold_of_similarity_for_creation_of_mappings
         self.threshold_of_similarity_between_mappings = threshold_of_similarity_between_mappings
-        self.mappings = None
 
     def _get_mappings_for_api_elements(
         self,
@@ -172,28 +170,23 @@ class APIMapping:
                 self._merge_mappings_with_same_elements(new_mapping, element_mappings)
         return element_mappings
 
-    def get_mappings(self) -> List[Mapping]:
-        if self.mappings is None:
-            self._map_api()
-        return self.mappings
-
-    def _map_api(self):
-        self.mappings = []
-        self.mappings.extend(
+    def map_api(self) -> List[Mapping]:
+        mappings: List[Mapping] = []
+        mappings.extend(
             self._get_mappings_for_api_elements(
                 list(self.apiv1.classes.values()),
                 list(self.apiv2.classes.values()),
                 self.differ.compute_class_similarity,
             )
         )
-        self.mappings.extend(
+        mappings.extend(
             self._get_mappings_for_api_elements(
                 list(self.apiv1.functions.values()),
                 list(self.apiv2.functions.values()),
                 self.differ.compute_function_similarity,
             )
         )
-        self.mappings.extend(
+        mappings.extend(
             self._get_mappings_for_api_elements(
                 list(self.apiv1.parameters().values()),
                 list(self.apiv2.parameters().values()),
@@ -201,7 +194,7 @@ class APIMapping:
             )
         )
 
-        self.mappings.extend(
+        mappings.extend(
             self._get_mappings_for_api_elements(
                 [
                     attribute
@@ -217,7 +210,7 @@ class APIMapping:
             )
         )
 
-        self.mappings.extend(
+        mappings.extend(
             self._get_mappings_for_api_elements(
                 [
                     result
@@ -233,7 +226,8 @@ class APIMapping:
             )
         )
 
-        self.mappings.sort(key=Mapping.get_similarity, reverse=True)
+        mappings.sort(key=Mapping.get_similarity, reverse=True)
+        return mappings
 
     def _merge_similar_mappings(self, mappings: List[Mapping]) -> Optional[Mapping]:
         """
