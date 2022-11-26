@@ -3,13 +3,12 @@ from inspect import cleandoc
 import pytest
 from package_parser.processing.api.model import API, Class, ClassDocumentation
 from package_parser.processing.migration import (
-    THRESHOLD_OF_SIMILARITY_FOR_CREATION_OF_MAPPINGS,
     AbstractDiffer,
     ManyToManyMapping,
     ManyToOneMapping,
     OneToManyMapping,
     OneToOneMapping,
-    map_api,
+    APIMapping,
 )
 from test_differ import differ_list
 
@@ -34,7 +33,7 @@ def test_one_to_one_mapping(differ: AbstractDiffer):
     )
     apiv1.add_class(class_1)
     apiv2.add_class(class_1)
-    mappings = map_api(apiv1, apiv2, differ)
+    mappings = APIMapping(apiv1, apiv2, differ).get_mappings()
 
     assert len(mappings) == 1
     assert isinstance(mappings[0], OneToOneMapping)
@@ -49,7 +48,7 @@ def test_one_to_one_mapping(differ: AbstractDiffer):
 def test_one_to_many_and_many_to_one_mappings(differ: AbstractDiffer):
     apiv1, apiv2, class_1, class_2, class_3 = create_apis()
 
-    mappings = map_api(apiv1, apiv2, differ)
+    mappings = APIMapping(apiv1, apiv2, differ).get_mappings()
     assert len(mappings) == 1
     assert isinstance(mappings[0], OneToManyMapping)
     assert mappings[0].get_apiv1_elements()[0] == class_1
@@ -57,7 +56,7 @@ def test_one_to_many_and_many_to_one_mappings(differ: AbstractDiffer):
     assert set(mappings[0].get_apiv2_elements()) == {class_2, class_3}
 
     apiv1, apiv2 = apiv2, apiv1
-    mappings = map_api(apiv1, apiv2, differ)
+    mappings = APIMapping(apiv1, apiv2, differ).get_mappings()
     assert len(mappings) == 1
     assert isinstance(mappings[0], ManyToOneMapping)
     assert len(mappings[0].get_apiv1_elements()) == 2
@@ -83,7 +82,7 @@ def test_many_to_many_mapping(differ: AbstractDiffer):
         [],
     )
     apiv1.add_class(class_4)
-    mappings = map_api(apiv1, apiv2, differ)
+    mappings = APIMapping(apiv1, apiv2, differ).get_mappings()
     assert len(mappings) == 1
     assert isinstance(mappings[0], ManyToManyMapping)
     assert len(mappings[0].get_apiv1_elements()) == 2
@@ -130,10 +129,11 @@ def test_too_different_mapping(differ: AbstractDiffer):
         [],
     )
     apiv2.add_class(class_2)
-    mappings = map_api(apiv1, apiv2, differ)
+    api_mapping = APIMapping(apiv1, apiv2, differ)
+    mappings = api_mapping.get_mappings()
     assert (
         differ.compute_class_similarity(class_1, class_2)
-        < THRESHOLD_OF_SIMILARITY_FOR_CREATION_OF_MAPPINGS
+        < api_mapping.threshold_of_similarity_for_creation_of_mappings
     )
     assert len(mappings) == 0
 
