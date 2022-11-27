@@ -3,6 +3,8 @@ from pathlib import Path
 
 from package_parser.processing.annotations.model import AnnotationStore
 from package_parser.processing.api.model import API
+from package_parser.processing.migration import SimpleDiffer, APIMapping, migrate_annotations
+from package_parser.utils import ensure_file_exists
 
 
 def _run_migrate_command(
@@ -12,9 +14,14 @@ def _run_migrate_command(
     out_dir_path: Path,
 ) -> None:
     # pylint: disable=unused-argument
-    _read_api_file(apiv1_file_path)
-    _read_api_file(apiv2_file_path)
-    _read_annotations_file(annotations_file_path)
+    apiv1 = _read_api_file(apiv1_file_path)
+    apiv2 = _read_api_file(apiv2_file_path)
+    annotationsv1 = _read_annotations_file(annotations_file_path)
+    differ = SimpleDiffer()
+    api_mapping = APIMapping(apiv1, apiv2, differ)
+    mappings = api_mapping.map_api()
+    annotationsv2 = migrate_annotations(annotationsv1, mappings)
+    _write_annotations_file(annotationsv2, out_dir_path)
 
 
 def _read_annotations_file(annotations_file_path: Path) -> AnnotationStore:
@@ -22,6 +29,14 @@ def _read_annotations_file(annotations_file_path: Path) -> AnnotationStore:
         annotations_json = json.load(annotations_file)
 
     return AnnotationStore.from_json(annotations_json)
+
+
+def _write_annotations_file(
+    annotations: AnnotationStore, annotations_file_path: Path
+) -> None:
+    ensure_file_exists(annotations_file_path)
+    with annotations_file_path.open("w") as f:
+        json.dump(annotations.to_json(), f, indent=2)
 
 
 def _read_api_file(api_file_path: Path) -> API:

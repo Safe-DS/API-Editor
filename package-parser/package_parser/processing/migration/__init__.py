@@ -7,3 +7,5 @@ from ._mapping import (
     OneToOneMapping,
     APIMapping,
 )
+from .annotation import migrate_rename_annotation
+from ._migrate import migrate_annotations
