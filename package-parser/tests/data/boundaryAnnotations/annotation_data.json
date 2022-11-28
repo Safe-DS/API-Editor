@@ -4,6 +4,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I turned this into a bounded number because the description contained int in range (0, infinity).",
+        "reviewResult": "",
         "interval": {
             "isDiscrete": true,
             "lowerIntervalLimit": 0,
@@ -17,6 +18,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I turned this into a bounded number because the description contained float in range (negative_infinity, 1).",
+        "reviewResult": "",
         "interval": {
             "isDiscrete": false,
             "lowerIntervalLimit": 0,
@@ -30,6 +32,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I turned this into a bounded number because the description contained float in range [0, 1].",
+        "reviewResult": "",
         "interval": {
             "isDiscrete": false,
             "lowerIntervalLimit": 0.0,

@@ -6,7 +6,7 @@ from package_parser.processing.annotations.model import (
     OmittedAnnotation,
     OptionalAnnotation,
     RequiredAnnotation,
-    ValueAnnotation,
+    ValueAnnotation, EnumReviewResult,
 )
 from package_parser.processing.api.model import API, Parameter, ParameterAssignment
 from package_parser.processing.usages.model import UsageCountStore
@@ -23,8 +23,7 @@ def _generate_value_annotations(
 
         # Don't create annotations for variadic parameters
         if (
-            parameter.assigned_by == ParameterAssignment.POSITIONAL_VARARG
-            or parameter.assigned_by == ParameterAssignment.NAMED_VARARG
+            parameter.assigned_by in (ParameterAssignment.POSITIONAL_VARARG, ParameterAssignment.NAMED_VARARG)
         ):
             continue
 
@@ -54,6 +53,7 @@ def _generate_constant_annotation(
                 authors=[autogen_author],
                 reviewers=[],
                 comment=f"I omitted this parameter because it is always set to the original default value ({parameter.default_value}).",
+                reviewResult=EnumReviewResult.NONE,
             )
         )
         return
@@ -68,6 +68,7 @@ def _generate_constant_annotation(
                 authors=[autogen_author],
                 reviewers=[],
                 comment=f"I replaced this parameter with a constant because it is always set to the same literal value ({sole_stringified_value}).",
+                reviewResult=EnumReviewResult.NONE,
                 defaultValueType=default_value_type,
                 defaultValue=default_value,
             )
@@ -79,6 +80,7 @@ def _generate_constant_annotation(
                 authors=[autogen_author],
                 reviewers=[],
                 comment=f"I made this parameter required because, even though it is always set to the same value ({sole_stringified_value}), that value is not a literal.",
+                reviewResult=EnumReviewResult.NONE,
             )
         )
 
@@ -98,6 +100,7 @@ def _generate_required_or_optional_annotation(
                 authors=[autogen_author],
                 reviewers=[],
                 comment=f"I made this parameter required because the most common value ({most_common_values[0]}) is not a literal.",
+                reviewResult=EnumReviewResult.NONE,
             )
         )
         return
@@ -122,6 +125,7 @@ def _generate_required_or_optional_annotation(
                 authors=[autogen_author],
                 reviewers=[],
                 comment=comment,
+                reviewResult=EnumReviewResult.NONE,
             )
         )
     else:
@@ -136,6 +140,7 @@ def _generate_required_or_optional_annotation(
                     authors=[autogen_author],
                     reviewers=[],
                     comment=comment,
+                    reviewResult=EnumReviewResult.NONE,
                     defaultValueType=default_value_type,
                     defaultValue=default_value,
                 )
@@ -186,11 +191,10 @@ def _should_be_required(
             False,
             f"I made this parameter optional because there is a statistically significant most common value (p-value {p_value:.2%} <= significance level {significance_level:.0%}).",
         )
-    else:
-        return (
-            True,
-            f"I made this parameter required because there is no statistically significant most common value (p-value ({p_value:.2%}) > significance level ({significance_level:.0%}).",
-        )
+    return (
+        True,
+        f"I made this parameter required because there is no statistically significant most common value (p-value ({p_value:.2%}) > significance level ({significance_level:.0%}).",
+    )
 
 
 def _is_stringified_literal(stringified_value: str) -> bool:
@@ -203,14 +207,13 @@ def _get_type_and_value_for_stringified_value(
 ) -> tuple[Optional[ValueAnnotation.DefaultValueType], Any]:
     if stringified_value == "None":
         return ValueAnnotation.DefaultValueType.NONE, None
-    elif stringified_value == "True" or stringified_value == "False":
+    if stringified_value in ("True", "False"):
         return ValueAnnotation.DefaultValueType.BOOLEAN, stringified_value == "True"
-    elif _is_float(stringified_value):
+    if _is_float(stringified_value):
         return ValueAnnotation.DefaultValueType.NUMBER, float(stringified_value)
-    elif stringified_value[0] == "'" and stringified_value[-1] == "'":
+    if stringified_value[0] == "'" and stringified_value[-1] == "'":
         return ValueAnnotation.DefaultValueType.STRING, stringified_value[1:-1]
-    else:
-        return None, None
+    return None, None
 
 
 def _is_float(stringified_value: str) -> bool:

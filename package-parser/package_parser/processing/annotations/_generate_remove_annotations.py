@@ -1,6 +1,6 @@
 from package_parser.processing.annotations.model import (
     AnnotationStore,
-    RemoveAnnotation,
+    RemoveAnnotation, EnumReviewResult,
 )
 from package_parser.processing.api.model import API
 from package_parser.processing.usages.model import UsageCountStore
@@ -26,6 +26,7 @@ def _generate_remove_annotations(
                     authors=[autogen_author],
                     reviewers=[],
                     comment=_create_explanation("class", n_class_usages),
+                    reviewResult=EnumReviewResult.NONE,
                 )
             )
 
@@ -38,6 +39,7 @@ def _generate_remove_annotations(
                     authors=[autogen_author],
                     reviewers=[],
                     comment=_create_explanation("function", n_function_usages),
+                    reviewResult=EnumReviewResult.NONE,
                 )
             )
 
