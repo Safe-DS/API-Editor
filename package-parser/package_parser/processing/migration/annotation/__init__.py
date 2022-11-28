@@ -1,1 +1,0 @@
-from ._migrate_rename_annotation import migrate_rename_annotation

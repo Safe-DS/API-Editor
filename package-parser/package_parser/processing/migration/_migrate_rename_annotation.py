@@ -1,6 +1,5 @@
-from package_parser.processing.annotations.model import RenameAnnotation, TodoAnnotation, AbstractAnnotation
-from package_parser.processing.annotations.model import EnumReviewResult
-from package_parser.processing.migration import Mapping, OneToOneMapping, ManyToOneMapping
+from package_parser.processing.annotations.model import RenameAnnotation, TodoAnnotation, AbstractAnnotation, EnumReviewResult
+from ._mapping import Mapping, OneToOneMapping, ManyToOneMapping
 from ._constants import migration_author
 from package_parser.processing.api.model import Attribute, Result
 

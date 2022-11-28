@@ -16,7 +16,7 @@ from package_parser.processing.annotations.model import (
     ValueAnnotation, AbstractAnnotation
 )
 from ._mapping import Mapping
-from .annotation import migrate_rename_annotation
+from ._migrate_rename_annotation import migrate_rename_annotation
 
 
 def _get_mapping_from_annotation(annotation: AbstractAnnotation, mappings: list[Mapping]) -> Optional[Mapping]:
