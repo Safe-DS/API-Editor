@@ -3,8 +3,9 @@ from typing import Optional
 from package_parser.processing.annotations.model import (
     AnnotationStore,
     BoundaryAnnotation,
+    EnumReviewResult,
     Interval,
-    ValueAnnotation, EnumReviewResult,
+    ValueAnnotation,
 )
 from package_parser.processing.api.model import API, BoundaryType, UnionType
 
