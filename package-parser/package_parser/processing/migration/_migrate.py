@@ -17,12 +17,13 @@ from package_parser.processing.annotations.model import (
 )
 from ._mapping import Mapping
 from ._migrate_rename_annotation import migrate_rename_annotation
+from package_parser.processing.api.model import Attribute, Result
 
 
 def _get_mapping_from_annotation(annotation: AbstractAnnotation, mappings: list[Mapping]) -> Optional[Mapping]:
     for mapping in mappings:
         for element in mapping.get_apiv1_elements():
-            if hasattr(element, "id") and element.id == annotation.target:
+            if not isinstance(element, (Attribute, Result)) and element.id == annotation.target:
                 return mapping
     return None
 
