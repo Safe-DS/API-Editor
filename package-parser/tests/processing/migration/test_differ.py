@@ -15,7 +15,7 @@ from package_parser.processing.api.model import (
     ResultDocstring,
     UnionType,
 )
-from package_parser.processing.migration import AbstractDiffer, SimpleDiffer
+from package_parser.processing.migration.model import AbstractDiffer, SimpleDiffer
 
 differ_list = [
     SimpleDiffer(),

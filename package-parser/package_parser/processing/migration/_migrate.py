@@ -17,9 +17,8 @@ from package_parser.processing.annotations.model import (
     ValueAnnotation,
 )
 from package_parser.processing.api.model import Attribute, Result
-
-from ._mapping import Mapping
-from ._migrate_rename_annotation import migrate_rename_annotation
+from package_parser.processing.migration.annotations import migrate_rename_annotation
+from package_parser.processing.migration.model import Mapping
 
 
 def _get_mapping_from_annotation(

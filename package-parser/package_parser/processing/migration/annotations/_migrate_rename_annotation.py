@@ -5,9 +5,13 @@ from package_parser.processing.annotations.model import (
     TodoAnnotation,
 )
 from package_parser.processing.api.model import Attribute, Result
+from package_parser.processing.migration.model import (
+    ManyToOneMapping,
+    Mapping,
+    OneToOneMapping,
+)
 
 from ._constants import migration_author
-from ._mapping import ManyToOneMapping, Mapping, OneToOneMapping
 
 
 def migrate_rename_annotation(
