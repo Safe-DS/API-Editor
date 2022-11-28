@@ -15,7 +15,7 @@ from package_parser.processing.annotations.model import (
     TodoAnnotation,
     ValueAnnotation, AbstractAnnotation
 )
-from package_parser.processing.migration import Mapping
+from ._mapping import Mapping
 from .annotation import migrate_rename_annotation
 
 
@@ -32,7 +32,8 @@ def migrate_annotations(annotationsv1: AnnotationStore, mappings: list[Mapping])
 
     for rename_annotation in annotationsv1.renameAnnotations:
         mapping = _get_mapping_from_annotation(rename_annotation, mappings)
-        annotations.extend(migrate_rename_annotation(rename_annotation, mapping))
+        if mapping is not None:
+            annotations.extend(migrate_rename_annotation(rename_annotation, mapping))
 
     boundary_annotations: list[BoundaryAnnotation] = [annotation for annotation in annotations if isinstance(annotation, BoundaryAnnotation)]
     called_after_annotations: list[CalledAfterAnnotation] = [annotation for annotation in annotations if isinstance(annotation, CalledAfterAnnotation)]
