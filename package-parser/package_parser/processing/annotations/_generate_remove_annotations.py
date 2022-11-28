@@ -1,6 +1,7 @@
 from package_parser.processing.annotations.model import (
     AnnotationStore,
-    RemoveAnnotation, EnumReviewResult,
+    EnumReviewResult,
+    RemoveAnnotation,
 )
 from package_parser.processing.api.model import API
 from package_parser.processing.usages.model import UsageCountStore

@@ -4,7 +4,8 @@ from package_parser.processing.annotations.model import (
     AnnotationStore,
     EnumAnnotation,
     EnumPair,
-    ValueAnnotation, EnumReviewResult,
+    EnumReviewResult,
+    ValueAnnotation,
 )
 from package_parser.processing.api.model import API, EnumType
 

@@ -9,10 +9,10 @@ ANNOTATION_SCHEMA_VERSION = 2
 
 
 class EnumReviewResult(Enum):
-    CORRECT = 'correct'
-    UNSURE = 'unsure'
-    WRONG = 'wrong'
-    NONE = ''
+    CORRECT = "correct"
+    UNSURE = "unsure"
+    WRONG = "wrong"
+    NONE = ""
 
     @staticmethod
     def to_json(result: list[tuple[str, Any]]) -> dict[str, Any]:
@@ -39,7 +39,11 @@ class AbstractAnnotation(ABC):
         review_result = EnumReviewResult(json.get("reviewResult", ""))
 
         return AbstractAnnotation(
-            json["target"], json["authors"], json["reviewers"], json.get("comment", ""), review_result
+            json["target"],
+            json["authors"],
+            json["reviewers"],
+            json.get("comment", ""),
+            review_result,
         )
 
 
@@ -282,7 +286,6 @@ class RequiredAnnotation(ValueAnnotation):
             "reviewResult": self.reviewResult.value,
             "variant": self.variant.value,
         }
-
 
     @staticmethod
     def from_json(json: Any) -> RequiredAnnotation:

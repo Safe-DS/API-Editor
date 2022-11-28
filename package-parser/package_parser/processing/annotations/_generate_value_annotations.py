@@ -3,10 +3,11 @@ from typing import Any, Optional
 from package_parser.processing.annotations.model import (
     AnnotationStore,
     ConstantAnnotation,
+    EnumReviewResult,
     OmittedAnnotation,
     OptionalAnnotation,
     RequiredAnnotation,
-    ValueAnnotation, EnumReviewResult,
+    ValueAnnotation,
 )
 from package_parser.processing.api.model import API, Parameter, ParameterAssignment
 from package_parser.processing.usages.model import UsageCountStore
@@ -22,8 +23,9 @@ def _generate_value_annotations(
     for parameter in api.parameters().values():
 
         # Don't create annotations for variadic parameters
-        if (
-            parameter.assigned_by in (ParameterAssignment.POSITIONAL_VARARG, ParameterAssignment.NAMED_VARARG)
+        if parameter.assigned_by in (
+            ParameterAssignment.POSITIONAL_VARARG,
+            ParameterAssignment.NAMED_VARARG,
         ):
             continue
 
