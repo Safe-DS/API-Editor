@@ -28,25 +28,24 @@ def _get_mapping_from_annotation(annotation: AbstractAnnotation, mappings: list[
 
 
 def migrate_annotations(annotationsv1: AnnotationStore, mappings: list[Mapping]) -> AnnotationStore:
-    boundary_annotations: list[BoundaryAnnotation] = []
-    called_after_annotations: list[CalledAfterAnnotation] = []
-    complete_annotations: list[CompleteAnnotation] = []
-    description_annotations: list[DescriptionAnnotation] = []
-    enum_annotations: list[EnumAnnotation] = []
-    group_annotations: list[GroupAnnotation] = []
-    move_annotations: list[MoveAnnotation] = []
-    pure_annotations: list[PureAnnotation] = []
-    remove_annotations: list[RemoveAnnotation] = []
-    rename_annotations: list[RenameAnnotation] = []
-    todo_annotations: list[TodoAnnotation] = []
-    value_annotations: list[ValueAnnotation] = []
+    annotations: list[AbstractAnnotation] = []
 
-    for renameAnnotation in annotationsv1.renameAnnotations:
-        mapping = _get_mapping_from_annotation(renameAnnotation, mappings)
-        annotation = migrate_rename_annotation(renameAnnotation, mapping)
-        if annotation is not None:
-            rename_annotations.append(annotation)
+    for rename_annotation in annotationsv1.renameAnnotations:
+        mapping = _get_mapping_from_annotation(rename_annotation, mappings)
+        annotations.extend(migrate_rename_annotation(rename_annotation, mapping))
 
+    boundary_annotations: list[BoundaryAnnotation] = [annotation for annotation in annotations if isinstance(annotation, BoundaryAnnotation)]
+    called_after_annotations: list[CalledAfterAnnotation] = [annotation for annotation in annotations if isinstance(annotation, CalledAfterAnnotation)]
+    complete_annotations: list[CompleteAnnotation] = [annotation for annotation in annotations if isinstance(annotation, CompleteAnnotation)]
+    description_annotations: list[DescriptionAnnotation] = [annotation for annotation in annotations if isinstance(annotation, DescriptionAnnotation)]
+    enum_annotations: list[EnumAnnotation] = [annotation for annotation in annotations if isinstance(annotation, EnumAnnotation)]
+    group_annotations: list[GroupAnnotation] = [annotation for annotation in annotations if isinstance(annotation, GroupAnnotation)]
+    move_annotations: list[MoveAnnotation] = [annotation for annotation in annotations if isinstance(annotation, MoveAnnotation)]
+    pure_annotations: list[PureAnnotation] = [annotation for annotation in annotations if isinstance(annotation, PureAnnotation)]
+    remove_annotations: list[RemoveAnnotation] = [annotation for annotation in annotations if isinstance(annotation, RemoveAnnotation)]
+    rename_annotations: list[RenameAnnotation] = [annotation for annotation in annotations if isinstance(annotation, RenameAnnotation)]
+    todo_annotations: list[TodoAnnotation] = [annotation for annotation in annotations if isinstance(annotation, TodoAnnotation)]
+    value_annotations: list[ValueAnnotation] = [annotation for annotation in annotations if isinstance(annotation, ValueAnnotation)]
     annotationsv2 = AnnotationStore(
         boundary_annotations, called_after_annotations, complete_annotations,
         description_annotations, enum_annotations, group_annotations, move_annotations,

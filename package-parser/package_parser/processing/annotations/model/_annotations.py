@@ -3,7 +3,7 @@ from __future__ import annotations
 from abc import ABC
 from dataclasses import asdict, dataclass
 from enum import Enum
-from typing import Any, Union, Optional
+from typing import Any, Union
 
 ANNOTATION_SCHEMA_VERSION = 2
 
@@ -12,6 +12,15 @@ class EnumReviewResult(Enum):
     CORRECT = 'correct'
     UNSURE = 'unsure'
     WRONG = 'wrong'
+    NONE = ''
+
+    @staticmethod
+    def to_json(result: list[tuple[str, any]]) -> dict[str, Any]:
+        for item in result:
+            if isinstance(item[1], EnumReviewResult):
+                result.append((item[0], item[1].value))
+                result.remove(item)
+        return dict(result)
 
 
 @dataclass
@@ -20,23 +29,14 @@ class AbstractAnnotation(ABC):
     authors: list[str]
     reviewers: list[str]
     comment: str
-    reviewResult: Optional[EnumReviewResult]
-
-    def __init__(self, target: str, authors: list[str], reviewers: list[str], comment: str, reviewResult=None):
-        self.target = target
-        self.authors = authors
-        self.reviewers = reviewers
-        self.comment = comment
-        self.reviewResult = reviewResult
+    reviewResult: EnumReviewResult
 
     def to_json(self) -> dict:
-        return asdict(self)
+        return asdict(self, dict_factory=EnumReviewResult.to_json)
 
     @staticmethod
     def from_json(json: Any) -> AbstractAnnotation:
-        review_result = json.get("reviewResult", None)
-        if review_result is not None:
-            review_result = EnumReviewResult(review_result)
+        review_result = EnumReviewResult(json.get("reviewResult", ""))
 
         return AbstractAnnotation(
             json["target"], json["authors"], json["reviewers"], json.get("comment", ""), review_result
