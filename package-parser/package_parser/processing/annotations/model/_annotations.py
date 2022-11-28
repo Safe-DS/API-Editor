@@ -15,7 +15,7 @@ class EnumReviewResult(Enum):
     NONE = ''
 
     @staticmethod
-    def to_json(result: list[tuple[str, any]]) -> dict[str, Any]:
+    def to_json(result: list[tuple[str, Any]]) -> dict[str, Any]:
         for item in result:
             if isinstance(item[1], EnumReviewResult):
                 result.append((item[0], item[1].value))
@@ -89,6 +89,7 @@ class BoundaryAnnotation(AbstractAnnotation):
             "authors": self.authors,
             "reviewers": self.reviewers,
             "comment": self.comment,
+            "reviewResult": self.reviewResult.value,
             "interval": self.interval.to_json(),
         }
 
@@ -129,6 +130,7 @@ class EnumAnnotation(AbstractAnnotation):
             "authors": self.authors,
             "reviewers": self.reviewers,
             "comment": self.comment,
+            "reviewResult": self.reviewResult.value,
             "enumName": self.enumName,
             "pairs": [pair.to_json() for pair in self.pairs],
         }
@@ -189,6 +191,7 @@ class ConstantAnnotation(ValueAnnotation):
             "authors": self.authors,
             "reviewers": self.reviewers,
             "comment": self.comment,
+            "reviewResult": self.reviewResult.value,
             "variant": self.variant.value,
             "defaultValueType": self.defaultValueType.value,
             "defaultValue": self.defaultValue,
@@ -218,6 +221,7 @@ class OmittedAnnotation(ValueAnnotation):
             "authors": self.authors,
             "reviewers": self.reviewers,
             "comment": self.comment,
+            "reviewResult": self.reviewResult.value,
             "variant": self.variant.value,
         }
 
@@ -245,6 +249,7 @@ class OptionalAnnotation(ValueAnnotation):
             "authors": self.authors,
             "reviewers": self.reviewers,
             "comment": self.comment,
+            "reviewResult": self.reviewResult.value,
             "variant": self.variant.value,
             "defaultValueType": self.defaultValueType.value,
             "defaultValue": self.defaultValue,
@@ -274,8 +279,10 @@ class RequiredAnnotation(ValueAnnotation):
             "authors": self.authors,
             "reviewers": self.reviewers,
             "comment": self.comment,
+            "reviewResult": self.reviewResult.value,
             "variant": self.variant.value,
         }
+
 
     @staticmethod
     def from_json(json: Any) -> RequiredAnnotation:

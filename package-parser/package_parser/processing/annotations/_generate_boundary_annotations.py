@@ -4,7 +4,7 @@ from package_parser.processing.annotations.model import (
     AnnotationStore,
     BoundaryAnnotation,
     Interval,
-    ValueAnnotation,
+    ValueAnnotation, EnumReviewResult,
 )
 from package_parser.processing.api.model import API, BoundaryType, UnionType
 
@@ -73,5 +73,6 @@ def _generate_boundary_annotations(api: API, annotations: AnnotationStore) -> No
                 reviewers=[],
                 comment=f"I turned this into a bounded number because the description contained {boundary_type.full_match}.",
                 interval=interval,
+                reviewResult=EnumReviewResult.NONE,
             )
             annotations.boundaryAnnotations.append(boundary)

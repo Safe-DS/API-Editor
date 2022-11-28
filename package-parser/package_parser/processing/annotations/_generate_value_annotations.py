@@ -6,7 +6,7 @@ from package_parser.processing.annotations.model import (
     OmittedAnnotation,
     OptionalAnnotation,
     RequiredAnnotation,
-    ValueAnnotation,
+    ValueAnnotation, EnumReviewResult,
 )
 from package_parser.processing.api.model import API, Parameter, ParameterAssignment
 from package_parser.processing.usages.model import UsageCountStore
@@ -54,6 +54,7 @@ def _generate_constant_annotation(
                 authors=[autogen_author],
                 reviewers=[],
                 comment=f"I omitted this parameter because it is always set to the original default value ({parameter.default_value}).",
+                reviewResult=EnumReviewResult.NONE,
             )
         )
         return
@@ -68,6 +69,7 @@ def _generate_constant_annotation(
                 authors=[autogen_author],
                 reviewers=[],
                 comment=f"I replaced this parameter with a constant because it is always set to the same literal value ({sole_stringified_value}).",
+                reviewResult=EnumReviewResult.NONE,
                 defaultValueType=default_value_type,
                 defaultValue=default_value,
             )
@@ -79,6 +81,7 @@ def _generate_constant_annotation(
                 authors=[autogen_author],
                 reviewers=[],
                 comment=f"I made this parameter required because, even though it is always set to the same value ({sole_stringified_value}), that value is not a literal.",
+                reviewResult=EnumReviewResult.NONE,
             )
         )
 
@@ -98,6 +101,7 @@ def _generate_required_or_optional_annotation(
                 authors=[autogen_author],
                 reviewers=[],
                 comment=f"I made this parameter required because the most common value ({most_common_values[0]}) is not a literal.",
+                reviewResult=EnumReviewResult.NONE,
             )
         )
         return
@@ -122,6 +126,7 @@ def _generate_required_or_optional_annotation(
                 authors=[autogen_author],
                 reviewers=[],
                 comment=comment,
+                reviewResult=EnumReviewResult.NONE,
             )
         )
     else:
@@ -136,6 +141,7 @@ def _generate_required_or_optional_annotation(
                     authors=[autogen_author],
                     reviewers=[],
                     comment=comment,
+                    reviewResult=EnumReviewResult.NONE,
                     defaultValueType=default_value_type,
                     defaultValue=default_value,
                 )

@@ -4,7 +4,7 @@ from package_parser.processing.annotations.model import (
     AnnotationStore,
     EnumAnnotation,
     EnumPair,
-    ValueAnnotation,
+    ValueAnnotation, EnumReviewResult,
 )
 from package_parser.processing.api.model import API, EnumType
 
@@ -47,6 +47,7 @@ def _generate_enum_annotations(api: API, annotations: AnnotationStore) -> None:
                     comment=f"I turned this into an enum because the type in the documentation contained {full_match}.",
                     enumName=enum_name,
                     pairs=pairs,
+                    reviewResult=EnumReviewResult.NONE,
                 )
             )
 
