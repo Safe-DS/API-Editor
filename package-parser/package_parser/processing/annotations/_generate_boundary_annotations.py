@@ -17,6 +17,7 @@ def _generate_boundary_annotations(api: API, annotations: AnnotationStore) -> No
     :param api: Description of the API
     :param annotations: AnnotationStore, that holds all annotations
     """
+    # pylint: disable=duplicate-code
     for _, parameter in api.parameters().items():
 
         # Don't add boundary annotation to constant parameters

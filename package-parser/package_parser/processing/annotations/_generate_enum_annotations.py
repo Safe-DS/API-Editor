@@ -17,6 +17,7 @@ def _generate_enum_annotations(api: API, annotations: AnnotationStore) -> None:
     :param api: API object for usages
     :param annotations: AnnotationStore object
     """
+    # pylint: disable=duplicate-code
     for _, parameter in api.parameters().items():
 
         # Don't add enum annotation to constant parameters
