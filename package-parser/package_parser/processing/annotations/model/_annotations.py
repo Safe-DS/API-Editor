@@ -8,20 +8,38 @@ from typing import Any, Union
 ANNOTATION_SCHEMA_VERSION = 2
 
 
+class EnumReviewResult(Enum):
+    CORRECT = 'correct'
+    UNSURE = 'unsure'
+    WRONG = 'wrong'
+    NONE = ''
+
+    @staticmethod
+    def to_json(result: list[tuple[str, any]]) -> dict[str, Any]:
+        for item in result:
+            if isinstance(item[1], EnumReviewResult):
+                result.append((item[0], item[1].value))
+                result.remove(item)
+        return dict(result)
+
+
 @dataclass
 class AbstractAnnotation(ABC):
     target: str
     authors: list[str]
     reviewers: list[str]
     comment: str
+    reviewResult: EnumReviewResult
 
     def to_json(self) -> dict:
-        return asdict(self)
+        return asdict(self, dict_factory=EnumReviewResult.to_json)
 
     @staticmethod
     def from_json(json: Any) -> AbstractAnnotation:
+        review_result = EnumReviewResult(json.get("reviewResult", ""))
+
         return AbstractAnnotation(
-            json["target"], json["authors"], json["reviewers"], json.get("comment", "")
+            json["target"], json["authors"], json["reviewers"], json.get("comment", ""), review_result
         )
 
 
@@ -35,6 +53,7 @@ class RemoveAnnotation(AbstractAnnotation):
             annotation.authors,
             annotation.reviewers,
             annotation.comment,
+            annotation.reviewResult,
         )
 
 
@@ -81,6 +100,7 @@ class BoundaryAnnotation(AbstractAnnotation):
             annotation.authors,
             annotation.reviewers,
             annotation.comment,
+            annotation.reviewResult,
             Interval.from_json(json["interval"]),
         )
 
@@ -122,6 +142,7 @@ class EnumAnnotation(AbstractAnnotation):
             annotation.authors,
             annotation.reviewers,
             annotation.comment,
+            annotation.reviewResult,
             json["enumName"],
             pairs,
         )
@@ -181,6 +202,7 @@ class ConstantAnnotation(ValueAnnotation):
             annotation.authors,
             annotation.reviewers,
             annotation.comment,
+            annotation.reviewResult,
             ValueAnnotation.DefaultValueType(json["defaultValueType"]),
             json["defaultValue"],
         )
@@ -207,6 +229,7 @@ class OmittedAnnotation(ValueAnnotation):
             annotation.authors,
             annotation.reviewers,
             annotation.comment,
+            annotation.reviewResult,
         )
 
 
@@ -235,6 +258,7 @@ class OptionalAnnotation(ValueAnnotation):
             annotation.authors,
             annotation.reviewers,
             annotation.comment,
+            annotation.reviewResult,
             ValueAnnotation.DefaultValueType(json["defaultValueType"]),
             json["defaultValue"],
         )
@@ -261,6 +285,7 @@ class RequiredAnnotation(ValueAnnotation):
             annotation.authors,
             annotation.reviewers,
             annotation.comment,
+            annotation.reviewResult,
         )
 
 
@@ -294,6 +319,7 @@ class CalledAfterAnnotation(AbstractAnnotation):
             annotation.authors,
             annotation.reviewers,
             annotation.comment,
+            annotation.reviewResult,
             json["calledAfterName"],
         )
 
@@ -307,6 +333,7 @@ class CompleteAnnotation(AbstractAnnotation):
             annotation.authors,
             annotation.reviewers,
             annotation.comment,
+            annotation.reviewResult,
         )
 
 
@@ -322,6 +349,7 @@ class DescriptionAnnotation(AbstractAnnotation):
             annotation.authors,
             annotation.reviewers,
             annotation.comment,
+            annotation.reviewResult,
             json["newDescription"],
         )
 
@@ -336,6 +364,7 @@ class ExpertAnnotation(AbstractAnnotation):
             annotation.authors,
             annotation.reviewers,
             annotation.comment,
+            annotation.reviewResult,
         )
 
 
@@ -352,6 +381,7 @@ class GroupAnnotation(AbstractAnnotation):
             annotation.authors,
             annotation.reviewers,
             annotation.comment,
+            annotation.reviewResult,
             json["groupName"],
             json["parameters"],
         )
@@ -369,6 +399,7 @@ class MoveAnnotation(AbstractAnnotation):
             annotation.authors,
             annotation.reviewers,
             annotation.comment,
+            annotation.reviewResult,
             json["destination"],
         )
 
@@ -382,6 +413,7 @@ class PureAnnotation(AbstractAnnotation):
             annotation.authors,
             annotation.reviewers,
             annotation.comment,
+            annotation.reviewResult,
         )
 
 
@@ -397,6 +429,7 @@ class RenameAnnotation(AbstractAnnotation):
             annotation.authors,
             annotation.reviewers,
             annotation.comment,
+            annotation.reviewResult,
             json["newName"],
         )
 
@@ -413,5 +446,6 @@ class TodoAnnotation(AbstractAnnotation):
             annotation.authors,
             annotation.reviewers,
             annotation.comment,
+            annotation.reviewResult,
             json["newTodo"],
         )
