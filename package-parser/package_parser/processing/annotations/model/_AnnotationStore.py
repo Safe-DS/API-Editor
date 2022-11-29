@@ -4,8 +4,8 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from ._annotations import (
-    AbstractAnnotation,
     ANNOTATION_SCHEMA_VERSION,
+    AbstractAnnotation,
     BoundaryAnnotation,
     CalledAfterAnnotation,
     CompleteAnnotation,
@@ -133,7 +133,6 @@ class AnnotationStore:
             self.todoAnnotations.append(annotation)
         if isinstance(annotation, ValueAnnotation):
             self.valueAnnotations.append(annotation)
-
 
     def to_json(self) -> dict:
         return {

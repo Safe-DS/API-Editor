@@ -38,7 +38,9 @@ def migrate_rename_annotation(
         + "' from the previous version was at '"
         + rename_annotation.target
         + "' and the possible alternatives in the new version of the api are: "
-        + ", ".join(map(lambda api_element: api_element.name, mapping.get_apiv2_elements()))
+        + ", ".join(
+            map(lambda api_element: api_element.name, mapping.get_apiv2_elements())
+        )
     )
 
     todo_annotations: list[AbstractAnnotation] = []
