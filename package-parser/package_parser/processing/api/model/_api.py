@@ -7,6 +7,7 @@ from package_parser.utils import parent_id
 
 from ._documentation import ClassDocumentation, FunctionDocumentation
 from ._parameters import Parameter
+from ._types import AbstractType
 
 API_SCHEMA_VERSION = 1
 
@@ -207,7 +208,10 @@ class Class:
                 full_docstring=json.get("docstring", ""),
             ),
             json.get("code", ""),
-            json.get("instance_attributes", []),
+            [
+                Attribute.from_json(instance_attribute)
+                for instance_attribute in json.get("instance_attributes", [])
+            ],
         )
 
         for method_id in json["methods"]:
@@ -225,7 +229,7 @@ class Class:
         reexported_by: list[str],
         documentation: ClassDocumentation,
         code: str,
-        instance_attributes: list[str],
+        instance_attributes: list[Attribute],
     ) -> None:
         self.id: str = id_
         self.qname: str = qname
@@ -258,8 +262,24 @@ class Class:
             "description": self.documentation.description,
             "docstring": self.documentation.full_docstring,
             "code": self.code,
-            "instance_attributes": self.instance_attributes,
+            "instance_attributes": [
+                attribute.to_json() for attribute in self.instance_attributes
+            ],
         }
+
+
+@dataclass
+class Attribute:
+    name: str
+    types: Optional[AbstractType]
+
+    def to_json(self) -> dict[str, Any]:
+        types_json = self.types.to_json() if self.types is not None else ""
+        return {"name": self.name, "types": types_json}
+
+    @staticmethod
+    def from_json(json: Any) -> Attribute:
+        return Attribute(json["name"], AbstractType.from_json(json["types"]))
 
 
 @dataclass
