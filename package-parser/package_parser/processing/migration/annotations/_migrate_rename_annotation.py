@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from package_parser.processing.annotations.model import (
     AbstractAnnotation,
     EnumReviewResult,
@@ -17,6 +19,7 @@ from ._constants import migration_author
 def migrate_rename_annotation(
     rename_annotation: RenameAnnotation, mapping: Mapping
 ) -> list[AbstractAnnotation]:
+    rename_annotation = deepcopy(rename_annotation)
     new_name = rename_annotation.newName
     authors = rename_annotation.authors
     authors.append(migration_author)
