@@ -1,4 +1,3 @@
-from ._migrate import migrate_annotations
 from package_parser.processing.migration.model import (
     AbstractDiffer,
     APIMapping,
@@ -9,3 +8,5 @@ from package_parser.processing.migration.model import (
     OneToOneMapping,
     SimpleDiffer,
 )
+
+from ._migrate import migrate_annotations
