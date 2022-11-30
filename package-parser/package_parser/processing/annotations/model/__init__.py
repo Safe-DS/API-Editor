@@ -8,6 +8,7 @@ from ._annotations import (
     DescriptionAnnotation,
     EnumAnnotation,
     EnumPair,
+    EnumReviewResult,
     ExpertAnnotation,
     GroupAnnotation,
     Interval,

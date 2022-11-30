@@ -4,6 +4,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I turned this into an enum because the type in the documentation contained {'auto', 'kd_tree', 'kd-means++'}.",
+        "reviewResult": "",
         "enumName": "EnumParameter",
         "pairs": [
             {
@@ -25,6 +26,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I turned this into an enum because the type in the documentation contained {'l1', 'l2'}.",
+        "reviewResult": "",
         "enumName": "Issue760",
         "pairs": [
             {
@@ -42,6 +44,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I turned this into an enum because the type in the documentation contained {'SAMME.R'}.",
+        "reviewResult": "",
         "enumName": "Issue858",
         "pairs": [
             {
