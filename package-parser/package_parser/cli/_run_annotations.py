@@ -2,7 +2,11 @@ from pathlib import Path
 
 from package_parser.processing.annotations import generate_annotations
 
-from ._read_and_write_file import _read_api_file, _read_usages_file, _write_annotations_file
+from ._read_and_write_file import (
+    _read_api_file,
+    _read_usages_file,
+    _write_annotations_file,
+)
 
 
 def _run_annotations(
