@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
 from typing import Callable, List, Optional, TypeVar, Union
 
 from package_parser.processing.api.model import (
@@ -16,11 +17,9 @@ api_element = Union[Attribute, Class, Function, Parameter, Result]
 API_ELEMENTS = TypeVar("API_ELEMENTS", Attribute, Class, Function, Parameter, Result)
 
 
+@dataclass
 class Mapping(ABC):
     similarity: float
-
-    def __init__(self, similarity: float):
-        self.similarity = similarity
 
     @abstractmethod
     def get_apiv1_elements(self) -> list[api_element]:
@@ -34,82 +33,46 @@ class Mapping(ABC):
         return self.similarity
 
 
+@dataclass
 class OneToOneMapping(Mapping):
-    apiv1_elements: api_element
-    apiv2_elements: api_element
-
-    def __init__(
-        self,
-        apiv1_elements: api_element,
-        apiv2_elements: api_element,
-        similarity: float,
-    ):
-        super().__init__(similarity)
-        self.apiv1_elements = apiv1_elements
-        self.apiv2_elements = apiv2_elements
+    apiv1_element: api_element
+    apiv2_element: api_element
 
     def get_apiv1_elements(self) -> list[api_element]:
-        return [self.apiv1_elements]
+        return [self.apiv1_element]
 
     def get_apiv2_elements(self) -> list[api_element]:
-        return [self.apiv2_elements]
+        return [self.apiv2_element]
 
 
+@dataclass
 class OneToManyMapping(Mapping):
-    apiv1_elements: api_element
+    apiv1_element: api_element
     apiv2_elements: list[api_element]
 
-    def __init__(
-        self,
-        apiv1_elements: api_element,
-        apiv2_elements: list[api_element],
-        similarity: float,
-    ):
-        super().__init__(similarity)
-        self.apiv1_elements = apiv1_elements
-        self.apiv2_elements = apiv2_elements
-
     def get_apiv1_elements(self) -> list[api_element]:
-        return [self.apiv1_elements]
+        return [self.apiv1_element]
 
     def get_apiv2_elements(self) -> list[api_element]:
         return self.apiv2_elements
 
 
+@dataclass
 class ManyToOneMapping(Mapping):
     apiv1_elements: list[api_element]
-    apiv2_elements: api_element
-
-    def __init__(
-        self,
-        apiv1_elements: list[api_element],
-        apiv2_elements: api_element,
-        similarity: float,
-    ):
-        super().__init__(similarity)
-        self.apiv1_elements = apiv1_elements
-        self.apiv2_elements = apiv2_elements
+    apiv2_element: api_element
 
     def get_apiv1_elements(self) -> list[api_element]:
         return self.apiv1_elements
 
     def get_apiv2_elements(self) -> list[api_element]:
-        return [self.apiv2_elements]
+        return [self.apiv2_element]
 
 
+@dataclass
 class ManyToManyMapping(Mapping):
     apiv1_elements: list[api_element]
     apiv2_elements: list[api_element]
-
-    def __init__(
-        self,
-        apiv1_elements: list[api_element],
-        apiv2_elements: list[api_element],
-        similarity: float,
-    ):
-        super().__init__(similarity)
-        self.apiv1_elements = apiv1_elements
-        self.apiv2_elements = apiv2_elements
 
     def get_apiv1_elements(self) -> list[api_element]:
         return self.apiv1_elements
@@ -127,12 +90,12 @@ def merge_mappings(mapping_a: Mapping, mapping_b: Mapping) -> Mapping:
         set(mapping_a.get_apiv1_elements()) | set(mapping_b.get_apiv1_elements())
     )
     if len(domain) == 1 and len(codomain) == 1:
-        return OneToOneMapping(domain[0], codomain[0], similarity)
+        return OneToOneMapping(similarity, domain[0], codomain[0])
     if len(domain) == 1:
-        return OneToManyMapping(domain[0], codomain, similarity)
+        return OneToManyMapping(similarity, domain[0], codomain)
     if len(codomain) == 1:
-        return ManyToOneMapping(domain, codomain[0], similarity)
-    return ManyToManyMapping(domain, codomain, similarity)
+        return ManyToOneMapping(similarity, domain, codomain[0])
+    return ManyToManyMapping(similarity, domain, codomain)
 
 
 class APIMapping:
@@ -173,7 +136,7 @@ class APIMapping:
                 similarity = compute_similarity(api_elementv1, api_elementv2)
                 if similarity >= self.threshold_of_similarity_for_creation_of_mappings:
                     mapping_for_class_1.append(
-                        OneToOneMapping(api_elementv1, api_elementv2, similarity)
+                        OneToOneMapping(similarity, api_elementv1, api_elementv2)
                     )
             mapping_for_class_1.sort(key=Mapping.get_similarity, reverse=True)
             new_mapping = self._merge_similar_mappings(mapping_for_class_1)
