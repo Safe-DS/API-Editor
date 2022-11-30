@@ -4,6 +4,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I replaced this parameter with a constant because it is always set to the same literal value ('test').",
+        "reviewResult": "",
         "variant": "constant",
         "defaultValueType": "string",
         "defaultValue": "test"
@@ -13,6 +14,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I replaced this parameter with a constant because it is always set to the same literal value ('test2()').",
+        "reviewResult": "",
         "variant": "constant",
         "defaultValueType": "string",
         "defaultValue": "test2()"
@@ -22,6 +24,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I replaced this parameter with a constant because it is always set to the same literal value ('test').",
+        "reviewResult": "",
         "variant": "constant",
         "defaultValueType": "string",
         "defaultValue": "test"
@@ -31,6 +34,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I replaced this parameter with a constant because it is always set to the same literal value ('test2').",
+        "reviewResult": "",
         "variant": "constant",
         "defaultValueType": "string",
         "defaultValue": "test2"
@@ -40,6 +44,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I replaced this parameter with a constant because it is always set to the same literal value ('test').",
+        "reviewResult": "",
         "variant": "constant",
         "defaultValueType": "string",
         "defaultValue": "test"
@@ -49,6 +54,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I omitted this parameter because it is always set to the original default value (0.5).",
+        "reviewResult": "",
         "variant": "omitted"
     },
     "test/test/some_global_function/optional_parameter_that_should_be_omitted": {
@@ -56,6 +62,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I omitted this parameter because it is always set to the original default value (np.nan).",
+        "reviewResult": "",
         "variant": "omitted"
     },
     "test/test/some_global_function/required_parameter_that_should_be_optional": {
@@ -63,6 +70,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I made this parameter optional because there is a statistically significant most common value (p-value 1.18% <= significance level 5%).",
+        "reviewResult": "",
         "variant": "optional",
         "defaultValueType": "string",
         "defaultValue": "test2"
@@ -72,6 +80,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I made this parameter optional because there is a statistically significant most common value (p-value 4.90% <= significance level 5%).",
+        "reviewResult": "",
         "variant": "optional",
         "defaultValueType": "string",
         "defaultValue": "test2"
@@ -81,6 +90,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I made this parameter optional because there is a statistically significant most common value (p-value 1.18% <= significance level 5%).",
+        "reviewResult": "",
         "variant": "optional",
         "defaultValueType": "string",
         "defaultValue": "test"
@@ -90,6 +100,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I made this parameter optional because there is a statistically significant most common value (p-value 1.18% <= significance level 5%).",
+        "reviewResult": "",
         "variant": "optional",
         "defaultValueType": "string",
         "defaultValue": "test2"
@@ -99,6 +110,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I made this parameter optional because there is a statistically significant most common value (p-value 4.90% <= significance level 5%).",
+        "reviewResult": "",
         "variant": "optional",
         "defaultValueType": "string",
         "defaultValue": "test2"
@@ -108,6 +120,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I made this parameter optional because there is a statistically significant most common value (p-value 0.13% <= significance level 5%).",
+        "reviewResult": "",
         "variant": "optional",
         "defaultValueType": "number",
         "defaultValue": 1.0
@@ -117,6 +130,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I made this parameter optional because there is a statistically significant most common value (p-value 0.09% <= significance level 5%).",
+        "reviewResult": "",
         "variant": "optional",
         "defaultValueType": "string",
         "defaultValue": "numeric"
@@ -126,6 +140,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I made this parameter optional because there is a statistically significant most common value (p-value 0.00% <= significance level 5%).",
+        "reviewResult": "",
         "variant": "optional",
         "defaultValueType": "boolean",
         "defaultValue": false
@@ -135,6 +150,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I made this parameter required because there is no statistically significant most common value (p-value (50.34%) > significance level (5%).",
+        "reviewResult": "",
         "variant": "required"
     },
     "test/test/some_global_function/required_parameter_that_should_be_required_with_non_string": {
@@ -142,6 +158,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I made this parameter required because the most common value (non_string) is not a literal.",
+        "reviewResult": "",
         "variant": "required"
     },
     "test/test/some_global_function/optional_parameter_that_should_be_required": {
@@ -149,6 +166,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I made this parameter required because there is no statistically significant most common value (p-value (50.34%) > significance level (5%).",
+        "reviewResult": "",
         "variant": "required"
     },
     "test/test/some_global_function/optional_parameter_that_should_be_required_with_non_string": {
@@ -156,6 +174,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I made this parameter required because the most common value (non_string) is not a literal.",
+        "reviewResult": "",
         "variant": "required"
     },
     "test/test/UsedClass/used_method/should_not_be_constant_one": {
@@ -163,6 +182,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I made this parameter required because, even though it is always set to the same value (hallo), that value is not a literal.",
+        "reviewResult": "",
         "variant": "required"
     },
     "test/test/UsedClass/used_method/should_not_be_constant_two": {
@@ -170,6 +190,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I made this parameter required because, even though it is always set to the same value (hallo()), that value is not a literal.",
+        "reviewResult": "",
         "variant": "required"
     },
     "test/test/UsedClass/used_method/should_not_be_constant_three": {
@@ -177,6 +198,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I made this parameter required because, even though it is always set to the same value (test_hallo1()), that value is not a literal.",
+        "reviewResult": "",
         "variant": "required"
     },
     "test/test/UsedClass/used_method/should_not_be_constant_four": {
@@ -184,6 +206,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I made this parameter required because, even though it is always set to the same value (test/test/hallo21()), that value is not a literal.",
+        "reviewResult": "",
         "variant": "required"
     },
     "test/test/UsedClass/used_method/should_not_be_constant_five": {
@@ -191,6 +214,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I made this parameter required because, even though it is always set to the same value (test'), that value is not a literal.",
+        "reviewResult": "",
         "variant": "required"
     },
     "test/test/UsedClass/used_method/should_not_be_constant_six": {
@@ -198,6 +222,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I made this parameter required because, even though it is always set to the same value ('test), that value is not a literal.",
+        "reviewResult": "",
         "variant": "required"
     },
     "test/test/used_global_function/variable_required_parameter": {
@@ -205,6 +230,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I made this parameter required because there is no statistically significant most common value (p-value (100.00%) > significance level (5%).",
+        "reviewResult": "",
         "variant": "required"
     },
     "test/test/used_global_function/variable_optional_parameter": {
@@ -212,6 +238,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I made this parameter required because there is no statistically significant most common value (p-value (100.00%) > significance level (5%).",
+        "reviewResult": "",
         "variant": "required"
     },
     "test/test/UsedClass/used_method/variable_required_parameter": {
@@ -219,6 +246,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I made this parameter required because there is no statistically significant most common value (p-value (100.00%) > significance level (5%).",
+        "reviewResult": "",
         "variant": "required"
     },
     "test/test/UsedClass/used_method/variable_optional_parameter": {
@@ -226,6 +254,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I made this parameter required because there is no statistically significant most common value (p-value (100.00%) > significance level (5%).",
+        "reviewResult": "",
         "variant": "required"
     },
     "sklearn/sklearn.metrics.cluster._supervised/mutual_info_score/labels_pred": {
@@ -233,6 +262,7 @@
         "authors": ["$autogen$"],
         "reviewers": [],
         "comment": "I made this parameter required because there is no single most common value (None and verySimpleLearner.predict_proba(trainInputFeature)[:, 1] are both used 1 time).",
+        "reviewResult": "",
         "variant": "required"
     }
 }
