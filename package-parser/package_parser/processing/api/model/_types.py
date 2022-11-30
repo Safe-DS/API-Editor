@@ -45,6 +45,11 @@ class NamedType(AbstractType):
     def to_json(self) -> dict[str, str]:
         return {"kind": self.__class__.__name__, "name": self.name}
 
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.name == other.name
+        return False
+
 
 @dataclass
 class EnumType(AbstractType):
