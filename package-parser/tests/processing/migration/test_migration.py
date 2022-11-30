@@ -49,7 +49,7 @@ def migrate_rename_annotation_data_one_to_one_mapping() -> Tuple[
         is_public=True,
         documentation=ParameterDocumentation("", "", ""),
     )
-    mappings = OneToOneMapping(parameterv1, parameterv2, 1.0)
+    mappings = OneToOneMapping(1.0, parameterv1, parameterv2)
     annotationsv1 = RenameAnnotation(
         target="test/test.Test_",
         authors=["testauthor"],
@@ -102,7 +102,7 @@ def migrate_rename_annotation_data_one_to_many_mapping__with_changed_new_name() 
         is_public=True,
         documentation=ParameterDocumentation("", "", ""),
     )
-    mappings = OneToManyMapping(parameterv1, [parameterv2_a, parameterv2_b], 1.0)
+    mappings = OneToManyMapping(1.0, parameterv1, [parameterv2_a, parameterv2_b])
     annotationsv1 = RenameAnnotation(
         target="test/test.Test",
         authors=["testauthor"],
@@ -155,7 +155,7 @@ def migrate_rename_annotation_data_one_to_many_mapping() -> Tuple[
         is_public=True,
         documentation=ParameterDocumentation("", "", ""),
     )
-    mappings = OneToManyMapping(parameterv1, [parameterv2_a, parameterv2_b], 1.0)
+    mappings = OneToManyMapping(1.0, parameterv1, [parameterv2_a, parameterv2_b])
     annotationsv1 = RenameAnnotation(
         target="test/test.Test",
         authors=["testauthor"],
