@@ -2,7 +2,7 @@
 
 A tool to analyze client and API code written in Python.
 
-### Installation
+## Installation
 
 1. Install Python 3.10.
 2. Install [poetry](https://python-poetry.org/docs/master/#installation).
@@ -15,7 +15,7 @@ A tool to analyze client and API code written in Python.
     poetry shell
     ```
 
-### Example usage
+## Example usage
 
 1. Analyze an API:
     ```shell
@@ -32,5 +32,5 @@ A tool to analyze client and API code written in Python.
     ```
 4. Migrate annotations for a new version of the API:
     ```shell
-    parse-package migrate -a1 data/api/sklearn__api.json -a2 data/api/sklearn__apiv2.json -a data/annotations/annotations.json -o out
+    parse-package migrate -a1 data/api/scikit-learn_v0.24.2_api.json -a2 data/api/sklearn__apiv2.json -a data/annotations/annotations.json -o out
     ```

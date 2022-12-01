@@ -5,6 +5,7 @@ from typing import Any
 
 from ._annotations import (
     ANNOTATION_SCHEMA_VERSION,
+    AbstractAnnotation,
     BoundaryAnnotation,
     CalledAfterAnnotation,
     CompleteAnnotation,
@@ -104,6 +105,34 @@ class AnnotationStore:
             todoAnnotations,
             valueAnnotations,
         )
+
+    def add_annotation(self, annotation: AbstractAnnotation):
+        if isinstance(annotation, BoundaryAnnotation):
+            self.boundaryAnnotations.append(annotation)
+        if isinstance(annotation, BoundaryAnnotation):
+            self.boundaryAnnotations.append(annotation)
+        if isinstance(annotation, CalledAfterAnnotation):
+            self.calledAfterAnnotations.append(annotation)
+        if isinstance(annotation, CompleteAnnotation):
+            self.completeAnnotations.append(annotation)
+        if isinstance(annotation, DescriptionAnnotation):
+            self.descriptionAnnotations.append(annotation)
+        if isinstance(annotation, EnumAnnotation):
+            self.enumAnnotations.append(annotation)
+        if isinstance(annotation, GroupAnnotation):
+            self.groupAnnotations.append(annotation)
+        if isinstance(annotation, MoveAnnotation):
+            self.moveAnnotations.append(annotation)
+        if isinstance(annotation, PureAnnotation):
+            self.pureAnnotations.append(annotation)
+        if isinstance(annotation, RemoveAnnotation):
+            self.removeAnnotations.append(annotation)
+        if isinstance(annotation, RenameAnnotation):
+            self.renameAnnotations.append(annotation)
+        if isinstance(annotation, TodoAnnotation):
+            self.todoAnnotations.append(annotation)
+        if isinstance(annotation, ValueAnnotation):
+            self.valueAnnotations.append(annotation)
 
     def to_json(self) -> dict:
         return {

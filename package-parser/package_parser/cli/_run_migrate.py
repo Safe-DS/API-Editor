@@ -1,8 +1,13 @@
-import json
 from pathlib import Path
 
-from package_parser.processing.annotations.model import AnnotationStore
-from package_parser.processing.api.model import API
+from package_parser.processing.migration import migrate_annotations
+from package_parser.processing.migration.model import APIMapping, SimpleDiffer
+
+from ._read_and_write_file import (
+    _read_annotations_file,
+    _read_api_file,
+    _write_annotations_file,
+)
 
 
 def _run_migrate_command(
@@ -11,21 +16,11 @@ def _run_migrate_command(
     apiv2_file_path: Path,
     out_dir_path: Path,
 ) -> None:
-    # pylint: disable=unused-argument
-    _read_api_file(apiv1_file_path)
-    _read_api_file(apiv2_file_path)
-    _read_annotations_file(annotations_file_path)
-
-
-def _read_annotations_file(annotations_file_path: Path) -> AnnotationStore:
-    with open(annotations_file_path, encoding="utf-8") as annotations_file:
-        annotations_json = json.load(annotations_file)
-
-    return AnnotationStore.from_json(annotations_json)
-
-
-def _read_api_file(api_file_path: Path) -> API:
-    with open(api_file_path, encoding="utf-8") as api_file:
-        api_json = json.load(api_file)
-
-    return API.from_json(api_json)
+    apiv1 = _read_api_file(apiv1_file_path)
+    apiv2 = _read_api_file(apiv2_file_path)
+    annotationsv1 = _read_annotations_file(annotations_file_path)
+    differ = SimpleDiffer()
+    api_mapping = APIMapping(apiv1, apiv2, differ)
+    mappings = api_mapping.map_api()
+    annotationsv2 = migrate_annotations(annotationsv1, mappings)
+    _write_annotations_file(annotationsv2, out_dir_path)
