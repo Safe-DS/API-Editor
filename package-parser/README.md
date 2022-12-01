@@ -2,7 +2,7 @@
 
 A tool to analyze client and API code written in Python.
 
-### Installation
+## Installation
 
 1. Install Python 3.10.
 2. Install [poetry](https://python-poetry.org/docs/master/#installation).
@@ -15,7 +15,7 @@ A tool to analyze client and API code written in Python.
     poetry shell
     ```
 
-### Example usage
+## Example usage
 
 1. Analyze an API:
     ```shell
