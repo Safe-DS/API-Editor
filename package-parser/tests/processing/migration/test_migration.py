@@ -1,6 +1,6 @@
 from typing import Callable
-import pytest
 
+import pytest
 from package_parser.processing.annotations.model import (
     AbstractAnnotation,
     AnnotationStore,
