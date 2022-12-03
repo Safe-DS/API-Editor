@@ -1,6 +1,3 @@
-from typing import Callable
-
-import pytest
 from package_parser.processing.annotations.model import (
     AbstractAnnotation,
     AnnotationStore,
@@ -12,24 +9,20 @@ from tests.processing.migration.annotations.test_rename_migration import (
     migrate_rename_annotation_data_one_to_many_mapping__with_changed_new_name,
     migrate_rename_annotation_data_one_to_one_mapping,
 )
+from tests.processing.migration.annotations.test_enum_migration import (
+    migrate_enum_annotation_data_one_to_many_mapping,
+    migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping,
+    migrate_enum_annotation_data_one_to_one_mapping,
+)
 
 test_data = [
     migrate_rename_annotation_data_one_to_many_mapping__with_changed_new_name(),
     migrate_rename_annotation_data_one_to_one_mapping(),
     migrate_rename_annotation_data_one_to_many_mapping(),
+    migrate_enum_annotation_data_one_to_one_mapping(),
+    migrate_enum_annotation_data_one_to_many_mapping(),
+    migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping(),
 ]
-
-
-@pytest.mark.parametrize(
-    "mappings,annotationv1,expected_annotationsv2,migrate", test_data
-)
-def test_migrate_annotations(
-    mappings: Mapping,
-    annotationv1: AbstractAnnotation,
-    expected_annotationsv2: list[AbstractAnnotation],
-    migrate: Callable[[AbstractAnnotation, Mapping], list[AbstractAnnotation]],
-):
-    assert migrate(annotationv1, mappings) == expected_annotationsv2
 
 
 def test_migrate_all_annotations():
@@ -37,9 +30,25 @@ def test_migrate_all_annotations():
     annotation_store: AnnotationStore = AnnotationStore()
     expected_annotation_store: AnnotationStore = AnnotationStore()
 
-    for mapping, annotationv1, annotationsv2, _ in test_data:
+    for mapping, annotationv1, annotationsv2 in test_data:
         mappings.append(mapping)
         annotation_store.add_annotation(annotationv1)
         for expected_annotation in annotationsv2:
             expected_annotation_store.add_annotation(expected_annotation)
-    assert migrate_annotations(annotation_store, mappings) == expected_annotation_store
+
+    actual_annotations = migrate_annotations(annotation_store, mappings)
+
+    def get_key(annotation: AbstractAnnotation):
+        return annotation.target
+    assert sorted(actual_annotations.boundaryAnnotations, key=get_key) == sorted(expected_annotation_store.boundaryAnnotations, key=get_key)
+    assert sorted(actual_annotations.calledAfterAnnotations, key=get_key) == sorted(expected_annotation_store.calledAfterAnnotations, key=get_key)
+    assert sorted(actual_annotations.completeAnnotations, key=get_key) == sorted(expected_annotation_store.completeAnnotations, key=get_key)
+    assert sorted(actual_annotations.descriptionAnnotations, key=get_key) == sorted(expected_annotation_store.descriptionAnnotations, key=get_key)
+    assert sorted(actual_annotations.enumAnnotations, key=get_key) == sorted(expected_annotation_store.enumAnnotations, key=get_key)
+    assert sorted(actual_annotations.groupAnnotations, key=get_key) == sorted(expected_annotation_store.groupAnnotations, key=get_key)
+    assert sorted(actual_annotations.moveAnnotations, key=get_key) == sorted(expected_annotation_store.moveAnnotations, key=get_key)
+    assert sorted(actual_annotations.pureAnnotations, key=get_key) == sorted(expected_annotation_store.pureAnnotations, key=get_key)
+    assert sorted(actual_annotations.removeAnnotations, key=get_key) == sorted(expected_annotation_store.removeAnnotations, key=get_key)
+    assert sorted(actual_annotations.renameAnnotations, key=get_key) == sorted(expected_annotation_store.renameAnnotations, key=get_key)
+    assert sorted(actual_annotations.todoAnnotations, key=get_key) == sorted(expected_annotation_store.todoAnnotations, key=get_key)
+    assert sorted(actual_annotations.valueAnnotations, key=get_key) == sorted(expected_annotation_store.valueAnnotations, key=get_key)

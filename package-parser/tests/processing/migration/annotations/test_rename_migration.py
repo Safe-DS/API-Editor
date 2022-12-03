@@ -1,4 +1,4 @@
-from typing import Callable, Tuple
+from typing import Tuple
 
 from package_parser.processing.annotations.model import (
     AbstractAnnotation,
@@ -11,10 +11,7 @@ from package_parser.processing.api.model import (
     ParameterAssignment,
     ParameterDocumentation,
 )
-from package_parser.processing.migration.annotations import (
-    migrate_rename_annotation,
-    migration_author,
-)
+from package_parser.processing.migration.annotations import migration_author
 from package_parser.processing.migration.model import (
     Mapping,
     OneToManyMapping,
@@ -26,7 +23,6 @@ def migrate_rename_annotation_data_one_to_one_mapping() -> Tuple[
     Mapping,
     AbstractAnnotation,
     list[AbstractAnnotation],
-    Callable[[RenameAnnotation, Mapping], list[AbstractAnnotation]],
 ]:
     parameterv1 = Parameter(
         id_="test/test.Test_",
@@ -63,14 +59,13 @@ def migrate_rename_annotation_data_one_to_one_mapping() -> Tuple[
         reviewResult=EnumReviewResult.NONE,
         newName="TestE",
     )
-    return mappings, annotationsv1, [annotationsv2], migrate_rename_annotation
+    return mappings, annotationsv1, [annotationsv2]
 
 
 def migrate_rename_annotation_data_one_to_many_mapping__with_changed_new_name() -> Tuple[
     Mapping,
     AbstractAnnotation,
     list[AbstractAnnotation],
-    Callable[[RenameAnnotation, Mapping], list[AbstractAnnotation]],
 ]:
     parameterv1 = Parameter(
         id_="test/test.Test",
@@ -116,14 +111,13 @@ def migrate_rename_annotation_data_one_to_many_mapping__with_changed_new_name() 
         reviewResult=EnumReviewResult.UNSURE,
         newName="TestA",
     )
-    return mappings, annotationsv1, [annotationsv2], migrate_rename_annotation
+    return mappings, annotationsv1, [annotationsv2]
 
 
 def migrate_rename_annotation_data_one_to_many_mapping() -> Tuple[
     Mapping,
     AbstractAnnotation,
     list[AbstractAnnotation],
-    Callable[[RenameAnnotation, Mapping], list[AbstractAnnotation]],
 ]:
     parameterv1 = Parameter(
         id_="test/test.Test",
@@ -181,5 +175,4 @@ def migrate_rename_annotation_data_one_to_many_mapping() -> Tuple[
         mappings,
         annotationsv1,
         [annotationsv2_a, annotationsv2_b],
-        migrate_rename_annotation,
     )
