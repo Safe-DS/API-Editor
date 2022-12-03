@@ -10,7 +10,7 @@ parse-package = "package_parser.main:main"
 
 [tool.poetry.dependencies]
 python = "^3.10,<3.11"
-astroid = "^2.12.12"
+astroid = "^2.12.13"
 numpydoc = "^1.5"
 spacy = "^3.2.1"
 scipy = "^1.9.3"
@@ -21,15 +21,6 @@ url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_s
 [tool.poetry.dev-dependencies]
 pytest = "^7.2.0"
 pytest-cov = "^4.0.0"
-
-[tool.mypy]
-python_version = "3.10"
-no_site_packages = true
-ignore_missing_imports = true
-disallow_untyped-calls = true
-disallow_untyped-defs = true
-disallow_incomplete-defs = true
-disallow_untyped-decorators = true
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
