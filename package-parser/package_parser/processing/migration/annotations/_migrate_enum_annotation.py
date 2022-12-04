@@ -89,10 +89,11 @@ def migrate_enum_annotation(
             enum_annotation.comment = migrate_text
             return [enum_annotation]
 
-        for parameter in string_parameters:
-            todo_annotations.append(
-                TodoAnnotation(
-                    parameter.id, authors, [], "", EnumReviewResult.NONE, migrate_text
+        for parameter in mapping.get_apiv2_elements():
+            if isinstance(parameter, Parameter):
+                todo_annotations.append(
+                    TodoAnnotation(
+                        parameter.id, authors, [], "", EnumReviewResult.NONE, migrate_text
+                    )
                 )
-            )
     return todo_annotations
