@@ -27,9 +27,8 @@ def migrate_todo_annotation(
         element = mapping.get_apiv2_elements()[0]
         if isinstance(element, (Attribute, Result)):
             return []
-        else:
-            todo_annotation.target = element.id
-            return [todo_annotation]
+        todo_annotation.target = element.id
+        return [todo_annotation]
 
     migrate_text = (
         "The @Todo Annotation with the todo '"
