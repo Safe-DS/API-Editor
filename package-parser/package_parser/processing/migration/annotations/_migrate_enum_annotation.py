@@ -10,7 +10,7 @@ from package_parser.processing.api.model import (
     AbstractType,
     NamedType,
     Parameter,
-    UnionType,
+    UnionType, Attribute, Result,
 )
 from package_parser.processing.migration.model import (
     ManyToOneMapping,
@@ -22,7 +22,7 @@ from .. import ManyToManyMapping, OneToManyMapping
 from ._constants import migration_author
 
 
-def _contains_string(type_: AbstractType):
+def _contains_string(type_: AbstractType) -> bool:
     if isinstance(type_, NamedType):
         return type_.name == "str"
     if isinstance(type_, UnionType):
@@ -60,9 +60,15 @@ def migrate_enum_annotation(
 
     if isinstance(mapping, (OneToOneMapping, ManyToOneMapping)):
         parameter = mapping.get_apiv2_elements()[0]
+        if isinstance(parameter, (Attribute, Result)):
+            return []
         if isinstance(parameter, Parameter):
-            if _contains_string(parameter.type):
-                enum_annotation.target = parameter.id
+            if parameter.type is not None:
+                if _contains_string(parameter.type):
+                    enum_annotation.target = parameter.id
+                    return [enum_annotation]
+            else:
+                enum_annotation.reviewResult = EnumReviewResult.UNSURE
                 return [enum_annotation]
             # assuming api has been chanced to an enum type:
             # do not migrate annotation
@@ -76,13 +82,7 @@ def migrate_enum_annotation(
 
     todo_annotations: list[AbstractAnnotation] = []
     if isinstance(mapping, (OneToManyMapping, ManyToManyMapping)):
-        string_parameters = list(
-            filter(
-                lambda element: isinstance(element, Parameter)
-                and _contains_string(element.type),
-                mapping.get_apiv2_elements(),
-            )
-        )
+        string_parameters = [apiv2_element for apiv2_element in mapping.get_apiv2_elements() if isinstance(apiv2_element, Parameter) and apiv2_element.type is not None and _contains_string(apiv2_element.type)]
         size = len(string_parameters)
         if size == 1:
             enum_annotation.target = string_parameters[0].id

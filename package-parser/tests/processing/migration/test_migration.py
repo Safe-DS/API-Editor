@@ -25,7 +25,7 @@ test_data = [
 ]
 
 
-def test_migrate_all_annotations():
+def test_migrate_all_annotations() -> None:
     mappings: list[Mapping] = []
     annotation_store: AnnotationStore = AnnotationStore()
     expected_annotation_store: AnnotationStore = AnnotationStore()
@@ -38,7 +38,7 @@ def test_migrate_all_annotations():
 
     actual_annotations = migrate_annotations(annotation_store, mappings)
 
-    def get_key(annotation: AbstractAnnotation):
+    def get_key(annotation: AbstractAnnotation) -> str:
         return annotation.target
     assert sorted(actual_annotations.boundaryAnnotations, key=get_key) == sorted(expected_annotation_store.boundaryAnnotations, key=get_key)
     assert sorted(actual_annotations.calledAfterAnnotations, key=get_key) == sorted(expected_annotation_store.calledAfterAnnotations, key=get_key)
