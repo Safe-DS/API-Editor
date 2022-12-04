@@ -8,9 +8,11 @@ from package_parser.processing.annotations.model import (
 )
 from package_parser.processing.api.model import (
     AbstractType,
+    Attribute,
     NamedType,
     Parameter,
-    UnionType, Attribute, Result,
+    Result,
+    UnionType,
 )
 from package_parser.processing.migration.model import (
     ManyToOneMapping,
@@ -82,7 +84,13 @@ def migrate_enum_annotation(
 
     todo_annotations: list[AbstractAnnotation] = []
     if isinstance(mapping, (OneToManyMapping, ManyToManyMapping)):
-        string_parameters = [apiv2_element for apiv2_element in mapping.get_apiv2_elements() if isinstance(apiv2_element, Parameter) and apiv2_element.type is not None and _contains_string(apiv2_element.type)]
+        string_parameters = [
+            apiv2_element
+            for apiv2_element in mapping.get_apiv2_elements()
+            if isinstance(apiv2_element, Parameter)
+            and apiv2_element.type is not None
+            and _contains_string(apiv2_element.type)
+        ]
         size = len(string_parameters)
         if size == 1:
             enum_annotation.target = string_parameters[0].id
@@ -93,7 +101,12 @@ def migrate_enum_annotation(
             if isinstance(parameter, Parameter):
                 todo_annotations.append(
                     TodoAnnotation(
-                        parameter.id, authors, [], "", EnumReviewResult.NONE, migrate_text
+                        parameter.id,
+                        authors,
+                        [],
+                        "",
+                        EnumReviewResult.NONE,
+                        migrate_text,
                     )
                 )
     return todo_annotations

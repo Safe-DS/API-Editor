@@ -1,9 +1,22 @@
 from typing import Tuple
 
-from package_parser.processing.annotations.model import AbstractAnnotation, EnumAnnotation, EnumPair, EnumReviewResult, \
-    TodoAnnotation
-from package_parser.processing.api.model import Parameter, ParameterAssignment, ParameterDocumentation
-from package_parser.processing.migration import Mapping, OneToOneMapping, OneToManyMapping
+from package_parser.processing.annotations.model import (
+    AbstractAnnotation,
+    EnumAnnotation,
+    EnumPair,
+    EnumReviewResult,
+    TodoAnnotation,
+)
+from package_parser.processing.api.model import (
+    Parameter,
+    ParameterAssignment,
+    ParameterDocumentation,
+)
+from package_parser.processing.migration import (
+    Mapping,
+    OneToManyMapping,
+    OneToOneMapping,
+)
 from package_parser.processing.migration.annotations import migration_author
 
 
@@ -38,7 +51,7 @@ def migrate_enum_annotation_data_one_to_one_mapping() -> Tuple[
         comment="",
         reviewResult=EnumReviewResult.NONE,
         enumName="EnumName",
-        pairs=[EnumPair("name", "name")]
+        pairs=[EnumPair("name", "name")],
     )
     migrated_enum_annotation = EnumAnnotation(
         target="test/test.enum.TestB",
@@ -47,7 +60,7 @@ def migrate_enum_annotation_data_one_to_one_mapping() -> Tuple[
         comment="",
         reviewResult=EnumReviewResult.NONE,
         enumName="EnumName",
-        pairs=[EnumPair("name", "name")]
+        pairs=[EnumPair("name", "name")],
     )
     return mapping, enum_annotation, [migrated_enum_annotation]
 
@@ -92,7 +105,7 @@ def migrate_enum_annotation_data_one_to_many_mapping() -> Tuple[
         comment="",
         reviewResult=EnumReviewResult.NONE,
         enumName="EnumName",
-        pairs=[EnumPair("name", "name")]
+        pairs=[EnumPair("name", "name")],
     )
     migrated_enum_annotation = TodoAnnotation(
         target="test/test.enum.test2.TestA",
@@ -101,10 +114,10 @@ def migrate_enum_annotation_data_one_to_many_mapping() -> Tuple[
         comment="",
         reviewResult=EnumReviewResult.NONE,
         newTodo="The @Enum Annotation with the new name 'EnumName "
-                "(name, name)' from the previous version was at "
-                "'test/test.enum.test2.Test' and the possible "
-                'alternatives in the new version of the api are: '
-                'TestA, TestB'
+        "(name, name)' from the previous version was at "
+        "'test/test.enum.test2.Test' and the possible "
+        "alternatives in the new version of the api are: "
+        "TestA, TestB",
     )
     migrated_enum_annotation_2 = TodoAnnotation(
         target="test/test.enum.test2.TestB",
@@ -113,12 +126,16 @@ def migrate_enum_annotation_data_one_to_many_mapping() -> Tuple[
         comment="",
         reviewResult=EnumReviewResult.NONE,
         newTodo="The @Enum Annotation with the new name 'EnumName "
-                "(name, name)' from the previous version was at "
-                "'test/test.enum.test2.Test' and the possible "
-                'alternatives in the new version of the api are: '
-                'TestA, TestB'
+        "(name, name)' from the previous version was at "
+        "'test/test.enum.test2.Test' and the possible "
+        "alternatives in the new version of the api are: "
+        "TestA, TestB",
     )
-    return mapping, enum_annotation, [migrated_enum_annotation, migrated_enum_annotation_2]
+    return (
+        mapping,
+        enum_annotation,
+        [migrated_enum_annotation, migrated_enum_annotation_2],
+    )
 
 
 def migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping() -> Tuple[
@@ -169,11 +186,11 @@ def migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping(
         reviewers=[],
         reviewResult=EnumReviewResult.NONE,
         comment="The @Enum Annotation with the new name 'EnumName "
-                "(name, name)' from the previous version was at "
-                "'test/test.enum.test3.Test' and the possible "
-                'alternatives in the new version of the api are: '
-                'TestA, TestB',
+        "(name, name)' from the previous version was at "
+        "'test/test.enum.test3.Test' and the possible "
+        "alternatives in the new version of the api are: "
+        "TestA, TestB",
         enumName="EnumName",
-        pairs=[EnumPair("name", "name")]
+        pairs=[EnumPair("name", "name")],
     )
     return mapping, enum_annotation, [migrated_enum_annotation]

@@ -5,7 +5,10 @@ from package_parser.processing.annotations.model import (
     AnnotationStore,
 )
 from package_parser.processing.api.model import Attribute, Result
-from package_parser.processing.migration.annotations import migrate_rename_annotation, migrate_enum_annotation
+from package_parser.processing.migration.annotations import (
+    migrate_enum_annotation,
+    migrate_rename_annotation,
+)
 from package_parser.processing.migration.model import Mapping
 
 
