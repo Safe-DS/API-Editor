@@ -1,10 +1,11 @@
 from copy import deepcopy
+from typing import List
 
 from package_parser.processing.annotations.model import (
     AbstractAnnotation,
     EnumAnnotation,
     EnumReviewResult,
-    TodoAnnotation,
+    TodoAnnotation, EnumPair,
 )
 from package_parser.processing.api.model import (
     AbstractType,
@@ -33,6 +34,12 @@ def _contains_string(type_: AbstractType) -> bool:
             if _contains_string(element):
                 return True
     return False
+
+
+def _default_value_is_in_instance_values_or_is_empty(default_value: str, pairs: List[EnumPair]):
+    return default_value in map(lambda pair: pair.stringValue, pairs) \
+           or len(default_value) == 0 \
+           or default_value is None
 
 
 def migrate_enum_annotation(
@@ -67,7 +74,10 @@ def migrate_enum_annotation(
             return []
         if isinstance(parameter, Parameter):
             if parameter.type is not None:
-                if _contains_string(parameter.type):
+                if _contains_string(parameter.type) \
+                    and _default_value_is_in_instance_values_or_is_empty(
+                    parameter.documentation.default_value, enum_annotation.pairs
+                ):
                     enum_annotation.target = parameter.id
                     return [enum_annotation]
                 if isinstance(parameter.type, NamedType):
