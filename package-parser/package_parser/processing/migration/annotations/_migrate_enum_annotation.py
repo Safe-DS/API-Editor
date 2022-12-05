@@ -104,7 +104,9 @@ def migrate_enum_annotation(
         for parameter in mapping.get_apiv2_elements():
             if isinstance(parameter, Parameter):
                 if parameter.type is not None:
-                    if _contains_string(parameter.type) and _default_value_is_in_instance_values_or_is_empty(
+                    if _contains_string(
+                        parameter.type
+                    ) and _default_value_is_in_instance_values_or_is_empty(
                         parameter.documentation.default_value, enum_annotation.pairs
                     ):
                         migrated_annotations.append(
