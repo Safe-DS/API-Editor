@@ -153,7 +153,7 @@ def migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping(
         default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
-        documentation=ParameterDocumentation("int", "value", "docstring"),
+        documentation=ParameterDocumentation("", "", ""),
     )
     parameterv2_b = Parameter(
         id_="test/test.enum.test3.TestB",
@@ -164,7 +164,16 @@ def migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping(
         is_public=True,
         documentation=ParameterDocumentation("str", "value", "docstring"),
     )
-    mapping = OneToManyMapping(1.0, parameterv1, [parameterv2_a, parameterv2_b])
+    parameterv2_c = Parameter(
+        id_="test/test.enum.test3.TestC",
+        name="TestC",
+        qname="test.enum.test3.TestC",
+        default_value=None,
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("int", "value", "docstring"),
+    )
+    mapping = OneToManyMapping(1.0, parameterv1, [parameterv2_a, parameterv2_b, parameterv2_c])
     enum_annotation = EnumAnnotation(
         target="test/test.enum.test3.Test",
         authors=["testauthor"],
@@ -172,7 +181,7 @@ def migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping(
         comment="",
         reviewResult=EnumReviewResult.NONE,
         enumName="EnumName",
-        pairs=[EnumPair("name", "name")],
+        pairs=[EnumPair("value", "name")],
     )
     migrated_enum_annotation = EnumAnnotation(
         target="test/test.enum.test3.TestB",
@@ -181,7 +190,7 @@ def migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping(
         reviewResult=EnumReviewResult.NONE,
         comment="",
         enumName="EnumName",
-        pairs=[EnumPair("name", "name")],
+        pairs=[EnumPair("value", "name")],
     )
     migrated_todo_annotation = TodoAnnotation(
         target="test/test.enum.test3.TestA",
@@ -190,10 +199,10 @@ def migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping(
         reviewResult=EnumReviewResult.UNSURE,
         comment="",
         newTodo="The @Enum Annotation with the new name 'EnumName "
-        "(name, name)' from the previous version was at "
-        "'test/test.enum.test3.Test' and the possible "
-        "alternatives in the new version of the api are: "
-        "TestA, TestB",
+                "(value, name)' from the previous version was at "
+                "'test/test.enum.test3.Test' and the possible "
+                'alternatives in the new version of the api are: '
+                'TestA, TestB, TestC',
     )
     return (
         mapping,
