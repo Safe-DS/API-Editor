@@ -7,6 +7,7 @@ from package_parser.processing.annotations.model import (
 )
 from package_parser.processing.api.model import Attribute, Result
 from package_parser.processing.migration.model import (
+    ManyToManyMapping,
     ManyToOneMapping,
     Mapping,
     OneToOneMapping,
@@ -30,6 +31,7 @@ def migrate_todo_annotation(
         todo_annotation.target = element.id
         return [todo_annotation]
 
+    todo_annotations: list[AbstractAnnotation] = []
     migrate_text = (
         "The @Todo Annotation with the todo '"
         + todo_annotation.newTodo
@@ -38,13 +40,8 @@ def migrate_todo_annotation(
         + "' and the possible alternatives in the new version of the api are: "
         + ", ".join(
         map(lambda api_element: api_element.name, mapping.get_apiv2_elements()))
-    )
-
-    todo_annotations: list[AbstractAnnotation] = []
-    elements = [element.id for element in mapping.get_apiv2_elements() if not isinstance(element, (Attribute, Result))]
-    if todo_annotation.target in elements:
-        return [todo_annotation]
-
+    ) if isinstance(mapping, ManyToManyMapping) else todo_annotation.newTodo
+    review_result = EnumReviewResult.UNSURE if isinstance(mapping, ManyToManyMapping) else EnumReviewResult.NONE
     for element in mapping.get_apiv2_elements():
         if not isinstance(element, (Attribute, Result)):
             todo_annotations.append(
@@ -53,7 +50,7 @@ def migrate_todo_annotation(
                     authors,
                     todo_annotation.reviewers,
                     todo_annotation.comment,
-                    EnumReviewResult.UNSURE,
+                    review_result,
                     migrate_text
                 )
             )

@@ -1,4 +1,4 @@
-from typing import Callable, Tuple
+from typing import Tuple
 
 from package_parser.processing.annotations.model import (
     AbstractAnnotation,
@@ -11,10 +11,7 @@ from package_parser.processing.api.model import (
     ParameterAssignment,
     ParameterDocumentation,
 )
-from package_parser.processing.migration.annotations import (
-    migrate_rename_annotation,
-    migration_author,
-)
+from package_parser.processing.migration.annotations import migration_author
 from package_parser.processing.migration.model import (
     Mapping,
     OneToManyMapping,
@@ -26,7 +23,6 @@ def migrate_rename_annotation_data_one_to_one_mapping() -> Tuple[
     Mapping,
     AbstractAnnotation,
     list[AbstractAnnotation],
-    Callable[[RenameAnnotation, Mapping], list[AbstractAnnotation]],
 ]:
     parameterv1 = Parameter(
         id_="test/test.Test_",
@@ -47,7 +43,7 @@ def migrate_rename_annotation_data_one_to_one_mapping() -> Tuple[
         documentation=ParameterDocumentation("", "", ""),
     )
     mappings = OneToOneMapping(1.0, parameterv1, parameterv2)
-    annotationsv1 = RenameAnnotation(
+    annotationv1 = RenameAnnotation(
         target="test/test.Test_",
         authors=["testauthor"],
         reviewers=[],
@@ -55,7 +51,7 @@ def migrate_rename_annotation_data_one_to_one_mapping() -> Tuple[
         reviewResult=EnumReviewResult.NONE,
         newName="TestE",
     )
-    annotationsv2 = RenameAnnotation(
+    annotationv2 = RenameAnnotation(
         target="test/test.TestB",
         authors=["testauthor", migration_author],
         reviewers=[],
@@ -63,14 +59,13 @@ def migrate_rename_annotation_data_one_to_one_mapping() -> Tuple[
         reviewResult=EnumReviewResult.NONE,
         newName="TestE",
     )
-    return mappings, annotationsv1, [annotationsv2], migrate_rename_annotation
+    return mappings, annotationv1, [annotationv2]
 
 
 def migrate_rename_annotation_data_one_to_many_mapping__with_changed_new_name() -> Tuple[
     Mapping,
     AbstractAnnotation,
     list[AbstractAnnotation],
-    Callable[[RenameAnnotation, Mapping], list[AbstractAnnotation]],
 ]:
     parameterv1 = Parameter(
         id_="test/test.Test",
@@ -100,7 +95,7 @@ def migrate_rename_annotation_data_one_to_many_mapping__with_changed_new_name() 
         documentation=ParameterDocumentation("", "", ""),
     )
     mappings = OneToManyMapping(1.0, parameterv1, [parameterv2_a, parameterv2_b])
-    annotationsv1 = RenameAnnotation(
+    annotationv1 = RenameAnnotation(
         target="test/test.Test",
         authors=["testauthor"],
         reviewers=[],
@@ -108,7 +103,7 @@ def migrate_rename_annotation_data_one_to_many_mapping__with_changed_new_name() 
         reviewResult=EnumReviewResult.NONE,
         newName="TestA",
     )
-    annotationsv2 = RenameAnnotation(
+    annotationv2 = RenameAnnotation(
         target="test/test.TestA",
         authors=["testauthor", migration_author],
         reviewers=[],
@@ -116,14 +111,13 @@ def migrate_rename_annotation_data_one_to_many_mapping__with_changed_new_name() 
         reviewResult=EnumReviewResult.UNSURE,
         newName="TestA",
     )
-    return mappings, annotationsv1, [annotationsv2], migrate_rename_annotation
+    return mappings, annotationv1, [annotationv2]
 
 
 def migrate_rename_annotation_data_one_to_many_mapping() -> Tuple[
     Mapping,
     AbstractAnnotation,
     list[AbstractAnnotation],
-    Callable[[RenameAnnotation, Mapping], list[AbstractAnnotation]],
 ]:
     parameterv1 = Parameter(
         id_="test/test.Test",
@@ -153,7 +147,7 @@ def migrate_rename_annotation_data_one_to_many_mapping() -> Tuple[
         documentation=ParameterDocumentation("", "", ""),
     )
     mappings = OneToManyMapping(1.0, parameterv1, [parameterv2_a, parameterv2_b])
-    annotationsv1 = RenameAnnotation(
+    annotationv1 = RenameAnnotation(
         target="test/test.Test",
         authors=["testauthor"],
         reviewers=[],
@@ -161,7 +155,7 @@ def migrate_rename_annotation_data_one_to_many_mapping() -> Tuple[
         reviewResult=EnumReviewResult.NONE,
         newName="TestZ",
     )
-    annotationsv2_a = TodoAnnotation(
+    annotationv2_a = TodoAnnotation(
         target="test/test.TestA",
         authors=["testauthor", migration_author],
         reviewers=[],
@@ -169,7 +163,7 @@ def migrate_rename_annotation_data_one_to_many_mapping() -> Tuple[
         reviewResult=EnumReviewResult.NONE,
         newTodo="The @Rename Annotation with the new name 'TestZ' from the previous version was at 'test/test.Test' and the possible alternatives in the new version of the api are: TestA, TestB",
     )
-    annotationsv2_b = TodoAnnotation(
+    annotationv2_b = TodoAnnotation(
         target="test/test.TestB",
         authors=["testauthor", migration_author],
         reviewers=[],
@@ -179,7 +173,6 @@ def migrate_rename_annotation_data_one_to_many_mapping() -> Tuple[
     )
     return (
         mappings,
-        annotationsv1,
-        [annotationsv2_a, annotationsv2_b],
-        migrate_rename_annotation,
+        annotationv1,
+        [annotationv2_a, annotationv2_b],
     )
