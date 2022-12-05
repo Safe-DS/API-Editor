@@ -173,7 +173,9 @@ def migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping(
         is_public=True,
         documentation=ParameterDocumentation("int", "0", "docstring"),
     )
-    mapping = OneToManyMapping(1.0, parameterv1, [parameterv2_a, parameterv2_b, parameterv2_c])
+    mapping = OneToManyMapping(
+        1.0, parameterv1, [parameterv2_a, parameterv2_b, parameterv2_c]
+    )
     enum_annotation = EnumAnnotation(
         target="test/test.enum.test3.Test",
         authors=["testauthor"],
@@ -199,10 +201,10 @@ def migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping(
         reviewResult=EnumReviewResult.UNSURE,
         comment="",
         newTodo="The @Enum Annotation with the new name 'EnumName "
-                "(value, name)' from the previous version was at "
-                "'test/test.enum.test3.Test' and the possible "
-                'alternatives in the new version of the api are: '
-                'TestA, TestB, TestC',
+        "(value, name)' from the previous version was at "
+        "'test/test.enum.test3.Test' and the possible "
+        "alternatives in the new version of the api are: "
+        "TestA, TestB, TestC",
     )
     return (
         mapping,
