@@ -6,9 +6,11 @@ from package_parser.processing.annotations.model import (
     TodoAnnotation,
 )
 from package_parser.processing.api.model import (
+    Class,
+    ClassDocumentation,
     Parameter,
     ParameterAssignment,
-    ParameterDocumentation, Class, ClassDocumentation,
+    ParameterDocumentation,
 )
 from package_parser.processing.migration import ManyToManyMapping
 from package_parser.processing.migration.annotations import migration_author
@@ -204,10 +206,9 @@ def migrate_todo_annotation_data_many_to_many_mapping() -> Tuple[
         comment="",
         reviewResult=EnumReviewResult.UNSURE,
         newTodo="The @Todo Annotation with the todo 'todo' from the "
-                "previous version was at 'test/test.todo.test3.TestA' "
-                'and the possible alternatives in the new version of '
-                'the api are: NewTestA, NewTestB, TestClass',
-
+        "previous version was at 'test/test.todo.test3.TestA' "
+        "and the possible alternatives in the new version of "
+        "the api are: NewTestA, NewTestB, TestClass",
     )
     return (
         mappings,

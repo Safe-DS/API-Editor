@@ -7,7 +7,6 @@ from package_parser.processing.annotations.model import (
 )
 from package_parser.processing.api.model import Attribute, Result
 from package_parser.processing.migration.model import (
-    ManyToManyMapping,
     ManyToOneMapping,
     Mapping,
     OneToOneMapping,
@@ -31,16 +30,27 @@ def migrate_todo_annotation(
         todo_annotation.target = element.id
         return [todo_annotation]
 
-    target_type = None
+    annotated_apiv1_element = None
     for element in mapping.get_apiv1_elements():
         if not isinstance(element, (Attribute, Result)) and element.id:
-            target_type = element.__class__
-    migrate_text = "The @Todo Annotation with the todo '" + todo_annotation.newTodo + "' from the previous version was at '" + todo_annotation.target + "' and the possible alternatives in the new version of the api are: " + ", ".join(
-        map(lambda api_element: api_element.name, mapping.get_apiv2_elements()))
+            annotated_apiv1_element = element
+    migrate_text = (
+        "The @Todo Annotation with the todo '"
+        + todo_annotation.newTodo
+        + "' from the previous version was at '"
+        + todo_annotation.target
+        + "' and the possible alternatives in the new version of the api are: "
+        + ", ".join(
+            map(lambda api_element: api_element.name, mapping.get_apiv2_elements())
+        )
+    )
 
     todo_annotations: list[AbstractAnnotation] = []
     for element in mapping.get_apiv2_elements():
-        if isinstance(element, target_type):
+        if (
+            annotated_apiv1_element is None
+            or isinstance(element, type(annotated_apiv1_element))
+        ) and not isinstance(element, (Attribute, Result)):
             todo_annotations.append(
                 TodoAnnotation(
                     element.id,
