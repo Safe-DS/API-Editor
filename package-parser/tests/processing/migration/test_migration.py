@@ -9,15 +9,15 @@ from tests.processing.migration.annotations.test_enum_migration import (
     migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping,
     migrate_enum_annotation_data_one_to_one_mapping,
 )
-from tests.processing.migration.annotations.test_todo_migration import (
-    migrate_todo_annotation_data_many_to_many_mapping,
-    migrate_todo_annotation_data_one_to_many_mapping,
-    migrate_todo_annotation_data_one_to_one_mapping,
-)
 from tests.processing.migration.annotations.test_rename_migration import (
     migrate_rename_annotation_data_one_to_many_mapping,
     migrate_rename_annotation_data_one_to_many_mapping__with_changed_new_name,
     migrate_rename_annotation_data_one_to_one_mapping,
+)
+from tests.processing.migration.annotations.test_todo_migration import (
+    migrate_todo_annotation_data_many_to_many_mapping,
+    migrate_todo_annotation_data_one_to_many_mapping,
+    migrate_todo_annotation_data_one_to_one_mapping,
 )
 
 test_data = [
@@ -30,7 +30,6 @@ test_data = [
     migrate_enum_annotation_data_one_to_one_mapping(),
     migrate_enum_annotation_data_one_to_many_mapping(),
     migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping(),
-
 ]
 
 
