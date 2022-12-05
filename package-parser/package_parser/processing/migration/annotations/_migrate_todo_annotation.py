@@ -47,10 +47,9 @@ def migrate_todo_annotation(
 
     todo_annotations: list[AbstractAnnotation] = []
     for element in mapping.get_apiv2_elements():
-        if (
-            annotated_apiv1_element is None
-            or isinstance(element, type(annotated_apiv1_element))
-        ) and not isinstance(element, (Attribute, Result)):
+        if isinstance(element, type(annotated_apiv1_element)) and not isinstance(
+            element, (Attribute, Result)
+        ):
             todo_annotations.append(
                 TodoAnnotation(
                     element.id,
