@@ -58,7 +58,12 @@ def migrate_rename_annotation(
                 return [rename_annotation]
             todo_annotations.append(
                 TodoAnnotation(
-                    element.id, authors, [], "", EnumReviewResult.NONE, migrate_text
+                    element.id,
+                    authors,
+                    rename_annotation.reviewers,
+                    rename_annotation.comment,
+                    EnumReviewResult.NONE,
+                    migrate_text,
                 )
             )
     return todo_annotations

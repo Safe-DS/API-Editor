@@ -30,10 +30,6 @@ def migrate_todo_annotation(
         todo_annotation.target = element.id
         return [todo_annotation]
 
-    annotated_apiv1_element = None
-    for element in mapping.get_apiv1_elements():
-        if not isinstance(element, (Attribute, Result)) and element.id:
-            annotated_apiv1_element = element
     migrate_text = (
         "The @Todo Annotation with the todo '"
         + todo_annotation.newTodo
@@ -44,6 +40,11 @@ def migrate_todo_annotation(
             map(lambda api_element: api_element.name, mapping.get_apiv2_elements())
         )
     )
+
+    annotated_apiv1_element = None
+    for element in mapping.get_apiv1_elements():
+        if not isinstance(element, (Attribute, Result)) and element.id:
+            annotated_apiv1_element = element
 
     todo_annotations: list[AbstractAnnotation] = []
     for element in mapping.get_apiv2_elements():
