@@ -1,2 +1,3 @@
 from ._constants import migration_author
+from ._migrate_enum_annotation import migrate_enum_annotation
 from ._migrate_rename_annotation import migrate_rename_annotation
