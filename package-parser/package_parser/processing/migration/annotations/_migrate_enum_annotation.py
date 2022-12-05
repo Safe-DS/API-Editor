@@ -95,7 +95,12 @@ def migrate_enum_annotation(
                 return [enum_annotation]
         return [
             TodoAnnotation(
-                parameter.id, authors, [], "", EnumReviewResult.NONE, migrate_text
+                parameter.id,
+                authors,
+                enum_annotation.reviewers,
+                enum_annotation.comment,
+                EnumReviewResult.NONE,
+                migrate_text,
             )
         ]
 
@@ -113,8 +118,8 @@ def migrate_enum_annotation(
                             EnumAnnotation(
                                 parameter.id,
                                 authors,
-                                [],
-                                "",
+                                enum_annotation.reviewers,
+                                enum_annotation.comment,
                                 EnumReviewResult.NONE,
                                 enum_annotation.enumName,
                                 enum_annotation.pairs,
@@ -127,8 +132,8 @@ def migrate_enum_annotation(
                         TodoAnnotation(
                             parameter.id,
                             authors,
-                            [],
-                            "",
+                            enum_annotation.reviewers,
+                            enum_annotation.comment,
                             EnumReviewResult.UNSURE,
                             migrate_text,
                         )
