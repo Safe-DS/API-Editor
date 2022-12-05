@@ -33,15 +33,24 @@ def migrate_todo_annotation(
 
     todo_annotations: list[AbstractAnnotation] = []
     migrate_text = (
-        "The @Todo Annotation with the todo '"
-        + todo_annotation.newTodo
-        + "' from the previous version was at '"
-        + todo_annotation.target
-        + "' and the possible alternatives in the new version of the api are: "
-        + ", ".join(
-            map(lambda api_element: api_element.name, mapping.get_apiv2_elements()))
-    ) if isinstance(mapping, ManyToManyMapping) else todo_annotation.newTodo
-    review_result = EnumReviewResult.UNSURE if isinstance(mapping, ManyToManyMapping) else EnumReviewResult.NONE
+        (
+            "The @Todo Annotation with the todo '"
+            + todo_annotation.newTodo
+            + "' from the previous version was at '"
+            + todo_annotation.target
+            + "' and the possible alternatives in the new version of the api are: "
+            + ", ".join(
+                map(lambda api_element: api_element.name, mapping.get_apiv2_elements())
+            )
+        )
+        if isinstance(mapping, ManyToManyMapping)
+        else todo_annotation.newTodo
+    )
+    review_result = (
+        EnumReviewResult.UNSURE
+        if isinstance(mapping, ManyToManyMapping)
+        else EnumReviewResult.NONE
+    )
     for element in mapping.get_apiv2_elements():
         if not isinstance(element, (Attribute, Result)):
             todo_annotations.append(
@@ -51,7 +60,7 @@ def migrate_todo_annotation(
                     todo_annotation.reviewers,
                     todo_annotation.comment,
                     review_result,
-                    migrate_text
+                    migrate_text,
                 )
             )
     return todo_annotations

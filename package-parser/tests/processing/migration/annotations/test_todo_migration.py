@@ -11,9 +11,7 @@ from package_parser.processing.api.model import (
     ParameterDocumentation,
 )
 from package_parser.processing.migration import ManyToManyMapping
-from package_parser.processing.migration.annotations import (
-    migration_author,
-)
+from package_parser.processing.migration.annotations import migration_author
 from package_parser.processing.migration.model import (
     Mapping,
     OneToManyMapping,
@@ -22,9 +20,7 @@ from package_parser.processing.migration.model import (
 
 
 def migrate_todo_annotation_data_one_to_one_mapping() -> Tuple[
-    Mapping,
-    AbstractAnnotation,
-    list[AbstractAnnotation]
+    Mapping, AbstractAnnotation, list[AbstractAnnotation]
 ]:
     parameterv1 = Parameter(
         id_="test/test.todo.Test1",
@@ -125,9 +121,7 @@ def migrate_todo_annotation_data_one_to_many_mapping() -> Tuple[
 
 
 def migrate_todo_annotation_data_many_to_many_mapping() -> Tuple[
-    Mapping,
-    AbstractAnnotation,
-    list[AbstractAnnotation]
+    Mapping, AbstractAnnotation, list[AbstractAnnotation]
 ]:
     parameterv1_a = Parameter(
         id_="test/test.todo.Test6",
@@ -165,7 +159,9 @@ def migrate_todo_annotation_data_many_to_many_mapping() -> Tuple[
         is_public=True,
         documentation=ParameterDocumentation("str", "", ""),
     )
-    mappings = ManyToManyMapping(1.0, [parameterv1_a, parameterv1_b], [parameterv2_a, parameterv2_b])
+    mappings = ManyToManyMapping(
+        1.0, [parameterv1_a, parameterv1_b], [parameterv2_a, parameterv2_b]
+    )
     annotationv1 = TodoAnnotation(
         target="test/test.todo.Test6",
         authors=["testauthor"],
@@ -181,9 +177,9 @@ def migrate_todo_annotation_data_many_to_many_mapping() -> Tuple[
         comment="",
         reviewResult=EnumReviewResult.UNSURE,
         newTodo="The @Todo Annotation with the todo 'todo' from the "
-                "previous version was at 'test/test.todo.Test6' and "
-                'the possible alternatives in the new version of the '
-                'api are: Test8, Test9',
+        "previous version was at 'test/test.todo.Test6' and "
+        "the possible alternatives in the new version of the "
+        "api are: Test8, Test9",
     )
     annotationv2_b = TodoAnnotation(
         target="test/test.todo.Test9",
@@ -192,9 +188,9 @@ def migrate_todo_annotation_data_many_to_many_mapping() -> Tuple[
         comment="",
         reviewResult=EnumReviewResult.UNSURE,
         newTodo="The @Todo Annotation with the todo 'todo' from the "
-                "previous version was at 'test/test.todo.Test6' and "
-                'the possible alternatives in the new version of the '
-                'api are: Test8, Test9',
+        "previous version was at 'test/test.todo.Test6' and "
+        "the possible alternatives in the new version of the "
+        "api are: Test8, Test9",
     )
     return (
         mappings,

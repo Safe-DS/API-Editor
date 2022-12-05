@@ -10,9 +10,9 @@ from tests.processing.migration.annotations.test_rename_migration import (
     migrate_rename_annotation_data_one_to_one_mapping,
 )
 from tests.processing.migration.annotations.test_todo_migration import (
+    migrate_todo_annotation_data_many_to_many_mapping,
     migrate_todo_annotation_data_one_to_many_mapping,
     migrate_todo_annotation_data_one_to_one_mapping,
-    migrate_todo_annotation_data_many_to_many_mapping,
 )
 
 test_data = [
