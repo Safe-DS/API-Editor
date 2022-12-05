@@ -18,9 +18,9 @@ from package_parser.processing.migration.model import (
     ManyToOneMapping,
     Mapping,
     OneToOneMapping,
+    ManyToManyMapping,
+    OneToManyMapping,
 )
-
-from .. import ManyToManyMapping, OneToManyMapping
 from ._constants import migration_author
 
 
@@ -69,44 +69,44 @@ def migrate_enum_annotation(
                 if _contains_string(parameter.type):
                     enum_annotation.target = parameter.id
                     return [enum_annotation]
+                if isinstance(parameter.type, NamedType):
+                    # assuming api has been chanced to an enum type:
+                    # do not migrate annotation
+                    return []
             else:
                 enum_annotation.reviewResult = EnumReviewResult.UNSURE
                 return [enum_annotation]
-            # assuming api has been chanced to an enum type:
-            # do not migrate annotation
-            if isinstance(parameter.type, NamedType):
-                return []
         return [
             TodoAnnotation(
                 parameter.id, authors, [], "", EnumReviewResult.NONE, migrate_text
             )
         ]
 
-    todo_annotations: list[AbstractAnnotation] = []
+    migrated_annotations: list[AbstractAnnotation] = []
     if isinstance(mapping, (OneToManyMapping, ManyToManyMapping)):
-        string_parameters = [
-            apiv2_element
-            for apiv2_element in mapping.get_apiv2_elements()
-            if isinstance(apiv2_element, Parameter)
-            and apiv2_element.type is not None
-            and _contains_string(apiv2_element.type)
-        ]
-        size = len(string_parameters)
-        if size == 1:
-            enum_annotation.target = string_parameters[0].id
-            enum_annotation.comment = migrate_text
-            return [enum_annotation]
-
         for parameter in mapping.get_apiv2_elements():
             if isinstance(parameter, Parameter):
-                todo_annotations.append(
-                    TodoAnnotation(
-                        parameter.id,
-                        authors,
-                        [],
-                        "",
-                        EnumReviewResult.NONE,
-                        migrate_text,
+                if parameter.type is not None and _contains_string(parameter.type):
+                    migrated_annotations.append(
+                        EnumAnnotation(
+                            parameter.id,
+                            authors,
+                            [],
+                            "",
+                            EnumReviewResult.NONE,
+                            enum_annotation.enumName,
+                            enum_annotation.pairs,
+                        )
                     )
-                )
-    return todo_annotations
+                else:
+                    migrated_annotations.append(
+                        TodoAnnotation(
+                            parameter.id,
+                            authors,
+                            [],
+                            "",
+                            EnumReviewResult.UNSURE,
+                            migrate_text,
+                        )
+                    )
+    return migrated_annotations
