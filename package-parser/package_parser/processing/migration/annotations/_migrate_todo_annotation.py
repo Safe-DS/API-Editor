@@ -31,35 +31,34 @@ def migrate_todo_annotation(
         todo_annotation.target = element.id
         return [todo_annotation]
 
+    target_type = None
+    for element in mapping.get_apiv1_elements():
+        if not isinstance(element, (Attribute, Result)) and element.id:
+            target_type = element.__class__
+    migrate_text = "The @Todo Annotation with the todo '" + todo_annotation.newTodo + "' from the previous version was at '" + todo_annotation.target + "' and the possible alternatives in the new version of the api are: " + ", ".join(
+        map(lambda api_element: api_element.name, mapping.get_apiv2_elements()))
+
     todo_annotations: list[AbstractAnnotation] = []
-    migrate_text = (
-        (
-            "The @Todo Annotation with the todo '"
-            + todo_annotation.newTodo
-            + "' from the previous version was at '"
-            + todo_annotation.target
-            + "' and the possible alternatives in the new version of the api are: "
-            + ", ".join(
-                map(lambda api_element: api_element.name, mapping.get_apiv2_elements())
-            )
-        )
-        if isinstance(mapping, ManyToManyMapping)
-        else todo_annotation.newTodo
-    )
-    review_result = (
-        EnumReviewResult.UNSURE
-        if isinstance(mapping, ManyToManyMapping)
-        else EnumReviewResult.NONE
-    )
     for element in mapping.get_apiv2_elements():
-        if not isinstance(element, (Attribute, Result)):
+        if isinstance(element, target_type):
             todo_annotations.append(
                 TodoAnnotation(
                     element.id,
                     authors,
                     todo_annotation.reviewers,
                     todo_annotation.comment,
-                    review_result,
+                    EnumReviewResult.NONE,
+                    todo_annotation.newTodo,
+                )
+            )
+        elif not isinstance(element, (Attribute, Result)):
+            todo_annotations.append(
+                TodoAnnotation(
+                    element.id,
+                    authors,
+                    todo_annotation.reviewers,
+                    todo_annotation.comment,
+                    EnumReviewResult.UNSURE,
                     migrate_text,
                 )
             )
