@@ -15,12 +15,13 @@ from package_parser.processing.api.model import (
     UnionType,
 )
 from package_parser.processing.migration.model import (
+    ManyToManyMapping,
     ManyToOneMapping,
     Mapping,
-    OneToOneMapping,
-    ManyToManyMapping,
     OneToManyMapping,
+    OneToOneMapping,
 )
+
 from ._constants import migration_author
 
 
