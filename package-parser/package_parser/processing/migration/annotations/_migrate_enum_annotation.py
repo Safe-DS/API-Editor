@@ -103,18 +103,23 @@ def migrate_enum_annotation(
     if isinstance(mapping, (OneToManyMapping, ManyToManyMapping)):
         for parameter in mapping.get_apiv2_elements():
             if isinstance(parameter, Parameter):
-                if parameter.type is not None and _contains_string(parameter.type):
-                    migrated_annotations.append(
-                        EnumAnnotation(
-                            parameter.id,
-                            authors,
-                            [],
-                            "",
-                            EnumReviewResult.NONE,
-                            enum_annotation.enumName,
-                            enum_annotation.pairs,
+                if parameter.type is not None:
+                    if _contains_string(parameter.type) and _default_value_is_in_instance_values_or_is_empty(
+                        parameter.documentation.default_value, enum_annotation.pairs
+                    ):
+                        migrated_annotations.append(
+                            EnumAnnotation(
+                                parameter.id,
+                                authors,
+                                [],
+                                "",
+                                EnumReviewResult.NONE,
+                                enum_annotation.enumName,
+                                enum_annotation.pairs,
+                            )
                         )
-                    )
+                    elif isinstance(parameter.type, NamedType):
+                        continue
                 else:
                     migrated_annotations.append(
                         TodoAnnotation(
