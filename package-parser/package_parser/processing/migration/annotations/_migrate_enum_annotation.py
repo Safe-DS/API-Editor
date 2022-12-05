@@ -36,7 +36,7 @@ def _contains_string(type_: AbstractType) -> bool:
     return False
 
 
-def _default_value_is_in_instance_values_or_is_empty(default_value: str, pairs: List[EnumPair]):
+def _default_value_is_in_instance_values_or_is_empty(default_value: str, pairs: List[EnumPair]) -> bool:
     return default_value in map(lambda pair: pair.stringValue, pairs) \
            or len(default_value) == 0 \
            or default_value is None
