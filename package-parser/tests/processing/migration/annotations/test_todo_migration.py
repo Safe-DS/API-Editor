@@ -1,9 +1,8 @@
-from typing import Callable, Tuple
+from typing import Tuple
 
 from package_parser.processing.annotations.model import (
     AbstractAnnotation,
     EnumReviewResult,
-    TodoAnnotation,
     TodoAnnotation,
 )
 from package_parser.processing.api.model import (
@@ -13,7 +12,6 @@ from package_parser.processing.api.model import (
 )
 from package_parser.processing.migration import ManyToManyMapping
 from package_parser.processing.migration.annotations import (
-    migrate_todo_annotation,
     migration_author,
 )
 from package_parser.processing.migration.model import (
@@ -35,7 +33,7 @@ def migrate_todo_annotation_data_one_to_one_mapping() -> Tuple[
         default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
-        documentation=ParameterDocumentation("", "", ""),
+        documentation=ParameterDocumentation("str", "", ""),
     )
     parameterv2 = Parameter(
         id_="test/test.todo.Test2",
@@ -44,7 +42,7 @@ def migrate_todo_annotation_data_one_to_one_mapping() -> Tuple[
         default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
-        documentation=ParameterDocumentation("", "", ""),
+        documentation=ParameterDocumentation("str", "", ""),
     )
     mappings = OneToOneMapping(1.0, parameterv1, parameterv2)
     annotationsv1 = TodoAnnotation(
@@ -78,7 +76,7 @@ def migrate_todo_annotation_data_one_to_many_mapping() -> Tuple[
         default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
-        documentation=ParameterDocumentation("", "", ""),
+        documentation=ParameterDocumentation("str", "", ""),
     )
     parameterv2_a = Parameter(
         id_="test/test.todo.Test4",
@@ -87,7 +85,7 @@ def migrate_todo_annotation_data_one_to_many_mapping() -> Tuple[
         default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
-        documentation=ParameterDocumentation("", "", ""),
+        documentation=ParameterDocumentation("str", "", ""),
     )
     parameterv2_b = Parameter(
         id_="test/test.todo.Test5",
@@ -96,7 +94,7 @@ def migrate_todo_annotation_data_one_to_many_mapping() -> Tuple[
         default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
-        documentation=ParameterDocumentation("", "", ""),
+        documentation=ParameterDocumentation("str", "", ""),
     )
     mappings = OneToManyMapping(1.0, parameterv1, [parameterv2_a, parameterv2_b])
     annotationsv1 = TodoAnnotation(
@@ -138,7 +136,7 @@ def migrate_todo_annotation_data_many_to_many_mapping() -> Tuple[
         default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
-        documentation=ParameterDocumentation("", "", ""),
+        documentation=ParameterDocumentation("str", "", ""),
     )
     parameterv1_b = Parameter(
         id_="test/test.todo.Test7",
@@ -147,7 +145,7 @@ def migrate_todo_annotation_data_many_to_many_mapping() -> Tuple[
         default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
-        documentation=ParameterDocumentation("", "", ""),
+        documentation=ParameterDocumentation("str", "", ""),
     )
     parameterv2_a = Parameter(
         id_="test/test.todo.Test8",
@@ -156,7 +154,7 @@ def migrate_todo_annotation_data_many_to_many_mapping() -> Tuple[
         default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
-        documentation=ParameterDocumentation("", "", ""),
+        documentation=ParameterDocumentation("str", "", ""),
     )
     parameterv2_b = Parameter(
         id_="test/test.todo.Test9",
@@ -165,7 +163,7 @@ def migrate_todo_annotation_data_many_to_many_mapping() -> Tuple[
         default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
-        documentation=ParameterDocumentation("", "", ""),
+        documentation=ParameterDocumentation("str", "", ""),
     )
     mappings = ManyToManyMapping(1.0, [parameterv1_a, parameterv1_b], [parameterv2_a, parameterv2_b])
     annotationv1 = TodoAnnotation(

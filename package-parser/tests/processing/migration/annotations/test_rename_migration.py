@@ -68,27 +68,27 @@ def migrate_rename_annotation_data_one_to_many_mapping__with_changed_new_name() 
     list[AbstractAnnotation],
 ]:
     parameterv1 = Parameter(
-        id_="test/test.Test",
+        id_="test/test.rename.Test",
         name="Test",
-        qname="test.Test",
+        qname="test.rename.Test",
         default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
         documentation=ParameterDocumentation("", "", ""),
     )
     parameterv2_a = Parameter(
-        id_="test/test.TestA",
+        id_="test/test.rename.TestA",
         name="TestA",
-        qname="test.TestA",
+        qname="test.rename.TestA",
         default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
         documentation=ParameterDocumentation("", "", ""),
     )
     parameterv2_b = Parameter(
-        id_="test/test.TestB",
+        id_="test/test.rename.TestB",
         name="TestB",
-        qname="test.TestB",
+        qname="test.rename.TestB",
         default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
@@ -96,7 +96,7 @@ def migrate_rename_annotation_data_one_to_many_mapping__with_changed_new_name() 
     )
     mappings = OneToManyMapping(1.0, parameterv1, [parameterv2_a, parameterv2_b])
     annotationv1 = RenameAnnotation(
-        target="test/test.Test",
+        target="test/test.rename.Test",
         authors=["testauthor"],
         reviewers=[],
         comment="",
@@ -104,10 +104,10 @@ def migrate_rename_annotation_data_one_to_many_mapping__with_changed_new_name() 
         newName="TestA",
     )
     annotationv2 = RenameAnnotation(
-        target="test/test.TestA",
+        target="test/test.rename.TestA",
         authors=["testauthor", migration_author],
         reviewers=[],
-        comment="The @Rename Annotation with the new name 'TestA' from the previous version was at 'test/test.Test' and the possible alternatives in the new version of the api are: TestA, TestB",
+        comment="The @Rename Annotation with the new name 'TestA' from the previous version was at 'test/test.rename.Test' and the possible alternatives in the new version of the api are: TestA, TestB",
         reviewResult=EnumReviewResult.UNSURE,
         newName="TestA",
     )
@@ -120,27 +120,27 @@ def migrate_rename_annotation_data_one_to_many_mapping() -> Tuple[
     list[AbstractAnnotation],
 ]:
     parameterv1 = Parameter(
-        id_="test/test.Test",
+        id_="test/test.rename.Test",
         name="Test",
-        qname="test.Test",
+        qname="test.rename.Test",
         default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
         documentation=ParameterDocumentation("", "", ""),
     )
     parameterv2_a = Parameter(
-        id_="test/test.TestA",
+        id_="test/test.rename.TestA",
         name="TestA",
-        qname="test.TestA",
+        qname="test.rename.TestA",
         default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
         documentation=ParameterDocumentation("", "", ""),
     )
     parameterv2_b = Parameter(
-        id_="test/test.TestB",
+        id_="test/test.rename.TestB",
         name="TestB",
-        qname="test.TestB",
+        qname="test.rename.TestB",
         default_value=None,
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
@@ -148,7 +148,7 @@ def migrate_rename_annotation_data_one_to_many_mapping() -> Tuple[
     )
     mappings = OneToManyMapping(1.0, parameterv1, [parameterv2_a, parameterv2_b])
     annotationv1 = RenameAnnotation(
-        target="test/test.Test",
+        target="test/test.rename.Test",
         authors=["testauthor"],
         reviewers=[],
         comment="",
@@ -156,20 +156,20 @@ def migrate_rename_annotation_data_one_to_many_mapping() -> Tuple[
         newName="TestZ",
     )
     annotationv2_a = TodoAnnotation(
-        target="test/test.TestA",
+        target="test/test.rename.TestA",
         authors=["testauthor", migration_author],
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        newTodo="The @Rename Annotation with the new name 'TestZ' from the previous version was at 'test/test.Test' and the possible alternatives in the new version of the api are: TestA, TestB",
+        newTodo="The @Rename Annotation with the new name 'TestZ' from the previous version was at 'test/test.rename.Test' and the possible alternatives in the new version of the api are: TestA, TestB",
     )
     annotationv2_b = TodoAnnotation(
-        target="test/test.TestB",
+        target="test/test.rename.TestB",
         authors=["testauthor", migration_author],
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        newTodo="The @Rename Annotation with the new name 'TestZ' from the previous version was at 'test/test.Test' and the possible alternatives in the new version of the api are: TestA, TestB",
+        newTodo="The @Rename Annotation with the new name 'TestZ' from the previous version was at 'test/test.rename.Test' and the possible alternatives in the new version of the api are: TestA, TestB",
     )
     return (
         mappings,

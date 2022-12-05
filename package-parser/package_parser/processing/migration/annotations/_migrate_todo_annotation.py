@@ -39,7 +39,7 @@ def migrate_todo_annotation(
         + todo_annotation.target
         + "' and the possible alternatives in the new version of the api are: "
         + ", ".join(
-        map(lambda api_element: api_element.name, mapping.get_apiv2_elements()))
+            map(lambda api_element: api_element.name, mapping.get_apiv2_elements()))
     ) if isinstance(mapping, ManyToManyMapping) else todo_annotation.newTodo
     review_result = EnumReviewResult.UNSURE if isinstance(mapping, ManyToManyMapping) else EnumReviewResult.NONE
     for element in mapping.get_apiv2_elements():
