@@ -1,5 +1,5 @@
 from copy import deepcopy
-from typing import List
+from typing import List, Optional
 
 from package_parser.processing.annotations.model import (
     AbstractAnnotation,
@@ -38,12 +38,12 @@ def _contains_string(type_: AbstractType) -> bool:
 
 
 def _default_value_is_in_instance_values_or_is_empty(
-    default_value: str, pairs: List[EnumPair]
+    default_value: Optional[str], pairs: List[EnumPair]
 ) -> bool:
     return (
-        default_value in map(lambda pair: pair.stringValue, pairs)
+        default_value is None
+        or default_value in map(lambda pair: pair.stringValue, pairs)
         or len(default_value) == 0
-        or default_value is None
     )
 
 
@@ -82,7 +82,7 @@ def migrate_enum_annotation(
                 if _contains_string(
                     parameter.type
                 ) and _default_value_is_in_instance_values_or_is_empty(
-                    parameter.documentation.default_value, enum_annotation.pairs
+                    parameter.default_value, enum_annotation.pairs
                 ):
                     enum_annotation.target = parameter.id
                     return [enum_annotation]
@@ -107,7 +107,7 @@ def migrate_enum_annotation(
                     if _contains_string(
                         parameter.type
                     ) and _default_value_is_in_instance_values_or_is_empty(
-                        parameter.documentation.default_value, enum_annotation.pairs
+                        parameter.default_value, enum_annotation.pairs
                     ):
                         migrated_annotations.append(
                             EnumAnnotation(
