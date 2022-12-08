@@ -5,7 +5,8 @@ from package_parser.processing.annotations.model import (
     AbstractAnnotation,
     BoundaryAnnotation,
     EnumReviewResult,
-    TodoAnnotation, Interval,
+    Interval,
+    TodoAnnotation,
 )
 from package_parser.processing.api.model import (
     AbstractType,
@@ -26,7 +27,9 @@ from package_parser.processing.migration.model import (
 from ._constants import migration_author
 
 
-def migrate_interval_to_fit_parameter_type(intervalv1: Interval, is_discrete: bool) -> Interval:
+def migrate_interval_to_fit_parameter_type(
+    intervalv1: Interval, is_discrete: bool
+) -> Interval:
     intervalv2 = deepcopy(intervalv1)
     if intervalv2.isDiscrete == is_discrete:
         return intervalv2
@@ -107,7 +110,11 @@ def migrate_boundary_annotation(
                     is not boundary_annotation.interval.isDiscrete
                 ):
                     boundary_annotation.reviewResult = EnumReviewResult.UNSURE
-                    boundary_annotation.interval = migrate_interval_to_fit_parameter_type(boundary_annotation.interval, parameter_type_is_discrete)
+                    boundary_annotation.interval = (
+                        migrate_interval_to_fit_parameter_type(
+                            boundary_annotation.interval, parameter_type_is_discrete
+                        )
+                    )
                 return [boundary_annotation]
         return [
             TodoAnnotation(

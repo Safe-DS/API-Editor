@@ -5,10 +5,10 @@ from package_parser.processing.annotations.model import (
 from package_parser.processing.migration import migrate_annotations
 from package_parser.processing.migration.model import Mapping
 from tests.processing.migration.annotations.test_boundary_migration import (
-    migrate_boundary_annotation_data_one_to_one_mapping,
-    migrate_boundary_annotation_data_one_to_one_mapping_int_to_float,
-    migrate_boundary_annotation_data_one_to_one_mapping_float_to_int,
     migrate_boundary_annotation_data_one_to_many_mapping,
+    migrate_boundary_annotation_data_one_to_one_mapping,
+    migrate_boundary_annotation_data_one_to_one_mapping_float_to_int,
+    migrate_boundary_annotation_data_one_to_one_mapping_int_to_float,
 )
 from tests.processing.migration.annotations.test_enum_migration import (
     migrate_enum_annotation_data_one_to_many_mapping,
