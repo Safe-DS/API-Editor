@@ -1,5 +1,5 @@
 from copy import deepcopy
-from typing import Tuple, Optional
+from typing import Optional, Tuple
 
 from package_parser.processing.annotations.model import (
     AbstractAnnotation,
@@ -26,7 +26,9 @@ from package_parser.processing.migration.model import (
 from ._constants import migration_author
 
 
-def _contains_number_and_is_discrete(type_: Optional[AbstractType]) -> Tuple[bool, bool]:
+def _contains_number_and_is_discrete(
+    type_: Optional[AbstractType],
+) -> Tuple[bool, bool]:
     if type_ is None:
         return False, False
     if isinstance(type_, NamedType):
@@ -54,7 +56,9 @@ def migrate_boundary_annotation(
         + "' from the previous version was at '"
         + boundary_annotation.target
         + "' and the possible alternatives in the new version of the api are: "
-        + ", ".join(map(lambda api_element: api_element.name, mapping.get_apiv2_elements()))
+        + ", ".join(
+            map(lambda api_element: api_element.name, mapping.get_apiv2_elements())
+        )
     )
 
     if isinstance(mapping, (OneToOneMapping, ManyToOneMapping)):
@@ -63,21 +67,38 @@ def migrate_boundary_annotation(
             return []
         if isinstance(parameter, Parameter):
             boundary_annotation.target = parameter.id
-            parameter_expects_number, parameter_type_is_discrete = _contains_number_and_is_discrete(parameter.type)
+            (
+                parameter_expects_number,
+                parameter_type_is_discrete,
+            ) = _contains_number_and_is_discrete(parameter.type)
             if parameter.type is None:
                 boundary_annotation.reviewResult = EnumReviewResult.UNSURE
                 return [boundary_annotation]
             if parameter_expects_number:
-                if parameter_type_is_discrete and not boundary_annotation.interval.isDiscrete:
+                if (
+                    parameter_type_is_discrete
+                    and not boundary_annotation.interval.isDiscrete
+                ):
                     boundary_annotation.reviewResult = EnumReviewResult.UNSURE
                     boundary_annotation.interval.isDiscrete = True
-                    boundary_annotation.interval.upperIntervalLimit = int(boundary_annotation.interval.upperIntervalLimit)
-                    boundary_annotation.interval.lowerIntervalLimit = int(boundary_annotation.interval.upperIntervalLimit)
-                if not parameter_type_is_discrete and boundary_annotation.interval.isDiscrete:
+                    boundary_annotation.interval.upperIntervalLimit = int(
+                        boundary_annotation.interval.upperIntervalLimit
+                    )
+                    boundary_annotation.interval.lowerIntervalLimit = int(
+                        boundary_annotation.interval.upperIntervalLimit
+                    )
+                if (
+                    not parameter_type_is_discrete
+                    and boundary_annotation.interval.isDiscrete
+                ):
                     boundary_annotation.reviewResult = EnumReviewResult.UNSURE
                     boundary_annotation.interval.isDiscrete = False
-                    boundary_annotation.interval.upperIntervalLimit = float(boundary_annotation.interval.upperIntervalLimit)
-                    boundary_annotation.interval.lowerIntervalLimit = float(boundary_annotation.interval.upperIntervalLimit)
+                    boundary_annotation.interval.upperIntervalLimit = float(
+                        boundary_annotation.interval.upperIntervalLimit
+                    )
+                    boundary_annotation.interval.lowerIntervalLimit = float(
+                        boundary_annotation.interval.upperIntervalLimit
+                    )
                 return [boundary_annotation]
         return [
             TodoAnnotation(
@@ -93,8 +114,14 @@ def migrate_boundary_annotation(
     if isinstance(mapping, (OneToManyMapping, ManyToManyMapping)):
         for parameter in mapping.get_apiv2_elements():
             if isinstance(parameter, Parameter):
-                is_number, is_discrete = _contains_number_and_is_discrete(parameter.type)
-                if parameter.type is not None and is_number and is_discrete is boundary_annotation.interval.isDiscrete:
+                is_number, is_discrete = _contains_number_and_is_discrete(
+                    parameter.type
+                )
+                if (
+                    parameter.type is not None
+                    and is_number
+                    and is_discrete is boundary_annotation.interval.isDiscrete
+                ):
                     migrated_annotations.append(
                         BoundaryAnnotation(
                             parameter.id,
