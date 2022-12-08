@@ -167,14 +167,15 @@ def migrate_boundary_annotation(
                         )
                     )
                 continue
-            migrated_annotations.append(
-                TodoAnnotation(
-                    parameter.id,
-                    authors,
-                    boundary_annotation.reviewers,
-                    boundary_annotation.comment,
-                    EnumReviewResult.UNSURE,
-                    migrate_text,
+            if not isinstance(parameter, (Attribute, Result)):
+                migrated_annotations.append(
+                    TodoAnnotation(
+                        parameter.id,
+                        authors,
+                        boundary_annotation.reviewers,
+                        boundary_annotation.comment,
+                        EnumReviewResult.UNSURE,
+                        migrate_text,
+                    )
                 )
-            )
     return migrated_annotations

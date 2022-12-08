@@ -106,7 +106,7 @@ class AnnotationStore:
             valueAnnotations,
         )
 
-    def add_annotation(self, annotation: AbstractAnnotation):
+    def add_annotation(self, annotation: AbstractAnnotation) -> None:
         if isinstance(annotation, BoundaryAnnotation):
             self.boundaryAnnotations.append(annotation)
         elif isinstance(annotation, CalledAfterAnnotation):
