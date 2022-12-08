@@ -5,7 +5,7 @@ from package_parser.processing.annotations.model import (
     AbstractAnnotation,
     BoundaryAnnotation,
     EnumReviewResult,
-    TodoAnnotation,
+    TodoAnnotation, Interval,
 )
 from package_parser.processing.api.model import (
     AbstractType,
@@ -24,6 +24,33 @@ from package_parser.processing.migration.model import (
 )
 
 from ._constants import migration_author
+
+
+def migrate_interval_to_fit_parameter_type(intervalv1: Interval, is_discrete: bool) -> Interval:
+    intervalv2 = deepcopy(intervalv1)
+    if intervalv2.isDiscrete == is_discrete:
+        return intervalv2
+    if is_discrete:
+        intervalv2.isDiscrete = True
+        if intervalv1.upperLimitType in (0, 1):
+            intervalv2.upperIntervalLimit = int(intervalv1.upperIntervalLimit)
+            intervalv2.upperLimitType = 1
+            if intervalv2.upperIntervalLimit == intervalv1.upperIntervalLimit:
+                intervalv2.upperLimitType = intervalv1.upperLimitType
+        if intervalv1.lowerLimitType in (0, 1):
+            intervalv2.lowerIntervalLimit = int(intervalv1.lowerIntervalLimit)
+            intervalv2.lowerLimitType = 1
+            if intervalv2.lowerIntervalLimit == intervalv1.lowerIntervalLimit:
+                intervalv2.lowerLimitType = intervalv1.lowerLimitType
+            else:
+                intervalv2.lowerIntervalLimit += 1
+    else:
+        intervalv2.isDiscrete = False
+        if intervalv1.upperLimitType in (0, 1):
+            intervalv2.upperIntervalLimit = float(intervalv1.upperIntervalLimit)
+        if intervalv1.lowerLimitType in (0, 1):
+            intervalv2.lowerIntervalLimit = float(intervalv1.lowerIntervalLimit)
+    return intervalv2
 
 
 def _contains_number_and_is_discrete(
@@ -77,28 +104,10 @@ def migrate_boundary_annotation(
             if parameter_expects_number:
                 if (
                     parameter_type_is_discrete
-                    and not boundary_annotation.interval.isDiscrete
+                    is not boundary_annotation.interval.isDiscrete
                 ):
                     boundary_annotation.reviewResult = EnumReviewResult.UNSURE
-                    boundary_annotation.interval.isDiscrete = True
-                    boundary_annotation.interval.upperIntervalLimit = int(
-                        boundary_annotation.interval.upperIntervalLimit
-                    )
-                    boundary_annotation.interval.lowerIntervalLimit = int(
-                        boundary_annotation.interval.upperIntervalLimit
-                    )
-                if (
-                    not parameter_type_is_discrete
-                    and boundary_annotation.interval.isDiscrete
-                ):
-                    boundary_annotation.reviewResult = EnumReviewResult.UNSURE
-                    boundary_annotation.interval.isDiscrete = False
-                    boundary_annotation.interval.upperIntervalLimit = float(
-                        boundary_annotation.interval.upperIntervalLimit
-                    )
-                    boundary_annotation.interval.lowerIntervalLimit = float(
-                        boundary_annotation.interval.upperIntervalLimit
-                    )
+                    boundary_annotation.interval = migrate_interval_to_fit_parameter_type(boundary_annotation.interval, parameter_type_is_discrete)
                 return [boundary_annotation]
         return [
             TodoAnnotation(
@@ -132,15 +141,40 @@ def migrate_boundary_annotation(
                             boundary_annotation.interval,
                         )
                     )
-                else:
+                elif parameter.type is not None and is_number:
                     migrated_annotations.append(
-                        TodoAnnotation(
+                        BoundaryAnnotation(
                             parameter.id,
                             authors,
                             boundary_annotation.reviewers,
                             boundary_annotation.comment,
                             EnumReviewResult.UNSURE,
-                            migrate_text,
+                            migrate_interval_to_fit_parameter_type(
+                                boundary_annotation.interval,
+                                is_discrete,
+                            ),
                         )
                     )
+                elif parameter.type is None:
+                    migrated_annotations.append(
+                        BoundaryAnnotation(
+                            parameter.id,
+                            authors,
+                            boundary_annotation.reviewers,
+                            boundary_annotation.comment,
+                            EnumReviewResult.UNSURE,
+                            boundary_annotation.interval,
+                        )
+                    )
+                continue
+            migrated_annotations.append(
+                TodoAnnotation(
+                    parameter.id,
+                    authors,
+                    boundary_annotation.reviewers,
+                    boundary_annotation.comment,
+                    EnumReviewResult.UNSURE,
+                    migrate_text,
+                )
+            )
     return migrated_annotations
