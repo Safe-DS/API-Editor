@@ -4,6 +4,12 @@ from package_parser.processing.annotations.model import (
 )
 from package_parser.processing.migration import migrate_annotations
 from package_parser.processing.migration.model import Mapping
+from tests.processing.migration.annotations.test_boundary_migration import (
+    migrate_boundary_annotation_data_one_to_many_mapping,
+    migrate_boundary_annotation_data_one_to_one_mapping,
+    migrate_boundary_annotation_data_one_to_one_mapping_float_to_int,
+    migrate_boundary_annotation_data_one_to_one_mapping_int_to_float,
+)
 from tests.processing.migration.annotations.test_enum_migration import (
     migrate_enum_annotation_data_one_to_many_mapping,
     migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping,
@@ -21,15 +27,23 @@ from tests.processing.migration.annotations.test_todo_migration import (
 )
 
 test_data = [
-    migrate_rename_annotation_data_one_to_many_mapping__with_changed_new_name(),
-    migrate_rename_annotation_data_one_to_one_mapping(),
-    migrate_rename_annotation_data_one_to_many_mapping(),
-    migrate_todo_annotation_data_one_to_one_mapping(),
-    migrate_todo_annotation_data_one_to_many_mapping(),
-    migrate_todo_annotation_data_many_to_many_mapping(),
+    # enum annotation
     migrate_enum_annotation_data_one_to_one_mapping(),
     migrate_enum_annotation_data_one_to_many_mapping(),
     migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping(),
+    # boundary annotation
+    migrate_boundary_annotation_data_one_to_one_mapping(),
+    migrate_boundary_annotation_data_one_to_one_mapping_int_to_float(),
+    migrate_boundary_annotation_data_one_to_one_mapping_float_to_int(),
+    migrate_boundary_annotation_data_one_to_many_mapping(),
+    # rename annotation
+    migrate_rename_annotation_data_one_to_many_mapping__with_changed_new_name(),
+    migrate_rename_annotation_data_one_to_one_mapping(),
+    migrate_rename_annotation_data_one_to_many_mapping(),
+    # to-do annotation
+    migrate_todo_annotation_data_one_to_one_mapping(),
+    migrate_todo_annotation_data_one_to_many_mapping(),
+    migrate_todo_annotation_data_many_to_many_mapping(),
 ]
 
 

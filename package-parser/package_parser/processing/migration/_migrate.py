@@ -6,6 +6,7 @@ from package_parser.processing.annotations.model import (
 )
 from package_parser.processing.api.model import Attribute, Result
 from package_parser.processing.migration.annotations import (
+    migrate_boundary_annotation,
     migrate_enum_annotation,
     migrate_rename_annotation,
     migrate_todo_annotation,
@@ -30,6 +31,12 @@ def migrate_annotations(
     annotationsv1: AnnotationStore, mappings: list[Mapping]
 ) -> AnnotationStore:
     migrated_annotation_store = AnnotationStore()
+
+    for boundary_annotation in annotationsv1.boundaryAnnotations:
+        mapping = _get_mapping_from_annotation(boundary_annotation, mappings)
+        if mapping is not None:
+            for annotation in migrate_boundary_annotation(boundary_annotation, mapping):
+                migrated_annotation_store.add_annotation(annotation)
 
     for enum_annotation in annotationsv1.enumAnnotations:
         mapping = _get_mapping_from_annotation(enum_annotation, mappings)

@@ -47,6 +47,7 @@ def _default_value_is_in_instance_values_or_is_empty(
     )
 
 
+# pylint: disable=duplicate-code
 def migrate_enum_annotation(
     enum_annotation: EnumAnnotation, mapping: Mapping
 ) -> list[AbstractAnnotation]:
@@ -92,6 +93,7 @@ def migrate_enum_annotation(
                     return []
             else:
                 enum_annotation.reviewResult = EnumReviewResult.UNSURE
+                enum_annotation.target = parameter.id
                 return [enum_annotation]
         return [
             TodoAnnotation(

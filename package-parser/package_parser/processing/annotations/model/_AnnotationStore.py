@@ -106,32 +106,30 @@ class AnnotationStore:
             valueAnnotations,
         )
 
-    def add_annotation(self, annotation: AbstractAnnotation):
+    def add_annotation(self, annotation: AbstractAnnotation) -> None:
         if isinstance(annotation, BoundaryAnnotation):
             self.boundaryAnnotations.append(annotation)
-        if isinstance(annotation, BoundaryAnnotation):
-            self.boundaryAnnotations.append(annotation)
-        if isinstance(annotation, CalledAfterAnnotation):
+        elif isinstance(annotation, CalledAfterAnnotation):
             self.calledAfterAnnotations.append(annotation)
-        if isinstance(annotation, CompleteAnnotation):
+        elif isinstance(annotation, CompleteAnnotation):
             self.completeAnnotations.append(annotation)
-        if isinstance(annotation, DescriptionAnnotation):
+        elif isinstance(annotation, DescriptionAnnotation):
             self.descriptionAnnotations.append(annotation)
-        if isinstance(annotation, EnumAnnotation):
+        elif isinstance(annotation, EnumAnnotation):
             self.enumAnnotations.append(annotation)
-        if isinstance(annotation, GroupAnnotation):
+        elif isinstance(annotation, GroupAnnotation):
             self.groupAnnotations.append(annotation)
-        if isinstance(annotation, MoveAnnotation):
+        elif isinstance(annotation, MoveAnnotation):
             self.moveAnnotations.append(annotation)
-        if isinstance(annotation, PureAnnotation):
+        elif isinstance(annotation, PureAnnotation):
             self.pureAnnotations.append(annotation)
-        if isinstance(annotation, RemoveAnnotation):
+        elif isinstance(annotation, RemoveAnnotation):
             self.removeAnnotations.append(annotation)
-        if isinstance(annotation, RenameAnnotation):
+        elif isinstance(annotation, RenameAnnotation):
             self.renameAnnotations.append(annotation)
-        if isinstance(annotation, TodoAnnotation):
+        elif isinstance(annotation, TodoAnnotation):
             self.todoAnnotations.append(annotation)
-        if isinstance(annotation, ValueAnnotation):
+        elif isinstance(annotation, ValueAnnotation):
             self.valueAnnotations.append(annotation)
 
     def to_json(self) -> dict:
