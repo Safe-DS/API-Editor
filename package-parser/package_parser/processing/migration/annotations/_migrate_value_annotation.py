@@ -169,6 +169,66 @@ def _contains_type(
     return False
 
 
+def _have_same_default_type(
+    annotation: Union[OmittedAnnotation, RequiredAnnotation],
+    parameterv2: Parameter,
+    mapping: Mapping,
+) -> Optional[Tuple[bool, bool, bool]]:
+    element_list = [
+        element
+        for element in mapping.get_apiv1_elements()
+        if isinstance(element, Parameter) and element.id == annotation.target
+    ]
+    if len(element_list) != 1:
+        return None
+    parameterv1 = element_list[0]
+    parameterv1_default_value = parameterv1.default_value
+    parameterv2_default_value = parameterv2.default_value
+
+    if parameterv1_default_value is None:
+        return None
+    if parameterv2_default_value is None:
+        return None
+    have_same_explicit_value_type = False
+    have_same_implicit_value_type = False
+    are_equal = False
+    if not have_same_explicit_value_type:
+        try:
+            intv1_value = int(parameterv1_default_value)
+            intv2_value = int(parameterv2_default_value)
+            are_equal = intv1_value == intv2_value
+            have_same_explicit_value_type = True
+        except ValueError:
+            pass
+    if not have_same_explicit_value_type:
+        try:
+            floatv1_value = float(parameterv1_default_value)
+            floatv2_value = float(parameterv2_default_value)
+            are_equal = floatv1_value == floatv2_value
+            have_same_explicit_value_type = True
+            try:
+                int(parameterv1_default_value)
+                have_same_implicit_value_type = True
+                are_equal = False
+            except ValueError:
+                pass
+            try:
+                int(parameterv2_default_value)
+                have_same_implicit_value_type = True
+                are_equal = False
+            except ValueError:
+                pass
+        except ValueError:
+            pass
+        if not have_same_explicit_value_type and parameterv1_default_value in (
+            "True",
+            "False",
+        ) and parameterv2_default_value in ("True", "False"):
+            have_same_explicit_value_type = True
+            are_equal = parameterv1_default_value == parameterv2_default_value
+    return have_same_explicit_value_type, have_same_implicit_value_type, are_equal
+
+
 def migrate_constant_annotation(
     constant_annotation: ConstantAnnotation, parameter: Parameter, mapping: Mapping
 ) -> Optional[ConstantAnnotation]:
@@ -200,25 +260,20 @@ def migrate_constant_annotation(
     return None
 
 
-def _get_all_named_types(type_: AbstractType) -> set[str]:
-    named_types: set[str] = set()
-    if isinstance(type_, NamedType):
-        return {type_.name}
-    if isinstance(type_, UnionType):
-        for element in type_.types:
-            named_types = named_types.union(_get_all_named_types(element))
-    return named_types
-
-
 def migrate_omitted_annotation(
     omitted_annotation: OmittedAnnotation, parameterv2: Parameter, mapping: Mapping
 ) -> Optional[OmittedAnnotation]:
-    same_type = have_same_default_type(omitted_annotation, parameterv2, mapping)
+    same_type = _have_same_default_type(omitted_annotation, parameterv2, mapping)
     if same_type is None:
         return None
-    explicit_same_type, implicit_same_type = same_type
+    explicit_same_type, implicit_same_type, are_equal = same_type
     review_result = (
-        EnumReviewResult.NONE if not implicit_same_type else EnumReviewResult.UNSURE
+        EnumReviewResult.NONE if not implicit_same_type and are_equal else EnumReviewResult.UNSURE
+    )
+    migrate_text = (
+        _get_migration_text(mapping, omitted_annotation)
+        if len(omitted_annotation.comment) == 0
+        else omitted_annotation.comment + "\n" + _get_migration_text(mapping, omitted_annotation)
     )
 
     if explicit_same_type:
@@ -226,66 +281,10 @@ def migrate_omitted_annotation(
             parameterv2.id,
             omitted_annotation.authors,
             omitted_annotation.reviewers,
-            omitted_annotation.comment,
+            omitted_annotation.comment if review_result is EnumReviewResult.NONE else migrate_text,
             review_result,
         )
     return None
-
-
-def have_same_default_type(
-    annotation: Union[OmittedAnnotation, RequiredAnnotation],
-    parameterv2: Parameter,
-    mapping: Mapping,
-) -> Optional[Tuple[bool, bool]]:
-    element_list = [
-        element
-        for element in mapping.get_apiv1_elements()
-        if isinstance(element, Parameter) and element.id == annotation.target
-    ]
-    if len(element_list) != 1:
-        return None
-    parameterv1 = element_list[0]
-    parameterv1_default_value = parameterv1.default_value
-    parameterv2_default_value = parameterv2.default_value
-
-    if parameterv1_default_value is None:
-        return None
-    if parameterv2_default_value is None:
-        return None
-    have_same_explicit_value_type = (
-        parameterv1_default_value == parameterv2_default_value
-    )
-    have_same_implicit_value_type = False
-    if not have_same_explicit_value_type:
-        try:
-            int(parameterv1_default_value)
-            int(parameterv2_default_value)
-            have_same_explicit_value_type = True
-        except ValueError:
-            pass
-    if not have_same_explicit_value_type:
-        try:
-            float(parameterv1_default_value)
-            float(parameterv2_default_value)
-            have_same_explicit_value_type = True
-            try:
-                int(parameterv1_default_value)
-                have_same_implicit_value_type = True
-            except ValueError:
-                pass
-            try:
-                int(parameterv2_default_value)
-                have_same_implicit_value_type = True
-            except ValueError:
-                pass
-        except ValueError:
-            pass
-        if not have_same_explicit_value_type:
-            have_same_explicit_value_type = parameterv1_default_value in (
-                "True",
-                "False",
-            ) and parameterv2_default_value in ("True", "False")
-    return have_same_explicit_value_type, have_same_implicit_value_type
 
 
 def migrate_optional_annotation(
@@ -322,12 +321,17 @@ def migrate_optional_annotation(
 def migrate_required_annotation(
     required_annotation: RequiredAnnotation, parameterv2: Parameter, mapping: Mapping
 ) -> Optional[RequiredAnnotation]:
-    same_type = have_same_default_type(required_annotation, parameterv2, mapping)
+    same_type = _have_same_default_type(required_annotation, parameterv2, mapping)
     if same_type is None:
         return None
-    explicit_same_type, implicit_same_type = same_type
+    explicit_same_type, implicit_same_type, _ = same_type
     review_result = (
         EnumReviewResult.NONE if not implicit_same_type else EnumReviewResult.UNSURE
+    )
+    migrate_text = (
+        _get_migration_text(mapping, required_annotation)
+        if len(required_annotation.comment) == 0
+        else required_annotation.comment + "\n" + _get_migration_text(mapping, required_annotation)
     )
 
     if explicit_same_type:
@@ -335,7 +339,7 @@ def migrate_required_annotation(
             parameterv2.id,
             required_annotation.authors,
             required_annotation.reviewers,
-            required_annotation.comment,
+            required_annotation.comment if review_result is EnumReviewResult.NONE else migrate_text,
             review_result,
         )
     return None
