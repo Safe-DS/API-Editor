@@ -217,7 +217,9 @@ def migrate_omitted_annotation(
     if same_type is None:
         return None
     explicit_same_type, implicit_same_type = same_type
-    review_result = EnumReviewResult.NONE if not implicit_same_type else EnumReviewResult.UNSURE
+    review_result = (
+        EnumReviewResult.NONE if not implicit_same_type else EnumReviewResult.UNSURE
+    )
 
     if explicit_same_type:
         return OmittedAnnotation(
@@ -230,7 +232,11 @@ def migrate_omitted_annotation(
     return None
 
 
-def have_same_default_type(annotation: Union[OmittedAnnotation, RequiredAnnotation], parameterv2: Parameter, mapping: Mapping) -> Optional[Tuple[bool, bool]]:
+def have_same_default_type(
+    annotation: Union[OmittedAnnotation, RequiredAnnotation],
+    parameterv2: Parameter,
+    mapping: Mapping,
+) -> Optional[Tuple[bool, bool]]:
     element_list = [
         element
         for element in mapping.get_apiv1_elements()
@@ -320,7 +326,9 @@ def migrate_required_annotation(
     if same_type is None:
         return None
     explicit_same_type, implicit_same_type = same_type
-    review_result = EnumReviewResult.NONE if not implicit_same_type else EnumReviewResult.UNSURE
+    review_result = (
+        EnumReviewResult.NONE if not implicit_same_type else EnumReviewResult.UNSURE
+    )
 
     if explicit_same_type:
         return RequiredAnnotation(
