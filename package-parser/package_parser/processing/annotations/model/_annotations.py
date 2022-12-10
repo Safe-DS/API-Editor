@@ -3,7 +3,7 @@ from __future__ import annotations
 from abc import ABC
 from dataclasses import asdict, dataclass
 from enum import Enum
-from typing import Any, Union, Type
+from typing import Any, Union
 
 ANNOTATION_SCHEMA_VERSION = 2
 
@@ -168,6 +168,7 @@ class ValueAnnotation(AbstractAnnotation, ABC):
         STRING = "string"
 
     variant: Variant
+
     @staticmethod
     def from_json(json: Any) -> ValueAnnotation:
         variant = json["variant"]

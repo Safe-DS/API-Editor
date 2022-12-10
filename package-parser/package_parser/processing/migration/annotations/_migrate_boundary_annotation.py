@@ -103,7 +103,11 @@ def migrate_boundary_annotation(
             ) = _contains_number_and_is_discrete(parameter.type)
             if parameter.type is None:
                 boundary_annotation.reviewResult = EnumReviewResult.UNSURE
-                boundary_annotation.comment = migrate_text if len(boundary_annotation.comment) == 0 else boundary_annotation.comment + "\n" + migrate_text
+                boundary_annotation.comment = (
+                    migrate_text
+                    if len(boundary_annotation.comment) == 0
+                    else boundary_annotation.comment + "\n" + migrate_text
+                )
                 return [boundary_annotation]
             if parameter_expects_number:
                 if (
@@ -111,12 +115,16 @@ def migrate_boundary_annotation(
                     is not boundary_annotation.interval.isDiscrete
                 ):
                     boundary_annotation.reviewResult = EnumReviewResult.UNSURE
+                    boundary_annotation.comment = (
+                        migrate_text
+                        if len(boundary_annotation.comment) == 0
+                        else boundary_annotation.comment + "\n" + migrate_text
+                    )
                     boundary_annotation.interval = (
                         migrate_interval_to_fit_parameter_type(
                             boundary_annotation.interval, parameter_type_is_discrete
                         )
                     )
-                boundary_annotation.comment = migrate_text if len(boundary_annotation.comment) == 0 else boundary_annotation.comment + "\n" + migrate_text
                 return [boundary_annotation]
         return [
             TodoAnnotation(
@@ -156,7 +164,9 @@ def migrate_boundary_annotation(
                             parameter.id,
                             authors,
                             boundary_annotation.reviewers,
-                            migrate_text if len(boundary_annotation.comment) == 0 else boundary_annotation.comment + "\n" + migrate_text,
+                            migrate_text
+                            if len(boundary_annotation.comment) == 0
+                            else boundary_annotation.comment + "\n" + migrate_text,
                             EnumReviewResult.UNSURE,
                             migrate_interval_to_fit_parameter_type(
                                 boundary_annotation.interval,
@@ -170,7 +180,9 @@ def migrate_boundary_annotation(
                             parameter.id,
                             authors,
                             boundary_annotation.reviewers,
-                            migrate_text if len(boundary_annotation.comment) == 0 else boundary_annotation.comment + "\n" + migrate_text,
+                            migrate_text
+                            if len(boundary_annotation.comment) == 0
+                            else boundary_annotation.comment + "\n" + migrate_text,
                             EnumReviewResult.UNSURE,
                             boundary_annotation.interval,
                         )
