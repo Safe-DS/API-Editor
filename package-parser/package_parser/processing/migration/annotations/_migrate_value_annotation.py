@@ -231,10 +231,15 @@ def _have_same_default_type(
                 pass
         except ValueError:
             pass
-        if not have_same_explicit_value_type and parameterv1_default_value in (
-            "True",
-            "False",
-        ) and parameterv2_default_value in ("True", "False"):
+        if (
+            not have_same_explicit_value_type
+            and parameterv1_default_value
+            in (
+                "True",
+                "False",
+            )
+            and parameterv2_default_value in ("True", "False")
+        ):
             have_same_explicit_value_type = True
             have_same_implicit_value_type = True
             are_equal = parameterv1_default_value == parameterv2_default_value
@@ -280,13 +285,13 @@ def migrate_omitted_annotation(
         return None
     explicit_same_type, implicit_same_type, are_equal = same_type
     is_unsure = implicit_same_type and are_equal
-    review_result = (
-        EnumReviewResult.NONE if is_unsure else EnumReviewResult.UNSURE
-    )
+    review_result = EnumReviewResult.NONE if is_unsure else EnumReviewResult.UNSURE
     migrate_text = (
         _get_migration_text(mapping, omitted_annotation)
         if len(omitted_annotation.comment) == 0
-        else omitted_annotation.comment + "\n" + _get_migration_text(mapping, omitted_annotation)
+        else omitted_annotation.comment
+        + "\n"
+        + _get_migration_text(mapping, omitted_annotation)
     )
 
     if explicit_same_type:
@@ -344,7 +349,9 @@ def migrate_required_annotation(
     migrate_text = (
         _get_migration_text(mapping, required_annotation)
         if len(required_annotation.comment) == 0
-        else required_annotation.comment + "\n" + _get_migration_text(mapping, required_annotation)
+        else required_annotation.comment
+        + "\n"
+        + _get_migration_text(mapping, required_annotation)
     )
 
     if explicit_same_type:
@@ -352,7 +359,9 @@ def migrate_required_annotation(
             parameterv2.id,
             required_annotation.authors,
             required_annotation.reviewers,
-            required_annotation.comment if review_result is EnumReviewResult.NONE else migrate_text,
+            required_annotation.comment
+            if review_result is EnumReviewResult.NONE
+            else migrate_text,
             review_result,
         )
     return None

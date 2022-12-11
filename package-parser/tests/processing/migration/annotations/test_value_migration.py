@@ -1,10 +1,27 @@
 from typing import Tuple
 
-from package_parser.processing.annotations.model import AbstractAnnotation, ConstantAnnotation, EnumReviewResult, \
-    ValueAnnotation, OptionalAnnotation, RequiredAnnotation, OmittedAnnotation, TodoAnnotation
-from package_parser.processing.api.model import Parameter, ParameterAssignment, ParameterDocumentation, Attribute, \
-    NamedType
-from package_parser.processing.migration import Mapping, OneToOneMapping, OneToManyMapping
+from package_parser.processing.annotations.model import (
+    AbstractAnnotation,
+    ConstantAnnotation,
+    EnumReviewResult,
+    OmittedAnnotation,
+    OptionalAnnotation,
+    RequiredAnnotation,
+    TodoAnnotation,
+    ValueAnnotation,
+)
+from package_parser.processing.api.model import (
+    Attribute,
+    NamedType,
+    Parameter,
+    ParameterAssignment,
+    ParameterDocumentation,
+)
+from package_parser.processing.migration import (
+    Mapping,
+    OneToManyMapping,
+    OneToOneMapping,
+)
 from package_parser.processing.migration.annotations import migration_author
 
 
@@ -242,11 +259,11 @@ def migrate_constant_annotation_data_one_to_many_mapping() -> Tuple[
         authors=["testauthor", migration_author],
         reviewers=[],
         comment="The @Value Annotation with the variant 'constant' "
-                "and the default Value '2 ( type: number )' from "
-                'the previous version was at '
-                "'test/test.value.test5.testB' and the possible "
-                'alternatives in the new version of the api are: '
-                'testA, testB, testC, test_attribute',
+        "and the default Value '2 ( type: number )' from "
+        "the previous version was at "
+        "'test/test.value.test5.testB' and the possible "
+        "alternatives in the new version of the api are: "
+        "testA, testB, testC, test_attribute",
         reviewResult=EnumReviewResult.UNSURE,
         defaultValueType=ValueAnnotation.DefaultValueType.NUMBER,
         defaultValue="2",
@@ -258,14 +275,20 @@ def migrate_constant_annotation_data_one_to_many_mapping() -> Tuple[
         comment="",
         reviewResult=EnumReviewResult.UNSURE,
         newTodo="The @Value Annotation with the variant 'constant' "
-                "and the default Value '2 ( type: number )' from "
-                'the previous version was at '
-                "'test/test.value.test5.testB' and the possible "
-                'alternatives in the new version of the api are: '
-                'testA, testB, testC, test_attribute',
+        "and the default Value '2 ( type: number )' from "
+        "the previous version was at "
+        "'test/test.value.test5.testB' and the possible "
+        "alternatives in the new version of the api are: "
+        "testA, testB, testC, test_attribute",
     )
 
-    return OneToManyMapping(1.0, parameterv1, [parameterv2_a, parameterv2_b, parameterv2_c, attribute]), annotation, [annotationv2_a, annotationv2_b, annotationv2_c]
+    return (
+        OneToManyMapping(
+            1.0, parameterv1, [parameterv2_a, parameterv2_b, parameterv2_c, attribute]
+        ),
+        annotation,
+        [annotationv2_a, annotationv2_b, annotationv2_c],
+    )
 
 
 def migrate_optional_annotation_data_one_to_many_mapping() -> Tuple[
@@ -333,11 +356,11 @@ def migrate_optional_annotation_data_one_to_many_mapping() -> Tuple[
         authors=["testauthor", migration_author],
         reviewers=[],
         comment="The @Value Annotation with the variant 'optional' "
-                "and the default Value '2 ( type: number )' from "
-                'the previous version was at '
-                "'test/test.value.test6.testB' and the possible "
-                'alternatives in the new version of the api are: '
-                'testA, testB, testC',
+        "and the default Value '2 ( type: number )' from "
+        "the previous version was at "
+        "'test/test.value.test6.testB' and the possible "
+        "alternatives in the new version of the api are: "
+        "testA, testB, testC",
         reviewResult=EnumReviewResult.UNSURE,
         defaultValueType=ValueAnnotation.DefaultValueType.NUMBER,
         defaultValue="2",
@@ -349,10 +372,16 @@ def migrate_optional_annotation_data_one_to_many_mapping() -> Tuple[
         comment="",
         reviewResult=EnumReviewResult.UNSURE,
         newTodo="The @Value Annotation with the variant 'optional' "
-                "and the default Value '2 ( type: number )' from "
-                'the previous version was at '
-                "'test/test.value.test6.testB' and the possible "
-                'alternatives in the new version of the api are: '
-                'testA, testB, testC',
+        "and the default Value '2 ( type: number )' from "
+        "the previous version was at "
+        "'test/test.value.test6.testB' and the possible "
+        "alternatives in the new version of the api are: "
+        "testA, testB, testC",
     )
-    return OneToManyMapping(1.0, parameterv1, [parameterv2_a, parameterv2_b, parameterv2_c]), annotation, [annotationv2_a, annotationv2_b, annotationv2_c]
+    return (
+        OneToManyMapping(
+            1.0, parameterv1, [parameterv2_a, parameterv2_b, parameterv2_c]
+        ),
+        annotation,
+        [annotationv2_a, annotationv2_b, annotationv2_c],
+    )
