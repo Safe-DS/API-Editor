@@ -30,7 +30,8 @@ from tests.processing.migration.annotations.test_value_migration import (
     migrate_omitted_annotation_data_one_to_one_mapping,
     migrate_required_annotation_data_one_to_one_mapping,
     migrate_optional_annotation_data_one_to_one_mapping,
-    test_migrate_constant_annotation_data_one_to_many_mapping,
+    migrate_constant_annotation_data_one_to_many_mapping,
+    migrate_optional_annotation_data_one_to_many_mapping
 )
 
 test_data = [
@@ -56,7 +57,9 @@ test_data = [
     migrate_omitted_annotation_data_one_to_one_mapping(),
     migrate_required_annotation_data_one_to_one_mapping(),
     migrate_optional_annotation_data_one_to_one_mapping(),
-    test_migrate_constant_annotation_data_one_to_many_mapping(),
+    migrate_constant_annotation_data_one_to_many_mapping(),
+    migrate_optional_annotation_data_one_to_many_mapping(),
+
 ]
 
 

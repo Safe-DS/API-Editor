@@ -89,24 +89,28 @@ def migrate_value_annotation(
                     )
                     if migrated_constant_annotation is not None:
                         migrated_annotations.append(migrated_constant_annotation)
+                        continue
                 if isinstance(value_annotation, OmittedAnnotation):
                     migrated_omitted_annotation = migrate_omitted_annotation(
                         value_annotation, parameter, mapping
                     )
                     if migrated_omitted_annotation is not None:
                         migrated_annotations.append(migrated_omitted_annotation)
+                        continue
                 if isinstance(value_annotation, OptionalAnnotation):
                     migrated_optional_annotation = migrate_optional_annotation(
                         value_annotation, parameter, mapping
                     )
                     if migrated_optional_annotation is not None:
                         migrated_annotations.append(migrated_optional_annotation)
+                        continue
                 if isinstance(value_annotation, RequiredAnnotation):
                     migrated_required_annotation = migrate_required_annotation(
                         value_annotation, parameter, mapping
                     )
                     if migrated_required_annotation is not None:
                         migrated_annotations.append(migrated_required_annotation)
+                        continue
             if not isinstance(parameter, (Attribute, Result)):
                 migrated_annotations.append(
                     TodoAnnotation(
@@ -151,15 +155,21 @@ def _contains_type(
         return False
     if isinstance(type_, NamedType):
         return (
-            default_value_type is ValueAnnotation.DefaultValueType.BOOLEAN
-            and (type_.name in ("bool", "boolean"))
-            or default_value_type is ValueAnnotation.DefaultValueType.STRING
-            and (type_.name in ("str", "string"))
-            or default_value_type is ValueAnnotation.DefaultValueType.NUMBER
-            and (
-                type_.name in ("int", "integer", "float")
-                or type_.name.startswith("int ")
-                or type_.name.startswith("float ")
+            (
+                default_value_type is ValueAnnotation.DefaultValueType.BOOLEAN
+                and type_.name in ("bool", "boolean")
+            )
+            or (
+                default_value_type is ValueAnnotation.DefaultValueType.STRING
+                and type_.name in ("str", "string")
+            )
+            or (
+                default_value_type is ValueAnnotation.DefaultValueType.NUMBER
+                and (
+                    type_.name in ("int", "integer", "float")
+                    or type_.name.startswith("int ")
+                    or type_.name.startswith("float ")
+                )
             )
         )
     if isinstance(type_, UnionType):
@@ -198,6 +208,7 @@ def _have_same_default_type(
             intv2_value = int(parameterv2_default_value)
             are_equal = intv1_value == intv2_value
             have_same_explicit_value_type = True
+            have_same_implicit_value_type = True
         except ValueError:
             pass
     if not have_same_explicit_value_type:
@@ -225,6 +236,7 @@ def _have_same_default_type(
             "False",
         ) and parameterv2_default_value in ("True", "False"):
             have_same_explicit_value_type = True
+            have_same_implicit_value_type = True
             are_equal = parameterv1_default_value == parameterv2_default_value
     return have_same_explicit_value_type, have_same_implicit_value_type, are_equal
 
@@ -267,8 +279,9 @@ def migrate_omitted_annotation(
     if same_type is None:
         return None
     explicit_same_type, implicit_same_type, are_equal = same_type
+    is_unsure = implicit_same_type and are_equal
     review_result = (
-        EnumReviewResult.NONE if not implicit_same_type and are_equal else EnumReviewResult.UNSURE
+        EnumReviewResult.NONE if is_unsure else EnumReviewResult.UNSURE
     )
     migrate_text = (
         _get_migration_text(mapping, omitted_annotation)
@@ -281,7 +294,7 @@ def migrate_omitted_annotation(
             parameterv2.id,
             omitted_annotation.authors,
             omitted_annotation.reviewers,
-            omitted_annotation.comment if review_result is EnumReviewResult.NONE else migrate_text,
+            omitted_annotation.comment if is_unsure else migrate_text,
             review_result,
         )
     return None
