@@ -153,10 +153,8 @@ def _get_migration_text(mapping: Mapping, value_annotation: ValueAnnotation) -> 
 def _have_same_type(
     default_value_typev1: ValueAnnotation.DefaultValueType,
     parameterv1: Parameter,
-    typev2: Optional[AbstractType],
+    typev2: AbstractType,
 ) -> bool:
-    if typev2 is None:
-        return False
     if isinstance(typev2, NamedType):
         if default_value_typev1 is ValueAnnotation.DefaultValueType.NUMBER:
             if parameterv1 is not None:
@@ -225,18 +223,18 @@ def _have_same_value(
         and parameterv1_default_value.endswith("'")
     ) or (
         parameterv1_default_value.startswith('"')
-        or parameterv1_default_value.endswith('"')
+        and parameterv1_default_value.endswith('"')
     )
     parameterv2_is_in_quotation_marks = (
         parameterv2_default_value.startswith("'")
         and parameterv2_default_value.endswith("'")
     ) or (
         parameterv2_default_value.startswith('"')
-        or parameterv2_default_value.endswith('"')
+        and parameterv2_default_value.endswith('"')
     )
     if parameterv1_default_value == "None" and parameterv2_default_value == "None":
         return None, True
-    if _have_same_type(
+    if parameterv2.type is None or _have_same_type(
         ValueAnnotation.DefaultValueType.NUMBER, parameterv1, parameterv2.type
     ):
         try:
@@ -254,10 +252,12 @@ def _have_same_value(
             except ValueError:
                 try:
                     int(parameterv1_default_value)
+                    float(parameterv2_default_value)
                     return ValueAnnotation.DefaultValueType.NUMBER, False
                 except ValueError:
                     try:
                         int(parameterv2_default_value)
+                        float(parameterv1_default_value)
                         return ValueAnnotation.DefaultValueType.NUMBER, False
                     except ValueError:
                         pass
@@ -285,9 +285,11 @@ def get_api_element_from_mapping(
     element_list = [
         element
         for element in mapping.get_apiv1_elements()
-        if isinstance(element, api_type)
-        and hasattr(element, "id")
-        and element.id == annotation.target
+        if (
+            isinstance(element, api_type)
+            and hasattr(element, "id")
+            and element.id == annotation.target
+        )
     ]
     if len(element_list) != 1:
         return None
@@ -342,10 +344,12 @@ def migrate_omitted_annotation(
         return None
     data_type, are_equal = type_and_same_value
 
-    is_unsure = data_type is None or (
-        are_equal and _have_same_type(data_type, parameterv1, parameterv2.type)
+    is_unsure = (
+        parameterv2.type is None
+        or data_type is None
+        or not (are_equal and _have_same_type(data_type, parameterv1, parameterv2.type))
     )
-    review_result = EnumReviewResult.NONE if is_unsure else EnumReviewResult.UNSURE
+    review_result = EnumReviewResult.NONE if not is_unsure else EnumReviewResult.UNSURE
     migrate_text = (
         _get_migration_text(mapping, omitted_annotation)
         if len(omitted_annotation.comment) == 0
@@ -358,22 +362,22 @@ def migrate_omitted_annotation(
         parameterv2.id,
         omitted_annotation.authors,
         omitted_annotation.reviewers,
-        omitted_annotation.comment if is_unsure else migrate_text,
+        omitted_annotation.comment if not is_unsure else migrate_text,
         review_result,
     )
 
 
 def migrate_optional_annotation(
-    optional_annotation: OptionalAnnotation, parameter: Parameter, mapping: Mapping
+    optional_annotation: OptionalAnnotation, parameterv2: Parameter, mapping: Mapping
 ) -> Optional[OptionalAnnotation]:
     parameterv1 = get_api_element_from_mapping(optional_annotation, mapping, Parameter)
     if parameterv1 is None:
         return None
-    if _have_same_type(
-        optional_annotation.defaultValueType, parameterv1, parameter.type
+    if parameterv2.type and _have_same_type(
+        optional_annotation.defaultValueType, parameterv1, parameterv2.type
     ):
         return OptionalAnnotation(
-            parameter.id,
+            parameterv2.id,
             optional_annotation.authors,
             optional_annotation.reviewers,
             optional_annotation.comment,
@@ -381,12 +385,12 @@ def migrate_optional_annotation(
             optional_annotation.defaultValueType,
             optional_annotation.defaultValue,
         )
-    if parameter.type is None:
-        optional_annotation.target = parameter.id
+    if parameterv2.type is None:
+        optional_annotation.target = parameterv2.id
         optional_annotation.reviewResult = EnumReviewResult.UNSURE
         migrate_text = _get_migration_text(mapping, optional_annotation)
         return OptionalAnnotation(
-            parameter.id,
+            parameterv2.id,
             optional_annotation.authors,
             optional_annotation.reviewers,
             migrate_text
