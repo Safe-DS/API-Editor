@@ -12,7 +12,8 @@ from package_parser.processing.api.model import (
     ParameterDocumentation,
 )
 from package_parser.processing.migration.annotations import (
-    migration_author, get_migration_text
+    get_migration_text,
+    migration_author,
 )
 from package_parser.processing.migration.model import (
     Mapping,
@@ -163,7 +164,7 @@ def migrate_rename_annotation_data_one_to_many_mapping() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        newTodo=get_migration_text(annotationv1, mappings)
+        newTodo=get_migration_text(annotationv1, mappings),
     )
     annotationv2_b = TodoAnnotation(
         target="test/test.rename.TestB",
@@ -171,7 +172,7 @@ def migrate_rename_annotation_data_one_to_many_mapping() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        newTodo=get_migration_text(annotationv1, mappings)
+        newTodo=get_migration_text(annotationv1, mappings),
     )
     return (
         mappings,

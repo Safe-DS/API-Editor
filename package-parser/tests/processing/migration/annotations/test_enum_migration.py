@@ -17,7 +17,11 @@ from package_parser.processing.migration import (
     OneToManyMapping,
     OneToOneMapping,
 )
-from package_parser.processing.migration.annotations import migration_author, get_migration_text
+from package_parser.processing.migration.annotations import (
+    get_migration_text,
+    migration_author,
+)
+
 
 def migrate_enum_annotation_data_one_to_one_mapping() -> Tuple[
     Mapping,

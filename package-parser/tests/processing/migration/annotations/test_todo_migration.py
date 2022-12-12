@@ -13,7 +13,10 @@ from package_parser.processing.api.model import (
     ParameterDocumentation,
 )
 from package_parser.processing.migration import ManyToManyMapping
-from package_parser.processing.migration.annotations import migration_author, get_migration_text
+from package_parser.processing.migration.annotations import (
+    get_migration_text,
+    migration_author,
+)
 from package_parser.processing.migration.model import (
     Mapping,
     OneToManyMapping,
