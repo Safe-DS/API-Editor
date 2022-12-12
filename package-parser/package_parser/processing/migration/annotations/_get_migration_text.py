@@ -55,6 +55,8 @@ def get_migration_text(annotation: AbstractAnnotation, mapping: Mapping) -> str:
     class_name = str(annotation.__class__.__name__)
     if class_name.endswith("Annotation"):
         class_name = class_name[:-10]
+    if issubclass(type(annotation), ValueAnnotation):
+        class_name = "Value"
 
     migrate_text = (
         "The @"

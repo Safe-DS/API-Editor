@@ -16,7 +16,10 @@ from package_parser.processing.migration import (
     OneToManyMapping,
     OneToOneMapping,
 )
-from package_parser.processing.migration.annotations import migration_author
+from package_parser.processing.migration.annotations import (
+    get_migration_text,
+    migration_author,
+)
 
 
 def migrate_boundary_annotation_data_one_to_one_mapping() -> Tuple[
@@ -102,6 +105,9 @@ def migrate_boundary_annotation_data_one_to_one_mapping_int_to_float() -> Tuple[
             "float", "1.0", "float in the range of [1.0, 9.0]"
         ),
     )
+
+    mapping = OneToOneMapping(1.0, parameterv1, parameterv2)
+
     boundary_annotation = BoundaryAnnotation(
         target="test/test.boundary.test2.testA",
         authors=["testauthor"],
@@ -120,13 +126,7 @@ def migrate_boundary_annotation_data_one_to_one_mapping_int_to_float() -> Tuple[
         target="test/test.boundary.test2.testB",
         authors=["testauthor", migration_author],
         reviewers=[],
-        comment="The @Boundary Annotation with the interval "
-        "'{'isDiscrete': True, 'lowerIntervalLimit': 0, "
-        "'lowerLimitType': 0, 'upperIntervalLimit': 10, "
-        "'upperLimitType': 0}' from the previous version "
-        "was at 'test/test.boundary.test2.testA' and the "
-        "possible alternatives in the new version of the "
-        "api are: testB",
+        comment=get_migration_text(boundary_annotation, mapping),
         reviewResult=EnumReviewResult.UNSURE,
         interval=Interval(
             isDiscrete=False,
@@ -136,8 +136,9 @@ def migrate_boundary_annotation_data_one_to_one_mapping_int_to_float() -> Tuple[
             upperLimitType=0,
         ),
     )
+
     return (
-        OneToOneMapping(1.0, parameterv1, parameterv2),
+        mapping,
         boundary_annotation,
         [migrated_boundary_annotation],
     )
@@ -168,6 +169,9 @@ def migrate_boundary_annotation_data_one_to_one_mapping_float_to_int() -> Tuple[
         is_public=True,
         documentation=ParameterDocumentation("int", "1", "int in the range of (0, 10)"),
     )
+
+    mapping = OneToOneMapping(1.0, parameterv1, parameterv2)
+
     boundary_annotation = BoundaryAnnotation(
         target="test/test.boundary.test3.testA",
         authors=["testauthor"],
@@ -186,13 +190,7 @@ def migrate_boundary_annotation_data_one_to_one_mapping_float_to_int() -> Tuple[
         target="test/test.boundary.test3.testB",
         authors=["testauthor", migration_author],
         reviewers=[],
-        comment="The @Boundary Annotation with the interval "
-        "'{'isDiscrete': False, 'lowerIntervalLimit': 0.5, "
-        "'lowerLimitType': 0, 'upperIntervalLimit': 9.5, "
-        "'upperLimitType': 0}' from the previous version "
-        "was at 'test/test.boundary.test3.testA' and the "
-        "possible alternatives in the new version of the "
-        "api are: testB",
+        comment=get_migration_text(boundary_annotation, mapping),
         reviewResult=EnumReviewResult.UNSURE,
         interval=Interval(
             isDiscrete=True,
@@ -203,7 +201,7 @@ def migrate_boundary_annotation_data_one_to_one_mapping_float_to_int() -> Tuple[
         ),
     )
     return (
-        OneToOneMapping(1.0, parameterv1, parameterv2),
+        mapping,
         boundary_annotation,
         [migrated_boundary_annotation],
     )
@@ -252,6 +250,11 @@ def migrate_boundary_annotation_data_one_to_many_mapping() -> Tuple[
         is_public=True,
         documentation=ParameterDocumentation("", "", ""),
     )
+
+    mapping = OneToManyMapping(
+        1.0, parameterv1, [parameterv2_a, parameterv2_b, parameterv2_c]
+    )
+
     boundary_annotation = BoundaryAnnotation(
         target="test/test.boundary.test4.testv1",
         authors=["testauthor"],
@@ -284,13 +287,7 @@ def migrate_boundary_annotation_data_one_to_many_mapping() -> Tuple[
         target="test/test.boundary.test4.testB",
         authors=["testauthor", migration_author],
         reviewers=[],
-        comment="The @Boundary Annotation with the interval "
-        "'{'isDiscrete': True, 'lowerIntervalLimit': 0, "
-        "'lowerLimitType': 1, 'upperIntervalLimit': 10, "
-        "'upperLimitType': 1}' from the previous version "
-        "was at 'test/test.boundary.test4.testv1' and the "
-        "possible alternatives in the new version of the "
-        "api are: testA, testB, testC",
+        comment=get_migration_text(boundary_annotation, mapping),
         reviewResult=EnumReviewResult.UNSURE,
         interval=Interval(
             isDiscrete=False,
@@ -304,13 +301,7 @@ def migrate_boundary_annotation_data_one_to_many_mapping() -> Tuple[
         target="test/test.boundary.test4.testC",
         authors=["testauthor", migration_author],
         reviewers=[],
-        comment="The @Boundary Annotation with the interval "
-        "'{'isDiscrete': True, 'lowerIntervalLimit': 0, "
-        "'lowerLimitType': 1, 'upperIntervalLimit': 10, "
-        "'upperLimitType': 1}' from the previous version "
-        "was at 'test/test.boundary.test4.testv1' and the "
-        "possible alternatives in the new version of the "
-        "api are: testA, testB, testC",
+        comment=get_migration_text(boundary_annotation, mapping),
         reviewResult=EnumReviewResult.UNSURE,
         interval=Interval(
             isDiscrete=True,
@@ -321,9 +312,7 @@ def migrate_boundary_annotation_data_one_to_many_mapping() -> Tuple[
         ),
     )
     return (
-        OneToManyMapping(
-            1.0, parameterv1, [parameterv2_a, parameterv2_b, parameterv2_c]
-        ),
+        mapping,
         boundary_annotation,
         [
             migrated_boundary_annotation_a,
