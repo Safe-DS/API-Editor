@@ -259,11 +259,11 @@ def migrate_constant_annotation_data_one_to_many_mapping() -> Tuple[
         authors=["testauthor", migration_author],
         reviewers=[],
         comment="The @Value Annotation with the variant 'constant' "
-                "and the default Value '2 ( type: number )' from "
-                "the previous version was at "
-                "'test/test.value.test5.testB' and the possible "
-                "alternatives in the new version of the api are: "
-                "testA, testB, testC, test_attribute",
+        "and the default Value '2 ( type: number )' from "
+        "the previous version was at "
+        "'test/test.value.test5.testB' and the possible "
+        "alternatives in the new version of the api are: "
+        "testA, testB, testC, test_attribute",
         reviewResult=EnumReviewResult.UNSURE,
         defaultValueType=ValueAnnotation.DefaultValueType.NUMBER,
         defaultValue="2",
@@ -275,11 +275,11 @@ def migrate_constant_annotation_data_one_to_many_mapping() -> Tuple[
         comment="",
         reviewResult=EnumReviewResult.UNSURE,
         newTodo="The @Value Annotation with the variant 'constant' "
-                "and the default Value '2 ( type: number )' from "
-                "the previous version was at "
-                "'test/test.value.test5.testB' and the possible "
-                "alternatives in the new version of the api are: "
-                "testA, testB, testC, test_attribute",
+        "and the default Value '2 ( type: number )' from "
+        "the previous version was at "
+        "'test/test.value.test5.testB' and the possible "
+        "alternatives in the new version of the api are: "
+        "testA, testB, testC, test_attribute",
     )
 
     return (
@@ -356,11 +356,11 @@ def migrate_optional_annotation_data_one_to_many_mapping() -> Tuple[
         authors=["testauthor", migration_author],
         reviewers=[],
         comment="The @Value Annotation with the variant 'optional' "
-                "and the default Value '2 ( type: number )' from "
-                "the previous version was at "
-                "'test/test.value.test6.testB' and the possible "
-                "alternatives in the new version of the api are: "
-                "testA, testB, testC",
+        "and the default Value '2 ( type: number )' from "
+        "the previous version was at "
+        "'test/test.value.test6.testB' and the possible "
+        "alternatives in the new version of the api are: "
+        "testA, testB, testC",
         reviewResult=EnumReviewResult.UNSURE,
         defaultValueType=ValueAnnotation.DefaultValueType.NUMBER,
         defaultValue="2",
@@ -372,11 +372,11 @@ def migrate_optional_annotation_data_one_to_many_mapping() -> Tuple[
         comment="",
         reviewResult=EnumReviewResult.UNSURE,
         newTodo="The @Value Annotation with the variant 'optional' "
-                "and the default Value '2 ( type: number )' from "
-                "the previous version was at "
-                "'test/test.value.test6.testB' and the possible "
-                "alternatives in the new version of the api are: "
-                "testA, testB, testC",
+        "and the default Value '2 ( type: number )' from "
+        "the previous version was at "
+        "'test/test.value.test6.testB' and the possible "
+        "alternatives in the new version of the api are: "
+        "testA, testB, testC",
     )
     return (
         OneToManyMapping(
@@ -424,10 +424,10 @@ def migrate_required_annotation_data_one_to_many_mapping() -> Tuple[
         id_="test/test.value.test7.testC",
         name="testC",
         qname="test.value.test7.testC",
-        default_value="\"value\"",
+        default_value='"value"',
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
-        documentation=ParameterDocumentation("string", "\"value\"", ""),
+        documentation=ParameterDocumentation("string", '"value"', ""),
     )
     parameterv2_d = Parameter(
         id_="test/test.value.test7.testD",
@@ -455,16 +455,18 @@ def migrate_required_annotation_data_one_to_many_mapping() -> Tuple[
         comment="",
         reviewResult=EnumReviewResult.NONE,
     )
-    annotationv2_a = TodoAnnotation(target='test/test.value.test7.testA',
-                                    authors=['testauthor', 'migration'],
-                                    reviewers=[],
-                                    comment='',
-                                    reviewResult=EnumReviewResult.UNSURE,
-                                    newTodo="The @Value Annotation with the variant 'required' "
-                                            'from the previous version was at '
-                                            "'test/test.value.test7.test' and the possible "
-                                            'alternatives in the new version of the api are: '
-                                            'testA, testB, testC, testD, testE')
+    annotationv2_a = TodoAnnotation(
+        target="test/test.value.test7.testA",
+        authors=["testauthor", "migration"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.UNSURE,
+        newTodo="The @Value Annotation with the variant 'required' "
+        "from the previous version was at "
+        "'test/test.value.test7.test' and the possible "
+        "alternatives in the new version of the api are: "
+        "testA, testB, testC, testD, testE",
+    )
     annotationv2_b = RequiredAnnotation(
         target="test/test.value.test7.testB",
         authors=["testauthor", migration_author],
@@ -472,41 +474,57 @@ def migrate_required_annotation_data_one_to_many_mapping() -> Tuple[
         comment="",
         reviewResult=EnumReviewResult.NONE,
     )
-    annotationv2_c = TodoAnnotation(target='test/test.value.test7.testC',
-                                    authors=['testauthor', 'migration'],
-                                    reviewers=[],
-                                    comment='',
-                                    reviewResult=EnumReviewResult.UNSURE,
-                                    newTodo="The @Value Annotation with the variant 'required' "
-                                            'from the previous version was at '
-                                            "'test/test.value.test7.test' and the possible "
-                                            'alternatives in the new version of the api are: '
-                                            'testA, testB, testC, testD, testE')
+    annotationv2_c = TodoAnnotation(
+        target="test/test.value.test7.testC",
+        authors=["testauthor", "migration"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.UNSURE,
+        newTodo="The @Value Annotation with the variant 'required' "
+        "from the previous version was at "
+        "'test/test.value.test7.test' and the possible "
+        "alternatives in the new version of the api are: "
+        "testA, testB, testC, testD, testE",
+    )
 
-    annotationv2_d = TodoAnnotation(target='test/test.value.test7.testD',
-                                    authors=['testauthor', 'migration'],
-                                    reviewers=[],
-                                    comment='',
-                                    reviewResult=EnumReviewResult.UNSURE,
-                                    newTodo="The @Value Annotation with the variant 'required' "
-                                            'from the previous version was at '
-                                            "'test/test.value.test7.test' and the possible "
-                                            'alternatives in the new version of the api are: '
-                                            'testA, testB, testC, testD, testE')
-    annotationv2_e = TodoAnnotation(target='test/test.value.test7.testE',
-                                    authors=['testauthor', 'migration'],
-                                    reviewers=[],
-                                    comment='',
-                                    reviewResult=EnumReviewResult.UNSURE,
-                                    newTodo="The @Value Annotation with the variant 'required' from "
-                                            'the previous version was at '
-                                            "'test/test.value.test7.test' and the possible "
-                                            'alternatives in the new version of the api are: '
-                                            'testA, testB, testC, testD, testE')
+    annotationv2_d = TodoAnnotation(
+        target="test/test.value.test7.testD",
+        authors=["testauthor", "migration"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.UNSURE,
+        newTodo="The @Value Annotation with the variant 'required' "
+        "from the previous version was at "
+        "'test/test.value.test7.test' and the possible "
+        "alternatives in the new version of the api are: "
+        "testA, testB, testC, testD, testE",
+    )
+    annotationv2_e = TodoAnnotation(
+        target="test/test.value.test7.testE",
+        authors=["testauthor", "migration"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.UNSURE,
+        newTodo="The @Value Annotation with the variant 'required' from "
+        "the previous version was at "
+        "'test/test.value.test7.test' and the possible "
+        "alternatives in the new version of the api are: "
+        "testA, testB, testC, testD, testE",
+    )
     return (
-        OneToManyMapping(1.0, parameterv1, [parameterv2_a, parameterv2_b, parameterv2_c, parameterv2_d, parameterv2_e]),
+        OneToManyMapping(
+            1.0,
+            parameterv1,
+            [parameterv2_a, parameterv2_b, parameterv2_c, parameterv2_d, parameterv2_e],
+        ),
         annotation,
-        [annotationv2_a, annotationv2_b, annotationv2_c, annotationv2_d, annotationv2_e],
+        [
+            annotationv2_a,
+            annotationv2_b,
+            annotationv2_c,
+            annotationv2_d,
+            annotationv2_e,
+        ],
     )
 
 
@@ -547,10 +565,10 @@ def migrate_omitted_annotation_data_one_to_many_mapping() -> Tuple[
         id_="test/test.value.test8.testC",
         name="testC",
         qname="test.value.test8.testC",
-        default_value="\"value\"",
+        default_value='"value"',
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
-        documentation=ParameterDocumentation("string", "\"value\"", ""),
+        documentation=ParameterDocumentation("string", '"value"', ""),
     )
     parameterv2_d = Parameter(
         id_="test/test.value.test8.testD",
@@ -583,56 +601,74 @@ def migrate_omitted_annotation_data_one_to_many_mapping() -> Tuple[
         authors=["testauthor", migration_author],
         reviewers=[],
         comment="The @Value Annotation with the variant 'omitted' "
-                'from the previous version was at '
-                "'test/test.value.test8.test' and the possible "
-                'alternatives in the new version of the api are: '
-                'testA, testB, testC, testD, testE',
+        "from the previous version was at "
+        "'test/test.value.test8.test' and the possible "
+        "alternatives in the new version of the api are: "
+        "testA, testB, testC, testD, testE",
         reviewResult=EnumReviewResult.UNSURE,
     )
-    annotationv2_b = TodoAnnotation(target='test/test.value.test8.testB',
-                                    authors=['testauthor', 'migration'],
-                                    reviewers=[],
-                                    comment='',
-                                    reviewResult=EnumReviewResult.UNSURE,
-                                    newTodo="The @Value Annotation with the variant 'omitted' from "
-                                            'the previous version was at '
-                                            "'test/test.value.test8.test' and the possible "
-                                            'alternatives in the new version of the api are: '
-                                            'testA, testB, testC, testD, testE')
-    annotationv2_c = TodoAnnotation(target='test/test.value.test8.testC',
-                                    authors=['testauthor', 'migration'],
-                                    reviewers=[],
-                                    comment='',
-                                    reviewResult=EnumReviewResult.UNSURE,
-                                    newTodo="The @Value Annotation with the variant 'omitted' "
-                                            'from the previous version was at '
-                                            "'test/test.value.test8.test' and the possible "
-                                            'alternatives in the new version of the api are: '
-                                            'testA, testB, testC, testD, testE')
+    annotationv2_b = TodoAnnotation(
+        target="test/test.value.test8.testB",
+        authors=["testauthor", "migration"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.UNSURE,
+        newTodo="The @Value Annotation with the variant 'omitted' from "
+        "the previous version was at "
+        "'test/test.value.test8.test' and the possible "
+        "alternatives in the new version of the api are: "
+        "testA, testB, testC, testD, testE",
+    )
+    annotationv2_c = TodoAnnotation(
+        target="test/test.value.test8.testC",
+        authors=["testauthor", "migration"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.UNSURE,
+        newTodo="The @Value Annotation with the variant 'omitted' "
+        "from the previous version was at "
+        "'test/test.value.test8.test' and the possible "
+        "alternatives in the new version of the api are: "
+        "testA, testB, testC, testD, testE",
+    )
 
-    annotationv2_d = TodoAnnotation(target='test/test.value.test8.testD',
-                                    authors=['testauthor', 'migration'],
-                                    reviewers=[],
-                                    comment='',
-                                    reviewResult=EnumReviewResult.UNSURE,
-                                    newTodo="The @Value Annotation with the variant 'omitted' "
-                                            'from the previous version was at '
-                                            "'test/test.value.test8.test' and the possible "
-                                            'alternatives in the new version of the api are: '
-                                            'testA, testB, testC, testD, testE')
-    annotationv2_e = TodoAnnotation(target='test/test.value.test8.testE',
-                                    authors=['testauthor', 'migration'],
-                                    reviewers=[],
-                                    comment='',
-                                    reviewResult=EnumReviewResult.UNSURE,
-                                    newTodo="The @Value Annotation with the variant 'omitted' "
-                                            'from the previous version was at '
-                                            "'test/test.value.test8.test' and the possible "
-                                            'alternatives in the new version of the api are: '
-                                            'testA, testB, testC, testD, testE')
+    annotationv2_d = TodoAnnotation(
+        target="test/test.value.test8.testD",
+        authors=["testauthor", "migration"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.UNSURE,
+        newTodo="The @Value Annotation with the variant 'omitted' "
+        "from the previous version was at "
+        "'test/test.value.test8.test' and the possible "
+        "alternatives in the new version of the api are: "
+        "testA, testB, testC, testD, testE",
+    )
+    annotationv2_e = TodoAnnotation(
+        target="test/test.value.test8.testE",
+        authors=["testauthor", "migration"],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.UNSURE,
+        newTodo="The @Value Annotation with the variant 'omitted' "
+        "from the previous version was at "
+        "'test/test.value.test8.test' and the possible "
+        "alternatives in the new version of the api are: "
+        "testA, testB, testC, testD, testE",
+    )
 
     return (
-        OneToManyMapping(1.0, parameterv1, [parameterv2_a, parameterv2_b, parameterv2_c, parameterv2_d, parameterv2_e]),
+        OneToManyMapping(
+            1.0,
+            parameterv1,
+            [parameterv2_a, parameterv2_b, parameterv2_c, parameterv2_d, parameterv2_e],
+        ),
         annotation,
-        [annotationv2_a, annotationv2_b, annotationv2_c, annotationv2_d, annotationv2_e],
+        [
+            annotationv2_a,
+            annotationv2_b,
+            annotationv2_c,
+            annotationv2_d,
+            annotationv2_e,
+        ],
     )

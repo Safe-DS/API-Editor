@@ -203,10 +203,9 @@ def _have_same_default_type_and_value(
     are_equal = False
     if parameterv1_default_value == "None" and parameterv2_default_value == "None":
         are_equal, have_same_explicit_value_type = True, True
-    elif (
-        _contains_type(ValueAnnotation.DefaultValueType.NUMBER, parameterv1.type)
-        or _contains_type(ValueAnnotation.DefaultValueType.NUMBER, parameterv2.type)
-    ):
+    elif _contains_type(
+        ValueAnnotation.DefaultValueType.NUMBER, parameterv1.type
+    ) or _contains_type(ValueAnnotation.DefaultValueType.NUMBER, parameterv2.type):
         try:
             intv1_value = int(parameterv1_default_value)
             intv2_value = int(parameterv2_default_value)
@@ -231,16 +230,29 @@ def _have_same_default_type_and_value(
                         pass
             except ValueError:
                 pass
-    elif (
-        parameterv1_default_value in ("True", "False")
-        and parameterv2_default_value in ("True", "False")
-    ):
+    elif parameterv1_default_value in (
+        "True",
+        "False",
+    ) and parameterv2_default_value in ("True", "False"):
         have_same_explicit_value_type = True
         are_equal = bool(parameterv1_default_value) == bool(parameterv2_default_value)
     elif (
-        (parameterv1_default_value.startswith("'") and parameterv1_default_value.endswith("'")) or (parameterv1_default_value.startswith("\"") or parameterv1_default_value.endswith("\""))
-        and
-        (parameterv2_default_value.startswith("'") and parameterv2_default_value.endswith("'")) or (parameterv2_default_value.startswith("\"") or parameterv2_default_value.endswith("\""))
+        (
+            parameterv1_default_value.startswith("'")
+            and parameterv1_default_value.endswith("'")
+        )
+        or (
+            parameterv1_default_value.startswith('"')
+            or parameterv1_default_value.endswith('"')
+        )
+        and (
+            parameterv2_default_value.startswith("'")
+            and parameterv2_default_value.endswith("'")
+        )
+        or (
+            parameterv2_default_value.startswith('"')
+            or parameterv2_default_value.endswith('"')
+        )
     ):
         have_same_explicit_value_type = True
         are_equal = parameterv1_default_value[1:-1] == parameterv2_default_value[1:-1]
@@ -281,7 +293,9 @@ def migrate_constant_annotation(
 def migrate_omitted_annotation(
     omitted_annotation: OmittedAnnotation, parameterv2: Parameter, mapping: Mapping
 ) -> Optional[OmittedAnnotation]:
-    same_type_and_value = _have_same_default_type_and_value(omitted_annotation, parameterv2, mapping)
+    same_type_and_value = _have_same_default_type_and_value(
+        omitted_annotation, parameterv2, mapping
+    )
     if same_type_and_value is None:
         return None
     explicit_same_type, are_equal = same_type_and_value
@@ -340,13 +354,13 @@ def migrate_optional_annotation(
 def migrate_required_annotation(
     required_annotation: RequiredAnnotation, parameterv2: Parameter, mapping: Mapping
 ) -> Optional[RequiredAnnotation]:
-    same_type_and_value = _have_same_default_type_and_value(required_annotation, parameterv2, mapping)
+    same_type_and_value = _have_same_default_type_and_value(
+        required_annotation, parameterv2, mapping
+    )
     if same_type_and_value is None:
         return None
     same_type, _ = same_type_and_value
-    review_result = (
-        EnumReviewResult.NONE if same_type else EnumReviewResult.UNSURE
-    )
+    review_result = EnumReviewResult.NONE if same_type else EnumReviewResult.UNSURE
 
     if same_type:
         return RequiredAnnotation(
