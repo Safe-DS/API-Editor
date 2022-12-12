@@ -13,7 +13,7 @@ from package_parser.processing.api.model import (
     ParameterDocumentation,
 )
 from package_parser.processing.migration import ManyToManyMapping
-from package_parser.processing.migration.annotations import migration_author
+from package_parser.processing.migration.annotations import migration_author, get_migration_text
 from package_parser.processing.migration.model import (
     Mapping,
     OneToManyMapping,
@@ -205,10 +205,7 @@ def migrate_todo_annotation_data_many_to_many_mapping() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.UNSURE,
-        newTodo="The @Todo Annotation with the todo 'todo' from the "
-        "previous version was at 'test/test.todo.test3.TestA' "
-        "and the possible alternatives in the new version of "
-        "the api are: NewTestA, NewTestB, TestClass",
+        newTodo=get_migration_text(annotationv1, mappings),
     )
     return (
         mappings,

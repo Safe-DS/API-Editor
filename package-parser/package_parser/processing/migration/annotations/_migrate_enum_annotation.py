@@ -25,6 +25,7 @@ from package_parser.processing.migration.model import (
 )
 
 from ._constants import migration_author
+from ._get_migration_text import get_migration_text
 
 
 def _contains_string(type_: AbstractType) -> bool:
@@ -56,23 +57,7 @@ def migrate_enum_annotation(
     authors.append(migration_author)
     enum_annotation.authors = authors
 
-    migrate_text = (
-        "The @Enum Annotation with the new name '"
-        + enum_annotation.enumName
-        + " ("
-        + ", ".join(
-            map(
-                lambda enum_pair: enum_pair.stringValue + ", " + enum_pair.instanceName,
-                enum_annotation.pairs,
-            )
-        )
-        + ")' from the previous version was at '"
-        + enum_annotation.target
-        + "' and the possible alternatives in the new version of the api are: "
-        + ", ".join(
-            map(lambda api_element: api_element.name, mapping.get_apiv2_elements())
-        )
-    )
+    migrate_text = get_migration_text(enum_annotation, mapping)
 
     if isinstance(mapping, (OneToOneMapping, ManyToOneMapping)):
         parameter = mapping.get_apiv2_elements()[0]

@@ -11,7 +11,9 @@ from package_parser.processing.api.model import (
     ParameterAssignment,
     ParameterDocumentation,
 )
-from package_parser.processing.migration.annotations import migration_author
+from package_parser.processing.migration.annotations import (
+    migration_author, get_migration_text
+)
 from package_parser.processing.migration.model import (
     Mapping,
     OneToManyMapping,
@@ -107,7 +109,7 @@ def migrate_rename_annotation_data_one_to_many_mapping__with_changed_new_name() 
         target="test/test.rename.TestA",
         authors=["testauthor", migration_author],
         reviewers=[],
-        comment="The @Rename Annotation with the new name 'TestA' from the previous version was at 'test/test.rename.Test' and the possible alternatives in the new version of the api are: TestA, TestB",
+        comment=get_migration_text(annotationv1, mappings),
         reviewResult=EnumReviewResult.UNSURE,
         newName="TestA",
     )
@@ -161,7 +163,7 @@ def migrate_rename_annotation_data_one_to_many_mapping() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        newTodo="The @Rename Annotation with the new name 'TestZ' from the previous version was at 'test/test.rename.Test' and the possible alternatives in the new version of the api are: TestA, TestB",
+        newTodo=get_migration_text(annotationv1, mappings)
     )
     annotationv2_b = TodoAnnotation(
         target="test/test.rename.TestB",
@@ -169,7 +171,7 @@ def migrate_rename_annotation_data_one_to_many_mapping() -> Tuple[
         reviewers=[],
         comment="",
         reviewResult=EnumReviewResult.NONE,
-        newTodo="The @Rename Annotation with the new name 'TestZ' from the previous version was at 'test/test.rename.Test' and the possible alternatives in the new version of the api are: TestA, TestB",
+        newTodo=get_migration_text(annotationv1, mappings)
     )
     return (
         mappings,

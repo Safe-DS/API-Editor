@@ -17,8 +17,7 @@ from package_parser.processing.migration import (
     OneToManyMapping,
     OneToOneMapping,
 )
-from package_parser.processing.migration.annotations import migration_author
-
+from package_parser.processing.migration.annotations import migration_author, get_migration_text
 
 def migrate_enum_annotation_data_one_to_one_mapping() -> Tuple[
     Mapping,
@@ -200,11 +199,7 @@ def migrate_enum_annotation_data_one_to_many_mapping__only_one_relevant_mapping(
         reviewers=[],
         reviewResult=EnumReviewResult.UNSURE,
         comment="",
-        newTodo="The @Enum Annotation with the new name 'EnumName "
-        "(value, name)' from the previous version was at "
-        "'test/test.enum.test3.Test' and the possible "
-        "alternatives in the new version of the api are: "
-        "TestA, TestB, TestC",
+        newTodo=get_migration_text(enum_annotation, mapping),
     )
     return (
         mapping,
