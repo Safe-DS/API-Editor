@@ -245,15 +245,16 @@ def migrate_constant_annotation_data_one_to_many_mapping() -> Tuple[
         defaultValueType=ValueAnnotation.DefaultValueType.NUMBER,
         defaultValue="2",
     )
-    annotationv2_a = ConstantAnnotation(
-        target="test/test.value.test5.testA",
-        authors=["testauthor", migration_author],
-        reviewers=[],
-        comment="",
-        reviewResult=EnumReviewResult.NONE,
-        defaultValueType=ValueAnnotation.DefaultValueType.NUMBER,
-        defaultValue="2",
-    )
+    annotationv2_a = TodoAnnotation(target='test/test.value.test5.testA',
+                                    authors=['testauthor', 'migration'],
+                                    reviewers=[],
+                                    comment='',
+                                    reviewResult=EnumReviewResult.UNSURE,
+                                    newTodo="The @Value Annotation with the variant 'constant' and "
+                                            "the default Value '2 ( type: number )' from the "
+                                            "previous version was at 'test/test.value.test5.test' "
+                                            'and the possible alternatives in the new version of '
+                                            'the api are: testA, testB, testC, test_attribute')
     annotationv2_b = ConstantAnnotation(
         target="test/test.value.test5.testB",
         authors=["testauthor", migration_author],
@@ -342,14 +343,18 @@ def migrate_optional_annotation_data_one_to_many_mapping() -> Tuple[
         defaultValueType=ValueAnnotation.DefaultValueType.NUMBER,
         defaultValue="2",
     )
-    annotationv2_a = OptionalAnnotation(
+    annotationv2_a = TodoAnnotation(
         target="test/test.value.test6.testA",
         authors=["testauthor", migration_author],
         reviewers=[],
         comment="",
-        reviewResult=EnumReviewResult.NONE,
-        defaultValueType=ValueAnnotation.DefaultValueType.NUMBER,
-        defaultValue="2",
+        newTodo="The @Value Annotation with the variant 'optional' "
+                "and the default Value '2 ( type: number )' from "
+                "the previous version was at "
+                "'test/test.value.test6.test' and the possible "
+                "alternatives in the new version of the api are: "
+                "testA, testB, testC",
+        reviewResult=EnumReviewResult.UNSURE,
     )
     annotationv2_b = OptionalAnnotation(
         target="test/test.value.test6.testB",
