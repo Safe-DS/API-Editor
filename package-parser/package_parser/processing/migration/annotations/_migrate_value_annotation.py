@@ -179,11 +179,11 @@ def _contains_type(
     return False
 
 
-def _have_same_default_type(
+def _have_same_default_type_and_value(
     annotation: Union[OmittedAnnotation, RequiredAnnotation],
     parameterv2: Parameter,
     mapping: Mapping,
-) -> Optional[Tuple[bool, bool, bool]]:
+) -> Optional[Tuple[bool, bool]]:
     element_list = [
         element
         for element in mapping.get_apiv1_elements()
@@ -200,50 +200,51 @@ def _have_same_default_type(
     if parameterv2_default_value is None:
         return None
     have_same_explicit_value_type = False
-    have_same_implicit_value_type = False
     are_equal = False
-    if not have_same_explicit_value_type:
+    if parameterv1_default_value == "None" and parameterv2_default_value == "None":
+        are_equal, have_same_explicit_value_type = True, True
+    elif (
+        _contains_type(ValueAnnotation.DefaultValueType.NUMBER, parameterv1.type)
+        or _contains_type(ValueAnnotation.DefaultValueType.NUMBER, parameterv2.type)
+    ):
         try:
             intv1_value = int(parameterv1_default_value)
             intv2_value = int(parameterv2_default_value)
             are_equal = intv1_value == intv2_value
             have_same_explicit_value_type = True
-            have_same_implicit_value_type = True
         except ValueError:
-            pass
-    if not have_same_explicit_value_type:
-        try:
-            floatv1_value = float(parameterv1_default_value)
-            floatv2_value = float(parameterv2_default_value)
-            are_equal = floatv1_value == floatv2_value
-            have_same_explicit_value_type = True
             try:
-                int(parameterv1_default_value)
-                have_same_implicit_value_type = True
-                are_equal = False
+                floatv1_value = float(parameterv1_default_value)
+                floatv2_value = float(parameterv2_default_value)
+                are_equal = floatv1_value == floatv2_value
+                have_same_explicit_value_type = True
+                try:
+                    int(parameterv1_default_value)
+                    have_same_explicit_value_type = False
+                    are_equal = False
+                except ValueError:
+                    try:
+                        int(parameterv2_default_value)
+                        have_same_explicit_value_type = False
+                        are_equal = False
+                    except ValueError:
+                        pass
             except ValueError:
                 pass
-            try:
-                int(parameterv2_default_value)
-                have_same_implicit_value_type = True
-                are_equal = False
-            except ValueError:
-                pass
-        except ValueError:
-            pass
-        if (
-            not have_same_explicit_value_type
-            and parameterv1_default_value
-            in (
-                "True",
-                "False",
-            )
-            and parameterv2_default_value in ("True", "False")
-        ):
-            have_same_explicit_value_type = True
-            have_same_implicit_value_type = True
-            are_equal = parameterv1_default_value == parameterv2_default_value
-    return have_same_explicit_value_type, have_same_implicit_value_type, are_equal
+    elif (
+        parameterv1_default_value in ("True", "False")
+        and parameterv2_default_value in ("True", "False")
+    ):
+        have_same_explicit_value_type = True
+        are_equal = bool(parameterv1_default_value) == bool(parameterv2_default_value)
+    elif (
+        (parameterv1_default_value.startswith("'") and parameterv1_default_value.endswith("'")) or (parameterv1_default_value.startswith("\"") or parameterv1_default_value.endswith("\""))
+        and
+        (parameterv2_default_value.startswith("'") and parameterv2_default_value.endswith("'")) or (parameterv2_default_value.startswith("\"") or parameterv2_default_value.endswith("\""))
+    ):
+        have_same_explicit_value_type = True
+        are_equal = parameterv1_default_value[1:-1] == parameterv2_default_value[1:-1]
+    return have_same_explicit_value_type, are_equal
 
 
 def migrate_constant_annotation(
@@ -280,11 +281,11 @@ def migrate_constant_annotation(
 def migrate_omitted_annotation(
     omitted_annotation: OmittedAnnotation, parameterv2: Parameter, mapping: Mapping
 ) -> Optional[OmittedAnnotation]:
-    same_type = _have_same_default_type(omitted_annotation, parameterv2, mapping)
-    if same_type is None:
+    same_type_and_value = _have_same_default_type_and_value(omitted_annotation, parameterv2, mapping)
+    if same_type_and_value is None:
         return None
-    explicit_same_type, implicit_same_type, are_equal = same_type
-    is_unsure = implicit_same_type and are_equal
+    explicit_same_type, are_equal = same_type_and_value
+    is_unsure = explicit_same_type and are_equal
     review_result = EnumReviewResult.NONE if is_unsure else EnumReviewResult.UNSURE
     migrate_text = (
         _get_migration_text(mapping, omitted_annotation)
@@ -339,29 +340,20 @@ def migrate_optional_annotation(
 def migrate_required_annotation(
     required_annotation: RequiredAnnotation, parameterv2: Parameter, mapping: Mapping
 ) -> Optional[RequiredAnnotation]:
-    same_type = _have_same_default_type(required_annotation, parameterv2, mapping)
-    if same_type is None:
+    same_type_and_value = _have_same_default_type_and_value(required_annotation, parameterv2, mapping)
+    if same_type_and_value is None:
         return None
-    explicit_same_type, implicit_same_type, _ = same_type
+    same_type, _ = same_type_and_value
     review_result = (
-        EnumReviewResult.NONE if not implicit_same_type else EnumReviewResult.UNSURE
-    )
-    migrate_text = (
-        _get_migration_text(mapping, required_annotation)
-        if len(required_annotation.comment) == 0
-        else required_annotation.comment
-        + "\n"
-        + _get_migration_text(mapping, required_annotation)
+        EnumReviewResult.NONE if same_type else EnumReviewResult.UNSURE
     )
 
-    if explicit_same_type:
+    if same_type:
         return RequiredAnnotation(
             parameterv2.id,
             required_annotation.authors,
             required_annotation.reviewers,
-            required_annotation.comment
-            if review_result is EnumReviewResult.NONE
-            else migrate_text,
+            required_annotation.comment,
             review_result,
         )
     return None
