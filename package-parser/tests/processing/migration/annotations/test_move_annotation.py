@@ -74,14 +74,14 @@ def migrate_move_annotation_data_one_to_one_mapping__class() -> Tuple[
         instance_attributes=[],
     )
     classv2 = Class(
-        id_="test/test.value.test2.test/newTestClass",
-        qname="test.value.test2.test/newTestClass",
+        id_="test/test.value.test2.test/NewMoveTestClass",
+        qname="test.value.test2.test.NewMoveTestClass",
         decorators=[],
         superclasses=[],
         is_public=True,
         reexported_by=[],
         documentation=ClassDocumentation("", ""),
-        code="",
+        code="class NewMoveTestClass:\n    pass",
         instance_attributes=[],
     )
 
@@ -96,7 +96,7 @@ def migrate_move_annotation_data_one_to_one_mapping__class() -> Tuple[
         destination="test.value.test2.destination",
     )
     annotationv2 = MoveAnnotation(
-        target="test/test.value.test2.test/newTestClass",
+        target="test/test.value.test2.test/NewMoveTestClass",
         authors=["testauthor", migration_author],
         reviewers=[],
         comment="",
