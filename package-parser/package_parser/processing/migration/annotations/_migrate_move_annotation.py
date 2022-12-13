@@ -63,8 +63,9 @@ def migrate_move_annotation(
 
     annotated_apiv1_element = None
     for element in mapping.get_apiv1_elements():
-        if not isinstance(element, (Attribute, Result)) and element.id:
+        if not isinstance(element, (Attribute, Result)) and move_annotation.target == element.id:
             annotated_apiv1_element = element
+            break
 
     if annotated_apiv1_element is None:
         return []

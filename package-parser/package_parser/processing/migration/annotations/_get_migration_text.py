@@ -17,7 +17,7 @@ def _get_further_information(annotation: AbstractAnnotation) -> str:
         return "the interval '" + str(annotation.interval.to_json()) + "'"
     if isinstance(annotation, EnumAnnotation):
         return (
-            "new enum '"
+            "the new enum '"
             + annotation.enumName
             + " ("
             + ", ".join(
