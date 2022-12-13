@@ -34,9 +34,9 @@ from ._get_migration_text import get_migration_text
 
 
 def migrate_value_annotation(
-    value_annotation_: ValueAnnotation, mapping: Mapping
+    annotation: ValueAnnotation, mapping: Mapping
 ) -> list[AbstractAnnotation]:
-    value_annotation = deepcopy(value_annotation_)
+    value_annotation = deepcopy(annotation)
     authors = value_annotation.authors
     authors.append(migration_author)
     value_annotation.authors = authors
@@ -77,7 +77,7 @@ def migrate_value_annotation(
                 value_annotation.reviewers,
                 value_annotation.comment,
                 EnumReviewResult.NONE,
-                get_migration_text(value_annotation_, mapping),
+                get_migration_text(value_annotation, mapping),
             )
         ]
     migrated_annotations: list[AbstractAnnotation] = []
@@ -122,7 +122,7 @@ def migrate_value_annotation(
                         value_annotation.reviewers,
                         value_annotation.comment,
                         EnumReviewResult.UNSURE,
-                        get_migration_text(value_annotation_, mapping),
+                        get_migration_text(value_annotation, mapping),
                     )
                 )
     return migrated_annotations
@@ -320,12 +320,12 @@ def migrate_omitted_annotation(
         return None
     data_type, are_equal = type_and_same_value
 
-    is_unsure = (
-        parameterv2.type is None
-        or data_type is None
-        or not (are_equal and _have_same_type(data_type, parameterv1, parameterv2.type))
-    )
-    review_result = EnumReviewResult.NONE if not is_unsure else EnumReviewResult.UNSURE
+    is_not_unsure = are_equal
+    if parameterv2.type is not None and data_type is not None:
+        is_not_unsure = are_equal and _have_same_type(
+            data_type, parameterv1, parameterv2.type
+        )
+    review_result = EnumReviewResult.NONE if is_not_unsure else EnumReviewResult.UNSURE
     migrate_text = (
         get_migration_text(omitted_annotation, mapping)
         if len(omitted_annotation.comment) == 0
@@ -338,7 +338,7 @@ def migrate_omitted_annotation(
         parameterv2.id,
         omitted_annotation.authors,
         omitted_annotation.reviewers,
-        omitted_annotation.comment if not is_unsure else migrate_text,
+        omitted_annotation.comment if is_not_unsure else migrate_text,
         review_result,
     )
 
@@ -349,7 +349,7 @@ def migrate_optional_annotation(
     parameterv1 = get_api_element_from_mapping(optional_annotation, mapping, Parameter)
     if parameterv1 is None:
         return None
-    if parameterv2.type and _have_same_type(
+    if parameterv2.type is not None and _have_same_type(
         optional_annotation.defaultValueType, parameterv1, parameterv2.type
     ):
         return OptionalAnnotation(

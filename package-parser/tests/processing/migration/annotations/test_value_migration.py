@@ -37,7 +37,7 @@ def migrate_constant_annotation_data_one_to_one_mapping() -> Tuple[
         id_="test/test.value.test1.testA",
         name="testA",
         qname="test.value.test1.testA",
-        default_value="1",
+        default_value="'this is a string'",
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
         documentation=ParameterDocumentation("str", "this is a string", ""),
@@ -46,10 +46,10 @@ def migrate_constant_annotation_data_one_to_one_mapping() -> Tuple[
         id_="test/test.value.test1.testB",
         name="testB",
         qname="test.value.test1.testB",
-        default_value="1",
+        default_value="'test string'",
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
-        documentation=ParameterDocumentation("str", "test string", ""),
+        documentation=ParameterDocumentation("str", "'test string'", ""),
     )
     annotation = ConstantAnnotation(
         target="test/test.value.test1.testA",
@@ -236,12 +236,21 @@ def migrate_constant_annotation_data_one_to_many_mapping() -> Tuple[
         default_value="test_value",
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
-        documentation=ParameterDocumentation("str", "test_string", ""),
+        documentation=ParameterDocumentation("str", "'test_string'", ""),
+    )
+    parameterv2_d = Parameter(
+        id_="test/test.value.test5.testD",
+        name="testD",
+        qname="test.value.test5.testD",
+        default_value="3.0",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("float", "3.0", ""),
     )
     attribute = Attribute("test_attribute", NamedType("str"))
 
     mapping = OneToManyMapping(
-        1.0, parameterv1, [parameterv2_a, parameterv2_b, parameterv2_c, attribute]
+        1.0, parameterv1, [parameterv2_a, parameterv2_b, parameterv2_c, parameterv2_d, attribute]
     )
 
     annotation = ConstantAnnotation(
@@ -251,7 +260,7 @@ def migrate_constant_annotation_data_one_to_many_mapping() -> Tuple[
         comment="",
         reviewResult=EnumReviewResult.NONE,
         defaultValueType=ValueAnnotation.DefaultValueType.NUMBER,
-        defaultValue="2",
+        defaultValue="2.0",
     )
     annotationv2_a = TodoAnnotation(
         target="test/test.value.test5.testA",
@@ -268,7 +277,7 @@ def migrate_constant_annotation_data_one_to_many_mapping() -> Tuple[
         comment=get_migration_text(annotation, mapping),
         reviewResult=EnumReviewResult.UNSURE,
         defaultValueType=ValueAnnotation.DefaultValueType.NUMBER,
-        defaultValue="2",
+        defaultValue="2.0",
     )
     annotationv2_c = TodoAnnotation(
         target="test/test.value.test5.testC",
@@ -278,11 +287,20 @@ def migrate_constant_annotation_data_one_to_many_mapping() -> Tuple[
         reviewResult=EnumReviewResult.UNSURE,
         newTodo=get_migration_text(annotation, mapping),
     )
+    annotationv2_d = ConstantAnnotation(
+        target="test/test.value.test5.testD",
+        authors=["testauthor", migration_author],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        defaultValueType=ValueAnnotation.DefaultValueType.NUMBER,
+        defaultValue="2.0",
+    )
 
     return (
         mapping,
         annotation,
-        [annotationv2_a, annotationv2_b, annotationv2_c],
+        [annotationv2_a, annotationv2_b, annotationv2_c, annotationv2_d],
     )
 
 
@@ -295,10 +313,10 @@ def migrate_optional_annotation_data_one_to_many_mapping() -> Tuple[
         id_="test/test.value.test6.test",
         name="test",
         qname="test.value.test6.test",
-        default_value="2.0",
+        default_value="2",
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
-        documentation=ParameterDocumentation("float", "2.0", ""),
+        documentation=ParameterDocumentation("int", "2", ""),
     )
 
     parameterv2_a = Parameter(
@@ -308,7 +326,7 @@ def migrate_optional_annotation_data_one_to_many_mapping() -> Tuple[
         default_value="5",
         assigned_by=ParameterAssignment.POSITION_OR_NAME,
         is_public=True,
-        documentation=ParameterDocumentation("int", "5", "int in the range of (0, 10)"),
+        documentation=ParameterDocumentation("float", "5.0", "float"),
     )
     parameterv2_b = Parameter(
         id_="test/test.value.test6.testB",
@@ -328,9 +346,18 @@ def migrate_optional_annotation_data_one_to_many_mapping() -> Tuple[
         is_public=True,
         documentation=ParameterDocumentation("str", "test_string", ""),
     )
+    parameterv2_d = Parameter(
+        id_="test/test.value.test6.testD",
+        name="testD",
+        qname="test.value.test6.testD",
+        default_value="5",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("int", "5", "int in the range of (0, 10)"),
+    )
 
     mapping = OneToManyMapping(
-        1.0, parameterv1, [parameterv2_a, parameterv2_b, parameterv2_c]
+        1.0, parameterv1, [parameterv2_a, parameterv2_b, parameterv2_c, parameterv2_d]
     )
 
     annotation = OptionalAnnotation(
@@ -367,11 +394,20 @@ def migrate_optional_annotation_data_one_to_many_mapping() -> Tuple[
         reviewResult=EnumReviewResult.UNSURE,
         newTodo=get_migration_text(annotation, mapping),
     )
+    annotationv2_d = OptionalAnnotation(
+        target="test/test.value.test6.testD",
+        authors=["testauthor", migration_author],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+        defaultValueType=ValueAnnotation.DefaultValueType.NUMBER,
+        defaultValue="2",
+    )
 
     return (
         mapping,
         annotation,
-        [annotationv2_a, annotationv2_b, annotationv2_c],
+        [annotationv2_a, annotationv2_b, annotationv2_c, annotationv2_d],
     )
 
 
@@ -435,11 +471,20 @@ def migrate_required_annotation_data_one_to_many_mapping() -> Tuple[
         is_public=True,
         documentation=ParameterDocumentation("", "", ""),
     )
+    parameterv2_f = Parameter(
+        id_="test/test.value.test7.testF",
+        name="testF",
+        qname="test.value.test7.testF",
+        default_value="3.0",
+        assigned_by=ParameterAssignment.POSITION_OR_NAME,
+        is_public=True,
+        documentation=ParameterDocumentation("float", "3.0", ""),
+    )
 
     mapping = OneToManyMapping(
         1.0,
         parameterv1,
-        [parameterv2_a, parameterv2_b, parameterv2_c, parameterv2_d, parameterv2_e],
+        [parameterv2_a, parameterv2_b, parameterv2_c, parameterv2_d, parameterv2_e, parameterv2_f],
     )
 
     annotation = RequiredAnnotation(
@@ -490,6 +535,14 @@ def migrate_required_annotation_data_one_to_many_mapping() -> Tuple[
         newTodo=get_migration_text(annotation, mapping),
     )
 
+    annotationv2_f = RequiredAnnotation(
+        target="test/test.value.test7.testF",
+        authors=["testauthor", migration_author],
+        reviewers=[],
+        comment="",
+        reviewResult=EnumReviewResult.NONE,
+    )
+
     return (
         mapping,
         annotation,
@@ -499,6 +552,7 @@ def migrate_required_annotation_data_one_to_many_mapping() -> Tuple[
             annotationv2_c,
             annotationv2_d,
             annotationv2_e,
+            annotationv2_f,
         ],
     )
 
