@@ -12,7 +12,9 @@ from package_parser.processing.migration.annotations import (
     migrate_todo_annotation,
     migrate_value_annotation,
 )
-from package_parser.processing.migration.annotations._migrate_move_annotation import migrate_move_annotation
+from package_parser.processing.migration.annotations._migrate_move_annotation import (
+    migrate_move_annotation,
+)
 from package_parser.processing.migration.model import Mapping
 
 
