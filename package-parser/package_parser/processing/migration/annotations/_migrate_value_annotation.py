@@ -344,7 +344,9 @@ def migrate_omitted_annotation(
 
     is_not_unsure = are_equal
     if parameterv2.type is not None and data_type is not None:
-        is_not_unsure = are_equal and _have_same_type(data_type, parameterv1, parameterv2.type)
+        is_not_unsure = are_equal and _have_same_type(
+            data_type, parameterv1, parameterv2.type
+        )
     review_result = EnumReviewResult.NONE if is_not_unsure else EnumReviewResult.UNSURE
     migrate_text = (
         _get_migration_text(mapping, omitted_annotation)
