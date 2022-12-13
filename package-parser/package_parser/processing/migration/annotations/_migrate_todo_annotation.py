@@ -16,6 +16,7 @@ from ._constants import migration_author
 from ._get_migration_text import get_migration_text
 
 
+# pylint: disable=duplicate-code
 def migrate_todo_annotation(
     todo_annotation: TodoAnnotation, mapping: Mapping
 ) -> list[AbstractAnnotation]:
@@ -37,6 +38,9 @@ def migrate_todo_annotation(
     for element in mapping.get_apiv1_elements():
         if not isinstance(element, (Attribute, Result)) and element.id:
             annotated_apiv1_element = element
+
+    if annotated_apiv1_element is None:
+        return []
 
     todo_annotations: list[AbstractAnnotation] = []
     for element in mapping.get_apiv2_elements():
