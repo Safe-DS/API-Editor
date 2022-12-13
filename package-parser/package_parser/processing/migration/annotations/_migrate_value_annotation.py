@@ -342,12 +342,10 @@ def migrate_omitted_annotation(
         return None
     data_type, are_equal = type_and_same_value
 
-    is_unsure = (
-        parameterv2.type is None
-        or data_type is None
-        or not (are_equal and _have_same_type(data_type, parameterv1, parameterv2.type))
-    )
-    review_result = EnumReviewResult.NONE if not is_unsure else EnumReviewResult.UNSURE
+    is_not_unsure = are_equal
+    if parameterv2.type is not None and data_type is not None:
+        is_not_unsure = are_equal and _have_same_type(data_type, parameterv1, parameterv2.type)
+    review_result = EnumReviewResult.NONE if is_not_unsure else EnumReviewResult.UNSURE
     migrate_text = (
         _get_migration_text(mapping, omitted_annotation)
         if len(omitted_annotation.comment) == 0
@@ -360,7 +358,7 @@ def migrate_omitted_annotation(
         parameterv2.id,
         omitted_annotation.authors,
         omitted_annotation.reviewers,
-        omitted_annotation.comment if not is_unsure else migrate_text,
+        omitted_annotation.comment if is_not_unsure else migrate_text,
         review_result,
     )
 
